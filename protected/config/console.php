@@ -8,6 +8,12 @@ return array(
 
 	// preloading 'log' component
 	'preload'=>array('log'),
+	'import'=>array(
+		'application.models.*',
+		'application.components.*',
+        'application.modules.user.models.*',
+        'application.modules.user.components.*',		
+	),	
 	'modules'=>array(
 	        #...
 	        'user'=>array(
@@ -58,6 +64,7 @@ return array(
 			'username' => 'db_personaling',
 			'password' => 'Perso123Naling',
 			'charset' => 'utf8',
+			'tablePrefix' => 'tbl_',
 		),
 		
 		'log'=>array(

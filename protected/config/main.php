@@ -104,6 +104,7 @@ return array(
 			'username' => 'db_personaling',
 			'password' => 'Perso123Naling',
 			'charset' => 'utf8',
+			'tablePrefix' => 'tbl_',
 		),
         'user'=>array(
             // enable cookie-based authentication

@@ -13,8 +13,8 @@ return array(
 	'name'=>'My Web Application',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
-
+	'preload'=>array('log','bootstrap'),
+	'theme'=>'bootstrap',
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
@@ -31,11 +31,11 @@ return array(
 			'password'=>'Enter Your Password Here',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('*'),
-        	'gii'=>array(
+        	
             	'generatorPaths'=>array(
                 	'bootstrap.gii',
                 ),
-            ),			
+            	
 		),
  		'user'=>array(
             # encrypting method (php hash function)
@@ -78,7 +78,7 @@ return array(
 			'allowAutoLogin'=>true,
 		),
 		 'bootstrap'=>array(
-            'class'=>'bootstrap.components.Bootstrap',
+            'class'=>'ext.bootstrap.components.Bootstrap',
         ),
 		// uncomment the following to enable URLs in path-format
 		

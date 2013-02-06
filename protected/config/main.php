@@ -10,7 +10,7 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'Personaling',
 
 	// preloading 'log' component
 	'preload'=>array('log','bootstrap'),
@@ -77,6 +77,13 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+	    'less'=>array(
+	      'class'=>'ext.less.components.Less',
+	      'mode'=>'client',
+	      'files'=>array(
+	        'less/style.less'=>'css/style.less',
+	      ),
+	    ),		
 		 'bootstrap'=>array(
             'class'=>'ext.bootstrap.components.Bootstrap',
         ),

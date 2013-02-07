@@ -45,7 +45,8 @@ $this->breadcrumbs=array(
 			foreach($profileFields as $field) {
 				//echo $field->varname;
 			?>
-
+<div class="control-group">
+	<div class="controls">
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
@@ -59,7 +60,8 @@ $this->breadcrumbs=array(
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 		}
 		 ?>
-
+	</div>
+</div>
 			<?php
 			}
 		}

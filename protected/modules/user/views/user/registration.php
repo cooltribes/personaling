@@ -23,7 +23,7 @@ $this->breadcrumbs=array(
 	'htmlOptions'=>array('class'=>'personaling_form'),
     //'type'=>'stacked',
     'type'=>'inline',
-	'enableClientValidation'=>true,
+	'enableAjaxValidation'=>true,
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),
@@ -32,11 +32,20 @@ $this->breadcrumbs=array(
             <legend >Datos personales: </legend>	
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	
-
-	<?php echo $form->textFieldRow($model,'email',array("class"=>"span5")); ?>
-	
-	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span5')); ?>
-
+<div class="control-group">
+	<div class="controls">
+	<?php echo $form->textFieldRow($model,'email',array("class"=>"span5")); 
+	echo $form->error($model,'email');
+	?>
+	</div>
+</div>
+<div class="control-group">
+	<div class="controls">	
+	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span5')); 
+	echo $form->error($model,'password');
+	?>
+	</div>
+</div>
 
 	
 <?php 
@@ -56,9 +65,21 @@ $this->breadcrumbs=array(
 			//echo $form->radioButtonListRow($profile,$field->varname,Profile::range($field->range));
 		} elseif ($field->field_type=="TEXT") {
 			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+		} elseif ($field->field_type=="DATE") {
+			/*	
+			echo $form->labelEx($profile,$field->varname);	
+			echo $form->DropDownList($profile,$field->varname.'[day]',array(1=>"01",2=>"02"),array('class'=>'span1'));
+			echo $form->DropDownList($profile,$field->varname.'[month]',array(1=>"Enero",2=>"Febrero"),array('class'=>'span1'));
+			echo $form->DropDownList($profile,$field->varname.'[year]',array(1900=>"1900",1901=>"1901"),array('class'=>'span1'));
+			*/
+			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+			
+				 
+				
 		} else {
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 		}
+		 echo $form->error($profile,$field->varname);
 		 ?>
 	</div>
 </div>
@@ -71,6 +92,7 @@ $this->breadcrumbs=array(
 		
 			
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
 		    'label'=>'Siguiente',
 		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'large', // null, 'large', 'small' or 'mini'

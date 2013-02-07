@@ -39,7 +39,7 @@ class UserModule extends CWebModule
 	 * @desc allow auth for is not active user
 	 */
 	public $loginNotActiv=true;
-	
+	 
 	/**
 	 * @var boolean
 	 * @desc activate user on registration (only $sendActivationMail = false)

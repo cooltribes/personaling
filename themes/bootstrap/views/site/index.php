@@ -9,9 +9,15 @@ $this->pageTitle=Yii::app()->name;
 )); ?>
 
 <p>Congratulations! You have successfully created your Yii application.</p>
-
+<p><?php $this->widget('bootstrap.widgets.TbButton', array(
+        'type'=>'primary',
+        'size'=>'large',
+        'label'=>'Registrate aqui!!',
+        'url'=>array('user/registration'),
+    )); ?></p>
 <?php $this->endWidget(); ?>
 
+<?php echo CHtml::link('Registrate aqui',array('user/registration')); ?>
 <p>You may change the content of this page by modifying the following two files:</p>
 
 <ul>

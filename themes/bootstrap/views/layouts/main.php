@@ -21,6 +21,7 @@
     'items'=>array(
         array(
             'class'=>'bootstrap.widgets.TbMenu',
+            'htmlOptions'=>array('class'=>'pull-right'),
             'items'=>array(
 
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
@@ -30,7 +31,16 @@
                 array('label'=>'Magazine', 'url'=>array('/site/contact')),
                // array('label'=>'<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>', 'url'=>array('/site/contact')),
                 array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-                array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+                //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
+                 array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Tu Cuenta', 'url'=>'#'),
+                    array('label'=>'Perfil', 'url'=>'#'),
+                    array('label'=>'Configuracion', 'url'=>'#'),
+                    '---',
+                    array('label'=>'Salir', 'url'=>array('/site/logout')),
+                ),
+                'visible'=>!Yii::app()->user->isGuest,
+				),
             ),
         ),
     ),

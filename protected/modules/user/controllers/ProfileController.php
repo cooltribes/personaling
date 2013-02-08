@@ -20,8 +20,28 @@ class ProfileController extends Controller
 			'profile'=>$model->profile,
 	    ));
 	}
-
-
+/**
+ * Mi cuenta  
+ */
+	public function actionMicuenta()
+	{
+		$model = $this->loadUser();
+	    $this->render('micuenta',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+/**
+ * Regsitro tu tipo  
+ */
+	public function actionTutipo()
+	{
+		$model = $this->loadUser();
+	    $this->render('tutipo',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}	
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

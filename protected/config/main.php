@@ -45,7 +45,7 @@ return array(
             'sendActivationMail' => true,
 
             # allow access for non-activated users
-            'loginNotActiv' => false,
+            'loginNotActiv' => true,
 
             # activate user on registration (only sendActivationMail = false)
             'activeAfterRegister' => false,

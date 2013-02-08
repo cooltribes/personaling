@@ -19,33 +19,27 @@
               <div class="controls row">
                 <div class="span3">
                   <?php 
-                  	$field = ProfileField::model()->findByAttribute(array('varname'=>'altura'));
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+                  ?>
+                </div> 
+                <div class="span3">
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
 				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
                   ?>
                 </div>
                 <div class="span3">
-                  <label>Label 1 aqui</label>
-                  <select class="span2" type="text" placeholder=".span4">
-                    <option>Dia</option>
-                    <option>01</option>
-                    <option>02</option>
-                  </select>
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+                  ?>
                 </div>
                 <div class="span3">
-                  <label>Label 1 aqui</label>
-                  <select class="span2" type="text" placeholder=".span4">
-                    <option>Dia</option>
-                    <option>01</option>
-                    <option>02</option>
-                  </select>
-                </div>
-                <div class="span3">
-                  <label>Label 1 aqui</label>
-                  <select class="span2" type="text" placeholder=".span4">
-                    <option>Dia</option>
-                    <option>01</option>
-                    <option>02</option>
-                  </select>
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+                  ?>
                 </div>
               </div>
             </div>

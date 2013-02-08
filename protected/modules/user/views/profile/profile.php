@@ -2,6 +2,9 @@
 $this->breadcrumbs=array(
 	UserModule::t("Profile"),
 );
+?>
+
+<?php
 $this->menu=array(
 	((UserModule::isAdmin())
 		?array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin'))

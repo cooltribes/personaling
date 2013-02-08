@@ -9,6 +9,11 @@ class User extends CActiveRecord
 	//TODO: Delete for next version (backward compatibility)
 	const STATUS_BANED=-1;
 	
+	const STATUS_REGISTER_NEW = 0;
+	const STATUS_REGISTER_TIPO = 1;
+	const STATUS_REGISTER_ESTILO = 2;
+	const STATUS_REGISTER_DONE = 3;
+	
 	/**
 	 * The followings are the available columns in table 'users':
 	 * @var integer $id
@@ -60,8 +65,8 @@ class User extends CActiveRecord
             array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
-			array('superuser, status', 'numerical', 'integerOnly'=>true),
-			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status', 'safe', 'on'=>'search'),
+			array('superuser, status,status_register', 'numerical', 'integerOnly'=>true),
+			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status,status_register', 'safe', 'on'=>'search'),
 		):((Yii::app()->user->id==$this->id)?array(
 			array('username, email', 'required'),
 			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),

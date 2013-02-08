@@ -134,6 +134,15 @@ return array(
 					'class'=>'CWebLogRoute',
 				),
 				*/
+			array(
+                    'class' => 'CDbLogRoute',
+                    'connectionID' => 'db',
+                    'autoCreateLogTable' => false,
+                    'logTableName' => 'tbl_logger',
+                    'levels' => 'trace',
+                    'categories' => 'registro',
+
+			),
 			),
 		),
 	),

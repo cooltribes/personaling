@@ -32,11 +32,70 @@ class ProfileController extends Controller
 	    ));
 	}
 /**
+ * Regsitro tu estilo  
+ */
+	public function actionTuestilo()
+	{
+		$model = $this->loadUser();
+		$profile=$model->profile;
+		//$profile=new Profile;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-form')
+		{
+			echo CActiveForm::validate($profile);
+			Yii::app()->end();
+		}	
+		if(isset($_POST['Profile'])) {
+			$profile->attributes=$_POST['Profile'];
+			if($profile->validate())
+			{
+				if ($profile->save())
+				{
+					$model->status_register = User::STATUS_REGISTER_ESTILO;
+					if ($model->save())	
+						$this->redirect(array('/user/profile/tuestilo'));
+					else 
+						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+					
+				} else {
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			}
+		}	
+	    $this->render('tuestilo',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}	
+ /**
  * Regsitro tu tipo  
  */
 	public function actionTutipo()
 	{
 		$model = $this->loadUser();
+		$profile=$model->profile;
+		//$profile=new Profile;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
+		{
+			echo CActiveForm::validate($profile);
+			Yii::app()->end();
+		}	
+		if(isset($_POST['Profile'])) {
+			$profile->attributes=$_POST['Profile'];
+			if($profile->validate())
+			{
+				if ($profile->save())
+				{
+					$model->status_register = User::STATUS_REGISTER_TIPO;
+					if ($model->save())	
+						$this->redirect(array('/user/profile/tuestilo'));
+					else 
+						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+					
+				} else {
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			}
+		}	
 	    $this->render('tutipo',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,

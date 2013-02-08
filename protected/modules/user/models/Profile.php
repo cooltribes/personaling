@@ -180,4 +180,11 @@ class Profile extends UActiveRecord
 			return $this->_model;
 		}
 	}
+	protected function beforeValidate()
+	{
+	   	
+	   //$this->birthday = $this->birthday['year'] .'-'. $this->birthday['month'] .'-'. $this->birthday['day'];
+	   //echo $this->birthday;
+	   return parent::beforeValidate();
+	}
 }

@@ -27,13 +27,21 @@ class RegistrationController extends Controller
 			// ajax validator
 			if(isset($_POST['ajax']) && $_POST['ajax']==='registration-form')
 			{
+				//echo "rafa";	
+				//echo $_POST['Profile']['birthday'];	
 				echo UActiveForm::validate(array($model,$profile));
+				//$_POST['Profile']['birthday'] = $_POST['Profile']['birthday']['year'] .'-'. $_POST['Profile']['birthday']['month'] .'-'. $_POST['Profile']['birthday']['day'];
+				
+				//echo CActiveForm::validate($profile);
+				
 				Yii::app()->end();
 			}
 			
 		    if (Yii::app()->user->id) {
 		    	$this->redirect(Yii::app()->controller->module->profileUrl);
 		    } else {
+		    	//echo "lore";
+				//Yii::app()->end();
 		    	if(isset($_POST['RegistrationForm'])) {
 					$model->attributes=$_POST['RegistrationForm'];
 					$profile->attributes=((isset($_POST['Profile'])?$_POST['Profile']:array()));
@@ -65,7 +73,12 @@ class RegistrationController extends Controller
 								} elseif(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false) {
 									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please {{login}}.",array('{{login}}'=>CHtml::link(UserModule::t('Login'),Yii::app()->controller->module->loginUrl))));
 								} elseif(Yii::app()->controller->module->loginNotActiv) {
-									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email or login."));
+									//Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email or login."));
+									$identity=new UserIdentity($model->email,$soucePassword);
+									$identity->authenticate();
+									Yii::app()->user->login($identity,0);
+									$this->redirect(array('/user/profile/tutipo'));									
+									
 								} else {
 									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email."));
 								}

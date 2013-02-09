@@ -8,6 +8,7 @@ class Profile extends UActiveRecord
 	 * @var boolean $regMode
 	 */
 	public $regMode = false;
+	public $personal = false;
 	
 	private $_model;
 	private $_modelReg;
@@ -46,9 +47,9 @@ class Profile extends UActiveRecord
 			
 			foreach ($model as $field) {
 				$field_rule = array();
-				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG)
+				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_MORE)
 					array_push($required,$field->varname);
-				if ($field->field_type=='FLOAT')
+				if ($field->field_type=='FLOAT') 
 					array_push($float,$field->varname);
 				if ($field->field_type=='DECIMAL')
 					array_push($decimal,$field->varname);
@@ -176,7 +177,10 @@ class Profile extends UActiveRecord
 			return $this->_modelReg;
 		} else {
 			if (!$this->_model)
-				$this->_model=ProfileField::model()->forOwner()->findAll();
+				if ($this->personal)
+					$this->_model=ProfileField::model()->forPersonal()->forOwner()->findAll(); //
+				else
+					$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->
 			return $this->_model;
 		}
 	}

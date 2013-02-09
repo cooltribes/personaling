@@ -32,6 +32,48 @@ class ProfileController extends Controller
 	    ));
 	}
 /**
+ * Editar tu estilo  
+ */
+	public function actionEdittuestilo()
+	{
+		$model = $this->loadUser();
+		$profile=$model->profile;
+		//$profile=new Profile;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-form')
+		{
+			echo CActiveForm::validate($profile);
+			Yii::app()->end();
+		}	
+		if(isset($_POST['Profile'])) {
+			$profile->attributes=$_POST['Profile'];
+			if($profile->validate())
+			{
+				if ($profile->save())
+				{
+					//$model->status_register = User::STATUS_REGISTER_ESTILO;
+					//if ($model->save()){
+               			Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));						
+						$this->render('tuestilo',array(
+					    	'model'=>$model,
+							'profile'=>$model->profile,
+							'editar'=>true,
+					    ));
+						//$this->redirect(array('/user/profile/tuestilo'));
+					//}else {
+					//	Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+					//}
+				} else {
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			}
+		}	
+	    $this->render('tuestilo',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+/**
  * Regsitro tu estilo  
  */
 	public function actionTuestilo()
@@ -52,7 +94,7 @@ class ProfileController extends Controller
 				{
 					$model->status_register = User::STATUS_REGISTER_ESTILO;
 					if ($model->save())	
-						$this->redirect(array('/user/profile/tuestilo'));
+						$this->redirect(array('/site/index'));
 					else 
 						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
 					
@@ -100,16 +142,61 @@ class ProfileController extends Controller
 	    	'model'=>$model,
 			'profile'=>$model->profile,
 	    ));
-	}	
+	}
+/**
+ * Editar tu tipo  
+ */
+	public function actionEdittutipo()
+	{
+		$model = $this->loadUser();
+		$profile=$model->profile;
+		//$profile=new Profile;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
+		{
+			echo CActiveForm::validate($profile);
+			Yii::app()->end();
+		}	
+		if(isset($_POST['Profile'])) {
+			$profile->attributes=$_POST['Profile'];
+			if($profile->validate())
+			{
+				if ($profile->save())
+				{
+					//$model->status_register = User::STATUS_REGISTER_TIPO;
+					//if ($model->save()){	
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));						
+						$this->render('tuestilo',array(
+					    	'model'=>$model,
+							'profile'=>$model->profile,
+							'editar'=>true,
+					    ));
+					//}else{ 
+					//	Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+					//}
+				} else {
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			}
+		}	
+	    $this->render('tutipo',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+			'editar'=>true,
+	    ));
+		
+	}		
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionEdit()
 	{
-		$model = $this->loadUser();
-		$profile=$model->profile;
 		
+		$model = $this->loadUser();
+		Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
+		$profile=$model->profile;
+		$profile->personal = true;
 		// ajax validator
 		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
 		{
@@ -117,13 +204,13 @@ class ProfileController extends Controller
 			Yii::app()->end();
 		}
 		
-		if(isset($_POST['User']))
+		if(isset($_POST['Profile']))
 		{
-			$model->attributes=$_POST['User'];
+			//$model->attributes=$_POST['User'];
 			$profile->attributes=$_POST['Profile'];
 			
-			if($model->validate()&&$profile->validate()) {
-				$model->save();
+			if($profile->validate()) {
+				//$model->save();
 				$profile->save();
                 Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));

@@ -18,9 +18,36 @@
             <div class="control-group">
               <div class="controls row">
               	            <?php 
+              	             
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'coctel'));
-				echo $form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range));
+				$tabs[] = array(
+            		'active'=>true,
+            		'label'=>$field->title,
+            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+        		);
+                $field = ProfileField::model()->findByAttributes(array('varname'=>'fiesta'));
+				$tabs[] = array(
+            		'active'=>false,
+            		'label'=>$field->title,
+            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+        		);        		
 				?>
+				<?php $this->widget('bootstrap.widgets.TbTabs', array(
+				'placement'=>'left', // 'above', 'right', 'below' or 'left'
+    				'tabs'=>$tabs,
+				)); ?>
+				<?php
+				Yii::app()->clientScript->registerScript('change', "
+					$('.tab-content :input').click(function(){
+							div_id = $(this).closest('div').next().attr('id');
+							alert(div_id);
+							$('.nav-tabs a[href=\"#'+div_id+'\"]').tab('show');
+						
+					});
+					
+					
+					");
+					?>
               <!-- 
                 <div class="span4 offset2">
                <label><a href="Buscar_looks_Catalogo.php" title="catalogo"><img src="http://placehold.it/370x400"/> </a>

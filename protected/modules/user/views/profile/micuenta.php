@@ -111,7 +111,7 @@
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Correo Electronico y Contrasena </h5>
             <ul>
               <li><a href="cambiar_Correo_electronico.php" title="cambiar corre electronico">Cambiar correo electronico</a></li>
-              <li> <a href="cambiar_Contrasena.php" title="cambiar contrasena">Cambiar contraseña</a></li>
+              <li> <?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
             </ul>
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Libreta de Direcciones </h5>
             <ul>

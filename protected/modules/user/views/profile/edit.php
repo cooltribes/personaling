@@ -4,15 +4,28 @@ $this->breadcrumbs=array(
 	UserModule::t("Edit"),
 );
 ?>
+<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
+<div class="success">
+<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
+</div>
+<?php endif; ?>
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
       <h1>Tu personaling | Tu perfil</h1>
      <!-- MENU ON -->
      <ul class="nav nav-pills margin_top">
-        <li class="active"> <a href="Tu_Perfil_Tus_datos_Personales_Usuaria.php" title="datos personales">Datos Personales</a> </li>
-        <li><a href="Tu_Perfil_Avatar_Usuaria.php" title="avatar"> Avatar</a></li>
-        <li><a href="Tu_Perfil_Perfil_Corporal_Usuaria.php">Perfil Corporal</a></li>
+        <li class="active"> 
+        	<?php echo CHtml::link('Datos Personales',array('profile/edit')); ?>
+        </li>
+        <li>
+        	<?php echo CHtml::link('Avatar',array('profile/avatar')); ?>
+        	
+        </li>
+        <li>
+        	<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo')); ?>
+        	
+        </li>
       </ul>
      <!-- MENU OFF -->
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
@@ -62,10 +75,12 @@ $this->breadcrumbs=array(
             <div class="form-actions"> 
             	 
             			<?php $this->widget('bootstrap.widgets.TbButton', array(
+            				'buttonType'=>'submit',
 						    'label'=>'Guardar',
 						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						    'size'=>'large', // null, 'large', 'small' or 'mini'
 						)); ?>
+						<?php //echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>
             </div>
           </fieldset>
         <?php $this->endWidget(); ?>
@@ -84,63 +99,7 @@ $this->menu=array(
     array('label'=>UserModule::t('Change password'), 'url'=>array('changepassword')),
     array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
 );
-?><h1><?php echo UserModule::t('Edit profile'); ?></h1>
-
-<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
-</div>
-<?php endif; ?>
-<div class="form">
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'profile-form',
-	'enableAjaxValidation'=>true,
-	'htmlOptions' => array('enctype'=>'multipart/form-data'),
-)); ?>
-
-	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
-
-	<?php echo $form->errorSummary(array($model,$profile)); ?>
-
-<?php 
-		$profileFields=$profile->getFields();
-		if ($profileFields) {
-			foreach($profileFields as $field) {
-			?>
-	<div class="row">
-		<?php echo $form->labelEx($profile,$field->varname);
-		
-		if ($widgetEdit = $field->widgetEdit($profile)) {
-			echo $widgetEdit;
-		} elseif ($field->range) {
-			echo $form->dropDownList($profile,$field->varname,Profile::range($field->range));
-		} elseif ($field->field_type=="TEXT") {
-			echo $form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
-		} else {
-			echo $form->textField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
-		}
-		echo $form->error($profile,$field->varname); ?>
-	</div>	
-			<?php
-			}
-		}
 ?>
-	<div class="row">
-		<?php echo $form->labelEx($model,'username'); ?>
-		<?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'username'); ?>
-	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'email'); ?>
-		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'email'); ?>
-	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>
-	</div>
 
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->

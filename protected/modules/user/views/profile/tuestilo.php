@@ -1,7 +1,29 @@
+<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
+<div class="success">
+<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
+</div>
+<?php endif; ?>
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
       <h1>Tu Estilo</h1>
+     <?php if (isset($editar) && $editar){ ?>
+     <!-- MENU ON -->
+     <ul class="nav nav-pills margin_top">
+        <li class="active"> 
+        	<?php echo CHtml::link('Datos Personales',array('user/profile/edit')); ?>
+        </li>
+        <li>
+        	<?php echo CHtml::link('Avatar',array('user/profile/avatar')); ?>
+        	
+        </li>
+        <li>
+        	<?php echo CHtml::link('Avatar',array('user/profile/edittuestilo')); ?>
+        	
+        </li>
+      </ul>
+     <!-- MENU OFF -->
+     <?php } ?>
       <article class="margin_top  margin_bottom_small ">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',
@@ -31,6 +53,24 @@
             		'label'=>$field->title,
             		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
         		);        		
+                $field = ProfileField::model()->findByAttributes(array('varname'=>'playa'));
+				$tabs[] = array(
+            		'active'=>false,
+            		'label'=>$field->title,
+            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+        		);
+                $field = ProfileField::model()->findByAttributes(array('varname'=>'sport'));
+				$tabs[] = array(
+            		'active'=>false,
+            		'label'=>$field->title,
+            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+        		);
+				$field = ProfileField::model()->findByAttributes(array('varname'=>'trabajo'));
+				$tabs[] = array(
+            		'active'=>false,
+            		'label'=>$field->title,
+            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+        		);
 				?>
 				<?php $this->widget('bootstrap.widgets.TbTabs', array(
 				'placement'=>'left', // 'above', 'right', 'below' or 'left'
@@ -40,8 +80,11 @@
 				Yii::app()->clientScript->registerScript('change', "
 					$('.tab-content :input').click(function(){
 							div_id = $(this).closest('div').next().attr('id');
-							alert(div_id);
-							$('.nav-tabs a[href=\"#'+div_id+'\"]').tab('show');
+							if (div_id === undefined) {
+								$('#tutipo-form').submit();
+							} else {
+								$('.nav-tabs a[href=\"#'+div_id+'\"]').tab('show');
+							}
 						
 					});
 					

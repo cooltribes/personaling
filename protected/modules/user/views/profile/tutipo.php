@@ -1,7 +1,29 @@
+<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
+<div class="success">
+<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
+</div>
+<?php endif; ?>
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
       <h1>Tu tipo</h1>
+	<?php if (isset($editar) && $editar){ ?>
+     <!-- MENU ON -->
+     <ul class="nav nav-pills margin_top">
+        <li class="active"> 
+        	<?php echo CHtml::link('Datos Personales',array('profile/edit')); ?>
+        </li>
+        <li>
+        	<?php echo CHtml::link('Avatar',array('profile/avatar')); ?>
+        	
+        </li>
+        <li>
+        	<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo')); ?>
+        	
+        </li>
+      </ul>
+     <!-- MENU OFF -->
+     <?php } ?>      
       <article class="margin_top  margin_bottom_small ">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',
@@ -81,10 +103,11 @@
             <div class="form-actions">             			
             	<?php $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType' => 'submit',
-						    'label'=>'Siguiente',
+						    'label'=>isset($editar)?'Guardar':'Siguiente',
 						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						    'size'=>'large', // null, 'large', 'small' or 'mini'
-						)); ?> </div>
+						)); ?> 
+			</div>
           </fieldset>
        <?php $this->endWidget(); ?>
       </article>

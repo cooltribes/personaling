@@ -36,6 +36,7 @@
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Configuracion', 'url'=>'#'),
+                    array('label'=>'Admin','url'=>array('/user/admin'),'visible'=>Yii::app()->user->id?UserModule::isAdmin():false),
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),
                 ),

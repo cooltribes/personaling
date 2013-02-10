@@ -34,9 +34,9 @@
           <div class="span4">
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small"> Tu Perfil </h5>
             <ul>
-              <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Datos Personales")); ?></li>
-              <li> <a href="Tu_Perfil_Avatar_Usuaria.php" title="Avatar">Tu Avatar</a></li>
-              <li> <a href="Tu_Perfil_Perfil_Corporal_Usuaria.php" title="Tu perfil corporal">Tu perfil corporal</a></li>
+              <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
+              <li> <?php echo CHtml::link('avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
+              <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
               <li> <a href="#" title="Tu perfil publico">Tu perfil publico</a></li>
             </ul>
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small"> Tu Estilo </h5>

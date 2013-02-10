@@ -3,56 +3,68 @@ $this->breadcrumbs=array(
 	UserModule::t("Profile") => array('/user/profile'),
 	UserModule::t("Change Password"),
 );
-$this->menu=array(
-	((UserModule::isAdmin())
-		?array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin'))
-		:array()),
-    array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
-    array('label'=>UserModule::t('Profile'), 'url'=>array('/user/profile')),
-    array('label'=>UserModule::t('Edit'), 'url'=>array('edit')),
-    array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
-);
+
 ?>
+<div class="container margin_top">
+  <div class="row">
+    <div class="span6 offset3">
+      <h1>Cambiar contraseña</h1>
+      
+      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			'id'=>'changepassword-form',
+			'htmlOptions'=>array('class'=>'personaling_form'),
+		    //'type'=>'stacked',
+		    'type'=>'inline',
+			'enableClientValidation'=>true,
+			'clientOptions'=>array(
+				'validateOnSubmit'=>true,
+			),
+		)); ?>
+          <fieldset>
+            <legend >Ingresa los datos a continuación: </legend>
+            <p class="note">Campos con <span class="required">*</span> son requeridos.</p>
+            <div class="control-group"> 
+           
+            <label for="RegistrationForm_email" class="control-label required">Ingresa tu contraseña actual: <span class="required">*</span></label>
 
-<h1><?php echo UserModule::t("Change password"); ?></h1>
+              <div class="controls">
+              	<?php echo $form->passwordFieldRow($model,'oldPassword',array('class'=>'span5','maxlength'=>128)); ?>
+              	<?php echo $form->error($model,'oldPassword'); ?>
 
-<div class="form">
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'changepassword-form',
-	'enableAjaxValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
-	),
-)); ?>
+              </div>
+            </div>
+            <div class="control-group"> 
+          
+            <label for="RegistrationForm_email" class="control-label required">Ingresa tu nueva contraseña: <span class="required">*</span></label>
 
-	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
-	<?php echo $form->errorSummary($model); ?>
-	
-	<div class="row">
-	<?php echo $form->labelEx($model,'oldPassword'); ?>
-	<?php echo $form->passwordField($model,'oldPassword'); ?>
-	<?php echo $form->error($model,'oldPassword'); ?>
-	</div>
-	
-	<div class="row">
-	<?php echo $form->labelEx($model,'password'); ?>
-	<?php echo $form->passwordField($model,'password'); ?>
-	<?php echo $form->error($model,'password'); ?>
-	<p class="hint">
-	<?php echo UserModule::t("Minimal password length 4 symbols."); ?>
-	</p>
-	</div>
-	
-	<div class="row">
-	<?php echo $form->labelEx($model,'verifyPassword'); ?>
-	<?php echo $form->passwordField($model,'verifyPassword'); ?>
-	<?php echo $form->error($model,'verifyPassword'); ?>
-	</div>
-	
-	
-	<div class="row submit">
-	<?php echo CHtml::submitButton(UserModule::t("Save")); ?>
-	</div>
+              <div class="controls">
+              	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span5','maxlength'=>128)); ?>
+              	<?php echo $form->error($model,'password'); ?>
+              </div>
+            </div>
+            <div class="control-group"> 
+       
+            <label for="RegistrationForm_email" class="control-label required">Escríbela de nuevo: <span class="required">*</span></label>
 
-<?php $this->endWidget(); ?>
-</div><!-- form -->
+              <div class="controls">
+              	<?php echo $form->passwordFieldRow($model,'verifyPassword',array('class'=>'span5','maxlength'=>128)); ?>
+              	<?php echo $form->error($model,'verifyPassword'); ?>
+              </div>
+            </div>
+            
+             <div class="form-actions"> 
+             	<?php $this->widget('bootstrap.widgets.TbButton', array(
+            				'buttonType' => 'submit',
+						    'label'=>'Cambiar Contraseña',
+						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+						    'size'=>'large', // null, 'large', 'small' or 'mini'
+						)); ?> 
+             	<a href="login_2.php" class="btn-large btn btn-danger">Cambiar Contraseña</a> 
+             </div>
+          </fieldset>
+         <?php $this->endWidget(); ?>
+      </article>
+    </div>
+  </div>
+</div>

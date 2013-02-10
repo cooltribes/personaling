@@ -194,7 +194,7 @@ class ProfileController extends Controller
 	{
 		
 		$model = $this->loadUser();
-		Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
+		//Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
 		$profile=$model->profile;
 		$profile->personal = true;
 		// ajax validator
@@ -211,10 +211,13 @@ class ProfileController extends Controller
 			
 			if($profile->validate()) {
 				//$model->save();
-				$profile->save();
+				if ($profile->save()){
                 Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));
 				$this->redirect(array('/user/profile'));
+				} else {
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
 			} else $profile->validate();
 		}
 

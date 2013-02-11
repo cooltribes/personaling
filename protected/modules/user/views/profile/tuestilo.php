@@ -7,26 +7,10 @@
   <div class="row">
     <div class="span12">
       <h1>Tu Estilo</h1>
-     <?php if (isset($editar) && $editar){ ?>
-     <!-- MENU ON -->
-     <ul class="nav nav-pills margin_top">
-        <li class="active"> 
-        	<?php echo CHtml::link('Datos Personales',array('user/profile/edit')); ?>
-        </li>
-        <li>
-        	<?php echo CHtml::link('Avatar',array('user/profile/avatar')); ?>
-        	
-        </li>
-        <li>
-        	<?php echo CHtml::link('Avatar',array('user/profile/edittuestilo')); ?>
-        	
-        </li>
-      </ul>
-     <!-- MENU OFF -->
-     <?php } ?>
+
       <article class="margin_top  margin_bottom_small ">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-	'id'=>'tutipo-form',
+	'id'=>'tuestilo-form',
 	'htmlOptions'=>array('class'=>'personaling_form'),
     //'type'=>'stacked',
     'type'=>'inline',
@@ -81,7 +65,7 @@
 					$('.tab-content :input').click(function(){
 							div_id = $(this).closest('div').next().attr('id');
 							if (div_id === undefined) {
-								$('#tutipo-form').submit();
+								$('#tuestilo-form').submit();
 							} else {
 								$('.nav-tabs a[href=\"#'+div_id+'\"]').tab('show');
 							}

@@ -11,7 +11,9 @@ class ProfileField extends CActiveRecord
 	const REQUIRED_YES_SHOW_REG = 1;
 	const REQUIRED_NO_SHOW_REG = 2;
 	const REQUIRED_YES_NOT_SHOW_REG = 3;
-	const REQUIRED_YES_SHOW_MORE = 4;
+	const REQUIRED_YES_ESTILO = 4;
+	const REQUIRED_YES_TIPO = 5;
+	
 	
 	/**
 	 * The followings are the available columns in table 'profiles_fields':
@@ -127,9 +129,17 @@ class ProfileField extends CActiveRecord
                 'order'=>'position',
             ),
             'forPersonal'=>array(
-                'condition'=>'required!='.self::REQUIRED_YES_SHOW_MORE,
+                'condition'=>'required!='.self::REQUIRED_YES_ESTILO.' AND required!='.self::REQUIRED_YES_TIPO,
                 'order'=>'position',
-            ),            
+            ),
+            'forEstilo'=>array(
+                'condition'=>'required='.self::REQUIRED_YES_ESTILO,
+                'order'=>'position',
+            ), 
+            'forTipo'=>array(
+                'condition'=>'required='.self::REQUIRED_YES_TIPO,
+                'order'=>'position',
+            ),                                     
         );
     }
     
@@ -197,7 +207,8 @@ class ProfileField extends CActiveRecord
 				self::REQUIRED_NO_SHOW_REG => UserModule::t('No, but show on registration form'),
 				self::REQUIRED_YES_SHOW_REG => UserModule::t('Yes and show on registration form'),
 				self::REQUIRED_YES_NOT_SHOW_REG => UserModule::t('Yes'),
-				self::REQUIRED_YES_SHOW_MORE => 'Yes, In other',
+				self::REQUIRED_YES_ESTILO => 'Yes, Estilo',
+				self::REQUIRED_YES_TIPO => 'Yes, Tipo',
 			),
 			'visible' => array(
 				self::VISIBLE_ALL => UserModule::t('For all'),

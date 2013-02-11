@@ -8,7 +8,7 @@ class Profile extends UActiveRecord
 	 * @var boolean $regMode
 	 */
 	public $regMode = false;
-	public $personal = false;
+	public $profile_type = 0;
 	
 	private $_model;
 	private $_modelReg;
@@ -47,7 +47,8 @@ class Profile extends UActiveRecord
 			
 			foreach ($model as $field) {
 				$field_rule = array();
-				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_MORE)
+				
+				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_ESTILO||$field->required==ProfileField::REQUIRED_YES_TIPO)
 					array_push($required,$field->varname);
 				if ($field->field_type=='FLOAT') 
 					array_push($float,$field->varname);
@@ -176,11 +177,21 @@ class Profile extends UActiveRecord
 				$this->_modelReg=ProfileField::model()->forRegistration()->findAll();
 			return $this->_modelReg;
 		} else {
+			
 			if (!$this->_model)
-				if ($this->personal)
-					$this->_model=ProfileField::model()->forPersonal()->forOwner()->findAll(); //
-				else
-					$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->
+				switch ($this->profile_type){
+					case 1:
+						$this->_model=ProfileField::model()->forPersonal()->forOwner()->findAll(); //
+						break;
+					case 2:
+						$this->_model=ProfileField::model()->forEstilo()->forOwner()->findAll(); //forPersonal()->
+						break;
+					case 3:
+						$this->_model=ProfileField::model()->forTipo()->forOwner()->findAll(); //forPersonal()->
+						break;
+					default:
+						$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->	
+				}
 			return $this->_model;
 		}
 	}

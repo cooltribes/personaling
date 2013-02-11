@@ -38,6 +38,7 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		$profile=$model->profile;
+		$profile->profile_type = 2;
 		//$profile=new Profile;
 		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-form')
 		{
@@ -66,6 +67,8 @@ class ProfileController extends Controller
 				} else {
 					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
 				}
+			} else {
+				Yii::trace('username:'.$model->username.' Error:'.implode("|",$profile->getErrors()), 'registro');
 			}
 		}	
 	    $this->render('tuestilo',array(
@@ -80,6 +83,7 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		$profile=$model->profile;
+		$profile->profile_type = 2;
 		//$profile=new Profile;
 		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-form')
 		{
@@ -115,6 +119,7 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		$profile=$model->profile;
+		$profile->profile_type = 3;
 		//$profile=new Profile;
 		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
 		{
@@ -150,6 +155,7 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		$profile=$model->profile;
+		$profile->profile_type = 3;
 		//$profile=new Profile;
 		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
 		{
@@ -166,7 +172,7 @@ class ProfileController extends Controller
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();
 						Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));						
-						$this->render('tuestilo',array(
+						$this->render('tutipo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,
 							'editar'=>true,
@@ -177,6 +183,9 @@ class ProfileController extends Controller
 				} else {
 					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
 				}
+			} else {
+				Yii::trace('username:'.$model->username.' Error:'.implode("|",$profile->getErrors()), 'registro');
+				//Yii::trace('username:'.$model->username.' Error:'.$profile->getErrors(), 'registro');
 			}
 		}	
 	    $this->render('tutipo',array(
@@ -196,7 +205,7 @@ class ProfileController extends Controller
 		$model = $this->loadUser();
 		//Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
 		$profile=$model->profile;
-		$profile->personal = true;
+		$profile->profile_type = 1;
 		// ajax validator
 		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
 		{

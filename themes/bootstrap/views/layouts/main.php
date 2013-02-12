@@ -26,8 +26,8 @@
 
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Top', 'url'=>array('/site/page', 'view'=>'about')),
-                array('label'=>'Tu personal Shopper', 'url'=>array('/site/contact')),
-                array('label'=>'Tienda', 'url'=>array('/site/contact')),
+                array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal')),
+                array('label'=>'Tienda', 'url'=>array('/tienda')),
                 array('label'=>'Magazine', 'url'=>array('/site/contact')),
                // array('label'=>'<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>', 'url'=>array('/site/contact')),
                 array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),

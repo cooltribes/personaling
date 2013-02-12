@@ -3,8 +3,8 @@
   <div class="row">
     <div class="span3">
       <div class="shadow_1"> <img src="http://placehold.it/270x200"/>
-        <h4>Nombre y Apellido</h4>
-        <p class="muted">Miembro desde: 03/03/2013</p>
+        <h4><?php echo $profile->first_name." ".$profile->last_name; ?></h4>
+        <p class="muted">Miembro desde: <?php echo $model->create_at; ?></p>
         <hr/>
         <h4>Tus Compras</h4>
         <ul>
@@ -41,12 +41,12 @@
             </ul>
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small"> Tu Estilo </h5>
             <ul>
-                 <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Casual">Casual</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Coctel">Coctel</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Fiesta">Fiesta</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Playa">Playa</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Sport">Sport</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Trabajo">Trabajo</a></li>
+                 <li><?php echo CHtml::link('Casual',array('profile/edittuestilo'),array("title"=>"Edita tu estilo Casual")); ?></li>
+			    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Coctel">Coctel</a></li>
+			    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Fiesta">Fiesta</a></li>
+			    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Playa">Playa</a></li>
+			    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Sport">Sport</a></li>
+			    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Trabajo">Trabajo</a></li>
             </ul>
           </div>
           <div class="span4">

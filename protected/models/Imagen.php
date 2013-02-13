@@ -1,29 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "{{precio}}".
+ * This is the model class for table "{{imagen}}".
  *
- * The followings are the available columns in table '{{precio}}':
+ * The followings are the available columns in table '{{imagen}}':
  * @property integer $id
- * @property double $costo
- * @property double $precioVenta
- * @property integer $tipoDescuento
- * @property integer $valorTipo
- * @property double $ahorro
- * @property double $precioDescuento
- * @property integer $impuesto
- * @property double $precioImpuesto
+ * @property string $url
+ * @property integer $principal
+ * @property integer $orden
  * @property integer $tbl_producto_id
  *
  * The followings are the available model relations:
  * @property Producto $tblProducto
  */
-class tblprecio extends CActiveRecord
+class Imagen extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tblprecio the static model class
+	 * @return tblimagen the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -35,7 +30,7 @@ class tblprecio extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{precio}}';
+		return '{{imagen}}';
 	}
 
 	/**
@@ -47,11 +42,11 @@ class tblprecio extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, tbl_producto_id', 'required'),
-			array('id, tipoDescuento, valorTipo, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
-			array('costo, precioVenta, ahorro, precioDescuento, precioImpuesto', 'numerical'),
+			array('id, principal, orden, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('url', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, costo, precioVenta, tipoDescuento, valorTipo, ahorro, precioDescuento, impuesto, precioImpuesto, tbl_producto_id', 'safe', 'on'=>'search'),
+			array('id, url, principal, orden, tbl_producto_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,14 +69,9 @@ class tblprecio extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'costo' => 'Costo',
-			'precioVenta' => 'Precio Venta',
-			'tipoDescuento' => 'Tipo Descuento',
-			'valorTipo' => 'Valor Tipo',
-			'ahorro' => 'Ahorro',
-			'precioDescuento' => 'Precio Descuento',
-			'impuesto' => 'Impuesto',
-			'precioImpuesto' => 'Precio Impuesto',
+			'url' => 'Url',
+			'principal' => 'Principal',
+			'orden' => 'Orden',
 			'tbl_producto_id' => 'Tbl Producto',
 		);
 	}
@@ -98,14 +88,9 @@ class tblprecio extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('costo',$this->costo);
-		$criteria->compare('precioVenta',$this->precioVenta);
-		$criteria->compare('tipoDescuento',$this->tipoDescuento);
-		$criteria->compare('valorTipo',$this->valorTipo);
-		$criteria->compare('ahorro',$this->ahorro);
-		$criteria->compare('precioDescuento',$this->precioDescuento);
-		$criteria->compare('impuesto',$this->impuesto);
-		$criteria->compare('precioImpuesto',$this->precioImpuesto);
+		$criteria->compare('url',$this->url,true);
+		$criteria->compare('principal',$this->principal);
+		$criteria->compare('orden',$this->orden);
 		$criteria->compare('tbl_producto_id',$this->tbl_producto_id);
 
 		return new CActiveDataProvider($this, array(

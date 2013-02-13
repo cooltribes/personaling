@@ -1,6 +1,6 @@
 <?php
 
-class TblproductoController extends Controller
+class ColorController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -61,14 +61,14 @@ class TblproductoController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new tblproducto;
+		$model=new tblcolor;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblproducto']))
+		if(isset($_POST['tblcolor']))
 		{
-			$model->attributes=$_POST['tblproducto'];
+			$model->attributes=$_POST['tblcolor'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -90,9 +90,9 @@ class TblproductoController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblproducto']))
+		if(isset($_POST['tblcolor']))
 		{
-			$model->attributes=$_POST['tblproducto'];
+			$model->attributes=$_POST['tblcolor'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +127,7 @@ class TblproductoController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('tblproducto');
+		$dataProvider=new CActiveDataProvider('tblcolor');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +138,10 @@ class TblproductoController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new tblproducto('search');
+		$model=new tblcolor('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['tblproducto']))
-			$model->attributes=$_GET['tblproducto'];
+		if(isset($_GET['tblcolor']))
+			$model->attributes=$_GET['tblcolor'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -155,7 +155,7 @@ class TblproductoController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=tblproducto::model()->findByPk($id);
+		$model=tblcolor::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -167,7 +167,7 @@ class TblproductoController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tblproducto-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tblcolor-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

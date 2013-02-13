@@ -21,7 +21,7 @@
  * @property Precio[] $precios
  * @property Seo[] $seos
  */
-class tblproducto extends CActiveRecord
+class Producto extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.

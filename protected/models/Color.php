@@ -1,21 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "{{talla}}".
+ * This is the model class for table "{{color}}".
  *
- * The followings are the available columns in table '{{talla}}':
+ * The followings are the available columns in table '{{color}}':
  * @property integer $id
  * @property string $valor
  *
  * The followings are the available model relations:
  * @property PrecioTallaColor[] $precioTallaColors
  */
-class tbltalla extends CActiveRecord
+class Color extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tbltalla the static model class
+	 * @return tblcolor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -27,7 +27,7 @@ class tbltalla extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{talla}}';
+		return '{{color}}';
 	}
 
 	/**
@@ -40,7 +40,7 @@ class tbltalla extends CActiveRecord
 		return array(
 			array('id', 'required'),
 			array('id', 'numerical', 'integerOnly'=>true),
-			array('valor', 'length', 'max'=>15),
+			array('valor', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, valor', 'safe', 'on'=>'search'),
@@ -55,7 +55,7 @@ class tbltalla extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'precioTallaColors' => array(self::HAS_MANY, 'PrecioTallaColor', 'tbl_talla_id'),
+			'precioTallaColors' => array(self::HAS_MANY, 'PrecioTallaColor', 'tbl_color_id'),
 		);
 	}
 

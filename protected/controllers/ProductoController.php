@@ -1,6 +1,6 @@
 <?php
 
-class TblcategoriaController extends Controller
+class ProductoController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -61,14 +61,14 @@ class TblcategoriaController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new tblcategoria;
+		$model=new tblproducto;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblcategoria']))
+		if(isset($_POST['tblproducto']))
 		{
-			$model->attributes=$_POST['tblcategoria'];
+			$model->attributes=$_POST['tblproducto'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -90,9 +90,9 @@ class TblcategoriaController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblcategoria']))
+		if(isset($_POST['tblproducto']))
 		{
-			$model->attributes=$_POST['tblcategoria'];
+			$model->attributes=$_POST['tblproducto'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +127,7 @@ class TblcategoriaController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('tblcategoria');
+		$dataProvider=new CActiveDataProvider('tblproducto');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +138,10 @@ class TblcategoriaController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new tblcategoria('search');
+		$model=new tblproducto('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['tblcategoria']))
-			$model->attributes=$_GET['tblcategoria'];
+		if(isset($_GET['tblproducto']))
+			$model->attributes=$_GET['tblproducto'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -155,7 +155,7 @@ class TblcategoriaController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=tblcategoria::model()->findByPk($id);
+		$model=tblproducto::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -167,7 +167,7 @@ class TblcategoriaController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tblcategoria-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tblproducto-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

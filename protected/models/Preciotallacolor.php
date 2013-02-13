@@ -1,25 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "{{categoria}}".
+ * This is the model class for table "{{precioTallaColor}}".
  *
- * The followings are the available columns in table '{{categoria}}':
+ * The followings are the available columns in table '{{precioTallaColor}}':
  * @property integer $id
- * @property integer $padreId
- * @property string $nombre
- * @property string $urlImagen
- * @property string $mTitulo
- * @property string $mDescripcion
+ * @property integer $cantidad
+ * @property integer $tbl_producto_id
+ * @property integer $tbl_talla_id
+ * @property integer $tbl_color_id
  *
  * The followings are the available model relations:
- * @property Producto[] $tblProductos
+ * @property Producto $tblProducto
+ * @property Talla $tblTalla
+ * @property Color $tblColor
  */
-class tblcategoria extends CActiveRecord
+class Preciotallacolor extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tblcategoria the static model class
+	 * @return tblpreciotallacolor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +32,7 @@ class tblcategoria extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{categoria}}';
+		return '{{precioTallaColor}}';
 	}
 
 	/**
@@ -42,15 +43,11 @@ class tblcategoria extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
-			array('id, padreId', 'numerical', 'integerOnly'=>true),
-			array('nombre', 'length', 'max'=>100),
-			array('urlImagen', 'length', 'max'=>150),
-			array('mTitulo', 'length', 'max'=>80),
-			array('mDescripcion', 'safe'),
+			array('id, tbl_producto_id, tbl_talla_id, tbl_color_id', 'required'),
+			array('id, cantidad, tbl_producto_id, tbl_talla_id, tbl_color_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, padreId, nombre, urlImagen, mTitulo, mDescripcion', 'safe', 'on'=>'search'),
+			array('id, cantidad, tbl_producto_id, tbl_talla_id, tbl_color_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,7 +59,9 @@ class tblcategoria extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{categoria_has_tbl_producto}}(tbl_categoria_id, tbl_producto_id)'),
+			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
+			'tblTalla' => array(self::BELONGS_TO, 'Talla', 'tbl_talla_id'),
+			'tblColor' => array(self::BELONGS_TO, 'Color', 'tbl_color_id'),
 		);
 	}
 
@@ -73,11 +72,10 @@ class tblcategoria extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'padreId' => 'Padre',
-			'nombre' => 'Nombre',
-			'urlImagen' => 'Url Imagen',
-			'mTitulo' => 'M Titulo',
-			'mDescripcion' => 'M Descripcion',
+			'cantidad' => 'Cantidad',
+			'tbl_producto_id' => 'Tbl Producto',
+			'tbl_talla_id' => 'Tbl Talla',
+			'tbl_color_id' => 'Tbl Color',
 		);
 	}
 
@@ -93,11 +91,10 @@ class tblcategoria extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('padreId',$this->padreId);
-		$criteria->compare('nombre',$this->nombre,true);
-		$criteria->compare('urlImagen',$this->urlImagen,true);
-		$criteria->compare('mTitulo',$this->mTitulo,true);
-		$criteria->compare('mDescripcion',$this->mDescripcion,true);
+		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('tbl_producto_id',$this->tbl_producto_id);
+		$criteria->compare('tbl_talla_id',$this->tbl_talla_id);
+		$criteria->compare('tbl_color_id',$this->tbl_color_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

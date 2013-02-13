@@ -1,25 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "{{seo}}".
+ * This is the model class for table "{{categoria}}".
  *
- * The followings are the available columns in table '{{seo}}':
+ * The followings are the available columns in table '{{categoria}}':
  * @property integer $id
+ * @property integer $padreId
+ * @property string $nombre
+ * @property string $urlImagen
  * @property string $mTitulo
  * @property string $mDescripcion
- * @property string $pClave
- * @property string $urlAmigable
- * @property integer $tbl_producto_id
  *
  * The followings are the available model relations:
- * @property Producto $tblProducto
+ * @property Producto[] $tblProductos
  */
-class tblseo extends CActiveRecord
+class Categoria extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tblseo the static model class
+	 * @return tblcategoria the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +31,7 @@ class tblseo extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{seo}}';
+		return '{{categoria}}';
 	}
 
 	/**
@@ -42,15 +42,15 @@ class tblseo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, tbl_producto_id', 'required'),
-			array('id, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('id', 'required'),
+			array('id, padreId', 'numerical', 'integerOnly'=>true),
+			array('nombre', 'length', 'max'=>100),
+			array('urlImagen', 'length', 'max'=>150),
 			array('mTitulo', 'length', 'max'=>80),
-			array('pClave', 'length', 'max'=>140),
-			array('urlAmigable', 'length', 'max'=>180),
 			array('mDescripcion', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, mTitulo, mDescripcion, pClave, urlAmigable, tbl_producto_id', 'safe', 'on'=>'search'),
+			array('id, padreId, nombre, urlImagen, mTitulo, mDescripcion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,7 +62,7 @@ class tblseo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
+			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{categoria_has_tbl_producto}}(tbl_categoria_id, tbl_producto_id)'),
 		);
 	}
 
@@ -73,11 +73,11 @@ class tblseo extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'padreId' => 'Padre',
+			'nombre' => 'Nombre',
+			'urlImagen' => 'Url Imagen',
 			'mTitulo' => 'M Titulo',
 			'mDescripcion' => 'M Descripcion',
-			'pClave' => 'P Clave',
-			'urlAmigable' => 'Url Amigable',
-			'tbl_producto_id' => 'Tbl Producto',
 		);
 	}
 
@@ -93,11 +93,11 @@ class tblseo extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('padreId',$this->padreId);
+		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('urlImagen',$this->urlImagen,true);
 		$criteria->compare('mTitulo',$this->mTitulo,true);
 		$criteria->compare('mDescripcion',$this->mDescripcion,true);
-		$criteria->compare('pClave',$this->pClave,true);
-		$criteria->compare('urlAmigable',$this->urlAmigable,true);
-		$criteria->compare('tbl_producto_id',$this->tbl_producto_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -1,6 +1,6 @@
 <?php
 
-class TblcolorController extends Controller
+class CategoriaController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -61,14 +61,14 @@ class TblcolorController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new tblcolor;
+		$model=new tblcategoria;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblcolor']))
+		if(isset($_POST['tblcategoria']))
 		{
-			$model->attributes=$_POST['tblcolor'];
+			$model->attributes=$_POST['tblcategoria'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -90,9 +90,9 @@ class TblcolorController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblcolor']))
+		if(isset($_POST['tblcategoria']))
 		{
-			$model->attributes=$_POST['tblcolor'];
+			$model->attributes=$_POST['tblcategoria'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +127,7 @@ class TblcolorController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('tblcolor');
+		$dataProvider=new CActiveDataProvider('tblcategoria');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +138,10 @@ class TblcolorController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new tblcolor('search');
+		$model=new tblcategoria('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['tblcolor']))
-			$model->attributes=$_GET['tblcolor'];
+		if(isset($_GET['tblcategoria']))
+			$model->attributes=$_GET['tblcategoria'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -155,7 +155,7 @@ class TblcolorController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=tblcolor::model()->findByPk($id);
+		$model=tblcategoria::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -167,7 +167,7 @@ class TblcolorController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tblcolor-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tblcategoria-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

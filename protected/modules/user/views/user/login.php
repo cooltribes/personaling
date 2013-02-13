@@ -5,8 +5,6 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1><?php echo UserModule::t("Login"); ?></h1>
-
 <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
 <div class="success">
@@ -14,66 +12,57 @@ $this->breadcrumbs=array(
 </div>
 
 <?php endif; ?>
-
-<p><?php echo UserModule::t("Please fill out the following form with your login credentials:"); ?></p>
-
-<div class="form">
-<?php echo CHtml::beginForm(); ?>
-
-	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
-	
-	<?php echo CHtml::errorSummary($model); ?>
-	
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'username'); ?>
-		<?php echo CHtml::activeTextField($model,'username') ?>
+<div class="container margin_top">
+  <div class="row">
+    <div class="span6 offset3">
+      <h1>Ingresa</h1>
+      <div class="row margin_bottom margin_top">
+        <div class="span3"> <a onclick="loadLiData()" id="registro_linkedin" title="sign up with linkedin" class="btn transition_all" href="#">Ingresa con twitter</a> 
+          <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
+        </div>
+        <div class="span3"><a title="sign up with facebook" class="btn transition_all" onclick="check_fb()" href="#">Ingresa con facebook</a></div>
+      </div>
+      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			'id'=>'login-form',
+			'htmlOptions'=>array('class'=>'personaling_form'),
+		    //'type'=>'stacked',
+		    'type'=>'inline',
+			'enableClientValidation'=>true,
+			'clientOptions'=>array(
+				'validateOnSubmit'=>true,
+			),
+		)); ?>
+          <fieldset>
+            <legend >O ingresa tus datos: </legend>
+            
+            <div class="control-group">
+            	 <div class="controls"> 
+            		<?php echo $form->textFieldRow($model,'username',array("class"=>"span5","placeholder"=>"correoelectronico@cuenta.com")); ?>
+            	</div>  
+            </div>
+             <div class="control-group"> 
+             	<div class="controls">
+            		<?php echo $form->passwordFieldRow($model,'password',array(
+            			'class'=>'span5',
+        				'hint'=>'Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>',
+    				)); ?>
+    			</div>
+    		</div>
+            <?php echo $form->checkBoxRow($model,'rememberMe'); ?>
+            
+            
+            	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+            'buttonType'=>'submit',
+            'type'=>'danger',
+            'size'=>'large',
+            'label'=>'Entrar',
+        )); ?>
 	</div>
-	
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'password'); ?>
-		<?php echo CHtml::activePasswordField($model,'password') ?>
-	</div>
-	
-	<div class="row">
-		<p class="hint">
-		<?php echo CHtml::link(UserModule::t("Register"),Yii::app()->getModule('user')->registrationUrl); ?> | <?php echo CHtml::link(UserModule::t("Lost Password?"),Yii::app()->getModule('user')->recoveryUrl); ?>
-		</p>
-	</div>
-	
-	<div class="row rememberMe">
-		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
-		<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
-	</div>
-
-	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Login")); ?>
-	</div>
-	
-<?php echo CHtml::endForm(); ?>
-</div><!-- form -->
-
-
-<?php
-$form = new CForm(array(
-    'elements'=>array(
-        'username'=>array(
-            'type'=>'text',
-            'maxlength'=>32,
-        ),
-        'password'=>array(
-            'type'=>'password',
-            'maxlength'=>32,
-        ),
-        'rememberMe'=>array(
-            'type'=>'checkbox',
-        )
-    ),
-
-    'buttons'=>array(
-        'login'=>array(
-            'type'=>'submit',
-            'label'=>'Login',
-        ),
-    ),
-), $model);
-?>
+          </fieldset>
+        <?php $this->endWidget(); ?>
+      </article>
+    </div>
+  </div>
+</div>

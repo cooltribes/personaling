@@ -47,8 +47,11 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'nombre',
 		'estado',
 		'descripcion',
+		'proveedor',
+		/*
 		'fInicio',
 		'fFin',
+		*/
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),

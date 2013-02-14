@@ -23,6 +23,7 @@ $this->menu=array(
 		'nombre',
 		'estado',
 		'descripcion',
+		'proveedor',
 		'fInicio',
 		'fFin',
 	),

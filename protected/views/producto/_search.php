@@ -13,13 +13,15 @@
 
 	<?php echo $form->textAreaRow($model,'descripcion',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
+	<?php echo $form->textFieldRow($model,'proveedor',array('class'=>'span5','maxlength'=>45)); ?>
+
 	<?php echo $form->textFieldRow($model,'fInicio',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'fFin',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
+			'buttonType' => 'submit',
 			'type'=>'primary',
 			'label'=>'Search',
 		)); ?>

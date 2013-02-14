@@ -39,8 +39,8 @@ class Seo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, tbl_producto_id', 'required'),
-			array('id, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('tbl_producto_id', 'required'),
+			array('tbl_producto_id', 'numerical', 'integerOnly'=>true),
 			array('mTitulo', 'length', 'max'=>80),
 			array('pClave', 'length', 'max'=>140),
 			array('urlAmigable', 'length', 'max'=>180),

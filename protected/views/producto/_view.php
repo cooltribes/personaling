@@ -20,13 +20,19 @@
 	<?php echo CHtml::encode($data->descripcion); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('proveedor')); ?>:</b>
+	<?php echo CHtml::encode($data->proveedor); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('fInicio')); ?>:</b>
 	<?php echo CHtml::encode($data->fInicio); ?>
 	<br />
 
+	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('fFin')); ?>:</b>
 	<?php echo CHtml::encode($data->fFin); ?>
 	<br />
 
+	*/ ?>
 
 </div>

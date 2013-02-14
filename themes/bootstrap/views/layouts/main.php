@@ -9,7 +9,7 @@
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
-	<?php Yii::app()->bootstrap->register(); ?>
+	<?php //Yii::app()->bootstrap->register(); ?>
 
 	 <?php Yii::app()->less->register(); ?>
 
@@ -17,7 +17,9 @@
 
 <body>
 
-<?php $this->widget('bootstrap.widgets.TbNavbar',array(
+<?php 
+//<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
+$this->widget('bootstrap.widgets.TbNavbar',array(
     'items'=>array(
         array(
             'class'=>'bootstrap.widgets.TbMenu',
@@ -26,10 +28,10 @@
 
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Top', 'url'=>array('/site/page', 'view'=>'about')),
-                array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal')),
+                array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tienda', 'url'=>array('/tienda')),
                 array('label'=>'Magazine', 'url'=>array('/site/contact')),
-               // array('label'=>'<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>', 'url'=>array('/site/contact')),
+                array('label'=>'2','icon'=>'icon-shopping-cart', 'url'=>array('/site/contact'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                  array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
@@ -45,7 +47,9 @@
             ),
         ),
     ),
-)); ?>
+)); 
+
+?>
 
 <div class="container" id="page">
 

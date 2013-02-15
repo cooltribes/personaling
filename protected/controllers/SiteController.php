@@ -45,6 +45,15 @@ class SiteController extends Controller
 		$this->render('personal_shopper');
 	}
 	/**
+	 * Esto es la pagina de top
+	 */
+	public function actionTop()
+	{
+		// renders the view file 'protected/views/site/index.php'
+		// using the default layout 'protected/views/layouts/main.php'
+		$this->render('top');
+	}	
+	/**
 	 * This is the action to handle external exceptions.
 	 */
 	public function actionError()

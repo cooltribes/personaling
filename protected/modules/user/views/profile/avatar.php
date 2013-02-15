@@ -6,7 +6,6 @@
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1>Tu personaling | Tu perfil</h1>
      <!-- MENU ON -->
      <ul class="nav nav-pills margin_top">
         <li class="active"> 
@@ -22,6 +21,8 @@
         </li>
       </ul>
      <!-- MENU OFF -->
+      <h1>Tu personaling | Tu perfil</h1>
+
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         
 		<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(

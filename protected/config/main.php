@@ -73,7 +73,7 @@ return array(
 	),
 
 	// application components
-	'components'=>array(
+	'components'=>array( 
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
@@ -93,6 +93,9 @@ return array(
 		
 		'urlManager'=>array(
 			'urlFormat'=>'path',
+			 'showScriptName'=>false,
+     			'caseSensitive'=>false, 
+     			'baseUrl'=>'/site',  
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',

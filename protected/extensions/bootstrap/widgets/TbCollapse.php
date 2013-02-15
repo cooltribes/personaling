@@ -14,14 +14,12 @@
  */
 class TbCollapse extends CWidget
 {
-	const CONTAINER_PREFIX = 'yii_bootstrap_collapse_';
-
 	/**
-	 * @var string the name of the collapse element. Defaults to 'div'.
+	 * @var string the name of the collapse element. Defaults to 'a'.
 	 */
 	public $tagName = 'div';
 	/**
-	 * @var boolean the CSS selector for element to collapse. Defaults to 'false'.
+	 * @var boolean the CSS selector for element to collapse. Default to 'false'.
 	 */
 	public $parent = false;
 	/**
@@ -88,7 +86,7 @@ class TbCollapse extends CWidget
 	 */
 	public static function getNextContainerId()
 	{
-		return self::CONTAINER_PREFIX.self::$_containerId++;
+		return 'collapse_'.self::$_containerId++;
 	}
 }
 

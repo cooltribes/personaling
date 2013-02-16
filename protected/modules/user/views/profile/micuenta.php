@@ -1,4 +1,9 @@
-
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+$this->breadcrumbs=array(
+	//UserModule::t("Profile")=>array('profile'),
+	UserModule::t("Mi cuenta"),
+);
+?>
 <div class="container margin_top">
   <div class="row">
     <div class="span3">
@@ -110,8 +115,8 @@
           <div class="span4">
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Correo Electronico y Contrasena </h5>
             <ul>
-              <li><a href="cambiar_Correo_electronico.php" title="cambiar corre electronico">Cambiar correo electronico</a></li>
-              <li> <?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
+              <li><?php echo CHtml::link('Cambiar correo electronico',array('changeemail'),array("title"=>"Cambia tu correo electronico")); ?></li>
+              <li><?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
             </ul>
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Libreta de Direcciones </h5>
             <ul>
@@ -122,13 +127,13 @@
           <div class="span4">
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Notificaciones </h5>
             <ul>
-              <li>Gestionar correos de Personaling</li>
+              <li><?php echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>
               <li>Desuscribir de la lista correos</li>
             </ul>
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Privacidad </h5>
             <ul>
-              <li> Informacion publica</li>
-              <li>Eliminar Cuenta </li>
+              <li><?php echo CHtml::link('Informacion publica',array('privacidad'),array("title"=>"Cambia tu Informacion publica")); ?></li>
+              <li><?php echo CHtml::link('Eliminar Cuenta',array('delete'),array("title"=>"Eliminar Cuenta")); ?> </li>
             </ul>
           </div>
         </div>

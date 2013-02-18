@@ -1,11 +1,14 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Change Password");
 $this->breadcrumbs=array(
-	UserModule::t("Profile") => array('/user/profile'),
+	UserModule::t("Mi cuenta") => array('micuenta'),
 	UserModule::t("Change Password"),
 );
 
 ?>
 <div class="container margin_top">
+  <!-- SUBMENU ON -->
+ <?php $this->renderPartial("_menu"); ?>
+  <!-- SUBMENU OFF -->	
   <div class="row">
     <div class="span6 offset3">
       <h1>Cambiar contraseña</h1>

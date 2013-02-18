@@ -15,7 +15,7 @@
 class TbModal extends CWidget
 {
 	/**
-	 * @var boolean indicates whether to automatically open the modal. Defaults to 'false'.
+	 * @var boolean indicates whether to automatically open the modal when initialized. Defaults to 'false'.
 	 */
 	public $autoOpen = false;
 	/**
@@ -46,7 +46,7 @@ class TbModal extends CWidget
 		if ($this->autoOpen === false && !isset($this->options['show']))
 			$this->options['show'] = false;
 
-		$classes = array('modal hide');
+		$classes = array('modal');
 
 		if ($this->fade === true)
 			$classes[] = 'fade';

@@ -21,6 +21,39 @@ class ProfileController extends Controller
 	    ));
 	}
 /**
+ * Configuracion de Privacidad  
+ */
+	public function actionPrivacidad()
+	{
+		$model = $this->loadUser();
+	    $this->render('privacidad',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+/**
+ * Configuracion de Eliminar  
+ */
+	public function actionDelete()
+	{
+		$model = $this->loadUser();
+	    $this->render('delete',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}	
+/**
+ * Configuracion de Notificaciones  
+ */
+	public function actionNotificaciones()
+	{
+		$model = $this->loadUser();
+	    $this->render('notificaciones',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}	
+/**
  * Mi cuenta  
  */
 	public function actionMicuenta()
@@ -234,6 +267,34 @@ class ProfileController extends Controller
 			'model'=>$model,
 			'profile'=>$profile,
 		));
+	}
+	/**
+	 * Change email
+	 */
+	public function actionChangeemail() {
+		$model = $this->loadUser();
+		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='changeemail-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['User'])) {
+					$model->attributes=$_POST['User'];
+					if($model->validate()) {
+						//$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+						//$new_password->password = UserModule::encrypting($model->password);
+						//$new_password->activkey=UserModule::encrypting(microtime().$model->password);
+						//$new_password->save();
+						Yii::app()->user->setFlash('profileMessage',UserModule::t("New Email is saved."));
+						$this->redirect(array("profile"));
+					}
+			}
+			$this->render('changeemail',array('model'=>$model));
+	    }
 	}
 	
 	/**

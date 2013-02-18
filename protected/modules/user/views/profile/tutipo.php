@@ -6,24 +6,30 @@
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
-      <h1>Tu tipo</h1>
 	<?php if (isset($editar) && $editar){ ?>
      <!-- MENU ON -->
-     <ul class="nav nav-pills margin_top">
-        <li class="active"> 
-        	<?php echo CHtml::link('Datos Personales',array('profile/edit')); ?>
-        </li>
-        <li>
-        	<?php echo CHtml::link('Avatar',array('profile/avatar')); ?>
-        	
-        </li>
-        <li>
-        	<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo')); ?>
-        	
-        </li>
-      </ul>
+		<div class="navbar">
+			<div class="navbar-inner margin_bottom">
+				<ul class="nav ">
+					<li class="active">
+						<?php echo CHtml::link('Datos Personales',array('profile/edit'));
+						?>
+					</li>
+					<li>
+						<?php echo CHtml::link('Avatar',array('profile/avatar'));
+						?>
+					</li>
+					<li>
+						<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo'));
+						?>
+					</li>
+				</ul>
+			</div>
+		</div>
      <!-- MENU OFF -->
-     <?php } ?>      
+     <?php } ?>   
+      <h1>Tu tipo</h1>
+   
       <article class="margin_top  margin_bottom_small ">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',

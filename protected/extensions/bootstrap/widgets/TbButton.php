@@ -23,8 +23,6 @@ class TbButton extends CWidget
 	const BUTTON_AJAXLINK = 'ajaxLink';
 	const BUTTON_AJAXBUTTON = 'ajaxButton';
 	const BUTTON_AJAXSUBMIT = 'ajaxSubmit';
-	const BUTTON_INPUTBUTTON = 'inputButton';
-	const BUTTON_INPUTSUBMIT = 'inputSubmit';
 
 	// Button types.
 	const TYPE_PRIMARY = 'primary';
@@ -114,6 +112,12 @@ class TbButton extends CWidget
 	public $dropdownOptions = array();
 
 	/**
+	 * @var whether the button is visible or not
+	 * @since 0.9.11
+	 */
+	public $visible = true;
+
+	/**
 	 * Initializes the widget.
 	 */
 	public function init()
@@ -138,21 +142,7 @@ class TbButton extends CWidget
 			$classes[] = 'active';
 
 		if ($this->disabled)
-		{
-			$disableTypes = array(self::BUTTON_BUTTON, self::BUTTON_SUBMIT, self::BUTTON_RESET,
-				self::BUTTON_AJAXBUTTON, self::BUTTON_AJAXSUBMIT, self::BUTTON_INPUTBUTTON, self::BUTTON_INPUTSUBMIT);
-
-			if (in_array($this->buttonType, $disableTypes))
-				$this->htmlOptions['disabled'] = 'disabled';
-
 			$classes[] = 'disabled';
-		}
-
-        if (!isset($this->url) && isset($this->htmlOptions['href']))
-        {
-            $this->url = $this->htmlOptions['href'];
-            unset($this->htmlOptions['href']);
-        }
 
 		if ($this->encodeLabel)
 			$this->label = CHtml::encode($this->label);
@@ -184,6 +174,11 @@ class TbButton extends CWidget
 			$this->label = '<i class="'.$this->icon.'"></i> '.$this->label;
 		}
 
+		if(!isset($this->htmlOptions['id']))
+		{
+			$this->htmlOptions['id'] = $this->getId();
+		}
+
 		if (isset($this->toggle))
 			$this->htmlOptions['data-toggle'] = 'button';
 
@@ -199,6 +194,8 @@ class TbButton extends CWidget
 	 */
 	public function run()
 	{
+		if(!$this->visible)
+				return false;
 		echo $this->createButton();
 
 		if ($this->hasDropdown())
@@ -242,18 +239,11 @@ class TbButton extends CWidget
 				return CHtml::htmlButton($this->label, $this->htmlOptions);
 
 			case self::BUTTON_AJAXSUBMIT:
-				$this->ajaxOptions['type'] = isset($this->ajaxOptions['type']) ? $this->ajaxOptions['type'] : 'POST';
+				$this->ajaxOptions['type'] = 'POST';
 				$this->ajaxOptions['url'] = $this->url;
 				$this->htmlOptions['type'] = 'submit';
 				$this->htmlOptions['ajax'] = $this->ajaxOptions;
 				return CHtml::htmlButton($this->label, $this->htmlOptions);
-
-			case self::BUTTON_INPUTBUTTON:
-				return CHtml::button($this->label, $this->htmlOptions);
-
-			case self::BUTTON_INPUTSUBMIT:
-				$this->htmlOptions['type'] = 'submit';
-				return CHtml::button($this->label, $this->htmlOptions);
 
 			default:
 			case self::BUTTON_LINK:

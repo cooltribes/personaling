@@ -12,22 +12,28 @@ $this->breadcrumbs=array(
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1>Tu personaling | Tu perfil</h1>
      <!-- MENU ON -->
-     <ul class="nav nav-pills margin_top">
-        <li class="active"> 
-        	<?php echo CHtml::link('Datos Personales',array('profile/edit')); ?>
-        </li>
-        <li>
-        	<?php echo CHtml::link('Avatar',array('profile/avatar')); ?>
-        	
-        </li>
-        <li>
-        	<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo')); ?>
-        	
-        </li>
-      </ul>
+		<div class="navbar">
+			<div class="navbar-inner margin_bottom">
+				<ul class="nav ">
+					<li class="active">
+						<?php echo CHtml::link('Datos Personales',array('profile/edit'));
+						?>
+					</li>
+					<li>
+						<?php echo CHtml::link('Avatar',array('profile/avatar'));
+						?>
+					</li>
+					<li>
+						<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo'));
+						?>
+					</li>
+				</ul>
+			</div>
+		</div>
      <!-- MENU OFF -->
+      <h1>Tu personaling | Tu perfil</h1>
+
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -88,18 +94,7 @@ $this->breadcrumbs=array(
     </div>
   </div>
 </div>
-<?php
 
-$this->menu=array(
-	((UserModule::isAdmin())
-		?array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin'))
-		:array()),
-    array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
-    array('label'=>UserModule::t('Profile'), 'url'=>array('/user/profile')),
-    array('label'=>UserModule::t('Change password'), 'url'=>array('changepassword')),
-    array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
-);
-?>
 
 
 

@@ -115,7 +115,6 @@
   text-decoration: none;
   background-color: transparent;
   background-image: none; // Remove CSS gradient
-  .reset-filter();
   cursor: default;
 }
 
@@ -169,7 +168,9 @@
   left: 100%;
   margin-top: -6px;
   margin-left: -1px;
-  .border-radius(0 6px 6px 6px);
+  -webkit-border-radius: 0 6px 6px 6px;
+     -moz-border-radius: 0 6px 6px 6px;
+          border-radius: 0 6px 6px 6px;
 }
 .dropdown-submenu:hover > .dropdown-menu {
   display: block;
@@ -181,7 +182,9 @@
   bottom: 0;
   margin-top: 0;
   margin-bottom: -2px;
-  .border-radius(5px 5px 5px 0);
+  -webkit-border-radius: 5px 5px 5px 0;
+     -moz-border-radius: 5px 5px 5px 0;
+          border-radius: 5px 5px 5px 0;
 }
 
 // Caret to indicate there is a submenu
@@ -212,7 +215,9 @@
   > .dropdown-menu {
     left: -100%;
     margin-left: 10px;
-    .border-radius(6px 0 6px 6px);
+    -webkit-border-radius: 6px 0 6px 6px;
+       -moz-border-radius: 6px 0 6px 6px;
+            border-radius: 6px 0 6px 6px;
   }
 }
 
@@ -227,7 +232,6 @@
 // Typeahead
 // ---------
 .typeahead {
-  z-index: 1051;
   margin-top: 2px; // give it some space to breathe
   .border-radius(@baseBorderRadius);
 }

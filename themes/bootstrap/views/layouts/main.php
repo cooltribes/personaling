@@ -19,6 +19,37 @@
 
 <?php 
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
+if (Yii::app()->user->id?UserModule::isAdmin():false){
+$this->widget('bootstrap.widgets.TbNavbar',array(
+	'type'=> 'inverse',
+    'items'=>array(
+        array(
+            'class'=>'bootstrap.widgets.TbMenu',
+            'htmlOptions'=>array('class'=>'pull-right'),
+            'items'=>array(
+ 
+                //array('label'=>'Personaling', 'url'=>array('/site/index')),
+                array('label'=>'Panel de Control', 'url'=>array('/site/index')),
+                array('label'=>'Usuarios', 'url'=>array('/user/admin')),
+                array('label'=>'Looks', 'url'=>array('/tienda/index')),
+                array('label'=>'Productos', 'url'=>array('/producto/admin')),
+                
+                array('label'=>'Ventas', 'url'=>array('/user/login')),
+               array('label'=>'Sistema', 'url'=>array('/site/logout')),
+				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
+                    array('label'=>'Perfil', 'url'=>'#'),
+                    array('label'=>'Configuracion', 'url'=>'#'),
+                   
+                    '---',
+                    array('label'=>'Salir', 'url'=>array('/site/logout')),
+                ),
+               ),
+            ),
+        ),
+    ),
+)); 
+} else {
 $this->widget('bootstrap.widgets.TbNavbar',array(
     'items'=>array(
         array(
@@ -38,7 +69,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Configuracion', 'url'=>'#'),
-                    array('label'=>'Admin','url'=>array('/user/admin'),'visible'=>Yii::app()->user->id?UserModule::isAdmin():false),
+                    
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),
                 ),
@@ -48,7 +79,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         ),
     ),
 )); 
-
+}
 ?>
 
 <div class="container" id="page">

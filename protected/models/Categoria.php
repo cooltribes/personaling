@@ -68,11 +68,11 @@ class Categoria extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'padreId' => 'Padre',
+			'padreId' => 'Categoría Padre',
 			'nombre' => 'Nombre',
 			'urlImagen' => 'Url Imagen',
-			'mTitulo' => 'M Titulo',
-			'mDescripcion' => 'M Descripcion',
+			'mTitulo' => 'Meta Titulo',
+			'mDescripcion' => 'Meta Descripcion',
 		);
 	}
 
@@ -98,4 +98,24 @@ class Categoria extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	
+	
+	public function beforeSave()
+	{
+
+	$valor->attributes=$_POST['Categoria'];
+
+		if($this->padreId=='')
+		{
+			$this->padreId = 0;
+		}
+		
+		echo($this->padreId);
+		
+
+	return parent::beforeSave();	
+	}
+	
+	
 }

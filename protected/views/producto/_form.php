@@ -99,9 +99,10 @@
 		)); ?>
       	
         <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Restablecer">Restablecer</a></li>
+        	<?php echo CHtml::button(Yii::t('ui','Clear'), array('class'=>'clearform')); ?>
+          <li><a href="#" title="Restablecer">Limpiar</a></li>
           <li><a href="#" title="Duplicar">Duplicar</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-trash"> </i>Borrar</a></li>
+          <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar</a></li>
         </ul>
       </div>
     </div>

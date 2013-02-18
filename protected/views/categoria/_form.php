@@ -7,7 +7,11 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'padreId',array('class'=>'span5')); ?>
+		<?php echo $form->labelEx($model,'padreId'); ?>
+		<?php echo CHtml::activeDropDownList($model,'padreId',CHtml::listData( Categoria::model()->findAll(), 'id', 'nombre' ),array('prompt'=>'Ninguno')); ?>
+		<?php echo $form->error($model,'padreId'); ?>
+
+	<?php //echo $form->textFieldRow($model,'padreId',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'nombre',array('class'=>'span5','maxlength'=>100)); ?>
 

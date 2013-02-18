@@ -173,4 +173,28 @@ class CategoriaController extends Controller
 			Yii::app()->end();
 		}
 	}
+	
+	public function actionGetTree()
+    {
+        $result = null;
+ 
+        if(!isset($_REQUEST['padreId']) )
+        {
+            $result = TreeManager::load(null);
+        }
+        elseif(($id = (float)$_REQUEST['padreId']) && ($id > 1))
+        {
+            $result = TreeManager::load($id);
+        }
+ 
+        if(!empty($result))
+        {
+            echo CJavaScript::jsonEncode($result);
+        }
+        else
+        {
+            echo "[]";
+        }
+    }
+	
 }

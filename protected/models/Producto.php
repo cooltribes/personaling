@@ -20,6 +20,8 @@ class Producto extends CActiveRecord
 	const mango='Mango';
 	// const a='Zara';
 	
+	public $horaInicio="";
+	public $horaFin="";
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -51,10 +53,10 @@ class Producto extends CActiveRecord
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>50),
 			array('proveedor', 'length', 'max'=>45),
-			array('descripcion, fInicio, fFin', 'safe'),
+			array('descripcion, fInicio, fFin,horaInicio,horaFin', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,7 +82,7 @@ class Producto extends CActiveRecord
 			'nombre' => 'Nombre / Titulo',
 			'estado' => 'Estado',
 			'descripcion' => 'Descripcion',
-			'proveedor' => 'Proveedor',
+			'proveedor' => 'Marca / Proveedor',
 			'fInicio' => 'Inicio',
 			'fFin' => 'Fin',
 		);
@@ -110,4 +112,43 @@ class Producto extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+
+	public function beforeSave()
+	{
+		/*if(parent::beforeSave())
+		{
+		*/	
+		$producto->attributes=$_POST['Producto'];
+			
+		$this->fInicio=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fInicio);	
+		$this->fFin=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fFin);
+		
+		//$this->horaInicio = $producto->horaInicio."".$producto->minInicio;
+		
+		$this->horaInicio = substr($this->horaInicio, 0, 5); 
+		$this->horaFin = substr($this->horaFin, 0, 5);
+		
+		$this->fInicio= $this->fInicio.' '.$this->horaInicio.':00';
+		$this->fFin = $this->fFin.' '.$this->horaFin.':00';
+		
+		echo ("inicio ".$this->horaInicio);
+		echo ("<br>fin".$this->horaFin);
+		
+		echo ($this->fInicio);
+		echo ($this->fFin);
+		return parent::beforeSave();
+		//exit;
+		
+		/*
+		parent::beforeSave();
+			
+		return true;
+		}
+		else {
+			return false;
+		}
+		*/
+	}
+
 }

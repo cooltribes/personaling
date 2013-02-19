@@ -26,6 +26,21 @@ class ProfileController extends Controller
 	public function actionPrivacidad()
 	{
 		$model = $this->loadUser();
+		if (isset($_POST['privacidad'])){
+			
+			$privacidad = array_sum($_POST['privacidad']);
+			$model->privacy = $privacidad;
+			if ($model->save()){
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Changes is saved."));				
+			} else {
+				Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("Changes not saved."));				
+			}
+			
+			
+		}
 	    $this->render('privacidad',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
@@ -204,7 +219,7 @@ class ProfileController extends Controller
 					//$model->status_register = User::STATUS_REGISTER_TIPO;
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));						
+						Yii::app()->user->setFlash('success',UserModule::t("Changes is saved."));						
 						$this->render('tutipo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,

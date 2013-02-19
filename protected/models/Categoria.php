@@ -13,6 +13,9 @@
  */
 class Categoria extends CActiveRecord
 {
+	
+	public $items;
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -115,6 +118,18 @@ class Categoria extends CActiveRecord
 		
 
 	return parent::beforeSave();	
+	}
+	
+	public function hasChildren(){
+		if (Categoria::model()->findByAttributes(array('padreId'=>$this->id))){
+			return true; 
+		}	else {
+			return false;
+		}
+	}
+	
+	public function getChildren(){
+		return Categoria::model()->findAllByAttributes(array('padreId'=>$this->id));
 	}
 	
 	

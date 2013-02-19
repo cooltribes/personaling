@@ -1,11 +1,26 @@
-<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
-</div>
-<?php endif; ?>
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta")=>array('micuenta'),
+	UserModule::t("Tu perfil corporal"),
+);
+?>
+
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
+<?php
+
+$this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); 
+
+?>
 	<?php if (isset($editar) && $editar){ ?>
      <!-- MENU ON -->
 		<div class="navbar">

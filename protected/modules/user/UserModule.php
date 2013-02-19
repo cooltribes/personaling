@@ -74,7 +74,9 @@ class UserModule extends CWebModule
 	 * @desc User model relation from other models
 	 * @see http://www.yiiframework.com/doc/guide/database.arr
 	 */
-	public $relations = array();
+	public $relations = array(
+		
+	);
 	
 	/**
 	 * @var array

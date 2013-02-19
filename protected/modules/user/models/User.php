@@ -14,6 +14,13 @@ class User extends CActiveRecord
 	const STATUS_REGISTER_ESTILO = 2;
 	const STATUS_REGISTER_DONE = 3;
 	
+	// PRIVACIDAD
+		const PRIVACIDAD_DATOS_BASICOS = 1;
+		const PRIVACIDAD_AVATAR = 2;	
+		const PRIVACIDAD_LOOKS = 4;
+		const PRIVACIDAD_SHOPPERS = 8;
+		
+ 
 	/**
 	 * The followings are the available columns in table 'users':
 	 * @var integer $id
@@ -66,10 +73,11 @@ class User extends CActiveRecord
             array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
-			array('superuser, status,status_register', 'numerical', 'integerOnly'=>true),
-			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status,status_register', 'safe', 'on'=>'search'),
+			array('superuser, status,status_register,privacy', 'numerical', 'integerOnly'=>true),
+			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status,status_register,privacy', 'safe', 'on'=>'search'),
 		):((Yii::app()->user->id==$this->id)?array(
 			array('username, email', 'required'),
+			array('privacy', 'numerical', 'integerOnly'=>true),
 			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
 			array('email', 'email'),
 			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
@@ -127,7 +135,7 @@ class User extends CActiveRecord
                 'condition'=>'superuser=1',
             ),
             'notsafe'=>array(
-            	'select' => 'id, username, password, email, activkey, create_at, lastvisit_at, superuser, status, status_register',
+            	'select' => 'id, username, password, email, activkey, create_at, lastvisit_at, superuser, status, status_register,privacy',
             ),
         );
     }
@@ -136,7 +144,7 @@ class User extends CActiveRecord
     {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope,array(
             'alias'=>'user',
-            'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.superuser, user.status',
+            'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.superuser, user.status, user.privacy',
         ));
     }
 	

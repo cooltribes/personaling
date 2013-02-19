@@ -83,7 +83,7 @@
 				<?php echo $form->timepickerRow($model, 'horaFin', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>'));?>	
             </div>
             
-          </fieldset>
+          </fieldset>       
         </form>
       </div>
     </div>
@@ -97,10 +97,9 @@
 			'block'=>'true',
 			'label'=>$model->isNewRecord ? 'Crear' : 'Guardar',
 		)); ?>
-      	
+
         <ul class="nav nav-stacked nav-tabs margin_top">
-        	<?php echo CHtml::button(Yii::t('ui','Clear'), array('class'=>'clearform')); ?>
-          <li><a href="#" title="Restablecer">Limpiar</a></li>
+          <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
           <li><a href="#" title="Duplicar">Duplicar</a></li>
           <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar</a></li>
         </ul>
@@ -108,5 +107,20 @@
     </div>
   </div>
 
+<script>
+
+		$('#limpiar').on('click', function() {
+           $("#producto-form input[type=text]").val('');
+           $("#producto-form textarea").val("");
+           $("#producto-form select").val('-1');
+           $("#producto-form input[type=radio]").val('0');
+           $("#producto-form input[type=checkbox]").val('false');
+           $("#producto-form")[0].reset();
+           $("#producto-form")[3].reset();
+       });
+	
+</script>
 
 <?php $this->endWidget(); ?>
+
+

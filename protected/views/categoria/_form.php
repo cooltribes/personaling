@@ -11,6 +11,30 @@
 		<?php echo CHtml::activeDropDownList($model,'padreId',CHtml::listData( Categoria::model()->findAll(), 'id', 'nombre' ),array('prompt'=>'Ninguno')); ?>
 		<?php echo $form->error($model,'padreId'); ?>
 
+<?php 
+
+$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'0',));
+
+	nodos($cat,$form,$model); 
+	
+	function nodos($items,$form,$model){
+		echo "<ul>";
+		foreach ($items as $item){
+			
+			echo $form->radioButtonListRow($model, 'padreId', array($item->nombre,));
+			
+			//echo "<li> <input type='checkbox'> ".$item->nombre."</li>";
+			if ($item->hasChildren()){
+				nodos($item->getChildren(),$form,$model);
+			}
+		}
+		echo "</ul>";
+		return 1;
+	}
+
+
+?>
+
 	<?php //echo $form->textFieldRow($model,'padreId',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'nombre',array('class'=>'span5','maxlength'=>100)); ?>

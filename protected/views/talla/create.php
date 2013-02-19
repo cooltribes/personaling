@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Tbltallas'=>array('index'),
+	'Tallas'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List tbltalla','url'=>array('index')),
-	array('label'=>'Manage tbltalla','url'=>array('admin')),
+	array('label'=>'List Talla','url'=>array('index')),
+	array('label'=>'Manage Talla','url'=>array('admin')),
 );
 ?>
 
-<h1>Create tbltalla</h1>
+<h1>Create Talla</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

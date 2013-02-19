@@ -1,5 +1,5 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'tblcategoria-form',
+	'id'=>'categoria-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 

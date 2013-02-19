@@ -1,19 +1,19 @@
 <?php
 $this->breadcrumbs=array(
-	'Tblcolors'=>array('index'),
+	'Colors'=>array('index'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List tblcolor','url'=>array('index')),
-	array('label'=>'Create tblcolor','url'=>array('create')),
-	array('label'=>'Update tblcolor','url'=>array('update','id'=>$model->id)),
-	array('label'=>'Delete tblcolor','url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage tblcolor','url'=>array('admin')),
+	array('label'=>'List Color','url'=>array('index')),
+	array('label'=>'Create Color','url'=>array('create')),
+	array('label'=>'Update Color','url'=>array('update','id'=>$model->id)),
+	array('label'=>'Delete Color','url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Manage Color','url'=>array('admin')),
 );
 ?>
 
-<h1>View tblcolor #<?php echo $model->id; ?></h1>
+<h1>View Color #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('bootstrap.widgets.TbDetailView',array(
 	'data'=>$model,

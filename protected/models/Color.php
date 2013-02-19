@@ -15,7 +15,7 @@ class Color extends CActiveRecord
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tblcolor the static model class
+	 * @return Color the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

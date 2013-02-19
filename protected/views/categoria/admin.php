@@ -1,12 +1,12 @@
 <?php
 $this->breadcrumbs=array(
-	'Tblcategorias'=>array('index'),
+	'Categorias'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List tblcategoria','url'=>array('index')),
-	array('label'=>'Create tblcategoria','url'=>array('create')),
+	array('label'=>'List Categoria','url'=>array('index')),
+	array('label'=>'Create Categoria','url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -15,7 +15,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('tblcategoria-grid', {
+	$.fn.yiiGridView.update('categoria-grid', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -23,7 +23,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Tblcategorias</h1>
+<h1>Manage Categorias</h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
@@ -38,7 +38,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 </div><!-- search-form -->
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
-	'id'=>'tblcategoria-grid',
+	'id'=>'categoria-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(

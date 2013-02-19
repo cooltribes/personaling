@@ -61,14 +61,14 @@ class ColorController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new tblcolor;
+		$model=new Color;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblcolor']))
+		if(isset($_POST['Color']))
 		{
-			$model->attributes=$_POST['tblcolor'];
+			$model->attributes=$_POST['Color'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -90,9 +90,9 @@ class ColorController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblcolor']))
+		if(isset($_POST['Color']))
 		{
-			$model->attributes=$_POST['tblcolor'];
+			$model->attributes=$_POST['Color'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +127,7 @@ class ColorController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('tblcolor');
+		$dataProvider=new CActiveDataProvider('Color');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +138,10 @@ class ColorController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new tblcolor('search');
+		$model=new Color('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['tblcolor']))
-			$model->attributes=$_GET['tblcolor'];
+		if(isset($_GET['Color']))
+			$model->attributes=$_GET['Color'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -155,7 +155,7 @@ class ColorController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=tblcolor::model()->findByPk($id);
+		$model=Color::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -167,7 +167,7 @@ class ColorController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tblcolor-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='color-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

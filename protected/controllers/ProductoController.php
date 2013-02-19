@@ -61,14 +61,14 @@ class ProductoController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new tblproducto;
+		$model=new Producto;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblproducto']))
+		if(isset($_POST['Producto']))
 		{
-			$model->attributes=$_POST['tblproducto'];
+			$model->attributes=$_POST['Producto'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -90,9 +90,9 @@ class ProductoController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tblproducto']))
+		if(isset($_POST['Producto']))
 		{
-			$model->attributes=$_POST['tblproducto'];
+			$model->attributes=$_POST['Producto'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +127,7 @@ class ProductoController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('tblproducto');
+		$dataProvider=new CActiveDataProvider('Producto');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +138,10 @@ class ProductoController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new tblproducto('search');
+		$model=new Producto('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['tblproducto']))
-			$model->attributes=$_GET['tblproducto'];
+		if(isset($_GET['Producto']))
+			$model->attributes=$_GET['Producto'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -155,7 +155,7 @@ class ProductoController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=tblproducto::model()->findByPk($id);
+		$model=Producto::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -167,7 +167,7 @@ class ProductoController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tblproducto-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='producto-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

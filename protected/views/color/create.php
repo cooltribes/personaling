@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Tblcolors'=>array('index'),
+	'Colors'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List tblcolor','url'=>array('index')),
-	array('label'=>'Manage tblcolor','url'=>array('admin')),
+	array('label'=>'List Color','url'=>array('index')),
+	array('label'=>'Manage Color','url'=>array('admin')),
 );
 ?>
 
-<h1>Create tblcolor</h1>
+<h1>Create Color</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

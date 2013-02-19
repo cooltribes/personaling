@@ -1,5 +1,5 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'tblcolor-form',
+	'id'=>'color-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 

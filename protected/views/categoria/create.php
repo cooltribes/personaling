@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Tblcategorias'=>array('index'),
+	'Categorias'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List tblcategoria','url'=>array('index')),
-	array('label'=>'Manage tblcategoria','url'=>array('admin')),
+	array('label'=>'List Categoria','url'=>array('index')),
+	array('label'=>'Manage Categoria','url'=>array('admin')),
 );
 ?>
 
-<h1>Create tblcategoria</h1>
+<h1>Create Categoria</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

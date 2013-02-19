@@ -1,5 +1,5 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'tblproducto-form',
+	'id'=>'producto-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 

@@ -1,18 +1,18 @@
 <?php
 $this->breadcrumbs=array(
-	'Tbltallas'=>array('index'),
+	'Tallas'=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
 	'Update',
 );
 
 $this->menu=array(
-	array('label'=>'List tbltalla','url'=>array('index')),
-	array('label'=>'Create tbltalla','url'=>array('create')),
-	array('label'=>'View tbltalla','url'=>array('view','id'=>$model->id)),
-	array('label'=>'Manage tbltalla','url'=>array('admin')),
+	array('label'=>'List Talla','url'=>array('index')),
+	array('label'=>'Create Talla','url'=>array('create')),
+	array('label'=>'View Talla','url'=>array('view','id'=>$model->id)),
+	array('label'=>'Manage Talla','url'=>array('admin')),
 );
 ?>
 
-<h1>Update tbltalla <?php echo $model->id; ?></h1>
+<h1>Update Talla <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

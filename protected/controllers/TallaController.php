@@ -61,14 +61,14 @@ class TallaController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new tbltalla;
+		$model=new Talla;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tbltalla']))
+		if(isset($_POST['Talla']))
 		{
-			$model->attributes=$_POST['tbltalla'];
+			$model->attributes=$_POST['Talla'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -90,9 +90,9 @@ class TallaController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['tbltalla']))
+		if(isset($_POST['Talla']))
 		{
-			$model->attributes=$_POST['tbltalla'];
+			$model->attributes=$_POST['Talla'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +127,7 @@ class TallaController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('tbltalla');
+		$dataProvider=new CActiveDataProvider('Talla');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +138,10 @@ class TallaController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new tbltalla('search');
+		$model=new Talla('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['tbltalla']))
-			$model->attributes=$_GET['tbltalla'];
+		if(isset($_GET['Talla']))
+			$model->attributes=$_GET['Talla'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -155,7 +155,7 @@ class TallaController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=tbltalla::model()->findByPk($id);
+		$model=Talla::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -167,7 +167,7 @@ class TallaController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tbltalla-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='talla-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

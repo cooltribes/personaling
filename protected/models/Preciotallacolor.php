@@ -11,16 +11,16 @@
  * @property integer $tbl_color_id
  *
  * The followings are the available model relations:
+ * @property Color $tblColor
  * @property Producto $tblProducto
  * @property Talla $tblTalla
- * @property Color $tblColor
  */
-class Preciotallacolor extends CActiveRecord
+class PrecioTallaColor extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tblpreciotallacolor the static model class
+	 * @return PrecioTallaColor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -59,9 +59,9 @@ class Preciotallacolor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'tblColor' => array(self::BELONGS_TO, 'Color', 'tbl_color_id'),
 			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
 			'tblTalla' => array(self::BELONGS_TO, 'Talla', 'tbl_talla_id'),
-			'tblColor' => array(self::BELONGS_TO, 'Color', 'tbl_color_id'),
 		);
 	}
 

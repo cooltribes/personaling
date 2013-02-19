@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Tblcolors',
+	'Colors',
 );
 
 $this->menu=array(
-	array('label'=>'Create tblcolor','url'=>array('create')),
-	array('label'=>'Manage tblcolor','url'=>array('admin')),
+	array('label'=>'Create Color','url'=>array('create')),
+	array('label'=>'Manage Color','url'=>array('admin')),
 );
 ?>
 
-<h1>Tblcolors</h1>
+<h1>Colors</h1>
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,

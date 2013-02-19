@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Tbltallas',
+	'Tallas',
 );
 
 $this->menu=array(
-	array('label'=>'Create tbltalla','url'=>array('create')),
-	array('label'=>'Manage tbltalla','url'=>array('admin')),
+	array('label'=>'Create Talla','url'=>array('create')),
+	array('label'=>'Manage Talla','url'=>array('admin')),
 );
 ?>
 
-<h1>Tbltallas</h1>
+<h1>Tallas</h1>
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,

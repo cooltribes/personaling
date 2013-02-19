@@ -6,16 +6,13 @@
  * The followings are the available columns in table '{{talla}}':
  * @property integer $id
  * @property string $valor
- *
- * The followings are the available model relations:
- * @property PrecioTallaColor[] $precioTallaColors
  */
 class Talla extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tbltalla the static model class
+	 * @return Talla the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -55,7 +52,6 @@ class Talla extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'precioTallaColors' => array(self::HAS_MANY, 'PrecioTallaColor', 'tbl_talla_id'),
 		);
 	}
 

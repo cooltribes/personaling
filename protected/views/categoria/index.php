@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Tblcategorias',
+	'Categorias',
 );
 
 $this->menu=array(
-	array('label'=>'Create tblcategoria','url'=>array('create')),
-	array('label'=>'Manage tblcategoria','url'=>array('admin')),
+	array('label'=>'Create Categoria','url'=>array('create')),
+	array('label'=>'Manage Categoria','url'=>array('admin')),
 );
 ?>
 
-<h1>Tblcategorias</h1>
+<h1>Categorias</h1>
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,

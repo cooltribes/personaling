@@ -19,6 +19,7 @@
  * @property Imagen[] $imagens
  * @property Look[] $tblLooks
  * @property Precio[] $precios
+ * @property PrecioTallaColor[] $precioTallaColors
  * @property Seo[] $seos
  */
 class Producto extends CActiveRecord
@@ -26,7 +27,7 @@ class Producto extends CActiveRecord
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return tblproducto the static model class
+	 * @return Producto the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -74,6 +75,7 @@ class Producto extends CActiveRecord
 			'imagens' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id'),
 			'tblLooks' => array(self::MANY_MANY, 'Look', '{{look_has_tbl_producto}}(tbl_producto_id, tbl_look_id)'),
 			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
+			'precioTallaColors' => array(self::HAS_MANY, 'PrecioTallaColor', 'tbl_producto_id'),
 			'seos' => array(self::HAS_MANY, 'Seo', 'tbl_producto_id'),
 		);
 	}

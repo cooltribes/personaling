@@ -9,11 +9,6 @@
  * @property integer $tbl_producto_id
  * @property integer $tbl_talla_id
  * @property integer $tbl_color_id
- *
- * The followings are the available model relations:
- * @property Color $tblColor
- * @property Producto $tblProducto
- * @property Talla $tblTalla
  */
 class PrecioTallaColor extends CActiveRecord
 {
@@ -43,8 +38,8 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, tbl_producto_id, tbl_talla_id, tbl_color_id', 'required'),
-			array('id, cantidad, tbl_producto_id, tbl_talla_id, tbl_color_id', 'numerical', 'integerOnly'=>true),
+			array('tbl_producto_id, tbl_talla_id, tbl_color_id', 'required'),
+			array('cantidad, tbl_producto_id, tbl_talla_id, tbl_color_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, cantidad, tbl_producto_id, tbl_talla_id, tbl_color_id', 'safe', 'on'=>'search'),
@@ -59,9 +54,6 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblColor' => array(self::BELONGS_TO, 'Color', 'tbl_color_id'),
-			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
-			'tblTalla' => array(self::BELONGS_TO, 'Talla', 'tbl_talla_id'),
 		);
 	}
 

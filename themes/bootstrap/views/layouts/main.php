@@ -50,6 +50,12 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 } else {
+	if (Yii::app()->user->id){
+		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+		$nombre = $profile->first_name.' '.$profile->last_name;
+	} else {
+		$nombre = 'N/A';
+	}
 $this->widget('bootstrap.widgets.TbNavbar',array(
     'items'=>array(
         array(
@@ -65,7 +71,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'2','icon'=>'icon-shopping-cart', 'url'=>array('/site/contact'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                 array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
+                 array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Configuracion', 'url'=>'#'),

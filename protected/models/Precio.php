@@ -14,9 +14,6 @@
  * @property integer $impuesto
  * @property double $precioImpuesto
  * @property integer $tbl_producto_id
- *
- * The followings are the available model relations:
- * @property Producto $tblProducto
  */
 class Precio extends CActiveRecord
 {
@@ -46,8 +43,8 @@ class Precio extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, tbl_producto_id', 'required'),
-			array('id, tipoDescuento, valorTipo, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('tbl_producto_id', 'required'),
+			array('tipoDescuento, valorTipo, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
 			array('costo, precioVenta, ahorro, precioDescuento, precioImpuesto', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -63,7 +60,6 @@ class Precio extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
 		);
 	}
 

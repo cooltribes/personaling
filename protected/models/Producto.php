@@ -11,16 +11,6 @@
  * @property string $descripcion
  * @property string $fInicio
  * @property string $fFin
- *
- * The followings are the available model relations:
- * @property Bolsa[] $tblBolsas
- * @property Caracteristica[] $caracteristicas
- * @property Categoria[] $tblCategorias
- * @property Imagen[] $imagens
- * @property Look[] $tblLooks
- * @property Precio[] $precios
- * @property PrecioTallaColor[] $precioTallaColors
- * @property Seo[] $seos
  */
 class Producto extends CActiveRecord
 {
@@ -50,8 +40,7 @@ class Producto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
-			array('id, estado', 'numerical', 'integerOnly'=>true),
+			array('estado', 'numerical', 'integerOnly'=>true),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>50),
 			array('descripcion, fInicio, fFin', 'safe'),
@@ -69,14 +58,6 @@ class Producto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblBolsas' => array(self::MANY_MANY, 'Bolsa', '{{bolsa_has_tbl_producto}}(tbl_producto_id, tbl_bolsa_id)'),
-			'caracteristicas' => array(self::HAS_MANY, 'Caracteristica', 'tbl_producto_id'),
-			'tblCategorias' => array(self::MANY_MANY, 'Categoria', '{{categoria_has_tbl_producto}}(tbl_producto_id, tbl_categoria_id)'),
-			'imagens' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id'),
-			'tblLooks' => array(self::MANY_MANY, 'Look', '{{look_has_tbl_producto}}(tbl_producto_id, tbl_look_id)'),
-			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
-			'precioTallaColors' => array(self::HAS_MANY, 'PrecioTallaColor', 'tbl_producto_id'),
-			'seos' => array(self::HAS_MANY, 'Seo', 'tbl_producto_id'),
 		);
 	}
 

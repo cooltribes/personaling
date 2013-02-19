@@ -9,9 +9,6 @@
  * @property integer $principal
  * @property integer $orden
  * @property integer $tbl_producto_id
- *
- * The followings are the available model relations:
- * @property Producto $tblProducto
  */
 class Imagen extends CActiveRecord
 {
@@ -41,8 +38,8 @@ class Imagen extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, tbl_producto_id', 'required'),
-			array('id, principal, orden, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('tbl_producto_id', 'required'),
+			array('principal, orden, tbl_producto_id', 'numerical', 'integerOnly'=>true),
 			array('url', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -58,7 +55,6 @@ class Imagen extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
 		);
 	}
 

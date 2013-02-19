@@ -6,9 +6,6 @@
  * The followings are the available columns in table '{{color}}':
  * @property integer $id
  * @property string $valor
- *
- * The followings are the available model relations:
- * @property PrecioTallaColor[] $precioTallaColors
  */
 class Color extends CActiveRecord
 {
@@ -38,8 +35,6 @@ class Color extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
 			array('valor', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -55,7 +50,6 @@ class Color extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'precioTallaColors' => array(self::HAS_MANY, 'PrecioTallaColor', 'tbl_color_id'),
 		);
 	}
 

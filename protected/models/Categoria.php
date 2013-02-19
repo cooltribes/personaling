@@ -10,9 +10,6 @@
  * @property string $urlImagen
  * @property string $mTitulo
  * @property string $mDescripcion
- *
- * The followings are the available model relations:
- * @property Producto[] $tblProductos
  */
 class Categoria extends CActiveRecord
 {
@@ -42,8 +39,7 @@ class Categoria extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
-			array('id, padreId', 'numerical', 'integerOnly'=>true),
+			array('padreId', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>100),
 			array('urlImagen', 'length', 'max'=>150),
 			array('mTitulo', 'length', 'max'=>80),
@@ -62,7 +58,6 @@ class Categoria extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{categoria_has_tbl_producto}}(tbl_categoria_id, tbl_producto_id)'),
 		);
 	}
 

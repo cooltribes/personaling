@@ -6,6 +6,18 @@ $this->breadcrumbs=array(
 
 ?>
 <div class="container margin_top"> 
+	<!-- FLASH ON --> 
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'),
+        ),
+    )
+); ?>	
+<!-- FLASH OFF --> 	
   <!-- SUBMENU ON -->
  <?php $this->renderPartial("_menu"); ?>
   <!-- SUBMENU OFF -->
@@ -27,32 +39,43 @@ $this->breadcrumbs=array(
             <div class="control-group">
               <label for="RegistrationForm_email" class="control-label required">Dirección de correo electrónico actual: <span class="required">*</span></label>
               <div class="controls">
-                <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="correoelectronico@cuenta.com" name="RegistrationForm[email]" class="span5 uneditable-input" value="jpernia@cooltribes.com">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                <?php echo $form->textFieldRow($model,'oldEmail',array('class'=>'span5')); ?>
+                <?php echo $form->error($model,'oldEmail'); ?>
               </div>
             </div>
+            
             <div class="control-group">
               <label for="RegistrationForm_email" class="control-label required">Ingresa tu nueva dirección de correo electrónico: <span class="required">*</span></label>
               <div class="controls">
-                <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Ej.: correoelectronico@cuenta.com" name="RegistrationForm[email]" class="span5" >
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                <?php echo $form->textFieldRow($model,'newEmail',array('class'=>'span5')); ?>
+                <?php echo $form->error($model,'newEmail'); ?>
               </div>
             </div>
+            
             <div class="control-group">
               <label for="RegistrationForm_email" class="control-label required">Escríbela de nuevo: <span class="required">*</span></label>
               <div class="controls">
-                <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Ej.: correoelectronico@cuenta.com" name="RegistrationForm[email]" class="span5" >
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                <?php echo $form->textFieldRow($model,'verifyEmail',array('class'=>'span5')); ?>
+                <?php echo $form->error($model,'verifyEmail'); ?>
               </div>
             </div>
+            
             <div class="control-group">
               <label for="RegistrationForm_password" class="control-label required">Ingresa tu contraseña para finalizar: <span class="required">*</span></label>
               <div class="controls">
-                <input type="password" maxlength="128" id="RegistrationForm_password" placeholder="Contraseña" name="RegistrationForm[password]" class="span5">
-                <div style="display:none" id="RegistrationForm_password_em_" class="help-inline">ayuda aqui </div>
+              	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span5','maxlength'=>128)); ?>
+              	<?php echo $form->error($model,'password'); ?>
               </div>
             </div>
-            <div class="form-actions"> <a href="login_2.php" class="btn-large btn btn-danger">Cambiar correo electrónico</a> </div>
+            
+            <div class="form-actions"> 
+                         	<?php $this->widget('bootstrap.widgets.TbButton', array(
+            				'buttonType' => 'submit',
+						    'label'=>'Cambiar correo electrónico',
+						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+						    'size'=>'large', // null, 'large', 'small' or 'mini'
+						)); ?> 	
+            </div>
           </fieldset>
          <?php $this->endWidget(); ?>
       </article>

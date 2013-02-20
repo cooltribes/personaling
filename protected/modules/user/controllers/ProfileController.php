@@ -287,7 +287,9 @@ class ProfileController extends Controller
 	 * Change email
 	 */
 	public function actionChangeemail() {
-		$model = $this->loadUser();
+		$user = $this->loadUser();
+		$model = new UserChangeEmail;
+		$model->oldEmail = $user->email;
 		if (Yii::app()->user->id) {
 			
 			// ajax validator
@@ -297,15 +299,21 @@ class ProfileController extends Controller
 				Yii::app()->end();
 			}
 			
-			if(isset($_POST['User'])) {
-					$model->attributes=$_POST['User'];
+			if(isset($_POST['UserChangeEmail'])) {
+					$model->attributes=$_POST['UserChangeEmail'];
 					if($model->validate()) {
+						$user->email = $model->newEmail;
+						$user->username = $model->newEmail;
 						//$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
 						//$new_password->password = UserModule::encrypting($model->password);
 						//$new_password->activkey=UserModule::encrypting(microtime().$model->password);
-						//$new_password->save();
-						Yii::app()->user->setFlash('profileMessage',UserModule::t("New Email is saved."));
-						$this->redirect(array("profile"));
+						if ($user->save()){
+							Yii::app()->user->setFlash('success',UserModule::t("Se guardo el nuevo Correo."));
+						} else {
+							Yii::trace('username:'.$user->username.' Error:'.implode('|',$user->getErrors()), 'registro');
+							Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
+						}
+						//$this->redirect(array("profile"));
 					}
 			}
 			$this->render('changeemail',array('model'=>$model));

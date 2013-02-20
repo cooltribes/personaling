@@ -22,7 +22,7 @@ class LoginController extends Controller
 					$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
 					
 					if ($user->status_register == User::STATUS_REGISTER_ESTILO){
-						Yii::trace('username:'.$model->username.' Error ESTILO: '.$user->status_register, 'registro');
+						//Yii::trace('username:'.$model->username.' Error ESTILO: '.$user->status_register, 'registro');
 					if (Yii::app()->user->returnUrl=='/index.php')
 						$this->redirect(Yii::app()->controller->module->returnUrl);
 					else
@@ -30,7 +30,7 @@ class LoginController extends Controller
 					} elseif ($user->status_register == User::STATUS_REGISTER_TIPO) {
 						$this->redirect(array("/user/profile/tuestilo"));
 					} elseif ($user->status_register == User::STATUS_REGISTER_NEW){
-						Yii::trace('username:'.$model->username.' Error NEW: '.$user->status_register, 'registro');
+						//Yii::trace('username:'.$model->username.' Error NEW: '.$user->status_register, 'registro');
 						$this->redirect(array("/user/profile/tutipo"));
 					}
 				}

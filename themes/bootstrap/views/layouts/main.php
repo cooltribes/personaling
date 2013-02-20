@@ -73,7 +73,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                  array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-                    array('label'=>'Perfil', 'url'=>'#'),
+                    array('label'=>'Perfil', 'url'=>array('/user/profile')),
                     array('label'=>'Configuracion', 'url'=>'#'),
                     
                     '---',

@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{precio}}':
  * @property integer $id
  * @property double $costo
+ * @property integer $combinacion
  * @property double $precioVenta
  * @property integer $tipoDescuento
  * @property integer $valorTipo
@@ -14,6 +15,9 @@
  * @property integer $impuesto
  * @property double $precioImpuesto
  * @property integer $tbl_producto_id
+ *
+ * The followings are the available model relations:
+ * @property Producto $tblProducto
  */
 class Precio extends CActiveRecord
 {
@@ -44,11 +48,11 @@ class Precio extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('tbl_producto_id', 'required'),
-			array('tipoDescuento, valorTipo, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('combinacion, tipoDescuento, valorTipo, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
 			array('costo, precioVenta, ahorro, precioDescuento, precioImpuesto', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, costo, precioVenta, tipoDescuento, valorTipo, ahorro, precioDescuento, impuesto, precioImpuesto, tbl_producto_id', 'safe', 'on'=>'search'),
+			array('id, costo, combinacion, precioVenta, tipoDescuento, valorTipo, ahorro, precioDescuento, impuesto, precioImpuesto, tbl_producto_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,6 +64,7 @@ class Precio extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
 		);
 	}
 
@@ -71,13 +76,14 @@ class Precio extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'costo' => 'Costo',
+			'combinacion' => 'Combinacion',
 			'precioVenta' => 'Precio Venta',
-			'tipoDescuento' => 'Tipo Descuento',
-			'valorTipo' => 'Valor Tipo',
-			'ahorro' => 'Ahorro',
-			'precioDescuento' => 'Precio Descuento',
-			'impuesto' => 'Impuesto',
-			'precioImpuesto' => 'Precio Impuesto',
+			'tipoDescuento' => 'Tipo de Descuento',
+			'valorTipo' => 'Valor: (% o Bs.)',
+			'ahorro' => 'Ahorro para el usuario (Bs.)',
+			'precioDescuento' => 'Precio con descuento para el usuario (Bs.)',
+			'impuesto' => 'Regla de Impuestos',
+			'precioImpuesto' => 'Precio con impuesto para el usuario (Bs.)',
 			'tbl_producto_id' => 'Tbl Producto',
 		);
 	}
@@ -95,6 +101,7 @@ class Precio extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('costo',$this->costo);
+		$criteria->compare('combinacion',$this->combinacion);
 		$criteria->compare('precioVenta',$this->precioVenta);
 		$criteria->compare('tipoDescuento',$this->tipoDescuento);
 		$criteria->compare('valorTipo',$this->valorTipo);

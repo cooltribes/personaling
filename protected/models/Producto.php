@@ -22,6 +22,10 @@ class Producto extends CActiveRecord
 	
 	public $horaInicio="";
 	public $horaFin="";
+	public $minInicio="";
+	public $minFin="";
+	public $uno="";
+	public $dos="";
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -53,10 +57,10 @@ class Producto extends CActiveRecord
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>50),
 			array('proveedor', 'length', 'max'=>45),
-			array('descripcion, fInicio, fFin,horaInicio,horaFin', 'safe'),
+			array('descripcion, fInicio, fFin,horaInicio,horaFin,minInicio,minFin', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin,minInicio,minFin', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +72,7 @@ class Producto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'tbl_categoria' => array(self::MANY_MANY, 'Categoria', '{{tbl_categoria_has_tbl_producto}}(tbl_categoria_id, tbl_producto_id)'),
 		);
 	}
 
@@ -126,17 +131,49 @@ class Producto extends CActiveRecord
 		
 		//$this->horaInicio = $producto->horaInicio."".$producto->minInicio;
 		
-		$this->horaInicio = substr($this->horaInicio, 0, 5); 
-		$this->horaFin = substr($this->horaFin, 0, 5);
+		$this->uno = $this->horaInicio;
+		$this->dos = $this->horaFin;
 		
-		$this->fInicio= $this->fInicio.' '.$this->horaInicio.':00';
-		$this->fFin = $this->fFin.' '.$this->horaFin.':00';
+		$this->horaInicio = substr($this->horaInicio, 0, 2); 
+		$this->horaFin = substr($this->horaFin, 0, 2);
 		
+		$this->minInicio = substr($this->uno, 3, 2);
+		$this->minFin = substr($this->dos, 3, 2);
+		
+		$horarioInicio = substr($this->uno, 6, 2);
+		$horarioFin = substr($this->dos, 6, 2);
+		
+		if($horarioInicio=='AM')
+			$this->fInicio= $this->fInicio.' '.$this->horaInicio.':'.$this->minInicio.':00';
+		else
+			{
+				$this->horaInicio=$this->horaInicio+12;
+				$this->fInicio= $this->fInicio.' '.$this->horaInicio.':'.$this->minInicio.':00';
+			}
+			
+		if($horarioFin=='AM')
+			$this->fFin = $this->fFin.' '.$this->horaFin.':'.$this->minFin.':00';
+		else
+			{
+				$this->horaFin=$this->horaFin+12;
+				$this->fFin = $this->fFin.' '.$this->horaFin.':'.$this->minFin.':00';
+			}
+				
+			
+	//	$this->fFin = $this->fFin.' '.$this->horaFin.':00';
+		/*
 		echo ("inicio ".$this->horaInicio);
 		echo ("<br>fin".$this->horaFin);
 		
-		echo ($this->fInicio);
-		echo ($this->fFin);
+		echo ("<br>inicio ".$this->minInicio);
+		echo ("<br>fin".$this->minFin);
+		
+		echo ("<br>inicio ".$this->fInicio);
+		echo ("<br>inicio ".$this->fFin);
+		
+		echo ("<br>horario inicio".$horarioInicio);
+		echo ("<br>fin".$horarioFin);
+		*/
 		return parent::beforeSave();
 		//exit;
 		

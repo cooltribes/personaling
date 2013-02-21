@@ -31,7 +31,7 @@ class ProductoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','precios'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -61,8 +61,14 @@ class ProductoController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Producto;
-
+		if(isset($_GET['id']))
+		{
+			$model = Producto::model()->findByPk($_GET['id']);
+		}
+		else {
+			$model=new Producto;	
+		}
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -70,11 +76,49 @@ class ProductoController extends Controller
 		{
 			$model->attributes=$_POST['Producto'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+				
+			}
+				//$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+		));
+	}
+	//acceso para la pestaña de precios
+	public function actionPrecios($id)
+	{
+		if(isset($_GET['id'])){
+			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
+		}
+		else {
+			$precio=new Precio;
+		}
+		
+		$model = Producto::model()->findByPk($id);
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Precio']))
+		{
+			$precio->attributes=$_POST['Precio'];
+			$precio->tbl_producto_id = $id;
+			
+			if($precio->save())
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+				
+			}
+			//	$this->redirect(array('view','id'=>$model->id));
+		}
+
+		$this->render('_view_precios',array(
+			'model'=>$model,'precio'=>$precio,
 		));
 	}
 

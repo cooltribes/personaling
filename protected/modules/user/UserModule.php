@@ -106,6 +106,7 @@ class UserModule extends CWebModule
 	static private $_users=array();
 	static private $_userByName=array();
 	static private $_admin;
+	static private $_personal_shopper;
 	static private $_admins;
 	
 	/**
@@ -202,6 +203,24 @@ class UserModule extends CWebModule
 		}
 	}
 
+	/**
+	 * Return personal shopper status.
+	 * @return boolean
+	 */
+	public static function isPersonalShopper() {
+		if(Yii::app()->user->isGuest)
+			return false;
+		else {
+			if (!isset(self::$_personal_shopper)) {
+				if(self::user()->personal_shopper)
+					self::$_personal_shopper = true;
+				else
+					self::$_personal_shopper = false;	
+			}
+			return self::$_personal_shopper;
+		}
+	}
+	
 	/**
 	 * Return admins.
 	 * @return array syperusers names

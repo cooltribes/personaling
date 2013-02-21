@@ -29,11 +29,18 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		
-		if (Yii::app()->user->isGuest)
+		if (UserModule::isAdmin())
+			$this->redirect(array('/controlpanel/index'));
+		elseif (UserModule::isPersonalShopper()) 
+			$this->render('personal_shopper');
+		elseif (Yii::app()->user->isGuest) 
 			$this->render('index');
 		else
 			$this->render('personal_shopper');
+			
+		
+		
+		
 	}
 	/**
 	 * Esto es la pagina de tu personal shopper

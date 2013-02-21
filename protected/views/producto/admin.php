@@ -3,12 +3,7 @@ $this->breadcrumbs=array(
 	'Productos'=>array('index'),
 	'Manage',
 );
-
-$this->menu=array(
-	array('label'=>'List Producto','url'=>array('index')),
-	array('label'=>'Create Producto','url'=>array('create')),
-);
-
+/*
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
@@ -20,38 +15,69 @@ $('.search-form form').submit(function(){
 	});
 	return false;
 });
-");
+");*/
 ?>
 
-<h1>Manage Productos</h1>
+<?php // include('admin_header.php'); ?>
+<div class="container margin_top">
+  <div class="page-header">
+    <h1>Administrar Productos</small></h1>
+  </div>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
+    <tr>
+      <th scope="col" colspan="6"> Totales </th>
+    </tr>
+    <tr>
+      <td><p class="T_xlarge margin_top_xsmall">120 </p>
+        Totales</td>
+      <td><p class="T_xlarge margin_top_xsmall"> 144 </p>
+        Activos</td>
+      <td><p class="T_xlarge margin_top_xsmall"> 156</p>
+        Inactivos</td>
+      <td><p class="T_xlarge margin_top_xsmall">150</p>
+        Enviados</td>
+      <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
+        En tránsito </td>
+      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+        Devueltos</td>
+    </tr>
+  </table>
+  <hr/>
+  
+    <div class="row margin_top margin_bottom ">
+    <div class="span4">
+      <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
+		<?php echo CHtml::textField('Buscar','Buscar', array('id'=>'prependedInput','class'=>'span3')); //<input class="span3" id="prependedInput" type="text" placeholder="Buscar"> ?>
+	</div>
+    </div>
+    <div class="span3">
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
+       <?php $select=''; echo CHtml::dropDownList('listname', $select, 
+              array('M' => 'Male', 'F' => 'Female'),
+              array('empty' => '(Filtros Preestablecidos)')); 
+              array('class'=>'span3')?>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button btn')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
-	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
+    </div>
+    <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
+    <div class="span2"><a href="#" class="btn btn-success">Añadir producto</a></div>
+  </div>
+  <hr/>
+  
+  </div>
+
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'producto-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'codigo',
 		'nombre',
+		'codigo',
 		'estado',
 		'descripcion',
 		'proveedor',
-		/*
 		'fInicio',
 		'fFin',
-		*/
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),

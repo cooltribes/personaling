@@ -74,10 +74,16 @@ class ProfileController extends Controller
 	public function actionMicuenta()
 	{
 		$model = $this->loadUser();
-	    $this->render('micuenta',array(
+		if  (UserModule::isPersonalShopper()) 
+	    $this->render('micuenta_ps',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
 	    ));
+		else 
+	    $this->render('micuenta',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));			
 	}
 /**
  * Editar tu estilo  

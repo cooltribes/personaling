@@ -39,6 +39,7 @@ $this->breadcrumbs=array(
             <div class="control-group">
             	 <div class="controls"> 
             		<?php echo $form->textFieldRow($model,'username',array("class"=>"span5","placeholder"=>"correoelectronico@cuenta.com")); ?>
+            		<?php echo $form->error($model,'username'); ?>
             	</div>  
             </div>
              <div class="control-group"> 
@@ -47,6 +48,7 @@ $this->breadcrumbs=array(
             			'class'=>'span5',
         				'hint'=>'Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>',
     				)); ?>
+    				<?php echo $form->error($model,'password'); ?>
     			</div>
     		</div>
             <?php echo $form->checkBoxRow($model,'rememberMe'); ?>

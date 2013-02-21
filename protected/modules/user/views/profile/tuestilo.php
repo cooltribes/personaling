@@ -1,11 +1,29 @@
-<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
-</div>
-<?php endif; ?>
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta")=>array('micuenta'),
+	UserModule::t("Tu estilo"),
+);
+?>
+<?php
+	if (!(isset($estilo)))
+		$estilo = 'coctel';
+?>
+
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
+	<!-- FLASH ON --> 
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); ?>	
+<!-- FLASH OFF --> 
       <h1>Tu Estilo</h1>
 
       <article class="margin_top  margin_bottom_small ">
@@ -27,31 +45,31 @@
               	             
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'coctel'));
 				$tabs[] = array(
-            		'active'=>true,
+            		'active'=>$estilo=='coctel'?true:false,
             		'label'=>$field->title,
             		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
         		);
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'fiesta'));
 				$tabs[] = array(
-            		'active'=>false,
+            		'active'=>$estilo=='fiesta'?true:false,
             		'label'=>$field->title,
             		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
         		);        		
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'playa'));
 				$tabs[] = array(
-            		'active'=>false,
+            		'active'=>$estilo=='playa'?true:false,
             		'label'=>$field->title,
             		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
         		);
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'sport'));
 				$tabs[] = array(
-            		'active'=>false,
+            		'active'=>$estilo=='sport'?true:false,
             		'label'=>$field->title,
             		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
         		);
 				$field = ProfileField::model()->findByAttributes(array('varname'=>'trabajo'));
 				$tabs[] = array(
-            		'active'=>false,
+            		'active'=>$estilo=='trabajo'?true:false,
             		'label'=>$field->title,
             		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
         		);

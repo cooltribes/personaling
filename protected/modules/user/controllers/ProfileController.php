@@ -34,7 +34,7 @@ class ProfileController extends Controller
 				Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Changes is saved."));				
 			} else {
-				Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+				Yii::trace('username:'.$model->username.' Error:'.print_r($model->getErrors(), true), 'registro');
 				Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('error',UserModule::t("Changes not saved."));				
 			}
@@ -52,6 +52,12 @@ class ProfileController extends Controller
 	public function actionDelete()
 	{
 		$model = $this->loadUser();
+		if (isset($_POST['acepto'])){
+			$model->status = -1;
+			if ($model->save()){
+				$this->redirect(array('/site/logout'));
+			}	
+		}
 	    $this->render('delete',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
@@ -88,7 +94,7 @@ class ProfileController extends Controller
 /**
  * Editar tu estilo  
  */
-	public function actionEdittuestilo()
+	public function actionEdittuestilo($id)
 	{
 		$model = $this->loadUser();
 		$profile=$model->profile;
@@ -108,7 +114,7 @@ class ProfileController extends Controller
 					//$model->status_register = User::STATUS_REGISTER_ESTILO;
 					//if ($model->save()){
                			Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));						
+						Yii::app()->user->setFlash('success',UserModule::t("Changes is saved."));						
 						$this->render('tuestilo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,
@@ -128,6 +134,7 @@ class ProfileController extends Controller
 	    $this->render('tuestilo',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
+			'estilo'=>$id,
 	    ));
 	}
 /**

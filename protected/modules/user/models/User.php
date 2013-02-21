@@ -212,8 +212,9 @@ class User extends CActiveRecord
     }
 	protected function beforeValidate()
 	{
-	   	
-	   	$this->username = $this->email;
+	   		
+	   	if (!(isset($this->username)) || $this->username=='')
+	   		$this->username = $this->email;
 	   //$this->birthday = $this->birthday['year'] .'-'. $this->birthday['month'] .'-'. $this->birthday['day'];
 	   //echo $this->birthday;
 	   return parent::beforeValidate();

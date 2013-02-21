@@ -87,7 +87,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 )); 
 }
 ?>
-
+<!-- <div class="alert alert-error margin_top padding_top">Estas en el sitio de Pruebas T1</div> -->
 <div class="container" id="page">
 
 	<?php if(isset($this->breadcrumbs)):?>

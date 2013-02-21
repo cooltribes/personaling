@@ -71,6 +71,7 @@ $this->breadcrumbs=array(
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 		}
 		 ?>
+		 <?php echo $form->error($model,$field->varname); ?>
 	</div>
 </div>
 			<?php

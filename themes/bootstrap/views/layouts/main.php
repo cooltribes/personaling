@@ -29,7 +29,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'items'=>array(
  
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
-                array('label'=>'Panel de Control', 'url'=>array('/site/index')),
+                array('label'=>'Panel de Control', 'url'=>array('/controlpanel/index')),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>array('/tienda/index')),
                 array('label'=>'Productos', 'url'=>array('/producto/admin')),

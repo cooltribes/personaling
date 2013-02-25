@@ -31,11 +31,11 @@ class ProductoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','precios'),
+				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -88,17 +88,22 @@ class ProductoController extends Controller
 			'model'=>$model,
 		));
 	}
+
 	//acceso para la pestaña de precios
 	public function actionPrecios($id)
 	{
+
 		if(isset($_GET['id'])){
-			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
+			if(!$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id)))
+				$precio=new Precio;
+			
+			$model = Producto::model()->findByPk($id);
 		}
 		else {
 			$precio=new Precio;
+			$model = new Producto;
 		}
 		
-		$model = Producto::model()->findByPk($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -112,7 +117,6 @@ class ProductoController extends Controller
 			{
 				Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-				
 			}
 			//	$this->redirect(array('view','id'=>$model->id));
 		}
@@ -121,6 +125,134 @@ class ProductoController extends Controller
 			'model'=>$model,'precio'=>$precio,
 		));
 	}
+	
+	// mostrar la pagina
+	public function actionImagenes($id)
+	{
+		if(isset($_GET['id'])){
+			
+			if(!$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$id)))
+				$imagen = new Imagen;
+			
+		}
+		else {
+			$imagen = new Imagen;
+		}
+		
+		$model = Producto::model()->findByPk($id);
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Imagen']))
+		{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+		}
+
+		$this->render('_view_imagenes',array(
+			'model'=>$model,'imagen'=>$imagen,
+		));
+	}
+	
+	// carga de imagenes
+	public function actionMulti($id) {
+				
+			
+		// make the directory to store the pic:
+			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id))
+			{
+   				mkdir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id,0777,true);
+ 			}
+
+        $images = CUploadedFile::getInstancesByName('url');
+
+        if (isset($images) && count($images) > 0) {
+            foreach ($images as $image => $pic) {
+
+                $imagen = new Imagen;
+                $imagen->tbl_producto_id = $_GET['id'];
+                $imagen->orden = 1 + Imagen::model()->count('`tbl_producto_id` = '.$_GET['id'].'');
+                $imagen->save();
+
+                $nombre = Yii::getPathOfAlias('webroot').'/images/producto/'. $id .'/'. $imagen->id;
+                $extension = ".jpg";
+
+
+                if ($pic->saveAs($nombre . $extension)) {
+
+                    $imagen->url = '/images/producto/'. $id .'/'. $imagen->id .".jpg";
+                    $imagen->save();
+					
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));
+
+                 /*   $image = Yii::app()->image->load($nombre . $extension);
+                    $image->resize(640, 480);
+                    $image->save($nombre . ".jpg");
+
+                    $image = Yii::app()->image->load($nombre . $extension);
+                    $image->resize(300, 200)->quality(40);
+                    $image->save($nombre . "_thumb.jpg");*/
+                } else {
+                    $imagen->delete();
+                }
+            }
+        }
+        else {
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));	
+		}
+
+
+        $this->redirect(array('producto/imagenes', 'id' => $id));
+    }
+
+    // le da un nuevo orden a las imagenes
+    public function actionOrden() {
+        if (Yii::app()->request->isPostRequest) {
+
+            $action = $_POST['action'];
+            $actualizarImgs = $_POST['img'];
+			
+//	foreach ($actualizarImgs as $ima) {
+	//	echo("<br> ".$ima);
+	//}
+
+
+            if ($action == "actualizar_orden") {
+                $orden = 1;
+                foreach ($actualizarImgs as $img) {
+                    Imagen::model()->updateByPk($img, array('orden' => $orden));
+                    echo("<br> ".$img);
+					echo($orden);
+                    $orden++;
+                
+			//	Post::model()->updateByPk($pks, 'author_id = :author_id', array('author_id'=>$myId));
+				
+				}
+            }
+        }
+        else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+    }
+
+// eliminacion en bd y fisica
+    public function actionEliminar() {
+        if (Yii::app()->request->isPostRequest) {
+
+			$model=Imagen::model()->findByPk($_POST['id']);
+            
+            if ($model) {
+                if (is_file(Yii::app()->basePath . '/..' . $model->url))
+                     unlink(Yii::app()->basePath . '/..' . $model->url);
+                $model->delete();
+            }
+            echo "OK";
+        }
+        else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+    }
 
 	/**
 	 * Updates a particular model.

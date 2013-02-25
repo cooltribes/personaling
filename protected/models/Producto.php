@@ -57,6 +57,7 @@ class Producto extends CActiveRecord
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>50),
 			array('proveedor', 'length', 'max'=>45),
+			array('imagenes', 'required', 'on'=>'multi'),
 			array('descripcion, fInicio, fFin,horaInicio,horaFin,minInicio,minFin', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -73,6 +74,7 @@ class Producto extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'tbl_categoria' => array(self::MANY_MANY, 'Categoria', '{{tbl_categoria_has_tbl_producto}}(tbl_categoria_id, tbl_producto_id)'),
+			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
 		);
 	}
 

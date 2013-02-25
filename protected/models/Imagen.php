@@ -55,6 +55,7 @@ class Imagen extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		'producto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
 		);
 	}
 
@@ -65,12 +66,24 @@ class Imagen extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'url' => 'Url',
+			'url' => '',
 			'principal' => 'Principal',
 			'orden' => 'Orden',
 			'tbl_producto_id' => 'Tbl Producto',
 		);
 	}
+
+	public function scopes()
+	    {
+	        return array(
+	            'published'=>array(
+	                'condition'=>'status=1',
+	            ),
+	            'ordenadas'=>array(
+	                'order'=>'orden DESC',
+	            ),
+	        );
+	    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

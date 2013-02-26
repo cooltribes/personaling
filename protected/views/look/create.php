@@ -5,6 +5,7 @@ function handleDragStart(e) {
 }
 alert("rafael");
 var cols = document.querySelectorAll('.column');
+alert(cols);
 [].forEach.call(cols, function(col) {
 	alert("lore");
   col.addEventListener('dragstart', handleDragStart, false);

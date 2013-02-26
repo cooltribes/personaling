@@ -10,6 +10,7 @@ return array(
     'username' => "Nombre de Usuario",
     'username or email' => "Nombre de Usuario o Email",
     'password' => 'Contraseña',
+    'old password' => 'Contraseña vieja',
     'Remember me next time' => 'Recordarme más tarde',
     'Username is incorrect.' => "El nombre de usuario es incorrecto.",
     'Email is incorrect.' => 'El E-mail es incorrecto.',

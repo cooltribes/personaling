@@ -137,17 +137,17 @@ $this->breadcrumbs=array(
       <div class="well">
         <div class="row">
           <div class="span4">
-            <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Correo Electronico y Contrasena </h5>
+            <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Correo electrónico y contraseña </h5>
             <ul>
-              <li><a href="cambiar_Correo_electronico.php" title="cambiar corre electronico">Cambiar correo electronico</a></li>
+              <li><a href="cambiar_Correo_electronico.php" title="cambiar corre electronico">Cambiar correo electrónico</a></li>
               <li> <a href="cambiar_Contrasena.php" title="cambiar contrasena">Cambiar contraseña</a></li>
             </ul>
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Libreta de Direcciones </h5>
-            <ul>
+            <ul> 
               <li>Gestionar direcciones de Envios y Pagos.</li>
               <li>Anadir nueva direccion</li>
             </ul>
-          </div>
+          </div> 
           <div class="span4">
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Notificaciones </h5>
             <ul>

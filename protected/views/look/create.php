@@ -1,15 +1,103 @@
+<style>
+.column.over {
+  border: 1px dashed #000;
+}
+
+.canvas.over {
+  border: 1px dashed #000;
+}
+</style>
 <script language="JavaScript">
 function handleDragStart(e) {
-	alert("rafa");
+	
   this.style.opacity = '0.4';  // this / e.target is the source node.
+   dragSrcEl = this;
+
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/html', this.innerHTML);
 }
-alert("rafael");
+function handleDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
+
+  e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+  return false;
+}
+
+function handleDragEnter(e) {
+  // this / e.target is the current hover target.
+  this.classList.add('over');
+}
+
+function handleDragLeave(e) {
+  this.classList.remove('over');  // this / e.target is previous target element.
+}
+function handleDrop(e) {
+  // this/e.target is current target element.
+
+  if (e.stopPropagation) {
+    e.stopPropagation(); // Stops some browsers from redirecting.
+  }
+
+  // Don't do anything if dropping the same column we're dragging.
+  if (dragSrcEl != this) {
+    // Set the source column's HTML to the HTML of the column we dropped on.
+    //dragSrcEl.innerHTML = this.innerHTML;
+    if (this.innerHTML.indexOf("Crea tus Looks aqui") >=0)
+    	this.innerHTML = e.dataTransfer.getData('text/html');
+    else
+    	this.innerHTML += e.dataTransfer.getData('text/html');
+//"<h1>Crea tus Looks aqui</h1><p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>"    
+  }
+
+  return false;
+}
+
+function handleDragEnd(e) {
+  // this/e.target is the source node.
 var cols = document.querySelectorAll('.column');
-alert(cols);
+  [].forEach.call(cols, function (col) {
+    col.classList.remove('over');
+    col.style.opacity = '1';
+  });
+}
+$(document).ready(function() {
+
+var cols = document.querySelectorAll('.column');
+var i = 0;
+while (i <  cols.length) {
+ col = cols[i];
+
+  col.addEventListener('dragstart', handleDragStart, false);
+  //col.addEventListener('dragenter', handleDragEnter, false);
+  col.addEventListener('dragover', handleDragOver, false);
+  //col.addEventListener('dragleave', handleDragLeave, false);  
+  //col.addEventListener('drop', handleDrop, false);
+  col.addEventListener('dragend', handleDragEnd, false);  
+  i++;
+}
+var canvas = document.querySelectorAll('.canvas');
+i = 0;
+while (i <  canvas.length) {
+ col = canvas[i];
+
+  col.addEventListener('dragstart', handleDragStart, false);
+  col.addEventListener('dragenter', handleDragEnter, false);
+  col.addEventListener('dragover', handleDragOver, false);
+  col.addEventListener('dragleave', handleDragLeave, false);  
+  col.addEventListener('drop', handleDrop, false);
+  col.addEventListener('dragend', handleDragEnd, false);  
+  i++;
+}
+});
+/*
 [].forEach.call(cols, function(col) {
 	alert("lore");
   col.addEventListener('dragstart', handleDragStart, false);
 });	
+*/
 </script>
 <div class="container margin_top" id="crear_look">
   <div class="clearfix margin_bottom_medium"><a  href="#myModal" role="button" title="Publicar" data-toggle="modal" class="btn  btn-danger pull-right margin_left_small">Publicar</a> <a href="#" title="Guardar borrador" class="btn pull-right">Guardar borrador</a> </div><hr/>
@@ -20,7 +108,7 @@ alert(cols);
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         <hr/>
         <!-- CANVAS ON -->
-        <div class="well well-large">
+        <div class="well well-large canvas">
           <h1>Crea tus Looks aqui</h1>
           <p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>
         </div>
@@ -52,62 +140,68 @@ alert(cols);
             </div>
             <hr/>
             <ul class="thumbnails">
+              <li class="span2" > 
+              	<div class=" column" draggable="true">
+              		<a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+                	<div class="caption">
+                  		<p>Pantalones</p>
+	                </div>
+              	</div>
+              	
+              </li>
+              <li class="span2" > 
+              	<div class=" column" draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+                <div class="caption">
+                  <p>Tops</p>
+                </div>
+                </div>
+              </li>
+              <li class="span2 column"  draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+                <div class="caption">
+                  <p>Franelas</p>
+                </div>
+              </li>
+              <li class="span2 column"  draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+                <div class="caption">
+                  <p>Shorts</p>
+                </div>
+              </li>
               <li class="span2 column"  draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Pantalones</p>
                 </div>
               </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Tops</p>
                 </div>
               </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Franelas</p>
                 </div>
               </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Shorts</p>
                 </div>
               </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Pantalones</p>
                 </div>
               </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Tops</p>
                 </div>
               </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Franelas</p>
                 </div>
               </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Shorts</p>
-                </div>
-              </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Pantalones</p>
-                </div>
-              </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Tops</p>
-                </div>
-              </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Franelas</p>
-                </div>
-              </li>
-              <li class="span2"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
+              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
                   <p>Shorts</p>
                 </div>

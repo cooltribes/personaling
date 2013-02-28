@@ -13,6 +13,9 @@ class Profile extends UActiveRecord
 	private $_model;
 	private $_modelReg;
 	private $_rules = array();
+	public $month;
+	public $day;
+	public $year;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -92,10 +95,12 @@ class Profile extends UActiveRecord
 				}
 			}
 			
+			array_push($rules,array('month,day,year', 'safe'));
 			array_push($rules,array(implode(',',$required), 'required'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
 			array_push($rules,array(implode(',',$decimal), 'match', 'pattern' => '/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/'));
+			
 			$this->_rules = $rules;
 		}
 		return $this->_rules;
@@ -198,7 +203,7 @@ class Profile extends UActiveRecord
 	protected function beforeValidate()
 	{
 	   	
-	   //$this->birthday = $this->birthday['year'] .'-'. $this->birthday['month'] .'-'. $this->birthday['day'];
+	   //$this->birthday = $this->year .'-'. $this->month .'-'. $this->day;
 	   //echo $this->birthday;
 	   return parent::beforeValidate();
 	}

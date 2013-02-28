@@ -103,7 +103,7 @@ return array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
-     			'caseSensitive'=>false, 
+     			//'caseSensitive'=>false, 
      			'baseUrl'=>'/site',  
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',

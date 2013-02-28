@@ -4,14 +4,23 @@ $this->breadcrumbs=array(
 	UserModule::t("Edit"),
 );
 ?>
-<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
-</div>
-<?php endif; ?>
+
 <div class="container margin_top">
   <div class="row">
+	<!-- FLASH ON --> 
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); ?>	
+<!-- FLASH OFF -->   
     <div class="span6 offset3">
+  	
      <!-- MENU ON -->
 		<div class="navbar">
 			<div class="navbar-inner margin_bottom">
@@ -71,7 +80,7 @@ $this->breadcrumbs=array(
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 		}
 		 ?>
-		 <?php echo $form->error($model,$field->varname); ?>
+		 <?php echo $form->error($profile,$field->varname); ?>
 	</div>
 </div>
 			<?php

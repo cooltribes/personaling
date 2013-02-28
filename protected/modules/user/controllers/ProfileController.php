@@ -32,7 +32,7 @@ class ProfileController extends Controller
 			$model->privacy = $privacidad;
 			if ($model->save()){
 				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Changes is saved."));				
+				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));				
 			} else {
 				Yii::trace('username:'.$model->username.' Error:'.print_r($model->getErrors(), true), 'registro');
 				Yii::app()->user->updateSession();
@@ -114,7 +114,7 @@ class ProfileController extends Controller
 					//$model->status_register = User::STATUS_REGISTER_ESTILO;
 					//if ($model->save()){
                			Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Changes is saved."));						
+						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));						
 						$this->render('tuestilo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,
@@ -232,7 +232,7 @@ class ProfileController extends Controller
 					//$model->status_register = User::STATUS_REGISTER_TIPO;
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Changes is saved."));						
+						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));						
 						$this->render('tutipo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,
@@ -283,9 +283,10 @@ class ProfileController extends Controller
 				//$model->save();
 				if ($profile->save()){
                 Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));
-				$this->redirect(array('/user/profile'));
+				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+				//$this->redirect(array('/user/profile'));
 				} else {
+					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
 					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
 				}
 			} else $profile->validate();

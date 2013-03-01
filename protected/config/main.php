@@ -23,7 +23,8 @@ return array(
 		'application.modules.user.*',
         'application.modules.user.models.*',
         'application.modules.user.components.*',	
-         'application.helpers.*',	
+        'application.helpers.*',	
+        'application.extensions.validators.age.*',	
 	),
 
 	'modules'=>array(

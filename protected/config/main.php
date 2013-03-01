@@ -11,7 +11,7 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Personaling',
-
+	'language' => 'es',
 	// preloading 'log' component
 	'preload'=>array('log','bootstrap'),
 	'theme'=>'bootstrap',
@@ -22,7 +22,9 @@ return array(
 		'application.components.*',
 		'application.modules.user.*',
         'application.modules.user.models.*',
-        'application.modules.user.components.*',		
+        'application.modules.user.components.*',	
+        'application.helpers.*',	
+        'application.extensions.validators.age.*',	
 	),
 
 	'modules'=>array(
@@ -75,6 +77,13 @@ return array(
 
 	// application components
 	'components'=>array( 
+		'image'=>array(
+		          'class'=>'application.extensions.image.CImageComponent',
+		            // GD or ImageMagick
+		            'driver'=>'GD',
+		            // ImageMagick setup path
+		            'params'=>array('directory'=>'/opt/local/bin'),
+		        ),	
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
@@ -95,7 +104,7 @@ return array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
-     			'caseSensitive'=>false, 
+     			//'caseSensitive'=>false, 
      			'baseUrl'=>'/site',  
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',

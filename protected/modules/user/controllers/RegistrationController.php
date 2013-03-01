@@ -29,6 +29,8 @@ class RegistrationController extends Controller
 			{
 				//echo "rafa";	
 				//echo $_POST['Profile']['birthday'];	
+				//$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
+				//echo 'rafa'.$_POST['Profile']['birthday'];
 				echo UActiveForm::validate(array($model,$profile));
 				//$_POST['Profile']['birthday'] = $_POST['Profile']['birthday']['year'] .'-'. $_POST['Profile']['birthday']['month'] .'-'. $_POST['Profile']['birthday']['day'];
 				
@@ -37,16 +39,23 @@ class RegistrationController extends Controller
 				Yii::app()->end();
 			}
 			
-		    if (Yii::app()->user->id) {
+		    if (Yii::app()->user->id) { 
 		    	$this->redirect(Yii::app()->controller->module->profileUrl);
 		    } else {
-		    	//echo "lore";
+		    	
 				//Yii::app()->end();
+				
 		    	if(isset($_POST['RegistrationForm'])) {
+					//$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
+					//echo 'rafa'.$_POST['Profile']['birthday'];	
 					$model->attributes=$_POST['RegistrationForm'];
 					$profile->attributes=((isset($_POST['Profile'])?$_POST['Profile']:array()));
+					//$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
+					//echo 'lore'.$profile->birthday;
+					
 					if($model->validate()&&$profile->validate())
 					{
+						//echo 'entro';	
 						$soucePassword = $model->password;
 						$model->activkey=UserModule::encrypting(microtime().$model->password);
 						$model->password=UserModule::encrypting($model->password);

@@ -28,7 +28,7 @@ class UserChangePassword extends CFormModel {
 	public function attributeLabels()
 	{
 		return array(
-			'oldPassword'=>UserModule::t("Old Password"),
+			'oldPassword'=>UserModule::t("old password"),
 			'password'=>UserModule::t("password"),
 			'verifyPassword'=>UserModule::t("Retype Password"),
 		);

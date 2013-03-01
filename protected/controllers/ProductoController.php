@@ -68,6 +68,9 @@ class ProductoController extends Controller
 			
 		//	$in = substr($model->fInicio, 11, 5);	
 			//$fin = substr($model->fFin, 11, 5);	
+
+			//$model->horaInicio = Yii::app()->dateFormatter->formatDateTime($model->fInicio, false, 'medium');
+
 		}
 		else {
 			$model=new Producto;	

@@ -111,18 +111,18 @@ $this->breadcrumbs=array(
         </div>
       </div><?php */?>
       <div class="well">
-        <div class="row">  
+        <div class="row">    
           <div class="span4">
-            <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Correo Electronico y Contrasena </h5>
+            <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Correo electrónico y contraseña </h5>
             <ul>
-              <li><?php echo CHtml::link('Cambiar correo electronico',array('changeemail'),array("title"=>"Cambia tu correo electronico")); ?></li>
+              <li><?php echo CHtml::link('Cambiar correo electrónico',array('changeemail'),array("title"=>"Cambia tu correo electrónico")); ?></li>
               <li><?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
             </ul>
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Libreta de Direcciones </h5>
             <ul>
               <li>Gestionar direcciones de Envios y Pagos.</li>
               <li>Anadir nueva direccion</li>
-            </ul>
+            </ul> 
           </div>
           <div class="span4">
             <h5 class="braker_bottom padding_bottom_xsmall margin_top_small">Notificaciones </h5>

@@ -39,7 +39,7 @@ $this->breadcrumbs=array(
             <div class="control-group">
               <label for="RegistrationForm_email" class="control-label required">Dirección de correo electrónico actual: <span class="required">*</span></label>
               <div class="controls">
-                <?php echo $form->textFieldRow($model,'oldEmail',array('class'=>'span5')); ?>
+                <?php echo $form->textFieldRow($model,'oldEmail',array('class'=>'span5','disabled'=>true)); ?>
                 <?php echo $form->error($model,'oldEmail'); ?>
               </div>
             </div>

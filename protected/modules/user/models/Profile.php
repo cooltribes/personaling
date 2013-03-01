@@ -13,6 +13,9 @@ class Profile extends UActiveRecord
 	private $_model;
 	private $_modelReg;
 	private $_rules = array();
+	public $month;
+	public $day;
+	public $year;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -79,6 +82,11 @@ class Profile extends UActiveRecord
 					$field_rule = array($field->varname, 'type', 'type' => 'date', 'dateFormat' => 'yyyy-mm-dd', 'allowEmpty'=>true);
 					if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 					array_push($rules,$field_rule);
+					if ($field->varname=='birthday'){
+						$field_rule = array($field->varname, 'EAgeValidator',  'minAge'=>1,  'maxAge'=>120,  'allowEmpty'=>false);
+						array_push($rules,$field_rule);
+					}
+					
 				}
 				if ($field->match) {
 					$field_rule = array($field->varname, 'match', 'pattern' => $field->match);
@@ -92,10 +100,12 @@ class Profile extends UActiveRecord
 				}
 			}
 			
+			array_push($rules,array('month,day,year', 'safe'));
 			array_push($rules,array(implode(',',$required), 'required'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
 			array_push($rules,array(implode(',',$decimal), 'match', 'pattern' => '/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/'));
+			
 			$this->_rules = $rules;
 		}
 		return $this->_rules;
@@ -198,7 +208,7 @@ class Profile extends UActiveRecord
 	protected function beforeValidate()
 	{
 	   	
-	   //$this->birthday = $this->birthday['year'] .'-'. $this->birthday['month'] .'-'. $this->birthday['day'];
+	   $this->birthday = $this->year .'-'. $this->month .'-'. $this->day;
 	   //echo $this->birthday;
 	   return parent::beforeValidate();
 	}

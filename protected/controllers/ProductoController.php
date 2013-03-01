@@ -64,6 +64,8 @@ class ProductoController extends Controller
 		if(isset($_GET['id']))
 		{
 			$model = Producto::model()->findByPk($_GET['id']);
+			//$model->horaInicio = Yii::app()->dateFormatter->formatDateTime($model->fInicio, false, 'medium');
+			$model->horaInicio = '05:00 AM';
 		}
 		else {
 			$model=new Producto;	

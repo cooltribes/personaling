@@ -50,7 +50,7 @@ class RegistrationController extends Controller
 					//echo 'rafa'.$_POST['Profile']['birthday'];	
 					$model->attributes=$_POST['RegistrationForm'];
 					$profile->attributes=((isset($_POST['Profile'])?$_POST['Profile']:array()));
-					$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
+					//$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
 					//echo 'lore'.$profile->birthday;
 					
 					if($model->validate()&&$profile->validate())

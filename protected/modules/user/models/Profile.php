@@ -82,6 +82,11 @@ class Profile extends UActiveRecord
 					$field_rule = array($field->varname, 'type', 'type' => 'date', 'dateFormat' => 'yyyy-mm-dd', 'allowEmpty'=>true);
 					if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 					array_push($rules,$field_rule);
+					if ($field->varname=='birthday'){
+						$field_rule = array($field->varname, 'EAgeValidator',  'minAge'=>1,  'maxAge'=>120,  'allowEmpty'=>false);
+						array_push($rules,$field_rule);
+					}
+					
 				}
 				if ($field->match) {
 					$field_rule = array($field->varname, 'match', 'pattern' => $field->match);
@@ -203,7 +208,7 @@ class Profile extends UActiveRecord
 	protected function beforeValidate()
 	{
 	   	
-	   //$this->birthday = $this->year .'-'. $this->month .'-'. $this->day;
+	   $this->birthday = $this->year .'-'. $this->month .'-'. $this->day;
 	   //echo $this->birthday;
 	   return parent::beforeValidate();
 	}

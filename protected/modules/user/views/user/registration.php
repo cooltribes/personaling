@@ -108,9 +108,12 @@ $this->breadcrumbs=array(
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
 		} elseif ($field->range) {
+			if ($field->varname == 'sex')
+				echo $form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range));
+			else
+				echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
 			
-			echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
-			//echo $form->radioButtonListRow($profile,$field->varname,Profile::range($field->range));
+			
 		} elseif ($field->field_type=="TEXT") {
 			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 		} elseif ($field->field_type=="DATE") {
@@ -118,9 +121,9 @@ $this->breadcrumbs=array(
 			echo $form->labelEx($profile,$field->varname);	
 			
 			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
-			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span1'));
+			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span3'));
 			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
-			
+			echo $form->hiddenField($profile,$field->varname);
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			
 				 

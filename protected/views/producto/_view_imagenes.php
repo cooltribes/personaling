@@ -126,7 +126,7 @@
 	            $contador++;
 
 	            $lis['img_' . $img->id] =
-	                    CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen " . $img->id, array("width" => "150", "height" => "125")) . "<span>X</span>";
+	                    CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url), "Imagen " . $img->id, array("width" => "150", "height" => "150")) . "<span>X</span>";
 
 			}			
 

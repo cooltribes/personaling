@@ -12,6 +12,8 @@
  * @property string $proveedor
  * @property string $fInicio
  * @property string $fFin
+ * @property string $fecha
+ * @property integer $status
  */
 class Producto extends CActiveRecord
 {
@@ -58,10 +60,10 @@ class Producto extends CActiveRecord
 			array('nombre', 'length', 'max'=>50),
 			array('proveedor', 'length', 'max'=>45),
 			array('imagenes', 'required', 'on'=>'multi'),
-			array('descripcion, fInicio, fFin,horaInicio,horaFin,minInicio,minFin', 'safe'),
+			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin,minInicio,minFin', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,6 +77,8 @@ class Producto extends CActiveRecord
 		return array(
 			'tbl_categoria' => array(self::MANY_MANY, 'Categoria', '{{tbl_categoria_has_tbl_producto}}(tbl_categoria_id, tbl_producto_id)'),
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
+			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
+			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
 		);
 	}
 
@@ -92,6 +96,8 @@ class Producto extends CActiveRecord
 			'proveedor' => 'Marca / Proveedor',
 			'fInicio' => 'Inicio',
 			'fFin' => 'Fin',
+			'fecha' => 'Fecha',
+			'status' => 'Status',
 		);
 	}
 
@@ -114,6 +120,8 @@ class Producto extends CActiveRecord
 		$criteria->compare('proveedor',$this->proveedor,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('status',$this->status,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -125,13 +133,16 @@ class Producto extends CActiveRecord
 	{
 		/*if(parent::beforeSave())
 		{
-		*/	
-		$producto->attributes=$_POST['Producto'];
+		*/
+			
+		//$producto->attributes=$_POST['Producto'];
 			
 		$this->fInicio=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fInicio);	
 		$this->fFin=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fFin);
 		
 		//$this->horaInicio = $producto->horaInicio."".$producto->minInicio;
+		
+		$this->fecha = date("Y-m-d");
 		
 		$this->uno = $this->horaInicio;
 		$this->dos = $this->horaFin;

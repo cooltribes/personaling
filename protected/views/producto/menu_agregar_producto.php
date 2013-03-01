@@ -23,7 +23,8 @@
         <li><?php echo CHtml::link('Imágenes',array('imagenes',
                                      'id'=>$model->id,)); ?></li>
         <li><a href="#">Categorías</a></li>
-        <li><a href="#">Inventario</a></li>
+        <li><?php echo CHtml::link('Inventario',array('inventario',
+                                     'id'=>$model->id,)); ?></li>
         <li><a href="#">Envíos y Transporte</a></li>
         <li><a href="#">Ventas Cruzadas</a></li>
       </ul>

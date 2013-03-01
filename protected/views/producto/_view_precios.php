@@ -139,10 +139,20 @@ dos= document.getElementById("Precio_precioDescuento").value;
 
 		$('#limpiar').on('click', function() {
            $("#producto-form input[type=text]").val('');
+           $("#producto-form input[type=text]").value('');
+           
            $("#producto-form textarea").val("");
+           $("#producto-form textarea").value("");
+            
            $("#producto-form select").val('-1');
+           $("#producto-form select").value('-1');
+           
            $("#producto-form input[type=radio]").val('0');
+             $("#producto-form input[type=radio]").value('0');
+           
            $("#producto-form input[type=checkbox]").val('false');
+           $("#producto-form input[type=checkbox]").value('false');
+           
            $("#producto-form")[0].reset();
            $("#producto-form")[3].reset();
        });

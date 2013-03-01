@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar'),
+				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -61,9 +61,13 @@ class ProductoController extends Controller
 	 */
 	public function actionCreate()
 	{
+		
 		if(isset($_GET['id']))
 		{
 			$model = Producto::model()->findByPk($_GET['id']);
+			
+		//	$in = substr($model->fInicio, 11, 5);	
+			//$fin = substr($model->fFin, 11, 5);	
 		}
 		else {
 			$model=new Producto;	
@@ -75,6 +79,7 @@ class ProductoController extends Controller
 		if(isset($_POST['Producto']))
 		{
 			$model->attributes=$_POST['Producto'];
+			$model->status=1;
 			if($model->save())
 			{
 				Yii::app()->user->updateSession();
@@ -187,13 +192,13 @@ class ProductoController extends Controller
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));
 
-                 /*   $image = Yii::app()->image->load($nombre . $extension);
+                    $image = Yii::app()->image->load($nombre . $extension);
                     $image->resize(640, 480);
                     $image->save($nombre . ".jpg");
 
                     $image = Yii::app()->image->load($nombre . $extension);
-                    $image->resize(300, 200)->quality(40);
-                    $image->save($nombre . "_thumb.jpg");*/
+                    $image->resize(150, 150)->quality(40);
+                    $image->save($nombre . "_thumb.jpg");
                 } else {
                     $imagen->delete();
                 }
@@ -207,6 +212,103 @@ class ProductoController extends Controller
 
         $this->redirect(array('producto/imagenes', 'id' => $id));
     }
+
+//detalles producto
+    public function actionDetalles($id) {
+			
+		$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
+		$producto = Producto::model()->findByPk($id);
+		$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$id,'orden'=>'1'));
+			
+		$datos="";
+		$datos=$datos."	<div class='modal-header'>"; 
+		$datos=$datos. "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>";
+		$datos=$datos."<h3 id='myModalLabel'>";
+		$datos=$datos. $producto->nombre;
+		$datos=$datos."</h3></div>";
+		
+// fin del header
+
+		$datos=$datos."<div class='modal-body'><div class='pull-left margin_right'>";
+		if($imagen){
+			$datos=$datos. CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "200", "height" => "200",'class'=>'img-polaroid'));
+			$datos=$datos."</div>";
+		}else
+			$datos=$datos."<img src='http://placehold.it/200' class='img-polaroid'/></div>"; 
+		
+		
+		$datos=$datos."<div class='pull-left'><h4>Precios</h4>";
+      	$datos=$datos."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-condensed'>";
+        $datos=$datos."<tr>";
+        $datos=$datos."<th scope='row'>Precio base</th>";
+		
+		if($precio)
+	        $datos=$datos."<td> Bs.".$precio->precioVenta; 
+		else
+        	$datos=$datos."<td>"; 
+
+        $datos=$datos."</td></tr>";
+        
+        $datos=$datos."<tr>";
+        $datos=$datos."<th scope='row'>Precio con descuento</th>";
+		
+		if($precio)
+	        $datos=$datos."<td> Bs.".$precio->precioDescuento; 
+		else
+        	$datos=$datos."<td>"; 
+
+        $datos=$datos."</td></tr>";
+        
+		$datos=$datos."<tr>";
+        $datos=$datos."<th scope='row'>Descuento </th>";
+		
+		if($precio)
+			if($precio->tipoDescuento==0)
+	        	$datos=$datos."<td>".$precio->valorTipo."%";
+			else
+				$datos=$datos."<td> En Bs.";
+		else
+        	$datos=$datos."<td>"; 
+
+        $datos=$datos."</td></tr>";
+		
+		$datos=$datos."<tr>";
+        $datos=$datos."<th scope='row'>Total Descuento</th>";
+		
+		if($precio)
+			if($precio)
+				$datos=$datos."<td> Bs.".$precio->ahorro;
+			else
+        		$datos=$datos."<td>"; 
+
+        $datos=$datos."</td></tr>";
+		$datos=$datos."</table><hr/>";
+		
+		$datos=$datos."<h4>Estadísticas</h4>";	
+     	$datos=$datos."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-condensed'>";
+        $datos=$datos."<tr>";
+        $datos=$datos."<th scope='row'>Vistas</th>";
+		$datos=$datos."<td> 120";
+        $datos=$datos."</td></tr>";
+        
+        $datos=$datos."<tr>";
+        $datos=$datos."<th scope='row'>Looks que lo usan</th>";
+		$datos=$datos."<td> 18";
+		$datos=$datos."</td></tr>";
+		$datos=$datos."</table>";
+		$datos=$datos."</div></div>";
+		// fin del body
+		
+		$datos=$datos."<div class='modal-footer'>";
+		$datos=$datos."<a href='delete/".$producto->id."' title='eliminar' class='btn'><i class='icon-trash'></i> Eliminar</a>";
+		$datos=$datos."<a href='#' title='Exportar' class='btn'><i class='icon-share-alt'></i> Exportar</a>";
+		$datos=$datos."<a href='create/".$producto->id."' title='editar' class='btn'><i class='icon-edit'></i> Editar</a>";
+		$datos=$datos."<a href='' title='ver' class='btn btn-info' target='_blank'><i class='icon-eye-open icon-white'></i> Ver</a> ";
+		$datos=$datos."</div>";	
+		$datos=$datos."</div>";	
+		
+		echo $datos;
+	}
 
     // le da un nuevo orden a las imagenes
     public function actionOrden() {
@@ -245,7 +347,10 @@ class ProductoController extends Controller
             
             if ($model) {
                 if (is_file(Yii::app()->basePath . '/..' . $model->url))
-                     unlink(Yii::app()->basePath . '/..' . $model->url);
+				{
+                    unlink(Yii::app()->basePath . '/..' . $model->url);
+					unlink(Yii::app()->basePath . '/..' . str_replace(".","_thumb.",$model->url));
+				}
                 $model->delete();
             }
             echo "OK";
@@ -253,6 +358,41 @@ class ProductoController extends Controller
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
+	
+	//
+	// trabajo con el inventario
+	public function actionInventario($id)
+	{
+
+		if(isset($_GET['id'])){
+			if(!$inventario = Inventario::model()->findByAttributes(array('tbl_producto_id'=>$id)))
+				$inventario=new Inventario;
+			
+			$model = Producto::model()->findByPk($id);
+		}
+		else {
+			$inventario=new Inventario;
+			$model = new Producto;
+		}
+		
+		if(isset($_POST['Inventario']))
+		{
+			$inventario->attributes=$_POST['Inventario'];
+			$inventario->tbl_producto_id = $id;
+			
+			if($inventario->save())
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+			}
+			//	$this->redirect(array('view','id'=>$model->id));
+		}
+
+		$this->render('_view_inventario',array(
+			'model'=>$model,'inventario'=>$inventario,
+		));
+	}
+	
 
 	/**
 	 * Updates a particular model.
@@ -292,10 +432,14 @@ class ProductoController extends Controller
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				$this->redirect(array('admin'));
 		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		else{
+			$model=Producto::model()->findByPk($id);
+			$model->status = 0;
+			$model->save();
+			$this->redirect(array('admin'));
+		}
 	}
 
 	/**

@@ -139,16 +139,13 @@ while (i <  canvas.length) {
               <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>
             </div>
             <hr/>
+            <div id="div_categorias">
+            <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
+            </div>
+            <!--
             <ul class="thumbnails">
-              <li class="span2" > 
-              	<div class=" column" draggable="true">
-              		<a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                	<div class="caption">
-                  		<p>Pantalones</p>
-	                </div>
-              	</div>
-              	
-              </li>
+
+              
               <li class="span2" > 
               	<div class=" column" draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
                 <div class="caption">
@@ -206,7 +203,9 @@ while (i <  canvas.length) {
                   <p>Shorts</p>
                 </div>
               </li>
+            
             </ul>
+           
             <div class="pagination pagination-small pull-right">
               <ul>
                 <li class="disabled"><span>&laquo;</span></li>
@@ -218,6 +217,7 @@ while (i <  canvas.length) {
                 <li><a href="#">Next</a></li>
               </ul>
             </div>
+            -->
           </div>
           <div class="tab-pane" id="tab2">
             <p>Se cargaria por Ajax (lo que se tenga que cargar)</p>

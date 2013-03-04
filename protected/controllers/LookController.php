@@ -30,7 +30,7 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create'),
+				'actions'=>array('admin','delete','create','categorias'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -43,12 +43,30 @@ class LookController extends Controller
 	{
 		$this->render('index');
 	}
-
+public function actionCategorias(){
+	
+	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']));
+	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;	
+	  if ($categorias){
+	  $this->renderPartial('_view_categorias',array('categoria'=>$categorias),false,true);
+	  }else {
+	  	$productos = Producto::model()->with(array('categorias
+	  	'=>array('condition'=>'tbl_categoria_id=7')))->findAll();
+	  	//$this->renderPartial('_view_productos',array('productos'=>$productos),false,true);
+	  	echo 'rafa';
+	  }
+}
 	public function actionCreate()
 	{
 		$model ='';	
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
+		
 		$this->render('create',array(
-						'model'=>$model
+						'model'=>$model,
+						'categorias'=>$categorias,
 					)
 				);
 	}

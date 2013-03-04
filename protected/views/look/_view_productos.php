@@ -3,7 +3,7 @@
               foreach($productos as $producto){
               ?>
               <li class="span2" > 
-              	<div class=" column" draggable="true">
+              	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id; ?>">
               		
               		
               		<?php
@@ -29,15 +29,22 @@
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
-						    'class' => 'thumbnail'
+						    'class' => 'thumbnail',
+						    'id' => 'producto'.$producto->id,
 						  )
 						);
 					?>
                 	<div class="caption">
-                  		<p><?php echo $producto->nomre; ?></p>
+                  		<p><?php echo $producto->nombre; ?></p>
 	                </div>
               	</div>
-              	
+              	<?php
+              	$script = "element = document.querySelector('#div_producto".$producto->id."');
+              	  element.addEventListener('dragstart', handleDragStart, false);
+  					element.addEventListener('dragover', handleDragOver, false);
+				  element.addEventListener('dragend', handleDragEnd, false); ";
+              	Yii::app()->clientScript->registerScript('drag'.$producto->id,$script);
+              	?>              	
               </li>
               <?php } ?>
 </ul>              

@@ -49,14 +49,14 @@ public function actionCategorias(){
 	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
 	  if ($categorias){
-	  $this->renderPartial('_view_categorias',array('categoria'=>$categorias),false,true);
+	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias),true,true);
 	  }else {
-	  	$productos = Producto::model()->with(array('categorias
-	  	'=>array('condition'=>'tbl_categoria_id=7')))->findAll();
-	  	//$this->renderPartial('_view_productos',array('productos'=>$productos),false,true);
-	  	echo 'rafa';
+	  	$productos = Producto::model()->with(array('categorias'=>array('condition'=>'tbl_categoria_id=7')))->findAll();
+	  	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);
+	  	// echo 'rafa';
 	  }
 }
 	public function actionCreate()

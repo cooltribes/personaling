@@ -65,6 +65,7 @@ var cols = document.querySelectorAll('.column');
 }
 $(document).ready(function() {
 
+/*
 var cols = document.querySelectorAll('.column');
 var i = 0;
 while (i <  cols.length) {
@@ -78,6 +79,7 @@ while (i <  cols.length) {
   col.addEventListener('dragend', handleDragEnd, false);  
   i++;
 }
+*/
 var canvas = document.querySelectorAll('.canvas');
 i = 0;
 while (i <  canvas.length) {
@@ -91,6 +93,7 @@ while (i <  canvas.length) {
   col.addEventListener('dragend', handleDragEnd, false);  
   i++;
 }
+
 });
 /*
 [].forEach.call(cols, function(col) {

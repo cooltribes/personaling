@@ -3,7 +3,7 @@
               foreach($categorias as $categoria){
               ?>
               <li class="span2" > 
-              	<div class=" column" draggable="true">
+              	<div>
               		
               		
               		<?php
@@ -29,7 +29,8 @@
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
-						    'class' => 'thumbnail'
+						    'class' => 'thumbnail',
+						    'id' => 'categoria'.$categoria->id,
 						  )
 						);
 					?>
@@ -37,7 +38,8 @@
                   		<p><?php echo $categoria->mTitulo; ?></p>
 	                </div>
               	</div>
-              	
+
               </li>
               <?php } ?>
-</ul>              
+</ul>     
+         

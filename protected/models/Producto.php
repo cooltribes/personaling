@@ -57,10 +57,13 @@ class Producto extends CActiveRecord
 		return array(
 			array('estado', 'numerical', 'integerOnly'=>true),
 			array('codigo', 'length', 'max'=>25),
-			array('nombre', 'length', 'max'=>50),
+			array('nombre', 'length', 'max'=>70),
+			array('nombre, codigo', 'required'),
 			array('proveedor', 'length', 'max'=>45),
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
+			array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'>'),
+			array('fFin','compare','compareValue'=>date("Y-m-d"),'operator'=>'>'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
@@ -75,7 +78,7 @@ class Producto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tbl_categoria' => array(self::MANY_MANY, 'Categoria', '{{tbl_categoria_has_tbl_producto}}(tbl_categoria_id, tbl_producto_id)'),
+			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
 			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
 			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
@@ -89,10 +92,10 @@ class Producto extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'codigo' => 'SKU / Codigo',
+			'codigo' => 'SKU / Código',
 			'nombre' => 'Nombre / Titulo',
 			'estado' => 'Estado',
-			'descripcion' => 'Descripcion',
+			'descripcion' => 'Descripción',
 			'proveedor' => 'Marca / Proveedor',
 			'fInicio' => 'Inicio',
 			'fFin' => 'Fin',
@@ -131,11 +134,19 @@ class Producto extends CActiveRecord
 
 	public function beforeSave()
 	{
-		/*if(parent::beforeSave())
-		{
-		*/
+
 			
-		//$producto->attributes=$_POST['Producto'];
+		if(!$this->fInicio && !$this->fFin)
+		{
+			$this->fInicio = "";
+			$this->fFin = "";
+			
+			$this->fecha = date("Y-m-d");
+			
+			return parent::beforeSave();
+		}
+		else {
+
 			
 		$this->fInicio=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fInicio);	
 		$this->fFin=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fFin);
@@ -172,33 +183,9 @@ class Producto extends CActiveRecord
 				$this->fFin = $this->fFin.' '.$this->horaFin.':'.$this->minFin.':00';
 			}
 				
-			
-	//	$this->fFin = $this->fFin.' '.$this->horaFin.':00';
-		/*
-		echo ("inicio ".$this->horaInicio);
-		echo ("<br>fin".$this->horaFin);
-		
-		echo ("<br>inicio ".$this->minInicio);
-		echo ("<br>fin".$this->minFin);
-		
-		echo ("<br>inicio ".$this->fInicio);
-		echo ("<br>inicio ".$this->fFin);
-		
-		echo ("<br>horario inicio".$horarioInicio);
-		echo ("<br>fin".$horarioFin);
-		*/
 		return parent::beforeSave();
-		//exit;
-		
-		/*
-		parent::beforeSave();
-			
-		return true;
-		}
-		else {
-			return false;
-		}
-		*/
 	}
+	
+}
 
 }

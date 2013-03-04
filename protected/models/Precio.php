@@ -49,7 +49,18 @@ class Precio extends CActiveRecord
 		return array(
 			array('tbl_producto_id', 'required'),
 			array('combinacion, tipoDescuento, valorTipo, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
-			array('costo, precioVenta, ahorro, precioDescuento, precioImpuesto', 'numerical'),
+			array('ahorro, precioDescuento, precioImpuesto', 'numerical'),
+			array('costo, precioVenta','numerical',
+				    'integerOnly'=>true,
+				    'min'=>0,
+				    'tooSmall'=>'El valor del producto no puede ser menor a 0',
+					),
+			array('valorTipo','numerical',
+				    'integerOnly'=>true,
+				    'min'=>0,
+				    'tooSmall'=>'El descuento no puede ser menor a 0',
+					),
+			array('costo, precioVenta', 'required'),		
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, costo, combinacion, precioVenta, tipoDescuento, valorTipo, ahorro, precioDescuento, impuesto, precioImpuesto, tbl_producto_id', 'safe', 'on'=>'search'),

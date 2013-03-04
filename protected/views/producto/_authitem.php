@@ -3,10 +3,21 @@
    	$r="";
 
 echo"<tr>";
-	echo "<td><input name='check' type='checkbox' id='".$data->id."'></td>";
+	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
    	echo "<td>".$data->nombre."</td>";
    	echo "<td>".$data->codigo."</td>";
-   	echo "<td></td>"; // categoria
+	
+	foreach ($data->categorias as $categ) {
+		
+			$cat = Categoria::model()->findByPk($categ->id);
+		
+   	echo "<td>".$cat->nombre."</td>"; // categoria
+	$r=1;
+	}
+	
+	if($r!=1)
+   		echo "<td></td>"; // categoria
+
    	
    	foreach ($data->precios as $precio) {
    	echo "<td>".$precio->precioDescuento."</td>"; // precio
@@ -16,7 +27,7 @@ echo"<tr>";
 	if($r!=1)
 		echo "<td></td>"; // precio
 	
-	$inv = Inventario::model()->findByAttributes(array('tbl_producto_id' => $data->id));
+	//$inv = Inventario::model()->findByAttributes(array('tbl_producto_id' => $data->id));
 
 	if($data->inventario)
 	{

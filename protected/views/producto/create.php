@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-	'Productos'=>array('index'),
-	'Create',
+	'Productos'=>array('admin'),
+	'Añadir',
 );
 
 ?>

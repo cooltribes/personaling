@@ -26,14 +26,12 @@
           </div>
             <div class="control-group">
                     <?php echo $form->textFieldRow($precio, 'costo', array('class'=>'span5')); ?>
-                    <?php echo $form->error($precio,'costo'); ?>
                 <div class="controls">    
                 <div class=" muted">Precio al que compró este producto como mayorista </div>
                 </div>
             </div>
             <div class="control-group">
               		<?php echo $form->textFieldRow($precio, 'precioVenta', array('class'=>'span5')); ?>
-                    <?php echo $form->error($precio,'precioVenta'); ?>
                 <div class="controls">
                 <div class=" muted">Precio sin Iva de venta de este producto</div>
                 </div>
@@ -44,15 +42,15 @@
             </div>
             <div class="control-group">
                  	<?php echo $form->textFieldRow($precio, 'valorTipo', array('class'=>'span5','id'=>'valordescuento')); ?>
-                    <?php echo $form->error($precio,'valorTipo'); ?>
+                 <div class="controls">
+                <div class=" muted">Si el producto no tendrá descuento ingrese 0</div>
+                </div>
             </div>
             <div class="control-group">
                  	<?php echo $form->textFieldRow($precio, 'ahorro', array('class'=>'span5')); ?>
-                    <?php echo $form->error($precio,'ahorro'); ?>
             </div>
             <div class="control-group">
-                 	<?php echo $form->textFieldRow($precio, 'precioDescuento', array('class'=>'span5')); ?>
-                    <?php echo $form->error($precio,'precioDescuento'); ?>
+                 	<?php echo $form->textFieldRow($precio, 'precioDescuento', array('class'=>'span5','disabled'=>true)); ?>
             </div>
             <div class="control-group">
 				<?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA 12% (Tierra Firme)',2 => 'Ambos')); ?>
@@ -60,7 +58,6 @@
             </div>
             <div class="control-group">
                  	<?php echo $form->textFieldRow($precio, 'precioImpuesto', array('class'=>'span5')); ?>
-                    <?php echo $form->error($precio,'precioImpuesto'); ?>
             </div>
           </fieldset>
         </form>
@@ -88,6 +85,49 @@
 
 <script type="text/javascript">
 
+$("#Precio_precioVenta").keyup(function(){
+
+var uno;
+var dos;
+var valor;
+var tres;
+var pre;
+
+	
+	uno = document.getElementById("Precio_tipoDescuento").value;
+	dos = document.getElementById("valordescuento").value;
+	
+	valor = document.getElementById("Precio_impuesto").value;
+	
+	if(uno==0)
+	{
+		$("#Precio_ahorro").val(this.value * (dos/100));		
+		$("#Precio_precioDescuento").val(this.value - (this.value * (dos/100)));
+		
+		if(valor==0)
+			$("#Precio_precioImpuesto").val(this.value - (this.value * (dos/100)));		
+		else{
+			pre = document.getElementById("Precio_precioDescuento").value;
+			tres = parseFloat(pre) + (parseFloat(pre) * 0.12);			
+			$("#Precio_precioImpuesto").val(tres);
+		}// else
+	}
+	else
+	{
+		$("#Precio_ahorro").val(dos);
+		$("#Precio_precioDescuento").val(this.value - dos);
+		
+		if(valor==0)
+			$("#Precio_precioImpuesto").val(this.value - dos);	
+		else{
+			pre = document.getElementById("Precio_precioDescuento").value;
+			tres = parseFloat(pre) + (parseFloat(pre) * 0.12);			
+			$("#Precio_precioImpuesto").val(tres);
+		}	
+	}
+    
+});
+
 $("#valordescuento").keyup(function(){
 
 var uno;
@@ -98,20 +138,37 @@ var valor;
 	uno = document.getElementById("Precio_tipoDescuento").value;
 	dos = document.getElementById("Precio_precioVenta").value;
 	
+	valor = document.getElementById("Precio_impuesto").value;
+	
+	
 	if(uno==0)
 	{
 		$("#Precio_ahorro").val(dos * (this.value/100));		
-		$("#Precio_precioDescuento").val(dos - (dos * (this.value/100)));	
+		$("#Precio_precioDescuento").val(dos - (dos * (this.value/100)));
+		
+		if(valor==0)
+			$("#Precio_precioImpuesto").val(dos - (dos * (this.value/100)));	
+		else{
+			tres = parseFloat(dos) + (parseFloat(dos) * 0.12);			
+			$("#Precio_precioImpuesto").val(tres);
+		}
 	}
 	else
 	{
 		$("#Precio_ahorro").val(this.value);
 		$("#Precio_precioDescuento").val(dos - this.value);
-		$("#Precio_precioImpuesto").val(dos - this.value);				
+		
+		if(valor==0)
+			$("#Precio_precioImpuesto").val(dos - this.value);	
+		else{
+			tres = parseFloat(dos) + (parseFloat(dos) * 0.12);			
+			$("#Precio_precioImpuesto").val(tres);
+		}				
 	}
 	
     
 });
+
 
 $("#Precio_impuesto").click(function(){
 	
@@ -136,6 +193,30 @@ dos= document.getElementById("Precio_precioDescuento").value;
 	
 });
 
+$("#Precio_tipoDescuento").click(function(){
+	
+	$("#Precio_ahorro").val("AAAAAAAAA");
+var uno;
+var dos;
+var tres;
+var cuatro;
+var cinco;
+
+uno = document.getElementById("Precio_precioVenta").value;
+dos = document.getElementById("valordescuento").value;	
+tres = document.getElementById("Precio_ahorro").value;
+cuatro = document.getElementById("Precio_precioDescuento").value;
+cinco = $("#Precio_tipoDescuento").val();
+console.log(cinco);
+	if(cinco==0)
+		$("#Precio_ahorro").val("AAAAAAAAA");
+	if(cinco==1){
+		$("#Precio_ahorro").val("OOOOOO");
+	}
+
+	
+});
+
 
 		$('#limpiar').on('click', function() {
            $("#producto-form input[type=text]").val('');
@@ -147,11 +228,11 @@ dos= document.getElementById("Precio_precioDescuento").value;
            $("#producto-form select").val('-1');
            $("#producto-form select").value('-1');
            
-           $("#producto-form input[type=radio]").val('0');
-             $("#producto-form input[type=radio]").value('0');
+           $("#producto-form input[type=radio]").val('');
+           $("#producto-form input[type=radio]").value('');
            
-           $("#producto-form input[type=checkbox]").val('false');
-           $("#producto-form input[type=checkbox]").value('false');
+           $("#producto-form input[type=checkbox]").val('');
+           $("#producto-form input[type=checkbox]").value('');
            
            $("#producto-form")[0].reset();
            $("#producto-form")[3].reset();

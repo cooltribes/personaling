@@ -1,17 +1,7 @@
 <?php
-/*
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('producto-grid', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");*/
+$this->breadcrumbs=array(
+	'Productos',
+);
 ?>
 
 <div class="container margin_top">
@@ -124,7 +114,7 @@ echo $num;
         <option>Borrar</option>
       </select>
     </div>
-    <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
+    <div class="span1"><a href="" id="procesar" title="procesar" class="btn btn-danger">Procesar</a></div>
     <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
   </div>	  
 		  
@@ -164,10 +154,20 @@ $(document).ready(function(){
                 else
                {
                      inputs.attr('checked', false);
-               }
+               } 	
+		});
+       
+                var selected = new Array();                   
+               
+
+ $('#procesar').click(function () {
+    var checkValues = $(':checkbox:checked').map(function() {
+        return this.id;
+    }).get().join();
+    alert(checkValues);
+  });
+       
  
             });
- 
-});
-
+  
 </script>	

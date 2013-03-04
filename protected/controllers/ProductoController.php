@@ -108,13 +108,10 @@ class ProductoController extends Controller
 			$model = Producto::model()->findByPk($id);
 		}
 		else {
-			$precio=new Precio;
+			$precio = new Precio;
 			$model = new Producto;
 		}
-		
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Precio']))
 		{

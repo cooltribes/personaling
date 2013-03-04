@@ -61,6 +61,7 @@ class Categoria extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		'productos' => array(self::MANY_MANY, 'Producto', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
 		);
 	}
 

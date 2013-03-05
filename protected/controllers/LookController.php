@@ -61,7 +61,7 @@ public function actionCategorias(){
 }
 	public function actionCreate()
 	{
-		$model ='';	
+		$model = new PublicarForm;	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
 		$this->render('create',array(

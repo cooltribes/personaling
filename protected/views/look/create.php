@@ -103,7 +103,19 @@ while (i <  canvas.length) {
 */
 </script>
 <div class="container margin_top" id="crear_look">
-  <div class="clearfix margin_bottom_medium"><a  href="#myModal" role="button" title="Publicar" data-toggle="modal" class="btn  btn-danger pull-right margin_left_small">Publicar</a> <a href="#" title="Guardar borrador" class="btn pull-right">Guardar borrador</a> </div><hr/>
+  <div class="clearfix margin_bottom_medium">
+  	 
+	<?php $this->widget('bootstrap.widgets.TbButton', array(
+	    'label'=>'Publicar',
+	    'type'=>'danger',
+	    'htmlOptions'=>array(
+	        'data-toggle'=>'modal',
+	        'data-target'=>'#myModal',
+	        'class'=>'pull-right margin_left_small',
+	    ),
+	)); ?>  	
+  	<a href="#" title="Guardar borrador" class="btn pull-right">Guardar borrador</a> 
+  </div><hr/>
   <div class="row">
     <section class="span8">
       <div class="well">
@@ -238,8 +250,20 @@ while (i <  canvas.length) {
 
 <!------------------- MODAL WINDOW ON -----------------> 
 
+
 <!-- Modal 1 -->
+<!--
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	--></div>
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal')); ?>	
+<?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id'=>'PublicarForm',
+    //'type'=>'horizontal',
+    'htmlOptions'=>array('class'=>'personaling_form'),
+    //'type'=>'stacked',
+    'type'=>'inline',
+)); ?>
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3>Publicar look</h3>
@@ -276,16 +300,14 @@ while (i <  canvas.length) {
         </select>
       </div>
       <div class="span3">
-        <select>
-          <option>Tipo de cuerpo</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
+ <?php echo $form->radioButtonListInlineRow($model, 'tipo', array(
+        'Casual',
+        'Atrevida',
+    )); ?>
       </div>
     </div>
     <div class="row">
+    	
       <div class="span3 text_align_right">Look ideal para una altura comprendida entre:</div>
       <div class="span3">
         <select>
@@ -296,8 +318,19 @@ while (i <  canvas.length) {
           <option>5</option>
         </select>
       </div>
+            <div class="span3">
+        <select>
+          <option>Tipo de cuerpo</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
     </div>
   </div>
   <div class="modal-footer"> <a href="#" title="Cancelar" data-dismiss="modal" class="btn"> Cancelar</a> <a href="Look_seleccionado.php" title="Publicar" class="btn btn-danger" >Publicar</a> </div>
-</div>
+  <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
+
 <!------------------- MODAL WINDOW OFF ----------------->

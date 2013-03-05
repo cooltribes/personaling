@@ -8,7 +8,7 @@ class UserChangeEmail extends CFormModel {
 	public function rules() {
 		return array(
 			array('newEmail, password, verifyEmail', 'required'),
-			//array('oldPassword, password, verifyPassword', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
+			array('newEmail', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Maximo 128 Caracteres para el Correo.")),
 			array('verifyEmail', 'compare', 'compareAttribute'=>'newEmail', 'message' => UserModule::t("Los correos no coinciden.")),
 			array('password', 'verifyOldPassword'),
 			array('newEmail', 'email','message'=>'El formato de correo es incorrecto'),

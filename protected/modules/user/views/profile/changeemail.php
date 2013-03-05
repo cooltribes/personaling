@@ -47,7 +47,7 @@ $this->breadcrumbs=array(
             <div class="control-group">
               <label for="RegistrationForm_email" class="control-label required">Ingresa tu nueva dirección de correo electrónico: <span class="required">*</span></label>
               <div class="controls">
-                <?php echo $form->textFieldRow($model,'newEmail',array('class'=>'span5')); ?>
+                <?php echo $form->textFieldRow($model,'newEmail',array('class'=>'span5','maxlength'=>128)); ?>
                 <?php echo $form->error($model,'newEmail'); ?>
               </div>
             </div>
@@ -55,7 +55,7 @@ $this->breadcrumbs=array(
             <div class="control-group">
               <label for="RegistrationForm_email" class="control-label required">Escríbela de nuevo: <span class="required">*</span></label>
               <div class="controls">
-                <?php echo $form->textFieldRow($model,'verifyEmail',array('class'=>'span5')); ?>
+                <?php echo $form->textFieldRow($model,'verifyEmail',array('class'=>'span5','maxlength'=>128)); ?>
                 <?php echo $form->error($model,'verifyEmail'); ?>
               </div>
             </div>

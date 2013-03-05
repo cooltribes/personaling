@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles'),
+				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -474,6 +474,24 @@ class ProductoController extends Controller
 		));
 	}
 
+/**
+ * Manejador de Colors y Tallas
+ */
+	public function actionTallacolor(){
+		if(isset($_GET['id'])){
+			//if(!$inventario = Inventario::model()->findByAttributes(array('tbl_producto_id'=>$id)))
+			//	$inventario=new Inventario;
+			
+			$model = Producto::model()->findByPk($id);
+		}
+		else {
+			//$inventario=new Inventario;
+			$model = new Producto;
+		}		
+		$this->render('tallacolor',array(
+			'model'=>$model
+		));
+	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

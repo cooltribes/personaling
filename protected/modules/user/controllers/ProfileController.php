@@ -233,19 +233,20 @@ class ProfileController extends Controller
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();
 						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));						
-						$this->render('tutipo',array(
+						/*$this->render('tutipo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,
 							'editar'=>true,
-					    ));
+					    ));*/
+						// Yii::app()->end();
 					//}else{ 
 					//	Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
 					//}
 				} else {
-					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
 				}
 			} else {
-				Yii::trace('username:'.$model->username.' Error:'.implode("|",$profile->getErrors()), 'registro');
+				Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
 				//Yii::trace('username:'.$model->username.' Error:'.$profile->getErrors(), 'registro');
 			}
 		}	
@@ -324,7 +325,7 @@ class ProfileController extends Controller
 						if ($user->save()){
 							Yii::app()->user->setFlash('success',UserModule::t("Se guardo el nuevo Correo."));
 						} else {
-							Yii::trace('username:'.$user->username.' Error:'.implode('|',$user->getErrors()), 'registro');
+							Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
 							Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
 						}
 						//$this->redirect(array("profile"));
@@ -355,8 +356,11 @@ class ProfileController extends Controller
 						$new_password->password = UserModule::encrypting($model->password);
 						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
 						$new_password->save();
-						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
-						$this->redirect(array("profile"));
+						Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
+						//$this->redirect(array("profile"));
+					} else {
+						Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
+						Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
 					}
 			}
 			$this->render('changepassword',array('model'=>$model));

@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
     <div class="span3">
       <div class="shadow_1"> <img src="http://placehold.it/270x200"/>
         <h4><?php echo $profile->first_name." ".$profile->last_name; ?></h4>
-        <p class="muted">Miembro desde: <?php echo $model->create_at; ?></p>
+        <p class="muted">Miembro desde: <?php echo Yii::app()->dateFormatter->format("d MMM y",strtotime($model->create_at)); ?></p>
         <hr/>
         <h4>Tus Compras</h4>
         <ul>

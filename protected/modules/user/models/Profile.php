@@ -212,4 +212,12 @@ class Profile extends UActiveRecord
 	   //echo $this->birthday;
 	   return parent::beforeValidate();
 	}
+	protected function afterFind(){
+		
+   $this->day = date('d', strtotime($this->birthday));
+    $this->month = date('m', strtotime($this->birthday));
+    $this->year = date('Y', strtotime($this->birthday));	
+
+		return parent::afterFind();
+	}
 }

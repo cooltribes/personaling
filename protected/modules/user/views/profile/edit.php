@@ -2,7 +2,54 @@
 $this->breadcrumbs=array(
 	UserModule::t("Profile")=>array('profile'),
 	UserModule::t("Edit"),
-);
+);     function getMonthsArray()
+    {
+        
+         $months['01'] = "Enero";
+		 $months['02'] = "Febrero";
+		 $months['03'] = "Marzo";
+		 $months['04'] = "Abril";
+		 $months['05'] = "Mayo";
+		 $months['06'] = "Junio";
+		 $months['07'] = "Julio";
+		 $months['08'] = "Agosto";
+		 $months['09'] = "Septiembre";
+		 $months['10'] = "Octubre";
+		 $months['11'] = "Noviembre";
+		 $months['12'] = "Diciembre";
+    
+
+        return array(0 => 'Mes:') + $months;
+    }
+
+     function getDaysArray()
+    {
+		$days['01'] = '01';
+		$days['02'] = '02';
+		$days['03'] = '03';
+		$days['04'] = '04';
+		$days['05'] = '05';
+		$days['06'] = '06';
+		$days['07'] = '07';
+		$days['08'] = '08';
+		$days['09'] = '09';
+        for($dayNum = 10; $dayNum <= 31; $dayNum++){
+            $days[$dayNum] = $dayNum;
+        }
+
+        return array(0 => 'Dia:') + $days;
+    }
+
+     function getYearsArray()
+    {
+        $thisYear = date('Y', time());
+
+        for($yearNum = $thisYear; $yearNum >= 1920; $yearNum--){
+            $years[$yearNum] = $yearNum;
+        }
+
+        return array(0 => 'Año:') + $years;
+    }
 ?>
 
 <div class="container margin_top">
@@ -71,11 +118,30 @@ $this->breadcrumbs=array(
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
 		} elseif ($field->range) {
-			
-			echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+			if ($field->varname == 'sex')
+				echo $form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range));
+			else
+				echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+						
+			//echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
 			//echo $form->radioButtonListRow($profile,$field->varname,Profile::range($field->range));
 		} elseif ($field->field_type=="TEXT") {
 			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+		} elseif ($field->field_type=="DATE") {
+				
+			echo $form->labelEx($profile,$field->varname);	
+			
+			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
+			echo ' ';
+			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span2'));
+			echo ' ';
+			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
+			echo ' ';
+			echo $form->hiddenField($profile,$field->varname);
+			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+			
+				 
+				
 		} else {
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 		}

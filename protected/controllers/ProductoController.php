@@ -113,20 +113,29 @@ class ProductoController extends Controller
 		else {
 			$precio = new Precio;
 			$model = new Producto;
+			$id="";
 		}
 
 
 		if(isset($_POST['Precio']))
 		{
 			$precio->attributes=$_POST['Precio'];
-			$precio->tbl_producto_id = $id;
 			
-			if($precio->save())
-			{
+			if($id==""){
 				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+				Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar los precios si aún no se ha creado el producto."));
+			}			
+			else{
+							
+				$precio->tbl_producto_id = $id;
+				
+				if($precio->save())
+				{
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+				}
+				//	$this->redirect(array('view','id'=>$model->id));
 			}
-			//	$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('_view_precios',array(
@@ -150,73 +159,83 @@ class ProductoController extends Controller
 		else {
 			$imagen = new Imagen;
 			$model = new Producto;
+			$id="";
 		}
 		
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		// revisa si tiene o no un id
+		if($id==""){
+			Yii::app()->user->updateSession();
+			Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar imágenes si aún no se ha creado el producto."));
+		}else{
 
-		if(isset($_POST['Imagen']))
-		{
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-		}
-
+			if(isset($_POST['Imagen']))
+			{
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+			}
+		}//else
+		
 		$this->render('_view_imagenes',array(
 			'model'=>$model,'imagen'=>$imagen,
 		));
 	}
 	
 	// carga de imagenes
-	public function actionMulti($id) {
+	public function actionMulti() {
 				
-			
-		// make the directory to store the pic:
-			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id))
-			{
-   				mkdir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id,0777,true);
- 			}
-
-        $images = CUploadedFile::getInstancesByName('url');
-
-        if (isset($images) && count($images) > 0) {
-            foreach ($images as $image => $pic) {
-
-                $imagen = new Imagen;
-                $imagen->tbl_producto_id = $_GET['id'];
-                $imagen->orden = 1 + Imagen::model()->count('`tbl_producto_id` = '.$_GET['id'].'');
-                $imagen->save();
-
-                $nombre = Yii::getPathOfAlias('webroot').'/images/producto/'. $id .'/'. $imagen->id;
-                $extension = ".jpg";
-
-
-                if ($pic->saveAs($nombre . $extension)) {
-
-                    $imagen->url = '/images/producto/'. $id .'/'. $imagen->id .".jpg";
-                    $imagen->save();
-					
-					Yii::app()->user->updateSession();
-					Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));
-
-                    $image = Yii::app()->image->load($nombre . $extension);
-                    $image->resize(640, 480);
-                    $image->save($nombre . ".jpg");
-
-                    $image = Yii::app()->image->load($nombre . $extension);
-                    $image->resize(150, 150)->quality(40);
-                    $image->save($nombre . "_thumb.jpg");
-                } else {
-                    $imagen->delete();
-                }
-            }
-        }
-        else {
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));	
+		if(!isset($_GET['id'])){
+			$this->redirect(array('producto/imagenes'));
 		}
+		else {
+				$id = $_GET['id'];
+			// make the directory to store the pic:
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id))
+				{
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id,0777,true);
+	 			}
+	
+	        	$images = CUploadedFile::getInstancesByName('url');
+
+		        if (isset($images) && count($images) > 0) {
+		            foreach ($images as $image => $pic) {
+		
+		                $imagen = new Imagen;
+		                $imagen->tbl_producto_id = $_GET['id'];
+		                $imagen->orden = 1 + Imagen::model()->count('`tbl_producto_id` = '.$_GET['id'].'');
+		                $imagen->save();
+		
+		                $nombre = Yii::getPathOfAlias('webroot').'/images/producto/'. $id .'/'. $imagen->id;
+		                $extension = ".jpg";
 
 
-        $this->redirect(array('producto/imagenes', 'id' => $id));
+		                if ($pic->saveAs($nombre . $extension)) {
+		
+		                    $imagen->url = '/images/producto/'. $id .'/'. $imagen->id .".jpg";
+		                    $imagen->save();
+							
+							Yii::app()->user->updateSession();
+							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));
+		
+		                    $image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(640, 480);
+		                    $image->save($nombre . ".jpg");
+		
+		                    $image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(150, 150)->quality(40);
+		                    $image->save($nombre . "_thumb.jpg");
+		                } else {
+		                    $imagen->delete();
+		                }
+		            }// foreach
+		        }// isset
+		        else {
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));	
+				}
+
+
+        		$this->redirect(array('producto/imagenes', 'id' => $id));
+        }//else principal
     }
 
 //detalles producto
@@ -367,10 +386,13 @@ class ProductoController extends Controller
 	
 	//
 	// trabajo con el inventario
-	public function actionInventario($id)
+	public function actionInventario()
 	{
 
 		if(isset($_GET['id'])){
+			
+			$id = $_GET['id'];
+			
 			if(!$inventario = Inventario::model()->findByAttributes(array('tbl_producto_id'=>$id)))
 				$inventario=new Inventario;
 			
@@ -379,19 +401,28 @@ class ProductoController extends Controller
 		else {
 			$inventario=new Inventario;
 			$model = new Producto;
+			$id="";
 		}
 		
 		if(isset($_POST['Inventario']))
 		{
 			$inventario->attributes=$_POST['Inventario'];
-			$inventario->tbl_producto_id = $id;
 			
-			if($inventario->save())
-			{
+			if($id==""){
 				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-			}
-			//	$this->redirect(array('view','id'=>$model->id));
+				Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar los datos de inventario si aún no se ha creado el producto."));
+			}			
+			else{
+				$inventario->tbl_producto_id = $id;
+			
+				if($inventario->save())
+				{
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+				}
+				//	$this->redirect(array('view','id'=>$model->id));
+				
+			}//else grande
 		}
 
 		$this->render('_view_inventario',array(

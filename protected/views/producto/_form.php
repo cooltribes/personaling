@@ -47,7 +47,7 @@
               <div class="controls">
               	
               	<?php 
-              		if($model->fInicio!="0000-00-00 00:00:00")
+              		if($model->fInicio!="0000-00-00 00:00:00" && $model->fFin!="0000-00-00 00:00:00")
 					{
 						echo CHtml::CheckBox('calendario','true', array (
                      						'checked'=>'checked',

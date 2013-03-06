@@ -58,7 +58,11 @@ $this->breadcrumbs=array(
                  	<?php echo $form->textFieldRow($precio, 'ahorro', array('class'=>'span5')); ?>
             </div>
             <div class="control-group">
-                 	<?php echo $form->textFieldRow($precio, 'precioDescuento', array('class'=>'span5','disabled'=>true)); ?>
+				<?php echo $form->labelEx($precio,'precioDescuento', array('class' => 'control-label required')); ?>
+              <div class="controls">
+                <?php echo $form->textField($precio, 'precioDescuento', array('class'=>'span5','readonly'=>true)); ?>
+                <?php echo $form->error($precio,'precioDescuento'); ?>
+              </div> 	
             </div>
             <div class="control-group">
 				<?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA 12% (Tierra Firme)',2 => 'Ambos')); ?>

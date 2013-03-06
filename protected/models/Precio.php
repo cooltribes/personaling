@@ -126,4 +126,33 @@ class Precio extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	
+	public function beforeSave()
+	{
+		
+		if($this->tipoDescuento==0){ // si es porcentaje no puede ser mayor a 100
+			
+			if($this->valorTipo>100 || $this->valorTipo<0)
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("El porcentaje no puede ser menor a 0% o mayor a 100%"));
+			}
+			else
+				return parent::beforeSave();
+		}
+		
+		if($this->tipoDescuento==1) // si es descuento en dinero no puede ser mayor al precio de venta
+		{
+			if($this->precioVenta < $this->valorTipo)
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("El monto de descuento no puede ser mayor al precio de venta"));
+			}
+			else
+				return parent::beforeSave();			
+		}
+
+	}
+	
 }

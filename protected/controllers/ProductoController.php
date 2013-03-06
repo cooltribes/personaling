@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor'),
+				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -473,7 +473,24 @@ class ProductoController extends Controller
 			'model'=>$model,
 		));
 	}
-
+/**
+ * Genera la fila para talla color
+ */
+	public function actionAddTallacolor(){
+		if(isset($_GET['id'])){
+			//if(!$inventario = Inventario::model()->findByAttributes(array('tbl_producto_id'=>$id)))
+			//	$inventario=new Inventario;
+			
+			$model = Producto::model()->findByPk($id);
+		}
+		else {
+			//$inventario=new Inventario;
+			$model = new Producto;
+		}		
+		$this->render('tallacolor',array(
+			'model'=>$model
+		));
+	}
 /**
  * Manejador de Colors y Tallas
  */

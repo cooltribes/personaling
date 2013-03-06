@@ -1,0 +1,9 @@
+              <tr>
+                <td><input name="" type="text" value="Azul" disabled class="input-small uneditable-input"></td>
+                <td><input name="" type="text" value="S" disabled class="input-small uneditable-input"></td>
+                <td><input name="" type="text" class="input-small"></td>
+                <td><input name="" type="text" class="input-small"></td>
+                <td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>
+                  <a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imÃ¡genes</a></td>
+                <td><a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> <a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a></td>
+              </tr>

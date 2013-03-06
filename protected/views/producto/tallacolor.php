@@ -1,3 +1,16 @@
+<script language="JavaScript">
+$(document).ready(function() {
+	
+});
+</script>
+<?php
+$this->breadcrumbs=array(
+	'Productos'=>array('index'),
+	$model->id=>array('view','id'=>$model->id),
+	'Tallas y Colores',
+);
+
+?>
 
 <div class="container margin_top">
   <div class="page-header">
@@ -30,9 +43,23 @@
                 -->
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'type' => 'primary',
-				    'toggle' => 'radio', // 'checkbox' or 'radio'
+				   
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => array(
-				        array('label'=>'32'),
+				        array('label'=>'32',
+				       // 'buttonType' => 'ajaxLink',
+				        /*
+				        'ajaxOptions'=>array(
+							 'type'=>'post',
+							 'url'=>array('producto/addTallacolor', 'id'=>$model->id),
+							 'success' => "function( data )
+			                  {
+			                    // handle return data
+			                    alert( data );
+			                  }",
+						)
+						 * 
+						 */),
 				        array('label'=>'34'),
 				        array('label'=>'36'),
 				        array('label'=>'38'),
@@ -162,6 +189,22 @@
               </div>
             </div>
           </fieldset>
+          <?php $this->widget('bootstrap.widgets.TbButton', array(
+		    'buttonType'=>'ajaxButton',
+		    'type'=>'primary',
+		    'label'=>'Generar',
+		    'loadingText'=>'loading...',
+		    'htmlOptions'=>array('id'=>'buttonStateful'),
+		    'ajaxOptions'=>array(
+		    	    'type' => 'POST',
+    				'beforeSend' => "function( request )
+                     {
+                       $('.btn-group a.active').each(function(index){
+                       		alert($(this).html());
+                       })
+                     }",
+			),
+		)); ?>
           <fieldset class="margin_top">
             <legend>Combinaciones: </legend>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -172,39 +215,6 @@
                 <th scope="col">Cantidad</th>
                 <th scope="col">ImÃ¡genes</th>
                 <th scope="col">Acciones</th>
-              </tr>
-              <tr>
-                <td><input name="" type="text" value="Azul" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" value="S" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>
-                  <a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imÃ¡genes</a></td>
-                <td><a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> <a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a></td>
-              </tr>
-              <tr>
-                <td><input name="" type="text" value="Azul" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" value="S" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imÃ¡genes</a></td>
-                <td><a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> <a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a></td>
-              </tr>
-              <tr>
-                <td><input name="" type="text" value="Azul" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" value="S" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imÃ¡genes</a></td>
-                <td><a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> <a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a></td>
-              </tr>
-              <tr>
-                <td><input name="" type="text" value="Azul" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" value="S" disabled class="input-small uneditable-input"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><input name="" type="text" class="input-small"></td>
-                <td><a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imÃ¡genes</a></td>
-                <td><a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> <a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a></td>
               </tr>
             </table>
           </fieldset>

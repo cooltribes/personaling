@@ -62,8 +62,9 @@ class Producto extends CActiveRecord
 			array('proveedor', 'length', 'max'=>45),
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
-			array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
-			array('fFin','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
+			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
+			array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
+			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
@@ -143,10 +144,15 @@ class Producto extends CActiveRecord
 			
 			$this->fecha = date("Y-m-d");
 			
+			if(!$this->estado)
+				$this->estado = 1;
+			
 			return parent::beforeSave();
 		}
 		else {
 
+			if(!$this->estado)
+				$this->estado = 1;
 			
 		$this->fInicio=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fInicio);	
 		$this->fFin=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fFin);

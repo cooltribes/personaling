@@ -44,6 +44,7 @@ class Inventario extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('cantidad, tope, minimaCompra, maximaCompra, disponibilidad, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('tbl_producto_id', 'required', 'message'=>'No es posible almacenar los datos de inventario si aún no se ha creado el producto.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, cantidad, tope, minimaCompra, maximaCompra, disponibilidad, tbl_producto_id', 'safe', 'on'=>'search'),

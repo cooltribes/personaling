@@ -55,34 +55,40 @@ echo"<tr>";
 	$d = date("d/m/Y",strtotime($c));
 	$e = date("d/m/Y"); // hoy
 
-	$trans = compara_fechas($e, $d);
-	$falt = compara_fechas($b, $e);
-	$total = compara_fechas($b, $d);
-		
-	if($falt <= 0)
+	if($a!='0000-00-00 00:00:00' && $c!='0000-00-00 00:00:00')
 	{
-		echo "      <td> Finaliza en: ".$b." ";
-		$this->widget('bootstrap.widgets.TbProgress', array(
-		    'type'=>'danger', // 'info', 'success' or 'danger'
-		    'percent'=>100,
-		));
-		echo "</td>";
-	}
-	else 
-	{
-		if($total ==0)
-			$total = 1;
+	
+		$trans = compara_fechas($e, $d);
+		$falt = compara_fechas($b, $e);
+		$total = compara_fechas($b, $d);
 			
-		$porc = ($trans * 100) / $total;
-
-		echo "      <td> Finaliza en: ".$b." ";
-		$this->widget('bootstrap.widgets.TbProgress', array(
-		    'type'=>'danger', // 'info', 'success' or 'danger'
-		    'percent'=>$porc,
-		));
-		echo "</td>";
-		
-	}
+		if($falt <= 0)
+		{
+			echo "      <td> Finaliza en: ".$b." ";
+			$this->widget('bootstrap.widgets.TbProgress', array(
+			    'type'=>'danger', // 'info', 'success' or 'danger'
+			    'percent'=>100,
+			));
+			echo "</td>";
+		}
+		else 
+		{
+			if($total ==0)
+				$total = 1;
+				
+			$porc = ($trans * 100) / $total;
+	
+			echo "      <td> Finaliza en: ".$b." ";
+			$this->widget('bootstrap.widgets.TbProgress', array(
+			    'type'=>'danger', // 'info', 'success' or 'danger'
+			    'percent'=>$porc,
+			));
+			echo "</td>";
+		}
+	}else
+		{
+			echo "<td> Sin rango de fechas.</td>";
+		}	
 
 	echo "<td>";
 	

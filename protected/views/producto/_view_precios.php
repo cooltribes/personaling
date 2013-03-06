@@ -1,3 +1,11 @@
+<?php
+$this->breadcrumbs=array(
+	'Productos'=>array('admin'),
+	'Precios',
+);
+
+?>
+
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Producto - Precio</small></h1>
@@ -149,7 +157,8 @@ var valor;
 		if(valor==0)
 			$("#Precio_precioImpuesto").val(dos - (dos * (this.value/100)));	
 		else{
-			tres = parseFloat(dos) + (parseFloat(dos) * 0.12);			
+			pre = document.getElementById("Precio_precioDescuento").value;
+			tres = parseFloat(pre) + (parseFloat(pre) * 0.12);			
 			$("#Precio_precioImpuesto").val(tres);
 		}
 	}
@@ -161,7 +170,8 @@ var valor;
 		if(valor==0)
 			$("#Precio_precioImpuesto").val(dos - this.value);	
 		else{
-			tres = parseFloat(dos) + (parseFloat(dos) * 0.12);			
+			pre = document.getElementById("Precio_precioDescuento").value;
+			tres = parseFloat(pre) + (parseFloat(pre) * 0.12);			
 			$("#Precio_precioImpuesto").val(tres);
 		}				
 	}
@@ -194,24 +204,50 @@ dos= document.getElementById("Precio_precioDescuento").value;
 });
 
 $("#Precio_tipoDescuento").click(function(){
-	
-	$("#Precio_ahorro").val("AAAAAAAAA");
+
 var uno;
 var dos;
 var tres;
 var cuatro;
 var cinco;
+var pre;
+var valor;
 
-uno = document.getElementById("Precio_precioVenta").value;
-dos = document.getElementById("valordescuento").value;	
-tres = document.getElementById("Precio_ahorro").value;
-cuatro = document.getElementById("Precio_precioDescuento").value;
+	valor = document.getElementById("Precio_impuesto").value;
+
+uno = $("#Precio_precioVenta").val();
+dos = $("#valordescuento").val();	
+tres = $("#Precio_ahorro").val();
+cuatro = $("#Precio_precioDescuento").val();
 cinco = $("#Precio_tipoDescuento").val();
-console.log(cinco);
-	if(cinco==0)
-		$("#Precio_ahorro").val("AAAAAAAAA");
+
+	if(cinco==0){
+	
+		$("#Precio_ahorro").val(uno * (dos/100));		
+		$("#Precio_precioDescuento").val(uno - (uno * (dos/100)));
+		
+		if(valor==0)
+			$("#Precio_precioImpuesto").val(uno - (uno * (dos/100)));	
+		else{
+			pre = $("#Precio_precioDescuento").val();
+			tres = parseFloat(pre) + (parseFloat(pre) * 0.12);			
+			$("#Precio_precioImpuesto").val(tres);
+		}
+		
+	}else 
 	if(cinco==1){
-		$("#Precio_ahorro").val("OOOOOO");
+	
+		$("#Precio_ahorro").val(dos);		
+		$("#Precio_precioDescuento").val(uno - dos);
+		
+		if(valor==0)
+			$("#Precio_precioImpuesto").val(uno - dos);	
+		else{
+			pre = $("#Precio_precioDescuento").val();
+			tres = parseFloat(pre) + (parseFloat(pre) * 0.12);			
+			$("#Precio_precioImpuesto").val(tres);
+		}
+		
 	}
 
 	
@@ -219,8 +255,31 @@ console.log(cinco);
 
 
 		$('#limpiar').on('click', function() {
+			
+			$('#producto-form').each (function(){
+			  this.reset();
+			});
+			
+			 $('#producto-form').find(':input').each(function() {
+            switch(this.type) {
+                case 'password':
+                case 'select-multiple':
+                case 'select-one':
+                case 'text':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+			
            $("#producto-form input[type=text]").val('');
-           $("#producto-form input[type=text]").value('');
+           
+           $("#Precio_combinacion_1").attr("checked");
+           
+           $("#Precio_tipoDescuento").val();
            
            $("#producto-form textarea").val("");
            $("#producto-form textarea").value("");
@@ -233,9 +292,7 @@ console.log(cinco);
            
            $("#producto-form input[type=checkbox]").val('');
            $("#producto-form input[type=checkbox]").value('');
-           
-           $("#producto-form")[0].reset();
-           $("#producto-form")[3].reset();
+
        });
 	
 	

@@ -98,10 +98,13 @@ class ProductoController extends Controller
 	}
 
 	//acceso para la pestaña de precios
-	public function actionPrecios($id)
+	public function actionPrecios()
 	{
 
 		if(isset($_GET['id'])){
+			
+			$id = $_GET['id'];
+			
 			if(!$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id)))
 				$precio=new Precio;
 			
@@ -132,20 +135,23 @@ class ProductoController extends Controller
 	}
 	
 	// mostrar la pagina
-	public function actionImagenes($id)
+	public function actionImagenes()
 	{
 		if(isset($_GET['id'])){
+			
+			$id = $_GET['id'];
 			
 			if(!$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$id)))
 				$imagen = new Imagen;
 			
+			$model = Producto::model()->findByPk($id);
+			
 		}
 		else {
 			$imagen = new Imagen;
+			$model = new Producto;
 		}
 		
-		$model = Producto::model()->findByPk($id);
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 

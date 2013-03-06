@@ -1,3 +1,11 @@
+<?php
+$this->breadcrumbs=array(
+	'Productos'=>array('admin'),
+	'Inventario',
+);
+
+?>
+
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Producto - Inventario</small></h1>

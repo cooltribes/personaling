@@ -51,6 +51,13 @@
     });
 </script>
 
+<?php
+$this->breadcrumbs=array(
+	'Productos'=>array('admin'),
+	'Imágenes',
+);
+
+?>
 
 <div class="container margin_top">
   <div class="page-header">
@@ -162,9 +169,7 @@
 			'label'=>'Guardar',
 		)); ?>
         <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Restablecer">Restablecer</a></li>
           <li><a href="#" title="Duplicar">Duplicar</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-trash"> </i>Borrar</a></li>
         </ul>
       </div>
     </div>

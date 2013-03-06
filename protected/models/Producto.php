@@ -62,8 +62,8 @@ class Producto extends CActiveRecord
 			array('proveedor', 'length', 'max'=>45),
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
-			array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'>'),
-			array('fFin','compare','compareValue'=>date("Y-m-d"),'operator'=>'>'),
+			array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
+			array('fFin','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),

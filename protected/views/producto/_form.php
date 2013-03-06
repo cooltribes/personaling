@@ -110,6 +110,27 @@
 <script>
 
 		$('#limpiar').on('click', function() {
+			
+			$('#producto-form').each (function(){
+			  this.reset();
+			});
+			
+			 $('#producto-form').find(':input').each(function() {
+            switch(this.type) {
+                case 'password':
+                case 'select-multiple':
+                case 'select-one':
+                case 'text':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+			
+			
            $("#producto-form input[type=text]").val('');
            $("#producto-form input[type=text]").value('');
            
@@ -127,6 +148,9 @@
            
            $("#producto-form")[0].reset();
            $("#producto-form")[3].reset();
+           
+
+           
        });
 	
 </script>

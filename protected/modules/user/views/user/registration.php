@@ -121,8 +121,11 @@ $this->breadcrumbs=array(
 			echo $form->labelEx($profile,$field->varname);	
 			
 			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
-			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span3'));
+			echo ' ';
+			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span2'));
+			echo ' ';
 			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
+			echo ' ';
 			echo $form->hiddenField($profile,$field->varname);
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			

@@ -1,7 +1,9 @@
 <script language="JavaScript">
-$(document).ready(function() {
+
+//$(document).ready(function() {
 	
-});
+//});
+
 </script>
 <?php
 $this->breadcrumbs=array(
@@ -194,26 +196,43 @@ $this->breadcrumbs=array(
 		    'type'=>'primary',
 		    'label'=>'Generar',
 		    'loadingText'=>'loading...',
+		    'url'=>array('producto/addtallacolor'),
 		    'htmlOptions'=>array('id'=>'buttonStateful'),
 		    'ajaxOptions'=>array(
 		    	    'type' => 'POST',
+		    	    
     				'beforeSend' => "function( request )
-                     {
-                       $('.btn-group a.active').each(function(index){
-                       		alert($(this).html());
-                       })
-                     }",
+	                     {
+	                       var tallas = '';
+	                       $('.btn-group a.active').each(function(index){
+	                       		tallas += $(this).html()+',';
+	                       });
+						   tallas = tallas.substring(0, tallas.length-1);
+	                       var colores = '';
+	                       $('.select2-search-choice div').each(function(index){
+	                       		colores +=$(this).html()+ ',';
+	                       });
+	                       colores = colores.substring(0, colores.length-1);
+	                       this.data += '&colores='+colores+'&tallas='+tallas;
+	                     }",
+                     'success' => "function( data )
+		                  {
+		                    // handle return data
+		                    //alert( data );
+		                    $('#table_tallacolor').append(data);
+		                  }",
+		                  'data'=>array('id'=>$model->id),
 			),
 		)); ?>
           <fieldset class="margin_top">
             <legend>Combinaciones: </legend>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+            <table id="table_tallacolor" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
               <tr>
                 <th scope="col">Color</th>
                 <th scope="col">Talla</th>
-                <th scope="col">SKU/CÃ³digo</th>
+                <th scope="col">SKU/Código</th>
                 <th scope="col">Cantidad</th>
-                <th scope="col">ImÃ¡genes</th>
+                <th scope="col">Imágenes</th>
                 <th scope="col">Acciones</th>
               </tr>
             </table>

@@ -555,10 +555,23 @@ class ProductoController extends Controller
 		else {
 			//$inventario=new Inventario;
 			$model = new Producto;
-		}		
+		}	
+		if(isset($_POST['tallas'])){
+			$tallas = explode(',',$_POST['tallas']);
+			$colores = explode(',',$_POST['colores']);
+			
+		}
+		
+		foreach($tallas as $talla){
+			foreach($colores as $color){
+			$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
+			}
+		}	
+		/*
 		$this->render('tallacolor',array(
 			'model'=>$model
 		));
+		 * */
 	}
 /**
  * Manejador de Colors y Tallas

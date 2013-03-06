@@ -49,8 +49,38 @@ echo $num;
   
     <div class="row margin_top margin_bottom ">
     <div class="span4">
-      <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
-		<?php echo CHtml::textField('Buscar','Buscar', array('id'=>'prependedInput','class'=>'span3')); //<input class="span3" id="prependedInput" type="text" placeholder="Buscar"> ?>
+      <div class="input-prepend">
+    <form class="no_margin_bottom form-search">
+    <input type="text" name="query" id="query" class="span3">
+    <a href="#" class="btn" id="btn_search_event">Buscar</a>
+	</form>
+		
+	<?php
+	Yii::app()->clientScript->registerScript('query',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		$('#btn_search_event').click(function(){
+			ajaxRequest = $('#query').serialize();
+			clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('producto/admin') . "',
+				data: ajaxRequest}
+				
+				)
+				},
+		
+		300);
+		return false;
+		});",CClientScript::POS_READY
+	);
+	
+	?>	
+		
 	</div>
     </div>
     <div class="span3">
@@ -73,10 +103,11 @@ echo $num;
     </div>
   </div>
   <hr/>
-  
+<?php
+$template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
-      <th rowspan="2" scope="col"><input name='check' type='checkbox' id='todos'></th>
+      <th rowspan="2" scope="col"><input name="check" type="checkbox" id="todos"></th>
       <th rowspan="2" scope="col">Producto</th>
       <th rowspan="2" scope="col">Sku</th>
       <th rowspan="2" scope="col">Categoria</th>
@@ -93,16 +124,18 @@ echo $num;
       <th scope="col">Disp.</th>
       <th scope="col">Vendido</th>
     </tr>
-	  <?php 
-	  	$model->status=1;	  
+    {items}
+    </table>
+    {pager}
+	';
+
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
-	    'dataProvider'=>$model->search(),
+	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_authitem',
+	    'template'=>$template,
 	));    
 	?>
-	</tr>
-    </table>
 
 	  <hr/>
   <div class="row">
@@ -114,6 +147,29 @@ echo $num;
         <option>Borrar</option>
       </select>
     </div>
+
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'ajaxButton',
+			'type'=>'danger',
+			'label'=>'procesar',
+			'loadingText'=>'loading...',
+			'url'=>array('producto/varias'),
+			'htmlOptions'=>array('id'=>'procesar'),
+			'ajaxOptions'=>array(
+			'type' => 'POST',
+			'beforeSend' => "function( request )
+			{
+				 var checkValues = $(':checkbox:checked').map(function() {
+			        return this.id;
+			    }).get().join();
+			
+			this.data += '&check='+checkValues;
+			}",
+			
+			'data'=>array('id'=>$model->id),
+			),
+			)); ?>
+    
     <div class="span1"><a href="" id="procesar" title="procesar" class="btn btn-danger">Procesar</a></div>
     <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
   </div>	  
@@ -160,14 +216,15 @@ $(document).ready(function(){
                 var selected = new Array();                   
                
 
- $('#procesar').click(function () {
-    var checkValues = $(':checkbox:checked').map(function() {
-        return this.id;
-    }).get().join();
-    alert(checkValues);
-  });
+// $('#procesar').click(function () {
+   
+    
+    
+    
+//    alert(checkValues);
+ // });
        
  
-            });
+        //    });
   
 </script>	

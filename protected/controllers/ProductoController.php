@@ -621,12 +621,17 @@ class ProductoController extends Controller
 			$colores = explode(',',$_POST['colores']);
 			
 		}
-		
+		$i = 0;
 		foreach($tallas as $talla){
 			foreach($colores as $color){
-			$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
+				$tallacolor[$i]= new preciotallacolor;
+				$tallacolor[$i]->color_id = $color;
+				$tallacolor[$i]->talla_id = $talla;
+				
+			//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
 			}
-		}	
+		}
+		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$tallacolor));	
 		/*
 		$this->render('tallacolor',array(
 			'model'=>$model

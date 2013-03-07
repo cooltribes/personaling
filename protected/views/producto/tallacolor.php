@@ -24,7 +24,9 @@ $this->breadcrumbs=array(
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
+      	<!--
         <form enctype="multipart/form-data" class="form-horizontal" id="registration-form" action="/aiesec/user/registration?template=1" method="post">
+        -->
           <fieldset>
             <legend>Elige las tallas disponibles para este producto: </legend>
             <p class="margin_bottom muted"> Haz click sobre los botones para elegir las tallas </p>
@@ -131,7 +133,7 @@ $this->breadcrumbs=array(
 	'asDropDownList' => false,
 	'name' => 'clevertech',
 	'options' => array(
-		'tags' => array('Negro mate','Titanio', 'Azul', ' Negro Violento','Agua Marina'),
+		'tags' => array(1=>'Negro mate',2=>'Titanio', 3=>'Azul', 4=>' Negro Violento',5=>'Agua Marina'),
 		'placeholder' => 'disciplines',
 		'width' => '40%',
 		'tokenSeparators' => array(',', ' ')
@@ -226,23 +228,51 @@ $this->breadcrumbs=array(
 		)); ?>
           <fieldset class="margin_top">
             <legend>Combinaciones: </legend>
-            <table id="table_tallacolor" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-              <tr>
-                <th scope="col">Color</th>
-                <th scope="col">Talla</th>
-                <th scope="col">SKU/Código</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Imágenes</th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </table>
+
           </fieldset>
+        <!--
         </form>
+        -->
         <hr/>
       </div>
     </div>
     <div class="span3">
-      <div class="padding_left"> <a href="#" title="Guardar" class="btn btn-danger btn-large btn-block">Guardar</a>
+      <div class="padding_left"> 
+      	
+		 <?php $this->widget('bootstrap.widgets.TbButton', array(
+				    'buttonType'=>'ajaxButton',
+				    'type'=>'danger',
+				    'label'=>'Guardar',
+				    'block'=>'true',
+				   	'size'=> 'large',
+				    'url'=>array('producto/tallacolor'),
+				    'htmlOptions'=>array('id'=>'buttonGuardar'),
+				    'ajaxOptions'=>array(
+				    	    'type' => 'POST',
+				    	    
+		    				'beforeSend' => "function( request )
+			                     {
+			                       var codigos = '';
+			                       $('.input-sku').each(function(index){
+			                       		codigos += $(this).val()+',';
+			                       });
+								   codigos = codigos.substring(0, codigos.length-1);
+			                       var cantidades = '';
+			                       $('.input-cant').each(function(index){
+			                       		cantidades +=$(this).val()+ ',';
+			                       });
+			                       cantidades = cantidades.substring(0, cantidades.length-1);
+			                       this.data += '&cantidades='+cantidades+'&codigos='+codigos;
+			                     }",
+		                     'success' => "function( data )
+				                  {
+				                    // handle return data
+				                    alert( data );
+				                   // $('#table_tallacolor').append(data);
+				                  }",
+				                  'data'=>array('id'=>$model->id),
+					),
+				)); ?>      	
         <ul class="nav nav-stacked nav-tabs margin_top">
           <li><a href="#" title="Restablecer">Restablecer</a></li>
           <li><a href="#" title="Duplicar">Duplicar</a></li>

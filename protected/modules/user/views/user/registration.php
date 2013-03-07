@@ -112,10 +112,11 @@ $this->breadcrumbs=array(
 				echo $form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range));
 			else
 				echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
-			
+			//echo $form->error($profile,$field->varname);
 			
 		} elseif ($field->field_type=="TEXT") {
 			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {
 				
 			echo $form->labelEx($profile,$field->varname);	
@@ -128,14 +129,15 @@ $this->breadcrumbs=array(
 			echo ' ';
 			echo $form->hiddenField($profile,$field->varname);
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
-			
+			echo $form->error($profile,$field->varname);
 				 
 				
 		} else {
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+			echo $form->error($profile,$field->varname);
 		}
 		
-		 echo $form->error($profile,$field->varname);
+		 
 				 ?>
 	</div>
 </div>

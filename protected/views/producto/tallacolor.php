@@ -242,7 +242,42 @@ $this->breadcrumbs=array(
       </div>
     </div>
     <div class="span3">
-      <div class="padding_left"> <a href="#" title="Guardar" class="btn btn-danger btn-large btn-block">Guardar</a>
+      <div class="padding_left"> 
+      	
+		 <?php $this->widget('bootstrap.widgets.TbButton', array(
+				    'buttonType'=>'ajaxButton',
+				    'type'=>'danger',
+				    'label'=>'Guardar',
+				    'block'=>'true',
+				   	'size'=> 'large',
+				    'url'=>array('producto/tallacolor'),
+				    'htmlOptions'=>array('id'=>'buttonGuardar'),
+				    'ajaxOptions'=>array(
+				    	    'type' => 'POST',
+				    	    
+		    				'beforeSend' => "function( request )
+			                     {
+			                       var codigos = '';
+			                       $('.input-sku').each(function(index){
+			                       		codigos += $(this).val()+',';
+			                       });
+								   codigos = codigos.substring(0, codigos.length-1);
+			                       var cantidades = '';
+			                       $('.input-cant').each(function(index){
+			                       		cantidades +=$(this).val()+ ',';
+			                       });
+			                       cantidades = cantidades.substring(0, cantidades.length-1);
+			                       this.data += '&cantidades='+cantidades+'&codigos='+codigos;
+			                     }",
+		                     'success' => "function( data )
+				                  {
+				                    // handle return data
+				                    alert( data );
+				                   // $('#table_tallacolor').append(data);
+				                  }",
+				                  'data'=>array('id'=>$model->id),
+					),
+				)); ?>      	
         <ul class="nav nav-stacked nav-tabs margin_top">
           <li><a href="#" title="Restablecer">Restablecer</a></li>
           <li><a href="#" title="Duplicar">Duplicar</a></li>

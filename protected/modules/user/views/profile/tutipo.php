@@ -86,7 +86,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 </div>
               </div>
             </div>
-            <legend class="text_align_center">Tu tipo es: </legend>
+            <legend class="text_align_center">Tu forma de cuerpo: </legend>
             <div class="control-group">
               <div class="controls row">
                 <!--

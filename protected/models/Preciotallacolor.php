@@ -38,11 +38,11 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tbl_producto_id, tbl_talla_id, tbl_color_id', 'required'),
-			array('cantidad, tbl_producto_id, tbl_talla_id, tbl_color_id', 'numerical', 'integerOnly'=>true),
+			array('producto_id, tbl_talla_id, tbl_color_id,sku', 'required'),
+			array('cantidad, producto_id, talla_id, color_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, cantidad, tbl_producto_id, tbl_talla_id, tbl_color_id', 'safe', 'on'=>'search'),
+			array('id, cantidad, producto_id, talla_id, color_id,sku', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,9 +65,10 @@ class PrecioTallaColor extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'cantidad' => 'Cantidad',
-			'tbl_producto_id' => 'Tbl Producto',
-			'tbl_talla_id' => 'Tbl Talla',
-			'tbl_color_id' => 'Tbl Color',
+			'producto_id' => 'Tbl Producto',
+			'talla_id' => 'Tbl Talla',
+			'color_id' => 'Tbl Color',
+			'sky'=>'Codigo/Sku',
 		);
 	}
 
@@ -84,9 +85,9 @@ class PrecioTallaColor extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('cantidad',$this->cantidad);
-		$criteria->compare('tbl_producto_id',$this->tbl_producto_id);
-		$criteria->compare('tbl_talla_id',$this->tbl_talla_id);
-		$criteria->compare('tbl_color_id',$this->tbl_color_id);
+		$criteria->compare('producto_id',$this->tbl_producto_id);
+		$criteria->compare('talla_id',$this->tbl_talla_id);
+		$criteria->compare('color_id',$this->tbl_color_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

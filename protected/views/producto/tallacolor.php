@@ -24,7 +24,9 @@ $this->breadcrumbs=array(
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
+      	<!--
         <form enctype="multipart/form-data" class="form-horizontal" id="registration-form" action="/aiesec/user/registration?template=1" method="post">
+        -->
           <fieldset>
             <legend>Elige las tallas disponibles para este producto: </legend>
             <p class="margin_bottom muted"> Haz click sobre los botones para elegir las tallas </p>
@@ -131,7 +133,7 @@ $this->breadcrumbs=array(
 	'asDropDownList' => false,
 	'name' => 'clevertech',
 	'options' => array(
-		'tags' => array('Negro mate','Titanio', 'Azul', ' Negro Violento','Agua Marina'),
+		'tags' => array(1=>'Negro mate',2=>'Titanio', 3=>'Azul', 4=>' Negro Violento',5=>'Agua Marina'),
 		'placeholder' => 'disciplines',
 		'width' => '40%',
 		'tokenSeparators' => array(',', ' ')
@@ -226,18 +228,11 @@ $this->breadcrumbs=array(
 		)); ?>
           <fieldset class="margin_top">
             <legend>Combinaciones: </legend>
-            <table id="table_tallacolor" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-              <tr>
-                <th scope="col">Color</th>
-                <th scope="col">Talla</th>
-                <th scope="col">SKU/Código</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Imágenes</th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </table>
+
           </fieldset>
+        <!--
         </form>
+        -->
         <hr/>
       </div>
     </div>

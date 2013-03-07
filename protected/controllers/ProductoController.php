@@ -484,15 +484,53 @@ class ProductoController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Producto');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$model = new Producto($scenario='search');
+		  $model->unsetAttributes();
+		  $model->nombre = $_GET['query'];
+		
+		  //add the ->search() call: 
+		  $this->render('index',array('dataProvider'=>$model->search())); 
+
+	//	$dataProvider=new CActiveDataProvider('Producto');
+	//	$this->render('index',array(
+	//		'dataProvider'=>$dataProvider,
+	//	));
 	}
+
+
+	public function actionAdmin()
+	{
+		$producto = new Producto;
+
+		if (isset($_POST['query']))
+		{
+			//echo($_POST['query']);	
+			$producto->nombre = $_POST['query'];
+		}	
+		
+		$producto->status = 1;
+		
+		$dataProvider = $producto->search();
+		$this->render('admin',
+		array('model'=>$producto,
+		'dataProvider'=>$dataProvider,
+		));	
+			
+	/*		
+		$model=new Producto($scenario='search');
+		$model->unsetAttributes();  // clear any default values
+		if($_GET['Buscar']!='')
+			$model->nombre = $_GET['Buscar'];
+		$model->status = 1;
+
+  //add the ->search() call: 
+  $this->render('admin',array('model'=>$model,'dataProvider'=>$model->search()));
+	*/
+	}// fin
 
 	/**
 	 * Manages all models.
-	 */
+	 
 	public function actionAdmin()
 	{
 		$model=new Producto('search');

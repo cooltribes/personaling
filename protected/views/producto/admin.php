@@ -140,7 +140,7 @@ $template = '{summary}
 	  <hr/>
   <div class="row">
     <div class="span3">
-      <select class="span3">
+      <select class="span3" id="accion">
         <option id="accion">Acciones</option>
         <option>Activar</option>
         <option>Inactivar</option>
@@ -151,10 +151,9 @@ $template = '{summary}
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'ajaxButton',
 			'type'=>'danger',
-			'label'=>'procesar',
-			'loadingText'=>'loading...',
+			'label'=>'Procesar',
 			'url'=>array('producto/varias'),
-			'htmlOptions'=>array('id'=>'procesar'),
+			'htmlOptions'=>array('id'=>'procesar','class'=>'span0.5'),
 			'ajaxOptions'=>array(
 			'type' => 'POST',
 			'beforeSend' => "function( request )
@@ -162,15 +161,54 @@ $template = '{summary}
 				 var checkValues = $(':checkbox:checked').map(function() {
 			        return this.id;
 			    }).get().join();
+				
+				var uno = $('#accion').val();
 			
-			this.data += '&check='+checkValues;
+			this.data += '&accion='+uno+'&check='+checkValues;
 			}",
 			
-			'data'=>array('id'=>$model->id),
+			'data'=>array('a'=>'5'),
+			'success'=>"function(data){
+				
+				if(data==1)
+					alert('No ha seleccionado ningún producto.');
+				
+				if(data==2)
+					alert('No ha seleccionado ninguna acción.');
+					
+				if(data==3 || data==4){
+					
+						ajaxUpdateTimeout = setTimeout(function () {
+						$.fn.yiiListView.update(
+						'list-auth-items',
+						{
+						type: 'POST',	
+						url: '" . CController::createUrl('producto/admin') . "',
+						data: ajaxRequest}
+						
+						)
+						},0);
+					alert('Los productos han sido actualizados');
+					}
+				
+				if(data==5)
+				{
+					ajaxUpdateTimeout = setTimeout(function () {
+						$.fn.yiiListView.update(
+						'list-auth-items',
+						{
+						type: 'POST',	
+						url: '" . CController::createUrl('producto/admin') . "',
+						data: ajaxRequest}
+						
+						)
+						},0);
+				}
+				
+			}",
 			),
 			)); ?>
-    
-    <div class="span1"><a href="" id="procesar" title="procesar" class="btn btn-danger">Procesar</a></div>
+
     <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
   </div>	  
 		  

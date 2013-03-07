@@ -135,8 +135,13 @@ class Producto extends CActiveRecord
 
 	public function beforeSave()
 	{
+		
+		if($this->fInicio == "0000-00-00 00:00:00" && $this->fFin == "0000-00-00 00:00:00")
+		{
+			$this->fInicio = "";
+			$this->fFin = "";
+		}	
 
-			
 		if(!$this->fInicio && !$this->fFin)
 		{
 			$this->fInicio = "";

@@ -4,7 +4,15 @@ class TiendaController extends Controller
 {
 	public function actionIndex()
 	{
-		$this->render('index');
+		$producto = new Producto;		
+		$producto->status = 1;
+		
+		$dataProvider = $producto->search();
+		$this->render('index',
+		array('index'=>$producto,
+		'dataProvider'=>$dataProvider,
+		));	
+			
 	}
 
 	// Uncomment the following methods and override them if needed

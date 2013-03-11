@@ -63,7 +63,7 @@ class Producto extends CActiveRecord
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
 			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
-			array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
+			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
 			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -131,6 +131,36 @@ class Producto extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function busqueda()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('codigo',$this->codigo,true);
+		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('estado',$this->estado);
+		$criteria->compare('descripcion',$this->descripcion,true);
+		$criteria->compare('proveedor',$this->proveedor,true);
+		$criteria->compare('fInicio',$this->fInicio,true);
+		$criteria->compare('fFin',$this->fFin,true);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('status',$this->status,true);
+
+		//return new CActiveDataProvider($this, array(
+			//'criteria'=>$criteria,
+		//));
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
+	}
+
 
 
 	public function beforeSave()

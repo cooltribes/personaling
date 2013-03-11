@@ -92,6 +92,15 @@ echo"<tr>";
 
 	echo "<td>";
 	
+	echo CHtml::link("<i class='icon-eye-open'></i>","detalles/".$data->id,array(
+		'onClick'=>'{'. CHtml::ajax( array(
+			'success'=>"function(data){		
+					$('#myModal').html(data);
+					$('#myModal').modal();
+				}")) . 'return false;}'
+	));
+	 
+	/*
 	echo CHtml::ajaxLink("<i class='icon-eye-open'></i>","detalles/".$data->id,array(
 	"success"=>"function(data)
 				{
@@ -102,7 +111,7 @@ echo"<tr>";
 					
 				}"));
 	
-	/*
+	
 	$this->widget('bootstrap.widgets.TbButton', array(
 	    'buttonType' => 'link',
 	    'size'=>'mini', // null, 'large', 'small' or 'mini'

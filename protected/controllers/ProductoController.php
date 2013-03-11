@@ -522,7 +522,7 @@ class ProductoController extends Controller
 			}
 		}// isset */
 		
-		$producto = new Producto;
+		$producto = new Producto; 
 
 		if (isset($_POST['query']))
 		{

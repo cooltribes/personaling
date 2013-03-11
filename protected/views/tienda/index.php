@@ -35,7 +35,7 @@ $this->breadcrumbs=array(
         <img src="http://placehold.it/270x200" /> </div>
     </div>
     <?php
-	$template = '{summary}
+	$template = '
     <div class="span9 tienda_productos">
       <div class="row">
 		{items}
@@ -52,7 +52,7 @@ $this->breadcrumbs=array(
 	));    
 	?>
 	
-	<article class="span3"> <img src="http://placehold.it/270x320"/> </article>
+	
 	
   </div>
 </div>

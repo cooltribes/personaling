@@ -7,7 +7,7 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1;
 		
-		$dataProvider = $producto->search();
+		$dataProvider = $producto->busqueda();
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,

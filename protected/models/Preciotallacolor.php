@@ -7,8 +7,8 @@
  * @property integer $id
  * @property integer $cantidad
  * @property integer $tbl_producto_id
- * @property integer $tbl_talla_id
- * @property integer $tbl_color_id
+ * @property integer $talla_id
+ * @property integer $color_id
  * 
  */
 class PrecioTallaColor extends CActiveRecord
@@ -19,6 +19,7 @@ class PrecioTallaColor extends CActiveRecord
 	 * @return PrecioTallaColor the static model class
 	 */
 	 public $color = '';
+	 public $talla = '';
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -40,7 +41,7 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('producto_id, tbl_talla_id, tbl_color_id,sku', 'required'),
+			array('producto_id, talla_id, color_id,sku', 'required'),
 			array('cantidad, producto_id, talla_id, color_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -88,8 +89,8 @@ class PrecioTallaColor extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('cantidad',$this->cantidad);
 		$criteria->compare('producto_id',$this->tbl_producto_id);
-		$criteria->compare('talla_id',$this->tbl_talla_id);
-		$criteria->compare('color_id',$this->tbl_color_id);
+		$criteria->compare('talla_id',$this->talla_id);
+		$criteria->compare('color_id',$this->color_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -100,7 +101,8 @@ class PrecioTallaColor extends CActiveRecord
    //$this->day = date('d', strtotime($this->birthday));
     //$this->month = date('m', strtotime($this->birthday));
     //$this->year = date('Y', strtotime($this->birthday));
-	$this->color = Color::model()->findByPk($this->color_id)->valor;	
+	$this->color = Color::model()->findByPk($this->color_id)->valor;
+	$this->talla = Talla::model()->findByPk($this->talla_id)->valor;	
 
 		return parent::afterFind();
 	}	

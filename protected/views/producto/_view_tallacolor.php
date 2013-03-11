@@ -23,17 +23,19 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 	<?php echo $form->hiddenField($item,"[$i]color_id"); ?>
                 </td>
                 <td>
-                	<?php echo $form->textFieldRow($item, "[$i]talla_id", array('class'=>'input-small', 'disabled'=>true)); ?>
-                	
+                	<?php echo $form->textFieldRow($item, "[$i]talla", array('class'=>'input-small', 'disabled'=>true)); ?>
+                	<?php echo $form->hiddenField($item,"[$i]talla_id"); ?>
                 </td>
                 
                 <td>
                 	
-                	<?php echo $form->textFieldRow($item, "[$i]sku", array('class'=>'input-small')); ?>
+                	<?php echo $form->textFieldRow($item, "[$i]sku", array('placeholder'=>'SKU','class'=>'input-small')); ?>
+                	<?php echo $form->error($item,"[$i]sku"); ?>
                 </td>
                 <td>
                 	
                 	<?php echo $form->textFieldRow($item, "[$i]cantidad", array('class'=>'input-small')); ?>
+                	<?php echo $form->error($item,"[$i]cantidad"); ?>
                 </td>
                 
                 <td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>

@@ -91,7 +91,7 @@ echo"<tr>";
 		}	
 
 	echo "<td>";
-	/*
+	
 	echo CHtml::ajaxLink("<i class='icon-eye-open'></i>","detalles/".$data->id,array(
 	"success"=>"function(data)
 				{
@@ -101,19 +101,6 @@ echo"<tr>";
 					$('#myModal').modal();
 					
 				}"));
-	 * */
-echo CHtml::link("<i class='icon-eye-open'></i>",
-    $this->createUrl('producto/detalles',array('id'=>$data->id)),
-    array(// for htmlOptions
-      'onclick'=>' {'.CHtml::ajax( array(
-      'url'=>CController::createUrl('producto/detalles',array('id'=>$data->id)),
-          // 'beforeSend'=>'js:function(){if(confirm("Are you sure you want to delete?"))return true;else return false;}',
-           'success'=>"js:function(data){ $('#myModal').html(data);
-					$('#myModal').modal(); }")).
-         'return false;}',// returning false prevents the default navigation to another url on a new page 
-   // 'class'=>'delete-icon',
-    'id'=>'link'.$data->id)
-);	 
 	
 	/*
 	$this->widget('bootstrap.widgets.TbButton', array(

@@ -34,22 +34,25 @@ $this->breadcrumbs=array(
         <h5>Looks con estas prendas:</h5>
         <img src="http://placehold.it/270x200" /> </div>
     </div>
+    <?php
+	$template = '
     <div class="span9 tienda_productos">
       <div class="row">
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-        <article class="span3"> <img src="http://placehold.it/270x320"/> </article>
-
+		{items}
       </div>
+      {pager}
     </div>
+    ';
+	
+	$this->widget('zii.widgets.CListView', array(
+	    'id'=>'list-auth-items',
+	    'dataProvider'=>$dataProvider,
+	    'itemView'=>'_datos',
+	    'template'=>$template,
+	));    
+	?>
+	
+	
+	
   </div>
 </div>

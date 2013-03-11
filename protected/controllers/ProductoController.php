@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor'),
+				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -500,7 +500,29 @@ class ProductoController extends Controller
 
 	public function actionAdmin()
 	{
-		$producto = new Producto;
+		/* if(isset($_GET['caso'])){
+			$caso = $_GET['caso'];
+		
+			if($caso==1)
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("Seleccione al menos un producto."));
+			}
+			
+			if($caso==2)
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("Seleccione una acción"));
+			}
+			
+			if($caso==3)
+			{
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los productos han sido activados."));
+			}
+		}// isset */
+		
+		$producto = new Producto; 
 
 		if (isset($_POST['query']))
 		{
@@ -515,32 +537,70 @@ class ProductoController extends Controller
 		array('model'=>$producto,
 		'dataProvider'=>$dataProvider,
 		));	
-			
-	/*		
-		$model=new Producto($scenario='search');
-		$model->unsetAttributes();  // clear any default values
-		if($_GET['Buscar']!='')
-			$model->nombre = $_GET['Buscar'];
-		$model->status = 1;
 
-  //add the ->search() call: 
-  $this->render('admin',array('model'=>$model,'dataProvider'=>$model->search()));
-	*/
 	}// fin
 
 	/**
-	 * Manages all models.
-	 
-	public function actionAdmin()
+	 * Maneja las acciones para varios productos
+	 */
+	public function actionVarias()
 	{
-		$model=new Producto('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Producto']))
-			$model->attributes=$_GET['Producto'];
+		if($_POST['check']!=""){
+			
+			$checks = explode(',',$_POST['check']);
+			$accion = $_POST['accion'];	
+		
+			if($accion=="Acciones")
+			{
+				echo("2"); // no selecciono una accion
+			}
+			else if($accion=="Activar")
+			{
+				foreach($checks as $id){
+					$model = Producto::model()->findByPk($id);
+					$model->estado=0;
+					Producto::model()->updateByPk($id, array('estado'=>'0'));
+					/*if($model->save())
+						echo("guarda");
+					else {
+						print_r($model->getErrors());
+					}*/				
+				}
+				echo("3"); // activo los productos
+			}
+			else if($accion=="Inactivar")
+			{
+				foreach($checks as $id){
+					$model = Producto::model()->findByPk($id);
+					$model->estado=1;
+					Producto::model()->updateByPk($id, array('estado'=>'1'));
+					/*if($model->save())
+						echo("guarda");
+					else {
+						print_r($model->getErrors());
+					}*/				
+				}
+				echo("4");				
+			}
+			else if($accion=="Borrar")
+			{
+				foreach($checks as $id){
+					$model = Producto::model()->findByPk($id);
+					$model->status=0;
+					Producto::model()->updateByPk($id, array('status'=>'0'));
+					/*if($model->save())
+						echo("guarda");
+					else {
+						print_r($model->getErrors());
+					}*/				
+				}
+				echo("5");	
+			}
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+		}
+		else {
+			echo("1"); // no selecciono checks
+		}
 	}
 /**
  * Genera la fila para talla color

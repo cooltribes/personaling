@@ -624,10 +624,14 @@ class ProductoController extends Controller
 		$i = 0;
 		foreach($tallas as $talla){
 			foreach($colores as $color){
-				$tallacolor[$i]= new preciotallacolor;
-				$tallacolor[$i]->color_id = $color;
+				$tallacolor[$i]= new Preciotallacolor;
+				$color = Color::model()->findByAttributes(array('valor'=>$color));
+				if (isset($color)){
+					$tallacolor[$i]->color_id = $color->id;
+					$tallacolor[$i]->color = $color->valor;
+				}
 				$tallacolor[$i]->talla_id = $talla;
-				
+				$i++;
 			//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
 			}
 		}

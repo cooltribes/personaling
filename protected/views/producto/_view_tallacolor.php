@@ -19,7 +19,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
  <?php foreach($tallacolor as $i=>$item): ?>          
               <tr>
                 <td>
-                	<?php echo $form->textFieldRow($item, 'color_id', array('class'=>'input-small', 'disabled'=>true)); ?>
+                	<?php echo $form->textFieldRow($item, 'color', array('class'=>'input-small', 'disabled'=>true)); ?>
                 	
                 </td>
                 <td>

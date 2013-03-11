@@ -9,6 +9,7 @@
  * @property integer $tbl_producto_id
  * @property integer $tbl_talla_id
  * @property integer $tbl_color_id
+ * 
  */
 class PrecioTallaColor extends CActiveRecord
 {
@@ -17,6 +18,7 @@ class PrecioTallaColor extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return PrecioTallaColor the static model class
 	 */
+	 public $color = '';
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -93,4 +95,13 @@ class PrecioTallaColor extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	protected function afterFind(){
+		
+   //$this->day = date('d', strtotime($this->birthday));
+    //$this->month = date('m', strtotime($this->birthday));
+    //$this->year = date('Y', strtotime($this->birthday));
+	$this->color = Color::model()->findByPk($this->color_id)->valor;	
+
+		return parent::afterFind();
+	}	
 }

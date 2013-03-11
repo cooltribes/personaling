@@ -64,12 +64,12 @@ $this->breadcrumbs=array(
 						)
 						 * 
 						 */),
-				        array('label'=>'34'),
-				        array('label'=>'36'),
-				        array('label'=>'38'),
-				        array('label'=>'40'),
-				        array('label'=>'42'),
-				        array('label'=>'44'),
+				        array('label'=>'34',),
+				        array('label'=>'36',),
+				        array('label'=>'38',),
+				        array('label'=>'40',),
+				        array('label'=>'42',),
+				        array('label'=>'44',),
 				    ),
 				)); ?>
               </div>
@@ -129,12 +129,20 @@ $this->breadcrumbs=array(
               <label class="control-label required">Color</label>
               <div class="controls">
               	<?php
+              	 $colores = Color::model()->findAll();
+				 foreach($colores as $row)
+					$tags[]= $row->valor;
+				 
               	$this->widget('bootstrap.widgets.TbSelect2', array(
 	'asDropDownList' => false,
 	'name' => 'clevertech',
 	'options' => array(
-		'tags' => array(1=>'Negro mate',2=>'Titanio', 3=>'Azul', 4=>' Negro Violento',5=>'Agua Marina'),
-		'placeholder' => 'disciplines',
+		'tags'=>$tags,
+		//'tags' => array(1=>'Negro mate',2=>'Titanio', 3=>'Azul', 4=>' Negro Violento',5=>'Agua Marina'),
+		/*'tags'=> CHtml::listData($colores, 
+                'id', 'valor'),*/
+		//'tags' => array(array('id'=>1,'text'=>'Negro mate')),
+		'placeholder' => 'colores',
 		'width' => '40%',
 		'tokenSeparators' => array(',', ' ')
 )));	
@@ -221,12 +229,12 @@ $this->breadcrumbs=array(
 		                  {
 		                    // handle return data
 		                    //alert( data );
-		                    $('#table_tallacolor').append(data);
+		                    $('#fieldset_tallacolor').append(data);
 		                  }",
 		                  'data'=>array('id'=>$model->id),
 			),
 		)); ?>
-          <fieldset class="margin_top">
+          <fieldset class="margin_top" id="fieldset_tallacolor">
             <legend>Combinaciones: </legend>
 
           </fieldset>

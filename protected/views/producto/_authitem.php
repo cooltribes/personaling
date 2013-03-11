@@ -103,6 +103,7 @@ echo"<tr>";
 					
 				}"));
 	 * */
+	 
 echo CHtml::link("<i class='icon-eye-open'></i>",
     $this->createUrl('producto/detalles',array('id'=>$data->id)),
     array(// for htmlOptions
@@ -114,21 +115,8 @@ echo CHtml::link("<i class='icon-eye-open'></i>",
          'return false;}',// returning false prevents the default navigation to another url on a new page 
    // 'class'=>'delete-icon',
     'id'=>'link'.$data->id)
-);	 
-	
-	
-	$this->widget('bootstrap.widgets.TbButton', array(
-	    'buttonType' => 'link',
-	    'size'=>'mini', // null, 'large', 'small' or 'mini'
-	    'url' => '#myModal',
-	    'icon' => 'eye-open',
-	    'htmlOptions'=>array('data-toggle'=>'modal','data-target'=>'#myModal'),
-	)); 
-?>	
-	
+);		
 
-	
-<?php	
 	echo "</td>";
   // 	echo "<td><a href='#myModal' role='button' class='btn btn-mini' data-toggle='modal'><i class='icon-eye-open'></i></a></td>";
 	

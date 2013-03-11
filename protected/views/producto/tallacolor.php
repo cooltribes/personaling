@@ -12,7 +12,7 @@ $this->breadcrumbs=array(
 	'Tallas y Colores',
 );
 
-?>
+?> 
 
 <div class="container margin_top">
   <div class="page-header">
@@ -247,7 +247,16 @@ $this->breadcrumbs=array(
     <div class="span3">
       <div class="padding_left"> 
       	
-		 <?php $this->widget('bootstrap.widgets.TbButton', array(
+		 <?php 
+		  $this->widget('bootstrap.widgets.TbButton', array(
+            				'buttonType'=>'submit',
+						    'label'=>'Guardar',
+						    'block'=>'true',
+						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+						    'size'=>'large', // null, 'large', 'small' or 'mini'
+						)); 
+		 /*
+		 $this->widget('bootstrap.widgets.TbButton', array(
 				    'buttonType'=>'ajaxButton',
 				    'type'=>'danger',
 				    'label'=>'Guardar',
@@ -280,7 +289,10 @@ $this->breadcrumbs=array(
 				                  }",
 				                  'data'=>array('id'=>$model->id),
 					),
-				)); ?>      	
+				)); 
+		  * 
+		  */
+				?>      	
         <ul class="nav nav-stacked nav-tabs margin_top">
           <li><a href="#" title="Restablecer">Restablecer</a></li>
           <li><a href="#" title="Duplicar">Duplicar</a></li>

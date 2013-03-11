@@ -585,17 +585,41 @@ class ProductoController extends Controller
 /**
  * Manejador de Colors y Tallas
  */
-	public function actionTallacolor(){
-		if(isset($_GET['id'])){
+	public function actionTallacolor($id){
+		//if(isset($_GET['id'])){
 			//if(!$inventario = Inventario::model()->findByAttributes(array('tbl_producto_id'=>$id)))
 			//	$inventario=new Inventario;
 			
 			$model = Producto::model()->findByPk($id);
-		}
-		else {
+		//}
+		//else {
 			//$inventario=new Inventario;
-			$model = new Producto;
-		}		
+		//	$model = new Producto;
+		//}	
+		
+		if (isset($_POST['PrecioTallaColor'])){
+			$valid = true;
+			 foreach ( $_POST['PrecioTallaColor'] as $i => $tallacolor ) {
+			 	$preciotallacolor[$i] = new Preciotallacolor;
+				//$preciotallacolor->attributes=$tallacolor; 
+				$valid  = $valid  && $preciotallacolor[$i]->validate();
+			 	
+			 }
+		
+			if ($valid){
+				  foreach ( $preciotallacolor as $i => $tallacolor ) {
+						$preciotallacolor->attributes=$tallacolor;  
+					  $preciotallacolor->producto_id = $model->id;
+					  if ($preciotallacolor->save()){
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('success',UserModule::t("Se guardaron las cantidades"));				  	
+					  }	else {
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("No se pudieron guardar las cantidades, por favor intente de nuevo mas tarde"));				  	
+					  }
+				  }
+			}
+		}
 		$this->render('tallacolor',array(
 			'model'=>$model
 		));

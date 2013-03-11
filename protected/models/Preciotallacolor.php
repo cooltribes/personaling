@@ -70,7 +70,7 @@ class PrecioTallaColor extends CActiveRecord
 			'producto_id' => 'Tbl Producto',
 			'talla_id' => 'Tbl Talla',
 			'color_id' => 'Tbl Color',
-			'sky'=>'Codigo/Sku',
+			'sku'=>'Codigo/Sku',
 		);
 	}
 

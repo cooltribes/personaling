@@ -5,6 +5,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'htmlOptions'=>array('class'=>'personaling_form'),
     //'type'=>'stacked',
     'type'=>'inline',
+    
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),    
 )); ?>
 
 <table id="table_tallacolor" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -23,17 +28,19 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 	<?php echo $form->hiddenField($item,"[$i]color_id"); ?>
                 </td>
                 <td>
-                	<?php echo $form->textFieldRow($item, "[$i]talla_id", array('class'=>'input-small', 'disabled'=>true)); ?>
-                	
+                	<?php echo $form->textFieldRow($item, "[$i]talla", array('class'=>'input-small', 'disabled'=>true)); ?>
+                	<?php echo $form->hiddenField($item,"[$i]talla_id"); ?>
                 </td>
                 
                 <td>
                 	
-                	<?php echo $form->textFieldRow($item, "[$i]sku", array('class'=>'input-small')); ?>
+                	<?php echo $form->textFieldRow($item, "[$i]sku", array('placeholder'=>'SKU','class'=>'input-small')); ?>
+                	<?php echo $form->error($item,"[$i]sku"); ?>
                 </td>
                 <td>
                 	
                 	<?php echo $form->textFieldRow($item, "[$i]cantidad", array('class'=>'input-small')); ?>
+                	<?php echo $form->error($item,"[$i]cantidad"); ?>
                 </td>
                 
                 <td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>

@@ -130,22 +130,38 @@ $this->breadcrumbs=array(
               <div class="controls">
               	<?php
               	 $colores = Color::model()->findAll();
-				 foreach($colores as $row)
-					$tags[]= $row->valor;
-				 
+				 foreach($colores as $i => $row){
+					$data[$i]['text']= $row->valor;
+					$data[$i]['id'] = $row->id;
+				 }
+				$this->widget('bootstrap.widgets.TbSelect2',array(
+				'asDropDownList' => false,
+	'name' => 'clevertech',
+	'options' => array(
+		 'placeholder'=> "Seleccione un color",
+		 'multiple'=>true,
+		 'data'=>$data,
+		 //'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
+		// 'data'=> CHtml::listData(Color::model()->findAll(),'id', 'valor'),
+		 'width' => '40%',
+	),
+			)
+				);
+				/*
               	$this->widget('bootstrap.widgets.TbSelect2', array(
 	'asDropDownList' => false,
 	'name' => 'clevertech',
 	'options' => array(
 		'tags'=>$tags,
 		//'tags' => array(1=>'Negro mate',2=>'Titanio', 3=>'Azul', 4=>' Negro Violento',5=>'Agua Marina'),
-		/*'tags'=> CHtml::listData($colores, 
-                'id', 'valor'),*/
+		//'tags'=> CHtml::listData($colores, 
+        //        'id', 'valor'),
 		//'tags' => array(array('id'=>1,'text'=>'Negro mate')),
 		'placeholder' => 'colores',
 		'width' => '40%',
 		'tokenSeparators' => array(',', ' ')
 )));	
+*/
 ?>
               	<!--
                 <div class="input-append">
@@ -236,7 +252,10 @@ $this->breadcrumbs=array(
 		)); ?>
           <fieldset class="margin_top" id="fieldset_tallacolor">
             <legend>Combinaciones: </legend>
-
+<?php 
+	if (count($model->preciotallacolor))
+		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$model->preciotallacolor)); 
+?>
           </fieldset>
         <!--
         </form>
@@ -248,6 +267,7 @@ $this->breadcrumbs=array(
       <div class="padding_left"> 
       	
 		 <?php 
+		 /*
 		  $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType'=>'submit',
 						    'label'=>'Guardar',
@@ -255,18 +275,21 @@ $this->breadcrumbs=array(
 						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						    'size'=>'large', // null, 'large', 'small' or 'mini'
 						)); 
-		 /*
+		  * */
+		 
 		 $this->widget('bootstrap.widgets.TbButton', array(
 				    'buttonType'=>'ajaxButton',
 				    'type'=>'danger',
 				    'label'=>'Guardar',
 				    'block'=>'true',
 				   	'size'=> 'large',
-				    'url'=>array('producto/tallacolor'),
+				   // 'url'=>array('producto/tallacolor'),
+				   'url'=> CController::createUrl('producto/tallacolor',array('id'=>$model->id)) ,
 				    'htmlOptions'=>array('id'=>'buttonGuardar'),
 				    'ajaxOptions'=>array(
 				    	    'type' => 'POST',
-				    	    
+				    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
+		    				/*
 		    				'beforeSend' => "function( request )
 			                     {
 			                       var codigos = '';
@@ -281,17 +304,39 @@ $this->breadcrumbs=array(
 			                       cantidades = cantidades.substring(0, cantidades.length-1);
 			                       this.data += '&cantidades='+cantidades+'&codigos='+codigos;
 			                     }",
+							 * 
+							 */
 		                     'success' => "function( data )
 				                  {
 				                    // handle return data
-				                    alert( data );
+				                   // alert( data );
 				                   // $('#table_tallacolor').append(data);
+				                   data = JSON.parse( data );
+				                    if(data.status=='success'){
+				                        // $('#formResult').html('form submitted successfully.');
+				                        alert('si');
+				                         $('#Tallacolor-Form')[0].reset();
+				                        }
+				                         else{
+				                         	id = data.id;
+											 delete data['id'];
+				                         	
+				                        $.each(data, function(key, val) {
+				                        	key_tmp = key.split('_');
+											key_tmp.splice(1,0,id);
+				                        	key = key_tmp.join('_');
+											
+				                        	alert('#Tallacolor-Form #'+key+'_em_');
+				                        	
+				                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+				                        $('#Tallacolor-Form #'+key+'_em_').show();
+				                        });
+										}
 				                  }",
-				                  'data'=>array('id'=>$model->id),
+				                //  'data'=>array('id'=>$model->id),
 					),
 				)); 
-		  * 
-		  */
+		
 				?>      	
         <ul class="nav nav-stacked nav-tabs margin_top">
           <li><a href="#" title="Restablecer">Restablecer</a></li>

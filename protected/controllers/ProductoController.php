@@ -626,12 +626,18 @@ class ProductoController extends Controller
 		foreach($tallas as $talla){
 			foreach($colores as $color){
 				$tallacolor[$i]= new Preciotallacolor;
-				$color = Color::model()->findByAttributes(array('valor'=>$color));
+				$color_tmp = Color::model()->findByAttributes(array('valor'=>$color));
 				if (isset($color)){
-					$tallacolor[$i]->color_id = $color->id;
-					$tallacolor[$i]->color = $color->valor;
+					$tallacolor[$i]->color_id = $color_tmp->id;
+					$tallacolor[$i]->color = $color_tmp->valor;
 				}
-				$tallacolor[$i]->talla_id = $talla;
+				$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+				if (isset($color)){
+					$tallacolor[$i]->talla_id = $talla_tmp->id;
+					$tallacolor[$i]->talla = $talla_tmp->valor;
+				}
+				
+				
 				$i++;
 			//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
 			}
@@ -662,28 +668,44 @@ class ProductoController extends Controller
 			$valid = true;
 			 foreach ( $_POST['PrecioTallaColor'] as $i => $tallacolor ) {
 			 	$preciotallacolor[$i] = new Preciotallacolor;
-				//$preciotallacolor->attributes=$tallacolor; 
+				$this->performAjaxValidation($preciotallacolor[$i]);  
+				$preciotallacolor[$i]->attributes=$tallacolor; 
+				$preciotallacolor[$i]->producto_id = $model->id;
 				$valid  = $valid  && $preciotallacolor[$i]->validate();
+				if(!($valid)){
+					$error = CActiveForm::validate($preciotallacolor[$i]);
+                    if($error!='[]'){
+                    	$error = CJSON::decode($error);
+                    	$error['id']= $i;
+						echo CJSON::encode($error);
+					}
+                    Yii::app()->end();					
+				}
 			 	
 			 }
 		
 			if ($valid){
 				  foreach ( $preciotallacolor as $i => $tallacolor ) {
-						$preciotallacolor->attributes=$tallacolor;  
-					  $preciotallacolor->producto_id = $model->id;
-					  if ($preciotallacolor->save()){
+					//	$preciotallacolor->attributes=$tallacolor;  
+					  
+					  if ($tallacolor->save()){
 						Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Se guardaron las cantidades"));				  	
+						Yii::app()->user->setFlash('success',UserModule::t("Se guardaron las cantidades"));	
+						echo CJSON::encode(array(
+                                  'status'=>'success'
+                             ));	
+							 Yii::app()->end();		  	
 					  }	else {
 						Yii::app()->user->updateSession();
 						Yii::app()->user->setFlash('error',UserModule::t("No se pudieron guardar las cantidades, por favor intente de nuevo mas tarde"));				  	
 					  }
 				  }
 			}
-		}
+		} 
 		$this->render('tallacolor',array(
 			'model'=>$model
 		));
+		
 	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

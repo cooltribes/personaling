@@ -673,8 +673,11 @@ class ProductoController extends Controller
 				$valid  = $valid  && $preciotallacolor[$i]->validate();
 				if(!($valid)){
 					$error = CActiveForm::validate($preciotallacolor[$i]);
-                    if($error!='[]')
-                       echo $error;
+                    if($error!='[]'){
+                    	$error = CJSON::decode($error);
+                    	$error['id']= $i;
+						echo CJSON::encode($error);
+					}
                     Yii::app()->end();					
 				}
 			 	

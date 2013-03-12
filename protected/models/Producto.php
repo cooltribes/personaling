@@ -83,6 +83,7 @@ class Producto extends CActiveRecord
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
 			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
 			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
+			'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
 		);
 	}
 

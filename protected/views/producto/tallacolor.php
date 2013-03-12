@@ -252,7 +252,10 @@ $this->breadcrumbs=array(
 		)); ?>
           <fieldset class="margin_top" id="fieldset_tallacolor">
             <legend>Combinaciones: </legend>
-
+<?php 
+	if (count($model->preciotallacolor))
+		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$model->preciotallacolor)); 
+?>
           </fieldset>
         <!--
         </form>
@@ -315,8 +318,14 @@ $this->breadcrumbs=array(
 				                         $('#Tallacolor-Form')[0].reset();
 				                        }
 				                         else{
+				                         	id = data.id;
+											 delete data['id'];
+				                         	
 				                        $.each(data, function(key, val) {
-				                        	alert(val);
+				                        	key = key.split('_').splice(1,0,id).join('_');
+											
+				                        	alert('#Tallacolor-Form #'+key+'_em_');
+				                        	
 				                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
 				                        $('#Tallacolor-Form #'+key+'_em_').show();
 				                        });

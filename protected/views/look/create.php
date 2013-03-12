@@ -268,68 +268,107 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3>Publicar look</h3>
   </div>
-  <div class="modal-body">
-    <div class="control-group"> 
-      <!--[if lte IE 7]>
+  
+      <div class="modal-body">
+        <div class="control-group"> 
+            <!--[if lte IE 7]>
             <label class="control-label required">Titulo del look <span class="required">*</span></label>
 <![endif]-->
-      <div class="controls">
-        <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Titulo del look, ej.: Look de Verano Europeo" name="RegistrationForm[email]" class="span5">
-        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-      </div>
-    </div>
-    <div class="control-group"> 
-      <!--[if lte IE 7]>
-            <label class="control-label required">Descripción del look <span class="required">*</span></label>
+            <div class="controls">
+                <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Titulo del look, ej.: Look de Verano Europeo" name="RegistrationForm[email]" class="span5">
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+            </div>
+        </div>
+        <div class="control-group"> 
+            <!--[if lte IE 7]>
+            <label class="control-label required">DescripciÃ³n del look <span class="required">*</span></label>
 <![endif]-->
-      <div class="controls">
-        <textarea class="span5" placeholder="Descripción del look"></textarea>
-        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-      </div>
-    </div>
-    <hr/>
-    <h4>Escoge al tipo de usuaria que favorece</h4>
-    <div class="row">
-      <div class="span3">
-        <select>
-          <option>Estilo</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-      <div class="span3">
- <?php echo $form->radioButtonListInlineRow($model, 'tipo', array(
-        'Casual',
+            <div class="controls">
+                <textarea class="span5" placeholder="DescripciÃ³n del look"></textarea>
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+            </div>
+        </div>
+        <hr/>
+        <h4>Escoge al tipo de usuaria que favorece</h4>
+        <div class="control-group">
+            <label class="control-label required">Condición Física:</label>
+            <div class="controls">
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range),
+				)); ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label required">Color de Cabello:</label>
+            <div class="controls">
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range),
+				)); ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label required">Altura:</label>
+            <div class="controls">
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range),
+				)); ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label required">Color de Ojos:</label>
+            <div class="controls">
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range),
+				)); ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label required">Forma de Cuerpo :</label>
+            <div class="controls">
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range),
+				)); ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label required">Color de Piel:</label>
+            <div class="controls">
+                <div data-toggle="buttons-checkbox" class="btn-group">
+                    <button class="btn btn-small" type="button">Blanca</button>
+                    <button class="btn btn-small" type="button">Morena</button>
+                    <button class="btn btn-small" type="button">Rosada</button>
+                    <button class="btn btn-small" type="button">Amarilla</button>
+                </div>
+                <div class=" muted" style="display:none">Ayuda</div>
+            </div>
+        </div>
+        <hr/>
+        <div class="control-group">
+            <div class="controls">
+                <?php echo $form->radioButtonListInlineRow($model, 'tipo', array(
         'Atrevida',
+        'Conservador',
     )); ?>
-      </div>
+                <div class=" muted" style="display:none">Ayuda</div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-    	
-      <div class="span3 text_align_right">Look ideal para una altura comprendida entre:</div>
-      <div class="span3">
-        <select>
-          <option>1,60 - 1,70</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-            <div class="span3">
-        <select>
-          <option>Tipo de cuerpo</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer"> <a href="#" title="Cancelar" data-dismiss="modal" class="btn"> Cancelar</a> <a href="Look_seleccionado.php" title="Publicar" class="btn btn-danger" >Publicar</a> </div>
+  <div class="modal-footer"> <a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> <a href="Look_seleccionado.php" title="Publicar" class="btn btn-danger" >Publicar</a> </div>
   <?php $this->endWidget(); ?>
 <?php $this->endWidget(); ?>
 

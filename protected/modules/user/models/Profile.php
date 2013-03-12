@@ -160,7 +160,21 @@ class Profile extends UActiveRecord
 		else
 			return $array;
 	}
-	
+	static public function rangeButtons($str,$fieldValue=NULL) {
+		$rules = explode(';',$str);
+		$array = array();
+		for ($i=0;$i<count($rules);$i++) {
+			$item = explode("==",$rules[$i]);
+			if (isset($item[0])){
+				$array[$i]['label'] = ((isset($item[1]))?$item[1]:$item[0]);
+				$array[$i]['url'] = '#'.$item[0];
+			} 
+		}
+		if (isset($fieldValue)) 
+			if (isset($array[$fieldValue])) return $array[$fieldValue]; else return '';
+		else
+			return $array;
+	}	
 	public function widgetAttributes() {
 		$data = array();
 		$model=$this->getFields();

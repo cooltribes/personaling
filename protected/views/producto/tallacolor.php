@@ -245,17 +245,18 @@ $this->breadcrumbs=array(
 		                  {
 		                    // handle return data
 		                    //alert( data );
-		                    $('#fieldset_tallacolor').append(data);
+		                    $('#fieldset_tallacolor').html(data);
 		                  }",
 		                  'data'=>array('id'=>$model->id),
 			),
 		)); ?>
-          <fieldset class="margin_top" id="fieldset_tallacolor">
+          <fieldset class="margin_top" >
             <legend>Combinaciones: </legend>
+            <div id="fieldset_tallacolor">
 <?php 
 	if (count($model->preciotallacolor))
 		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$model->preciotallacolor)); 
-?>
+?></div>
           </fieldset>
         <!--
         </form>
@@ -314,9 +315,10 @@ $this->breadcrumbs=array(
 				                   data = JSON.parse( data );
 				                    if(data.status=='success'){
 				                        // $('#formResult').html('form submitted successfully.');
-				                        alert('si');
-				                         $('#Tallacolor-Form')[0].reset();
-				                        }
+				                        //alert('si');
+				                        // $('#Tallacolor-Form')[0].reset();
+				                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+									}
 				                         else{
 				                         	id = data.id;
 											 delete data['id'];
@@ -326,8 +328,8 @@ $this->breadcrumbs=array(
 											key_tmp.splice(1,0,id);
 				                        	key = key_tmp.join('_');
 											
-				                        	alert('#Tallacolor-Form #'+key+'_em_');
-				                        	
+				                        	//alert('#Tallacolor-Form #'+key+'_em_');
+				                        	 
 				                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
 				                        $('#Tallacolor-Form #'+key+'_em_').show();
 				                        });

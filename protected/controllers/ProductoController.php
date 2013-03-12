@@ -606,16 +606,18 @@ class ProductoController extends Controller
  * Genera la fila para talla color
  */
 	public function actionAddTallacolor(){
-		if(isset($_GET['id'])){
+			
+		//if(isset($_GET['id'])){
 			//if(!$inventario = Inventario::model()->findByAttributes(array('tbl_producto_id'=>$id)))
 			//	$inventario=new Inventario;
 			
-			$model = Producto::model()->findByPk($id);
-		}
-		else {
+			$model = Producto::model()->findByPk($_POST['id']);
+		//}
+		//else {
 			//$inventario=new Inventario;
-			$model = new Producto;
-		}	
+		//	$model = new Producto;
+		//}	
+		
 		if(isset($_POST['tallas'])){
 			$tallas = explode(',',$_POST['tallas']);
 			$colores = explode(',',$_POST['colores']);
@@ -641,6 +643,8 @@ class ProductoController extends Controller
 			//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
 			}
 		}
+		if (count($model->preciotallacolor))
+			$tallacolor = CMap::mergeArray($tallacolor,$model->preciotallacolor);
 		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$tallacolor));	
 		/*
 		$this->render('tallacolor',array(
@@ -666,7 +670,10 @@ class ProductoController extends Controller
 		if (isset($_POST['PrecioTallaColor'])){
 			$valid = true;
 			 foreach ( $_POST['PrecioTallaColor'] as $i => $tallacolor ) {
-			 	$preciotallacolor[$i] = new Preciotallacolor;
+			 	if ($tallacolor['id']!='')
+			 		$preciotallacolor[$i] = Preciotallacolor::model()->findByPk($tallacolor['id']);
+				else 
+					$preciotallacolor[$i] = new Preciotallacolor;
 				$this->performAjaxValidation($preciotallacolor[$i]);  
 				$preciotallacolor[$i]->attributes=$tallacolor; 
 				$preciotallacolor[$i]->producto_id = $model->id;
@@ -680,30 +687,37 @@ class ProductoController extends Controller
 					}
                     Yii::app()->end();					
 				}
-			 	
 			 }
-		
 			if ($valid){
+				
 				  foreach ( $preciotallacolor as $i => $tallacolor ) {
 					//	$preciotallacolor->attributes=$tallacolor;  
 					  
 					  if ($tallacolor->save()){
 						Yii::app()->user->updateSession();
 						Yii::app()->user->setFlash('success',UserModule::t("Se guardaron las cantidades"));	
-						echo CJSON::encode(array(
-                                  'status'=>'success'
-                             ));	
-							 Yii::app()->end();		  	
+						
+							
+							 	  	
 					  }	else {
+					  	$valid = false;
+					  	Yii::trace('PrecioTallaColor Error:'.print_r($tallacolor->getErrors(),true), 'registro');
 						Yii::app()->user->updateSession();
 						Yii::app()->user->setFlash('error',UserModule::t("No se pudieron guardar las cantidades, por favor intente de nuevo mas tarde"));				  	
 					  }
 				  }
+				if ($valid)  
+					echo CJSON::encode(array(
+	                                  'status'=>'success'
+	                             ));
 			}
 		} 
+		else {
 		$this->render('tallacolor',array(
 			'model'=>$model
 		));
+		}
+		
 		
 	}
 	/**

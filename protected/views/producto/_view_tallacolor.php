@@ -18,7 +18,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 <th scope="col">Talla</th>
                 <th scope="col">SKU/Código</th>
                 <th scope="col">Cantidad</th>
-                <th scope="col">Imágenes</th>
+                <!--<th scope="col">Imágenes</th>-->
                 <th scope="col">Acciones</th>
               </tr> 
  <?php foreach($tallacolor as $i=>$item): ?>          
@@ -43,9 +43,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 	<?php echo $form->error($item,"[$i]cantidad"); ?>
                 </td>
                 
-                <td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>
-                  <a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imágenes</a></td>
-                <td><a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> <a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a></td>
+                <!--<td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>
+                  <a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imágenes</a></td>-->
+                <td>
+                	<a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> 
+                	<a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a>
+                	<?php echo $form->hiddenField($item,"[$i]id"); ?>
+                </td>
               </tr>
  <?php endforeach; ?>             
 

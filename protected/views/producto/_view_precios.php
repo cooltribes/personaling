@@ -55,7 +55,7 @@ $this->breadcrumbs=array(
                 </div>
             </div>
             <div class="control-group">
-                 	<?php echo $form->textFieldRow($precio, 'ahorro', array('class'=>'span5')); ?>
+                 	<?php echo $form->textFieldRow($precio, 'ahorro', array('class'=>'span5','readonly'=>true)); ?>
             </div>
             <div class="control-group">
 				<?php echo $form->labelEx($precio,'precioDescuento', array('class' => 'control-label required')); ?>

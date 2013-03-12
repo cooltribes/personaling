@@ -20,7 +20,6 @@ class Producto extends CActiveRecord
 	const zara='Zara';
 	const bershka='Bershka';
 	const mango='Mango';
-	// const a='Zara';
 	
 	public $horaInicio="";
 	public $horaFin="";
@@ -28,6 +27,7 @@ class Producto extends CActiveRecord
 	public $minFin="";
 	public $uno="";
 	public $dos="";
+	public $categoria_id="";
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -142,7 +142,7 @@ class Producto extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
-		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('t.nombre',$this->nombre,true);
 		$criteria->compare('estado',$this->estado);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('proveedor',$this->proveedor,true);
@@ -150,10 +150,26 @@ class Producto extends CActiveRecord
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
+		$criteria->with = array('categorias');
+		/*
+		$op=0;
+		$hijos = array();
+		$cat = Categoria::model()->findAllByAttributes(array('id'=>$this->categoria_id,));
 
-		//return new CActiveDataProvider($this, array(
-			//'criteria'=>$criteria,
-		//));
+		if(isset($cat)){
+			$hijos = $this->hijos($cat,$op); 
+		
+			if($op==1){
+				foreach($hijos as $hijo){
+					$criteria->compare('tbl_categoria_id',$hijo->id);
+				}
+			}else if($op>=2){
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+			}
+		}*/
+		$criteria->compare('tbl_categoria_id',$this->categoria_id);
+		
+		$criteria->together = true;
 		
 		return new CActiveDataProvider($this, array(
        'pagination'=>array('pageSize'=>12,),
@@ -162,16 +178,25 @@ class Producto extends CActiveRecord
 		
 	}
 
-
+	public function hijos($items,$op){
+		
+		$ids = array();
+		
+		foreach ($items as $item) {				
+			if($item->hasChildren()){
+				$categ = Categoria::model()->findAllByAttributes(array('padreId'=>$item->id,));
+				foreach ($categ as $ca){
+					array_push($ids, $ca->id);
+					$op++;
+				}
+			}	
+		}
+		return $ids;
+	}
 
 	public function beforeSave()
 	{
 		
-		if($this->fInicio == "0000-00-00 00:00:00" && $this->fFin == "0000-00-00 00:00:00")
-		{
-			$this->fInicio = "";
-			$this->fFin = "";
-		}	
 
 		if(!$this->fInicio && !$this->fFin)
 		{
@@ -180,14 +205,14 @@ class Producto extends CActiveRecord
 			
 			$this->fecha = date("Y-m-d");
 			
-			if(!$this->estado)
+			if($this->estado=="")
 				$this->estado = 1;
 			
 			return parent::beforeSave();
 		}
 		else {
 
-			if(!$this->estado)
+			if($this->estado=="")
 				$this->estado = 1;
 			
 		$this->fInicio=Yii::app()->dateformatter->format("yyyy-MM-dd",$this->fInicio);	

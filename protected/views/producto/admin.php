@@ -105,13 +105,13 @@ echo $num;
   <hr/>
 <?php
 $template = '{summary}
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+  <table id="table" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
       <th rowspan="2" scope="col"><input name="check" type="checkbox" id="todos"></th>
       <th rowspan="2" scope="col">Producto</th>
       <th rowspan="2" scope="col">Sku</th>
-      <th rowspan="2" scope="col">Categoria</th>
-      <th rowspan="2" scope="col">Precio</th>
+      <th rowspan="2" scope="col">Categoría</th>
+      <th rowspan="2" scope="col">Precio (Bs.)</th>
       <th colspan="3" scope="col">Cantidad</th>
       <th rowspan="2" scope="col">Ventas Bs.</th>
       <th rowspan="2" scope="col">Estado</th>
@@ -134,6 +134,19 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_authitem',
 	    'template'=>$template,
+	    'afterAjaxUpdate'=>" function(id, data) {
+						    	
+							$('#todos').click(function() { 
+				            	inputs = $('table').find('input').filter('[type=checkbox]');
+				 
+				 				if($(this).attr('checked')){
+				                     inputs.attr('checked', true);
+				               	}else {
+				                     inputs.attr('checked', false);
+				               	} 	
+							});
+						   
+							} ",
 	));    
 	?>
 
@@ -175,6 +188,7 @@ $template = '{summary}
 				
 				if(data==2)
 					alert('No ha seleccionado ninguna acción.');
+					
 					
 				if(data==3 || data==4){
 					
@@ -236,33 +250,19 @@ function compara_fechas($fecha1,$fecha2)
 <script type="text/javascript">
 
 $(document).ready(function(){
- 
-            $("#todos").click(function() {
- 
+	
+            $("#todos").click(function() { 
+            	
                inputs = $('table').find('input').filter('[type=checkbox]');
  
-               if($(this).attr("checked"))
-               {
+               if($(this).attr("checked")){
                      inputs.attr('checked', true);
-               } 
-                else
-               {
+               }else {
                      inputs.attr('checked', false);
                } 	
 		});
        
                 var selected = new Array();                   
-               
-
-// $('#procesar').click(function () {
-   
-    
-    
-    
-//    alert(checkValues);
- // });
-       
- 
 });
   
 </script>	

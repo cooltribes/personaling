@@ -471,11 +471,12 @@ class ProductoController extends Controller
 			if(!isset($_GET['ajax']))
 				$this->redirect(array('admin'));
 		}
-		else{
+		else if(isset($_GET['id'])){
 			$model=Producto::model()->findByPk($id);
 			$model->status = 0;
-			$model->save();
+			Producto::model()->updateByPk($id, array('status'=>'0'));
 			$this->redirect(array('admin'));
+			
 		}
 	}
 

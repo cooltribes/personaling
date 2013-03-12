@@ -322,7 +322,9 @@ $this->breadcrumbs=array(
 											 delete data['id'];
 				                         	
 				                        $.each(data, function(key, val) {
-				                        	key = key.split('_').splice(1,0,id).join('_');
+				                        	key_tmp = key.split('_');
+											key_tmp.splice(1,0,id);
+				                        	key = key_tmp.join('_');
 											
 				                        	alert('#Tallacolor-Form #'+key+'_em_');
 				                        	

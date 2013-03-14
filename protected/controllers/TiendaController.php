@@ -74,7 +74,9 @@ class TiendaController extends Controller
 		}
 	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
-		print_r($this->getAllChildren($categorias));
+		
+		print_r($this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id))));
+		
 		$dataProvider = $producto->busqueda();
 		$this->render('index',
 		array('index'=>$producto,

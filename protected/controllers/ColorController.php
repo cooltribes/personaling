@@ -35,7 +35,7 @@ class ColorController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','upload'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -81,14 +81,19 @@ class ColorController extends Controller
                 }
                 else
                     $this->redirect(array('view','id'=>$model->id));
-            }
+            } 
 		}
 
         if (Yii::app()->request->isAjaxRequest)
         {
+            Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_addColor', array('model'=>$model), true)));
+                'div'=>$this->renderPartial('_addColor', array('model'=>$model), true,true)));
             exit;               
         }
         else
@@ -164,7 +169,26 @@ class ColorController extends Controller
 			'model'=>$model,
 		));
 	}
-
+	/**
+	 * Subir la imagen
+	 */
+	public function actionUpload()
+	{
+	        Yii::import("ext.EAjaxUpload.qqFileUploader");
+	 
+	        $folder=Yii::app()->getBasePath().'/../images/colores/';// folder for uploaded files
+	        Yii::trace('PrecioTallaColor Error:'.$folder, 'registro');
+	        $allowedExtensions = array("jpg");//array("jpg","jpeg","gif","exe","mov" and etc...
+	        $sizeLimit = 10 * 1024 * 1024;// maximum file size in bytes
+	        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+	        $result = $uploader->handleUpload($folder);
+	        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+	 
+	        $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
+	        $fileName=$result['filename'];//GETTING FILE NAME
+	 
+	        echo $return;// it's array
+	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

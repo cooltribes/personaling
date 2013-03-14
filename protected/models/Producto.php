@@ -137,7 +137,7 @@ class Producto extends CActiveRecord
 		));
 	}
 
-	public function busqueda()
+	public function busqueda($todos)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
@@ -154,26 +154,24 @@ class Producto extends CActiveRecord
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
-		$criteria->with = array('categorias');
+		$criteria->with = array('categorias');	
 		
-		/*
-		$op=0;
-		$hijos = array();
-		$cat = Categoria::model()->findAllByAttributes(array('id'=>$this->categoria_id,));
-
-		if(isset($cat)){
-			$hijos = $this->hijos($cat,$op); 
-		
-			if($op==1){
-				foreach($hijos as $hijo){
-					$criteria->compare('tbl_categoria_id',$hijo->id);
-				}
-			}else if($op>=2){
+		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
+		{
+			if(empty($todos)) // si no tiene hijos devuelve un array vacio por lo que debe buscar por el id de la categoria
+			{
 				$criteria->compare('tbl_categoria_id',$this->categoria_id);
 			}
-		}*/
-		
-		$criteria->compare('tbl_categoria_id',$this->categoria_id);
+			else // si tienes hijos
+				{
+					$criteria->addInCondition("tbl_categoria_id",$todos);	
+					echo($todos);
+				}		
+		}else if($todos=="a")
+		{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+		}
+			
 		
 		$criteria->together = true;
 		

@@ -124,7 +124,25 @@ $this->breadcrumbs=array(
               <div class="span6">
                 <p class="margin_bottom muted">Utiliza el buscador para encontrar y seleccionar los colores que correspondan</p>
               </div>
-              <a href="#myModal"  role="button" data-toggle="modal" class="btn btn-small pull-right"><i class="icon-plus"></i> Crear un nuevo color</a> </div>
+              <!--
+              <a href="#myModal"  role="button" data-toggle="modal" class="btn btn-small pull-right"><i class="icon-plus"></i> Crear un nuevo color</a> 
+              -->
+
+			
+			<?php $this->widget('bootstrap.widgets.TbButton', array(
+				'icon'=>'plus',
+			    'label'=>'Crear un nuevo color',
+			    //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			    'size'=>'small', // null, 'large', 'small' or 'mini'
+			    'htmlOptions'=> array(
+				      'data-toggle'=>'modal',
+						'data-target'=>'#dialogColor', 
+				        'onclick'=>"{addColor();}"
+				       ),
+				       
+			)); ?>	        
+				        
+              </div>
             <div class="control-group">
               <label class="control-label required">Color</label>
               <div class="controls">
@@ -354,51 +372,42 @@ $this->breadcrumbs=array(
 <!------------------- MODAL WINDOW ON -----------------> 
 
 <!-- Modal 1 -->
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogColor')); ?>
+<div class="divForForm"></div>
+<?php $this->endWidget(); ?>
+<!--
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-    <h3 id="myModalLabel">Agregar nuevo color</h3>
-  </div>
-  <div class="modal-body">
-  	<!--
-    <p class="alert alert-info">Puedes usar cualquier de las opciones a continuaciÃ³n:</p>
-    <h4>1. Usar el Color-picker</h4>
-    <input type="text" placeholder="Haz click para escoger un color" >
-    <hr/>
-    <h4>2. O Sube una imagen</h4>
-    <p>La imagen sera redimensionada y cortada a 70 x 70 pixeles</p>
-    <label>Elige una imagen:</label>
-    <div class="input-append">
-      <input class="span3"  type="text">
-      <span class="add-on"><i class="icon-search"></i></span> </div>
-    -->
-    <h4>Sube una imagen</h4>
-    <p>La imagen sera redimensionada y cortada a 70 x 70 pixeles</p>
-    <label>Elige una imagen:</label>
-    <div class="input-append">
-    <? $this->widget('ext.EAjaxUpload.EAjaxUpload',
-array(
-        'id'=>'uploadFile',
-        'config'=>array(
-               'action'=>Yii::app()->createUrl('controller/upload'),
-               'allowedExtensions'=>array("jpg"),//array("jpg","jpeg","gif","exe","mov" and etc...
-               'sizeLimit'=>10*1024*1024,// maximum file size in bytes
-               'minSizeLimit'=>10*1024*1024,// minimum file size in bytes
-               //'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
-               //'messages'=>array(
-               //                  'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
-               //                  'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
-               //                  'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",
-               //                  'emptyError'=>"{file} is empty, please select files again without it.",
-               //                  'onLeave'=>"The files are being uploaded, if you leave now the upload will be cancelled."
-               //                 ),
-               //'showMessage'=>"js:function(message){ alert(message); }"
-              )
-)); ?>
-    </div>
-    
-  </div>
-  <div class="modal-footer"> <a href="#" title="eliminar">Cancelar</a> <a href="" title="ver" class="btn btn-info">Guardar</a> </div>
+ 
 </div>
+-->
 <!------------------- MODAL WINDOW OFF ----------------->
-
+<script type="text/javascript">
+// here is the magic
+function addColor()
+{
+    <?php echo CHtml::ajax(array(
+            'url'=>array('color/create'),
+            'data'=> "js:$(this).serialize()",
+            'type'=>'post',
+            'dataType'=>'json',
+            'success'=>"function(data)
+            {
+                if (data.status == 'failure')
+                {
+                    $('#dialogColor div.divForForm').html(data.div);
+                          // Here is the trick: on submit-> once again this function!
+                    $('#dialogColor div.divForForm form').submit(addColor);
+                }
+                else
+                {
+                    $('#dialogColor div.divForForm').html(data.div);
+                    setTimeout(\"$('#dialogColor').dialog('close') \",3000);
+                }
+ 
+            } ",
+            ))?>;
+    return false; 
+ 
+}
+ 
+</script>

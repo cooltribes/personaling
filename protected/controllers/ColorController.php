@@ -70,12 +70,29 @@ class ColorController extends Controller
 		{
 			$model->attributes=$_POST['Color'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            {
+                if (Yii::app()->request->isAjaxRequest)
+                {
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"El color se agrego con exito"
+                        ));
+                    exit;               
+                }
+                else
+                    $this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_addColor', array('model'=>$model), true)));
+            exit;               
+        }
+        else
+           $this->render('create',array('model'=>$model,));
 	}
 
 	/**

@@ -62,7 +62,7 @@ class Color extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'valor' => 'Valor',
+			'valor' => 'Nombre',
 			
 		);
 	}

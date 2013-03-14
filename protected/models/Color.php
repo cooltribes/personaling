@@ -36,9 +36,11 @@ class Color extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('valor', 'length', 'max'=>45),
+			array('path_image', 'length', 'max'=>255),
+			array('rgb', 'length', 'max'=>6),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, valor', 'safe', 'on'=>'search'),
+			array('id, valor,path_image,rgb', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,6 +63,7 @@ class Color extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'valor' => 'Valor',
+			
 		);
 	}
 

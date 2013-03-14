@@ -74,7 +74,7 @@ class TiendaController extends Controller
 		}
 	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
-		
+		print_r($this->getAllChildren($categorias));
 		$dataProvider = $producto->busqueda();
 		$this->render('index',
 		array('index'=>$producto,
@@ -82,8 +82,21 @@ class TiendaController extends Controller
 		));	
 			
 	}
-	
-	
+
+	public function getAllChildren($models){
+		$items = array();
+		foreach($models as $model){
+			if (isset($model->id)){
+				$items[] = array('id'=> $model->id,'nombre'=> $model->nombre);
+			 	if($model->hasChildren()){
+                        $items= CMap::mergeArray($items,$this->getAllChildren($model->getChildren()));
+                }
+			}
+		}
+		return $items;
+		
+	}	
+	 
 	public function actionCategorias(){
 	
 	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']));

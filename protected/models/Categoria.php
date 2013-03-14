@@ -132,6 +132,7 @@ class Categoria extends CActiveRecord
 	public function getChildren(){
 		return Categoria::model()->findAllByAttributes(array('padreId'=>$this->id));
 	}
+
 	
 	
 }

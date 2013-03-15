@@ -401,7 +401,7 @@ function addColor()
                 else
                 {
                     $('#dialogColor div.divForForm').html(data.div);
-                    setTimeout(\"$('#dialogColor').dialog('close') \",3000);
+                    setTimeout(\"$('#dialogColor').modal('hide') \",3000);
                 }
  
             } ",

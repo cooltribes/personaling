@@ -75,12 +75,11 @@ array(
   	<a data-dismiss='modal' href="#" title="eliminar">Cancelar</a> 
   		<?php $this->widget('bootstrap.widgets.TbButton', array(
 	'type'=>'info',
-	'buttonType'=> 'ajaxSubmit',
+	//'buttonType'=> 'ajaxSubmit',
+	'buttonType'=> 'submit',
 	'label'=>'guardar',
-	'url'=>$this->createUrl('color/create'),
-	 'ajaxOptions'=>array(
-                       // 'update' => '#yw5_tab_2',
-                ),
+	//'url'=>array('color/create'),
+
 )); ?>
 	
   </div>

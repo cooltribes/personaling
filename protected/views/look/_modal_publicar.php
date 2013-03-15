@@ -20,6 +20,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
                 <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Titulo del look, ej.: Look de Verano Europeo" name="RegistrationForm[email]" class="span5">
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45)); ?>
+                <?php echo $form->error($model,'title'); ?>
             </div>
         </div>
         <div class="control-group"> 
@@ -27,8 +29,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <label class="control-label required">DescripciÃ³n del look <span class="required">*</span></label>
 <![endif]-->
             <div class="controls">
-                <textarea class="span5" placeholder="DescripciÃ³n del look"></textarea>
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+            	
+			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->error($profile,'description'); ?>
             </div>
         </div>
         <hr/>

@@ -126,7 +126,7 @@ $this->breadcrumbs=array(
 			//echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
 			//echo $form->radioButtonListRow($profile,$field->varname,Profile::range($field->range));
 		} elseif ($field->field_type=="TEXT") {
-			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+			echo $form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 		} elseif ($field->field_type=="DATE") {
 				
 			echo $form->labelEx($profile,$field->varname);	

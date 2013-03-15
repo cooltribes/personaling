@@ -35,7 +35,9 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1;
 		
-		$dataProvider = $producto->busqueda();
+		$a ="a";
+		
+		$dataProvider = $producto->busqueda($a);
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
@@ -46,26 +48,12 @@ class TiendaController extends Controller
 		public function actionFiltrar()
 	{
 		
-		/*
-		foreach ($data->categorias as $categ) {
-		
-			$cat = Categoria::model()->findByPk($categ->id);
-		
-   	echo "<td>".$cat->nombre."</td>"; // categoria
-	$r=1;
-	}
-		*/
-		
 		$producto = new Producto;
 		$producto->status = 1;
 
 		if (isset($_POST['cate1']))
 		{
-			 if($_POST['cate1']==0)
-			 	{}
-			 else
-			 	$producto->categoria_id = $_POST['cate1'];
-			
+			 	$producto->categoria_id = $_POST['cate1'];			
 		}	
 	
 		if (isset($_POST['busqueda']))
@@ -75,9 +63,12 @@ class TiendaController extends Controller
 	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
-		print_r($this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id))));
+		$todos = array();
+		//print_r($this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id))));
+		$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+		print_r($todos);
 		
-		$dataProvider = $producto->busqueda();
+		$dataProvider = $producto->busqueda($todos);
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
@@ -86,6 +77,24 @@ class TiendaController extends Controller
 	}
 
 	public function getAllChildren($models){
+		$items = array();
+		foreach($models as $model){
+			if (isset($model->id)){
+				$items[] = $model->id;
+			 	if($model->hasChildren()){
+                        $items= CMap::mergeArray($items,$this->getAllChildren($model->getChildren()));
+                }
+			}
+		}
+		return $items;
+		
+	}	
+	 
+	/*
+	 * funcion original
+	 * 
+	 * 
+	 * 	public function getAllChildren($models){
 		$items = array();
 		foreach($models as $model){
 			if (isset($model->id)){
@@ -98,6 +107,9 @@ class TiendaController extends Controller
 		return $items;
 		
 	}	
+	 * 
+	 * 
+	 * */ 
 	 
 	public function actionCategorias(){
 	

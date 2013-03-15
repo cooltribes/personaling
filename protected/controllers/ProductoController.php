@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','producto'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','precios','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias'),
+				'actions'=>array('admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -721,6 +721,22 @@ class ProductoController extends Controller
 		
 		
 	}
+
+
+/**
+ * Manejador de la vista general para el producto
+ */
+	public function actionProducto($id)
+	{
+		if(isset($_GET['prod'])){
+			$id = $_GET['prod'];
+	
+		$producto = Producto::model()->findByPk($id);
+		
+		$this->render('_view_detalle',array('producto'=>$producto));
+		}
+	}
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

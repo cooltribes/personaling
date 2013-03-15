@@ -147,6 +147,12 @@ $template = '{summary}
 							});
 						   
 							} ",
+		'pager'=>array(
+			'header'=>'',
+			'htmlOptions'=>array(
+			'class'=>'pagination pagination-right',
+		)
+		),					
 	));    
 	?>
 

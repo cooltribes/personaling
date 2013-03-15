@@ -48,15 +48,15 @@ class Precio extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('tbl_producto_id', 'required'),
-			array('combinacion, tipoDescuento, valorTipo, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('combinacion, tipoDescuento, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
 			array('ahorro, precioDescuento, precioImpuesto', 'numerical'),
 			array('costo, precioVenta','numerical',
-				    'integerOnly'=>true,
+				    'integerOnly'=>false,
 				    'min'=>0,
 				    'tooSmall'=>'El valor del producto no puede ser menor a 0',
 					),
 			array('valorTipo','numerical',
-				    'integerOnly'=>true,
+				    'integerOnly'=>false,
 				    'min'=>0,
 				    'tooSmall'=>'El descuento no puede ser menor a 0',
 					),
@@ -126,7 +126,64 @@ class Precio extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	
+	/*
+	public function beforeValidate()
+	{
+
+		$fmt = new \NumberFormatter( 'VEF', NumberFormatter::CURRENCY );
+		$num = $this->costo;
+		$this->costo = $fmt->parseCurrency($num, 'VEF');
+
+		//$fmt = new NumberFormatter( 'VEF', NumberFormatter::CURRENCY );
+		$num = $this->precioVenta;
+		$this->precioVenta = $fmt->parseCurrency($num, 'VEF');
+		
+		//$fmt = new NumberFormatter( 'VEF', NumberFormatter::CURRENCY );
+		$num = $this->valorTipo;
+		$this->valorTipo = $fmt->parseCurrency($num, 'VEF');
+		
+		//$fmt = new NumberFormatter( 'VEF', NumberFormatter::CURRENCY );
+		$num = $this->ahorro;
+		$this->ahorro = $fmt->parseCurrency($num, 'VEF');
+		
+		//$fmt = new NumberFormatter( 'VEF', NumberFormatter::CURRENCY );
+		$num = $this->precioDescuento;
+		$this->precioDescuento = $fmt->parseCurrency($num, 'VEF');
+		
+		//$fmt = new NumberFormatter( 'VEF', NumberFormatter::CURRENCY );
+		$num = $this->precioImpuesto;
+		$this->precioImpuesto = $fmt->parseCurrency($num, 'VEF');
+
+		
+		return parent::beforeValidate();
+	}
+	*/
+	public function afterFind()
+	{
+			
+		setlocale(LC_MONETARY, 've_VE');
+		$this->costo = money_format('%i', $this->costo);
+		
+		$this->precioVenta = money_format('%i', $this->precioVenta);
+		
+		$this->valorTipo = money_format('%i', $this->valorTipo);
+		
+		$this->ahorro = money_format('%i', $this->ahorro);
+		
+		$this->precioDescuento = money_format('%i', $this->precioDescuento);
+		
+		$this->precioImpuesto = money_format('%i', $this->precioImpuesto);
+		
+		/*
+		$this->costo = Yii::app()->numberFormatter->formatDecimal($this->costo); 
+		$this->precioVenta = Yii::app()->numberFormatter->formatDecimal($this->precioVenta); 
+		$this->valorTipo = Yii::app()->numberFormatter->formatDecimal($this->valorTipo);
+		$this->ahorro = Yii::app()->numberFormatter->formatDecimal($this->ahorro);
+		$this->precioDescuento = Yii::app()->numberFormatter->formatDecimal($this->precioDescuento);
+		$this->precioImpuesto = Yii::app()->numberFormatter->formatDecimal($this->precioImpuesto); 
+		*/
+		return parent::afterFind();
+	}
 	
 	public function beforeSave()
 	{

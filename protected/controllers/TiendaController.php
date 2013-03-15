@@ -73,12 +73,12 @@ class TiendaController extends Controller
 			$producto->nombre = $_POST['busqueda'];
 		}
 	
-		
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
 		$dataProvider = $producto->busqueda();
 		$this->render('index',
 		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
 			
 	}

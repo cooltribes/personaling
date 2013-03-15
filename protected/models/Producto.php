@@ -17,9 +17,12 @@
  */
 class Producto extends CActiveRecord
 {
-	const zara='Zara';
-	const bershka='Bershka';
+	const aldo='Aldo';
+	const desigual='Desigual';
 	const mango='Mango';
+	const accessorize='Accessorize';
+	const suite='SuiteBlanco';
+	
 	
 	public $horaInicio="";
 	public $horaFin="";
@@ -61,6 +64,7 @@ class Producto extends CActiveRecord
 			array('nombre, codigo', 'required'),
 			array('proveedor', 'length', 'max'=>45),
 			array('imagenes', 'required', 'on'=>'multi'),
+			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
 			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
 			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
@@ -151,6 +155,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->with = array('categorias');
+		
 		/*
 		$op=0;
 		$hijos = array();
@@ -167,6 +172,7 @@ class Producto extends CActiveRecord
 				$criteria->compare('tbl_categoria_id',$this->categoria_id);
 			}
 		}*/
+		
 		$criteria->compare('tbl_categoria_id',$this->categoria_id);
 		
 		$criteria->together = true;

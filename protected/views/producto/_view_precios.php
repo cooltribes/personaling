@@ -33,7 +33,7 @@ $this->breadcrumbs=array(
              <?php echo $form->error($precio,'combinacion'); ?>
           </div>
             <div class="control-group">
-                    <?php echo $form->textFieldRow($precio, 'costo', array('class'=>'span5')); ?>
+                    <?php  echo $form->textFieldRow($precio, 'costo', array('class'=>'span5')); ?>
                 <div class="controls">    
                 <div class=" muted">Precio al que compró este producto como mayorista </div>
                 </div>

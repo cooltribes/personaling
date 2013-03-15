@@ -268,7 +268,7 @@ class ProductoController extends Controller
         $datos=$datos."<th scope='row'>Precio base</th>";
 		
 		if($precio)
-	        $datos=$datos."<td> Bs.".$precio->precioVenta; 
+	        $datos=$datos."<td> Bs.".Yii::app()->numberFormatter->formatDecimal($precio->precioVenta); 
 		else
         	$datos=$datos."<td>"; 
 
@@ -278,7 +278,7 @@ class ProductoController extends Controller
         $datos=$datos."<th scope='row'>Precio con descuento</th>";
 		
 		if($precio)
-	        $datos=$datos."<td> Bs.".$precio->precioDescuento; 
+	        $datos=$datos."<td> Bs.".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); 
 		else
         	$datos=$datos."<td>"; 
 
@@ -289,7 +289,7 @@ class ProductoController extends Controller
 		
 		if($precio)
 			if($precio->tipoDescuento==0)
-	        	$datos=$datos."<td>".$precio->valorTipo."%";
+	        	$datos=$datos."<td>".Yii::app()->numberFormatter->formatDecimal($precio->valorTipo)."%";
 			else
 				$datos=$datos."<td> En Bs.";
 		else
@@ -302,7 +302,7 @@ class ProductoController extends Controller
 		
 		if($precio)
 			if($precio)
-				$datos=$datos."<td> Bs.".$precio->ahorro;
+				$datos=$datos."<td> Bs.".Yii::app()->numberFormatter->formatDecimal($precio->ahorro); 
 			else
         		$datos=$datos."<td>"; 
 

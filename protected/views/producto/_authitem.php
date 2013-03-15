@@ -1,26 +1,35 @@
 <?php
 
    	$r="";
-
+	$cats="";
+	
 echo"<tr>";
 	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
    	echo "<td>".$data->nombre."</td>";
    	echo "<td>".$data->codigo."</td>";
 	
-	foreach ($data->categorias as $categ) {
+		foreach ($data->categorias as $categ) {
 		
 			$cat = Categoria::model()->findByPk($categ->id);
-		
-   	echo "<td>".$cat->nombre."</td>"; // categoria
-	$r=1;
-	}
+	
+	if($cats=="")
+		$cats = $cats . $cat->nombre; 
+	else		
+		$cats = $cats ."<br>".$cat->nombre; 	
+	
+		$r=1;
+		}
+	if($r==1)
+		echo "<td>".$cats."</td>"; // categoria
 	
 	if($r!=1)
    		echo "<td></td>"; // categoria
 
    	
    	foreach ($data->precios as $precio) {
-   	echo "<td>".$precio->precioDescuento."</td>"; // precio
+   	echo "<td>".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento)."</td>"; // precio
+		
+   	//echo "<td>".$precio->precioDescuento."</td>"; // precio
 	$r=1;
 	}
 	

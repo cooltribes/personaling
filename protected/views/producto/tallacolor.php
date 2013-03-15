@@ -245,17 +245,18 @@ $this->breadcrumbs=array(
 		                  {
 		                    // handle return data
 		                    //alert( data );
-		                    $('#fieldset_tallacolor').append(data);
+		                    $('#fieldset_tallacolor').html(data);
 		                  }",
 		                  'data'=>array('id'=>$model->id),
 			),
 		)); ?>
-          <fieldset class="margin_top" id="fieldset_tallacolor">
+          <fieldset class="margin_top" >
             <legend>Combinaciones: </legend>
+            <div id="fieldset_tallacolor">
 <?php 
 	if (count($model->preciotallacolor))
 		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$model->preciotallacolor)); 
-?>
+?></div>
           </fieldset>
         <!--
         </form>
@@ -314,9 +315,10 @@ $this->breadcrumbs=array(
 				                   data = JSON.parse( data );
 				                    if(data.status=='success'){
 				                        // $('#formResult').html('form submitted successfully.');
-				                        alert('si');
-				                         $('#Tallacolor-Form')[0].reset();
-				                        }
+				                        //alert('si');
+				                        // $('#Tallacolor-Form')[0].reset();
+				                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+									}
 				                         else{
 				                         	id = data.id;
 											 delete data['id'];
@@ -326,8 +328,8 @@ $this->breadcrumbs=array(
 											key_tmp.splice(1,0,id);
 				                        	key = key_tmp.join('_');
 											
-				                        	alert('#Tallacolor-Form #'+key+'_em_');
-				                        	
+				                        	//alert('#Tallacolor-Form #'+key+'_em_');
+				                        	 
 				                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
 				                        $('#Tallacolor-Form #'+key+'_em_').show();
 				                        });
@@ -354,10 +356,11 @@ $this->breadcrumbs=array(
 <!-- Modal 1 -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
     <h3 id="myModalLabel">Agregar nuevo color</h3>
   </div>
   <div class="modal-body">
+  	<!--
     <p class="alert alert-info">Puedes usar cualquier de las opciones a continuaciÃ³n:</p>
     <h4>1. Usar el Color-picker</h4>
     <input type="text" placeholder="Haz click para escoger un color" >
@@ -368,6 +371,32 @@ $this->breadcrumbs=array(
     <div class="input-append">
       <input class="span3"  type="text">
       <span class="add-on"><i class="icon-search"></i></span> </div>
+    -->
+    <h4>Sube una imagen</h4>
+    <p>La imagen sera redimensionada y cortada a 70 x 70 pixeles</p>
+    <label>Elige una imagen:</label>
+    <div class="input-append">
+    <? $this->widget('ext.EAjaxUpload.EAjaxUpload',
+array(
+        'id'=>'uploadFile',
+        'config'=>array(
+               'action'=>Yii::app()->createUrl('controller/upload'),
+               'allowedExtensions'=>array("jpg"),//array("jpg","jpeg","gif","exe","mov" and etc...
+               'sizeLimit'=>10*1024*1024,// maximum file size in bytes
+               'minSizeLimit'=>10*1024*1024,// minimum file size in bytes
+               //'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
+               //'messages'=>array(
+               //                  'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
+               //                  'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
+               //                  'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",
+               //                  'emptyError'=>"{file} is empty, please select files again without it.",
+               //                  'onLeave'=>"The files are being uploaded, if you leave now the upload will be cancelled."
+               //                 ),
+               //'showMessage'=>"js:function(message){ alert(message); }"
+              )
+)); ?>
+    </div>
+    
   </div>
   <div class="modal-footer"> <a href="#" title="eliminar">Cancelar</a> <a href="" title="ver" class="btn btn-info">Guardar</a> </div>
 </div>

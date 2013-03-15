@@ -348,13 +348,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <div class="control-group">
             <label class="control-label required">Color de Piel:</label>
             <div class="controls">
-                <div data-toggle="buttons-checkbox" class="btn-group">
-                    <button class="btn btn-small" type="button">Blanca</button>
-                    <button class="btn btn-small" type="button">Morena</button>
-                    <button class="btn btn-small" type="button">Rosada</button>
-                    <button class="btn btn-small" type="button">Amarilla</button>
-                </div>
-                <div class=" muted" style="display:none">Ayuda</div>
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range),
+				)); ?>
             </div>
         </div>
         <hr/>

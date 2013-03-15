@@ -125,10 +125,10 @@ class ProfileController extends Controller
 					//	Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
 					//}
 				} else {
-					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
 				}
 			} else {
-				Yii::trace('username:'.$model->username.' Error:'.implode("|",$profile->getErrors()), 'registro');
+				Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
 			}
 		}	
 	    $this->render('tuestilo',array(

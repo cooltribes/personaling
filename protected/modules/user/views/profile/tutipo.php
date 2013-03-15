@@ -84,6 +84,12 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
                   ?>
                 </div>
+                <div class="span3">
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+                  ?>
+                </div>                
               </div>
             </div>
             <legend class="text_align_center">Tu forma de cuerpo: </legend>

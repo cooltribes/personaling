@@ -140,6 +140,21 @@ while (i <  canvas.length) {
         </div>
         <!-- CANVAS OFF --> 
       </div>
+      <!--
+      <form method="POST" id="form_productos">
+      	<input id="productos_id" type="hidden" value="1,2,3,4" />
+      </form>
+      -->
+      <?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id'=>'form_productos',
+    //'type'=>'horizontal',
+    'htmlOptions'=>array('class'=>'personaling_form'),
+    //'type'=>'stacked',
+    'type'=>'inline',
+)); ?>
+<?php echo CHtml::hiddenField('productos_id'); ?>
+<?php $this->endWidget(); ?>
     </section>
     <section class="span4">
       <div class="">
@@ -276,10 +291,25 @@ while (i <  canvas.length) {
 function addPublicar()
 {
 	var productos_id = '';
+	var count = 0;
 	$(".canvas input").each(function(item){
+		
 		productos_id += $(this).val()+',';
+		count++;
 	});
-	alert(productos_id);
+	//productos_id = "1,2,3,4";
+	//$("#productos_id").val(productos_id);
+	count = 6;
+	//alert(productos_id);
+	if (count >= 6){
+	
+	$("#form_productos").submit();
+	} else {
+		bootbox.alert("Debes tener al menos seis productos");
+		
+		
+	}
+	
     <?php
     /* 
     	echo CHtml::ajax(array(

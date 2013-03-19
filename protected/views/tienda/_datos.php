@@ -8,7 +8,7 @@ $con=0;
 	
 		if(isset($ima)){
 				$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "320",'class'=>'img-polaroid'));
-				echo("<td> <article class='span3'> ".$a."</article> </td>");
+				echo("<td><a href='../producto/detalle/".$data->id."' ><article class='span3'> ".$a."</article></a></td>");
 				$con=$id;
 			}
 			else {

@@ -47,7 +47,13 @@
               <div class="controls">
               	
               	<?php 
-              		if($model->fInicio!="0000-00-00 00:00:00" && $model->fFin!="0000-00-00 00:00:00")
+              		if ($model->fInicio=="" && $model->fFin=="")
+					{
+						echo("<label class='checkbox'>
+                  <input type='checkbox''>
+                  ¿Se publicará con fecha de Inicio y fin?</label>");
+					}
+					else if($model->fInicio!="0000-00-00 00:00:00" && $model->fFin!="0000-00-00 00:00:00")
 					{
 						echo CHtml::CheckBox('calendario','true', array (
                      						'checked'=>'checked',
@@ -56,12 +62,8 @@
 						echo(" ¿Se publicará con fecha de Inicio y fin?");				
 											
 					}
-					else
-					{
-						echo("<label class='checkbox'>
-                  <input type='checkbox''>
-                  ¿Se publicará con fecha de Inicio y fin?</label>");
-					}
+					
+
 				
               	?>
                 

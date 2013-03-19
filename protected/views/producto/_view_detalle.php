@@ -1,68 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<title>Personaling</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Personal shoppers">
-<meta name="author" content="Cooltribes">
 
-<!-- Le styles -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<style>
-body {
-	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-}
-</style>
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
-
-<!-- Le LESS -->
-<link rel="stylesheet/less" type="text/css" href="css/style.less" />
-<script src="js/less-1.3.3.min.js" type="text/javascript"></script>
-
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-<!-- Fav and touch icons -->
-<link rel="shortcut icon" href="../assets/ico/favicon.png">
-</head>
-
-<body>
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container"> <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> <a class="brand" href="index.php">Personaling</a>
-      <nav class="nav-collapse collapse pull-right">
-        <ul class="nav">
-          <li class="active"><a href="lo_mas_top.php" title="Lo más top">Top</a></li>
-          <li><a href="Buscar_looks_Catalogo.php" title="Tu personal Shopper">Tu personal Shopper</a></li>
-          <li><a href="tienda.php" title="tienda">Tienda</a></li>
-          <li><a href="http://personaling.com/blog" target="_blank" title="blog">Magazine</a></li>
-          <li><a href="bolsa_de_compras.php" title="tu carrito de compras"><i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span></a></li>
-          <li class="dropdown"> <a data-toggle="dropdown" class="dropdown-toggle" href="#">Tu cuenta <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li class="nav-header">Usuario</li>
-              <li><a  href="tu_cuenta_usuario.php" title="tu perfil">Tu Cuenta</a></li>
-              <li><a href="#" title="tu perfil">Perfil</a></li>
-              <li><a href="#" title="configuración de tu cuenta">Configuracion</a></li>
-              <li class="divider"></li>
-              <li class="nav-header">Personal Shopper</li>
-              <li><a  href="tu_cuenta_usuario_personal_shopper.php" title="tu perfil">Tu Cuenta </a></li>
-              <li><a  href="crear_look.php" title="Crear Look">Crear Look</a></li>
-              <li class="divider"></li>
-              <li class="nav-header">Admin</li>
-              <li><a href="panel_de_control.php" title="Panel de control">Panel de Control admin</a></li>
-              <li class="divider"></li>
-              <li><a href="#" title="salir de tu cuenta">Salir</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <!--/.nav-collapse --> 
-    </div>
-  </div>
-</div>
 <div class="container margin_top" id="carrito_compras">
   <div class="row margin_bottom_large">
     <div class="span12">
@@ -71,25 +7,61 @@ body {
         <article class="span8">
           <div class="row">
             <div class="span6">
-              <h1> <?php echo($producto->nombre); ?> <span class="label label-important"> ON SALE</span></h1>
+              <h1> <?php echo $producto->nombre; ?> <span class="label label-important"> ON SALE</span></h1>
             </div>
             <div class="span2">
               <div class="pull-right"><i class="icon-heart"></i> <i class="icon-share"></i> </div>
             </div>
           </div>
           <div class="row">
-            <div class="span6"> 
-            <!-- FOTO principal ON -->
-            	<img src="http://placehold.it/770x640" />
-            <!-- FOTO principal OFF -->
-            </div>
+            <?php
+            
+            	echo "<div class='span6'> 
+            			<!-- FOTO principal ON -->";
+            	
+            	$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
+	
+			foreach ($ima as $img){
+					
+				if($img->orden==1)
+				{
+					echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "770", "height" => "640", 'id'=>'principal'));
+					//  <img src="http://placehold.it/770x640" />
+					echo "<!-- FOTO principal OFF -->";
+	          		echo "</div>";	
+					
+					echo " <div class='span2 margin_bottom'> 
+            				<!-- FOTOS Secundarias ON -->";
+				
+					//imprimiendo igual la primera 
+					$pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "170", "height" => "145",'class'=>'margin_bottom_small', 'value'=>$pri->id));					
+							
+				}
+								
+				if($img->orden!=1){
+					//luego el resto para completar el scroll					
+					echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "170", "height" => "145",'class'=>'margin_bottom_small', 'value'=>$img->id));
+					// <img src="http://placehold.it/170x145" class="margin_bottom_small"/>
+				}
+			}
+			
+			echo "</div>";
+            
+			/*
+			 * 
             <div class="span2 margin_bottom"> 
             <!-- FOTOS Secundarias ON -->
-            	<img src="http://placehold.it/170x145" class="margin_bottom_small"/>
-                <img src="http://placehold.it/170x145" class="margin_bottom_small"/> 
+            	<img src="http://placehold.it/170x145" class="margin_bottom_small"/> 
                 <img src="http://placehold.it/170x145" class="margin_bottom_small"/> 
             <!-- FOTOS Secundarias OFF -->
              </div>
+			 * 
+			 * */
+			
+            ?>
+
+
           </div>
         </article>
 		<!-- Columna principal OFF -->
@@ -99,7 +71,13 @@ body {
         <div class="span4 margin_bottom margin_top padding_top">
           <div class="row">
             <div class="span2">
-              <h4 >Precio: Bs. 3500</h4>
+              <h4 >Precio: Bs. 
+              	
+              <?php foreach ($producto->precios as $precio) {
+   					echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
+   					}
+	
+			?></h4>
             </div>
             <div class="span2"> <a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-warning pull-right"><i class="icon-shopping-cart icon-white"></i> Añadir a la bolsa</a> </div>
           </div>
@@ -118,16 +96,37 @@ body {
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
               <li class="active"><a href="#detalles">Detalles</a></li>
-              <li><a href="#Recomendaciones">Recomendaciones para lucirlo</a></li>
               <li><a href="#Envio">Envio</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="detalles">
-                <div class="clearfix">
-                  <h4>Marca / Disenador</h4>
+                <div class="clearfix"> 
+                  <h4> <?php
+                  	
+                  	if($producto->proveedor==1)
+						echo "Aldo"; 
+						
+					if($producto->proveedor==2)
+						echo "Desigual";
+					
+					if($producto->proveedor==3)
+						echo "Accessorize";
+					
+					if($producto->proveedor==4)
+						echo "SuiteBlanco";
+					
+					if($producto->proveedor==5)
+						echo "Mango";
+					
+					if($producto->proveedor==6 || $producto->proveedor==0)
+						echo "Otro proveedor"; 
+					 
+					 ?></h4>
                   <img src="http://placehold.it/70x70" class="img-circle pull-right" />
                   <p><strong>Bio</strong>: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmoofficia deserunt mollit anim id</p>
-                  <a href="#">Ver looks de esta marca</a> </div>
+                  <p><a href="#">Ver looks de esta marca</a></p>
+                  <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p>
+                  </div>
               </div>
               <div class="tab-pane" id="Recomendaciones">Recomendaciones</div>
               <div class="tab-pane" id="Envio">Envio</div>
@@ -151,20 +150,22 @@ body {
 
 <!-- /container -->
 
-	<footer class="container">
-        <div class="row">
-           <div class="span12"><hr/> Personaling &reg; 2013  </div>
-        </div>
-    </footer>
-
-  <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-
 <script>
-$('.popover_actions').popover({ html : true });
+$(document).ready(function(){
+	
+   $(".margin_bottom_small").click(function(){
+      
+     	var image = $("#principal");
+     	var thumbnail = $(this).attr("src");
+          	
+      //  alert(thumbnail);
+          	
+     	$("#principal").fadeOut("slow",function(){
+     		$("#principal").attr("src", thumbnail);
+     	});
+
+      	$("#principal").fadeIn("slow",function(){});
+      });
+      
+   });
 </script>
-  </body>
-</html>

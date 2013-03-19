@@ -2,7 +2,7 @@
               <?php
               foreach($categorias as $categoria){
               ?>
-              <li class="span2" > 
+              <li class="span2" draggable="false" > 
               	<div>
               		
               		
@@ -31,6 +31,7 @@
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
 						    'class' => 'thumbnail',
 						    'id' => 'categoria'.$categoria->id,
+						    'draggable'=>"false",
 						  )
 						);
 					?>

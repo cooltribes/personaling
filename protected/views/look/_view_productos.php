@@ -33,9 +33,10 @@
 						    'id' => 'producto'.$producto->id,
 						  )
 						);
-					?>
+					?> 
                 	<div class="caption">
                   		<p><?php echo $producto->nombre; ?></p>
+                  		<input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
 	                </div>
               	</div>
               	<?php

@@ -1,3 +1,10 @@
+<?php
+$this->breadcrumbs=array(
+	'Looks'=>array('admin'),
+	'Crear',
+);
+
+?>
 <style>
 .column.over {
   border: 1px dashed #000;
@@ -8,6 +15,7 @@
 }
 </style>
 <script language="JavaScript">
+var dragSrcEl = '';
 function handleDragStart(e) {
 	
   this.style.opacity = '0.4';  // this / e.target is the source node.
@@ -110,8 +118,8 @@ while (i <  canvas.length) {
 	    'type'=>'danger',
 
 	    'htmlOptions'=> array(
-		      'data-toggle'=>'modal',
-				'data-target'=>'#dialogPublicar',
+		     // 'data-toggle'=>'modal',
+			//	'data-target'=>'#dialogPublicar',
 				'class'=>'pull-right margin_left_small', 
 		        'onclick'=>"{addPublicar();}"
 		       ),	    
@@ -267,7 +275,14 @@ while (i <  canvas.length) {
 // here is the magic
 function addPublicar()
 {
-    <?php echo CHtml::ajax(array(
+	var productos_id = '';
+	$(".canvas input").each(function(item){
+		productos_id += $(this).val()+',';
+	});
+	alert(productos_id);
+    <?php
+    /* 
+    	echo CHtml::ajax(array(
             'url'=>array('look/create'),
             'data'=> "js:$(this).serialize()",
             'type'=>'post',
@@ -287,7 +302,9 @@ function addPublicar()
                 }
  
             } ",
-            ))?>;
+            )) 
+          */  
+            ?>;
     return false; 
  
 }

@@ -85,6 +85,7 @@ class Producto extends CActiveRecord
 		return array(
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
+			'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
 			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
 			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
 			'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),

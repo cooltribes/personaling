@@ -1,3 +1,10 @@
+<?php
+$this->breadcrumbs=array(
+	'Looks'=>array('admin'),
+	'Crear',
+);
+
+?>
 <style>
 .column.over {
   border: 1px dashed #000;
@@ -8,6 +15,7 @@
 }
 </style>
 <script language="JavaScript">
+var dragSrcEl = '';
 function handleDragStart(e) {
 	
   this.style.opacity = '0.4';  // this / e.target is the source node.
@@ -110,8 +118,8 @@ while (i <  canvas.length) {
 	    'type'=>'danger',
 
 	    'htmlOptions'=> array(
-		      'data-toggle'=>'modal',
-				'data-target'=>'#dialogPublicar',
+		     // 'data-toggle'=>'modal',
+			//	'data-target'=>'#dialogPublicar',
 				'class'=>'pull-right margin_left_small', 
 		        'onclick'=>"{addPublicar();}"
 		       ),	    
@@ -132,6 +140,21 @@ while (i <  canvas.length) {
         </div>
         <!-- CANVAS OFF --> 
       </div>
+      <!--
+      <form method="POST" id="form_productos">
+      	<input id="productos_id" type="hidden" value="1,2,3,4" />
+      </form>
+      -->
+      <?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id'=>'form_productos',
+    //'type'=>'horizontal',
+    'htmlOptions'=>array('class'=>'personaling_form'),
+    //'type'=>'stacked',
+    'type'=>'inline',
+)); ?>
+<?php echo CHtml::hiddenField('productos_id'); ?>
+<?php $this->endWidget(); ?>
     </section>
     <section class="span4">
       <div class="">
@@ -143,18 +166,78 @@ while (i <  canvas.length) {
         <div class="tab-content">
           <div class="tab-pane active" id="tab1">
             <div class="row">
+            	<form id="formu" class="no_margin_bottom form-search">
               <div class="span2">
-                <select class="span2">
-                  <option>Buscar por categoria</option>
-                  <option>Categoria 1</option>
-                  <option>Categoria 2</option>
-                  <option>Categoria 3</option>
-                </select>
+ <select id="padreId" class="span3" name="padreId">
+        	<option value="0">Buscar por Categoria</option>
+    <?php 
+
+	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',));
+	nodos($cat); 
+	
+	function nodos($items){
+		
+		foreach ($items as $item){
+			
+			if($item->padreId==1)
+			{
+				echo "<option value='".$item->id."' name='".$item->id."'>"; // cada option tiene entonces el id de su categoria
+				echo $item->nombre;
+				echo "</option>";
+			}
+			else {
+				echo "<option value='".$item->id."' name='".$item->id."'> &nbsp;&nbsp;&nbsp;";
+				echo $item->nombre;
+				echo "</option>";
+			}
+			
+			if ($item->hasChildren()){
+				nodos($item->getChildren());
+			}
+		}	
+		return 1;
+	}
+?>	
+   		</select>
               </div>
+           <?php
+	Yii::app()->clientScript->registerScript('busqueda',
+		"
+		$('#padreId').change(function(){". CHtml::ajax(
+						 
+						  array( // ajaxOptions
+						    'url'=>Yii::app()->createUrl( 'look/categorias'),
+						    'type' => 'POST',
+						    'beforeSend' => "function( request )
+						                     {
+						                       // Set up any pre-sending stuff like initializing progress indicators
+						                     }",
+						    'success' => "function( data )
+						                  {
+						                    // handle return data
+						                    //alert( data );
+						                    $('#div_categorias').html(data);
+						                  }",
+						    'data' => "js:$('#formu').serialize()",
+						  ),
+						  array( //htmlOptions
+						    'href' => Yii::app()->createUrl( 'look/categorias' ),
+						    'class' => 'thumbnail',
+						  
+						    'draggable'=>"false",
+						  )
+						).
+			
+		"return false;
+		});",CClientScript::POS_READY
+	);
+	
+	?>              
               <div class="span2">
                 <input name="" type="text" placeholder="Buscar por palabra clave" class="span2">
               </div>
               <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>
+              </form>
             </div>
             <hr/>
             <div id="div_categorias">
@@ -267,7 +350,28 @@ while (i <  canvas.length) {
 // here is the magic
 function addPublicar()
 {
-    <?php echo CHtml::ajax(array(
+	var productos_id = '';
+	var count = 0;
+	$(".canvas input").each(function(item){
+		productos_id += $(this).val()+',';
+		count++;
+	});
+	//productos_id = "1,2,3,4";
+	$("#productos_id").val(productos_id);
+	//count = 6;
+	//alert(productos_id);
+	if (count >= 3){
+		
+		$("#form_productos").submit();
+	} else {
+		bootbox.alert("Debes tener al menos seis productos");
+		
+		
+	}
+	
+    <?php
+    /* 
+    	echo CHtml::ajax(array(
             'url'=>array('look/create'),
             'data'=> "js:$(this).serialize()",
             'type'=>'post',
@@ -287,7 +391,9 @@ function addPublicar()
                 }
  
             } ",
-            ))?>;
+            )) 
+          */  
+            ?>;
     return false; 
  
 }

@@ -168,12 +168,16 @@ class Profile extends UActiveRecord
 			if (isset($item[0])){
 				$array[$i]['label'] = ((isset($item[1]))?$item[1]:$item[0]);
 				$array[$i]['url'] = '#'.$item[0];
+				
+				if ((int)$item[0]&(int)$fieldValue){
+					
+					//echo 'item'.$item[0].'value'.$fieldValue;
+					$array[$i]['active'] = true;
+				}
 			} 
 		}
-		if (isset($fieldValue)) 
-			if (isset($array[$fieldValue])) return $array[$fieldValue]; else return '';
-		else
-			return $array;
+		return $array;
+
 	}	
 	public function widgetAttributes() {
 		$data = array();

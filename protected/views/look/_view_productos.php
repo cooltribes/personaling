@@ -7,8 +7,11 @@
               		
               		
               		<?php
-              		$image = CHtml::image("http://placehold.it/180");
-
+              		
+					if ($producto->mainimage)
+					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => "180", "height" => "180"));
+					else 
+					$image = CHtml::image("http://placehold.it/180");	
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
 					echo CHtml::ajaxLink(
 						  $image,
@@ -33,9 +36,10 @@
 						    'id' => 'producto'.$producto->id,
 						  )
 						);
-					?>
+					?> 
                 	<div class="caption">
                   		<p><?php echo $producto->nombre; ?></p>
+                  		<input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
 	                </div>
               	</div>
               	<?php

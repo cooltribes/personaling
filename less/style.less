@@ -335,26 +335,28 @@ src: url('../fonts/entypo.woff'),
 	line-height: 0;
 }
 
-#myLogo a, #site-title a {
-    background:  no-repeat center;
+#myLogo a, #site-title a , .brand{
 	display: block;
-    height: 135px;
-    margin-bottom: -70px;
-    margin-top: -15px;
-    position: fixed;
+    height: 36px;
+    position: fixed; background:url(../images/logo_personaling.png) no-repeat center left;
     text-indent: -9999px;
-    width: 310px;
+    width: 284px;
     z-index: 100;
+	margin:0 !important;
+	padding:0;
     
 }
-.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner{	
+
+.navbar-inner{ 
+	background:@color3;
+	border-bottom:none;
+}
+.bar-fixed-top .navbar-inner, .navbar-fixed-top .navbar-inner{	
 	border-top:5px solid @color1;
 	margin-top:-2px;
 	min-height:55px;
 }
-.navbar-inner{ 
-	background:@color3;
-	border:0;}
+
 .navbar .nav > li > a{ padding:18px 15px}
 
 /*------------ HEADER OFF --------------*/

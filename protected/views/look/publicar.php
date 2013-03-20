@@ -22,8 +22,10 @@ $this->breadcrumbs=array(
     <h1>Publicar Look</h1>
   </div>
   <div class="row">
-    <section class="span6"><img src="images/look_sample_grande_1.jpg" width="770" height="640"  class="img_1" alt="Look"> 
-      <?php if (Yii::app()->user->isAdmin()){ ?>
+    <section class="span6">
+    	 
+    	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "450", "height" => "226", 'class'=>'img_1')); ?>
+      <?php if (!Yii::app()->user->isAdmin()){ ?>
       <!-- Tabla  para el admin ON -->
       <hr/>
       <h4>Productos que componen el Look </h4>
@@ -68,6 +70,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'htmlOptions'=>array('class'=>'well personaling_form'),
     //'type'=>'stacked',
     'type'=>'inline',
+    'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
 )); ?>      	
         <legend>Ultimo paso</legend>
         <p>LLena los siguientes campos:</p>
@@ -89,7 +95,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<?php echo $form->error($model,'description'); ?>
           </div>
         </div>
-        <?php if (Yii::app()->user->isAdmin()){ ?>
+        <?php if (!Yii::app()->user->isAdmin()){ ?>
         <!-- Para el admin ON -->
         
         <div class="control-group ">

@@ -1,3 +1,10 @@
+<?php
+$this->breadcrumbs=array(
+	'Looks'=>array('admin'),
+	'Crear',
+);
+
+?>
 <style>
 .column.over {
   border: 1px dashed #000;
@@ -8,6 +15,7 @@
 }
 </style>
 <script language="JavaScript">
+var dragSrcEl = '';
 function handleDragStart(e) {
 	
   this.style.opacity = '0.4';  // this / e.target is the source node.
@@ -110,8 +118,8 @@ while (i <  canvas.length) {
 	    'type'=>'danger',
 
 	    'htmlOptions'=> array(
-		      'data-toggle'=>'modal',
-				'data-target'=>'#dialogPublicar',
+		     // 'data-toggle'=>'modal',
+			//	'data-target'=>'#dialogPublicar',
 				'class'=>'pull-right margin_left_small', 
 		        'onclick'=>"{addPublicar();}"
 		       ),	    
@@ -132,6 +140,21 @@ while (i <  canvas.length) {
         </div>
         <!-- CANVAS OFF --> 
       </div>
+      <!--
+      <form method="POST" id="form_productos">
+      	<input id="productos_id" type="hidden" value="1,2,3,4" />
+      </form>
+      -->
+      <?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id'=>'form_productos',
+    //'type'=>'horizontal',
+    'htmlOptions'=>array('class'=>'personaling_form'),
+    //'type'=>'stacked',
+    'type'=>'inline',
+)); ?>
+<?php echo CHtml::hiddenField('productos_id'); ?>
+<?php $this->endWidget(); ?>
     </section>
     <section class="span4">
       <div class="">
@@ -267,7 +290,29 @@ while (i <  canvas.length) {
 // here is the magic
 function addPublicar()
 {
-    <?php echo CHtml::ajax(array(
+	var productos_id = '';
+	var count = 0;
+	$(".canvas input").each(function(item){
+		
+		productos_id += $(this).val()+',';
+		count++;
+	});
+	//productos_id = "1,2,3,4";
+	//$("#productos_id").val(productos_id);
+	count = 6;
+	//alert(productos_id);
+	if (count >= 6){
+	
+	$("#form_productos").submit();
+	} else {
+		bootbox.alert("Debes tener al menos seis productos");
+		
+		
+	}
+	
+    <?php
+    /* 
+    	echo CHtml::ajax(array(
             'url'=>array('look/create'),
             'data'=> "js:$(this).serialize()",
             'type'=>'post',
@@ -287,7 +332,9 @@ function addPublicar()
                 }
  
             } ",
-            ))?>;
+            )) 
+          */  
+            ?>;
     return false; 
  
 }

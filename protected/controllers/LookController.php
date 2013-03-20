@@ -30,7 +30,7 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias'),
+				'actions'=>array('admin','delete','create','categorias','publicar'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -70,7 +70,73 @@ public function actionCategorias(){
 					)
 				);
 	}
+	public function actionView($id)
+	{
+		echo "hola".$id;
+	}
+	public function actionPublicar($id)
+	{
+		$model = Look::model()->findByPk($id);
+		if(isset($_POST['Look']))
+			{
+				$model->attributes=$_POST['Look'];
+				if($model->save())
+	            {
+	                if (Yii::app()->request->isAjaxRequest)
+	                {
+	                    echo CJSON::encode(array(
+	                        'status'=>'success', 
+	                        'div'=>"El color se agrego con exito"
+	                        ));
+	                    exit;               
+	                }
+	                else
+	                    $this->redirect(array('view','id'=>$model->id));
+	            } 
+			}	
+		       $this->render('publicar',array(
+				'model'=>$model,
+				
+				)
+			);
+				
+	}
 	public function actionCreate()
+	{
+		$model=new Look;
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
+		//echo $_POST['productos_id'];
+		if (isset($_POST['productos_id'])){
+			$model->title = "Look Nuevo";
+			$model->altura = 0;
+			$model->contextura = 0;
+			$model->pelo = 0;
+			$model->ojos = 0;
+			$model->tipo_cuerpo = 0;
+			$model->piel = 0;
+			$model->tipo = 0;
+			if($model->save()){
+				foreach(explode(',',$_POST['productos_id']) as $producto_id){
+					$lookhasproducto = new LookHasProducto;
+					$lookhasproducto->look_id = $model->id;
+					$lookhasproducto->producto_id = $producto_id;
+					$lookhasproducto->save();
+					 
+				}
+			   $this->redirect(array('look/publicar','id'=>$model->id)); 
+				Yii::app()->end();			
+			} else{
+					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
+				}
+		} else {
+       $this->render('create',array(
+				'model'=>$model,
+				'categorias'=>$categorias,
+			)
+		);
+		}
+	}
+	public function actionCreate3()
 	{
 		$model=new Look;
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));

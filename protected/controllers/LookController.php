@@ -59,7 +59,7 @@ public function actionCategorias(){
 	  	// echo 'rafa';
 	  }
 }
-	public function actionCreate()
+	public function actionCreate2()
 	{
 		$model = new PublicarForm;	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
@@ -70,7 +70,50 @@ public function actionCategorias(){
 					)
 				);
 	}
+	public function actionCreate()
+	{
+		$model=new Look;
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
 
+		if(isset($_POST['Look']))
+		{
+			$model->attributes=$_POST['Look'];
+			if($model->save())
+            {
+                if (Yii::app()->request->isAjaxRequest)
+                {
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"El color se agrego con exito"
+                        ));
+                    exit;               
+                }
+                else
+                    $this->redirect(array('view','id'=>$model->id));
+            } 
+		}
+
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_modal_publicar', array('model'=>$model), true,true)));
+            exit;               
+        }
+        else
+           $this->render('create',array(
+           						'model'=>$model,
+           						'categorias'=>$categorias,
+						)
+				);
+	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

@@ -1,5 +1,5 @@
 <?php
-
+	$es="";
    	$r="";
 	$cats="";
 	
@@ -12,28 +12,30 @@ echo"<tr>";
 		
 			$cat = Categoria::model()->findByPk($categ->id);
 	
-	if($cats=="")
-		$cats = $cats . $cat->nombre; 
-	else		
-		$cats = $cats ."<br>".$cat->nombre; 	
-	
-		$r=1;
+			if($cats=="")
+				$cats = $cats . $cat->nombre; 
+			else		
+				$cats = $cats ."<br>".$cat->nombre; 	
+			
+				$r=1;
 		}
+		
 	if($r==1)
 		echo "<td>".$cats."</td>"; // categoria
 	
 	if($r!=1)
    		echo "<td></td>"; // categoria
 
-   	
-   	foreach ($data->precios as $precio) {
-   	echo "<td>".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento)."</td>"; // precio
-		
-   	//echo "<td>".$precio->precioDescuento."</td>"; // precio
-	$r=1;
+   	if($data->precios){
+	   	foreach ($data->precios as $precio) {
+	   	echo "<td>".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento)."</td>"; // precio
+			
+	   	//echo "<td>".$precio->precioDescuento."</td>"; // precio
+		$es=1;
+		}
 	}
 	
-	if($r!=1)
+	if($es!=1)
 		echo "<td></td>"; // precio
 	
 	//$inv = Inventario::model()->findByAttributes(array('tbl_producto_id' => $data->id));
@@ -106,7 +108,7 @@ echo"<tr>";
 	"success"=>"function(data)
 				{
 					console.log(data);
-					
+					 
 					$('#myModal').html(data);
 					$('#myModal').modal();
 					

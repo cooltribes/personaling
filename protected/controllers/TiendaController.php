@@ -34,6 +34,7 @@ class TiendaController extends Controller
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		$producto = new Producto;		
 		$producto->status = 1;
+		$producto->estado = 0; // solo productos activos
 		
 		$a ="a";
 		
@@ -49,7 +50,8 @@ class TiendaController extends Controller
 	{
 		
 		$producto = new Producto;
-		$producto->status = 1;
+		$producto->status = 1; // que no haya sido borrado logicamente
+		$producto->estado = 0; // que no esté inactivo
 
 		if (isset($_POST['cate1'])) // desde el select
 		{

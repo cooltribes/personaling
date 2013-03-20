@@ -164,8 +164,7 @@ class Producto extends CActiveRecord
 			}
 			else // si tienes hijos
 				{
-					$criteria->addInCondition("tbl_categoria_id",$todos);	
-					echo($todos);
+					$criteria->addInCondition("tbl_categoria_id",$todos);
 				}		
 		}else if($todos=="a")
 		{

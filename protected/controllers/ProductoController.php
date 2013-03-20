@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','producto'),
+				'actions'=>array('index','view','detalle'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -726,15 +726,12 @@ class ProductoController extends Controller
 /**
  * Manejador de la vista general para el producto
  */
-	public function actionProducto($id)
+	public function actionDetalle($id)
 	{
-		if(isset($_GET['prod'])){
-			$id = $_GET['prod'];
-	
 		$producto = Producto::model()->findByPk($id);
 		
-		$this->render('_view_detalle',array('producto'=>$producto));
-		}
+		$this->render('_view_detalle2',array('producto'=>$producto));
+
 	}
 
 	/**

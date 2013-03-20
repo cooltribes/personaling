@@ -87,7 +87,7 @@ class Precio extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'costo' => 'Costo',
-			'combinacion' => 'Combinacion',
+			'combinacion' => 'Combinación',
 			'precioVenta' => 'Precio Venta',
 			'tipoDescuento' => 'Tipo de Descuento',
 			'valorTipo' => 'Valor: (% o Bs.)',

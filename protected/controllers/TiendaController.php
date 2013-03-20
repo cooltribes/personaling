@@ -51,12 +51,18 @@ class TiendaController extends Controller
 		$producto = new Producto;
 		$producto->status = 1;
 
-		if (isset($_POST['cate1']))
+		if (isset($_POST['cate1'])) // desde el select
 		{
-			 	$producto->categoria_id = $_POST['cate1'];			
-		}	
+			//if($_POST['cate1']!=0)	
+				$producto->categoria_id = $_POST['cate1'];			
+		}
+		
+		if (isset($_POST['idact'])) // actualizacion desde los ajaxlink
+		{
+			 $producto->categoria_id = $_POST['idact'];			
+		}		
 	
-		if (isset($_POST['busqueda']))
+		if (isset($_POST['busqueda'])) // desde el input
 		{	
 			$producto->nombre = $_POST['busqueda'];
 		}
@@ -64,9 +70,7 @@ class TiendaController extends Controller
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
 		$todos = array();
-		//print_r($this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id))));
 		$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
-		print_r($todos);
 		
 		$dataProvider = $producto->busqueda($todos);
 		$this->render('index',
@@ -119,10 +123,29 @@ class TiendaController extends Controller
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+		
+		// para que también filtre del lado del list view
+		/*
+		$producto = new Producto;
+		$producto->status = 1;
+		$producto->categoria_id = $_POST['padreId']; // el id del que se le da click		
+		$todos = array(); 
+		$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+		$dataProvider = $producto->busqueda($todos);
+		*/
+		
 	  if ($categorias){
-	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias),true,true);
+		 echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'padre',
+			'div'=> $this->renderPartial('_view_categorias',array('categorias'=>$categorias),true,true)
+		));
+		exit;
 	  }else {
-	  		echo("2");
+	  		echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'hijo'
+		));
 	  }
 }
 

@@ -12,8 +12,8 @@
 @color3: #fff;
 @color4: #000; /* Negro */
 @color5: #ddd; /* Gris */
-@color6: #e30893;
-@color7: #60c058;
+@color6: #AD3682; /* Morado claro */
+@color7: #22F28A; /* Verde chillon */
 @color8: #685b5b;
 @color9: #9b9894;
 
@@ -286,7 +286,7 @@ body {
 	background:url(../images/bg_site_acuerela.jpg) no-repeat  right -30px;
 	}
 h1,h2,h3, h4{ font-weight:300}
-
+.well{ .border_radius(@radius:1px)}
 
 /*------------ BUTTONS ON --------------*/
 	.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child{
@@ -346,10 +346,13 @@ src: url('../fonts/entypo.woff'),
 	padding:0;
     
 }
+.navbar-inverse .brand{
+    position: fixed; background:url(../images/logo_personaling_inverso.png) no-repeat center left;
+}
 
 .navbar-inner{ 
 	background:@color3;
-	border-bottom:none;
+	border-bottom:1px solid #ddd;
 }
 .bar-fixed-top .navbar-inner, .navbar-fixed-top .navbar-inner{	
 	border-top:5px solid @color1;
@@ -661,13 +664,59 @@ src: url('../fonts/entypo.woff'),
 /*----------- Tienda OFF -------------*/
 
 /*------------ Perfil ON ------------*/
-.configuracion_perfil{
+.tu_perfil{
+	
+	.nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a{ 
+		.border_radius(@radius:0);
+		}
+	
+	
 	ul{
 		min-height:100px;
 		margin-bottom:20px;
+		li a{
+			color:#666;
+			}
 		}	
-	
-	
+	.card{
+		background:#f5f5f5;
+		box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);
+		.card_content{
+			.padding_small;
+			.muted{ font-size:.8em;}
+			}	
+		.card_numbers{
+						.T_xlarge{ 
+							display: block;
+							float: left;
+							font-size: 2em !important;
+							text-align: right;
+							min-width: 20%;
+							margin-top:.5em;
+						}
+						.padding_small;
+						border-bottom:1px solid #ddd;
+						p{
+							float:left; 
+							margin-top:0.4em;
+							width:60%;
+							margin-left:1em;
+							color:#666;}
+			}
+		}
+		h2{ 
+			font-size:1.5em;
+			margin-bottom:1em;
+			.color1;
+		}
+		aside{
+			h5{
+				.CAPS;
+				font-size:.8em;
+				font-weight:300;
+				text-align: center;
+				color:#999;}
+		}
 }
 
 

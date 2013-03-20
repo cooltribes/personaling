@@ -48,8 +48,10 @@ class Look extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical', 'integerOnly'=>true),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
@@ -79,14 +81,14 @@ class Look extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'title' => 'Title',
+			'title' => 'Titulo',
 			'description' => 'Description',
 			'altura' => 'Altura',
-			'contextura' => 'Contextura',
-			'pelo' => 'Pelo',
-			'ojos' => 'Ojos',
+			'contextura' => 'Condición Física',
+			'pelo' => 'Color de Cabello',
+			'ojos' => 'Color de Ojos',
 			'tipo_cuerpo' => 'Tipo Cuerpo',
-			'piel' => 'Piel',
+			'piel' => 'Color de Piel',
 			'created_on' => 'Created On',
 			'tipo' => 'Tipo',
 		);

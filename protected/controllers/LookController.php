@@ -22,7 +22,7 @@ class LookController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','getimage'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -42,6 +42,41 @@ class LookController extends Controller
 	public function actionIndex()
 	{
 		$this->render('index');
+	}
+	public function actionGetImage()
+	{
+		 $image1_path=Yii::app()->getBasePath().'/../images/producto/1/27_thumb.jpg';
+		 $image2_path=Yii::app()->getBasePath().'/../images/producto/1/28_thumb.jpg';
+		 $image3_path=Yii::app()->getBasePath().'/../images/producto/1/29_thumb.jpg';
+		 $image4_path=Yii::app()->getBasePath().'/../images/producto/1/39_thumb.jpg';
+		 $image5_path=Yii::app()->getBasePath().'/../images/producto/1/40_thumb.jpg';
+		 $image6_path=Yii::app()->getBasePath().'/../images/producto/1/41_thumb.jpg';
+		// $image1_path=Yii::app()->baseUrl.'/images/producto/1/27_thumb.jpg';
+		
+		// imagealphablending($image1, false);
+		//imagesavealpha($image2, true);
+		$canvas = imagecreatetruecolor(450, 226);
+		$image1 = imagecreatefromstring(file_get_contents($image1_path));
+		$image2 = imagecreatefromstring(file_get_contents($image2_path));
+		$image3 = imagecreatefromstring(file_get_contents($image3_path));
+		$image4 = imagecreatefromstring(file_get_contents($image4_path));
+		$image5 = imagecreatefromstring(file_get_contents($image5_path));
+		$image6 = imagecreatefromstring(file_get_contents($image6_path));
+		//imagecopymerge($image1, $image2, 100, 0, 0, 0, 300, 113, 100); //have to play with these numbers for it to work for you, etc.
+		imagecopy($canvas, $image1, 0, 0, 0, 0, 150, 113);
+		imagecopy($canvas, $image2, 150, 0, 0, 0, 150, 113);
+		imagecopy($canvas, $image3, 300, 0, 0, 0, 150, 113);
+		imagecopy($canvas, $image4, 0, 113, 0, 0, 150, 113);
+		imagecopy($canvas, $image5, 150, 113, 0, 0, 150, 113);
+		imagecopy($canvas, $image6, 300, 113, 0, 0, 150, 113);
+		
+		header('Content-Type: image/png');
+		imagepng($canvas);
+		imagedestroy($canvas);
+		imagedestroy($image1);
+		imagedestroy($image2);
+		 
+		
 	}
 public function actionCategorias(){
 	

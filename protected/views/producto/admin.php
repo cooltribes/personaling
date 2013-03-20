@@ -134,6 +134,7 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_authitem',
 	    'template'=>$template,
+	    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	
 							$('#todos').click(function() { 

@@ -357,10 +357,11 @@ function addPublicar()
 		count++;
 	});
 	//productos_id = "1,2,3,4";
-	//$("#productos_id").val(productos_id);
+	$("#productos_id").val(productos_id);
 	//count = 6;
 	//alert(productos_id);
 	if (count >= 3){
+		
 		$("#form_productos").submit();
 	} else {
 		bootbox.alert("Debes tener al menos seis productos");

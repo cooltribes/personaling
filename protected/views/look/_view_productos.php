@@ -7,8 +7,11 @@
               		
               		
               		<?php
-              		$image = CHtml::image("http://placehold.it/180");
-
+              		
+					if ($producto->mainimage)
+					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => "180", "height" => "180"));
+					else 
+					$image = CHtml::image("http://placehold.it/180");	
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
 					echo CHtml::ajaxLink(
 						  $image,

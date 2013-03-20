@@ -51,7 +51,7 @@ class Look extends CActiveRecord
 			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical', 'integerOnly'=>true),
-			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}'),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
@@ -69,7 +69,7 @@ class Look extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_look_id'),
-			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{look_has_tbl_producto}}(tbl_look_id, tbl_producto_id)'),
+			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{look_has_producto}}(look_id, producto_id)'),
 			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
 		);
 	}

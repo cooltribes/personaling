@@ -24,7 +24,7 @@ $this->breadcrumbs=array(
   <div class="row">
     <section class="span6">
     	 
-    	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage'), "Look", array("width" => "450", "height" => "226", 'class'=>'img_1')); ?>
+    	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "450", "height" => "226", 'class'=>'img_1')); ?>
       <?php if (!Yii::app()->user->isAdmin()){ ?>
       <!-- Tabla  para el admin ON -->
       <hr/>

@@ -77,28 +77,39 @@ public function actionCategorias(){
 	public function actionPublicar($id)
 	{
 		$model = Look::model()->findByPk($id);
-		if(isset($_POST['Look']))
-			{
-				$model->attributes=$_POST['Look'];
-				if($model->save())
-	            {
-	                if (Yii::app()->request->isAjaxRequest)
-	                {
-	                    echo CJSON::encode(array(
-	                        'status'=>'success', 
-	                        'div'=>"El color se agrego con exito"
-	                        ));
-	                    exit;               
-	                }
-	                else
-	                    $this->redirect(array('view','id'=>$model->id));
-	            } 
-			}	
-		       $this->render('publicar',array(
-				'model'=>$model,
-				
-				)
-			);
+		if(isset($_POST['Look'])){
+			$model->attributes=$_POST['Look'];
+			if($model->save())
+            {
+                if (isset($_POST['categorias'])){
+                	foreach(explode('#',$_POST['categorias']) as $categoria){
+                		$categoriahaslook = new CategoriaHasLook;
+						$categoriahaslook->categoria_id = $categoria;
+						$categoriahaslook->look_id = $model->id;
+						$categoriahaslook->save();
+						
+                	}
+                }	
+                if (Yii::app()->request->isAjaxRequest)
+                {
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"El color se agrego con exito"
+                        ));
+                    exit;               
+                }
+                else {
+                    //$this->redirect(array('view','id'=>$model->id));
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Tu look se a publicado."));	
+                }
+            } 
+		}	
+	    $this->render('publicar',array(
+			'model'=>$model,
+			
+			)
+		);
 				
 	}
 	public function actionCreate()

@@ -68,6 +68,7 @@ class Look extends CActiveRecord
 		return array(
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_look_id'),
 			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{look_has_tbl_producto}}(tbl_look_id, tbl_producto_id)'),
+			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
 		);
 	}
 
@@ -117,5 +118,13 @@ class Look extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	public function getCategorias()
+	{
+		$array = array();	
+		foreach($this->categoriahaslook as $categoria)
+			$array[] = $categoria->categoria_id;
+		return $array;
+			
 	}
 }

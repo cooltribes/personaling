@@ -7,11 +7,25 @@ $this->breadcrumbs=array(
 ?>
 <div class="container margin_top" id="crear_look">
   <div class="page-header">
+  		<!-- FLASH ON --> 
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); ?>	
+<!-- FLASH OFF --> 
     <h1>Publicar Look</h1>
   </div>
   <div class="row">
-    <section class="span6"><img src="images/look_sample_grande_1.jpg" width="770" height="640"  class="img_1" alt="Look"> 
-      
+    <section class="span6">
+    	 
+    	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "450", "height" => "226", 'class'=>'img_1')); ?>
+      <?php if (!Yii::app()->user->isAdmin()){ ?>
       <!-- Tabla  para el admin ON -->
       <hr/>
       <h4>Productos que componen el Look </h4>
@@ -45,9 +59,22 @@ $this->breadcrumbs=array(
       </table>
       
       <!-- Tabla  para el admin OFF --> 
+      <?php } ?>
     </section>
     <section class="span6 ">
-      <form class="well personaling_form">
+      
+<?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id'=>'PublicarForm',
+    //'type'=>'horizontal',
+    'htmlOptions'=>array('class'=>'well personaling_form'),
+    //'type'=>'stacked',
+    'type'=>'inline',
+    'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+)); ?>      	
         <legend>Ultimo paso</legend>
         <p>LLena los siguientes campos:</p>
         <div class="control-group"> 
@@ -55,8 +82,8 @@ $this->breadcrumbs=array(
             <label class="control-label required">Titulo del look <span class="required">*</span></label>
 <![endif]-->
           <div class="controls">
-            <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Titulo del look, ej.: Look de Verano Europeo" name="RegistrationForm[email]" class="span4">
-            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+             <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45)); ?>
+             <?php echo $form->error($model,'title'); ?>
           </div>
         </div>
         <div class="control-group"> 
@@ -64,12 +91,13 @@ $this->breadcrumbs=array(
             <label class="control-label required">Descripción del look <span class="required">*</span></label>
 <![endif]-->
           <div class="controls">
-            <textarea class="span5" rows="6" placeholder="Descripción del look"></textarea>
-            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->error($model,'description'); ?>
           </div>
         </div>
-        
+        <?php if (!Yii::app()->user->isAdmin()){ ?>
         <!-- Para el admin ON -->
+        
         <div class="control-group ">
           <div class="controls">
             <label class="checkbox">
@@ -118,71 +146,39 @@ $this->breadcrumbs=array(
           </div>
         </div>
         <!-- Para el admin OFF -->
-        
+        <?php  } ?>
         <hr/>
+        <div id="div_ocasiones">
         <h4>¿En que ocasión se puede usar este look?</h4>
+        <?php $categorias = Categoria::model()->findAllByAttributes(array('padreId'=>'2')); ?>
+        <?php 
+        
+        if(count($categorias))
+				foreach($categorias as $categoria){
+					
+		?>
         <div class="control-group">
-          <label class="control-label required">Fiesta:</label>
+          <label class="control-label required"><?php echo $categoria->nombre; ?>:</label>
           <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Reunión Familiar</button>
-              <button class="btn btn-small" type="button">Graduación</button>
-              <button class="btn btn-small" type="button">Cita Romántica</button>
-              <button class="btn btn-small" type="button">Boda</button>
-              <button class="btn btn-small" type="button">Plan de amigas</button>
-              <button class="btn btn-small" type="button">Cóctel</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
+            <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => $categoria->childrenButtons($model->getCategorias()),
+				)); ?>
+				
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label required">Oficina:</label>
-          <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Diario</button>
-              <button class="btn btn-small" type="button">Evento Especial</button>
-              <button class="btn btn-small" type="button">Sexy</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label required">Vacaciones:</label>
-          <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Playa</button>
-              <button class="btn btn-small" type="button">Montaña</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label required">Haciendo Deporte:</label>
-          <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Gym</button>
-              <button class="btn btn-small" type="button">Aire libre</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label required">Diario:</label>
-          <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Elegante</button>
-              <button class="btn btn-small" type="button">Casual</button>
-              <button class="btn btn-small" type="button">Cómodo</button>
-              <button class="btn btn-small" type="button">En clases</button>
-              <button class="btn btn-small" type="button"> Los must de tu armario</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
-          </div>
+        <?php
+				}
+        ?>
+        <?php echo CHtml::hiddenField('categorias'); ?>
         </div>
         <hr/>
         <h4> ¿Que estilo se adapta a este look: atrevido/ conservador?</h4>
+        
         <div class="control-group">
           <div class="controls">
+            <!--
             <label class="checkbox inline">
               <input type="checkbox" value="option1">
               Atrevido </label>
@@ -190,91 +186,143 @@ $this->breadcrumbs=array(
               <input type="checkbox" value="option2">
               Conservador </label>
             <div class=" muted" style="display:none">Ayuda</div>
+            -->
+             <?php echo $form->radioButtonListInlineRow($model, 'tipo', array(
+			        'Atrevida',
+			        'Conservador',
+			    )); ?>
           </div>
         </div>
         <hr/>
+        <div id="div_tipo">
         <h4>Escoge al tipo de usuaria que favorece</h4>
         <div class="control-group">
           <label class="control-label required">Condición Física:</label>
           <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Delgada</button>
-              <button class="btn btn-small" type="button">Media</button>
-              <button class="btn btn-small" type="button">Gruesa</button>
-              <button class="btn btn-small" type="button">Muy Gruesa</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range,$model->contextura),
+				)); ?>
+				<?php echo $form->hiddenField($model,'contextura'); ?>
+				<?php echo $form->error($model,'contextura'); ?>
           </div>
         </div>
         <div class="control-group">
           <label class="control-label required">Color de Cabello:</label>
           <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Rubio</button>
-              <button class="btn btn-small" type="button">Castaño Claro</button>
-              <button class="btn btn-small" type="button">Castaño Oscuro</button>
-              <button class="btn btn-small" type="button">Negro</button>
-              <button class="btn btn-small" type="button">Rojo</button>
-              <button class="btn btn-small" type="button">Blanco</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
+          		
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range,$model->pelo),
+				)); ?>
+				<?php echo $form->hiddenField($model,'pelo'); ?>
+				<?php echo $form->error($model,'pelo'); ?>
+				
           </div>
         </div>
         <div class="control-group">
           <label class="control-label required">Altura:</label>
           <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">-1.55 a 1.65</button>
-              <button class="btn btn-small" type="button">1.66 a 1.75</button>
-              <button class="btn btn-small" type="button">1.76 a 1.85</button>
-              <button class="btn btn-small" type="button">1.86 a 1.95</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range,$model->altura),
+				)); ?>
+				<?php echo $form->hiddenField($model,'altura'); ?>
+				<?php echo $form->error($model,'altura'); ?>
           </div>
         </div>
         <div class="control-group">
           <label class="control-label required">Color de Ojos:</label>
           <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Verde</button>
-              <button class="btn btn-small" type="button">Azul</button>
-              <button class="btn btn-small" type="button">Ambar</button>
-              <button class="btn btn-small" type="button">Marrón</button>
-              <button class="btn btn-small" type="button">Gris</button>
-              <button class="btn btn-small" type="button">Negro</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range,$model->ojos),
+				)); ?>
+				<?php echo $form->hiddenField($model,'ojos'); ?>
+				<?php echo $form->error($model,'ojos'); ?>
           </div>
         </div>
         <div class="control-group">
           <label class="control-label required">Forma de Cuerpo :</label>
           <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Rectangular</button>
-              <button class="btn btn-small" type="button">Curvilíneo</button>
-              <button class="btn btn-small" type="button">Triángulo</button>
-              <button class="btn btn-small" type="button">Triángulo Invertido</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range,$model->tipo_cuerpo),
+				)); ?>
+				<?php echo $form->hiddenField($model,'tipo_cuerpo'); ?>
+				<?php echo $form->error($model,'tipo_cuerpo'); ?>
           </div>
         </div>
         <div class="control-group">
           <label class="control-label required">Color de Piel:</label>
           <div class="controls">
-            <div data-toggle="buttons-checkbox" class="btn-group">
-              <button class="btn btn-small" type="button">Blanca</button>
-              <button class="btn btn-small" type="button">Morena</button>
-              <button class="btn btn-small" type="button">Rosada</button>
-              <button class="btn btn-small" type="button">Amarilla</button>
-            </div>
-            <div class=" muted" style="display:none">Ayuda</div>
+            	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'size' => 'small',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => Profile::rangeButtons($field->range,$model->piel),
+				)); ?>
+				<?php echo $form->hiddenField($model,'piel'); ?>
+				<?php echo $form->error($model,'piel'); ?>
+				
           </div>
         </div>
-        <div class="form-actions"> <a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> <a href="Look_seleccionado.php" title="Publicar" class="btn btn-danger btn-large" >Publicar Look</a> </div>
-      </form>
+        </div>
+        <div class="form-actions"> 
+        	<a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> 
+        	
+        	<?php $this->widget('bootstrap.widgets.TbButton', array(
+				'buttonType'=>'submit',
+			    'label'=>'Publicar Look',
+			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			    'size'=>'large', // null, 'large', 'small' or 'mini'
+			)); ?>
+        </div>
+     <?php $this->endWidget(); ?>
       <!------------------- MODAL WINDOW OFF -----------------> 
       
     </section>
   </div>
 </div>
+<?php 
+$script = "
+	$('#div_ocasiones').on('click', 'a', function() {
+		 
+		 var ids = '';
+		 $('#div_ocasiones .active').each(function(){
+		 	
+		 	ids += $(this).attr('href');
+			
+		 });
+		 if (!($(this).hasClass('active')))
+		 	ids += $(this).attr('href');
+		 alert(ids);
+		 $('#categorias').val(ids.substring(1));
+	 });
+	$('#div_tipo .btn-group').on('click', 'a', function() {
+		 //alert($(this).attr('href'));
+		 var ids = 0;
+		 $(this).siblings('.active').each(function(){
+		 	//alert($(this).attr('href').substring(1));
+		 	ids += parseInt($(this).attr('href').substring(1));
+			
+		 });
+		 if (!($(this).hasClass('active')))
+		 	ids += parseInt($(this).attr('href').substring(1));
+		
+		 $(this).parent().next('input').val(ids);
+	 });
+";
+?>
+<?php Yii::app()->clientScript->registerScript('botones',$script); ?>
 

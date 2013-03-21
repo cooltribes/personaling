@@ -22,7 +22,7 @@ class LookController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','getimage'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -43,6 +43,87 @@ class LookController extends Controller
 	{
 		$this->render('index');
 	}
+	public function actionGetImage($id)
+	{
+		 	
+		 $look = Look::model()->findByPk($id);
+		 $images_path = array();
+		 foreach($look->tblProductos as $producto){
+		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
+		 	$images_path[] = Yii::app()->getBasePath() .'/..' . substr_replace($producto->mainimage->url, '_thumb', strrpos($producto->mainimage->url,'.'), 0);
+		 }	
+		 /*
+		 $image1_path=Yii::app()->getBasePath().'/../images/producto/1/27_thumb.jpg';
+		 $image2_path=Yii::app()->getBasePath().'/../images/producto/1/28_thumb.jpg';
+		 $image3_path=Yii::app()->getBasePath().'/../images/producto/1/29_thumb.jpg';
+		 $image4_path=Yii::app()->getBasePath().'/../images/producto/1/39_thumb.jpg';
+		 $image5_path=Yii::app()->getBasePath().'/../images/producto/1/40_thumb.jpg';
+		 $image6_path=Yii::app()->getBasePath().'/../images/producto/1/41_thumb.jpg';
+		  * */
+		// $image1_path=Yii::app()->baseUrl.'/images/producto/1/27_thumb.jpg';
+		
+		// imagealphablending($image1, false);
+		//imagesavealpha($image2, true);
+		
+		$images = array();
+		$i = 0;
+		$large_width = 0;
+		$large_height = 0;
+		$total_width = 0;
+		foreach ($images_path as $image_path){
+			$images[$i] = imagecreatefromstring(file_get_contents($image_path));
+			$width = imagesx($images[$i]);
+			$height = imagesy($images[$i]);
+			if ($large_width<$width) $large_width=$width;
+			if ($large_height<$height) $large_height=$height;
+    		$total_width += $width;
+			$i++;
+		}
+		//echo 'w'.$large_width;
+		//echo 'h'.$large_height;
+		$canvas = imagecreatetruecolor($total_width, $large_height);
+		
+		$white = imagecolorallocate($canvas, 255, 255, 255);
+		imagefill($canvas, 0, 0, $white);
+		
+		
+		 
+		 
+
+		  
+		  
+		 /*
+		$image1 = imagecreatefromstring(file_get_contents($image1_path));
+		$image2 = imagecreatefromstring(file_get_contents($image2_path));
+		$image3 = imagecreatefromstring(file_get_contents($image3_path));
+		$image4 = imagecreatefromstring(file_get_contents($image4_path));
+		$image5 = imagecreatefromstring(file_get_contents($image5_path));
+		$image6 = imagecreatefromstring(file_get_contents($image6_path));
+*/		
+		//imagecopymerge($image1, $image2, 100, 0, 0, 0, 300, 113, 100); //have to play with these numbers for it to work for you, etc.
+		$inicio_x = 0;
+		foreach($images as $image){
+			imagecopy($canvas, $image, $inicio_x, 0, 0, 0, imagesx($image), imagesy($image));
+			$inicio_x += imagesx($image);
+		}
+		//imagecopy($canvas, $images[0], 0, 0, 0, 0, imagesx($images[0]), imagesy($images[0]));
+		//imagecopy($canvas, $images[1], 150, 0, 0, 0, imagesx($images[1]), imagesy($images[1]));
+		//imagecopy($canvas, $images[2], 300, 0, 0, 0, imagesx($images[2]), imagesy($images[2]));
+		
+		//imagecopy($canvas, $image4, 0, 113, 0, 0, 150, 113);
+		//imagecopy($canvas, $image5, 150, 113, 0, 0, 150, 113);
+		//imagecopy($canvas, $image6, 300, 113, 0, 0, 150, 113);
+		
+		header('Content-Type: image/png');
+		imagepng($canvas);
+		
+		imagedestroy($canvas);
+		imagedestroy($images[0]);
+		imagedestroy($images[1]);
+		imagedestroy($images[2]);
+		 
+		
+	}
 public function actionCategorias(){
 	
 	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']));
@@ -54,7 +135,7 @@ public function actionCategorias(){
 	  if ($categorias){
 	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias),true,true);
 	  }else {
-	  	$productos = Producto::model()->with(array('categorias'=>array('condition'=>'tbl_categoria_id=7')))->findAll();
+	  	$productos = Producto::model()->with(array('categorias'=>array('condition'=>'tbl_categoria_id='.$_POST['padreId'])))->findAll();
 	  	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);
 	  	// echo 'rafa';
 	  }
@@ -77,28 +158,39 @@ public function actionCategorias(){
 	public function actionPublicar($id)
 	{
 		$model = Look::model()->findByPk($id);
-		if(isset($_POST['Look']))
-			{
-				$model->attributes=$_POST['Look'];
-				if($model->save())
-	            {
-	                if (Yii::app()->request->isAjaxRequest)
-	                {
-	                    echo CJSON::encode(array(
-	                        'status'=>'success', 
-	                        'div'=>"El color se agrego con exito"
-	                        ));
-	                    exit;               
-	                }
-	                else
-	                    $this->redirect(array('view','id'=>$model->id));
-	            } 
-			}	
-		       $this->render('publicar',array(
-				'model'=>$model,
-				
-				)
-			);
+		if(isset($_POST['Look'])){
+			$model->attributes=$_POST['Look'];
+			if($model->save())
+            {
+                if (isset($_POST['categorias'])){
+                	foreach(explode('#',$_POST['categorias']) as $categoria){
+                		$categoriahaslook = new CategoriaHasLook;
+						$categoriahaslook->categoria_id = $categoria;
+						$categoriahaslook->look_id = $model->id;
+						$categoriahaslook->save();
+						
+                	}
+                }	
+                if (Yii::app()->request->isAjaxRequest)
+                {
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"El color se agrego con exito"
+                        ));
+                    exit;               
+                }
+                else {
+                    //$this->redirect(array('view','id'=>$model->id));
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Tu look se a publicado."));	
+                }
+            } 
+		}	
+	    $this->render('publicar',array(
+			'model'=>$model,
+			
+			)
+		);
 				
 	}
 	public function actionCreate()

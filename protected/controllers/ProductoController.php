@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle'),
+				'actions'=>array('index','view','detalle','tallas','colores'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -730,7 +730,69 @@ class ProductoController extends Controller
 	{
 		$producto = Producto::model()->findByPk($id);
 		
-		$this->render('_view_detalle2',array('producto'=>$producto));
+		$this->render('_view_detalle',array('producto'=>$producto));
+
+	}
+	
+	/**
+ * Consigue las tallas al presionar un color
+ */
+	public function actionTallas()
+	{
+		$tallas = array();
+		
+		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
+		
+		foreach($ptc as $p)
+		{
+			$datos = array();
+			
+			$ta = Talla::model()->findByPk($p->talla_id);
+			
+			array_push($datos,$ta->id);
+			array_push($datos,$ta->valor); // para cada talla guardo su id y su valor
+			
+			array_push($tallas,$datos); // se envian en un array de datos de tallas
+		}	
+		
+			//print_r($tallas);
+		
+		echo CJSON::encode(array(
+			'status'=> 'ok',
+			'datos'=> $tallas
+		));
+		exit;
+	}
+	
+	
+	/**
+ * Consigue los colores al presionar una talla
+ */
+	public function actionColores()
+	{
+		$colores = array();
+		
+		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
+		
+		foreach($ptc as $p)
+		{
+			$datos = array();
+			
+			$co = Color::model()->findByPk($p->color_id);
+			 
+			array_push($datos,$co->id);
+			array_push($datos,$co->valor); // para cada talla guardo su id y su valor
+			
+			array_push($colores,$datos); // se envian en un array de datos de colores
+		}	
+		
+			//print_r($tallas);
+		
+		echo CJSON::encode(array(
+			'status'=> 'ok',
+			'datos'=> $colores
+		));
+		exit;
 
 	}
 

@@ -1,22 +1,23 @@
-
 <div class="container margin_top" id="carrito_compras">
-  <div class="row margin_bottom_large">
+  <div class="row detalle_producto">
     <div class="span12">
-      <div class="row">
-       <!-- Columna principal ON -->
+      <div class="row"> 
+        <!-- Columna principal ON -->
         <article class="span8">
           <div class="row">
             <div class="span6">
+            	<input id="producto" type="hidden" value="<?php echo $producto->id ?>" />
               <h1> <?php echo $producto->nombre; ?> <span class="label label-important"> ON SALE</span></h1>
             </div>
-            <div class="span2">
-              <div class="pull-right"><i class="icon-heart"></i> <i class="icon-share"></i> </div>
+            <div class="span2 share_like">
+              <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+              <button data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-placement="left" data-toggle="popover" id="share" class="btn-link"  data-original-title="Compartelo" href="#" title=""> <span class="entypo icon_personaling_big">&#59157;</span> </button>
             </div>
           </div>
           <div class="row">
-            <?php
+          	<?php
             
-            	echo "<div class='span6'> 
+            	echo "<div class='span6 imagen_principal'> 
             			<!-- FOTO principal ON -->";
             	
             	$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
@@ -25,71 +26,113 @@
 					
 				if($img->orden==1)
 				{
-					echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "770", "height" => "640", 'id'=>'principal'));
-					//  <img src="http://placehold.it/770x640" />
+					echo CHtml::image(Yii::app()->baseUrl . $img->url, "producto", array("width" => "570", "height" => "570", 'id'=>'principal'));
 					echo "<!-- FOTO principal OFF -->";
 	          		echo "</div>";	
 					
-					echo " <div class='span2 margin_bottom'> 
-            				<!-- FOTOS Secundarias ON -->";
+					echo " <div class='span2'> 
+            				<!-- FOTOS Secundarias ON -->
+            				<div class='imagenes_secundarias'> 
+            				";
 				
-					//imprimiendo igual la primera 
+					//imprimiendo igual la primera en thumbnail
 					$pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "170", "height" => "145",'class'=>'margin_bottom_small', 'value'=>$pri->id));					
+					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "90", "height" => "90",'value'=>$pri->id,'class'=>'miniaturas_listado_click'));					
 							
 				}
-								
+				
 				if($img->orden!=1){
 					//luego el resto para completar el scroll					
-					echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "170", "height" => "145",'class'=>'margin_bottom_small', 'value'=>$img->id));
-					// <img src="http://placehold.it/170x145" class="margin_bottom_small"/>
+					echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "90", "height" => "90", 'value'=>$img->id, 'class'=>'miniaturas_listado_click'));
 				}
 			}
 			
-			echo "</div>";
+			echo "</div></div>";
             
 			/*
-			 * 
-            <div class="span2 margin_bottom"> 
-            <!-- FOTOS Secundarias ON -->
-            	<img src="http://placehold.it/170x145" class="margin_bottom_small"/> 
-                <img src="http://placehold.it/170x145" class="margin_bottom_small"/> 
             <!-- FOTOS Secundarias OFF -->
-             </div>
-			 * 
 			 * */
 			
             ?>
-
-
+            
           </div>
         </article>
-		<!-- Columna principal OFF -->
-
-
-		<!-- Columna Secundaria ON -->
-        <div class="span4 margin_bottom margin_top padding_top">
-          <div class="row">
+        <!-- Columna principal OFF --> 
+        
+        <!-- Columna Secundaria ON -->
+        <div class="span4 columna_secundaria margin_bottom margin_top padding_top">
+          <div class="row call2action">
             <div class="span2">
-              <h4 >Precio: Bs. 
-              	
-              <?php foreach ($producto->precios as $precio) {
+              <h4 class="precio" ><span>Subtotal</span> Bs. 
+              	<?php foreach ($producto->precios as $precio) {
    					echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
    					}
 	
 			?></h4>
             </div>
-            <div class="span2"> <a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-warning pull-right"><i class="icon-shopping-cart icon-white"></i> Añadir a la bolsa</a> </div>
+            <div class="span2">
+              <div class="btn-group"> <a class="btn btn-danger" href="#"><span class="entypo color3">&#59197;</span></a>
+              	<a onclick="c()" id="agregar" href="#" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa </a>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="span2">
-              <h5>Tallas</h5>
-              <div class="clearfix"> <img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/> <img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/> <img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/><img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/> 
+              <h5>Colores</h5>
+              <div id="vCo" class="clearfix colores">
+              	<?php
+
+              	$valores = Array();
+				              	
+				foreach ($producto->preciotallacolor as $talCol) {
+              	
+					$color = Color::model()->findByPk($talCol->color_id);		
+					
+					if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
+					}
+					else{
+						echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='color'>".$color->valor."</div>"; 
+						array_push($valores, $color->id);
+					}
+					
+					/*
+					<a href="#" title="color"><img  src="http://placehold.it/40/22F28A/22F28A"/></a>
+              		<a href="#" title="color"><img  src="http://placehold.it/40/3691AD/3691AD"/></a>
+              		<a href="#" title="color"> <img  src="http://placehold.it/40/AD3682/AD3682"/></a>
+              		<a href="#" title="color"><img  src="http://placehold.it/40/FF9600/FF9600"/></a>
+					* */
+					 
+   				}
+              	?>
               </div>
             </div>
             <div class="span2">
-              <h5>Colores</h5>
-              <div class="clearfix"> <img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/> <img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/> <img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/><img class="pull-left margin_right_xsmall margin_bottom_xsmall" src="http://placehold.it/40x40"/> 
+              <h5>Tallas</h5>
+              <div id="vTa" class="clearfix tallas">
+              	<?php
+
+              	$valores = Array();
+				              	
+				foreach ($producto->preciotallacolor as $talCol) {
+              	
+					$talla = Talla::model()->findByPk($talCol->talla_id);
+
+					if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
+					}
+					else{
+						echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
+						array_push($valores, $talla->id);
+					}
+					
+					/*
+					<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+	              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+	              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+	              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+					* */
+					 
+   				}
+              	?>         	     	
               </div>
             </div>
           </div>
@@ -100,8 +143,8 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="detalles">
-                <div class="clearfix"> 
-                  <h4> <?php
+                <div class="clearfix">
+                  <h4><?php
                   	
                   	if($producto->proveedor==1)
 						echo "Aldo"; 
@@ -122,38 +165,56 @@
 						echo "Otro proveedor"; 
 					 
 					 ?></h4>
-                  <img src="http://placehold.it/70x70" class="img-circle pull-right" />
                   <p><strong>Bio</strong>: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmoofficia deserunt mollit anim id</p>
                   <p><a href="#">Ver looks de esta marca</a></p>
-                  <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p>
-                  </div>
+                  <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> </div>
               </div>
-              <div class="tab-pane" id="Recomendaciones">Recomendaciones</div>
               <div class="tab-pane" id="Envio">Envio</div>
             </div>
           </div>
-          <hr/>
-          <p><i class="icon-calendar"></i> Fecha estimada de entrega: 00/00/2013 - 00/00/2013 </p>
+          <div class="braker_horz_top_1">
+           <p> <span class="entypo icon_personaling_medium">&#128197;</span>
+              Fecha estimada de entrega: 00/00/2013 - 00/00/2013  </p>            
+              <hr />
+          </div>
         </div>
-		<!-- Columna Secundaria OFF -->
+        <!-- Columna Secundaria OFF --> 
       </div>
     </div>
   </div>
-  <hr/>
-  <h3>Looks recomendados que incluyen este producto</h3>
-  <div class="row">
-    <div class="span4"><img src="http://placehold.it/370"/></div>
-    <div class="span4"><img src="http://placehold.it/370"/></div>
-    <div class="span4"><img src="http://placehold.it/370"/></div>
+  <div class="braker_horz_top_1">
+    <h3>Looks recomendados con este producto</h3>
+    <div id="myCarousel" class="carousel slide"> 
+      
+      <!-- Carousel items -->
+      <div class="carousel-inner">
+        <div class="active item">
+          <div class="row">
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="row">
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+          </div>
+        </div>
+      </div>
+      <!-- Carousel nav --> 
+      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a> </div>
   </div>
 </div>
 
 <!-- /container -->
 
+
 <script>
 $(document).ready(function(){
-	
-   $(".margin_bottom_small").click(function(){
+
+   $(".miniaturas_listado_click").click(function(){
       
      	var image = $("#principal");
      	var thumbnail = $(this).attr("src");
@@ -165,7 +226,130 @@ $(document).ready(function(){
      	});
 
       	$("#principal").fadeIn("slow",function(){});
-      });
+   });
+      
+      
+   	$(".coloress").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
+   		ev.preventDefault();
+   		alert("COLOR");
+   		//alert($(this).attr("id"));
+   		
+   		var dataString = $(this).attr("id");
+     	var prod = $("#producto").attr("value");
+     
+     	$(this).removeClass('coloress');
+  		$(this).addClass('coloress active'); // añado la clase active al seleccionado
+  		   
+     	$.ajax({
+	        type: "post",
+	        url: "../tallas", // action Tallas de Producto
+	        data: { 'idTalla':dataString , 'idProd':prod}, 
+	        dataType:"json",
+	        success: function (data) {
+	        	
+		        if(data.status == 'ok')
+		        {
+		        	//alert(data.datos);
+					var cont="";
+					$.each(data.datos,function(clave,valor) {
+					  	//0 -> id, 1 -> valor
+					  	cont = cont + "<div onclick='a("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='tallass' title='talla'>"+valor[1]+"</div>";
+					  	
+					});
+					//alert(cont); 
+					
+					$("#vTa").fadeOut("slow",function(){
+			     		$("#vTa").html(cont); // cambiando el div
+			     	});
+			
+			      	$("#vTa").fadeIn("slow",function(){});
+					
+					//$("#vTa").html(cont);
+							        	
+		        }
+	       	}//success
+	       })
+   		
+   	});   
+   
+
+   	$(".tallass").click(function(ev){
+   		ev.preventDefault();
+   		alert("TALLAS");
+   		//alert($(this).attr("id")); 
+   		
+   		var dataString = $(this).attr("id");
+     	var prod = $("#producto").attr("value");
+     
+     	$(this).removeClass('tallass');
+  		$(this).addClass('tallass active'); // añado la clase active al seleccionado
+     
+     	$.ajax({
+	        type: "post",
+	        url: "../colores", // action Colores de Producto
+	        data: { 'idColor':dataString , 'idProd':prod}, 
+	        dataType:"json",
+	        success: function (data) {
+	        	
+		        if(data.status == 'ok')
+		        {
+		        	//alert(data.datos);
+					var cont="";
+					$.each(data.datos,function(clave,valor) {
+					  	//0 -> id, 1 -> valor
+					  	cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='color'>"+valor[1]+"</div>";
+					  	
+					});
+					//alert(cont); 
+					
+					$("#vCo").fadeOut("slow",function(){
+			     		$("#vCo").html(cont); // cambiando el div
+			     	});
+			
+			      	$("#vCo").fadeIn("slow",function(){});
+					
+					//$("#vTa").html(cont);
+							        	
+		        }
+	       	}//success
+	       })
+   		
+   	}); // tallas
+   	
+	$("#agregar").click(function(ev){
+		ev.preventDefault();
+		
+		alert("Color :"+colorSel+" Talla :"+tallaSel);
+	}); // agregar
+   	
       
    });
+   
+   function a(id){ // seleccion de talla
+
+   			$("#"+id+".tallass").removeClass('tallass');
+  			$("#"+id).addClass('tallass active');
+		
+		// falta si le vuelvo a dar click deseleccione la anterior
+   }
+   
+   function b(id){ // seleccion de color
+   		
+   			$("#"+id+".coloress").removeClass('coloress');
+  			$("#"+id).addClass('coloress active');
+		
+		// falta si le vuelvo a dar click deseleccione la anterior
+   		
+   }
+   
+   function c(){ // comprobar quienes están seleccionados
+   
+   		var talla = $("#vTa").find(".tallass.active").attr("id");
+   		var color = $("#vCo").find(".coloress.active").attr("id");
+   		var producto = $("#producto").attr("value");
+   		
+   		alert('Producto :'+producto+' Talla :'+talla+' Color :'+color);
+   }
+   
+   
 </script>

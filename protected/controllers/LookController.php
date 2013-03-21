@@ -26,11 +26,11 @@ class LookController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update','precios'),
+				'actions'=>array('update','precios','create','categorias','publicar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -207,11 +207,17 @@ public function actionCategorias(){
 			$model->tipo_cuerpo = 0;
 			$model->piel = 0;
 			$model->tipo = 0;
+			$model->user_id = Yii::app()->user->id;
+			
 			if($model->save()){
-				foreach(explode(',',$_POST['productos_id']) as $producto_id){
+				$colores_id = explode(',',$_POST['colores_id']);
+				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
+					
 					$lookhasproducto = new LookHasProducto;
 					$lookhasproducto->look_id = $model->id;
 					$lookhasproducto->producto_id = $producto_id;
+					$lookhasproducto->color_id = $colores_id[$index];
+					$lookhasproducto->cantidad = 1;
 					$lookhasproducto->save();
 					 
 				}
@@ -228,6 +234,21 @@ public function actionCategorias(){
 		);
 		}
 	}
+	public function actionAdmin()
+	{
+
+		
+		$look = new Look; 
+
+
+		
+		$dataProvider = $look->search();
+		$this->render('admin',
+		array('model'=>$look,
+		'dataProvider'=>$dataProvider,
+		));	
+
+	}// fin	
 	public function actionCreate3()
 	{
 		$model=new Look;

@@ -27,6 +27,7 @@ class Look extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Look the static model class
 	 */
+	 private $_items;
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -71,6 +72,7 @@ class Look extends CActiveRecord
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_look_id'),
 			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{look_has_producto}}(look_id, producto_id)'),
 			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 		);
 	}
 
@@ -128,5 +130,14 @@ class Look extends CActiveRecord
 			$array[] = $categoria->categoria_id;
 		return $array;
 			
+	}
+	public function countItems()
+	{
+		if (isset($this->_items)){
+			return $_items;
+		}else {
+			$_items = count($this->tblProductos);
+			return $_items;
+		}
 	}
 }

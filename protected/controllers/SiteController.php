@@ -32,7 +32,7 @@ class SiteController extends Controller
 		if (UserModule::isAdmin())
 			$this->redirect(array('/controlpanel/index'));
 		elseif (UserModule::isPersonalShopper()) 
-			$this->render('personal_shopper');
+			$this->redirect(array('look/create'));//$this->render('personal_shopper');
 		elseif (Yii::app()->user->isGuest) 
 			$this->render('index');
 		else

@@ -1,6 +1,18 @@
 <ul class="thumbnails">
               <?php
               foreach($productos as $producto){
+              	/*
+				$tallacolores=Preciotallacolor::model()->findAll(array(
+				    'condition'=>'producto_id=:producto_id AND cantidad >= :cantidad',
+				    'params'=>array(':cantidad'=>1, ':producto_id'=>$producto->id),
+				));
+				 * 
+				 */
+				$tallacolores=Preciotallacolor::model()->findAllBySql(
+				'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad GROUP BY color_id',
+				array(':cantidad'=>1, ':producto_id'=>$producto->id)
+				);
+				foreach($tallacolores as $tallacolor){
               ?>
               <li class="span2" > 
               	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id; ?>">
@@ -37,10 +49,10 @@
 						  )
 						);
 					?> 
-                	<div class="caption">
-                  		<p><?php echo $producto->nombre; ?></p>
-                  		<input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
-	                </div>
+
+ 	                
+	                <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
+	                <input type="hidden" name="color_id" value="<?php echo $tallacolor->color_id; ?>">
               	</div>
               	<?php
               	$script = "element = document.querySelector('#div_producto".$producto->id."');
@@ -50,5 +62,7 @@
               	Yii::app()->clientScript->registerScript('drag'.$producto->id,$script);
               	?>              	
               </li>
-              <?php } ?>
+              <?php }
+				} 
+				?>
 </ul>              

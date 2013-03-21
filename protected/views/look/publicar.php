@@ -25,7 +25,7 @@ $this->breadcrumbs=array(
     <section class="span6">
     	 
     	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "450", "height" => "226", 'class'=>'img_1')); ?>
-      <?php if (!Yii::app()->user->isAdmin()){ ?>
+      <?php if (Yii::app()->user->isAdmin()){ ?>
       <!-- Tabla  para el admin ON -->
       <hr/>
       <h4>Productos que componen el Look </h4>
@@ -95,7 +95,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<?php echo $form->error($model,'description'); ?>
           </div>
         </div>
-        <?php if (!Yii::app()->user->isAdmin()){ ?>
+        <?php if (Yii::app()->user->isAdmin()){ ?>
         <!-- Para el admin ON -->
         
         <div class="control-group ">
@@ -296,7 +296,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </div>
 <?php 
 $script = "
-	$('#div_ocasiones').on('click', 'a', function() {
+	$('#div_ocasiones').on('click', 'a', function(e) {
 		 
 		 var ids = '';
 		 $('#div_ocasiones .active').each(function(){
@@ -306,10 +306,12 @@ $script = "
 		 });
 		 if (!($(this).hasClass('active')))
 		 	ids += $(this).attr('href');
-		 alert(ids);
+		 //alert(ids);
 		 $('#categorias').val(ids.substring(1));
+		 //return false;
+		 e.preventDefault();
 	 });
-	$('#div_tipo .btn-group').on('click', 'a', function() {
+	$('#div_tipo .btn-group').on('click', 'a', function(e) {
 		 //alert($(this).attr('href'));
 		 var ids = 0;
 		 $(this).siblings('.active').each(function(){
@@ -321,6 +323,8 @@ $script = "
 		 	ids += parseInt($(this).attr('href').substring(1));
 		
 		 $(this).parent().next('input').val(ids);
+		 //return false;
+		 e.preventDefault();
 	 });
 ";
 ?>

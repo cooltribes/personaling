@@ -101,7 +101,7 @@ $this->breadcrumbs=array(
 	
 	?>
         
-        <div class="row tienda_iconos" id="uno">
+        <div class="tienda_iconos" id="uno">
            <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>

@@ -154,6 +154,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'type'=>'inline',
 )); ?>
 <?php echo CHtml::hiddenField('productos_id'); ?>
+<?php echo CHtml::hiddenField('colores_id'); ?>
 <?php $this->endWidget(); ?>
     </section>
     <section class="span4">
@@ -351,13 +352,16 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 function addPublicar()
 {
 	var productos_id = '';
+	var color_id = '';
 	var count = 0;
-	$(".canvas input").each(function(item){
+	$('.canvas input[name="producto_id"]').each(function(item){
 		productos_id += $(this).val()+',';
+		color_id += $(this).next().val()+',';
 		count++;
 	});
 	//productos_id = "1,2,3,4";
 	$("#productos_id").val(productos_id);
+	$("#colores_id").val(color_id);
 	//count = 6;
 	//alert(productos_id);
 	if (count >= 3){

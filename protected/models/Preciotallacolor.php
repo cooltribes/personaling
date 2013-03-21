@@ -28,7 +28,7 @@ class PrecioTallaColor extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	public function tableName() 
 	{
 		return '{{precioTallaColor}}';
 	}
@@ -42,7 +42,9 @@ class PrecioTallaColor extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('producto_id, talla_id, color_id,sku', 'required'),
+			array('sku','unique'),
 			array('cantidad, producto_id, talla_id, color_id', 'numerical', 'integerOnly'=>true),
+			array('cantidad', 'numerical','min'=>0), //,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}','on'=>'update'
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, cantidad, producto_id, talla_id, color_id,sku', 'safe', 'on'=>'search'),

@@ -6,6 +6,9 @@ $con=0;
 
 	$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'1'));
 	
+	// limitando a que se muestren los status 1 y estado 0
+	
+
 		if(isset($ima)){
 				$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "320",'class'=>'img-polaroid'));
 				echo("<td><a href='../producto/detalle/".$data->id."' ><article class='span3'> ".$a."</article></a></td>");
@@ -15,7 +18,7 @@ $con=0;
 					echo "<td><article class='span3'> <img src='http://placehold.it/270x320'/> </article></td>";
 					$con=$id;
 				}
-	
+	//}
 
 	/*foreach ($data->imagenes as $ima) {
 		

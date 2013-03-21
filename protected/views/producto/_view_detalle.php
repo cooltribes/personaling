@@ -1,3 +1,15 @@
+	<!-- FLASH ON --> 
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); ?>	
+<!-- FLASH OFF -->
 <div class="container margin_top" id="carrito_compras">
   <div class="row detalle_producto">
     <div class="span12">
@@ -71,8 +83,8 @@
 			?></h4>
             </div>
             <div class="span2">
-              <div class="btn-group"> <a class="btn btn-danger" href="#"><span class="entypo color3">&#59197;</span></a>
-              	<a onclick="c()" id="agregar" href="#" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa </a>
+              <div class="btn-group"> <a class="btn btn-danger" ><span class="entypo color3">&#59197;</span></a>
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa </a>
               </div>
             </div>
           </div>
@@ -231,7 +243,7 @@ $(document).ready(function(){
       
    	$(".coloress").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
    		ev.preventDefault();
-   		alert("COLOR");
+   		//alert("COLOR");
    		//alert($(this).attr("id"));
    		
    		var dataString = $(this).attr("id");
@@ -275,7 +287,7 @@ $(document).ready(function(){
 
    	$(".tallass").click(function(ev){
    		ev.preventDefault();
-   		alert("TALLAS");
+   		//alert("TALLAS");
    		//alert($(this).attr("id")); 
    		
    		var dataString = $(this).attr("id");
@@ -315,28 +327,27 @@ $(document).ready(function(){
 	       })
    		
    	}); // tallas
-   	
-	$("#agregar").click(function(ev){
-		ev.preventDefault();
-		
-		alert("Color :"+colorSel+" Talla :"+tallaSel);
-	}); // agregar
-   	
+   	 
       
    });
    
    function a(id){ // seleccion de talla
 
-   			$("#"+id+".tallass").removeClass('tallass');
-  			$("#"+id).addClass('tallass active');
+			$("#vTa").find("div#"+id+".tallass").removeClass("tallass");
+			$("#vTa").find("div#"+id).addClass("tallass active");
+   		//	$("#"+id+".tallass").removeClass("tallass");
+  		//	$("#"+id).addClass("tallass active");
 		
 		// falta si le vuelvo a dar click deseleccione la anterior
    }
    
    function b(id){ // seleccion de color
    		
-   			$("#"+id+".coloress").removeClass('coloress');
-  			$("#"+id).addClass('coloress active');
+   			$("#vCo").find("div#"+id+".coloress").removeClass("coloress");
+			$("#vCo").find("div#"+id).addClass("coloress active");
+   			
+   			//$("#"+id+".coloress").removeClass("coloress");
+  			//$("#"+id).addClass("coloress active");
 		
 		// falta si le vuelvo a dar click deseleccione la anterior
    		
@@ -348,7 +359,28 @@ $(document).ready(function(){
    		var color = $("#vCo").find(".coloress.active").attr("id");
    		var producto = $("#producto").attr("value");
    		
-   		alert('Producto :'+producto+' Talla :'+talla+' Color :'+color);
+   		// llamada ajax para el controlador de bolsa
+ 		   
+     	$.ajax({
+	        type: "post",
+	        url: "../../bolsa/agregar", // action Tallas de Producto
+	        data: { 'producto':producto, 'talla':talla, 'color':color}, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{
+					//alert("redireccionar mañana");
+					window.location="../../bolsa/index";
+				}
+				
+				if(data=="no es usuario")
+				{
+					alert("Debe primero ingresar como usuario");
+				}
+					
+	       	}//success
+	       })
+
    }
    
    

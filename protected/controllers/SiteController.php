@@ -49,7 +49,13 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('personal_shopper');
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		$looks = new Look;
+		
+		$this->render('personal_shopper',array(
+					'dataProvider' => $looks->match($user),
+					'user'=>$user,	
+				));
 	}
 	/**
 	 * Esto es la pagina de top

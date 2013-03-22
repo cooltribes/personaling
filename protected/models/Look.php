@@ -96,6 +96,49 @@ class Look extends CActiveRecord
 		);
 	}
 
+	public function match($user) 
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+/*
+		$criteria->compare('id',$this->id);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('altura',$this->altura);
+		$criteria->compare('contextura',$this->contextura);
+		$criteria->compare('pelo',$this->pelo);
+		$criteria->compare('ojos',$this->ojos);
+		$criteria->compare('tipo_cuerpo',$this->tipo_cuerpo);
+		$criteria->compare('piel',$this->piel);
+		$criteria->compare('created_on',$this->created_on,true);
+		$criteria->compare('tipo',$this->tipo);
+*/
+		/*
+		$criteria->addCondition('altura & ' . $user->profile->altura . ' != 0');
+		$criteria->addCondition('contextura & ' . $user->profile->contextura . ' != 0');
+		$criteria->addCondition('pelo & ' . $user->profile->pelo . ' != 0');
+		$criteria->addCondition('ojos & ' . $user->profile->ojos . ' != 0');
+		$criteria->addCondition('tipo_cuerpo & ' . $user->profile->tipo_cuerpo . ' != 0');
+		$criteria->addCondition('piel & ' . $user->profile->piel . ' != 0');
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));*/
+		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0))>=2')->queryScalar();
+		$sql='SELECT id FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0)) >= 2';
+		return new CSqlDataProvider($sql, array(
+		    'totalItemCount'=>$count,
+		//'sort'=>array(
+		//    'attributes'=>array(
+		//         'id', 'username', 'email',
+		//    ),
+		//),
+		//'pagination'=>array(
+		//    'pageSize'=>10,
+		//    ),
+		));
+	}
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.

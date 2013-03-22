@@ -22,11 +22,11 @@ class LookController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','getimage'),
+				'actions'=>array('index','getimage'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update','precios','create','categorias','publicar'),
+				'actions'=>array('update','precios','create','categorias','publicar','view'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -38,7 +38,15 @@ class LookController extends Controller
 			),
 		);
 	}
-
+	public function actionView($id)
+	{
+		$model = Look::model()->findByPk($id);
+		$this->render('view',array(
+						'model'=>$model,
+						//'categorias'=>$categorias,
+					)
+				);		
+	}
 	public function actionIndex()
 	{
 		$this->render('index');
@@ -151,10 +159,7 @@ public function actionCategorias(){
 					)
 				);
 	}
-	public function actionView($id)
-	{
-		echo "hola".$id;
-	}
+
 	public function actionPublicar($id)
 	{
 		$model = Look::model()->findByPk($id);

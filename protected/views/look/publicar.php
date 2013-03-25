@@ -188,9 +188,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class=" muted" style="display:none">Ayuda</div>
             -->
              <?php echo $form->radioButtonListInlineRow($model, 'tipo', array(
-			        'Atrevida',
-			        'Conservador',
-			    )); ?>
+			        1=>'Atrevida',
+			        2=>'Conservador',
+			    )); ?> 
           </div>
         </div>
         <hr/>

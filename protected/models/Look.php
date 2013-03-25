@@ -125,8 +125,21 @@ class Look extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));*/
-		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0))>=2')->queryScalar();
-		$sql='SELECT id FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0)) >= 2';
+		
+		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
+		$sql='SELECT id FROM tbl_look WHERE (
+			if('.$user->profile->altura.' & altura !=0,1,0)+
+			if('.$user->profile->contextura.' & contextura !=0,1,0)+
+			if('.$user->profile->pelo.' & pelo !=0,1,0)+
+			if('.$user->profile->ojos.' & ojos !=0,1,0)+
+			if('.$user->profile->piel.' & ojos !=0,1,0)+
+			if('.$user->profile->tipo_cuerpo.' & altura !=0,1,0)
+		) >= 2';
+		//$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0))>=2')->queryScalar();
+		//$sql='SELECT id FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0)) >= 2';
+		//$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if(tipo = coctel,1,0)+if(tipo = fiesta,1,0))>=2')->queryScalar();
+		//$sql='SELECT id FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0)) >= 2';
+		
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
 		//'sort'=>array(
@@ -135,7 +148,7 @@ class Look extends CActiveRecord
 		//    ),
 		//),
 		//'pagination'=>array(
-		//    'pageSize'=>10,
+		//    'pageSize'=>10, 
 		//    ),
 		));
 	}

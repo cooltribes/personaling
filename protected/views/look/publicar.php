@@ -299,14 +299,17 @@ $script = "
 	$('#div_ocasiones').on('click', 'a', function(e) {
 		 
 		 var ids = '';
+		 var selected = $(this).attr('href');
 		 $('#div_ocasiones .active').each(function(){
-		 	
-		 	ids += $(this).attr('href');
+		 	if (selected != $(this).attr('href'))
+		 		ids += $(this).attr('href');
 			
 		 });
+		// alert($(this).hasClass('active'));
+		// alert(ids);
 		 if (!($(this).hasClass('active')))
 		 	ids += $(this).attr('href');
-		 //alert(ids);
+		// alert(ids);
 		 $('#categorias').val(ids.substring(1));
 		 //return false;
 		 e.preventDefault();

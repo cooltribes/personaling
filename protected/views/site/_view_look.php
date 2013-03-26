@@ -1,5 +1,6 @@
 <?php
 	$look = Look::model()->findByPk($data['id']);
+	$look->matchOcaciones();
 ?>
               <div class="active item">
             <div class="row"> 

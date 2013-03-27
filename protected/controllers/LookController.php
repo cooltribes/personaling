@@ -30,13 +30,22 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
+	}
+	public function actionDetalle($id)
+	{
+		$model = Look::model()->findByPk($id);
+		echo $this->renderPartial('_view_detalle_look',array(
+						'model'=>$model,
+						//'categorias'=>$categorias,
+					),true
+				);		
 	}
 	public function actionView($id)
 	{

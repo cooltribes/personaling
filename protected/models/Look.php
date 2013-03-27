@@ -28,6 +28,7 @@ class Look extends CActiveRecord
 	 * @return Look the static model class
 	 */
 	 private $_items;
+	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -96,11 +97,15 @@ class Look extends CActiveRecord
 			'tipo' => 'Tipo',
 		);
 	}
-	public function matchOcaciones()
+	public function matchOcaciones($user)
 	{
 		foreach ($this->categorias as $categoria){
-			echo $categoria->padreId;
+			$algo = $this->_ocasiones[$categoria->padreId];
+			//echo '/'.$user->profile->$algo;
+			if ($user->profile->$algo == $this->tipo)
+				return true;
 		}
+		return false;
 	}
 	public function match($user) 
 	{

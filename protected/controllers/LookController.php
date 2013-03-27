@@ -168,6 +168,10 @@ public function actionCategorias(){
 			if($model->save())
             {
                 if (isset($_POST['categorias'])){
+                	CategoriaHasLook::model()->deleteAll(
+    					"`look_id` = :look_id",
+    					array(':look_id' => $model->id)
+					);
                 	foreach(explode('#',$_POST['categorias']) as $categoria){
                 		$categoriahaslook = new CategoriaHasLook;
 						$categoriahaslook->categoria_id = $categoria;

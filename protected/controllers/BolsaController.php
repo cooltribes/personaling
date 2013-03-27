@@ -15,7 +15,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar'),
+				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -95,31 +95,120 @@ class BolsaController extends Controller
 	}
 
 }
-
-	// Uncomment the following methods and override them if needed
+/*
+ * action para actualizar las cantidades del producto en el carrito
+ * 
+ * */
+	public function actionActualizar(){
+		
+		$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
+		
+		$bolsa->cantidad = $_POST['cantidad'];
+		
+		if($bolsa->save())
+		{
+			echo "ok";
+		}
+		
+		
+	}
+	
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
+	 * 
+	 * action para eliminar desde la bolsa
+	 * 
+	 * */
+    public function actionEliminar() {
+        if (Yii::app()->request->isPostRequest) {
+			$model= BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
+			           
+            if ($model) {
+                $model->delete();
+            	echo "ok";
+			}   
+        }
+        else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+    }
+	/*
+	 * 
+	 * para validar los datos del usuario 
+	 * 
+	 */
+	
+		public function actionPagos()
+		{
+			if(isset($_GET['id'])){ // de direcciones
+				$this->render('pago',array('id_direccion'=>$_GET['id']));
+			}
+		
+		}
+		
+		
+		public function actionDirecciones()
+		{
+			$dir = new Direccion;
+			
+			if(isset($_POST['Direccion'])) // nuevo registro
+			{
+				
+				// guardar en el modelo direccion
+				$dir->attributes=$_POST['Direccion'];
+				
+				if($dir->pais=="1")
+					$dir->pais = "Venezuela";
+				
+				if($dir->pais=="2")
+					$dir->pais = "Colombia";
+				
+				if($dir->pais=="3")
+					$dir->pais = "Estados Unidos"; 
+				
+				$dir->user_id = Yii::app()->user->id;
+				
+				if($dir->save())
+				{
+					$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
+				}
+				
+			}
+			else // si está viniendo de la pagina anterior que muestre todo 
+			{
+				$this->render('direcciones',array('dir'=>$dir));
+			}
+			
 
-	public function actions()
+		}
+	
+		/**
+	 * Displays the login page
+	 */
+	public function actionCompra()
 	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
+		if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
+			
+			$model=new UserLogin;
+			
+			if(isset($_POST['UserLogin']))
+			{
+				$model->attributes=$_POST['UserLogin'];
+				// validate user input and redirect to previous page if valid
+				
+				if($model->validate()) {
+					$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
+					$this->redirect(array('bolsa/direcciones'));
+				}else{
+					$this->render('login',array('model'=>$model));
+					Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta.")); 
+				}	
+			}else{
+				// si no viene del formulario. O bien viene de la pagina anterior
+				$this->render('login',array('model'=>$model));
+			}
+		} else{
+			// no va a llegar nadie que no esté logueado
+		}
+	}//fin
+
+	
 }

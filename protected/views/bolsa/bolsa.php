@@ -15,7 +15,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
           <h1>Tu bolsa</h1>
           <?php 
           
-          if($num!=0)
+          if($num!=0) // si hay looks
 		  {
 		  	//imprima looks
 		  	
@@ -76,7 +76,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0";
 $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 
-		if($pr!=0)
+		if($pr!=0) // si hay productos individuales
 		{
 		?>
 		  <!-- Look ON -->
@@ -97,20 +97,26 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                   
                   $precios = array();
 				  $descuentos = array();
+				  $cantidades = array();
                   
                   foreach($bptcolor as $detalles)
 				  {
-				  
-				  echo"<tr>
-                  <td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
-				  
-				  	
-					$todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);
+				  	$todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);
 					
 				  		$producto = Producto::model()->findByPk($todo->producto_id);
 				  		$talla = Talla::model()->findByPk($todo->talla_id);
-				  		$color = Color::model()->findByPk($todo->color_id);	
-				  		
+				  		$color = Color::model()->findByPk($todo->color_id);
+						
+						$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+				
+				echo "<tr>";		
+						
+				if($imagen){					  	
+					$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+					echo "<td>".$aaa."</td>";
+				}else
+					echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+						
 					echo "
 					<td>
 					<strong>".$producto->nombre."</strong> <br/>
@@ -126,10 +132,12 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					array_push($descuentos,$precio->ahorro);		
 					}
 				 
+				 	array_push($cantidades,$detalles->cantidad);
+					
 				 	echo "<td>Bs. ".$pre."</td>";
-				 	echo"<td width='8%'><input type='text' maxlength='2' placeholder='Cant.' value='".$detalles->cantidad."' class='span1'/>
-                    <a href='#' class='btn btn-mini'>Actualizar</a></td>
-                  	<td >&times;</td>
+				 	echo"<td width='8%'><input type='text' id='cant".$detalles->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$detalles->cantidad."' class='span1'/>
+                    <a id=".$detalles->preciotallacolor_id." onclick='actualizar(".$detalles->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
+                  	<td style='cursor: pointer' onclick='eliminar(".$detalles->preciotallacolor_id.")' id='elim".$detalles->preciotallacolor_id."'>&times;</td>
                 	</tr>";
 				  }
 				     
@@ -179,7 +187,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             	?>
             	
               <h5><?php echo $look; ?> Look seleccionado<br/>
-                6 productos que componen los Looks<br/>
+              	<?php 
+              	
+              	if($look!=0)
+				{
+					echo "6 productos que componen los Looks<br/>";
+				}				
+              	?>
                 <?php echo $indiv; ?> Productos individuales </h5>
               <hr/>
               <label class="checkbox">
@@ -187,9 +201,16 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                 Envolver y enviar como regalo (9Bs. Adicionales) </label>
               <hr/>
               <div class="row margin_bottom">
-                <div class="span2"> Con la compra  del Look 
-                  completo Ahorras 
-                  184 Bs. </div>
+                <div class="span2"> 
+                	<?php
+                	
+                	if($look!=0)
+					{
+						echo "Con la compra  del Look completo ahorras 184 Bs.";
+					}
+                	
+                	?>
+                	 </div>
                 <div class="span2">
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
@@ -198,20 +219,23 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       	<?php
                       	$totalPr=0;
                       	$totalDe=0;
-                      	
+                      	$envio = 100;
+						$i=0;
+						
                       	foreach($precios as $x)
                       	{
-                      		$totalPr = $totalPr + $x;
+                      		$totalPr = $totalPr + ($x * $cantidades[$i]);
+							$i++;
                       	}
                       	
-						foreach($descuentos as $y)
+					/*	foreach($descuentos as $y)
                       	{
                       		$totalDe = $totalDe + $y;
-                      	}
+                      	}*/
 						
 						$iva = (($totalPr - $totalDe)*0.12); 
 						
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12); 
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
 						
 						echo $totalPr;
                       	?>                      	
@@ -223,7 +247,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                     </tr>
                     <tr>
                       <th class="text_align_left">Envío:</th>
-                      <td>100 Bs.</td>
+                      <td><?php echo $envio; ?> Bs.</td>
                     </tr>
                     <tr>
                       <th class="text_align_left">I.V.A. (12%):</th>
@@ -234,7 +258,19 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       <td><h4><?php echo $t; ?> Bs.</h4></td>
                     </tr>
                   </table>
-                  <a href="Proceso_de_Compra_1.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a> </div>
+                  
+                  <?php $this->widget('bootstrap.widgets.TbButton', array(
+				    'label'=>'Completar compra',
+				    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+				    'size'=>'normal', // null, 'large', 'small' or 'mini'
+				    'url'=>'compra', // action ir 
+				    'icon'=>'shopping-cart white',
+				)); 
+				 
+				//<a href="Proceso_de_Compra_1.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
+				?>
+                  
+                   </div>
               </div>
               <p><i class="icon-calendar"></i> Fecha estimada de entrega: 00/00/2013 - 00/00/2013 </p>
             </div>
@@ -252,4 +288,57 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 
 <!-- /container -->
 
+<script>
+	
+	
+	function actualizar(id)
+	{
+		
+	var cantidad = $("#cant"+id+".span1").attr("value");
+	
+	//alert(cantidad);
+	
+	// llamada ajax para el controlador de bolsa	   
+     	$.ajax({
+	        type: "post",
+	        url: "actualizar", // action de actualizar
+	        data: { 'prtc':id, 'cantidad':cantidad}, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{
+					//alert("cantidad actualizada");
+					window.location.reload()
+				}
+					
+	       	}//success
+	       })
 
+	}
+	
+	function eliminar(id)
+	{
+		
+	var td = $(this);
+	
+	//alert(cantidad);
+	
+	// llamada ajax para el controlador de bolsa	   
+     	$.ajax({
+	        type: "post",
+	        url: "eliminar", // action de actualizar
+	        data: { 'prtc':id }, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{
+					window.location.reload()
+				}
+					
+	       	}//success
+	       })
+
+	}
+	
+	
+</script>

@@ -36,7 +36,7 @@ class SiteController extends Controller
 		elseif (Yii::app()->user->isGuest) 
 			$this->render('index');
 		else
-			$this->render('personal_shopper');
+			$this->redirect(array('site/personal'));//$this->render('personal_shopper');
 			
 		
 		

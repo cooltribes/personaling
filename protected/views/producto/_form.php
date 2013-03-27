@@ -47,7 +47,7 @@
               <div class="controls">
               	
               	<?php 
-              		if ($model->fInicio=="" && $model->fFin=="")
+              		if (($model->fInicio=="" && $model->fFin=="") || ($model->fInicio=="0000-00-00 00:00:00" && $model->fFin="0000-00-00 00:00:00" && $model->nombre!=""))
 					{
 						echo("<label class='checkbox'>
                   <input type='checkbox''>

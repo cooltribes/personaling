@@ -1,7 +1,7 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Registration");
-$this->breadcrumbs=array(
-	UserModule::t("Registration"),
-);
+<?php //$this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Registration");
+//$this->breadcrumbs=array(
+	//UserModule::t("Registration"),
+//);
      function getMonthsArray()
     {
         
@@ -63,8 +63,15 @@ $this->breadcrumbs=array(
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1>Registro</h1>
-      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+      <h1>Regístrate</h1>
+      <div class="row margin_bottom margin_top">
+              <div class="span3"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/registro_facebook.png" width="230" height="39" alt="Registrate con Facebook"></a></div>
+
+        <div class="span3"> <a onclick="loadLiData()" id="registro_linkedin" title="Registrate con Twitter" class="transition_all pull-right" href="#"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/registro_twitter.png" width="230" height="39" alt="Registrate con twitter"></a> 
+          <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
+        </div>
+      </div>
+      <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
 
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'registration-form',
@@ -77,7 +84,7 @@ $this->breadcrumbs=array(
 	),
 )); ?>
           <fieldset>
-            <legend >Datos personales: </legend>	
+            <legend >O llena los campos a continuación: </legend>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	
 <div class="control-group">
@@ -103,7 +110,7 @@ $this->breadcrumbs=array(
 				//echo $field->varname;
 			?>
 <div class="control-group">
-	<div class="controls">
+	<div class="controls controls-row">
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
@@ -119,7 +126,7 @@ $this->breadcrumbs=array(
 			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {
 				
-			echo $form->labelEx($profile,$field->varname);	
+			echo $form->labelEx($profile,$field->varname, array('class'=>'span1'));	
 			
 			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
 			echo ' ';
@@ -133,6 +140,7 @@ $this->breadcrumbs=array(
 				 
 				
 		} else {
+			
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			echo $form->error($profile,$field->varname);
 		}
@@ -145,6 +153,8 @@ $this->breadcrumbs=array(
 			}
 		}
 ?>
+            <hr/>
+            <label class="checkbox"> <input type="checkbox"> Al hacer clic en "Crear Cuenta" estas indicando que has leido y aceptado los <a href="#" title="terminos y condiciones">Terminos de Servicio</a> y la <a href="#" title="Politicas de Privacidad">Politica de Privacidad</a>. </label>
 
 	<div class="form-actions"> 
 		
@@ -159,7 +169,7 @@ $this->breadcrumbs=array(
 
 </fieldset>
 <?php $this->endWidget(); ?>
-      </article>
+      </section>
     </div>
   </div>
 </div>

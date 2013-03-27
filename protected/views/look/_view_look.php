@@ -23,7 +23,9 @@
       'onclick'=>' {'.CHtml::ajax( array(
       'url'=>CController::createUrl('look/detalle',array('id'=>$data->id)),
           // 'beforeSend'=>'js:function(){if(confirm("Are you sure you want to delete?"))return true;else return false;}',
-           'success'=>"js:function(data){ $('#myModal').html(data);
+           'success'=>"js:function(data){
+           		
+           	 $('#myModal').html(data);
 					$('#myModal').modal(); }")).
          'return false;}',// returning false prevents the default navigation to another url on a new page 
    // 'class'=>'delete-icon',

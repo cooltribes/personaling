@@ -1,8 +1,8 @@
 <!-- Modal 1 -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Nombre del look</h3>
+        <h3 id="myModalLabel"><?php echo $model->title; ?></h3>
     </div>
     <div class="modal-body">
       <div class="text_align_center"><img src="http://placehold.it/300" class="img-polaroid"/></div>
@@ -69,5 +69,18 @@
             </table>
         </div>
     </div>
-    <div class="modal-footer"> <a href="#" title="eliminar" class="btn"><i class="icon-trash"></i> Eliminar</a> <a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> <a href="admin_anadir_producto.php" title="editar" class="btn"><i class="icon-edit"></i> Editar</a> <a href="" title="ver" class="btn btn-info" target="_blank"><i class="icon-eye-open icon-white"></i> Ver</a> </div>
-</div>
+    <div class="modal-footer"> 
+    	<a href="#" title="eliminar" class="btn"><i class="icon-trash"></i> Eliminar</a> 
+    	<a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> 
+    <?php $this->widget('bootstrap.widgets.TbButton', array(
+			'label'=>'Editar',
+			'icon'=>'edit',
+			'url' => CController::createUrl('look/edit',array('id'=>$model->id)),
+			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			//'size'=>'large', // null, 'large', 'small' or 'mini'
+		)); ?>
+
+    	
+    	
+    	<a href="" title="ver" class="btn btn-info" target="_blank"><i class="icon-eye-open icon-white"></i> Ver</a> 
+    </div>

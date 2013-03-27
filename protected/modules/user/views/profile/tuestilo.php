@@ -25,7 +25,36 @@ $this->breadcrumbs=array(
 ); ?>	
 <!-- FLASH OFF --> 
       <h1>Tu Estilo</h1>
-
+<!-- Deberia quedar como este --><div class="row"><div class="span6 offset3"><section class="margin_top  margin_bottom_small ">
+        <ul class="nav nav-pills">
+          <li class="active"> <a href="#">Diario</a> </li>
+          <li><a href="#">Fiesta</a></li>
+          <li><a href="#">Vacaciones</a></li>
+          <li><a href="#">Haciendo Deporte</a></li>
+          <li><a href="#">Oficina</a></li>
+        </ul>
+        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked personaling_form" enctype="multipart/form-data">
+          <fieldset>
+            <legend>Escoge tu estilo: </legend>
+            <ul class="thumbnails">
+              <li class="span3 active"> <a href="#" title="Elegir este tipo de cuerpo">
+                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="caption text_align_center CAPS">
+                    <p>Cras justoelit.</p>
+                  </div>
+                </div>
+                </a> </li>
+              <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
+                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="caption text_align_center CAPS">
+                    <p>Cras justoelit.</p>
+                  </div>
+                </div>
+                </a> </li>
+            </ul>
+          </fieldset>
+        </form>
+      </section></div></div>
       <article class="margin_top  margin_bottom_small ">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tuestilo-form',
@@ -38,7 +67,11 @@ $this->breadcrumbs=array(
 	),
 )); ?>
           <fieldset>
-            <legend class="text_align_center">Escoge tu estilo: </legend>
+            <legend>Escoge tu estilo: </legend>
+            
+            
+            
+            
             <div class="control-group">
               <div class="controls row">
               	            <?php 

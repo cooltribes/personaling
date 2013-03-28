@@ -122,11 +122,11 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 </div>
                 -->
                 <?php 
-              //  $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));
-			  // echo $form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range));
+                $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));
+			   echo $form->hiddenField($profile,$field->varname,Profile::range($field->range));
 				?>
                 <ul class="thumbnails">
-                <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
+                <li class="span3 active"> <a href="#" title="Elegir este tipo de cuerpo">
                   <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
                     <div class="caption text_align_center CAPS">
                       <p>Cras justoelit.</p>

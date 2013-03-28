@@ -7,7 +7,7 @@ class BolsaController extends Controller
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
-	 */
+	 */ 
 	public function accessRules()
 	{
 		return array(
@@ -15,7 +15,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar'),
+				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -242,5 +242,13 @@ class BolsaController extends Controller
 		}
 	}//fin
 
-	
+	/*
+	 * 
+	 * */
+	public function actionComprar()
+	{
+		$this->render('compra');
+		
+	}
+		
 }

@@ -106,7 +106,17 @@
               </table>
               <a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
               <hr/>
-              <a href="Instrucciones_Deposito_Transferencia.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
+			  	
+          <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'type'=>'danger',
+            'size'=>'large',
+            'label'=>'Pagar',
+            'url'=>'comprar', // action
+            'icon'=>'shopping-cart white',
+        )); 
+        // <a href="Instrucciones_Deposito_Transferencia.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
+        ?>
+			
               <hr/>
                             <a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
 

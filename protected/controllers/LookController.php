@@ -30,13 +30,22 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
+	}
+	public function actionDetalle($id)
+	{
+		$model = Look::model()->findByPk($id);
+		echo $this->renderPartial('_view_detalle_look',array(
+						'model'=>$model,
+						//'categorias'=>$categorias,
+					),true
+				);		
 	}
 	public function actionView($id)
 	{
@@ -201,6 +210,47 @@ public function actionCategorias(){
 			)
 		);
 				
+	}
+	public function actionEdit($id)
+	{
+		$model= Look::model()->findByPK($id);
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
+		//echo $_POST['productos_id'];
+		if (isset($_POST['productos_id'])){
+			$model->title = "Look Nuevo";
+			$model->altura = 0;
+			$model->contextura = 0;
+			$model->pelo = 0;
+			$model->ojos = 0;
+			$model->tipo_cuerpo = 0;
+			$model->piel = 0;
+			$model->tipo = 0;
+			$model->user_id = Yii::app()->user->id;
+			
+			if($model->save()){
+				$colores_id = explode(',',$_POST['colores_id']);
+				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
+					
+					$lookhasproducto = new LookHasProducto;
+					$lookhasproducto->look_id = $model->id;
+					$lookhasproducto->producto_id = $producto_id;
+					$lookhasproducto->color_id = $colores_id[$index];
+					$lookhasproducto->cantidad = 1;
+					$lookhasproducto->save();
+					 
+				}
+			   $this->redirect(array('look/publicar','id'=>$model->id)); 
+				Yii::app()->end();			
+			} else{
+					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
+				}
+		} else {
+       $this->render('create',array(
+				'model'=>$model,
+				'categorias'=>$categorias,
+			)
+		);
+		}
 	}
 	public function actionCreate()
 	{

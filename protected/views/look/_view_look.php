@@ -14,5 +14,23 @@
                 <div class="progress margin_top_small  progress-danger">
                     <div class="bar" style="width: 70%;"></div>
                 </div></td>
-            <td><a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal"><i class="icon-eye-open"></i></a></td>
+            <td>
+            
+<?php
+            	echo CHtml::link("<i class='icon-eye-open'></i>",
+    $this->createUrl('producto/detalles',array('id'=>$data->id)),
+    array(// for htmlOptions
+      'onclick'=>' {'.CHtml::ajax( array(
+      'url'=>CController::createUrl('look/detalle',array('id'=>$data->id)),
+          // 'beforeSend'=>'js:function(){if(confirm("Are you sure you want to delete?"))return true;else return false;}',
+           'success'=>"js:function(data){
+           		
+           	 $('#myModal').html(data);
+					$('#myModal').modal(); }")).
+         'return false;}',// returning false prevents the default navigation to another url on a new page 
+   // 'class'=>'delete-icon',
+    'id'=>'link'.$data->id)
+);	
+?>
+            </td>
         </tr> 

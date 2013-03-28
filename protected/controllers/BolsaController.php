@@ -15,7 +15,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones'),
+				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -73,19 +73,36 @@ class BolsaController extends Controller
 		{
 			$carrito = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 			$ptcolor = PrecioTallaColor::model()->findByAttributes(array('producto_id'=>$_POST['producto'],'talla_id'=>$_POST['talla'],'color_id'=>$_POST['color']));
-				
-			$pn = new BolsaHasProductotallacolor;
-			$pn->bolsa_id = $carrito->id;
-			$pn->preciotallacolor_id = $ptcolor->id;
-			$pn->cantidad = 1;
-				
-			if($pn->save())
-			{// en bolsa tengo id de usuario e id de bolsa
 			
+			//revisar si está o no en el carrito
+			
+			$nuevo = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptcolor->id));
+			
+			if(isset($nuevo)) // existe
+			{
+				$cantidadnueva = $nuevo->cantidad + 1;
+				BolsaHasProductotallacolor::model()->updateByPk($nuevo->preciotallacolor_id, array('cantidad'=>$cantidadnueva));
 				echo "ok";
-			
-			//	$this->render('bolsa', array('preciotallacolor' => $ptcolor, 'bolsa'=>$carrito));
+							
 			}
+			else{ // si el producto es nuevo en la bolsa
+			
+				$pn = new BolsaHasProductotallacolor;
+				$pn->bolsa_id = $carrito->id;
+				$pn->preciotallacolor_id = $ptcolor->id;
+				$pn->cantidad = 1;
+					
+				if($pn->save())
+				{// en bolsa tengo id de usuario e id de bolsa
+				
+					echo "ok";
+				
+				//	$this->render('bolsa', array('preciotallacolor' => $ptcolor, 'bolsa'=>$carrito));
+				}
+					
+			}
+				
+			
 				
 		}//else bolsa		
 	}// isset usuario
@@ -138,12 +155,27 @@ class BolsaController extends Controller
 	
 		public function actionPagos()
 		{
-			if(isset($_GET['id'])){ // de direcciones
+			
+			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
+			{ 
+				$idDireccion = $_POST['idDireccion'];
+				$tipoPago = $_POST['tipoPago'];
+				
+				$this->render('confirmar',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
+				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
+				// se le pasan los datos al action confirmar	
+			}else if(isset($_GET['id'])){ // de direcciones
 				$this->render('pago',array('id_direccion'=>$_GET['id']));
 			}
+			
 		
 		}
 		
+		public function actionConfirmar()
+		{
+			// viene de pagos
+				$this->render('confirmar');						
+		}
 		
 		public function actionDirecciones()
 		{
@@ -168,11 +200,11 @@ class BolsaController extends Controller
 				
 				if($dir->save())
 				{
-					$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
+					$this->render('pago',array('idDireccion'=>$dir->id));
+					//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
 				}
 				
-			}
-			else // si está viniendo de la pagina anterior que muestre todo 
+			}else // si está viniendo de la pagina anterior que muestre todo 
 			{
 				$this->render('direcciones',array('dir'=>$dir));
 			}

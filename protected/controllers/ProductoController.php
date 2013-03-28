@@ -207,7 +207,6 @@ class ProductoController extends Controller
 		                $nombre = Yii::getPathOfAlias('webroot').'/images/producto/'. $id .'/'. $imagen->id;
 		                $extension = ".jpg";
 
-
 		                if ($pic->saveAs($nombre . $extension)) {
 		
 		                    $imagen->url = '/images/producto/'. $id .'/'. $imagen->id .".jpg";
@@ -215,13 +214,16 @@ class ProductoController extends Controller
 							
 							Yii::app()->user->updateSession();
 							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));
-		
-		                    $image = Yii::app()->image->load($nombre . $extension);
-		                    $image->resize(640, 480);
+			
+							$image = Yii::app()->image->load($nombre . $extension);
+		                    $image->save($nombre . "_original.jpg"); 
+				
+							$image = Yii::app()->image->load($nombre . $extension); 
+		                    $image->resize(770, 770);
 		                    $image->save($nombre . ".jpg");
 		
 		                    $image = Yii::app()->image->load($nombre . $extension);
-		                    $image->resize(150, 150)->quality(40);
+		                    $image->resize(200, 200)->quality(40);
 		                    $image->save($nombre . "_thumb.jpg");
 		                } else {
 		                    $imagen->delete();

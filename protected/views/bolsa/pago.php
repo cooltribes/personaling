@@ -1,4 +1,7 @@
-
+<!-- tipopago 1: transferencia
+	 tipopago 2: Tarjeta credito
+	 tipopago 3: puntos o tarjeta de regalo -->
+	 
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
@@ -8,7 +11,7 @@
         <div class="middle-not_done "></div>
         <div class="last-not_done"></div>
       </div>
-      <h1>Preferencias de Pago. <?php echo "id dir:".$id_direccion; ?></h1>
+      <h1>Preferencias de Pago.</h1>
       <p>Elige la opción de pago que deseas utilizar:</p>
     </div>
   </div>
@@ -17,7 +20,7 @@
       <!-- Forma de pago ON -->
       <div class="box_1 padding_small margin_bottom">
         <h4 class="braker_bottom padding_bottom_xsmall ">Pagar con Depósito o  Transferencia Bancaria</h4>
-        <input type="checkbox" name="optionsRadios" id="optionsRadios1" value="option1" >
+        <input type="checkbox" name="optionsRadios" id="deposito" value="option1" >
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Usar éste método de pago (click para ver las cuentas) </button>
         (al seleccionar esta opción se desplegarian las cuentas aqui abajo)
         </label>
@@ -280,14 +283,28 @@
           <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-large">Anadir Tarjeta de Crédito</a> </div>
       </div><?php */?>
     </section>
-    <div class="span5 margin_bottom padding_top_xsmall">
+
+    <?php
+    
+//     echo CHtml::hiddenField('idDireccion',$idDireccion);
+// echo CHtml::hiddenField('tipoPago','1'); 
+?>
+    
+
+   
+  <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
+  <?php Yii::app()->getSession()->add('tipoPago',1); ?>
+    
+	<div class="span5 margin_bottom padding_top_xsmall">
       <div class="margin_left">
-        <div class="well ">
+        <div id="resumen" class="well ">
           <h4>Metodo de Pago Seleccionado</h4>
           <div class=" margin_bottom">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
-              <tr>
-                <td valign="top"><i class="icon-picture"></i></td>
+              <tr id="adentro">
+              <?php
+              /*
+			    <td valign="top"><i class="icon-picture"></i></td>
                 <td>MaterCard<br/>
                   XXXX XXXX XXXX 6589<br/>
                   Vence: 12/2018<br/>
@@ -302,9 +319,23 @@
                 <td valign="top"><i class="icon-certificate"></i></td>
                 <td>Balance de Puntos <br/>
                   Ganados <strong>250 Bs.</strong></td>
-              </tr>
-            </table>
-            <div class="form-actions"><a href="Proceso_de_Compra_4.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a> </div>
+              */
+			  ?> 
+			  </tr>
+			 </table>
+            <div class="form-actions">
+            	
+          <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'type'=>'danger',
+            'size'=>'large',
+            'label'=>'Completar compra',
+            'url'=>'confirmar', // action
+            'icon'=>'shopping-cart white',
+        )); 
+        // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a> 
+        ?>
+            	
+            	</div>
           </div>
         </div>
       </div>
@@ -321,7 +352,7 @@
     <h4>Agregar Depósito o Transferencia bancaria ya realizada</h4>
   </div>
   <div class="modal-body">
-    <form class="personaling_form">
+    <form class="">
       <div class="control-group"> 
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
@@ -366,3 +397,48 @@
 
 <!-- // Modal Window -->
 
+<script>
+
+	$(document).ready(function() {
+
+		$("#deposito").click(function() {
+			
+			var añadir = "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i></td><td> Depósito o Transferencia Bancaria.</td></tr>";
+			
+			if( $(this).is(':checked') ) // si activa el check
+			{
+				$("#adentro").append(añadir);
+			}else
+			{
+				$("tr.deptran").remove();
+			}	
+		});
+		
+		
+	$("#completar-compra").click(function(ev){
+   		ev.preventDefault();
+   		alert("pasar al sig");
+   		
+   		var idDir = $("#id-direccion").attr("value");
+     	var tipoPago = 1; // en este caso siempre es transferencia pero hay que pensarlo para los distintos tipos
+     
+     	$.ajax({
+	        type: "post",
+	        url: "pagos", // action pagos
+	        data: { 'idDir':idDir, 'tipoPago':tipoPago}, 
+	       // success: function (data) {	        	
+		     //   if(data == 'ok')
+		       // {
+		        //	alert("entró");
+	        	//	window.location="../confirmar";
+		        //}
+	       //	}//success
+	       })
+   		
+   	}); // tallas
+		
+	
+	});
+	
+	
+</script>

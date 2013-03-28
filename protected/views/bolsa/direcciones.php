@@ -166,7 +166,7 @@
 <![endif]-->
               <div class="controls">
               	
-              	 <?php echo $form->dropDownList($dir, 'pais', array('Seleccione', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              	 <?php echo $form->dropDownList($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
               	 /*
 				  * <select>
                   <option>Venezuela</option>

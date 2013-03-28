@@ -1,6 +1,11 @@
 <?php
 
-$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0";
+$usuario = Yii::app()->user->id;
+
+//$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+
+
+$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
 
 // bolsa tiene pro-talla-color
@@ -73,7 +78,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 			 * */
 		  }
 
-$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0";
+$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
 $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 
 		if($pr!=0) // si hay productos individuales
@@ -99,7 +104,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				  $descuentos = array();
 				  $cantidades = array();
                   
-                  foreach($bptcolor as $detalles)
+                  foreach($bptcolor as $detalles) // cada producto en la bolsa
 				  {
 				  	$todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);
 					
@@ -178,10 +183,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             <div class="well margin_top_large">
             	<?php 
             	
-            	$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0";
+            	$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
 				$look = Yii::app()->db->createCommand($sql)->queryScalar();	
             	
-				$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0";
+				$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
 				$indiv = Yii::app()->db->createCommand($sql)->queryScalar();
 				
             	?>
@@ -193,6 +198,11 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				{
 					echo "6 productos que componen los Looks<br/>";
 				}				
+              	?><?php 
+              	//variables de sesion
+              	Yii::app()->getSession()->add('totalLook',$look);
+              	Yii::app()->getSession()->add('totalIndiv',$indiv);
+              	
               	?>
                 <?php echo $indiv; ?> Productos individuales </h5>
               <hr/>
@@ -236,6 +246,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						$iva = (($totalPr - $totalDe)*0.12); 
 						
 						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
+						
+						// variables de sesion
+						Yii::app()->getSession()->add('subtotal',$totalPr);
+						Yii::app()->getSession()->add('descuento',$totalDe);
+						Yii::app()->getSession()->add('envio',$envio);
+						Yii::app()->getSession()->add('iva',$iva);
+						Yii::app()->getSession()->add('total',$t); 
 						
 						echo $totalPr;
                       	?>                      	

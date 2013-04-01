@@ -83,7 +83,7 @@
 			?></h4>
             </div>
             <div class="span2">
-              <div class="btn-group"> <a class="btn btn-danger" ><span class="entypo color3">&#59197;</span></a>
+              <div class="btn-group"> <a class="btn btn-danger" ><span class="entypo color3">&#128274;</span></a>
               	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa </a>
               </div>
             </div>

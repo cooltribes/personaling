@@ -1,5 +1,6 @@
 <?php
 	$look = Look::model()->findByPk($data['id']);
+	if($look->matchOcaciones(User::model()->findByPk(Yii::app()->user->id))){
 ?>
               <div class="active item">
             <div class="row"> 
@@ -17,3 +18,4 @@
                 </div>
               </article>
             </div></div>
+<?php } ?>

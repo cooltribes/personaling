@@ -1,5 +1,7 @@
 <?php
 
+if (!Yii::app()->user->isGuest) { // que este logueado
+
 $usuario = Yii::app()->user->id;
 
 //$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
@@ -324,7 +326,15 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
   
   ?>
 </div>
+<?php
 
+}// si esta logueado
+else
+	{
+		// redirecciona al login porque se murió la sesión
+	header('Location: /site/user/login');	
+	}
+?>
 <!-- /container -->
 
 <script>

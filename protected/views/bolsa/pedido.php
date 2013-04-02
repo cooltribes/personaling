@@ -4,9 +4,9 @@
     <div class="span8 offset2">
       <div class="clearfix margin_bottom margin_top margin_left">
         <div class="first-done"></div>
+        <div class="middle-done "></div> 
         <div class="middle-done "></div>
-        <div class="middle-done "></div>
-        <div class="last-done"></div>
+        <div class="last-done"></div> 
       </div>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <p class="alert alert-success"><strong>Tu Pedido ha sido recibido con éxito.</strong> <br/>

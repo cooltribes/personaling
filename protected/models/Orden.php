@@ -22,7 +22,6 @@
  * @property DireccionEnvio $direccionEnvio
  * @property Pago $pago
  * @property Pago $detalle
- * @property Producto[] $tblProductos
  */
 class Orden extends CActiveRecord
 {
@@ -72,7 +71,6 @@ class Orden extends CActiveRecord
 			'direccionEnvio' => array(self::BELONGS_TO, 'DireccionEnvio', 'direccionEnvio_id'),
 			'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
-			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{orden_has_tbl_producto}}(tbl_orden_id, tbl_producto_id)'),
 		);
 	}
 

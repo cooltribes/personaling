@@ -1,18 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "{{orden_has_tbl_producto}}".
+ * This is the model class for table "{{orden_has_productotallacolor}}".
  *
- * The followings are the available columns in table '{{orden_has_tbl_producto}}':
+ * The followings are the available columns in table '{{orden_has_productotallacolor}}':
  * @property integer $tbl_orden_id
- * @property integer $tbl_producto_id
+ * @property integer $preciotallacolor_id
+ * @property integer $cantidad
+ * @property integer $look_id
+ *
+ * The followings are the available model relations:
+ * @property PrecioTallaColor $preciotallacolor
  */
-class OrdenHasProducto extends CActiveRecord
+class OrdenHasProductotallacolor extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return OrdenHasProducto the static model class
+	 * @return OrdenHasProductotallacolor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -24,7 +29,7 @@ class OrdenHasProducto extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{orden_has_tbl_producto}}';
+		return '{{orden_has_productotallacolor}}';
 	}
 
 	/**
@@ -35,11 +40,11 @@ class OrdenHasProducto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tbl_orden_id, tbl_producto_id', 'required'),
-			array('tbl_orden_id, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('tbl_orden_id, preciotallacolor_id, cantidad', 'required'),
+			array('tbl_orden_id, preciotallacolor_id, cantidad, look_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('tbl_orden_id, tbl_producto_id', 'safe', 'on'=>'search'),
+			array('tbl_orden_id, preciotallacolor_id, cantidad, look_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,6 +56,7 @@ class OrdenHasProducto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'preciotallacolor' => array(self::BELONGS_TO, 'PrecioTallaColor', 'preciotallacolor_id'),
 		);
 	}
 
@@ -61,7 +67,9 @@ class OrdenHasProducto extends CActiveRecord
 	{
 		return array(
 			'tbl_orden_id' => 'Tbl Orden',
-			'tbl_producto_id' => 'Tbl Producto',
+			'preciotallacolor_id' => 'Preciotallacolor',
+			'cantidad' => 'Cantidad',
+			'look_id' => 'Look',
 		);
 	}
 
@@ -77,7 +85,9 @@ class OrdenHasProducto extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('tbl_orden_id',$this->tbl_orden_id);
-		$criteria->compare('tbl_producto_id',$this->tbl_producto_id);
+		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
+		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('look_id',$this->look_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

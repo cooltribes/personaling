@@ -5,12 +5,13 @@ $this->breadcrumbs=array(
 	'Tienda',
 );
 ?>
-<div class="container margin_top">
+
+<div class="container margin_top" id="tienda">
   <div class="row">
     <div class="span3">
-      <div class="shadow_1">
-      	 <!-- para filtrar por seleccion de categoria -->
-   <?php
+      <div class="shadow_1"> 
+        <!-- para filtrar por seleccion de categoria -->
+        <?php
 	Yii::app()->clientScript->registerScript('cate1',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest; 
@@ -34,12 +35,11 @@ $this->breadcrumbs=array(
 		});",CClientScript::POS_READY
 	);
 	
-	?>	
-      	
-      <form id="formu" class="no_margin_bottom form-search">
-        <select id="cate1" class="span3" name="cate1">
-        	<option value="0">Buscar por Categoria</option>
-    <?php 
+	?>
+        <form id="formu" class="no_margin_bottom form-search">
+          <select id="cate1" class="span3" name="cate1">
+            <option value="0">Buscar por Categoria</option>
+            <?php 
 
 	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',));
 	nodos($cat); 
@@ -66,16 +66,18 @@ $this->breadcrumbs=array(
 		}	
 		return 1;
 	}
-?>	
-   		</select><p></p>
-        <input type="text" placeholder="Buscar por palabras clave" id="busqueda" name="busqueda" class="span3">
-        <p></p>
-        <a href="#" title="Buscar" id="btn_search" class="btn">Buscar</a>
+?>
+          </select>
+          <p></p>
+          <div class="input-append">
+            <input class="" id="appendedInputButtons" type="text" placeholder="Buscar por palabras clave">
+            <button class="btn btn-warning" type="button"><i class="icon-search icon-white"></i></button>
+          </div>
         </form>
         <hr/>
         
         <!-- para filtrar por campo de texto -->
-           <?php
+        <?php
 	Yii::app()->clientScript->registerScript('busqueda',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest; 
@@ -100,9 +102,8 @@ $this->breadcrumbs=array(
 	);
 	
 	?>
-        
         <div class="tienda_iconos" id="uno">
-           <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
+          <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
         <h5>Buscar por colores</h5>
@@ -128,8 +129,5 @@ $this->breadcrumbs=array(
 	    'template'=>$template,
 	));    
 	?>
-	
-	
-	
   </div>
 </div>

@@ -123,37 +123,24 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 -->
                 <?php 
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));
-			   echo $form->hiddenField($profile,$field->varname,Profile::range($field->range));
+			   echo $form->hiddenField($profile,$field->varname);
+			   $nombre_tmp = $field->varname;
+			   if (isset($profile->$nombre_tmp)) $valor_tmp = $profile->$nombre_tmp; else $valor_tmp = 0;
 				?>
-                <ul class="thumbnails">
-                <li class="span3 active"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                <ul class="thumbnails" id="tipo_cuerpo">
+                
+                <?php foreach (Profile::range($field->range) as $key => $tipo){ ?>
+                	
+                <li class="span3 <?php if ($valor_tmp == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>"> <a href="#" title="Elegir este tipo de cuerpo">
+                  <div class="thumbnail"> <img alt="<?php echo $tipo; ?>" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
                     <div class="caption text_align_center CAPS">
-                      <p>Cras justoelit.</p>
+                      <p><?php echo $tipo; ?></p>
                     </div>
                   </div>
-                  </a> </li>
-                <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                    <div class="caption text_align_center CAPS">
-                      <p>Cras justoelit.</p>
-                    </div>
-                  </div>
-                  </a> </li>
-                <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                    <div class="caption text_align_center CAPS">
-                      <p>Cras justoelit.</p>
-                    </div>
-                  </div>
-                  </a> </li>
-                <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                    <div class="caption text_align_center CAPS">
-                      <p>Cras justoelit.</p>
-                    </div>
-                  </div>
-                  </a> </li>
+                  </a> 
+               </li>
+                <?php } ?>
+               
               </ul>
                 
                 
@@ -175,3 +162,32 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     </div>
   </div>
 </div>
+<?php 
+$script = "
+	$('#tipo_cuerpo').on('click', 'li', function(e) {
+		 
+		 var ids = '';
+		 $(this).siblings().removeClass('active');
+		 $(this).addClass('active');
+		 
+		// var selected = $(this).attr('href');
+		// $('#tipo_cuerpo .active').each(function(){
+		// 	if (selected != $(this).attr('id'))
+		// 		ids += $(this).attr('id');
+			
+		// });
+		// alert($(this).hasClass('active'));
+		// alert(ids);
+		 //if (!($(this).hasClass('active')))
+		 //	ids += $(this).attr('id');
+		// alert(ids);
+		// alert(ids.substring(1));
+		 $('#Profile_tipo_cuerpo').val($(this).attr('id').substring(5));
+		 //return false;
+		 e.preventDefault();
+	 });
+	
+	
+";
+?>
+<?php Yii::app()->clientScript->registerScript('botones',$script); ?>

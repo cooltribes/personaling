@@ -66,8 +66,7 @@ $this->breadcrumbs=array(
 		'validateOnSubmit'=>true,
 	),
 )); ?>
-          <fieldset>
-            <legend>Escoge tu estilo: </legend>
+          
             
             
             
@@ -80,7 +79,26 @@ $this->breadcrumbs=array(
 				$tabs[] = array(
             		'active'=>$estilo=='coctel'?true:false,
             		'label'=>$field->title,
-            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+            		//'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+            		'content'=> '          <fieldset>
+            <legend>Escoge tu estilo: </legend>
+            <ul class="thumbnails">
+              <li class="span3 active"> <a href="#" title="Elegir este tipo de cuerpo">
+                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="caption text_align_center CAPS">
+                    <p>Cras justoelit.</p>
+                  </div>
+                </div>
+                </a> </li>
+              <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
+                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="caption text_align_center CAPS">
+                    <p>Cras justoelit.</p>
+                  </div>
+                </div>
+                </a> </li>
+            </ul>
+          </fieldset>',
         		);
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'fiesta'));
 				$tabs[] = array(
@@ -108,8 +126,9 @@ $this->breadcrumbs=array(
         		);
 				?>
 				<?php $this->widget('bootstrap.widgets.TbTabs', array(
-				'placement'=>'left', // 'above', 'right', 'below' or 'left'
+				'placement'=>'adove', // 'above', 'right', 'below' or 'left'
     				'tabs'=>$tabs,
+    				'type'=>'pills'
 				)); ?>
 				<?php
 				Yii::app()->clientScript->registerScript('change', "
@@ -146,7 +165,7 @@ $this->breadcrumbs=array(
               -->
               </div>
             </div>
-          </fieldset>
+         
         <?php $this->endWidget(); ?>
        
       </article>

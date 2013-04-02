@@ -119,7 +119,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                     <input type="radio" id="inlineCheckbox1" name="optionsRadios" value="option2">
                     Triangulo</label>
                   </label>
-                </div>
+                </div> 
                 -->
                 <?php 
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));

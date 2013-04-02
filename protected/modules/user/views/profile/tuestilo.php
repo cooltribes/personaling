@@ -25,7 +25,11 @@ $this->breadcrumbs=array(
 ); ?>	
 <!-- FLASH OFF --> 
       <h1>Tu Estilo</h1>
-<!-- Deberia quedar como este --><div class="row"><div class="span6 offset3"><section class="margin_top  margin_bottom_small ">
+      
+      
+<!-- Deberia quedar como este -->
+<!--
+<div class="row"><div class="span6 offset3"><section class="margin_top  margin_bottom_small ">
         <ul class="nav nav-pills">
           <li class="active"> <a href="#">Diario</a> </li>
           <li><a href="#">Fiesta</a></li>
@@ -55,7 +59,8 @@ $this->breadcrumbs=array(
           </fieldset>
         </form>
       </section></div></div>
-      <article class="margin_top  margin_bottom_small ">
+     -->
+      
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tuestilo-form',
 	'htmlOptions'=>array('class'=>'personaling_form'),
@@ -71,58 +76,58 @@ $this->breadcrumbs=array(
             
             
             
-            <div class="control-group">
-              <div class="controls row">
+           <div class="row"><div class="span6 offset3">
               	            <?php 
-              	             
+              	function getTabs($field,$profile){
+            				$nombre_tmp = $field->varname;
+			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
+			$return = '<fieldset>
+            <legend>Escoge tu estilo: </legend>
+            <ul class="thumbnails">';
+            foreach (Profile::range($field->range) as $key => $value){
+            $return .=  '<li class="span3 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
+                <div class="thumbnail"> <img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="caption text_align_center CAPS">
+                    
+                  </div>
+                </div>
+                </a> </li>';
+                }
+            $return .= '</ul> 
+          </fieldset>';      
+		  return $return;  		
+              	}             
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'coctel'));
+
 				$tabs[] = array(
             		'active'=>$estilo=='coctel'?true:false,
             		'label'=>$field->title,
             		//'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
-            		'content'=> '          <fieldset>
-            <legend>Escoge tu estilo: </legend>
-            <ul class="thumbnails">
-              <li class="span3 active"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                  <div class="caption text_align_center CAPS">
-                    <p>Cras justoelit.</p>
-                  </div>
-                </div>
-                </a> </li>
-              <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                  <div class="caption text_align_center CAPS">
-                    <p>Cras justoelit.</p>
-                  </div>
-                </div>
-                </a> </li>
-            </ul>
-          </fieldset>',
+            		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'fiesta'));
 				$tabs[] = array(
             		'active'=>$estilo=='fiesta'?true:false,
             		'label'=>$field->title,
-            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+            		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);        		
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'playa'));
 				$tabs[] = array(
             		'active'=>$estilo=='playa'?true:false,
             		'label'=>$field->title,
-            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+            		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'sport'));
 				$tabs[] = array(
             		'active'=>$estilo=='sport'?true:false,
             		'label'=>$field->title,
-            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+            		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
 				$field = ProfileField::model()->findByAttributes(array('varname'=>'trabajo'));
 				$tabs[] = array(
             		'active'=>$estilo=='trabajo'?true:false,
             		'label'=>$field->title,
-            		'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
+            		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
 				?>
 				<?php $this->widget('bootstrap.widgets.TbTabs', array(
@@ -168,7 +173,31 @@ $this->breadcrumbs=array(
          
         <?php $this->endWidget(); ?>
        
-      </article>
+      
     </div>
   </div>
 </div>
+<?php 
+$script = "
+	$('.tab-content').on('click', 'li', function(e) {
+		 
+		 var ids = '';
+		 $(this).siblings().removeClass('active');
+		 $(this).addClass('active');
+		 
+		$(this).parents('fieldset').next('input').val($(this).attr('id').substring(8));
+		 //$('#Profile_tipo_cuerpo').val($(this).attr('id').substring(5));
+		div_id = $(this).parents('div.tab-pane').next().attr('id');
+		
+		if (div_id === undefined) {
+			$('#tuestilo-form').submit();
+		} else {
+			$('.nav-pills a[href=\"#'+div_id+'\"]').tab('show');
+		}		 
+		// e.preventDefault();
+	 });
+	
+	
+";
+?>
+<?php Yii::app()->clientScript->registerScript('botones',$script); ?>

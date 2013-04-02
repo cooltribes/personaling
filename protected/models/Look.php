@@ -71,13 +71,13 @@ class Look extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_look_id'),
-			'tblProductos' => array(self::MANY_MANY, 'Producto', '{{look_has_producto}}(look_id, producto_id)'),
+			'productos' => array(self::MANY_MANY, 'Producto', '{{look_has_producto}}(look_id, producto_id)'),
 			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
 		);
 	}
-
+ 
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

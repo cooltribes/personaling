@@ -21,7 +21,10 @@ $this->breadcrumbs=array(
               </div>
             </div>
           </div>
-          <div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <img src="images/look_sample_grande_1.jpg" width="770" height="770" alt="Nombre del look"></div>
+          <div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> 
+         
+          	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "770", "height" => "770", 'class'=>'img_1')); ?>
+          </div>
           <div class="hidden-phone clearfix vcard">
             <div class="pull-left margin_right_small avatar "><img class="pull-left photo  img-circle" src="images/avatar_sample1.jpg"/></div>
             <div class="pull-left"> <span class="muted">Look creado por: </span>
@@ -50,7 +53,16 @@ $this->breadcrumbs=array(
           <!-- Productos del look ON -->
           <div class="productos_del_look">
             <div class="row-fluid">
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
+              <?php if($model->productos)
+			  			foreach ($model->productos as $producto){ 
+			  				 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+			?>
+              <div class="span6"> 
+              	<a href="pagina_producto.php" title="Nombre del Producto"> 
+              		<!-- <img width="170" height="170" src="images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 
+              		-->
+              		<?php echo CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
+              	</a>
                 <input type="checkbox" checked >
                 <div class="metadata_top">
                   <select class="span5">
@@ -62,13 +74,15 @@ $this->breadcrumbs=array(
                   </select>
                 </div>
                 <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
+                  <h5><?php echo $producto->nombre; ?></h5>
                   <div class="row-fluid">
                     <div class="span7"><span>Bs. 5.000,00</span></div>
                     <div class="span5"> <span>20 unds.</span></div>
                   </div>
                 </div>
               </div>
+              <?php } ?>
+             <!-- 
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_2.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
                 <input type="checkbox" checked >
                 <div class="metadata_top">
@@ -202,6 +216,7 @@ $this->breadcrumbs=array(
                   </div>
                 </div>
               </div>
+             -->
             </div>
           </div>
           <!-- Productos del look OFF -->
@@ -258,7 +273,7 @@ $this->breadcrumbs=array(
             </div>
           </div>
         </div>
-      </div>
+      </div> 
       
           <div class="text_align_center">
           <hr/>

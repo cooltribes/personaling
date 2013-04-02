@@ -28,7 +28,7 @@
           </div>
           <div class="row">
           	<?php
-            
+             
             	echo "<div class='span6 imagen_principal'> 
             			<!-- FOTO principal ON -->";
             	

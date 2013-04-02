@@ -35,7 +35,7 @@ class LookController extends Controller
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
-			),
+			), 
 		);
 	}
 	public function actionDetalle($id)
@@ -65,7 +65,7 @@ class LookController extends Controller
 		 	
 		 $look = Look::model()->findByPk($id);
 		 $images_path = array();
-		 foreach($look->tblProductos as $producto){
+		 foreach($look->productos as $producto){
 		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
 		 	$images_path[] = Yii::app()->getBasePath() .'/..' . substr_replace($producto->mainimage->url, '_thumb', strrpos($producto->mainimage->url,'.'), 0);
 		 }	

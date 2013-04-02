@@ -247,8 +247,107 @@ class BolsaController extends Controller
 	 * */
 	public function actionComprar()
 	{
-		$this->render('compra');
+		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
+		 {
+		 	$usuario = Yii::app()->user->id; 
+			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+			
+			if($_POST['tipoPago']==1){ // transferencia
+				$detalle = new Detalle;
+			
+				if($detalle->save())
+				{
+					$pago = new Pago;
+					$pago->tipo = $_POST['tipoPago']; // trans
+					$pago->tbl_detalle_id = $detalle->id;
+					
+					if($pago->save()){
+					
+					// clonando la direccion
+					$dir1 = Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario));
+					$dirEnvio = new DireccionEnvio;
+					
+					$dirEnvio->nombre = $dir1->nombre;
+					$dirEnvio->apellido = $dir1->apellido;
+					$dirEnvio->cedula = $dir1->cedula;
+					$dirEnvio->dirUno = $dir1->dirUno;
+					$dirEnvio->dirDos = $dir1->dirDos;
+					$dirEnvio->ciudad = $dir1->ciudad;
+					$dirEnvio->estado = $dir1->estado;
+					$dirEnvio->pais = $dir1->pais;
+
+						if($dirEnvio->save()){
+							// ya esta todo para realizar la orden
+							
+							$orden = new Orden;
+							
+							$orden->subtotal = $_POST['subtotal'];
+							$orden->descuento = $_POST['descuento'];
+							$orden->envio = $_POST['envio'];
+							$orden->iva = $_POST['iva'];
+							$orden->descuentoRegalo = 0;
+							$orden->total = $_POST['total'];
+							$orden->estado = 1; // en espera de pago (?)
+							$orden->bolsa_id = $bolsa->id; 
+							$orden->user_id = $usuario;
+							$orden->pago_id = $pago->id;
+							$orden->detalle_id = $detalle->id;
+							$orden->direccionEnvio_id = $dirEnvio->id;	
+							
+							if($orden->save()){
+								$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));	
+								
+								foreach($productosBolsa as $prod)
+								{
+									$prorden = new OrdenHasProductotallacolor;
+									$prorden->tbl_orden_id = $orden->id;
+									$prorden->preciotallacolor_id = $prod->preciotallacolor_id;
+									$prorden->cantidad = $prod->cantidad;
+									$prorden->look_id = $prod->look_id;
+									
+									if($prorden->save()){
+										//listo y que repita el proceso
+									}
+								}
+								
+								// para borrar los productos de la bolsa								
+								foreach($productosBolsa as $prod)
+								{
+									$prod->delete();															
+								}
+								
+							// cuando finalice entonces envia id de la orden para redireccionar
+							echo CJSON::encode(array(
+								'status'=> 'ok',
+								'orden'=> $orden->id
+							));
+							
+							
+							}//orden
+						}//direccion de envio
+					} // pago
+				}// detalle
+			}// transferencia
+			
+			// detalle de pago (caso transferencia todo vacio)
+			// tipo de pago y copiar direccion envio
+			// realizar la orden
+			// mover los productos
+			// quitarlos de bolsa tiene producto
+			
+		 }
 		
 	}
+
+	/*
+	 * 
+	 * */
+	public function actionPedido($id)
+	{
+		$orden = Orden::model()->findByPk($id);
+		
+		$this->render('pedido',array('orden'=>$orden));
+	}
+
 		
 }

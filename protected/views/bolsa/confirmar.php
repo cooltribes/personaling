@@ -11,6 +11,15 @@
       <h1>Confirmación del Pedido</h1>
     </div>
   </div>
+  
+  <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
+  <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
+  <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
+  <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
+  <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
+  <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
+  <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
+  
   <div class="row margin_top_medium">
     <section class="span4"> 
       <!-- Direcciones ON -->
@@ -107,7 +116,7 @@
               <a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
               <hr/>
 			  	
-          <?php $this->widget('bootstrap.widgets.TbButton', array(
+          <?php /*$this->widget('bootstrap.widgets.TbButton', array(
             'type'=>'danger',
             'size'=>'large',
             'label'=>'Pagar',
@@ -115,8 +124,10 @@
             'icon'=>'shopping-cart white',
         )); 
         // <a href="Instrucciones_Deposito_Transferencia.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
+		   * */
+		   
         ?>
-			
+			<a onclick="enviar()" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
               <hr/>
                             <a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
 
@@ -140,4 +151,32 @@
 </div>
 <!-- /container -->
 
+<script>
+	
+	function enviar()
+	{
+   		var idDireccion = $("#idDireccion").attr("value");
+		var tipoPago = $("#tipoPago").attr("value");
+		var subtotal = $("#subtotal").attr("value");
+		var descuento = $("#descuento").attr("value");
+		var envio = $("#envio").attr("value");
+		var iva = $("#iva").attr("value");
+		var total = $("#total").attr("value");
 
+ 		$.ajax({
+	        type: "post",
+	        dataType: 'json',
+	        url: "comprar", // action 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total}, 
+	        success: function (data) {
+				
+				if(data.status=="ok")
+				{
+					window.location="pedido/"+data.orden+"";
+				}
+	       	}//success
+	       })
+ 			
+	}
+	
+</script>

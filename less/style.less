@@ -739,7 +739,25 @@ src: url('../fonts/entypo.woff'),
 }
 .tienda_colores{ img{ float:left; margin:0 8px 8px 0}}
 .tienda_productos{ 
-	.span3{margin-bottom:30px}
+	.span3{
+		margin-bottom:30px;
+		text-align:center;
+		img{
+			margin-bottom:.2em;}
+		h3{
+			.CAPS;
+			color:#666;
+			font-size:1em;
+			margin-bottom:0;
+			font-size: 1em;
+    line-height: 1.3em;
+			}
+		span.precio{
+			color:@color4;
+			
+			}
+		}
+	
 	}
 
 /* Brakers */
@@ -752,6 +770,96 @@ src: url('../fonts/entypo.woff'),
 	.margin_top_large;
 	.margin_bottom_large;
 	}
+.form-search .input-append .btn{
+	border-radius:0;
+	-moz-border-radius:0;
+	-webkit-border-radius:0;
+	-o-border-radius:0;
+	
+	}
+#tienda{
+	.list-view{
+		padding-top:0;
+		}
+}
+
+/**
+ * CSS styles for CLinkPager.
+ *
+ * @author Qiang Xue <qiang.xue@gmail.com>
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @since 1.0
+ */
+
+ul.yiiPager
+{
+	font-size:11px;
+	border:0;
+	margin:0;
+	padding:0;
+	line-height:100%;
+	display:inline;
+}
+
+ul.yiiPager li
+{
+	display:inline;
+}
+
+ul.yiiPager a:link,
+ul.yiiPager a:visited
+{
+	border:solid 1px #ddd;
+	font-weight:bold;
+	color:#555;
+	padding:6px 10px;
+	text-decoration:none;
+	margin:0 3px;
+}
+
+ul.yiiPager .page a
+{
+	font-weight:normal;
+}
+
+ul.yiiPager a:hover
+{
+	border:solid 1px #0e509e;
+}
+
+ul.yiiPager .selected a
+{
+	background:@color6;
+	color:#FFFFFF;
+	font-weight:bold;
+}
+
+ul.yiiPager .hidden a
+{
+	border:solid 1px #DEDEDE;
+	color:#888888;
+}
+
+/**
+ * Hide first and last buttons by default.
+ */
+ul.yiiPager .first,
+ul.yiiPager .last
+{
+	display:none;
+}
+.pager li > a,
+.pager li > span {
+    display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
 
 /*----------- Tienda OFF -------------*/
 

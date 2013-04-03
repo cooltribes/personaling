@@ -197,7 +197,27 @@ class Producto extends CActiveRecord
 		}
 		return $ids;
 	}
-
+	public function getTallas($color)
+	{
+		//$kwdata = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color)))->findByPk($this->id);
+		//foreach ($this->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color))) as $producto){
+		//	$co = Color::model()->findByPk($p->color_id);
+		//}
+$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id));
+		$datos = array();
+		foreach($ptc as $p)
+		{
+			
+			
+			$ta = Talla::model()->findByPk($p->talla_id);
+			$datos[$ta->id]=$ta->valor;
+			//array_push($datos,$ta->id);
+			//array_push($datos,$ta->valor); // para cada talla guardo su id y su valor
+			
+			
+		}		
+		return $datos;
+	}
 	public function beforeSave()
 	{
 		

@@ -61,17 +61,14 @@ $this->breadcrumbs=array(
               	<a href="pagina_producto.php" title="Nombre del Producto"> 
               		<!-- <img width="170" height="170" src="images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 
               		-->
-              		<?php echo CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
+              		<?php $image = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
+              		<?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
               	</a>
                 <input type="checkbox" checked >
                 <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
+                	<?php   ?>
+                 <?php echo CHtml::dropDownList('tallas','',$producto->getTallas(4),array('class'=>'span5')); ?>
+                
                 </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $producto->nombre; ?></h5>

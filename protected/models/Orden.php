@@ -71,6 +71,7 @@ class Orden extends CActiveRecord
 			'direccionEnvio' => array(self::BELONGS_TO, 'DireccionEnvio', 'direccionEnvio_id'),
 			'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
+			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
 		);
 	}
 

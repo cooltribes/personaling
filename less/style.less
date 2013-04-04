@@ -739,23 +739,57 @@ src: url('../fonts/entypo.woff'),
 }
 .tienda_colores{ img{ float:left; margin:0 8px 8px 0}}
 .tienda_productos{ 
+	.span3:hover 
+	{
+		.ver_detalle, .agregar_a_bolsa{
+			opacity:1;
+			}
+	}
 	.span3{
-		margin-bottom:30px;
+		margin-bottom:50px;
 		text-align:center;
+		background:url(../images/shdow_productos_tienda.png) no-repeat center bottom ;
+		padding-bottom:50px;
+		position:relative;
+		.label{.border_radius(@radius:0); margin-right:.5em;}
+		.ver_detalle, .agregar_a_bolsa{
+			opacity:0;
+			position: absolute;
+			top:30%;
+			left:40%;
+			background:rgba(255,255,255,.5);
+			border:40px;
+			color: lighten(@color4,10%);
+			line-height: 0.7em;
+			width:40px;
+			height:40px;
+			.border_radius(@radius:40px);
+			&:hover{.color6}
+			}
+		.agregar_a_bolsa{
+			left:60%;
+
+			}
+	
 		img{
 			margin-bottom:.2em;}
 		h3{
 			.CAPS;
 			color:#666;
 			font-size:1em;
-			margin-bottom:0;
+			margin-bottom:.3em;
 			font-size: 1em;
     line-height: 1.3em;
 			}
 		span.precio{
 			color:@color4;
+			display:block;
+			margin-bottom:.1em;
 			
 			}
+		.like{
+			&:hover{.color6;
+				}}
 		}
 	
 	}

@@ -15,7 +15,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar'),
+				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -351,5 +351,29 @@ class BolsaController extends Controller
 		$this->render('pedido',array('orden'=>$orden));
 	}
 
+	/*
+	 * 
+	 * */
+	public function actionCpago()
+	{
+		if (Yii::app()->request->isPostRequest) // asegurar que viene en post
+		{
+			$detPago = Detalle::model()->findByPk($_POST['idDetalle']);
+			
+			$detPago->nombre = $_POST['nombre'];
+			$detPago->nTransferencia = $_POST['numeroTrans'];
+			$detPago->comentario = $_POST['comentario'];
+			
+			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia'];
+			
+			if($detPago->save())
+			{
+				echo "ok";
+			}
+			
+		}
+		
+		
+	}
 		
 }

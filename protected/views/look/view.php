@@ -46,11 +46,86 @@ $this->breadcrumbs=array(
               <h4 class="precio" ><span>Subtotal</span> Bs. 13.500,00</h4>
             </div>
             <div class="span2">
-              <div class="btn-group"> <a class="btn btn-danger" href="#"><span class="entypo color3">&#59197;</span></a> <a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa</a> </div>
+              <div class="btn-group"> <a class="btn btn-danger" href="#"><span class="entypo color3">&#59197;</span></a> 
+              	<a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa</a> 
+		 <?php 
+		 
+		 $this->widget('bootstrap.widgets.TbButton', array(
+				    'buttonType'=>'ajaxButton',
+				    'type'=>'danger',
+				    'label'=>'Añadir a la bolsa',
+				    //'block'=>'true',
+				   	//'size'=> 'large',
+				   // 'url'=>array('producto/tallacolor'),
+				   'url'=> CController::createUrl('producto/tallacolor',array('id'=>$model->id)) ,
+				    'htmlOptions'=>array('id'=>'buttonGuardar'),
+				    'ajaxOptions'=>array(
+				    	    'type' => 'POST',
+				    	    'data'=> "js:$('#producto-form').serialize()",
+		    				
+		    				'beforeSend' => "function( request )
+			                     {
+			                       	/*
+			                       var codigos = '';
+			                       $('.input-sku').each(function(index){
+			                       		codigos += $(this).val()+',';
+			                       });
+								   codigos = codigos.substring(0, codigos.length-1);
+			                       var cantidades = '';
+			                       $('.input-cant').each(function(index){
+			                       		cantidades +=$(this).val()+ ',';
+			                       });
+			                       cantidades = cantidades.substring(0, cantidades.length-1);
+			                       this.data += '&cantidades='+cantidades+'&codigos='+codigos;
+			                       */
+			                       return false;
+			                     }",
+							  
+							 
+		                     'success' => "function( data )
+				                  {
+				                    // handle return data
+				                   // alert( data );
+				                   // $('#table_tallacolor').append(data);
+				                   data = JSON.parse( data );
+				                    if(data.status=='success'){
+				                        // $('#formResult').html('form submitted successfully.');
+				                        //alert('si');
+				                        // $('#Tallacolor-Form')[0].reset();
+				                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+									}
+				                         else{
+				                         	id = data.id;
+											 delete data['id'];
+				                         	
+				                        $.each(data, function(key, val) {
+				                        	key_tmp = key.split('_');
+											key_tmp.splice(1,0,id);
+				                        	key = key_tmp.join('_');
+											
+				                        	//alert('#Tallacolor-Form #'+key+'_em_');
+				                        	 
+				                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+				                        $('#Tallacolor-Form #'+key+'_em_').show();
+				                        });
+										}
+				                  }",
+				                //  'data'=>array('id'=>$model->id),
+					),
+				)); 
+		
+				?>               	
+              	</div>
             </div>
           </div>
           
           <!-- Productos del look ON -->
+		<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+			'id'=>'producto-form',
+			'enableAjaxValidation'=>false,
+			'type'=>'horizontal',
+		)); ?>
+          
           <div class="productos_del_look">
             <div class="row-fluid">
               <?php if($model->productos)
@@ -218,6 +293,7 @@ $this->breadcrumbs=array(
              -->
             </div>
           </div>
+          <?php $this->endWidget(); ?>
           <!-- Productos del look OFF -->
           
           <div class="braker_horz_top_1">

@@ -65,33 +65,50 @@ class ProductoController extends Controller
 		if(isset($_GET['id']))
 		{
 			$model = Producto::model()->findByPk($_GET['id']);
-			
-		//	$in = substr($model->fInicio, 11, 5);	
-			//$fin = substr($model->fFin, 11, 5);	
-
-			//$model->horaInicio = Yii::app()->dateFormatter->formatDateTime($model->fInicio, false, 'medium');
 
 		}
 		else {
 			$model=new Producto;	
 		}
 		
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
+// si es un producto nuevo viene así
 		if(isset($_POST['Producto']))
 		{
-			$model->attributes=$_POST['Producto'];
-			$model->status=1;
-			if($model->save())
+			$exist = Producto::model()->findByAttributes(array('codigo'=>$_POST['Producto']['codigo']));
+			
+			if(isset($exist)) // si existe
 			{
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-				
+				 Producto::model()->updateByPk($exist->id, array(
+				 	'nombre' => $_POST['Producto']['nombre'],
+				 	'proveedor'=>$_POST['Producto']['proveedor'],
+				 	'descripcion'=>$_POST['Producto']['descripcion'],
+				 	'estado'=>$_POST['Producto']['estado'],
+				 	'fInicio'=>$_POST['Producto']['fInicio'],
+					'fFin'=>$_POST['Producto']['fFin']
+					));
+					
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+					
+					$this->redirect(array('create','id'=>$exist->id));
+					
 			}
+			else // nuevo
+			{
+				$model->attributes=$_POST['Producto'];
+				$model->status=1;
+				if($model->save())
+				{
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+					
+				}
+			}
+			
+			
 				//$this->redirect(array('view','id'=>$model->id));
 		}
-
+//echo $model->fFin;
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -747,14 +764,17 @@ class ProductoController extends Controller
 		
 		foreach($ptc as $p)
 		{
-			$datos = array();
-			
-			$ta = Talla::model()->findByPk($p->talla_id);
-			
-			array_push($datos,$ta->id);
-			array_push($datos,$ta->valor); // para cada talla guardo su id y su valor
-			
-			array_push($tallas,$datos); // se envian en un array de datos de tallas
+			if($p->cantidad>0) // que haya disponibilidad para mostrarlo
+			{
+				$datos = array();
+				
+				$ta = Talla::model()->findByPk($p->talla_id);
+				
+				array_push($datos,$ta->id);
+				array_push($datos,$ta->valor); // para cada talla guardo su id y su valor
+				
+				array_push($tallas,$datos); // se envian en un array de datos de tallas
+			}
 		}	
 		
 			//print_r($tallas);
@@ -778,14 +798,17 @@ class ProductoController extends Controller
 		
 		foreach($ptc as $p)
 		{
-			$datos = array();
-			
-			$co = Color::model()->findByPk($p->color_id);
-			 
-			array_push($datos,$co->id);
-			array_push($datos,$co->valor); // para cada talla guardo su id y su valor
-			
-			array_push($colores,$datos); // se envian en un array de datos de colores
+			if($p->cantidad > 0) // que haya disponibilidad para mostrarlo
+			{
+				$datos = array();
+				
+				$co = Color::model()->findByPk($p->color_id);
+				 
+				array_push($datos,$co->id);
+				array_push($datos,$co->valor); // para cada talla guardo su id y su valor
+				
+				array_push($colores,$datos); // se envian en un array de datos de colores
+			}
 		}	
 		
 			//print_r($tallas);

@@ -97,23 +97,25 @@
               	$valores = Array();
 				              	
 				foreach ($producto->preciotallacolor as $talCol) {
-              	
-					$color = Color::model()->findByPk($talCol->color_id);		
-					
-					if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
+              		
+              		if($talCol->cantidad > 0) // que haya disp
+					{
+						$color = Color::model()->findByPk($talCol->color_id);		
+						
+						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
+						}
+						else{
+							echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='color'>".$color->valor."</div>"; 
+							array_push($valores, $color->id);
+						}
+						
+						/*
+						<a href="#" title="color"><img  src="http://placehold.it/40/22F28A/22F28A"/></a>
+	              		<a href="#" title="color"><img  src="http://placehold.it/40/3691AD/3691AD"/></a>
+	              		<a href="#" title="color"> <img  src="http://placehold.it/40/AD3682/AD3682"/></a>
+	              		<a href="#" title="color"><img  src="http://placehold.it/40/FF9600/FF9600"/></a>
+						* */
 					}
-					else{
-						echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='color'>".$color->valor."</div>"; 
-						array_push($valores, $color->id);
-					}
-					
-					/*
-					<a href="#" title="color"><img  src="http://placehold.it/40/22F28A/22F28A"/></a>
-              		<a href="#" title="color"><img  src="http://placehold.it/40/3691AD/3691AD"/></a>
-              		<a href="#" title="color"> <img  src="http://placehold.it/40/AD3682/AD3682"/></a>
-              		<a href="#" title="color"><img  src="http://placehold.it/40/FF9600/FF9600"/></a>
-					* */
-					 
    				}
               	?>
               </div>
@@ -127,22 +129,25 @@
 				              	
 				foreach ($producto->preciotallacolor as $talCol) {
               	
-					$talla = Talla::model()->findByPk($talCol->talla_id);
-
-					if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
-					}
-					else{
-						echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
-						array_push($valores, $talla->id);
-					}
+					if($talCol->cantidad > 0) // que haya disp
+					{
 					
-					/*
-					<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-	              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-	              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-	              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-					* */
-					 
+						$talla = Talla::model()->findByPk($talCol->talla_id);
+	
+						if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
+						}
+						else{
+							echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
+							array_push($valores, $talla->id);
+						}
+						
+						/*
+						<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+		              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+		              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+		              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
+						* */
+					}
    				}
               	?>         	     	
               </div>
@@ -246,6 +251,9 @@ $(document).ready(function(){
    		//alert("COLOR");
    		//alert($(this).attr("id"));
    		
+   		// para quitar el active en caso de que ya alguno estuviera seleccionado
+   		$("#vCo").find("div").siblings().removeClass('active');
+   		
    		var dataString = $(this).attr("id");
      	var prod = $("#producto").attr("value");
      
@@ -290,6 +298,9 @@ $(document).ready(function(){
    		//alert("TALLAS");
    		//alert($(this).attr("id")); 
    		
+   		// para quitar el active en caso de que ya alguno estuviera seleccionado
+   		$("#vTa").find("div").siblings().removeClass('active');
+   		
    		var dataString = $(this).attr("id");
      	var prod = $("#producto").attr("value");
      
@@ -333,6 +344,8 @@ $(document).ready(function(){
    
    function a(id){ // seleccion de talla
 
+			$("#vTa").find("div").siblings().removeClass('active');
+			
 			$("#vTa").find("div#"+id+".tallass").removeClass("tallass");
 			$("#vTa").find("div#"+id).addClass("tallass active");
    		//	$("#"+id+".tallass").removeClass("tallass");
@@ -342,6 +355,8 @@ $(document).ready(function(){
    }
    
    function b(id){ // seleccion de color
+   	
+   			$("#vCo").find("div").siblings().removeClass('active');	
    		
    			$("#vCo").find("div#"+id+".coloress").removeClass("coloress");
 			$("#vCo").find("div#"+id).addClass("coloress active");

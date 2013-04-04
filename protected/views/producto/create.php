@@ -3,7 +3,6 @@ $this->breadcrumbs=array(
 	'Productos'=>array('admin'),
 	'Añadir',
 );
-
 ?>
 
 <div class="container margin_top">

@@ -27,6 +27,9 @@ class Look extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Look the static model class
 	 */
+	 const TIPO_CONSERVADOR = 2;
+	 const TIPO_ATREVIDO = 1;
+	  
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	public static function model($className=__CLASS__)
@@ -186,7 +189,7 @@ class Look extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria=new CDbCriteria;  
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('title',$this->title,true);
@@ -204,7 +207,7 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	public function getCategorias()
+	public function getCategorias()  
 	{
 		$array = array();	
 		foreach($this->categoriahaslook as $categoria)
@@ -217,8 +220,12 @@ class Look extends CActiveRecord
 		if (isset($this->_items)){
 			return $_items;
 		}else {
-			$_items = count($this->tblProductos);
+			$_items = count($this->productos);
 			return $_items;
 		}
+	}
+	public function getTipo()
+	{
+		return $this->tipo == self::TIPO_CONSERVADOR?'Consevador':'Atrevido';
 	}
 }

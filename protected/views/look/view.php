@@ -11,8 +11,8 @@ $this->breadcrumbs=array(
         <article class="span8 columna_principal">
           <div class="row">
             <div class="span6">
-              <h1>Titulo del look</h1>
-              <p class="margin_top_small_minus"> <small>Look <a href="#" title="playero">Playero</a>,  Estilo <a href="#" title="casual">Casual</a> | Disponible hasta: 18/03/2013 | 100% Disponible</small></p>
+              <h1><?php echo $model->title; ?></h1>
+              <p class="margin_top_small_minus"> <small>Look <a href="#" title="playero">Playero</a>,  Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> | Disponible hasta: 18/03/2013 | 100% Disponible</small></p>
             </div>
             <div class="span2 share_like">
               <div class="pull-right">
@@ -34,7 +34,7 @@ $this->breadcrumbs=array(
           </div>
           <hr/>
           <h3>Descripcion del look</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim </p>
+          <p><?php echo $model->description; ?> </p>
         </article>
       <!-- Columna Principal OFF -->
       
@@ -63,11 +63,13 @@ $this->breadcrumbs=array(
               		-->
               		<?php $image = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
               		<?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
+              		<?php $color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$producto->id))->color_id ?>
+              		
               	</a>
                 <input type="checkbox" checked >
                 <div class="metadata_top">
                 	<?php   ?>
-                 <?php echo CHtml::dropDownList('tallas','',$producto->getTallas(4),array('class'=>'span5')); ?>
+                 <?php echo CHtml::dropDownList('tallas','',$producto->getTallas($color_id),array('class'=>'span5')); ?>
                 
                 </div>
                 <div class="metadata_bottom">

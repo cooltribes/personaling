@@ -62,7 +62,7 @@ class LookController extends Controller
 	}
 	public function actionGetImage($id)
 	{
-		 	
+		 	 
 		 $look = Look::model()->findByPk($id);
 		 $images_path = array();
 		 foreach($look->productos as $producto){

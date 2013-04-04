@@ -47,7 +47,7 @@ $this->breadcrumbs=array(
             </div>
             <div class="span2">
               <div class="btn-group"> <a class="btn btn-danger" href="#"><span class="entypo color3">&#59197;</span></a> 
-              	<a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa</a> 
+              <!--	<a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa</a> -->
 		 <?php 
 		 
 		 $this->widget('bootstrap.widgets.TbButton', array(
@@ -55,36 +55,40 @@ $this->breadcrumbs=array(
 				    'type'=>'danger',
 				    'label'=>'Añadir a la bolsa',
 				    //'block'=>'true',
-				   	//'size'=> 'large',
+				   	'size'=> 'large',
 				   // 'url'=>array('producto/tallacolor'),
-				   'url'=> CController::createUrl('producto/tallacolor',array('id'=>$model->id)) ,
+				   'url'=> CController::createUrl('bolsa/agregar') ,
 				    'htmlOptions'=>array('id'=>'buttonGuardar'),
 				    'ajaxOptions'=>array(
-				    	    'type' => 'POST',
+				    	    'type' => 'POST', 
 				    	    'data'=> "js:$('#producto-form').serialize()",
 		    				
 		    				'beforeSend' => "function( request )
 			                     {
-			                       	/*
-			                       var codigos = '';
-			                       $('.input-sku').each(function(index){
-			                       		codigos += $(this).val()+',';
+			                       	
+			                       var color_id = '';
+			                       $('.colores').each(function(index){
+			                       		color_id += $(this).val()+',';
 			                       });
-								   codigos = codigos.substring(0, codigos.length-1);
-			                       var cantidades = '';
-			                       $('.input-cant').each(function(index){
-			                       		cantidades +=$(this).val()+ ',';
+								   color_id = color_id.substring(0, color_id.length-1);
+			                       var talla_id = '';
+			                       $('.tallas').each(function(index){
+			                       		talla_id +=$(this).val()+ ',';
 			                       });
-			                       cantidades = cantidades.substring(0, cantidades.length-1);
-			                       this.data += '&cantidades='+cantidades+'&codigos='+codigos;
-			                       */
-			                       return false;
+			                       talla_id = talla_id.substring(0, talla_id.length-1);
+			                       alert(talla_id);
+			                       //this.data += '&talla_id='+talla_id+'color_id='+color_id;
+			                       
+			                       
+			                       //return false;
 			                     }",
 							  
 							 
 		                     'success' => "function( data )
 				                  {
-				                    // handle return data
+				                 alert(data);
+								  /*
+								    // handle return data
 				                   // alert( data );
 				                   // $('#table_tallacolor').append(data);
 				                   data = JSON.parse( data );
@@ -109,6 +113,7 @@ $this->breadcrumbs=array(
 				                        $('#Tallacolor-Form #'+key+'_em_').show();
 				                        });
 										}
+										 */
 				                  }",
 				                //  'data'=>array('id'=>$model->id),
 					),
@@ -125,7 +130,7 @@ $this->breadcrumbs=array(
 			'enableAjaxValidation'=>false,
 			'type'=>'horizontal',
 		)); ?>
-          
+          <?php echo CHtml::hiddenField('look_id',$model->id); ?>
           <div class="productos_del_look">
             <div class="row-fluid">
               <?php if($model->productos)
@@ -143,8 +148,9 @@ $this->breadcrumbs=array(
               	</a>
                 <input type="checkbox" checked >
                 <div class="metadata_top">
-                	<?php   ?>
-                 <?php echo CHtml::dropDownList('tallas','',$producto->getTallas($color_id),array('class'=>'span5')); ?>
+                	<?php  echo Chtml::hiddenField("color_id[]",$color_id); ?>
+                	<?php  echo Chtml::hiddenField("producto_id[]",$producto->id); ?>
+                 <?php echo CHtml::dropDownList('talla_id[]','',$producto->getTallas($color_id),array('class'=>'span5 tallas')); ?>
                 
                 </div>
                 <div class="metadata_bottom">
@@ -156,141 +162,7 @@ $this->breadcrumbs=array(
                 </div>
               </div>
               <?php } ?>
-             <!-- 
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_2.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
-                <input type="checkbox" checked >
-                <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
-                <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_3.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
-                <input type="checkbox" checked >
-                <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
-                <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_4.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
-                <input type="checkbox" checked >
-                <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
-                <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_5.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
-                <input type="checkbox" checked >
-                <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
-                <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_6.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
-                <input type="checkbox" checked >
-                <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
-                <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_7.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
-                <input type="checkbox" checked >
-                <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
-                <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> <img width="170" height="170" src="images/producto_sample_8.jpg" title="Nombre del producto" class="imagen_producto" /> </a>
-                <input type="checkbox" checked >
-                <div class="metadata_top">
-                  <select class="span5">
-                    <option>Tallas</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
-                <div class="metadata_bottom">
-                  <h5> Nombre del producto</h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
-                  </div>
-                </div>
-              </div>
-             -->
+            
             </div>
           </div>
           <?php $this->endWidget(); ?>

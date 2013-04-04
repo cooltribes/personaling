@@ -61,7 +61,8 @@ class BolsaController extends Controller
 				$pn->bolsa_id = $carrito->id;
 				$pn->preciotallacolor_id = $ptcolor->id;
 				$pn->cantidad = 1;
-				
+				if (isset($_POST['look']))
+					$pn->look_id = $_POST['look'];
 				if($pn->save())
 				{// en bolsa tengo id de usuario e id de bolsa
 					//$this->render('bolsa', array('preciotallacolor' => $ptcolor, 'bolsa'=>$carrito));
@@ -91,7 +92,8 @@ class BolsaController extends Controller
 				$pn->bolsa_id = $carrito->id;
 				$pn->preciotallacolor_id = $ptcolor->id;
 				$pn->cantidad = 1;
-					
+				if (isset($_POST['look']))
+					$pn->look_id = $_POST['look'];	
 				if($pn->save())
 				{// en bolsa tengo id de usuario e id de bolsa
 				

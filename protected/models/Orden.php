@@ -1,4 +1,12 @@
 <?php
+/*
+ * Definicion de los estados de la orden por transferencia
+ * 1 - Pendiente de Pago
+ * 2 - Pendiente por confirmar
+ * 3 - Pago confirmado
+ * 
+ * */
+
 
 /**
  * This is the model class for table "{{orden}}".

@@ -13,6 +13,13 @@ $user = User::model()->findByPk(Yii::app()->user->id);
         <div class="middle-done "></div>
         <div class="last-done"></div> 
       </div>
+      
+      <?php
+      
+      if($orden->estado==1) // pendiente de pago
+	  {
+      ?>
+      
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <p class="alert alert-success"><strong>Tu Pedido ha sido recibido con éxito.</strong> <br/>
           A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
@@ -53,6 +60,25 @@ $user = User::model()->findByPk(Yii::app()->user->id);
         	Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div></div>
 
       </section>
+      <?php
+      }// caso 1
+      
+      if($orden->estado==2) // pendiente por confirmar
+	  {
+	  	echo "
+	  	<section class='bg_color3 margin_top  margin_bottom_small padding_small box_1'>
+        <div class='alert'>
+          <h1>Pedido en proceso</h1>
+          <p>Hemos recibido los datos de pedido asi como de tu pago con transferencia o depósito bancario</p>
+        </div>
+         
+        <p>Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado</p>
+	  	</section>
+	  	";
+		
+	  }
+      
+      ?>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <h3>Resumen del pedido </h3>
         <p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p> 
@@ -289,7 +315,8 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 				
 				if(data=="ok")
 				{
-					alert("guardado"); 
+					window.location.reload();
+					//alert("guardado"); 
 					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
 				}
 	       	}//success

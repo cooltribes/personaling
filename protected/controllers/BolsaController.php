@@ -119,18 +119,28 @@ class BolsaController extends Controller
  * 
  * */
 	public function actionActualizar(){
-		
-		$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
-		
-		$bolsa->cantidad = $_POST['cantidad'];
-		
-		if($bolsa->save())
+			
+		if($_POST['cantidad']==0)
 		{
+			$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
+			$bolsa->delete();
+			
 			echo "ok";
+			
+		}
+		else if($_POST['cantidad']>0){
+		
+			$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
+			
+			$bolsa->cantidad = $_POST['cantidad'];
+			
+			if($bolsa->save())
+			{
+				echo "ok";
+			}
 		}
 		
-		
-	}
+	} // actualizar
 	
 	/*
 	 * 
@@ -368,7 +378,13 @@ class BolsaController extends Controller
 			
 			if($detPago->save())
 			{
-				echo "ok";
+				$orden = Orden::model()->findByAttributes(array('detalle_id'=>$_POST['idDetalle']));
+				$orden->estado = 2;	// se recibió los datos de pago por transferencia			 
+				
+				if($orden->save())
+				{
+					echo "ok";
+				}				
 			}
 			
 		}

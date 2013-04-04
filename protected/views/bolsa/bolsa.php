@@ -345,8 +345,11 @@ else
 		
 	var cantidad = $("#cant"+id+".span1").attr("value");
 	
-	//alert(cantidad);
-	
+	if(cantidad<0)
+	{
+		alert("Ingrese una cantidad mayor a 1.");
+	}else
+	{
 	// llamada ajax para el controlador de bolsa	   
      	$.ajax({
 	        type: "post",
@@ -362,7 +365,8 @@ else
 					
 	       	}//success
 	       })
-
+	}
+	
 	}
 	
 	function eliminar(id)

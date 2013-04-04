@@ -47,7 +47,7 @@
               <div class="controls">
               	
               	<?php 
-              		if (($model->fInicio=="" && $model->fFin=="") || ($model->fInicio=="0000-00-00 00:00:00" && $model->fFin="0000-00-00 00:00:00" && $model->nombre!=""))
+              		if (($model->fInicio=="" && $model->fFin=="") || ($model->fInicio=="0000-00-00 00:00:00" && $model->fFin=="0000-00-00 00:00:00" && $model->nombre!=""))
 					{
 						echo("<label class='checkbox'>
                   <input type='checkbox''>
@@ -71,18 +71,48 @@
               </div>
             </div>
             <div class="control-group">
-               <?php echo $form->datepickerRow($model, 'fInicio',
-        			array('hint'=>'Haz clic dentro del campo para desplegar el calendario.',
-							'prepend'=>'<i class="icon-calendar"></i>')); ?>		
+               <?php 
+               
+               	if($model->fInicio=="0000-00-00 00:00:00")
+			   	{
+               		echo $form->datepickerRow($model, 'fInicio',
+        				array('hint'=>'Haz clic dentro del campo para desplegar el calendario.',
+							'prepend'=>'<i class="icon-calendar"></i>','value'=>'')); 	
 											
-				<?php echo $form->timepickerRow($model, 'horaInicio', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>'));?>								
+					echo $form->timepickerRow($model, 'horaInicio', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>','value'=>''));							
+            	}
+            	else // si tiene fecha de inicio
+            	{
+            		echo $form->datepickerRow($model, 'fInicio',
+        				array('hint'=>'Haz clic dentro del campo para desplegar el calendario.',
+							'prepend'=>'<i class="icon-calendar"></i>')); 	
+											
+					echo $form->timepickerRow($model, 'horaInicio', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>'));
+            	}
+            ?>
             </div>
             <div class="control-group">
-            	<?php echo $form->datepickerRow($model, 'fFin',
+            	
+            	<?php 
+            	if($model->fFin=="0000-00-00 00:00:00")
+			   	{
+            	
+            	echo $form->datepickerRow($model, 'fFin',
         			array('hint'=>'Haz clic dentro del campo para desplegar el calendario.',
-							'prepend'=>'<i class="icon-calendar"></i>')); ?>
+							'prepend'=>'<i class="icon-calendar"></i>','value'=>'')); 
 							
-				<?php echo $form->timepickerRow($model, 'horaFin', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>'));?>	
+				 echo $form->timepickerRow($model, 'horaFin', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>','value'=>''));	
+				}
+				else
+				{
+					echo $form->datepickerRow($model, 'fFin',
+        			array('hint'=>'Haz clic dentro del campo para desplegar el calendario.',
+							'prepend'=>'<i class="icon-calendar"></i>')); 
+							
+				 	echo $form->timepickerRow($model, 'horaFin', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>'));	
+				}
+
+            ?>
             </div>
             
           </fieldset>       

@@ -234,7 +234,20 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 			
 			return parent::beforeSave();
 		}
-		else {
+		else if(($this->fInicio=="" && $this->fFin=="") || ($this->fInicio=="0000-00-00 00:00:00" && $this->fFin=="0000-00-00 00:00:00"))
+		{ 
+		
+			$this->fInicio = "";
+			$this->fFin = "";
+			
+			$this->fecha = date("Y-m-d");
+			
+			if($this->estado=="")
+				$this->estado = 1;
+			
+			return parent::beforeSave();	
+		
+		}else{
 
 			if($this->estado=="")
 				$this->estado = 1;

@@ -59,9 +59,11 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
+			'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
 		);
 	}
-
+ 
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -104,6 +106,7 @@ class PrecioTallaColor extends CActiveRecord
     //$this->month = date('m', strtotime($this->birthday));
     //$this->year = date('Y', strtotime($this->birthday));
 	$this->color = Color::model()->findByPk($this->color_id)->valor;
+	
 	$this->talla = Talla::model()->findByPk($this->talla_id)->valor;	
 
 		return parent::afterFind();

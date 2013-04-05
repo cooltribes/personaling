@@ -11,7 +11,7 @@ $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where l
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
 
 // bolsa tiene pro-talla-color
-$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));
+$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
 
 ?>
 <div class="container margin_top" id="carrito_compras">
@@ -22,13 +22,17 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
           <h1>Tu bolsa</h1>
           <?php 
           
-          if($num!=0) // si hay looks
+          if($num!=0) // si hay looks 
 		  {
 		  	//imprima looks
-		  	
-		  	/*
-			 *  <!-- Look ON -->
-          <h3 class="braker_bottom margin_top">Nombre del Look 1</h3>
+		  	foreach ($bolsa->looks() as $look_id){
+		  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
+				$look = Look::model()->findByPk($look_id);
+				
+				
+		  	?>
+		  	  <!-- Look ON -->
+          <h3 class="braker_bottom margin_top"><?php echo $look->title; ?></h3>
           <div class="padding_left">
             <table class="table" width="100%" >
               <thead>
@@ -40,44 +44,36 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                 </tr>
               </thead>
               <tbody>
+                <?php foreach($bolsahasproductotallacolor as $productotallacolor){ ?>
+                	<?php 
+                	$color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
+					$talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+                	//$test = PrecioTallaColor::model()->findByPK($productotallacolor->preciotallacolor->id);
+					//if(isset($test)){
+					//	echo $test->color_id;
+						
+					//	echo Color::model()->findByPk($test->color_id)->valor;
+					//}
+                	?>
                 <tr>
                   <td><img src="http://placehold.it/70x70"/ class="margin_bottom"></td>
                   <td><strong>Vestido Stradivarius</strong> <br/>
-                    <strong>Color</strong>: azul<br/>
-                    <strong>Talla</strong>: M</td>
+                    <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
+                    <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?></td>
                   <td >Bs. 3500</td>
-                  <td width="8%"><input type="text" maxlength="2" placeholder="Cant." value="10" class="span1"/>
+                  <td width="8%"><input type="text" maxlength="2" placeholder="Cant." value="<?php echo $productotallacolor->cantidad; ?>" class="span1"/>
                     <a href="#" class="btn btn-mini" >Actualizar</a></td>
                   <td>&times;</td>
                 </tr>
-                <tr class="muted">
-                  <td><img src="http://placehold.it/70x70"/ class="margin_bottom"></td>
-                  <td><strong>Camisa The New Pornographers</strong> <br/>
-                    <strong>Color</strong>: azul<br/>
-                    <strong>Talla</strong>: M</td>
-                  <td>Bs. 3500</td>
-                  <td><input type="text" maxlength="2" placeholder="Cant." value="0" class="span1"/>
-                    <a href="#" class="btn btn-mini" >Actualizar</a></td>
-                  <td >&times;</td>
-                </tr>
-                <tr>
-                  <td><img src="http://placehold.it/70x70"/ class="margin_bottom"></td>
-                  <td><strong>Pantalón Ok Go</strong> <br/>
-                    <strong>Color</strong>: azul<br/>
-                    <strong>Talla</strong>: M</td>
-                  <td>Bs. 3500</td>
-                  <td><input type="text" maxlength="2" placeholder="Cant." value="5" class="span1"/>
-                    <a href="#" class="btn btn-mini" >Actualizar</a></td>
-                  <td >&times;</td>
-                </tr>
+                <?php } ?>
               </tbody>
             </table>
             <hr/>
-            <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil">Nombre del personal shopper</a></p>
+            <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
           </div>
           <!-- Look OFF --> 
-			 * 
-			 * */
+		<?	 
+			}
 		  }
 
 $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";

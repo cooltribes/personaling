@@ -38,12 +38,12 @@ class Imagen extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tbl_producto_id', 'required'),
-			array('principal, orden, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('tbl_producto_id', 'required'), 
+			array('principal, orden, tbl_producto_id,color_id', 'numerical', 'integerOnly'=>true),
 			array('url', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, url, principal, orden, tbl_producto_id', 'safe', 'on'=>'search'),
+			array('id, url, principal, orden, tbl_producto_id,color_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +70,7 @@ class Imagen extends CActiveRecord
 			'principal' => 'Principal',
 			'orden' => 'Orden',
 			'tbl_producto_id' => 'Tbl Producto',
+			'color_id' => 'Color',
 		);
 	}
 

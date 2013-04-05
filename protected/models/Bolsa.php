@@ -65,6 +65,7 @@ class Bolsa extends CActiveRecord
 			'lookHasTblBolsas1' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_user_id'),
 			'ordens' => array(self::HAS_MANY, 'Orden', 'tbl_bolsa_id'),
 			'ordens1' => array(self::HAS_MANY, 'Orden', 'user_id'),
+			//'bolsahasproducto' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id')
 		);
 	}
 
@@ -99,6 +100,33 @@ class Bolsa extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function looks()
+	{
+		
+		$sql = "select look_id from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$this->id." group by look_id";
+		return Yii::app()->db->createCommand($sql)->queryColumn();
+		
+	}
+
+ /*
+	public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+		$criteria->with = array('bolsahasproducto');
+		$criteria->group='bolsahasproducto.look_id';
+		$criteria->compare('id',$this->id);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('created_on',$this->created_on,true);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+*/	
 	public function addProducto($producto_id,$talla_id,$color_id,$look_id=0)
 	{
 		
@@ -122,8 +150,8 @@ class Bolsa extends CActiveRecord
 				$pn->bolsa_id = $carrito->id;
 				$pn->preciotallacolor_id = $ptcolor->id;
 				$pn->cantidad = 1;
-				if (isset($_POST['look']))
-					$pn->look_id = $_POST['look'];	
+				if ($look_id != 0)
+					$pn->look_id = $look_id;	
 				if($pn->save())
 				{// en bolsa tengo id de usuario e id de bolsa
 				

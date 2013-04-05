@@ -66,7 +66,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>array('/site/contact')),
-                array('label'=>'2','icon'=>'icon-shopping-cart', 'url'=>array('/site/contact'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'2','icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                  array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(

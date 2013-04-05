@@ -54,7 +54,13 @@ class BolsaController extends Controller
 			$bolsa->created_on = date("Y-m-d H:i:s");
 			$bolsa->save();
 		}
-		echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+		if (isset($_POST['look_id'])){
+			foreach($_POST['producto'] as $key => $value){
+				echo $bolsa->addProducto($value,$_POST['talla'][$key],$_POST['color'][$key],$_POST['look_id']);
+			}
+		} else {
+			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+		}
 		 /*	
 		$usuario = Yii::app()->user->id;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));

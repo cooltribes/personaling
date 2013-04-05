@@ -76,7 +76,7 @@ $this->breadcrumbs=array(
 			                       		talla_id +=$(this).val()+ ',';
 			                       });
 			                       talla_id = talla_id.substring(0, talla_id.length-1);
-			                       alert(talla_id);
+			                       //alert(talla_id);
 			                       //this.data += '&talla_id='+talla_id+'color_id='+color_id;
 			                       
 			                       
@@ -148,9 +148,9 @@ $this->breadcrumbs=array(
               	</a>
                 <input type="checkbox" checked >
                 <div class="metadata_top">
-                	<?php  echo Chtml::hiddenField("color_id[]",$color_id); ?>
-                	<?php  echo Chtml::hiddenField("producto_id[]",$producto->id); ?>
-                 <?php echo CHtml::dropDownList('talla_id[]','',$producto->getTallas($color_id),array('class'=>'span5 tallas')); ?>
+                	<?php  echo Chtml::hiddenField("color[]",$color_id); ?>
+                	<?php  echo Chtml::hiddenField("producto[]",$producto->id); ?>
+                 <?php echo CHtml::dropDownList('talla[]','',$producto->getTallas($color_id),array('class'=>'span5 tallas')); ?>
                 
                 </div>
                 <div class="metadata_bottom">

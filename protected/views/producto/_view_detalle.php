@@ -8,7 +8,15 @@
             'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
         ),
     )
-); ?>	
+); ?>
+
+<?php  
+ $baseUrl = Yii::app()->baseUrl;
+ $cs = Yii::app()->getClientScript();
+ $cs->registerScriptFile($baseUrl.'/js/jquery.zoom.js');
+
+?>
+
 <!-- FLASH OFF -->
 <div class="container margin_top" id="carrito_compras">
   <div class="row detalle_producto">
@@ -38,7 +46,7 @@
 					
 				if($img->orden==1)
 				{
-					echo CHtml::image(Yii::app()->baseUrl . $img->url, "producto", array("width" => "570", "height" => "570", 'id'=>'principal'));
+					echo CHtml::image(Yii::app()->baseUrl . $img->url, "producto", array('id'=>'principal'));
 					echo "<!-- FOTO principal OFF -->";
 	          		echo "</div>";	
 					
@@ -226,23 +234,37 @@
 </div>
 
 <!-- /container -->
+<?php 
 
+//$cs = Yii::app()->getClientScript();
+//$cs->registerScript("unodos","$('.imagen_principal').zoom()",CClientScript::POS_READY);
 
+?>
+ 
 <script>
 $(document).ready(function(){
+
+$('.imagen_principal').css('display','block').zoom();
+
+	$(".imagen_principal").hover(function(){
+		var source = $('#principal').attr("src");
+		$('.imagen_principal').css('display','block').zoom({url: source});
+	});
 
    $(".miniaturas_listado_click").click(function(){
       
      	var image = $("#principal");
      	var thumbnail = $(this).attr("src");
           	
-      //  alert(thumbnail);
-          	
      	$("#principal").fadeOut("slow",function(){
      		$("#principal").attr("src", thumbnail);
      	});
 
       	$("#principal").fadeIn("slow",function(){});
+      	
+      	// cambiando la imagen que se va a hacer zoom
+     	var source = thumbnail;
+     	$('.imagen_principal').css('display','block').zoom({url: source});
    });
       
       

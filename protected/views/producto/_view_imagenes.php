@@ -120,7 +120,7 @@ $this->breadcrumbs=array(
             <li>Arrastra las imagenes para organizarlas</li>
           </ul>
         </div>
-		<div class="clearfix">			
+		<div class="clearfix productos_del_look">			
 			<?php
 			$imagenes = $model->imagenes;
 
@@ -133,7 +133,13 @@ $this->breadcrumbs=array(
 	            $contador++;
 
 	            $lis['img_' . $img->id] =
-	                    CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url), "Imagen " . $img->id, array("width" => "150", "height" => "150")) . "<span>X</span>";
+	            		'<div >'.
+	                    CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url), "Imagen " . $img->id, array("width" => "150", "height" => "150")) . 
+	                    '<span>X</span>'.
+	                    '<div class="metadata_top">'.
+	                    CHtml::dropDownList('color_id[]','',$model->getColores(),array('class'=>'span2 tallas')).
+	                    '</div></div>';
+						
 
 			}			
 

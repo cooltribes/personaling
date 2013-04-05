@@ -99,39 +99,11 @@ class Bolsa extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	public function addProducto()
+	public function addProducto($producto_id,$talla_id,$color_id,$look_id=0)
 	{
-		$usuario = Yii::app()->user->id;
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 		
-		if(!isset($bolsa)) // si no tiene aun un carrito asociado se crea y se añade el producto
-		{
-			$model = new Bolsa;
-			$model->user_id = $usuario;
-			$model->created_on = date("Y-m-d H:i:s");
-			
-			if($model->save()) // si guarda entonces se añade el nuevo producto
-			{
-				$carrito = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
-				$ptcolor = PrecioTallaColor::model()->findByAttributes(array('producto_id'=>$_POST['producto'],'talla_id'=>$_POST['talla'],'color_id'=>$_POST['color']));
-				
-				$pn = new BolsaHasProductotallacolor;
-				$pn->bolsa_id = $carrito->id;
-				$pn->preciotallacolor_id = $ptcolor->id;
-				$pn->cantidad = 1;
-				if (isset($_POST['look']))
-					$pn->look_id = $_POST['look'];
-				if($pn->save())
-				{// en bolsa tengo id de usuario e id de bolsa
-					//$this->render('bolsa', array('preciotallacolor' => $ptcolor, 'bolsa'=>$carrito));
-					echo "ok";
-				}
-			}
-		}
-		else // si ya tiene una bolsa
-		{
-			$carrito = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
-			$ptcolor = PrecioTallaColor::model()->findByAttributes(array('producto_id'=>$_POST['producto'],'talla_id'=>$_POST['talla'],'color_id'=>$_POST['color']));
+			$carrito = $this;
+			$ptcolor = PrecioTallaColor::model()->findByAttributes(array('producto_id'=>$producto_id,'talla_id'=>$talla_id,'color_id'=>$color_id));
 			
 			//revisar si está o no en el carrito
 			
@@ -141,7 +113,7 @@ class Bolsa extends CActiveRecord
 			{
 				$cantidadnueva = $nuevo->cantidad + 1;
 				BolsaHasProductotallacolor::model()->updateByPk($nuevo->preciotallacolor_id, array('cantidad'=>$cantidadnueva));
-				echo "ok";
+				return "ok";
 							
 			}
 			else{ // si el producto es nuevo en la bolsa
@@ -155,15 +127,10 @@ class Bolsa extends CActiveRecord
 				if($pn->save())
 				{// en bolsa tengo id de usuario e id de bolsa
 				
-					echo "ok";
-				
-				//	$this->render('bolsa', array('preciotallacolor' => $ptcolor, 'bolsa'=>$carrito));
+					return "ok";
 				}
 					
 			}
-				
-			
-				
-		}//else bolsa		
+		return "fail";	
 	}
 }

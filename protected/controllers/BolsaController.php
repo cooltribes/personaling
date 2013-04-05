@@ -43,6 +43,25 @@ class BolsaController extends Controller
 		
 	if(Yii::app()->user->isGuest==false) 
 	{
+		
+		$usuario = Yii::app()->user->id;
+		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+		
+		if(!isset($bolsa)) // si no tiene aun un carrito asociado se crea y se añade el producto
+		{
+			$bolsa = new Bolsa;
+			$bolsa->user_id = $usuario;
+			$bolsa->created_on = date("Y-m-d H:i:s");
+			$bolsa->save();
+		}
+		if (isset($_POST['look_id'])){
+			foreach($_POST['producto'] as $key => $value){
+				echo $bolsa->addProducto($value,$_POST['talla'][$key],$_POST['color'][$key],$_POST['look_id']);
+			}
+		} else {
+			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+		}
+		 /*	
 		$usuario = Yii::app()->user->id;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 		
@@ -106,8 +125,10 @@ class BolsaController extends Controller
 				
 			
 				
-		}//else bolsa		
+		}//else bolsa	
+		 * */	
 	}// isset usuario
+		
 	else
 	{
 	echo "no es usuario";	

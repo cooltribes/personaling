@@ -137,8 +137,8 @@ $this->breadcrumbs=array(
 	                    CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url), "Imagen " . $img->id, array("width" => "150", "height" => "150")) . 
 	                    '<span>X</span>'.
 	                    '<div class="metadata_top">'.
-	                    CHtml::dropDownList('color_id[]','',$model->getColores(),array('class'=>'span2 tallas')).
-	                    '</div></div>';
+	                    CHtml::dropDownList('color_id'.$img->id,$img->color_id,$model->getColores(),array('class'=>'span2 colores','onchange'=>'js:addColor('.$img->id.')')).
+	                    '</div></div>'; 
 						
 
 			}			
@@ -187,4 +187,38 @@ $this->breadcrumbs=array(
   
 </div>
 <!-- /container -->
-
+<script type="text/javascript">
+// here is the magic
+function addColor(id)
+{
+	var image_id = id;
+	var color_id = $("#color_id"+id).val(); 
+	//alert($(this).val());
+    <?php echo CHtml::ajax(array(
+            'url'=>array('producto/imagenColor'),
+           // 'data'=> "js:$(this).serialize()",
+           'data' => array('id'=>'js:image_id','color_id'=>'js:color_id'),
+            'type'=>'post',
+            'dataType'=>'json',
+           /*
+		    'success'=>"function(data)
+            {
+                if (data.status == 'failure')
+                {
+                    $('#dialogColor div.divForForm').html(data.div);
+                          // Here is the trick: on submit-> once again this function!
+                    $('#dialogColor div.divForForm form').submit(addColor);
+                }
+                else
+                {
+                    $('#dialogColor div.divForForm').html(data.div);
+                    setTimeout(\"$('#dialogColor').modal('hide') \",3000);
+                }
+ 
+            } ",*/
+            ))?>;
+    return false; 
+ 
+}
+ 
+</script>

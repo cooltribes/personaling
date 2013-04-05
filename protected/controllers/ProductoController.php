@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','colores'),
+				'actions'=>array('index','view','detalle','tallas','colores','imagenColor'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -353,7 +353,11 @@ class ProductoController extends Controller
 		
 		echo $datos;
 	}
-
+    // le asigna un color a la imagen
+    public function actionImagenColor()
+	{
+		 Imagen::model()->updateByPk($_POST['id'], array('color_id' => $_POST['color_id']));
+	}
     // le da un nuevo orden a las imagenes
     public function actionOrden() {
         if (Yii::app()->request->isPostRequest) {

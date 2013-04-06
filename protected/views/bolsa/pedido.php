@@ -1,5 +1,7 @@
 <?php
 
+if (!Yii::app()->user->isGuest) { // que este logueado
+
 $user = User::model()->findByPk(Yii::app()->user->id);
 
 
@@ -236,6 +238,16 @@ $user = User::model()->findByPk(Yii::app()->user->id);
   </div>
 </div>
 <!-- /container -->
+<?php 
+
+}// si esta logueado
+else
+{
+	// redirecciona al login porque se murió la sesión
+	header('Location: /site/user/login');	
+}
+
+?>
 
 <!-- Modal Window -->
 <?php 

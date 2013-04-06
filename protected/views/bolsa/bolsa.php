@@ -197,23 +197,23 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             	<?php 
             	
             	$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
-				$look = Yii::app()->db->createCommand($sql)->queryScalar();	
+				$looksTotal = Yii::app()->db->createCommand($sql)->queryScalar();	
             	
 				$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
 				$indiv = Yii::app()->db->createCommand($sql)->queryScalar();
 				
             	?>
             	
-              <h5><?php echo $look; ?> Look seleccionado<br/>
+              <h5><?php echo $looksTotal; ?> Look seleccionado<br/>
               	<?php 
               	
-              	if($look!=0)
+              	if($looksTotal!=0)
 				{
 					echo "6 productos que componen los Looks<br/>";
 				}				
               	?><?php 
               	//variables de sesion
-              	Yii::app()->getSession()->add('totalLook',$look);
+              	Yii::app()->getSession()->add('totalLook',$looksTotal);
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>

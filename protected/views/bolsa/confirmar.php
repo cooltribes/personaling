@@ -71,11 +71,11 @@
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
         <div class="well">
-          <h5><?php echo Yii::app()->getSession()->get('totalLook'); ?> Look seleccionado<br/>
+          <h5><?php //echo Yii::app()->getSession()->get('totalLook'); ?> Look seleccionado<br/>
            	<?php  
-           	if(Yii::app()->getSession()->get('totalLook') != 0){
-           		echo "6 productos que componen los Looks<br/>";
-           	}
+           	//if(Yii::app()->getSession()->get('totalLook') != 0){
+           	//	echo "6 productos que componen los Looks<br/>";
+           	//}
 			
 			echo Yii::app()->getSession()->get('totalIndiv')." Productos individuales " 
 			?> 
@@ -85,9 +85,9 @@
           <div class="row margin_bottom">
             <div class="span1">
 			<?php  
-           	if(Yii::app()->getSession()->get('totalLook') != 0){
-				echo "Con la compra del Look completo Ahorras 184 Bs."; 
-			}
+          // 	if(Yii::app()->getSession()->get('totalLook') != 0){
+			//	echo "Con la compra del Look completo Ahorras 184 Bs."; 
+			//}
 			?>
               </div>
             <div class="span2">

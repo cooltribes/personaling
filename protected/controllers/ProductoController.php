@@ -233,7 +233,7 @@ class ProductoController extends Controller
 							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));
 			
 							$image = Yii::app()->image->load($nombre . $extension);
-		                    $image->save($nombre . "_original.jpg"); 
+		                    $image->save($nombre . "_orig.jpg"); 
 				
 							$image = Yii::app()->image->load($nombre . $extension); 
 		                    $image->resize(770, 770);

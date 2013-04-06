@@ -1,3 +1,9 @@
+<?php
+
+if (!Yii::app()->user->isGuest) { // que este logueado
+
+?>
+
 <div class="container margin_top">
   <div class="row">
     <div class="span8 offset2"> 
@@ -198,3 +204,15 @@
 <!-- /container -->
 
 <?php $this->endWidget(); ?>
+
+<?php 
+
+}// si esta logueado
+else
+{
+	// redirecciona al login porque se murió la sesión
+	header('Location: /site/user/login');	
+}
+
+
+?>

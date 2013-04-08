@@ -220,24 +220,28 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             <div class="well margin_top_large">
             	<?php 
             	
+
             	//$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
 				//$look = Yii::app()->db->createCommand($sql)->queryScalar();	
+
             	
 				$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
 				$indiv = Yii::app()->db->createCommand($sql)->queryScalar();
 				
             	?>
             	
+
               <h5><?php echo $total_look; ?> Look seleccionado<br/>
               	<?php 
               	
               	if($total_look!=0)
+
 				{
 					echo $total_productos_look." productos que componen los Looks<br/>";
 				}				
               	?><?php 
               	//variables de sesion
-              	Yii::app()->getSession()->add('totalLook',$look);
+              	Yii::app()->getSession()->add('totalLook',$looksTotal);
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>
@@ -380,7 +384,7 @@ else
 				
 				if(data=="ok")
 				{
-					//alert("cantidad actualizada");
+					//alert("cantidad actualizada"); 
 					window.location.reload()
 				}
 					

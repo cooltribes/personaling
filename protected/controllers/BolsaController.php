@@ -330,6 +330,7 @@ class BolsaController extends Controller
 							if($orden->save()){
 								$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));	
 								
+								// añadiendo a orden producto
 								foreach($productosBolsa as $prod)
 								{
 									$prorden = new OrdenHasProductotallacolor;
@@ -342,6 +343,17 @@ class BolsaController extends Controller
 										//listo y que repita el proceso
 									}
 								}
+								
+								//descontando del inventario
+								foreach($productosBolsa as $prod)
+								{
+									$uno = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id);
+									$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
+									
+									PrecioTallaColor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+									// descuenta y se repite									
+								}
+								
 								
 								// para borrar los productos de la bolsa								
 								foreach($productosBolsa as $prod)

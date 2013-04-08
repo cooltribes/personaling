@@ -248,7 +248,9 @@ $('.imagen_principal').css('display','block').zoom();
 
 	$(".imagen_principal").hover(function(){
 		var source = $('#principal').attr("src");
-		$('.imagen_principal').css('display','block').zoom({url: source});
+		
+		var imgZ = source.replace(".","_orig.");
+		$('.imagen_principal').css('display','block').zoom({url: imgZ});
 	});
 
    $(".miniaturas_listado_click").click(function(){
@@ -264,7 +266,10 @@ $('.imagen_principal').css('display','block').zoom();
       	
       	// cambiando la imagen que se va a hacer zoom
      	var source = thumbnail;
-     	$('.imagen_principal').css('display','block').zoom({url: source});
+		
+		var imgZ = source.replace(".","_orig.");
+     	
+     	$('.imagen_principal').css('display','block').zoom({url: imgZ});
    });
       
       

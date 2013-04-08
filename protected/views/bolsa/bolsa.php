@@ -12,7 +12,11 @@ $num = Yii::app()->db->createCommand($sql)->queryScalar();
 
 // bolsa tiene pro-talla-color
 $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
-
+                  $precios = array();
+				  $descuentos = array();
+				  $cantidades = array();
+				  $total_look = 0;
+				  $total_productos_look = 0;
 ?>
 <div class="container margin_top" id="carrito_compras">
   <div class="row margin_bottom_large">
@@ -28,6 +32,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 		  	foreach ($bolsa->looks() as $look_id){
 		  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
 				$look = Look::model()->findByPk($look_id);
+				$total_look++;
 				
 				
 		  	?>
@@ -46,24 +51,45 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
               <tbody>
                 <?php foreach($bolsahasproductotallacolor as $productotallacolor){ ?>
                 	<?php 
+                	$total_productos_look++;
                 	$color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
 					$talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+					$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+					$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
                 	//$test = PrecioTallaColor::model()->findByPK($productotallacolor->preciotallacolor->id);
 					//if(isset($test)){
 					//	echo $test->color_id;
 						
 					//	echo Color::model()->findByPk($test->color_id)->valor;
 					//}
+					$pre="";
+					 	foreach ($producto->precios as $precio) {
+				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+						
+						array_push($precios,$precio->precioDescuento);	
+						array_push($descuentos,$precio->ahorro);		
+						}
+					 
+					 	array_push($cantidades,$productotallacolor->cantidad);
                 	?>
                 <tr>
-                  <td><img src="http://placehold.it/70x70"/ class="margin_bottom"></td>
-                  <td><strong>Vestido Stradivarius</strong> <br/>
+                	<?php
+                  if($imagen){					  	
+						$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+						echo "<td>".$aaa."</td>";
+					}else{
+						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+					}
+					?>
+                  <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
                     <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?></td>
-                  <td >Bs. 3500</td>
-                  <td width="8%"><input type="text" maxlength="2" placeholder="Cant." value="<?php echo $productotallacolor->cantidad; ?>" class="span1"/>
-                    <a href="#" class="btn btn-mini" >Actualizar</a></td>
-                  <td>&times;</td>
+                  <?php
+                  echo "<td>Bs. ".$pre."</td>";
+					 	echo"<td width='8%'><input type='text' id='cant".$productotallacolor->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$productotallacolor->cantidad."' class='span1'/>
+	                    <a id=".$productotallacolor->preciotallacolor_id." onclick='actualizar(".$productotallacolor->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
+	                  	<td style='cursor: pointer' onclick='eliminar(".$productotallacolor->preciotallacolor_id.")' id='elim".$productotallacolor->preciotallacolor_id."'>&times;</td>";
+				?>
                 </tr>
                 <?php } ?>
               </tbody>
@@ -98,9 +124,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                 
                   <?php
                   
-                  $precios = array();
-				  $descuentos = array();
-				  $cantidades = array();
+
                   
 				  if(isset($bptcolor)) // si hay productos en la bolsa del usuario
 				  {
@@ -196,20 +220,20 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             <div class="well margin_top_large">
             	<?php 
             	
-            	$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
-				$look = Yii::app()->db->createCommand($sql)->queryScalar();	
+            	//$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
+				//$look = Yii::app()->db->createCommand($sql)->queryScalar();	
             	
 				$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
 				$indiv = Yii::app()->db->createCommand($sql)->queryScalar();
 				
             	?>
             	
-              <h5><?php echo $look; ?> Look seleccionado<br/>
+              <h5><?php echo $total_look; ?> Look seleccionado<br/>
               	<?php 
               	
-              	if($look!=0)
+              	if($total_look!=0)
 				{
-					echo "6 productos que componen los Looks<br/>";
+					echo $total_productos_look." productos que componen los Looks<br/>";
 				}				
               	?><?php 
               	//variables de sesion
@@ -227,7 +251,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                 <div class="span2"> 
                 	<?php
                 	
-                	if($look!=0)
+                	if($total_look!=0)
 					{
 						echo "Con la compra  del Look completo ahorras 184 Bs.";
 					}
@@ -248,6 +272,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						if (empty($precios)) // si no esta vacio
 						{}
 						else{
+							
 							foreach($precios as $x){
 	                      		$totalPr = $totalPr + ($x * $cantidades[$i]);
 								$i++;
@@ -261,7 +286,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						$iva = (($totalPr - $totalDe)*0.12); 
 						
 						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
-						
+			 			
 						// variables de sesion
 						Yii::app()->getSession()->add('subtotal',$totalPr);
 						Yii::app()->getSession()->add('descuento',$totalDe);

@@ -86,7 +86,12 @@ $this->breadcrumbs=array(
 							 
 		                     'success' => "function( data )
 				                  {
-				                 alert(data);
+				                 	if(data.indexOf('ok'))
+									{
+										window.location='../../bolsa/index';
+									}
+									
+				                 //alert(data);
 								  /*
 								    // handle return data
 				                   // alert( data );

@@ -17,7 +17,27 @@
             <div class="span2 share_like">
               <div class="pull-right">
                 <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                <button data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-placement="left" data-toggle="popover" id="share" class="btn-link"  data-original-title="Compartelo" href="#" title=""> <span class="entypo icon_personaling_big">&#59157;</span> </button>
+                
+            
+
+<div class="btn-group">
+  <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+ 
+<ul class="dropdown-menu addthis_toolbox addthis_default_style ">  
+<!-- AddThis Button BEGIN -->
+
+<li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+</li><li><a class="addthis_button_tweet"></a></li>
+<li><a class="addthis_button_pinterest_pinit"></a></li>
+
+</ul>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
+<!-- AddThis Button END -->
+ 
+</div>
+                
+             
               </div>
             </div>
           </div>

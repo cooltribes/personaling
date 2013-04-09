@@ -34,7 +34,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 				$look = Look::model()->findByPk($look_id);
 				$total_look++;
 				
-				
+				 
 		  	?>
 		  	  <!-- Look ON -->
           <h3 class="braker_bottom margin_top"><?php echo $look->title; ?></h3>
@@ -236,12 +236,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               	
               	if($total_look!=0)
 
-				{
+				{ 
 					echo $total_productos_look." productos que componen los Looks<br/>";
 				}				
               	?><?php 
               	//variables de sesion
-              	Yii::app()->getSession()->add('totalLook',$looksTotal);
+              	Yii::app()->getSession()->add('totalLook',$total_look);
+              	Yii::app()->getSession()->add('totalProductosLook',$total_productos_look);
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>

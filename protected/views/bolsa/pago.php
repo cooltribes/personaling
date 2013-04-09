@@ -1,6 +1,11 @@
 <!-- tipopago 1: transferencia
 	 tipopago 2: Tarjeta credito
 	 tipopago 3: puntos o tarjeta de regalo -->
+<?php
+
+if (!Yii::app()->user->isGuest) { // que este logueado
+
+?>
 	 
 <div class="container margin_top">
   <div class="row">
@@ -343,6 +348,18 @@
   </div>
 </div>
 <!-- /container --> 
+
+<?php 
+
+}// si esta logueado
+else
+{
+	// redirecciona al login porque se murió la sesión
+	header('Location: /site/user/login');	
+}
+
+
+?>
 
 <!-- Modal Window -->
 

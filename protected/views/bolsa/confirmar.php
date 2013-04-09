@@ -1,4 +1,8 @@
+<?php
 
+if (!Yii::app()->user->isGuest) { // que este logueado
+
+?>
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
@@ -113,9 +117,10 @@
                   <td><h4><?php echo Yii::app()->getSession()->get('total'); ?>  Bs.</h4></td>
                 </tr>
               </table>
-              <a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
-              <hr/>
-			  	
+              <?php 
+              //<a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
+              //<hr/>
+			  ?>	
           <?php /*$this->widget('bootstrap.widgets.TbButton', array(
             'type'=>'danger',
             'size'=>'large',
@@ -129,10 +134,10 @@
         ?>
 			<a onclick="enviar()" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
               <hr/>
-                            <a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
-
-                            <hr/>
-
+               <?php
+               	//<a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
+				//<hr/>
+				?>
               <div class="alert">
               <!-- <strong>Ojo</strong>: a efectos del prototipo funcional será 1 sólo boton. Los 3 botones que estan aqui arriba llevan a paginas diferentes dependiendo del metodo de pago que haya elegido el usuario.
               -->
@@ -150,6 +155,18 @@
   </div>
 </div>
 <!-- /container -->
+
+<?php 
+
+}// si esta logueado
+else
+{
+	// redirecciona al login porque se murió la sesión
+	header('Location: /site/user/login');	
+}
+
+
+?>
 
 <script>
 	

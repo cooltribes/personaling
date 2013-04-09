@@ -82,13 +82,13 @@ $this->breadcrumbs=array(
 			                       
 			                       //return false;
 			                     }",
-							  
+							   
 							 
 		                     'success' => "function( data )
 				                  {
-				                 	if(data.indexOf('ok'))
+				                 	if(data.indexOf('ok')>=0)
 									{
-										window.location='../../bolsa/index';
+										window.location='../bolsa/index'; 
 									}
 									
 				                 //alert(data);

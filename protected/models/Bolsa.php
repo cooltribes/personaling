@@ -65,7 +65,7 @@ class Bolsa extends CActiveRecord
 			'lookHasTblBolsas1' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_user_id'),
 			'ordens' => array(self::HAS_MANY, 'Orden', 'tbl_bolsa_id'),
 			'ordens1' => array(self::HAS_MANY, 'Orden', 'user_id'),
-			//'bolsahasproducto' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id')
+			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id')
 		);
 	}
 
@@ -135,14 +135,14 @@ class Bolsa extends CActiveRecord
 			
 			//revisar si está o no en el carrito
 			
-			$nuevo = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptcolor->id));
+			$nuevo = BolsaHasProductotallacolor::model()->findByPk(array('preciotallacolor_id'=>$ptcolor->id,'look_id'=>$look_id));
 			
 			if(isset($nuevo)) // existe
 			{
 				$cantidadnueva = $nuevo->cantidad + 1;
-				BolsaHasProductotallacolor::model()->updateByPk($nuevo->preciotallacolor_id, array('cantidad'=>$cantidadnueva));
+				BolsaHasProductotallacolor::model()->updateByPk(array('preciotallacolor_id'=>$nuevo->preciotallacolor_id,'look_id'=>$look_id), array('cantidad'=>$cantidadnueva));
 				return "ok";
-							
+							 
 			}
 			else{ // si el producto es nuevo en la bolsa
 			

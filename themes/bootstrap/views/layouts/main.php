@@ -48,9 +48,15 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 } else {
-	if (Yii::app()->user->id){
+	$cont_productos = 0;
+	if (Yii::app()->user->id){ 
 		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 		$nombre = $profile->first_name.' '.$profile->last_name;
+		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+		
+		if(isset($bolsa))
+			$cont_productos = count($bolsa->bolsahasproductos);
+		
 	} else {
 		$nombre = 'N/A';
 	}
@@ -66,7 +72,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>array('/site/contact')),
-                array('label'=>'2','icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                  array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(

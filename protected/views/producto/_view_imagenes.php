@@ -9,11 +9,11 @@
                 type:"POST",
                 url: "<?php echo CController::createUrl('producto/eliminar'); ?>",
                 cache:false,
-               data: "id="+$(this).parent().attr('id').replace('img_',''),
+               data: "id="+$(this).parent().parent().attr('id').replace('img_',''),
                 success: function(data){
 
                     if(data=='OK'){
-                        span.parent().fadeOut();
+                        span.parent().parent().fadeOut();
                     }else{
 
                     }
@@ -27,7 +27,7 @@
                 opacity: 0.3,
                 cursor: 'move',
                 update: function() {
-
+ 
                     //alert("movi");
 
                     var order = $(this).sortable("serialize") + '&action=actualizar_orden';

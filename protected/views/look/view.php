@@ -1,7 +1,7 @@
 <?php
-$this->breadcrumbs=array(
-	'Look',
-);
+// $this->breadcrumbs=array(
+	//'Look',
+// );
 ?>
 <div class="container margin_top" id="carrito_compras">
   <div class="row">
@@ -26,7 +26,7 @@ $this->breadcrumbs=array(
           	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "770", "height" => "770", 'class'=>'img_1')); ?>
           </div>
           <div class="hidden-phone clearfix vcard">
-            <div class="pull-left margin_right_small avatar "><img class="pull-left photo  img-circle" src="images/avatar_sample1.jpg"/></div>
+            <div class="pull-left margin_right_small avatar "><img class="pull-left photo  img-circle" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/hipster_girl.jpg"/></div>
             <div class="pull-left"> <span class="muted">Look creado por: </span>
               <h5><a href="#" title="profile" class="url"><span class="fn">Daniel Kosan</span> <i class="icon-chevron-right"></i></a></h5>
               <p  class="note"><strong>Bio</strong>: Lorem ipsum dolor sit amet deserunt mollit anim</p>
@@ -46,7 +46,7 @@ $this->breadcrumbs=array(
               <h4 class="precio" ><span>Subtotal</span> Bs. 13.500,00</h4>
             </div>
             <div class="span2">
-              <div class="btn-group"> <a class="btn btn-danger" href="#"><span class="entypo color3">&#59197;</span></a> 
+              <div class=""> 
               <!--	<a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa</a> -->
 		 <?php 
 		 
@@ -144,7 +144,7 @@ $this->breadcrumbs=array(
 			?>
               <div class="span6"> 
               	<a href="pagina_producto.php" title="Nombre del Producto"> 
-              		<!-- <img width="170" height="170" src="images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 
+              		<!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 
               		-->
               		<?php $image = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
               		<?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
@@ -191,16 +191,16 @@ $this->breadcrumbs=array(
           <div class="carousel-inner">
             <div class="active item">
               <div class="row">
-                <div class="span4"><img src="images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></div>
+                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
+                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></div>
+                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></div>
               </div>
             </div>
             <div class="item">
               <div class="row">
-                <div class="span4"><img src="images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></div>
+                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
+                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></div>
+                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></div>
               </div>
             </div>
           </div>
@@ -212,16 +212,16 @@ $this->breadcrumbs=array(
           <div class="span6">
             <h3>Otros Productos que te pueden gustar</h3>
             <div class="row">
-              <div class="span2"> <a href="#" ><img width="170" height="170" src="images/producto_sample_7.jpg" width="170" height="145"></a></div>
-              <div class="span2"> <a href="#" ><img width="170" height="170" src="images/producto_sample_8.jpg" width="170" height="145"></a></div>
-              <div class="span2"> <a href="#" ><img width="170" height="170" src="images/producto_sample_9.jpg" width="170" height="145"></a></div>
+              <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_7.jpg" ></a></div>
+              <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_8.jpg" ></a></div>
+              <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_9.jpg" ></a></div>
             </div>
           </div>
           <div class="span4 offset2">
             <h3>Vistos recientemente</h3>
             <div class="row">
-              <div class="span2"> <a href="#" ><img width="170" height="170" src="images/producto_sample_11.jpg" width="170" height="145"></a></div>
-              <div class="span2"> <a href="#" ><img width="170" height="170" src="images/producto_sample_12.jpg" width="170" height="145"></a></div>
+              <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_11.jpg" ></a></div>
+              <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_12.jpg" ></a></div>
             </div>
           </div>
         </div>

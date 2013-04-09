@@ -377,7 +377,8 @@ src: url('../fonts/entypo.woff'),
 .navbar-inverse .brand, .navbar-inverse .nav > li > a{
 	color:darken(@color3,25%);
 	}
-.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{.color3}
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{.color4}
+.navbar-inverse .nav > .active > a, .navbar-inverse .nav > .active > a:hover, .navbar-inverse .nav > .active > a:focus{.color3}
 .nav-pills > .active > a, .nav-pills > .active > a:hover{ background-color:@color1;}
 .nav-pills > li > a{ .border_radius(@radius:0)}
 
@@ -448,7 +449,7 @@ src: url('../fonts/entypo.woff'),
 			 height:80px;
 			 .border_radius(@radius:100px);
 			 img{
-				padding:5px; 
+				padding:2px; 
 			 }
    
 			}
@@ -466,7 +467,7 @@ src: url('../fonts/entypo.woff'),
 /*------------- Home ON -------------*/
 
 .wrapper_home{
-	background:url(../images/bg_home.jpg) no-repeat center 40px;
+	background:url(../images/bg_home.jpg) no-repeat -130px 0px;
 	.padding_top_large;
 	min-height:500px;
 	}
@@ -626,10 +627,19 @@ src: url('../fonts/entypo.woff'),
 			margin-bottom:2em;
 			padding-bottom:1em;
 			border-bottom:1px solid #ddd;
-			
+			.btn-danger:before{
+				content:'\E73D';
+				font-size:2em;
+				margin-right:7px;		
+				font-family:entypo;
+				display:inline-block;
+				
+				}
 			.btn-danger{
-				height:2.3em;
-	            line-height:2.3em;
+				/*height:2.3em;
+	            line-height:2.3em;*/ 
+				font-size:1em;
+				
 				.color3;
 				.entypo{ font-size:2em;.color3;}
 				}
@@ -638,7 +648,7 @@ src: url('../fonts/entypo.woff'),
 					.entypo{
 						color:#ff9600;
 					}
-					span{ font-size: 0.8em;
+					span{ font-size: 0.7em;
     					  font-weight: bold;
 						 
 						 }
@@ -647,6 +657,7 @@ src: url('../fonts/entypo.woff'),
 		.productos_del_look{
 			overflow:auto;
 			height:570px;
+			padding-top:5px;
 			.span6:nth-child(2n+1){ margin-left:0}
 			.span6{
 					 margin-bottom:1.4em;
@@ -678,9 +689,7 @@ src: url('../fonts/entypo.woff'),
 							.margin_top_xsmall;
 							.margin_bottom_xsmall;
 							height:20px;
-							width:70%;
-
-							
+							width:70%;							
 							}
 						.colores{
 							.margin_left_small;
@@ -1089,3 +1098,48 @@ ul.yiiPager .last
     -o-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
     -webkit-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
 }
+
+
+/*---------------------- Responsive Design --------------------*/
+
+
+/* Large desktop */
+@media (min-width: 1680px)  { 
+.wrapper_home{
+	background:url(../images/bg_home.jpg) no-repeat -30px 0px;
+ }
+ }
+
+/* Large desktop */
+@media (min-width: 1200px)  and (max-width: 1679px) { 
+.wrapper_home{
+	background:url(../images/bg_home.jpg) no-repeat -300px 0px;
+ }
+ }
+
+/* Mid desktop */
+@media (min-width: 980px) and (max-width: 1199px) { 
+.wrapper_home{
+	background:url(../images/bg_home.jpg) no-repeat -390px 0px;
+ }
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) { 
+.wrapper_home{
+	background:url(../images/bg_home.jpg) no-repeat -390px 0px;
+ }
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+.wrapper_home{
+	background:url(../images/bg_home.jpg) no-repeat -300px 0px;
+ }
+ }
+ 
+/* Landscape phones and down */
+@media (max-width: 480px) {  }
+
+
+
+/* Ultima actualizacion: 09/04/2013 10:46 */

@@ -1,9 +1,8 @@
 <?php
-/* @var $this LookController */
-
-$this->breadcrumbs=array(
-	'Look',
-);
+	/* @var $this LookController */
+	// $this->breadcrumbs=array(
+	//'Look',
+	//);
 ?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
 

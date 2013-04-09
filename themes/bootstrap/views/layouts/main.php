@@ -48,7 +48,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 } else {
-	$cont_productos = 0;
+	$cont_productos = 0; 
 	if (Yii::app()->user->id){ 
 		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 		$nombre = $profile->first_name.' '.$profile->last_name;

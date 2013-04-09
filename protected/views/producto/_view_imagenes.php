@@ -21,7 +21,7 @@
             });
 
         })
-
+  
         $(function() {
             $("#ul_imagenes").sortable({
                 opacity: 0.3,

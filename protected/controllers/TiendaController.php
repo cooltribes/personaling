@@ -33,10 +33,10 @@ class TiendaController extends Controller
 	{
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		$producto = new Producto;		
-		$producto->status = 1;
+		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
 		
-		$a ="a";
+		$a ="a"; 
 		
 		$dataProvider = $producto->busqueda($a);
 		$this->render('index',

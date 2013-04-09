@@ -113,7 +113,7 @@
 						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
 						}
 						else{
-							echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='color'>".$color->valor."</div>"; 
+							echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='color'><img src='/site/images/colores/".$color->path_image."'></div>"; 
 							array_push($valores, $color->id);
 						}
 						
@@ -320,7 +320,7 @@ $('.imagen_principal').css('display','block').zoom();
    	});   
    
 
-   	$(".tallass").click(function(ev){
+   	$(".tallass").click(function(ev){ // click en tallas -> recarga los colores para esa talla
    		ev.preventDefault();
    		//alert("TALLAS");
    		//alert($(this).attr("id")); 
@@ -347,7 +347,7 @@ $('.imagen_principal').css('display','block').zoom();
 					var cont="";
 					$.each(data.datos,function(clave,valor) {
 					  	//0 -> id, 1 -> valor
-					  	cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='color'>"+valor[1]+"</div>";
+					  	cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='color'><img src='/site/images/colores/"+valor[2]+"'></div>";
 					  	
 					});
 					//alert(cont); 

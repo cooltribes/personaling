@@ -810,6 +810,7 @@ class ProductoController extends Controller
 				 
 				array_push($datos,$co->id);
 				array_push($datos,$co->valor); // para cada talla guardo su id y su valor
+				array_push($datos,$co->path_image); // y su path de imagen
 				
 				array_push($colores,$datos); // se envian en un array de datos de colores
 			}

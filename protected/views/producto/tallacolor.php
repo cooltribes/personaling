@@ -7,8 +7,7 @@
 </script>
 <?php
 $this->breadcrumbs=array(
-	'Productos'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
+	'Productos'=>array('admin'),
 	'Tallas y Colores',
 );
 

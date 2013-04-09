@@ -50,7 +50,7 @@ class Bolsa extends CActiveRecord
 			// Please remove those attributes that should not be searched.
 			array('id, user_id, created_on', 'safe', 'on'=>'search'),
 		);
-	}
+	} 
 
 	/**
 	 * @return array relational rules.
@@ -66,7 +66,7 @@ class Bolsa extends CActiveRecord
 			'ordens' => array(self::HAS_MANY, 'Orden', 'tbl_bolsa_id'),
 			'ordens1' => array(self::HAS_MANY, 'Orden', 'user_id'),
 			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id')
-		);
+		); 
 	}
 
 	/**

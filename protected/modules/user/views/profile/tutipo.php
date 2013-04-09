@@ -132,7 +132,11 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 <?php foreach (Profile::range($field->range) as $key => $tipo){ ?>
                 	
                 <li class="span3 <?php if ($valor_tmp == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> <img alt="<?php echo $tipo; ?>" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="thumbnail"> 
+                  	
+                  	
+                    
+                    <?php echo  CHtml::image(Yii::app()->baseUrl . 'images/'.$tipo, "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
                     <div class="caption text_align_center CAPS">
                       <p><?php echo $tipo; ?></p>
                     </div>

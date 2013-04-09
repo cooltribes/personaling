@@ -203,14 +203,14 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 		<?php
 			}// if de productos individuales
 			else
-			{
+			{ 
 			 
 			 echo "<h4 class='braker_bottom margin_top'>No hay ningun producto individual en la bolsa.</h4>";
 				
 			}
 		?>
         <?php
-        if($pr!=0) // si hay productos individuales o bien si hay looks (aqui se puede poner la comparacion de si hay looks)
+        if($pr!=0 || $num!=0) // si hay productos individuales o bien si hay looks (aqui se puede poner la comparacion de si hay looks)
 		{
 		?> 
           

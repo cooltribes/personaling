@@ -17,7 +17,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la seccion inferior:</p>
       <?php 
       
-     	$usuario = Yii::app()->user->id;
+     	$usuario = Yii::app()->user->id; 
       
       /* 
 	   * lo de la libreta

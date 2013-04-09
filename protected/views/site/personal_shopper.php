@@ -20,7 +20,7 @@ $this->breadcrumbs=array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_look',
-
+'template'=>"{items}",
 
 		'pager'=>array(
 			'header'=>'',

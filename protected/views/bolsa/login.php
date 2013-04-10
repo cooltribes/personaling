@@ -33,7 +33,7 @@
 		    'type'=>'inline',
 			'enableClientValidation'=>true,
 			'clientOptions'=>array(
-				'validateOnSubmit'=>true,
+				'validateOnSubmit'=>true, 
 			),
 		)); ?>
           <fieldset>
@@ -55,7 +55,7 @@
     				<?php echo $form->error($model,'password'); ?>
     			</div>
     		</div>
-            <?php echo $form->checkBoxRow($model,'rememberMe'); ?>
+            <?php //echo $form->checkBoxRow($model,'rememberMe'); ?>
             
             
         <div class="form-actions">

@@ -19,15 +19,15 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <h1>Preferencias de Pago.</h1>
       <p>Elige la opción de pago que deseas utilizar:</p>
     </div>
-  </div>
+  </div>  
   <div class="row">
     <section class="span7"> 
       <!-- Forma de pago ON -->
       <div class="box_1 padding_small margin_bottom">
         <h4 class="braker_bottom padding_bottom_xsmall ">Pagar con Depósito o  Transferencia Bancaria</h4>
-        <input type="checkbox" name="optionsRadios" id="deposito" value="option1" >
+        <input type="checkbox" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Usar éste método de pago (click para ver las cuentas) </button>
-        (al seleccionar esta opción se desplegarian las cuentas aqui abajo)
+         
         </label>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >

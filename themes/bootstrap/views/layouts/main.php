@@ -15,7 +15,7 @@
 </head>
 
 <body>
-<?php 
+<?php  
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
 if (Yii::app()->user->id?UserModule::isAdmin():false){
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -48,7 +48,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 } else {
-	$cont_productos = 0;
+	$cont_productos = 0; 
 	if (Yii::app()->user->id){ 
 		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 		$nombre = $profile->first_name.' '.$profile->last_name;
@@ -66,14 +66,15 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'class'=>'bootstrap.widgets.TbMenu',
             'htmlOptions'=>array('class'=>'pull-right'),
             'items'=>array(
- 
+  
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Top', 'url'=>array('/site/top'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
-                array('label'=>'Magazine', 'url'=>array('/site/contact')),
+                array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
+                array('label'=>'Registrate', 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                  array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),

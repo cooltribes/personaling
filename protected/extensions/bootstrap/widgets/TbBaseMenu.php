@@ -68,7 +68,8 @@ abstract class TbBaseMenu extends CMenu
 
 					if (isset($item['items']))
 						$classes[] = $this->getDropdownCssClass();
-
+					
+					
 					if (isset($item['disabled']))
 						$classes[] = 'disabled';
 
@@ -140,14 +141,22 @@ abstract class TbBaseMenu extends CMenu
 			}
 
 			if (isset($item['linkOptions']['class']))
-				$item['linkOptions']['class'] .= ' dropdown-toggle';
+				$item['linkOptions']['class'] .= ' dropdown-toggle'; 
 			else
 				$item['linkOptions']['class'] = 'dropdown-toggle';
 
 			$item['linkOptions']['data-toggle'] = 'dropdown';
 			$item['label'] .= ' <span class="caret"></span>';
 		}
-
+			/* MODIFICACION DE RAFA PARA PODER COLOCARLE UNA CLASE A UN BOTON CON LABEL REGSITRATE */
+			if (strpos($item['label'],'Registrate')!==false){
+				if (isset($item['linkOptions']['class']))
+						$item['linkOptions']['class'] .= ' btn-danger';
+				else
+						$item['linkOptions']['class'] = ' btn-danger';
+						$item['linkOptions']['class'] .= ' btn';
+					}
+			/* FIN */
 		if (isset($item['url']))
 			return CHtml::link($item['label'], $item['url'], $item['linkOptions']);
 		else

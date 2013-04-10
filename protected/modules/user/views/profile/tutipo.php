@@ -8,8 +8,12 @@ $this->breadcrumbs=array(
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
-<?php
 
+<?php
+function replace_accents($string) 
+{ 
+  return str_replace( array(' ','à','á','â','ã','ä', 'ç', 'è','é','ê','ë', 'ì','í','î','ï', 'ñ', 'ò','ó','ô','õ','ö', 'ù','ú','û','ü', 'ý','ÿ', 'À','Á','Â','Ã','Ä', 'Ç', 'È','É','Ê','Ë', 'Ì','Í','Î','Ï', 'Ñ', 'Ò','Ó','Ô','Õ','Ö', 'Ù','Ú','Û','Ü', 'Ý'), array('','a','a','a','a','a', 'c', 'e','e','e','e', 'i','i','i','i', 'n', 'o','o','o','o','o', 'u','u','u','u', 'y','y', 'A','A','A','A','A', 'C', 'E','E','E','E', 'I','I','I','I', 'N', 'O','O','O','O','O', 'U','U','U','U', 'Y'), $string); 
+} 
 $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
         'fade'=>true, // use transitions?
@@ -43,8 +47,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 		</div>
      <!-- MENU OFF -->
      <?php } ?>   
-      <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
-   
+             <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
+
       <article class="margin_top  margin_bottom_small ">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',
@@ -132,7 +136,11 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 <?php foreach (Profile::range($field->range) as $key => $tipo){ ?>
                 	
                 <li class="span3 <?php if ($valor_tmp == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> <img alt="<?php echo $tipo; ?>" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="thumbnail"> 
+                  	
+                  	
+                    
+                    <?php echo  CHtml::image(Yii::app()->baseUrl . '/images/'.replace_accents($tipo).'.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
                     <div class="caption text_align_center CAPS">
                       <p><?php echo $tipo; ?></p>
                     </div>
@@ -140,7 +148,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                   </a> 
                </li>
                 <?php } ?>
-               
+                
               </ul>
                 
                 

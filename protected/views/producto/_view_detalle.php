@@ -30,8 +30,21 @@
               <h1> <?php echo $producto->nombre; ?> <span class="label label-important"> ON SALE</span></h1>
             </div>
             <div class="span2 share_like">
-              <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-              <button data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-placement="left" data-toggle="popover" id="share" class="btn-link"  data-original-title="Compartelo" href="#" title=""> <span class="entypo icon_personaling_big">&#59157;</span> </button>
+               <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                <div class="btn-group">
+                  <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                    <!-- AddThis Button BEGIN -->
+                    
+                    <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                    <li><a class="addthis_button_tweet"></a></li>
+                    <li><a class="addthis_button_pinterest_pinit"></a></li>
+                  </ul>
+                  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
+                  <!-- AddThis Button END --> 
+                  
+                </div>
             </div>
           </div>
           <div class="row">
@@ -215,16 +228,16 @@
       <div class="carousel-inner">
         <div class="active item">
           <div class="row">
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
           </div>
         </div>
         <div class="item">
           <div class="row">
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
+            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
           </div>
         </div>
       </div>

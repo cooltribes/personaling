@@ -763,6 +763,7 @@ class ProductoController extends Controller
 	public function actionTallas()
 	{
 		$tallas = array();
+		$imgs = array(); // donde se van a ir las imagenes
 		
 		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
@@ -776,16 +777,27 @@ class ProductoController extends Controller
 				
 				array_push($datos,$ta->id);
 				array_push($datos,$ta->valor); // para cada talla guardo su id y su valor
-				
 				array_push($tallas,$datos); // se envian en un array de datos de tallas
+				
 			}
-		}	
+		}
+		
+		$imagenes = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$_POST['idProd'],'color_id'=>$_POST['idTalla']),array('order'=>'orden ASC'));
+				
+			foreach ($imagenes as $img) {
+				$todos = array();					
+						
+				array_push($todos,$img->url);
+				array_push($todos,$img->orden);
+				array_push($imgs,$todos); // array de datos de imagenes
+			}	
 		
 			//print_r($tallas);
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',
-			'datos'=> $tallas
+			'datos'=> $tallas,
+			'imagenes'=>$imgs
 		));
 		exit;
 	}

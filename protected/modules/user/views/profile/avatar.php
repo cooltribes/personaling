@@ -21,7 +21,6 @@
         </li>
       </ul>
      <!-- MENU OFF -->
-      <h1>Tu personaling | Tu perfil</h1>
 
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         
@@ -36,7 +35,8 @@
 			),
 		)); ?>        	
           <fieldset>
-            <legend >Avatar: </legend>
+                  <h1>Tu Avatar</h1>
+
             
             <div class="row">
             <div class="span2"><img src="http://placehold.it/150x150"/></div>

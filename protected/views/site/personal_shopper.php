@@ -19,12 +19,12 @@ $this->breadcrumbs=array(
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_view_look',
+	    'itemView'=>'_view_look', 
 'template'=>"{items}",
 
 		'pager'=>array(
 			'header'=>'',
-			'htmlOptions'=>array(
+			'htmlOptions'=>array( 
 			'class'=>'pagination pagination-right',
 		)
 		),					

@@ -126,7 +126,7 @@
 						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
 						}
 						else{
-							echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='color'><img src='/site/images/colores/".$color->path_image."'></div>"; 
+							echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='/site/images/colores/".$color->path_image."'></div>"; 
 							array_push($valores, $color->id);
 						}
 						
@@ -257,6 +257,8 @@
 <script>
 $(document).ready(function(){
 
+var source = $('#principal').attr("src");
+var imgZ = source.replace(".","_orig.");
 $('.imagen_principal').css('display','block').zoom();
 
 	$(".imagen_principal").hover(function(){
@@ -275,14 +277,15 @@ $('.imagen_principal').css('display','block').zoom();
      		$("#principal").attr("src", thumbnail);
      	});
 
-      	$("#principal").fadeIn("slow",function(){});
-      	
-      	// cambiando la imagen que se va a hacer zoom
-     	var source = thumbnail;
-		
+      	$("#principal").fadeIn("slow",function(){
+      		// cambiando la imagen que se va a hacer zoom
+     	var source = thumbnail;	
 		var imgZ = source.replace(".","_orig.");
-     	
      	$('.imagen_principal').css('display','block').zoom({url: imgZ});
+      		
+      	});
+      	
+      	
    });
       
       
@@ -296,6 +299,8 @@ $('.imagen_principal').css('display','block').zoom();
    		
    		var dataString = $(this).attr("id");
      	var prod = $("#producto").attr("value");
+     
+		var menor=15478; // exagerado valor para comparar adentro
      
      	$(this).removeClass('coloress');
   		$(this).addClass('coloress active'); // añado la clase active al seleccionado
@@ -323,12 +328,46 @@ $('.imagen_principal').css('display','block').zoom();
 			     	});
 			
 			      	$("#vTa").fadeIn("slow",function(){});
+							   
 					
-					//$("#vTa").html(cont);
+					// ahora cambiar las imagenes a las del color 
+					
+					// primero determino el menor de las imagenes  
+						var zona="";
+						var thumbs="";
+						$.each(data.imagenes,function(clave,valor) {
+						  	
+						  	if(valor[1]<menor){
+								menor = valor[1];
+						  	}	  	
+						  	
+						});
+					
+					// luego muestro	
+						$.each(data.imagenes,function(clave,valor) {
+						  	//0 -> url
+						  	//1 -> orden
+						  	//zona = zona + "<div onclick='a("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='tallass' title='talla'>"+valor[1]+"</div>";
+						  	
+						  	if(valor[1] == menor) // conseguir cual es el menor en el orden para determinar el color 
+						  	{
+						  		var zona="<img id='principal' src='/site/"+valor[0]+"' alt'producto'>";
+						  		//alert(zona);
+						  	}
+						  	
+						  	$(".imagen_principal").html(zona); // cambiando la imagen principal :@
+						  	
+						  	
+						  	
+						});
+						
+						//alert(cont); 		   
 							        	
 		        }
+
 	       	}//success
 	       })
+	     
    		
    	});   
    
@@ -360,7 +399,7 @@ $('.imagen_principal').css('display','block').zoom();
 					var cont="";
 					$.each(data.datos,function(clave,valor) {
 					  	//0 -> id, 1 -> valor
-					  	cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='color'><img src='/site/images/colores/"+valor[2]+"'></div>";
+					  	cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='"+valor[1]+"'><img src='/site/images/colores/"+valor[2]+"'></div>";
 					  	
 					});
 					//alert(cont); 

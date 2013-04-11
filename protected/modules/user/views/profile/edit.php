@@ -67,7 +67,6 @@ $this->breadcrumbs=array(
 ); ?>	
 <!-- FLASH OFF -->   
     <div class="span6 offset3">
-  	
      <!-- MENU ON -->
 		<div class="navbar">
 			<div class="navbar-inner margin_bottom">
@@ -88,7 +87,7 @@ $this->breadcrumbs=array(
 			</div>
 		</div>
      <!-- MENU OFF -->
-      <h1>Tu personaling | Tu perfil</h1>
+   
 
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         
@@ -104,7 +103,8 @@ $this->breadcrumbs=array(
 	
 )); ?>        	
           <fieldset>
-            <legend >Datos personales: </legend>
+             	   <h1>Tu perfil</h1>
+
 
 <?php 
 		$profileFields=$profile->getFields();

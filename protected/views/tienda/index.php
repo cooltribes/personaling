@@ -70,8 +70,8 @@ $this->breadcrumbs=array(
           </select>
           <p></p>
           <div class="input-append">
-            <input class="" id="appendedInputButtons" type="text" placeholder="Buscar por palabras clave">
-            <button class="btn btn-warning" type="button"><i class="icon-search icon-white"></i></button>
+            <input id="busqueda" name="busqueda" class="" id="appendedInputButtons" type="text" placeholder="Buscar por palabras clave">
+            <button id="boton_search" class="btn btn-warning" type="button"><i class="icon-search icon-white"></i></button>
           </div>
         </form>
         <hr/>
@@ -81,7 +81,7 @@ $this->breadcrumbs=array(
 	Yii::app()->clientScript->registerScript('busqueda',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest; 
-		$('#btn_search').click(function(){
+		$('#boton_search').click(function(){
 			ajaxRequest = $('#formu').serialize();
 			clearTimeout(ajaxUpdateTimeout);
 			

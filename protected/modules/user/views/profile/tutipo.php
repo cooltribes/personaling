@@ -8,6 +8,7 @@ $this->breadcrumbs=array(
 <div class="container margin_top">
   <div class="row">
     <div class="span12">
+
 <?php
 function replace_accents($string) 
 { 
@@ -46,8 +47,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 		</div>
      <!-- MENU OFF -->
      <?php } ?>   
-      <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
-   
+             <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
+
       <article class="margin_top  margin_bottom_small ">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',

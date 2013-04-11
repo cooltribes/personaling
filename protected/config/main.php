@@ -88,13 +88,31 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+		/*
+	    'less'=>array(
+	      'class'=>'ext.less.components.Less',
+	      'mode'=>'server',
+	      'files'=>array(
+	        'less/style.less'=>'css/style.css',
+	      ),
+	      'options'=>array(
+                'nodePath'=>'/usr/local/lib/node_modules/npm/bin/npm-cli.js',
+                'compilerPath'=>'/usr/local/lib/node_modules/less/bin/lessc',
+                 'basePath'=>'/home/personaling/public_html/site/',
+               // 'strictImports'=>true,
+                'forceCompile'=>true,
+        ),
+	    ),
+		 * */
+	    
 	    'less'=>array(
 	      'class'=>'ext.less.components.Less',
 	      'mode'=>'client',
 	      'files'=>array(
 	        'less/style.less'=>'css/style.less',
 	      ),
-	    ),		
+	    ),	
+		 	
 		 'bootstrap'=>array(
             'class'=>'ext.bootstrap.components.Bootstrap',
             'responsiveCss' => true,

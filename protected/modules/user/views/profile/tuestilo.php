@@ -3,6 +3,25 @@ $this->breadcrumbs=array(
 	UserModule::t("Mi cuenta")=>array('micuenta'),
 	UserModule::t("Tu estilo"),
 );
+    function getTabs($field,$profile){
+            				$nombre_tmp = $field->varname;
+			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
+			$return = '<fieldset>
+            <legend>Escoge tu estilo: </legend>
+            <ul class="thumbnails">';
+            foreach (Profile::range($field->range) as $key => $value){
+            $return .=  '<li class="span3 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
+                <div class="thumbnail"> <img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+                  <div class="caption text_align_center CAPS">
+                    
+                  </div>
+                </div>
+                </a> </li>';
+                }
+            $return .= '</ul> 
+          </fieldset>';      
+		  return $return;  		
+     }   
 ?>
 <?php
 	if (!(isset($estilo)))
@@ -78,25 +97,7 @@ $this->breadcrumbs=array(
             
            <div class="row"><div class="span6 offset3">
               	            <?php 
-              	function getTabs($field,$profile){
-            				$nombre_tmp = $field->varname;
-			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
-			$return = '<fieldset>
-            <legend>Escoge tu estilo: </legend>
-            <ul class="thumbnails">';
-            foreach (Profile::range($field->range) as $key => $value){
-            $return .=  '<li class="span3 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                  <div class="caption text_align_center CAPS">
-                    
-                  </div>
-                </div>
-                </a> </li>';
-                }
-            $return .= '</ul> 
-          </fieldset>';      
-		  return $return;  		
-              	}             
+          
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'coctel'));
 
 				$tabs[] = array(

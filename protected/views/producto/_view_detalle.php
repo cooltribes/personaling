@@ -49,7 +49,9 @@
           </div>
           <div class="row">
           	<?php
-             
+             	
+             	$colorPredet="";
+             	
             	echo "<div class='span6 imagen_principal'> 
             			<!-- FOTO principal ON -->";
             	
@@ -59,6 +61,7 @@
 					
 				if($img->orden==1)
 				{
+					$colorPredet = $img->color_id;
 					echo CHtml::image(Yii::app()->baseUrl . $img->url, "producto", array('id'=>'principal'));
 					echo "<!-- FOTO principal OFF -->";
 	          		echo "</div>";	
@@ -70,14 +73,17 @@
 				
 					//imprimiendo igual la primera en thumbnail
 					$pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "90", "height" => "90",'value'=>$pri->id,'class'=>'miniaturas_listado_click'));					
+					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "90", "height" => "90",'value'=>$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
 							
 				}
 				
 				if($img->orden!=1){
-					//luego el resto para completar el scroll					
-					echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "90", "height" => "90", 'value'=>$img->id, 'class'=>'miniaturas_listado_click'));
-				}
+					if($colorPredet == $img->color_id)
+					{
+						//luego el resto para completar el scroll					
+						echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "90", "height" => "90", 'value'=>$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+					}// color
+				}// que no es la primera en el orden
 			}
 			
 			echo "</div></div>";
@@ -269,29 +275,25 @@ $('.imagen_principal').css('display','block').zoom();
 	});
 
    $(".miniaturas_listado_click").click(function(){
-      
      	var image = $("#principal");
      	var thumbnail = $(this).attr("src");
-          	
+     	
+     	// primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
+     	var source = thumbnail;	
+		var imgZ = source.replace(".","_orig.");
+     	$('.imagen_principal').css('display','block').zoom({url: imgZ});
+          
+        // cambio de la principal  	
      	$("#principal").fadeOut("slow",function(){
      		$("#principal").attr("src", thumbnail);
      	});
 
-      	$("#principal").fadeIn("slow",function(){
-      		// cambiando la imagen que se va a hacer zoom
-     	var source = thumbnail;	
-		var imgZ = source.replace(".","_orig.");
-     	$('.imagen_principal').css('display','block').zoom({url: imgZ});
-      		
-      	});
-      	
-      	
-   });
-      
+      	$("#principal").fadeIn("slow",function(){});
+
+   });     
       
    	$(".coloress").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
    		ev.preventDefault();
-   		//alert("COLOR");
    		//alert($(this).attr("id"));
    		
    		// para quitar el active en caso de que ya alguno estuviera seleccionado
@@ -335,33 +337,49 @@ $('.imagen_principal').css('display','block').zoom();
 					// primero determino el menor de las imagenes  
 						var zona="";
 						var thumbs="";
+						
 						$.each(data.imagenes,function(clave,valor) {
-						  	
 						  	if(valor[1]<menor){
 								menor = valor[1];
-						  	}	  	
-						  	
+						  	}
 						});
 					
 					// luego muestro	
 						$.each(data.imagenes,function(clave,valor) {
-						  	//0 -> url
-						  	//1 -> orden
-						  	//zona = zona + "<div onclick='a("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='tallass' title='talla'>"+valor[1]+"</div>";
+						  	//0 -> url | 1 -> orden | 2 -> id imagen
 						  	
-						  	if(valor[1] == menor) // conseguir cual es el menor en el orden para determinar el color 
-						  	{
-						  		var zona="<img id='principal' src='/site/"+valor[0]+"' alt'producto'>";
-						  		//alert(zona);
+						  	// conseguir cual es el menor en el orden para determinar el color 	
+						  	if(valor[1] == menor) {
+						  		zona="<img id='principal' src='/site"+valor[0]+"' alt'producto'>";
 						  	}
 						  	
-						  	$(".imagen_principal").html(zona); // cambiando la imagen principal :@
-						  	
-						  	
+						  	thumbs = thumbs + "<img width='90' height='90' value='"+valor[2]+"' class='miniaturas_listado_click' src='/site"+valor[0]+"' alt='Imagen' style='cursor: pointer' >";
 						  	
 						});
 						
-						//alert(cont); 		   
+						//alert(thumbs); 		   
+						
+						// cambiando la imagen principal :@
+						$(".imagen_principal").fadeOut("10",function(){
+							$(".imagen_principal").html(zona);
+							
+								var source = $('#principal').attr("src");
+								var imgZ = source.replace(".","_orig.");
+								$('.imagen_principal').css('display','block').zoom();
+							
+						});
+						  	
+						$(".imagen_principal").fadeIn("10",function(){});
+						
+						
+						// cambiando los thumbnails
+						$(".imagenes_secundarias").fadeOut("slow",function(){ 
+							$(".imagenes_secundarias").html(thumbs); 
+						});
+						  	
+						$(".imagenes_secundarias").fadeIn("slow",function(){});
+						
+						
 							        	
 		        }
 
@@ -420,6 +438,28 @@ $('.imagen_principal').css('display','block').zoom();
    	 
       
    });
+   
+	$(".miniaturas_listado_click").live({
+		click: function() {
+			var image = $("#principal");
+	     	var thumbnail = $(this).attr("src");
+	     	
+	     	// primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
+	     	var source = thumbnail;	
+			var imgZ = source.replace(".","_orig.");
+	     	$('.imagen_principal').css('display','block').zoom({url: imgZ});
+	          
+	        // cambio de la principal  	
+	     	$("#principal").fadeOut("slow",function(){
+	     		$("#principal").attr("src", thumbnail);
+	     	});
+	
+	      	$("#principal").fadeIn("slow",function(){});			
+		}
+	});
+   
+   
+   
    
    function a(id){ // seleccion de talla
 

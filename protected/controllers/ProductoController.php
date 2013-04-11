@@ -789,6 +789,7 @@ class ProductoController extends Controller
 						
 				array_push($todos,$img->url);
 				array_push($todos,$img->orden);
+				array_push($todos,$img->id);
 				array_push($imgs,$todos); // array de datos de imagenes
 			}	
 		

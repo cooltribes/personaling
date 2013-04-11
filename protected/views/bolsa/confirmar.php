@@ -30,7 +30,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <div class="well">
         <h4 class="braker_bottom"> Direccion de Envio</h4>
         <?php 
-        // direccion de envio
+        // direccion de envio 
         
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
         ?>

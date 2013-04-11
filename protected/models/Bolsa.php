@@ -135,12 +135,12 @@ class Bolsa extends CActiveRecord
 			
 			//revisar si está o no en el carrito
 			
-			$nuevo = BolsaHasProductotallacolor::model()->findByPk(array('preciotallacolor_id'=>$ptcolor->id,'look_id'=>$look_id));
+			$nuevo = BolsaHasProductotallacolor::model()->findByPk(array('bolsa_id'=>$this->id,'preciotallacolor_id'=>$ptcolor->id,'look_id'=>$look_id));
 			
 			if(isset($nuevo)) // existe
 			{
 				$cantidadnueva = $nuevo->cantidad + 1;
-				BolsaHasProductotallacolor::model()->updateByPk(array('preciotallacolor_id'=>$nuevo->preciotallacolor_id,'look_id'=>$look_id), array('cantidad'=>$cantidadnueva));
+				BolsaHasProductotallacolor::model()->updateByPk(array('bolsa_id'=>$this->id,'preciotallacolor_id'=>$nuevo->preciotallacolor_id,'look_id'=>$look_id), array('cantidad'=>$cantidadnueva));
 				return "ok";
 							 
 			}
@@ -158,7 +158,7 @@ class Bolsa extends CActiveRecord
 					return "ok";
 				}
 					
-			}
+			}  
 		return "fail";	
 	}
 }

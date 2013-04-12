@@ -388,6 +388,13 @@ else
 					//alert("cantidad actualizada"); 
 					window.location.reload()
 				}
+				
+				if(data=="NO")
+				{
+					alert("Imposible actualizar. Cantidad mayor a la existencia en inventario."); 
+					
+				}
+				
 					
 	       	}//success
 	       })

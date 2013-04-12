@@ -153,13 +153,23 @@ class BolsaController extends Controller
 		
 			$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
 			
-			$bolsa->cantidad = $_POST['cantidad'];
+			$pr = PrecioTallaColor::model()->findByPk($_POST['prtc']);
 			
-			if($bolsa->save())
-			{
-				echo "ok";
+			$mientras = $pr->cantidad;
+			if(($mientras - $_POST['cantidad']) < 0){
+				echo "NO";
 			}
-		}
+			else
+			{
+				$bolsa->cantidad = $_POST['cantidad'];
+				
+				if($bolsa->save())
+				{
+					echo "ok";
+				}
+			}
+
+		}// mayor que 0
 		
 	} // actualizar
 	

@@ -73,7 +73,7 @@
 				
 					//imprimiendo igual la primera en thumbnail
 					$pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "90", "height" => "90",'value'=>$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
+					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
 							
 				}
 				
@@ -81,7 +81,8 @@
 					if($colorPredet == $img->color_id)
 					{
 						//luego el resto para completar el scroll					
-						echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "90", "height" => "90", 'value'=>$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+						echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+						
 					}// color
 				}// que no es la primera en el orden
 			}
@@ -265,7 +266,7 @@ $(document).ready(function(){
 
 var source = $('#principal').attr("src");
 var imgZ = source.replace(".","_orig.");
-$('.imagen_principal').css('display','block').zoom();
+$('.imagen_principal').zoom({url: imgZ});
 
 	$(".imagen_principal").hover(function(){
 		var source = $('#principal').attr("src");
@@ -273,7 +274,7 @@ $('.imagen_principal').css('display','block').zoom();
 		var imgZ = source.replace(".","_orig.");
 		$('.imagen_principal').css('display','block').zoom({url: imgZ});
 	});
-
+	
    $(".miniaturas_listado_click").click(function(){
      	var image = $("#principal");
      	var thumbnail = $(this).attr("src");
@@ -290,8 +291,8 @@ $('.imagen_principal').css('display','block').zoom();
 
       	$("#principal").fadeIn("slow",function(){});
 
-   });     
-      
+   });
+
    	$(".coloress").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
    		ev.preventDefault();
    		//alert($(this).attr("id"));
@@ -301,9 +302,7 @@ $('.imagen_principal').css('display','block').zoom();
    		
    		var dataString = $(this).attr("id");
      	var prod = $("#producto").attr("value");
-     
-		var menor=15478; // exagerado valor para comparar adentro
-     
+
      	$(this).removeClass('coloress');
   		$(this).addClass('coloress active'); // añado la clase active al seleccionado
   		   
@@ -334,27 +333,29 @@ $('.imagen_principal').css('display','block').zoom();
 					
 					// ahora cambiar las imagenes a las del color 
 					
-					// primero determino el menor de las imagenes  
 						var zona="";
 						var thumbs="";
+						var contador=0;
 						
-						$.each(data.imagenes,function(clave,valor) {
-						  	if(valor[1]<menor){
-								menor = valor[1];
-						  	}
-						});
-					
 					// luego muestro	
 						$.each(data.imagenes,function(clave,valor) {
 						  	//0 -> url | 1 -> orden | 2 -> id imagen
 						  	
 						  	// conseguir cual es el menor en el orden para determinar el color 	
-						  	if(valor[1] == menor) {
+						  	if( contador == 0) {
 						  		zona="<img id='principal' src='/site"+valor[0]+"' alt'producto'>";
+						  		contador++;
 						  	}
 						  	
-						  	thumbs = thumbs + "<img width='90' height='90' value='"+valor[2]+"' class='miniaturas_listado_click' src='/site"+valor[0]+"' alt='Imagen' style='cursor: pointer' >";
+						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='/site"+valor[0]+"' alt='Imagen' style='cursor: pointer' >";
 						  	
+						  	objImage = new Image();
+						  	var source = '/site'+valor[0];
+						  	var imgZ = source.replace(".","_orig.");
+						  //	alert(imgZ);			
+							objImage.src = imgZ;
+							
+										  	
 						});
 						
 						//alert(thumbs); 		   
@@ -437,29 +438,40 @@ $('.imagen_principal').css('display','block').zoom();
    	}); // tallas
    	 
       
-   });
-   
-	$(".miniaturas_listado_click").live({
-		click: function() {
-			var image = $("#principal");
-	     	var thumbnail = $(this).attr("src");
-	     	
-	     	// primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
-	     	var source = thumbnail;	
-			var imgZ = source.replace(".","_orig.");
-	     	$('.imagen_principal').css('display','block').zoom({url: imgZ});
-	          
-	        // cambio de la principal  	
-	     	$("#principal").fadeOut("slow",function(){
-	     		$("#principal").attr("src", thumbnail);
-	     	});
+}); // ready
+
+	$(".imagen_principal").hover(function(){
+		var source = $('#principal').attr("src");
+		var imgZ = source.replace(".","_orig.");
+		$('.imagen_principal').zoom({url: imgZ});			
+	});
 	
-	      	$("#principal").fadeIn("slow",function(){});			
+	/*	
+	$(".imagen_principal").live({
+		hover: function() {
+	   		var source = $('#principal').attr("src");
+			var imgZ = source.replace(".","_orig.");
+			$('.imagen_principal').zoom({url: imgZ});			
 		}
 	});
-   
-   
-   
+	*/
+	
+	function minis(idImagen){		
+		var thumbnail = $('#thumb'+idImagen).attr("src");
+		//alert(thumbnail);
+	    
+	    // primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
+	    var source = thumbnail;	
+		var imgZ = source.replace(".","_orig.");
+	   	$('.imagen_principal').zoom({url: imgZ});
+
+		 // cambio de la principal  	 
+	     $("#principal").fadeOut("slow",function(){
+	     	$("#principal").attr("src", thumbnail);
+	     });
+	
+	     $("#principal").fadeIn("slow",function(){});
+	}
    
    function a(id){ // seleccion de talla
 
@@ -467,10 +479,6 @@ $('.imagen_principal').css('display','block').zoom();
 			
 			$("#vTa").find("div#"+id+".tallass").removeClass("tallass");
 			$("#vTa").find("div#"+id).addClass("tallass active");
-   		//	$("#"+id+".tallass").removeClass("tallass");
-  		//	$("#"+id).addClass("tallass active");
-		
-		// falta si le vuelvo a dar click deseleccione la anterior
    }
    
    function b(id){ // seleccion de color
@@ -478,13 +486,7 @@ $('.imagen_principal').css('display','block').zoom();
    			$("#vCo").find("div").siblings().removeClass('active');	
    		
    			$("#vCo").find("div#"+id+".coloress").removeClass("coloress");
-			$("#vCo").find("div#"+id).addClass("coloress active");
-   			
-   			//$("#"+id+".coloress").removeClass("coloress");
-  			//$("#"+id).addClass("coloress active");
-		
-		// falta si le vuelvo a dar click deseleccione la anterior
-   		
+			$("#vCo").find("div#"+id).addClass("coloress active");   		
    }
    
    function c(){ // comprobar quienes están seleccionados

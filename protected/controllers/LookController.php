@@ -64,10 +64,76 @@ class LookController extends Controller
 	{
 		 	 
 		 $look = Look::model()->findByPk($id);
+		 $imagenes = array();
+		 $i = 0;
+		 foreach($look->lookhasproducto as $lookhasproducto){
+		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
+		 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($lookhasproducto->producto->mainimage->url, '_thumb', strrpos($lookhasproducto->producto->mainimage->url,'.'), 0);
+			//$imagenes[$i]->image = imagecreatefromstring(file_get_contents($imagenes[$i]->path));
+			$imagenes[$i]->top = $lookhasproducto->top;
+			$imagenes[$i]->left = $lookhasproducto->left;
+			$imagenes[$i]->width = $lookhasproducto->width;
+			$imagenes[$i]->height = $lookhasproducto->height;
+			$i++;
+		 }	
+/*
+		$images = array();
+		$i = 0;
+		$large_width = 0;
+		$large_height = 0;
+		$total_width = 0;
+		foreach ($images_path as $image_path){
+			$images[$i] = imagecreatefromstring(file_get_contents($image_path));
+			$width = imagesx($images[$i]);
+			$height = imagesy($images[$i]);
+			if ($large_width<$width) $large_width=$width;
+			if ($large_height<$height) $large_height=$height;
+    		$total_width += $width;
+			$i++;
+		}
+*/
+
+		$canvas = imagecreatetruecolor(670, 670);
+		$white = imagecolorallocate($canvas, 255, 255, 255);
+		imagefill($canvas, 0, 0, $white);
+
+		$inicio_x = 0;
+		foreach($imagenes as $image){
+			//echo 	$image->top;
+			//echo 	$image->path;
+			$src = imagecreatefromstring(file_get_contents($image->path));
+			$img = imagecreatetruecolor($image->width,$image->height); 
+    		imagecopyresized($img,$src,0,0,0,0,$image->width,$image->height,imagesx($src), imagesy($src));
+			//echo $image->path;
+			//if (isset($imagen_tmp))
+				imagecopy($canvas, $img, $image->left, $image->top, 0, 0, imagesx($img), imagesy($img));
+			//$inicio_x += imagesx($image);
+		}
+
+		
+		header('Content-Type: image/png');
+		imagepng($canvas);
+		
+		imagedestroy($canvas);
+		
+		//foreach($imagenes as $image){
+		//	imagedestroy($images->image);
+		//}
+		//imagedestroy($images[0]);
+		//imagedestroy($images[1]);
+		//imagedestroy($images[2]);
+		
+		
+	}
+
+	public function actionGetImage2($id)
+	{
+		 	 
+		 $look = Look::model()->findByPk($id);
 		 $images_path = array();
 		 foreach($look->productos as $producto){
 		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
-		 	$images_path[] = Yii::app()->getBasePath() .'/..' . substr_replace($producto->mainimage->url, '_thumb', strrpos($producto->mainimage->url,'.'), 0);
+		 	echo $images_path[] = Yii::app()->getBasePath() .'/..' . substr_replace($producto->mainimage->url, '_thumb', strrpos($producto->mainimage->url,'.'), 0);
 		 }	
 		 /*
 		 $image1_path=Yii::app()->getBasePath().'/../images/producto/1/27_thumb.jpg';
@@ -98,8 +164,9 @@ class LookController extends Controller
 		}
 		//echo 'w'.$large_width;
 		//echo 'h'.$large_height;
-		$canvas = imagecreatetruecolor($total_width, $large_height);
 		
+		$canvas = imagecreatetruecolor($total_width, $large_height);
+		//$canvas = imagecreatetruecolor(670, 670);
 		$white = imagecolorallocate($canvas, 255, 255, 255);
 		imagefill($canvas, 0, 0, $white);
 		
@@ -270,6 +337,10 @@ public function actionCategorias(){
 			
 			if($model->save()){
 				$colores_id = explode(',',$_POST['colores_id']);
+				$left = explode(',',$_POST['left']);
+				$top = explode(',',$_POST['top']);
+				$width = explode(',',$_POST['width']);
+				$height = explode(',',$_POST['height']);
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
 					
 					$lookhasproducto = new LookHasProducto;
@@ -277,8 +348,12 @@ public function actionCategorias(){
 					$lookhasproducto->producto_id = $producto_id;
 					$lookhasproducto->color_id = $colores_id[$index];
 					$lookhasproducto->cantidad = 1;
-					$lookhasproducto->save();
-					 
+					$lookhasproducto->left = $left[$index];
+					$lookhasproducto->top = $top[$index];
+					$lookhasproducto->width = $width[$index];
+					$lookhasproducto->height = $height[$index];
+					if (!$lookhasproducto->save())
+					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 				}
 			   $this->redirect(array('look/publicar','id'=>$model->id)); 
 				Yii::app()->end();			

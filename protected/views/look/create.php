@@ -53,10 +53,30 @@ function handleDrop(e) {
   if (dragSrcEl != this) {
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML;
+    
+   	nuevo_objeto = $(e.dataTransfer.getData('text/html'));
+	nuevo_objeto.css('position','absolute');
+	nuevo_objeto.css('top','0');
+	nuevo_objeto.css('left','0');
+	//nuevo_objeto.find('img').unwrap();
+	nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
+	//alert(nuevo_objeto.html());
     if (this.innerHTML.indexOf("Crea tus Looks aqui") >=0)
-    	this.innerHTML = e.dataTransfer.getData('text/html');
+    	$(this).html(	nuevo_objeto );
     else
-    	this.innerHTML += e.dataTransfer.getData('text/html');
+    	$(this).append(	nuevo_objeto );
+    	
+	$(".new",this).draggable( {
+    cursor: 'move',
+    containment: 'document',
+   // stop: handleDragStop
+	} );
+   
+  //.wrap('<div class="new" />')
+  //alert($("img",this).last().attr('src'));
+  $("img",this).last().resizable({
+      aspectRatio: 1
+    });    	
 //"<h1>Crea tus Looks aqui</h1><p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>"    
   }
 
@@ -99,6 +119,7 @@ while (i <  canvas.length) {
   col.addEventListener('dragleave', handleDragLeave, false);  
   col.addEventListener('drop', handleDrop, false);
   col.addEventListener('dragend', handleDragEnd, false);  
+ 
   i++;
 }
 
@@ -134,7 +155,7 @@ while (i <  canvas.length) {
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         <hr/>
         <!-- CANVAS ON -->
-        <div class="well well-large canvas">
+        <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px">
           <h1>Crea tus Looks aqui</h1>
           <p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>
         </div>
@@ -155,6 +176,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 )); ?>
 <?php echo CHtml::hiddenField('productos_id'); ?>
 <?php echo CHtml::hiddenField('colores_id'); ?>
+<?php echo CHtml::hiddenField('left'); ?>
+<?php echo CHtml::hiddenField('top'); ?>
+<?php echo CHtml::hiddenField('width'); ?>
+<?php echo CHtml::hiddenField('height'); ?>
 <?php $this->endWidget(); ?>
     </section>
     <section class="span4">
@@ -244,82 +269,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div id="div_categorias">
             <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
             </div>
-            <!--
-            <ul class="thumbnails">
-
-              
-              <li class="span2" > 
-              	<div class=" column" draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Tops</p>
-                </div>
-                </div>
-              </li>
-              <li class="span2 column"  draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Franelas</p>
-                </div>
-              </li>
-              <li class="span2 column"  draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Shorts</p>
-                </div>
-              </li>
-              <li class="span2 column"  draggable="true"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Pantalones</p>
-                </div>
-              </li>
-              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Tops</p>
-                </div>
-              </li>
-              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Franelas</p>
-                </div>
-              </li>
-              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Shorts</p>
-                </div>
-              </li>
-              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Pantalones</p>
-                </div>
-              </li>
-              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Tops</p>
-                </div>
-              </li>
-              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Franelas</p>
-                </div>
-              </li>
-              <li class="span2 column"> <a class="thumbnail" href="#"> <img alt="180" src="http://placehold.it/180"> </a>
-                <div class="caption">
-                  <p>Shorts</p>
-                </div>
-              </li>
-            
-            </ul>
-           
-            <div class="pagination pagination-small pull-right">
-              <ul>
-                <li class="disabled"><span>&laquo;</span></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">Next</a></li>
-              </ul>
-            </div>
-            -->
+    
           </div>
           <div class="tab-pane" id="tab2">
             <p>Se cargaria por Ajax (lo que se tenga que cargar)</p>
@@ -353,15 +303,30 @@ function addPublicar()
 {
 	var productos_id = '';
 	var color_id = '';
+	var left = '';
+	var top = '';
+	var height = '';
+	var width = '';
 	var count = 0;
 	$('.canvas input[name="producto_id"]').each(function(item){
 		productos_id += $(this).val()+',';
 		color_id += $(this).next().val()+',';
+		position = $(this).parent().position();
+		image = $(this).parent().find('img');
+		width += image.width() + ',';
+		height += image.height() + ',';
+		left += position.left + ',';
+		top += position.top + ',';
 		count++;
 	});
+	//alert(left);
 	//productos_id = "1,2,3,4";
 	$("#productos_id").val(productos_id);
 	$("#colores_id").val(color_id);
+	$("#left").val(left);
+	$("#top").val(top);
+	$("#height").val(height);
+	$("#width").val(width);
 	//count = 6;
 	//alert(productos_id);
 	if (count >= 3){

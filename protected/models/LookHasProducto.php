@@ -6,6 +6,10 @@
  * The followings are the available columns in table '{{look_has_producto}}':
  * @property integer $look_id
  * @property integer $producto_id
+ *  * * @property integer $left
+ * * @property integer $top
+ * * @property integer $width
+ * * @property integer $height
  */
 class LookHasProducto extends CActiveRecord
 {
@@ -36,10 +40,10 @@ class LookHasProducto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('look_id, producto_id', 'required'),
-			array('look_id, producto_id', 'numerical', 'integerOnly'=>true),
+			array('look_id, producto_id, top, left, width, height', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('look_id, producto_id', 'safe', 'on'=>'search'),
+			array('look_id, producto_id, top, left, width, height', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,6 +55,7 @@ class LookHasProducto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'producto' => array(self::BELONGS_TO, 'Producto', 'producto_id'),
 		);
 	}
 

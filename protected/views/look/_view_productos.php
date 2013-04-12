@@ -15,8 +15,8 @@
 				foreach($tallacolores as $tallacolor){
               ?>
               <li class="span2" > 
-              	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id; ?>">
-              		
+              	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$tallacolor->color_id; ?>">
+              		<div class="new" id="div<?php echo $producto->id."_".$tallacolor->color_id; ?>">
               		
               		<?php
               		
@@ -24,7 +24,9 @@
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => "180", "height" => "180"));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
+					echo $image;
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
+					/*
 					echo CHtml::ajaxLink(
 						  $image,
 						  Yii::app()->createUrl( 'look/categorias'),
@@ -45,21 +47,23 @@
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
 						    'class' => 'thumbnail',
-						    'id' => 'producto'.$producto->id,
+						    'id' => 'producto'.$producto->id."_".$tallacolor->color_id,
 						  )
 						);
+					*/
 					?> 
 
  	                
 	                <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
 	                <input type="hidden" name="color_id" value="<?php echo $tallacolor->color_id; ?>">
+	               </div>
               	</div>
               	<?php
-              	$script = "element = document.querySelector('#div_producto".$producto->id."');
+              	$script = "element = document.querySelector('#div_producto".$producto->id."_".$tallacolor->color_id."');
               	  element.addEventListener('dragstart', handleDragStart, false);
   					element.addEventListener('dragover', handleDragOver, false);
 				  element.addEventListener('dragend', handleDragEnd, false); ";
-              	Yii::app()->clientScript->registerScript('drag'.$producto->id,$script);
+              	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$tallacolor->color_id,$script);
               	?>              	
               </li>
               <?php }

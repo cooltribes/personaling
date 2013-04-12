@@ -15,6 +15,7 @@
  * @property integer $piel
  * @property string $created_on
  * @property integer $tipo
+
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -78,8 +79,9 @@ class Look extends CActiveRecord
 			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
+			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 		);
-	}
+	} 
  
 	/**
 	 * @return array customized attribute labels (name=>label)

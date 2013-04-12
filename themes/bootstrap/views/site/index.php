@@ -7,15 +7,24 @@ $this->pageTitle=Yii::app()->name;
 </div>
 <!-- /Hack para el layout del home  -->
 
+<style>
+
+.note_startupchile{
+	position: absolute;
+	top:5em;
+	left:0;}
+
+</style>
+
 <div class="wrapper_home">
   <div class="container">
     <div class="row">
       <div class="span3 text_align_right margin_top">
         <div class="padding_bottom_small braker_bottom margin_bottom_small">
-          <h1>Bienveni@s</h1>
-          <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+          <h1>Bienvenid@s</h1>
+          <p>Personaling, es un personal shopper digital, un portal de moda y belleza en donde las usuarias se dan de alta, definen su perfil físico y sus preferencias de estilo para descubrir looks recomendados por expert@s en moda (personal shoppers, celebrities, estilistas, fashionistas), podrán comprar el look completo en un click y recibirlo en su domicilio</p>
         </div>
-        <p class="CAPS"> Siguenos también:</p>
+        <p class="CAPS"> Siguenos en:</p>
         <div class="clearfix"> <a href="https://www.facebook.com/Personaling" title="Personaling en facebook"><img width="40" height="40" src="images/icon_facebook.png" title="personaling en pinterest"></a> <a href="https://twitter.com/personaling" title="Personaling en Pinterest"> <img width="40" height="40" src="images/icon_twitter.png" title="personaling en pinterest"></a> <a href="https://pinterest.com/personaling/" title="pinterest"><img width="40" height="40" src="images/icon_pinterest.png" title="Personaling en Pinterest"></a> <a href="http://instagram.com/personaling" title="Personaling en Instagram"><img width="40" height="40" src="images/icon_instagram.png" title="Personaling en Pinterest"></a> </div>
       </div>
       <div class="span7 offset2">
@@ -37,6 +46,39 @@ $this->pageTitle=Yii::app()->name;
           <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a> </div>
       </div>
     </div>
+  </div>
+</div>
+<div class="note_startupchile"> <a href="#startupchile" role="button" data-toggle="modal"><img src="images/note_startupchile.png" title="Startup Chile"></a></div>
+
+<!-- Modal -->
+<div id="startupchile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Notes for Startup Chile Board Members</h3>
+  </div>
+  <div class="modal-body">
+    <p> Hi and welcome to Personaling, your Digital Personal Shopper.</p>
+    <p> Here are some resources you may find useful in order to test our Web Application: </p>
+    <ul class="no_bullets">
+      <li><a href="docs/Personaling_features.pdf">Features in this realease (Test v.9) (PDF)</a> <br/> <br/></li>
+      <li>Regular User credentials:
+        <ul>
+          <li><strong>User</strong>: u@upsidecorp.ch</li>
+          <li><strong>Password</strong>: 1234<br/> <br/></li>
+        </ul>
+      </li>
+      <li> Personal Shopper User credentials:
+        <ul>
+          <li><strong>User</strong>: cm@upsidecorp.ch </li>
+          <li><strong>Password</strong>: 1234<br/> <br/></li>
+        </ul>
+      </li>
+            <li><a href="http://personaling.com/test9/user/login" title="Login page" class="btn btn-danger">Login Page</a></li>
+
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
   </div>
 </div>
 <div class="bg_color3 braker_top padding_top ">

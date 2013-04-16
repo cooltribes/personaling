@@ -203,7 +203,7 @@ $template = '{summary}
             <td><a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal"><i class="icon-eye-open"></i></a></td>
         </tr>
     </table>
-    -->
+    
     <div class="pagination pagination-right">
       <ul>
             <li class="disabled"><a href="#">&laquo;</a></li>
@@ -215,6 +215,7 @@ $template = '{summary}
             <li><a href="#">Siguiente</a></li>
       </ul>
 </div>
+-->
     <hr/>
     <div class="row">
         <div class="span3">

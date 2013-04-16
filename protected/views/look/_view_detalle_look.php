@@ -5,7 +5,10 @@
         <h3 id="myModalLabel"><?php echo $model->title; ?></h3>
     </div>
     <div class="modal-body">
-      <div class="text_align_center"><img src="http://placehold.it/300" class="img-polaroid"/></div>
+      <div class="text_align_center">
+      	
+      	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "300", "height" => "300", 'class'=>'img-polaroid')); ?>
+      	</div>
       <hr/>
         <div >
         <h4>Productos</h4>
@@ -79,8 +82,14 @@
 			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
 		)); ?>
-
+ <?php $this->widget('bootstrap.widgets.TbButton', array(
+			'label'=>'Ver',
+			'icon'=>'eye-open',
+			'url' => CController::createUrl('look/view',array('id'=>$model->id)),
+			'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			//'size'=>'large', // null, 'large', 'small' or 'mini'
+		)); ?>
     	
     	
-    	<a href="" title="ver" class="btn btn-info" target="_blank"><i class="icon-eye-open icon-white"></i> Ver</a> 
+    	<!-- <a href="" title="ver" class="btn btn-info" target="_blank"><i class="icon-eye-open icon-white"></i> Ver</a> -->
     </div>

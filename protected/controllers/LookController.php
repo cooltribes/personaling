@@ -321,7 +321,11 @@ public function actionCategorias(){
 	}
 	public function actionCreate()
 	{
+		if (isset($_GET['id']))
+		$model= Look::model()->findByPk($_GET['id']);	
+		else
 		$model=new Look;
+		
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){

@@ -156,9 +156,70 @@ while (i <  canvas.length) {
         <hr/>
         <!-- CANVAS ON -->
         <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px">
+        <?php 
+        
+        if (count($model->lookhasproducto)){
+        	?>
+
+              <?php
+              foreach($model->lookhasproducto as $hasproducto){
+              	$producto = $hasproducto->producto;
+				$tallacolores=Preciotallacolor::model()->findAllBySql(
+				'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad GROUP BY color_id',
+				array(':cantidad'=>1, ':producto_id'=>$producto->id)
+				);
+				
+				
+              ?>
+               
+              	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$hasproducto->color_id; ?>">
+              		<div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px;">
+              		<?php
+					if ($producto->mainimage)
+					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
+					else 
+					$image = CHtml::image("http://placehold.it/180");	
+					echo $image;
+
+					?> 
+
+ 	                
+	                <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
+	                <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
+	               </div>
+              	</div>
+              	<?php
+              	$script = "	$('#div_producto".$producto->id."_".$hasproducto->color_id." > .new').draggable( {
+    cursor: 'move',
+    containment: 'document',
+  
+	} );
+   
+
+  $('#div_producto".$producto->id."_".$hasproducto->color_id." > img').resizable({
+      aspectRatio: 1
+    });   ";
+              	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$hasproducto->color_id,$script);
+              	?>              	
+             
+              <?php 
+				} 
+				?>        	
+        	<?php
+        	
+        } else {
+        	?>
+         
           <h1>Crea tus Looks aqui</h1>
           <p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>
-        </div>
+           	
+        	<?php        	
+        }
+		?>
+</div>    
+        
+        
+           
         <!-- CANVAS OFF --> 
       </div>
       <!--

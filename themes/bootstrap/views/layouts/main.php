@@ -32,7 +32,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Looks', 'url'=>array('/look/admin')),
                 array('label'=>'Productos', 'url'=>array('/producto/admin')),
                 
-                array('label'=>'Ventas', 'url'=>array('/user/login')),
+                array('label'=>'Ventas', 'url'=>array('/orden/admin')),
                array('label'=>'Sistema', 'url'=>array('/site/logout')),
 				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),

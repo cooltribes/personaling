@@ -241,7 +241,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				}				
               	?><?php 
               	//variables de sesion
-              	Yii::app()->getSession()->add('totalLook',$total_look);
+              	Yii::app()->getSession()->add('totalLook',$total_look); 
               	Yii::app()->getSession()->add('totalProductosLook',$total_productos_look);
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	

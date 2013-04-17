@@ -296,13 +296,22 @@ public function actionCategorias(){
 			
 			if($model->save()){
 				$colores_id = explode(',',$_POST['colores_id']);
+				$left = explode(',',$_POST['left']);
+				$top = explode(',',$_POST['top']);
+				$width = explode(',',$_POST['width']);
+				$height = explode(',',$_POST['height']);
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
+						
 					
 					$lookhasproducto = new LookHasProducto;
 					$lookhasproducto->look_id = $model->id;
 					$lookhasproducto->producto_id = $producto_id;
 					$lookhasproducto->color_id = $colores_id[$index];
 					$lookhasproducto->cantidad = 1;
+					$lookhasproducto->left = $left[$index];
+					$lookhasproducto->top = $top[$index];
+					$lookhasproducto->width = $width[$index];
+					$lookhasproducto->height = $height[$index];
 					$lookhasproducto->save();
 					 
 				}
@@ -346,7 +355,9 @@ public function actionCategorias(){
 				$width = explode(',',$_POST['width']);
 				$height = explode(',',$_POST['height']);
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
-					
+						
+					$temporal = LookHasProducto::model()->findByPk(array('look_id'=>$model->id,'producto_id'=>$producto_id));
+					if (!isset($temporal)){
 					$lookhasproducto = new LookHasProducto;
 					$lookhasproducto->look_id = $model->id;
 					$lookhasproducto->producto_id = $producto_id;
@@ -358,6 +369,7 @@ public function actionCategorias(){
 					$lookhasproducto->height = $height[$index];
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
+					}
 				}
 			   $this->redirect(array('look/publicar','id'=>$model->id)); 
 				Yii::app()->end();			

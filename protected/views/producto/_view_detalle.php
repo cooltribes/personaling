@@ -343,11 +343,13 @@ $('.imagen_principal').zoom({url: imgZ});
 						  	
 						  	// conseguir cual es el menor en el orden para determinar el color 	
 						  	if( contador == 0) {
-						  		zona="<img id='principal' src='/site"+valor[0]+"' alt'producto'>";
+						  		var Url = "<?php echo Yii::app()->baseUrl; ?>" + valor[0];
+						  		zona="<img id='principal' src='"+Url+"' alt'producto'>";
 						  		contador++;
 						  	}
 						  	
-						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='/site"+valor[0]+"' alt='Imagen' style='cursor: pointer' >";
+						  	var base = "<?php echo Yii::app()->baseUrl; ?>";						  	
+						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + valor[0]+"' alt='Imagen' style='cursor: pointer' >";
 						  	
 						  	objImage = new Image();
 						  	var source = '/site'+valor[0];

@@ -1,9 +1,10 @@
 <?php
 /*
  * Definicion de los estados de la orden por transferencia
- * 1 - Pendiente de Pago
- * 2 - Pendiente por confirmar
- * 3 - Pago confirmado
+ * 1 - En espera de pago
+ * 2 - En espera de confirmación
+ * 3 - Pago recibido
+ * 4 - Preparandose para el envío
  * 
  * */
 

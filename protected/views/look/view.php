@@ -76,7 +76,7 @@
 		    				
 		    				'beforeSend' => "function( request )
 			                     {
-			                       	
+			                       /*	
 			                       var color_id = '';
 			                       $('.colores').each(function(index){
 			                       		color_id += $(this).val()+',';
@@ -87,6 +87,7 @@
 			                       		talla_id +=$(this).val()+ ',';
 			                       });
 			                       talla_id = talla_id.substring(0, talla_id.length-1);
+			                       */
 			                       //alert(talla_id);
 			                       //this.data += '&talla_id='+talla_id+'color_id='+color_id;
 			                       
@@ -97,10 +98,12 @@
 							 
 		                     'success' => "function( data )
 				                  {
+				                 		
 				                 	if(data.indexOf('ok')>=0)
 									{
 										window.location='../bolsa/index'; 
 									}
+									
 									
 				                 //alert(data);
 								  /*
@@ -160,15 +163,23 @@
                 <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
                 <?php $color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$producto->id))->color_id ?>
                 </a>
-                <input type="checkbox" checked >
+                <?php echo CHtml::checkBox("producto[]",true,array('value'=>$producto->id.'_'.$color_id)); ?>
+               
                 <div class="metadata_top">
-                  <?php  echo Chtml::hiddenField("color[]",$color_id); ?>
-                  <?php  echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla[]','',$producto->getTallas($color_id),array('class'=>'span5 tallas')); ?> </div>
+                  <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
+                  <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
+                  <?php echo CHtml::dropDownList('talla'.$producto->id.'_'.$color_id,'',$producto->getTallas($color_id),array('class'=>'span5 tallas')); ?> </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $producto->nombre; ?></h5>
                   <div class="row-fluid">
-                    <div class="span7"><span>Bs. 5.000,00</span></div>
+                    <div class="span7"><span>Bs. 
+                    	<?php foreach ($producto->precios as $precio) {
+   					echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
+   					}
+	
+			?>
+                    	
+                    </span></div>
                     <div class="span5"> <span>20 unds.</span></div>
                   </div>
                 </div>

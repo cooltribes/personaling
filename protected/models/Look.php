@@ -30,7 +30,7 @@ class Look extends CActiveRecord
 	 */
 	 const TIPO_CONSERVADOR = 2;
 	 const TIPO_ATREVIDO = 1;
-	  
+	 private $_precio = null; 
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	public static function model($className=__CLASS__)
@@ -216,6 +216,19 @@ class Look extends CActiveRecord
 			$array[] = $categoria->categoria_id;
 		return $array;
 			
+	}
+	public function getPrecio($format=true)
+	{
+		if (is_null($this->_precio)) {
+				$this->_precio = 0;
+		foreach($this->productos as $producto){
+			$this->_precio += $producto->getPrecio(false);
+		}
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->formatDecimal($this->_precio);
+		else
+			return $this->_precio;
 	}
 	public function countItems()
 	{

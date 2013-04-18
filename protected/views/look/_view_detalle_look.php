@@ -12,13 +12,17 @@
       <hr/>
         <div >
         <h4>Productos</h4>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed">      
-<tr> <th scope="row">Mango - Pantalon X</th>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed"> 
+        	<?php foreach($model->productos as $producto){ ?>     
+<tr> <th scope="row"><?php echo $producto->nombre; ?></th>
  <td>10 disponibles</td>
-<td>              700,00 Bs.</td>
+<td>           <?php   echo $producto->getPrecio(); ?> Bs.</td>
 
  
-</tr><tr> <th scope="row">Mango - Camisa Y</th>
+</tr>
+<?php } ?>
+<!--
+<tr> <th scope="row">Mango - Camisa Y</th>
  <td>20 disponibles</td>
  <td>650,00 Bs.</td>
 </tr>
@@ -31,6 +35,7 @@
 
 <td>  50,00 Bs.</td>
   </tr>
+ -->
 </table>
         
         
@@ -47,7 +52,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Precio con descuento</th>
-                    <td> Bs. 650,0</td>
+                    <td> Bs. <?php echo $model->getPrecio(); ?></td>
                 </tr>
                 <tr>
                     <th scope="row">Descuento %</th>

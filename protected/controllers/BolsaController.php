@@ -56,7 +56,8 @@ class BolsaController extends Controller
 		}
 		if (isset($_POST['look_id'])){
 			foreach($_POST['producto'] as $key => $value){
-				echo $bolsa->addProducto($value,$_POST['talla'][$key],$_POST['color'][$key],$_POST['look_id']);
+				list($producto_id,$color_id) = split("_",$value);
+				echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 			}
 		} else {
 			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);

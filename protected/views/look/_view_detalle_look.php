@@ -52,7 +52,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Precio con descuento</th>
-                    <td> Bs. 650,0</td>
+                    <td> Bs. <?php echo $model->getPrecio(); ?></td>
                 </tr>
                 <tr>
                     <th scope="row">Descuento %</th>

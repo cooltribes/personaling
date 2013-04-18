@@ -284,6 +284,7 @@ public function actionCategorias(){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
+			/*	
 			$model->title = "Look Nuevo";
 			$model->altura = 0;
 			$model->contextura = 0;
@@ -293,33 +294,40 @@ public function actionCategorias(){
 			$model->piel = 0;
 			$model->tipo = 0;
 			$model->user_id = Yii::app()->user->id;
-			
-			if($model->save()){
-				$colores_id = explode(',',$_POST['colores_id']);
+			*/
+			//if($model->save()){
+				
+				$colores_id = explode(',',$_POST['colores_id']); 
 				$left = explode(',',$_POST['left']);
 				$top = explode(',',$_POST['top']);
 				$width = explode(',',$_POST['width']);
 				$height = explode(',',$_POST['height']);
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
 						
+					$lookhasproducto = LookHasProducto::model()->findByPk(array('look_id'=>$model->id,'producto_id'=>$producto_id));
+					if (is_null($lookhasproducto)){
+						$lookhasproducto = new LookHasProducto;
+						$lookhasproducto->look_id = $model->id;
+						$lookhasproducto->producto_id = $producto_id;
+					}
 					
-					$lookhasproducto = new LookHasProducto;
-					$lookhasproducto->look_id = $model->id;
-					$lookhasproducto->producto_id = $producto_id;
 					$lookhasproducto->color_id = $colores_id[$index];
 					$lookhasproducto->cantidad = 1;
 					$lookhasproducto->left = $left[$index];
 					$lookhasproducto->top = $top[$index];
 					$lookhasproducto->width = $width[$index];
 					$lookhasproducto->height = $height[$index];
-					$lookhasproducto->save();
+					if (!$lookhasproducto->save())
+					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
+					
 					 
 				}
 			   $this->redirect(array('look/publicar','id'=>$model->id)); 
 				Yii::app()->end();			
-			} else{
-					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
-				}
+			
+			//} else{
+			//		Yii::trace('edit a look, Error:'.print_r($model->getErrors(), true), 'registro');
+			//}
 		} else {
        $this->render('create',array(
 				'model'=>$model,

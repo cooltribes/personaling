@@ -60,19 +60,22 @@ $this->pageTitle=Yii::app()->name;
     <p> Hi and welcome to Personaling, your Digital Personal Shopper.</p>
     <p> Here are some resources you may find useful in order to test our Web Application: </p>
     <ul class="no_bullets">
-      <li><a href="docs/Personaling_features.pdf">Features in this realease (Test v.9) (PDF)</a> <br/> <br/></li>
       <li>Regular User credentials:
         <ul>
-          <li><strong>User</strong>: u@upsidecorp.ch</li>
+          <li><strong>User</strong>: cm@upsidecorp.ch </li>
           <li><strong>Password</strong>: 1234<br/> <br/></li>
+        
         </ul>
       </li>
       <li> Personal Shopper User credentials:
         <ul>
-          <li><strong>User</strong>: cm@upsidecorp.ch </li>
+          <li><strong>User</strong>: u@upsidecorp.ch</li>
           <li><strong>Password</strong>: 1234<br/> <br/></li>
         </ul>
+        
       </li>
+            <li><a href="docs/Personaling_features.pdf">Features in this realease (Test v.9) (PDF)</a> <br/> <br/></li>
+
             <li><a href="http://personaling.com/test9/user/login" title="Login page" class="btn btn-danger">Login Page</a></li>
 
     </ul>

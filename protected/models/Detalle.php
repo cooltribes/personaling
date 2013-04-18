@@ -1,5 +1,5 @@
 <?php
-
+// Estado: 0 -> default, 1 -> Aprobado, 2 -> rechazado
 /**
  * This is the model class for table "{{detalle}}".
  *
@@ -14,7 +14,8 @@
  * @property double $monto
  * @property string $fecha
  * @property string $comentario
- *
+ * @property integer $estado
+ * 
  * The followings are the available model relations:
  * @property Pago[] $pagos
  */
@@ -88,6 +89,7 @@ class Detalle extends CActiveRecord
 			'monto' => 'Monto',
 			'fecha' => 'Fecha',
 			'comentario' => 'Comentario',
+			'estado' => 'Estado',
 		);
 	}
 
@@ -112,6 +114,7 @@ class Detalle extends CActiveRecord
 		$criteria->compare('monto',$this->monto);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('comentario',$this->comentario,true);
+		$criteria->compare('estado',$this->estado,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

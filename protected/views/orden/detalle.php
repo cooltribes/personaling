@@ -20,17 +20,28 @@ $usuario = User::model()->findByPk($orden->user_id);
       <th scope="col" colspan="2"><div class="text_align_right">23/03/2013 - 05:30 p.m.</div></th>
     </tr>
     <tr>
-      <td><p class="T_xlarge margin_top_xsmall color1">Recibido </p>
+   	<td><p class="T_xlarge margin_top_xsmall color1">
+<?php
+//----------------------Estado
+	if($orden->estado == 1)
+		echo "En espera de pago"; 
+	
+	if($orden->estado == 2)
+		echo "En espera de confirmación"; 
+	
+	// agregar demas estados
+?>
+	</p>
         Estado actual</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 4 </p>
+      <td><p class="T_xlarge margin_top_xsmall"> 1 </p>
         Documentos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 4</p>
+      <td><p class="T_xlarge margin_top_xsmall"> 2</p>
         Mensajes<br/></td>
       <td><p class="T_xlarge margin_top_xsmall">150</p>
         Prendas</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $orden->total; ?></p>
         Bolivares (Bs.)</td>
-      <td><a href="#" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
+      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
   </table>
   <hr/>
@@ -40,44 +51,62 @@ $usuario = User::model()->findByPk($orden->user_id);
       <div class="row">
         <div class="span1"><img src="http://placehold.it/90" title="Nombre del usuario"></div>
         <div class="span6">
-          <h2>John Doe<small> C.I. 14.941.873</small></h2>
+          <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> C.I. <?php echo $usuario->profile->cedula; ?></small></h2>
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>eMail</strong>: johannmg@gmail.com </li>
-                <li><strong>Telefono</strong>: 0414-724.80.43 </li>
-                <li><strong>Ciudad</strong>: San Cristobal </li>
+                <li><strong>eMail</strong>: <?php echo $usuario->email; ?></li>
+                <li><strong>Telefono</strong>:<?php echo $usuario->profile->tlf_celular; ?> </li>
+                <li><strong>Ciudad</strong>:<?php echo $usuario->profile->ciudad; ?> </li>
               </ul>
             </div>
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>Cuenta registrada</strong>: 21/12/2012 - 12:21 pm</li>
+                <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
                 <li><strong>Pedidos validos realizados</strong>: 0</li>
                 <li><strong>Total comprado desde su registro</strong>: 0,00 Bs. </li>
               </ul>
             </div>
           </div>
         </div>
-      </div>
-      <div class="well well-small margin_top well_personaling_small">
-        <h3 class="braker_bottom "> Método de Pago</h3>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-          <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Método de pago</th>
-            <th scope="col">ID de Transaccion</th>
-            <th scope="col">Monto</th>
-            <th scope="col"></th>
-          </tr>
-          <tr>
-            <td>21/12/2012 - 12:21 PM</td>
-            <td>Deposito o Transferencia</td>
-            <td>12345678910</td>
-            <td>8.890,00 Bs.</td>
-            <td><a href="#" title="Ver"><i class="icon-eye-open"></i></a></td>
-          </tr>
-        </table>
-      </div>
+      </div>      
+        
+          	<?php
+          	
+          	$detalle = Detalle::model()->findByPk($orden->detalle_id);
+          	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+			
+			if($detalle->estado == 1)
+			{
+				echo("
+          	<div id='pago' class='well well-small margin_top well_personaling_small'>
+          	<h3 class='braker_bottom '> Método de Pago</h3>
+        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
+          		<tr>
+            		<th scope='col'>Fecha</th>
+            		<th scope='col'>Método de pago</th>
+            		<th scope='col'>ID de Transaccion</th>
+            		<th scope='col'>Monto</th>
+            		<th scope='col'></th>
+          		</tr>
+          	<tr>
+          	");	
+				echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
+				
+				if($pago->tipo == 1)
+					echo("<td>Deposito o Transferencia</td>");
+					//hacer los demas tipos
+						
+				echo("<td>".$detalle->nTransferencia."</td>");	
+				echo("<td>".$detalle->monto."</td>");
+				echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
+				echo("
+				</tr>
+        		</table> </div>
+				");
+			}
+		  	?>    
+     
       <div class="well well-small margin_top well_personaling_small">
         <h3 class="braker_bottom "> Transporte </h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -95,7 +124,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td>Delivery</td>
             <td>DHL</td>
             <td>0,00 Kg.</td>
-            <td>180,00 Bs.</td>
+            <td>100,00 Bs.</td>
             <td>1234567891012345</td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
@@ -106,13 +135,16 @@ $usuario = User::model()->findByPk($orden->user_id);
           <h3 class="braker_bottom margin_top">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
-              <div class="street-address"><i class="icon-map-marker"></i> Av. 5ta. Edificio Los Mirtos  Piso 3. Oficina 3-3</div>
-              <span class="locality">San Cristobal, Tachira 5001</span>
-              <div class="country-name">Venezuela</div>
+            	<?php
+            	$direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+            	?>
+              <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
+              <span class="locality"><?php echo $direccionEnvio->ciudad ?>, <?php echo $direccionEnvio->estado; ?>.</span>
+              <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
             <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
-            <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
+            <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           <a href="#" class="btn"><i class="icon-edit"></i></a> </div>
         <div class="span6">
@@ -133,15 +165,33 @@ $usuario = User::model()->findByPk($orden->user_id);
     <div class="span5">
       <div class="well well_personaling_big">
         <h3 class="braker_bottom"><strong>Acciones pendientes</strong></h3>
-        <div class="alert alert-block ">
-          <h4 class="alert-heading ">Confirmar Pago:</h4>
-          <ul class="padding_bottom_small padding_top_small">
-            <li>Banco: Mercantil</li>
-            <li>Monto: XXXX</li>
-            <li>Fecha</li>
-          </ul>
-          <p> <a href="#" class="btn" title="Aceptar pago"><i class="icon-check"></i> Aceptar</a> <a href="#" class="btn" title="Rechazar pago">Rechazar</a> </p>
-        </div>
+        
+        	<?php
+        	
+        	if($detalle->estado == 0) // si esta en default
+			{
+				echo("<div class='alert alert-block '>");
+				echo(" <h4 class='alert-heading '>Confirmar Pago:</h4>");
+				echo("<ul class='padding_bottom_small padding_top_small'>");
+				echo("<li>Banco Mercantil</li>");
+				echo("<li>Numero: ".$detalle->nTransferencia."</li>");
+				echo("<li>Monto: ".$detalle->monto." Bs.</li>");
+				echo("<li>Fecha: ".date("d/m/Y",strtotime($detalle->fecha))."</li>");
+			
+				echo("
+				
+				</ul>
+          		<p> <a onclick='aceptar(".$detalle->id.")' class='btn' title='Aceptar pago'>
+          		<i class='icon-check'></i> Aceptar</a>
+          		<a onclick='rechazar(".$detalle->id.")' class='btn' title='Rechazar pago'>Rechazar</a> </p>
+        		</div>
+        		
+				");
+			
+			}
+        	
+        	?>
+
         <div class="alert alert-block form-inline ">
           <h4 class="alert-heading "> Enviar pedido:</h4>
           <p>
@@ -169,8 +219,8 @@ $usuario = User::model()->findByPk($orden->user_id);
           </tr>
           <tr>
             <td>Nuevo Pedido</td>
-            <td>Sophia Marquez</td>
-            <td>21/12/2012 </td>
+            <td><?php echo($usuario->username); ?></td>
+            <td> AÑADIR FECHA </td>
             <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
@@ -226,106 +276,112 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Impuesto</th>
           <th scope="col">Accion</th>
         </tr>
-        <tr>
-          <td>Vestido</td>
-          <td>10</td>
-          <td>4</td>
-          <td>12.000,00</td>
-          <td>48.000,00</td>
-          <td>8.000,00</td>
-          <td>12.000,00</td>
-          <td><div class="dropdown"> <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html"> <i class="icon-cog"></i></a> 
-              <!-- Link or button to toggle dropdown -->
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a tabindex="-1" href="#"><i class="icon-edit"></i> Editar</a></li>
-                <li class="divider"></li>
-                <li><a tabindex="-1" href="#"><i class="icon-trash"></i> Eliminar</a></li>
-              </ul>
-            </div></td>
-        </tr>
-        <tr>
-          <td>Vestido</td>
-          <td>10</td>
-          <td>4</td>
-          <td>12.000,00</td>
-          <td>48.000,00</td>
-          <td>8.000,00</td>
-          <td>12.000,00</td>
-          <td><div class="dropdown"> <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html"> <i class="icon-cog"></i></a> 
-              <!-- Link or button to toggle dropdown -->
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a tabindex="-1" href="#"><i class="icon-edit"></i> Editar</a></li>
-                <li class="divider"></li>
-                <li><a tabindex="-1" href="#"><i class="icon-trash"></i> Eliminar</a></li>
-              </ul>
-            </div></td>
-        </tr>
-        <tr>
-          <td>Vestido</td>
-          <td>10</td>
-          <td>4</td>
-          <td>12.000,00</td>
-          <td>48.000,00</td>
-          <td>8.000,00</td>
-          <td>12.000,00</td>
-          <td><div class="dropdown"> <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html"> <i class="icon-cog"></i></a> 
-              <!-- Link or button to toggle dropdown -->
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a tabindex="-1" href="#"><i class="icon-edit"></i> Editar</a></li>
-                <li class="divider"></li>
-                <li><a tabindex="-1" href="#"><i class="icon-trash"></i> Eliminar</a></li>
-              </ul>
-            </div></td>
-        </tr>
-        <tr>
-          <td>Vestido</td>
-          <td>10</td>
-          <td>4</td>
-          <td>12.000,00</td>
-          <td>48.000,00</td>
-          <td>8.000,00</td>
-          <td>12.000,00</td>
-          <td><div class="dropdown"> <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html"> <i class="icon-cog"></i></a> 
-              <!-- Link or button to toggle dropdown -->
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a tabindex="-1" href="#"><i class="icon-edit"></i> Editar</a></li>
-                <li class="divider"></li>
-                <li><a tabindex="-1" href="#"><i class="icon-trash"></i> Eliminar</a></li>
-              </ul>
-            </div></td>
-        </tr>
+        <?php
+        
+        	$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id)); // productos de la orden
+        	
+			foreach ($productos as $prod) {
+				
+				if($prod->look_id != 0) // si es look
+				{
+					
+				}
+				else // individual
+				{
+					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+					$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
+					
+					echo("<tr>");
+					echo("<td>".$indiv->nombre."</td>"); // nombre
+					echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
+					echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
+					
+					setlocale(LC_MONETARY, 've_VE');
+					$a = money_format('%i', $precio->precioVenta);
+					$c = money_format('%i', $precio->ahorro);
+					
+					$iva = $precio->precioDescuento * 0.12;
+					
+					echo("<td>".$a."</td>"); //precio individual sin descuento
+					
+					$b = $a * $prod->cantidad;					
+					echo("<td>".$b."</td>"); // subtotal
+					
+					$d = $c * $prod->cantidad;					
+					echo("<td>".$d."</td>"); //descuento total
+					
+					$e = $iva * $prod->cantidad;
+					echo("<td>".$e."</td>"); // impuesto total
+					
+					echo("
+						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
+		              	<!-- Link or button to toggle dropdown -->
+		              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+		                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
+		                	<li class='divider'></li>
+		                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
+		              	</ul>
+		            	</div></td>
+					");
+					
+					echo("</tr>");				
+				}				
+				
+			}
+        
+        ?>
+
       </table>
+      <?php
+      $individuales=0;
+	  $looks=0;
+      $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+	
+		foreach ($compra as $tot) {
+			
+			if($tot->look_id == 0)
+			{
+				$individuales++;
+			}else{
+				$looks++;
+			}
+			
+		}
+      
+      ?>
+      
       <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div>
     <div class="span5">
    <div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
           <th scope="col">No de Looks</th>
-          <th scope="col">1</th>
+          <th scope="col"><?php echo($looks); ?></th>
         </tr>
         <tr>
           <td>No de Prendas</td>
-          <td>4</td>
+          <td><?php echo($individuales); ?></td>
         </tr>
         <tr>
           <td>SubTotal</td>
-          <td>2.400,00</td>
+          <td><?php echo($orden->subtotal); ?></td>
         </tr>
         <tr>
           <td>Descuento</td>
-          <td>0,00</td>
+          <td><?php echo($orden->descuento); ?></td>
         </tr>
         <tr>
           <td>Envio y Transporte</td>
-          <td> 180,00</td>
+          <td><?php echo($orden->envio); ?></td>
         </tr>
         <tr>
           <td>Impuesto</td>
-          <td> 307,20</td>
+          <td><?php echo($orden->iva); ?></td>
         </tr>
         <tr>
           <td>Total</td>
-          <td>2.887,20</td>
+          <td><?php echo($orden->total); ?></td>
         </tr>
       </table></div>
     </div>
@@ -420,3 +476,33 @@ $usuario = User::model()->findByPk($orden->user_id);
   <div class="modal-footer"><a href="" title="ver" class="btn-link" target="_blank">Cancelar </a> <a href="#" title="Confirmar" class="btn btn-success">Aceptar el pago</a> </div>
 </div>
 <!------------------- MODAL WINDOW OFF ----------------->
+
+<script>
+	
+	function aceptar(id){
+
+		var uno = 'aceptar';
+		
+ 		$.ajax({
+	        type: "post", 
+	        url: "../validar", // action 
+	        data: { 'accion':uno, 'id':id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();
+					//alert("guardado"); 
+					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
+				}
+	       	}//success
+	       })
+ 			
+		
+		
+	}
+	
+	function rechazar(){
+		
+	}
+	
+</script>

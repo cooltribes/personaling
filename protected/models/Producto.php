@@ -198,7 +198,7 @@ class Producto extends CActiveRecord
 		}
 		return $ids;
 	}
-	public function getPrecio()
+	public function getPrecio($format=true)
 	{
 
     if (is_null($this->_precio)) {
@@ -208,7 +208,11 @@ class Producto extends CActiveRecord
       $this->_precio = Precio::model()->find($c);
     }
 	if (isset($this->_precio->precioDescuento))
-	 return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioDescuento);
+		if ($format){
+	 		return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioDescuento);
+		} else {
+			return $this->_precio->precioDescuento;
+		}
 	else 
 		return 0;
 	

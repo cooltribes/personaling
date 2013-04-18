@@ -19,7 +19,7 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','detalles'),
+				'actions'=>array('index','admin','detalles','validar'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -63,6 +63,22 @@ class OrdenController extends Controller
 		$this->render('detalle', array('orden'=>$orden,));
 	}
 	
+	public function actionValidar()
+	{
+		if($_POST['accion']=="aceptar")
+		{
+			$detalle = Detalle::model()->findByPk($_POST['id']);
+		
+			$detalle->estado = 1;
+		
+			if($detalle->save())
+				echo "ok";
+		}
+		else if($_POST['accion']=="rechazar")
+		{
+			// lalalalala
+		}
+	}
 
 	// Uncomment the following methods and override them if needed
 	/*

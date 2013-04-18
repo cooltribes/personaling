@@ -31,6 +31,7 @@ class Producto extends CActiveRecord
 	public $uno="";
 	public $dos="";
 	public $categoria_id="";
+	public $_precio = null;
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -196,6 +197,23 @@ class Producto extends CActiveRecord
 			}	
 		}
 		return $ids;
+	}
+	public function getPrecio()
+	{
+
+    if (is_null($this->_precio)) {
+      $c = new CDbCriteria();
+      $c->order = '`id` desc';
+      $c->compare('tbl_producto_id', $this->id);
+      $this->_precio = Precio::model()->find($c);
+    }
+	if (isset($this->_precio->precioDescuento))
+	 return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioDescuento);
+	else 
+		return 0;
+	
+    
+  		
 	}
 	public function getColores($talla=null)
 	{

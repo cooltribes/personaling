@@ -60,6 +60,7 @@ function handleDrop(e) {
 	nuevo_objeto.css('left','0');
 	//nuevo_objeto.find('img').unwrap();
 	nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
+	nuevo_objeto.append('<span>x</span>');
 	//alert(nuevo_objeto.html());
     if (this.innerHTML.indexOf("Crea tus Looks aqui") >=0)
     	$(this).html(	nuevo_objeto );
@@ -74,6 +75,10 @@ function handleDrop(e) {
    
   //.wrap('<div class="new" />')
   //alert($("img",this).last().attr('src'));
+  $("span",this).last().click(function(){
+  	//alert('x');
+  	$(this).parent().remove();
+  });
   $("img",this).last().resizable({
       aspectRatio: 1
     });    	

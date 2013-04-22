@@ -176,8 +176,6 @@ while (i <  canvas.length) {
 				
 				
               ?>
-               
-              	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$hasproducto->color_id; ?>">
               		<div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px;">
               		<?php
 					if ($producto->mainimage)
@@ -185,23 +183,25 @@ while (i <  canvas.length) {
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
 					echo $image;
-
 					?> 
-
- 	                
 	                <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
 	                <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
+	                <span>x</span>
 	               </div>
-              	</div>
+	               
+              	
               	<?php
-              	$script = "	$('#div_producto".$producto->id."_".$hasproducto->color_id." > .new').draggable( {
+              	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
   
 	} );
-   
+  $('#div".$producto->id."_".$hasproducto->color_id." > span').last().click(function(){
+  	
+  	$(this).parent().remove();
+  });   
 
-  $('#div_producto".$producto->id."_".$hasproducto->color_id." > img').resizable({
+  $('#div".$producto->id."_".$hasproducto->color_id." > img').resizable({
       aspectRatio: 1
     });   ";
               	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$hasproducto->color_id,$script);

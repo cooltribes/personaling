@@ -13,10 +13,10 @@
         <div >
         <h4>Productos</h4>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed"> 
-        	<?php foreach($model->productos as $producto){ ?>     
-<tr> <th scope="row"><?php echo $producto->nombre; ?></th>
- <td>10 disponibles</td>
-<td>           <?php   echo $producto->getPrecio(); ?> Bs.</td>
+        	<?php foreach($model->lookhasproducto as $lookhasproducto){ ?>     
+<tr> <th scope="row"><?php echo $lookhasproducto->producto->nombre; ?></th>
+ <td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> disponibles</td>
+<td>           <?php   echo $lookhasproducto->producto->getPrecio(); ?> Bs.</td>
 
  
 </tr>
@@ -37,14 +37,7 @@
   </tr>
  -->
 </table>
-        
-        
             <h4>Precios</h4>
-            
-         
-            
-            
-            
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed">
                 <tr>
                     <th scope="row">Precio base</th>

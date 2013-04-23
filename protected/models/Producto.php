@@ -90,6 +90,9 @@ class Producto extends CActiveRecord
 			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
 			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
 			'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
+			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
+                'select'=> 'SUM(cantidad)',
+                ),
 		);
 	}
 
@@ -218,6 +221,23 @@ class Producto extends CActiveRecord
 	
     
   		
+	}
+	public function getCantidad($talla=null,$color=null)
+	{
+	if (is_null($talla) and is_null($color))
+		return $this->preciotallacolorSum;
+	if (is_null($talla))
+ 		return $this->preciotallacolorSum(array('condition'=>'color_id=:color_id',
+                      'params' => array(':color_id'=>$color)
+				));	
+	if (is_null($color))
+ 		return $this->preciotallacolorSum(array('condition'=>'talla_id = :talla_id',
+                  'params' => array(':talla_id' => $talla)
+			));
+			
+	return $this->preciotallacolorSum(array('condition'=>'talla_id = :talla_id AND color_id=:color_id',
+                  'params' => array(':talla_id' => $talla,':color_id'=>$color)
+			));
 	}
 	public function getColores($talla=null)
 	{

@@ -302,15 +302,19 @@ public function actionCategorias(){
 				$top = explode(',',$_POST['top']);
 				$width = explode(',',$_POST['width']);
 				$height = explode(',',$_POST['height']);
+				LookHasProducto::model()->deleteAllByAttributes(array('look_id'=>$model->id));
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
-						
+					/*	
 					$lookhasproducto = LookHasProducto::model()->findByPk(array('look_id'=>$model->id,'producto_id'=>$producto_id));
 					if (is_null($lookhasproducto)){
 						$lookhasproducto = new LookHasProducto;
 						$lookhasproducto->look_id = $model->id;
 						$lookhasproducto->producto_id = $producto_id;
 					}
-					
+					*/
+					$lookhasproducto = new LookHasProducto;
+					$lookhasproducto->look_id = $model->id;
+					$lookhasproducto->producto_id = $producto_id;
 					$lookhasproducto->color_id = $colores_id[$index];
 					$lookhasproducto->cantidad = 1;
 					$lookhasproducto->left = $left[$index];

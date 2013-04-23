@@ -60,6 +60,7 @@ function handleDrop(e) {
 	nuevo_objeto.css('left','0');
 	//nuevo_objeto.find('img').unwrap();
 	nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
+	nuevo_objeto.append('<span>x</span>');
 	//alert(nuevo_objeto.html());
     if (this.innerHTML.indexOf("Crea tus Looks aqui") >=0)
     	$(this).html(	nuevo_objeto );
@@ -74,6 +75,10 @@ function handleDrop(e) {
    
   //.wrap('<div class="new" />')
   //alert($("img",this).last().attr('src'));
+  $("span",this).last().click(function(){
+  	//alert('x');
+  	$(this).parent().remove();
+  });
   $("img",this).last().resizable({
       aspectRatio: 1
     });    	
@@ -171,8 +176,6 @@ while (i <  canvas.length) {
 				
 				
               ?>
-               
-              	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$hasproducto->color_id; ?>">
               		<div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px;">
               		<?php
 					if ($producto->mainimage)
@@ -180,23 +183,25 @@ while (i <  canvas.length) {
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
 					echo $image;
-
 					?> 
-
- 	                
 	                <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
 	                <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
+	                <span>x</span>
 	               </div>
-              	</div>
+	               
+              	
               	<?php
-              	$script = "	$('#div_producto".$producto->id."_".$hasproducto->color_id." > .new').draggable( {
+              	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
   
 	} );
-   
+  $('#div".$producto->id."_".$hasproducto->color_id." > span').last().click(function(){
+  	
+  	$(this).parent().remove();
+  });   
 
-  $('#div_producto".$producto->id."_".$hasproducto->color_id." > img').resizable({
+  $('#div".$producto->id."_".$hasproducto->color_id." > img').resizable({
       aspectRatio: 1
     });   ";
               	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$hasproducto->color_id,$script);
@@ -255,7 +260,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="row">
             	<form id="formu" class="no_margin_bottom form-search">
               <div class="span2">
- <select id="padreId" class="span3" name="padreId">
+ <select id="padreId" class="span2" name="padreId">
         	<option value="0">Buscar por Categoria</option>
     <?php 
 
@@ -323,7 +328,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <div class="span2">
                 <input name="" type="text" placeholder="Buscar por palabra clave" class="span2">
               </div>
-              <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>
+             <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
             </div>
             <hr/>

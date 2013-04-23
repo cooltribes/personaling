@@ -153,34 +153,40 @@
           <div class="productos_del_look">
             <div class="row-fluid">
               <?php if($model->productos)
-			  			foreach ($model->productos as $producto){ 
-			  				 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+			  			foreach ($model->lookhasproducto as $lookhasproducto){ 
+			  				 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
 			?>
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> 
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 
               		-->
                 <?php $image = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
-                <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
-                <?php $color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$producto->id))->color_id ?>
+                <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$lookhasproducto->producto_id)); ?>
+                <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
+                <?php $color_id = $lookhasproducto->color_id; ?>
                 </a>
-                <?php echo CHtml::checkBox("producto[]",true,array('value'=>$producto->id.'_'.$color_id)); ?>
+                <?php if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 ){ ?>
+                <?php echo CHtml::checkBox("producto[]",true,array('value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
+                <?php } else { ?>
+                 <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>	
+					
+                <?php } ?>
                
                 <div class="metadata_top">
                   <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla'.$producto->id.'_'.$color_id,'',$producto->getTallas($color_id),array('class'=>'span5 tallas')); ?> </div>
+                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('class'=>'span5 tallas')); ?> </div>
                 <div class="metadata_bottom">
-                  <h5><?php echo $producto->nombre; ?></h5>
+                  <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
                     <div class="span7"><span>Bs. 
-                    	<?php foreach ($producto->precios as $precio) {
+                    	<?php foreach ($lookhasproducto->producto->precios as $precio) {
    					echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
    					}
 	
 			?>
                     	
                     </span></div>
-                    <div class="span5"> <span>20 unds.</span></div>
+                    <div class="span5"> <span><?php echo $lookhasproducto->producto->getCantidad(null,$color_id); ?> unds.</span></div>
                   </div>
                 </div>
               </div>

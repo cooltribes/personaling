@@ -16,18 +16,17 @@ $prePub="";
 		}
 	
 		if(isset($ima)){
+			if($prePub!="")
+			{
 				$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "270",'class'=>'img-polaroid'));
+				
 				echo("<td><a href='../producto/detalle/".$data->id."' ><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
 				<a href='#' class='ver_detalle entypo icon_personaling_big'>&#128269;</a>
 				<span class='precio'>Bs. ".$prePub."</span><br/><a href='#' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></article></a></td>");
+				
 				$con=$id;
-			} 
-			else {
-					echo "<td><article class='span3'> <img src='http://placehold.it/270'/><h3>".$data->nombre."</h3>
-					<a href='#' class='ver_detalle entypo icon_personaling_big'>&#128269;</a>
-					<span class='precio'><span class='label label-important'>Promoción</span>Bs. 50.000,00</span> <br/><a href='#' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></article></td>";
-					$con=$id;
-				}
+			}
+			}
 	//}
 
 	/*foreach ($data->imagenes as $ima) {

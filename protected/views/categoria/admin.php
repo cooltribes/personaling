@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
 	'Categorias'=>array('index'),
-	'Manage',
+	'Administrador',
 );
 
 $this->menu=array(
@@ -53,3 +53,51 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		),
 	),
 )); ?>
+
+<div class="container margin_top">
+  <div class="page-header">
+    <h1>Administrar Categorías</small></h1>
+  </div>
+  <!-- SUBMENU ON -->
+  <!-- SUBMENU OFF -->
+  <div class="row margin_top">
+    <div class="span12">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped ">
+  <tr>
+    <th scope="col">Nombre</th>
+    <th scope="col">Categoría Padre</th>
+    <th scope="col">Estado</th>
+    <th scope="col">Descripción</th>
+    <th scope="col">Acciones</th>
+  </tr>
+  <tr>
+    <td>Vestidos</td>
+    <td>Ropa</td>
+    <td>Activa</td>
+    <td>Ropa Variada</td>
+    <td>
+     <a title="editar" href="admin_editar_categoria.php" class="btn">  <i class="icon-edit">  </i>  Editar</a>
+      </td>
+  </tr>
+  <tr>
+    <td>Plataformas</td>
+    <td>Zapatos</td>
+    <td>Activa</td>
+    <td>Aqui se guardan los zapatos</td>
+   <td>
+     <a title="editar" href="admin_editar_categoria.php" class="btn">  <i class="icon-edit">  </i>  Editar</a>
+      </td>  </tr>
+  <tr>
+    <td>Medias</td>
+    <td>Accesorios</td>
+    <td>Inactiva</td>
+    <td>Son las medias</td>
+   <td>
+     <a title="editar" href="admin_editar_categoria.php" class="btn">  <i class="icon-edit">  </i>  Editar</a>
+      </td>  </tr>
+</table>
+    </div>
+    
+  </div>
+</div>
+<!-- /container -->

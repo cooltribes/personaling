@@ -11,6 +11,7 @@
  * @property string $vencimiento
  * @property string $nombre
  * @property string $cedula
+ * @property double $banco
  * @property double $monto
  * @property string $fecha
  * @property string $comentario
@@ -48,7 +49,7 @@ class Detalle extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('monto', 'numerical'),
-			array('nTransferencia', 'length', 'max'=>45),
+			array('nTransferencia, banco', 'length', 'max'=>45),
 			array('nTarjeta', 'length', 'max'=>25),
 			array('codigo', 'length', 'max'=>10),
 			array('nombre', 'length', 'max'=>80),
@@ -57,7 +58,7 @@ class Detalle extends CActiveRecord
 			array('vencimiento, fecha', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nTransferencia, nTarjeta, codigo, vencimiento, nombre, cedula, monto, fecha, comentario', 'safe', 'on'=>'search'),
+			array('id, nTransferencia, banco, nTarjeta, codigo, vencimiento, nombre, cedula, monto, fecha, comentario', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -86,6 +87,7 @@ class Detalle extends CActiveRecord
 			'vencimiento' => 'Vencimiento',
 			'nombre' => 'Nombre',
 			'cedula' => 'Cedula',
+			'banco' => 'Banco',
 			'monto' => 'Monto',
 			'fecha' => 'Fecha',
 			'comentario' => 'Comentario',
@@ -111,6 +113,7 @@ class Detalle extends CActiveRecord
 		$criteria->compare('vencimiento',$this->vencimiento,true);
 		$criteria->compare('nombre',$this->nombre,true);
 		$criteria->compare('cedula',$this->cedula,true);
+		$criteria->compare('banco',$this->banco,true);		
 		$criteria->compare('monto',$this->monto);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('comentario',$this->comentario,true);

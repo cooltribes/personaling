@@ -9,7 +9,6 @@
   background-image: -webkit-linear-gradient(top, #3691ad, #286d83);
   background-image: -o-linear-gradient(top, #3691ad, #286d83);
   background-image: linear-gradient(top, #3691ad, #286d83);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#'3691ad, endColorstr='#'286d83, GradientType=0);
 }
 
 .btn-primary:hover,
@@ -48,7 +47,6 @@
   background-image: -webkit-linear-gradient(top, #7D275E, #7d275e);
   background-image: -o-linear-gradient(top, #7D275E, #7d275e);
   background-image: linear-gradient(top, #7D275E, #7d275e);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#'7D275E, endColorstr='#'7d275e, GradientType=0);
 }
 
 .btn-danger:hover,
@@ -133,7 +131,7 @@
   background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: linear-gradient(top, #ffffff, #f2f2f2);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#'ffffff, endColorstr='#'f2f2f2, GradientType=0);
+  background-color:#fff;
 }
 
 .navbar .brand {

@@ -78,6 +78,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'direccion_nueva',
 	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true, 
+	),
 	'htmlOptions'=>array('class'=>'form-stacked personaling_form'),
 )); ?>
       
@@ -90,7 +94,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label for="RegistrationForm_email" class="control-label required">Nombre de la persona a la que envias <span class="required">*</span></label>
 <![endif]-->
               <div class="controls">
-              	<?php echo $form->textField($dir,'nombre',array('class'=>'span5','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
+              	<?php echo $form->textFieldRow($dir,'nombre',array('class'=>'span5','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span5">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -101,7 +105,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label for="RegistrationForm_email" class="control-label required">Apellido de la persona a la que envias tu compra<span class="required">*</span></label>
 <![endif]-->
               <div class="controls">
-              	<?php echo $form->textField($dir,'apellido',array('class'=>'span5','maxlength'=>70,'placeholder'=>'Apellido de la persona a la que envias tu compra')); 
+              	<?php echo $form->textFieldRow($dir,'apellido',array('class'=>'span5','maxlength'=>70,'placeholder'=>'Apellido de la persona a la que envias tu compra')); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Apellido de la persona a la que envias tu compra" name="RegistrationForm[email]" class="span5">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -112,7 +116,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label for="RegistrationForm_email" class="control-label required">Cedula de Identidad de la persona a la que envias<span class="required">*</span></label>
 <![endif]-->
               <div class="controls">
-              	<?php echo $form->textField($dir,'cedula',array('class'=>'span5','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona a la que envias')); 
+              	<?php echo $form->textFieldRow($dir,'cedula',array('class'=>'span5','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona a la que envias')); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span5">
               	?>
                
@@ -124,7 +128,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label for="RegistrationForm_email" class="control-label required">Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.) <span class="required">*</span></label>
 <![endif]-->
               <div class="controls">
-              	<?php echo $form->textField($dir,'dirUno',array('class'=>'span5','maxlength'=>120,'placeholder'=>'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)'));
+              	<?php echo $form->textFieldRow($dir,'dirUno',array('class'=>'span5','maxlength'=>120,'placeholder'=>'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)'));
 				//<input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" name="RegistrationForm[email]" class="span5">
 				 ?>
                 
@@ -136,8 +140,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label for="RegistrationForm_email" class="control-label required">Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc) </label>
 <![endif]-->
               <div class="controls">
-              	<?php echo $form->textField($dir,'dirDos',array('class'=>'span5','maxlength'=>120,'placeholder'=>'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)'));
+              	<?php echo $form->textFieldRow($dir,'dirDos',array('class'=>'span5','maxlength'=>120,'placeholder'=>'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)'));
 				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" name="RegistrationForm[email]" class="span5">
+				 ?>
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            <div class="control-group"> 
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc) </label>
+<![endif]-->
+              <div class="controls">
+              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Numero de Telefono'));
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -147,7 +161,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label for="RegistrationForm_email" class="control-label required">Ciudad <span class="required">*</span></label>
 <![endif]-->
               <div class="controls">
-              	<?php echo $form->textField($dir,'ciudad',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Ciudad'));
+              	<?php echo $form->textFieldRow($dir,'ciudad',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Ciudad'));
 				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Ciudad" name="RegistrationForm[email]" class="span5">
 				 ?>
                 
@@ -159,7 +173,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label for="RegistrationForm_email" class="control-label required">Estado <span class="required">*</span></label>
 <![endif]-->
               <div class="controls">
-              	<?php echo $form->textField($dir,'estado',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Estado'));
+              	<?php echo $form->textFieldRow($dir,'estado',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Estado'));
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Estado" name="RegistrationForm[email]" class="span5">
               	?>
                 
@@ -172,7 +186,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 <![endif]-->
               <div class="controls">
               	
-              	 <?php echo $form->dropDownList($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              	 <?php echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
               	 /*
 				  * <select>
                   <option>Venezuela</option>

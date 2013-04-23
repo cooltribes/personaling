@@ -76,7 +76,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           	$detalle = Detalle::model()->findByPk($orden->detalle_id);
           	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 			
-			if($detalle->estado == 1)
+			if($detalle->estado == 1) // si fue aceptado
 			{
 				echo("
           	<div id='pago' class='well well-small margin_top well_personaling_small'>
@@ -105,6 +105,36 @@ $usuario = User::model()->findByPk($orden->user_id);
         		</table> </div>
 				");
 			}
+			else if($detalle->estado == 2) // rechazado
+				{
+						echo("
+          	<div id='pago' class='well well-small margin_top well_personaling_small'>
+          	<h3 class='braker_bottom '> Método de Pago</h3>
+        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
+          		<tr>
+            		<th scope='col'>Fecha</th>
+            		<th scope='col'>Método de pago</th>
+            		<th scope='col'>ID de Transaccion</th>
+            		<th scope='col'>Monto</th>
+            		<th scope='col'></th>
+          		</tr>
+          	<tr>
+          	");	
+				echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
+				
+				if($pago->tipo == 1)
+					echo("<td>Deposito o Transferencia</td>");
+					//hacer los demas tipos
+						
+				echo("<td> PAGO RECHAZADO </td>");	
+				echo("<td></td>");
+				echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
+				echo("
+				</tr>
+        		</table></div>
+				");
+					
+				}
 		  	?>    
      
       <div class="well well-small margin_top well_personaling_small">
@@ -168,7 +198,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         
         	<?php
         	
-        	if($detalle->estado == 0) // si esta en default
+        	if($detalle->estado == 0 && $detalle->nTransferencia!="") // si esta en default
 			{
 				echo("<div class='alert alert-block '>");
 				echo(" <h4 class='alert-heading '>Confirmar Pago:</h4>");
@@ -205,22 +235,34 @@ $usuario = User::model()->findByPk($orden->user_id);
             <th scope="col">Fecha</th>
             <th scope="col">&nbsp;</th>
           </tr>
-          <tr>
-            <td>Pendiente por confirmar</td>
-            <td>Sophia Marquez</td>
-            <td>21/12/2012 </td>
-            <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
-          </tr>
-          <tr>
-            <td>Pendiente de Pago</td>
-            <td>Sophia Marquez</td>
-            <td>21/12/2012 </td>
-            <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
-          </tr>
+          <?php
+          
+          $estados = Estado::model()->findAllByAttributes(array('orden_id'=>$orden->id),array('order'=>'id DESC'));
+          
+		  	foreach ($estados as $est)
+		  	{
+		  		echo("<tr>");
+				
+				if($est->estado==1)
+					echo("<td>Pendiente de Pago</td>");
+				
+				if($est->estado==2)
+					echo("<td>Pendiente por confirmar</td>");
+				
+				$usu = User::model()->findByPk($est->user_id);
+				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
+				
+				$fecha = date("d/m/Y",strtotime($est->fecha));
+				echo("<td>".$fecha." </td>");
+            	echo("<td><a tabindex='-1' href='#'><i class='icon-edit'></i></a></td>");		
+            	echo("</tr>");
+		  	}
+		  
+          ?>
           <tr>
             <td>Nuevo Pedido</td>
-            <td><?php echo($usuario->username); ?></td>
-            <td> AÑADIR FECHA </td>
+            <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
+            <td> AÑADIR FECHA A TABLA ORDEN </td>
             <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
@@ -495,13 +537,27 @@ $usuario = User::model()->findByPk($orden->user_id);
 					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
 				}
 	       	}//success
-	       })
- 			
-		
-		
+	       }) 			
+
 	}
 	
-	function rechazar(){
+	function rechazar(id){
+		
+		var uno = 'rechazar';
+		
+ 		$.ajax({
+	        type: "post", 
+	        url: "../validar", // action 
+	        data: { 'accion':uno, 'id':id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();
+					//alert("guardado"); 
+					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
+				}
+	       	}//success
+	       })		
 		
 	}
 	

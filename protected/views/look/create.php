@@ -260,7 +260,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="row">
             	<form id="formu" class="no_margin_bottom form-search">
               <div class="span2">
- <select id="padreId" class="span3" name="padreId">
+ <select id="padreId" class="span2" name="padreId">
         	<option value="0">Buscar por Categoria</option>
     <?php 
 
@@ -328,7 +328,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <div class="span2">
                 <input name="" type="text" placeholder="Buscar por palabra clave" class="span2">
               </div>
-              <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>
+             <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
             </div>
             <hr/>

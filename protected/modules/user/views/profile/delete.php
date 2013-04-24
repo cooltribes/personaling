@@ -1,8 +1,8 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
-	UserModule::t("Mi cuenta")=>array('micuenta'),
-	UserModule::t("Eliminar"),
-);
+<?php //$this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+//$this->breadcrumbs=array(
+//	UserModule::t("Mi cuenta")=>array('micuenta'),
+//	UserModule::t("Eliminar"),
+//);
 ?>
 <div class="container margin_top"> 
   <!-- SUBMENU ON -->
@@ -25,19 +25,19 @@ $this->breadcrumbs=array(
           
           
           <fieldset>
-            <legend >Al borrar tu Cuenta de Personaling,  estas aceptando los siguientes apartados:</legend>
-            <ul>
+            <p class="lead" >Al borrar tu Cuenta de Personaling,  estas aceptando los siguientes apartados:</p>
+            <ul class="padding_left_medium">
             	
 <li>Borrar tu Cuenta sera algo PERMANENTE.
 </li><li>Toda la informacion almacenada en tu Cuenta se borrara inmediatamente </li>
 
 
 
-            </ul>
-            <label class="checkbox">
+            </ul><hr/>
+            <div class="control-group"><div class="padding_left_medium"><label class="checkbox">
               <input type="checkbox" value="">
               <?php echo CHtml::checkBox('acepto',false); ?>
-              Acepto los Terminos & Condiciones y acepto ELIMINAR mi Cuenta PERMANENTEMENTE. </label>
+              Acepto los Terminos & Condiciones y acepto ELIMINAR mi Cuenta PERMANENTEMENTE. </label></div></div>
       		<?php 
       		Yii::app()->clientScript->registerScript('check_acepto',"
 				  
@@ -56,7 +56,7 @@ $this->breadcrumbs=array(
             <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
             'label'=> 'Borrar Cuenta',
     		'buttonType' => 'button',
-    		'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+    		'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
     		'size'=>'large', // null, 'large', 'small' or 'mini'
     		'htmlOptions' => array('id'=>'btn_borrar'),
 )); ?> 

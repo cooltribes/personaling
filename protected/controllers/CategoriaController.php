@@ -71,24 +71,48 @@ class CategoriaController extends Controller
 			$model->attributes=$_POST['Categoria'];
 			$model->estado = $_POST['Categoria']['estado'];
 			$model->descripcion = $_POST['Categoria']['descripcion'];
-			$model->urlImagen = $_POST['Categoria']['urlImagen'];
-			
-			//$model->urlImagen = CUploadedFile::getInstance($model,'');
-			$model->imagen = CUploadedFile::getInstance($model,'urlImagen');		
-			echo($model->imagen);
 			
 			if($model->save()){
-			
-			$nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
+				
+	        	$images = CUploadedFile::getInstancesByName('url');
 					
-			if(!is_dir($nombre))
-			{
-		   		mkdir($nombre,0777,true);
-		 	}
-				 
-			$model->imagen->saveAs($nombre);
+			 	if (isset($images) && count($images) > 0) {
+					foreach ($images as $image => $pic) {
+
+		                $nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
+						
+						if(!is_dir($nombre))
+						{
+				   			mkdir($nombre,0777,true);
+				 		}
+								
+		                if ($pic->saveAs($nombre."/img.jpg")) {
+							
+							 $model->urlImagen = '/images/categorias/'. $model->id .'/img.jpg';
+							//$model->urlImagen = $_POST['Categoria']['urlImagen'];
+							$model->save();
+							
+							$image = Yii::app()->image->load($nombre."/img.jpg");
+		                    $image->resize(150, 150);
+		                    $image->save($nombre."/img.jpg");
+		
+		                	} 
+						}
+		            }
 			
-				/*$model->imagen = CUploadedFile::getInstance($model,'urlImagen');
+				/*
+				$model->imagen = CUploadedFile::getInstanceByName($_POST['Categoria']['urlImagen']);
+				
+					
+				if(!is_dir($nombre))
+				{
+		   			mkdir($nombre,0777,true);
+		 		}
+				
+				echo "aaaaa:".$model->imagen;
+				$model->imagen->saveAs($nombre."/img.jpg");
+			
+				$model->imagen = CUploadedFile::getInstance($model,'urlImagen');
 								
 				$nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
 					

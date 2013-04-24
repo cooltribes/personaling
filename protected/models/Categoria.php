@@ -19,7 +19,7 @@ class Categoria extends CActiveRecord
 {
 	
 	public $items;
-	public $imagen="";
+	//public $imagen="";
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -129,7 +129,7 @@ class Categoria extends CActiveRecord
 			$this->padreId = 0;
 		}
 		
-		echo($this->padreId);
+		//echo($this->padreId);
 		
 
 	return parent::beforeSave();	

@@ -10,14 +10,24 @@ $this->breadcrumbs=array(
     <h1>Crear Categoría</h1>
   </div>
   
-  <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'',
+  <?php
+  /*
+    $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'action' => CController::createUrl('Producto/multi', array('id' => $model->id)),
+	'id'=>'producto-form',
+	'enableAjaxValidation'=>false,
+	'type'=>'horizontal',
+	'htmlOptions' => array('enctype' => 'multipart/form-data'),
+)); */
+  
+  $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'id'=>'categoria-form',
 	'enableAjaxValidation'=>false,
 	'enableClientValidation'=>true,
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true, 
 	),
-	'htmlOptions'=>array('class'=>'form-stacked form-horizontal'),
+	'htmlOptions'=>array('class'=>'form-stacked form-horizontal','enctype' => 'multipart/form-data'),
 )); ?>
 
   <div class="row margin_top">
@@ -29,7 +39,15 @@ $this->breadcrumbs=array(
           <div class="row">
               <div class="span2 offset2"><img src="http://placehold.it/150x150"/></div>
               <div class="span3 margin_top">
-              	<?php echo CHtml::activeFileField($model,'urlImagen'); ?>
+              	 <?php
+            	$this->widget('CMultiFileUpload', array(
+                'name' => 'url',
+                'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+                'duplicate' => 'El archivo está duplicado.', // useful, i think
+                'denied' => 'Tipo de archivo invalido.', // useful, i think
+            ));
+			
+			?>
               </div>
             </div>
           <hr/>

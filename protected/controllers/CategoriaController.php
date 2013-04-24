@@ -69,8 +69,43 @@ class CategoriaController extends Controller
 		if(isset($_POST['Categoria']))
 		{
 			$model->attributes=$_POST['Categoria'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->estado = $_POST['Categoria']['estado'];
+			$model->descripcion = $_POST['Categoria']['descripcion'];
+			$model->urlImagen = $_POST['Categoria']['urlImagen'];
+			
+			//$model->urlImagen = CUploadedFile::getInstance($model,'');
+			$model->imagen = CUploadedFile::getInstance($model,'urlImagen');		
+			echo($model->imagen);
+			
+			if($model->save()){
+			
+			$nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
+					
+			if(!is_dir($nombre))
+			{
+		   		mkdir($nombre,0777,true);
+		 	}
+				 
+			$model->imagen->saveAs($nombre);
+			
+				/*$model->imagen = CUploadedFile::getInstance($model,'urlImagen');
+								
+				$nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
+					
+				echo "imagen:".$model->urlImagen." -".$nombre;
+					
+				if(!is_dir($nombre))
+				{
+		   			mkdir($nombre,0777,true);
+		 		}
+				 
+				$model->imagen->saveAs($nombre);*/
+				
+				$this->redirect(array('admin'));
+			}else
+				{
+					var_dump($model->getErrors());
+				}
 		}
 
 		$this->render('create',array(

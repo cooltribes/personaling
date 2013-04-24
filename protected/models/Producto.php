@@ -152,7 +152,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('t.nombre',$this->nombre,true);
-		$criteria->compare('estado',$this->estado);
+		$criteria->compare('t.estado',$this->estado);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('proveedor',$this->proveedor,true);
 		$criteria->compare('fInicio',$this->fInicio,true);

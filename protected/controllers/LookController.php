@@ -383,8 +383,18 @@ public function actionCategorias(){
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}
 				}
+if ($_POST['tipo']==1){
 			   $this->redirect(array('look/publicar','id'=>$model->id)); 
-				Yii::app()->end();			
+				Yii::app()->end();
+} else {
+					Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Tu look se a guardado."));	
+				$this->render('create',array(
+				'model'=>$model,
+				'categorias'=>$categorias,
+			)
+		);
+}			
 			} else{
 					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
 				}

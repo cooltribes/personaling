@@ -54,7 +54,7 @@
           <!-- Boton de comprar  -->
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span>Subtotal</span> Bs. 13.500,00</h4>
+              <h4 class="precio" ><span>Subtotal</span> Bs. <?php echo $model->getPrecio(); ?></h4>
             </div>
             <div class="span2">
               <div class=""> 
@@ -167,7 +167,7 @@
                 <?php if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 ){ ?>
                 <?php echo CHtml::checkBox("producto[]",true,array('value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
                 <?php } else { ?>
-                 <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>	
+                 <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'disabled'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>	
 					
                 <?php } ?>
                

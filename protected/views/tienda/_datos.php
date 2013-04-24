@@ -18,10 +18,10 @@ $prePub="";
 		if(isset($ima)){
 			if($prePub!="")
 			{
-				$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "270",'class'=>'img-polaroid'));
+				$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
 				
-				echo("<td><a href='../producto/detalle/".$data->id."' ><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
-				<a href='#' class='ver_detalle entypo icon_personaling_big'>&#128269;</a>
+				echo("<td><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
+				<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a>
 				<span class='precio'>Bs. ".$prePub."</span><br/><a href='#' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></article></a></td>");
 				
 				$con=$id;

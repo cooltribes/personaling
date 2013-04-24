@@ -15,9 +15,15 @@ if ($.browser.msie && $.browser.version == 10) {
 
 var rightInterval;
 var leftInterval;
+/*
 var op25 = 0.25;
 var op50 = 0.50;
 var op75 = 0.75;
+*/
+var op25 = 1;
+var op50 = 1;
+var op75 = 1;
+
 var core = 134;
 var init_center = 1060;
 var windowWidth = window.screen.width < window.outerWidth ?
@@ -269,8 +275,11 @@ function init_slider(){
 	$(".image_not_bw img").parent().find('img:first').stop().animate({opacity:1}, 1000);
 	
 	$('#b').css({ 'left': x + 'px' });
-	$(".image_not_bw").prev().css({opacity: '0.75'}).prev().css({opacity: '0.5'}).prev().css({opacity: '0.25'});
-	$(".image_not_bw").next().css({opacity: '0.75'}).next().css({opacity: '0.5'}).next().css({opacity: '0.25'});	
+	if (false){ //opciones para evitar opacity
+		$(".image_not_bw").prev().css({opacity: '0.75'}).prev().css({opacity: '0.5'}).prev().css({opacity: '0.25'});
+		$(".image_not_bw").next().css({opacity: '0.75'}).next().css({opacity: '0.5'}).next().css({opacity: '0.25'});	
+	}
+	
 	//$("#b").show();
    // $("#b").animate({left: "+=500"}, 2000);
    // $("#b").animate({left: "-=300"}, 1000);
@@ -337,6 +346,7 @@ function grayscale(src){
 //beeRight();
 $(window).load(function(){
 // Fade in images so there isn't a color "pop" document load and then on window load
+		
 		$(".image_bw img").fadeIn(500);
 		
 		// clone image

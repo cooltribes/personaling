@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias'),
+				'actions'=>array('admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -169,6 +169,7 @@ class ProductoController extends Controller
 			'model'=>$model,'precio'=>$precio,
 		));
 	}
+
 	
 	// mostrar la pagina
 	public function actionImagenes()
@@ -847,6 +848,59 @@ class ProductoController extends Controller
 		));
 		exit;
 
+	}
+	
+	/*
+	 * Relacionando el producto a una o varias categorias
+	 * 
+	 * */
+	public function actionCategorias()
+	{
+		if(isset($_GET['id'])){
+			$id = $_GET['id'];			
+			$model = Producto::model()->findByPk($id);
+			$categorias = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$id));
+		}
+		else {
+			$model = new Producto;
+			$id="";
+			$categorias = new CategoriaHasProducto;
+		}
+		
+		$this->render('_view_categoria',array(
+			'model'=>$model,'categorias'=>$categorias,
+		));
+	}
+	
+	/*
+	 * Relacionando el producto a una o varias categorias
+	 * 
+	 * */
+	public function actionReCatProd()
+	{
+		if(isset($_POST['check'])){
+			if($_POST['check']!=""){
+
+				$checks = explode(',',$_POST['check']);
+				$idProducto = $_POST['idProd'];	
+				
+				foreach($checks as $idCateg){
+						
+					if(!$prodCat = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$idCateg))) // reviso si ya esta en la BD esa asignacion
+					{
+						$prodCat = new CategoriaHasProducto;
+						$prodCat->tbl_categoria_id = $idCateg; //id Categoria cambia en el foreach
+						$prodCat->tbl_producto_id = $idProducto; // producto igual para todos
+										
+						$prodCat->save();
+						//Producto::model()->updateByPk($id, array('estado'=>'0'));					
+					}	
+					// si ya está la ignora
+					//$prodCat = new CategoriaHasProducto;
+				}
+				echo("ok"); // realizo la relación
+			}
+		}
 	}
 
 	/**

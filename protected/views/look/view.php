@@ -174,7 +174,7 @@
                 <div class="metadata_top">
                   <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('class'=>'span5 tallas')); ?> </div>
+                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Seleccione','class'=>'span5 tallas')); ?> </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
@@ -186,7 +186,7 @@
 			?>
                     	
                     </span></div>
-                    <div class="span5"> <span><?php echo $lookhasproducto->producto->getCantidad(null,$color_id); ?> unds.</span></div>
+                    <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>"><?php echo $lookhasproducto->producto->getCantidad(null,$color_id); ?> unds.</span></div>
                   </div>
                 </div>
               </div>
@@ -279,6 +279,35 @@
 
 <!-- // Modal Window -->
 <script>
+	function updateCantidad(object){
+		//alert(object.id.substring(5));
+		//alert(object.value);
+		//var talla = this.val();
+		//var prendas = $(this).attr('id');
+		//alert(talla);
+		//alert(prendas);
+		<?php
+		//'colores'=>'js:colores',
+		echo CHtml::ajax(array(
+            'url'=>array('producto/updateCantidad'),
+            'data'=> array('talla'=>'js:object.value','prenda'=>'js:object.id.substring(5)'),
+            'type'=>'post',
+            'dataType'=>'json',
+            'success'=>"function(data)
+            {
+                if (data.status == 'success')
+                {
+                  	//$('#price').html('Bs.'+data.div);
+                  	$('#'+data.id).fadeOut(400,function() { $(this).html(data.div+ ' unds.').fadeIn(400); });
+                  //alert(data.div);
+
+                }
+
+ 
+            } ",
+            )) 
+		?>		
+	}
 	function updatePrice(){
 		var prendas = '';
 		//var colores = '';

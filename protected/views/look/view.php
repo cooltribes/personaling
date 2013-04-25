@@ -54,7 +54,7 @@
           <!-- Boton de comprar  -->
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span>Subtotal</span> Bs. <?php echo $model->getPrecio(); ?></h4>
+              <h4 class="precio" ><span>Subtotal</span><div id="price">Bs. <?php echo $model->getPrecio(); ?></div></h4>
             </div>
             <div class="span2">
               <div class=""> 
@@ -165,7 +165,7 @@
                 <?php $color_id = $lookhasproducto->color_id; ?>
                 </a>
                 <?php if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 ){ ?>
-                <?php echo CHtml::checkBox("producto[]",true,array('value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
+                <?php echo CHtml::checkBox("producto[]",true,array('onclick'=>'js:updatePrice();','value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
                 <?php } else { ?>
                  <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'disabled'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>	
 					
@@ -277,4 +277,40 @@
   <div class="modal-footer"> <a href="#" class="btn btn-danger">Añadir al Look</a> </div>
 </div>
 
-<!-- // Modal Window --> 
+<!-- // Modal Window -->
+<script>
+	function updatePrice(){
+		var prendas = '';
+		//var colores = '';
+		$("input[name='producto[]']:checked").each(function(){
+			//tempo = $(this).val().split('_');
+			//prendas += tempo[0]+',';
+			//colores += tempo[1]+',';
+			prendas += $(this).val()+',';
+		});
+		//alert(prendas);
+		<?php
+		//'colores'=>'js:colores',
+		echo CHtml::ajax(array(
+            'url'=>array('look/updatePrice'),
+            'data'=> array('prendas'=>'js:prendas','look_id'=>'js:$("#look_id").val()'),
+            
+            'type'=>'post',
+            'dataType'=>'json',
+            'success'=>"function(data)
+            {
+                if (data.status == 'success')
+                {
+                  	//$('#price').html('Bs.'+data.div);
+                  	$('#price').fadeOut(400,function() { $(this).html('Bs.'+data.div).fadeIn(400); });
+                  //alert(data.div);
+
+                }
+
+ 
+            } ",
+            )) 
+		?>
+		
+	}
+</script> 

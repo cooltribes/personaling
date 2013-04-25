@@ -20,13 +20,10 @@ class OrdenController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'users'=>array('@'),
-			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','admin','detalles','validar'),
 				'users'=>array('admin'),
-				//'expression' => 'Yii::app()->user->isAdmin()',
+				'expression' => 'Yii::app()->user->isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

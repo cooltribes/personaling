@@ -61,11 +61,16 @@ class CategoriaController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Categoria;
+		if(isset($_GET['id']))
+		{
+			$model = Categoria::model()->findByPk($_GET['id']);
+		}
+		else	
+			$model=new Categoria;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+		
 		if(isset($_POST['Categoria']))
 		{
 			$model->attributes=$_POST['Categoria'];
@@ -73,7 +78,7 @@ class CategoriaController extends Controller
 			$model->descripcion = $_POST['Categoria']['descripcion'];
 			
 			if($model->save()){
-				
+
 	        	$images = CUploadedFile::getInstancesByName('url');
 					
 			 	if (isset($images) && count($images) > 0) {
@@ -126,10 +131,9 @@ class CategoriaController extends Controller
 				$model->imagen->saveAs($nombre);*/
 				
 				$this->redirect(array('admin'));
-			}else
-				{
-					var_dump($model->getErrors());
-				}
+			}
+			else
+				echo $model->getErrors();	
 		}
 
 		$this->render('create',array(
@@ -197,13 +201,13 @@ class CategoriaController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Categoria('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Categoria']))
-			$model->attributes=$_GET['Categoria'];
-
-		$this->render('admin',array(
-			'model'=>$model,
+		$categoria = new Categoria;
+		
+		$dataProvider = $categoria->search();
+		
+		$this->render('admin',
+		array('categoria'=>$categoria,
+		'dataProvider'=>$dataProvider,
 		));
 	}
 

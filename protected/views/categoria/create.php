@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Categorias'=>array('index'),
+	'Categorías'=>array('admin'),
 	'Crear',
 );
 
@@ -35,9 +35,18 @@ $this->breadcrumbs=array(
       <div class="bg_color3   margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
-          
           <div class="row">
-              <div class="span2 offset2"><img src="http://placehold.it/150x150"/></div>
+          	<div class="span2 offset2">
+          	<?php
+          	if($model->urlImagen!="")
+          	{
+          		echo CHtml::image(Yii::app()->baseUrl . $model->urlImagen, "categoria", array('id'=>'img-categoria'));
+          	}
+			else{
+				echo "<img src='http://placehold.it/150x150'/>";
+				}
+          	?>              
+              </div>
               <div class="span3 margin_top">
               	 <?php
             	$this->widget('CMultiFileUpload', array(
@@ -51,7 +60,7 @@ $this->breadcrumbs=array(
               </div>
             </div>
           <hr/>
-            <legend >Categoría <?php //NOMBRE ?>: </legend>
+            <legend >Categoría <?php echo $model->nombre; ?>: </legend>
             <div class="control-group">
             	<label  class="control-label ">Nombre </label>
             	<div class="controls">
@@ -72,12 +81,19 @@ $this->breadcrumbs=array(
               	<select id="Categoria_padreId" name="Categoria[padreId]" class="span5" >
 				<option>Seleccione...</option>
 				<?php
+				
 				nodos($cat,$form,$model); 
 	
 				function nodos($items,$form,$model){
 					foreach ($items as $item){
+				
+				$padre = $model->padreId;
 						
-						echo("<option value='".$item->id."'>".$item->nombre."</option>");
+						if($padre!="")
+							if($item->id == $padre)
+								echo("<option value='".$item->id."' selected>".$item->nombre."</option>");
+						else
+							echo("<option value='".$item->id."'>".$item->nombre."</option>");
 						
 						if ($item->hasChildren()){
 							nodos($item->getChildren(),$form,$model);

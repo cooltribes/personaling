@@ -22,7 +22,7 @@ class LookController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','getimage'),
+				'actions'=>array('index','getimage','updateprice'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -37,6 +37,23 @@ class LookController extends Controller
 				'users'=>array('*'),
 			), 
 		);
+	}
+	public function actionUpdatePrice()
+	{
+		$model = Look::model()->findByPk($_POST['look_id']);
+		$precio = 0;
+		$prendas = explode(',',$_POST['prendas']);
+		
+		foreach($model->lookhasproducto as $lookhasproducto){
+			
+			//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+			if (in_array($lookhasproducto->producto->id.'_'.$lookhasproducto->color_id,$prendas))
+				$precio += $lookhasproducto->producto->getPrecio(false);
+		}	
+		echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>Yii::app()->numberFormatter->formatDecimal($precio)
+                        ));
 	}
 	public function actionDetalle($id)
 	{
@@ -383,8 +400,18 @@ public function actionCategorias(){
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}
 				}
+if ($_POST['tipo']==1){
 			   $this->redirect(array('look/publicar','id'=>$model->id)); 
-				Yii::app()->end();			
+				Yii::app()->end();
+} else {
+					Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Tu look se a guardado."));	
+				$this->render('create',array(
+				'model'=>$model,
+				'categorias'=>$categorias,
+			)
+		);
+}			
 			} else{
 					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
 				}

@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','colores','imagenColor'), 
+				'actions'=>array('index','view','detalle','tallas','colores','imagenColor','updateCantidad'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -41,7 +41,7 @@ class ProductoController extends Controller
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
-		);
+		); 
 	}
 
 	/**
@@ -54,7 +54,17 @@ class ProductoController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
-
+	public function actionUpdateCantidad()
+	{
+		$prenda = explode('_',$_POST['prenda']);
+		$model = Producto::model()->findByPk($prenda[0]);
+		
+		echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>$model->getCantidad($_POST['talla'],$prenda[1]),
+                        'id'=>'cantidad'.$_POST['prenda'],
+                        ));		
+	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

@@ -93,6 +93,23 @@
 			                       
 			                       
 			                       //return false;
+			                       if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
+			                       	 alert('debe seleccionar por lo menos una prenda');
+			                       	 return false;
+			                       }
+			                       
+			                       $('.tallas').each(function(){
+			                       		if ($(this).val()==''){
+			                       			
+			                       			if ($(this).parent().prev('input').prop('checked')){
+			                       				alert('debe seleccionar todas las tallas');
+			                       				return false;
+			                       			}
+			                       		}
+			                       		
+			                       });
+			                      // return false;
+			                       
 			                     }",
 							   
 							 

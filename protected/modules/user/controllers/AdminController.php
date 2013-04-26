@@ -25,7 +25,7 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view'),
+				'actions'=>array('admin','delete','create','update','view','corporal'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -99,7 +99,15 @@ class AdminController extends Controller
 			'profile'=>$profile,
 		));
 	}
-
+	public function actionCorporal()
+	{
+		$model=$this->loadModel();
+		$profile=$model->profile;
+		$this->render('corporal',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));		
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

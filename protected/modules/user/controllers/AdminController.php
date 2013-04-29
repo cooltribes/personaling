@@ -25,7 +25,7 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view','corporal'),
+				'actions'=>array('admin','delete','create','update','view','corporal','estilos'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -99,10 +99,21 @@ class AdminController extends Controller
 			'profile'=>$profile,
 		));
 	}
+	public function actionEstilos()
+	{
+		$model=$this->loadModel();
+		$profile=$model->profile;
+		$profile->profile_type = 2;
+		$this->render('estilos',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));		
+	}
 	public function actionCorporal()
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
+		$profile->profile_type = 3;
 		$this->render('corporal',array(
 			'model'=>$model,
 			'profile'=>$profile,
@@ -116,6 +127,7 @@ class AdminController extends Controller
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
+		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
 		{

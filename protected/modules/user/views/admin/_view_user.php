@@ -22,7 +22,7 @@
           <!-- Link or button to toggle dropdown -->
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <li>
-				<?php echo CHtml::link('<i class="icon-edit">  </i>  Editar',array("admin/view","id"=>$data->id));	?>          	
+				<?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver',array("admin/view","id"=>$data->id));	?>          	
             </li>
       <li>
       	

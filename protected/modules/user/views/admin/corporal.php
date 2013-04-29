@@ -9,67 +9,66 @@
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
+        
+       
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+	'id'=>'tutipo-form',
+	'htmlOptions'=>array('class'=>'form-stacked'),
+    //'type'=>'stacked',
+    'type'=>'horizontal',
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+)); ?>        	
           <fieldset>
             <legend >Perfil Corporal: </legend>
             <div class="control-group">
-              <label for="" class="control-label ">Altura</label>
+             
               <div class="controls">
-                <select class="span5" type="text" >
-                  <option>1,55 - 1,65</option>
-                  <option> 1,66-1,75</option>
-                  <option>1,76-1,85 </option>
-                  <option>1,86-1,95 </option>
-                </select>
+                <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5'));
+                  ?>
               </div>
             </div>
             <div class="control-group">
-              <label for="" class="control-label ">Condición Física</label>
+              
               <div class="controls">
-                <select class="span5" type="text" >
-                  <option>Delgada</option>
-                  <option>Media</option>
-                  <option>Gruesa</option>
-                  <option>Muy Gruesa</option>
-                </select>
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5'));
+                  ?>              </div>
+            </div>
+            <div class="control-group">
+              
+              <div class="controls">
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5'));
+                  ?>
               </div>
             </div>
             <div class="control-group">
-              <label for="" class="control-label ">Forma de Cuerpo</label>
+          
               <div class="controls">
-                <select class="span5" type="text" >
-                  <option>Rectangular</option>
-                  <option>Curvilíneo</option>
-                  <option>Triángulo</option>
-                  <option>Triángulo Invertido</option>
-                </select>
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5'));
+                  ?>
               </div>
             </div>
             <div class="control-group">
-              <label for="" class="control-label ">Color de ojos</label>
+             
               <div class="controls">
-                <select class="span5" type="text" >
-                  <option>Verde</option>
-                  <option>Azul</option>
-                  <option>Ámbar</option>
-                  <option>Marrón</option>
-                  <option>Negro</option>
-                  <option>Gris</option>
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Color de Piel</label>
-              <div class="controls">
-                <select class="span5" type="text" >
-                  <option>Blanca </option>
-                  <option>Morena</option>
-                  <option>Mulata</option>
-                </select>
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5'));
+                  ?>
               </div>
             </div>
           </fieldset>
-        </form>
+           <?php $this->endWidget(); ?>
       </div>
     </div>
     <div class="span3">

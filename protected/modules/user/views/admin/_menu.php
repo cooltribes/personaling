@@ -11,7 +11,11 @@
 		<?php echo CHtml::link('Perfil Corporal',array('corporal',
                                      'id'=>$model->id,)); ?>
 		</li>
-        <li><a href="admin_editar_estilos.php" title="Estilos">Estilos</a></li>
+        <li>
+        	
+        		<?php echo CHtml::link('Estilos',array('estilos',
+                                     'id'=>$model->id,)); ?>	
+        </li>
         <li><a href="admin_editar_avatar.php" title="Avatar">Avatar</a></li>
         <li><a href="admin_editar_direcciones.php" title="Direcciones">Direcciones</a></li>
         <li><a href="admin_editar_pedidos.php" title="Pedidos">Pedidos</a></li>

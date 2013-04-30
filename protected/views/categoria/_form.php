@@ -21,7 +21,7 @@ $cat = Categoria::model()->findAllByAttributes(array('padreId'=>'0',));
 		echo "<ul>";
 		foreach ($items as $item){
 			
-			echo $form->radioButtonList($model, 'padreId', array($item->nombre,));
+			echo $form->radioButtonListRow($model, 'padreId', array($item->nombre,));
 			
 			//echo "<li> <input type='checkbox'> ".$item->nombre."</li>";
 			if ($item->hasChildren()){

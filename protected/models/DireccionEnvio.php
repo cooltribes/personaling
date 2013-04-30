@@ -10,7 +10,6 @@
  * @property string $cedula
  * @property string $dirUno
  * @property string $dirDos
- * @property string $telefono
  * @property string $ciudad
  * @property string $estado
  * @property string $pais
@@ -49,7 +48,7 @@ class DireccionEnvio extends CActiveRecord
 			array('nombre, apellido', 'length', 'max'=>100),
 			array('cedula', 'length', 'max'=>20),
 			array('dirUno, dirDos', 'length', 'max'=>120),
-			array('ciudad, estado, pais, telefono', 'length', 'max'=>45),
+			array('ciudad, estado, pais', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad, estado, pais', 'safe', 'on'=>'search'),
@@ -80,7 +79,6 @@ class DireccionEnvio extends CActiveRecord
 			'cedula' => 'Cedula',
 			'dirUno' => 'Dir Uno',
 			'dirDos' => 'Dir Dos',
-			'telefono' => 'Telefono',
 			'ciudad' => 'Ciudad',
 			'estado' => 'Estado',
 			'pais' => 'Pais',
@@ -104,7 +102,6 @@ class DireccionEnvio extends CActiveRecord
 		$criteria->compare('cedula',$this->cedula,true);
 		$criteria->compare('dirUno',$this->dirUno,true);
 		$criteria->compare('dirDos',$this->dirDos,true);
-		$criteria->compare('telefono',$this->telefono,true);		
 		$criteria->compare('ciudad',$this->ciudad,true);
 		$criteria->compare('estado',$this->estado,true);
 		$criteria->compare('pais',$this->pais,true);

@@ -137,21 +137,6 @@ while (i <  canvas.length) {
 */
 </script>
 <div class="container margin_top" id="crear_look">
-	  <div class="page-header">
-  		<!-- FLASH ON --> 
-<?php $this->widget('bootstrap.widgets.TbAlert', array(
-        'block'=>true, // display a larger alert block?
-        'fade'=>true, // use transitions?
-        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
-        'alerts'=>array( // configurations per alert type
-            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-        ),
-    )
-); ?>	
-<!-- FLASH OFF --> 
-   
-  </div>
   <div class="clearfix margin_bottom_medium">
   	 
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -162,21 +147,11 @@ while (i <  canvas.length) {
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				'class'=>'pull-right margin_left_small', 
-		        'onclick'=>"{addPublicar(1);}"
+		        'onclick'=>"{addPublicar();}"
 		       ),	    
 	)); ?>  	
 	
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'label'=>'Guardar borrador',
-	   // 'type'=>'danger',
-
-	    'htmlOptions'=> array(
-		     // 'data-toggle'=>'modal',
-			//	'data-target'=>'#dialogPublicar',
-				'class'=>'pull-right', 
-		        'onclick'=>"{addPublicar(0);}"
-		       ),	    
-	)); ?>  	  	
+  	<a href="#" title="Guardar borrador" class="btn pull-right">Guardar borrador</a> 
   </div><hr/>
   <div class="row">
     <section class="span8">
@@ -208,7 +183,6 @@ while (i <  canvas.length) {
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
 					echo $image;
-					//echo $hasproducto->width.'/'.$hasproducto->height;
 					?> 
 	                <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
 	                <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
@@ -216,22 +190,20 @@ while (i <  canvas.length) {
 	               </div>
 	               
               	
-              	<?php 
+              	<?php
               	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
   
-	} ); 
+	} );
   $('#div".$producto->id."_".$hasproducto->color_id." > span').last().click(function(){
   	
   	$(this).parent().remove();
   });   
-$('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function () { $(this).resizable({
+
+  $('#div".$producto->id."_".$hasproducto->color_id." > img').resizable({
       aspectRatio: 1
-    });	
-    });	
-    
- ";
+    });   ";
               	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$hasproducto->color_id,$script);
               	?>              	
              
@@ -274,7 +246,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php echo CHtml::hiddenField('top'); ?>
 <?php echo CHtml::hiddenField('width'); ?>
 <?php echo CHtml::hiddenField('height'); ?>
-<?php echo CHtml::hiddenField('tipo'); ?>
 <?php $this->endWidget(); ?>
     </section>
     <section class="span4">
@@ -394,7 +365,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <!------------------- MODAL WINDOW OFF ----------------->
 <script type="text/javascript">
 // here is the magic
-function addPublicar(tipo)
+function addPublicar()
 {
 	var productos_id = '';
 	var color_id = '';
@@ -422,7 +393,6 @@ function addPublicar(tipo)
 	$("#top").val(top);
 	$("#height").val(height);
 	$("#width").val(width);
-	$("#tipo").val(tipo);
 	//count = 6;
 	//alert(productos_id);
 	if (count >= 3){

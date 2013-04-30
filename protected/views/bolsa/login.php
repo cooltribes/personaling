@@ -20,6 +20,7 @@
     )
 ); ?>	
 <!-- FLASH OFF -->
+
 	
   <div class="row">
     <div class="span6 offset3">
@@ -62,7 +63,7 @@
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
-            'label'=>'Siguiente',
+            'label'=>'Entrar',
         )); ?>
 	</div>
           </fieldset>

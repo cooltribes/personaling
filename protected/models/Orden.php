@@ -5,7 +5,6 @@
  * 2 - En espera de confirmación
  * 3 - Pago Confirmado
  * 4 - Preparandose para el envío
- * 5 - Cancelado
  * 
  * */
 

@@ -1,75 +1,55 @@
 <?php
 $this->breadcrumbs=array(
-	'Categorías'
+	'Categorias'=>array('index'),
+	'Manage',
 );
+
+$this->menu=array(
+	array('label'=>'List Categoria','url'=>array('index')),
+	array('label'=>'Create Categoria','url'=>array('create')),
+);
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$.fn.yiiGridView.update('categoria-grid', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
 ?>
 
-<div class="container margin_top">
-  <div class="page-header">
-    <h1>Administrar Categorías</small></h1>
-  </div>
-  <!-- SUBMENU ON -->
-  <!-- SUBMENU OFF -->
-  <div class="row margin_top">
-    <div class="span12">
-    	<div class="clearfix">
-    	<?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'buttonType' => 'link',
-	    'label'=>'Agregar Categoría',
-	    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-	    'size'=>'normal', // null, 'large', 'small' or 'mini'
-	    'url' =>'create',
-	    'htmlOptions' => array('class'=>'btn pull-right margin_bottom_small'),
-		)); ?>
-    	</div>
-   
-  <?php
-  
-$template = '{summary}
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped ">
-  <tr>
-    <th scope="col">Nombre</th>
-    <th scope="col">Categoría Padre</th>
-    <th scope="col">Estado</th>
-    <th scope="col">Descripción</th>
-    <th scope="col">Acciones</th>
-  </tr>
-    {items}
-    </table>
-    {pager}
-	';
-    
-  $this->widget('zii.widgets.CListView', array(
-	    'id'=>'categoria-listado',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos',
-	    'template'=>$template,
-	    'enableSorting'=>'true',
-	    'afterAjaxUpdate'=>" function(id, data) {
-						    	
-							$('#todos').click(function() { 
-				            	inputs = $('table').find('input').filter('[type=checkbox]');
-				 
-				 				if($(this).attr('checked')){
-				                     inputs.attr('checked', true);
-				               	}else {
-				                     inputs.attr('checked', false);
-				               	} 	
-							});
-						   
-							} ",
-		'pager'=>array(
-			'header'=>'',
-			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
-		)
-		),					
-	));
-	
-	?> 
-    	
-    </div>
-    
-  </div>
-</div>
-<!-- /container -->
+<h1>Manage Categorias</h1>
+
+<p>
+You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+</p>
+
+<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button btn')); ?>
+<div class="search-form" style="display:none">
+<?php $this->renderPartial('_search',array(
+	'model'=>$model,
+)); ?>
+</div><!-- search-form -->
+
+<?php $this->widget('bootstrap.widgets.TbGridView',array(
+	'id'=>'categoria-grid',
+	'dataProvider'=>$model->search(),
+	'filter'=>$model,
+	'columns'=>array(
+		'id',
+		'padreId',
+		'nombre',
+		'urlImagen',
+		'mTitulo',
+		'mDescripcion',
+		array(
+			'class'=>'bootstrap.widgets.TbButtonColumn',
+		),
+	),
+)); ?>

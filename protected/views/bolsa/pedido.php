@@ -278,33 +278,6 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
-		<div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
       <div class="controls controls-row"> 
         <!--[if lte IE 7]>
             <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
@@ -344,6 +317,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 		var mes = $("#mes").attr("value");
 		var ano = $("#ano").attr("value");
 		var comentario = $("#comentario").attr("value");
+<<<<<<< HEAD
 		var banco = $("#banco").attr("value");
 		var cedula = $("#cedula").attr("value");
 		var monto = $("#monto").attr("value");
@@ -355,10 +329,14 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 		else
 		{
 		
+=======
+
+
+>>>>>>> 810cb7523af9fca4177b6cf268f29faf1783d927
  		$.ajax({
 	        type: "post", 
 	        url: "../cpago", // action 
-	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
+	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle}, 
 	        success: function (data) {
 				
 				if(data=="ok")

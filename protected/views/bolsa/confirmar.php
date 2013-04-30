@@ -39,8 +39,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <p><strong>Dirección:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$direccion->ciudad.", ".$direccion->estado.". ".$direccion->pais); ?>
         </p>
-        <p> <strong>Telefono</strong>: <?php echo($direccion->telefono); ?> <br/>
-         </p>
+        <p> <strong>Telefono</strong>: 0276-341.47.12 <br/>
+          <strong>Celular</strong>:   0414-724.80.43 </p>
         <!--  
         <h4 class="braker_bottom margin_top"> Direccion de Facturación de Forma de Pago</h4>
         <p> <strong>Johann Marquez</strong> <br/>

@@ -61,79 +61,16 @@ class CategoriaController extends Controller
 	 */
 	public function actionCreate()
 	{
-		if(isset($_GET['id']))
-		{
-			$model = Categoria::model()->findByPk($_GET['id']);
-		}
-		else	
-			$model=new Categoria;
+		$model=new Categoria;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-		
+
 		if(isset($_POST['Categoria']))
 		{
 			$model->attributes=$_POST['Categoria'];
-			$model->estado = $_POST['Categoria']['estado'];
-			$model->descripcion = $_POST['Categoria']['descripcion'];
-			
-			if($model->save()){
-
-	        	$images = CUploadedFile::getInstancesByName('url');
-					
-			 	if (isset($images) && count($images) > 0) {
-					foreach ($images as $image => $pic) {
-
-		                $nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
-						
-						if(!is_dir($nombre))
-						{
-				   			mkdir($nombre,0777,true);
-				 		}
-								
-		                if ($pic->saveAs($nombre."/img.jpg")) {
-							
-							 $model->urlImagen = '/images/categorias/'. $model->id .'/img.jpg';
-							//$model->urlImagen = $_POST['Categoria']['urlImagen'];
-							$model->save();
-							
-							$image = Yii::app()->image->load($nombre."/img.jpg");
-		                    $image->resize(150, 150);
-		                    $image->save($nombre."/img.jpg");
-		
-		                	} 
-						}
-		            }
-			
-				/*
-				$model->imagen = CUploadedFile::getInstanceByName($_POST['Categoria']['urlImagen']);
-				
-					
-				if(!is_dir($nombre))
-				{
-		   			mkdir($nombre,0777,true);
-		 		}
-				
-				echo "aaaaa:".$model->imagen;
-				$model->imagen->saveAs($nombre."/img.jpg");
-			
-				$model->imagen = CUploadedFile::getInstance($model,'urlImagen');
-								
-				$nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
-					
-				echo "imagen:".$model->urlImagen." -".$nombre;
-					
-				if(!is_dir($nombre))
-				{
-		   			mkdir($nombre,0777,true);
-		 		}
-				 
-				$model->imagen->saveAs($nombre);*/
-				
-				$this->redirect(array('admin'));
-			}
-			else
-				echo $model->getErrors();	
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -201,13 +138,13 @@ class CategoriaController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$categoria = new Categoria;
-		
-		$dataProvider = $categoria->search();
-		
-		$this->render('admin',
-		array('categoria'=>$categoria,
-		'dataProvider'=>$dataProvider,
+		$model=new Categoria('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Categoria']))
+			$model->attributes=$_GET['Categoria'];
+
+		$this->render('admin',array(
+			'model'=>$model,
 		));
 	}
 

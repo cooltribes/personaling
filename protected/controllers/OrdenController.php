@@ -1,29 +1,26 @@
 <?php
 
 class OrdenController extends Controller
-{	
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
+{
 	
 		/**
 	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter. 
+	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */
 	public function accessRules()
 	{
 		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'users'=>array('*'),
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array(''),
+				'users'=>array('@'),
+			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','admin','detalles','validar'),
 				'users'=>array('admin'),
-				'expression' => 'Yii::app()->user->isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -71,6 +68,7 @@ class OrdenController extends Controller
 		if($_POST['accion']=="aceptar")
 		{
 			$detalle = Detalle::model()->findByPk($_POST['id']);
+<<<<<<< HEAD
 			$detalle->estado = 1; // aceptado
 			
 			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
@@ -115,6 +113,17 @@ class OrdenController extends Controller
 			if($detalle->save())
 				if($orden->save())
 					echo "ok"; 
+=======
+		
+			$detalle->estado = 1;
+		
+			if($detalle->save())
+				echo "ok";
+		}
+		else if($_POST['accion']=="rechazar")
+		{
+			// lalalalala
+>>>>>>> 810cb7523af9fca4177b6cf268f29faf1783d927
 		}
 	}
 

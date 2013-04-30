@@ -2,15 +2,6 @@
 
 class BolsaController extends Controller
 {
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
 
 		/**
 	 * Specifies the access control rules.
@@ -236,8 +227,6 @@ class BolsaController extends Controller
 			
 			if(isset($_POST['Direccion'])) // nuevo registro
 			{
-				//if($_POST['Direccion']['nombre']!="")
-			//	{
 				
 				// guardar en el modelo direccion
 				$dir->attributes=$_POST['Direccion'];
@@ -253,16 +242,11 @@ class BolsaController extends Controller
 				
 				$dir->user_id = Yii::app()->user->id;
 				
-					if($dir->save())
-					{
-						$this->render('pago',array('idDireccion'=>$dir->id));
-						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
-					}
-					
-				//} // nombre
-			//	else {
-					//$this->render('direcciones',array('dir'=>$dir)); // regresa
-				//}
+				if($dir->save())
+				{
+					$this->render('pago',array('idDireccion'=>$dir->id));
+					//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
+				}
 				
 			}else // si está viniendo de la pagina anterior que muestre todo 
 			{
@@ -332,7 +316,6 @@ class BolsaController extends Controller
 					$dirEnvio->cedula = $dir1->cedula;
 					$dirEnvio->dirUno = $dir1->dirUno;
 					$dirEnvio->dirDos = $dir1->dirDos;
-					$dirEnvio->telefono = $dir1->telefono;
 					$dirEnvio->ciudad = $dir1->ciudad;
 					$dirEnvio->estado = $dir1->estado;
 					$dirEnvio->pais = $dir1->pais;
@@ -348,8 +331,12 @@ class BolsaController extends Controller
 							$orden->iva = $_POST['iva'];
 							$orden->descuentoRegalo = 0;
 							$orden->total = $_POST['total'];
+<<<<<<< HEAD
 							$orden->estado = 1; // en espera de pago
 							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+=======
+							$orden->estado = 1; // en espera de pago (?)
+>>>>>>> 810cb7523af9fca4177b6cf268f29faf1783d927
 							$orden->bolsa_id = $bolsa->id; 
 							$orden->user_id = $usuario;
 							$orden->pago_id = $pago->id;
@@ -389,17 +376,6 @@ class BolsaController extends Controller
 								{
 									$prod->delete();															
 								}
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								$estado = new Estado;
-									
-								$estado->estado = 1;
-								$estado->user_id = $usuario;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
-								
-								if($estado->save())
-									echo "";
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
 							echo CJSON::encode(array(
@@ -441,19 +417,12 @@ class BolsaController extends Controller
 	{
 		if (Yii::app()->request->isPostRequest) // asegurar que viene en post
 		{
-			$usuario = Yii::app()->user->id; 
-			
 			$detPago = Detalle::model()->findByPk($_POST['idDetalle']);
 			
 			$detPago->nombre = $_POST['nombre'];
 			$detPago->nTransferencia = $_POST['numeroTrans'];
 			$detPago->comentario = $_POST['comentario'];
-			$detPago->banco = $_POST['banco'];
-			$detPago->monto = $_POST['monto'];
-			$detPago->cedula = $_POST['cedula'];
-			$detPago->estado = 0; // defecto
 			
-							
 			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia'];
 			
 			if($detPago->save())
@@ -463,19 +432,7 @@ class BolsaController extends Controller
 				
 				if($orden->save())
 				{
-					// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-					$estado = new Estado;
-									
-					$estado->estado = 2;
-					$estado->user_id = $usuario;
-					$estado->fecha = date("Y-m-d");
-					$estado->orden_id = $orden->id;
-					
-					if($estado->save())
-					{
-						echo "ok";	
-					}	
-					
+					echo "ok";
 				}				
 			}
 			

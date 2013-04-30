@@ -10,16 +10,11 @@
  * @property string $urlImagen
  * @property string $mTitulo
  * @property string $mDescripcion
- * @property string $descripcion
- * @property string $pClaves
- * @property string $urlSugerida
- * @property string $estado
  */
 class Categoria extends CActiveRecord
 {
 	
 	public $items;
-	//public $imagen="";
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -48,14 +43,13 @@ class Categoria extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('padreId', 'numerical', 'integerOnly'=>true),
-			array('nombre, pClaves, urlSugerida', 'length', 'max'=>100),
+			array('nombre', 'length', 'max'=>100),
 			array('urlImagen', 'length', 'max'=>150),
-			//array('imagen', 'file', 'types'=>'jpg, gif, png'),
 			array('mTitulo', 'length', 'max'=>80),
 			array('mDescripcion', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, padreId, nombre, urlImagen, mTitulo, mDescripcion, estado, descripcion, urlSugerida, pClaves', 'safe', 'on'=>'search'),
+			array('id, padreId, nombre, urlImagen, mTitulo, mDescripcion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,10 +77,6 @@ class Categoria extends CActiveRecord
 			'urlImagen' => 'Url Imagen',
 			'mTitulo' => 'Meta Titulo',
 			'mDescripcion' => 'Meta Descripcion',
-			'Descripcion' => 'Descripción',
-			'urlSugerida' => 'Url Sugerida',
-			'pClaves' => 'Palabras Claves',
-			'estado' => 'Estado',
 		);
 	}
 
@@ -107,10 +97,6 @@ class Categoria extends CActiveRecord
 		$criteria->compare('urlImagen',$this->urlImagen,true);
 		$criteria->compare('mTitulo',$this->mTitulo,true);
 		$criteria->compare('mDescripcion',$this->mDescripcion,true);
-		$criteria->compare('Descripcion',$this->descripcion,true);
-		$criteria->compare('pClaves',$this->pClaves,true);
-		$criteria->compare('urlSugerida',$this->urlSugerida,true);
-		$criteria->compare('estado',$this->estado,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -129,7 +115,7 @@ class Categoria extends CActiveRecord
 			$this->padreId = 0;
 		}
 		
-		//echo($this->padreId);
+		echo($this->padreId);
 		
 
 	return parent::beforeSave();	

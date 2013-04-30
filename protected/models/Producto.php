@@ -87,7 +87,6 @@ class Producto extends CActiveRecord
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
 			'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
-			'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id'),
 			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
 			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
 			'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
@@ -153,7 +152,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('t.nombre',$this->nombre,true);
-		$criteria->compare('t.estado',$this->estado);
+		$criteria->compare('estado',$this->estado);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('proveedor',$this->proveedor,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
@@ -239,18 +238,6 @@ class Producto extends CActiveRecord
 	return $this->preciotallacolorSum(array('condition'=>'talla_id = :talla_id AND color_id=:color_id',
                   'params' => array(':talla_id' => $talla,':color_id'=>$color)
 			));
-	}
-	public function getImageUrl($color=null)
-	{
-			if (is_null($color)){
-				if ($this->mainimage) return Yii::app()->baseUrl.$this->mainimage->url;
-			}else{
-				$imagecolor = $this->colorimage( array('condition'=>'color_id=:color_id','params' => array(':color_id'=>$color) ) ); 
-				if ( isset( $imagecolor) ) return  Yii::app()->baseUrl.$imagecolor->url;
-				elseif ($this->mainimage) return Yii::app()->baseUrl.$this->mainimage->url;
-			}
-			return "http://placehold.it/180";
-			
 	}
 	public function getColores($talla=null)
 	{

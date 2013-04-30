@@ -54,7 +54,7 @@
           <!-- Boton de comprar  -->
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span>Subtotal</span><div id="price">Bs. <?php echo $model->getPrecio(); ?></div></h4>
+              <h4 class="precio" ><span>Subtotal</span> Bs. 13.500,00</h4>
             </div>
             <div class="span2">
               <div class=""> 
@@ -165,16 +165,16 @@
                 <?php $color_id = $lookhasproducto->color_id; ?>
                 </a>
                 <?php if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 ){ ?>
-                <?php echo CHtml::checkBox("producto[]",true,array('onclick'=>'js:updatePrice();','value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
+                <?php echo CHtml::checkBox("producto[]",true,array('value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
                 <?php } else { ?>
-                 <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'disabled'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>	
+                 <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>	
 					
                 <?php } ?>
                
                 <div class="metadata_top">
                   <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Seleccione','class'=>'span5 tallas')); ?> </div>
+                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('class'=>'span5 tallas')); ?> </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
@@ -186,7 +186,7 @@
 			?>
                     	
                     </span></div>
-                    <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>"><?php echo $lookhasproducto->producto->getCantidad(null,$color_id); ?> unds.</span></div>
+                    <div class="span5"> <span><?php echo $lookhasproducto->producto->getCantidad(null,$color_id); ?> unds.</span></div>
                   </div>
                 </div>
               </div>
@@ -277,69 +277,4 @@
   <div class="modal-footer"> <a href="#" class="btn btn-danger">Añadir al Look</a> </div>
 </div>
 
-<!-- // Modal Window -->
-<script>
-	function updateCantidad(object){
-		//alert(object.id.substring(5));
-		//alert(object.value);
-		//var talla = this.val();
-		//var prendas = $(this).attr('id');
-		//alert(talla);
-		//alert(prendas);
-		<?php
-		//'colores'=>'js:colores',
-		echo CHtml::ajax(array(
-            'url'=>array('producto/updateCantidad'),
-            'data'=> array('talla'=>'js:object.value','prenda'=>'js:object.id.substring(5)'),
-            'type'=>'post',
-            'dataType'=>'json',
-            'success'=>"function(data)
-            {
-                if (data.status == 'success')
-                {
-                  	//$('#price').html('Bs.'+data.div);
-                  	$('#'+data.id).fadeOut(400,function() { $(this).html(data.div+ ' unds.').fadeIn(400); });
-                  //alert(data.div);
-
-                }
-
- 
-            } ",
-            )) 
-		?>		
-	}
-	function updatePrice(){
-		var prendas = '';
-		//var colores = '';
-		$("input[name='producto[]']:checked").each(function(){
-			//tempo = $(this).val().split('_');
-			//prendas += tempo[0]+',';
-			//colores += tempo[1]+',';
-			prendas += $(this).val()+',';
-		});
-		//alert(prendas);
-		<?php
-		//'colores'=>'js:colores',
-		echo CHtml::ajax(array(
-            'url'=>array('look/updatePrice'),
-            'data'=> array('prendas'=>'js:prendas','look_id'=>'js:$("#look_id").val()'),
-            
-            'type'=>'post',
-            'dataType'=>'json',
-            'success'=>"function(data)
-            {
-                if (data.status == 'success')
-                {
-                  	//$('#price').html('Bs.'+data.div);
-                  	$('#price').fadeOut(400,function() { $(this).html('Bs.'+data.div).fadeIn(400); });
-                  //alert(data.div);
-
-                }
-
- 
-            } ",
-            )) 
-		?>
-		
-	}
-</script> 
+<!-- // Modal Window --> 

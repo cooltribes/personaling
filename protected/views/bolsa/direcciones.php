@@ -78,97 +78,101 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'direccion_nueva',
 	'enableAjaxValidation'=>false,
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true, 
-	),
-	'htmlOptions'=>array('class'=>'form-stacked'),
+	'htmlOptions'=>array('class'=>'form-stacked personaling_form'),
 )); ?>
       
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form" enctype="multipart/form-data">
+        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form" class="form-stacked personaling_form" enctype="multipart/form-data">
           <fieldset>
             <legend >Incluir una nueva dirección de envío: </legend>
             <div class="control-group"> 
-             
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Nombre de la persona a la que envias <span class="required">*</span></label>
+<![endif]-->
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
-              	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
+              	<?php echo $form->textField($dir,'nombre',array('class'=>'span5','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
+              	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span5">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-             
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Apellido de la persona a la que envias tu compra<span class="required">*</span></label>
+<![endif]-->
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'apellido',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Apellido de la persona a la que envias tu compra')); 
-              	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Apellido de la persona a la que envias tu compra" name="RegistrationForm[email]" class="span4">
+              	<?php echo $form->textField($dir,'apellido',array('class'=>'span5','maxlength'=>70,'placeholder'=>'Apellido de la persona a la que envias tu compra')); 
+              	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Apellido de la persona a la que envias tu compra" name="RegistrationForm[email]" class="span5">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-             
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Cedula de Identidad de la persona a la que envias<span class="required">*</span></label>
+<![endif]-->
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'cedula',array('class'=>'span4','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona a la que envias')); 
-              	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span4">
+              	<?php echo $form->textField($dir,'cedula',array('class'=>'span5','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona a la que envias')); 
+              	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span5">
               	?>
                
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-           
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.) <span class="required">*</span></label>
+<![endif]-->
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'dirUno',array('class'=>'span4','maxlength'=>120,'placeholder'=>'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)'));
-				//<input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" name="RegistrationForm[email]" class="span4">
+              	<?php echo $form->textField($dir,'dirUno',array('class'=>'span5','maxlength'=>120,'placeholder'=>'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)'));
+				//<input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" name="RegistrationForm[email]" class="span5">
 				 ?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-            
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc) </label>
+<![endif]-->
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'dirDos',array('class'=>'span4','maxlength'=>120,'placeholder'=>'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)'));
-				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" name="RegistrationForm[email]" class="span4">
+              	<?php echo $form->textField($dir,'dirDos',array('class'=>'span5','maxlength'=>120,'placeholder'=>'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)'));
+				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" name="RegistrationForm[email]" class="span5">
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-            
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Ciudad <span class="required">*</span></label>
+<![endif]-->
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Numero de Telefono'));
-				 ?>
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-           
-              <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'ciudad',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Ciudad'));
-				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Ciudad" name="RegistrationForm[email]" class="span4">
+              	<?php echo $form->textField($dir,'ciudad',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Ciudad'));
+				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Ciudad" name="RegistrationForm[email]" class="span5">
 				 ?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-              
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">Estado <span class="required">*</span></label>
+<![endif]-->
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'estado',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Estado'));
-              	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Estado" name="RegistrationForm[email]" class="span4">
+              	<?php echo $form->textField($dir,'estado',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Estado'));
+              	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Estado" name="RegistrationForm[email]" class="span5">
               	?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-            
+              <!--[if lte IE 7]>
+            <label for="RegistrationForm_email" class="control-label required">País <span class="required">*</span></label>
+<![endif]-->
               <div class="controls">
               	
-              	 <?php echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              	 <?php echo $form->dropDownList($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
               	 /*
 				  * <select>
                   <option>Venezuela</option>

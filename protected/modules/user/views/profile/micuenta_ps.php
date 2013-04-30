@@ -88,14 +88,7 @@ $this->breadcrumbs=array(
            <ul class="nav nav-stacked nav-tabs">
               <li><a href="#" title="Tus Looks Publicados">Tus Looks Publicados</a></li>
               <li><a href="#" title="Tus Looks Pendientes por aprobació">Tus Looks Pendientes por aprobación</a></li>
-              <li>
-              		<?php $this->widget('bootstrap.widgets.TbButton', array(
-					    'label'=>'Crear Look',
-					    'type'=>'danger',
-						'url'=>array('//look/create')	,    
-					)); ?> 
-              	
-              </li>
+              <li><a href="crear_look.php" title="Crear look" class="btn btn-danger">Crear Look</a></li>
               <li><a href="#" title="Crear look">Manual para crear un Look</a></li>
             </ul>
            

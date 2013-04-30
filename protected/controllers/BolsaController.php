@@ -349,6 +349,7 @@ class BolsaController extends Controller
 							$orden->descuentoRegalo = 0;
 							$orden->total = $_POST['total'];
 							$orden->estado = 1; // en espera de pago
+							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
 							$orden->bolsa_id = $bolsa->id; 
 							$orden->user_id = $usuario;
 							$orden->pago_id = $pago->id;

@@ -17,7 +17,14 @@ $usuario = User::model()->findByPk($orden->user_id);
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
       <th scope="col" colspan="4"> PEDIDO #<?php echo $orden->id; ?> - <span class="color1"><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></span> </th>
-      <th scope="col" colspan="2"><div class="text_align_right">23/03/2013 - 05:30 p.m.</div></th>
+      <th scope="col" colspan="2"><div class="text_align_right">
+      	<?php
+      	
+      	if($orden->fecha!="")
+   			echo date("d-m-Y H:i:s",strtotime($orden->fecha));
+      	
+      	?>
+      </div></th>
     </tr>
     <tr>
    	<td><p class="T_xlarge margin_top_xsmall color1">
@@ -27,7 +34,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 		echo "En espera de pago"; 
 	
 	if($orden->estado == 2)
-		echo "En espera de confirmación"; 
+		echo "En espera de confirmación";
+	
+	if($orden->estado == 3)
+		echo "Pago Confirmado";
 	
 	// agregar demas estados
 ?>
@@ -39,7 +49,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         Mensajes<br/></td>
       <td><p class="T_xlarge margin_top_xsmall">150</p>
         Prendas</td>
-      <td><p class="T_xlarge margin_top_xsmall"><?php echo $orden->total; ?></p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
         Bolivares (Bs.)</td>
       <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
@@ -98,7 +108,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 					//hacer los demas tipos
 						
 				echo("<td>".$detalle->nTransferencia."</td>");	
-				echo("<td>".$detalle->monto."</td>");
+				echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
 				echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
 				echo("
 				</tr>
@@ -127,7 +137,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 					//hacer los demas tipos
 						
 				echo("<td> PAGO RECHAZADO </td>");	
-				echo("<td></td>");
+				echo("<td>".$detalle->monto."</td>");
 				echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
 				echo("
 				</tr>
@@ -203,9 +213,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				echo("<div class='alert alert-block '>");
 				echo(" <h4 class='alert-heading '>Confirmar Pago:</h4>");
 				echo("<ul class='padding_bottom_small padding_top_small'>");
-				echo("<li>Banco Mercantil</li>");
+				echo("<li>Banco: ".$detalle->banco."</li>");
 				echo("<li>Numero: ".$detalle->nTransferencia."</li>");
-				echo("<li>Monto: ".$detalle->monto." Bs.</li>");
+				echo("<li>Monto: ".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</li>");
 				echo("<li>Fecha: ".date("d/m/Y",strtotime($detalle->fecha))."</li>");
 			
 				echo("
@@ -249,6 +259,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				if($est->estado==2)
 					echo("<td>Pendiente por confirmar</td>");
 				
+				if($est->estado==3)
+					echo("<td>Pago Confirmado</td>");
+				
 				$usu = User::model()->findByPk($est->user_id);
 				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
 				
@@ -262,7 +275,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <tr>
             <td>Nuevo Pedido</td>
             <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
-            <td> AÑADIR FECHA A TABLA ORDEN </td>
+            <td> <?php echo $orden->fecha; ?></td>
             <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
@@ -345,16 +358,16 @@ $usuario = User::model()->findByPk($orden->user_id);
 					
 					$iva = $precio->precioDescuento * 0.12;
 					
-					echo("<td>".$a."</td>"); //precio individual sin descuento
+					echo("<td>".Yii::app()->numberFormatter->formatDecimal($a)."</td>"); //precio individual sin descuento
 					
 					$b = $a * $prod->cantidad;					
-					echo("<td>".$b."</td>"); // subtotal
+					echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
 					
 					$d = $c * $prod->cantidad;					
-					echo("<td>".$d."</td>"); //descuento total
+					echo("<td>".Yii::app()->numberFormatter->formatDecimal($d)."</td>"); //descuento total
 					
 					$e = $iva * $prod->cantidad;
-					echo("<td>".$e."</td>"); // impuesto total
+					echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
 					
 					echo("
 						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
@@ -407,23 +420,23 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
           <td>SubTotal</td>
-          <td><?php echo($orden->subtotal); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal); ?></td>
         </tr>
         <tr>
           <td>Descuento</td>
-          <td><?php echo($orden->descuento); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
         </tr>
         <tr>
           <td>Envio y Transporte</td>
-          <td><?php echo($orden->envio); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio); ?></td>
         </tr>
         <tr>
           <td>Impuesto</td>
-          <td><?php echo($orden->iva); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva); ?></td>
         </tr>
         <tr>
           <td>Total</td>
-          <td><?php echo($orden->total); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></td>
         </tr>
       </table></div>
     </div>

@@ -348,6 +348,13 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 		var cedula = $("#cedula").attr("value");
 		var monto = $("#monto").attr("value");
 		
+		if(nombre=="" || numeroTrans=="" || monto=="")
+		{
+			alert("Por favor complete los datos.");
+		}
+		else
+		{
+		
  		$.ajax({
 	        type: "post", 
 	        url: "../cpago", // action 
@@ -362,7 +369,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 				}
 	       	}//success
 	       })
- 			
+ 		}	
 		
 		
 	}

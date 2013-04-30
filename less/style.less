@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 23/04/2013 */ 
+/* Project name: Personaling  al 24/04/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -585,6 +585,59 @@ src: url('../fonts/entypo.woff'),
 
 /*------------- Detalle de Producto OFF -------------*/
 
+
+/*------------- Proceso de Compra ON -------------*/
+
+/*Loading images*/
+
+.first-not_done, .middle-not_done , .last-not_done, .first-done, .middle-done, .last-done { width:119px; float:left;}
+.first-not_done {
+  background-image: url(../images/i1small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
+  height: 35px;
+}
+.middle-not_done {
+  background-image: url(../images/i2small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
+  height: 35px; 
+
+}
+.last-not_done {
+  background-image: url(../images/i3small.png);
+  background-repeat: no-repeat;
+  height: 35px; 
+
+}
+.first-done {
+  background-image: url(../images/j1small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;  
+
+  height: 35px;
+}
+.middle-done {
+  background-image: url(../images/j2small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;  
+
+  height: 35px;
+}
+.last-done {
+  background-image: url(../images/j3small.png);
+  background-repeat: no-repeat;  
+
+  height: 35px;
+}
+.description-text {
+  margin-right: -40px;
+  font-size: 11px;
+}
+
+
+/*------------- Proceso de Compra OFF -------------*/
+
 /*------------ Detalle del Look ON --------------*/
 
 
@@ -770,13 +823,15 @@ src: url('../fonts/entypo.woff'),
 	
   
 		}
-	.span3:hover 
+	.span3:hover , .span6:hover 
 	{
 		.ver_detalle, .agregar_a_bolsa{
 			opacity:1;
 			}
 	}
-	.span3{
+	.item_tienda:nth-child(odd) {
+    margin-left:0;}
+	.span3, .item_tienda{
 		margin-bottom:50px;
 		text-align:center;
 		background:url(../images/shdow_productos_tienda.png) no-repeat center bottom ;

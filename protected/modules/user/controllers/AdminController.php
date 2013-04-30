@@ -104,6 +104,18 @@ class AdminController extends Controller
 		$model=$this->loadModel();
 		$profile=$model->profile;
 		$profile->profile_type = 2;
+if(isset($_POST['Profile']))
+		{
+			//$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				
+				
+				$profile->save();
+				$this->redirect(array('view','id'=>$model->id));
+			} else $profile->validate();
+		}		
 		$this->render('estilos',array(
 			'model'=>$model,
 			'profile'=>$profile,
@@ -114,6 +126,28 @@ class AdminController extends Controller
 		$model=$this->loadModel();
 		$profile=$model->profile;
 		$profile->profile_type = 3;
+		$this->performAjaxValidation(array($profile));
+if(isset($_POST['Profile']))
+		{
+			//$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				
+				
+				if ($profile->save()){
+				$this->redirect(array('view','id'=>$model->id));
+					} else {
+					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
+				}
+				
+			} else{
+				//echo CActiveForm::validate($profile);
+				 $profile->validate();
+				// echo 'RAFA';
+				//Yii::app()->end(); 
+			}
+		}		
 		$this->render('corporal',array(
 			'model'=>$model,
 			'profile'=>$profile,

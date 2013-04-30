@@ -71,3 +71,10 @@ $this->breadcrumbs=array(
     </div>
   </div>
 </div>
+
+<?php  
+ $baseUrl = Yii::app()->baseUrl;
+ $cs = Yii::app()->getClientScript();
+ $cs->registerScriptFile($baseUrl.'/js/facebook.js');
+
+?>

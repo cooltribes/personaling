@@ -29,6 +29,22 @@ $this->breadcrumbs=array(
           <fieldset>
             <legend>Elige las tallas disponibles para este producto: </legend>
             <p class="margin_bottom muted"> Haz click sobre los botones para elegir las tallas </p>
+            <div id="div_tallas">
+            <div class="control-group">
+              <label class="control-label required">Bolsos y Otros:</label>
+              <div class="controls">
+              	 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'type' => 'primary',
+				   
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => array(
+				        array('url'=>'#0','label'=>'Sin Talla',
+				       ),
+				       
+				    ),
+				)); ?>
+              </div>
+              </div>
             <div class="control-group">
               <label class="control-label required">Vestidos y Trajes:</label>
               <div class="controls">
@@ -49,9 +65,10 @@ $this->breadcrumbs=array(
 				   
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => array(
-				        array('label'=>'32',
-				       // 'buttonType' => 'ajaxLink',
 				        /*
+				        array('label'=>'32',
+				        'buttonType' => 'ajaxLink',
+				        
 				        'ajaxOptions'=>array(
 							 'type'=>'post',
 							 'url'=>array('producto/addTallacolor', 'id'=>$model->id),
@@ -61,14 +78,17 @@ $this->breadcrumbs=array(
 			                    alert( data );
 			                  }",
 						)
-						 * 
-						 */),
-				        array('label'=>'34',),
-				        array('label'=>'36',),
-				        array('label'=>'38',),
-				        array('label'=>'40',),
-				        array('label'=>'42',),
-				        array('label'=>'44',),
+						  
+						 ),
+						 * */
+				       
+				        array('label'=>'32','url'=>'#1'),
+				        array('label'=>'34','url'=>'#2'),
+				        array('label'=>'36','url'=>'#3'),
+				        array('label'=>'38','url'=>'#4'),
+				        array('label'=>'40','url'=>'#5'),
+				        array('label'=>'42','url'=>'#6'),
+				        array('label'=>'44','url'=>'#7'),
 				    ),
 				)); ?>
               </div>
@@ -76,45 +96,57 @@ $this->breadcrumbs=array(
             <div class="control-group">
               <label class="control-label required">Vestidos y Trajes:</label>
               <div class="controls">
-                <div class="btn-group" data-toggle="buttons-checkbox">
-                  <button type="button" class="btn btn-inverse">XS</button>
-                  <button type="button" class="btn btn-inverse">S</button>
-                  <button type="button" class="btn btn-inverse">M</button>
-                  <button type="button" class="btn btn-inverse">L</button>
-                  <button type="button" class="btn btn-inverse">X</button>
-                </div>
-                <div style="display:none" class=" muted">Ayuda</div>
+                
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'type' => 'primary',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => array(
+				        array('label'=>'XS','url'=>'#9'),
+				        array('label'=>'S','url'=>'#10'),
+				        array('label'=>'M','url'=>'#11'),
+				        array('label'=>'L','url'=>'#12'),
+				        array('label'=>'XL','url'=>'#13'),
+				    ),
+				)); ?>
               </div>
             </div>
             <div class="control-group">
               <label class="control-label required">Pantalones:</label>
               <div class="controls">
-                <div class="btn-group" data-toggle="buttons-checkbox">
-                  <button type="button" class="btn btn-inverse">24</button>
-                  <button type="button" class="btn btn-inverse">26</button>
-                  <button type="button" class="btn btn-inverse">28</button>
-                  <button type="button" class="btn btn-inverse">30</button>
-                  <button type="button" class="btn btn-inverse">32</button>
-                  <button type="button" class="btn btn-inverse">34</button>
-                </div>
-                <div style="display:none" class=" muted">Ayuda</div>
+               <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'type' => 'primary',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => array(
+				        array('label'=>'24','url'=>'#14'),
+				        array('label'=>'26','url'=>'#15'),
+				        array('label'=>'28','url'=>'#16'),
+				        array('label'=>'30','url'=>'#18'),
+				        array('label'=>'32','url'=>'#1'),
+				        array('label'=>'34','url'=>'#2'),
+				    ),
+				)); ?>
               </div>
             </div>
             <div class="control-group">
               <label class="control-label required">Zapatos:</label>
               <div class="controls">
-                <div class="btn-group" data-toggle="buttons-checkbox">
-                  <button type="button" class="btn btn-inverse">35</button>
-                  <button type="button" class="btn btn-inverse">36</button>
-                  <button type="button" class="btn btn-inverse">37</button>
-                  <button type="button" class="btn btn-inverse">38</button>
-                  <button type="button" class="btn btn-inverse">39</button>
-                  <button type="button" class="btn btn-inverse">40</button>
-                  <button type="button" class="btn btn-inverse">41</button>
-                  <button type="button" class="btn btn-inverse">42</button>
-                </div>
-                <div style="display:none" class=" muted">Ayuda</div>
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'type' => 'primary',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => array(
+				        array('label'=>'35','url'=>'#19'),
+				        array('label'=>'36','url'=>'#3'),
+				        array('label'=>'37','url'=>'#20'),
+				        array('label'=>'38','url'=>'#4'),
+				        array('label'=>'39','url'=>'#21'),
+				        array('label'=>'40','url'=>'#5'),
+				        array('label'=>'41','url'=>'#22'),
+				        array('label'=>'42','url'=>'#6'),
+				    ),
+				)); ?>
+               
               </div>
+            </div>
             </div>
           </fieldset>
           <fieldset class="margin_top">
@@ -248,9 +280,10 @@ $this->breadcrumbs=array(
 	                     {
 	                       var tallas = '';
 	                       $('.btn-group a.active').each(function(index){
-	                       		tallas += $(this).html()+',';
+	                       		//tallas += $(this).html()+',';
+	                       		tallas += $(this).attr('href');
 	                       });
-						   tallas = tallas.substring(0, tallas.length-1);
+						   //tallas = tallas.substring(0, tallas.length-1);
 	                       var colores = '';
 	                       $('.select2-search-choice div').each(function(index){
 	                       		colores +=$(this).html()+ ',';
@@ -410,3 +443,42 @@ function addColor()
 }
  
 </script>
+<?php 
+$script = "
+	
+	$('#div_tallas .btn-group').on('click', 'a', function(e) {
+		if ($(this).attr('href') == '#0'){
+			//alert('entro');
+			$('#div_tallas a.active').each(function(){
+				if ($(this).attr('href') != '#0')
+					$(this).removeClass('active');
+			});
+			//$(this).siblings('.active').removeClass('active');
+			//if (!($(this).hasClass('active')))
+			
+		}
+		if ($('a[href=\"#0\"]').hasClass('active') && $(this).attr('href') != '#0')
+			return false;
+		//alert('rafa');
+		//if (($(this).hasClass('active')))
+				
+		//if (($(this).hasClass('active')))
+		//	$(this).removeClass('active');
+		 //alert($(this).attr('href'));
+		 /*
+		 var ids = 0;
+		 $(this).siblings('.active').each(function(){
+		 	//alert($(this).attr('href').substring(1));
+		 	ids += parseInt($(this).attr('href').substring(1));
+			
+		 });
+		 if (!($(this).hasClass('active')))
+		 	ids += parseInt($(this).attr('href').substring(1));
+		
+		 $(this).parent().next('input').val(ids);*/
+		 //return false;
+		 e.preventDefault();
+	 });
+";
+?>
+<?php Yii::app()->clientScript->registerScript('botones',$script); ?>

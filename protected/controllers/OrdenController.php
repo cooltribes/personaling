@@ -68,7 +68,6 @@ class OrdenController extends Controller
 		if($_POST['accion']=="aceptar")
 		{
 			$detalle = Detalle::model()->findByPk($_POST['id']);
-<<<<<<< HEAD
 			$detalle->estado = 1; // aceptado
 			
 			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
@@ -109,22 +108,17 @@ class OrdenController extends Controller
 			
 			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
 			$orden->estado = 1; // regresa a "En espera de pago"
-					
+			
 			if($detalle->save())
 				if($orden->save())
 					echo "ok"; 
-=======
 		
 			$detalle->estado = 1;
 		
 			if($detalle->save())
 				echo "ok";
 		}
-		else if($_POST['accion']=="rechazar")
-		{
-			// lalalalala
->>>>>>> 810cb7523af9fca4177b6cf268f29faf1783d927
-		}
+
 	}
 
 	// Uncomment the following methods and override them if needed

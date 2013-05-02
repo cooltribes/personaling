@@ -115,7 +115,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         		</table> </div>
 				");
 			}
-<<<<<<< HEAD
+
 			else if($detalle->estado == 2) // rechazado
 				{
 						echo("
@@ -146,8 +146,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				");
 					
 				}
-=======
->>>>>>> 810cb7523af9fca4177b6cf268f29faf1783d927
+
 		  	?>    
      
       <div class="well well-small margin_top well_personaling_small">
@@ -248,7 +247,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <th scope="col">Fecha</th>
             <th scope="col">&nbsp;</th>
           </tr>
-<<<<<<< HEAD
+
           <?php
           
           $estados = Estado::model()->findAllByAttributes(array('orden_id'=>$orden->id),array('order'=>'id DESC'));
@@ -279,25 +278,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <tr>
             <td>Nuevo Pedido</td>
             <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
-            <td> <?php echo $orden->fecha; ?></td>
-=======
-          <tr>
-            <td>Pendiente por confirmar</td>
-            <td>Sophia Marquez</td>
-            <td>21/12/2012 </td>
-            <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
-          </tr>
-          <tr>
-            <td>Pendiente de Pago</td>
-            <td>Sophia Marquez</td>
-            <td>21/12/2012 </td>
-            <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
-          </tr>
-          <tr>
-            <td>Nuevo Pedido</td>
-            <td><?php echo($usuario->username); ?></td>
-            <td> AÑADIR FECHA </td>
->>>>>>> 810cb7523af9fca4177b6cf268f29faf1783d927
+            <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
             <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
           </tr>
         </table>

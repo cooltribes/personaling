@@ -16,6 +16,7 @@
         		<?php echo CHtml::link('Estilos',array('estilos',
                                      'id'=>$model->id,)); ?>	
         </li>
+
         <li>
     		<?php echo CHtml::link('Avatar',array('avatar',
                      'id'=>$model->id,)); ?>

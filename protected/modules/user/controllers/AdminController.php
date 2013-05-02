@@ -124,6 +124,7 @@ if(isset($_POST['Profile']))
 			'profile'=>$profile,
 		));		
 	}
+
 	public function actionPedidos()
 	{
 		$model=$this->loadModel();
@@ -163,6 +164,7 @@ if(isset($_POST['Profile']))
 		$profile=$model->profile;
 		$profile->profile_type = 3;
 		$this->performAjaxValidation(array($profile));
+if(isset($_POST['Profile']))
 		if(isset($_POST['Profile']))
 		{
 			//$model->attributes=$_POST['User'];
@@ -197,6 +199,7 @@ if(isset($_POST['Profile']))
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
+		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
 		{

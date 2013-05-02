@@ -598,7 +598,17 @@ src: url('../fonts/entypo.woff'),
 
 /*Loading images*/
 
-.first-not_done, .middle-not_done , .last-not_done, .first-done, .middle-done, .last-done { width:119px; float:left;}
+.first-not_done, .middle-not_done , .last-not_done, .first-done, .middle-done, .last-done , .first-past, .middle-past, .last-past { 
+	width:119px; 
+	float:left;
+	text-align: left;
+	padding-top: 3.5em;
+	font-size: .8em;
+	line-height:1.1em;
+	color:#999;
+	a{color:#999;}
+
+}
 .first-not_done {
   background-image: url(../images/i1small.png);
   background-repeat: no-repeat;
@@ -616,6 +626,7 @@ src: url('../fonts/entypo.woff'),
   background-image: url(../images/i3small.png);
   background-repeat: no-repeat;
   height: 35px; 
+  width:70px;
 
 }
 .first-done {
@@ -629,15 +640,38 @@ src: url('../fonts/entypo.woff'),
   background-image: url(../images/j2small.png);
   background-repeat: no-repeat;
   margin-right: -20px;  
-
   height: 35px;
 }
 .last-done {
   background-image: url(../images/j3small.png);
   background-repeat: no-repeat;  
+  height: 35px;
+  width:70px;
+}
 
+.first-past {
+  background-image: url(../images/p1small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
   height: 35px;
 }
+.middle-past {
+  background-image: url(../images/p2small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
+  height: 35px; 
+
+}
+.last-past {
+  background-image: url(../images/p3small.png);
+  background-repeat: no-repeat;
+  height: 35px;
+  width:70px;
+
+}
+.progreso_compra{
+	width:400px;
+	margin:0 auto;}
 .description-text {
   margin-right: -40px;
   font-size: 11px;

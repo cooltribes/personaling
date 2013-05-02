@@ -1,26 +1,29 @@
 <?php
 
 class OrdenController extends Controller
-{
+{	
+	/**
+	 * @return array action filters
+	 */
+	public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+		);
+	}
 	
 		/**
 	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
+	 * This method is used by the 'accessControl' filter. 
 	 * @return array access control rules
 	 */
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array(''),
-				'users'=>array('@'),
-			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','admin','detalles','validar'),
 				'users'=>array('admin'),
+				'expression' => 'Yii::app()->user->isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -73,10 +76,17 @@ class OrdenController extends Controller
 		
 			if($detalle->save())
 				echo "ok";
+			
+			//faltaria cambiar el estado del pedido
 		}
 		else if($_POST['accion']=="rechazar")
 		{
-			// lalalalala
+			$detalle = Detalle::model()->findByPk($_POST['id']);
+		
+			$detalle->estado = 2; // rechazado
+		
+			if($detalle->save())
+				echo "ok";
 		}
 	}
 

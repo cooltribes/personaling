@@ -59,24 +59,23 @@
                                         <div class="span5"><span class="precio">Bs. 10.000</span></div>
                                     </div>
                                     <div class="share_like">
-               <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                <div class="btn-group">
-                  <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN -->
-                    
-                    <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                    <li><a class="addthis_button_tweet"></a></li>
-                    <li><a class="addthis_button_pinterest_pinit"></a></li>
-                  </ul>
-                  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                  <!-- AddThis Button END --> 
-                  
-                </div>
-            </div>
-          							<span class="label label-important">Promoción</span>
-                                </article>
+                                        <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                                        <div class="btn-group">
+                                            <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                                            <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                                                <!-- AddThis Button BEGIN -->
+                                                
+                                                <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                                                <li><a class="addthis_button_tweet"></a></li>
+                                                <li><a class="addthis_button_pinterest_pinit"></a></li>
+                                            </ul>
+                                            <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+                                            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
+                                            <!-- AddThis Button END --> 
+                                            
+                                        </div>
+                                    </div>
+                                    <span class="label label-important">Promoción</span> </article>
                             </div>
                             <?php } ?>
                             <?php	
@@ -88,26 +87,17 @@
                 <!-- Carousel nav --> 
                 <a class="carousel-control left margin_top_small bx-prev" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">&rsaquo;</a> </div>
         </div>
-        
     </div>
-   
-        <div class="braker_horz_top_1"><div class="row">
-
+    <div class="braker_horz_top_1">
+        <div class="row">
             <div class="span6">
-            	<div  class="banner_1">
-                               Aqui va un Banner
-
-                </div>
-            
+                <div  class="banner_1"> Aqui va un Banner </div>
             </div>
             <div class="span6">
-            	<div  class="banner_1">
-               <a href="#"> Ver todos los looks</a>
-               <div class="pull-right"><a href="#">  <span class="entypo icon_personaling_big color11">&#59146;</span></a></div>
+                <div  class="banner_1"> <a href="#"> Ver todos los looks</a>
+                    <div class="pull-right"><a href="#"> <span class="entypo icon_personaling_big color11">&#59146;</span></a></div>
                 </div>
-            
             </div>
-
-</div></div>
-
+        </div>
+    </div>
 </div>

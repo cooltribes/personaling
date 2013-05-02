@@ -25,7 +25,7 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view'),
+				'actions'=>array('admin','delete','create','update','view','corporal','estilos'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -99,7 +99,60 @@ class AdminController extends Controller
 			'profile'=>$profile,
 		));
 	}
-
+	public function actionEstilos()
+	{
+		$model=$this->loadModel();
+		$profile=$model->profile;
+		$profile->profile_type = 2;
+if(isset($_POST['Profile']))
+		{
+			//$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				
+				
+				$profile->save();
+				$this->redirect(array('view','id'=>$model->id));
+			} else $profile->validate();
+		}		
+		$this->render('estilos',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));		
+	}
+	public function actionCorporal()
+	{
+		$model=$this->loadModel();
+		$profile=$model->profile;
+		$profile->profile_type = 3;
+		$this->performAjaxValidation(array($profile));
+if(isset($_POST['Profile']))
+		{
+			//$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				
+				
+				if ($profile->save()){
+				$this->redirect(array('view','id'=>$model->id));
+					} else {
+					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
+				}
+				
+			} else{
+				//echo CActiveForm::validate($profile);
+				 $profile->validate();
+				// echo 'RAFA';
+				//Yii::app()->end(); 
+			}
+		}		
+		$this->render('corporal',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));		
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -108,6 +161,7 @@ class AdminController extends Controller
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
+		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
 		{

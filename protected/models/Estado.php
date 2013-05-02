@@ -1,29 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "{{direccionEnvio}}".
+ * This is the model class for table "{{estado}}".
  *
- * The followings are the available columns in table '{{direccionEnvio}}':
+ * The followings are the available columns in table '{{estado}}':
  * @property integer $id
- * @property string $nombre
- * @property string $apellido
- * @property string $cedula
- * @property string $dirUno
- * @property string $dirDos
- * @property string $telefono
- * @property string $ciudad
- * @property string $estado
- * @property string $pais
+ * @property integer $estado
+ * @property integer $user_id
+ * @property string $fecha
+ * @property integer $orden_id
  *
  * The followings are the available model relations:
- * @property Orden[] $ordens
+ * @property Orden $orden
  */
-class DireccionEnvio extends CActiveRecord
+class Estado extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return DireccionEnvio the static model class
+	 * @return Estado the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -35,7 +30,7 @@ class DireccionEnvio extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{direccionEnvio}}';
+		return '{{estado}}';
 	}
 
 	/**
@@ -46,13 +41,12 @@ class DireccionEnvio extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, apellido', 'length', 'max'=>100),
-			array('cedula', 'length', 'max'=>20),
-			array('dirUno, dirDos', 'length', 'max'=>120),
-			array('ciudad, estado, pais, telefono', 'length', 'max'=>45),
+			array('orden_id', 'required'),
+			array('estado, user_id, orden_id', 'numerical', 'integerOnly'=>true),
+			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad, estado, pais', 'safe', 'on'=>'search'),
+			array('id, estado, user_id, fecha, orden_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,7 +58,7 @@ class DireccionEnvio extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'ordens' => array(self::HAS_MANY, 'Orden', 'direccionEnvio_id'),
+			'orden' => array(self::BELONGS_TO, 'Orden', 'orden_id'),
 		);
 	}
 
@@ -75,15 +69,10 @@ class DireccionEnvio extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nombre' => 'Nombre',
-			'apellido' => 'Apellido',
-			'cedula' => 'Cedula',
-			'dirUno' => 'Dir Uno',
-			'dirDos' => 'Dir Dos',
-			'telefono' => 'Telefono',
-			'ciudad' => 'Ciudad',
 			'estado' => 'Estado',
-			'pais' => 'Pais',
+			'user_id' => 'User',
+			'fecha' => 'Fecha',
+			'orden_id' => 'Orden',
 		);
 	}
 
@@ -99,15 +88,10 @@ class DireccionEnvio extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('nombre',$this->nombre,true);
-		$criteria->compare('apellido',$this->apellido,true);
-		$criteria->compare('cedula',$this->cedula,true);
-		$criteria->compare('dirUno',$this->dirUno,true);
-		$criteria->compare('dirDos',$this->dirDos,true);
-		$criteria->compare('telefono',$this->telefono,true);		
-		$criteria->compare('ciudad',$this->ciudad,true);
-		$criteria->compare('estado',$this->estado,true);
-		$criteria->compare('pais',$this->pais,true);
+		$criteria->compare('estado',$this->estado);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('orden_id',$this->orden_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

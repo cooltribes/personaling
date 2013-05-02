@@ -13,6 +13,7 @@
  * @property string $ciudad
  * @property string $estado
  * @property string $pais
+ * @property string $telefono
  * @property integer $user_id
  *
  * The followings are the available model relations:
@@ -50,8 +51,9 @@ class Direccion extends CActiveRecord
 			array('nombre, apellido', 'length', 'max'=>70),
 			array('cedula', 'length', 'max'=>20),
 			array('dirUno, dirDos', 'length', 'max'=>120),
-			array('ciudad, estado', 'length', 'max'=>45),
+			array('ciudad, estado, telefono', 'length', 'max'=>45),
 			array('pais', 'length', 'max'=>80),
+			array('nombre, apellido, cedula, dirUno, ciudad, estado, pais, telefono', 'required'),	
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad, estado, pais, user_id', 'safe', 'on'=>'search'),
@@ -80,11 +82,12 @@ class Direccion extends CActiveRecord
 			'nombre' => 'Nombre',
 			'apellido' => 'Apellido',
 			'cedula' => 'Cedula',
-			'dirUno' => 'Dir Uno',
-			'dirDos' => 'Dir Dos',
+			'dirUno' => 'Dirección Uno',
+			'dirDos' => 'Dirección Dos',
+			'telefono' => 'Teléfono',
 			'ciudad' => 'Ciudad',
 			'estado' => 'Estado',
-			'pais' => 'Pais',
+			'pais' => 'País',
 			'user_id' => 'User',
 		);
 	}
@@ -106,6 +109,7 @@ class Direccion extends CActiveRecord
 		$criteria->compare('cedula',$this->cedula,true);
 		$criteria->compare('dirUno',$this->dirUno,true);
 		$criteria->compare('dirDos',$this->dirDos,true);
+		$criteria->compare('telefono',$this->telefono,true);
 		$criteria->compare('ciudad',$this->ciudad,true);
 		$criteria->compare('estado',$this->estado,true);
 		$criteria->compare('pais',$this->pais,true);

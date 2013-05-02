@@ -16,11 +16,27 @@
         		<?php echo CHtml::link('Estilos',array('estilos',
                                      'id'=>$model->id,)); ?>	
         </li>
-        <li><a href="admin_editar_avatar.php" title="Avatar">Avatar</a></li>
-        <li><a href="admin_editar_direcciones.php" title="Direcciones">Direcciones</a></li>
-        <li><a href="admin_editar_pedidos.php" title="Pedidos">Pedidos</a></li>
-        <li><a href="admin_editar_carrito.php" title="Carrito">Carrito</a></li>
-        <li><a href="admin_editar_favoritos.php" title="Favoritos">Favoritos</a></li>
+        <li>
+    		<?php echo CHtml::link('Avatar',array('avatar',
+                     'id'=>$model->id,)); ?>
+        </li>
+        <li>
+    		<?php echo CHtml::link('Direcciones',array('direcciones',
+                     'id'=>$model->id,)); ?>
+        </li> 
+        <li>
+    		<?php echo CHtml::link('Pedidos',array('pedidos',
+                     'id'=>$model->id,)); ?>
+        </li>
+        <li>
+    		<?php echo CHtml::link('Carrito',array('carrito',
+                     'id'=>$model->id,)); ?>
+        </li>
+        <li>
+    		<?php echo CHtml::link('Favoritos',array('favoritos',
+                     'id'=>$model->id,)); ?>
+        </li>                        
+   
       </ul>
     </div>
   </div>

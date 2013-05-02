@@ -25,7 +25,9 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view','corporal','estilos'),
+
+				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar'),
+
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -99,6 +101,7 @@ class AdminController extends Controller
 			'profile'=>$profile,
 		));
 	}
+
 	public function actionEstilos()
 	{
 		$model=$this->loadModel();
@@ -121,13 +124,46 @@ if(isset($_POST['Profile']))
 			'profile'=>$profile,
 		));		
 	}
+	public function actionPedidos()
+	{
+		$model=$this->loadModel();
+		$this->render('pedidos',array(
+			'model'=>$model,
+			
+		));
+	}
+	public function actionDirecciones()
+	{
+		$model=$this->loadModel();
+		$this->render('direcciones',array(
+			'model'=>$model,
+			
+		));
+	}
+	public function actionAvatar()
+	{
+		$model=$this->loadModel();
+		$this->render('avatar',array(
+			'model'=>$model,
+			
+		));
+	}
+			
+	public function actionCarrito()
+	{
+		$model=$this->loadModel();
+		$this->render('carrito',array(
+			'model'=>$model,
+			
+		));
+	}
 	public function actionCorporal()
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
 		$profile->profile_type = 3;
 		$this->performAjaxValidation(array($profile));
-if(isset($_POST['Profile']))
+		if(isset($_POST['Profile']))
 		{
 			//$model->attributes=$_POST['User'];
 			$profile->attributes=$_POST['Profile'];
@@ -161,7 +197,6 @@ if(isset($_POST['Profile']))
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
-		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
 		{

@@ -19,12 +19,23 @@
               		<div class="new" id="div<?php echo $producto->id."_".$tallacolor->color_id; ?>">
               		
               		<?php
-              		
-					if ($producto->mainimage)
-					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => "180", "height" => "180"));
-					else 
-					$image = CHtml::image("http://placehold.it/180");	
-					echo $image;
+              		/*
+              		echo $tallacolor->color_id;
+              		$imagecolor = $producto->colorimage( array('condition'=>'color_id=:color_id','params' => array(':color_id'=>$tallacolor->color_id) ) ); 
+					//print_r($imagencolor);
+					//foreach ($producto->colorimage as $colorimage){
+					//	echo $colorimage->url;
+					//}
+					if ( isset( $imagecolor) )
+					$image = CHtml::image(Yii::app()->baseUrl . $imagecolor->url, "Imagen", array("width" => "180", "height" => "180"));
+					elseif ($producto->mainimage) 
+						$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => "180", "height" => "180"));
+					else
+					$image = CHtml::image("http://placehold.it/180");
+					 * */
+					 	
+					//echo $image;
+					echo CHtml::image($producto->getImageUrl($tallacolor->color_id), "Imagen", array("width" => "180", "height" => "180"));
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
 					/*
 					echo CHtml::ajaxLink(

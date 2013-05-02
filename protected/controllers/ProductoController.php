@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','colores','imagenColor'), 
+				'actions'=>array('index','view','detalle','tallas','colores','imagenColor','updateCantidad'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -35,17 +35,13 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-<<<<<<< HEAD
-				'actions'=>array('update','create','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod'),
-=======
-				'actions'=>array('admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias'),
->>>>>>> 810cb7523af9fca4177b6cf268f29faf1783d927
+				'actions'=>array('admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
-		);
+		); 
 	}
 
 	/**
@@ -58,7 +54,17 @@ class ProductoController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
-
+	public function actionUpdateCantidad()
+	{
+		$prenda = explode('_',$_POST['prenda']);
+		$model = Producto::model()->findByPk($prenda[0]);
+		
+		echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>$model->getCantidad($_POST['talla'],$prenda[1]),
+                        'id'=>'cantidad'.$_POST['prenda'],
+                        ));		
+	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -163,6 +169,7 @@ class ProductoController extends Controller
 			'model'=>$model,'precio'=>$precio,
 		));
 	}
+
 	
 	// mostrar la pagina
 	public function actionImagenes()
@@ -647,7 +654,7 @@ class ProductoController extends Controller
 		//}	
 		
 		if(isset($_POST['tallas'])){
-			$tallas = explode(',',$_POST['tallas']);
+			$tallas = explode('#',$_POST['tallas']);
 			$colores = explode(',',$_POST['colores']);
 			
 		}
@@ -660,7 +667,8 @@ class ProductoController extends Controller
 					$tallacolor[$i]->color_id = $color_tmp->id;
 					$tallacolor[$i]->color = $color_tmp->valor;
 				}
-				$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+				//$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+				$talla_tmp = Talla::model()->findByPk($talla);
 				if (isset($color)){
 					$tallacolor[$i]->talla_id = $talla_tmp->id;
 					$tallacolor[$i]->talla = $talla_tmp->valor;
@@ -841,6 +849,59 @@ class ProductoController extends Controller
 		));
 		exit;
 
+	}
+	
+	/*
+	 * Relacionando el producto a una o varias categorias
+	 * 
+	 * */
+	public function actionCategorias()
+	{
+		if(isset($_GET['id'])){
+			$id = $_GET['id'];			
+			$model = Producto::model()->findByPk($id);
+			$categorias = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$id));
+		}
+		else {
+			$model = new Producto;
+			$id="";
+			$categorias = new CategoriaHasProducto;
+		}
+		
+		$this->render('_view_categoria',array(
+			'model'=>$model,'categorias'=>$categorias,
+		));
+	}
+	
+	/*
+	 * Relacionando el producto a una o varias categorias
+	 * 
+	 * */
+	public function actionReCatProd()
+	{
+		if(isset($_POST['check'])){
+			if($_POST['check']!=""){
+
+				$checks = explode(',',$_POST['check']);
+				$idProducto = $_POST['idProd'];	
+				
+				foreach($checks as $idCateg){
+						
+					if(!$prodCat = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$idCateg))) // reviso si ya esta en la BD esa asignacion
+					{
+						$prodCat = new CategoriaHasProducto;
+						$prodCat->tbl_categoria_id = $idCateg; //id Categoria cambia en el foreach
+						$prodCat->tbl_producto_id = $idProducto; // producto igual para todos
+										
+						$prodCat->save();
+						//Producto::model()->updateByPk($id, array('estado'=>'0'));					
+					}	
+					// si ya está la ignora
+					//$prodCat = new CategoriaHasProducto;
+				}
+				echo("ok"); // realizo la relación
+			}
+		}
 	}
 
 	/**

@@ -57,7 +57,7 @@ class Look extends CActiveRecord
 			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical', 'integerOnly'=>true),
-			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}','on'=>'update'),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
@@ -221,8 +221,9 @@ class Look extends CActiveRecord
 	{
 		if (is_null($this->_precio)) {
 				$this->_precio = 0;
-		foreach($this->productos as $producto){
-			$this->_precio += $producto->getPrecio(false);
+		foreach($this->lookhasproducto as $lookhasproducto){
+			if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+			$this->_precio += $lookhasproducto->producto->getPrecio(false);
 		}
 		}
 		if ($format)

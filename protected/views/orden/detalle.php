@@ -86,7 +86,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           	$detalle = Detalle::model()->findByPk($orden->detalle_id);
           	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 			
-			if($detalle->estado == 1)
+			if($detalle->estado == 1) // si fue aceptado
 			{
 				echo("
           	<div id='pago' class='well well-small margin_top well_personaling_small'>
@@ -115,7 +115,6 @@ $usuario = User::model()->findByPk($orden->user_id);
         		</table> </div>
 				");
 			}
-
 			else if($detalle->estado == 2) // rechazado
 				{
 						echo("
@@ -210,7 +209,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         
         	<?php
         	
-        	if($detalle->estado == 0) // si esta en default
+        	if($detalle->estado == 0 && $detalle->nTransferencia!="") // si esta en default
 			{
 				echo("<div class='alert alert-block '>");
 				echo(" <h4 class='alert-heading '>Confirmar Pago:</h4>");
@@ -553,13 +552,27 @@ $usuario = User::model()->findByPk($orden->user_id);
 					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
 				}
 	       	}//success
-	       })
- 			
-		
-		
+	       }) 			
+
 	}
 	
-	function rechazar(){
+	function rechazar(id){
+		
+		var uno = 'rechazar';
+		
+ 		$.ajax({
+	        type: "post", 
+	        url: "../validar", // action 
+	        data: { 'accion':uno, 'id':id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();
+					//alert("guardado"); 
+					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
+				}
+	       	}//success
+	       })		
 		
 	}
 	

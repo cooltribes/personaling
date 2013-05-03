@@ -8,6 +8,23 @@ $this->breadcrumbs=array(
 
 <div class="container margin_top" id="tienda">
   <div class="row">
+    <?php
+	$template = '
+    <div class="span9 tienda_productos">
+      <div class="row">
+		{items}
+      </div>
+      {pager}
+    </div>
+    ';
+	
+	$this->widget('zii.widgets.CListView', array(
+	    'id'=>'list-auth-items',
+	    'dataProvider'=>$dataProvider,
+	    'itemView'=>'_datos',
+	    'template'=>$template,
+	));    
+	?>
     <div class="span3">
       <div class="shadow_1"> 
         <!-- para filtrar por seleccion de categoria -->
@@ -112,22 +129,5 @@ $this->breadcrumbs=array(
         <h5>Looks con estas prendas:</h5>
         <img src="http://placehold.it/270x200" /> </div>
     </div>
-    <?php
-	$template = '
-    <div class="span9 tienda_productos">
-      <div class="row">
-		{items}
-      </div>
-      {pager}
-    </div>
-    ';
-	
-	$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos',
-	    'template'=>$template,
-	));    
-	?>
   </div>
 </div>

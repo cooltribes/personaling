@@ -67,12 +67,33 @@
                   ?>
               </div>
             </div>
+            <div class="control-group">
+             
+              <div class="controls">
+                  <?php 
+                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));
+				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5'));
+                  ?>
+              </div>
+            </div>
           </fieldset>
            <?php $this->endWidget(); ?>
       </div>
     </div>
     <div class="span3">
-      <div class="padding_left"> <a href="#" title="Guardar" class="btn btn-danger btn-large btn-block">Guardar</a>
+      <div class="padding_left"> 
+                  	 
+            			<?php $this->widget('bootstrap.widgets.TbButton', array(
+            				'buttonType'=>'button',
+						    'label'=>'Guardar',
+						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+						    'size'=>'large', // null, 'large', 'small' or 'mini'
+						    'block'=>'true',
+						    'htmlOptions'=>array('onclick'=>'js:$("#tutipo-form").submit();')
+						)); ?>
+						
+           
+      	
         <ul class="nav nav-stacked nav-tabs margin_top">
          <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
           <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>

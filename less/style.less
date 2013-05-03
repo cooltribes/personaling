@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 24/04/2013 */ 
+/* Project name: Personaling  al 30/04/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -16,6 +16,9 @@
 @color7: #22F28A; /* Verde chillon */
 @color8: #685b5b;
 @color9: #9b9894;
+@color10: #f0e9f1; /* Lila */
+@color11: #8b5293; /* Morado chillon */
+
 
 /*--- "." ---*/
 .color1{ color:@color1;}
@@ -27,6 +30,8 @@
 .color7{ color:@color7;}
 .color8{ color:@color8;}
 .color9{ color:@color9;}
+.color10{ color:@color10;}
+.color11{ color:@color11;}
 
 .bg_color1{ background-color:@color1;}
 .bg_color2{ background-color:@color2;}
@@ -37,6 +42,8 @@
 .bg_color7{ background-color:@color7;}
 .bg_color8{ background-color:@color8;}
 .bg_color9{ background-color:@color9;}
+.bg_color10{ background-color:@color10;}
+.bg_color11{ background-color:@color11;}
 
 
 
@@ -285,8 +292,9 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	background:url(../images/bg_site_acuerela.jpg) no-repeat  right -30px;
 	}
-h1,h2,h3, h4{ font-weight:300}
-.well{ .border_radius(@radius:1px)}
+h1,h2,h3,h4{font-weight:300}
+.well{ .border_radius(@radius:1px);}
+
 
 /*------------ BUTTONS ON --------------*/
 	.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child{
@@ -590,7 +598,17 @@ src: url('../fonts/entypo.woff'),
 
 /*Loading images*/
 
-.first-not_done, .middle-not_done , .last-not_done, .first-done, .middle-done, .last-done { width:119px; float:left;}
+.first-not_done, .middle-not_done , .last-not_done, .first-done, .middle-done, .last-done , .first-past, .middle-past, .last-past { 
+	width:119px; 
+	float:left;
+	text-align: left;
+	padding-top: 3.5em;
+	font-size: .8em;
+	line-height:1.1em;
+	color:#999;
+	a{color:#999;}
+
+}
 .first-not_done {
   background-image: url(../images/i1small.png);
   background-repeat: no-repeat;
@@ -608,6 +626,7 @@ src: url('../fonts/entypo.woff'),
   background-image: url(../images/i3small.png);
   background-repeat: no-repeat;
   height: 35px; 
+  width:70px;
 
 }
 .first-done {
@@ -621,15 +640,38 @@ src: url('../fonts/entypo.woff'),
   background-image: url(../images/j2small.png);
   background-repeat: no-repeat;
   margin-right: -20px;  
-
   height: 35px;
 }
 .last-done {
   background-image: url(../images/j3small.png);
   background-repeat: no-repeat;  
+  height: 35px;
+  width:70px;
+}
 
+.first-past {
+  background-image: url(../images/p1small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
   height: 35px;
 }
+.middle-past {
+  background-image: url(../images/p2small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
+  height: 35px; 
+
+}
+.last-past {
+  background-image: url(../images/p3small.png);
+  background-repeat: no-repeat;
+  height: 35px;
+  width:70px;
+
+}
+.progreso_compra{
+	width:400px;
+	margin:0 auto;}
 .description-text {
   margin-right: -40px;
   font-size: 11px;
@@ -1042,7 +1084,7 @@ ul.yiiPager .last
 #carousel_looks_recomendados {
 	width:100%;
 	overflow:hidden;
-	height:490px;
+	height:460px;
 	.items{
 			position: absolute;
 			width: 2000%;
@@ -1052,11 +1094,54 @@ ul.yiiPager .last
 		position: relative;
 		overflow: hidden;
 		width: 1210px;
-		height: 400px;
+		height: 460px;
 	}
+	.span4{
+				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				padding-bottom:9px;
+}
 	.item{
 		display:inline-block;
-		width:400px;
+		padding: 1em 1em 1.5em;
+		border: 1px solid #ddd;
+		position:relative;
+		
+			.share_like{
+				position:absolute;
+				top:1em;
+				right:1em;
+				opacity:.7;
+				.btn-link{ 
+					padding:0; 
+					margin:0;
+					color:#666;}
+				}
+			.share_like:hover{
+				opacity:1;
+				.btn-link{ .color1}
+			}
+			.label{
+				position:absolute;
+				top:.5em;
+				background-color:@color1;
+				.border_radius(@radius:0);
+				left:0;}
+			.vcard {
+				.avatar {
+						width:40px;
+						height:40px;
+					}
+				.precio{
+					text-align: right;
+					font-weight: 300;
+					font-size: 1.8em;
+					display: block;
+					margin-top: .5em;
+					color: #777;
+					 }
+				
+			}
+		
 		}
 	}
 
@@ -1212,6 +1297,19 @@ ul.yiiPager .last
     -o-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
     -webkit-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
 }
+
+
+/*---------------- BANNERS y BOTONES ON ------------*/
+
+.banner_1{
+	.bg_color10;
+	padding:2em;
+	color:@color11 ;
+	a, .entypo{color:@color11}
+	}
+
+/*---------------- BANNERS y BOTONES OFF ------------*/
+
 
 
 /*---------------------- Responsive Design --------------------*/

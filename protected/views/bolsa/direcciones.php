@@ -5,14 +5,19 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 ?>
 
 <div class="container margin_top">
+    <div class="progreso_compra">
+      <div class="clearfix margin_bottom">
+        <div class="first-past">Autenticación</div>
+        <div class="middle-done">Dirección<br/>de envío <br/>y facturación</div>
+        <div class="middle-not_done">Método <br/>de pago</div>
+        <div class="last-not_done">Completar<br/>compra</div>
+      </div>
+      
+  </div>
+
   <div class="row">
     <div class="span8 offset2"> 
-      <div class="clearfix margin_bottom margin_top margin_left">
-        <div class="first-done"></div>
-        <div class="middle-not_done "></div>
-        <div class="middle-not_done "></div>
-        <div class="last-not_done"></div>
-      </div>
+     
       <h1>Dirección de envío</h1>
       <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la seccion inferior:</p>
       <?php 

@@ -31,7 +31,7 @@ class ProductoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array(''),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -654,7 +654,7 @@ class ProductoController extends Controller
 		//}	
 		
 		if(isset($_POST['tallas'])){
-			$tallas = explode(',',$_POST['tallas']);
+			$tallas = explode('#',$_POST['tallas']);
 			$colores = explode(',',$_POST['colores']);
 			
 		}
@@ -667,7 +667,8 @@ class ProductoController extends Controller
 					$tallacolor[$i]->color_id = $color_tmp->id;
 					$tallacolor[$i]->color = $color_tmp->valor;
 				}
-				$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+				//$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+				$talla_tmp = Talla::model()->findByPk($talla);
 				if (isset($color)){
 					$tallacolor[$i]->talla_id = $talla_tmp->id;
 					$tallacolor[$i]->talla = $talla_tmp->valor;

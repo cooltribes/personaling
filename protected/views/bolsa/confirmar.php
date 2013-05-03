@@ -4,15 +4,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 ?>
 <div class="container margin_top">
+  <div class="progreso_compra">
+      <div class="clearfix margin_bottom">
+          <div class="first-past">Autenticación</div>
+        <div class="middle-past">Dirección<br/>de envío <br/>y facturación</div>
+        <div class="middle-past">Método <br/>de pago</div>
+        <div class="last-done">Proceso<br/>completado</div>
+      </div>
+  </div>
+
   <div class="row">
     <div class="span12">
-      <div class="clearfix margin_bottom margin_top margin_left">
-        <div class="first-done"></div>
-        <div class="middle-done "></div>
-        <div class="middle-done "></div>
-        <div class="last-not_done"></div>
-      </div>
-      <h1>Confirmación del Pedido</h1>
+     <h1>Confirmación del Pedido</h1>
     </div>
   </div>
   

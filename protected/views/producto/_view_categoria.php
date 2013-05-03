@@ -179,29 +179,31 @@
                   </li>
                 </ul>*/
 
-            $cat = Categoria::model()->findAllByAttributes(array('id'=>'1','padreId'=>'0'));
-			$cats = array();
-			
-			nodos($cat); 
-	
+        $cat = Categoria::model()->findAllByAttributes(array('id'=>'1','padreId'=>'0'));
+		
+		if(count($categorias) > 0){
+			foreach($categorias as $indiv)
+			{
+				 echo("<input class='idsCategorias' type='hidden' value='".$indiv->tbl_categoria_id."' />");
+			}		
+		}
+		
+		nodos($cat);
+		
 			function nodos($items){
 				echo "<ul class='no_bullets'>";
 				foreach ($items as $item){
-					foreach($categorias as $ind){
-						if($ind->tbl_categoria_id == $item->id)
-							echo "<li><label><input id='".$item->id."' type='checkbox' value='' checked> ".$item->nombre."</label></li>";
-						else 
-							echo "<li><label><input id='".$item->id."' type='checkbox' value=''> ".$item->nombre."</label></li>";
+						echo "<li><label><input id='".$item->id."' type='checkbox' value='' /> ".$item->nombre."</label></li>";
 						
 						if ($item->hasChildren()){
 							nodos($item->getChildren());
 						}
 					}
-				}
 				echo "</ul>";
 				return 1;
 			}
-            ?>
+
+     ?>
                 
               </div>
              
@@ -242,7 +244,7 @@
 			),
 			)); ?>
         <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Restablecer">Restablecer</a></li>
+          <li><a href="#" title="Limpiar" id="limpiar">Limpiar</a></li>
           <li><a href="#" title="Duplicar">Duplicar</a></li>
           <li><a href="#" title="Guardar"><i class="icon-trash"> </i>Borrar</a></li>
         </ul>
@@ -252,3 +254,17 @@
 </div>
 <!-- /container -->
 <?php $this->endWidget(); ?>
+
+<script>
+	$(document).ready(function(){
+		
+	jQuery.each($('.idsCategorias'), function() {
+		
+		var id = $(this).attr('value');
+    	$('#'+id).attr('checked',true);
+   	});		
+		
+	               
+	});
+	
+</script>

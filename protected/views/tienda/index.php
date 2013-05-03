@@ -124,7 +124,20 @@ $this->breadcrumbs=array(
         </div>
         <hr/>
         <h5>Buscar por colores</h5>
-        <div class="clearfix tienda_colores"> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> </div>
+        <div class="clearfix tienda_colores">
+        	<?php
+        	
+        	$colores = Color::model()->findAll();
+			
+			foreach ($colores as $color ) {
+				
+				echo CHtml::image(Yii::app()->baseUrl ."/images/colores/". $color->path_image, "color");
+					
+			}
+        	
+        	?>
+        	<img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" />
+        </div>
         <hr/>
         <h5>Looks con estas prendas:</h5>
         <img src="http://placehold.it/270x200" /> </div>

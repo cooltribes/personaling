@@ -6,7 +6,7 @@
  * 3 - Pago Confirmado
  * 4 - Preparandose para el envío
  * 5 - Cancelado
- * 
+ * 6 - Pago Rechazado
  * */
 
 

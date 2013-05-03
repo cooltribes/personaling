@@ -347,7 +347,6 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 		var banco = $("#banco").attr("value");
 		var cedula = $("#cedula").attr("value");
 		var monto = $("#monto").attr("value");
-		
 
 		if(nombre=="" || numeroTrans=="" || monto=="")
 		{
@@ -355,7 +354,6 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 		}
 		else
 		{
-
 
  		$.ajax({
 	        type: "post", 

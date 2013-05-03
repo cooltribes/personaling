@@ -47,6 +47,9 @@ echo"<tr>";
 	if($data->estado == 2)
 		echo "<td>En espera de confirmación</td>"; 
 	
+	if($data->estado == 3)
+		echo "<td>Pago Confirmado</td>"; 
+	
 	// agregar demas estados
 	
 	//------------------ acciones

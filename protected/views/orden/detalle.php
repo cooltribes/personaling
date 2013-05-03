@@ -264,6 +264,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				if($est->estado==3)
 					echo("<td>Pago Confirmado</td>");
 				
+				if($est->estado==6)
+					echo("<td>Pago Rechazado</td>");
+				
 				$usu = User::model()->findByPk($est->user_id);
 				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
 				

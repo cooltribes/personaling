@@ -8,7 +8,13 @@
               ?>
               <li class="span1" > 
               		<?php
-              		$image = CHtml::image("http://placehold.it/140");
+              		
+              		$a = $categoria->getImage($categoria->id);
+              		
+              		if($a!="no")// tiene img
+              			$image = CHtml::image(Yii::app()->baseUrl . $a, "categoria", array('id'=>'img-categoria'));
+					else
+              			$image = CHtml::image("http://placehold.it/140");
 
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
 					echo CHtml::ajaxLink(

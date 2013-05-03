@@ -160,7 +160,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
-		$criteria->with = array('categorias');	
+		$criteria->with = array('categorias');
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
 		{

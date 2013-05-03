@@ -112,16 +112,25 @@ class OrdenController extends Controller
 			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
 			$orden->estado = 1; // regresa a "En espera de pago"
 			
-			if($detalle->save())
-				if($orden->save())
-					echo "ok"; 
-		
-			$detalle->estado = 1;
-		
-			if($detalle->save())
-				echo "ok";
-			
-			//faltaria cambiar el estado del pedido
+			if($detalle->save()){
+				if($orden->save()){
+					
+					$usuario = Yii::app()->user->id; 
+						
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+						$estado = new Estado;
+											
+						$estado->estado = 6; // pago rechazado
+						$estado->user_id = $usuario;
+						$estado->fecha = date("Y-m-d");
+						$estado->orden_id = $orden->id;
+							
+						if($estado->save())
+						{
+							echo "ok";	
+						}
+				}
+			}
 		}
 
 	}

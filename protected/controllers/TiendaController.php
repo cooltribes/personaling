@@ -81,6 +81,32 @@ class TiendaController extends Controller
 		));	
 			
 	}
+	
+	
+	public function actionColores()
+	{
+		
+		$producto = new Producto;
+		$producto->status = 1; // que no haya sido borrado logicamente
+		$producto->estado = 0; // que no esté inactivo
+	
+		$color="";
+	
+		if(isset($_POST['idColor'])) // desde el input
+		{	
+			$color = $_POST['idColor'];
+		}
+
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
+
+		$dataProvider = $producto->busColor($color);
+		$this->render('index',
+		array('index'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	
+			
+	}
+	
 
 	public function getAllChildren($models){
 		$items = array();

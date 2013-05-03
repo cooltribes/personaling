@@ -153,7 +153,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('t.nombre',$this->nombre,true);
-		$criteria->compare('t.estado',$this->estado);
+		$criteria->compare('t.estado',$this->estado,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('proveedor',$this->proveedor,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
@@ -370,5 +370,38 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 	}
 	
 }
+
+
+	public function busColor($idColor)
+	{
+		// llega un ID de color
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('codigo',$this->codigo,true);
+		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('estado',$this->estado);
+		$criteria->compare('descripcion',$this->descripcion,true);
+		$criteria->compare('proveedor',$this->proveedor,true);
+		$criteria->compare('fInicio',$this->fInicio,true);
+		$criteria->compare('fFin',$this->fFin,true);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('status',$this->status,true);
+		$criteria->with = array('preciotallacolor');
+
+		$criteria->compare('color_id',$idColor,true);
+
+		$criteria->together = true;
+		
+		var_dump($criteria);
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
+	}
+
 
 }

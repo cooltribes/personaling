@@ -94,7 +94,7 @@ $this->breadcrumbs=array(
         <hr/>
         
         <!-- para filtrar por campo de texto -->
-        <?php
+    <?php
 	Yii::app()->clientScript->registerScript('busqueda',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest; 
@@ -119,28 +119,46 @@ $this->breadcrumbs=array(
 	);
 	
 	?>
+	
+	
+	<!-- para filtrar por color -->
+    <?php
+	Yii::app()->clientScript->registerScript('color',
+		"var ajaxUpdateTimeout;
+		var idColor; 
+		$('.color').click(function(){
+			idColor = $(this).attr('id');
+			clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('tienda/colores') . "',
+				data: {'idColor':idColor}
+				}
+				
+				)
+				},
+		
+		300);
+		return false;
+		});",CClientScript::POS_READY
+	);
+	
+	?>
         <div class="tienda_iconos" id="uno">
           <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
         <h5>Buscar por colores</h5>
         <div class="clearfix tienda_colores">
-        	<?php
-        	
-        	$colores = Color::model()->findAll();
-			
-			foreach ($colores as $color ) {
-				
-				echo CHtml::image(Yii::app()->baseUrl ."/images/colores/". $color->path_image, "color");
-					
-			}
-        	
-        	?>
-        	<img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" /> <img src="http://placehold.it/30x30" />
+			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
         <h5>Looks con estas prendas:</h5>
-        <img src="http://placehold.it/270x200" /> </div>
+        <img src="http://cooltribes.com/sandbox/personaling/prototipo/images/look_sample_pequeno_2.jpg" /> </div>
     </div>
   </div>
 </div>

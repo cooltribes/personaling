@@ -1,144 +1,224 @@
 <div class="container margin_top">
- <h1 class="page-header">top</h1>
-      <ul class="nav nav-pills">
-        <li class="active"> <a href="#">Lo más trending</a> </li>
-        <li><a href="#">Próxima Campaña</a></li>
-      </ul>
+  <h1 class="page-header">top</h1>
+  <ul class="nav nav-pills">
+    <li class="active"> <a href="#">Lo más trending</a> </li>
+    <li><a href="#">Próxima Campaña</a></li>
+    <li><a href="#">Looks en promoción</a></li>
+  </ul>
   <div class="row margin_bottom_large">
-    <div class="span12">
-     
+    <div class="span12"> 
+      
       <!-- Carousel items -->
-      <div id="myCarousel" class="carousel slide margin_top ">
+      
+      <?php // OJO que esto hay que ponerlo DINAMICO //?>
+      <div id="carousel_looks_recomendados" class="carousel slide ">
         <div class="carousel-inner">
-          <div class="active item">
-            <div class="row">
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-            </div>
-          </div>
-          <div class="item">
-            <div class="row">
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-            </div>
-          </div>
-          <div class="item">
-            <div class="row">
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
-              <article class="span4"> <a href="Look_seleccionado.php" title="look"><img src="http://placehold.it/370x400"/></a>
-                <div class="margin_top_small"><img class="pull-right" src="http://placehold.it/50x50"/>
-                  <p class="pull-right margin_top_small margin_right_small"> Recomendado por </p>
-                </div>
-              </article>
+          <div id="list-auth-items" class="list-view">
+            <div class="items row" >
+              <div class="span4" >
+                <article class="item"> <a href="/site/look/1"><img width="370" height="400" class="" src="/site/look/getImage/1" alt="Look"></a>
+                  <div class="hidden-phone margin_top_small vcard row-fluid">
+                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
+                    <div class="span5"> <span class="muted">Look creado por: </span>
+                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
+                    </div>
+                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
+                  </div>
+                  <div class="share_like">
+                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                    <div class="btn-group">
+                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                        <!-- AddThis Button BEGIN -->
+                        
+                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                        <li><a class="addthis_button_tweet"></a></li>
+                        <li><a class="addthis_button_pinterest_pinit"></a></li>
+                      </ul>
+                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
+                      <!-- AddThis Button END --> 
+                      
+                    </div>
+                  </div>
+                  <span class="label label-important">Promoción</span> </article>
+              </div>
+              <div class="span4" style="opacity: 1;">
+                <article class="item"> <a href="/site/look/2"><img width="370" height="400" class="" src="/site/look/getImage/2" alt="Look"></a>
+                  <div class="hidden-phone margin_top_small vcard row-fluid">
+                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
+                    <div class="span5"> <span class="muted">Look creado por: </span>
+                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
+                    </div>
+                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
+                  </div>
+                  <div class="share_like">
+                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                    <div class="btn-group">
+                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                        <!-- AddThis Button BEGIN -->
+                        
+                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                        <li><a class="addthis_button_tweet"></a></li>
+                        <li><a class="addthis_button_pinterest_pinit"></a></li>
+                      </ul>
+                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
+                      <!-- AddThis Button END --> 
+                      
+                    </div>
+                  </div>
+                  <span class="label label-important">Promoción</span> </article>
+              </div>
+              <div class="span4 image_not_bw" style="opacity: 1;">
+                <article class="item"> <a href="/site/look/3"><img width="370" height="400" class="" src="/site/look/getImage/3" alt="Look" style="opacity: 1;"></a>
+                  <div class="hidden-phone margin_top_small vcard row-fluid">
+                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
+                    <div class="span5"> <span class="muted">Look creado por: </span>
+                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
+                    </div>
+                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
+                  </div>
+                  <div class="share_like">
+                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                    <div class="btn-group">
+                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                        <!-- AddThis Button BEGIN -->
+                        
+                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                        <li><a class="addthis_button_tweet"></a></li>
+                        <li><a class="addthis_button_pinterest_pinit"></a></li>
+                      </ul>
+                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
+                      <!-- AddThis Button END --> 
+                      
+                    </div>
+                  </div>
+                  <span class="label label-important">Promoción</span> </article>
+              </div>
+              <div class="span4 image_bw" style="opacity: 1;">
+                <article class="item"> <a href="/site/look/4"><img width="370" height="400" class="" src="/site/look/getImage/4" alt="Look" style="opacity: 1;"></a>
+                  <div class="hidden-phone margin_top_small vcard row-fluid">
+                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
+                    <div class="span5"> <span class="muted">Look creado por: </span>
+                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
+                    </div>
+                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
+                  </div>
+                  <div class="share_like">
+                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                    <div class="btn-group">
+                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                        <!-- AddThis Button BEGIN -->
+                        
+                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                        <li><a class="addthis_button_tweet"></a></li>
+                        <li><a class="addthis_button_pinterest_pinit"></a></li>
+                      </ul>
+                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
+                      <!-- AddThis Button END --> 
+                      
+                    </div>
+                  </div>
+                  <span class="label label-important">Promoción</span> </article>
+              </div>
             </div>
           </div>
         </div>
         <!-- Carousel nav --> 
-         <a class="carousel-control left margin_top_small" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right margin_top_small" href="#myCarousel" data-slide="next">&rsaquo;</a>
-      </div>
-      </div>
-      
-      
+        <a class="carousel-control left margin_top_small bx-prev" href="#myCarousel" data-slide="prev">‹</a> <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">›</a> </div>
+    </div>
   </div>
-    <div class=" margin_bottom_large">
+  <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
+    <h2 class="margin_bottom">Personal shoppers destacados</h2>
+    <ul class="thumbnails ">
+      <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+        <h3><a href="#" title="Nombre del Personal Shopper">Heidi García</a></h3>
+        <p>Bio pequeña del personal shopper</p>
+      </li>
+      <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+        <h3><a href="#" title="Nombre del Personal Shopper">Rosa Virginia</a></h3>
+        <p>Bio pequeña del personal shopper</p>
+      </li>
+      <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+        <h3><a href="#" title="Nombre del Personal Shopper">Elise Vigouroux</a></h3>
+        <p>Bio pequeña del personal shopper</p>
+      </li>
+      <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+        <h3><a href="#" title="Nombre del Personal Shopper">Ariana Basciani</a></h3>
+        <p>Bio pequeña del personal shopper</p>
+      </li>
+    </ul>
+    <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
+      <div class="row">
+        <div class="span12">
+          <h3 class="margin_bottom_small">Otros Productos que te pueden gustar</h3>
+          <div class="thumbnails">
+            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_7.jpg"></a></li>
+            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_8.jpg"></a></li>
+            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_9.jpg"></a></li>
+            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_7.jpg"></a></li>
+            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_8.jpg"></a></li>
+            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_9.jpg"></a></li>
+          </div>
+        </div>
+      </div>
+    </div>
     
-   <h2 class="margin_top margin_bottom_small">Personal shoppers destacados</h2>
-
-    <ul class="thumbnails">
-              <li class="span3">
-                <a class="thumbnail" href="#">
-                  <img alt="260x180" data-src="holder.js/260x180" style="width: 260px; height: 180px;" src="data:image/png;base64,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">
-                </a> <p class="margin_top_small"><a href="#" title="Nombre del Personal Shopper">Daniela Kosan</a></p>
-              </li>
-              <li class="span3">
-                <a class="thumbnail" href="#">
-                  <img alt="260x180" data-src="holder.js/260x180" style="width: 260px; height: 180px;" src="data:image/png;base64,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">
-                </a> <p class="margin_top_small"><a href="#" title="Nombre del Personal Shopper">Daniela Kosan</a></p>
-              </li>
-              <li class="span3">
-                <a class="thumbnail" href="#">
-                  <img alt="260x180" data-src="holder.js/260x180" style="width: 260px; height: 180px;" src="data:image/png;base64,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">
-                </a> <p class="margin_top_small"><a href="#" title="Nombre del Personal Shopper">Daniela Kosan</a></p>
-              </li>
-              <li class="span3">
-                <a class="thumbnail" href="#">
-                  <img alt="260x180" data-src="holder.js/260x180" style="width: 260px; height: 180px;" src="data:image/png;base64,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">
-                 
-                </a> <p class="margin_top_small"><a href="#" title="Nombre del Personal Shopper">Daniela Kosan</a></p>
-              </li>
-            </ul>
-            
-            <hr/>
-            
-             <h2 class="margin_top margin_bottom_small">Looks destacados</h2>
-
-  <div class="row">
-    <div class="span4"><img src="http://placehold.it/370"/></div>
-    <div class="span4"><img src="http://placehold.it/370"/></div>
-    <div class="span4"><img src="http://placehold.it/370"/></div>
   </div>
-         <hr/>
-          <ul class="thumbnails">
-              <li class="span3">
-               <h2>Productos más vendidos</h2>
-              </li>
-              <li class="span3">
-                <a class="thumbnail" href="#">
-                  <img alt="260x180" data-src="holder.js/260x180" style="width: 260px; height: 180px;" src="data:image/png;base64,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">
-                </a> 
-              </li>
-              <li class="span3">
-                <a class="thumbnail" href="#">
-                  <img alt="260x180" data-src="holder.js/260x180" style="width: 260px; height: 180px;" src="data:image/png;base64,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">
-                </a> 
-              </li>
-              <li class="span3">
-                <a class="thumbnail" href="#">
-                  <img alt="260x180" data-src="holder.js/260x180" style="width: 260px; height: 180px;" src="data:image/png;base64,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">
-                 
-                </a> 
-              </li>
-            </ul>
-         
-         
-         
+  <div class=" margin_bottom_large braker_horz_top_1 ">
+                <h3 class="margin_bottom_small">Desde Nuestra Magazine</h3>
+
+      <div class="row posts_list">
+        <div class="span12">
+          <div class="thumbnails">
+            <li class="span3">
+              <div class="post"> <a href="http://personaling.com/620/" title="Semana de las Madres: Sofía Vergara" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/sofiavergara-494x700.jpg" class="attachment-medium wp-post-image" alt="Especial Mamá: Sofía Vergara"> </a>
+                <h3 ><a href="http://personaling.com/620/" class="show_modal_post" title="Semana de las Madres: Sofía Vergara"> Semana de las Madres: Sofía Vergara </a></h3>
+                <!-- /.row --> 
+              </div>
+            </li>
+            <!-- /.post_class -->
+            <li class="span3">
+              <div class="post"> <a href="http://personaling.com/flores-al-poder/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/FLORAL-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
+                <h3 ><a href="http://personaling.com/flores-al-poder/" class="show_modal_post" title="Flores al Poder"> Flores al Poder </a></h3>
+                <!-- /.row -->                 
+              </div>
+            </li>
+            <li class="span3">
+              <div class="post"> <a href="http://personaling.com/flores-al-poder/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/FLORAL-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
+                <h3 ><a href="http://personaling.com/flores-al-poder/" class="show_modal_post" title="Flores al Poder"> Flores al Poder </a></h3>
+                <!-- /.row --> 
+              </div>
+            </li>
+            <!-- /.post_class -->
+            <li class="span3">
+              <div class="post "> <a href="http://personaling.com/los-cuellos-joyas-por-irene-garcia-p/" title="Los cuellos joyas por Irene García P." class="show_modal_post"> <img width="270" src="http://personaling.com/blog/wp-content/uploads/2013/03/irenecuellos-494x700.jpg" class="attachment-medium wp-post-image" alt="irenecuellos"> </a>
+                <h3 ><a href="http://personaling.com/los-cuellos-joyas-por-irene-garcia-p/" class="show_modal_post" title="Los cuellos joyas por Irene García P."> Los cuellos joyas por Irene García P. </a></h3>
+                <!-- /.row -->                 
+              </div>
+            </li>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="braker_horz_top_1">
+        <div class="row">
+          <div class="span6">
+            <div  class="banner_1"> Aqui va un Banner </div>
+          </div>
+          <div class="span6">
+            <div  class="banner_1"> <a href="#"> Ver todos los looks</a>
+              <div class="pull-right"><a href="#"> <span class="entypo icon_personaling_big color11">&#59146;</span></a></div>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 
-</div>
-
-<!-- /container -->
+<!-- /container --> 

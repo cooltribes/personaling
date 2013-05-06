@@ -595,6 +595,17 @@ $('.imagen_principal').zoom({url: imgZ});
 					alert("Debe primero ingresar como usuario");
 					//window.location="../../user/login";
 				}
+				
+				if(data=="borrado")
+				{
+					var a = "♡";
+					
+					//alert("borrando");
+					
+					$("#meEncanta").removeClass("btn-link-active");
+					$("span#like").text(a);
+					
+				}
 					
 	       	}//success
 	       })

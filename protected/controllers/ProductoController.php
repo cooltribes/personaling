@@ -913,14 +913,25 @@ class ProductoController extends Controller
 		
 		if(Yii::app()->user->isGuest==false) // si está logueado
 		{
-			$encanta = new UserEncantan;
 			
-			$encanta->producto_id = $_POST['idProd'];
-			$encanta->user_id = Yii::app()->user->id;
+			$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$_POST['idProd']));
 			
-			if($encanta->save())
-				echo "ok"; // guardó y le encantó
-			
+			if(isset($like)) // si ya le dio like
+			{
+				$like->delete();
+				
+				echo "borrado";				
+			}
+			else // esta logueado y es un like nuevo
+			{
+				$encanta = new UserEncantan;
+				
+				$encanta->producto_id = $_POST['idProd'];
+				$encanta->user_id = Yii::app()->user->id;
+				
+				if($encanta->save())
+					echo "ok"; // guardó y le encantó	
+			}
 		}
 		else
 			echo "no";

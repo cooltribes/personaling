@@ -381,12 +381,15 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 
         $criteria->select = 't.*';
         $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
-        $criteria->condition = 't.estado = :uno';
-		$criteria->condition = 't.status = :dos';
-		$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+        $criteria->addCondition('t.estado = 0');
+		$criteria->addCondition('t.status = 1');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+		$criteria->addCondition('tbl_precioTallaColor.color_id = :tres');
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
 		$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
-        $criteria->params = array(":uno" => "0"); // estado
-		$criteria->params = array(":dos" => "1"); // status
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
 		$criteria->params = array(":tres" => $idColor); // color que llega
 		$criteria->group = 't.id';
 		

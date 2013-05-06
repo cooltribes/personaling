@@ -85,6 +85,7 @@ class Producto extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
+			'encantan' => array(self::MANY_MANY, 'UserEncantan', 'tbl_userEncantan(producto_id, user_id)'),
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
 			'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
 			'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id'),
@@ -378,6 +379,18 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 
 		$criteria=new CDbCriteria;
 
+        $criteria->select = 't.*';
+        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
+        $criteria->condition = 't.estado = :uno';
+		$criteria->condition = 't.status = :dos';
+		$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+		$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
+        $criteria->params = array(":uno" => "0"); // estado
+		$criteria->params = array(":dos" => "1"); // status
+		$criteria->params = array(":tres" => $idColor); // color que llega
+		$criteria->group = 't.id';
+		
+ /*
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('nombre',$this->nombre,true);
@@ -393,8 +406,9 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('color_id',$idColor,true);
 
 		$criteria->together = true;
-		
-		var_dump($criteria);
+ */
+
+	
 		
 		return new CActiveDataProvider($this, array(
        'pagination'=>array('pageSize'=>12,),

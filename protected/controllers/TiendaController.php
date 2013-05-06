@@ -92,7 +92,7 @@ class TiendaController extends Controller
 	
 		$color="";
 	
-		if(isset($_POST['idColor'])) // desde el input
+		if(isset($_POST['idColor'])) // llega como parametro el id del color presionado
 		{	
 			$color = $_POST['idColor'];
 		}

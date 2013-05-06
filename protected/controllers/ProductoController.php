@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','colores','imagenColor','updateCantidad'), 
+				'actions'=>array('index','view','detalle','tallas','colores','imagenColor','updateCantidad','encantar'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -903,6 +903,30 @@ class ProductoController extends Controller
 			}
 		}
 	}
+	
+	/*
+	 * Action para que la usuaria le encante un producto
+	 * 
+	 * */
+	public function actionEncantar()
+	{
+		
+		if(Yii::app()->user->isGuest==false) // si está logueado
+		{
+			$encanta = new UserEncantan;
+			
+			$encanta->producto_id = $_POST['idProd'];
+			$encanta->user_id = Yii::app()->user->id;
+			
+			if($encanta->save())
+				echo "ok"; // guardó y le encantó
+			
+		}
+		else
+			echo "no";
+
+	}
+	
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 24/04/2013 */ 
+/* Project name: Personaling  al 07/05/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -16,6 +16,9 @@
 @color7: #22F28A; /* Verde chillon */
 @color8: #685b5b;
 @color9: #9b9894;
+@color10: #f0e9f1; /* Lila */
+@color11: #8b5293; /* Morado chillon */
+
 
 /*--- "." ---*/
 .color1{ color:@color1;}
@@ -27,6 +30,8 @@
 .color7{ color:@color7;}
 .color8{ color:@color8;}
 .color9{ color:@color9;}
+.color10{ color:@color10;}
+.color11{ color:@color11;}
 
 .bg_color1{ background-color:@color1;}
 .bg_color2{ background-color:@color2;}
@@ -37,6 +42,8 @@
 .bg_color7{ background-color:@color7;}
 .bg_color8{ background-color:@color8;}
 .bg_color9{ background-color:@color9;}
+.bg_color10{ background-color:@color10;}
+.bg_color11{ background-color:@color11;}
 
 
 
@@ -285,8 +292,9 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	background:url(../images/bg_site_acuerela.jpg) no-repeat  right -30px;
 	}
-h1,h2,h3, h4{ font-weight:300}
-.well{ .border_radius(@radius:1px)}
+h1,h2,h3,h4{font-weight:300}
+.well{ .border_radius(@radius:1px);}
+
 
 /*------------ BUTTONS ON --------------*/
 	.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child{
@@ -434,7 +442,9 @@ src: url('../fonts/entypo.woff'),
 /*------------ Forms ON --------------*/
 
 .personaling_form{
-	input[type="text"],input[type="email"],input[type="password"]{ padding:15px;}
+	input[type="text"],input[type="email"],input[type="password"]{ padding:14px;}
+	select{ height:40px;}
+	
 	}
 /*------------ Forms OFF --------------*/
 
@@ -508,10 +518,14 @@ src: url('../fonts/entypo.woff'),
 /*------------- Registro OFF -------------*/
 
 .thumbnails > li .thumbnail{.transition_all	}
-.thumbnails > li.active .thumbnail, .thumbnails > li .thumbnail:hover {
+ .thumbnails > li .thumbnail:hover {
 	border-color:lighten(@color6,30%);
 	
 	}
+.thumbnails > li.active .thumbnail{
+	border-color:lighten(@color1,10%);
+	border-width:2px;
+}
 
 /*------------- Registro OFF -------------*/
 
@@ -572,6 +586,7 @@ src: url('../fonts/entypo.woff'),
 								height:50px;
 							}		
 			}
+			.btn-link-active .entypo{color:@color1 !important;}
 	}
 	.imagen_principal{}
 	.imagenes_secundarias{
@@ -590,7 +605,17 @@ src: url('../fonts/entypo.woff'),
 
 /*Loading images*/
 
-.first-not_done, .middle-not_done , .last-not_done, .first-done, .middle-done, .last-done { width:119px; float:left;}
+.first-not_done, .middle-not_done , .last-not_done, .first-done, .middle-done, .last-done , .first-past, .middle-past, .last-past { 
+	width:119px; 
+	float:left;
+	text-align: left;
+	padding-top: 3.5em;
+	font-size: .8em;
+	line-height:1.1em;
+	color:#999;
+	a{color:#999;}
+
+}
 .first-not_done {
   background-image: url(../images/i1small.png);
   background-repeat: no-repeat;
@@ -608,6 +633,7 @@ src: url('../fonts/entypo.woff'),
   background-image: url(../images/i3small.png);
   background-repeat: no-repeat;
   height: 35px; 
+  width:70px;
 
 }
 .first-done {
@@ -621,15 +647,38 @@ src: url('../fonts/entypo.woff'),
   background-image: url(../images/j2small.png);
   background-repeat: no-repeat;
   margin-right: -20px;  
-
   height: 35px;
 }
 .last-done {
   background-image: url(../images/j3small.png);
   background-repeat: no-repeat;  
+  height: 35px;
+  width:70px;
+}
 
+.first-past {
+  background-image: url(../images/p1small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
   height: 35px;
 }
+.middle-past {
+  background-image: url(../images/p2small.png);
+  background-repeat: no-repeat;
+  margin-right: -20px;
+  height: 35px; 
+
+}
+.last-past {
+  background-image: url(../images/p3small.png);
+  background-repeat: no-repeat;
+  height: 35px;
+  width:70px;
+
+}
+.progreso_compra{
+	width:400px;
+	margin:0 auto;}
 .description-text {
   margin-right: -40px;
   font-size: 11px;
@@ -653,6 +702,8 @@ src: url('../fonts/entypo.woff'),
 
 						.icon_personaling_big{ height:50px;}		
 				}
+			.btn-link-active .entypo{color:@color1 !important;}
+
 		}
 	.columna_principal{
 		.imagen_principal{
@@ -806,22 +857,25 @@ src: url('../fonts/entypo.woff'),
 		overflow: hidden;
 	}
 }
-.tienda_colores{ img{ float:left; margin:0 8px 8px 0}}
+.tienda_colores{ 
+	img{ 
+		float:left; 
+		margin:0 8px 8px 0;
+		width: 57px;
+		border: 1px solid #ddd;
+		}	
+	}
 .tienda_productos{ 
 	.empty{
-
-	
-	padding: 2em;
-	color: #b94a48;
-    background-color: #f2dede;
-    border:1px solid #dab5b5;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-	font-size: 2em;
-	margin: 0 2em 2em;
-	font-weight: 300;
-	display: block;
-	
-  
+		padding: 2em;
+		color: #b94a48;
+		background-color: #f2dede;
+		border:1px solid #dab5b5;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+		font-size: 2em;
+		margin: 0 2em 2em;
+		font-weight: 300;
+		display: block;		
 		}
 	.span3:hover , .span6:hover 
 	{
@@ -850,7 +904,7 @@ src: url('../fonts/entypo.woff'),
 			width:40px;
 			height:40px;
 			.border_radius(@radius:40px);
-			&:hover{.color6}
+				&:hover{.color6}
 			}
 		.agregar_a_bolsa{
 			left:60%;
@@ -858,14 +912,17 @@ src: url('../fonts/entypo.woff'),
 			}
 	
 		img{
-			margin-bottom:.2em;}
+			margin-bottom:.2em;
+			max-height:270px;
+			max-width:270px;
+			}
 		h3{
 			.CAPS;
 			color:#666;
 			font-size:1em;
 			margin-bottom:.3em;
 			font-size: 1em;
-    line-height: 1.3em;
+    		line-height: 1.3em;
 			}
 		span.precio{
 			color:@color4;
@@ -876,6 +933,9 @@ src: url('../fonts/entypo.woff'),
 		.like{
 			&:hover{.color6;
 				}}
+		.like-active{
+			.color1;
+				}
 		}
 	
 	}
@@ -1042,7 +1102,7 @@ ul.yiiPager .last
 #carousel_looks_recomendados {
 	width:100%;
 	overflow:hidden;
-	height:490px;
+	height:460px;
 	.items{
 			position: absolute;
 			width: 2000%;
@@ -1052,19 +1112,104 @@ ul.yiiPager .last
 		position: relative;
 		overflow: hidden;
 		width: 1210px;
-		height: 400px;
+		height: 460px;
 	}
+	.span4{
+				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				padding-bottom:9px;
+}
 	.item{
 		display:inline-block;
-		width:400px;
+		padding: 1em 1em 1.5em;
+		border: 1px solid #ddd;
+		position:relative;
+		
+			.share_like{
+				position:absolute;
+				top:1em;
+				right:1em;
+				opacity:.7;
+				.btn-link{ 
+					padding:0; 
+					margin:0;
+					color:#666;}
+				.btn-link-active .entypo{color:@color1 !important;}
+				}
+			.share_like:hover{
+				opacity:1;
+				.btn-link{ .color1}
+			}
+			.label{
+				position:absolute;
+				top:.5em;
+				background-color:@color1;
+				.border_radius(@radius:0);
+				left:0;}
+			.vcard {
+				.avatar {
+						width:40px;
+						height:40px;
+					}
+				.precio{
+					text-align: right;
+					font-weight: 300;
+					font-size: 1.8em;
+					display: block;
+					margin-top: .5em;
+					color: #777;
+					 }
+				
+			}
+		
 		}
 	}
 
+
+
+
+
 /*------------ Perfil OFF ------------*/
 
+/*------------ LO MAS TOP ON ------------*/
 
 
+/* Personal Shoppers list */
+.personal_shoppers_list{
+	li{
+		text-align:center;
+		h3{
+			font-size: 1.2em;
+			margin: 1em 0 0;
+			padding: 0;
+			font-weight: normal;
+			line-height: 1.5em;			}
+		
+		}
+	}
+.posts_list{
+	.post{
+		background-color: #fff;
+		box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+		-moz-box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+		-webkit-box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+		padding: 10px 20px;
+		}
+	h3{
+		border-bottom: 1px solid #eee;
+		border-top: 1px solid #DDDDDD;
+		font-size: 1em;
+		font-weight: 300;
+		margin: 10px -20px -10px;
+		padding: 14px;
+		font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+		text-transform: none;
+		background: #F2F0F0;
+		line-height:1em; 
+		a{ .color2}
+		}
+	}
 
+/*------------ LO MAS TOP OFF ------------*/
 
 
 /*------------ Backend ON --------------*/
@@ -1214,41 +1359,74 @@ ul.yiiPager .last
 }
 
 
+/*---------------- BANNERS y BOTONES ON ------------*/
+
+.banner_1{
+	.bg_color10;
+	padding:2em;
+	color:@color11 ;
+	a, .entypo{color:@color11}
+	}
+
+/*---------------- BANNERS y BOTONES OFF ------------*/
+
+
+/*--------------- HACKS ON --------------------*/
+#profile-form{
+	select#Profile_pais, select#Profile_day, #Profile_sex_0{
+		margin-left:1em;
+		}
+	#Profile_month{
+		margin:0 1em;
+		}
+}
+
+/*--------------- HACKS OFF --------------------*/
+
+
 /*---------------------- Responsive Design --------------------*/
 
 
 /* Large desktop */
 @media (min-width: 1680px)  { 
 .wrapper_home{
-	background:url(../images/bg_home.jpg) no-repeat -30px 0px;
+	background:url(../images/bg_home.jpg) no-repeat 350px 0px;
+	background-size: contain;
  }
  }
 
 /* Large desktop */
 @media (min-width: 1200px)  and (max-width: 1679px) { 
 .wrapper_home{
-	background:url(../images/bg_home.jpg) no-repeat -300px 0px;
+	background:url(../images/bg_home.jpg) no-repeat 200px 0px;
+	background-size: contain;
+
  }
  }
 
 /* Mid desktop */
 @media (min-width: 980px) and (max-width: 1199px) { 
 .wrapper_home{
-	background:url(../images/bg_home.jpg) no-repeat -390px 0px;
+	background:url(../images/bg_home.jpg) no-repeat 150px 0px;
+	background-size: contain;
+
  }
 }
  
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) { 
 .wrapper_home{
-	background:url(../images/bg_home.jpg) no-repeat -390px 0px;
+	background:url(../images/bg_home.jpg) no-repeat 20px 0px;
+	background-size: contain;
+
  }
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
 .wrapper_home{
-	background:url(../images/bg_home.jpg) no-repeat -300px 0px;
- }
+	background:url(../images/bg_home.jpg) no-repeat 0px 0px;
+	background-size: contain;
+		 }
  }
  
 /* Landscape phones and down */

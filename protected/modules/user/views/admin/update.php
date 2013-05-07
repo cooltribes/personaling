@@ -73,6 +73,20 @@ function getMonthsArray()
 	
 )); ?>        	
           <fieldset>
+             	   <legend >Datos de Usuario: </legend>
+            <div class="control-group">
+<?php echo $form->textFieldRow($model,'email',array('class'=>'span5',)); ?>
+            </div>
+            <div class="control-group">
+              <label for="" class="control-label ">Contraseña </label>
+              <div class="controls">
+                <input type="password" placeholder="Contraseña"  class="span5">
+                <div style="display:none" class="help-inline">ayuda aqui </div>
+              </div>
+            </div>
+            <div class="control-group">
+				<?php echo $form->DropDownList($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?>
+            </div>             	   
              	   <legend >Datos básicos: </legend>
 
 
@@ -124,19 +138,11 @@ function getMonthsArray()
 		}
 ?>		          
             
-            <div class="form-actions"> 
-            	 
-            			<?php $this->widget('bootstrap.widgets.TbButton', array(
-            				'buttonType'=>'submit',
-						    'label'=>'Guardar',
-						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-						    'size'=>'large', // null, 'large', 'small' or 'mini'
-						)); ?>
-						<?php //echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>
-            </div>
+           
           </fieldset>
-        <?php $this->endWidget(); ?>        
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
+        <?php $this->endWidget(); ?>       
+        <!-- 
+        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form2"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
             <legend >Datos básicos: </legend>
             <div class="control-group">
@@ -255,11 +261,25 @@ function getMonthsArray()
             </div>
           </fieldset>
         </form>
-        
+        -->
       </div>
     </div>
+   
     <div class="span3">
-      <div class="padding_left"> <a href="#" title="Guardar" class="btn btn-danger btn-large btn-block">Guardar</a>
+      <div class="padding_left"> 
+      	  
+            	 
+            			<?php $this->widget('bootstrap.widgets.TbButton', array(
+            				'buttonType'=>'button',
+						    'label'=>'Guardar',
+						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+						    'size'=>'large', // null, 'large', 'small' or 'mini'
+						    'block'=>'true',
+						    'htmlOptions'=>array('onclick'=>'js:$("#registration-form").submit();')
+						)); ?>
+						
+           
+      	
         <ul class="nav nav-stacked nav-tabs margin_top">
           <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
           <li><a href="#" title="Guardar"><i class="icon-bell"></i> Crear / Enviar Intivacion</a></li>

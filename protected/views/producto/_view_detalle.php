@@ -30,7 +30,33 @@
               <h1> <?php echo $producto->nombre; ?> <span class="label label-important"> ON SALE</span></h1>
             </div>
             <div class="span2 share_like">
-               <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+            	
+            	<?php
+            	$entro = 0;
+				
+				$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$producto->id));
+            	
+            	if(isset($like)) // le ha dado like
+				{
+					//echo "p:".$like->producto_id." us:".$like->user_id;
+					$entro=1;
+					?>
+						<button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
+               				<span id="like" class="entypo icon_personaling_big">&hearts;</span>
+               			</button>
+               		<?php	
+					
+				}
+					
+					if($entro==0)
+					{
+						echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
+               			<span id='like' class='entypo icon_personaling_big'>&#9825;</span>
+               			</button>";
+					}
+
+               	?>
+               	
                 <div class="btn-group">
                   <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
@@ -542,6 +568,50 @@ $('.imagen_principal').zoom({url: imgZ});
 
 
    }
+   
+   	function encantar()
+   	{
+   		var idProd = $("#producto").attr("value");
+   		//alert("id:"+idProd);		
+   		
+   		$.ajax({
+	        type: "post",
+	        url: "../encantar", // action Tallas de Producto
+	        data: { 'idProd':idProd}, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{					
+					var a = "♥";
+					
+					//$("#meEncanta").removeClass("btn-link");
+					$("#meEncanta").addClass("btn-link-active");
+					$("span#like").text(a);
+					
+				}
+				
+				if(data=="no")
+				{
+					alert("Debe primero ingresar como usuario");
+					//window.location="../../user/login";
+				}
+				
+				if(data=="borrado")
+				{
+					var a = "♡";
+					
+					//alert("borrando");
+					
+					$("#meEncanta").removeClass("btn-link-active");
+					$("span#like").text(a);
+					
+				}
+					
+	       	}//success
+	       })
+   		
+   		
+   	}
    
    
 </script>

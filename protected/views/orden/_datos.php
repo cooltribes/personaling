@@ -10,8 +10,11 @@ echo"<tr>";
 	$user = User::model()->findByPk($data->user_id);
    	echo "<td>".$user->username."</td>";	 // usuario
 	
-   	echo "<td></td>"; // fecha
-	
+   //	echo "<td>".$data->fecha."</td>"; // fecha
+   	if($data->fecha!="")
+   		echo "<td>".date("d-m-Y H:i:s",strtotime($data->fecha))."</td>";
+	else
+		echo "<td></td>";
 	$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
 	
 		foreach ($compra as $tot) {
@@ -27,7 +30,8 @@ echo"<tr>";
 		
 	echo "<td><strong>Looks</strong>:     (".$looks.")<br><strong>Prendas</strong>: (".$indiv.")</td>"; // totales en look y indiv
 	
-	echo "<td>".$data->total."</td>"; // monto total
+	echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->total)."</td>"; // precio
+	//echo "<td>".$data->total."</td>"; // monto total
 	//--------------------
 	$tipoPago = Pago::model()->findByAttributes(array('id'=>$data->pago_id));
 	
@@ -42,6 +46,9 @@ echo"<tr>";
 	
 	if($data->estado == 2)
 		echo "<td>En espera de confirmación</td>"; 
+	
+	if($data->estado == 3)
+		echo "<td>Pago Confirmado</td>"; 
 	
 	// agregar demas estados
 	

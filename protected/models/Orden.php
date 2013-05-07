@@ -3,10 +3,10 @@
  * Definicion de los estados de la orden por transferencia
  * 1 - En espera de pago
  * 2 - En espera de confirmación
- * 3 - Pago recibido
+ * 3 - Pago Confirmado
  * 4 - Preparandose para el envío
  * 5 - Cancelado
- * 
+ * 6 - Pago Rechazado
  * */
 
 
@@ -22,6 +22,7 @@
  * @property double $descuentoRegalo
  * @property double $total
  * @property integer $estado
+ * @property string $fecha
  * @property integer $bolsa_id
  * @property integer $user_id
  * @property integer $pago_id
@@ -66,7 +67,7 @@ class Orden extends CActiveRecord
 			array('subtotal, descuento, envio, iva, descuentoRegalo, total', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, subtotal, descuento, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id', 'safe', 'on'=>'search'),
+			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,6 +100,7 @@ class Orden extends CActiveRecord
 			'descuentoRegalo' => 'Descuento Regalo',
 			'total' => 'Total',
 			'estado' => 'Estado',
+			'fecha' => 'Fecha',
 			'bolsa_id' => 'Bolsa',
 			'user_id' => 'User',
 			'pago_id' => 'Pago',
@@ -126,6 +128,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('descuentoRegalo',$this->descuentoRegalo);
 		$criteria->compare('total',$this->total);
 		$criteria->compare('estado',$this->estado);
+		$criteria->compare('fecha',$this->fecha);
 		$criteria->compare('bolsa_id',$this->bolsa_id);
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('pago_id',$this->pago_id);

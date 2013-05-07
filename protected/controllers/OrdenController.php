@@ -71,23 +71,68 @@ class OrdenController extends Controller
 		if($_POST['accion']=="aceptar")
 		{
 			$detalle = Detalle::model()->findByPk($_POST['id']);
-		
-			$detalle->estado = 1;
-		
-			if($detalle->save())
-				echo "ok";
+			$detalle->estado = 1; // aceptado
 			
-			//faltaria cambiar el estado del pedido
+			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
+	
+			if($detalle->save()){
+				/*
+				 * Revisando si lo depositado es > o = al total de la orden. 
+				 * */
+				if($detalle->monto >= $orden->total){
+					$orden->estado = 3;
+					
+					if($orden->save()){
+						$usuario = Yii::app()->user->id; 
+						
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+						$estado = new Estado;
+											
+						$estado->estado = 3; // pago recibido
+						$estado->user_id = $usuario;
+						$estado->fecha = date("Y-m-d");
+						$estado->orden_id = $orden->id;
+							
+						if($estado->save())
+						{
+							echo "ok";	
+						}
+						
+					}//orden save
+				}// si es mayor
+			
+			}// detalle
+					
 		}
 		else if($_POST['accion']=="rechazar")
 		{
 			$detalle = Detalle::model()->findByPk($_POST['id']);
-		
 			$detalle->estado = 2; // rechazado
-		
-			if($detalle->save())
-				echo "ok";
+			
+			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
+			$orden->estado = 1; // regresa a "En espera de pago"
+			
+			if($detalle->save()){
+				if($orden->save()){
+					
+					$usuario = Yii::app()->user->id; 
+						
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+						$estado = new Estado;
+											
+						$estado->estado = 6; // pago rechazado
+						$estado->user_id = $usuario;
+						$estado->fecha = date("Y-m-d");
+						$estado->orden_id = $orden->id;
+							
+						if($estado->save())
+						{
+							echo "ok";	
+						}
+				}
+			}
 		}
+
 	}
 
 	// Uncomment the following methods and override them if needed

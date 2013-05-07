@@ -27,11 +27,11 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','colores','imagenColor','updateCantidad'), 
+				'actions'=>array('index','view','detalle','tallas','colores','imagenColor','updateCantidad','encantar'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array(''),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -654,7 +654,7 @@ class ProductoController extends Controller
 		//}	
 		
 		if(isset($_POST['tallas'])){
-			$tallas = explode(',',$_POST['tallas']);
+			$tallas = explode('#',$_POST['tallas']);
 			$colores = explode(',',$_POST['colores']);
 			
 		}
@@ -667,7 +667,8 @@ class ProductoController extends Controller
 					$tallacolor[$i]->color_id = $color_tmp->id;
 					$tallacolor[$i]->color = $color_tmp->valor;
 				}
-				$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+				//$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+				$talla_tmp = Talla::model()->findByPk($talla);
 				if (isset($color)){
 					$tallacolor[$i]->talla_id = $talla_tmp->id;
 					$tallacolor[$i]->talla = $talla_tmp->valor;
@@ -902,6 +903,41 @@ class ProductoController extends Controller
 			}
 		}
 	}
+	
+	/*
+	 * Action para que la usuaria le encante un producto
+	 * 
+	 * */
+	public function actionEncantar()
+	{
+		
+		if(Yii::app()->user->isGuest==false) // si está logueado
+		{
+			
+			$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$_POST['idProd']));
+			
+			if(isset($like)) // si ya le dio like
+			{
+				$like->delete();
+				
+				echo "borrado";				
+			}
+			else // esta logueado y es un like nuevo
+			{
+				$encanta = new UserEncantan;
+				
+				$encanta->producto_id = $_POST['idProd'];
+				$encanta->user_id = Yii::app()->user->id;
+				
+				if($encanta->save())
+					echo "ok"; // guardó y le encantó	
+			}
+		}
+		else
+			echo "no";
+
+	}
+	
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

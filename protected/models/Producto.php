@@ -85,6 +85,7 @@ class Producto extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
+			'encantan' => array(self::MANY_MANY, 'UserEncantan', 'tbl_userEncantan(producto_id, user_id)'),
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
 			'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
 			'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id'),
@@ -153,14 +154,14 @@ class Producto extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('t.nombre',$this->nombre,true);
-		$criteria->compare('t.estado',$this->estado);
+		$criteria->compare('t.estado',$this->estado,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('proveedor',$this->proveedor,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
-		$criteria->with = array('categorias');	
+		$criteria->with = array('categorias');
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
 		{
@@ -370,5 +371,54 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 	}
 	
 }
+
+
+	public function busColor($idColor)
+	{
+		// llega un ID de color
+
+		$criteria=new CDbCriteria;
+
+        $criteria->select = 't.*';
+        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
+        $criteria->addCondition('t.estado = 0');
+		$criteria->addCondition('t.status = 1');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+		$criteria->addCondition('tbl_precioTallaColor.color_id = :tres');
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+		$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
+		$criteria->params = array(":tres" => $idColor); // color que llega
+		$criteria->group = 't.id';
+		
+ /*
+		$criteria->compare('id',$this->id);
+		$criteria->compare('codigo',$this->codigo,true);
+		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('estado',$this->estado);
+		$criteria->compare('descripcion',$this->descripcion,true);
+		$criteria->compare('proveedor',$this->proveedor,true);
+		$criteria->compare('fInicio',$this->fInicio,true);
+		$criteria->compare('fFin',$this->fFin,true);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('status',$this->status,true);
+		$criteria->with = array('preciotallacolor');
+
+		$criteria->compare('color_id',$idColor,true);
+
+		$criteria->together = true;
+ */
+
+	
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
+	}
+
 
 }

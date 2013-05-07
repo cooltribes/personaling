@@ -9,6 +9,30 @@ class LoginController extends Controller
 	 */
 	public function actionLogin()
 	{
+		if(isset($_POST['datos']))
+		{
+			$usuario = User::model()->findByAttributes(array('email'=>$_POST['email']));
+	
+			if($usuario){
+				//echo 'usuario existe';
+				
+				$this->_model = $usuario;
+				$session = new CHttpSession;
+				$session->open();
+				$session['username'] = $this->_model->username;
+				Yii::app()->user->setState('username', $this->_model->username);
+				Yii::app()->user->setState('id', $this->_model->id);
+				$identity = new UserIdentity($this->_model->username, '');
+		
+				Yii::app()->user->login($identity, 3600);
+		
+				
+			}else{
+				
+			}
+			
+		}
+
 		if (Yii::app()->user->isGuest) {
 			$model=new UserLogin;
 			// collect user input data
@@ -55,5 +79,35 @@ class LoginController extends Controller
 		$lastVisit->visit = $lastVisit->visit+1;
 		$lastVisit->save();
 	}
+		
+	public function actionLoginfb()
+	{
+	
+	$usuario = User::model()->findByAttributes(array('email'=>$_POST['email']));
+	
+			if($usuario){
+				$session = new CHttpSession;
+				$session->open();
+				$session['username'] = $usuario->username;
+				
+				Yii::app()->user->setState('username', $usuario->username);
+				Yii::app()->user->setState('id', $usuario->id);
+				Yii::app()->user->allowAutoLogin = true;
+				
+				$identity = new UserIdentity($usuario->username, '');
+				$identity->facebook();
+				
+				Yii::app()->user->login($identity, 3600);
+				
+				if(!Yii::app()->user->isGuest)
+					//echo Yii::app()->user->id." ".Yii::app()->user->name;
+					echo "existe";
+				 
+			}else{
+				echo "no";
+			}
+	
+		
+	}//loginfb
 
 }

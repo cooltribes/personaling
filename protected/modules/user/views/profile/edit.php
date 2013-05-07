@@ -90,7 +90,7 @@ function getMonthsArray()
      <!-- MENU OFF -->
    
 
-      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1" style="width: 86%; margin: 0 auto;">
         
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'profile-form',

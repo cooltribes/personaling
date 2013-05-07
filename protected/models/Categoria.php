@@ -117,22 +117,29 @@ class Categoria extends CActiveRecord
 		));
 	}
 	
+	public function getImage($id)
+	{
+		$c = Categoria::model()->findByPk($id);
+		
+		if($c->urlImagen!="")
+			return $c->urlImagen;
+		else 
+			return "no";
+				
+	}
 	
 	
 	public function beforeSave()
 	{
 
-	$valor->attributes=$_POST['Categoria'];
-
-		if($this->padreId=='')
-		{
-			$this->padreId = 0;
-		}
-		
-		//echo($this->padreId);
-		
-
-	return parent::beforeSave();	
+		$valor->attributes=$_POST['Categoria'];
+	
+			if($this->padreId=='')
+			{
+				$this->padreId = 0;
+			}
+	
+		return parent::beforeSave();	
 	}
 	
 	public function hasChildren(){

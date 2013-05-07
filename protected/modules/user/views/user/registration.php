@@ -60,6 +60,7 @@
 </div>
 <?php else: ?>
 
+
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
@@ -174,3 +175,150 @@
   </div>
 </div>
 <?php endif; ?>
+
+<script>
+	
+$(document).ready(function(){
+    
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+            channelUrl : 'http://personaling.com/site/user/registration', // Channel File
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            xfbml      : true,  // parse XFBML
+            oauth      : true
+        });
+
+    };
+    
+    (function(d){
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement('script');js.id = id;js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+});
+
+function check_fb(){
+    FB.getLoginStatus(function(response){
+        console.log("response: "+response.status);
+        if (response.status === 'connected') {
+        	// está conectado a facebook y además ya tiene permiso de usar la aplicacion personaling
+				
+			console.log('Welcome!  Fetching your information.... ');
+                    
+                    FB.api('/me', function(response) {
+                        console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+                        console.log(response.birthday);
+                        
+                  		$("#registration-form").fadeOut(100,function(){
+	     					
+	     					$('#RegistrationForm_email').val(response.email); 
+	                        $('#Profile_first_name').val(response.first_name);
+	                        $('#Profile_last_name').val(response.last_name);
+	                        
+	                        var fecha = response.birthday;
+	                        var n = fecha.split("/"); // 0 mes, 1 dia, 2 año
+	                        
+	                        $('#Profile_day').val(n[1]);
+	                        $('#Profile_month').val(n[0]);
+	                        $('#Profile_year').val(n[2]);
+	                        
+	                        if(response.gender == 'male')
+	                        {
+	                        	$('#Profile_sex_1').attr('checked',true);
+	                        }
+	                        
+	                        if(response.gender == 'female')
+	                        {
+	                        	$('#Profile_sex_0').attr('checked',true);
+	                        }
+	     	
+	     				});
+	
+	    				$("#registration-form").fadeIn(100,function(){});
+                        
+                        
+                        /*
+                        
+						var pass=12345;
+
+                        $.ajax({
+                          url: '', // accion
+                          data: {email : response.email, birthday: response.birthday, gender : response.gender, first: response.first_name, last: response.last_name, password: pass},
+                          type: 'POST',
+                          dataType: 'html',
+                          success: function(data) {
+                              console.log(data);
+                              alert("registró");
+                              //window.location = "http://careerdays.ch/aiesec/user/profile/create";
+                          }
+                        });*/
+                        
+                    }, {scope: 'email,user_birthday'});
+        } else {
+            FB.login(function(response) {
+                if (response.authResponse) {
+                	//user is already logged in and connected (using information)
+                    console.log('Welcome!  Fetching your information.... ');
+                    
+                    FB.api('/me', function(response) {
+                        console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+						console.log(response.user_birthday);
+						
+						$("#registration-form").fadeOut(100,function(){
+	     					
+	     					$('#RegistrationForm_email').val(response.email); 
+	                        $('#Profile_first_name').val(response.first_name);
+	                        $('#Profile_last_name').val(response.last_name);
+	                        
+	                        var fecha = response.birthday;
+	                        var n = fecha.split("/"); // 0 mes, 1 dia, 2 año
+	                        
+	                        $('#Profile_day').val(n[1]);
+	                        $('#Profile_month').val(n[0]);
+	                        $('#Profile_year').val(n[2]);
+	                        
+	                        if(response.gender == 'male')
+	                        {
+	                        	$('#Profile_sex_1').attr('checked',true);
+	                        }
+	                        
+	                        if(response.gender == 'female')
+	                        {
+	                        	$('#Profile_sex_0').attr('checked',true);
+	                        }
+	     	
+	     				});
+	
+	    				$("#registration-form").fadeIn(100,function(){});
+						
+						/*
+						var pass=12345;
+
+                        $.ajax({
+                          url: '', // accion
+                          data: {email : response.email, birthday : response.birthday, gender : response.gender, first: response.first_name, last: response.last_name, password: pass},
+                          type: 'POST',
+                          dataType: 'html',
+                          success: function(data) {
+                              console.log(data);
+                              alert("registró");
+                              //window.location = "http://careerdays.ch/aiesec/user/profile/create";
+                          }
+                        });*/
+                        
+                    });
+                    
+                } else {
+                    console.log('User cancelled login or did not fully authorize.');
+                }
+            }, {scope: 'email,user_birthday'});
+        }
+    });
+}
+	
+	
+</script>

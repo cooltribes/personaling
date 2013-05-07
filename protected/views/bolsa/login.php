@@ -7,6 +7,17 @@
 
 <?php endif; ?>
 <div class="container margin_top">
+
+<div class="progreso_compra">
+      <div class="clearfix margin_bottom">
+         <div class="first-done">Autenticación</div>
+        <div class="middle-not_done">Dirección<br/>de envío <br/>y facturación</div>
+        <div class="middle-not_done">Método <br/>de pago</div>
+        <div class="last-not_done">Completar<br/>compra</div>
+      </div>
+  </div>
+
+
 	
 <!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(

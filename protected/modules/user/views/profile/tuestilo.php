@@ -1,17 +1,17 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
-	UserModule::t("Mi cuenta")=>array('micuenta'),
-	UserModule::t("Tu estilo"),
-);
+//$this->breadcrumbs=array(
+	//UserModule::t("Mi cuenta")=>array('micuenta'),
+	//UserModule::t("Tu estilo"),
+//);
     function getTabs($field,$profile){
             				$nombre_tmp = $field->varname;
 			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
 			$return = '<fieldset>
-            <legend>Escoge tu estilo: </legend>
+            <legend>De los siguientes looks, elige el que más te guste: </legend>
             <ul class="thumbnails">';
             foreach (Profile::range($field->range) as $key => $value){
-            $return .=  '<li class="span3 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
+            $return .=  '<li class="span4 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
+                <div class="thumbnail"> <img alt="'.$value.'" style="width: 370px; height: 370px;" src="http://placehold.it/370">
                   <div class="caption text_align_center CAPS">
                     
                   </div>
@@ -43,7 +43,7 @@ $this->breadcrumbs=array(
     )
 ); ?>	
 <!-- FLASH OFF --> 
-      <h1>Tu Estilo</h1>
+    <div class="page-header">  <h1>Elige tu Estilo</h1></div>
       
       
 <!-- Deberia quedar como este -->
@@ -95,7 +95,7 @@ $this->breadcrumbs=array(
             
             
             
-           <div class="row"><div class="span6 offset3">
+           <div class="row"><div class="span8 offset2">
               	            <?php 
           
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'coctel'));
@@ -151,24 +151,7 @@ $this->breadcrumbs=array(
 					
 					");
 					?>
-              <!-- 
-                <div class="span4 offset2">
-               <label><a href="Buscar_looks_Catalogo.php" title="catalogo"><img src="http://placehold.it/370x400"/> </a>
-               
-               <input type="radio" id="inlineCheckbox1" name="optionsRadios" value="option2"> Atrevido</label>
-               </label>
-                </div>
-                <div class="span4">
-                	
-                	
-                  <label><img src="http://placehold.it/370x400"/> 
-            
-               <input type="radio" id="inlineCheckbox1" name="optionsRadios" value="option2">Conservador</label>
-               </label>
               
-  
-                </div>
-              -->
               </div>
             </div>
          

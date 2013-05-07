@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 03/05/2013 */ 
+/* Project name: Personaling  al 07/05/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -518,10 +518,14 @@ src: url('../fonts/entypo.woff'),
 /*------------- Registro OFF -------------*/
 
 .thumbnails > li .thumbnail{.transition_all	}
-.thumbnails > li.active .thumbnail, .thumbnails > li .thumbnail:hover {
+ .thumbnails > li .thumbnail:hover {
 	border-color:lighten(@color6,30%);
 	
 	}
+.thumbnails > li.active .thumbnail{
+	border-color:lighten(@color1,10%);
+	border-width:2px;
+}
 
 /*------------- Registro OFF -------------*/
 
@@ -853,22 +857,25 @@ src: url('../fonts/entypo.woff'),
 		overflow: hidden;
 	}
 }
-.tienda_colores{ img{ float:left; margin:0 8px 8px 0}}
+.tienda_colores{ 
+	img{ 
+		float:left; 
+		margin:0 8px 8px 0;
+		width: 57px;
+		border: 1px solid #ddd;
+		}	
+	}
 .tienda_productos{ 
 	.empty{
-
-	
-	padding: 2em;
-	color: #b94a48;
-    background-color: #f2dede;
-    border:1px solid #dab5b5;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-	font-size: 2em;
-	margin: 0 2em 2em;
-	font-weight: 300;
-	display: block;
-	
-  
+		padding: 2em;
+		color: #b94a48;
+		background-color: #f2dede;
+		border:1px solid #dab5b5;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+		font-size: 2em;
+		margin: 0 2em 2em;
+		font-weight: 300;
+		display: block;		
 		}
 	.span3:hover , .span6:hover 
 	{
@@ -897,7 +904,7 @@ src: url('../fonts/entypo.woff'),
 			width:40px;
 			height:40px;
 			.border_radius(@radius:40px);
-			&:hover{.color6}
+				&:hover{.color6}
 			}
 		.agregar_a_bolsa{
 			left:60%;
@@ -905,14 +912,17 @@ src: url('../fonts/entypo.woff'),
 			}
 	
 		img{
-			margin-bottom:.2em;}
+			margin-bottom:.2em;
+			max-height:270px;
+			max-width:270px;
+			}
 		h3{
 			.CAPS;
 			color:#666;
 			font-size:1em;
 			margin-bottom:.3em;
 			font-size: 1em;
-    line-height: 1.3em;
+    		line-height: 1.3em;
 			}
 		span.precio{
 			color:@color4;

@@ -7,12 +7,20 @@ $this->breadcrumbs=array(
             				$nombre_tmp = $field->varname;
 			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
 			$return = '<fieldset>
+			
             <legend>Escoge tu estilo: </legend>
             <ul class="thumbnails">';
+			//<img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
             foreach (Profile::range($field->range) as $key => $value){
+            	//echo Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
+            	//if (file_exists(Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg'))
+					$nombre_image = Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
+				//else 
+				//	$nombre_image = "http://placehold.it/270x400";
             $return .=  '<li class="span3 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                  <div class="caption text_align_center CAPS">
+                <div class="thumbnail">'.
+                CHtml::image($nombre_image, "Imagen ".$value, array("width" => "270", "height" => "400"))
+                .'<div class="caption text_align_center CAPS">
                     
                   </div>
                 </div>

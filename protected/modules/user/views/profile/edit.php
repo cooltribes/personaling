@@ -2,7 +2,8 @@
 $this->breadcrumbs=array(
 	UserModule::t("Profile")=>array('micuenta'),
 	UserModule::t("Edit"),
-);     function getMonthsArray()
+);     
+function getMonthsArray()
     {
         
          $months['01'] = "Enero";

@@ -88,7 +88,7 @@ $this->breadcrumbs=array(
           <p></p>
           <div class="input-append">
             <input id="busqueda" name="busqueda" class="" type="text" placeholder="Buscar por palabras clave">
-            <button id="boton_search" class="btn btn-warning" type="button"><i class="icon-search icon-white"></i></button>
+            <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
         </form>
         <hr/>

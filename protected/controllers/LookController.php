@@ -22,7 +22,7 @@ class LookController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','getimage','updateprice'),
+				'actions'=>array('index','getimage','updateprice','encantar'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -482,6 +482,43 @@ if ($_POST['tipo']==1){
 						)
 				);
 	}
+	
+	
+	/*
+	 * Action para que la usuaria le encante un look
+	 * 
+	 * */
+	public function actionEncantar()
+	{
+		
+		if(Yii::app()->user->isGuest==false) // si está logueado
+		{
+			
+			$like = LookEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'look_id'=>$_POST['idLook']));
+			
+			if(isset($like)) // si ya le dio like
+			{
+				$like->delete();
+				
+				echo "borrado";				
+			}
+			else // esta logueado y es un like nuevo
+			{
+				$encanta = new LookEncantan;
+				
+				$encanta->look_id = $_POST['idLook'];
+				$encanta->user_id = Yii::app()->user->id;
+				
+				if($encanta->save())
+					echo "ok"; // guardó y le encantó	
+			}
+		}
+		else
+			echo "no";
+
+	}
+	
+	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

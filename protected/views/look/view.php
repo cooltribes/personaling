@@ -12,12 +12,40 @@
         <article class="span8 columna_principal">
           <div class="row">
             <div class="span6">
+            	<input id="idLook" type="hidden" value="<?php echo $model->id ?>" />
               <h1><?php echo $model->title; ?></h1>
               <p class="margin_top_small_minus"> <small>Look <a href="#" title="playero">Playero</a>,  Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> | Disponible hasta: 18/03/2013 | 100% Disponible</small></p>
             </div>
             <div class="span2 share_like">
               <div class="pull-right">
-                <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+              	
+              	<?php
+            	$entro = 0;
+				
+				$like = LookEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'look_id'=>$model->id));
+            	
+            	if(isset($like)) // le ha dado like al look
+				{
+					//echo "p:".$like->producto_id." us:".$like->user_id;
+					$entro=1;
+					?>
+						
+						<button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
+							<span id="like" class="entypo icon_personaling_big">&hearts;</span>
+						</button>
+               		<?php	
+					
+				}
+					
+					if($entro==0) // no le ha dado like
+					{
+						echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
+               			<span id='like' class='entypo icon_personaling_big'>&#9825;</span>
+               			</button>";
+					}
+
+               	?>
+               	
                 <div class="btn-group">
                   <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
@@ -359,4 +387,51 @@
 		?>
 		
 	}
+	
+	
+	   
+   	function encantar()
+   	{
+   		var idLook = $("#idLook").attr("value");
+   		//alert("id:"+idLook);		
+   		
+   		$.ajax({
+	        type: "post",
+	        url: "encantar", // action Tallas de look
+	        data: { 'idLook':idLook}, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{					
+					var a = "♥";
+					
+					//$("#meEncanta").removeClass("btn-link");
+					$("#meEncanta").addClass("btn-link-active");
+					$("span#like").text(a);
+					
+				}
+				
+				if(data=="no")
+				{
+					alert("Debe primero ingresar como usuario");
+					//window.location="../../user/login";
+				}
+				
+				if(data=="borrado")
+				{
+					var a = "♡";
+					
+					//alert("borrando");
+					
+					$("#meEncanta").removeClass("btn-link-active");
+					$("span#like").text(a);
+					
+				}
+					
+	       	}//success
+	       })
+   		
+   		
+   	}
+	
 </script> 

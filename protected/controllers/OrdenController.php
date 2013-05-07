@@ -20,6 +20,10 @@ class OrdenController extends Controller
 	public function accessRules()
 	{
 		return array(
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('detallepedido','listado'),
+				'users'=>array('@'),
+			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','admin','detalles','validar'),
 				'users'=>array('admin'),
@@ -31,7 +35,39 @@ class OrdenController extends Controller
 		);
 	}
 	
+	/*
+	 * administrador de pedidos del usuario
+	 * */
+	public function actionListado()
+	{
+		$orden = new Orden;
+		
+		$orden->user_id = Yii::app()->user->id;
+		$dataProvider = $orden->search();
+		
+		$this->render('adminUsuario',
+		array('orden'=>$orden,
+		'dataProvider'=>$dataProvider,
+		));
+
+	}
+
 	
+	/*
+	 * action de detalle desde usuario 
+	 * */
+	public function actionDetallepedido()
+	{
+		
+		$orden = Orden::model()->findByAttributes(array('id'=>$_GET['id'],'user_id'=>Yii::app()->user->id));
+		
+		if(isset($orden))
+			$this->render('detalleUsuario', array('orden'=>$orden,));
+		else
+			echo "error";
+	}
+	
+		
 	public function actionIndex()
 	{
 		$this->render('index');

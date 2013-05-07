@@ -8,11 +8,21 @@
 			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
 			$return = '<fieldset>
             <legend>De los siguientes looks, elige el que más te guste: </legend>
+		
+           
             <ul class="thumbnails">';
+			//<img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
             foreach (Profile::range($field->range) as $key => $value){
+
+            	//echo Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
+            	//if (file_exists(Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg'))
+					$nombre_image = Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
+				//else 
+				//	$nombre_image = "http://placehold.it/270x400";
             $return .=  '<li class="span4 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="'.$value.'" style="width: 370px; height: 370px;" src="http://placehold.it/370">
-                  <div class="caption text_align_center CAPS">
+                <div class="thumbnail">'.
+                CHtml::image($nombre_image, "Imagen ".$value, array("width" => "370", "height" => "370"))
+                .'<div class="caption text_align_center CAPS">
                     
                   </div>
                 </div>
@@ -46,39 +56,6 @@
     <div class="page-header">  <h1>Elige tu Estilo</h1></div>
       
       
-<!-- Deberia quedar como este -->
-<!--
-<div class="row"><div class="span6 offset3"><section class="margin_top  margin_bottom_small ">
-        <ul class="nav nav-pills">
-          <li class="active"> <a href="#">Diario</a> </li>
-          <li><a href="#">Fiesta</a></li>
-          <li><a href="#">Vacaciones</a></li>
-          <li><a href="#">Haciendo Deporte</a></li>
-          <li><a href="#">Oficina</a></li>
-        </ul>
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked personaling_form" enctype="multipart/form-data">
-          <fieldset>
-            <legend>Escoge tu estilo: </legend>
-            <ul class="thumbnails">
-              <li class="span3 active"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                  <div class="caption text_align_center CAPS">
-                    <p>Cras justoelit.</p>
-                  </div>
-                </div>
-                </a> </li>
-              <li class="span3"> <a href="#" title="Elegir este tipo de cuerpo">
-                <div class="thumbnail"> <img alt="Tipo de cuerpo" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
-                  <div class="caption text_align_center CAPS">
-                    <p>Cras justoelit.</p>
-                  </div>
-                </div>
-                </a> </li>
-            </ul>
-          </fieldset>
-        </form>
-      </section></div></div>
-     -->
       
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tuestilo-form',

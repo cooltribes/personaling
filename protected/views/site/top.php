@@ -1,7 +1,7 @@
 <div class="container margin_top">
-  <h1 class="page-header">top</h1>
+  <h1 class="page-header">Top</h1>
   <ul class="nav nav-pills">
-    <li class="active"> <a href="#">Lo más trending</a> </li>
+    <li class="active"> <a href="#">Looks más vendidos</a> </li>
     <li><a href="#">Próxima Campaña</a></li>
     <li><a href="#">Looks en promoción</a></li>
   </ul>
@@ -163,7 +163,7 @@
     <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
       <div class="row">
         <div class="span12">
-          <h3 class="margin_bottom_small">Otros Productos que te pueden gustar</h3>
+          <h3 class="margin_bottom_small">Prendas más vendidas</h3>
           <div class="thumbnails">
             <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_7.jpg"></a></li>
             <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_8.jpg"></a></li>

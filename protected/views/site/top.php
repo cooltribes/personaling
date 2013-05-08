@@ -137,21 +137,27 @@
   <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
     <h2 class="margin_bottom">Personal shoppers destacados</h2>
     <ul class="thumbnails ">
-      <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+      <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/heidi.jpg" width="250"> </a>
         <h3><a href="#" title="Nombre del Personal Shopper">Heidi García</a></h3>
-        <p>Bio pequeña del personal shopper</p>
+        <p>Emprendedora de nacimiento,  CEO y Fundadora de Personaling.com. Amante del buen gusto y la moda. Siempre he pensado que tu mejor look es una buena actitud.
+
+</p>
       </li>
-      <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+      <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/rosa.jpg" width="250"> </a>
         <h3><a href="#" title="Nombre del Personal Shopper">Rosa Virginia</a></h3>
-        <p>Bio pequeña del personal shopper</p>
+        <p>Modelo, Abogada, amante de la moda y adicta al shopping. Se lo que te favorece, porque se de moda real. RRPP de Personaling.com</p>
       </li>
-      <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+      <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/elise.jpg" width="250"> </a>
         <h3><a href="#" title="Nombre del Personal Shopper">Elise Vigouroux</a></h3>
-        <p>Bio pequeña del personal shopper</p>
+        <p>Una gran parte de mi vida me la paso escribiendo, otra parte leyendo, la otra trabajando para la moda y la que queda paseando a mi pug. Directora de Contenido de Personaling.com 
+
+</p>
       </li>
-      <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/hipster_girl.jpg" width="250"> </a>
+      <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/Ariana.jpg" width="250"> </a>
         <h3><a href="#" title="Nombre del Personal Shopper">Ariana Basciani</a></h3>
-        <p>Bio pequeña del personal shopper</p>
+        <p>Soy parte del equipo de contenido de Personaling.com. Amante de la literatura. Voy cazando tendencias cada día. Mi trabajo es hacer del mundo un lugar con gente mejor vestida.
+
+</p>
       </li>
     </ul>
     <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
@@ -191,8 +197,8 @@
               </div>
             </li>
             <li class="span3">
-              <div class="post"> <a href="http://personaling.com/flores-al-poder/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/FLORAL-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
-                <h3 ><a href="http://personaling.com/flores-al-poder/" class="show_modal_post" title="Flores al Poder"> Flores al Poder </a></h3>
+              <div class="post"> <a href="http://personaling.com/estilo-tropical-by-mng/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/04/tropicallook1-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
+                <h3 ><a href="http://personaling.com/estilo-tropical-by-mng/" class="show_modal_post" title="Flores al Poder"> Estilo Tropical by MNG</a></h3>
                 <!-- /.row --> 
               </div>
             </li>

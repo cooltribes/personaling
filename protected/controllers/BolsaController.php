@@ -233,7 +233,7 @@ class BolsaController extends Controller
 		public function actionDirecciones()
 		{
 			$dir = new Direccion;
-			
+
 			if(isset($_POST['Direccion'])) // nuevo registro
 			{
 				//if($_POST['Direccion']['nombre']!="")

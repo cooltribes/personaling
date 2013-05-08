@@ -555,7 +555,7 @@ src: url('../fonts/entypo.woff'),
 			border-bottom:1px solid #ddd;
 			
 			
-			.btn-danger{
+			.btn-danger, .btn-warning{
 				height:2.3em;
 	            line-height:2.3em;
 				.color3;
@@ -588,7 +588,14 @@ src: url('../fonts/entypo.woff'),
 			}
 			.btn-link-active .entypo{color:@color1 !important;}
 	}
-	.imagen_principal{}
+	.imagen_principal{ 
+		border: 2px solid #ddd;
+		box-shadow: 5px 5px 0 #ddd;
+		-moz-box-shadow: 5px 5px 0 #ddd;
+		-o-box-shadow: 5px 5px 0 #ddd;
+		-webkit-box-shadow: 5px 5px 0 #ddd;
+		
+		}
 	.imagenes_secundarias{
 			height:640px;
 			width:70%;
@@ -738,7 +745,7 @@ src: url('../fonts/entypo.woff'),
 			margin-bottom:2em;
 			padding-bottom:1em;
 			border-bottom:1px solid #ddd;
-			.btn-danger:before{
+			.btn-danger:before, .btn-warning:before{
 				content:'\E73D';
 				font-size:2em;
 				margin-right:7px;		
@@ -746,7 +753,7 @@ src: url('../fonts/entypo.woff'),
 				display:inline-block;
 				
 				}
-			.btn-danger{
+			.btn-danger, .btn-warning{
 				/*height:2.3em;
 	            line-height:2.3em;*/ 
 				font-size:1em;
@@ -1182,7 +1189,13 @@ ul.yiiPager .last
 			margin: 1em 0 0;
 			padding: 0;
 			font-weight: normal;
-			line-height: 1.5em;			}
+			line-height: 1.5em;
+			}
+		p{
+			font-size: .9em;
+			line-height: 1.5em;
+			font-weight: 300;
+			}
 		
 		}
 	}

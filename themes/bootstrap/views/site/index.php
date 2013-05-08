@@ -12,7 +12,8 @@ $this->pageTitle=Yii::app()->name;
 .note_startupchile{
 	position: absolute;
 	top:5em;
-	left:0;}
+	left:0;
+	display:none;}
 
 </style>
 

@@ -88,7 +88,7 @@ class Producto extends CActiveRecord
 			'encantan' => array(self::MANY_MANY, 'UserEncantan', 'tbl_userEncantan(producto_id, user_id)'),
 			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
 			'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
-			'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id'),
+			'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','order'=>'k.orden ASC', 'alias' => 'k'),
 			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
 			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
 			'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
@@ -97,7 +97,7 @@ class Producto extends CActiveRecord
                 ),
 		);
 	}
-
+ 
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

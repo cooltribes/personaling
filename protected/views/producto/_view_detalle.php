@@ -78,7 +78,7 @@
              	
              	$colorPredet="";
              	
-            	echo "<div class='span6 imagen_principal'> 
+            	echo "<div class='span6'><div class='imagen_principal'> 
             			<!-- FOTO principal ON -->";
             	
             	$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
@@ -90,6 +90,7 @@
 					$colorPredet = $img->color_id;
 					echo CHtml::image(Yii::app()->baseUrl . $img->url, "producto", array('id'=>'principal'));
 					echo "<!-- FOTO principal OFF -->";
+	          		echo "</div>";	
 	          		echo "</div>";	
 					
 					echo " <div class='span2'> 
@@ -137,8 +138,8 @@
 			?></h4>
             </div>
             <div class="span2">
-              <div class="btn-group"> <a class="btn btn-danger" ><span class="entypo color3">&#128274;</span></a>
-              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa </a>
+              <div class="btn-group"> <a class="btn btn-warning" ><span class="entypo color3">&#128274;</span></a>
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning"> Añadir a la bolsa </a>
               </div>
             </div>
           </div>
@@ -236,8 +237,8 @@
 						echo "Otro proveedor"; 
 					 
 					 ?></h4>
-                  <p><strong>Bio</strong>: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmoofficia deserunt mollit anim id</p>
-                  <p><a href="#">Ver looks de esta marca</a></p>
+                  <p>Grandes Marcas 1 tienda.</p>
+                  <!-- <p><a href="#">Ver looks de esta marca</a></p>-->
                   <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> </div>
               </div>
               <div class="tab-pane" id="Envio">Envio</div>

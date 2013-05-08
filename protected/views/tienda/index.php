@@ -88,7 +88,7 @@ $this->breadcrumbs=array(
           <p></p>
           <div class="input-append">
             <input id="busqueda" name="busqueda" class="" type="text" placeholder="Buscar por palabras clave">
-            <button id="boton_search" class="btn btn-warning" type="button"><i class="icon-search icon-white"></i></button>
+            <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
         </form>
         <hr/>
@@ -157,8 +157,8 @@ $this->breadcrumbs=array(
 			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-        <h5>Looks con estas prendas:</h5>
-        <img src="http://cooltribes.com/sandbox/personaling/prototipo/images/look_sample_pequeno_2.jpg" /> </div>
+        <h5>Looks con estas prendas:</h5><br/>
+        <img src="http://personaling.com/blog/wp-content/uploads/2013/05/Look-recomendado-para-tienda1.jpg" /> </div>
     </div>
   </div>
 </div>

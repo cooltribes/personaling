@@ -91,7 +91,7 @@
 		 
 		 $this->widget('bootstrap.widgets.TbButton', array(
 				    'buttonType'=>'ajaxButton',
-				    'type'=>'danger',
+				    'type'=>'warning',
 				    'label'=>'Añadir a la bolsa',
 				    //'block'=>'true',
 				   	'size'=> 'large',
@@ -319,7 +319,7 @@
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolor </div>
     </div>
   </div>
-  <div class="modal-footer"> <a href="#" class="btn btn-danger">Añadir al Look</a> </div>
+  <div class="modal-footer"> <a href="#" class="btn btn-warning">Añadir al Look</a> </div>
 </div>
 
 <!-- // Modal Window -->

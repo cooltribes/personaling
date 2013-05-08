@@ -73,24 +73,29 @@ class LookController extends Controller
 					)
 				);		
 	}
-	public function actionIndex()
+	public function actionIndex() 
 	{
 		$this->render('index');
 	}
 	public function actionGetImage($id)
-	{
-		 	 
+	{ 
+		 	  
 		 $look = Look::model()->findByPk($id);
 		 $imagenes = array();
 		 $i = 0;
 		 foreach($look->lookhasproducto as $lookhasproducto){
 		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
-		 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($lookhasproducto->producto->mainimage->url, '_thumb', strrpos($lookhasproducto->producto->mainimage->url,'.'), 0);
-			//$imagenes[$i]->image = imagecreatefromstring(file_get_contents($imagenes[$i]->path));
-			$imagenes[$i]->top = $lookhasproducto->top;
-			$imagenes[$i]->left = $lookhasproducto->left;
-			$imagenes[$i]->width = $lookhasproducto->width;
-			$imagenes[$i]->height = $lookhasproducto->height;
+		 	if (isset($lookhasproducto->producto->mainimage)){
+				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($lookhasproducto->producto->mainimage->url, '_thumb', strrpos($lookhasproducto->producto->mainimage->url,'.'), 0);
+					//$imagenes[$i]->image = imagecreatefromstring(file_get_contents($imagenes[$i]->path));
+					$imagenes[$i]->top = $lookhasproducto->top;
+					$imagenes[$i]->left = $lookhasproducto->left;
+					$imagenes[$i]->width = $lookhasproducto->width;
+					$imagenes[$i]->height = $lookhasproducto->height;
+			} 
+			//else {
+			//	echo $lookhasproducto->producto->id;
+			//}
 			$i++;
 		 }	
 /*
@@ -313,7 +318,7 @@ public function actionCategorias(){
 			$model->user_id = Yii::app()->user->id;
 			*/
 			//if($model->save()){
-				
+				 
 				$colores_id = explode(',',$_POST['colores_id']); 
 				$left = explode(',',$_POST['left']);
 				$top = explode(',',$_POST['top']);
@@ -343,8 +348,18 @@ public function actionCategorias(){
 					
 					 
 				}
-			   $this->redirect(array('look/publicar','id'=>$model->id)); 
-				Yii::app()->end();			
+				if ($_POST['tipo']==1){
+			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
+					Yii::app()->end();
+				} else {
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Tu look se a guardado."));	
+					$this->render('create',array(
+							'model'=>$model,
+							'categorias'=>$categorias,
+						)
+					);
+				}		
 			
 			//} else{
 			//		Yii::trace('edit a look, Error:'.print_r($model->getErrors(), true), 'registro');
@@ -400,18 +415,18 @@ public function actionCategorias(){
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}
 				}
-if ($_POST['tipo']==1){
-			   $this->redirect(array('look/publicar','id'=>$model->id)); 
-				Yii::app()->end();
-} else {
+				if ($_POST['tipo']==1){
+			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
+					Yii::app()->end();
+				} else {
 					Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Tu look se a guardado."));	
-				$this->render('create',array(
-				'model'=>$model,
-				'categorias'=>$categorias,
-			)
-		);
-}			
+					Yii::app()->user->setFlash('success',UserModule::t("Tu look se a guardado."));	
+					$this->render('create',array(
+							'model'=>$model,
+							'categorias'=>$categorias,
+						)
+					);
+				}			
 			} else{
 					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
 				}

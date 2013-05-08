@@ -157,8 +157,8 @@ $this->breadcrumbs=array(
 			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-        <h5>Looks con estas prendas:</h5>
-        <img src="http://cooltribes.com/sandbox/personaling/prototipo/images/look_sample_pequeno_2.jpg" /> </div>
+        <h5>Looks con estas prendas:</h5><br/>
+        <img src="http://personaling.com/blog/wp-content/uploads/2013/05/Look-recomendado-para-tienda1.jpg" /> </div>
     </div>
   </div>
 </div>

@@ -157,7 +157,7 @@ while (i <  canvas.length) {
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'label'=>'Publicar',
 	    'type'=>'danger',
-
+		'buttonType' => 'ajaxSubmit',
 	    'htmlOptions'=> array(
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
@@ -401,7 +401,7 @@ function addPublicar(tipo)
 	var left = '';
 	var top = '';
 	var height = '';
-	var width = '';
+	var width = ''; 
 	var count = 0;
 	$('.canvas input[name="producto_id"]').each(function(item){
 		productos_id += $(this).val()+',';
@@ -414,14 +414,16 @@ function addPublicar(tipo)
 		top += position.top + ',';
 		count++;
 	});
+	productos_id = productos_id.substring(0, productos_id.length-1);
+	//alert(productos_id);
 	//alert(left);
 	//productos_id = "1,2,3,4";
 	$("#productos_id").val(productos_id);
-	$("#colores_id").val(color_id);
-	$("#left").val(left);
-	$("#top").val(top);
-	$("#height").val(height);
-	$("#width").val(width);
+	$("#colores_id").val(color_id.substring(0, color_id.length-1));
+	$("#left").val(left.substring(0, left.length-1));
+	$("#top").val(top.substring(0, top.length-1));
+	$("#height").val(height.substring(0, height.length-1));
+	$("#width").val(width.substring(0, width.length-1));
 	$("#tipo").val(tipo);
 	//count = 6;
 	//alert(productos_id);

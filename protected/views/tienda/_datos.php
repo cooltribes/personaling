@@ -1,6 +1,5 @@
 <?php
 
-echo"<tr>";
 $id=0;
 $entro=0;
 $con=0;
@@ -15,10 +14,12 @@ $prePub="";
 	   		$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 			}
 		}
-	
+		
 		if(isset($ima)){
+			
 			if($prePub!="")
 			{
+				//echo"<tr>";
 				$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$data->id));
             	
             	if(isset($like)) // le ha dado like
@@ -39,42 +40,22 @@ $prePub="";
 					
 					$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
 					
-					echo("<td><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
+					echo("<a href='../producto/detalle/".$data->id."' title='".$data->nombre."'><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
 					<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a>
 					<span class='precio'>Bs. ".$prePub."</span><br/>
-					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></article></a></td>");
+					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></article></a>");
 					
 					$con=$id;
 						
 				}
+				
+				//echo("</tr>");
 			}
-			}
-	//}
-
-	/*foreach ($data->imagenes as $ima) {
 		
-		$id = $data->id;
-		
-		if($id!=$con)
-		{
-			
-			$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'1'));
-			if(isset($ima)){
-				$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "320",'class'=>'img-polaroid'));
-				echo("<td> <article class='span3'> ".$a."</article> </td>");
-				$con=$id;
-			}
-			else {
-				{
-					echo "<td><article class='span3'> <img src='http://placehold.it/270x320'/> </article></td>";
-					$con=$id;
-				}
-			}
-			
 		}
-	}*/
 
-echo("</tr>");
+
+
 
 ?>
 <script>

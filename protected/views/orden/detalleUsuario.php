@@ -62,9 +62,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 ?>
         
        </td>
-   
-      <td><a href="#" class="btn btn-info margin_top pull-right"><i class="icon-check icon-white"></i> Reportar Pago </a></td>
-      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
+ 		<td><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white"></i> Reportar Pago </td>
+      	<td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
   </table>
   <hr/>
@@ -488,7 +487,7 @@ Para una futura iteración
 <!------------------- MODAL WINDOW ON -----------------> 
 
 <!-- Modal 1 -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="myModal-prueba" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Desea aceptar este pago?</h3>
@@ -504,3 +503,130 @@ Para una futura iteración
   <div class="modal-footer"><a href="" title="ver" class="btn-link" target="_blank">Cancelar </a> <a href="#" title="Confirmar" class="btn btn-success">Aceptar el pago</a> </div>
 </div>
 <!------------------- MODAL WINDOW OFF ----------------->
+
+<!-- Modal Window -->
+<?php 
+$detPago = Detalle::model()->findByPk($orden->detalle_id);
+?>
+<div class="modal hide fade" id="myModal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4>Agregar Depósito o Transferencia bancaria ya realizada</h4>
+  </div>
+  <div class="modal-body">
+    <form class="">
+      <div class="control-group"> 
+        <!--[if lte IE 7]>
+            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
+<![endif]-->
+        <div class="controls">
+          <?php echo CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')); ?>
+          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+        </div>
+      </div>
+      <div class="control-group"> 
+        <!--[if lte IE 7]>
+            <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
+<![endif]-->
+        <div class="controls">
+        	<?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
+          <div style="display:none" class="help-inline"></div>
+        </div>
+      </div>
+		<div class="control-group"> 
+        <!--[if lte IE 7]>
+            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
+<![endif]-->
+        <div class="controls">
+          <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
+          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+        </div>
+      </div>
+      <div class="control-group"> 
+        <!--[if lte IE 7]>
+            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
+<![endif]-->
+        <div class="controls">
+          <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
+          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+        </div>
+      </div>
+      <div class="control-group"> 
+        <!--[if lte IE 7]>
+            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
+<![endif]-->
+        <div class="controls">
+          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto')); ?>
+          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+        </div>
+      </div>
+      <div class="controls controls-row"> 
+        <!--[if lte IE 7]>
+            <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
+<![endif]-->
+<?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?>
+<?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
+<?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
+      </div>
+      <div class="control-group"> 
+        <!--[if lte IE 7]>
+            <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
+<![endif]-->
+        <div class="controls">
+        	<?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
+          <div style="display:none" class="help-inline"></div>
+        </div>
+      </div>
+      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
+      <p class="well well-small"> <strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>
+    </form>
+  </div>
+</div>
+
+<input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+
+<!-- // Modal Window -->
+
+<script>
+	
+	function enviar()
+	{	
+		var idDetalle = $("#idDetalle").attr("value");
+		var nombre= $("#nombre").attr("value");
+		var numeroTrans = $("#numeroTrans").attr("value");
+		var dia = $("#dia").attr("value");
+		var mes = $("#mes").attr("value");
+		var ano = $("#ano").attr("value");
+		var comentario = $("#comentario").attr("value");
+		var banco = $("#banco").attr("value");
+		var cedula = $("#cedula").attr("value");
+		var monto = $("#monto").attr("value");
+
+		if(nombre=="" || numeroTrans=="" || monto=="")
+		{
+			alert("Por favor complete los datos.");
+		}
+		else
+		{
+
+ 		$.ajax({
+	        type: "post", 
+	        url: "../../bolsa/cpago", // action de controlador de bolsa cpago
+	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{
+					window.location.reload();
+					//alert("guardado"); 
+					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
+				}
+	       	}//success
+	       })
+ 		}	
+		
+		
+	}
+	
+</script>

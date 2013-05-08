@@ -65,3 +65,51 @@ $template = '{summary}
   <hr/>
 </div>
 <!-- /container -->
+
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+<?php $this->endWidget(); ?>
+
+<script>
+	
+	function enviar()
+	{	
+		var idDetalle = $("#idDetalle").attr("value");
+		var nombre= $("#nombre").attr("value");
+		var numeroTrans = $("#numeroTrans").attr("value");
+		var dia = $("#dia").attr("value");
+		var mes = $("#mes").attr("value");
+		var ano = $("#ano").attr("value");
+		var comentario = $("#comentario").attr("value");
+		var banco = $("#banco").attr("value");
+		var cedula = $("#cedula").attr("value");
+		var monto = $("#monto").attr("value");
+
+		if(nombre=="" || numeroTrans=="" || monto=="")
+		{
+			alert("Por favor complete los datos.");
+		}
+		else
+		{
+
+ 		$.ajax({
+	        type: "post", 
+	        url: "../bolsa/cpago", // action de controlador de bolsa cpago
+	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{
+					window.location.reload();
+					//alert("guardado"); 
+					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
+				}
+	       	}//success
+	       })
+ 		}	
+		
+		
+	}
+	
+	
+</script>

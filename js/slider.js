@@ -14,7 +14,7 @@ if ($.browser.msie && $.browser.version == 10) {
 */
 
 var rightInterval;
-var leftInterval;
+var leftInterval; 
 /*
 var op25 = 0.25;
 var op50 = 0.50;

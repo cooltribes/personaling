@@ -9,14 +9,14 @@
      <!-- MENU ON -->
      <ul class="nav nav-pills margin_top">
         <li class="active"> 
-        	<?php echo CHtml::link('Datos Personales',array('user/profile/edit')); ?>
+        	<?php echo CHtml::link('Datos Personales',array('profile/edit')); ?>
         </li>
         <li>
-        	<?php echo CHtml::link('Avatar',array('user/profile/avatar')); ?>
+        	<?php echo CHtml::link('Avatar',array('profile/avatar')); ?>
         	
         </li>
         <li>
-        	<?php echo CHtml::link('Avatar',array('user/profile/edittutipo')); ?>
+        	<?php echo CHtml::link('Avatar',array('profile/edittutipo')); ?>
         	
         </li>
       </ul>
@@ -40,7 +40,20 @@
             
             <div class="row">
             <div class="span2"><img src="http://placehold.it/150x150"/></div>
-            <div class="span3 margin_top"><a href="#" class="btn">Aqui va el plugin del uploader</a></div>
+            <div class="span3 margin_top">
+            	 <div class="well well-large">
+            	    <?php //input-append
+            	$this->widget('CMultiFileUpload', array(
+                'name' => 'url',
+                'model'=>$model,
+     			'attribute'=>'path_image',
+                'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+                'duplicate' => 'El archivo está duplicado.', // useful, i think
+                'denied' => 'Tipo de archivo invalido.', // useful, i think
+            ));
+	?> </div>
+            	
+            </div>
             
             </div>
             

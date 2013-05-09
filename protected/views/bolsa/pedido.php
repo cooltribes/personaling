@@ -8,13 +8,11 @@ $user = User::model()->findByPk(Yii::app()->user->id);
 ?>
 <div class="container margin_top">
   <div class="row">
+  
+  
+  
     <div class="span8 offset2">
-      <div class="clearfix margin_bottom margin_top margin_left">
-        <div class="first-done"></div>
-        <div class="middle-done "></div> 
-        <div class="middle-done "></div>
-        <div class="last-done"></div> 
-      </div>
+      
       
       <?php
       
@@ -22,10 +20,11 @@ $user = User::model()->findByPk(Yii::app()->user->id);
 	  {
       ?>
       
-      <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-        <p class="alert alert-success"><strong>Tu Pedido ha sido recibido con éxito.</strong> <br/>
-          A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
-        <h1 class="error">Siguiente paso</h1>
+      <div class="alert alert-success margin_top_medium margin_bottom"><h1>Tu Pedido ha sido recibido con éxito.</h1> <p>
+          A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p></div>
+      <section class="bg_color3 margin_bottom_small padding_small box_1">
+        
+        <h2>Siguiente paso</h2><hr/>
         <p><strong>Para completar tu comprar debes:</strong></p>
         <ol>
           <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
@@ -229,13 +228,18 @@ $user = User::model()->findByPk(Yii::app()->user->id);
 
             </tbody>
           </table>
+          
+          </section>
           <hr/>
+          <a href="../../tienda/index" class="btn btn-danger" title="seguir comprando">Seguir comprando</a>
         </div>
         
-      </section>
-      <hr/>
-      <a href="../../tienda/index" class="btn" title="seguir comprando">Seguir comprando</a> </div>
+      
+     
+       </div>
+      
   </div>
+  
 </div>
 <!-- /container -->
 <?php 

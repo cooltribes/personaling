@@ -137,6 +137,14 @@ class ProfileController extends Controller
 			'estilo'=>$id,
 	    ));
 	}
+	public function actionAvatar()
+	{
+		$model = $this->loadUser();
+	    $this->render('avatar',array(
+	    	'model'=>$model,
+			//'profile'=>$model->profile,
+	    ));		
+	}
 /**
  * Regsitro tu estilo  
  */

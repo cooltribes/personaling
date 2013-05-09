@@ -8,11 +8,13 @@
 				));
 				 * 
 				 */
-				$tallacolores=Preciotallacolor::model()->findAllBySql(
-				'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad GROUP BY color_id',
-				array(':cantidad'=>1, ':producto_id'=>$producto->id)
-				);
-				foreach($tallacolores as $tallacolor){
+				if ($producto->getPrecio(false)!=0){
+					$tallacolores=Preciotallacolor::model()->findAllBySql(
+						'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad GROUP BY color_id',
+						array(':cantidad'=>1, ':producto_id'=>$producto->id)
+					);
+					foreach($tallacolores as $tallacolor){
+						if ( $producto->getImageUrl($tallacolor->color_id)!="http://placehold.it/180"){
               ?>
               <li class="span2" > 
               	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$tallacolor->color_id; ?>">
@@ -77,7 +79,9 @@
               	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$tallacolor->color_id,$script);
               	?>              	
               </li>
-              <?php }
-				} 
+              <?php } // if
+					} //foreach
+				} // if
+			} // foreach
 				?>
 </ul>              

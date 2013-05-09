@@ -9,7 +9,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <div class="first-past">Autenticación</div>
         <div class="middle-past">Dirección<br/>de envío <br/>y facturación</div>
         <div class="middle-past">Método <br/>de pago</div>
-        <div class="last-done">Proceso<br/>completado</div>
+        <div class="last-done">Confirmar<br/>compra</div>
       </div>
   </div>
 

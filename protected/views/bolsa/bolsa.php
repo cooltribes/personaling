@@ -43,8 +43,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
               <thead>
                 <tr>
                   <th colspan="2">Producto</th>
-                  <th>Precio por 
-                    unidad </th>
+                  <th>Precio Unt.</th>
                   <th colspan="2">Cantidad</th>
                 </tr>
               </thead>
@@ -217,7 +216,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
         </article>
         <div class="span5 margin_bottom margin_top_large padding_top_xsmall">
           <div class="margin_left">
-            <div class="well margin_top_large">
+            <div class="well margin_top_large well_personaling_big">
             	<?php 
             	
 
@@ -252,19 +251,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                 <input type="checkbox">
                 Envolver y enviar como regalo (9Bs. Adicionales) </label>
               <hr/>
-              <div class="row margin_bottom">
-                <div class="span2"> 
-                	<?php
-                	
-                	if($total_look!=0)
-					{
-						echo "Con la compra  del Look completo ahorras 184 Bs.";
-					}
-                	
-                	?>
-                	 </div>
-                <div class="span2">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <div class=" margin_bottom">
+                
+                <div class="tabla_resumen_bolsa">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
                     <tr>
                       <th class="text_align_left">Subtotal:</th>
                       <td>
@@ -305,35 +295,47 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                     </tr>
                     <tr>
                       <th class="text_align_left">Descuento:</th>
-                      <td><?php echo $totalDe; ?> Bs.</td>
+                      <td class="text_align_right"><?php echo $totalDe; ?> Bs.</td>
                     </tr>
                     <tr>
                       <th class="text_align_left">Envío:</th>
-                      <td><?php echo $envio; ?> Bs.</td>
+                      <td class="text_align_right"><?php echo $envio; ?> Bs.</td>
                     </tr>
                     <tr>
                       <th class="text_align_left">I.V.A. (12%):</th>
-                      <td><?php echo $iva; ?> Bs.</td>
+                      <td class="text_align_right"><?php echo $iva; ?> Bs.</td>
                     </tr>
                     <tr>
                       <th class="text_align_left"><h4>Total:</h4></th>
-                      <td><h4><?php echo $t; ?> Bs.</h4></td>
+                      <td class="text_align_right"><h4><?php echo $t; ?> Bs.</h4></td>
                     </tr>
                   </table>
                   
                   <?php
                    $this->widget('bootstrap.widgets.TbButton', array(
 				    'label'=>'Completar compra',
-				    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				    'size'=>'normal', // null, 'large', 'small' or 'mini'
 				    'url'=>'compra', // action ir 
-				    'icon'=>'shopping-cart white',
+				    'icon'=>'lock white',
 				)); 
 				 
 				//<a href="Proceso_de_Compra_1.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
 				?>
-                  
-                   </div>
+                
+                 <?php
+                	
+                	if($total_look!=0)
+					{
+						echo '<div class="alert alert-info margin_top_small">';
+						echo "Con la compra  del Look completo estas ahorrando 184 Bs.";
+						echo '</div>';
+
+					}
+                	
+                	?>
+                 </div>
+                 
               </div>
               <p><i class="icon-calendar"></i> Fecha estimada de entrega: 00/00/2013 - 00/00/2013 </p>
             </div>

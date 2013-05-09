@@ -138,6 +138,8 @@ while (i <  canvas.length) {
 </script>
 <div class="container margin_top" id="crear_look">
 	  <div class="page-header">
+      
+      <h1>Crear look</h1>
   		<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?

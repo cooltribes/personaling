@@ -83,7 +83,7 @@ function encantar(id)
 				
 				if(data=="no")
 				{
-					alert("Debe primero ingresar como usuario");
+					alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar Me Encanta a un producto");
 					//window.location="../../user/login";
 				}
 				

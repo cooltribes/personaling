@@ -219,7 +219,7 @@
                 <div class="metadata_top">
                   <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Seleccione','class'=>'span5 tallas')); ?> </div>
+                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); ?> </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">

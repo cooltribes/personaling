@@ -883,12 +883,44 @@ class ProductoController extends Controller
 			if($_POST['check']!=""){
 
 				$checks = explode(',',$_POST['check']);
-				$idProducto = $_POST['idProd'];	
+				$idProducto = $_POST['idProd'];
+				
+				$cuales = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$idProducto));
+				$todos = array();
+				$BD = array();
+				$total = count($cuales);
+				$contador=0;
+				
+				// en el caso que sea una segunda modificacion y se quita alguna categoria debe eliminarse de la BD
+				foreach($cuales as $uno){
+					
+					array_push($BD,$uno->tbl_categoria_id);
+					
+					foreach($checks as $vienen){
+						if($vienen == $uno->tbl_categoria_id){
+							$contador++;
+							array_push($todos,$uno->tbl_categoria_id);
+						}
+					}
+				}				
+				
+				// tengo los que llegaron y estan dentro de la BD en dos array, busco la diferencia
+				
+				$r = array_diff($BD, $todos);
+				
+				if(isset($r)){
+					foreach($r as $cadauno){
+						$borr = CategoriaHasProducto::model()->findByAttributes(array('tbl_categoria_id'=>$cadauno));
+						$borr->delete();
+					}
+					
+				}
 				
 				foreach($checks as $idCateg){
 						
 					if(!$prodCat = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$idCateg))) // reviso si ya esta en la BD esa asignacion
 					{
+						
 						$prodCat = new CategoriaHasProducto;
 						$prodCat->tbl_categoria_id = $idCateg; //id Categoria cambia en el foreach
 						$prodCat->tbl_producto_id = $idProducto; // producto igual para todos

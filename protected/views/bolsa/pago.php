@@ -51,7 +51,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </ul>
           </div>
         </div>
-        Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini btn-info" data-toggle="modal">haz click aqui</a> </div>
+
       <div class="box_1 padding_small margin_bottom"> 
         <!-- Forma de pago OFF --> 
         <!-- Forma de pago ON -->

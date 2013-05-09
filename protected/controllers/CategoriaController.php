@@ -31,11 +31,11 @@ class CategoriaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array(''),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','create'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -77,6 +77,8 @@ class CategoriaController extends Controller
 			$model->estado = $_POST['Categoria']['estado'];
 			$model->descripcion = $_POST['Categoria']['descripcion'];
 			
+			echo($model->nombre);
+			
 			if($model->save()){
 
 	        	$images = CUploadedFile::getInstancesByName('url');
@@ -104,36 +106,11 @@ class CategoriaController extends Controller
 		                	} 
 						}
 		            }
-			
-				/*
-				$model->imagen = CUploadedFile::getInstanceByName($_POST['Categoria']['urlImagen']);
-				
-					
-				if(!is_dir($nombre))
-				{
-		   			mkdir($nombre,0777,true);
-		 		}
-				
-				echo "aaaaa:".$model->imagen;
-				$model->imagen->saveAs($nombre."/img.jpg");
-			
-				$model->imagen = CUploadedFile::getInstance($model,'urlImagen');
-								
-				$nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
-					
-				echo "imagen:".$model->urlImagen." -".$nombre;
-					
-				if(!is_dir($nombre))
-				{
-		   			mkdir($nombre,0777,true);
-		 		}
-				 
-				$model->imagen->saveAs($nombre);*/
 				
 				$this->redirect(array('admin'));
 			}
-			else
-				echo $model->getErrors();	
+			//else
+				//var_dump($model->getErrors());	
 		}
 
 		$this->render('create',array(

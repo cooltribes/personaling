@@ -73,6 +73,7 @@ $this->breadcrumbs=array(
             <?php 
             $cat = Categoria::model()->findAllByAttributes(array('id'=>'1','padreId'=>'0'));
 			$cats = array();
+
 			
             ?>
             <div class="control-group">
@@ -86,13 +87,18 @@ $this->breadcrumbs=array(
 	
 				function nodos($items,$form,$model){
 					foreach ($items as $item){
-				
-				$padre = $model->padreId;
 						
-						if($padre!="")
-							if($item->id == $padre)
-								echo("<option value='".$item->id."' selected>".$item->nombre."</option>");
+						if(isset($model->padreId) && $model->padreId != ""){ // si el modelo viene cargado para edicion seleccione
+									$padre = $model->padreId;
+								
+									if($item->id == $padre)
+										echo("<option value='".$item->id."' selected>".$item->nombre."</option>");
+								
+							}
 						else
+							echo("<option value='".$item->id."'>".$item->nombre."</option>");
+						
+						if($model->padreId == "Seleccione...") // si no guarda porque le falto nombre o descripcion
 							echo("<option value='".$item->id."'>".$item->nombre."</option>");
 						
 						if ($item->hasChildren()){

@@ -50,7 +50,10 @@ class Categoria extends CActiveRecord
 			array('padreId', 'numerical', 'integerOnly'=>true),
 			array('nombre, pClaves, urlSugerida', 'length', 'max'=>100),
 			array('urlImagen', 'length', 'max'=>150),
-			//array('imagen', 'file', 'types'=>'jpg, gif, png'),
+			array('nombre, padreId, descripcion, estado', 'required'),
+			array('nombre', 'required', 'message'=>'No puede registrar una categoría sin nombre.'),
+			array('descripcion', 'required', 'message'=>'No puede registrar una categoría sin descripción.'),
+			//array('padreId','compare','compareValue'=>'Seleccione...','operator'=>'==','allowEmpty'=>false, 'message'=>'Escoja una categoría.'),
 			array('mTitulo', 'length', 'max'=>80),
 			array('mDescripcion', 'safe'),
 			// The following rule is used by search().

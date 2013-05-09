@@ -368,6 +368,21 @@ class ProfileController extends Controller
 	}
 
 	/**
+	 * Productos que le encantan a la usuaria
+	 */
+	public function actionEncantan() {
+		
+		$prodEncantan = new UserEncantan;
+		$prodEncantan->user_id = Yii::app()->user->id;
+		
+		$dataProvider = $prodEncantan->search();
+		
+		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider));
+		
+	}	
+
+
+	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable

@@ -1,27 +1,51 @@
 <script type="text/javascript">
     $(document).ready(function(){
+var uno=0;
 
-        $("#ul_imagenes span").click(function(){
+        $("#ul_imagenes span").live('click',function(){
 
             var span = $(this);
-
+			
             $.ajax({
                 type:"POST",
                 url: "<?php echo CController::createUrl('producto/eliminar'); ?>",
                 cache:false,
-               data: "id="+$(this).parent().parent().attr('id').replace('img_',''),
+               	data: "id="+$(this).parent().parent().attr('id').replace('img_',''),
                 success: function(data){
 
                     if(data=='OK'){
-                        span.parent().parent().fadeOut();
+                        
+                        span.parent().parent().fadeOut('medium', function() {
+						    // Animation complete.
+						    span.parent().parent().remove(); // se quita el elemento
+						    
+						    var order = $("#ul_imagenes").sortable("serialize") + '&action=actualizar_orden';
+								
+					    	$.ajax({
+		                        type:"POST",
+		                        url: "<?php echo CController::createUrl('producto/orden'); ?>",
+		                        cache:false,
+		                        data: order,
+		                        success: function(data){
+		
+		                            $("#respuesta").empty();
+		                            $("#respuesta").html(data);
+		                        }
+		                    });
+					    
+					  });
+                    
                     }else{
 
                     }
+                    
+                
+                    
                }
             });
-
+			
         })
-  
+
         $(function() {
             $("#ul_imagenes").sortable({
                 opacity: 0.3,

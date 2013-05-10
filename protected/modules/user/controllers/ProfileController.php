@@ -387,7 +387,21 @@ class ProfileController extends Controller
 		
 		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider));
 		
-	}	
+	}
+	
+	/**
+	 * Looks que le encantan
+	 */
+	public function actionLooksencantan()
+	{
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		$lookEncantan = LookEncantan::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id));
+		
+		$this->render('looksEncantan',array(
+					'looks' => $lookEncantan,
+					'user'=>$user,	
+				));
+	}
 
 
 	/**

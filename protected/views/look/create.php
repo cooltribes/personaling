@@ -56,7 +56,7 @@ function handleDrop(e) {
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
     y = e.clientY - e.currentTarget.offsetTop - mouse_position_y;
-    //x = e.clientX;
+    //x = e.clientX; 
     //y = e.clientY;
    // x = e.clientX - e.target.offsetLeft;
     //y = e.clientY - e.target.offsetTop;

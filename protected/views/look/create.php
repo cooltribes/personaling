@@ -23,6 +23,9 @@ function handleDragStart(e) {
 
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', this.innerHTML);
+  e.dataTransfer.setData("mouse_position_x",e.clientX - e.target.offsetLeft );
+  e.dataTransfer.setData("mouse_position_y",e.clientY - e.target.offsetTop  );
+  
 }
 function handleDragOver(e) {
   if (e.preventDefault) {
@@ -44,7 +47,21 @@ function handleDragLeave(e) {
 }
 function handleDrop(e) {
   // this/e.target is current target element.
-
+	//alert(e.target);
+	//alert(e.currentTarget.offsetLeft);
+	//alert(e.currentTarget.offsetTop);
+	//alert(e.dataTransfer.getData("mouse_position_x"));
+	//alert( e.dataTransfer.getData("mouse_position_y"));
+	var mouse_position_x = e.dataTransfer.getData("mouse_position_x");
+    var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
+    x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
+    y = e.clientY - e.currentTarget.offsetTop - mouse_position_y;
+    //x = e.clientX;
+    //y = e.clientY;
+   // x = e.clientX - e.target.offsetLeft;
+    //y = e.clientY - e.target.offsetTop;
+   // alert (x+'/'+e.clientX+'/'+e.currentTarget.offsetLeft+'/'+mouse_position_x);
+	//alert(e.clientX);
   if (e.stopPropagation) {
     e.stopPropagation(); // Stops some browsers from redirecting.
   }
@@ -56,8 +73,8 @@ function handleDrop(e) {
     
    	nuevo_objeto = $(e.dataTransfer.getData('text/html'));
 	nuevo_objeto.css('position','absolute');
-	nuevo_objeto.css('top','0');
-	nuevo_objeto.css('left','0');
+	nuevo_objeto.css('top',y);
+	nuevo_objeto.css('left',x);
 	//nuevo_objeto.find('img').unwrap();
 	nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
 	nuevo_objeto.append('<span>x</span>');
@@ -70,6 +87,11 @@ function handleDrop(e) {
 	$(".new",this).draggable( {
     cursor: 'move',
     containment: 'document',
+    start: function( event, ui ) { 
+    	ui.helper.siblings().css('z-index',9); 
+    	ui.helper.css('z-index',10); 
+    	
+    }
    // stop: handleDragStop
 	} );
    

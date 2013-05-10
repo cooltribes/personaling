@@ -143,6 +143,8 @@
               </div>
             </div>
           </div>
+          <p class="muted t_small CAPS">Seleccione Color y talla </p>
+          
           <div class="row">
             <div class="span2">
               <h5>Colores</h5>

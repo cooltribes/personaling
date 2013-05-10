@@ -118,24 +118,45 @@ class LookController extends Controller
 		$canvas = imagecreatetruecolor(670, 670);
 		$white = imagecolorallocate($canvas, 255, 255, 255);
 		imagefill($canvas, 0, 0, $white);
-
+		//imagealphablending( $canvas, false );
+		//imagesavealpha( $canvas, true );
 		$inicio_x = 0;
 		foreach($imagenes as $image){
 			//echo 	$image->top;
 			//echo 	$image->path;
-			$src = imagecreatefromstring(file_get_contents($image->path));
+			//$src = imagecreatefromstring(file_get_contents($image->path));
+			//$src = imagecreatefrompng('data://image/png;base64,'.file_get_contents($image->path));
+			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
+			 switch($ext) {
+			          case 'gif':
+			          $src = imagecreatefromgif($image->path);
+			          break;
+			          case 'jpg':
+			          $src = imagecreatefromjpeg($image->path);
+			          break;
+			          case 'png':
+			          $src = imagecreatefrompng($image->path);
+			          break;
+			      }			
+			//$src = imagecreatefrompng($image->path);
+			//imagealphablending( $src, false );
+			//imagesavealpha( $src, true ); 
 			$img = imagecreatetruecolor($image->width,$image->height); 
+			imagealphablending( $img, false );
+			imagesavealpha( $img, true ); 
+    		//$black = imagecolorallocate($img, 0, 0, 0); 
+			//imagecolortransparent($img, $black);
     		imagecopyresized($img,$src,0,0,0,0,$image->width,$image->height,imagesx($src), imagesy($src));
 			//echo $image->path;
 			//if (isset($imagen_tmp))
-				imagecopy($canvas, $img, $image->left, $image->top, 0, 0, imagesx($img), imagesy($img));
+			imagecopy($canvas, $img, $image->left, $image->top, 0, 0, imagesx($img), imagesy($img));
 			//$inicio_x += imagesx($image);
 		}
 
 		
 		header('Content-Type: image/png');
 		imagepng($canvas);
-		
+		 
 		imagedestroy($canvas);
 		
 		//foreach($imagenes as $image){

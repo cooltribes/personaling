@@ -360,10 +360,24 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	);
 	
 	?>
-                <div class="span2"> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Action <span class="caret"></span> </a>
-                  <ul class="dropdown-menu">
-                    <li>COlor <img src="http://placehold.it/90"/></li>
-                  </ul>
+                <div class="span2"> 
+                
+                <div class="dropdown">
+                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+Filtrar por Colores <span class="caret"></span></a>
+  <!-- Link or button to toggle dropdown -->
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Azul</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Verde</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Amarillo</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Multicolor</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Vinotinto</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Aguamarina</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Violeta</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Naranja</a></li>
+  </ul>
+</div>
+                
                 </div>
                 <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>

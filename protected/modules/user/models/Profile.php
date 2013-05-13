@@ -52,7 +52,16 @@ class Profile extends UActiveRecord
 				$field_rule = array();
 				
 				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_ESTILO||$field->required==ProfileField::REQUIRED_YES_TIPO)
-					array_push($required,$field->varname);
+					 {
+                                       if ($field->varname=="first_name")
+                                               array_push($rules,array($field->varname, 'required','message'=>' ¿Cómo te llamas? '));
+									   else	if ($field->varname=="last_name")
+                                               array_push($rules,array($field->varname, 'required','message'=>' ¿Cuál es tu apellido? '));
+									   else if ($field->varname=="sex")
+                                               array_push($rules,array($field->varname, 'required','message'=>' ¿Eres mujer/hombre? '));
+									   else									   
+                                       		array_push($required,$field->varname);
+                     }
 				if ($field->field_type=='FLOAT') 
 					array_push($float,$field->varname);
 				if ($field->field_type=='DECIMAL')
@@ -101,7 +110,7 @@ class Profile extends UActiveRecord
 			}
 			
 			array_push($rules,array('month,day,year', 'safe'));
-			array_push($rules,array(implode(',',$required), 'required'));
+			array_push($rules,array(implode(',',$required), 'required', 'message'=>'{attribute}'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
 			array_push($rules,array(implode(',',$decimal), 'match', 'pattern' => '/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/'));

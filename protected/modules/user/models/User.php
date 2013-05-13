@@ -63,7 +63,8 @@ class User extends CActiveRecord
 		// will receive user inputs.CConsoleApplication
 		return ((get_class(Yii::app())=='CConsoleApplication' || (get_class(Yii::app())!='CConsoleApplication' && Yii::app()->getModule('user')->isAdmin()))?array(
 			array('username', 'length', 'max'=>128, 'min' => 8,'message' => UserModule::t("Incorrect username (length between 8 and 128 characters).")),
-			array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
+			//array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
+			array('password', 'length', 'max'=>128, 'min' => 4,'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
 			array('email', 'email'),
 			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
 			array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
@@ -77,6 +78,7 @@ class User extends CActiveRecord
 			array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper', 'safe', 'on'=>'search'),
 		):((Yii::app()->user->id==$this->id)?array(
 			array('username, email', 'required'),
+			array('password', 'length', 'max'=>128, 'min' => 4,'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
 			array('privacy', 'numerical', 'integerOnly'=>true),
 			array('username', 'length', 'max'=>128, 'min' => 8,'message' => UserModule::t("Incorrect username (length between 8 and 128 characters).")),
 			array('email', 'email'),

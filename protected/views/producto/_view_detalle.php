@@ -246,7 +246,7 @@
           </div>
           <div class="braker_horz_top_1">
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
-              Fecha estimada de entrega: 00/00/2013 - 00/00/2013  </p>            
+              Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
               <hr />
           </div>
         </div>

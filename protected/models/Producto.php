@@ -22,6 +22,9 @@ class Producto extends CActiveRecord
 	const mango='Mango';
 	const accessorize='Accessorize';
 	const suite='SuiteBlanco';
+	const helly='Helly Hansel';
+	const secret='Woman Secret';
+	const bimba='Bimba & Lola';
 	
 	
 	public $horaInicio="";

@@ -30,7 +30,7 @@
             <div class="control-group">
               <?php echo $form->labelEx($model,'proveedor', array('class' => 'control-label')); ?>
               <div class="controls controls-row">
-                <?php echo $form->dropDownList($model, 'proveedor', array('Seleccione...', Producto::aldo, Producto::desigual, Producto::accessorize, Producto::suite, Producto::mango, 'Otra')); ?>
+                <?php echo $form->dropDownList($model, 'proveedor', array('Seleccione...', Producto::aldo, Producto::desigual, Producto::accessorize, Producto::suite, Producto::mango, Producto::helly, Producto::secret, Producto::bimba ,'Otra')); ?>
                 <?php echo $form->error($model,'proveedor'); ?>
               </div>
             </div>

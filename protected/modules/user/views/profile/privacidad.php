@@ -35,8 +35,8 @@ $this->breadcrumbs=array(
 	),
 )); ?>
           <fieldset>
-            <legend >Informacion de tu Cuenta </legend>
-            <p>Los siguientes campos marcados estan publicamente abiertos:</p>
+            <legend >Información de tu Cuenta </legend>
+            <p>Los siguientes campos marcados están públicamente abiertos:</p>
             <?php $select = array(
             User::PRIVACIDAD_DATOS_BASICOS=>(User::PRIVACIDAD_DATOS_BASICOS&$model->privacy),
             User::PRIVACIDAD_AVATAR=>(User::PRIVACIDAD_AVATAR & $model->privacy),

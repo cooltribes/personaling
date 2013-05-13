@@ -7,11 +7,10 @@ $this->breadcrumbs=array(
 ?>
 <style>
 .column.over {
-  border: 1px dashed #000;
+	border: 1px dashed #000;
 }
-
 .canvas.over {
-  border: 1px dashed #000;
+	border: 1px dashed #000;
 }
 </style>
 <script language="JavaScript">
@@ -56,7 +55,7 @@ function handleDrop(e) {
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
     y = e.clientY - e.currentTarget.offsetTop - mouse_position_y;
-    //x = e.clientX;
+    //x = e.clientX; 
     //y = e.clientY;
    // x = e.clientX - e.target.offsetLeft;
     //y = e.clientY - e.target.offsetTop;
@@ -159,11 +158,10 @@ while (i <  canvas.length) {
 */
 </script>
 <div class="container margin_top" id="crear_look">
-	  <div class="page-header">
-      
-      <h1>Crear look</h1>
-  		<!-- FLASH ON --> 
-<?php $this->widget('bootstrap.widgets.TbAlert', array(
+  <div class="page-header">
+    <h1>Crear look</h1>
+    <!-- FLASH ON -->
+    <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
         'fade'=>true, // use transitions?
         'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
@@ -172,13 +170,12 @@ while (i <  canvas.length) {
             'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
         ),
     )
-); ?>	
-<!-- FLASH OFF --> 
-   
+); ?>
+    <!-- FLASH OFF --> 
+    
   </div>
   <div class="clearfix margin_bottom_medium">
-  	 
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
+    <?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'label'=>'Publicar',
 	    'type'=>'danger',
 		'buttonType' => 'ajaxSubmit',
@@ -188,9 +185,8 @@ while (i <  canvas.length) {
 				'class'=>'pull-right margin_left_small', 
 		        'onclick'=>"{addPublicar(1);}"
 		       ),	    
-	)); ?>  	
-	
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
+	)); ?>
+    <?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'label'=>'Guardar borrador',
 	   // 'type'=>'danger',
 
@@ -200,8 +196,9 @@ while (i <  canvas.length) {
 				'class'=>'pull-right', 
 		        'onclick'=>"{addPublicar(0);}"
 		       ),	    
-	)); ?>  	  	
-  </div><hr/>
+	)); ?>
+  </div>
+  <hr/>
   <div class="row">
     <section class="span8">
       <div class="well">
@@ -210,12 +207,11 @@ while (i <  canvas.length) {
         <hr/>
         <!-- CANVAS ON -->
         <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px">
-        <?php 
+          <?php 
         
         if (count($model->lookhasproducto)){
         	?>
-
-              <?php
+          <?php
               foreach($model->lookhasproducto as $hasproducto){
               	$producto = $hasproducto->producto;
 				$tallacolores=Preciotallacolor::model()->findAllBySql(
@@ -225,22 +221,19 @@ while (i <  canvas.length) {
 				
 				
               ?>
-              		<div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px;">
-              		<?php
+          <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px;">
+            <?php
 					if ($producto->mainimage)
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
 					echo $image;
 					//echo $hasproducto->width.'/'.$hasproducto->height;
-					?> 
-	                <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
-	                <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
-	                <span>x</span>
-	               </div>
-	               
-              	
-              	<?php 
+					?>
+            <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
+            <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
+            <span>x</span> </div>
+          <?php 
               	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
@@ -257,26 +250,21 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
     
  ";
               	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$hasproducto->color_id,$script);
-              	?>              	
-             
-              <?php 
+              	?>
+          <?php 
 				} 
-				?>        	
-        	<?php
+				?>
+          <?php
         	
         } else {
         	?>
-         
           <h1>Crea tus Looks aqui</h1>
           <p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>
-           	
-        	<?php        	
+          <?php        	
         }
 		?>
-</div>    
+        </div>
         
-        
-           
         <!-- CANVAS OFF --> 
       </div>
       <!--
@@ -292,14 +280,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'type'=>'stacked',
     'type'=>'inline',
 )); ?>
-<?php echo CHtml::hiddenField('productos_id'); ?>
-<?php echo CHtml::hiddenField('colores_id'); ?>
-<?php echo CHtml::hiddenField('left'); ?>
-<?php echo CHtml::hiddenField('top'); ?>
-<?php echo CHtml::hiddenField('width'); ?>
-<?php echo CHtml::hiddenField('height'); ?>
-<?php echo CHtml::hiddenField('tipo'); ?>
-<?php $this->endWidget(); ?>
+      <?php echo CHtml::hiddenField('productos_id'); ?> <?php echo CHtml::hiddenField('colores_id'); ?> <?php echo CHtml::hiddenField('left'); ?> <?php echo CHtml::hiddenField('top'); ?> <?php echo CHtml::hiddenField('width'); ?> <?php echo CHtml::hiddenField('height'); ?> <?php echo CHtml::hiddenField('tipo'); ?>
+      <?php $this->endWidget(); ?>
     </section>
     <section class="span4">
       <div class="">
@@ -311,11 +293,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <div class="tab-content">
           <div class="tab-pane active" id="tab1">
             <div class="row">
-            	<form id="formu" class="no_margin_bottom form-search">
-              <div class="span2">
- <select id="padreId" class="span2" name="padreId">
-        	<option value="0">Buscar por Categoria</option>
-    <?php 
+              <form id="formu" class="no_margin_bottom form-search">
+                <div class="span2">
+                  <select id="padreId" class="span2" name="padreId">
+                    <option value="0">Buscar por Categoria</option>
+                    <?php 
 
 	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',));
 	nodos($cat); 
@@ -342,10 +324,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		}	
 		return 1;
 	}
-?>	
-   		</select>
-              </div>
-           <?php
+?>
+                  </select>
+                </div>
+                <?php
 	Yii::app()->clientScript->registerScript('busqueda',
 		"
 		$('#padreId').change(function(){". CHtml::ajax(
@@ -377,18 +359,33 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		});",CClientScript::POS_READY
 	);
 	
-	?>              
-              <div class="span2">
-                <input name="" type="text" placeholder="Buscar por palabra clave" class="span2">
-              </div>
-             <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
+	?>
+                <div class="span2"> 
+                
+                <div class="dropdown">
+                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+Filtrar por Colores <span class="caret"></span></a>
+  <!-- Link or button to toggle dropdown -->
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Azul</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Verde</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Amarillo</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Multicolor</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Vinotinto</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Aguamarina</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Violeta</a></li>
+    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Naranja</a></li>
+  </ul>
+</div>
+                
+                </div>
+                <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
             </div>
             <hr/>
             <div id="div_categorias">
-            <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
+              <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
             </div>
-    
           </div>
           <div class="tab-pane" id="tab2">
             <p>Se cargaria por Ajax (lo que se tenga que cargar)</p>
@@ -406,16 +403,16 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 <!------------------- MODAL WINDOW ON -----------------> 
 
-
-<!-- Modal 1 -->
+<!-- Modal 1 --> 
 <!--
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	--></div>
-<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogPublicar')); ?>	
-<div class="divForForm"></div> 
+	-->
+</div>
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogPublicar')); ?>
+<div class="divForForm"></div>
 <?php $this->endWidget(); ?>
 
-<!------------------- MODAL WINDOW OFF ----------------->
+<!------------------- MODAL WINDOW OFF -----------------> 
 <script type="text/javascript">
 // here is the magic
 function addPublicar(tipo)
@@ -489,4 +486,4 @@ function addPublicar(tipo)
  
 }
  
-</script>
+</script> 

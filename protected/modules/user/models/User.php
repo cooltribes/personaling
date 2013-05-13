@@ -126,7 +126,7 @@ class User extends CActiveRecord
 			'status' => UserModule::t("Status"),
 		);
 	}
-	
+	 
 	public function scopes()
     {
         return array(

@@ -213,7 +213,7 @@ if(isset($_POST['Profile']))
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
 				}
 				$model->save();
-				$profile->save();
+				$profile->save(); 
 				$this->redirect(array('view','id'=>$model->id));
 			} else $profile->validate();
 		}

@@ -19,7 +19,7 @@
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
 					echo CHtml::ajaxLink(
 						  $image,
-						  Yii::app()->createUrl( 'tienda/categorias'),
+						  Yii::app()->createUrl('tienda/categorias'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
 						    'dataType'=>'json',
@@ -73,7 +73,7 @@
 						);
 					?>
                 	<div class="caption">
-                  		<p><?php echo $categoria->mTitulo; ?></p>
+                  		<p><?php echo $categoria->nombre; ?></p>
 	                </div>
 
               </li>

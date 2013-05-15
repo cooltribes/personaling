@@ -1,14 +1,5 @@
 	<!-- FLASH ON --> 
-<?php $this->widget('bootstrap.widgets.TbAlert', array(
-        'block'=>true, // display a larger alert block?
-        'fade'=>true, // use transitions?
-        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
-        'alerts'=>array( // configurations per alert type
-            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-        ),
-    )
-); 
+<?php 
 
  $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'categoria-form',
@@ -30,6 +21,22 @@
  <input id="producto" type="hidden" value="<?php echo $model->id ?>" />
 <?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model)); ?>
   <!-- SUBMENU OFF -->
+  <?php 
+  
+$this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); 
+
+  ?>
+  
+  
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">

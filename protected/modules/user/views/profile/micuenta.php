@@ -71,9 +71,8 @@ $this->breadcrumbs=array(
           <div class="span4">
             <h2 class="braker_bottom"> Tus Encantos/Favoritos </h2>
             <ul class="nav nav-stacked nav-tabs">
-
-              <li><a href="Tu_Personaling_Tus_EncantosFavoritos_Looks.php" title="Tus Looks favoritos">Looks</a></li>
-              <li><a href="Tu_Personaling_Tus_EncantosFavoritos_productos.php" title="Tus productos favoritos">Productos</a></li>
+				<li><?php echo CHtml::link('Looks',array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
+				<li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>
             </ul>
             <h2 class="braker_bottom">  Conecta tus Redes Sociales </h2>
             <ul class="nav nav-stacked nav-tabs">

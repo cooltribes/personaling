@@ -259,28 +259,37 @@
     </div>
   </div>
   <div class="braker_horz_top_1">
+  	
+<?php
+$looksProducto = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$producto->id));
+$cont=0;
+?>
+
     <h3>Looks recomendados con este producto</h3>
     <div id="myCarousel" class="carousel slide"> 
-      
       <!-- Carousel items -->
       <div class="carousel-inner">
-        <div class="active item">
           <div class="row">
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="row">
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-            <div class="span4"><a href="Look_seleccionado.php" title="Nombre del look"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></a></div>
-          </div>
-        </div>
+			<?php
+			foreach($looksProducto as $cadauno){
+				if($cont<3){
+					if($cadauno->width != "" && $cadauno->height != ""){
+					
+					$lk = Look::model()->findByPk($cadauno->look_id);
+					
+					echo('<div class="span4">'); 
+					echo("<a href='".CController::createUrl('look/view',array('id'=>$cadauno->look_id))."' title='".$lk->title."'>");
+					echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>'img_1'));
+					echo("</a></div>");
+					$cont++; // solo 3 veces
+					}
+				}
+			}
+			
+			?>  
+          	         </div>
       </div>
-      <!-- Carousel nav --> 
-      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a> </div>
+
   </div>
 </div>
 

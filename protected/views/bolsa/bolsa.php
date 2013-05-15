@@ -337,7 +337,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                  </div>
                  
               </div>
-              <p><i class="icon-calendar"></i> Fecha estimada de entrega: 00/00/2013 - 00/00/2013 </p>
+              <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>
             </div>
             <p><a href="#">Ver Politicas de Envios y Devoluciones</a></p>
             <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>

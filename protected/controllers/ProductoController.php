@@ -905,13 +905,18 @@ class ProductoController extends Controller
 				}				
 				
 				// tengo los que llegaron y estan dentro de la BD en dos array, busco la diferencia
-				
 				$r = array_diff($BD, $todos);
+				/*var_dump($BD);
+				var_dump($todos);
+				var_dump($r);*/
 				
 				if(isset($r)){
 					foreach($r as $cadauno){
 						$borr = CategoriaHasProducto::model()->findByAttributes(array('tbl_categoria_id'=>$cadauno));
-						$borr->delete();
+						
+						if(isset($borr))
+							$borr->delete();
+					
 					}
 					
 				}
@@ -931,6 +936,9 @@ class ProductoController extends Controller
 					// si ya está la ignora
 					//$prodCat = new CategoriaHasProducto;
 				}
+				
+				Yii::app()->user->setFlash('success', "Se ha relacionado el producto a las categorias.");
+				
 				echo("ok"); // realizo la relación
 			}
 		}

@@ -188,7 +188,45 @@ class Image {
 
 		return $this;
 	}
+/**
+	 * Crop an image to a specific width and height. You may also set the top
+	 * and left offset.
+	 * This method is chainable.
+	 *
+	 * @throws  Kohana_Exception
+	 * @param   integer  width
+	 * @param   integer  height
+	 * @param   integer  top offset, pixel value or one of: top, center, bottom
+	 * @param   integer  left offset, pixel value or one of: left, center, right
+	 * @return  object
+	 */
+	public function super_crop($width, $height, $top = 'center', $left = 'center')
+	{
+		if ( ! $this->valid_size('width', $width))
+			throw new CException('image invalid width', $width);
 
+		if ( ! $this->valid_size('height', $height))
+			throw new CException('image invalid height', $height);
+
+		if ( ! $this->valid_size('top', $top))
+			throw new CException('image invalid top', $top);
+
+		if ( ! $this->valid_size('left', $left))
+			throw new CException('image invalid left', $left);
+
+		if (empty($width) AND empty($height))
+			throw new CException('image invalid dimensions');
+
+		$this->actions['super_crop'] = array
+		(
+			'width'  => $width,
+			'height' => $height,
+			'top'    => $top,
+			'left'   => $left,
+		);
+
+		return $this;
+	}
     /**
 	 * Crop an image to a specific width and height. You may also set the top
 	 * and left offset.

@@ -124,7 +124,7 @@ $this->breadcrumbs=array(
 				        array('label'=>'32','url'=>'#1'),
 				        array('label'=>'34','url'=>'#2'),
 				    ),
-				)); ?>
+				)); ?> 
               </div>
             </div>
             <div class="control-group">

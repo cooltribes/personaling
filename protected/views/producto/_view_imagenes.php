@@ -155,10 +155,10 @@ $this->breadcrumbs=array(
 
 	        foreach ($imagenes as $img) {
 	            $contador++;
-
+				//Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url)
 	            $lis['img_' . $img->id] =
 	            		'<div >'.
-	                    CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url), "Imagen " . $img->id, array("width" => "150", "height" => "150")) . 
+	                    CHtml::image($img->getUrl(array('type'=>'thumb')), "Imagen " . $img->id, array("width" => "150", "height" => "150")) . 
 	                    '<span>X</span>'.
 	                    '<div class="metadata_top">'.
 	                    CHtml::dropDownList('color_id'.$img->id,$img->color_id,$model->getColores(),array('prompt'=>'Seleccione','class'=>'span2 colores','onchange'=>'js:addColor('.$img->id.')')).

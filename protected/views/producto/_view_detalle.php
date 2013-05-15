@@ -88,7 +88,8 @@
 				if($img->orden==1)
 				{
 					$colorPredet = $img->color_id;
-					echo CHtml::image(Yii::app()->baseUrl . $img->url, "producto", array('id'=>'principal'));
+					
+					echo CHtml::image($img->getUrl(), "producto", array('id'=>'principal'));
 					echo "<!-- FOTO principal OFF -->";
 	          		echo "</div>";	
 	          		echo "</div>";	
@@ -100,7 +101,7 @@
 				
 					//imprimiendo igual la primera en thumbnail
 					$pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					echo CHtml::image(Yii::app()->baseUrl . $pri->url, "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
+					echo CHtml::image($img->getUrl(), "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
 							
 				}
 				
@@ -108,7 +109,8 @@
 					if($colorPredet == $img->color_id)
 					{
 						//luego el resto para completar el scroll					
-						echo CHtml::image(Yii::app()->baseUrl . $img->url, "Imagen ", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+						
+						echo CHtml::image($img->getUrl(), "Imagen ", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
 						
 					}// color
 				}// que no es la primera en el orden

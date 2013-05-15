@@ -233,7 +233,7 @@ class ProductoController extends Controller
 		                $imagen->save();
 		
 		                $nombre = Yii::getPathOfAlias('webroot').'/images/producto/'. $id .'/'. $imagen->id;
-		               // $extension = ".jpg";
+		                $extension_ori = ".jpg";
 						$extension = '.'.$pic->extensionName;
 		                if ($pic->saveAs($nombre . $extension)) {
 		
@@ -245,14 +245,33 @@ class ProductoController extends Controller
 			
 							$image = Yii::app()->image->load($nombre . $extension);
 		                    $image->save($nombre . "_orig".$extension); 
-				
+							if ($extension == '.png')
+								$image->save($nombre ."_orig". $extension_ori);
+							
+
+		
+		                    $image = Yii::app()->image->load($nombre . $extension);
+		                    //$image->resize(200, 200)->quality(40);
+		                    $image->resize(200, 200);
+							//$image->crop(200,200);
+		                    $image->save($nombre . "_thumb".$extension);
+							if ($extension == '.png'){
+								$image->resize(200, 200)->quality(40);	
+								
+								$image->super_crop(200,200,"top","left");
+								
+								$image->save($nombre .  "_thumb".$extension_ori);	
+								//echo $nombre .  "_thumb".$extension_ori;
+							}	
+							
 							$image = Yii::app()->image->load($nombre . $extension); 
 		                    $image->resize(770, 770);
 		                    $image->save($nombre . $extension);
-		
-		                    $image = Yii::app()->image->load($nombre . $extension);
-		                    $image->resize(200, 200)->quality(40);
-		                    $image->save($nombre . "_thumb".$extension);
+							if ($extension == '.png'){
+								$image->resize(770, 770)->quality(40);	
+								$image->super_crop(770,770,"top","left");
+								$image->save($nombre . $extension_ori);		
+							}										
 		                } else {
 		                    $imagen->delete();
 		                }
@@ -650,7 +669,7 @@ class ProductoController extends Controller
 		//}
 		//else {
 			//$inventario=new Inventario;
-		//	$model = new Producto;
+		//	$model = new Producto; 
 		//}	
 		
 		if(isset($_POST['tallas'])){
@@ -660,23 +679,25 @@ class ProductoController extends Controller
 		}
 		$i = 0;
 		foreach($tallas as $talla){
-			foreach($colores as $color){
-				$tallacolor[$i]= new Preciotallacolor;
-				$color_tmp = Color::model()->findByAttributes(array('valor'=>$color));
-				if (isset($color)){
-					$tallacolor[$i]->color_id = $color_tmp->id;
-					$tallacolor[$i]->color = $color_tmp->valor;
+			if ($talla!=''){
+				foreach($colores as $color){
+					$tallacolor[$i]= new Preciotallacolor;
+					$color_tmp = Color::model()->findByAttributes(array('valor'=>$color));
+					if (isset($color_tmp)){
+						$tallacolor[$i]->color_id = $color_tmp->id;
+						$tallacolor[$i]->color = $color_tmp->valor;
+					}
+					//$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
+					$talla_tmp = Talla::model()->findByPk($talla);
+					if (isset($talla_tmp)){
+						$tallacolor[$i]->talla_id = $talla_tmp->id;
+						$tallacolor[$i]->talla = $talla_tmp->valor;
+					}
+					
+					
+					$i++;
+				//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
 				}
-				//$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
-				$talla_tmp = Talla::model()->findByPk($talla);
-				if (isset($color)){
-					$tallacolor[$i]->talla_id = $talla_tmp->id;
-					$tallacolor[$i]->talla = $talla_tmp->valor;
-				}
-				
-				
-				$i++;
-			//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
 			}
 		}
 		if (count($model->preciotallacolor))

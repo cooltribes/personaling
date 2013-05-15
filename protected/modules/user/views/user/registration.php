@@ -111,7 +111,7 @@
 				//echo $field->varname;
 			?>
 <div class="control-group">
-	<div class="controls controls-row">
+
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
@@ -123,7 +123,7 @@
 			//echo $form->error($profile,$field->varname);
 			
 		} elseif ($field->field_type=="TEXT") {
-			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+			echo $form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {
 				
@@ -148,7 +148,7 @@
 		
 		 
 				 ?>
-	</div>
+
 </div>
 			<?php
 			}

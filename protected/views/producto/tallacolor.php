@@ -38,7 +38,7 @@ $this->breadcrumbs=array(
 				   
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => array(
-				        array('url'=>'#0','label'=>'Sin Talla',
+				        array('url'=>'#0','label'=>'U',
 				       ),
 				       
 				    ),

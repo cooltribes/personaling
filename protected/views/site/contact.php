@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1>Contact Us</h1>
+<h1>Ponte en contacto con nosotros</h1>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
@@ -20,8 +20,7 @@ $this->breadcrumbs=array(
 <?php else: ?>
 
 <p>
-If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
-</p>
+Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por favor contáctanos a través del siguiente formulario:</p>
 
 <div class="form">
 
@@ -33,36 +32,35 @@ If you have business inquiries or other questions, please fill out the following
 	),
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name'); ?>
-		<?php echo $form->error($model,'name'); ?>
+	<div class="control-group">
+		<?php echo $form->labelEx($model,'Nombre'); ?>
+		<div class="controls"><?php echo $form->textField($model,'name'); ?>
+		<?php echo $form->error($model,'name'); ?></div>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'email'); ?>
-		<?php echo $form->textField($model,'email'); ?>
-		<?php echo $form->error($model,'email'); ?>
+	<div class="control-group">
+		<?php echo $form->labelEx($model,'Correo electrónico'); ?>
+		<div class="controls"><?php echo $form->textField($model,'email'); ?>
+		<?php echo $form->error($model,'email'); ?></div>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'subject'); ?>
-		<?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'subject'); ?>
+	<div class="control-group">
+		<?php echo $form->labelEx($model,'Asunto'); ?>
+		<div class="controls"><?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'subject'); ?></div>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'body'); ?>
-		<?php echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'body'); ?>
+	<div class="control-group">
+		<?php echo $form->labelEx($model,'Mensaje'); ?>
+	<div class="controls">	<?php echo $form->textArea($model,'body',array('rows'=>4, 'cols'=>40)); ?>
+		<?php echo $form->error($model,'body'); ?></div>
 	</div>
 
 	<?php if(CCaptcha::checkRequirements()): ?>
-	<div class="row">
+	<div class="control-group">
 		<?php echo $form->labelEx($model,'verifyCode'); ?>
 		<div>
 		<?php $this->widget('CCaptcha'); ?>

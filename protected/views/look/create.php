@@ -287,7 +287,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
       <div class="">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#tab1" data-toggle="tab" title="Todos los productos">Productos</a></li>
-          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks">Antes Usados</a></li>
+          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks">Prendas</a></li>
           <li><a href="#tab3" data-toggle="tab" title="Looks que has hecho">Tus Looks</a></li>
         </ul>
         <div class="tab-content">

@@ -69,7 +69,7 @@ class Imagen extends CActiveRecord
 			'url' => '',
 			'principal' => 'Principal',
 			'orden' => 'Orden',
-			'tbl_producto_id' => 'Tbl Producto',
+			'tbl_producto_id' => 'Tbl Producto', 
 			'color_id' => 'Color',
 		);
 	}
@@ -85,7 +85,40 @@ class Imagen extends CActiveRecord
 	            ),
 	        );
 	    }
-
+	/**
+	 * Obtener el Url de la imagen
+	 * ext = jpg / png
+	 * type = thumb / orig / 
+	 */	
+	public function getUrl($opciones=array())
+	{
+		
+		$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto
+		$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto
+		
+		
+		$ext = pathinfo($this->url, PATHINFO_EXTENSION);
+		//echo $ext; 
+		if ($ext == $opciones['ext'] )
+			return Yii::app()->baseUrl.str_replace(".",$opciones['type'],$this->url);
+		
+		//$info = pathinfo($this->url);
+		//$new_file = $info['filename'] . '.' . $type;
+		$new_file = preg_replace('/\..+$/', '.' . $opciones['ext'] , $this->url);
+		$new_file_path = Yii::app()->basePath.'/..'.$new_file;
+		//$new_file_path = $_SERVER['DOCUMENT_ROOT'].$new_file;
+		
+		//echo $new_file_path;
+		//clearstatcache();
+		if (file_exists ($new_file_path)){
+			//echo 'sip';  
+			return Yii::app()->baseUrl.str_replace(".",$opciones['type'],$new_file);
+		}
+		//echo 'nop';
+		return Yii::app()->baseUrl.str_replace(".",$opciones['type'],$this->url);	
+		
+		
+	}
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -107,4 +140,5 @@ class Imagen extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
 }

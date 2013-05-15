@@ -247,14 +247,14 @@ class Producto extends CActiveRecord
 	public function getImageUrl($color=null)
 	{
 			if (is_null($color)){
-				if ($this->mainimage) return Yii::app()->baseUrl.$this->mainimage->url;
+				if ($this->mainimage) return $this->mainimage->getUrl();
 			}else{
 				$imagecolor = $this->colorimage( array('condition'=>'color_id=:color_id','params' => array(':color_id'=>$color) ) ); 
-				if ( isset( $imagecolor) ) return  Yii::app()->baseUrl.$imagecolor->url;
-				elseif ($this->mainimage) return Yii::app()->baseUrl.$this->mainimage->url;
+				if ( isset( $imagecolor) ) return  $imagecolor->getUrl();
+				elseif ($this->mainimage) return $this->mainimage->getUrl();
 			}
 			return "http://placehold.it/180";
-			
+			 
 	}
 	public function getColores($talla=null)
 	{

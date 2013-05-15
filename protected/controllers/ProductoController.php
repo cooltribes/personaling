@@ -267,8 +267,11 @@ class ProductoController extends Controller
 							$image = Yii::app()->image->load($nombre . $extension); 
 		                    $image->resize(770, 770);
 		                    $image->save($nombre . $extension);
-							if ($extension == '.png')
-								$image->save($nombre . $extension_ori);												
+							if ($extension == '.png'){
+								$image->resize(770, 770)->quality(40);	
+								$image->super_crop(770,770,"top","left");
+								$image->save($nombre . $extension_ori);		
+							}										
 		                } else {
 		                    $imagen->delete();
 		                }

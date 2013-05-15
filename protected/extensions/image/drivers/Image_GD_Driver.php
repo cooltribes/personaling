@@ -16,7 +16,20 @@ class Image_GD_Driver extends Image_Driver {
 	protected static $blank_png;
 	protected static $blank_png_width;
 	protected static $blank_png_height;
-
+	function imagetranstowhite($trans) {
+	    // Create a new true color image with the same size
+	    $w = imagesx($trans);
+	    $h = imagesy($trans);
+	    $white = imagecreatetruecolor($w, $h);
+	 
+	    // Fill the new image with white background
+	    $bg = imagecolorallocate($white, 255, 255, 255);
+	    imagefill($white, 0, 0, $bg);
+	 
+	    // Copy original transparent image onto the new image
+	    imagecopy($white, $trans, 0, 0, 0, 0, $w, $h);
+	    return $white;
+	}
 	public function __construct()
 	{
 		// Make sure that GD2 is available
@@ -46,7 +59,7 @@ class Image_GD_Driver extends Image_Driver {
 				$create = 'imagecreatefrompng';
 			break;
 		}
-
+		
 		// Set the "save" function
 		switch (strtolower(substr(strrchr($file, '.'), 1)))
 		{
@@ -90,6 +103,11 @@ class Image_GD_Driver extends Image_Driver {
 				case 'imagejpeg':
 					// Default the quality to 95
 					($quality === NULL) and $quality = 95;
+					
+					$this->tmp_image = $this->imagetranstowhite($this->tmp_image);
+					//$nombre = $dir.'rafa'.rand(1, 20).'.jpg';
+					//imagejpeg($jpg, $nombre);
+					//echo $nombre;
 				break;
 				case 'imagegif':
 					// Remove the quality setting, GIF doesn't use it
@@ -171,7 +189,30 @@ class Image_GD_Driver extends Image_Driver {
 
 		return $status;
 	}
+	public function super_crop($properties)
+	{
+		// Sanitize the cropping settings
+		//$this->sanitize_geometry($properties);
 
+		// Get the current width and height
+		$width = imagesx($this->tmp_image);
+		$height = imagesy($this->tmp_image);
+
+		// Create the temporary image to copy to
+		$img = $this->imagecreatetransparent($properties['width'], $properties['height']);
+
+		// Execute the crop
+		//echo 'h'.$properties['height'].'/w'.$properties['width'].'/l'.$properties['left'].'/t'.$properties['top'];
+		if ($status = imagecopy($img, $this->tmp_image,0,0,0,0,$width, $height))
+		//if ($status = imagecopyresampled($img, $this->tmp_image, 0, 0, $properties['left'], $properties['top'], $width, $height, $width, $height))
+		{
+			// Swap the new image for the old one
+			imagedestroy($this->tmp_image);
+			$this->tmp_image = $img;
+		}
+
+		return $status;
+	}
 	public function crop($properties)
 	{
 		// Sanitize the cropping settings
@@ -185,6 +226,7 @@ class Image_GD_Driver extends Image_Driver {
 		$img = $this->imagecreatetransparent($properties['width'], $properties['height']);
 
 		// Execute the crop
+		
 		if ($status = imagecopyresampled($img, $this->tmp_image, 0, 0, $properties['left'], $properties['top'], $width, $height, $width, $height))
 		{
 			// Swap the new image for the old one

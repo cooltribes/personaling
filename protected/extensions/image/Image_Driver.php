@@ -113,7 +113,13 @@ abstract class Image_Driver {
 	 * @return  boolean
 	 */
 	abstract function flip($direction);
-
+/**
+	 * Crop an image. Valid properties are: width, height, top, left.
+	 *
+	 * @param   array     new properties
+	 * @return  boolean
+	 */
+	abstract function super_crop($properties);
 	/**
 	 * Crop an image. Valid properties are: width, height, top, left.
 	 *

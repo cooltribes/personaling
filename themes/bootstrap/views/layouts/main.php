@@ -80,7 +80,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
                 array('label'=>'Pedidos', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Iniciar sesión', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
+                array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Registrate', 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                  array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(

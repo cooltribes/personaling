@@ -5,11 +5,13 @@
 
 $this->pageTitle=Yii::app()->name . ' - Contact Us';
 $this->breadcrumbs=array(
-	'Contact',
+	'Contacto',
 );
 ?>
 
-<h1>Contact Us</h1>
+<div class="span6 offset3">
+<div class="box_1">
+<h1>Ponte en contacto</h1>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
@@ -19,9 +21,9 @@ $this->breadcrumbs=array(
 
 <?php else: ?>
 
-<p>
-If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
-</p>
+<p class="margin_top_medium">
+Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por favor contáctanos a través del siguiente formulario:</p>
+
 
 <div class="form">
 
@@ -34,7 +36,6 @@ If you have business inquiries or other questions, please fill out the following
 	),
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -44,24 +45,24 @@ If you have business inquiries or other questions, please fill out the following
 
     <?php echo $form->textFieldRow($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
 
-    <?php echo $form->textAreaRow($model,'body',array('rows'=>6, 'class'=>'span8')); ?>
+    <?php echo $form->textAreaRow($model,'body',array('rows'=>4, 'class'=>'span3')); ?>
 
 	<?php if(CCaptcha::checkRequirements()): ?>
 		<?php echo $form->captchaRow($model,'verifyCode',array(
-            'hint'=>'Please enter the letters as they are shown in the image above.<br/>Letters are not case-sensitive.',
+            'hint'=>'Por favor escriba las letras que se muestran aqui arriba. No importa si estan en mayúscula o minúscula.',
         )); ?>
 	<?php endif; ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton',array(
             'buttonType'=>'submit',
-            'type'=>'primary',
-            'label'=>'Submit',
+            'type'=>'danger',
+            'label'=>'Enviar',
         )); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
 
-</div><!-- form -->
+</div><!-- form --></div></div>
 
 <?php endif; ?>

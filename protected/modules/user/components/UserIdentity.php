@@ -69,4 +69,19 @@ class UserIdentity extends CUserIdentity
 		return $this->errorCode;
 	}
 	
+	public function twitter()
+	{
+		$user=User::model()->notsafe()->findByAttributes(array('username'=>$this->username));
+		
+		if ( $user === null ) 
+			$this->errorCode = self::ERROR_USERNAME_INVALID;
+		else
+		{
+			$this->_id = $user->id;
+			$this->username = $user->username;
+			$this->errorCode = self::ERROR_NONE;
+		}
+		return $this->errorCode;
+	}
+	
 }

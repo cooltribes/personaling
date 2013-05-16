@@ -86,7 +86,7 @@
 			foreach ($ima as $img){
 					
 				if($img->orden==1)
-				{
+				{ 
 					$colorPredet = $img->color_id;
 					
 					echo CHtml::image($img->getUrl(), "producto", array('id'=>'principal'));

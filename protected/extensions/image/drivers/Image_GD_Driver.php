@@ -200,10 +200,13 @@ class Image_GD_Driver extends Image_Driver {
 
 		// Create the temporary image to copy to
 		$img = $this->imagecreatetransparent($properties['width'], $properties['height']);
-
+		// calcular posicion de la imagen
+		$pos_x = ($properties['width'] - $width)/2;
+		$pos_y = ($properties['height'] - $height)/2;
+		//echo $pos_x;
 		// Execute the crop
 		//echo 'h'.$properties['height'].'/w'.$properties['width'].'/l'.$properties['left'].'/t'.$properties['top'];
-		if ($status = imagecopy($img, $this->tmp_image,0,0,0,0,$width, $height))
+		if ($status = imagecopy($img, $this->tmp_image,$pos_x,$pos_y,0,0,$width, $height))
 		//if ($status = imagecopyresampled($img, $this->tmp_image, 0, 0, $properties['left'], $properties['top'], $width, $height, $width, $height))
 		{
 			// Swap the new image for the old one

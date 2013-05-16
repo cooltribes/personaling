@@ -76,7 +76,13 @@ return array(
 	),
 
 	// application components
-	'components'=>array( 
+	'components'=>array(
+		'twitter' => array(
+                'class' => 'ext.yiitwitteroauth.YiiTwitter',
+                'consumer_key' => 'oLqFHegtKHu8SvXtICuEuA',
+                'consumer_secret' => 'Bf9nlFPrcb1CNIqFAMjiCUG3qSOKefIoswDqlVawx8',
+                'callback' => 'http://personaling.com/site/user/registration/twitter',
+            ), 
 		'image'=>array(
 		          'class'=>'application.extensions.image.CImageComponent',
 		            // GD or ImageMagick

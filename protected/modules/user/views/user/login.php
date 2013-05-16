@@ -19,7 +19,7 @@ $this->breadcrumbs=array(
       <div class="row  margin_top">
               <div class="span3 margin_bottom"><a title="Inicia sesión con facebook" class="transition_all" onclick="check_fb()" href="#"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/login_facebook.png" width="230" height="39" alt="Inicia sesión con Facebook"></a></div>
 
-        <div class="span3 margin_bottom"> <a onclick="loadLiData()" id="registro_linkedin" title="Inicia sesión con Twitter" class="transition_all" href="#"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/login_twitter.png" width="230" height="39" alt="Inicia sesión con twitter"></a> 
+        <div class="span3 margin_bottom"> <a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/login_twitter.png" width="230" height="39" alt="Inicia sesión con twitter"></a> 
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
         </div>
       </div>

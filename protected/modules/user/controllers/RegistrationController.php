@@ -62,6 +62,9 @@ class RegistrationController extends Controller
 						$model->verifyPassword=UserModule::encrypting($model->verifyPassword);
 						$model->superuser=0;
 						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
+						if(isset($_POST['twitter_id'])){
+							$model->twitter_id = $_POST['twitter_id'];
+						}
 						
 						if ($model->save()) {
 							$profile->user_id=$model->id;
@@ -101,5 +104,104 @@ class RegistrationController extends Controller
 			    $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
 		    }//else
 	}// registration
+	
+	public function actionTwitterStart(){
+		 $twitter = Yii::app()->twitter->getTwitter();  
+	     $request_token = $twitter->getRequestToken();
+	 
+	         //set some session info
+	         Yii::app()->session['oauth_token'] = $token = $request_token['oauth_token'];
+	         Yii::app()->session['oauth_token_secret'] = $request_token['oauth_token_secret'];
+	 
+	        if($twitter->http_code == 200){
+	            //get twitter connect url
+	            $url = $twitter->getAuthorizeURL($token);
+	            //send them
+	            $this->redirect($url);
+	            //echo $url;
+	        }else{
+	            //error here
+	            echo 'error';
+	            //$this->redirect(Yii::app()->homeUrl);
+	        }
+	}
+	
+	public function actionTwitter()
+	{
+		/* If the oauth_token is old redirect to the connect page. */
+        if (isset($_REQUEST['oauth_token']) && Yii::app()->session['oauth_token'] !== $_REQUEST['oauth_token']) {
+            Yii::app()->session['oauth_status'] = 'oldtoken';
+        }
+ 
+        /* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
+        $twitter = Yii::app()->twitter->getTwitterTokened(Yii::app()->session['oauth_token'], Yii::app()->session['oauth_token_secret']);   
+ 
+        /* Request access tokens from twitter */
+        if(isset($_REQUEST['oauth_verifier'])){
+        	$access_token = $twitter->getAccessToken($_REQUEST['oauth_verifier']);
+		}else{
+			$this->redirect(array("/user/registration"));
+		}
+ 
+        /* Save the access tokens. Normally these would be saved in a database for future use. */
+        Yii::app()->session['access_token'] = $access_token;
+ 
+        /* Remove no longer needed request tokens */
+        unset(Yii::app()->session['oauth_token']);
+        unset(Yii::app()->session['oauth_token_secret']);
+ 
+        if (200 == $twitter->http_code) {
+            /* The user has been verified and the access tokens can be saved for future use */
+            Yii::app()->session['status'] = 'verified';
+ 
+            //get an access twitter object
+            $twitter = Yii::app()->twitter->getTwitterTokened($access_token['oauth_token'],$access_token['oauth_token_secret']);
+ 
+            //get user details
+            $twuser= $twitter->get("account/verify_credentials");
+			$user = User::model()->notsafe()->findByAttributes(array('twitter_id'=>$twuser->id));
+			if(!$user){
+				//no existe, crear usuario y redirigir a formulario para que complete el registro
+				$user = new User();
+				$registration_form = new RegistrationForm();
+				//$user->username = $twuser->username;
+				$user->twitter_id = $twuser->id;
+				$profile = new Profile();
+				$profile->regMode = true;
+				
+				$this->render('/user/twitter_registration',array('model'=>$registration_form, 'profile'=>$profile, 'twitter_user'=>$twuser));
+			}else{
+				//ya existe, login directo
+				//echo 'Username: '.$user->username;
+				$identity=new UserIdentity($user->username,$user->password);
+				$identity->twitter();
+				Yii::app()->user->login($identity,0);
+				//$this->redirect(Yii::app()->controller->module->returnUrl);
+				if ($user->status_register == User::STATUS_REGISTER_NEW){
+					$this->redirect(array('/user/profile/tutipo'));
+				}else if($user->status_register == User::STATUS_REGISTER_TIPO){
+					$this->redirect(array("/user/profile/tuestilo"));
+				}else{
+					$this->redirect(array("/site/personal"));
+				}
+				
+			}
+			
+			
+            //get friends ids
+            //$friends= $twitter->get("friends/ids");
+                        //get followers ids
+                //$followers= $twitter->get("followers/ids");
+            //tweet
+                        //$result=$twitter->post('statuses/update', array('status' => "Tweet message"));
+                        //echo 'Name: '.$twuser->name;
+ 
+        } else {
+            /* Save HTTP status for error dialog on connnect page.*/
+            //header('Location: /clearsessions.php');
+            //$this->redirect(Yii::app()->homeUrl);
+            echo 'Else';
+        }
+	}
 	
 }

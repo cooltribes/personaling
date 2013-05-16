@@ -48,7 +48,7 @@ $this->breadcrumbs=array(
             <div class="control-group">
               <label class="control-label required">Vestidos y Trajes:</label>
               <div class="controls">
-                <!--
+                <!-- 
                 <div class="btn-group" data-toggle="buttons-checkbox">
                   <button type="button" class="btn btn-inverse">32</button>
                   <button type="button" class="btn btn-inverse">34</button>

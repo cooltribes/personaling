@@ -24,7 +24,7 @@ $prePub="";
             	
             	if(isset($like)) // le ha dado like
 				{
-					$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
+					$a = CHtml::image($ima->getUrl(), "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
 				
 						echo("<td><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
 						<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a>
@@ -38,7 +38,7 @@ $prePub="";
 				else
 				{
 					
-					$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
+					$a = CHtml::image($ima->getUrl(), "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
 					
 					echo("<a href='../producto/detalle/".$data->id."' title='".$data->nombre."'><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
 					<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a>

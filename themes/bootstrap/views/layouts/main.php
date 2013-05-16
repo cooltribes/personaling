@@ -31,9 +31,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>array('/look/admin')),
                 array('label'=>'Productos', 'url'=>array('/producto/admin')),
-                
                 array('label'=>'Ventas', 'url'=>array('/orden/admin')),
-               array('label'=>'Sistema', 'url'=>array('/site/logout')),
+                array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
+                	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+				
+					),
+				),
+               	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
 				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
@@ -68,11 +72,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'items'=>array(
   
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
+                
                 array('label'=>'Top', 'url'=>array('/site/top'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
+                array('label'=>'Pedidos', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Iniciar sesión', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Registrate', 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),

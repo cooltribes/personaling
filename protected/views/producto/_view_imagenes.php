@@ -89,7 +89,7 @@ $this->breadcrumbs=array(
   </div>
   <!-- SUBMENU ON -->
   
-<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>4)); ?>
   
   <?php 
   

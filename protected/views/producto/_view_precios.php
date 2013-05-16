@@ -11,7 +11,7 @@ $this->breadcrumbs=array(
     <h1>Editar Producto - Precio</small></h1>
   </div>
   
-<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>2)); ?>
   
   <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'producto-form',

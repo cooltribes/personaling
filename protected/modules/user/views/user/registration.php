@@ -68,7 +68,7 @@
       <div class="row margin_bottom margin_top">
               <div class="span3"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/registro_facebook.png" width="230" height="39" alt="Registrate con Facebook"></a></div>
 
-        <div class="span3"> <a onclick="loadLiData()" id="registro_linkedin" title="Registrate con Twitter" class="transition_all pull-right" href="#"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/registro_twitter.png" width="230" height="39" alt="Registrate con twitter"></a> 
+        <div class="span3"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all pull-right" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/registro_twitter.png" width="230" height="39" alt="Regístrate con twitter"></a> 
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
         </div>
       </div>
@@ -111,7 +111,7 @@
 				//echo $field->varname;
 			?>
 <div class="control-group">
-
+	<div class="controls controls-row">
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
@@ -123,7 +123,7 @@
 			//echo $form->error($profile,$field->varname);
 			
 		} elseif ($field->field_type=="TEXT") {
-			echo $form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {
 				
@@ -148,7 +148,7 @@
 		
 		 
 				 ?>
-
+	</div>
 </div>
 			<?php
 			}
@@ -320,5 +320,7 @@ function check_fb(){
     });
 }
 	
-	
+function check_twitter(){
+	console.log("Twitter");
+}
 </script>

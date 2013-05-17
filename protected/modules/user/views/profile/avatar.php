@@ -24,17 +24,29 @@
 
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         
-		<form enctype="multipart/form-data" method="post" action="upload.php">
+		<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			'id'=>'avatar-form',
+			'htmlOptions'=>array('class'=>'personaling_form','enctype'=>"multipart/form-data"),
+		    //'type'=>'stacked',
+		    'type'=>'inline',
+			'enableClientValidation'=>true,
+			'clientOptions'=>array(
+				'validateOnSubmit'=>true,
+			),
+		)); ?>  
     <fieldset>
                   <h1>Tu Avatar</h1>
     <div class="row">
-    	
-    	<div id="container" class="span2"><img src="http://placehold.it/270x270"/></div>
+    	 
+    	<div id="container" class="span3"><img src="http://placehold.it/270x270"/></div>
  
-<canvas id="myCanvas" width="100" height="100"></canvas>
+
     	 <div class="span3 margin_top">
       <label for="fileToUpload">Select Files to Upload</label><br />
+           <!--
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
+      -->
+      <input type="file" name="filesToUpload" id="filesToUpload"/>
       <div id="dropTarget" style="width: 100%; height: 100px; border: 1px #ccc solid; padding: 10px;">Drop some files here</div>
       <output id="filesInfo"></output>
       </div>
@@ -45,7 +57,7 @@
       <div id="boton_original"  style="display:inline-block;">original</div> 
     </div>
     </fieldset>
-</form>
+<?php $this->endWidget(); ?>
 	
       </article>
     </div>
@@ -101,7 +113,11 @@ var ImagenH;
           }
 		  
         });
-		 darthVaderImg.rotate(Math.PI / 4); 
+		
+		// Rotate here
+		//darthVaderImg.rotate(Math.PI / 4); 
+        
+        
         // add cursor styling
         darthVaderImg.on('mouseover', function() {
 			
@@ -168,8 +184,8 @@ function fileSelect(evt) {
 			    */
 				reader.onload = (function (tFile) {
                 	return function (evt) {
-                		var canvas = document.getElementById('myCanvas');
-				      	var context = canvas.getContext('2d');
+                		//var canvas = document.getElementById('myCanvas');
+				      	//var context = canvas.getContext('2d');
 				      	var imageObj = new Image();
 			        	var exif = EXIF.readFromBinaryFile(new BinaryFile(evt.target.result)); // get EXIF data
 			        	//alert(exif.Orientation);				
@@ -206,17 +222,17 @@ function fileSelect(evt) {
 							
 							console.log(tempW+":"+tempH);
 							console.log('orientation='+exif.Orientation);
-							canvas.width = tempW;
-        					canvas.height = tempH;
+							//canvas.width = tempW;
+        					//canvas.height = tempH;
 							if (exif.Orientation==6){
 								height_old = canvas.height;
      							width_old = canvas.width;
-								canvas.width  = height_old;
-								canvas.height = width_old;
-	 							context.translate(canvas.width, 0);
+								//canvas.width  = height_old;
+								//canvas.height = width_old;
+	 							//context.translate(canvas.width, 0);
 	
      							// rotate 45 degrees clockwise
-      							context.rotate(Math.PI / 2);
+      							//context.rotate(Math.PI / 2);
 	  							//context.translate(canvas.height,0);
      							// imageObj.onload = function() {
      							//	imageObj.rotate(45);

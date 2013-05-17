@@ -18,7 +18,7 @@ $this->breadcrumbs=array(
     <h1>Editar Producto - Tallas y Colores</small></h1>
   </div>
   <!-- SUBMENU ON -->
-  <?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model)); ?>
+  <?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>6)); ?>
   <!-- SUBMENU OFF -->
   <div class="row margin_top">
     <div class="span9">

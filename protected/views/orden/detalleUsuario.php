@@ -299,7 +299,7 @@ $usuario = User::model()->findByPk($orden->user_id);
   <!-- INFORMACION DEL PEDIDO ON -->
   <div class="row">
     <div class="span7">
-   <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
+   <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos </h3> <p class="muted t_small CAPS"> (Precios expresados en Bs.)</p>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
           <th scope="col">Nombre de la prenda</th>
@@ -319,7 +319,36 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($prod->look_id != 0) // si es look
 				{
+
+					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 					
+					$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
+					$precio = $lookpedido->getPrecio(false);
+						
+						echo("<tr>");
+						echo("<td>".$lookpedido->title."</td>"); // nombre
+						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
+						echo("<td></td>"); // p/u
+						
+						setlocale(LC_MONETARY, 've_VE');
+						//$a = money_format('%i', $precio->precioVenta);
+						//$c = money_format('%i', $precio->ahorro);
+						//$des = money_format('%i', $precio->precioDescuento);
+						$iva = $precio * 0.12;
+						
+						$b = $precio * $prod->cantidad;					
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
+						
+						$e = $iva * $prod->cantidad;
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+										
+						echo("<td> desc look </td>"); //descuento del look
+	
+						$f = $b + $e;
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($f)."</td>"); //total
+						
+						echo("</tr>");	
+
 				}
 				else // individual
 				{
@@ -389,23 +418,23 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
           <td>SubTotal</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal). " Bs."; ?></td>
         </tr>
         <tr>
           <td>Descuento</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento). " Bs."; ?></td>
         </tr>
         <tr>
           <td>Envio y Transporte</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio). " Bs."; ?></td>
         </tr>
         <tr>
           <td>Impuesto</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva). " Bs."; ?></td>
         </tr>
         <tr>
           <td>Total</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " Bs."; ?></td>
         </tr>
       </table></div>
     </div>

@@ -19,7 +19,7 @@
   </div>
   <!-- SUBMENU ON -->
  <input id="producto" type="hidden" value="<?php echo $model->id ?>" />
-<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>5)); ?>
   <!-- SUBMENU OFF -->
   <?php 
   
@@ -187,14 +187,16 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 </ul>*/
 
         $cat = Categoria::model()->findAllByAttributes(array('id'=>'1','padreId'=>'0'));
-		
+
+
 		if(count($categorias) > 0){
 			foreach($categorias as $indiv)
 			{
-				 echo("<input class='idsCategorias' type='hidden' value='".$indiv->tbl_categoria_id."' />");
+				if(isset($indiv->tbl_categoria_id))	
+					echo("<input class='idsCategorias' type='hidden' value='".$indiv->tbl_categoria_id."' />");
 			}		
 		}
-		
+
 		nodos($cat);
 		
 			function nodos($items){

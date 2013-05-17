@@ -10,29 +10,27 @@ $accessToken = $mp->get_access_token();
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 ?>
-	 
+
 <div class="container margin_top">
-
-<div class="progreso_compra">
-      <div class="clearfix margin_bottom">
-       <div class="first-past">Autenticación</div>
-        <div class="middle-past">Dirección<br/>de envío <br/>y facturación</div>
-        <div class="middle-done">Método <br/>de pago</div>
-        <div class="last-not_done">Confirmar<br/>compra</div>
-      </div>
-      
+  <div class="progreso_compra">
+    <div class="clearfix margin_bottom">
+      <div class="first-past">Autenticación</div>
+      <div class="middle-past">Dirección<br/>
+        de envío <br/>
+        y facturación</div>
+      <div class="middle-done">Método <br/>
+        de pago</div>
+      <div class="last-not_done">Confirmar<br/>
+        compra</div>
+    </div>
   </div>
-
-    
   <div class="row">
     <section class="span7"> 
       <!-- Forma de pago ON -->
       <div class="box_1 padding_small margin_bottom">
-        <h4 class="braker_bottom padding_bottom_xsmall ">Pagar con Depósito o  Transferencia Bancaria</h4>
-        <input type="checkbox" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
+        <h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
+        <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Usar éste método de pago (click para ver las cuentas) </button>
-         
-        </label>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
             <h4>Banesco</h4>
@@ -55,12 +53,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </ul>
           </div>
         </div>
-
-      <div class="box_1 padding_small margin_bottom"> 
-        <!-- Forma de pago OFF --> 
-        <!-- Forma de pago ON -->
-        <h4 class="margin_top">Pagar con tarjetas de crédito</h4>
-        <div class="margin_bottom_large">
+        <input type="radio" name="optionsRadios" id="tarjeta" value="option2" data-toggle="collapse" data-target="#pagoTarjeta">
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Pagar con tarjetas de crédito </button>
+        <div class="collapse" id="pagoTarjeta">
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">
             <tr>
               <th scope="col" colspan="4">&nbsp;</th>
@@ -165,37 +160,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <!-- Forma de pago OFF --> 
           
         </div>
-        <!-- Forma de pago OFF --> 
-      </div>
-      <div class="box_1 padding_small margin_bottom"> 
-        <!-- Forma de pago ON -->
-        <h4 class="braker_bottom  padding_bottom_xsmall">Pagar con Tu saldo disponible en Personaling</h4>
-        <div class="padding_left margin_bottom_small">
-          <label class="checkbox">
-            <input type="checkbox" name="optionsRadios" id="optionsRadios1" value="option1" >
-            Usar Balance de Tarjetas de Regalo <strong>(Bs.255)</strong> </label>
-          <label class="checkbox">
-            <input type="checkbox" name="optionsRadios" id="optionsRadios2" value="option2">
-            Usar Balance de Puntos Ganados <strong>(Bs.356)</strong></label>
-        </div>
-        <button type="button" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button>
-        <!-- Forma de pago ON -->
-        <div class="margin_bottom_large collapse" id="collapse2">
-          <form class="personaling_form well well-small margin_top_medium">
-            <h4 class="braker_bottom  padding_bottom_xsmall"> Agregar Tarjeta de Regalo a tu Balance</h4>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" maxlength="128"  placeholder="Numero de la tarjeta de Regalo"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-          </form>
-          <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-large">Agregar Tarjeta de Regalo</a> </div>
-        <!-- Forma de pago OFF --> 
-        
       </div>
       <div class="box_1 padding_small margin_bottom"> 
         <!-- Forma de pago ON -->
@@ -318,26 +282,21 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-large">Anadir Tarjeta de Crédito</a> </div>
       </div><?php */?>
     </section>
-
     <?php
     
 //     echo CHtml::hiddenField('idDireccion',$idDireccion);
 // echo CHtml::hiddenField('tipoPago','1'); 
 ?>
-    
-
-   
-  <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
-  <?php Yii::app()->getSession()->add('tipoPago',1); ?>
-    
-	<div class="span5 margin_bottom padding_top_xsmall">
+    <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
+    <?php Yii::app()->getSession()->add('tipoPago',1); ?>
+    <div class="span5 margin_bottom padding_top_xsmall">
       <div class="margin_left">
-        <div id="resumen" class="well ">
-          <h4>Metodo de Pago Seleccionado</h4>
+        <div id="resumen" class="well well_personaling_big ">
+          <h4>Resumen de la compra</h4>
           <div class=" margin_bottom">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
               <tr id="adentro">
-              <?php
+                <?php
               /*
 			    <td valign="top"><i class="icon-picture"></i></td>
                 <td>MaterCard<br/>
@@ -355,29 +314,101 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <td>Balance de Puntos <br/>
                   Ganados <strong>250 Bs.</strong></td>
               */
-			  ?> 
-			  </tr>
-			 </table>
+			  ?>
+              </tr>
+            </table>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
+              <tr>
+                <th class="text_align_left">Subtotal:</th>
+                <td><?php
+                      	$totalPr=0;
+                      	$totalDe=0;
+                      	$envio = 100;
+						$i=0;
+						
+						if (empty($precios)) // si no esta vacio
+						{}
+						else{
+							
+							foreach($precios as $x){
+	                      		$totalPr = $totalPr + ($x * $cantidades[$i]);
+								$i++;
+	                      	}
+						}
+					/*	foreach($descuentos as $y)
+                      	{
+                      		$totalDe = $totalDe + $y;
+                      	}*/
+						
+						$iva = (($totalPr - $totalDe)*0.12); 
+						
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
+			 			
+						// variables de sesion
+						Yii::app()->getSession()->add('subtotal',$totalPr);
+						Yii::app()->getSession()->add('descuento',$totalDe);
+						Yii::app()->getSession()->add('envio',$envio);
+						Yii::app()->getSession()->add('iva',$iva);
+						Yii::app()->getSession()->add('total',$t); 
+						
+						echo $totalPr;
+                      	?>
+                  Bs.</td>
+              </tr>
+              <tr>
+                <th class="text_align_left">Descuento:</th>
+                <td class="text_align_right"><?php echo $totalDe; ?> Bs.</td>
+              </tr>
+              <tr>
+                <th class="text_align_left">Envío:</th>
+                <td class="text_align_right"><?php echo $envio; ?> Bs.</td>
+              </tr>
+              <tr>
+                <th class="text_align_left">I.V.A. (12%):</th>
+                <td class="text_align_right"><?php echo $iva; ?> Bs.</td>
+              </tr>
+              <tr>
+                <th class="text_align_left"><h4>Total:</h4></th>
+                <td class="text_align_right"><h4><?php echo $t; ?> Bs.</h4></td>
+              </tr>
+            </table>
+            <div>
+              <label class="checkbox">
+                <input type="checkbox" name="optionsRadios" id="optionsRadios1" value="option1" >
+                Usar Balance de Tarjetas de Regalo <strong>(Bs.255)</strong> </label>
+            </div>
+            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button>
+            <!-- Forma de pago ON -->
+            <div class="padding_left_small collapse" id="collapse2">
+              <form>
+                <!--[if lte IE 7]>
+            <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
+<![endif]-->
+                
+                <input type="text" maxlength="128"  placeholder="Numero de la tarjeta de Regalo"  class="span3">
+                <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-mini">Agregar Tarjeta de Regalo</a>
+              </form>
+            </div>
+            <!-- Forma de pago OFF -->
+            
             <div class="form-actions">
-            	
-          <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'type'=>'danger',
+              <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'type'=>'warning',
             'size'=>'large',
             'label'=>'Completar compra',
             'url'=>'confirmar', // action
-            'icon'=>'shopping-cart white',
+            'icon'=>'lock white',
         )); 
         // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a> 
         ?>
-            	
-            	</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- /container --> 
+<!-- /container -->
 
 <?php 
 
@@ -442,7 +473,7 @@ else
   </div>
 </div>
 
-<!-- // Modal Window -->
+<!-- // Modal Window --> 
 
 <script>
 

@@ -12,7 +12,7 @@ $this->breadcrumbs=array(
   </div>
   <!-- SUBMENU ON -->
 
-<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>7)); ?>
   
   <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'producto-form',

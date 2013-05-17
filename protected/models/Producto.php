@@ -395,26 +395,55 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 	//	$criteria->params = array(":dos" => "1"); // status
 		$criteria->params = array(":tres" => $idColor); // color que llega
 		$criteria->group = 't.id';
+
 		
- /*
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
+	}
+
+	public function nueva($todos)
+	{
+
+		$criteria=new CDbCriteria;
+
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
-		$criteria->compare('nombre',$this->nombre,true);
-		$criteria->compare('estado',$this->estado);
+		$criteria->compare('t.nombre',$this->nombre,true);
+		$criteria->compare('t.estado',$this->estado,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('proveedor',$this->proveedor,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
-		$criteria->with = array('preciotallacolor');
+		$criteria->with = array('categorias');
+		$criteria->with = array('precios');
+		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
+		
+		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
+		{
+			if(empty($todos)) // si no tiene hijos devuelve un array vacio por lo que debe buscar por el id de la categoria
+			{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+			}
+			else // si tienes hijos
+				{
+					$criteria->addInCondition("tbl_categoria_id",$todos);
+				}		
+		}else if($todos=="a")
+		{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+		}
 
-		$criteria->compare('color_id',$idColor,true);
-
+		$criteria->addCondition('precioDescuento != ""');
+		$criteria->addCondition('orden = 1');
+		
+		$criteria->order = "t.id ASC";
+		
 		$criteria->together = true;
- */
-
-	
 		
 		return new CActiveDataProvider($this, array(
        'pagination'=>array('pageSize'=>12,),

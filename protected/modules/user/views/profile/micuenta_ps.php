@@ -56,7 +56,22 @@ $this->breadcrumbs=array(
               <li> <a href="Editar_Perfil_Usuaria_Mi_Tipo.php" title="Tu Tipo">Tu Tipo</a></li>
 
             </ul>
-            <h2 class="braker_bottom">  Tu Estilo </h2>
+           
+          </div>
+          <div class="span4">
+          
+          <h2 class="braker_bottom"> Tus Pedidos </h2>
+            <ul class="nav nav-stacked nav-tabs">
+              <li><a href="#" title="Pedidos por pagar o por recibir">Pedidos Activos (falta por enlazar y quitar este texto)</a></li>
+              <li><a href="/orden/listado" title="Tus pedidos nuevos y anteriores">Historial de Pedidos</a></li>
+            </ul>
+             
+          </div>
+        </div>
+        
+        <div class="row">
+        <div class="span4">
+         <h2 class="braker_bottom">  Tu Estilo </h2>
            <ul class="nav nav-stacked nav-tabs">
                  <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Casual">Casual</a></li>
     <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Coctel">Coctel</a></li>
@@ -65,9 +80,10 @@ $this->breadcrumbs=array(
     <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Sport">Sport</a></li>
     <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Trabajo">Trabajo</a></li>
             </ul>
-          </div>
-          <div class="span4">
-             <h2 class="braker_bottom">Tus Encantos/Favoritos </h2>
+        
+        </div>
+        <div class="span4">
+        	<h2 class="braker_bottom">Tus Encantos/Favoritos </h2>
            <ul class="nav nav-stacked nav-tabs">
               <li><a href="Tu_Personaling_Tus_EncantosFavoritos_Looks.php" title="Tus Looks favoritos">Looks</a></li>
               <li><a href="Tu_Personaling_Tus_EncantosFavoritos_productos.php" title="Tus productos favoritos">Productos</a></li>
@@ -78,8 +94,12 @@ $this->breadcrumbs=array(
               <li>Twitter</li>
               <li>Pinterest</li>
             </ul>
-          </div>
+        
         </div>
+        
+        </div>
+        
+        
       </div>
       <div class="well">
         <div class="row">

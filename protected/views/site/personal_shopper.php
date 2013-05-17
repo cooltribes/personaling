@@ -10,15 +10,13 @@
   $cs = Yii::app()->getClientScript();
   $cs->registerScriptFile($baseUrl.'/js/slider.js');
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
-?>
-
-<div class=" margin_top">
-  <div class="row margin_bottom_large">
-    <div class="">
+?><div class="page-header margin_top padding_top_medium">
       <h1>Looks recomendados para ti</h1>
+</div>
+  <div class="row">
       
       <!-- Carousel items -->
-      <div id="carousel_looks_recomendados" class="carousel slide margin_top ">
+      <div id="carousel_looks_recomendados" class="carousel slide ">
         <div class="carousel-inner">
           <?php          	
         /*    	
@@ -113,10 +111,7 @@
           </div>
         </div>
       </div>
-    </div>
     <!-- Carousel nav --> 
-    <a class="carousel-control left margin_top_small bx-prev" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">&rsaquo;</a> </div>
-</div>
-</div>
-<hr/>
+    <a class="carousel-control left margin_top_small bx-prev" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">&rsaquo;</a> 
+    </div>
 </div>

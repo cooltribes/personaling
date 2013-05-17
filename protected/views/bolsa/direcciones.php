@@ -87,7 +87,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true, 
 	),
-	'htmlOptions'=>array('class'=>'form-stacked'),
+	'htmlOptions'=>array('class'=>'form-horizontal'),
 )); ?>
       
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">

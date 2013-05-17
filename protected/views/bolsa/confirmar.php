@@ -77,7 +77,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     </section>
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
-        <div class="well">
+        <div class="well well_personaling_big">
           <h5><?php echo Yii::app()->getSession()->get('totalLook'); ?> Look seleccionado<br/>
            	<?php  
            	if(Yii::app()->getSession()->get('totalProductosLook') != 0){
@@ -89,16 +89,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		</h5>
           
           <hr/>
-          <div class="row margin_bottom">
-            <div class="span1">
+          <div class="margin_bottom">
 			<?php  
           // 	if(Yii::app()->getSession()->get('totalLook') != 0){
 			//	echo "Con la compra del Look completo Ahorras 184 Bs."; 
 			//}
 			?>
-              </div>
-            <div class="span2">
-              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
                 <tr>
                   <th class="text_align_left">Subtotal:</th>
                   <td><?php echo Yii::app()->getSession()->get('subtotal'); ?> Bs.</td>
@@ -135,17 +132,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		   * */
 		   
         ?>
-			<a onclick="enviar()" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
+			<a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
               <hr/>
                <?php
                	//<a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
 				//<hr/>
 				?>
-              <div class="alert">
-              <!-- <strong>Ojo</strong>: a efectos del prototipo funcional será 1 sólo boton. Los 3 botones que estan aqui arriba llevan a paginas diferentes dependiendo del metodo de pago que haya elegido el usuario.
-              -->
-              </div>
-              </div>
+           
           </div>
           <p><i class="icon-calendar"></i> Fecha estimada de entrega: 00/00/2013 - 00/00/2013 </p>
         </div>

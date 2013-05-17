@@ -319,7 +319,36 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($prod->look_id != 0) // si es look
 				{
+
+					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 					
+					$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
+					$precio = $lookpedido->getPrecio(false);
+						
+						echo("<tr>");
+						echo("<td>".$lookpedido->title."</td>"); // nombre
+						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
+						echo("<td></td>"); // p/u
+						
+						setlocale(LC_MONETARY, 've_VE');
+						//$a = money_format('%i', $precio->precioVenta);
+						//$c = money_format('%i', $precio->ahorro);
+						//$des = money_format('%i', $precio->precioDescuento);
+						$iva = $precio * 0.12;
+						
+						$b = $precio * $prod->cantidad;					
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
+						
+						$e = $iva * $prod->cantidad;
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+										
+						echo("<td> desc look </td>"); //descuento del look
+	
+						$f = $b + $e;
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($f)."</td>"); //total
+						
+						echo("</tr>");	
+
 				}
 				else // individual
 				{

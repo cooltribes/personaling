@@ -21,17 +21,17 @@
                                      'id'=>$model->id,)); ?></li>
         <li id="2"><?php echo CHtml::link('Precios',array('precios',
                                      'id'=>$model->id,)); ?></li>
-        <li id="3"><a href="#">SEO</a></li>
-        <li id="4"><?php echo CHtml::link('Imágenes',array('imagenes',
-                                     'id'=>$model->id,)); ?></li>
+        <!-- <li id="3"><a href="#">SEO</a></li> -->
         <li id="5"><?php echo CHtml::link('Categorías',array('categorias',
                                      'id'=>$model->id,)); ?></li>
         <li id="6"><?php echo CHtml::link('Tallas y Colores',array('tallacolor',
                                      'id'=>$model->id,)); ?></li>
-        <li id="7"><?php echo CHtml::link('Inventario',array('inventario',
+		<li id="4"><?php echo CHtml::link('Imágenes',array('imagenes',
                                      'id'=>$model->id,)); ?></li>
+        <!-- <li id="7"><?php echo CHtml::link('Inventario',array('inventario',
+                                     'id'=>$model->id,)); ?></li> 
         <li id="8"><a href="#">Envíos y Transporte</a></li>
-        <li id="9"><a href="#">Ventas Cruzadas</a></li>
+        <li id="9"><a href="#">Ventas Cruzadas</a></li> -->
       </ul>
     </div>
   </div>

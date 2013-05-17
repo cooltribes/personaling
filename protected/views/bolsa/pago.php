@@ -468,7 +468,16 @@ else
 			if( $(this).is(':checked') ) // si activa el check
 			{
 				$("#adentro").append(añadir);
-				
+				$.ajax({
+			        type: "POST",
+			        url: "cambiarTipoPago", // action pagos
+			        data: { 'tipoPago' : 4 }, 
+			        success: function (data) {
+						alert('changed');
+			       	}//success
+			       })
+		   		
+		   		});
 			}else
 			{
 				$("tr.mp").remove();

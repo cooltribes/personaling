@@ -52,18 +52,24 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 } else {
-	$cont_productos = 0; 
+	$cont_productos = 0;
+	$total;
+	
+		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		
 	if (Yii::app()->user->id){ 
 		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 		$nombre = $profile->first_name.' '.$profile->last_name;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
-		
+
 		if(isset($bolsa))
 			$cont_productos = count($bolsa->bolsahasproductos);
 		
 	} else {
 		$nombre = 'N/A';
 	}
+	
 $this->widget('bootstrap.widgets.TbNavbar',array(
     'items'=>array(
         array(
@@ -78,7 +84,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-                array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
+				array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+                //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Registrate', 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),

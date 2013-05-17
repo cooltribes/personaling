@@ -138,5 +138,34 @@ class Orden extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}	
+
+	public function busqueda()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('subtotal',$this->subtotal);
+		$criteria->compare('descuento',$this->descuento);
+		$criteria->compare('envio',$this->envio);
+		$criteria->compare('iva',$this->iva);
+		$criteria->compare('descuentoRegalo',$this->descuentoRegalo);
+		$criteria->compare('total',$this->total);
+		$criteria->compare('estado',$this->estado);
+		$criteria->compare('fecha',$this->fecha);
+		$criteria->compare('bolsa_id',$this->bolsa_id);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('pago_id',$this->pago_id);
+		$criteria->compare('detalle_id',$this->detalle_id);
+		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
+		
+		$criteria->addCondition('estado < 5');
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
 	}
 }

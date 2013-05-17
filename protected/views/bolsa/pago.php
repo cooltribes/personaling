@@ -2,6 +2,10 @@
 	 tipopago 2: Tarjeta credito
 	 tipopago 3: puntos o tarjeta de regalo -->
 <?php
+Yii::import('application.components.*');
+require_once "mercadopago-sdk/lib/mercadopago.php";
+$mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
+$accessToken = $mp->get_access_token();
 
 if (!Yii::app()->user->isGuest) { // que este logueado
 
@@ -192,6 +196,32 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-large">Agregar Tarjeta de Regalo</a> </div>
         <!-- Forma de pago OFF --> 
         
+      </div>
+      <div class="box_1 padding_small margin_bottom"> 
+        <!-- Forma de pago ON -->
+        <h4 class="braker_bottom  padding_bottom_xsmall">Pagar con MercadoPago</h4>
+        <?php
+        //echo 'Total: '.Yii::app()->getSession()->get('total').'<br />';
+        $preference = array (
+		    "items" => array (
+		        array (
+		            "title" => "Test item",
+		            "quantity" => 1,
+		            "currency_id" => "VEF",
+		            "unit_price" => Yii::app()->getSession()->get('total')
+		        )
+		    )
+		);
+		
+		$preferenceResult = $mp->create_preference($preference);
+		
+		//var_dump ($preferenceResult);
+        ?>
+        <form class="personaling_form">
+	        <label class="checkbox"><input type="checkbox" name="optionsRadios" id="mercadopago" value="option4">
+	        Usar este método de pago</label>
+        </form>
+        <a href="<?php echo $preferenceResult['response']['init_point']; ?>" name="MP-Checkout" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
       </div>
       <?php /*?><div class="box_1 padding_small">
         <h3>Incluir nuevas opciones de pago</h3>
@@ -431,6 +461,19 @@ else
 			}	
 		});
 		
+		$("#mercadopago").click(function() {
+			
+			var añadir = "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i></td><td> Mercadopago.</td></tr>";
+			
+			if( $(this).is(':checked') ) // si activa el check
+			{
+				$("#adentro").append(añadir);
+				
+			}else
+			{
+				$("tr.mp").remove();
+			}	
+		});
 		
 	$("#completar-compra").click(function(ev){
    		ev.preventDefault();
@@ -438,12 +481,16 @@ else
    		
    		var idDir = $("#id-direccion").attr("value");
      	var tipoPago = 1; // en este caso siempre es transferencia pero hay que pensarlo para los distintos tipos
+     	
+     	if($("#mercadopago").is(':checked')){
+     		tipoPago = 4;
+     	}
      
      	$.ajax({
 	        type: "post",
 	        url: "pagos", // action pagos
 	        data: { 'idDir':idDir, 'tipoPago':tipoPago}, 
-	       // success: function (data) {	        	
+	       // success: function (data) {
 		     //   if(data == 'ok')
 		       // {
 		        //	alert("entró");
@@ -458,4 +505,10 @@ else
 	});
 	
 	
+</script>
+<script type="text/javascript">
+	(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;
+	s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";
+	var x = document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}
+	window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPBR_load) : window.addEventListener('load', $MPBR_load, false)) : null;})();
 </script>

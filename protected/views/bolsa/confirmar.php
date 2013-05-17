@@ -34,7 +34,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <h4 class="braker_bottom"> Direccion de Envio</h4>
         <?php 
         // direccion de envio 
-        
+        if(isset($tipoPago)){
+        	echo 'Tipo pago: '.$tipoPago;
+		}
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
@@ -69,6 +71,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               	if(Yii::app()->getSession()->get('tipoPago')==1)
 				{
 					echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i></td><td> Depósito o Transferencia Bancaria.</td></tr>";
+				}else if(Yii::app()->getSession()->get('tipoPago')==4){
+					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i></td><td> Mercadopago.</td></tr>";
 				}
               ?>
             </table>

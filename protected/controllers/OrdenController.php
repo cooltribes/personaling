@@ -43,7 +43,7 @@ class OrdenController extends Controller
 		$orden = new Orden;
 		
 		$orden->user_id = Yii::app()->user->id;
-		$dataProvider = $orden->search();
+		$dataProvider = $orden->busqueda();
 		
 		$this->render('adminUsuario',
 		array('orden'=>$orden,

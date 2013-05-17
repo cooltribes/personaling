@@ -59,8 +59,8 @@ $this->breadcrumbs=array(
           <div class="span4">
             <h2 class="braker_bottom"> Tus Pedidos </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><a href="#" title="Pedidos por pagar o por recibir">Pedidos Activos (falta por enlazar y quitar este texto)</a></li>
-              <li><a href="/orden/listado" title="Tus pedidos nuevos y anteriores">Historial de Pedidos</a></li>
+            	<li> <?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
+            	<li> <?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
             </ul>
           </div>
         </div>

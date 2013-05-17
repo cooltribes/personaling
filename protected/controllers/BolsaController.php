@@ -229,15 +229,19 @@ class BolsaController extends Controller
 		{
 			
 			if(isset($_POST['tipoPago'])) // escogiendo cual es la preferencia de pago
-			{ 
-				Yii::app()->session['tipoPago'] = $_POST['tipoPago'];
+			{
+				//Yii::app()->getSession()->remove('tipoPago'); 
+				//Yii::app()->getSession()->add('tipoPago',1) = $_POST['tipoPago'];
 			}
 		}
 		
 		public function actionConfirmar()
 		{
 			// viene de pagos
-				$this->render('confirmar');						
+			//var_dump($_POST);
+			//Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+			echo '<br/>'.$_POST['tipo_pago'];
+			//$this->render('confirmar');
 		}
 		
 		public function actionDirecciones()

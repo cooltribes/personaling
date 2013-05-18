@@ -5,20 +5,33 @@
 <?php endif; ?>
 <div class="container margin_top">
   <div class="row">
+  	<!-- FLASH ON --> 
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); ?>	
+<!-- FLASH OFF --> 
     <div class="span6 offset3">
      <!-- MENU ON -->
      <ul class="nav nav-pills margin_top">
-        <li class="active"> 
-        	<?php echo CHtml::link('Datos Personales',array('profile/edit')); ?>
-        </li>
-        <li>
-        	<?php echo CHtml::link('Avatar',array('profile/avatar')); ?>
-        	
-        </li>
-        <li>
-        	<?php echo CHtml::link('Avatar',array('profile/edittutipo')); ?>
-        	
-        </li>
+        					<li >
+						<?php echo CHtml::link('Datos Personales',array('profile/edit'));
+						?>
+					</li>
+					<li class="active">
+						<?php echo CHtml::link('Avatar',array('profile/avatar'));
+						?>
+					</li>
+					<li>
+						<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo'));
+						?>
+					</li>
       </ul>
      <!-- MENU OFF -->
 
@@ -37,7 +50,7 @@
     <fieldset>
                   <h1>Tu Avatar</h1>
     <div class="row">
-    	 
+    	 <div id="boton_original"  style="display:inline-block;">original</div> 
     	<div id="container" class="span3"><img src="http://placehold.it/270x270"/></div>
  
 
@@ -47,14 +60,19 @@
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
       -->
       <input type="file" name="filesToUpload" id="filesToUpload"/>
+      <?php echo CHtml::hiddenField('valido','1'); ?>
       <div id="dropTarget" style="width: 100%; height: 100px; border: 1px #ccc solid; padding: 10px;">Drop some files here</div>
       <output id="filesInfo"></output>
       </div>
     </div>
     
     <div class="row">
-      <input type="submit" value="Upload" />
-      <div id="boton_original"  style="display:inline-block;">original</div> 
+      <?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'danger',
+			'label'=>'Subir imágen',
+		)); ?>
+      
     </div>
     </fieldset>
 <?php $this->endWidget(); ?>

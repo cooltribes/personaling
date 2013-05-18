@@ -140,10 +140,35 @@ class ProfileController extends Controller
 	public function actionAvatar()
 	{
 		$model = $this->loadUser();
-	    $this->render('avatar',array(
+	    if (isset($_POST['valido'])){
+				$id = $model->id;
+			// make the directory to store the pic:
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id))
+				{
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id,0777,true);
+	 			}	 
+				$images = CUploadedFile::getInstancesByName('filesToUpload');
+				 if (isset($images) && count($images) > 0) {
+		            foreach ($images as $image => $pic) {
+		            	$nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'. $id .'/'. $image;
+						$extension = '.'.$pic->extensionName;
+		            	$model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
+		            	
+						$model->save();
+						
+		                if ($pic->saveAs($nombre . $extension)) {
+		                	//echo $nombre;
+		                	Yii::app()->user->updateSession();
+							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));	
+						}
+					}
+				 }  	
+		} 
+		 $this->render('avatar',array(
 	    	'model'=>$model,
 			//'profile'=>$model->profile,
-	    ));		
+	    ));	
+		
 	}
 /**
  * Regsitro tu estilo  

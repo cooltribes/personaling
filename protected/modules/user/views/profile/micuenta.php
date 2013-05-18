@@ -8,7 +8,10 @@ $this->breadcrumbs=array(
 <div class="container margin_top tu_perfil">
   <div class="row">
     <aside class="span3">
-      <div class="card"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/hipster_girl.jpg" width="270" height="270" alt="hipster">
+      <div class="card">
+      	
+      	
+        <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); ?>
         <div class="card_content vcard">
           <h4 class="fn"><?php echo $profile->first_name." ".$profile->last_name; ?></h4>
           <p class="muted">Miembro desde: <?php echo Yii::app()->dateFormatter->format("d MMM y",strtotime($model->create_at)); ?></p>

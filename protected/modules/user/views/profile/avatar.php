@@ -49,31 +49,31 @@
 		)); ?>  
     <fieldset>
                   <h1>Tu Avatar</h1>
-    <div class="row">
-    	 <div id="boton_original"  style="display:inline-block;">original</div> 
-    	<div id="container" class="span3"><img src="http://placehold.it/270x270"/></div>
- 
+<p>Puedes editar o cambiar tu avatar usando las opciones a continuación:</p>
+    	<div id="container" class="text_align_center margin_bottom margin_top" ><img src="http://placehold.it/270x270" class="img_1"/></div> <div class="text_align_center"><div id="boton_original" class="btn">original</div> </div>
+            	
 
-    	 <div class="span3 margin_top">
-      <label for="fileToUpload">Select Files to Upload</label><br />
+    	 <div class="braker_horz_top_1 ">
+      <label for="fileToUpload">Elige la imágen que deseas subir</label><br />
            <!--
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
       -->
-      <input type="file" name="filesToUpload" id="filesToUpload"/>
+      <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small"/>
       <?php echo CHtml::hiddenField('valido','1'); ?>
-      <div id="dropTarget" style="width: 100%; height: 100px; border: 1px #ccc solid; padding: 10px;">Drop some files here</div>
+      <div id="dropTarget">O arrasta la imagen hasta aqui</div>
       <output id="filesInfo"></output>
-      </div>
-    </div>
-    
-    <div class="row">
-      <?php $this->widget('bootstrap.widgets.TbButton', array(
+      
+         <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'danger',
-			'label'=>'Subir imágen',
+			'label'=>'Haz click aqui para subir la imágen',
 		)); ?>
-      
-    </div>
+      </div>
+      </div>
+    
+    
+  
+    
     </fieldset>
 <?php $this->endWidget(); ?>
 	

@@ -34,6 +34,7 @@ class User extends CActiveRecord
 	 * @var integer $status
      * @var timestamp $create_at
      * @var timestamp $lastvisit_at
+	 * @var timestamp $avatar_url
 	 */
 
 	/**
@@ -75,7 +76,7 @@ class User extends CActiveRecord
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
 			array('superuser, status,status_register,privacy, twitter_id', 'numerical', 'integerOnly'=>true),
-			array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id', 'safe', 'on'=>'search'),
+			array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id,avatar_url', 'safe', 'on'=>'search'),
 		):((Yii::app()->user->id==$this->id)?array(
 			array('username, email', 'required'),
 			array('password', 'length', 'max'=>128, 'min' => 4,'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
@@ -125,6 +126,7 @@ class User extends CActiveRecord
 			'superuser' => UserModule::t("Superuser"),
 			'status' => UserModule::t("Status"),
 			'twitter_id' => UserModule::t("Twitter ID"),
+			'avatar_url' => UserModule::t("Avatar"),
 		);
 	}
 	 
@@ -144,7 +146,7 @@ class User extends CActiveRecord
                 'condition'=>'superuser=1',
             ),
             'notsafe'=>array(
-            	'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id',
+            	'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id,avatar_url',
             ),
         );
     }
@@ -153,7 +155,7 @@ class User extends CActiveRecord
     {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope,array(
             'alias'=>'user',
-            'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id',
+            'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id, user.avatar_url',
         ));
     }
 	
@@ -204,7 +206,11 @@ class User extends CActiveRecord
 			),
         ));
     }
-
+	public function getAvatar(){
+		if ($this->avatar_url != '')
+			return Yii::app()->baseUrl.$this->avatar_url;
+		return Yii::app()->baseUrl.'/images/hipster_girl.jpg';
+	}
     public function getCreatetime() {
         return strtotime($this->create_at);
     }

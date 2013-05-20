@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago'),
+				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -213,21 +213,35 @@ class BolsaController extends Controller
 			{ 
 				$idDireccion = $_POST['idDireccion'];
 				$tipoPago = $_POST['tipoPago'];
-				
+				echo "if";
 				$this->render('confirmar',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
 				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
 				// se le pasan los datos al action confirmar	
 			}else if(isset($_GET['id'])){ // de direcciones
+			echo "else";
 				$this->render('pago',array('id_direccion'=>$_GET['id']));
 			}
 			
 		
 		}
 		
+		public function actionCambiarTipoPago()
+		{
+			
+			if(isset($_POST['tipoPago'])) // escogiendo cual es la preferencia de pago
+			{
+				//Yii::app()->getSession()->remove('tipoPago'); 
+				//Yii::app()->getSession()->add('tipoPago',1) = $_POST['tipoPago'];
+			}
+		}
+		
 		public function actionConfirmar()
 		{
 			// viene de pagos
-				$this->render('confirmar');						
+			//var_dump($_POST);
+			//Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+			echo '<br/>'.$_POST['tipo_pago'];
+			//$this->render('confirmar');
 		}
 		
 		public function actionDirecciones()

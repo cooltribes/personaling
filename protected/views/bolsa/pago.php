@@ -1,6 +1,6 @@
 <!-- tipopago 1: transferencia
-	 tipopago 2: Tarjeta credito
-	 tipopago 3: puntos o tarjeta de regalo -->
+     tipopago 2: Tarjeta credito
+     tipopago 3: puntos o tarjeta de regalo -->
 <?php
 
 if (!Yii::app()->user->isGuest) { // que este logueado
@@ -21,12 +21,19 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     </div>
   </div>
   <div class="row">
-    <section class="span7"> 
+    <section class="span7">
       <!-- Forma de pago ON -->
       <div class="box_1 padding_small margin_bottom">
         <h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
+        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPago"> MercadoPago </button>
+        <div class="padding_left margin_bottom_medium collapse" id="mercadoPago">
+          <div class="well well-small" >
+            Haz click en "Completar compra" para continuar. <?php echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
+          </div>
+        </div>
         <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
-        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Usar éste método de pago (click para ver las cuentas) </button>
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
             <h4>Banesco</h4>
@@ -50,7 +57,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           </div>
         </div>
         <input type="radio" name="optionsRadios" id="tarjeta" value="option2" data-toggle="collapse" data-target="#pagoTarjeta">
-        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Pagar con tarjetas de crédito </button>
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
         <div class="collapse" id="pagoTarjeta">
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">
             <tr>
@@ -76,13 +83,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </tr>
           </table>
           <button type="button" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>
-          
+
           <!-- Forma de pago ON -->
-          
+
           <div class="collapse" id="collapseOne">
             <form class="personaling_form well well-small margin_top_medium">
               <h5 class="braker_bottom">Nueva tarjeta de crédito</h5>
-              <div class="control-group"> 
+              <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Nombre en la tarjeta <span class="required">*</span></label>
 <![endif]-->
@@ -91,17 +98,17 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
               </div>
-              <div class="control-group"> 
+              <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Nombre impreso en la tarjeta <span class="required">*</span></label>
 <![endif]-->
-                
+
                 <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Nombre impreso en la tarjeta"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
               </div>
-              <div class="control-group"> 
+              <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Fecha de Vencimiento <span class="required">*</span></label>
 <![endif]-->
@@ -123,7 +130,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
               </div>
-              <div class="control-group"> 
+              <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Codigo de Seguridad <span class="required">*</span></label>
 <![endif]-->
@@ -132,7 +139,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
               </div>
-              <div class="control-group"> 
+              <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Cedula de Identidad <span class="required">*</span></label>
 <![endif]-->
@@ -141,7 +148,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
               </div>
-              <div class="control-group"> 
+              <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Numero de Telefono <span class="required">*</span></label>
 <![endif]-->
@@ -153,8 +160,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <div class="form-actions"> <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Anadir Tarjeta de Crédito</a> </div>
             </form>
           </div>
-          <!-- Forma de pago OFF --> 
-          
+          <!-- Forma de pago OFF -->
+
         </div>
       </div>
       <?php /*?><div class="box_1 padding_small">
@@ -163,7 +170,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <h4 class="braker_bottom">Tarjetas de crédito</h4>
         <div class="margin_bottom_large">
           <form class="personaling_form">
-            <div class="control-group"> 
+            <div class="control-group">
               <!--[if lte IE 7]>
             <label class="control-label required">Nombre en la tarjeta <span class="required">*</span></label>
 <![endif]-->
@@ -172,17 +179,17 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
-            <div class="control-group"> 
+            <div class="control-group">
               <!--[if lte IE 7]>
             <label class="control-label required">Nombre impreso en la tarjeta <span class="required">*</span></label>
 <![endif]-->
-              
+
               <div class="controls">
                 <input type="text" maxlength="128"  placeholder="Nombre impreso en la tarjeta"  class="span5">
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
-            <div class="control-group"> 
+            <div class="control-group">
               <!--[if lte IE 7]>
             <label class="control-label required">Fecha de Vencimiento <span class="required">*</span></label>
 <![endif]-->
@@ -204,7 +211,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
-            <div class="control-group"> 
+            <div class="control-group">
               <!--[if lte IE 7]>
             <label class="control-label required">Codigo de Seguridad <span class="required">*</span></label>
 <![endif]-->
@@ -213,7 +220,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
-            <div class="control-group"> 
+            <div class="control-group">
               <!--[if lte IE 7]>
             <label class="control-label required">Cedula de Identidad <span class="required">*</span></label>
 <![endif]-->
@@ -222,7 +229,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
-            <div class="control-group"> 
+            <div class="control-group">
               <!--[if lte IE 7]>
             <label class="control-label required">Numero de Telefono <span class="required">*</span></label>
 <![endif]-->
@@ -234,12 +241,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="form-actions"> <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Anadir Tarjeta de Crédito</a> </div>
           </form>
         </div>
-        <!-- Forma de pago OFF --> 
+        <!-- Forma de pago OFF -->
         <!-- Forma de pago ON -->
         <h4 class="braker_bottom  padding_bottom_xsmall"> Anadir Tarjeta de Regalo a tu Balance</h4>
         <div class="margin_bottom_large">
           <form class="personaling_form">
-            <div class="control-group"> 
+            <div class="control-group">
               <!--[if lte IE 7]>
             <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
 <![endif]-->
@@ -253,13 +260,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       </div><?php */?>
     </section>
     <?php
-    
+
 //     echo CHtml::hiddenField('idDireccion',$idDireccion);
-// echo CHtml::hiddenField('tipoPago','1'); 
+// echo CHtml::hiddenField('tipoPago','1');
 ?>
     <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
     <?php Yii::app()->getSession()->add('tipoPago',1); ?>
     <div class="span5 margin_bottom padding_top_xsmall">
+    	<form action="confirmar" method="POST">
       <div class="margin_left">
         <div id="resumen" class="well well_personaling_big ">
           <h4>Resumen de la compra</h4>
@@ -268,7 +276,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <tr id="adentro">
                 <?php
               /*
-			    <td valign="top"><i class="icon-picture"></i></td>
+                <td valign="top"><i class="icon-picture"></i></td>
                 <td>MaterCard<br/>
                   XXXX XXXX XXXX 6589<br/>
                   Vence: 12/2018<br/>
@@ -284,45 +292,45 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <td>Balance de Puntos <br/>
                   Ganados <strong>250 Bs.</strong></td>
               */
-			  ?>
+              ?>
               </tr>
             </table>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
               <tr>
                 <th class="text_align_left">Subtotal:</th>
                 <td><?php
-                      	$totalPr=0;
-                      	$totalDe=0;
-                      	$envio = 100;
-						$i=0;
-						
-						if (empty($precios)) // si no esta vacio
-						{}
-						else{
-							
-							foreach($precios as $x){
-	                      		$totalPr = $totalPr + ($x * $cantidades[$i]);
-								$i++;
-	                      	}
-						}
-					/*	foreach($descuentos as $y)
-                      	{
-                      		$totalDe = $totalDe + $y;
-                      	}*/
-						
-						$iva = (($totalPr - $totalDe)*0.12); 
-						
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
-			 			
-						// variables de sesion
-						Yii::app()->getSession()->add('subtotal',$totalPr);
-						Yii::app()->getSession()->add('descuento',$totalDe);
-						Yii::app()->getSession()->add('envio',$envio);
-						Yii::app()->getSession()->add('iva',$iva);
-						Yii::app()->getSession()->add('total',$t); 
-						
-						echo $totalPr;
-                      	?>
+                          $totalPr=0;
+                          $totalDe=0;
+                          $envio = 100;
+                        $i=0;
+
+                        if (empty($precios)) // si no esta vacio
+                        {}
+                        else{
+
+                            foreach($precios as $x){
+                                  $totalPr = $totalPr + ($x * $cantidades[$i]);
+                                $i++;
+                              }
+                        }
+                    /*    foreach($descuentos as $y)
+                          {
+                              $totalDe = $totalDe + $y;
+                          }*/
+
+                        $iva = (($totalPr - $totalDe)*0.12);
+
+                        $t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio;
+
+                        // variables de sesion
+                        Yii::app()->getSession()->add('subtotal',$totalPr);
+                        Yii::app()->getSession()->add('descuento',$totalDe);
+                        Yii::app()->getSession()->add('envio',$envio);
+                        Yii::app()->getSession()->add('iva',$iva);
+                        Yii::app()->getSession()->add('total',$t);
+
+                        echo $totalPr;
+                          ?>
                   Bs.</td>
               </tr>
               <tr>
@@ -350,43 +358,46 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button>
             <!-- Forma de pago ON -->
             <div class="padding_left_small collapse" id="collapse2">
-              <form>
+              
                 <!--[if lte IE 7]>
             <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
 <![endif]-->
-                
+
                 <input type="text" maxlength="128"  placeholder="Numero de la tarjeta de Regalo"  class="span3">
                 <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-mini">Agregar Tarjeta de Regalo</a>
-              </form>
+                <input type="hidden" id="tipo_pago" name="tipo_pago" value="1" />
+              
             </div>
             <!-- Forma de pago OFF -->
-            
+
             <div class="form-actions">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'type'=>'warning',
-            'size'=>'large',
-            'label'=>'Completar compra',
-            'url'=>'confirmar', // action
-            'icon'=>'lock white',
-        )); 
-        // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a> 
+	            'type'=>'warning',
+	            'size'=>'large',
+	            'label'=>'Completar compra',
+	            //'url'=>'confirmar', // action
+	            'icon'=>'lock white',
+	            'buttonType'=>'submit',
+	        ));
+        // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
         ?>
             </div>
           </div>
         </div>
       </div>
+      </form>
     </div>
   </div>
 </div>
 <!-- /container -->
 
-<?php 
+<?php
 
 }// si esta logueado
 else
 {
-	// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
+    // redirecciona al login porque se murió la sesión
+    header('Location: /site/user/login');
 }
 
 
@@ -401,7 +412,7 @@ else
   </div>
   <div class="modal-body">
     <form class="">
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
@@ -410,7 +421,7 @@ else
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
 <![endif]-->
@@ -419,7 +430,7 @@ else
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
-      <div class="controls controls-row"> 
+      <div class="controls controls-row">
         <!--[if lte IE 7]>
             <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
 <![endif]-->
@@ -427,7 +438,7 @@ else
         <input class="span1" type="text" placeholder="Mes">
         <input class="span2" type="text" placeholder="Año">
       </div>
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
 <![endif]-->
@@ -443,50 +454,51 @@ else
   </div>
 </div>
 
-<!-- // Modal Window --> 
+<!-- // Modal Window -->
 
 <script>
 
-	$(document).ready(function() {
+    $(document).ready(function() {
+        $("#deposito").click(function() {
+            var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
+            $("#adentro").html(añadir);
+        });
+        
+        $("#mercadopago").click(function() {
+            var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
+            $("#adentro").html(añadir);
+            $("#tipo_pago").val('4');
+        });
+        
+        $("#tarjeta").click(function() {
+            var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
+            $("#adentro").html(añadir);
+        });
 
-		$("#deposito").click(function() {
-			
-			var añadir = "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i></td><td> Depósito o Transferencia Bancaria.</td></tr>";
-			
-			if( $(this).is(':checked') ) // si activa el check
-			{
-				$("#adentro").append(añadir);
-			}else
-			{
-				$("tr.deptran").remove();
-			}	
-		});
-		
-		
-	$("#completar-compra").click(function(ev){
-   		ev.preventDefault();
-   		alert("pasar al sig");
-   		
-   		var idDir = $("#id-direccion").attr("value");
-     	var tipoPago = 1; // en este caso siempre es transferencia pero hay que pensarlo para los distintos tipos
-     
-     	$.ajax({
-	        type: "post",
-	        url: "pagos", // action pagos
-	        data: { 'idDir':idDir, 'tipoPago':tipoPago}, 
-	       // success: function (data) {	        	
-		     //   if(data == 'ok')
-		       // {
-		        //	alert("entró");
-	        	//	window.location="../confirmar";
-		        //}
-	       //	}//success
-	       })
-   		
-   	}); // tallas
-		
-	
-	});
-	
-	
+    $("#completar-compra").click(function(ev){
+           ev.preventDefault();
+           alert("pasar al sig");
+
+           var idDir = $("#id-direccion").attr("value");
+         var tipoPago = 1; // en este caso siempre es transferencia pero hay que pensarlo para los distintos tipos
+
+         $.ajax({
+            type: "post",
+            url: "pagos", // action pagos
+            data: { 'idDir':idDir, 'tipoPago':tipoPago},
+           // success: function (data) {
+             //   if(data == 'ok')
+               // {
+                //    alert("entró");
+                //    window.location="../confirmar";
+                //}
+           //    }//success
+           })
+
+       }); // tallas
+
+
+    });
+
+
 </script>

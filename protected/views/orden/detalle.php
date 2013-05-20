@@ -41,6 +41,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	if($orden->estado == 6)
 		echo "Pago Rechazado";
+
+	if($orden->estado == 7)
+		echo "Pago Insuficiente";
 	
 	// agregar demas estados
 ?>
@@ -52,8 +55,17 @@ $usuario = User::model()->findByPk($orden->user_id);
         Mensajes<br/></td>
       <td><p class="T_xlarge margin_top_xsmall">150</p>
         Prendas</td>
-      <td><p class="T_xlarge margin_top_xsmall"><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
-        Bolivares (Bs.)</td>
+      <td><p class="T_xlarge margin_top_xsmall"><?php
+      
+	if($orden->estado == 7)
+	{
+		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id));
+		$a = $balance->total * -1;
+		echo Yii::app()->numberFormatter->formatDecimal($a); 
+	}
+	else	
+      echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
+        Bolivares (Bs.) que faltan.</td>
       <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
   </table>
@@ -268,6 +280,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($est->estado==6)
 					echo("<td>Pago Rechazado</td>");
+				
+				if($est->estado == 7)
+					echo "<td>Pago Insuficiente</td>";
 				
 				$usu = User::model()->findByPk($est->user_id);
 				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");

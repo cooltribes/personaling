@@ -20,7 +20,10 @@
 			echo "<td>Pago Confirmado</td>";
 		
 		if($data->estado == 6)
-			echo "<td>Pago Rechazado</td>"; 
+			echo "<td>Pago Rechazado</td>";
+		
+		if($data->estado == 7)
+			echo "<td>Pago Insuficiente</td>";
 		
 		// agregar demas estados
 		

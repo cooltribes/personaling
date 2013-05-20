@@ -44,7 +44,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
           <fieldset>
           <?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'buttonType' => 'link',
-	    'label'=>'Agregar Categoría',
+	    'label'=>'Crear Nueva Categoría',
 	    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 	    'size'=>'normal', // null, 'large', 'small' or 'mini'
 	    'url' =>'../../categoria/create',

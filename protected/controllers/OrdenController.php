@@ -116,27 +116,77 @@ class OrdenController extends Controller
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
 				if($detalle->monto >= $orden->total){
+					/*
+					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
+					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
+					 * 
+					 * */
 					$orden->estado = 3;
 					
 					if($orden->save()){
 						$usuario = Yii::app()->user->id; 
-						
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-						$estado = new Estado;
 											
-						$estado->estado = 3; // pago recibido
-						$estado->user_id = $usuario;
-						$estado->fecha = date("Y-m-d");
-						$estado->orden_id = $orden->id;
-							
-						if($estado->save())
+						if($detalle->monto > $orden->total)
 						{
-							echo "ok";	
-						}
+							$excede = $detalle->monto - $orden->total;
+							
+							$balance = new Balance;
+							$balance->user_id = Yii::app()->user->id;
+							$balance->total = $excede;
+							
+							$balance->save();
+								
+						} // si es mayor hace el balance
 						
+													
+							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+							$estado = new Estado;
+													
+							$estado->estado = 3; // pago recibido
+							$estado->user_id = $usuario;
+							$estado->fecha = date("Y-m-d");
+							$estado->orden_id = $orden->id;
+									
+							if($estado->save())
+							{
+								echo "ok";	
+							}					
+
 					}//orden save
 				}// si es mayor
-			
+				else{
+					
+					$orden->estado = 7;
+					if($orden->save()){
+						
+						$falta = $detalle->monto - $orden->total;
+							
+						$balance = new Balance;
+						$balance->user_id = Yii::app()->user->id;
+						$balance->total = $falta;
+								
+						if($balance->save())
+						{
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+							$estado = new Estado;
+														
+							$estado->estado = 7; // pago insuficiente
+							$estado->user_id = Yii::app()->user->id;
+							$estado->fecha = date("Y-m-d");
+							$estado->orden_id = $orden->id;
+										
+							if($estado->save())
+							{
+								echo "ok";	
+							}	
+					}
+						
+						
+					}
+					
+					
+				}	
+							
 			}// detalle
 					
 		}

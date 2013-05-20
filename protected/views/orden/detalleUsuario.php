@@ -38,6 +38,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 3)
 		echo "Pago Confirmado";
 	
+	if($orden->estado == 7)
+		echo "Pago Insuficiente";
+	
 	// agregar demas estados
 ?>
       	</p>
@@ -46,7 +49,17 @@ $usuario = User::model()->findByPk($orden->user_id);
         Documentos</td>
       <td><p class="T_xlarge margin_top_xsmall"> 4</p>
         Prendas<br/></td>
-      <td><p class="T_xlarge margin_top_xsmall"><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php 
+      
+	if($orden->estado == 7)
+	{
+		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id));
+		$a = $balance->total * -1;
+		echo Yii::app()->numberFormatter->formatDecimal($a); 
+	}
+	else	
+      echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
+        
         <?php
 //----------------------Estado
 	if($orden->estado == 1)
@@ -58,9 +71,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 3)
 		echo "Bs. ya pagados";
 	
+	if($orden->estado == 7)
+		echo "Bs. que faltan.";
+	
 	// agregar demas estados
 ?>
-        
        </td>
  		<td><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white"></i> Reportar Pago </td>
       	<td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
@@ -242,6 +257,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($est->estado==6)
 					echo("<td>Pago Rechazado</td>");
+				
+				if($est->estado == 7)
+					echo "<td>Pago Insuficiente</td>";
 				
 				$usu = User::model()->findByPk($est->user_id);
 				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");

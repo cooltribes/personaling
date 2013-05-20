@@ -7,6 +7,7 @@
  * 4 - Preparandose para el envío
  * 5 - Cancelado
  * 6 - Pago Rechazado
+ * 7 - Pago insuficiente
  * */
 
 
@@ -162,7 +163,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		
-		$criteria->addCondition('estado < 5');
+		$criteria->addCondition('estado != 6');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

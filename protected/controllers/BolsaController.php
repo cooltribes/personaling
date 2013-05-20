@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago'),
+				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -225,6 +225,11 @@ class BolsaController extends Controller
 		
 		}
 		
+		public function actionSuccessMP(){
+			echo 'Tipo: '.Yii::app()->getSession()->get('tipoPago').'';
+			
+		}
+		
 		public function actionCambiarTipoPago()
 		{
 			
@@ -239,9 +244,11 @@ class BolsaController extends Controller
 		{
 			// viene de pagos
 			//var_dump($_POST);
-			//Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
-			echo '<br/>'.$_POST['tipo_pago'];
-			//$this->render('confirmar');
+			if(isset($_POST['tipo_pago'])){
+				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+				//echo '<br/>'.$_POST['tipo_pago'];
+				$this->render('confirmar');
+			}
 		}
 		
 		public function actionDirecciones()
@@ -326,7 +333,7 @@ class BolsaController extends Controller
 		 	$usuario = Yii::app()->user->id; 
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 			
-			if($_POST['tipoPago']==1){ // transferencia
+			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4){ // transferencia
 				$detalle = new Detalle;
 			
 				if($detalle->save())
@@ -444,7 +451,7 @@ class BolsaController extends Controller
 	public function actionPedido($id)
 	{
 		$orden = Orden::model()->findByPk($id);
-		
+		//$pago = Pago::model()->findByPk($orden->pago_id);
 		$this->render('pedido',array('orden'=>$orden));
 	}
 

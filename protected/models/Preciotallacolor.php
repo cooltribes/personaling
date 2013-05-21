@@ -41,7 +41,7 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('producto_id, talla_id, color_id,sku', 'required'),
+			array('producto_id, talla_id, color_id', 'required'),
 			array('sku','unique'),
 			array('cantidad, producto_id, talla_id, color_id', 'numerical', 'integerOnly'=>true),
 			array('cantidad', 'numerical','min'=>0), //,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}','on'=>'update'

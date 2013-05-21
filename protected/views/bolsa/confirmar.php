@@ -138,8 +138,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				            "title" => "Look seleccionado + productos individuales",
 				            "quantity" => 1,
 				            "currency_id" => "VEF",
-				            //"unit_price" => Yii::app()->getSession()->get('total')
-				            "unit_price" => 25
+				            "unit_price" => Yii::app()->getSession()->get('total')
+				            //"unit_price" => 25
 				        )
 				    ),
 				    "payer" => array(
@@ -250,7 +250,19 @@ else
     alert ('Pago acreditado');
   } else if(json.collection_status=='pending'){
     alert ('El usuario no completó el pago');
-    enviar();
+    $.ajax({
+	        type: "post",
+	        dataType: 'json',
+	        url: "comprar", // action 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id}, 
+	        success: function (data) {
+				
+				if(data.status=="ok")
+				{
+					window.location="pedido/"+data.orden+"";
+				}
+	       	}//success
+	       })
   } else if(json.collection_status=='in_process'){    
     alert ('El pago está siendo revisado');    
     

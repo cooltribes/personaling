@@ -357,6 +357,19 @@ class BolsaController extends Controller
 					$dirEnvio->ciudad = $dir1->ciudad;
 					$dirEnvio->estado = $dir1->estado;
 					$dirEnvio->pais = $dir1->pais;
+					
+					if(isset($_POST['id_transaccion']) && $_POST['tipoPago'] == 4){ // Pago con Mercadopago
+						$detalle->nTransferencia = $_POST['id_transaccion'];
+						$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
+						$detalle->cedula = $dirEnvio->cedula;
+						$detalle->monto = $_POST['total'];
+						$detalle->fecha = date("Y-m-d H:i:s");
+						$detalle->banco = 'Mecadopago';
+						
+						$detalle->estado = 0;
+						
+						$detalle->save();
+					}
 
 						if($dirEnvio->save()){
 							// ya esta todo para realizar la orden

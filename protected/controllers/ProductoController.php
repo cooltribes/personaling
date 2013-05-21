@@ -731,25 +731,34 @@ class ProductoController extends Controller
 			 		$preciotallacolor[$i] = Preciotallacolor::model()->findByPk($tallacolor['id']);
 				else 
 					$preciotallacolor[$i] = new Preciotallacolor;
-				if ($tallacolor['sku']!='' && $tallacolor['cantidad']!='' && $tallacolor['cantidad']>0){
+				if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){
 				$this->performAjaxValidation($preciotallacolor[$i]);  
-				$preciotallacolor[$i]->attributes=$tallacolor; 
-				$preciotallacolor[$i]->producto_id = $model->id;
-				$valid  = $valid  && $preciotallacolor[$i]->validate();
-				if(!($valid)){
-					$error = CActiveForm::validate($preciotallacolor[$i]);
-                    if($error!='[]'){
-                    	$error = CJSON::decode($error);
-                    	$error['id']= $i;
-						echo CJSON::encode($error);
+					$preciotallacolor[$i]->attributes=$tallacolor; 
+					$preciotallacolor[$i]->producto_id = $model->id;
+					$valid  = $valid  && $preciotallacolor[$i]->validate();
+					if(!($valid)){
+						$error = CActiveForm::validate($preciotallacolor[$i]);
+	                    if($error!='[]'){
+	                    	$error = CJSON::decode($error);
+	                    	$error['id']= $i;
+							echo CJSON::encode($error);
+						}
+	                    Yii::app()->end();	  				
 					}
-                    Yii::app()->end();					
-				}
 				} else {
-					if ($preciotallacolor[$i]->isNewRecord)
+					if ($preciotallacolor[$i]->isNewRecord){
 						unset($preciotallacolor[$i]);
-					else
-						$preciotallacolor[$i]->delete();
+					}else{
+						try{
+							$preciotallacolor[$i]->delete(); 
+						} catch (Exception $e) {
+	                    	$error['PrecioTallaColor_sku'] = "No es posible eliminar este codigo.";
+							$error['id']= $i;
+							echo CJSON::encode($error);
+						 	Yii::app()->end();
+						}
+						
+					}
 				}
 			 }
 			if ($valid){

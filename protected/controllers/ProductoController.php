@@ -693,7 +693,7 @@ class ProductoController extends Controller
 						$tallacolor[$i]->talla_id = $talla_tmp->id;
 						$tallacolor[$i]->talla = $talla_tmp->valor;
 					}
-					
+					$tallacolor[$i]->cantidad = 0;
 					
 					$i++;
 				//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
@@ -731,6 +731,7 @@ class ProductoController extends Controller
 			 		$preciotallacolor[$i] = Preciotallacolor::model()->findByPk($tallacolor['id']);
 				else 
 					$preciotallacolor[$i] = new Preciotallacolor;
+				if ($tallacolor['sku']!='' && $tallacolor['cantidad']!='' && $tallacolor['cantidad']>0){
 				$this->performAjaxValidation($preciotallacolor[$i]);  
 				$preciotallacolor[$i]->attributes=$tallacolor; 
 				$preciotallacolor[$i]->producto_id = $model->id;
@@ -743,6 +744,12 @@ class ProductoController extends Controller
 						echo CJSON::encode($error);
 					}
                     Yii::app()->end();					
+				}
+				} else {
+					if ($preciotallacolor[$i]->isNewRecord)
+						unset($preciotallacolor[$i]);
+					else
+						$preciotallacolor[$i]->delete();
 				}
 			 }
 			if ($valid){

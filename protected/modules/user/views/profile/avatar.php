@@ -50,7 +50,11 @@
     <fieldset>
                   <h1>Tu Avatar</h1>
 <p>Puedes editar o cambiar tu avatar usando las opciones a continuación:</p>
-    	<div id="container" class="text_align_center margin_bottom margin_top" ><img src="http://placehold.it/270x270" class="img_1"/></div> <div class="text_align_center"><div id="boton_original" class="btn">original</div> </div>
+    	<div id="container" class="text_align_center margin_bottom margin_top" ><img src="http://placehold.it/270x270" class="img_1"/></div> <div class="text_align_center">
+    		<div id="boton_original" class="btn">original</div> 
+    		<div id="boton_original" class="btn">+</div> 
+    		<div id="boton_original" class="btn">-</div> 
+    		</div>
             	
 
     	 <div class="braker_horz_top_1 ">

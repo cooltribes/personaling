@@ -1,4 +1,9 @@
 <?php
+Yii::import('application.components.*');
+require_once "mercadopago-sdk/lib/mercadopago.php";
+$mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
+$accessToken = $mp->get_access_token();
+//var_dump($accessToken);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
 
@@ -70,9 +75,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <?php 
               	if(Yii::app()->getSession()->get('tipoPago')==1)
 				{
-					echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i></td><td> Depósito o Transferencia Bancaria.</td></tr>";
+					echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
 				}else if(Yii::app()->getSession()->get('tipoPago')==4){
-					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i></td><td> Mercadopago.</td></tr>";
+					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
+				}else if(Yii::app()->getSession()->get('tipoPago')==2){
+					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
 				}
               ?>
             </table>
@@ -121,7 +128,41 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   <td><h4><?php echo Yii::app()->getSession()->get('total'); ?>  Bs.</h4></td>
                 </tr>
               </table>
-              <?php 
+              <?php
+              if(Yii::app()->getSession()->get('tipoPago') == 4){
+              	$user = User::model()->findByPk(Yii::app()->user->id);
+				$profile = Profile::model()->findByPk(Yii::app()->user->id);
+              	$preference = array (
+				    "items" => array (
+				        array (
+				            "title" => "Look seleccionado + productos individuales",
+				            "quantity" => 1,
+				            "currency_id" => "VEF",
+				            "unit_price" => Yii::app()->getSession()->get('total')
+				            //"unit_price" => 25
+				        )
+				    ),
+				    "payer" => array(
+						"name" => $profile->first_name,
+						"surname" => $profile->last_name,
+						"email" => $user->email
+					),
+					"back_urls" => array(
+						"success" => 'http://personaling.com/site/bolsa/successMP',
+						"failure" => 'http://personaling.com/site/bolsa/successMP',
+						"pending" => 'http://personaling.com/site/bolsa/successMP'
+					),
+				);
+				$preferenceResult = $mp->create_preference($preference);
+				?>
+				<a href="<?php echo $preferenceResult['response']['init_point']; ?>" name="MP-Checkout" class="blue-L-Rn-VeAll" mp-mode="modal" onreturn="enviar_mp">Pagar con MercadoPago</a>
+				<?php
+              }else{
+              	?>
+              	<a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
+              <hr/>
+              	<?php
+              }
               //<a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
               //<hr/>
 			  ?>	
@@ -136,8 +177,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		   * */
 		   
         ?>
-			<a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
-              <hr/>
+			
                <?php
                	//<a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
 				//<hr/>
@@ -196,4 +236,48 @@ else
  			
 	}
 	
+	function enviar_mp(json)
+	{
+   		var idDireccion = $("#idDireccion").attr("value");
+		var tipoPago = $("#tipoPago").attr("value");
+		var subtotal = $("#subtotal").attr("value");
+		var descuento = $("#descuento").attr("value");
+		var envio = $("#envio").attr("value");
+		var iva = $("#iva").attr("value");
+		var total = $("#total").attr("value");
+
+ 		 if (json.collection_status=='approved'){
+    alert ('Pago acreditado');
+  } else if(json.collection_status=='pending'){
+    alert ('El usuario no completó el pago');
+    $.ajax({
+	        type: "post",
+	        dataType: 'json',
+	        url: "comprar", // action 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id}, 
+	        success: function (data) {
+				
+				if(data.status=="ok")
+				{
+					window.location="pedido/"+data.orden+"";
+				}
+	       	}//success
+	       })
+  } else if(json.collection_status=='in_process'){    
+    alert ('El pago está siendo revisado');    
+    
+  } else if(json.collection_status=='rejected'){
+    alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
+  } else if(json.collection_status==null){
+    alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
+  }
+ 			
+	}
+	
+</script>
+<script type="text/javascript">
+	(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;
+	s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";
+	var x = document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}
+	window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPBR_load) : window.addEventListener('load', $MPBR_load, false)) : null;})();
 </script>

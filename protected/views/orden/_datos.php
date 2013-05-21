@@ -37,6 +37,8 @@ echo"<tr>";
 	
 	if($tipoPago->tipo==1)
 		echo "<td>Dep. o Transfer</td>"; // metodo de pago
+	if($tipoPago->tipo==4)
+		echo "<td>MercadoPago</td>"; 
 	// incluir demas tipos luego
 	
 	

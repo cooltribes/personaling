@@ -148,6 +148,88 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
         
         if($look!=0) // hay looks
 		{
+			$todos = array();
+			$vacio = array();
+			$ordenproducto =  OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+			
+			foreach ($ordenproducto as $cadauno) {
+				if($cadauno->look_id!=0){
+					$look = Look::model()->findByPk($cadauno->look_id);
+					array_push($todos,$look->id);
+				}
+			}
+			
+			foreach($todos as $cadalook)
+			{
+				$look = Look::model()->findByPk($cadalook);
+
+			
+			if(!in_array($cadalook,$vacio)){
+						
+			echo('
+			<h4 class="braker_bottom">'.$look->title.'</h4>
+	        <div class="padding_left">
+	          <table class="table" width="100%" >
+	            <thead>
+	              <tr>
+	                <th colspan="2">Producto</th>
+	                <th>Precio por 
+	                  unidad </th>
+	                <th >Cantidad</th>
+	              </tr>
+	            </thead>
+	            <tbody>');	
+				
+				foreach ($ordenproducto as $cadauno) {
+					if($cadauno->look_id!=0){
+						if($cadauno->look_id == $cadalook)
+						{
+							array_push($vacio,$cadalook);
+							
+							$tod = PrecioTallaColor::model()->findByPk($cadauno->preciotallacolor_id);
+							$talla = Talla::model()->findByPk($tod->talla_id);
+							$color = Color::model()->findByPk($tod->color_id);
+							
+							$producto = Producto::model()->findByPk($tod->producto_id);
+							$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+									
+							$pre="";
+						 	foreach ($producto->precios as $precio) {
+					   			$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+							}
+							
+							echo('<tr>');
+							
+							if($imagen){					  	
+								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+								echo "<td>".$aaa."</td>";
+							}else{
+								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+							}
+	
+							echo('<td><strong>'.$producto->nombre.'</strong> <br/>
+		                  		<strong>Color</strong>: '.$color->valor.'<br/>
+		                  		<strong>Talla</strong>: '.$talla->valor.'</td>
+		                  		</td>
+		                <td>Bs. '.$pre.'</td>
+		                <td>'.$cadauno->cantidad.'</td>
+		              </tr>');		
+						}
+					}
+				}
+
+
+			echo '</tbody>
+		          </table>
+		          <hr/>
+		          <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil">'.$look->user->profile->first_name.'</a></p>
+		          </div>';	
+
+			}
+				
+			}
+			
+			
 		/*	
 			 <h4 class="braker_bottom">Nombre del Look 1</h4>
         <div class="padding_left">
@@ -209,6 +291,8 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 			
 			foreach ($ordenprod as $individual) {
 				
+				if($individual->look_id==0){
+				
 				$todo = PrecioTallaColor::model()->findByPk($individual->preciotallacolor_id);
 						
 				$producto = Producto::model()->findByPk($todo->producto_id);
@@ -242,7 +326,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 					echo "<td>".$individual->cantidad."</td>
 					</tr>";
 
-              
+			}
 				
 			}// foreach de productos		
 		}// si hay indiv

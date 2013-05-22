@@ -131,7 +131,8 @@ class OrdenController extends Controller
 							$excede = $detalle->monto - $orden->total;
 							
 							$balance = new Balance;
-							$balance->user_id = Yii::app()->user->id;
+							$balance->orden_id = $orden->id;
+							$balance->user_id = $orden->user_id;
 							$balance->total = $excede;
 							
 							$balance->save();
@@ -162,7 +163,8 @@ class OrdenController extends Controller
 						$falta = $detalle->monto - $orden->total;
 							
 						$balance = new Balance;
-						$balance->user_id = Yii::app()->user->id;
+						$balance->orden_id = $orden->id;
+						$balance->user_id = $orden->user_id;
 						$balance->total = $falta;
 								
 						if($balance->save())

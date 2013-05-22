@@ -59,9 +59,11 @@ $usuario = User::model()->findByPk($orden->user_id);
       
 	if($orden->estado == 7)
 	{
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id));
-		$a = $balance->total * -1;
-		echo Yii::app()->numberFormatter->formatDecimal($a); 
+		$balance = Balance::model()->findByAttributes(array('user_id'=>$orden->user_id,'orden_id'=>$orden->id));
+		if(isset($balance)){
+			$a = $balance->total * -1;
+			echo Yii::app()->numberFormatter->formatDecimal($a); 
+		}
 	}
 	else	
       echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>

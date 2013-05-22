@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
+				'actions'=>array('index','eliminardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -251,10 +251,29 @@ class BolsaController extends Controller
 			}
 		}
 		
+		public function actionEliminardireccion()
+		{
+			if(isset($_POST['idDir']))
+			{
+				$direccion = Direccion::model()->findByPk($_POST['idDir']);
+				$direccion->delete();
+				
+				echo "ok";
+			}
+		}
+		
 		public function actionDirecciones()
 		{
 			$dir = new Direccion;
-
+			
+			if(isset($_POST['tipo']) && $_POST['tipo']=='direccionVieja')
+			{
+				//echo "Id:".$_POST['Direccion']['id'];
+				$dirEnvio = $_POST['Direccion']['id'];
+				
+				$this->render('pago',array('idDireccion'=>$dirEnvio));
+			}
+			else
 			if(isset($_POST['Direccion'])) // nuevo registro
 			{
 				//if($_POST['Direccion']['nombre']!="")

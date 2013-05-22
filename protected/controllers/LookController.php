@@ -253,7 +253,7 @@ class LookController extends Controller
 	}
 public function actionCategorias(){
 	
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']));
+	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
 	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
@@ -400,7 +400,7 @@ public function actionCategorias(){
 		else
 		$model=new Look;
 		
-		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
 			$model->title = "Look Nuevo";

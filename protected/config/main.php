@@ -22,9 +22,10 @@ return array(
 		'application.components.*',
 		'application.modules.user.*',
         'application.modules.user.models.*',
-        'application.modules.user.components.*',	
-        'application.helpers.*',	
-        'application.extensions.validators.age.*',	
+        'application.modules.user.components.*',
+        'application.helpers.*',
+        'application.extensions.validators.age.*',
+        'ext.yii-mail.YiiMailMessage',
 	),
 
 	'modules'=>array(
@@ -83,6 +84,11 @@ return array(
                 'consumer_secret' => 'Bf9nlFPrcb1CNIqFAMjiCUG3qSOKefIoswDqlVawx8',
                 'callback' => 'http://personaling.com/site/user/registration/twitter',
             ), 
+        'mail' => array(
+                'class' => 'ext.yii-mail.YiiMail',
+                'transportType'=>'php',
+                'viewPath' => 'application.views.mail',             
+        ),
 		'image'=>array(
 		          'class'=>'application.extensions.image.CImageComponent',
 		            // GD or ImageMagick

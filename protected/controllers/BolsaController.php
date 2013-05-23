@@ -352,7 +352,7 @@ class BolsaController extends Controller
 		 	$usuario = Yii::app()->user->id; 
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 			
-			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4){ // transferencia
+			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4){ // transferencia o MP
 				$detalle = new Detalle;
 			
 				if($detalle->save())
@@ -453,6 +453,20 @@ class BolsaController extends Controller
 								
 								if($estado->save())
 									echo "";
+								
+								// Enviar correo con resumen de la compra
+								$user = User::model()->findByPk($usuario);
+								$message            = new YiiMailMessage;
+						           //this points to the file test.php inside the view path
+						        $message->view = "mail_compra";
+								$subject = 'Tu compra en Pesonaling';
+						        $params              = array('subject'=>$subject, 'orden'=>$orden);
+						        $message->subject    = $subject;
+						        $message->setBody($params, 'text/html');                
+						        $message->addTo($user->email);
+								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
 							echo CJSON::encode(array(

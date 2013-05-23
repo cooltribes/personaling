@@ -118,35 +118,54 @@
   <div class=" margin_bottom_large braker_horz_top_1 ">
                 <h3 class="margin_bottom_small">Desde Nuestra Magazine</h3>
 
+
       <div class="row posts_list">
         <div class="span12">
           <div class="thumbnails">
-            <li class="span3">
-              <div class="post"> <a href="http://personaling.com/620/" title="Semana de las Madres: Sofía Vergara" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/sofiavergara-494x700.jpg" class="attachment-medium wp-post-image" alt="Especial Mamá: Sofía Vergara"> </a>
-                <h3 ><a href="http://personaling.com/620/" class="show_modal_post" title="Semana de las Madres: Sofía Vergara"> Semana de las Madres: Sofía Vergara </a></h3>
+<?php
+function str_lreplace($search, $replace, $subject)
+{
+    $pos = strrpos($subject, $search);
+
+    if($pos !== false)
+    {
+        $subject = substr_replace($subject, $replace, $pos, strlen($search));
+    }
+
+    return $subject;
+}
+	$posts_parent = WpPosts::model()->findAllByAttributes(array('post_type'=>'post','post_status'=>'publish'),array('order'=>'post_date DESC'));
+	$count = 0;
+	foreach($posts_parent as $posts_parent){
+		$posts_attachment = WpPosts::model()->findByAttributes(array('post_parent'=>$posts_parent->ID));
+		if(isset($posts_attachment)){
+			$count++;
+			//echo 'a';
+		?>	
+		            <li class="span3">
+              <div class="post"> 
+              	<?php
+              	$imagen_url = str_lreplace(".","-494x700.", $posts_attachment->guid);
+				//$imagen_url = substr_replace(".","-494x700.", strrpos(".", $posts_attachment->guid), strlen($posts_attachment->guid));
+              	$imghtml=CHtml::image($imagen_url, $posts_attachment->post_title,array("width" => "270", 'class'=>'show_modal_post'));
+				echo CHtml::link($imghtml, $posts_parent->guid);
+              	?>
+              
+                <h3 >
+                	<?php echo CHtml::link($posts_parent->post_title, $posts_parent->guid,array('class'=>"show_modal_post" )); ?>
+                	</h3>
                 <!-- /.row --> 
               </div>
             </li>
-            <!-- /.post_class -->
-            <li class="span3">
-              <div class="post"> <a href="http://personaling.com/flores-al-poder/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/FLORAL-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
-                <h3 ><a href="http://personaling.com/flores-al-poder/" class="show_modal_post" title="Flores al Poder"> Flores al Poder </a></h3>
-                <!-- /.row -->                 
-              </div>
-            </li>
-            <li class="span3">
-              <div class="post"> <a href="http://personaling.com/estilo-tropical-by-mng/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/04/tropicallook1-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
-                <h3 ><a href="http://personaling.com/estilo-tropical-by-mng/" class="show_modal_post" title="Flores al Poder"> Estilo Tropical by MNG</a></h3>
-                <!-- /.row --> 
-              </div>
-            </li>
-            <!-- /.post_class -->
-            <li class="span3">
-              <div class="post "> <a href="http://personaling.com/los-cuellos-joyas-por-irene-garcia-p/" title="Los cuellos joyas por Irene García P." class="show_modal_post"> <img width="270" src="http://personaling.com/blog/wp-content/uploads/2013/03/irenecuellos-494x700.jpg" class="attachment-medium wp-post-image" alt="irenecuellos"> </a>
-                <h3 ><a href="http://personaling.com/los-cuellos-joyas-por-irene-garcia-p/" class="show_modal_post" title="Los cuellos joyas por Irene García P."> Los cuellos joyas por Irene García P. </a></h3>
-                <!-- /.row -->                 
-              </div>
-            </li>
+			
+			
+		<?php 
+		}
+		if ($count >= 4)
+			break;
+	}
+?>            
+
           </div>
         </div>
       </div>

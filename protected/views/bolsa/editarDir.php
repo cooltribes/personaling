@@ -1,104 +1,4 @@
-<?php
 
-if (!Yii::app()->user->isGuest) { // que este logueado
-
-?>
-
-<div class="container margin_top">
-    <div class="progreso_compra">
-      <div class="clearfix margin_bottom">
-        <div class="first-past">Autenticación</div>
-        <div class="middle-done">Dirección<br/>de envío <br/>y facturación</div>
-        <div class="middle-not_done">Método <br/>de pago</div>
-        <div class="last-not_done">Confirmar<br/>compra</div>
-      </div>
-      
-  </div>
-
-  <div class="row">
-    <div class="span8 offset2"> 
-     
-      <h1>Dirección de envío</h1>
-      <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la seccion inferior:</p>
-      <?php 
-      
-     	$usuario = Yii::app()->user->id; 
-      
-	  	$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
-	  ?>
-	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-          <fieldset>
-            <legend >Direcciones utilizadas anteriormente: </legend>
-            <?php
-            
-            if(isset($direcciones)){
-	       		foreach($direcciones as $cadauna){
-
-			       $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-						'id'=>'direccionUsada',
-						'enableAjaxValidation'=>false,
-						'enableClientValidation'=>true,
-						'clientOptions'=>array(
-							'validateOnSubmit'=>true, 
-						),
-						'htmlOptions'=>array('class'=>'form-horizontal'),
-					));
-						
-		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
-		            echo CHtml::hiddenField('tipo','direccionVieja');
-					
-		            echo "
-		            <div class='row'>
-		            
-		              <div class='span2'>
-		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
-		                  <span class='muted small'> C.I. ".$cadauna->cedula."</span></p>
-		                <p> <strong>Telefono</strong>: ".$cadauna->telefono."</p>
-		              </div>
-		              <div class='span3'>
-		                <p><strong>Dirección:</strong> <br/>
-		                  ".$cadauna->dirUno." </br>
-		                  ".$cadauna->dirDos.". 
-		                  ".$cadauna->ciudad.", ".$cadauna->estado.". </br>
-		                  ".$cadauna->pais." </p>
-		              </div>
-		              <div class='span2 margin_top_medium'>
-		                <p>
-					";
-					
-					$this->widget('bootstrap.widgets.TbButton', array(
-			            'buttonType'=>'submit',
-			            'type'=>'danger',
-			            'size'=>'normal',
-			            'label'=>'Usar esta dirección',
-			        )); 
-					
-					echo"
-		                <br/>
-		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>Editar</a> <br/>
-		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar'>Eliminar</a></p>
-		              </div>
-		            </div>
-		            <hr/>
-			  		";
-			  		
-			  	$this->endWidget();
-			  		
-			  	}
-	  		}
-			else {
-			echo "<legend>No tiene direcciones registradas</legend>";					
-			}
- 	echo "
-          </fieldset>
-        </form>
-      </section>
-		";
-      ?>
-      
-      
-
-      
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'direccion_nueva',
 	'enableAjaxValidation'=>false,
@@ -109,11 +9,21 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	'htmlOptions'=>array('class'=>'form-horizontal'),
 )); 
 
+	if(isset($dir))
+	{
+		
+	echo CHtml::hiddenField('idDireccion',$dir->id);
 ?>
+    
       
-      <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form" enctype="multipart/form-data">
-          <fieldset>
+    <div class="row">
+    <div class="span8 offset2"> 
+    </br>
+    
+      <h1>Editar dirección de envío</h1>
+      
+      <section class="bg_color3 margin_top margin_bottom_small padding_small box_1">
+          <fieldset>          
             <legend >Incluir una nueva dirección de envío: </legend>
             <div class="control-group"> 
              
@@ -194,14 +104,24 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             
               <div class="controls">
               	
-              	 <?php echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
-              	 /*
-				  * <select>
-                  <option>Venezuela</option>
-                  <option>Colombia</option>
-                  <option>USA</option>
-                </select>
-				  * */
+              	 <?php 
+              	 
+              	 if($dir->pais=="Venezuela"){
+              	 	echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
+              	 		array('options' => array(1 => array('selected'=>true))));
+              	 }
+				 
+				 if($dir->pais=="Colombia"){
+              	 	echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
+              	 		array('options' => array(2 => array('selected'=>true))));
+              	 }
+              	 
+              	 if($dir->pais=="Estados Unidos"){
+              	 	echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
+              	 		array('options' => array(3 => array('selected'=>true))));
+              	 }
+	 	
+              	 
               	 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -211,9 +131,19 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
-            'label'=>'Usar esta dirección',
+            'label'=>'Guardar',
         )); 
-        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
+
+        ?>
+        
+        <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'buttonType'=>'link',
+            'type'=>'info',
+            'size'=>'large',
+            'label'=>'Cancelar',
+            'url' => '../direcciones',
+        )); 
+
         ?>
             </div>
            
@@ -222,56 +152,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       </section>
     </div>
   </div>
-</div>
+
 <!-- /container -->
 
-<?php $this->endWidget(); ?>
-
 <?php 
-
-}// si esta logueado
+} // if
 else
-{
-	// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
-}
-
-
-?>
-
-<script>
-	
-	function eliminar(id)
 	{
-		
-	var idDireccion = id;
-
-	// llamada ajax para el controlador de bolsa	   
-     	$.ajax({
-	        type: "post",
-	        url: "eliminardireccion", 
-	        data: { 'idDir':idDireccion }, 
-	        success: function (data) {
-	        	
-				if(data=="ok")
-				{
-					window.location.reload()
-				}
-					
-	       	}//success
-	       })
-
+	// redirecciona al login porque se murió la sesión
+	header('Location: /site/site/error');	
 	}
-	
-	
-	/*
-	 Funcion para editar una direccion
-	 * */
-	function editar(id)
-	{	
-	var idDireccion = id;
-	window.location="editardireccion/"+id+"";
-	}
-	
-	
-</script>
+$this->endWidget(); ?>

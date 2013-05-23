@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','eliminardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
+				'actions'=>array('index','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -260,6 +260,47 @@ class BolsaController extends Controller
 				
 				echo "ok";
 			}
+		}
+		
+			/**
+		 * editar una direccion.
+		 */
+		public function actionEditardireccion()
+		{
+			if(isset($_POST['idDireccion'])){
+				$dirEdit = Direccion::model()->findByPk($_POST['idDireccion']);
+				
+				$dirEdit->nombre = $_POST['Direccion']['nombre'];
+				$dirEdit->apellido = $_POST['Direccion']['apellido'];
+				$dirEdit->cedula = $_POST['Direccion']['cedula'];
+				$dirEdit->dirUno = $_POST['Direccion']['dirUno'];
+				$dirEdit->dirDos = $_POST['Direccion']['dirDos'];
+				$dirEdit->telefono = $_POST['Direccion']['telefono'];
+				$dirEdit->ciudad = $_POST['Direccion']['ciudad'];
+				$dirEdit->estado = $_POST['Direccion']['estado'];
+				
+				if($_POST['Direccion']['pais']==1)
+					$dirEdit->pais = "Venezuela";
+				
+				if($_POST['Direccion']['pais']==2)
+					$dirEdit->pais = "Colombia";
+				
+				if($_POST['Direccion']['pais']==3)
+					$dirEdit->pais = "Estados Unidos";
+				
+				if($dirEdit->save()){
+					$dir = new Direccion;
+					$this->redirect(array('bolsa/direcciones')); // redir to action
+					//$this->render('direcciones',array('dir'=>$dir));
+					}
+				
+			}
+			else if($_GET['id']){ // piden editarlo
+				$direccion = Direccion::model()->findByAttributes(array('id'=>$_GET['id'],'user_id'=>Yii::app()->user->id));
+				$this->render('editarDir',array('dir'=>$direccion));
+			}
+			
+			
 		}
 		
 		public function actionDirecciones()

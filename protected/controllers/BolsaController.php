@@ -460,52 +460,6 @@ class BolsaController extends Controller
 						           //this points to the file test.php inside the view path
 						        $message->view = "mail_compra";
 								$subject = 'Tu compra en Pesonaling';
-								$body = '<h3>Tu pedido ha sido recibido con éxito<h3><br/>.';
-								$body .= 'A continuación encontrarás las instrucciones para completar tu compra.';
-								if($pago->tipo == 1){
-									$body .= '<h2>Siguiente paso</h2><hr/>
-	        <p><strong>Para completar tu comprar debes:</strong></p>
-	        <ol>
-	          <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
-	            <br>
-	            <ul>
-	              <li><strong>Banesco</strong><br>
-	                Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-	                PERSONALING C.A<br>
-	                RIF Nº J-RRRRR<br>
-	                <br>
-	              </li>
-	            </ul>
-	            <ul>
-	              <li><strong>Mercantil<br>
-	                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-	                PERSONALING C.A<br>
-	                RIF Nº J-RRRRR<br>
-	                <br>
-	              </li>
-	              <li> <strong>Provincial<br>
-	                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-	                PERSONALING C.A<br>
-	                RIF Nº J-RRRRR<br>
-	                <br>
-	              </li>
-	            </ul>
-	          </li>
-	          <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
-	          <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
-	          <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
-	        </ol>';
-								}else if($pago->tipo == 4){
-									$body .= '<h2>Siguiente paso</h2><hr/>
-	        <p><strong>Para completar tu comprar debes:</strong></p>
-	        <ol>
-	          <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via MercadoPago. <br>
-	          </li>
-	          <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
-	          <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
-	          <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
-	        </ol>';
-								}
 						        $params              = array('subject'=>$subject, 'orden'=>$orden);
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');                

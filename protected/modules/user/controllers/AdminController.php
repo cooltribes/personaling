@@ -92,7 +92,9 @@ class AdminController extends Controller
 					$profile->user_id=$model->id;
 					$profile->save();
 				}
-				$this->redirect(array('view','id'=>$model->id));
+				//$this->redirect(array('view','id'=>$model->id));
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 			} else $profile->validate();
 		}
 
@@ -116,7 +118,9 @@ if(isset($_POST['Profile']))
 				
 				
 				$profile->save();
-				$this->redirect(array('view','id'=>$model->id));
+				//$this->redirect(array('view','id'=>$model->id));
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 			} else $profile->validate();
 		}		
 		$this->render('estilos',array(
@@ -174,7 +178,9 @@ if(isset($_POST['Profile']))
 				
 				
 				if ($profile->save()){
-				$this->redirect(array('view','id'=>$model->id));
+				//$this->redirect(array('view','id'=>$model->id));
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					} else {
 					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
 				}
@@ -214,7 +220,11 @@ if(isset($_POST['Profile']))
 				}
 				$model->save();
 				$profile->save(); 
-				$this->redirect(array('view','id'=>$model->id));
+				
+				//$this->redirect(array('view','id'=>$model->id));
+				
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 			} else $profile->validate();
 		}
 

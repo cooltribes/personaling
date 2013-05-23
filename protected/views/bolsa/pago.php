@@ -299,9 +299,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <tr>
                 <th class="text_align_left">Subtotal:</th>
                 <td><?php
-                          $totalPr=0;
-                          $totalDe=0;
-                          $envio = 20;
+                          $totalPr=Yii::app()->getSession()->get('subtotal');
+                          $totalDe=Yii::app()->getSession()->get('descuento');
+                          $envio = Yii::app()->getSession()->get('envio');
                         $i=0;
 
                         if (empty($precios)) // si no esta vacio

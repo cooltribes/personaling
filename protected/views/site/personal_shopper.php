@@ -1,4 +1,4 @@
-<?php
+	<?php
 /* @var $this TiendaController */
 //
 //$this->breadcrumbs=array(
@@ -48,9 +48,12 @@
                   <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
                   <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
+                    <div class="span2 avatar ">
+                    	
+                    	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                    </div>
                     <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn">
+                      <h5><a class="url" title="profile" href="#"><span class="fn"> 
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
@@ -76,24 +79,7 @@
                   <span class="label label-important">Promoción</span> </article>
               </div>
               <?php } ?>
-              <?php	?>
-              <div class="item">
-                <div class="row">
-                  <article class="span4">
-                    <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'img_1')); ?>
-                    <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?> 
-                    <!--
-              	<a href="Look_seleccionado.php" title="look"> 
-              	<img src="http://placehold.it/370x400"/>
-              	
-              </a>
-              -->
-                    <div class="margin_top_small"><!-- <img class="pull-right" src="http://placehold.it/50x50"/> -->
-                      <p class="pull-right margin_top_small margin_right_small"><?php echo $look->title; ?> Recomendado por: <?php echo $look->user->profile->first_name; ?></p>
-                    </div>
-                  </article>
-                </div>
-              </div>
+            
               <?php } ?>
             </div>
           </div>

@@ -209,7 +209,9 @@ class User extends CActiveRecord
 	public function getAvatar(){
 		if ($this->avatar_url != '')
 			return Yii::app()->baseUrl.$this->avatar_url;
-		return Yii::app()->baseUrl.'/images/hipster_girl.jpg';
+		if ($this->personal_shopper)
+			return Yii::app()->baseUrl.'/images/avatar_provisional_3.jpg';
+		return Yii::app()->baseUrl.'/images/avatar_provisional_2.jpg';
 	}
     public function getCreatetime() {
         return strtotime($this->create_at);

@@ -367,6 +367,7 @@ $this->breadcrumbs=array(
 				                        // $('#formResult').html('form submitted successfully.');
 				                        //alert('si');
 				                        // $('#Tallacolor-Form')[0].reset();
+				                        $('.error').hide();
 				                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
 									}
 				                         else{

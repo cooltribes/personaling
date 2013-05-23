@@ -247,9 +247,9 @@ else
 		var total = $("#total").attr("value");
 
  		 if (json.collection_status=='approved'){
-    alert ('Pago acreditado');
+    //alert ('Pago acreditado');
   } else if(json.collection_status=='pending'){
-    alert ('El usuario no completó el pago');
+    //alert ('El usuario no completó el pago');
     $.ajax({
 	        type: "post",
 	        dataType: 'json',
@@ -264,12 +264,12 @@ else
 	       	}//success
 	       })
   } else if(json.collection_status=='in_process'){    
-    alert ('El pago está siendo revisado');    
+    //alert ('El pago está siendo revisado');    
     
   } else if(json.collection_status=='rejected'){
-    alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
+    //alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
   } else if(json.collection_status==null){
-    alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
+    //alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
   }
  			
 	}

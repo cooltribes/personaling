@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{balance}}':
  * @property integer $id
  * @property double $total
+ * @property integer $orden_id 
  * @property integer $user_id
  *
  * The followings are the available model relations:
@@ -39,12 +40,12 @@ class Balance extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id', 'required'),
-			array('user_id', 'numerical', 'integerOnly'=>true),
+			array('user_id, orden_id', 'required'),
+			array('user_id, orden_id', 'numerical', 'integerOnly'=>true),
 			array('total', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, total, user_id', 'safe', 'on'=>'search'),
+			array('id, total, orden_id, user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +69,7 @@ class Balance extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'total' => 'Total',
+			'orden_id' => 'Orden',
 			'user_id' => 'User',
 		);
 	}
@@ -85,6 +87,7 @@ class Balance extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('total',$this->total);
+		$criteria->compare('orden_id',$this->orden_id);
 		$criteria->compare('user_id',$this->user_id);
 
 		return new CActiveDataProvider($this, array(

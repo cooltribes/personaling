@@ -1,3 +1,9 @@
+<?php  
+  $baseUrl = Yii::app()->baseUrl; 
+  $cs = Yii::app()->getClientScript();
+  $cs->registerScriptFile($baseUrl.'/js/slider.js');
+  //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
+?>
 <div class="container margin_top">
   <h1 class="page-header">Top</h1>
   <ul class="nav nav-pills">
@@ -14,15 +20,27 @@
       <div id="carousel_looks_recomendados" class="carousel slide ">
         <div class="carousel-inner">
           <div id="list-auth-items" class="list-view">
-            <div class="items row" >
-              <div class="span4" >
-                <article class="item"> <a href="/site/look/1"><img width="370" height="400" class="" src="/site/look/getImage/1" alt="Look"></a>
+            <div id="b" class="items row" >
+            	 <?php
+ foreach($dataProvider->getData() as $record) {
+ 	$look = Look::model()->findByPk($record['id']);
+ ?>
+             
+              <div class="span4">
+                <article class="item" >
+                  <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
+                  <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
+                    <div class="span2 avatar ">
+                    	
+                    	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
                     </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
+                    <div class="span5"> <span class="muted">Look creado por: </span>
+                      <h5><a class="url" title="profile" href="#"><span class="fn"> 
+                        <?php //echo $look->title; ?>
+                        <?php echo $look->user->profile->first_name; ?> </span></a></h5>
+                    </div>
+                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -43,90 +61,10 @@
                   </div>
                   <span class="label label-important">Promoción</span> </article>
               </div>
-              <div class="span4" style="opacity: 1;">
-                <article class="item"> <a href="/site/look/2"><img width="370" height="400" class="" src="/site/look/getImage/2" alt="Look"></a>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
-                        
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                      <!-- AddThis Button END --> 
-                      
-                    </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
-              <div class="span4 image_not_bw" style="opacity: 1;">
-                <article class="item"> <a href="/site/look/3"><img width="370" height="400" class="" src="/site/look/getImage/3" alt="Look" style="opacity: 1;"></a>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
-                        
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                      <!-- AddThis Button END --> 
-                      
-                    </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
-              <div class="span4 image_bw" style="opacity: 1;">
-                <article class="item"> <a href="/site/look/4"><img width="370" height="400" class="" src="/site/look/getImage/4" alt="Look" style="opacity: 1;"></a>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
-                        
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                      <!-- AddThis Button END --> 
-                      
-                    </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
+             
+
+              <?php } ?>
+              
             </div>
           </div>
         </div>

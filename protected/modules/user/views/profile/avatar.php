@@ -67,6 +67,8 @@
       -->
       <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small"/>
       <?php echo CHtml::hiddenField('valido','1'); ?>
+      <?php echo CHtml::hiddenField('avatar_x','0'); ?>
+      <?php echo CHtml::hiddenField('avatar_y','0'); ?>
       <div id="dropTarget">O arrasta la imagen hasta aqui</div>
       <output id="filesInfo"></output>
       
@@ -160,11 +162,45 @@ var ImagenH;
 		document.getElementById('boton_original').addEventListener('click', function() {
 			//darthVaderImg.setWidth(100);
 			//console.log(darthVaderImg.getWidth());
-        	darthVaderImg.setScale(1, 1);
-			ImagenW = originalW;
-			ImagenH = originalH;
-        layer.draw();
+        	 alert(
+              "   X/Y:"+
+              darthVaderImg.getAbsolutePosition().x+"/"+
+              darthVaderImg.getAbsolutePosition().y+" -- Width/Height:"+
+              darthVaderImg.getWidth()+"/"+
+              darthVaderImg.getHeight()          
+          );
+        	//darthVaderImg.setScale(1, 1);
+			//ImagenW = originalW;
+			//ImagenH = originalH;
+        	//layer.draw();
       },false);
+      $("#avatar-form").submit(function(evt){
+
+     // document.getElementById('avatar-form').addEventListener('submit', function(evt) {
+			//darthVaderImg.setWidth(100);
+			//console.log(darthVaderImg.getWidth());
+			//alert('asd');
+			//evt.preventDefault();
+			//document.getElementById('avatar_x').value =  darthVaderImg.getAbsolutePosition().x;
+			//document.getElementById('avatar_y').value =  darthVaderImg.getAbsolutePosition().y;
+			$('#avatar_x').val(darthVaderImg.getAbsolutePosition().x);
+			$('#avatar_y').val(darthVaderImg.getAbsolutePosition().y);
+			//$("#avatar-form").submit();
+			//$(this).submit();
+			/*
+        	 alert(
+              "   X/Y:"+
+              darthVaderImg.getAbsolutePosition().x+"/"+
+              darthVaderImg.getAbsolutePosition().y+" -- Width/Height:"+
+              darthVaderImg.getWidth()+"/"+
+              darthVaderImg.getHeight()          
+          );*/
+        	//darthVaderImg.setScale(1, 1);
+			//ImagenW = originalW;
+			//ImagenH = originalH;
+        	//layer.draw();
+     // },false);
+     });
       /*
 		darthVaderImg.on('dblclick', function() {
 		

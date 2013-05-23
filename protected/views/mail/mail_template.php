@@ -344,7 +344,7 @@ body, td {
                           </tbody>
                         </table>
                         <div class="header-content"><span class="hide">
-                          <preferences lang="es-ES"><?php echo $subject; ?></preferences>
+                          <preferences lang="es-ES"></preferences>
                           </span></div>
                         <table class="w325" width="350" cellpadding="0" cellspacing="0" border="0">
                           <tbody>
@@ -400,7 +400,7 @@ body, td {
                               <tbody>
                                 <tr>
                                   <td class="w580" width="580"><p align="left" class="article-title">
-                                      <singleline label="Title">Titulo del correo</singleline>
+                                      <singleline label="Title"><?php echo $subject; ?></singleline>
                                     </p>
                                     <div align="left" class="article-content">
                                       <multiline label="Description">
@@ -414,72 +414,6 @@ body, td {
                               </tbody>
                             </table>
                           </layout>
-                          <layout label="Text with full-width image">
-                            <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                              <tbody>
-                                <tr>
-                                  <td class="w580" width="580"><p align="left" class="article-title">
-                                      <singleline label="Title">Titulo con imagen</singleline>
-                                    </p></td>
-                                </tr>
-                                <tr>
-                                  <td class="w580" width="580"><img src="http://placehold.it/580x300" label="Image" class="w580" width="580" border="0"></td>
-                                </tr>
-                                <tr>
-                                  <td class="w580" width="580" height="15"></td>
-                                </tr>
-                                <tr>
-                                  <td class="w580" width="580"><div align="left" class="article-content">
-                                      <multiline label="Description">Enter your description</multiline>
-                                    </div></td>
-                                </tr>
-                                <tr>
-                                  <td class="w580" width="580" height="10"></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </layout>
-                          
-                          <layout label="Two columns">
-                            <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                              <tbody>
-                                <tr>
-                                  <td class="w275" width="275" valign="top"><table class="w275" width="275" cellpadding="0" cellspacing="0" border="0">
-                                      <tbody>
-                                        <tr>
-                                          <td class="w275" width="275"><p align="left" class="article-title">
-                                              <singleline label="Title">Columna 1</singleline>
-                                            </p>
-                                            <div align="left" class="article-content">
-                                              <multiline label="Description">Donec suscipit euismod gravida. Nullam dignissim scelerisque elementum. Quisque gravida pharetra lectus, in gravida dui molestie </multiline>
-                                            </div></td>
-                                        </tr>
-                                        <tr>
-                                          <td class="w275" width="275" height="10"></td>
-                                        </tr>
-                                      </tbody>
-                                    </table></td>
-                                  <td class="w30" width="30"></td>
-                                  <td class="w275" width="275" valign="top"><table class="w275" width="275" cellpadding="0" cellspacing="0" border="0">
-                                      <tbody>
-                                        <tr>
-                                          <td class="w275" width="275"><p align="left" class="article-title">
-                                              <singleline label="Title">Columna 2</singleline>
-                                            </p>
-                                            <div align="left" class="article-content">
-                                              <multiline label="Description"> Donec suscipit euismod gravida. Nullam dignissim scelerisque elementum. Quisque gravida pharetra lectus, in gravida dui molestie</multiline>
-                                            </div></td>
-                                        </tr>
-                                        <tr>
-                                          <td class="w275" width="275" height="10"></td>
-                                        </tr>
-                                      </tbody>
-                                    </table></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </layout>
-                          
                         </repeater></td>
                       <td class="w30" width="30"></td>
                     </tr>

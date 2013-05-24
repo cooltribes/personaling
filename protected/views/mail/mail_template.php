@@ -400,7 +400,7 @@ body, td {
                               <tbody>
                                 <tr>
                                   <td class="w580" width="580"><p align="left" class="article-title">
-                                      <singleline label="Title"><?php echo $subject; ?></singleline>
+                                      <singleline label="Title"><?php //echo $subject; ?></singleline>
                                     </p>
                                     <div align="left" class="article-content">
                                       <multiline label="Description">

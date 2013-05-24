@@ -43,18 +43,18 @@ class RecoveryController extends Controller
 			    			$user = User::model()->notsafe()->findbyPk($form->user_id);
 							$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl(implode(Yii::app()->controller->module->recoveryUrl),array("activkey" => $user->activkey, "email" => $user->email));
 							
-							$subject = UserModule::t("You have requested the password recovery site {site_name}",
-			    					array(
-			    						'{site_name}'=>Yii::app()->name,
-			    					));
-			    			$message = UserModule::t("You have requested the password recovery site {site_name}. To receive a new password, go to {activation_url}.",
-			    					array(
-			    						'{site_name}'=>Yii::app()->name,
-			    						'{activation_url}'=>$activation_url,
-			    					));
+							// Enviar correo con link de recuperación de contraseña
+							$message            = new YiiMailMessage;
+						    $message->view = "mail_template";
+							$subject = 'Recupera tu contraseña de Personaling';
+							$body = 'Has solicitado cambiar tu contraseña de Personaling. Para recibir una nueva contraseña ve al link: '.$activation_url;
+						    $params              = array('subject'=>$subject, 'body'=>$body);
+						    $message->subject    = $subject;
+						    $message->setBody($params, 'text/html');                
+						    $message->addTo($user->email);
+							$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+						    Yii::app()->mail->send($message);
 							
-			    			UserModule::sendMail($user->email,$subject,$message);
-			    			
 							Yii::app()->user->setFlash('recoveryMessage',UserModule::t("Please check your email. An instructions was sent to your email address."));
 			    			$this->refresh();
 			    		}

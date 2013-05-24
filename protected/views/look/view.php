@@ -202,12 +202,13 @@
             <div class="row-fluid">
               <?php if($model->productos)
 			  			foreach ($model->lookhasproducto as $lookhasproducto){ 
-			  				 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
+			  				// $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
+			  				$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,'thumb');
 			?>
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> 
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 
               		-->
-                <?php $image = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
+                <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
                 <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$lookhasproducto->producto_id)); ?>
                 <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
                 <?php $color_id = $lookhasproducto->color_id; ?>

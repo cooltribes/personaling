@@ -690,7 +690,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 				echo "<tr>";		
 							
 				if($imagen){					  	
-					$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+					$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
 					echo "<td>".$aaa."</td>";
 				}else
 					echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";

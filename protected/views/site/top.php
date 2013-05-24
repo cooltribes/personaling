@@ -23,7 +23,7 @@
             <div id="b" class="items row" >
             	 <?php
  foreach($dataProvider->getData() as $record) {
- 	$look = Look::model()->findByPk($record['id']);
+ 	$look = Look::model()->findByPk($record['look_id']);
  ?>
              
               <div class="span4">

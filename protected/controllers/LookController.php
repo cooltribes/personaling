@@ -84,9 +84,11 @@ class LookController extends Controller
 		 $imagenes = array();
 		 $i = 0;
 		 foreach($look->lookhasproducto as $lookhasproducto){
+		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,'thumb');
 		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
-		 	if (isset($lookhasproducto->producto->mainimage)){
-				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($lookhasproducto->producto->mainimage->url, '_thumb', strrpos($lookhasproducto->producto->mainimage->url,'.'), 0);
+		 	if (isset($image_url)){
+				 //	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($image_url, '_thumb', strrpos($image_url,'.'), 0);
+				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
 					//$imagenes[$i]->image = imagecreatefromstring(file_get_contents($imagenes[$i]->path));
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;

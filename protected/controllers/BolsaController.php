@@ -503,7 +503,7 @@ class BolsaController extends Controller
 								$subject = 'Tu compra en Pesonaling';
 						        $params              = array('subject'=>$subject, 'orden'=>$orden);
 						        $message->subject    = $subject;
-						        $message->setBody($params, 'text/html');                
+						        $message->setBody($params, 'text/html');
 						        $message->addTo($user->email);
 								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
 						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   

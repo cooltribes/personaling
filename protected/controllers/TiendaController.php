@@ -31,7 +31,7 @@ class TiendaController extends Controller
 	
 	public function actionIndex()
 	{
-		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
@@ -145,7 +145,7 @@ class TiendaController extends Controller
 	 
 	public function actionCategorias(){
 	
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']));
+	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
 	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;

@@ -244,14 +244,14 @@ class Producto extends CActiveRecord
                   'params' => array(':talla_id' => $talla,':color_id'=>$color)
 			));
 	}
-	public function getImageUrl($color=null)
+	public function getImageUrl($color=null,$type=null)
 	{
 			if (is_null($color)){
-				if ($this->mainimage) return $this->mainimage->getUrl();
+				if ($this->mainimage) return $this->mainimage->getUrl(array('type'=>$type));
 			}else{
 				$imagecolor = $this->colorimage( array('condition'=>'color_id=:color_id','params' => array(':color_id'=>$color) ) ); 
-				if ( isset( $imagecolor) ) return  $imagecolor->getUrl();
-				elseif ($this->mainimage) return $this->mainimage->getUrl();
+				if ( isset( $imagecolor) ) return  $imagecolor->getUrl(array('type'=>$type));
+				elseif ($this->mainimage) return $this->mainimage->getUrl(array('type'=>$type));
 			}
 			return "http://placehold.it/180";
 			 

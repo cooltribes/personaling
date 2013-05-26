@@ -1,3 +1,9 @@
+<?php  
+  $baseUrl = Yii::app()->baseUrl; 
+  $cs = Yii::app()->getClientScript();
+  $cs->registerScriptFile($baseUrl.'/js/slider.js');
+  //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
+?>
 <div class="container margin_top">
   <h1 class="page-header">Top</h1>
   <ul class="nav nav-pills">
@@ -14,15 +20,27 @@
       <div id="carousel_looks_recomendados" class="carousel slide ">
         <div class="carousel-inner">
           <div id="list-auth-items" class="list-view">
-            <div class="items row" >
-              <div class="span4" >
-                <article class="item"> <a href="/site/look/1"><img width="370" height="400" class="" src="/site/look/getImage/1" alt="Look"></a>
+            <div id="b" class="items row" >
+            	 <?php
+ foreach($dataProvider->getData() as $record) {
+ 	$look = Look::model()->findByPk($record['look_id']);
+ ?>
+             
+              <div class="span4">
+                <article class="item" >
+                  <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
+                  <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
+                    <div class="span2 avatar ">
+                    	
+                    	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
                     </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
+                    <div class="span5"> <span class="muted">Look creado por: </span>
+                      <h5><a class="url" title="profile" href="#"><span class="fn"> 
+                        <?php //echo $look->title; ?>
+                        <?php echo $look->user->profile->first_name; ?> </span></a></h5>
+                    </div>
+                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -43,90 +61,10 @@
                   </div>
                   <span class="label label-important">Promoción</span> </article>
               </div>
-              <div class="span4" style="opacity: 1;">
-                <article class="item"> <a href="/site/look/2"><img width="370" height="400" class="" src="/site/look/getImage/2" alt="Look"></a>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
-                        
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                      <!-- AddThis Button END --> 
-                      
-                    </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
-              <div class="span4 image_not_bw" style="opacity: 1;">
-                <article class="item"> <a href="/site/look/3"><img width="370" height="400" class="" src="/site/look/getImage/3" alt="Look" style="opacity: 1;"></a>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
-                        
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                      <!-- AddThis Button END --> 
-                      
-                    </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
-              <div class="span4 image_bw" style="opacity: 1;">
-                <article class="item"> <a href="/site/look/4"><img width="370" height="400" class="" src="/site/look/getImage/4" alt="Look" style="opacity: 1;"></a>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> Administrator </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio">Bs. 10.000</span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
-                        
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                      <!-- AddThis Button END --> 
-                      
-                    </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
+             
+
+              <?php } ?>
+              
             </div>
           </div>
         </div>
@@ -180,35 +118,54 @@
   <div class=" margin_bottom_large braker_horz_top_1 ">
                 <h3 class="margin_bottom_small">Desde Nuestra Magazine</h3>
 
+
       <div class="row posts_list">
         <div class="span12">
           <div class="thumbnails">
-            <li class="span3">
-              <div class="post"> <a href="http://personaling.com/620/" title="Semana de las Madres: Sofía Vergara" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/sofiavergara-494x700.jpg" class="attachment-medium wp-post-image" alt="Especial Mamá: Sofía Vergara"> </a>
-                <h3 ><a href="http://personaling.com/620/" class="show_modal_post" title="Semana de las Madres: Sofía Vergara"> Semana de las Madres: Sofía Vergara </a></h3>
+<?php
+function str_lreplace($search, $replace, $subject)
+{
+    $pos = strrpos($subject, $search);
+
+    if($pos !== false)
+    {
+        $subject = substr_replace($subject, $replace, $pos, strlen($search));
+    }
+
+    return $subject;
+}
+	$posts_parent = WpPosts::model()->findAllByAttributes(array('post_type'=>'post','post_status'=>'publish'),array('order'=>'post_date DESC'));
+	$count = 0;
+	foreach($posts_parent as $posts_parent){
+		$posts_attachment = WpPosts::model()->findByAttributes(array('post_parent'=>$posts_parent->ID));
+		if(isset($posts_attachment)){
+			$count++;
+			//echo 'a';
+		?>	
+		            <li class="span3">
+              <div class="post"> 
+              	<?php
+              	$imagen_url = str_lreplace(".","-494x700.", $posts_attachment->guid);
+				//$imagen_url = substr_replace(".","-494x700.", strrpos(".", $posts_attachment->guid), strlen($posts_attachment->guid));
+              	$imghtml=CHtml::image($imagen_url, $posts_attachment->post_title,array("width" => "270", 'class'=>'show_modal_post'));
+				echo CHtml::link($imghtml, $posts_parent->guid);
+              	?>
+              
+                <h3 >
+                	<?php echo CHtml::link($posts_parent->post_title, $posts_parent->guid,array('class'=>"show_modal_post" )); ?>
+                	</h3>
                 <!-- /.row --> 
               </div>
             </li>
-            <!-- /.post_class -->
-            <li class="span3">
-              <div class="post"> <a href="http://personaling.com/flores-al-poder/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/05/FLORAL-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
-                <h3 ><a href="http://personaling.com/flores-al-poder/" class="show_modal_post" title="Flores al Poder"> Flores al Poder </a></h3>
-                <!-- /.row -->                 
-              </div>
-            </li>
-            <li class="span3">
-              <div class="post"> <a href="http://personaling.com/estilo-tropical-by-mng/" title="Flores al Poder" class="show_modal_post"> <img width="270"  src="http://personaling.com/blog/wp-content/uploads/2013/04/tropicallook1-494x700.jpg" class="attachment-medium wp-post-image" alt="FLORAL look"> </a>
-                <h3 ><a href="http://personaling.com/estilo-tropical-by-mng/" class="show_modal_post" title="Flores al Poder"> Estilo Tropical by MNG</a></h3>
-                <!-- /.row --> 
-              </div>
-            </li>
-            <!-- /.post_class -->
-            <li class="span3">
-              <div class="post "> <a href="http://personaling.com/los-cuellos-joyas-por-irene-garcia-p/" title="Los cuellos joyas por Irene García P." class="show_modal_post"> <img width="270" src="http://personaling.com/blog/wp-content/uploads/2013/03/irenecuellos-494x700.jpg" class="attachment-medium wp-post-image" alt="irenecuellos"> </a>
-                <h3 ><a href="http://personaling.com/los-cuellos-joyas-por-irene-garcia-p/" class="show_modal_post" title="Los cuellos joyas por Irene García P."> Los cuellos joyas por Irene García P. </a></h3>
-                <!-- /.row -->                 
-              </div>
-            </li>
+			
+			
+		<?php 
+		}
+		if ($count >= 4)
+			break;
+	}
+?>            
+
           </div>
         </div>
       </div>

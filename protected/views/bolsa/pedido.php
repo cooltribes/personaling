@@ -3,7 +3,8 @@
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 $user = User::model()->findByPk(Yii::app()->user->id);
-
+$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+//echo $orden->pago_id;
 
 ?>
 <div class="container margin_top">
@@ -18,50 +19,72 @@ $user = User::model()->findByPk(Yii::app()->user->id);
       
       if($orden->estado==1) // pendiente de pago
 	  {
-      ?>
-      
-      <div class="alert alert-success margin_top_medium margin_bottom"><h1>Tu Pedido ha sido recibido con éxito.</h1> <p>
-          A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p></div>
-      <section class="bg_color3 margin_bottom_small padding_small box_1">
-        
-        <h2>Siguiente paso</h2><hr/>
-        <p><strong>Para completar tu comprar debes:</strong></p>
-        <ol>
-          <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
-            <br>
-            <ul>
-              <li><strong>Banesco</strong><br>
-                Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-                PERSONALING C.A<br>
-                RIF Nº J-RRRRR<br>
-                <br>
-              </li>
-            </ul>
-            <ul>
-              <li><strong>Mercantil<br>
-                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-                PERSONALING C.A<br>
-                RIF Nº J-RRRRR<br>
-                <br>
-              </li>
-              <li> <strong>Provincial<br>
-                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-                PERSONALING C.A<br>
-                RIF Nº J-RRRRR<br>
-                <br>
-              </li>
-            </ul>
-          </li>
-          <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
-          <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
-          <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
-        </ol>
-        <hr/>
-        <div class="clearfix"><div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div> <div class="pull-right">
-        	Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div></div>
-
-      </section>
-      <?php
+	  	if($pago->tipo == 1){
+	      ?>
+	      
+	      <div class="alert alert-success margin_top_medium margin_bottom"><h1>Tu Pedido ha sido recibido con éxito.</h1> <p>
+	          A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p></div>
+	      <section class="bg_color3 margin_bottom_small padding_small box_1">
+	        
+	        <h2>Siguiente paso</h2><hr/>
+	        <p><strong>Para completar tu comprar debes:</strong></p>
+	        <ol>
+	          <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
+	            <br>
+	            <ul>
+	              <li><strong>Banesco</strong><br>
+	                Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
+	                PERSONALING C.A<br>
+	                RIF Nº J-RRRRR<br>
+	                <br>
+	              </li>
+	            </ul>
+	            <ul>
+	              <li><strong>Mercantil<br>
+	                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
+	                PERSONALING C.A<br>
+	                RIF Nº J-RRRRR<br>
+	                <br>
+	              </li>
+	              <li> <strong>Provincial<br>
+	                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
+	                PERSONALING C.A<br>
+	                RIF Nº J-RRRRR<br>
+	                <br>
+	              </li>
+	            </ul>
+	          </li>
+	          <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
+	          <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
+	          <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
+	        </ol>
+	        <hr/>
+	        <div class="clearfix"><div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div> <div class="pull-right">
+	        	Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div></div>
+	
+	      </section>
+	      <?php
+      	}else if($pago->tipo == 4){
+      		?>
+	      
+	      <div class="alert alert-success margin_top_medium margin_bottom"><h1>Tu Pedido ha sido recibido con éxito.</h1> <p>
+	          A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p></div>
+	      <section class="bg_color3 margin_bottom_small padding_small box_1">
+	        
+	        <h2>Siguiente paso</h2><hr/>
+	        <p><strong>Para completar tu comprar debes:</strong></p>
+	        <ol>
+	          <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via MercadoPago. <br>
+	          </li>
+	          <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
+	          <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
+	          <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
+	        </ol>
+	        <hr/>
+	        <div class="clearfix"><div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div> <div class="pull-right">
+	      </section>
+	      <?php
+      	}
       }// caso 1
       
       if($orden->estado==2) // pendiente por confirmar
@@ -125,6 +148,88 @@ $user = User::model()->findByPk(Yii::app()->user->id);
         
         if($look!=0) // hay looks
 		{
+			$todos = array();
+			$vacio = array();
+			$ordenproducto =  OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+			
+			foreach ($ordenproducto as $cadauno) {
+				if($cadauno->look_id!=0){
+					$look = Look::model()->findByPk($cadauno->look_id);
+					array_push($todos,$look->id);
+				}
+			}
+			
+			foreach($todos as $cadalook)
+			{
+				$look = Look::model()->findByPk($cadalook);
+
+			
+			if(!in_array($cadalook,$vacio)){
+						
+			echo('
+			<h4 class="braker_bottom">'.$look->title.'</h4>
+	        <div class="padding_left">
+	          <table class="table" width="100%" >
+	            <thead>
+	              <tr>
+	                <th colspan="2">Producto</th>
+	                <th>Precio por 
+	                  unidad </th>
+	                <th >Cantidad</th>
+	              </tr>
+	            </thead>
+	            <tbody>');	
+				
+				foreach ($ordenproducto as $cadauno) {
+					if($cadauno->look_id!=0){
+						if($cadauno->look_id == $cadalook)
+						{
+							array_push($vacio,$cadalook);
+							
+							$tod = PrecioTallaColor::model()->findByPk($cadauno->preciotallacolor_id);
+							$talla = Talla::model()->findByPk($tod->talla_id);
+							$color = Color::model()->findByPk($tod->color_id);
+							
+							$producto = Producto::model()->findByPk($tod->producto_id);
+							$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+									
+							$pre="";
+						 	foreach ($producto->precios as $precio) {
+					   			$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+							}
+							
+							echo('<tr>');
+							
+							if($imagen){					  	
+								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+								echo "<td>".$aaa."</td>";
+							}else{
+								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+							}
+	
+							echo('<td><strong>'.$producto->nombre.'</strong> <br/>
+		                  		<strong>Color</strong>: '.$color->valor.'<br/>
+		                  		<strong>Talla</strong>: '.$talla->valor.'</td>
+		                  		</td>
+		                <td>Bs. '.$pre.'</td>
+		                <td>'.$cadauno->cantidad.'</td>
+		              </tr>');		
+						}
+					}
+				}
+
+
+			echo '</tbody>
+		          </table>
+		          <hr/>
+		          <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil">'.$look->user->profile->first_name.'</a></p>
+		          </div>';	
+
+			}
+				
+			}
+			
+			
 		/*	
 			 <h4 class="braker_bottom">Nombre del Look 1</h4>
         <div class="padding_left">
@@ -186,6 +291,8 @@ $user = User::model()->findByPk(Yii::app()->user->id);
 			
 			foreach ($ordenprod as $individual) {
 				
+				if($individual->look_id==0){
+				
 				$todo = PrecioTallaColor::model()->findByPk($individual->preciotallacolor_id);
 						
 				$producto = Producto::model()->findByPk($todo->producto_id);
@@ -219,7 +326,7 @@ $user = User::model()->findByPk(Yii::app()->user->id);
 					echo "<td>".$individual->cantidad."</td>
 					</tr>";
 
-              
+			}
 				
 			}// foreach de productos		
 		}// si hay indiv

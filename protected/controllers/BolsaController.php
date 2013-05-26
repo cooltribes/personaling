@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago'),
+				'actions'=>array('index','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -225,6 +225,11 @@ class BolsaController extends Controller
 		
 		}
 		
+		public function actionSuccessMP(){
+			echo 'Tipo: '.Yii::app()->getSession()->get('tipoPago').'';
+			
+		}
+		
 		public function actionCambiarTipoPago()
 		{
 			
@@ -239,15 +244,77 @@ class BolsaController extends Controller
 		{
 			// viene de pagos
 			//var_dump($_POST);
-			//Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
-			echo '<br/>'.$_POST['tipo_pago'];
-			//$this->render('confirmar');
+			if(isset($_POST['tipo_pago'])){
+				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+				//echo '<br/>'.$_POST['tipo_pago'];
+				$this->render('confirmar');
+			}
+		}
+		
+		public function actionEliminardireccion()
+		{
+			if(isset($_POST['idDir']))
+			{
+				$direccion = Direccion::model()->findByPk($_POST['idDir']);
+				$direccion->delete();
+				
+				echo "ok";
+			}
+		}
+		
+			/**
+		 * editar una direccion.
+		 */
+		public function actionEditardireccion()
+		{
+			if(isset($_POST['idDireccion'])){
+				$dirEdit = Direccion::model()->findByPk($_POST['idDireccion']);
+				
+				$dirEdit->nombre = $_POST['Direccion']['nombre'];
+				$dirEdit->apellido = $_POST['Direccion']['apellido'];
+				$dirEdit->cedula = $_POST['Direccion']['cedula'];
+				$dirEdit->dirUno = $_POST['Direccion']['dirUno'];
+				$dirEdit->dirDos = $_POST['Direccion']['dirDos'];
+				$dirEdit->telefono = $_POST['Direccion']['telefono'];
+				$dirEdit->ciudad = $_POST['Direccion']['ciudad'];
+				$dirEdit->estado = $_POST['Direccion']['estado'];
+				
+				if($_POST['Direccion']['pais']==1)
+					$dirEdit->pais = "Venezuela";
+				
+				if($_POST['Direccion']['pais']==2)
+					$dirEdit->pais = "Colombia";
+				
+				if($_POST['Direccion']['pais']==3)
+					$dirEdit->pais = "Estados Unidos";
+				
+				if($dirEdit->save()){
+					$dir = new Direccion;
+					$this->redirect(array('bolsa/direcciones')); // redir to action
+					//$this->render('direcciones',array('dir'=>$dir));
+					}
+				
+			}
+			else if($_GET['id']){ // piden editarlo
+				$direccion = Direccion::model()->findByAttributes(array('id'=>$_GET['id'],'user_id'=>Yii::app()->user->id));
+				$this->render('editarDir',array('dir'=>$direccion));
+			}
+			
+			
 		}
 		
 		public function actionDirecciones()
 		{
 			$dir = new Direccion;
-
+			
+			if(isset($_POST['tipo']) && $_POST['tipo']=='direccionVieja')
+			{
+				//echo "Id:".$_POST['Direccion']['id'];
+				$dirEnvio = $_POST['Direccion']['id'];
+				
+				$this->render('pago',array('idDireccion'=>$dirEnvio));
+			}
+			else
 			if(isset($_POST['Direccion'])) // nuevo registro
 			{
 				//if($_POST['Direccion']['nombre']!="")
@@ -326,7 +393,7 @@ class BolsaController extends Controller
 		 	$usuario = Yii::app()->user->id; 
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 			
-			if($_POST['tipoPago']==1){ // transferencia
+			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4){ // transferencia o MP
 				$detalle = new Detalle;
 			
 				if($detalle->save())
@@ -350,6 +417,19 @@ class BolsaController extends Controller
 					$dirEnvio->ciudad = $dir1->ciudad;
 					$dirEnvio->estado = $dir1->estado;
 					$dirEnvio->pais = $dir1->pais;
+					
+					if(isset($_POST['id_transaccion']) && $_POST['tipoPago'] == 4){ // Pago con Mercadopago
+						$detalle->nTransferencia = $_POST['id_transaccion'];
+						$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
+						$detalle->cedula = $dirEnvio->cedula;
+						$detalle->monto = $_POST['total'];
+						$detalle->fecha = date("Y-m-d H:i:s");
+						$detalle->banco = 'Mecadopago';
+						
+						$detalle->estado = 0;
+						
+						$detalle->save();
+					}
 
 						if($dirEnvio->save()){
 							// ya esta todo para realizar la orden
@@ -415,6 +495,20 @@ class BolsaController extends Controller
 								if($estado->save())
 									echo "";
 								
+								// Enviar correo con resumen de la compra
+								$user = User::model()->findByPk($usuario);
+								$message            = new YiiMailMessage;
+						           //this points to the file test.php inside the view path
+						        $message->view = "mail_compra";
+								$subject = 'Tu compra en Pesonaling';
+						        $params              = array('subject'=>$subject, 'orden'=>$orden);
+						        $message->subject    = $subject;
+						        $message->setBody($params, 'text/html');
+						        $message->addTo($user->email);
+								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+						        Yii::app()->mail->send($message);
+								
 							// cuando finalice entonces envia id de la orden para redireccionar
 							echo CJSON::encode(array(
 								'status'=> 'ok',
@@ -444,7 +538,7 @@ class BolsaController extends Controller
 	public function actionPedido($id)
 	{
 		$orden = Orden::model()->findByPk($id);
-		
+		//$pago = Pago::model()->findByPk($orden->pago_id);
 		$this->render('pedido',array('orden'=>$orden));
 	}
 
@@ -457,8 +551,11 @@ class BolsaController extends Controller
 		{
 			$usuario = Yii::app()->user->id; 
 			
-			$detPago = Detalle::model()->findByPk($_POST['idDetalle']);
-			
+			if($_POST['idDetalle'] != 0)
+				$detPago = Detalle::model()->findByPk($_POST['idDetalle']);
+			else
+				$detPago = new Detalle;
+				
 			$detPago->nombre = $_POST['nombre'];
 			$detPago->nTransferencia = $_POST['numeroTrans'];
 			$detPago->comentario = $_POST['comentario'];
@@ -466,13 +563,20 @@ class BolsaController extends Controller
 			$detPago->monto = $_POST['monto'];
 			$detPago->cedula = $_POST['cedula'];
 			$detPago->estado = 0; // defecto
-			
+			$detPago->orden_id = $_POST['idOrden'];
 							
 			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia'];
 			
 			if($detPago->save())
 			{
-				$orden = Orden::model()->findByAttributes(array('detalle_id'=>$_POST['idDetalle']));
+				
+				if($_POST['idDetalle'] != 0)
+					$orden = Orden::model()->findByAttributes(array('detalle_id'=>$_POST['idDetalle']));
+				else
+				{
+					$orden = Orden::model()->findByAttributes(array('id'=>$_POST['idOrden']));
+				}
+					
 				$orden->estado = 2;	// se recibió los datos de pago por transferencia			 
 				
 				if($orden->save())

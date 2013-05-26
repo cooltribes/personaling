@@ -65,9 +65,12 @@
           </div>
           <div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "770", "height" => "770", 'class'=>'img_1')); ?> </div>
           <div class="hidden-phone clearfix vcard">
-            <div class="pull-left margin_right_small avatar "><img class="pull-left photo  img-circle" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/hipster_girl.jpg"/></div>
+            <div class="pull-left margin_right_small avatar ">
+            	
+            <?php echo CHtml::image($model->user->getAvatar(),'Avatar',array("width"=>"84", "class"=>"pull-left photo  img-circle")); //,"height"=>"270" ?>	
+            </div>
             <div class="pull-left"> <span class="muted">Look creado por: </span>
-              <h5><a href="#" title="profile" class="url"><span class="fn">Daniel Kosan</span> <i class="icon-chevron-right"></i></a></h5>
+              <h5><a href="#" title="profile" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
               <p  class="note"><strong>Bio</strong>: Lorem ipsum dolor sit amet deserunt mollit anim</p>
             </div>
           </div>
@@ -199,12 +202,13 @@
             <div class="row-fluid">
               <?php if($model->productos)
 			  			foreach ($model->lookhasproducto as $lookhasproducto){ 
-			  				 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
+			  				// $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
+			  				$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,'thumb');
 			?>
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> 
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 
               		-->
-                <?php $image = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array('class'=>'imagen_producto'));  ?>
+                <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
                 <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$lookhasproducto->producto_id)); ?>
                 <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
                 <?php $color_id = $lookhasproducto->color_id; ?>

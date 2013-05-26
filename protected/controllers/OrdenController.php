@@ -109,34 +109,178 @@ class OrdenController extends Controller
 			$detalle = Detalle::model()->findByPk($_POST['id']);
 			$detalle->estado = 1; // aceptado
 			
-			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
+			$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
 	
 			if($detalle->save()){
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
 				if($detalle->monto >= $orden->total){
+					/*
+					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
+					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
+					 * 
+					 * */
 					$orden->estado = 3;
 					
 					if($orden->save()){
-						$usuario = Yii::app()->user->id; 
+						$usuario = Yii::app()->user->id;
 						
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-						$estado = new Estado;
-											
-						$estado->estado = 3; // pago recibido
-						$estado->user_id = $usuario;
-						$estado->fecha = date("Y-m-d");
-						$estado->orden_id = $orden->id;
+						$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario));
 							
-						if($estado->save())
+						if(isset($desc))
 						{
-							echo "ok";	
+							if($desc < 0)
+							{
+								$a = $desc->total + $detalle->monto; // si es menor le sumo lo que depositaron
+								$desc->total = $a;
+								$desc->save();
+							}
+							
+							//si deposito de mas
+							if($detalle->monto > $orden->total)
+							{	
+								$excede = $detalle->monto - $orden->total;
+								$desc->total = $excede;							
+								$desc->save();
+							}
 						}
+						else					
+						if($detalle->monto > $orden->total)
+						{
+							$excede = $detalle->monto - $orden->total;
+							
+							$balance = new Balance;
+							$balance->orden_id = $orden->id;
+							$balance->user_id = $orden->user_id;
+							$balance->total = $excede;
+							
+							$balance->save();
+								
+						} // si es mayor hace el balance
 						
+													
+							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+							$estado = new Estado;
+													
+							$estado->estado = 3; // pago recibido
+							$estado->user_id = $usuario;
+							$estado->fecha = date("Y-m-d");
+							$estado->orden_id = $orden->id;
+									
+							if($estado->save())
+							{
+								echo "ok";	
+							}					
+
 					}//orden save
 				}// si es mayor
-			
+				else{
+					$usuario = Yii::app()->user->id;
+					$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario));
+					
+					if(isset($desc)) // balance existe 
+					{
+						if($desc->total < 0) // debe
+						{
+							if(($desc->total * -1) == $detalle->monto) // paga la deuda
+							{
+								$desc->total = 0;
+								$desc->save();
+								
+								$orden->estado = 3; // aprobado el pago
+								$orden->save();
+								
+								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+								$estado = new Estado;
+														
+								$estado->estado = 3; // pago recibido
+								$estado->user_id = $usuario;
+								$estado->fecha = date("Y-m-d");
+								$estado->orden_id = $orden->id;
+								
+							}
+							
+							if(($desc->total * -1) < $detalle->monto)
+							{
+								$excede = $detalle->monto + $desc->total; // pago menos debia (como es negativo lo sumo para que subsane la deuda)
+								$desc->total = $excede;
+								$desc->save();
+								
+								$orden->estado = 3;
+								$orden->save();
+								
+								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+								$estado = new Estado;
+														
+								$estado->estado = 3; // pago recibido
+								$estado->user_id = $usuario;
+								$estado->fecha = date("Y-m-d");
+								$estado->orden_id = $orden->id;
+								
+							}
+							
+							if(($desc->total * -1) > $detalle->monto) 
+							{
+								$excede = $detalle->monto + $desc->total; // pago menos debia
+								$desc->total = $excede;
+								$desc->save();
+								
+								$orden->estado = 7;// aun le faltó
+								$orden->save();
+								
+								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+								$estado = new Estado;
+															
+								$estado->estado = 7; // pago insuficiente
+								$estado->user_id = Yii::app()->user->id;
+								$estado->fecha = date("Y-m-d");
+								$estado->orden_id = $orden->id;
+								
+							}
+							
+						if($estado->save())
+							{
+								echo "ok";	
+							}	
+							
+						}
+						
+					}
+					else { // no hay balance, solo pago menos
+					
+					$orden->estado = 7;
+					if($orden->save()){
+						
+						$falta = $detalle->monto - $orden->total;
+							
+						$balance = new Balance;
+						$balance->orden_id = $orden->id;
+						$balance->user_id = $orden->user_id;
+						$balance->total = $falta;
+								
+						if($balance->save())
+						{
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+							$estado = new Estado;
+														
+							$estado->estado = 7; // pago insuficiente
+							$estado->user_id = Yii::app()->user->id;
+							$estado->fecha = date("Y-m-d");
+							$estado->orden_id = $orden->id;
+										
+							if($estado->save())
+							{
+								echo "ok";	
+							}	
+						}	
+						
+					}
+				
+					}
+					
+				}	
+							
 			}// detalle
 					
 		}

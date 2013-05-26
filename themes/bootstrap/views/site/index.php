@@ -22,7 +22,7 @@ $this->pageTitle=Yii::app()->name;
                 <div class="box_home  margin_bottom_small">
                     <h1>Bienvenid@s</h1>
                     <p>Personaling, es un personal shopper digital, un portal de moda y belleza en donde las usuarias se dan de alta, definen su perfil físico y sus preferencias de estilo para descubrir looks recomendados por expert@s en moda (personal shoppers, celebrities, estilistas, fashionistas), podrán comprar el look completo en un click y recibirlo en su domicilio</p>
-                    <a href="/site/user/registration" title="Registrate" class="btn btn-danger btn-large">Regístrate</a> </div>
+                    <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger btn-large">Regístrate</a> </div>
                 <p class="CAPS"> Siguenos en:</p>
                 <div class="clearfix"> <a href="https://www.facebook.com/Personaling" title="Personaling en facebook"><img width="30" height="30" src="images/icon_facebook_2.png" title="personaling en pinterest"></a> <a href="https://twitter.com/personaling" title="Personaling en Pinterest"> <img width="30" height="30" src="images/icon_twitter_2.png" title="personaling en pinterest"></a> <a href="https://pinterest.com/personaling/" title="pinterest"><img width="30" height="30" src="images/icon_pinterest_2.png" title="Personaling en Pinterest"></a> <a href="http://instagram.com/personaling" title="Personaling en Instagram"><img width="30" height="30" src="images/icon_instagram_2.png" title="Personaling en Pinterest"></a> </div>
                 <p>  <a href="http://personaling.com/magazine/" title="Magazine" target="_blank" class="btn margin_top btn-small">ir al magazine</a></p>

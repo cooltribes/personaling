@@ -693,7 +693,7 @@ class ProductoController extends Controller
 						$tallacolor[$i]->talla_id = $talla_tmp->id;
 						$tallacolor[$i]->talla = $talla_tmp->valor;
 					}
-					
+					$tallacolor[$i]->cantidad = 0;
 					
 					$i++;
 				//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
@@ -731,18 +731,34 @@ class ProductoController extends Controller
 			 		$preciotallacolor[$i] = Preciotallacolor::model()->findByPk($tallacolor['id']);
 				else 
 					$preciotallacolor[$i] = new Preciotallacolor;
+				if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){
 				$this->performAjaxValidation($preciotallacolor[$i]);  
-				$preciotallacolor[$i]->attributes=$tallacolor; 
-				$preciotallacolor[$i]->producto_id = $model->id;
-				$valid  = $valid  && $preciotallacolor[$i]->validate();
-				if(!($valid)){
-					$error = CActiveForm::validate($preciotallacolor[$i]);
-                    if($error!='[]'){
-                    	$error = CJSON::decode($error);
-                    	$error['id']= $i;
-						echo CJSON::encode($error);
+					$preciotallacolor[$i]->attributes=$tallacolor; 
+					$preciotallacolor[$i]->producto_id = $model->id;
+					$valid  = $valid  && $preciotallacolor[$i]->validate();
+					if(!($valid)){
+						$error = CActiveForm::validate($preciotallacolor[$i]);
+	                    if($error!='[]'){
+	                    	$error = CJSON::decode($error);
+	                    	$error['id']= $i;
+							echo CJSON::encode($error);
+						}
+	                    Yii::app()->end();	  				
 					}
-                    Yii::app()->end();					
+				} else {
+					if ($preciotallacolor[$i]->isNewRecord){
+						unset($preciotallacolor[$i]);
+					}else{
+						try{
+							$preciotallacolor[$i]->delete(); 
+						} catch (Exception $e) {
+	                    	$error['PrecioTallaColor_sku'] = "No es posible eliminar este codigo.";
+							$error['id']= $i;
+							echo CJSON::encode($error);
+						 	Yii::app()->end();
+						}
+						
+					}
 				}
 			 }
 			if ($valid){

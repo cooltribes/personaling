@@ -56,13 +56,13 @@ class Look extends CActiveRecord
 		return array(
 			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'required'),
-			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical', 'integerOnly'=>true),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -98,6 +98,7 @@ class Look extends CActiveRecord
 			'ojos' => 'Color de Ojos',
 			'tipo_cuerpo' => 'Tipo Cuerpo',
 			'piel' => 'Color de Piel',
+			'destacado' => 'Destacado',
 			'created_on' => 'Created On',
 			'tipo' => 'Tipo',
 		);
@@ -183,6 +184,26 @@ class Look extends CActiveRecord
 		));
 	}
 	/**
+	 * Mas vendidos
+	 */
+	 public function masvendidos()
+	 {
+/*			
+		$criteria=new CDbCriteria;  
+		$criteria->compare('tipo',1);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+*/		
+		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";
+		$count = 5; 	
+		return new CSqlDataProvider($sql, array(
+		    'totalItemCount'=>$count,
+		    
+
+		));
+	 }
+	 /**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */

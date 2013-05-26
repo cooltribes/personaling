@@ -33,7 +33,23 @@ $this->breadcrumbs=array(
       <hr/>
       <h5>Tus Compras</h5>
       <ul class="nav nav-stacked text_align_center" >
-        <li>XX Bs. de Balance en tu Cuenta</li>
+      	
+      	<?php
+      	
+      	$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+      
+      	if($sum >= 0){
+      	?>
+      		<li><?php echo Yii::app()->numberFormatter->formatDecimal($sum); ?> Bs. de Balance en tu Cuenta</li>
+      	<?php
+      	}
+      	else
+      	{
+      	?>
+      		<li><?php echo Yii::app()->numberFormatter->formatDecimal($sum); ?> Bs. que adeudas.</li>
+      	<?php
+      	}
+      	?>
         <li>XX Puntos Ganados</li>
         <li>XX Pedidos Activos</li>
         <li>XX Devoluciones Pendientes</li>

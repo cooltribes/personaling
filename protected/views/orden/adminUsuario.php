@@ -23,7 +23,7 @@ $template = '{summary}
     <tr>
       <th scope="col">Número de Orden</th>
       <th scope="col">Fecha</th>
-      <th scope="col">Monto</th>
+      <th scope="col">Monto (En Bs.)</th>
       <th scope="col">Estado</th>
       <th scope="col">Acciones</th>
     </tr>

@@ -29,7 +29,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPago"> MercadoPago </button>
         <div class="padding_left margin_bottom_medium collapse" id="mercadoPago">
           <div class="well well-small" >
-            Haz click en "Completar compra" para continuar. <?php echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
+            Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
           </div>
         </div>
         <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
@@ -299,9 +299,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <tr>
                 <th class="text_align_left">Subtotal:</th>
                 <td><?php
-                          $totalPr=0;
-                          $totalDe=0;
-                          $envio = 100;
+                          $totalPr=Yii::app()->getSession()->get('subtotal');
+                          $totalDe=Yii::app()->getSession()->get('descuento');
+                          $envio = Yii::app()->getSession()->get('envio');
                         $i=0;
 
                         if (empty($precios)) // si no esta vacio
@@ -462,6 +462,7 @@ else
         $("#deposito").click(function() {
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
+            $("#tipo_pago").val('1');
         });
         
         $("#mercadopago").click(function() {
@@ -473,6 +474,7 @@ else
         $("#tarjeta").click(function() {
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
             $("#adentro").html(añadir);
+            $("#tipo_pago").val('2');
         });
 
     $("#completar-compra").click(function(ev){

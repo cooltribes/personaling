@@ -154,7 +154,7 @@ class Categoria extends CActiveRecord
 	}
 	
 	public function getChildren(){
-		return Categoria::model()->findAllByAttributes(array('padreId'=>$this->id));
+		return Categoria::model()->findAllByAttributes(array('padreId'=>$this->id),array('order'=>'nombre ASC'));
 	}
 	public function childrenButtons($categorias=NULL){
 		$array = array();

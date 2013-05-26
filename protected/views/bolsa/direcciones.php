@@ -24,61 +24,80 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       
      	$usuario = Yii::app()->user->id; 
       
-      /* 
-	   * lo de la libreta
-	   * 
-	   * <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked personaling_form" enctype="multipart/form-data">
+	  	$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
+	  ?>
+	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <fieldset>
             <legend >Direcciones utilizadas anteriormente: </legend>
-            <div class="row">
-              <div class="span2">
-                <p> <strong>Johann Marquez</strong> <br/>
-                  <span class="muted small"> C.I. 14.941.873</span></p>
-                <p> <strong>Telefono</strong>: 0276-341.47.12 <br/>
-                  <strong>Celular</strong>:   0414-724.80.43 </p>
-              </div>
-              <div class="span3">
-                <p><strong>Dirección:</strong> <br/>
-                  Urbanizacion Las Acacias.
-                  Carrera 2. N 1-76
-                  San Cristobal, Tachira 5001
-                  Venezuela </p>
-              </div>
-              <div class="span2 margin_top_medium">
-                <p><a href="Proceso_de_Compra_3.php" class="btn btn-danger">Usar esta dirección</a><br/>
-                  <a href="#" title="editar">Editar</a> <br/>
-                  <a href="#" title="eliminar">Eliminar</a></p>
-              </div>
-            </div>
-            <hr/>
-            <div class="row">
-              <div class="span2">
-                <p> <strong>Johann Marquez</strong> <br/>
-                  <span class="muted small"> C.I. 14.941.873</span></p>
-                <p> <strong>Telefono</strong>: 0276-341.47.12 <br/>
-                  <strong>Celular</strong>:   0414-724.80.43 </p>
-              </div>
-              <div class="span3">
-                <p><strong>Dirección:</strong> <br/>
-                  Urbanizacion Las Acacias.
-                  Carrera 2. N 1-76
-                  San Cristobal, Tachira 5001
-                  Venezuela </p>
-              </div>
-              <div class="span2 margin_top_medium">
-                <p><a href="Proceso_de_Compra_3.php" class="btn btn-danger">Usar esta dirección</a><br/>
-                  <a href="#" title="editar">Editar</a> <br/>
-                  <a href="#" title="eliminar">Eliminar</a></p>
-              </div>
-            </div>
-            <hr/>
+            <?php
+            
+            if(isset($direcciones)){
+	       		foreach($direcciones as $cadauna){
+
+			       $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+						'id'=>'direccionUsada',
+						'enableAjaxValidation'=>false,
+						'enableClientValidation'=>true,
+						'clientOptions'=>array(
+							'validateOnSubmit'=>true, 
+						),
+						'htmlOptions'=>array('class'=>'form-horizontal'),
+					));
+						
+		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
+		            echo CHtml::hiddenField('tipo','direccionVieja');
+					
+		            echo "
+		            <div class='row'>
+		            
+		              <div class='span2'>
+		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
+		                  <span class='muted small'> C.I. ".$cadauna->cedula."</span></p>
+		                <p> <strong>Telefono</strong>: ".$cadauna->telefono."</p>
+		              </div>
+		              <div class='span3'>
+		                <p><strong>Dirección:</strong> <br/>
+		                  ".$cadauna->dirUno." </br>
+		                  ".$cadauna->dirDos.". 
+		                  ".$cadauna->ciudad.", ".$cadauna->estado.". </br>
+		                  ".$cadauna->pais." </p>
+		              </div>
+		              <div class='span2 margin_top_medium'>
+		                <p>
+					";
+					
+					$this->widget('bootstrap.widgets.TbButton', array(
+			            'buttonType'=>'submit',
+			            'type'=>'danger',
+			            'size'=>'normal',
+			            'label'=>'Usar esta dirección',
+			        )); 
+					
+					echo"
+		                <br/>
+		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>Editar</a> <br/>
+		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar'>Eliminar</a></p>
+		              </div>
+		            </div>
+		            <hr/>
+			  		";
+			  		
+			  	$this->endWidget();
+			  		
+			  	}
+	  		}
+			else {
+			echo "<legend>No tiene direcciones registradas</legend>";					
+			}
+ 	echo "
           </fieldset>
         </form>
       </section>
-	   * 
-	   * */	  
+		";
       ?>
+      
+      
+
       
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'direccion_nueva',
@@ -88,7 +107,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		'validateOnSubmit'=>true, 
 	),
 	'htmlOptions'=>array('class'=>'form-horizontal'),
-)); ?>
+)); 
+
+?>
       
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form" enctype="multipart/form-data">
@@ -217,3 +238,40 @@ else
 
 
 ?>
+
+<script>
+	
+	function eliminar(id)
+	{
+		
+	var idDireccion = id;
+
+	// llamada ajax para el controlador de bolsa	   
+     	$.ajax({
+	        type: "post",
+	        url: "eliminardireccion", 
+	        data: { 'idDir':idDireccion }, 
+	        success: function (data) {
+	        	
+				if(data=="ok")
+				{
+					window.location.reload()
+				}
+					
+	       	}//success
+	       })
+
+	}
+	
+	
+	/*
+	 Funcion para editar una direccion
+	 * */
+	function editar(id)
+	{	
+	var idDireccion = id;
+	window.location="editardireccion/"+id+"";
+	}
+	
+	
+</script>

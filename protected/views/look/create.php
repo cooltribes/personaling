@@ -299,7 +299,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                     <option value="0">Buscar por Categoria</option>
                     <?php 
 
-	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',));
+	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',),array('order'=>'nombre ASC'));
 	nodos($cat); 
 	
 	function nodos($items){

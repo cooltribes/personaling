@@ -37,6 +37,8 @@ echo"<tr>";
 	
 	if($tipoPago->tipo==1)
 		echo "<td>Dep. o Transfer</td>"; // metodo de pago
+	if($tipoPago->tipo==4)
+		echo "<td>MercadoPago</td>"; 
 	// incluir demas tipos luego
 	
 	
@@ -48,7 +50,10 @@ echo"<tr>";
 		echo "<td>En espera de confirmación</td>"; 
 	
 	if($data->estado == 3)
-		echo "<td>Pago Confirmado</td>"; 
+		echo "<td>Pago Confirmado</td>";
+		
+	if($data->estado == 7)
+		echo "<td>Pago Insuficiente</td>";	
 	
 	// agregar demas estados
 	

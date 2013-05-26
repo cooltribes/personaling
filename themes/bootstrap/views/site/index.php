@@ -11,7 +11,6 @@ $this->pageTitle=Yii::app()->name;
 	position: absolute;
 	top:5em;
 	left:0;
-	display:none;
 }
 </style>
 
@@ -30,7 +29,7 @@ $this->pageTitle=Yii::app()->name;
         </div>
     </div>
 </div>
-<div class="note_startupchile"> <a href="#startupchile" role="button" data-toggle="modal"><img src="images/note_startupchile.png" title="Startup Chile"></a></div>
+<div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
 
 <!-- Modal -->
 <div id="startupchile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -68,6 +67,43 @@ $this->pageTitle=Yii::app()->name;
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     </div>
 </div>
+<div id="wayra" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Notas para el Jurado de Wayra 2013</h3>
+    </div>
+    <div class="modal-body">
+        <p> Hola y Bienvenidos a Personaling, tu Personal Shopper Digital..</p>
+        <p> A continuación un par de recursos útiles para probar nuestra web: </p>
+        <ul class="no_bullets">
+            <li>Credenciales de un Usuario regular:
+                <ul>
+                    <li><strong>Usuario</strong>: cm@upsidecorp.ch </li>
+                    <li><strong>Password</strong>: 1234<br/>
+                        <br/>
+                    </li>
+                </ul>
+            </li>
+            <li>Credenciales de un Personal Shopper:
+                <ul>
+                    <li><strong>Usuario</strong>: u@upsidecorp.ch</li>
+                    <li><strong>Password</strong>: 1234<br/>
+                        <br/>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="docs/Personaling_features.pdf">Funcionalidades en este versión (Test v.15) (PDF)</a> <br/>
+                <br/>
+            </li>
+            <li><a href="http://personaling.com/test15/user/login" title="Login page" class="btn btn-danger">Página para iniciar sesión</a></li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    </div>
+</div>
+
+
 <div class="bg_color3 braker_top padding_top ">
     <div class="container">
         <div class="row">

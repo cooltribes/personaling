@@ -321,17 +321,18 @@ class OrdenController extends Controller
 	 * */
 	public function actionModals($id)
 	{
-
-		$detPago = Detalle::model()->findByPk($id);
+		$orden = Orden::model()->findByPk($id);
+		$detPago = Detalle::model()->findByPk($orden->detalle_id);
 		
 		$datos="";
   		$datos=$datos."<div class='modal-header'>";
 		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
-		$datos=$datos."<h4>Agregar Depósito o Transferencia bancaria ya realizada</h4>";
+		$datos=$datos."<h4> Agregar Depósito o Transferencia bancaria ya realizada</h4>";
     	$datos=$datos."</div>";
   
   		$datos=$datos."<div class='modal-body'>";
   		$datos=$datos."<form class=''>";
+		$datos=$datos."<input type='hidden'id='idOrden' value='".$orden->id."' />";
 		
   		$datos=$datos."<div class='control-group'>";
     	$datos=$datos."<div class='controls'>";
@@ -388,7 +389,7 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
 		
-		$datos=$datos."<input type='hidden' id='idDetalle' value='".$id."' />";
+		$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
 
 		echo $datos;
 	}

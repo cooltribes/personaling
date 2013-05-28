@@ -221,29 +221,12 @@
               <div class="tab-pane active" id="detalles">
                 <div class="clearfix">
                   <h4><?php
-                  	
-                  	if($producto->proveedor==1)
-						echo "Aldo"; 
-						
-					if($producto->proveedor==2)
-						echo "Desigual";
-					
-					if($producto->proveedor==3)
-						echo "Accessorize";
-					
-					if($producto->proveedor==4)
-						echo "SuiteBlanco";
-					
-					if($producto->proveedor==5)
-						echo "Mango";
-					
-					if($producto->proveedor==6 || $producto->proveedor==0)
-						echo "Otro proveedor"; 
-					 
+					$marca = Marca::model()->findByPk($producto->marca_id); 
+				   
 					 ?></h4>
-                  <p>Grandes Marcas 1 tienda.</p>
+                  <p><strong><?php echo $marca->nombre; ?></strong></p>
                   <!-- <p><a href="#">Ver looks de esta marca</a></p>-->
-                  <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> </div>
+                  <p><strong>Descripción</strong>: <?php echo $marca->descripcion; ?></p> </div>
               </div>
               <div class="tab-pane" id="Envio">Envio</div>
             </div>

@@ -90,7 +90,7 @@ class ProductoController extends Controller
 			{
 				 Producto::model()->updateByPk($exist->id, array(
 				 	'nombre' => $_POST['Producto']['nombre'],
-				 	'proveedor'=>$_POST['Producto']['proveedor'],
+				 	'marca_id'=>$_POST['marcas'],
 				 	'descripcion'=>$_POST['Producto']['descripcion'],
 				 	'estado'=>$_POST['Producto']['estado'],
 				 	'fInicio'=>$_POST['Producto']['fInicio'],
@@ -106,6 +106,7 @@ class ProductoController extends Controller
 			else // nuevo
 			{
 				$model->attributes=$_POST['Producto'];
+				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
 				if($model->save())
 				{

@@ -37,10 +37,10 @@
             echo "<li>";
 
             echo CHtml::link("<i class='icon-edit'></i> Registrar Pago ",
-			    $this->createUrl('orden/modals',array('id'=>$data->detalle_id)),
+			    $this->createUrl('orden/modals',array('id'=>$data->id)),
 			    array(// for htmlOptions
 			      'onclick'=>' {'.CHtml::ajax( array(
-			      'url'=>CController::createUrl('orden/modals',array('id'=>$data->detalle_id)),
+			      'url'=>CController::createUrl('orden/modals',array('id'=>$data->id)),
 			           'success'=>"js:function(data){ $('#myModal').html(data);
 								$('#myModal').modal(); }")).
 			         'return false;}',

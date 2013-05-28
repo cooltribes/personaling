@@ -27,13 +27,20 @@
                 <?php echo $form->error($model,'codigo'); ?>
               </div>
             </div>
-            <div class="control-group">
-              <?php echo $form->labelEx($model,'proveedor', array('class' => 'control-label')); ?>
+          <div class="control-group">
+              <?php echo $form->labelEx($model,'marca_id', array('class' => 'control-label')); ?>
               <div class="controls controls-row">
-                <?php echo $form->dropDownList($model, 'proveedor', array('Seleccione...', Producto::aldo, Producto::desigual, Producto::accessorize, Producto::suite, Producto::mango, Producto::helly, Producto::secret, Producto::bimba ,'Otra')); ?>
-                <?php echo $form->error($model,'proveedor'); ?>
+                <?php
+                
+                $models = Marca::model()->findAll(array('order' => 'id'));
+				$list = CHtml::listData($models,'id', 'nombre');
+				
+				echo CHtml::dropDownList('marcas', $model->marca_id, $list, array('empty' => 'Seleccione...'));
+                
+                //echo $form->dropDownList($model, 'proveedor', array('Seleccione...', Producto::aldo, Producto::desigual, Producto::accessorize, Producto::suite, Producto::mango, Producto::helly, Producto::secret, Producto::bimba ,'Otra')); ?>
+                <?php echo $form->error($model,'marca_id'); ?>
               </div>
-            </div>
+          </div>
             <div class="control-group">
                 <?php echo $form->html5EditorRow($model, 'descripcion', array('class'=>'span5', 'rows'=>6, 'height'=>'200', 'options'=>array('color'=>true))); ?>
                 <?php echo $form->error($model,'descripcion'); ?>

@@ -9,11 +9,11 @@
  * @property string $nombre
  * @property integer $estado
  * @property string $descripcion
- * @property string $proveedor
  * @property string $fInicio
  * @property string $fFin
  * @property string $fecha
  * @property integer $status
+ * @property integer $marca_id
  */
 class Producto extends CActiveRecord
 {
@@ -62,11 +62,11 @@ class Producto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('estado', 'numerical', 'integerOnly'=>true),
+			array('estado, marca_id', 'numerical', 'integerOnly'=>true),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
-			array('nombre, codigo', 'required'),
-			array('proveedor', 'length', 'max'=>45),
+			array('nombre, codigo, marca_id, descripcion', 'required'),
+			//array('proveedor', 'length', 'max'=>45),
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
@@ -75,7 +75,7 @@ class Producto extends CActiveRecord
 			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, proveedor, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, marca_id, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -112,11 +112,11 @@ class Producto extends CActiveRecord
 			'nombre' => 'Nombre / Titulo',
 			'estado' => 'Estado',
 			'descripcion' => 'Descripción',
-			'proveedor' => 'Marca / Proveedor',
 			'fInicio' => 'Inicio',
 			'fFin' => 'Fin',
 			'fecha' => 'Fecha',
 			'status' => 'Status',
+			'marca_id' => 'Marca',
 		);
 	}
 
@@ -136,7 +136,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('nombre',$this->nombre,true);
 		$criteria->compare('estado',$this->estado);
 		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('proveedor',$this->proveedor,true);
+		$criteria->compare('marca_id',$this->marca_id,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
@@ -159,7 +159,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('t.nombre',$this->nombre,true);
 		$criteria->compare('t.estado',$this->estado,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('proveedor',$this->proveedor,true);
+		$criteria->compare('marca_id',$this->marca_id,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
@@ -414,7 +414,7 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('t.nombre',$this->nombre,true);
 		$criteria->compare('t.estado',$this->estado,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('proveedor',$this->proveedor,true);
+		$criteria->compare('marca_id',$this->marca_id,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);

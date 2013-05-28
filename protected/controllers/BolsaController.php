@@ -227,7 +227,142 @@ class BolsaController extends Controller
 		
 		public function actionSuccessMP(){
 			echo 'Tipo: '.Yii::app()->getSession()->get('tipoPago').'';
+			$usuario = Yii::app()->user->id; 
+			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 			
+			if(Yii::app()->getSession()->get('tipoPago')==1 || Yii::app()->getSession()->get('tipoPago')==4){ // transferencia o MP
+				$detalle = new Detalle;
+			
+				if($detalle->save())
+				{
+					$pago = new Pago;
+					$pago->tipo = Yii::app()->getSession()->get('tipoPago'); // trans
+					$pago->tbl_detalle_id = $detalle->id;
+					
+					if($pago->save()){
+					
+					// clonando la direccion
+					$dir1 = Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario));
+					$dirEnvio = new DireccionEnvio;
+					
+					$dirEnvio->nombre = $dir1->nombre;
+					$dirEnvio->apellido = $dir1->apellido;
+					$dirEnvio->cedula = $dir1->cedula;
+					$dirEnvio->dirUno = $dir1->dirUno;
+					$dirEnvio->dirDos = $dir1->dirDos;
+					$dirEnvio->telefono = $dir1->telefono;
+					$dirEnvio->ciudad = $dir1->ciudad;
+					$dirEnvio->estado = $dir1->estado;
+					$dirEnvio->pais = $dir1->pais;
+					
+					if(isset($_GET['collection_id']) && Yii::app()->getSession()->get('tipoPago') == 4){ // Pago con Mercadopago
+						$detalle->nTransferencia = $_GET['collection_id'];
+						$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
+						$detalle->cedula = $dirEnvio->cedula;
+						$detalle->monto = Yii::app()->getSession()->get('total');
+						$detalle->fecha = date("Y-m-d H:i:s");
+						$detalle->banco = 'Mercadopago';
+						
+						$detalle->estado = 0;
+						
+						$detalle->save();
+					}
+
+						if($dirEnvio->save()){
+							// ya esta todo para realizar la orden
+							
+							$orden = new Orden;
+							
+							$orden->subtotal = Yii::app()->getSession()->get('subtotal');
+							$orden->descuento = Yii::app()->getSession()->get('descuento');
+							$orden->envio = Yii::app()->getSession()->get('envio');
+							$orden->iva = Yii::app()->getSession()->get('iva');
+							$orden->descuentoRegalo = 0;
+							$orden->total = Yii::app()->getSession()->get('total');
+							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+							$orden->estado = 1; // en espera de pago
+							$orden->bolsa_id = $bolsa->id; 
+							$orden->user_id = $usuario;
+							$orden->pago_id = $pago->id;
+							$orden->detalle_id = $detalle->id;
+							$orden->direccionEnvio_id = $dirEnvio->id;	
+							
+							if($orden->save()){
+								$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));	
+								$detalle->orden_id = $orden->id;
+								$detalle->save();
+								// añadiendo a orden producto
+								foreach($productosBolsa as $prod)
+								{
+									$prorden = new OrdenHasProductotallacolor;
+									$prorden->tbl_orden_id = $orden->id;
+									$prorden->preciotallacolor_id = $prod->preciotallacolor_id;
+									$prorden->cantidad = $prod->cantidad;
+									$prorden->look_id = $prod->look_id;
+									
+									if($prorden->save()){
+										//listo y que repita el proceso
+									}
+								}
+								
+								//descontando del inventario
+								foreach($productosBolsa as $prod)
+								{
+									$uno = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id);
+									$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
+									
+									PrecioTallaColor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+									// descuenta y se repite									
+								}
+								
+								
+								// para borrar los productos de la bolsa								
+								foreach($productosBolsa as $prod)
+								{
+									$prod->delete();															
+								}
+								
+								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+								$estado = new Estado;
+									
+								$estado->estado = 1;
+								$estado->user_id = $usuario;
+								$estado->fecha = date("Y-m-d");
+								$estado->orden_id = $orden->id;
+								
+								if($estado->save())
+									echo "";
+								
+								// Enviar correo con resumen de la compra
+								$user = User::model()->findByPk($usuario);
+								$message            = new YiiMailMessage;
+						           //this points to the file test.php inside the view path
+						        $message->view = "mail_compra";
+								$subject = 'Tu compra en Pesonaling';
+						        $params              = array('subject'=>$subject, 'orden'=>$orden);
+						        $message->subject    = $subject;
+						        $message->setBody($params, 'text/html');
+						        $message->addTo($user->email);
+								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+						        Yii::app()->mail->send($message);
+								
+							// cuando finalice entonces envia id de la orden para redireccionar
+							$this->redirect(array('bolsa/pedido/'.$orden->id));
+							
+							
+							
+							}//orden
+						}//direccion de envio
+					} // pago
+				}// detalle
+			}// transferencia
+			
+			// detalle de pago (caso transferencia todo vacio)
+			// tipo de pago y copiar direccion envio
+			// realizar la orden
+			// mover los productos
+			// quitarlos de bolsa tiene producto
 		}
 		
 		public function actionCambiarTipoPago()

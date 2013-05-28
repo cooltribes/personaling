@@ -1,4 +1,8 @@
 <?php
+$this->metaKeywords = 'these, are, my, sample, page, meta, keywords';
+$this->metaDescription = 'This is a sample page description';
+$this->addMetaProperty('fb:app_id',Yii::app()->params['fbAppId']);
+$this->canonical = $model->getAbsoluteUrl(); // canonical URLs should always be absolute
 /* @var $this SiteController */
 
 $this->pageTitle=Yii::app()->name;

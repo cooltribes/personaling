@@ -2,6 +2,7 @@
 Yii::import('application.components.*');
 require_once "mercadopago-sdk/lib/mercadopago.php";
 $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
+$mp->sandbox_mode(TRUE);
 $accessToken = $mp->get_access_token();
 //var_dump($accessToken);
 
@@ -139,7 +140,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				            "quantity" => 1,
 				            "currency_id" => "VEF",
 				            "unit_price" => Yii::app()->getSession()->get('total')
-				            //"unit_price" => 25
+				            //"unit_price" => 23
 				        )
 				    ),
 				    "payer" => array(
@@ -155,7 +156,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				);
 				$preferenceResult = $mp->create_preference($preference);
 				?>
-				<a href="<?php echo $preferenceResult['response']['init_point']; ?>" name="MP-Checkout" class="blue-L-Rn-VeAll" mp-mode="modal" onreturn="enviar_mp">Pagar con MercadoPago</a>
+				<a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
 				<?php
               }else{
               	?>
@@ -238,6 +239,7 @@ else
 	
 	function enviar_mp(json)
 	{
+		alert("return");
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");
 		var subtotal = $("#subtotal").attr("value");
@@ -247,9 +249,9 @@ else
 		var total = $("#total").attr("value");
 
  		 if (json.collection_status=='approved'){
-    //alert ('Pago acreditado');
+    alert ('Pago acreditado');
   } else if(json.collection_status=='pending'){
-    //alert ('El usuario no completó el pago');
+    alert ('El usuario no completó el pago');
     $.ajax({
 	        type: "post",
 	        dataType: 'json',
@@ -264,12 +266,12 @@ else
 	       	}//success
 	       })
   } else if(json.collection_status=='in_process'){    
-    //alert ('El pago está siendo revisado');    
+    alert ('El pago está siendo revisado');    
     
   } else if(json.collection_status=='rejected'){
-    //alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
+    alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
   } else if(json.collection_status==null){
-    //alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
+    alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
   }
  			
 	}

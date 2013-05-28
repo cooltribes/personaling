@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod'),
+				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -50,8 +50,13 @@ class ProductoController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model = $this->loadModel($id);
+		$this->pageTitle = 'Personaling - '.$model->nombre;
+    	$this->pageDesc = $model->descripcion;
+		$this->display_seo();
+		//$this->registerSEO($model);
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 		));
 	}
 	public function actionUpdateCantidad()
@@ -122,6 +127,50 @@ class ProductoController extends Controller
 //echo $model->fFin;
 		$this->render('create',array(
 			'model'=>$model,
+		));
+	}
+
+	public function actionSeo()
+	{
+		if(isset($_GET['id'])){
+			
+			$id = $_GET['id'];
+			
+			if(!$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$id)))
+				$seo=new Seo;
+			
+			$model = Producto::model()->findByPk($id);
+		}
+		else {
+			$seo = new Seo;
+			$model = new Producto;
+			$id="";
+		}
+
+
+		if(isset($_POST['Seo']))
+		{
+			$seo->attributes=$_POST['Seo'];
+			
+			if($id==""){
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar los datos SEO si aún no se ha creado el producto."));
+			}			
+			else{
+							
+				$seo->tbl_producto_id = $id;
+				
+				if($seo->save())
+				{
+					Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+				}
+				//	$this->redirect(array('view','id'=>$model->id));
+			}
+		}
+
+		$this->render('_view_seo',array(
+			'model'=>$model,'seo'=>$seo,
 		));
 	}
 
@@ -375,6 +424,7 @@ class ProductoController extends Controller
 		// fin del body
 		
 		$datos=$datos."<div class='modal-footer'>";
+		$datos=$datos."<a href='seo/".$producto->id."' title='Editar Detalles SEO' class='btn'><i class='icon-pencil'></i> SEO</a>";
 		$datos=$datos."<a href='delete/".$producto->id."' title='eliminar' class='btn'><i class='icon-trash'></i> Eliminar</a>";
 		$datos=$datos."<a href='#' title='Exportar' class='btn'><i class='icon-share-alt'></i> Exportar</a>";
 		$datos=$datos."<a href='create/".$producto->id."' title='editar' class='btn'><i class='icon-edit'></i> Editar</a>";
@@ -803,6 +853,18 @@ class ProductoController extends Controller
 	{
 		$producto = Producto::model()->findByPk($id);
 		
+		$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$id));
+		if($seo){
+			$this->pageDesc = $seo->mDescripcion;
+			$this->pageTitle = 'Personaling - '.$seo->mTitulo;
+			$this->keywords = $seo->pClave;
+		}else{
+    		$this->pageDesc = $producto->descripcion;
+			$this->pageTitle = 'Personaling - '.$producto->nombre;
+    	}
+		
+		$this->display_seo();
+
 		$this->render('_view_detalle',array('producto'=>$producto));
 
 	}

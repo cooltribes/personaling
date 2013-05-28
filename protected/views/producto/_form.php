@@ -3,7 +3,6 @@
 	'enableAjaxValidation'=>false,
 	'type'=>'horizontal',
 )); ?>
-
 	<?php echo $form->errorSummary($model); ?>
 
   <!-- SUBMENU OFF -->

@@ -34,7 +34,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		echo "En espera de pago"; 
 	
 	if($orden->estado == 2)
-		echo "En espera de confirmación";
+		echo "Espera confirmación";
 	
 	if($orden->estado == 3)
 		echo "Pago Confirmado";
@@ -74,17 +74,38 @@ $usuario = User::model()->findByPk($orden->user_id);
 			if($balance->total < 0){
 				$a = $balance->total * -1;
 				echo Yii::app()->numberFormatter->formatDecimal($a);
-			}
-			else {
+			}else {
 				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
 			}
+			
+		}
+		else
+		{
+			echo Yii::app()->numberFormatter->formatDecimal($orden->total);
 		}
 					
 		
 				
 	}	
     //  echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
-        Bolivares (Bs.)</td>
+
+        <?php
+//----------------------Estado
+	if($orden->estado == 1)
+		echo "Bs. Pendientes por pagar"; 
+	
+	if($orden->estado == 2)
+		echo "Bs. Pendientes por confirmar";
+	
+	if($orden->estado == 3)
+		echo "Bs. ya pagados";
+	
+	if($orden->estado == 7)
+		echo "Bs. que faltan.";
+	
+	// agregar demas estados
+    
+        ?></td>
       <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
   </table>

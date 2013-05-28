@@ -71,6 +71,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
 			}
 		}
+		else {
+				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
+			}
 		
 	}	
        ?></p>

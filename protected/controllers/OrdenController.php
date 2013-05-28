@@ -183,10 +183,12 @@ class OrdenController extends Controller
 					{
 						if($desc->total < 0) // debe
 						{
-							if(($desc->total * -1) == $detalle->monto) // paga la deuda
+							$debe = Yii::app()->numberFormatter->formatDecimal($desc->total); 
+							$paga = Yii::app()->numberFormatter->formatDecimal($detalle->monto); 
+							
+							if(($debe * -1) == $paga) // paga exacta la deuda
 							{
-								$desc->total = 0;
-								$desc->save();
+								$desc->delete(); // son identicos, no habria saldo a favor ni en contra por lo tanto se borra el balance
 								
 								$orden->estado = 3; // aprobado el pago
 								$orden->save();
@@ -199,12 +201,11 @@ class OrdenController extends Controller
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
-							}
-							
-							if(($desc->total * -1) < $detalle->monto)
+							}else 
+							if(($debe * -1) < $paga)
 							{
-								$excede = $detalle->monto + $desc->total; // pago menos debia (como es negativo lo sumo para que subsane la deuda)
-								$desc->total = $excede;
+								$valor = $debe + $paga; // lo que debia +lo que pague (como es negativo lo sumo para que subsane la deuda)
+								$desc->total = $valor;
 								$desc->save();
 								
 								$orden->estado = 3;
@@ -218,12 +219,11 @@ class OrdenController extends Controller
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
-							}
-							
-							if(($desc->total * -1) > $detalle->monto) 
+							}else 							
+							if(($debe * -1) > $paga) 
 							{
-								$excede = $detalle->monto + $desc->total; // pago menos debia
-								$desc->total = $excede;
+								$valor = $desc->total + $detalle->monto; // lo que debia + lo que pague (como es negativo lo sumo para que subsane la deuda)
+								$desc->total = $valor;
 								$desc->save();
 								
 								$orden->estado = 7;// aun le faltó

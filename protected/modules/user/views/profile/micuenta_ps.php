@@ -3,6 +3,10 @@ $this->breadcrumbs=array(
 	//UserModule::t("Profile")=>array('profile'),
 	UserModule::t("Mi cuenta"),
 );
+$look = new Look;
+$looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
+$productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));
+$looks_recomendados = $look->match($model);
 ?> 
 <div class="container margin_top tu_perfil">
   <div class="row">
@@ -18,13 +22,13 @@ $this->breadcrumbs=array(
         <hr/>
         <h5>Tu actividad</h5>
         <div class="card">
-          <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">01</span>
+          <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_encantan; ?></span>
             <p>Looks que te Encantan</p>
           </div>
-          <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">23</span>
+          <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $productos_encantan; ?></span>
             <p>Productos que te Encantan</p>
           </div>
-          <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">18</span>
+          <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_recomendados->totalItemCount; ?></span>
             <p>Looks recomendados para ti</p>
           </div>
         </div>
@@ -50,11 +54,11 @@ $this->breadcrumbs=array(
           <div class="span4">
             <h2 class="braker_bottom">  Tu Perfil </h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li> <a href="Tu_Perfil_Tus_datos_Personales_Usuaria.php" title="Datos personales">Tus datos personales </a></li>
-              <li> <a href="Tu_Perfil_Avatar_Usuaria.php" title="Avatar">Tu Avatar</a></li>
-              <li> <a href="Tu_Perfil_Perfil_Corporal_Usuaria.php" title="Tu perfil corporal">Tu perfil corporal</a></li>
+              <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
+              <li> <?php echo CHtml::link('Tu avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
+              <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
               <li> <a href="#" title="Tu perfil publico">Tu perfil publico</a></li>
-              <li> <a href="Editar_Perfil_Usuaria_Mi_Tipo.php" title="Tu Tipo">Tu Tipo</a></li>
+              <li> <a href="#" title="Tu Tipo">Tu Tipo</a></li>
 
             </ul>
            
@@ -63,8 +67,8 @@ $this->breadcrumbs=array(
           
           <h2 class="braker_bottom"> Tus Pedidos </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><a href="#" title="Pedidos por pagar o por recibir">Pedidos Activos (falta por enlazar y quitar este texto)</a></li>
-              <li><a href="/orden/listado" title="Tus pedidos nuevos y anteriores">Historial de Pedidos</a></li>
+              <li><?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
+              <li><?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
             </ul>
              
           </div>
@@ -74,20 +78,19 @@ $this->breadcrumbs=array(
         <div class="span4">
          <h2 class="braker_bottom">  Tu Estilo </h2>
            <ul class="nav nav-stacked nav-tabs">
-                 <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Casual">Casual</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Coctel">Coctel</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Fiesta">Fiesta</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Playa">Playa</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Sport">Sport</a></li>
-    <li><a href="Tu_Personaling_Tu Estilo_Casual_Usuaria.php" title="Trabajo">Trabajo</a></li>
+                  <li><?php echo CHtml::link('Coctel',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Coctel")); ?></li>
+	              <li><?php echo CHtml::link('Fiesta',array('profile/edittuestilo','id'=>'fiesta'),array("title"=>"Edita tu estilo Fiesta")); ?></li>
+	              <li><?php echo CHtml::link('Playa',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Playa")); ?></li>
+	              <li><?php echo CHtml::link('Sport',array('profile/edittuestilo','id'=>'Sport'),array("title"=>"Edita tu estilo Sport")); ?></li>
+	              <li><?php echo CHtml::link('Trabajo',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Trabajo")); ?></li>
             </ul>
         
         </div>
         <div class="span4">
         	<h2 class="braker_bottom">Tus Encantos/Favoritos </h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li><a href="Tu_Personaling_Tus_EncantosFavoritos_Looks.php" title="Tus Looks favoritos">Looks</a></li>
-              <li><a href="Tu_Personaling_Tus_EncantosFavoritos_productos.php" title="Tus productos favoritos">Productos</a></li>
+              <li><?php echo CHtml::link('Looks',array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
+              <li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>
             </ul>
             <h2 class="braker_bottom">  Conecta tus Redes Sociales </h2>
            <ul class="nav nav-stacked nav-tabs">

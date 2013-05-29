@@ -203,7 +203,7 @@
               <?php if($model->productos)
 			  			foreach ($model->lookhasproducto as $lookhasproducto){ 
 			  				// $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
-			  				$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,'thumb');
+			  				$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('type'=>'thumb'));
 			?>
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto"> 
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" /> 

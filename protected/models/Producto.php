@@ -239,19 +239,21 @@ class Producto extends CActiveRecord
  		return $this->preciotallacolorSum(array('condition'=>'talla_id = :talla_id',
                   'params' => array(':talla_id' => $talla)
 			));
-			
+			 
 	return $this->preciotallacolorSum(array('condition'=>'talla_id = :talla_id AND color_id=:color_id',
                   'params' => array(':talla_id' => $talla,':color_id'=>$color)
 			));
 	}
-	public function getImageUrl($color=null,$type=null)
+	public function getImageUrl($color=null,$opciones=array())
 	{
+		//$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto
+	 	//$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto
 			if (is_null($color)){
-				if ($this->mainimage) return $this->mainimage->getUrl(array('type'=>$type));
+				if ($this->mainimage) return $this->mainimage->getUrl($opciones);
 			}else{
 				$imagecolor = $this->colorimage( array('condition'=>'color_id=:color_id','params' => array(':color_id'=>$color) ) ); 
-				if ( isset( $imagecolor) ) return  $imagecolor->getUrl(array('type'=>$type));
-				elseif ($this->mainimage) return $this->mainimage->getUrl(array('type'=>$type));
+				if ( isset( $imagecolor) ) return  $imagecolor->getUrl($opciones);
+				elseif ($this->mainimage) return $this->mainimage->getUrl($opciones);
 			}
 			return "http://placehold.it/180";
 			 

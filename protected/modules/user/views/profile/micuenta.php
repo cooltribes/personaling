@@ -3,6 +3,10 @@ $this->breadcrumbs=array(
 	//UserModule::t("Profile")=>array('profile'),
 	UserModule::t("Mi cuenta"),
 );
+$look = new Look;
+$looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
+$productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));
+$looks_recomendados = $look->match($model);
 ?>
 
 <div class="container margin_top tu_perfil">
@@ -20,13 +24,13 @@ $this->breadcrumbs=array(
       <hr/>
       <h5>Tu actividad</h5>
       <div class="card">
-        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">01</span>
+        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_encantan; ?></span>
           <p>Looks que te Encantan</p>
         </div>
-        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">23</span>
+        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $productos_encantan; ?></span>
           <p>Productos que te Encantan</p>
         </div>
-        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">18</span>
+        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_recomendados->totalItemCount; ?></span>
           <p>Looks recomendados para ti</p>
         </div>
       </div>

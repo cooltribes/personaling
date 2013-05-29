@@ -239,7 +239,7 @@ class Producto extends CActiveRecord
  		return $this->preciotallacolorSum(array('condition'=>'talla_id = :talla_id',
                   'params' => array(':talla_id' => $talla)
 			));
-			
+			 
 	return $this->preciotallacolorSum(array('condition'=>'talla_id = :talla_id AND color_id=:color_id',
                   'params' => array(':talla_id' => $talla,':color_id'=>$color)
 			));
@@ -247,7 +247,7 @@ class Producto extends CActiveRecord
 	public function getImageUrl($color=null,$opciones=array())
 	{
 		//$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto
-		//$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto
+	 	//$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto
 			if (is_null($color)){
 				if ($this->mainimage) return $this->mainimage->getUrl($opciones);
 			}else{

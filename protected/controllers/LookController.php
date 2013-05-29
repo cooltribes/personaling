@@ -79,7 +79,7 @@ class LookController extends Controller
 	}
 	public function actionGetImage($id)
 	{ 
-		 	  
+		 	   
 		 $look = Look::model()->findByPk($id);
 		 $imagenes = array();
 		 $i = 0;
@@ -120,14 +120,9 @@ class LookController extends Controller
 		$canvas = imagecreatetruecolor(670, 670);
 		$white = imagecolorallocate($canvas, 255, 255, 255);
 		imagefill($canvas, 0, 0, $white);
-		//imagealphablending( $canvas, false );
-		//imagesavealpha( $canvas, true );
 		$inicio_x = 0;
 		foreach($imagenes as $image){
-			//echo 	$image->top;
-			//echo 	$image->path;
-			//$src = imagecreatefromstring(file_get_contents($image->path));
-			//$src = imagecreatefrompng('data://image/png;base64,'.file_get_contents($image->path));
+
 			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
 			 switch($ext) {
 			          case 'gif':
@@ -140,19 +135,15 @@ class LookController extends Controller
 			          $src = imagecreatefrompng($image->path);
 			          break;
 			      }			
-			//$src = imagecreatefrompng($image->path);
-			//imagealphablending( $src, false );
-			//imagesavealpha( $src, true ); 
+
 			$img = imagecreatetruecolor($image->width,$image->height); 
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true ); 
-    		//$black = imagecolorallocate($img, 0, 0, 0); 
-			//imagecolortransparent($img, $black);
+
     		imagecopyresized($img,$src,0,0,0,0,$image->width,$image->height,imagesx($src), imagesy($src));
-			//echo $image->path;
-			//if (isset($imagen_tmp))
+
 			imagecopy($canvas, $img, $image->left, $image->top, 0, 0, imagesx($img), imagesy($img));
-			//$inicio_x += imagesx($image);
+
 		}
 
 		
@@ -162,12 +153,7 @@ class LookController extends Controller
 		 
 		imagedestroy($canvas);
 		
-		//foreach($imagenes as $image){
-		//	imagedestroy($images->image);
-		//}
-		//imagedestroy($images[0]);
-		//imagedestroy($images[1]);
-		//imagedestroy($images[2]);
+
 		
 		
 	}

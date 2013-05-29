@@ -78,7 +78,7 @@ class Imagen extends CActiveRecord
 	    {
 	        return array(
 	            'published'=>array(
-	                'condition'=>'status=1',
+	                'condition'=>'status=1', 
 	            ),
 	            'ordenadas'=>array(
 	                'order'=>'orden DESC',

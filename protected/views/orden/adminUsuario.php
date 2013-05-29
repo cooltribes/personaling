@@ -84,7 +84,8 @@ $template = '{summary}
 		var banco = $("#banco").attr("value");
 		var cedula = $("#cedula").attr("value");
 		var monto = $("#monto").attr("value");
-
+		var idOrden = $("#idOrden").attr("value");
+		
 		if(nombre=="" || numeroTrans=="" || monto=="")
 		{
 			alert("Por favor complete los datos.");
@@ -95,7 +96,7 @@ $template = '{summary}
  		$.ajax({
 	        type: "post", 
 	        url: "../bolsa/cpago", // action de controlador de bolsa cpago
-	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
+	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
 	        success: function (data) {
 				
 				if(data=="ok")

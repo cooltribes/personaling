@@ -28,6 +28,8 @@
                                      'id'=>$model->id,)); ?></li>
 		<li id="4"><?php echo CHtml::link('Imágenes',array('imagenes',
                                      'id'=>$model->id,)); ?></li>
+        <li id="7"><?php echo CHtml::link('SEO',array('seo',
+                                     'id'=>$model->id,)); ?></li>
         <!-- <li id="7"><?php echo CHtml::link('Inventario',array('inventario',
                                      'id'=>$model->id,)); ?></li> 
         <li id="8"><a href="#">Envíos y Transporte</a></li>

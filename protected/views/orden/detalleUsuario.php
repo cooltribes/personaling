@@ -71,6 +71,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
 			}
 		}
+		else {
+				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
+			}
 		
 	}	
        ?></p>
@@ -584,6 +587,7 @@ else{
 	$detPago = Detalle::model()->findByPk($orden->detalle_id);
 	?>
 	<input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+	<input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
 	<?php
 }
 ?>

@@ -367,6 +367,42 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 Filtrar por Colores <span class="caret"></span></a>
   <!-- Link or button to toggle dropdown -->
   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  <?php 
+  $colores = Color::model()->findAll();
+  foreach($colores as $color){
+  	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20'));
+	  
+  	echo '<li>';
+  	
+	echo CHtml::ajaxLink(
+						  $imagen.'  '.$color->valor,
+						  Yii::app()->createUrl( 'look/colores'),
+						  array( // ajaxOptions
+						    'type' => 'POST',
+						    'beforeSend' => "function( request )
+						                     {
+						                       // Set up any pre-sending stuff like initializing progress indicators
+						                     }",
+						    'success' => "function( data )
+						                  {
+						                    // handle return data
+						                    //alert( data );
+						                    $('#div_categorias').html(data);
+						                  }",
+						    'data' => array( 'color_id' => $color->id, 'val2' => '2' )
+						  ),
+						  array( //htmlOptions
+						    'href' => Yii::app()->createUrl( 'look/categorias' ),
+						   // 'class' => 'thumbnail',
+						    'id' => 'colores'.$color->id,
+						    'draggable'=>"false",
+						    'tabindex'=>'-1',
+						  )
+						);
+	echo '</li>';
+  }
+  ?>	
+  <!--
     <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Azul</a></li>
     <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Verde</a></li>
     <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Amarillo</a></li>
@@ -375,6 +411,7 @@ Filtrar por Colores <span class="caret"></span></a>
     <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Aguamarina</a></li>
     <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Violeta</a></li>
     <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Naranja</a></li>
+  -->
   </ul>
 </div>
                 

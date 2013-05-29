@@ -26,7 +26,7 @@ class LookController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update','precios','create','categorias','publicar','view'),
+				'actions'=>array('update','precios','create','categorias','publicar','view','colores'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -84,7 +84,7 @@ class LookController extends Controller
 		 $imagenes = array();
 		 $i = 0;
 		 foreach($look->lookhasproducto as $lookhasproducto){
-		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,'thumb');
+		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
 		 	if (isset($image_url)){
 				 //	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($image_url, '_thumb', strrpos($image_url,'.'), 0);
@@ -157,6 +157,7 @@ class LookController extends Controller
 
 		
 		header('Content-Type: image/png');
+		
 		imagepng($canvas);
 		 
 		imagedestroy($canvas);
@@ -253,6 +254,16 @@ class LookController extends Controller
 		 
 		
 	}
+public function actionColores(){
+	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+	Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['color_id'])))->findAll();
+	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);	
+	
+}
 public function actionCategorias(){
 	
 	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));

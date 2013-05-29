@@ -126,7 +126,7 @@ class OrdenController extends Controller
 					if($orden->save()){
 						$usuario = Yii::app()->user->id;
 						
-						$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario));
+						$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
 							
 						if(isset($desc))
 						{
@@ -164,7 +164,7 @@ class OrdenController extends Controller
 							$estado = new Estado;
 													
 							$estado->estado = 3; // pago recibido
-							$estado->user_id = $usuario;
+							$estado->user_id = $orden->user_id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
 									
@@ -176,8 +176,8 @@ class OrdenController extends Controller
 					}//orden save
 				}// si es mayor
 				else{
-					$usuario = Yii::app()->user->id;
-					$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario));
+					
+					$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
 					
 					if(isset($desc)) // balance existe 
 					{
@@ -188,6 +188,9 @@ class OrdenController extends Controller
 							
 							if(($debe * -1) == $paga) // paga exacta la deuda
 							{
+								$detalle->comentario = "deberia aqui";
+								$detalle->save();
+								
 								$desc->delete(); // son identicos, no habria saldo a favor ni en contra por lo tanto se borra el balance
 								
 								$orden->estado = 3; // aprobado el pago
@@ -197,14 +200,17 @@ class OrdenController extends Controller
 								$estado = new Estado;
 														
 								$estado->estado = 3; // pago recibido
-								$estado->user_id = $usuario;
+								$estado->user_id = $orden->user_id;
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
 							}else 
 							if(($debe * -1) < $paga)
 							{
-								$valor = $debe + $paga; // lo que debia +lo que pague (como es negativo lo sumo para que subsane la deuda)
+								$detalle->comentario = "aqui no";
+								$detalle->save();
+								
+								$valor = $desc->total + $detalle->monto; // lo que debia +lo que pague (como es negativo lo sumo para que subsane la deuda)
 								$desc->total = $valor;
 								$desc->save();
 								
@@ -215,7 +221,7 @@ class OrdenController extends Controller
 								$estado = new Estado;
 														
 								$estado->estado = 3; // pago recibido
-								$estado->user_id = $usuario;
+								$estado->user_id = $orden->user_id;
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
@@ -248,6 +254,9 @@ class OrdenController extends Controller
 						
 					}
 					else { // no hay balance, solo pago menos
+					
+					$detalle->comentario = "aqui jamas";
+					$detalle->save();
 					
 					$orden->estado = 7;
 					if($orden->save()){

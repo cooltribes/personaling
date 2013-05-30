@@ -390,7 +390,7 @@ body, td {
               <td class="w640" width="640" height="30" bgcolor="#ffffff"></td>
             </tr>
             <tr id="simple-content-row">
-              <td class="w640" width="640" bgcolor="#ffffff"><table class="w640" width="640" cellpadding="0" cellspacing="0" border="0">
+              <td class="w640" width="640" bgcolor="#ffffff"><table class="w640" width="640" cellpadding="0" cellspacing="0" border="0" >
                   <tbody>
                     <tr>
                       <td class="w30" width="30"></td>
@@ -424,7 +424,7 @@ body, td {
               <td class="w640" width="640" height="15" bgcolor="#ffffff"></td>
             </tr>
             <tr>
-              <td class="w640" width="640"><table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#dddddd">
+              <td class="w640" width="640"><table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#6E1346">
                   <tbody>
                     <tr>
                       <td class="w30" width="30"></td>
@@ -435,16 +435,15 @@ body, td {
                     </tr>
                     <tr>
                       <td class="w30" width="30"></td>
-                      <td class="w580" width="360" valign="top"><span class="hide">
-                        <p id="permission-reminder" align="left" class="footer-content-left"><span>Recibes este correo porque estas suscrito a nuestra lista de correos o compraste en Personaling.com</span></p>
-                        </span>
-                        <p align="left" class="footer-content-left">
-                          <preferences lang="es-ES">Modificar tu subscripcion</preferences>
-                          |
-                          <unsubscribe>Desuscribirse</unsubscribe>
-                        </p></td>
+                      <td class="w580" width="360" valign="top">
+                       <span class="hide">
+                                                <p id="permission-reminder" align="left" class="footer-content-left" style="color:#FFFFFF"><span>Recibes este correo porque tienes una cuenta en <a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a> </span></p>
+                                                </span>
+                       </td>
                       <td class="hide w0" width="60"></td>
-                      <td class="hide w0" width="160" valign="top"><p id="street-address" align="right" class="footer-content-right"><span>Direcci&oacute;n Fisica de Personaling.com</span></p></td>
+                      <td class="hide w0" width="160" valign="top">
+                      <p id="street-address" align="right" class="footer-content-right" style="color:#FFFFFF"><span><a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Tu Personal Shopper Digital</a></span></p>
+                      </td>
                       <td class="w30" width="30"></td>
                     </tr>
                     <tr>

@@ -33,7 +33,7 @@ class EAgeValidator extends CValidator {
 	public static $messages = array(
 		self::ERROR_EMPTY				=> 'Este campo es requerido.',
 		self::ERROR_INVALID_FORMAT		=> 'No es una fecha validad.',
-		self::ERROR_UNDERAGE			=> 'Tu edad debe ser mayor a {minAge}.',
+		self::ERROR_UNDERAGE			=> 'Tu edad debe tener más de dos dígitos.',
 		self::ERROR_OVERERAGE			=> 'Tu edad debe ser menor a {maxAge}.'
 	);
 
@@ -45,7 +45,7 @@ class EAgeValidator extends CValidator {
 	* Minimal allowed age
 	* @var int
 	*/
-	public $minAge = 18;
+	public $minAge = 10;
 
 	/**
 	* Maximal allowed age

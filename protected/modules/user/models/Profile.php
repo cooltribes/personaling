@@ -92,7 +92,7 @@ class Profile extends UActiveRecord
 					if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 					array_push($rules,$field_rule);
 					if ($field->varname=='birthday'){
-						$field_rule = array($field->varname, 'EAgeValidator',  'minAge'=>10,  'maxAge'=>120,  'allowEmpty'=>false);
+						$field_rule = array($field->varname, 'EAgeValidator',  'minAge'=>10,  'maxAge'=>120,  'allowEmpty'=>false, 'message'=>'Hola, edad validation');
 						array_push($rules,$field_rule);
 					}
 					
@@ -225,6 +225,9 @@ class Profile extends UActiveRecord
 						break;
 					case 3:
 						$this->_model=ProfileField::model()->forTipo()->forOwner()->findAll(); //forPersonal()->
+						break;
+					case 4:
+						$this->_model=ProfileField::model()->forPersonalShopper()->forOwner()->findAll(); //forPersonal()->
 						break;
 					default:
 						$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->	

@@ -31,7 +31,7 @@ class ProductoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array(''),
+				'actions'=>array('getImage'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -69,6 +69,19 @@ class ProductoController extends Controller
                         'div'=>$model->getCantidad($_POST['talla'],$prenda[1]),
                         'id'=>'cantidad'.$_POST['prenda'],
                         ));		
+	}
+	public function actionGetImage($id)
+	{
+		$model = $this->loadModel($id);
+		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png'));
+		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').'/../'.$image_url);		
+		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
+		echo '<img '.$attr.' src="'.$image_url.'" alt>';
+		echo '<input type="hidden" name="producto_id" value="'.$id.'">';
+		echo '<input type="hidden" name="color_id" value="'.$_GET['color_id'].'">';
+		echo '</div>';
+		//height="180" width="180"
+		
 	}
 	/**
 	 * Creates a new model.

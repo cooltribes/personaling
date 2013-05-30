@@ -22,7 +22,12 @@ function handleDragStart(e) {
 
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', this.innerHTML);
-  e.dataTransfer.setData("mouse_position_x",e.clientX - e.target.offsetLeft );
+  
+  var datos = this.id.substring(12).split('_'); 
+  e.dataTransfer.setData('producto_id', datos[0]);
+  e.dataTransfer.setData('color_id', datos[1]);
+  
+  e.dataTransfer.setData("mouse_position_x",e.clientX - e.target.offsetLeft ); // coordenadas del mouse donde agarre el div
   e.dataTransfer.setData("mouse_position_y",e.clientY - e.target.offsetTop  );
   
 }
@@ -45,22 +50,12 @@ function handleDragLeave(e) {
   this.classList.remove('over');  // this / e.target is previous target element.
 }
 function handleDrop(e) {
-  // this/e.target is current target element.
-	//alert(e.target);
-	//alert(e.currentTarget.offsetLeft);
-	//alert(e.currentTarget.offsetTop);
-	//alert(e.dataTransfer.getData("mouse_position_x"));
-	//alert( e.dataTransfer.getData("mouse_position_y"));
+
 	var mouse_position_x = e.dataTransfer.getData("mouse_position_x");
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
     y = e.clientY - e.currentTarget.offsetTop - mouse_position_y;
-    //x = e.clientX; 
-    //y = e.clientY;
-   // x = e.clientX - e.target.offsetLeft;
-    //y = e.clientY - e.target.offsetTop;
-   // alert (x+'/'+e.clientX+'/'+e.currentTarget.offsetLeft+'/'+mouse_position_x);
-	//alert(e.clientX);
+
   if (e.stopPropagation) {
     e.stopPropagation(); // Stops some browsers from redirecting.
   }
@@ -69,41 +64,52 @@ function handleDrop(e) {
   if (dragSrcEl != this) {
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML;
+    var contenedor = this;
+    $.ajax({
+	  url: "<?php echo Yii::app()->createUrl('producto/getImage'); ?>",
+	  data: {'id':e.dataTransfer.getData('producto_id'),'color_id':e.dataTransfer.getData('color_id')}
+	}).done(function( html ) {
+	  //alert(html);
+		nuevo_objeto = $(html);
+		nuevo_objeto.css('position','absolute');
+		nuevo_objeto.css('top',y);
+		nuevo_objeto.css('left',x);
+		//nuevo_objeto.find('img').unwrap();
+		nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
+		
+		nuevo_objeto.append('<span>x</span>');
+		//alert(nuevo_objeto.html());
+	    if (contenedor.innerHTML.indexOf("Crea tus Looks aqui") >=0)
+	    	$(contenedor).html(	nuevo_objeto );
+	    else
+	    	$(contenedor).append(	nuevo_objeto );
+	    //Hace draggable al obejto	
+		$(".new",contenedor).draggable( {
+	    cursor: 'move',
+	    containment: 'document',
+	    start: function( event, ui ) { 
+	    	ui.helper.siblings().css('z-index',9); 
+	    	ui.helper.css('z-index',10); 
+	    }
+	   // stop: handleDragStop
+		});
+	
+		$("span",contenedor).last().click(function(){
+	  		$(this).parent().remove();
+	  	});
+	  	// Hace resizable al objeto
+	  	var height = nuevo_objeto.find('img').attr('height');
+	  	var width = nuevo_objeto.find('img').attr('width');
+	  	
+	  	$("img",contenedor).last().resizable({
+	    	aspectRatio: width/height
+	  	}); 
+});
+    //alert(e.dataTransfer.getData('producto_id'));
+    //alert(e.dataTransfer.getData('text/html'));
+   	//nuevo_objeto = $(e.dataTransfer.getData('text/html'));
+   	
     
-   	nuevo_objeto = $(e.dataTransfer.getData('text/html'));
-	nuevo_objeto.css('position','absolute');
-	nuevo_objeto.css('top',y);
-	nuevo_objeto.css('left',x);
-	//nuevo_objeto.find('img').unwrap();
-	nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
-	nuevo_objeto.append('<span>x</span>');
-	//alert(nuevo_objeto.html());
-    if (this.innerHTML.indexOf("Crea tus Looks aqui") >=0)
-    	$(this).html(	nuevo_objeto );
-    else
-    	$(this).append(	nuevo_objeto );
-    	
-	$(".new",this).draggable( {
-    cursor: 'move',
-    containment: 'document',
-    start: function( event, ui ) { 
-    	ui.helper.siblings().css('z-index',9); 
-    	ui.helper.css('z-index',10); 
-    	
-    }
-   // stop: handleDragStop
-	} );
-   
-  //.wrap('<div class="new" />')
-  //alert($("img",this).last().attr('src'));
-  $("span",this).last().click(function(){
-  	//alert('x');
-  	$(this).parent().remove();
-  });
-  $("img",this).last().resizable({
-      aspectRatio: 1
-    });    	
-//"<h1>Crea tus Looks aqui</h1><p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>"    
   }
 
   return false;

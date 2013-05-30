@@ -13,6 +13,7 @@ class ProfileField extends CActiveRecord
 	const REQUIRED_YES_NOT_SHOW_REG = 3;
 	const REQUIRED_YES_ESTILO = 4;
 	const REQUIRED_YES_TIPO = 5;
+	const REQUIRED_YES_PERSONAL = 6;
 	
 	
 	/**
@@ -130,6 +131,12 @@ class ProfileField extends CActiveRecord
             ),
             'forPersonal'=>array(
                 'condition'=>'required!='.self::REQUIRED_YES_ESTILO.' AND required!='.self::REQUIRED_YES_TIPO,
+                //'condition'=>'required='.self::REQUIRED_YES_PERSONAL.' OR required='.self::REQUIRED_YES_SHOW_REG,
+                'order'=>'position',
+            ),
+            'forPersonalShopper'=>array(
+                //'condition'=>'required!='.self::REQUIRED_YES_ESTILO.' AND required!='.self::REQUIRED_YES_TIPO,
+                'condition'=>'required='.self::REQUIRED_YES_PERSONAL.' OR required='.self::REQUIRED_YES_SHOW_REG,
                 'order'=>'position',
             ),
             'forEstilo'=>array(
@@ -209,6 +216,7 @@ class ProfileField extends CActiveRecord
 				self::REQUIRED_YES_NOT_SHOW_REG => UserModule::t('Yes'),
 				self::REQUIRED_YES_ESTILO => 'Yes, Estilo',
 				self::REQUIRED_YES_TIPO => 'Yes, Tipo',
+				self::REQUIRED_YES_PERSONAL => 'Yes, Personal',
 			),
 			'visible' => array(
 				self::VISIBLE_ALL => UserModule::t('For all'),

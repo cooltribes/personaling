@@ -27,7 +27,7 @@ function handleDragStart(e) {
   e.dataTransfer.setData('producto_id', datos[0]);
   e.dataTransfer.setData('color_id', datos[1]);
   
-  e.dataTransfer.setData("mouse_position_x",e.clientX - e.target.offsetLeft );
+  e.dataTransfer.setData("mouse_position_x",e.clientX - e.target.offsetLeft ); // coordenadas del mouse donde agarre el div
   e.dataTransfer.setData("mouse_position_y",e.clientY - e.target.offsetTop  );
   
 }
@@ -50,22 +50,12 @@ function handleDragLeave(e) {
   this.classList.remove('over');  // this / e.target is previous target element.
 }
 function handleDrop(e) {
-  // this/e.target is current target element.
-	//alert(e.target);
-	//alert(e.currentTarget.offsetLeft);
-	//alert(e.currentTarget.offsetTop);
-	//alert(e.dataTransfer.getData("mouse_position_x"));
-	//alert( e.dataTransfer.getData("mouse_position_y"));
+
 	var mouse_position_x = e.dataTransfer.getData("mouse_position_x");
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
     y = e.clientY - e.currentTarget.offsetTop - mouse_position_y;
-    //x = e.clientX; 
-    //y = e.clientY;
-   // x = e.clientX - e.target.offsetLeft;
-    //y = e.clientY - e.target.offsetTop;
-   // alert (x+'/'+e.clientX+'/'+e.currentTarget.offsetLeft+'/'+mouse_position_x);
-	//alert(e.clientX);
+
   if (e.stopPropagation) {
     e.stopPropagation(); // Stops some browsers from redirecting.
   }
@@ -110,6 +100,7 @@ function handleDrop(e) {
 	  	// Hace resizable al objeto
 	  	var height = nuevo_objeto.find('img').attr('height');
 	  	var width = nuevo_objeto.find('img').attr('width');
+	  	
 	  	$("img",contenedor).last().resizable({
 	    	aspectRatio: width/height
 	  	}); 

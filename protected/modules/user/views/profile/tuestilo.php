@@ -19,7 +19,7 @@
 					$nombre_image = Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
 				//else 
 				//	$nombre_image = "http://placehold.it/270x400";
-            $return .=  '<li class="span4 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elegir este tipo de cuerpo">
+            $return .=  '<li class="span4 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elige este estilo">
                 <div class="thumbnail">'.
                 CHtml::image($nombre_image, "Imagen ".$value, array("width" => "370", "height" => "370"))
                 .'<div class="caption text_align_center CAPS">

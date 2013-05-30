@@ -236,7 +236,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               	if($total_look!=0)
 
 				{ 
-					echo " Productos que componen los Looks: ". $total_productos_look ."<br/>";
+					echo "Productos que componen los Looks: ". $total_productos_look ."<br/>";
 				}				
               	?><?php 
               	//variables de sesion

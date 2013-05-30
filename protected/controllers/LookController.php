@@ -26,7 +26,7 @@ class LookController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update','precios','create','categorias','publicar','view'),
+				'actions'=>array('update','precios','create','categorias','publicar','view','colores'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -79,12 +79,12 @@ class LookController extends Controller
 	}
 	public function actionGetImage($id)
 	{ 
-		 	  
+		 	   
 		 $look = Look::model()->findByPk($id);
 		 $imagenes = array();
 		 $i = 0;
 		 foreach($look->lookhasproducto as $lookhasproducto){
-		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,'thumb');
+		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
 		 	if (isset($image_url)){
 				 //	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($image_url, '_thumb', strrpos($image_url,'.'), 0);
@@ -120,14 +120,9 @@ class LookController extends Controller
 		$canvas = imagecreatetruecolor(670, 670);
 		$white = imagecolorallocate($canvas, 255, 255, 255);
 		imagefill($canvas, 0, 0, $white);
-		//imagealphablending( $canvas, false );
-		//imagesavealpha( $canvas, true );
 		$inicio_x = 0;
 		foreach($imagenes as $image){
-			//echo 	$image->top;
-			//echo 	$image->path;
-			//$src = imagecreatefromstring(file_get_contents($image->path));
-			//$src = imagecreatefrompng('data://image/png;base64,'.file_get_contents($image->path));
+
 			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
 			 switch($ext) {
 			          case 'gif':
@@ -140,33 +135,25 @@ class LookController extends Controller
 			          $src = imagecreatefrompng($image->path);
 			          break;
 			      }			
-			//$src = imagecreatefrompng($image->path);
-			//imagealphablending( $src, false );
-			//imagesavealpha( $src, true ); 
+
 			$img = imagecreatetruecolor($image->width,$image->height); 
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true ); 
-    		//$black = imagecolorallocate($img, 0, 0, 0); 
-			//imagecolortransparent($img, $black);
+
     		imagecopyresized($img,$src,0,0,0,0,$image->width,$image->height,imagesx($src), imagesy($src));
-			//echo $image->path;
-			//if (isset($imagen_tmp))
+
 			imagecopy($canvas, $img, $image->left, $image->top, 0, 0, imagesx($img), imagesy($img));
-			//$inicio_x += imagesx($image);
+
 		}
 
 		
 		header('Content-Type: image/png');
+		
 		imagepng($canvas);
 		 
 		imagedestroy($canvas);
 		
-		//foreach($imagenes as $image){
-		//	imagedestroy($images->image);
-		//}
-		//imagedestroy($images[0]);
-		//imagedestroy($images[1]);
-		//imagedestroy($images[2]);
+
 		
 		
 	}
@@ -253,6 +240,16 @@ class LookController extends Controller
 		 
 		
 	}
+public function actionColores(){
+	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+	Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['color_id'])))->findAll();
+	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);	
+	
+}
 public function actionCategorias(){
 	
 	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));

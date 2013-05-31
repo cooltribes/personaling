@@ -22,10 +22,14 @@ function handleDragStart(e) {
 
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', this.innerHTML);
-  
-  var datos = this.id.substring(12).split('_'); 
-  e.dataTransfer.setData('producto_id', datos[0]);
-  e.dataTransfer.setData('color_id', datos[1]);
+  if (this.id.substring(0,12) == "div_producto"){
+  	var datos = this.id.substring(12).split('_'); 
+  	e.dataTransfer.setData('producto_id', datos[0]);
+  	e.dataTransfer.setData('color_id', datos[1]);
+} else {
+	var datos = this.id.substring(10); 
+  	e.dataTransfer.setData('adorno_id', datos);
+}
   
   e.dataTransfer.setData("mouse_position_x",e.clientX - e.target.offsetLeft ); // coordenadas del mouse donde agarre el div
   e.dataTransfer.setData("mouse_position_y",e.clientY - e.target.offsetTop  );
@@ -65,9 +69,17 @@ function handleDrop(e) {
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML;
     var contenedor = this;
+    if (e.dataTransfer.getData('color_id')){
+    	var urlVar = "<?php echo Yii::app()->createUrl('producto/getImage'); ?>";
+    	var dataVar = {'id':e.dataTransfer.getData('producto_id'),'color_id':e.dataTransfer.getData('color_id')};
+    }else{
+    	var urlVar = "<?php echo Yii::app()->createUrl('adorno/getImage'); ?>";
+    	var dataVar = {'id':e.dataTransfer.getData('adorno_id')}
+    }
+    
     $.ajax({
-	  url: "<?php echo Yii::app()->createUrl('producto/getImage'); ?>",
-	  data: {'id':e.dataTransfer.getData('producto_id'),'color_id':e.dataTransfer.getData('color_id')}
+	  url: urlVar,
+	  data: dataVar
 	}).done(function( html ) {
 	  //alert(html);
 		nuevo_objeto = $(html);
@@ -293,7 +305,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
       <div class="">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#tab1" data-toggle="tab" title="Todos los productos">Productos</a></li>
-          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks">Prendas</a></li>
+          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks">Adornos</a></li>
           <li><a href="#tab3" data-toggle="tab" title="Looks que has hecho">Tus Looks</a></li>
         </ul>
         <div class="tab-content">
@@ -431,7 +443,12 @@ Filtrar por Colores <span class="caret"></span></a>
             </div>
           </div>
           <div class="tab-pane" id="tab2">
-            <p>Se cargaria por Ajax (lo que se tenga que cargar)</p>
+            <p>
+        <div id="div_prendas">
+              <?php $this->renderPartial('_view_adornos',array('productos'=>Adorno::model()->findAll())) ?>
+            </div>
+            	
+            </p>
           </div>
           <div class="tab-pane" id="tab3">
             <p>También se cargaria por Ajax (lo que se tenga que cargar)</p>

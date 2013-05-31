@@ -230,13 +230,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             	?>
             	
 
-              <h5><?php echo $total_look; ?> Look seleccionado<br/>
+              <h5>Looks seleccionados: <?php echo $total_look; ?><br/>
               	<?php 
               	
               	if($total_look!=0)
 
 				{ 
-					echo $total_productos_look." productos que componen los Looks<br/>";
+					echo "Productos que componen los Looks: ". $total_productos_look ."<br/>";
 				}				
               	?><?php 
               	//variables de sesion
@@ -245,7 +245,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>
-                <?php echo $indiv; ?> Productos individuales </h5>
+                Productos individuales: <?php echo $indiv; ?></h5>
               <hr/>
               <label class="checkbox">
                 <input type="checkbox">

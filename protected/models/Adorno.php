@@ -30,7 +30,43 @@ class Adorno extends CActiveRecord
 	{
 		return '{{adorno}}';
 	}
-
+	
+	// Para compatibilidad con producto
+	public function getImageUrl($opciones=array())
+	{
+		$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto
+		//$opciones['type'] = isset($opciones['type'])?$opciones['type']:''; // valor por defecto
+		return $this->getUrl($opciones);
+	}
+	public function getUrl($opciones=array())
+	{
+		
+		$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto
+		$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto
+		$extra_path = '/images/';
+		
+		$ext = pathinfo($this->path_image, PATHINFO_EXTENSION);
+		//echo $ext; 
+		if ($ext == $opciones['ext'] )
+			return Yii::app()->baseUrl.$extra_path.str_replace(".",$opciones['type'],$this->path_image);
+		
+		//$info = pathinfo($this->path_image);
+		//$new_file = $info['filename'] . '.' . $type;
+		$new_file = preg_replace('/\..+$/', '.' . $opciones['ext'] , $this->path_image);
+		$new_file_path = Yii::app()->basePath.'/..'.$new_file;
+		//$new_file_path = $_SERVER['DOCUMENT_ROOT'].$new_file;
+		
+		//echo $new_file_path;
+		//clearstatcache();
+		if (file_exists ($new_file_path)){
+			//echo 'sip';  
+			return Yii::app()->baseUrl.$extra_path.str_replace(".",$opciones['type'],$new_file);
+		}
+		//echo 'nop';
+		return Yii::app()->baseUrl.$extra_path.str_replace(".",$opciones['type'],$this->path_image);	
+		
+		
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */

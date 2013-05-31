@@ -95,7 +95,7 @@
 		 $this->widget('bootstrap.widgets.TbButton', array(
 				    'buttonType'=>'ajaxButton',
 				    'type'=>'warning',
-				    'label'=>'Añadir a la bolsa',
+				    'label'=>'Comprar',
 				    //'block'=>'true',
 				   	'size'=> 'large',
 				   // 'url'=>array('producto/tallacolor'),
@@ -190,6 +190,7 @@
               </div>
             </div>
           </div>
+          <p class="muted t_small CAPS">Selecciona las tallas </p>
           
           <!-- Productos del look ON -->
           <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(

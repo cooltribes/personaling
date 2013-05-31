@@ -141,11 +141,11 @@
             </div>
             <div class="span2">
               <div class="btn-group"> <a class="btn btn-warning" ><span class="entypo color3">&#128274;</span></a>
-              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning"> Añadir a la bolsa </a>
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning"> Comprar </a>
               </div>
             </div>
           </div>
-          <p class="muted t_small CAPS">Seleccione Color y talla </p>
+          <p class="muted t_small CAPS">Selecciona Color y talla </p>
           
           <div class="row">
             <div class="span2">

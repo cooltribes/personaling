@@ -14,8 +14,8 @@ $this->breadcrumbs=array(
     <h1 class="T_superlarge"><?php echo $code; ?></h1>
          <div class="error"> <strong>Detalles</strong>: <?php echo CHtml::encode($message); ?> </div>
 
-    <h2 class="bg_color4 color3 padding_left_xsmall">Oh! Algo salió mal y aterrizaste aqui. </h2>
-     <p class="lead">
+    <h2 class="bg_color4 color3 padding_left_xsmall">¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.  </h2>
+     <?php /*?><p class="lead">
      Aqui te dejamos un par de links que pueden ayudarte con lo que buscas
      </p>
      <ul>
@@ -23,7 +23,7 @@ $this->breadcrumbs=array(
      <li><a href="<?php echo Yii::app()->baseUrl; ?>/tienda/">Tienda</a></li>
      <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/login/">Iniciar sesión</a></li>
      
-     </ul>
+     </ul><?php */?>
   </div>
  
 </div>

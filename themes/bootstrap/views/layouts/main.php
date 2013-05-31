@@ -130,7 +130,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
           <li>Sit amet, consectetur  elit.</li>
           <li>Curabitur feugiat porta risus </li>
           <li>S elementum. Cras egestas</li>
-          <li>Leo eget massa dap nis</li>
+          <li><a href="/site/site/contact" title="Contactanos">Contáctanos</a></li>
         </ul>
       </div>
       <div class="span5">

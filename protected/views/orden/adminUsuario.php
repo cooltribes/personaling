@@ -86,7 +86,7 @@ $template = '{summary}
 		var monto = $("#monto").attr("value");
 		var idOrden = $("#idOrden").attr("value");
 		
-		if(nombre=="" || numeroTrans=="" || monto=="")
+		if(nombre=="" || numeroTrans=="" || monto=="" || banco=="")
 		{
 			alert("Por favor complete los datos.");
 		}
@@ -105,6 +105,12 @@ $template = '{summary}
 					//alert("guardado"); 
 					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
 				}
+				else
+				if(data=="no")
+				{
+					alert("Datos invalidos.");
+				}
+				
 	       	}//success
 	       })
  		}	

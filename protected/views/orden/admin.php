@@ -40,8 +40,14 @@ echo $num;
       </p>
         Esperando<br/>
         Confirmación</td>
-      <td><p class="T_xlarge margin_top_xsmall">150</p>
-        Pago Recibido</td>
+      <td><p class="T_xlarge margin_top_xsmall">
+	<?php
+	$sql = "SELECT count( * ) as total FROM tbl_orden where estado=3";
+	$num = Yii::app()->db->createCommand($sql)->queryScalar();
+	echo $num;
+	?>
+	</p>
+        Pago Confirmado</td>
       <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
         Preparandose <br/>
         para enviar </td>

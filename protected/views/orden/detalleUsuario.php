@@ -108,95 +108,67 @@ $usuario = User::model()->findByPk($orden->user_id);
 			$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
           	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 			
+			echo("
+	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
+	          	<h3 class='braker_bottom '> Método de Pago</h3>
+	        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
+	          		<tr>
+	            		<th scope='col'>Fecha</th>
+	            		<th scope='col'>Método de pago</th>
+	            		<th scope='col'>ID de Transaccion</th>
+	            		<th scope='col'>Monto</th>
+	          		</tr>
+	          	");	
+			
 			foreach($detalles as $detalle){
-						
-				if($detalle->estado == 0  && $detalle->nTransferencia!="") // stand by
-				{
-					echo("
-	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
-	          	<h3 class='braker_bottom '> Método de Pago</h3>
-	        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
-	          		<tr>
-	            		<th scope='col'>Fecha</th>
-	            		<th scope='col'>Método de pago</th>
-	            		<th scope='col'>ID de Transaccion</th>
-	            		<th scope='col'>Monto</th>
-	          		</tr>
-	          	<tr>
-	          	");	
-					echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 					
-					if($pago->tipo == 1)
-						echo("<td>Deposito en espera de confirmacion</td>");
-						//hacer los demas tipos
+				echo("<tr>");
 						
-					echo("<td>".$detalle->nTransferencia."</td>");	
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
-					echo("
-					</tr>
-	        		</table> </div>
-					");
-				}
-				else
-								
-				if($detalle->estado == 1) // si fue aceptado
-				{
-					echo("
-	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
-	          	<h3 class='braker_bottom '> Método de Pago</h3>
-	        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
-	          		<tr>
-	            		<th scope='col'>Fecha</th>
-	            		<th scope='col'>Método de pago</th>
-	            		<th scope='col'>ID de Transaccion</th>
-	            		<th scope='col'>Monto</th>
-	          		</tr>
-	          	<tr>
-	          	");	
-					echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
-					
-					if($pago->tipo == 1)
-						echo("<td>Deposito o Transferencia</td>");
-						//hacer los demas tipos
-							
-					echo("<td>".$detalle->nTransferencia."</td>");	
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
-					echo("
-					</tr>
-	        		</table> </div>
-					");
-				}
-				else if($detalle->estado == 2) // rechazado
+					if($detalle->estado == 0  && $detalle->nTransferencia!="") // stand by
 					{
-							echo("
-	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
-	          	<h3 class='braker_bottom '> Método de Pago</h3>
-	        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
-	          		<tr>
-	            		<th scope='col'>Fecha</th>
-	            		<th scope='col'>Método de pago</th>
-	            		<th scope='col'>ID de Transaccion</th>
-	            		<th scope='col'>Monto</th>
-	          		</tr>
-	          	<tr>
-	          	");	
-					echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 					
-					if($pago->tipo == 1)
-						echo("<td>Deposito o Transferencia</td>");
-						//hacer los demas tipos
-							
-					echo("<td> PAGO RECHAZADO </td>");	
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
-					echo("
-					</tr>
-	        		</table></div>
-					");
+						echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 						
+						if($pago->tipo == 1)
+							echo("<td>Deposito en espera de confirmacion</td>");
+							//hacer los demas tipos
+							
+						echo("<td>".$detalle->nTransferencia."</td>");	
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
 					}
-					
-					
+					else			
+						if($detalle->estado == 1) // si fue aceptado
+						{
+			          	
+							echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+							
+							if($pago->tipo == 1)
+								echo("<td>Deposito o Transferencia</td>");
+								//hacer los demas tipos
+									
+							echo("<td>".$detalle->nTransferencia."</td>");	
+							echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+
+						}
+					else if($detalle->estado == 2) // rechazado
+						{
+							
+						echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+						
+						if($pago->tipo == 1)
+							echo("<td>Deposito o Transferencia</td>");
+							//hacer los demas tipos
+								
+						echo("<td> PAGO RECHAZADO </td>");	
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+							
+						}
+
+				echo("</tr>");
 				}//foreach
+				
+				echo("</table></div>");
+
 		  	?>    
       	
       <div class="well well-small margin_top well_personaling_small">
@@ -706,6 +678,12 @@ else{
 					//alert("guardado"); 
 					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
 				}
+				else
+				if(data=="no")
+				{
+					alert("Datos invalidos.");
+				}
+				
 	       	}//success
 	       })
  		}	

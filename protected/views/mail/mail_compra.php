@@ -139,6 +139,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 	color: blue !important;
 }
+h3{ color:#999999; font-size:12px; text-transform:uppercase; margin-top:10px;}
 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
 	color: red !important;
 }
@@ -311,6 +312,8 @@ body, td {
 	color: #666666;
 	white-space: normal;
 }
+hr{ color:#dddddd; border-color:#dddddd;}
+th{ color:#999999; border-bottom:1px solid #ddd;}
 </style>
 <!--[if gte mso 9]>
 <style _tmplitem="499" >
@@ -471,7 +474,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       	}
       }// caso 1
       ?>
-                                                                <h3>Resumen del pedido </h3>
+                                                                <h3 style="color:#999999;">RESUMEN DEL PEDIDO</h3>
                                                                 <table width="100%" border="0" cellspacing="3" style="margin-bottom:10px;" cellpadding="5">
     <tr>
         <td style=" background-color:#dff0d8; padding:6px;  color:#468847; margin-bottom:5px"><p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p></td>
@@ -510,7 +513,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 		$ind = Yii::app()->db->createCommand($s2)->queryScalar();
 			
         ?>
-                                                                <h3 class="margin_top">Detalles del Pedido</h3>
+                                                             <h3 style="color:#999999;">DETALLES DEL PEDIDO</h3>
                                                                 
                                                                 <!-- Look ON -->
                                                                 
@@ -537,14 +540,14 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 			if(!in_array($cadalook,$vacio)){
 						
 			echo('
-			<h4 class="braker_bottom">'.$look->title.'</h4>
+			<p> <strong>Nombre del look:</strong> '.$look->title.' | Creado por: <a href="#" title="ir al perfil">'.$look->user->profile->first_name.'</a></p>
 	        <div>
-	          <table class="table" width="70%" >
+	          <table class="table" width="100%" >
 	            <thead>
 	              <tr>
-	                <th  style="text-align:left" colspan="2">Producto</th>
-	                <th style="text-align:left">Precio por unidad </th>
-	                <th style="text-align:left" >Cantidad</th>
+	                <th  style="text-align:left; color:#999999; border-bottom:1px solid #dddddd;" colspan="2">Producto</th>
+	                <th style="text-align:left; color:#999999; border-bottom:1px solid #dddddd;">Precio por unidad </th>
+	                <th style="text-align:left; color:#999999; border-bottom:1px solid #dddddd;" >Cantidad</th>
 	              </tr>
 	            </thead>
 	            <tbody>');	
@@ -571,17 +574,17 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 							
 							if($imagen){					  	
 								$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-								echo "<td>".$aaa."</td>";
+								echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
 							}else{
 								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 							}
 	
-							echo('<td><strong>'.$producto->nombre.'</strong> <br/>
+							echo('<td style="border-bottom:1px solid #dddddd;"><strong>'.$producto->nombre.'</strong> <br/>
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'<br/>
 		                  		</td>
-		                <td>Bs. '.$pre.'</td>
-		                <td>'.$cadauno->cantidad.'</td>
+		                <td style="border-bottom:1px solid #dddddd;">Bs. '.$pre.'</td>
+		                <td style="border-bottom:1px solid #dddddd;">'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
 					}
@@ -590,8 +593,8 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 
 			echo '</tbody>
 		          </table>
-		          <hr/>
-		          <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil">'.$look->user->profile->first_name.'</a></p>
+		          
+		          
 		          </div>';	
 
 			}
@@ -604,15 +607,15 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
         
 		if($ind!=0) // si hay individuales
 		{
-			echo "<h4 class='braker_bottom margin_top'></h4>
+			echo "<h4>Productos Individuales</h4>
 				        <div class='padding_left'>
 				          <table class='table' width='100%' >
 				            <thead>
 				              <tr>
-				                <th colspan='2' style='text-align:left'>Producto</th>
-				                <th style='text-align:left'>Precio por 
+				                <th colspan='2' style='text-align:left; color:#999999; border-bottom:1px solid #dddddd;'>Producto</th>
+				                <th style='text-align:left;  color:#999999; border-bottom:1px solid #dddddd;'>Precio por 
 				                  unidad </th>
-				                <th style='text-align:left'>Cantidad</th>
+				                <th style='text-align:left; color:#999999'; border-bottom:1px solid #dddddd;>Cantidad</th>
 				                </tr>
 				                </thead>
             					<tbody>
@@ -636,12 +639,12 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 							
 				if($imagen){					  	
 					$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-					echo "<td>".$aaa."</td>";
+					echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
 				}else
-					echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+					echo"<td style='border-bottom:1px solid #dddddd;'><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 
 				echo "
-					<td>
+					<td style='border-bottom:1px solid #dddddd;'>
 					<strong>".$producto->nombre."</strong> <br/>
 					<strong>Color</strong>: ".$color->valor."<br/>
 					<strong>Talla</strong>: ".$talla->valor."</br>
@@ -653,8 +656,8 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 				}
 						
-					echo "<td>Bs. ".$pre."</td>";
-					echo "<td>".$individual->cantidad."</td>
+					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".$pre."</td>";
+					echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>
 					</tr>";
 
 			}

@@ -731,6 +731,9 @@ class BolsaController extends Controller
 					
 				}				
 			}
+			else {
+				echo "no";
+			}
 			
 		}
 		

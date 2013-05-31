@@ -49,6 +49,10 @@
                  	<?php echo $form->error($model,'estado'); ?>
             </div>
             <div class="control-group">
+                	<?php echo $form->radioButtonListInlineRow($model, 'destacado', array(1 => 'Si', 0 => 'No',)); ?>
+                 	<?php echo $form->error($model,'destacado'); ?>
+            </div>
+            <div class="control-group">
               <label for="" class="control-label required"> Calendario</label>
               <div class="controls">
               	

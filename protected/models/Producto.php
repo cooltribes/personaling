@@ -13,6 +13,7 @@
  * @property string $fFin
  * @property string $fecha
  * @property integer $status
+ * @property integer $destacado
  * @property integer $marca_id
  */
 class Producto extends CActiveRecord
@@ -75,7 +76,7 @@ class Producto extends CActiveRecord
 			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, marca_id, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -116,6 +117,7 @@ class Producto extends CActiveRecord
 			'fFin' => 'Fin',
 			'fecha' => 'Fecha',
 			'status' => 'Status',
+			'destacado' => '¿Destacar?',
 			'marca_id' => 'Marca',
 		);
 	}
@@ -140,6 +142,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('destacado',$this->destacado,true);
 		$criteria->compare('status',$this->status,true);
 
 		return new CActiveDataProvider($this, array(
@@ -164,6 +167,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
+		$criteria->compare('destacado',$this->destacado,true);
 		$criteria->with = array('categorias');
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
@@ -421,6 +425,7 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('fFin',$this->fFin,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
+		$criteria->compare('destacado',$this->destacado,true);
 		$criteria->with = array('categorias');
 		$criteria->with = array('precios');
 		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';

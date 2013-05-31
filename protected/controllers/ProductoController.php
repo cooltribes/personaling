@@ -112,7 +112,8 @@ class ProductoController extends Controller
 				 	'descripcion'=>$_POST['Producto']['descripcion'],
 				 	'estado'=>$_POST['Producto']['estado'],
 				 	'fInicio'=>$_POST['Producto']['fInicio'],
-					'fFin'=>$_POST['Producto']['fFin']
+					'fFin'=>$_POST['Producto']['fFin'],
+					'destacado' => $_POST['Producto']['destacado']
 					));
 					
 					Yii::app()->user->updateSession();
@@ -123,7 +124,8 @@ class ProductoController extends Controller
 			}
 			else // nuevo
 			{
-				$model->attributes=$_POST['Producto'];
+				$model->attributes = $_POST['Producto'];
+				$model->destacado = $_POST['Producto']['destacado'];
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
 				if($model->save())

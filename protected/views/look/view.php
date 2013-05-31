@@ -71,7 +71,7 @@
             </div>
             <div class="pull-left"> <span class="muted">Look creado por: </span>
               <h5><a href="#" title="profile" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
-              <p  class="note"><strong>Bio</strong>: Lorem ipsum dolor sit amet deserunt mollit anim</p>
+              <p  class="note"><strong>Bio</strong>: <?php echo $model->user->profile->bio; ?> </p>
             </div>
           </div>
           <hr/>

@@ -339,6 +339,48 @@ class ProfileController extends Controller
 			'profile'=>$profile,
 		));
 	}
+
+	/**
+	Edita los campos del personal Shopper
+	 */
+	public function actionEditShopper()
+	{
+		
+		$model = $this->loadUser();
+		
+		$profile=$model->profile;
+		$profile->profile_type = 4;
+		
+		// ajax validator
+		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
+		{
+			echo UActiveForm::validate(array($model,$profile));
+			Yii::app()->end();
+		}
+		
+		if(isset($_POST['Profile']))
+		{
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				//$model->save();
+				if ($profile->save()){
+                	Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+				} else {
+					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			} else $profile->validate();
+		}
+
+		$this->render('editShopper',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
+	}
+
+
 	/**
 	 * Change email
 	 */

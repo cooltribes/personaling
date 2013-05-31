@@ -4,6 +4,13 @@ $this->breadcrumbs=array(
 	UserModule::t('Manage'),
 );
 
+$usuarios_totales = User::model()->count();
+$usuarios_activos = User::model()->countByAttributes(array('status'=>1));
+$usuarios_inactivos = User::model()->countByAttributes(array('status'=>0));
+$personal_shoppers = User::model()->countByAttributes(array('personal_shopper'=>1));
+$usuarios_facebook = User::model()->count('facebook_id IS NOT NULL');
+$usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
+
 ?>
 <div class="container margin_top">
   <div class="page-header">
@@ -14,17 +21,17 @@ $this->breadcrumbs=array(
       <th scope="col" colspan="6"> Totales </th>
     </tr>
     <tr>
-      <td><p class="T_xlarge margin_top_xsmall">120 </p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_totales; ?></p>
         Usuarios Totales</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 144 </p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_activos; ?></p>
         Usuarios Activos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 156</p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_inactivos; ?></p>
         Usuarios Inactivos</td>
-      <td><p class="T_xlarge margin_top_xsmall">150</p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $personal_shoppers; ?></p>
         Personal Shoppers</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_facebook; ?></p>
         Usuarios de Facebook </td>
-      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_twitter; ?> </p>
         Usuarios de Twitter</td>
     </tr>
   </table>

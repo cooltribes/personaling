@@ -136,6 +136,7 @@
 			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
 			echo ' ';
 			echo $form->hiddenField($profile,$field->varname);
+			echo CHtml::hiddenField('facebook_id', '', array('id'=>'facebook_id', 'name'=>'facebook_id'));
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			echo $form->error($profile,$field->varname);
 				 
@@ -215,6 +216,7 @@ function check_fb(){
                         
                   		$("#registration-form").fadeOut(100,function(){
 	     					
+	     					$('#facebook_id').val(response.id);
 	     					$('#RegistrationForm_email').val(response.email); 
 	                        $('#Profile_first_name').val(response.first_name);
 	                        $('#Profile_last_name').val(response.last_name);
@@ -270,6 +272,7 @@ function check_fb(){
 						
 						$("#registration-form").fadeOut(100,function(){
 	     					
+	     					$('#facebook_id').val(response.id);
 	     					$('#RegistrationForm_email').val(response.email); 
 	                        $('#Profile_first_name').val(response.first_name);
 	                        $('#Profile_last_name').val(response.last_name);

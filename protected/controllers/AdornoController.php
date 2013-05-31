@@ -4,7 +4,19 @@ class AdornoController extends Controller
 {
 	public function actionIndex()
 	{
-		$this->render('index');
+		$adorno = new Adorno; 
+
+		if (isset($_POST['query']))
+		{
+			//echo($_POST['query']);	
+			$adorno->nombre = $_POST['query'];
+		}
+		
+		$dataProvider = $adorno->search();
+		$this->render('index',
+			array('model'=>$adorno,
+			'dataProvider'=>$dataProvider,
+		));	
 	}
 
 	// Uncomment the following methods and override them if needed

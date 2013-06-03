@@ -124,6 +124,7 @@ return array(
 	      'files'=>array(
 	        'less/style.less'=>'css/style.less',
 	      ),
+		  'options'=>array('watch'=>false),
 	    ),	
 		 	
 		 'bootstrap'=>array(

@@ -479,13 +479,69 @@ src: url('../fonts/entypo.woff'),
 /*------------- Home ON -------------*/
 
 .wrapper_home{
-	background: url(../images/bg_home_personaling_chicas.jpg) no-repeat 0 -40px ;
 	.padding_top_large;
-	min-height:550px;
-	.box_home{ background-color:rgba(255,255,255,.6);
-	padding:2em 3em;
-	border-bottom:1px solid rgba(255,255,255,.7)}
+	min-height:600px;
+	background: url(../images/bg_home_personaling_chica_1.jpg) no-repeat center  ;
+	.container{ position:relative;}
+	.box_home{ 
+		background:rgba(148,227,104,.3);
+		.border_radius(@radius:350px);
+		border-bottom:1px solid rgba(255,255,255,.7);
+		float: right;
+		height: 280px;
+		padding: 100px 50px 40px;
+		width: 320px;
+		font-weight:300;
+		font-size:1.3em;
+		h1{ 
+			font-weight:400;
+			.CAPS;
+			}
+		.btn{
+			margin-bottom:1em;}
 	}
+	.box_home_2{
+		background: none repeat scroll 0 0 rgba(222, 193, 230, 0.3);
+		.border_radius(@radius:300px);
+		float: right;
+		height: 60px;
+		padding: 80px 20px 60px;
+		width: 160px;
+		color:#913b71;
+		font-size: 1em;
+		font-weight: 300;
+		margin-right: -45px;
+		.CAPS;
+		span{
+			font-weight:400;
+			font-size: 1.5em;
+			}
+		
+		
+	}
+	.box_home_3{
+		float: right;
+		height: 60px;
+		padding: 70px 20px;
+		width: 160px;
+		margin-top: 170px;
+		margin-right: -180px;	
+		font-size:1.5em;
+		font-weight:300;
+		.CAPS;
+		span{
+			font-weight:400;}
+	}
+	.box_home_4{
+	
+		bottom: -20px;
+		position: absolute;
+		right: 260px;
+			
+		}
+
+	
+}
 .carousel-indicators {
   position: absolute;
   top: 15px;
@@ -1469,16 +1525,13 @@ ul.yiiPager .last
 /* Large desktop */
 @media (min-width: 1680px)  { 
 .wrapper_home{
-	background:url(../images/bg_home_personaling_chicas.jpg) no-repeat 0 -50px;
-	background-size: cover;
+
  }
  }
 
 /* Large desktop */
 @media (min-width: 1200px)  and (max-width: 1679px) { 
 .wrapper_home{
-	background:url(../images/bg_home_personaling_chicas.jpg) no-repeat  0 -50px;
-	background-size: cover;
 
  }
  }
@@ -1486,8 +1539,6 @@ ul.yiiPager .last
 /* Mid desktop */
 @media (min-width: 980px) and (max-width: 1199px) { 
 .wrapper_home{
-	background:url(../images/bg_home_personaling_chicas.jpg) no-repeat ;
-	background-size: cover;
 
  }
 }
@@ -1495,17 +1546,13 @@ ul.yiiPager .last
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) { 
 .wrapper_home{
-	background:url(../images/bg_home_personaling_chicas.jpg) no-repeat ;
-	background-size: cover;
 
  }
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
 	.wrapper_home{
-		background:url(../images/bg_home_personaling_chicas.jpg) no-repeat ;
-		background-size: cover;
-		 }
+	}
 	#myLogo a, #site-title a , .brand{
   	  position: relative; 
  	}

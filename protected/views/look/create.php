@@ -86,6 +86,7 @@ function handleDrop(e) {
 		nuevo_objeto.css('position','absolute');
 		nuevo_objeto.css('top',y);
 		nuevo_objeto.css('left',x);
+		nuevo_objeto.css('height',200);
 		//nuevo_objeto.find('img').unwrap();
 		nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
 		
@@ -298,7 +299,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'type'=>'stacked',
     'type'=>'inline',
 )); ?>
-      <?php echo CHtml::hiddenField('productos_id'); ?> <?php echo CHtml::hiddenField('colores_id'); ?> <?php echo CHtml::hiddenField('left'); ?> <?php echo CHtml::hiddenField('top'); ?> <?php echo CHtml::hiddenField('width'); ?> <?php echo CHtml::hiddenField('height'); ?> <?php echo CHtml::hiddenField('tipo'); ?>
+      <?php echo CHtml::hiddenField('productos_id'); ?> <?php echo CHtml::hiddenField('colores_id'); ?> <?php echo CHtml::hiddenField('left'); ?> <?php echo CHtml::hiddenField('top'); ?>
+      <?php echo CHtml::hiddenField('width'); ?> <?php echo CHtml::hiddenField('height'); ?> <?php echo CHtml::hiddenField('tipo'); ?>
+      
+      <?php echo CHtml::hiddenField('adornos_id'); ?>
+      <?php echo CHtml::hiddenField('left_a'); ?>
+      <?php echo CHtml::hiddenField('top_a'); ?>
+      <?php echo CHtml::hiddenField('width_a'); ?>
+      <?php echo CHtml::hiddenField('height_a'); ?>
+
       <?php $this->endWidget(); ?>
     </section>
     <section class="span4">
@@ -484,6 +493,14 @@ function addPublicar(tipo)
 	var height = '';
 	var width = ''; 
 	var count = 0;
+	
+	var adornos_id = '';
+	var left_a = '';
+	var top_a = '';
+	var height_a = '';
+	var width_a = '';
+	var count_a = 0;
+	
 	$('.canvas input[name="producto_id"]').each(function(item){
 		productos_id += $(this).val()+',';
 		color_id += $(this).next().val()+',';
@@ -495,10 +512,28 @@ function addPublicar(tipo)
 		top += position.top + ',';
 		count++;
 	});
+	
+	alert(height);
+	
+	// para los adornos
+	/*
+	$('.canvas input[name="adorno_id"]').each(function(item){
+		adornos_id += $(this).val()+',';
+		position = $(this).parent().position();
+		image = $(this).parent().find('img');
+		width_a += image.width() + ',';
+		height_a += image.height() + ',';
+		left_a += position.left + ',';
+		top_a += position.top + ',';
+		count_a++;
+	});
+	
 	productos_id = productos_id.substring(0, productos_id.length-1);
+	adornos_id = adornos_id.substring(0, adornos_id.length-1);
 	//alert(productos_id);
 	//alert(left);
 	//productos_id = "1,2,3,4";
+	
 	$("#productos_id").val(productos_id);
 	$("#colores_id").val(color_id.substring(0, color_id.length-1));
 	$("#left").val(left.substring(0, left.length-1));
@@ -506,44 +541,23 @@ function addPublicar(tipo)
 	$("#height").val(height.substring(0, height.length-1));
 	$("#width").val(width.substring(0, width.length-1));
 	$("#tipo").val(tipo);
+	
+	// ahora los de los adornos
+	$("#adornos_id").val(adornos_id);
+	$("#left_a").val(left_a.substring(0, left_a.length-1));
+	$("#top_a").val(top_a.substring(0, top_a.length-1));
+	$("#height_a").val(height_a.substring(0, height_a.length-1));
+	$("#width_a").val(width_a.substring(0, width_a.length-1));
+	
 	//count = 6;
 	//alert(productos_id);
 	if (count >= 3){
-		
 		$("#form_productos").submit();
 	} else {
 		bootbox.alert("Debes tener al menos seis productos");
-		
-		
 	}
-	
-    <?php
-    /* 
-    	echo CHtml::ajax(array(
-            'url'=>array('look/create'),
-            'data'=> "js:$(this).serialize()",
-            'type'=>'post',
-            'dataType'=>'json',
-            'success'=>"function(data)
-            {
-                if (data.status == 'failure')
-                {
-                    $('#dialogPublicar div.divForForm').html(data.div);
-                          // Here is the trick: on submit-> once again this function!
-                    $('#dialogPublicar div.divForForm form').submit(addPublicar);
-                }
-                else
-                {
-                    $('#dialogPublicar div.divForForm').html(data.div);
-                    setTimeout(\"$('#dialogPublicar').modal('hide') \",3000);
-                }
- 
-            } ",
-            )) 
-          */  
-            ?>;
-    return false; 
- 
+
+    return false; */
 }
  
 </script> 

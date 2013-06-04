@@ -100,6 +100,7 @@ class LookController extends Controller
 			//}
 			$i++;
 		 }	
+		 
 /*
 		$images = array();
 		$i = 0;
@@ -124,6 +125,8 @@ class LookController extends Controller
 		foreach($imagenes as $image){
 
 			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
+			
+			
 			 switch($ext) {
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
@@ -135,6 +138,8 @@ class LookController extends Controller
 			          $src = imagecreatefrompng($image->path);
 			          break;
 			      }			
+			 
+			// echo(" ".$ext."-".$src."   ");
 
 			$img = imagecreatetruecolor($image->width,$image->height); 
 			imagealphablending( $img, false );
@@ -152,8 +157,6 @@ class LookController extends Controller
 		imagepng($canvas);
 		 
 		imagedestroy($canvas);
-		
-
 		
 		
 	}
@@ -418,29 +421,59 @@ public function actionCategorias(){
 				$top = explode(',',$_POST['top']);
 				$width = explode(',',$_POST['width']);
 				$height = explode(',',$_POST['height']);
+				
+				// para los valores de los adornos
+				$left_a = explode(',',$_POST['left_a']);
+				$top_a = explode(',',$_POST['top_a']);
+				$width_a = explode(',',$_POST['width_a']);
+				$height_a = explode(',',$_POST['height_a']);
+
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
 						
 					$temporal = LookHasProducto::model()->findByPk(array('look_id'=>$model->id,'producto_id'=>$producto_id));
 					if (!isset($temporal)){
-					$lookhasproducto = new LookHasProducto;
-					$lookhasproducto->look_id = $model->id;
-					$lookhasproducto->producto_id = $producto_id;
-					$lookhasproducto->color_id = $colores_id[$index];
-					$lookhasproducto->cantidad = 1;
-					$lookhasproducto->left = $left[$index];
-					$lookhasproducto->top = $top[$index];
-					$lookhasproducto->width = $width[$index];
-					$lookhasproducto->height = $height[$index];
+						$lookhasproducto = new LookHasProducto;
+						$lookhasproducto->look_id = $model->id;
+						$lookhasproducto->producto_id = $producto_id;
+						$lookhasproducto->color_id = $colores_id[$index];
+						$lookhasproducto->cantidad = 1;
+						$lookhasproducto->left = $left[$index];
+						$lookhasproducto->top = $top[$index];
+						$lookhasproducto->width = $width[$index];
+						$lookhasproducto->height = $height[$index];
+						
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}
 				}
+				
+				/* adornos */
+				foreach(explode(',',$_POST['adornos_id']) as $index => $adorno_id){
+						
+					$temporal = LookHasAdorno::model()->findByAttributes(array('look_id'=>$model->id,'adorno_id'=>$adorno_id));
+					
+					if (!isset($temporal)){
+						$lookhasadorno = new LookHasAdorno;
+						$lookhasadorno->look_id = $model->id;
+						$lookhasadorno->adorno_id = $adorno_id;
+						$lookhasadorno->left = $left_a[$index];
+						$lookhasadorno->top = $top_a[$index];
+						$lookhasadorno->width = $width_a[$index];
+						$lookhasadorno->height = $height_a[$index];
+						
+					if (!$lookhasadorno->save())
+					 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');
+					
+					}
+				}
+				
+				
 				if ($_POST['tipo']==1){
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();
 				} else {
 					Yii::app()->user->updateSession();
-					Yii::app()->user->setFlash('success',UserModule::t("Tu look se a guardado."));	
+					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha guardado."));	
 					$this->render('create',array(
 							'model'=>$model,
 							'categorias'=>$categorias,

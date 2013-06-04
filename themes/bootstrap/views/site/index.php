@@ -22,10 +22,10 @@ $this->pageTitle=Yii::app()->name;
           <h1>¡Bienvenid@s!</h1>
           <p>Recomendaciones personalizadas adaptadas a ti. Una nueva manera de renovar tu clóset. </p>
           <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger btn-large">¡Regístrate YA!</a>
-          <p class="CAPS"> Siguenos en:</p>
+          <p class="CAPS"> Síguenos en:</p>
           <div class="clearfix"> <a href="https://www.facebook.com/Personaling" title="Personaling en facebook"><img width="30" height="30" src="images/icon_facebook_2.png" title="personaling en pinterest"></a> <a href="https://twitter.com/personaling" title="Personaling en Pinterest"> <img width="30" height="30" src="images/icon_twitter_2.png" title="personaling en pinterest"></a> <a href="https://pinterest.com/personaling/" title="pinterest"><img width="30" height="30" src="images/icon_pinterest_2.png" title="Personaling en Pinterest"></a> <a href="http://instagram.com/personaling" title="Personaling en Instagram"><img width="30" height="30" src="images/icon_instagram_2.png" title="Personaling en Pinterest"></a> </div>
         </div>
-        <div class="box_home_2 hidden-phone"> <span>¡Tu Personal</span> <br/>Shopper Digital! </div>
+        <div class="box_home_2 hidden-phone"> ¡Tu <span>Personal <br/>Shopper</span> Digital! </div>
         <div class="box_home_3 hidden-phone"> Regístrate <br/><span>¡Gratis!</span></div>
         <div class="box_home_4 hidden-phone"> <a href="http://personaling.com/magazine/" title="Magazine" target="_blank" class="btn margin_top btn-small">IR A LA MAGAZINE</a></div>
       </div>
@@ -95,8 +95,12 @@ $this->pageTitle=Yii::app()->name;
           </li>
         </ul>
       </li>
-      <li><a href="docs/Personaling_features.pdf">Funcionalidades en este versión (Test v.15) (PDF)</a> <br/>
-        <br/>
+      <li>Links útiles:
+      <ul>
+      	<li><a href="docs/Personaling_features.pdf">Funcionalidades en este versión (Test v.15) (PDF)</a></li>
+      	<li><a href="http://www.youtube.com/watch?v=xNj80lfwpEs" target="_blank" title="Video Personaling">Video explicativo</a></li>
+        <li><a href="http://prezi.com/aw80fg4hohva/presentacion-e-show-2013-esade-personalingcom/?auth_key=c9f14f42a3a3ac0d5af176070333aa77f2c4d1e5" target="_blank" title="Presentacion de personaling">Presentación del negocio (PREZI)</a><br /><br/></li>
+      </ul>
       </li>
       <li><a href="http://personaling.com/test15/user/login" title="Login page" class="btn btn-danger">Página para iniciar sesión</a></li>
     </ul>

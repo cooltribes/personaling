@@ -129,7 +129,7 @@ $this->breadcrumbs=array(
               <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'danger',
-			'label'=>'Subir imágen',
+			'label'=>'Subir imagen',
 		)); ?>
 		</div>
 			</div>

@@ -75,7 +75,7 @@ class Adorno extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, path_image', 'required'),
+			array('nombre', 'required'),
 			array('nombre', 'length', 'max'=>50),
 			array('path_image', 'length', 'max'=>255),
 			// The following rule is used by search().
@@ -104,7 +104,7 @@ class Adorno extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
-			'path_image' => 'Path Image',
+			'path_image' => 'Imagen',
 		);
 	}
 

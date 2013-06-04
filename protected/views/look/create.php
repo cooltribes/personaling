@@ -81,42 +81,50 @@ function handleDrop(e) {
 	  url: urlVar,
 	  data: dataVar
 	}).done(function( html ) {
-	  //alert(html);
+		
+		// alert(html);
+
 		nuevo_objeto = $(html);
 		nuevo_objeto.css('position','absolute');
 		nuevo_objeto.css('top',y);
 		nuevo_objeto.css('left',x);
-		nuevo_objeto.css('height',200);
 		//nuevo_objeto.find('img').unwrap();
 		nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
-		
 		nuevo_objeto.append('<span>x</span>');
+		
 		//alert(nuevo_objeto.html());
-	    if (contenedor.innerHTML.indexOf("Crea tus Looks aqui") >=0)
-	    	$(contenedor).html(	nuevo_objeto );
-	    else
-	    	$(contenedor).append(	nuevo_objeto );
-	    //Hace draggable al obejto	
-		$(".new",contenedor).draggable( {
-	    cursor: 'move',
-	    containment: 'document',
-	    start: function( event, ui ) { 
-	    	ui.helper.siblings().css('z-index',9); 
-	    	ui.helper.css('z-index',10); 
-	    }
-	   // stop: handleDragStop
-		});
-	
-		$("span",contenedor).last().click(function(){
-	  		$(this).parent().remove();
-	  	});
-	  	// Hace resizable al objeto
-	  	var height = nuevo_objeto.find('img').attr('height');
-	  	var width = nuevo_objeto.find('img').attr('width');
-	  	
-	  	$("img",contenedor).last().resizable({
-	    	aspectRatio: width/height
-	  	}); 
+		var ident = nuevo_objeto.find('img').attr('src');
+			
+	$('<img/>').attr('src', ident).load(function() {
+		    
+		    if (contenedor.innerHTML.indexOf("Crea tus Looks aqui") >=0)
+				$(contenedor).html(	nuevo_objeto );
+		    else
+		    	$(contenedor).append(nuevo_objeto);
+		    	
+			//Hace draggable al obejto	
+			$(".new",contenedor).draggable( {
+		    cursor: 'move',
+		    containment: 'document',
+		    start: function( event, ui ) { 
+		    	ui.helper.siblings().css('z-index',9); 
+		    	ui.helper.css('z-index',10); 
+		    }
+		   // stop: handleDragStop
+			});
+		
+			$("span",contenedor).last().click(function(){
+		  		$(this).parent().remove();
+		  	});
+		  	// Hace resizable al objeto
+		  	var height = nuevo_objeto.find('img').attr('height');
+		  	var width = nuevo_objeto.find('img').attr('width');
+		  	
+		  	$("img",contenedor).last().resizable({
+		    	aspectRatio: width/height
+		  	});
+	 });
+	    
 });
     //alert(e.dataTransfer.getData('producto_id'));
     //alert(e.dataTransfer.getData('text/html'));
@@ -513,10 +521,8 @@ function addPublicar(tipo)
 		count++;
 	});
 	
-	alert(height);
-	
 	// para los adornos
-	/*
+	
 	$('.canvas input[name="adorno_id"]').each(function(item){
 		adornos_id += $(this).val()+',';
 		position = $(this).parent().position();
@@ -557,7 +563,7 @@ function addPublicar(tipo)
 		bootbox.alert("Debes tener al menos seis productos");
 	}
 
-    return false; */
+    return false; 
 }
  
 </script> 

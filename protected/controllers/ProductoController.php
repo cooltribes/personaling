@@ -74,16 +74,16 @@ class ProductoController extends Controller
 	{
 		$model = $this->loadModel($id);
 		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png'));
-		echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
-		echo("<br>".Yii::app()->basePath);
-		/*
+		/*echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
+		echo("<br>".Yii::app()->basePath);*/
+		
 		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').'/../'.$image_url);		
 		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
 		echo '<img '.$attr.' src="'.$image_url.'" alt>';
 		echo '<input type="hidden" name="producto_id" value="'.$id.'">';
 		echo '<input type="hidden" name="color_id" value="'.$_GET['color_id'].'">';
 		echo '</div>';
-		 * */
+		 
 	}
 	/**
 	 * Creates a new model.

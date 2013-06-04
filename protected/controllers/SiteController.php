@@ -22,7 +22,8 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','top','error','contact','login','logout'), 
+				'actions'=>array('index','top','error','contact','login','logout','acerca_de','condiciones_de_envios_y_encomiendas',
+				'formas_de_pago','politicas_y_privacidad','terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes','equipo_personaling'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -56,6 +57,46 @@ class SiteController extends Controller
 				'class'=>'CViewAction',
 			),
 		);
+	}
+	
+	public function actionEquipo_personaling()
+	{
+		$this->render('about');
+	}
+	
+	public function actionPoliticas_y_privacidad()
+	{
+		$this->render('about');
+	}
+	
+	public function actionTerminos_de_servicio()
+	{
+		$this->render('about');
+	}
+
+	public function actionPoliticas_de_devoluciones()
+	{
+		$this->render('about');
+	}
+
+	public function actionPreguntas_frecuentes()
+	{
+		$this->render('about');
+	}	
+
+	public function actionFormas_De_Pago()
+	{
+		$this->render('about');
+	}
+
+	public function actionCondiciones_De_Envios_y_Encomiendas()
+	{
+		$this->render('about');
+	}
+	
+	public function actionAcerca_De()
+	{
+		$this->render('about');
 	}
 
 	/**

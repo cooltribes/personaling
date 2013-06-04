@@ -80,6 +80,7 @@ class Look extends CActiveRecord
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
+			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'),
 		);
 	} 
  

@@ -83,6 +83,7 @@ class LookController extends Controller
 		 $look = Look::model()->findByPk($id);
 		 $imagenes = array();
 		 $i = 0;
+		 
 		 foreach($look->lookhasproducto as $lookhasproducto){
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
@@ -94,6 +95,23 @@ class LookController extends Controller
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;
 					$imagenes[$i]->height = $lookhasproducto->height;
+			} 
+			//else {
+			//	echo $lookhasproducto->producto->id;
+			//}
+			$i++;
+		 }	
+		 
+		 foreach($look->lookHasAdorno as $lookhasadorno){
+		 	
+		 	$image_url = $lookhasadorno->adorno->getImageUrl(array('ext'=>'png'));
+			 
+		 	if (isset($image_url)){
+				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
+					$imagenes[$i]->top = $lookhasadorno->top;
+					$imagenes[$i]->left = $lookhasadorno->left;
+					$imagenes[$i]->width = $lookhasadorno->width;
+					$imagenes[$i]->height = $lookhasadorno->height;
 			} 
 			//else {
 			//	echo $lookhasproducto->producto->id;

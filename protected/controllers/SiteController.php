@@ -61,7 +61,7 @@ class SiteController extends Controller
 	
 	public function actionEquipo_personaling()
 	{
-		$this->render('about');
+		$this->render('equipo_personaling');
 	}
 	
 	public function actionPoliticas_y_privacidad()

@@ -2,9 +2,134 @@
 
 class MarcaController extends Controller
 {
+	
+	/**
+	 * @return array action filters
+	 */
+	public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+		);
+	}
+
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index'),
+				'users'=>array('*'),
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('index'),
+				'users'=>array('@'),
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('admin','crear'),
+				'users'=>array('admin'),
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			), 
+		);
+	}
+	
+	public function actionAdmin()
+	{
+		$marca = new Marca; 
+
+		if (isset($_POST['query']))
+		{
+			//echo($_POST['query']);	
+			$marca->nombre = $_POST['query'];
+		}
+		
+		$dataProvider = $marca->search();
+		$this->render('admin',
+			array('marca'=>$marca,
+			'dataProvider'=>$dataProvider,
+		));	
+	}
+	
 	public function actionIndex()
 	{
 		$this->render('index');
+	}
+
+	public function actionCrear($id = null)
+	{
+		if(!$id){
+			$marca = new Marca;
+		}else{
+			$marca = Marca::model()->findByPk($id);
+		}
+		
+		if(isset($_POST['Marca'])){
+			$marca->attributes = $_POST['Marca'];
+			//$marca->urlImagen = $_POST['Marca']['Urlimagen'];
+		
+			echo($_POST['url']);
+		
+			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/marca/'))
+				{
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/marca/',0777,true);
+	 			}
+			
+			$rnd = rand(0,9999);  
+			$images=CUploadedFile::getInstanceByName('url');
+			
+			var_dump($images);
+			echo "<br>".count($images);
+			if (isset($images) && count($images) > 0) {
+				$marca->urlImagen = "{$rnd}-{$images}";
+				
+				$marca->save();
+		        
+		        $nombre = Yii::getPathOfAlias('webroot').'/images/marca/'.$marca->id;
+		        $extension_ori = ".jpg";
+				$extension = '.'.$images->extensionName;
+		       
+		       	if ($images->saveAs($nombre . $extension)) {
+		
+		       		$marca->urlImagen = $marca->id .$extension;
+		            $marca->save();
+									
+							
+					Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
+
+					$image = Yii::app()->image->load($nombre.$extension);
+					$image->resize(150, 150);
+					$image->save($nombre.'_thumb'.$extension);
+					
+					if($extension == '.png'){
+						$image = Yii::app()->image->load($nombre.$extension);
+						$image->resize(150, 150);
+						$image->save($nombre.'_thumb.jpg');
+					}	
+					
+				}
+				else {
+		        	$marca->delete();
+				}
+		        
+			}else{
+		    	if($marca->save()){
+		        	Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
+		        }else{
+		        	Yii::app()->user->setFlash('error',UserModule::t("Elemento gráfico no pudo ser guardado."));
+		        }
+			}// isset
+			
+		                $this->redirect(array('admin'));
+			}
+		
+		
+		$this->render('crear',array('marca'=>$marca));
 	}
 
 	// Uncomment the following methods and override them if needed

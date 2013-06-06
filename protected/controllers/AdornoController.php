@@ -56,7 +56,7 @@ class AdornoController extends Controller
 		if(!$id){
 			$adorno = new Adorno;
 		}else{
-			$adorno = Adorno::model()->findByPk($id);;
+			$adorno = Adorno::model()->findByPk($id);
 		}
 		
 		if(isset($_POST['Adorno'])){

@@ -61,42 +61,42 @@ class SiteController extends Controller
 	
 	public function actionEquipo_personaling()
 	{
-		$this->render('about');
+		$this->render('equipo_personaling');
 	}
 	
 	public function actionPoliticas_y_privacidad()
 	{
-		$this->render('about');
+		$this->render('politicas_y_privacidad');
 	}
 	
 	public function actionTerminos_de_servicio()
 	{
-		$this->render('about');
+		$this->render('terminos_de_servicio');
 	}
 
 	public function actionPoliticas_de_devoluciones()
 	{
-		$this->render('about');
+		$this->render('politicas_de_devoluciones');
 	}
 
 	public function actionPreguntas_frecuentes()
 	{
-		$this->render('about');
+		$this->render('preguntas_frecuentes');
 	}	
 
-	public function actionFormas_De_Pago()
+	public function actionFormas_de_pago()
 	{
-		$this->render('about');
+		$this->render('formas_de_pago');
 	}
 
 	public function actionCondiciones_De_Envios_y_Encomiendas()
 	{
-		$this->render('about');
+		$this->render('condiciones_de_envios_y_encomiendas');
 	}
 	
 	public function actionAcerca_De()
 	{
-		$this->render('about');
+		$this->render('acerca_de');
 	}
 
 	/**

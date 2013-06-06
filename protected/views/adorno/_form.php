@@ -1,6 +1,6 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'adorno-form',
-	'enableAjaxValidation'=>true,
+	'enableAjaxValidation'=>false,
 	'enableClientValidation'=>true,
 	'type'=>'horizontal',
 	'htmlOptions' => array(

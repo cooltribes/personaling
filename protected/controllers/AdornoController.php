@@ -117,11 +117,11 @@ class AdornoController extends Controller
 		                }
 		            //}// foreach
 		        }else{
-		        	//if($adorno->save()){
-		        		//Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
-		        	//}else{
+		        	if($adorno->save()){
+		        		Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
+		        	}else{
 		        		Yii::app()->user->setFlash('error',UserModule::t("Elemento gráfico no pudo ser guardado."));
-		        	//}
+		        	}
 		        }// isset
 			
 			

@@ -334,7 +334,7 @@ public function actionCategorias(){
                 else {
                     //$this->redirect(array('view','id'=>$model->id));
 				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Tu look se a publicado."));	
+				Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha publicado."));	
                 }
             } 
 		}	

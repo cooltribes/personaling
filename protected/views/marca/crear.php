@@ -85,6 +85,13 @@ $this->breadcrumbs=array(
             	
                 <ul class="nav nav-stacked nav-tabs margin_top">
                    <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
+                   <?php  
+                   if(!$marca->isNewRecord){
+		          	  echo "<li>";
+					  echo CHtml::link('<i class="icon-trash"> </i> Eliminar', CController::createUrl('marca/delete',array('id'=>$marca->id)), array('title'=>'Eliminar'));
+					  echo "</li>";
+		          }
+                   ?>
                 </ul>
             </div>
         </div>

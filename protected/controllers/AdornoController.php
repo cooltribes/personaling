@@ -68,7 +68,7 @@ class AdornoController extends Controller
 	   				mkdir(Yii::getPathOfAlias('webroot').'/images/adorno/',0777,true);
 	 			}
 			
-			$rnd = rand(0,9999);  // generate random number between 0-9999
+			//$rnd = rand(0,9999);  // generate random number between 0-9999
            //$adorno->attributes=$_POST['Banner'];
  
             $images=CUploadedFile::getInstance($adorno,'path_image');
@@ -77,7 +77,7 @@ class AdornoController extends Controller
 			if (isset($images) && count($images) > 0) {
 		            //foreach ($images as $image => $pic) {
 						
-							$adorno->path_image = "{$rnd}-{$images}";
+							//$adorno->path_image = "{$rnd}-{$images}";
 						
 						
 						//var_dump($adorno);
@@ -94,7 +94,7 @@ class AdornoController extends Controller
 							
 							if($extension == '.png'){
 								$image = Yii::app()->image->load($nombre.$extension);
-								$image->save($nombre.'jpg');
+								//$image->save($nombre.'jpg');
 							}else{
 								$image = Yii::app()->image->load($nombre.$extension);
 								$image->save($nombre.'.png');
@@ -106,6 +106,11 @@ class AdornoController extends Controller
 							$image = Yii::app()->image->load($nombre.$extension);
 							$image->resize(130, 130);
 							$image->save($nombre.'_thumb'.$extension);
+							if($extension == '.png'){
+								$image = Yii::app()->image->load($nombre.$extension);
+								$image->resize(130, 130);
+								$image->save($nombre.'_thumb.jpg');
+							}
 														
 		                } else {
 		                    $adorno->delete();

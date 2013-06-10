@@ -149,9 +149,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						"email" => $user->email
 					),
 					"back_urls" => array(
-						"success" => 'http://personaling.com/site/bolsa/successMP',
-						"failure" => 'http://personaling.com/site/bolsa/successMP',
-						"pending" => 'http://personaling.com/site/bolsa/successMP'
+						"success" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP',
+						"failure" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP',
+						"pending" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP'
 					),
 				);
 				$preferenceResult = $mp->create_preference($preference);

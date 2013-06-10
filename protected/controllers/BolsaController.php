@@ -712,7 +712,7 @@ class BolsaController extends Controller
 					$orden = Orden::model()->findByAttributes(array('id'=>$_POST['idOrden']));
 				}
 					
-				$orden->estado = 2;	// se recibió los datos de pago por transferencia			 
+				$orden->estado = 2;	// se recibió los datos de pago por transferencia
 				
 				if($orden->save())
 				{
@@ -726,6 +726,7 @@ class BolsaController extends Controller
 					
 					if($estado->save())
 					{
+						Yii::app()->user->setFlash('success', 'Hemos recibido tu pago y está en espera de confirmación');
 						echo "ok";	
 					}	
 					

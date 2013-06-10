@@ -104,12 +104,24 @@ class OrdenController extends Controller
 	
 	public function actionValidar()
 	{
+		// Elementos para enviar el correo, depende del estado en que quede la orden
+		$message            = new YiiMailMessage;
+		$message->view = "mail_template";
+		
+		$detalle = Detalle::model()->findByPk($_POST['id']);
+		$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
+		
+		$user = User::model()->findByPk($orden->user_id);
+		//$subject = 'Recupera tu contraseña de Personaling';
+		//$body = '<h2>Has solicitado cambiar tu contraseña de Personaling.</h2> Para recibir una nueva contraseña haz clic en el seiguiente link:<br/><br/> '.$activation_url;
+		
+		
 		if($_POST['accion']=="aceptar")
 		{
-			$detalle = Detalle::model()->findByPk($_POST['id']);
+			
 			$detalle->estado = 1; // aceptado
 			
-			$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
+			
 	
 			if($detalle->save()){
 				/*
@@ -124,6 +136,10 @@ class OrdenController extends Controller
 					$orden->estado = 3;
 					
 					if($orden->save()){
+						// Subject y body para el correo
+						$subject = 'Pago aceptado';
+						$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
+						
 						$usuario = Yii::app()->user->id;
 						
 						$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
@@ -143,6 +159,8 @@ class OrdenController extends Controller
 								$excede = $detalle->monto - $orden->total;
 								$desc->total = $excede;							
 								$desc->save();
+								// Cambio el body del correo para agregar el saldo que sobra
+								$body .= 'Tienes disponible un saldo a favor de '.$excede.' Bs.';
 							}
 						}
 						else					
@@ -156,7 +174,7 @@ class OrdenController extends Controller
 							$balance->total = $excede;
 							
 							$balance->save();
-								
+							$body .= 'Tienes disponible un saldo a favor de '.$excede.' Bs.';
 						} // si es mayor hace el balance
 						
 													
@@ -195,6 +213,8 @@ class OrdenController extends Controller
 								
 								$orden->estado = 3; // aprobado el pago
 								$orden->save();
+								$subject = 'Pago aceptado';
+								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 								$estado = new Estado;
@@ -216,6 +236,8 @@ class OrdenController extends Controller
 								
 								$orden->estado = 3;
 								$orden->save();
+								$subject = 'Pago aceptado';
+								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 								$estado = new Estado;
@@ -234,6 +256,8 @@ class OrdenController extends Controller
 								
 								$orden->estado = 7;// aun le faltó
 								$orden->save();
+								$subject = 'Pago insuficiente';
+								$body = 'El pago que realizaste no cubre el monto del pedido, faltan '.$valor.' Bs para pagar toda la orden.<br/><br/> ';
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 								$estado = new Estado;
@@ -260,13 +284,15 @@ class OrdenController extends Controller
 					
 					$orden->estado = 7;
 					if($orden->save()){
-						
 						$falta = $detalle->monto - $orden->total;
 							
 						$balance = new Balance;
 						$balance->orden_id = $orden->id;
 						$balance->user_id = $orden->user_id;
 						$balance->total = $falta;
+						
+						$subject = 'Pago insuficiente';
+						$body = 'El pago que realizaste no cubre el monto del pedido, faltan '.($falta*-1).' Bs para pagar toda la orden.<br/><br/> ';
 								
 						if($balance->save())
 						{
@@ -291,7 +317,6 @@ class OrdenController extends Controller
 				}	
 							
 			}// detalle
-					
 		}
 		else if($_POST['accion']=="rechazar")
 		{
@@ -303,6 +328,8 @@ class OrdenController extends Controller
 			
 			if($detalle->save()){
 				if($orden->save()){
+					$subject = 'Pago rechazado';
+					$body = 'El pago que realizaste fue rechazado. Por favor procesa el pago nuevamente a través del sistema.<br/><br/> ';
 					
 					$usuario = Yii::app()->user->id; 
 						
@@ -321,7 +348,12 @@ class OrdenController extends Controller
 				}
 			}
 		}
-
+		$params              = array('subject'=>$subject, 'body'=>$body);
+		$message->subject    = $subject;
+		$message->setBody($params, 'text/html');                
+		$message->addTo($user->email);
+		$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+		Yii::app()->mail->send($message);
 	}
 
 	/*

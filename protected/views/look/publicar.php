@@ -81,6 +81,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <!--[if lte IE 7]>
             <label class="control-label required">Titulo del look <span class="required">*</span></label>
 <![endif]-->
+		¿Qué nombre le pondrías a este look? 
           <div class="controls">
              <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45)); ?>
              <?php echo $form->error($model,'title'); ?>
@@ -90,8 +91,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <!--[if lte IE 7]>
             <label class="control-label required">Descripción del look <span class="required">*</span></label>
 <![endif]-->
+         Escribe una descripción para este look
           <div class="controls">
-			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50,'class'=>'span5')); ?>
 			<?php echo $form->error($model,'description'); ?>
           </div>
         </div>
@@ -179,7 +181,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <?php echo CHtml::hiddenField('categorias'); ?>
         </div>
         <hr/>
-        <h4> ¿Que estilo se adapta a este look: atrevido/ conservador?</h4>
+        <h4> ¿Que estilo se adapta a este look?</h4>
         
         <div class="control-group">
           <div class="controls">
@@ -202,7 +204,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <div id="div_tipo">
         <h4>Escoge al tipo de usuaria que favorece</h4>
         <div class="control-group">
-          <label class="control-label required">Condición Física:</label>
+          <label class="control-label required">¿A qué tipo de cuerpo le favorece más?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -215,7 +217,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label required">Color de Cabello:</label>
+          <label class="control-label required">¿Con qué color de cabello quedaría mejor?</label>
           <div class="controls">
           		
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
@@ -230,7 +232,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label required">Altura:</label>
+          <label class="control-label required">¿Cuánto debe medir la mujer que use este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -243,7 +245,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label required">Color de Ojos:</label>
+          <label class="control-label required">¿Con qué color de ojos queda mejor?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -256,7 +258,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label required">Forma de Cuerpo :</label>
+          <label class="control-label required">¿Qué tipo de cuerpo debería usarlo?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -269,7 +271,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label required">Color de Piel:</label>
+          <label class="control-label required">¿Qué color de piel se adapta mejor a este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(

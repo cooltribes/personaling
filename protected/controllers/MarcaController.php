@@ -30,7 +30,7 @@ class MarcaController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','crear'),
+				'actions'=>array('admin','crear','delete'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -130,6 +130,20 @@ class MarcaController extends Controller
 		
 		
 		$this->render('crear',array('marca'=>$marca));
+	}
+
+
+
+	public function actionDelete($id)
+	{
+		$marca = Marca::model()->findByPk($id);
+		
+		if($marca->delete()){
+			Yii::app()->user->setFlash('success',UserModule::t("Marca eliminada exitosamente."));
+		}else{
+			Yii::app()->user->setFlash('error',UserModule::t("Marca no pudo ser eliminada."));
+		}
+		$this->redirect(array('admin'));		
 	}
 
 	// Uncomment the following methods and override them if needed

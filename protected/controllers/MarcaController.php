@@ -55,6 +55,7 @@ class MarcaController extends Controller
 			'dataProvider'=>$dataProvider,
 		));	
 	}
+
 	
 	public function actionIndex()
 	{

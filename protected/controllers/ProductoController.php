@@ -445,7 +445,7 @@ class ProductoController extends Controller
 		$datos=$datos."<a href='delete/".$producto->id."' title='eliminar' class='btn'><i class='icon-trash'></i> Eliminar</a>";
 		$datos=$datos."<a href='#' title='Exportar' class='btn'><i class='icon-share-alt'></i> Exportar</a>";
 		$datos=$datos."<a href='create/".$producto->id."' title='editar' class='btn'><i class='icon-edit'></i> Editar</a>";
-		$datos=$datos."<a href='' title='ver' class='btn btn-info' target='_blank'><i class='icon-eye-open icon-white'></i> Ver</a> ";
+		$datos=$datos."<a href='detalle/".$producto->id."' title='ver' class='btn btn-info'><i class='icon-eye-open icon-white'></i> Ver</a> ";
 		$datos=$datos."</div>";	
 		$datos=$datos."</div>";	
 		

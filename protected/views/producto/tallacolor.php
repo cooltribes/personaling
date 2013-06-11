@@ -46,7 +46,7 @@ $this->breadcrumbs=array(
               </div>
               </div>
             <div class="control-group">
-              <label class="control-label required">Vestidos y Trajes:</label>
+              <label class="control-label required">Ropa</label>
               <div class="controls">
                 <!-- 
                 <div class="btn-group" data-toggle="buttons-checkbox">
@@ -89,23 +89,27 @@ $this->breadcrumbs=array(
 				        array('label'=>'40','url'=>'#5'),
 				        array('label'=>'42','url'=>'#6'),
 				        array('label'=>'44','url'=>'#7'),
+				        array('label'=>'46','url'=>'#26'),
 				    ),
 				)); ?>
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label required">Vestidos y Trajes:</label>
+              <label class="control-label required">Ropa</label>
               <div class="controls">
                 
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => array(
+					    array('label'=>'2XS','url'=>'#24'),
 				        array('label'=>'XS','url'=>'#9'),
 				        array('label'=>'S','url'=>'#10'),
 				        array('label'=>'M','url'=>'#11'),
 				        array('label'=>'L','url'=>'#12'),
 				        array('label'=>'XL','url'=>'#13'),
+				        array('label'=>'2XL','url'=>'#23'),
+				        array('label'=>'3XL','url'=>'#25'),
 				    ),
 				)); ?>
               </div>
@@ -178,7 +182,7 @@ $this->breadcrumbs=array(
               <label class="control-label required">Color</label>
               <div class="controls">
               	<?php
-              	 $colores = Color::model()->findAll();
+              	 $colores = Color::model()->findAll(array('order'=>'valor')); // ordena alfeticamente por nombre
 				 foreach($colores as $i => $row){
 					$data[$i]['text']= $row->valor;
 					$data[$i]['id'] = $row->id;

@@ -79,6 +79,34 @@ echo $num;
 		});",CClientScript::POS_READY
 	);
 	
+	// Codigo para actualizar el list view cuando presionen ENTER
+	
+	Yii::app()->clientScript->registerScript('query',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		
+		$(document).keypress(function(e) {
+		    if(e.which == 13) {
+		        ajaxRequest = $('#query').serialize();
+				clearTimeout(ajaxUpdateTimeout);
+				
+				ajaxUpdateTimeout = setTimeout(function () {
+					$.fn.yiiListView.update(
+					'list-auth-items',
+					{
+					type: 'POST',	
+					url: '" . CController::createUrl('producto/admin') . "',
+					data: ajaxRequest}
+					
+					)
+					},
+			
+			300);
+			return false;
+		    }
+		});",CClientScript::POS_READY
+	);	
+	
 	?>	
 		
 	</div>

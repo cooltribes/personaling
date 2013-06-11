@@ -109,15 +109,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 ?>
 <!-- <div class="alert alert-error margin_top padding_top">Estas en el sitio de Pruebas T1</div> -->
 <div class="container" id="page">
-    <?php if(isset($this->breadcrumbs)):?>
-    <?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+  <?php if(isset($this->breadcrumbs)):?>
+  <?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 			'links'=>$this->breadcrumbs,
 		)); ?>
-    <!-- breadcrumbs -->
-    <?php endif?>
-    <?php echo $content; ?>
-    
-</div>
+  <!-- breadcrumbs -->
+  <?php endif?>
+  <?php echo $content; ?> </div>
 <!-- page -->
 
 <div id="wrapper_footer">
@@ -126,33 +124,29 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
       <div class="span3">
         <h3>Links rápidos</h3>
         <ul>
-          <li> Lorem ipsum dolor </li>
-          <li>Sit amet, consectetur  elit.</li>
-          <li>Curabitur feugiat porta risus </li>
-          <li>S elementum. Cras egestas</li>
-          <li><a href="/site/site/contact" title="Contactanos">Contáctanos</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/formas_de_pago" title="Formas de Pago">Formas de Pago</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/condiciones_de_envios_y_encomiendas" title="Condiciones de Envíos y Encomiendas">Condiciones de Envíos y Encomiendas</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Politicas de Devoluciones">Politicas de Devoluciones</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="politicas y privacidad">Politicas y Privacidad</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Terminos de Servicio">Terminos de Servicio</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
         </ul>
       </div>
       <div class="span5">
         <h3> Sobre Personaling </h3>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat porta risus a elementum. Cras egestas leo eget massa facilisis sit amet dap nis </p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat porta risus a elementum. Cras egestas leo eget massa facilisis sit amet dap nis </p>
+        <p class="lead">Personaling, es un personal shopper digital, un portal de moda y belleza en donde las usuarias se dan de alta, definen su perfil físico y sus preferencias de estilo para descubrir looks recomendados por expert@s en moda (personal shoppers, celebrities, estilistas, fashionistas), podrán comprar el look completo en un click y recibirlo en su domicilio</p>
       </div>
       <div class="span3 offset1">
         <h3>Siguenos! </h3>
-        <div class="textwidget">  <a title="Personaling en facebook" href="https://www.facebook.com/Personaling"><img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a>
-       <a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a>
-  <a title="pinterest" href="https://pinterest.com/personaling/"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a>      
-  <a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a>        
+        <div class="textwidget"> <a title="Personaling en facebook" href="https://www.facebook.com/Personaling"><img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="pinterest" href="https://pinterest.com/personaling/"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a> </div>
       </div>
-      </div>
-</div>
-      <hr/>
-<div class="row">
-
-      <div class="span12 text_align_center creditos">Personaling &reg; <?php echo date("Y"); ?> | Todos los derechos reservados
-      <br/>Cooltribes.com
-       </div>
+    </div>
+    <hr/>
+    <div class="row">
+      <div class="span12 text_align_center creditos">Personaling &reg; <?php echo date("Y"); ?> | Todos los derechos reservados <br/>
+        Cooltribes.com </div>
     </div>
   </footer>
 </div>

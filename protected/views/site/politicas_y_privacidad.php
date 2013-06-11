@@ -3,81 +3,28 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Políticas de privacidad';
 $this->breadcrumbs=array(
-	'Contact',
+	'Políticas de privacidad',
 );
 ?>
 
-<h1>Ponte en contacto con nosotros</h1>
-
-<?php if(Yii::app()->user->hasFlash('contact')): ?>
-
-<div class="flash-success">
-	<?php echo Yii::app()->user->getFlash('contact'); ?>
+<div class="row">
+  <div class="span8">
+    <div class="box_1 bg_mancha_1 ">
+      <div class="page-header">
+        <h1>Políticas de privacidad</h1>
+      </div>
+      <p class="lead">Esta es la política de privacidad de nuestra página <a href="http://www.personaling.com">www.personaling.com</a> al dar de alta su registro está aceptando automáticamente cada uno de sus apartados. </p><p>Si por las legislaciones actuales necesitamos hacer algún cambio, cada uno de nuestros usuarios serán notificados vía correo electrónico. </p>
+      <ol>
+        <li>La información que facilite a la hora de registro será debidamente guardada en un fichero de datos destinado solamente al uso de nuestra plataforma y no será facilitada a terceros sin su previa autorización. </li>
+        <li>Si hace conexión con alguna red social, es posible que tengamos acceso a alguna información como fotografías, fecha de nacimiento, teléfono, etc. Será tratada esta información de la misma manera que en el punto uno (1)</li>
+        <li>Sus compras serán cuantificadas para uso interno de elaboración de apartados como &ldquo;Más vendidos&rdquo; o &ldquo;Más buscados&rdquo; y serán utilizadas dentro de grandes muestras para nuestra promoción. </li>
+        <li>Personaling.com cuenta con un sistema de protección de datos y seguridad en red que protegerá sus datos bancarios y personales.  </li>
+      </ol>
+    </div>
+  </div>
+   <!-- SIDEBAR ON -->
+  <div class="span4"> <?php echo $this->renderPartial('_sidebar'); ?> </div>
+  <!-- SIDEBAR ON --> 
 </div>
-
-<?php else: ?>
-
-<p>
-Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por favor contáctanos a través del siguiente formulario:</p>
-
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'contact-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
-	),
-)); ?>
-
-
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Nombre'); ?>
-		<div class="controls"><?php echo $form->textField($model,'name'); ?>
-		<?php echo $form->error($model,'name'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Correo electrónico'); ?>
-		<div class="controls"><?php echo $form->textField($model,'email'); ?>
-		<?php echo $form->error($model,'email'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Asunto'); ?>
-		<div class="controls"><?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'subject'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Mensaje'); ?>
-	<div class="controls">	<?php echo $form->textArea($model,'body',array('rows'=>4, 'cols'=>40)); ?>
-		<?php echo $form->error($model,'body'); ?></div>
-	</div>
-
-	<?php if(CCaptcha::checkRequirements()): ?>
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'verifyCode'); ?>
-		<div>
-		<?php $this->widget('CCaptcha'); ?>
-		<?php echo $form->textField($model,'verifyCode'); ?>
-		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
-		<br/>Letters are not case-sensitive.</div>
-		<?php echo $form->error($model,'verifyCode'); ?>
-	</div>
-	<?php endif; ?>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Submit'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
-
-<?php endif; ?>

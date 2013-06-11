@@ -1,6 +1,5 @@
 <?php
 /* @var $this BolsaController */
-
 $this->breadcrumbs=array(
 	'Bolsa',
 );

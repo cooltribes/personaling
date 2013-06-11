@@ -156,7 +156,7 @@
 		}
 ?>
             <hr/>
-            <label class="checkbox"> <input type="checkbox"> Al hacer clic en "Crear Cuenta" estas indicando que has leido y aceptado los <a href="#" title="terminos y condiciones">Terminos de Servicio</a> y la <a href="#" title="Politicas de Privacidad">Politica de Privacidad</a>. </label>
+            <label class="checkbox"> <input type="checkbox"> Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. </label>
 
 	<div class="form-actions"> 
 		

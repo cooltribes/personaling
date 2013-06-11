@@ -3,81 +3,33 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Acerca de Personaling';
 $this->breadcrumbs=array(
-	'Contact',
-);
-?>
+	'Acerca de Personaling',
+);?>
 
-<h1>Ponte en contacto con nosotros</h1>
-
-<?php if(Yii::app()->user->hasFlash('contact')): ?>
-
-<div class="flash-success">
-	<?php echo Yii::app()->user->getFlash('contact'); ?>
+<div class="row">
+  <div class="span12">
+    <div class="box_1 bg_mancha_1 ">
+      <div class="padding_medium">
+        <div class="page-header">
+          <h1>Acerca de nosotros: Personaling</h1>
+        </div>
+        <div class="row">
+          <div class="span5">
+            <p class="lead color1">¡Tu personal shopper digital!</p>
+            <p >Personaling.com es una plataforma de comercio online que ofrece el servicio gratuito de Personal Shoppers para todas aquellas chicas que quieren poseer un estilo increíble. Contamos con alianzas estratégicas con primeras marcas como MNG, Desigual, Aldo, SuiteBlanco, Women Secret y muchas más. </p>
+            <p>Nuestra principal idea es crear un universo lleno de moda y educar el ojo de todas las venezolanas a nivel de estilo. Contamos con Personal Shoppers experimentados que combinan prendas de las colecciones más buscadas para crear looks increíbles para nuestras compradoras. </p>
+            <p>Dirigido al público venezolano, Personaling.com desea abrir el camino del comercio de moda online en nuestro país. </p>
+          </div>
+          <div class="span5">
+            <iframe width="560" height="315" src="http://www.youtube.com/embed/xNj80lfwpEs" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<?php else: ?>
+<!-- form --> 
 
-<p>
-Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por favor contáctanos a través del siguiente formulario:</p>
-
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'contact-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
-	),
-)); ?>
-
-
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Nombre'); ?>
-		<div class="controls"><?php echo $form->textField($model,'name'); ?>
-		<?php echo $form->error($model,'name'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Correo electrónico'); ?>
-		<div class="controls"><?php echo $form->textField($model,'email'); ?>
-		<?php echo $form->error($model,'email'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Asunto'); ?>
-		<div class="controls"><?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'subject'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Mensaje'); ?>
-	<div class="controls">	<?php echo $form->textArea($model,'body',array('rows'=>4, 'cols'=>40)); ?>
-		<?php echo $form->error($model,'body'); ?></div>
-	</div>
-
-	<?php if(CCaptcha::checkRequirements()): ?>
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'verifyCode'); ?>
-		<div>
-		<?php $this->widget('CCaptcha'); ?>
-		<?php echo $form->textField($model,'verifyCode'); ?>
-		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
-		<br/>Letters are not case-sensitive.</div>
-		<?php echo $form->error($model,'verifyCode'); ?>
-	</div>
-	<?php endif; ?>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Submit'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
-
-<?php endif; ?>

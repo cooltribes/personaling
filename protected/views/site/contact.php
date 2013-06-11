@@ -3,9 +3,9 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Contacto';
 $this->breadcrumbs=array(
-	'Contact',
+	'Contacto',
 );
 ?>
 

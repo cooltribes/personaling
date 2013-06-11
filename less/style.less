@@ -493,12 +493,15 @@ src: url('../fonts/entypo.woff'),
 		width: 320px;
 		font-weight:300;
 		font-size:1.3em;
+		.transition_all;
+		&:hover{		background:rgba(148,227,104,.5);}
 		h1{ 
 			font-weight:400;
 			.CAPS;
 			}
 		.btn{
-			margin-bottom:1em;}
+			margin-bottom:1em;
+			font-size:1.2em;}
 	}
 	.box_home_2{
 		background: none repeat scroll 0 0 rgba(236, 156, 207, 0.3);
@@ -537,12 +540,24 @@ src: url('../fonts/entypo.woff'),
 			font-weight:400;}
 	}
 	.box_home_4{
-	
-		bottom: -20px;
+		color:#686536;
+		background-color: rgba(241, 249, 115, 0.5);
+		.border_radius(@radius:260px);
+		bottom: -3px;
+		color: #686536;
+		font-size: 1.3em;
+		height: 60px;
+		line-height: 1em;
+		padding: 50px 15px 30px;
 		position: absolute;
-		right: 260px;
-		
-			
+		right: 70px;
+		text-transform: uppercase;
+		width: 110px;
+		.transition_all;
+		&:hover{background-color: rgba(241, 249, 115, 0.8);}
+			a{
+				color:#686536;
+			 }
 		}
 
 	
@@ -1494,6 +1509,18 @@ ul.yiiPager .last
     -o-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
     -webkit-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
 }
+
+
+
+
+/*---------------- ESTATICAS ON ------------*/
+
+.bg_mancha_1{
+	background: url(../images/bg_mancha_acuarela.jpg) no-repeat scroll -302px -360px transparent;
+	}
+	
+
+/*---------------- ESTATICAS OFF ------------*/
 
 
 

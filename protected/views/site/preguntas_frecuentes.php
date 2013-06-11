@@ -3,81 +3,43 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Preguntas Frecuentes';
 $this->breadcrumbs=array(
-	'Contact',
+	'FAQ',
 );
 ?>
 
-<h1>Ponte en contacto con nosotros</h1>
-
-<?php if(Yii::app()->user->hasFlash('contact')): ?>
-
-<div class="flash-success">
-	<?php echo Yii::app()->user->getFlash('contact'); ?>
+<div class="row">
+  <div class="span8">
+    <div class="box_1 bg_mancha_1 ">
+      <div class="page-header">
+        <h1>Preguntas Frecuentes</h1>
+      </div>
+      <h3>¿Cómo funciona Personaling.com? </h3>
+      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>
+      <hr/>
+      <h3>¿Debo pagar por mi envío?</h3>
+      <p>Si, Personaling.com opera sus envíos a través de un operador local (Zoom) y cada envío debe pagarse, las tarifas cambiarán dependiendo del destino final de tu compra. </p>
+      <p>Quiero devolver mi compra ¿Debo hacerlo a través de Zoom?  </p>
+      <p>Para asegurar un mejor servicio recomendamos hacer la devolución a través de nuestro mismo operador local. </p>
+      <hr/>
+      <h3>¿Debo pagar la devolución?</h3>
+      <p>Si, debes pagar por la devolución de tu compra a menos que sea Personaling.com el responsable del deterioro de una de tus prendas o de un mal embalaje que dañara tu compra. </p>
+      <hr/>
+      <h3>¿Tiene Personaling.com tienda física? </h3>
+      <p>Por el momento no, y ¿Para qué? Nada mas fácil que comprar tus marcas favoritas desde la comodidad de tu casa.  </p>
+      <hr/>
+      <h3>¿Puedo elaborar looks? </h3>
+      <p>En Personaling.com estamos abiertos a cualquier opción y creemos que todos podemos agudizar nuestro buen gusto, así si eres muy activo en nuestras redes sociales podremos considerarte un personal shopper honorario. </p>
+      <hr/>
+      <h3>¿Si quiero cambiar algo puedo acercarme a la tienda de las marca directamente? </h3>
+      <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí.  </p>
+      <hr/>
+      <h3>¿Si tengo una queja o sugerencia, a que correo electrónico puedo escribir? </h3>
+      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de <a href="mailto:servicioalcliente@personaling.com">servicioalcliente@personaling.com</a></p>
+    </div>
+  </div>
+   <!-- SIDEBAR ON -->
+  <div class="span4"> <?php echo $this->renderPartial('_sidebar'); ?> </div>
+  <!-- SIDEBAR ON --> 
 </div>
-
-<?php else: ?>
-
-<p>
-Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por favor contáctanos a través del siguiente formulario:</p>
-
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'contact-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
-	),
-)); ?>
-
-
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Nombre'); ?>
-		<div class="controls"><?php echo $form->textField($model,'name'); ?>
-		<?php echo $form->error($model,'name'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Correo electrónico'); ?>
-		<div class="controls"><?php echo $form->textField($model,'email'); ?>
-		<?php echo $form->error($model,'email'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Asunto'); ?>
-		<div class="controls"><?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'subject'); ?></div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'Mensaje'); ?>
-	<div class="controls">	<?php echo $form->textArea($model,'body',array('rows'=>4, 'cols'=>40)); ?>
-		<?php echo $form->error($model,'body'); ?></div>
-	</div>
-
-	<?php if(CCaptcha::checkRequirements()): ?>
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'verifyCode'); ?>
-		<div>
-		<?php $this->widget('CCaptcha'); ?>
-		<?php echo $form->textField($model,'verifyCode'); ?>
-		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
-		<br/>Letters are not case-sensitive.</div>
-		<?php echo $form->error($model,'verifyCode'); ?>
-	</div>
-	<?php endif; ?>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Submit'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
-
-<?php endif; ?>

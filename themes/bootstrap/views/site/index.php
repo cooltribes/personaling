@@ -26,7 +26,7 @@ $this->pageTitle=Yii::app()->name;
           Shopper</span> Digital! </div>
         <div class="box_home_3 hidden-phone"> Registro <br/>
           <span>¡Gratis!</span></div>
-        <div class="box_home_4 hidden-phone"> <a  href="#myModal" role="button" data-toggle="modal"><strong>Video</strong> explicativo</a></div>
+        <div class="box_home_4 hidden-phone"> <a  href="#myModal" role="button" data-toggle="modal">Mira <strong>cómo funciona</strong> aqui</a></div>
       </div>
     </div>
   </div>

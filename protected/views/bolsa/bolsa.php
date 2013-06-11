@@ -175,25 +175,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				}
 				  
                   ?>
-                  <!--
-                  <td><strong>Collar LAI</strong> <br/>
-                    <strong>Color</strong>: azul<br/>
-                    <strong>Talla</strong>: M</td>
-                  <td>Bs. 3500</td>
-                  <td width="8%"><input type="text" maxlength="2" placeholder="Cant." value="10" class="span1"/>
-                    <a href="#" class="btn btn-mini" >Actualizar</a></td>
-                  <td >&times;</td>
-                </tr>
-                <tr>
-                  <td><img src="http://placehold.it/70x70"/ class="margin_bottom"></td>
-                  <td><strong>Reloj La Rochelle</strong> <br/>
-                    <strong>Color</strong>: azul<br/>
-                    <strong>Talla</strong>: M</td>
-                  <td>Bs. 3500</td>
-                  <td><input type="text" maxlength="2" placeholder="Cant." value="4" class="span1"/>
-                    <a href="#" class="btn btn-mini" >Actualizar</a></td>
-                  <td >&times;</td>
-                </tr> -->
+                  
               </tbody>
             </table>
           </div>
@@ -339,7 +321,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               </div>
               <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>
             </div>
-            <p><a href="#">Ver Politicas de Envios y Devoluciones</a></p>
+            <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" target="_blank">Ver Politicas de Envios y Devoluciones</a></p>
             <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
             <hr/>
             <p class="muted"><a href="#" title="vaciar la bolsa de compras">Vaciar la Bolsa de Compras</a> | <a href="../tienda/index" title="seguir comprando">Seguir comprando</a></p>
@@ -393,7 +375,7 @@ else
 				
 				if(data=="NO")
 				{
-					alert("Imposible actualizar. Cantidad mayor a la existencia en inventario."); 
+					alert("Lo sentimos, no es posible actualizar la cantidad. La Cantidad es mayor a la existencia en inventario."); 
 					
 				}
 				

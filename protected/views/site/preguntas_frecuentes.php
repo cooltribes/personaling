@@ -3,15 +3,15 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Preguntas Frecuentes';
 $this->breadcrumbs=array(
 	'FAQ',
 );
 ?>
 
 <div class="row">
-  <div class="span12">
-    <div class="box_1 ">
+  <div class="span8">
+    <div class="box_1 bg_mancha_1 ">
       <div class="page-header">
         <h1>Preguntas Frecuentes</h1>
       </div>
@@ -39,4 +39,7 @@ $this->breadcrumbs=array(
       <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de <a href="mailto:servicioalcliente@personaling.com">servicioalcliente@personaling.com</a></p>
     </div>
   </div>
+   <!-- SIDEBAR ON -->
+  <div class="span4"> <?php echo $this->renderPartial('_sidebar'); ?> </div>
+  <!-- SIDEBAR ON --> 
 </div>

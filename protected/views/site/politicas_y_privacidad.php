@@ -3,15 +3,15 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Políticas de privacidad';
 $this->breadcrumbs=array(
 	'Políticas de privacidad',
 );
 ?>
 
 <div class="row">
-  <div class="span12">
-    <div class="box_1 ">
+  <div class="span8">
+    <div class="box_1 bg_mancha_1 ">
       <div class="page-header">
         <h1>Políticas de privacidad</h1>
       </div>
@@ -24,4 +24,7 @@ $this->breadcrumbs=array(
       </ol>
     </div>
   </div>
+   <!-- SIDEBAR ON -->
+  <div class="span4"> <?php echo $this->renderPartial('_sidebar'); ?> </div>
+  <!-- SIDEBAR ON --> 
 </div>

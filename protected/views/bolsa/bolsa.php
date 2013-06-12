@@ -324,7 +324,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" target="_blank">Ver Politicas de Envios y Devoluciones</a></p>
             <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
             <hr/>
-            <p class="muted"><a href="#" title="vaciar la bolsa de compras">Vaciar la Bolsa de Compras</a> | <a href="../tienda/index" title="seguir comprando">Seguir comprando</a></p>
+            <p class="muted"><a style="cursor: pointer" onclick="limpiar(<?php echo($bolsa->id); ?>)" title="vaciar la bolsa de compras">Vaciar la Bolsa de Compras</a> | <a href="../tienda/index" title="seguir comprando">Seguir comprando</a></p>
           </div>
         </div>
       </div>
@@ -410,5 +410,26 @@ else
 
 	}
 	
+	
+	function limpiar(idBolsa)
+	{
+		//alert(idBolsa);	
+	
+	// llamada ajax 
+     	$.ajax({
+	        type: "post",
+	        url: "limpiar", // action
+	        data: { 'idBolsa':idBolsa }, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{
+					window.location.reload()
+				}
+					
+	       	}//success
+	       })
+
+	}
 	
 </script>

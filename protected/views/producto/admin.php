@@ -137,7 +137,7 @@ $template = '{summary}
     <tr>
       <th rowspan="2" scope="col"><input name="check" type="checkbox" id="todos"></th>
       <th rowspan="2" scope="col">Producto</th>
-      <th rowspan="2" scope="col">Sku</th>
+      <th rowspan="2" scope="col">Referencia</th>
       <th rowspan="2" scope="col">Categoría</th>
       <th rowspan="2" scope="col">Precio (Bs.)</th>
       <th colspan="3" scope="col">Cantidad</th>

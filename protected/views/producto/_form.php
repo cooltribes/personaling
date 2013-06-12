@@ -22,7 +22,7 @@
             <div class="control-group">
                <?php echo $form->labelEx($model,'codigo', array('class' => 'control-label')); ?>
               <div class="controls">
-                <?php echo $form->textField($model,'codigo',array('class'=>'span5','maxlength'=>25, 'placeholder'=>'SKU / Código')); ?>
+                <?php echo $form->textField($model,'codigo',array('class'=>'span5','maxlength'=>25, 'placeholder'=>'Referencia')); ?>
                 <?php echo $form->error($model,'codigo'); ?>
               </div>
             </div>

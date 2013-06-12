@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
+				'actions'=>array('index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -740,5 +740,25 @@ class BolsaController extends Controller
 		
 		
 	}
+
+	/*
+	 * 
+	 * */
+	public function actionLimpiar()
+	{
+		
+		if(isset($_POST['idBolsa'])){	
+		
+			$bolsahas = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$_POST['idBolsa']));
+			
+			foreach($bolsahas as $uno){
+				$uno->delete();
+			}
+			
+			echo "ok";
+		
+		}
+	}
+
 		
 }

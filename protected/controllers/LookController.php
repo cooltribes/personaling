@@ -109,9 +109,16 @@ class LookController extends Controller
 		 foreach($look->lookHasAdorno as $lookhasadorno){
 		 	
 		 	$image_url = $lookhasadorno->adorno->getImageUrl(array('ext'=>'png'));
+
+	  		 
+			//Yii::getPathOfAlias('webroot').'/images/adorno/'.$model->path_image		 
+			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
+
+		 //	if (isset($image_url)){
+		//		 	$imagenes[$i]->path = Yii::app()->getBasePath()."/images/adorno/".$ador->path_image;
 			 
 		 	if (isset($image_url)){
-				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
 					$imagenes[$i]->left = $lookhasadorno->left;
 					$imagenes[$i]->width = $lookhasadorno->width;
@@ -363,6 +370,12 @@ public function actionCategorias(){
 			$model->user_id = Yii::app()->user->id;
 			*/
 			//if($model->save()){
+					
+				// para los valores de los adornos
+				$left_a = explode(',',$_POST['left_a']);
+				$top_a = explode(',',$_POST['top_a']);
+				$width_a = explode(',',$_POST['width_a']);
+				$height_a = explode(',',$_POST['height_a']);		
 				 
 				$colores_id = explode(',',$_POST['colores_id']); 
 				$left = explode(',',$_POST['left']);
@@ -391,6 +404,27 @@ public function actionCategorias(){
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					
+					
+				/* adornos */
+				foreach(explode(',',$_POST['adornos_id']) as $index => $adorno_id){
+						
+					$temporal = LookHasAdorno::model()->findByAttributes(array('look_id'=>$model->id,'adorno_id'=>$adorno_id));
+					
+					if (!isset($temporal)){
+						$lookhasadorno = new LookHasAdorno;
+						$lookhasadorno->look_id = $model->id;
+						$lookhasadorno->adorno_id = $adorno_id;
+						$lookhasadorno->left = $left_a[$index];
+						$lookhasadorno->top = $top_a[$index];
+						$lookhasadorno->width = $width_a[$index];
+						$lookhasadorno->height = $height_a[$index];
+						
+					if (!$lookhasadorno->save())
+					 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');
+					
+					}
+				}
+					
 					 
 				}
 				if ($_POST['tipo']==1){
@@ -398,7 +432,7 @@ public function actionCategorias(){
 					Yii::app()->end();
 				} else {
 					Yii::app()->user->updateSession();
-					Yii::app()->user->setFlash('success',UserModule::t("Tu look se a guardado."));	
+					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha guardado."));	
 					$this->render('create',array(
 							'model'=>$model,
 							'categorias'=>$categorias,

@@ -74,10 +74,8 @@ function getMonthsArray()
 )); ?>        	
           <fieldset>
              	   <legend >Datos de Usuario: </legend>
-            <div class="control-group">
 <?php echo $form->textFieldRow($model,'email',array('class'=>'span5',)); ?>
-            </div>
-            <div class="control-group">
+           <div class="control-group">
               <label for="" class="control-label ">Contraseña </label>
               <div class="controls">
                 <input type="password" placeholder="Contraseña"  class="span5">
@@ -96,8 +94,7 @@ function getMonthsArray()
 			foreach($profileFields as $field) {
 				//echo $field->varname;
 			?>
-<div class="control-group">
-	<div class="controls">
+
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
@@ -112,27 +109,27 @@ function getMonthsArray()
 		} elseif ($field->field_type=="TEXT") {
 			echo $form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 		} elseif ($field->field_type=="DATE") {
-				
+			echo '<div class="control-group">';
+			echo '<div class="controls">';
+
 			echo $form->labelEx($profile,$field->varname);	
-			
 			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
 			echo ' ';
 			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span2'));
 			echo ' ';
 			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
-			echo ' ';
+			echo '</div></div> ';
 			echo $form->hiddenField($profile,$field->varname);
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
-			
+			echo '';
 				 
 				
 		} else {
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
-		}
+		}	
 		 ?>
 		 <?php echo $form->error($profile,$field->varname); ?>
-	</div>
-</div>
+		
 			<?php
 			}
 		}
@@ -267,7 +264,44 @@ function getMonthsArray()
    
     <div class="span3">
       <div class="padding_left"> 
-      	  
+      	  <script > 
+
+function moveScroller() {
+    var move = function() {
+        var st = $(window).scrollTop();
+        var ot = $("#scroller-anchor").offset().top;
+        var s = $("#scroller");
+        if(st > ot) {
+            s.css({
+                position: "fixed",
+                top: "0px"
+            });
+        } else {
+            if(st <= ot) {
+                s.css({
+                    position: "relative",
+                    top: ""
+                });
+            }
+        }
+    };
+    $(window).scroll(move);
+    move();
+}
+</script>
+<div id="sidebar" style="width:270px;"> 
+  <div id="scroller-anchor"></div> 
+  <div id="scroller" style="margin-top:10px; width:270px"> 
+    Scroller Scroller Scroller
+  </div>
+</div>
+
+<script type="text/javascript"> 
+  $(function() {
+    moveScroller();
+  });
+</script> 
+
             	 
             			<?php $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType'=>'button',

@@ -164,6 +164,7 @@ return array(
             // enable cookie-based authentication
             'class' => 'WebUser',
             'loginUrl'=>array('/user/login'),
+            'allowAutoLogin' => true,
         ),		
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors

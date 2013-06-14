@@ -77,7 +77,11 @@ class Adorno extends CActiveRecord
 		return array(
 			array('nombre', 'required'),
 			array('nombre', 'length', 'max'=>50),
-			array('path_image', 'length', 'max'=>255),
+			array('path_image,', 'file', 
+			        'safe' => true,
+			        'types'=> 'jpg, jpeg, png, gif',
+			        'maxSize' => (1024 * 1000), // 1000 Kb
+			),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, path_image', 'safe', 'on'=>'search'),

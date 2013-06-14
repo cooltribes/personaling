@@ -4,7 +4,8 @@ class CampanaController extends Controller
 {
 	public function actionCreate()
 	{
-		$this->render('create');
+		$campana = new Campana;
+		$this->render('create', array('campana'=>$campana));
 	}
 
 	public function actionDelete()

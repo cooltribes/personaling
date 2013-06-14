@@ -49,9 +49,9 @@ $this->breadcrumbs=array(
     	<?php $this->widget('bootstrap.widgets.TbButton', array(
 		    'buttonType' => 'link',
 		    'label'=>'Crear nueva campaña',
-		    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'normal', // null, 'large', 'small' or 'mini'
-		    'url' => '/create',
+		    'url' => 'campana/create',
 		)); ?>
     </div>
   </div>

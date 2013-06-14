@@ -170,6 +170,7 @@ class SiteController extends Controller
 	public function actionContact()
 	{
 		$model=new ContactForm;
+		
 		if(isset($_POST['ContactForm']))
 		{
 			$model->attributes=$_POST['ContactForm'];
@@ -187,6 +188,7 @@ class SiteController extends Controller
 				$this->refresh();
 			}
 		}
+		
 		$this->render('contact',array('model'=>$model));
 	}
 

@@ -89,7 +89,7 @@
 				{ 
 					$colorPredet = $img->color_id;
 					
-					echo CHtml::image($img->getUrl(), "producto", array('id'=>'principal'));
+					echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "producto", array('id'=>'principal'));
 					echo "<!-- FOTO principal OFF -->";
 	          		echo "</div>";	
 	          		echo "</div>";	
@@ -110,7 +110,7 @@
 					{
 						//luego el resto para completar el scroll					
 						
-						echo CHtml::image($img->getUrl(), "Imagen ", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+						echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Imagen ", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
 						
 					}// color
 				}// que no es la primera en el orden
@@ -295,7 +295,7 @@ $('.imagen_principal').zoom({url: imgZ});
 		var source = $('#principal').attr("src");
 		
 		var imgZ = source.replace(".","_orig.");
-		$('.imagen_principal').css('display','block').zoom({url: imgZ});
+		$('.imagen_principal').zoom({url: imgZ});
 	});
 	
    $(".miniaturas_listado_click").click(function(){
@@ -305,7 +305,7 @@ $('.imagen_principal').zoom({url: imgZ});
      	// primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
      	var source = thumbnail;	
 		var imgZ = source.replace(".","_orig.");
-     	$('.imagen_principal').css('display','block').zoom({url: imgZ});
+     	$('.imagen_principal').zoom({url: imgZ});
           
         // cambio de la principal  	
      	$("#principal").fadeOut("slow",function(){
@@ -367,6 +367,16 @@ $('.imagen_principal').zoom({url: imgZ});
 						  	// conseguir cual es el menor en el orden para determinar el color 	
 						  	if( contador == 0) {
 						  		var Url = "<?php echo Yii::app()->baseUrl; ?>" + valor[0];
+						  		
+								var n = Url.split(".");
+								//alert(n[0]); path			  		
+								//alert(n[1]); extension			  		
+						  		
+						  		if(n[1] == 'png')
+						  		{
+						  			Url = n[0] + ".jpg";
+						  		}
+						  		
 						  		zona="<img id='principal' src='"+Url+"' alt'producto'>";
 						  		contador++;
 						  	}
@@ -375,7 +385,7 @@ $('.imagen_principal').zoom({url: imgZ});
 						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + valor[0]+"' alt='Imagen' style='cursor: pointer' >";
 						  	
 						  	objImage = new Image();
-						  	var source = '/site'+valor[0];
+						  	var source = ''+base +valor[0];
 						  	var imgZ = source.replace(".","_orig.");
 						  //	alert(imgZ);			
 							objImage.src = imgZ;
@@ -391,7 +401,7 @@ $('.imagen_principal').zoom({url: imgZ});
 							
 								var source = $('#principal').attr("src");
 								var imgZ = source.replace(".","_orig.");
-								$('.imagen_principal').css('display','block').zoom();
+								$('.imagen_principal').zoom();
 							
 						});
 						  	
@@ -486,7 +496,17 @@ $('.imagen_principal').zoom({url: imgZ});
 		//alert(thumbnail);
 	    
 	    // primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
-	    var source = thumbnail;	
+	    var source = thumbnail;
+	    
+	    var n = source.split(".");
+		//alert(n[0]); 			  		
+		//alert(n[1]); 			  		
+						  		
+		if(n[1] == 'png')
+		{
+			source = n[0] + ".jpg";
+		}
+	    
 		var imgZ = source.replace(".","_orig.");
 	   	$('.imagen_principal').zoom({url: imgZ});
 

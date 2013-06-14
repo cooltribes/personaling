@@ -207,7 +207,8 @@ class AdornoController extends Controller
 		$model = $this->loadModel($id);
 		//$image_url = $model->getImageUrl(array('type'=>'thumb','ext'=>'png')); <--- este caso para cuando exista thumb
 		$image_url = $model->getImageUrl(array('ext'=>'png'));
-		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').$image_url);		
+		
+		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').'/images/adorno/'.$model->path_image);		
 		echo '<div class="new" id="adorno'.$id.'">';
 		echo '<img '.$attr.' src="'.$image_url.'" alt>';
 		echo '<input type="hidden" name="adorno_id" value="'.$id.'">';

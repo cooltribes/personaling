@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 14/05/2013 */ 
+/* Project name: Personaling  al 13/06/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -95,6 +95,12 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 	box-shadow: 0px 0px 4px  rgba(0,0,0,0.2);
 	-moz-box-shadow: 0px 0px 4px  rgba(0,0,0,0.2);
 	-webkit-box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+	}
+.box_shadow_personaling{
+	box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);
+	-moz-box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);
+	-webkit-box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);
+	-ms-box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);
 	}
 .big{ font-size:20px;}
 
@@ -356,22 +362,33 @@ src: url('../fonts/entypo.woff'),
 	padding:0;
     
 }
-.navbar-inverse .brand{
-    position: fixed; background:url(../images/logo_personaling_inverso.png) no-repeat center left;
-}
 
-.navbar-inner{ 
-	background:@color3;
-	border-bottom:1px solid #ddd;
-}
-.bar-fixed-top .navbar-inner, .navbar-fixed-top .navbar-inner{	
+
+#navegacion_principal{
+	 .nav > li > a{ padding:18px 15px;}	 			 
+     .navbar-inner{ 
+			background:@color3;
+			border-bottom:1px solid #ddd;
+		}
+		 
+		.navbar-inner{	
 	border-top:5px solid @color1;
 	margin-top:-2px;
 	min-height:55px;
+		}
+	
+	.navbar-inverse .navbar-inner {
+		 background-color: #1B1B1B;
+  		 background-image: linear-gradient(to bottom, #222222, #111111);
+    	 background-repeat: repeat-x;
+    	 border-color: #252525;
+		
+		.brand{
+			position: fixed; background:url(../images/logo_personaling_inverso.png) no-repeat center left;
+		}
+		
+	}
 }
-
-.navbar .nav > li > a{ padding:18px 15px}
-
 
 .navbar .nav > li > a.btn-danger{
 	.color3;
@@ -391,6 +408,87 @@ src: url('../fonts/entypo.woff'),
 .navbar-inverse .nav > .active > a, .navbar-inverse .nav > .active > a:hover, .navbar-inverse .nav > .active > a:focus{.color3}
 .nav-pills > .active > a, .nav-pills > .active > a:hover{ background-color:@color1;}
 .nav-pills > li > a{ .border_radius(@radius:0)}
+
+#menu_estatico, #scroller-anchor{
+	top:80px;
+	z-index:1029;
+	#scroller{ z-index:1029;}
+	.input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle { 				
+				.border_radius(@radius:0);
+		}
+	.label-warning{ background:@color6}
+	.navbar-inner{ 
+		position:relative;
+		background: #EEEEEE;
+		border-color: #FFFFFF #DDDDDD #DDDDDD;
+		border-top: 1px solid #FFFFFF;
+		box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
+		-ms-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
+		-webkit-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
+		top: 0;	 
+		.border_radius(@radius:0px);
+		.filtros-header{
+			 color: #999999;
+			display: block;
+			font-size: 11px;
+			font-weight: bold;
+			line-height: 20px;
+			margin-top: 6px;
+			padding: 5px 10px 5px 0;
+			text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+			text-transform: uppercase;
+			
+			}
+		 .btn-group{
+			margin-top:0}
+		}
+		
+	.menu_4_columnas{ width:620px; padding-bottom: 1em;}
+	.menu_3_columnas{ width:480px; padding-bottom: 1em;}
+	.menu_2_columnas{ width:320px; padding-bottom: 1em;}
+	.dropdown-menu {
+			a, label{
+				font-size: 0.8em;
+				line-height: 1.3em;
+				padding: 3px 10px;
+					}
+			input[type="radio"], input[type="checkbox"]{
+				margin:0;
+				}
+		
+		
+		.one-column{
+				float:left;
+				width:135px;
+				margin-right:20px;
+					ul{ 
+						float:none;
+						li{
+							list-style:none;
+							a, label{
+								    font-size: 0.8em;
+									line-height: 1.3em;
+									padding: 0;
+								}
+							input[type="radio"], input[type="checkbox"]{
+								margin:0}
+							}
+						.nav-title{
+							        border-bottom: 1px solid #DDDDDD;
+									color: #999999;
+									font-size: 0.7em;
+									font-weight: bold;
+									line-height: 1.3em;
+									list-style: none outside none;
+									margin: 1.5em 0 0.5em;
+									text-transform: uppercase;
+								}
+						}
+				}
+		}
+	
+}
 
 
 /*------------ HEADER OFF --------------*/
@@ -417,6 +515,8 @@ src: url('../fonts/entypo.woff'),
 		color: lighten(@color1,10%);}
 	li{
 		line-height:2em;
+		color:#d3cece;
+
 		}
 	.lead{
 		font-size:1.1em;
@@ -1154,6 +1254,77 @@ ul.yiiPager .last
 
 /*----------- Tienda OFF -------------*/
 
+/*----------- Tienda LOOKS ON -------------*/
+
+#tienda_looks{
+	margin-top:0;
+	
+		article{
+			border: 1px solid #DDDDDD;
+			padding: 0;
+			.margin_bottom;
+			position: relative;
+			.transition_all;
+			
+			&:hover{
+				.box_shadow_personaling;
+				
+				}
+			
+			.share_like{
+				position:absolute;
+				top:1em;
+				right:1em;
+				opacity:.7;
+				.btn-link{ 
+					padding:0; 
+					margin:0;
+					color:#666;}
+				.btn-link-active .entypo{color:@color1 !important;}
+				}
+			.share_like:hover{
+				opacity:1;
+				.btn-link{ .color1}
+			}
+			.label{
+				position:absolute;
+				top:.5em;
+				background-color:@color1;
+				.border_radius(@radius:0);
+				left:0;}
+			.vcard {
+				background: none repeat scroll 0 0 #EEEEEE;
+    			border-top: 1px solid #DDDDDD;
+				.muted{ margin-top:.8em;}
+				.muted, h5{ 
+						font-size:.8em;
+						line-height:1.3em;
+						}
+				.avatar {
+						
+							width:40px;
+							height:40px;
+							margin:.4em 0 .5em .5em;
+						
+					}
+				.precio{
+					text-align: right;
+					font-weight: 300;
+					font-size: 1.8em;
+					display: block;
+					margin-right:.5em;
+					margin-top: .6em;
+					color: #555;
+					small{ font-size:.6em;}
+					 }				
+			}
+		}
+}
+
+
+/*----------- Tienda LOOKS OFF -------------*/
+
+
 /*------------ Perfil ON ------------*/
 .tu_perfil{
 	
@@ -1231,10 +1402,15 @@ ul.yiiPager .last
 }
 	.item{
 		display:inline-block;
-		padding: 1em 1em 1.5em;
+		padding:0;
 		border: 1px solid #ddd;
 		position:relative;
-		
+		.transition_all;
+			
+			&:hover{
+				.box_shadow_personaling;
+				
+				}
 			.share_like{
 				position:absolute;
 				top:1em;
@@ -1257,17 +1433,29 @@ ul.yiiPager .last
 				.border_radius(@radius:0);
 				left:0;}
 			.vcard {
+				background: none repeat scroll 0 0 #EEEEEE;
+    			border-top: 1px solid #DDDDDD;
+				.muted{ margin-top:.8em;}
+				.muted, h5{ 
+						font-size:.8em;
+						line-height:1.3em;
+						}
 				.avatar {
-						width:40px;
-						height:40px;
+						
+							width:40px;
+							height:40px;
+							margin:.4em 0 .5em .5em;
+						
 					}
 				.precio{
 					text-align: right;
 					font-weight: 300;
 					font-size: 1.8em;
 					display: block;
-					margin-top: .5em;
-					color: #777;
+					margin-right:.5em;
+					margin-top: .6em;
+					color: #555;
+					small{ font-size:.6em;}
 					 }
 				
 			}
@@ -1556,9 +1744,12 @@ ul.yiiPager .last
 
 /* Large desktop */
 @media (min-width: 1680px)  { 
-.wrapper_home{
+	.wrapper_home{
 
- }
+	}
+ 	 #scroller-anchor #scroller{
+		 width:1170px;
+ 	}
  }
 
 /* Large desktop */
@@ -1566,6 +1757,10 @@ ul.yiiPager .last
 .wrapper_home{
 
  }
+ 	 #scroller-anchor #scroller{
+		 width:1170px;
+ 	}
+
  }
 
 /* Mid desktop */
@@ -1573,6 +1768,10 @@ ul.yiiPager .last
 .wrapper_home{
 
  }
+ 	 #scroller-anchor #scroller{
+		 width:940px;
+ 	}
+
 }
  
 /* Portrait tablet to landscape and desktop */
@@ -1580,6 +1779,10 @@ ul.yiiPager .last
 .wrapper_home{
 
  }
+ 	 #scroller-anchor #scroller{
+		 width:724px;
+ 	}
+
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
@@ -1588,11 +1791,17 @@ ul.yiiPager .last
 	#myLogo a, #site-title a , .brand{
   	  position: relative; 
  	}
+ 	 #scroller-anchor #scroller{
+		 width:auto;
+ 	}
 }
 /* Landscape phones and down */
 @media (max-width: 480px) { 
 	#myLogo a, #site-title a , .brand{
   	  position: relative; 
+ 	}
+ 	 #scroller-anchor #scroller{
+		 width:auto;
  	}
  
  }

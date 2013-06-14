@@ -88,7 +88,7 @@
       <div class="braker_horz_top_1">
         <div class="row">
           <div class="span6">
-            <div  class="banner_1"> Aqui va un Banner </div>
+            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_blanco.jpg" width="571" height="75" alt="Banner blanco" /> 
           </div>
           <div class="span6">
             <div  class="banner_1"> <a href="#"> Ver todos los looks</a>

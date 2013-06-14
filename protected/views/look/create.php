@@ -281,7 +281,43 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
           <?php 
 				} 
 				?>
-          <?php
+        <?php
+        	
+        foreach($model->lookHasAdorno as $hasAd){
+	        $adorno = Adorno::model()->findByPk($hasAd->adorno_id);
+				
+			?>
+	        <div class="new ui-draggable" id="adorno<?php echo $adorno->id; ?>" style="position: absolute; top: <?php echo $hasAd->top;?>px; left: <?php echo $hasAd->left;?>px;">
+	        
+	        <?php
+				$image = CHtml::image(Yii::app()->baseUrl.'/images/adorno/'.$adorno->path_image, $adorno->nombre, array("width" => $hasAd->width, "height" => $hasAd->height));				
+				echo $image;
+			?>
+	        
+	        <input type="hidden" name="adorno_id" value="<?php echo $adorno->id; ?>">
+	        <span>x</span>
+	        </div>
+	        <?php 
+	        
+	        $script = "	$('#adorno".$adorno->id."').draggable( {
+	    		cursor: 'move',
+	   	 		containment: 'document',
+	  			} ); 
+	 
+	 		$('#adorno".$adorno->id." > span').last().click(function(){
+	 			$(this).parent().remove();
+	  		});
+			   
+			$('#adorno".$adorno->id." > img').on('load', function () {
+				$(this).resizable({
+					aspectRatio: 1
+				});	
+		    });	
+		 	";
+	        
+	        Yii::app()->clientScript->registerScript('drag'.$adorno->id,$script);
+        } // foreach de adornos
+
         	
         } else {
         	?>

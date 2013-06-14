@@ -1,8 +1,9 @@
 <?php
+
 $this->breadcrumbs=array(
-	UserModule::t('Users')=>array('/user'),
-	UserModule::t('Manage'),
+	'Usuarios',
 );
+
 
 $usuarios_totales = User::model()->count();
 $usuarios_activos = User::model()->countByAttributes(array('status'=>1));

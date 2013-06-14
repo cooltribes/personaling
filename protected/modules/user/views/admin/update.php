@@ -63,8 +63,8 @@ function getMonthsArray()
         
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'registration-form',
-	'htmlOptions'=>array('class'=>'form-stacked','enctype'=>'multipart/form-data'),
-    'type'=>'horizontal ',
+	'htmlOptions'=>array('class'=>'form-horizontal','enctype'=>'multipart/form-data'),
+    'type'=>'horizontal',
    // 'type'=>'inline',
 	'enableClientValidation'=>true,
 	'clientOptions'=>array(

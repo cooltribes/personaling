@@ -3,23 +3,23 @@
 /* @var $model ContactForm */
 /* @var $form TbActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Equipo';
-//$this->breadcrumbs=array(
-	//'Equipo',
-//);
+$this->pageTitle=Yii::app()->name . ' - Contacto';
+$this->breadcrumbs=array(
+	'Contacto',
+);
 ?>
 
 
 <!-- PAGINA DE CONTACTO ON -->
-<div class="span6 offset3">
-    <div class="box_1" style="display:none">
+<div class="span6 offset3 margin_top">
+    <div class="box_1" >
         <h1>Ponte en contacto</h1>
         <?php if(Yii::app()->user->hasFlash('contact')): ?>
         <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'alerts'=>array('contact'),
     )); ?>
         <?php else: ?>
-        <p class="margin_top_medium"> Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por favor contáctanos a través del siguiente formulario:</p>
+        <p class="margin_top_medium">Es posible que lo que quieras preguntar este en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no esta allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. <strong>¡Gracias!</strong></p>
         <div class="form">
            
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(

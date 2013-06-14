@@ -14,7 +14,7 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 </head>
 
-<body>
+<body><div id="navegacion_principal">
 <?php  
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
 if (Yii::app()->user->id?UserModule::isAdmin():false){
@@ -106,7 +106,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 }
-?>
+?></div>
 <!-- <div class="alert alert-error margin_top padding_top">Estas en el sitio de Pruebas T1</div> -->
 <div class="container" id="page">
   <?php if(isset($this->breadcrumbs)):?>
@@ -126,7 +126,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         <ul>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/formas_de_pago" title="Formas de Pago">Formas de Pago</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/condiciones_de_envios_y_encomiendas" title="Condiciones de Envíos y Encomiendas">Condiciones de Envíos y Encomiendas</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/condiciones_de_envios_y_encomiendas" title="Envíos y Encomiendas">Envíos y Encomiendas</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Politicas de Devoluciones">Politicas de Devoluciones</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="politicas y privacidad">Politicas y Privacidad</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a></li>

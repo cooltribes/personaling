@@ -40,7 +40,7 @@
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
-                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+                    <div class="span5"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -173,7 +173,7 @@ function str_lreplace($search, $replace, $subject)
     <div class="braker_horz_top_1">
         <div class="row">
           <div class="span6">
-            <div  class="banner_1"> Aqui va un Banner </div>
+            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_blanco.jpg" width="571" height="75" alt="Banner blanco" /> 
           </div>
           <div class="span6">
             <div  class="banner_1"> <a href="#"> Ver todos los looks</a>

@@ -248,7 +248,8 @@
           
           <div class="braker_horz_top_1"> <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>
             <hr/>
-            <img src="http://placehold.it/180x150" align="banner"/> <img src="http://placehold.it/180x150" align="banner"/> </div>
+                        <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_accesorize.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" /> 
+</div>
         </div>
         <!-- Columna secundaria OFF --> 
       </div>
@@ -297,7 +298,8 @@
       </div>
       <div class="text_align_center">
         <hr/>
-        <img src="http://placehold.it/970x90"/> </div>
+            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_aldo.jpg" width="970" height="90" alt="Banner blanco" /> 
+ </div>
     </div>
     
     <!-- /container --> 

@@ -22,15 +22,54 @@
       </div>
     </div>
     <div class="span3">
-      <div class="padding_left"> <a href="#" title="Guardar" class="btn btn-danger btn-large btn-block">Guardar</a>
-        <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>
-          <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
-        </ul>
+      <div class="padding_left"> 
+        <!-- SIDEBAR ON --> 
+        <script > 
+			// Script para dejar el sidebar fijo Parte 1
+			function moveScroller() {
+				var move = function() {
+					var st = $(window).scrollTop();
+					var ot = $("#scroller-anchor").offset().top;
+					var s = $("#scroller");
+					if(st > ot) {
+						s.css({
+							position: "fixed",
+							top: "70px"
+						});
+					} else {
+						if(st <= ot) {
+							s.css({
+								position: "relative",
+								top: "0"
+							});
+						}
+					}
+				};
+				$(window).scroll(move);
+				move();
+			}
+		</script>
+        <div>
+          <div id="scroller-anchor"></div>
+          <div id="scroller"> <a href="#" title="Guardar" class="btn btn-danger btn-large btn-block">Guardar</a>
+            <ul class="nav nav-stacked nav-tabs margin_top">
+              <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
+              <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>
+              <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
+            </ul>
+          </div>
+        </div>
+        <script type="text/javascript"> 
+		// Script para dejar el sidebar fijo Parte 2
+			$(function() {
+				moveScroller();
+			 });
+		</script> 
+        <!-- SIDEBAR OFF --> 
+        
       </div>
     </div>
   </div>
 </div>
-<!-- /container -->
+<!-- /container --> 
 

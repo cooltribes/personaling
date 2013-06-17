@@ -50,6 +50,7 @@ function getMonthsArray()
     }
     
 	?>
+
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Usuario</h1>
@@ -60,7 +61,6 @@ function getMonthsArray()
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
-        
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'registration-form',
 	'htmlOptions'=>array('class'=>'form-horizontal','enctype'=>'multipart/form-data'),
@@ -71,31 +71,26 @@ function getMonthsArray()
 		'validateOnSubmit'=>true,
 	),
 	
-)); ?>        	
-          <fieldset>
-             	   <legend >Datos de Usuario: </legend>
-<?php echo $form->textFieldRow($model,'email',array('class'=>'span5',)); ?>
-           <div class="control-group">
-              <label for="" class="control-label ">Contraseña </label>
-              <div class="controls">
-                <input type="password" placeholder="Contraseña"  class="span5">
-                <div style="display:none" class="help-inline">ayuda aqui </div>
-              </div>
+)); ?>
+        <fieldset>
+          <legend >Datos de Usuario: </legend>
+          <?php echo $form->textFieldRow($model,'email',array('class'=>'span5',)); ?>
+          <div class="control-group">
+            <label for="" class="control-label ">Contraseña </label>
+            <div class="controls">
+              <input type="password" placeholder="Contraseña"  class="span5">
+              <div style="display:none" class="help-inline">ayuda aqui </div>
             </div>
-            <div class="control-group">
-				<?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?>
-            </div>             	   
-             	   <legend >Datos básicos: </legend>
-
-
-<?php 
+          </div>
+          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
+          <legend >Datos básicos: </legend>
+          <?php 
 		$profileFields=$profile->getFields();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 				//echo $field->varname;
 			?>
-
-		<?php 
+          <?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
 		} elseif ($field->range) {
@@ -128,182 +123,48 @@ function getMonthsArray()
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 		}	
 		 ?>
-		 <?php echo $form->error($profile,$field->varname); ?>
-		
-			<?php
+          <?php echo $form->error($profile,$field->varname); ?>
+          <?php
 			}
 		}
-?>		          
-            
-           
-          </fieldset>
-        <?php $this->endWidget(); ?>       
-        <!-- 
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form2"   class="form-stacked form-horizontal" enctype="multipart/form-data">
-          <fieldset>
-            <legend >Datos básicos: </legend>
-            <div class="control-group">
-              <label for="RegistrationForm_email" class="control-label ">Nombre de usuario </label>
-              <div class="controls">
-                <input type="text" placeholder="Nombre de usuario"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Correo electrónico </label>
-              <div class="controls">
-                <input type="text" placeholder="Ej.: juanmiguel@email.com"  class="span5">
-                <div style="display:none" class="help-inline">ayuda aqui </div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Contraseña </label>
-              <div class="controls">
-                <input type="password" placeholder="Contraseña"  class="span5">
-                <div style="display:none" class="help-inline">ayuda aqui </div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Nombre</label>
-              <div class="controls">
-                <input type="text" placeholder="Nombre"  class="span5">
-                <div style="display:none" class="help-inline">ayuda aqui </div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Apellido</label>
-              <div class="controls">
-                <input type="text" placeholder="Apellido"  class="span5">
-                <div style="display:none" class="help-inline">ayuda aqui </div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label "> Fecha de nacimiento</label>
-              <div class="controls controls-row">
-                <select class="span1" type="text" >
-                  <option>Dia</option>
-                  <option>01</option>
-                  <option>02</option>
-                </select>
-                <select class="span1" type="text" >
-                  <option>Mes</option>
-                  <option>01</option>
-                  <option>02</option>
-                </select>
-                <select class="span1" type="text" >
-                  <option>Año</option>
-                  <option>01</option>
-                  <option>02</option>
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Genero </label>
-              <div class=""controls controls-row"">
-                <label class="checkbox inline">
-                  <input type="radio" id="inlineCheckbox1" name="optionsRadios" value="option1">
-                  Mujer </label>
-                <label class="checkbox inline">
-                  <input type="radio" id="inlineCheckbox1" name="optionsRadios" value="option2">
-                  Hombre </label>
-                <div style="display:none" class="help-inline">ayuda aqui </div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Cédula</label>
-              <div class="controls">
-                <input type="text" placeholder="Cédula"  class="span5">
-                <div style="display:none" class="help-inline">ayuda aqui </div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label "> País</label>
-              <div class="controls">
-                <select class="span5" type="text" >
-                  <option>Venezuela</option>
-                  <option>Colombia</option>
-                  <option>USA</option>
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Ciudad</label>
-              <div class="controls">
-                <select class="span5" type="text" >
-                  <option>San Cristóbal</option>
-                  <option>item</option>
-                  <option>item</option>
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Tipo de Usuario</label>
-              <div class="controls">
-                <select class="span5" type="text" >
-                  <option>Usuario</option>
-                  <option>item</option>
-                  <option>item</option>
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="" class="control-label ">Estado</label>
-              <div class="controls">
-                <select class="span5" type="text" >
-                  <option>Invitado</option>
-                  <option>item</option>
-                  <option>item</option>
-                </select>
-              </div>
-            </div>
-          </fieldset>
-        </form>
-        -->
+?>
+        </fieldset>
+        <?php $this->endWidget(); ?>
       </div>
     </div>
-   
     <div class="span3">
       <div class="padding_left"> 
-      	  <script > 
-
-function moveScroller() {
-    var move = function() {
-        var st = $(window).scrollTop();
-        var ot = $("#scroller-anchor").offset().top;
-        var s = $("#scroller");
-        if(st > ot) {
-            s.css({
-                position: "fixed",
-                top: "0px"
-            });
-        } else {
-            if(st <= ot) {
-                s.css({
-                    position: "relative",
-                    top: ""
-                });
-            }
-        }
-    };
-    $(window).scroll(move);
-    move();
-}
-</script>
-<div id="sidebar" style="width:270px;"> 
-  <div id="scroller-anchor"></div> 
-  <div id="scroller" style="margin-top:10px; width:270px"> 
-    Scroller Scroller Scroller
-  </div>
-</div>
-
-<script type="text/javascript"> 
-  $(function() {
-    moveScroller();
-  });
-</script> 
-
-            	 
-            			<?php $this->widget('bootstrap.widgets.TbButton', array(
+        
+        <!-- SIDEBAR OFF --> 
+        <script > 
+			// Script para dejar el sidebar fijo Parte 1
+			function moveScroller() {
+				var move = function() {
+					var st = $(window).scrollTop();
+					var ot = $("#scroller-anchor").offset().top;
+					var s = $("#scroller");
+					if(st > ot) {
+						s.css({
+							position: "fixed",
+							top: "70px"
+						});
+					} else {
+						if(st <= ot) {
+							s.css({
+								position: "relative",
+								top: "0"
+							});
+						}
+					}
+				};
+				$(window).scroll(move);
+				move();
+			}
+		</script>
+        <div>
+          <div id="scroller-anchor"></div>
+          <div id="scroller">
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType'=>'button',
 						    'label'=>'Guardar',
 						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
@@ -311,17 +172,24 @@ function moveScroller() {
 						    'block'=>'true',
 						    'htmlOptions'=>array('onclick'=>'js:$("#registration-form").submit();')
 						)); ?>
-						
-           
-      	
-        <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-bell"></i> Crear / Enviar Intivacion</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-bell"></i> Reenviar Invitación</a></li>
-          <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
-        </ul>
+            <ul class="nav nav-stacked nav-tabs margin_top">
+              <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
+              <li><a href="#" title="Guardar"><i class="icon-bell"></i> Crear / Enviar Intivacion</a></li>
+              <li><a href="#" title="Guardar"><i class="icon-bell"></i> Reenviar Invitación</a></li>
+              <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
+            </ul>
+          </div>
+        </div>
+        <script type="text/javascript"> 
+		// Script para dejar el sidebar fijo Parte 2
+			$(function() {
+				moveScroller();
+			 });
+		</script> 
+        <!-- SIDEBAR OFF --> 
+        
       </div>
     </div>
   </div>
 </div>
-<!-- /container -->
+<!-- /container --> 

@@ -18,9 +18,10 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 				  $total_look = 0;
 				  $total_productos_look = 0;
 ?>
+
 <div class="container margin_top" id="carrito_compras">
   <div class="row margin_bottom_large">
-    <div class="span12"> <img src="http://placehold.it/1200x100"/ class="margin_bottom">
+    <div class="span12"> 
       <div class="row">
         <article class="span7">
           <h1>Tu bolsa</h1>
@@ -36,7 +37,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 				
 				 
 		  	?>
-		  	  <!-- Look ON -->
+          <!-- Look ON -->
           <h3 class="braker_bottom margin_top"><?php echo $look->title; ?></h3>
           <div class="padding_left">
             <table class="table" width="100%" >
@@ -49,7 +50,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
               </thead>
               <tbody>
                 <?php foreach($bolsahasproductotallacolor as $productotallacolor){ ?>
-                	<?php 
+                <?php 
                 	$total_productos_look++;
                 	$color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
 					$talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
@@ -72,7 +73,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					 	array_push($cantidades,$productotallacolor->cantidad);
                 	?>
                 <tr>
-                	<?php
+                  <?php
                   if($imagen){					  	
 						$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
 						echo "<td>".$aaa."</td>";
@@ -96,8 +97,8 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
             <hr/>
             <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
           </div>
-          <!-- Look OFF --> 
-		<?	 
+          <!-- Look OFF -->
+          <?	 
 			}
 		  }
 
@@ -107,7 +108,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 		if($pr!=0) // si hay productos individuales
 		{
 		?>
-		  <!-- Look ON -->
+          <!-- Look ON -->
           <h3 class="braker_bottom margin_top">Productos Individuales</h3>
           <div class="padding_left">
             <table class="table" width="100%" >
@@ -120,8 +121,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                 </tr>
               </thead>
               <tbody>
-                
-                  <?php
+                <?php
                   
 
                   
@@ -175,13 +175,12 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				}
 				  
                   ?>
-                  
               </tbody>
             </table>
           </div>
-          <!-- Look OFF --> 
+          <!-- Look OFF -->
           
-		<?php
+          <?php
 			}// if de productos individuales
 			else
 			{ 
@@ -190,16 +189,44 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				
 			}
 		?>
-        <?php
+          <?php
         if($pr!=0 || $num!=0) // si hay productos individuales o bien si hay looks (aqui se puede poner la comparacion de si hay looks)
 		{
-		?> 
-          
+		?>
         </article>
-        <div class="span5 margin_bottom margin_top_large padding_top_xsmall">
-          <div class="margin_left">
+        <div class="span5 margin_bottom margin_top_large padding_top_xsmall"> 
+         <div class="margin_left">
+             
+          <!-- SIDEBAR ON --> 
+          <script > 
+			// Script para dejar el sidebar fijo Parte 1
+			function moveScroller() {
+				var move = function() {
+					var st = $(window).scrollTop();
+					var ot = $("#scroller-anchor").offset().top;
+					var s = $("#scroller");
+					if(st > ot) {
+						s.css({
+							position: "fixed",
+							top: "70px"
+						});
+					} else {
+						if(st <= ot) {
+							s.css({
+								position: "relative",
+								top: "0"
+							});
+						}
+					}
+				};
+				$(window).scroll(move);
+				move();
+			}
+		</script>
+          <div id="scroller-anchor"></div>
+          <div id="scroller">
             <div class="well margin_top_large well_personaling_big">
-            	<?php 
+                <?php 
             	
 
             	//$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
@@ -210,37 +237,34 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				$indiv = Yii::app()->db->createCommand($sql)->queryScalar();
 				
             	?>
-            	
-
-              <h5>Looks seleccionados: <?php echo $total_look; ?><br/>
-              	<?php 
+                <h5>Looks seleccionados: <?php echo $total_look; ?><br/>
+                  <?php 
               	
               	if($total_look!=0)
 
 				{ 
 					echo "Productos que componen los Looks: ". $total_productos_look ."<br/>";
 				}				
-              	?><?php 
+              	?>
+                  <?php 
               	//variables de sesion
               	Yii::app()->getSession()->add('totalLook',$total_look); 
               	Yii::app()->getSession()->add('totalProductosLook',$total_productos_look);
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>
-                Productos individuales: <?php echo $indiv; ?></h5>
-              <hr/>
-              <label class="checkbox">
-                <input type="checkbox">
-                Envolver y enviar como regalo (9Bs. Adicionales) </label>
-              <hr/>
-              <div class=" margin_bottom">
-                
-                <div class="tabla_resumen_bolsa">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
-                    <tr>
-                      <th class="text_align_left">Subtotal:</th>
-                      <td>
-                      	<?php
+                  Productos individuales: <?php echo $indiv; ?></h5>
+                <hr/>
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Envolver y enviar como regalo (9Bs. Adicionales) </label>
+                <hr/>
+                <div class=" margin_bottom">
+                  <div class="tabla_resumen_bolsa">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
+                      <tr>
+                        <th class="text_align_left">Subtotal:</th>
+                        <td><?php
                       	$totalPr=0;
                       	$totalDe=0;
                       	$envio = 100;
@@ -272,28 +296,27 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						Yii::app()->getSession()->add('total',$t); 
 						
 						echo $totalPr;
-                      	?>                      	
-                      	Bs.</td>
-                    </tr>
-                    <tr>
-                      <th class="text_align_left">Descuento:</th>
-                      <td class="text_align_right"><?php echo $totalDe; ?> Bs.</td>
-                    </tr>
-                    <tr>
-                      <th class="text_align_left">Envío:</th>
-                      <td class="text_align_right"><?php echo $envio; ?> Bs.</td>
-                    </tr>
-                    <tr>
-                      <th class="text_align_left">I.V.A. (12%):</th>
-                      <td class="text_align_right"><?php echo $iva; ?> Bs.</td>
-                    </tr>
-                    <tr>
-                      <th class="text_align_left"><h4>Total:</h4></th>
-                      <td class="text_align_right"><h4><?php echo $t; ?> Bs.</h4></td>
-                    </tr>
-                  </table>
-                  
-                  <?php
+                      	?>
+                          Bs.</td>
+                      </tr>
+                      <tr>
+                        <th class="text_align_left">Descuento:</th>
+                        <td class="text_align_right"><?php echo $totalDe; ?> Bs.</td>
+                      </tr>
+                      <tr>
+                        <th class="text_align_left">Envío:</th>
+                        <td class="text_align_right"><?php echo $envio; ?> Bs.</td>
+                      </tr>
+                      <tr>
+                        <th class="text_align_left">I.V.A. (12%):</th>
+                        <td class="text_align_right"><?php echo $iva; ?> Bs.</td>
+                      </tr>
+                      <tr>
+                        <th class="text_align_left"><h4>Total:</h4></th>
+                        <td class="text_align_right"><h4><?php echo $t; ?> Bs.</h4></td>
+                      </tr>
+                    </table>
+                    <?php
                    $this->widget('bootstrap.widgets.TbButton', array(
 				    'label'=>'Completar compra',
 				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
@@ -304,8 +327,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				 
 				//<a href="Proceso_de_Compra_1.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
 				?>
-                
-                 <?php
+                    <?php
                 	
                 	if($total_look!=0)
 					{
@@ -316,16 +338,31 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					}
                 	
                 	?>
-                 </div>
-                 
-              </div>
-              <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>
-            </div>
-            <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" target="_blank">Ver Politicas de Envios y Devoluciones</a></p>
-            <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
-            <hr/>
-            <p class="muted"><a style="cursor: pointer" onclick="limpiar(<?php echo($bolsa->id); ?>)" title="vaciar la bolsa de compras">Vaciar la Bolsa de Compras</a> | <a href="../tienda/index" title="seguir comprando">Seguir comprando</a></p>
+                  </div>
+                </div>
+                <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+              </div>  
+          
+          
+          
           </div>
+            <script type="text/javascript"> 
+		// Script para dejar el sidebar fijo Parte 2
+			$(function() {
+				moveScroller();
+			 });
+		</script> 
+          <!-- SIDEBAR OFF --> 
+          
+          
+              <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" target="_blank">Ver Politicas de Envios y Devoluciones</a></p>
+              <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
+              <hr/>
+              <p class="muted"><a style="cursor: pointer" onclick="limpiar(<?php echo($bolsa->id); ?>)" title="vaciar la bolsa de compras">Vaciar la Bolsa de Compras</a> | <a href="../tienda/index" title="seguir comprando">Seguir comprando</a></p>
+            </div>
+            
+          
+        
         </div>
       </div>
     </div>
@@ -345,7 +382,7 @@ else
 	header('Location: /site/user/login');	
 	}
 ?>
-<!-- /container -->
+<!-- /container --> 
 
 <script>
 	
@@ -432,4 +469,4 @@ else
 
 	}
 	
-</script>
+</script> 

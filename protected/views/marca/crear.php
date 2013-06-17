@@ -8,13 +8,18 @@ $this->breadcrumbs=array(
 
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'marca-form',
-	'enableAjaxValidation'=>true,
+	'enableAjaxValidation'=>false,
 	'enableClientValidation'=>true,
 	'type'=>'horizontal',
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true, 
+	),
 	'htmlOptions' => array(
         'enctype' => 'multipart/form-data',
     ),
-)); ?>
+)); 
+
+?>
 
 <?php echo $form->errorSummary($marca); ?>
 

@@ -40,7 +40,9 @@ class Marca extends CActiveRecord
 			array('nombre', 'length', 'max'=>55),
 			array('descripcion', 'length', 'max'=>250),
 			array('urlImagen', 'length', 'max'=>150),
-			array('nombre, descripcion, urlImagen', 'required'),			
+			array('urlImagen', 'required'),
+			array('descripcion', 'required', 'message'=>'No puede registrar una marca sin descripción.'),
+			array('nombre', 'required', 'message'=>'No puede registrar una marca sin nombre.'),			
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, descripcion, urlImagen', 'safe', 'on'=>'search'),

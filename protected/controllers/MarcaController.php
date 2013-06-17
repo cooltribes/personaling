@@ -101,7 +101,7 @@ class MarcaController extends Controller
 		            $marca->save();
 									
 							
-					Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
+					Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
 
 					$image = Yii::app()->image->load($nombre.$extension);
 					$image->resize(150, 150);
@@ -120,9 +120,9 @@ class MarcaController extends Controller
 		        
 			}else{
 		    	if($marca->save()){
-		        	Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
+		        	Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
 		        }else{
-		        	Yii::app()->user->setFlash('error',UserModule::t("Elemento gráfico no pudo ser guardado."));
+		        	Yii::app()->user->setFlash('error',UserModule::t("Marca no pudo ser guardada."));
 		        }
 			}// isset
 			

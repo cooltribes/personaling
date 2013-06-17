@@ -1,8 +1,8 @@
 <?php
 
-$this->breadcrumbs=array(
-	'Usuarios',
-);
+//$this->breadcrumbs=array(
+	//'Usuarios',
+//);
 
 
 $usuarios_totales = User::model()->count();
@@ -57,7 +57,7 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
     <hr/>
    <?php
 $template = '{summary}
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped table-condensed">
     <tr>
       <th rowspan="2" scope="col"><input name="Check" type="checkbox" value="Check"></th>
       <th colspan="3" rowspan="2" scope="col">Usuario</th>

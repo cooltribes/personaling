@@ -30,11 +30,11 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas'),
 				'users'=>array('admin'),
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
@@ -298,6 +298,25 @@ public function actionCategorias(){
 	  	// echo 'rafa';
 	  }
 }
+
+
+/*
+ * filtrado por marcas
+ * */
+	public function actionMarcas(){
+		
+			$productos = Producto::model()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
+		  
+		  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+		 	
+		 	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);
+		  
+	}
+
 	public function actionCreate2()
 	{
 		$model = new PublicarForm;	

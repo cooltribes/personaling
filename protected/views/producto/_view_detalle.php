@@ -241,13 +241,18 @@
       </div>
     </div>
   </div>
-  <div class="braker_horz_top_1">
   	
 <?php
 $looksProducto = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$producto->id));
+
+$count = count ($looksProducto);
+
 $cont=0;
 ?>
 
+<?php if($count > 0){  ?>
+
+<div class="braker_horz_top_1">
     <h3>Looks recomendados con este producto</h3>
     <div id="myCarousel" class="carousel slide"> 
       <!-- Carousel items -->
@@ -267,8 +272,9 @@ $cont=0;
 					$cont++; // solo 3 veces
 					}
 				}
-			}
+			}// foreach
 			
+		} // count
 			?>  
           	         </div>
       </div>

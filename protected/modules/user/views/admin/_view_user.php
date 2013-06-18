@@ -1,12 +1,19 @@
     <tr>
       <td><input name="Check" type="checkbox" value="Check"></td>
-      <td><img src="images/kitten.png" width="70" height="70" alt="avatar"></td>
-      <td><strong> <span class="CAPS"><?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></span></strong><br/>
-        <strong>ID</strong>: <?php echo $data->id; ?><br/>
-        <?php echo $data->personal_shopper?'Personal Shopper':''; ?> </td>
-      <td><small><strong>eMail</strong>: <?php echo $data->email; ?><br/>
-        <strong>Telefono</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
-        <strong>Ciudad</strong>: <?php echo $data->profile->ciudad; ?>
+      <td>
+      	<?php
+      	 	// <img src="images/kitten.png" width="70" height="70" alt="avatar">
+      	 		echo CHtml::image($data->getAvatar(),'Avatar',array("width"=>"70", "height"=>"70"));
+      	 ?>
+      	
+      	
+      </td>
+      <td><h5 class="no_margin_bottom"> <?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></h5>
+        <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
+        <?php echo $data->personal_shopper?'Personal Shopper':''; ?> </small></td>
+      <td><small>eMail: <?php echo $data->email; ?><br/>
+        Telefono: <?php echo $data->profile->tlf_celular; ?> <br/>
+        Ciudad: <?php echo $data->profile->ciudad; ?>
         
      </small>
         

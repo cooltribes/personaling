@@ -39,6 +39,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
 					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+					array('label'=>'Campañas', 'url'=>array('/campana')),
 					),
 				),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),

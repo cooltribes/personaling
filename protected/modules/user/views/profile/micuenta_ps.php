@@ -1,8 +1,8 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Tu Perfil");
+//$this->breadcrumbs=array(
 	//UserModule::t("Profile")=>array('profile'),
-	UserModule::t("Mi cuenta"),
-);
+	//UserModule::t("Mi cuenta"),
+//);
 $look = new Look;
 $looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
 $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));
@@ -112,17 +112,19 @@ $looks_recomendados = $look->match($model);
            <ul class="nav nav-stacked nav-tabs">
               <li><a href="#" title="Tus Looks Publicados">Tus Looks Publicados</a></li>
               <li><a href="#" title="Tus Looks Pendientes por aprobació">Tus Looks Pendientes por aprobación</a></li>
-              <li>
-              		<?php $this->widget('bootstrap.widgets.TbButton', array(
-					    'label'=>'Crear Look',
-					    'type'=>'danger',
-						'url'=>array('//look/create')	,    
-					)); ?> 
-              	
-              </li>
+              
               <li><a href="#" title="Crear look">Manual para crear un Look</a></li>
             </ul>
-           
+          
+          </div>
+          <div class="span4 padding_top_xsmall">
+          <div class="well  margin_top_large">
+           <?php $this->widget('bootstrap.widgets.TbButton', array(
+					    'label'=>'Crear nuevo look',
+					    'type'=>'danger',
+					    'htmlOptions'=>array('class'=>'btn-block btn-large'),
+						'url'=>array('//look/create')	,    
+					)); ?> </div>
           </div>
           
         </div>

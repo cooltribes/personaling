@@ -54,7 +54,7 @@ $template = '{summary}
 	    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	
-							alert('After ajax update');
+							//alert('After ajax update');
 						   
 							} ",
 		'pager'=>array(

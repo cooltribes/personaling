@@ -30,11 +30,11 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks'),
 				'users'=>array('admin'),
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
@@ -59,6 +59,25 @@ class LookController extends Controller
                         'div'=>Yii::app()->numberFormatter->formatDecimal($precio)
                         ));
 	}
+	
+	/*
+	 * Ver los looks del personal shopper 
+	 * */
+	public function actionMislooks()
+	{
+		$look = new Look; 
+
+		if(UserModule::isPersonalShopper())
+		{
+			$look->user_id = Yii::app()->user->id;
+		}	
+		
+		$dataProvider = $look->search();
+		
+		$this->render('ps', array('model'=>$look,'dataProvider'=>$dataProvider,'tipo'=>'ps'));	
+		
+	}
+	
 	public function actionDetalle($id)
 	{
 		$model = Look::model()->findByPk($id);

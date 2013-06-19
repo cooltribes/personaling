@@ -226,7 +226,8 @@ class Look extends CActiveRecord
 		$criteria->compare('piel',$this->piel);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('tipo',$this->tipo);
-
+		$criteria->compare('user_id',$this->user_id,true);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

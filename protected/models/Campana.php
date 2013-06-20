@@ -1,20 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "{{marca}}".
+ * This is the model class for table "{{campana}}".
  *
- * The followings are the available columns in table '{{marca}}':
+ * The followings are the available columns in table '{{campana}}':
  * @property integer $id
  * @property string $nombre
- * @property string $descripcion
- * @property string $urlImagen
+ * @property string $recepcion_inicio
+ * @property string $recepcion_fin
+ * @property string $ventas_inicio
+ * @property string $ventas_fin
+ * @property string $fecha_creacion
+ * @property integer $estado
  */
-class Marca extends CActiveRecord
+class Campana extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Marca the static model class
+	 * @return Campana the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -26,7 +30,7 @@ class Marca extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{marca}}';
+		return '{{campana}}';
 	}
 
 	/**
@@ -37,15 +41,12 @@ class Marca extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre', 'length', 'max'=>55),
-			array('descripcion', 'length', 'max'=>250),
-			array('urlImagen', 'length', 'max'=>150),
-			array('urlImagen', 'required'),
-			array('descripcion', 'required', 'message'=>'No puede registrar una marca sin descripción.'),
-			array('nombre', 'required', 'message'=>'No puede registrar una marca sin nombre.'),			
+			array('nombre, recepcion_inicio, recepcion_fin, ventas_inicio, ventas_fin, fecha_creacion', 'required'),
+			array('estado', 'numerical', 'integerOnly'=>true),
+			array('nombre', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, descripcion, urlImagen', 'safe', 'on'=>'search'),
+			array('id, nombre, recepcion_inicio, recepcion_fin, ventas_inicio, ventas_fin, fecha_creacion, estado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,9 +68,13 @@ class Marca extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nombre' => 'Nombre',
-			'descripcion' => 'Descripcion',
-			'urlImagen' => 'Url Imagen',
+			'nombre' => 'Nombre de la campaña',
+			'recepcion_inicio' => 'Recepcion Inicio',
+			'recepcion_fin' => 'Recepcion Fin',
+			'ventas_inicio' => 'Ventas Inicio',
+			'ventas_fin' => 'Ventas Fin',
+			'fecha_creacion' => 'Fecha Creacion',
+			'estado' => 'Estado',
 		);
 	}
 
@@ -86,8 +91,12 @@ class Marca extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nombre',$this->nombre,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('urlImagen',$this->urlImagen,true);
+		$criteria->compare('recepcion_inicio',$this->recepcion_inicio,true);
+		$criteria->compare('recepcion_fin',$this->recepcion_fin,true);
+		$criteria->compare('ventas_inicio',$this->ventas_inicio,true);
+		$criteria->compare('ventas_fin',$this->ventas_fin,true);
+		$criteria->compare('fecha_creacion',$this->fecha_creacion,true);
+		$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

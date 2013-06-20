@@ -95,23 +95,32 @@ class AdornoController extends Controller
 							if($extension == '.png'){
 								$image = Yii::app()->image->load($nombre.$extension);
 								//$image->save($nombre.'jpg');
+							}else if($extension == '.jpeg'){
+								$image = Yii::app()->image->load($nombre.$extension);
+								$image->resize(130, 130);
+								$image->save($nombre.'_thumb.jpg');
+								$imageObject = imagecreatefromjpeg($nombre.$extension);
+								imagepng($imageObject, $nombre . '.png');
+								imagejpeg($imageObject, $nombre . '.jpg');
+								$adorno->path_image = $adorno->id .'.jpg';
+		                    	$adorno->save();
 							}else{
 								$image = Yii::app()->image->load($nombre.$extension);
 								$image->save($nombre.'.png');
 							}
 							
-							//Yii::app()->user->updateSession();
 							Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
 							
-							$image = Yii::app()->image->load($nombre.$extension);
-							$image->resize(130, 130);
-							$image->save($nombre.'_thumb'.$extension);
-							if($extension == '.png'){
+							if($extension != '.jpeg'){
 								$image = Yii::app()->image->load($nombre.$extension);
 								$image->resize(130, 130);
-								$image->save($nombre.'_thumb.jpg');
+								$image->save($nombre.'_thumb'.$extension);
+								if($extension == '.png'){
+									$image = Yii::app()->image->load($nombre.$extension);
+									$image->resize(130, 130);
+									$image->save($nombre.'_thumb.jpg');
+								}
 							}
-														
 		                } else {
 		                    $adorno->delete();
 		                }

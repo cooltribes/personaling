@@ -53,7 +53,7 @@
   -moz-border-radius: @radius;
 }
 
-.text_light{text-shadow:1px 1px #fff}
+.text_light{text-shadow:0 1px #fff}
 .text_shadow{text-shadow:1px 1px #000}
 .non_visible{text-indent:-9999px;font-size:0;height:0;padding:0}
 .text_align_right{text-align:right}
@@ -136,7 +136,7 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 
 /* SIdebar */
 #scroller{
-	background:@color3;
+	background:rgba(255,255,255,.8);
 	}
 
 /* Brakers */
@@ -306,14 +306,38 @@ h1,h2,h3,h4{font-weight:300}
 .well{ .border_radius(@radius:1px);}
 strong, th{ color:#555;}
 
-/*------------ BUTTONS ON --------------*/
-	.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child{
+/*------------ RESETS PARA BOOTSTRAP ON --------------*/
+.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a, .navbar-inner, .table-bordered{
 		.border_radius(@radius:0);
 	}
 
+.table-striped tbody tr:nth-child(2n+1) td{
+	 background-color: lighten(@color10,4%);
+}
+
+.table-striped  th{
+	font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+	background-color: @color10 !important;
+	color:darken(@color10,60%);
+	.text_light;
+
+}
+
+.table-bordered th, .table-bordered td {
+    border-left: 1px solid darken(@color10,5%);
+	border-top: 1px solid darken(@color10,5%);
+}
+
+.table-bordered{ border-color:darken(@color10,5%);}
 
 
-/*------------ BUTTONS OFF --------------*/
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th{ background-color:@color10}
+
+
+/*------------ RESETS PARA BOOTSTRAP OFF --------------*/
 
 
 /*------------ FUENTES ON --------------*/

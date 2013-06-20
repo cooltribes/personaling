@@ -52,14 +52,15 @@ echo $num;
       <div class="input-prepend">
     <form class="no_margin_bottom form-search">
     <input type="text" name="query" id="query" class="span3">
-    <a href="#" class="btn" id="btn_search_event">Buscar</a>
+    <a class="btn" id="btn_search_event">Buscar</a>
 	</form>
 		
 	<?php
-	Yii::app()->clientScript->registerScript('query',
+	Yii::app()->clientScript->registerScript('query1',
 		"var ajaxUpdateTimeout;
-		var ajaxRequest; 
+		var ajaxRequest;
 		$('#btn_search_event').click(function(){
+			
 			ajaxRequest = $('#query').serialize();
 			clearTimeout(ajaxUpdateTimeout);
 			

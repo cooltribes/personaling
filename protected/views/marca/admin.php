@@ -37,7 +37,7 @@ $this->breadcrumbs=array(
 
 		
 	<?php
-	Yii::app()->clientScript->registerScript('query',
+	Yii::app()->clientScript->registerScript('query1',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest; 
 		$('#btn_search_event').click(function(){

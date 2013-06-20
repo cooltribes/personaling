@@ -30,11 +30,16 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Panel de Control', 'url'=>array('/controlpanel/index')),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>array('/look/admin')),
-                array('label'=>'Productos', 'url'=>array('/producto/admin')),
+                array('label'=>'Productos', 'url'=>'#', 'items'=>array(
+                	array('label'=>'Productos', 'url'=>array('/producto/admin')),
+					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+					)
+				),
                 array('label'=>'Ventas', 'url'=>array('/orden/admin')),
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
 					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+					array('label'=>'Campañas', 'url'=>array('/campana')),
 					),
 				),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
@@ -81,6 +86,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 
                 array('label'=>'Top', 'url'=>array('/site/top'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
@@ -92,7 +98,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                  array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-                    array('label'=>'Perfil', 'url'=>array('/user/profile')),
+                    // array('label'=>'Perfil', 'url'=>'#'),
 					array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
                     array('label'=>'Configuracion', 'url'=>'#'),
                     
@@ -131,7 +137,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="politicas y privacidad">Politicas y Privacidad</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Terminos de Servicio">Terminos de Servicio</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
         </ul>
       </div>
       <div class="span5">

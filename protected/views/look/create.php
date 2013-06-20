@@ -397,6 +397,58 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	}
 ?>
                   </select>
+        <?php
+        	$marcas = Marca::model()->findAll(array('order'=>'nombre'));
+        	
+        ?>         
+                  
+        <!-- marcas -->
+        <div class="margin_top_small margin_bottom_small">
+        	<select id="marcas" class="span2" name="marcas">
+        		<option selected>Buscar por Marca</option>
+        		<?php
+        			foreach($marcas as $uno){
+        				echo "<option value='".$uno->id."'> ".$uno->nombre." </option>";
+        			}
+        		?>
+        	</select>	
+        </div>
+         
+	<?php
+	Yii::app()->clientScript->registerScript('marca',
+		"
+		$('#marcas').change(function(){". CHtml::ajax(
+						 
+			array( // ajaxOptions
+				'url'=>Yii::app()->createUrl( 'look/marcas'),
+				'type' => 'POST',
+				'beforeSend' => "function( request )
+				{
+					// Set up any pre-sending stuff like initializing progress indicators
+				}",
+				'success' => "function( data )
+				{
+				// handle return data
+				//alert( data );
+					$('#div_categorias').html(data);
+				}",
+					'data' => "js:$('#marcas').serialize()",
+				),
+				array( //htmlOptions
+					'href' => Yii::app()->createUrl( 'look/marcas' ),
+					'class' => 'thumbnail',
+					
+					'draggable'=>"false",
+				)
+			).
+			
+		"return false;
+		});",CClientScript::POS_READY
+	);
+	
+	?>
+                  
+                  
                 </div>
                 <?php
 	Yii::app()->clientScript->registerScript('busqueda',
@@ -473,20 +525,11 @@ Filtrar por Colores <span class="caret"></span></a>
 	echo '</li>';
   }
   ?>	
-  <!--
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Azul</a></li>
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Verde</a></li>
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Amarillo</a></li>
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Multicolor</a></li>
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Vinotinto</a></li>
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Aguamarina</a></li>
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Violeta</a></li>
-    <li><a tabindex="-1" href="#"><img src="http://placehold.it/20"/>  Naranja</a></li>
-  -->
   </ul>
 </div>
-                
-                </div>
+
+</div>
+		                        
                 <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
             </div>
@@ -527,6 +570,13 @@ Filtrar por Colores <span class="caret"></span></a>
 
 <!------------------- MODAL WINDOW OFF -----------------> 
 <script type="text/javascript">
+
+	function actualizar()
+	{
+		alert("llegó");
+	}
+
+
 // here is the magic
 function addPublicar(tipo)
 {

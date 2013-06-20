@@ -13,8 +13,20 @@
             <legend >Direcciones de envio: </legend>
             <div class="well well-small clearfix">
                       <div class="pull-right"> <a class="btn" href="#myModal"  role="button" data-toggle="modal" ><i class="icon-edit"></i></a> <a href="#" title="borrar" class="btn btn-link"><i class="icon-remove"></i></a> </div><h4 class="braker_bottom padding_bottom_xsmall">Dirección 1</h4>
+          
+          <?php
+          		$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$model->id));
+          		
+				foreach($direcciones as $dir)
+				{
+					echo "unounouno";
+					
+					// añadir lo que está debajo de esto
+				}
+          	?>
+          
           <div class="vcard">
-            <div class="adr">
+          	<div class="adr">
               <div class="street-address"><i class="icon-map-marker"></i> Av. 5ta. Edificio Los Mirtos  Piso 3. Oficina 3-3</div>
               <span class="locality">San Cristobal, Tachira 5001</span>
               <div class="country-name">Venezuela</div>

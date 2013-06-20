@@ -1,20 +1,19 @@
 <?php
 
 /**
- * This is the model class for table "{{marca}}".
+ * This is the model class for table "{{campana_has_personal_shopper}}".
  *
- * The followings are the available columns in table '{{marca}}':
- * @property integer $id
- * @property string $nombre
- * @property string $descripcion
- * @property string $urlImagen
+ * The followings are the available columns in table '{{campana_has_personal_shopper}}':
+ * @property integer $campana_id
+ * @property integer $user_id
+ * @property string $fecha_invitacion
  */
-class Marca extends CActiveRecord
+class CampanaHasPersonalShopper extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Marca the static model class
+	 * @return CampanaHasPersonalShopper the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -26,7 +25,7 @@ class Marca extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{marca}}';
+		return '{{campana_has_personal_shopper}}';
 	}
 
 	/**
@@ -37,15 +36,12 @@ class Marca extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre', 'length', 'max'=>55),
-			array('descripcion', 'length', 'max'=>250),
-			array('urlImagen', 'length', 'max'=>150),
-			array('urlImagen', 'required'),
-			array('descripcion', 'required', 'message'=>'No puede registrar una marca sin descripción.'),
-			array('nombre', 'required', 'message'=>'No puede registrar una marca sin nombre.'),			
+			array('campana_id, user_id', 'required'),
+			array('campana_id, user_id', 'numerical', 'integerOnly'=>true),
+			array('fecha_invitacion', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, descripcion, urlImagen', 'safe', 'on'=>'search'),
+			array('campana_id, user_id, fecha_invitacion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,10 +62,9 @@ class Marca extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'nombre' => 'Nombre',
-			'descripcion' => 'Descripcion',
-			'urlImagen' => 'Url Imagen',
+			'campana_id' => 'Campana',
+			'user_id' => 'User',
+			'fecha_invitacion' => 'Fecha Invitacion',
 		);
 	}
 
@@ -84,10 +79,9 @@ class Marca extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('nombre',$this->nombre,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('urlImagen',$this->urlImagen,true);
+		$criteria->compare('campana_id',$this->campana_id);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('fecha_invitacion',$this->fecha_invitacion,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

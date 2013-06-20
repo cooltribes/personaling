@@ -180,6 +180,12 @@ class CategoriaController extends Controller
 	{
 		$categoria = new Categoria;
 		
+		if (isset($_POST['query']))
+		{
+			//echo($_POST['query']);	
+			$categoria->nombre = $_POST['query'];
+		}
+		
 		$dataProvider = $categoria->search();
 		
 		$this->render('admin',

@@ -15,6 +15,7 @@ $prePub="";
 			}
 		}
 		
+		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
 		if(isset($ima)){
 			
 			if($prePub!="")

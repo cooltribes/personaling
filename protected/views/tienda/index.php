@@ -158,7 +158,70 @@ $this->breadcrumbs=array(
         </div>
         <hr/>
         <h5>Looks con estas prendas:</h5><br/>
-        <img src="http://personaling.com/blog/wp-content/uploads/2013/05/Look-recomendado-para-tienda1.jpg" /> </div>
+       		<div id="looks" class="clearfix">
+        	
+        	</div>
+        </div>
     </div>
   </div>
 </div>
+
+<script> 
+
+$(document).ready(function(){	
+   	
+   	var todos = new Array();
+   	var dosel = new Array();
+   		
+   	$(".ids").each( function(clave,valor) {
+		todos.push( $(this).attr("value") ); // agrego cada uno a un array
+	});	
+	
+	var uno;
+	
+	for(uno=0; uno<2; uno++)
+	{
+		dosel.push(randomFrom(todos));	
+	}
+	
+	// alert(todos[dosel[0]]);
+	// con esto ya tengo dos productos random de todos los que se estan mostrando
+	
+			$.ajax({
+	        type: "post",
+	        url: "imageneslooks", // action 
+	        dataType:"json",
+	        data: { 'pro1':todos[dosel[0]], 'pro2':todos[dosel[1]]}, 
+	        success: function (data) {
+				
+				if(data.status=="ok")
+				{
+					var cont;
+					//alert(data.datos);
+					
+					$.each(data.datos,function(clave,valor) {
+						if(valor!="undefined") 
+					  		cont = cont + valor;
+				
+					});
+					//alert(cont);
+					
+					//$('#looks.clearfix').append(cont);
+					$("#looks").html(cont); // cambiando el div
+					
+				}
+					
+	       	}//success
+	       })
+	
+	
+});
+	
+function randomFrom(arr){
+
+    var random = Math.floor(Math.random() * arr.length);
+    return random;
+    
+}
+
+</script>

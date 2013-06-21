@@ -1,6 +1,17 @@
 <?php
 /* @var $this ControlPanelController */
 
+
+$usuarios_totales = User::model()->count();
+$looks_totales = Look::model()->count();
+$productos_activos = Producto::model()->countByAttributes(array('status'=>1,'estado'=>0));
+$ventas = Orden::model()->count();
+
+$sql = "SELECT sum(total) as total FROM db_personaling.tbl_orden";
+$dinero_ventas = Yii::app()->db->createCommand($sql)->queryScalar();
+
+$promedio = $dinero_ventas / $ventas;
+
 ?>
 
 <div class="container margin_top">
@@ -19,27 +30,27 @@
          <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Ventas Totales</strong>:</td>
-              <td>105.430 Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($dinero_ventas); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong> Promedio de Ventas</strong>:</td>
-              <td>350 Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($promedio); ?> Bs / Venta.</td>
             </tr>
             <tr>
               <td><strong>Numero de Usuarios registrados</strong>:</td>
-              <td>870</td>
+              <td><?php echo $usuarios_totales; ?></td>
             </tr>
             <tr>
               <td><strong> Numero de Looks creados</strong>:</td>
-              <td>150</td>
+              <td><?php echo $looks_totales; ?></td>
             </tr>
             <tr>
               <td><strong>Numero de Looks Activos</strong>:</td>
-              <td>60</td>
+              <td>24</td>
             </tr>
             <tr>
               <td><strong> Numero de Productos Activos</strong>:</td>
-              <td>1.490</td>
+              <td><?php echo $productos_activos; ?></td>
             </tr>
           </table>
           <h4 class="margin_top">ACCIONES PENDIENTES</h4>

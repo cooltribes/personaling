@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 17/06/2013 */ 
+/* Project name: Personaling  al 24/06/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -1355,9 +1355,14 @@ ul.yiiPager .last
 .tu_perfil{
 	
 	.nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a{ 
-		.border_radius(@radius:0);
+					.border_radius(@radius:0);
+		.nav-stacked{ background-color:@color3;}
+		
 		}
-	
+	.direcciones {
+		.span6:nth-child(2n+1){ margin-left:0}
+	}
+	.nav-stacked li{ background-color:@color3;}
 	
 	ul{
 		min-height:100px;

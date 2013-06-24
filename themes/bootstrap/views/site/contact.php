@@ -9,10 +9,10 @@ $this->breadcrumbs=array(
 );
 ?>
 
-
+<div class="row">
 <!-- PAGINA DE CONTACTO ON -->
-<div class="span6 offset3 margin_top">
-    <div class="box_1" >
+<div class="span8 ">
+    <div class="box_1 bg_mancha_1 " >
         <h1>Ponte en contacto</h1>
         <?php if(Yii::app()->user->hasFlash('contact')): ?>
         <?php $this->widget('bootstrap.widgets.TbAlert', array(
@@ -62,4 +62,8 @@ $this->breadcrumbs=array(
 </div>
 <!-- PAGINA DE CONTACTO OFF -->
 
+ 
+  <!-- SIDEBAR ON -->
+  <div class="span4"> <?php echo $this->renderPartial('_sidebar'); ?> </div>
+  <!-- SIDEBAR ON --> </div>
 <?php endif; ?>

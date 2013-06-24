@@ -22,7 +22,7 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','top','error','contact','login','logout','acerca_de','condiciones_de_envios_y_encomiendas',
+				'actions'=>array('index','top','error','contacto','login','logout','acerca_de','condiciones_de_envios_y_encomiendas',
 				'formas_de_pago','politicas_y_privacidad','terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes','equipo_personaling'), 
 				'users'=>array('*'),
 			),
@@ -167,7 +167,7 @@ class SiteController extends Controller
 	/**
 	 * Displays the contact page
 	 */
-	public function actionContact()
+	public function actionContacto()
 	{
 		$model=new ContactForm;
 		

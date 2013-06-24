@@ -55,7 +55,15 @@ $looks_recomendados = $look->match($model);
       	}
       	?>
         <li>XX Puntos Ganados</li>
-        <li>XX Pedidos Activos</li>
+        
+        <?php
+        
+        $total;
+	
+		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+      	?>
+      	<li><?php echo $total; ?> Pedidos Activos</li>
         <li>XX Devoluciones Pendientes</li>
       </ul>
       <hr/>

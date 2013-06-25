@@ -178,7 +178,7 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom"> Libreta de Direcciones </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li>Gestionar direcciones de Envios y Pagos.</li>
+              <li><?php echo CHtml::link('Gestionar direcciones de Envios y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
               <li>Anadir nueva direccion</li>
             </ul>
           </div>

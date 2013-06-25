@@ -10,6 +10,25 @@ $this->breadcrumbs=array(
   <div class="page-header">
     <h1>Administrar Campañas</h1>
   </div>
+  <?php 
+  if(Yii::app()->user->hasFlash('success')){
+  	?>
+    <div class="alert alert-success text_align_center">
+        <?php echo Yii::app()->user->getFlash('success'); ?>
+    </div>
+  	<?php 
+  } 
+  ?>
+  
+  <?php 
+  if(Yii::app()->user->hasFlash('error')){
+  	?>
+    <div class="alert alert-error text_align_center">
+        <?php echo Yii::app()->user->getFlash('error'); ?>
+    </div>
+  	<?php 
+  } 
+  ?>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
       <th scope="col" colspan="6"> Totales </th>
@@ -51,7 +70,7 @@ $this->breadcrumbs=array(
 		    'label'=>'Crear nueva campaña',
 		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'normal', // null, 'large', 'small' or 'mini'
-		    'url' => 'campana/create',
+		    'url' => $this->createUrl('create'),
 		)); ?>
     </div>
   </div>

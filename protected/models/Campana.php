@@ -68,7 +68,7 @@ class Campana extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nombre' => 'Nombre de la campaña',
+			'nombre' => 'Nombre',
 			'recepcion_inicio' => 'Recepcion Inicio',
 			'recepcion_fin' => 'Recepcion Fin',
 			'ventas_inicio' => 'Ventas Inicio',

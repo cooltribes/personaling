@@ -413,6 +413,40 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         		?>
         	</select>	
         </div>
+         
+	<?php
+	Yii::app()->clientScript->registerScript('marca',
+		"
+		$('#marcas').change(function(){". CHtml::ajax(
+						 
+			array( // ajaxOptions
+				'url'=>Yii::app()->createUrl( 'look/marcas'),
+				'type' => 'POST',
+				'beforeSend' => "function( request )
+				{
+					// Set up any pre-sending stuff like initializing progress indicators
+				}",
+				'success' => "function( data )
+				{
+				// handle return data
+				//alert( data );
+					$('#div_categorias').html(data);
+				}",
+					'data' => "js:$('#marcas').serialize()",
+				),
+				array( //htmlOptions
+					'href' => Yii::app()->createUrl( 'look/marcas' ),
+					'class' => 'thumbnail',
+					
+					'draggable'=>"false",
+				)
+			).
+			
+		"return false;
+		});",CClientScript::POS_READY
+	);
+	
+	?>
                   
                   
                 </div>

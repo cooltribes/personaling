@@ -1,7 +1,9 @@
 <?php
-$this->breadcrumbs=array(
-	'Look',
-);
+
+	$this->breadcrumbs=array(
+		'Look',
+	);	
+
 ?>
 <div class="container margin_top">
     <div class="page-header">

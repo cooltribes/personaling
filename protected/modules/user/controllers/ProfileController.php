@@ -91,6 +91,67 @@ class ProfileController extends Controller
 			'profile'=>$model->profile,
 	    ));			
 	}
+
+/**
+ * Crear dir
+ */
+	public function actionCrearDireccion($id = null)
+	{
+		$usuario = $this->loadUser();
+		
+		if(!$id){
+			$model = new Direccion;
+		}else{
+			$model = Direccion::model()->findByPk($id);
+		}
+		
+		if(isset($_POST['Direccion']))
+		{
+			$model->attributes = $_POST['Direccion'];
+			$model->user_id = $usuario->id;
+			
+			if($model->save())
+				$this->redirect(array('direcciones'));
+		}
+
+		$this->render('create_dir',array(
+			'model'=>$model,
+			'usuario'=>$usuario,
+			'profile'=>$usuario->profile,
+		));
+	}
+
+/*
+ * Borrar direccion 
+ */
+	public function actionBorrardireccion($id)
+	{
+		$direccion = Direccion::model()->findByPk($id);
+		
+		if($direccion->delete()){
+			Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+		}else{
+			Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+		}
+		$this->redirect(array('direcciones'));		
+	}
+
+/**
+ * Direcciones
+ */
+	public function actionDirecciones()
+	{
+		$model = $this->loadUser();
+		
+		if  (UserModule::isPersonalShopper()) 
+	    	echo "";
+		else
+	    $this->render('direcciones',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));			
+	}
+
 /**
  * Editar tu estilo  
  */

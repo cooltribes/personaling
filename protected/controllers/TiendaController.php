@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -176,6 +176,65 @@ class TiendaController extends Controller
 		));
 	  }
 }
+
+	public function actionImageneslooks(){
+		
+		$look1 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro1']));
+		$look2 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro2']));
+		
+		$mos1 = 0;
+		$mos2 = 0;
+		
+		$l1 ="";
+		$l2 ="";
+		
+		if(isset($look1)){		
+			foreach($look1 as $uno)
+			{
+				if($mos1 == 0)
+				{				
+					$l1 = Look::model()->findByPk($uno->look_id);
+					$mos1=1;
+				}
+				else
+					break;
+			}
+		}
+		
+		if(isset($look2)){
+			foreach($look2 as $dos)
+			{
+				if($mos2 == 0)
+				{
+					$l2 = Look::model()->findByPk($dos->look_id);
+					$mos2=1;
+				}
+				else
+					break;
+			}
+		}
+		// tengo los dos looks. Ahora a generar lo que voy a devolver para que genere las imagenes.
+		
+		$ret = array();
+		array_push($ret,"<br>");
+		
+		if($l1 != "")
+			array_push($ret,'<a href="../look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="/site/look/getImage/'.$l1->id.'" alt="Look"></a>');
+		
+		array_push($ret,"<br><br>");
+		
+		if($l2 != "")
+			array_push($ret,'<a href="../look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="/site/look/getImage/'.$l2->id.'" alt="Look"></a>');
+		
+		//array_push($ret,CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$l1->id)), "Look", array("width" => "400", "height" => "400", 'class'=>'img-polaroid')) );
+		
+		echo CJSON::encode(array(
+			'status'=> 'ok',
+			'datos'=> $ret
+			));
+		exit;
+	}
+
 
 	// Uncomment the following methods and override them if needed
 	/*

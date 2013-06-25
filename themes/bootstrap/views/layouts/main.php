@@ -1,11 +1,12 @@
 <?php /* @var $this Controller */ ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en" />
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" />
 <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo Yii::app()->getBaseUrl(); ?>/favicon.ico">
+
 <?php //Yii::app()->bootstrap->register(); ?>
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/botones.css" rel="stylesheet">
 <?php Yii::app()->less->register(); ?>
@@ -86,6 +87,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 
                 array('label'=>'Top', 'url'=>array('/site/top'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
@@ -137,6 +139,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Terminos de Servicio">Terminos de Servicio</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contacto</a></li>
         </ul>
       </div>
       <div class="span5">

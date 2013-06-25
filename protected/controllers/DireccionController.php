@@ -59,13 +59,14 @@ class DireccionController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id = null)
 	{
-		$model=new Direccion;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
+		if(!$id){
+			$model=new Direccion;
+		}else{
+			$model = Direccion::model()->findByPk($id);
+		}
+		
 		if(isset($_POST['Direccion']))
 		{
 			$model->attributes=$_POST['Direccion'];

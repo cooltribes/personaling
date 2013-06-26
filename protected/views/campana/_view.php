@@ -62,8 +62,8 @@
       <td><div class="dropdown"> <a class="dropdown-toggle btn btn-small" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_campanas_crear.php"> <i class="icon-cog"></i></a> 
           <!-- Link or button to toggle dropdown -->
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li><a title="ver" href="#"> <i class="icon-eye-open"> </i> Ver</a></li>
-            <li><a title="Editar" href="admin_anadir_campana.php"> <i class="icon-edit"> </i> Editar</a></li>
+            <li><a title="ver" onclick="ver_campana(<?php echo $data->id; ?>)" style="cursor: pointer;"> <i class="icon-eye-open"> </i> Ver</a></li>
+            <li><?php echo CHtml::link('<i class="icon-edit"> </i> Editar', $this->createUrl('edit', array('id'=>$data->id))); ?></li>
             <li><a title="Pausar" href="admin_anadir_campana.php"> <i class="icon-pause"> </i> Pausar</a></li>
             <li><a title="Play" href="admin_anadir_campana.php"> <i class="icon-play"> </i> Reanudar</a></li>
             <li class="divider"></li>

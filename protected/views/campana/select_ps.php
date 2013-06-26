@@ -15,7 +15,15 @@ $this->breadcrumbs=array(
 )); ?>
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Crear Campaña</h1>
+    <h1>
+    	<?php 
+    	if(Yii::app()->controller->action->id == 'edit'){
+    		echo 'Editar Campaña';
+    	}else{
+    		echo 'Crear Campaña';
+    	}
+    	?>
+    	</h1>
   </div>
   <div class="row ">
     <div class="span9">
@@ -169,9 +177,10 @@ $this->breadcrumbs=array(
 
 <script>
 	$('.check_ps').click(function(e){
+		var path = location.pathname.split('/');
 		if($(this).is(':checked')){
 			$.ajax({
-		      url: "invite",
+		      url: "/"+path[1]+"/campana/invite",
 		      type: "post",
 		      data: { id : $(this).val() },
 		      success: function(){
@@ -180,7 +189,7 @@ $this->breadcrumbs=array(
 		    });
 	   	}else{
 	   		$.ajax({
-		      url: "uninvite",
+		      url: "/"+path[1]+"/campana/uninvite",
 		      type: "post",
 		      data: { id : $(this).val() },
 		      success: function(){

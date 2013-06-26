@@ -203,7 +203,7 @@ while (i <  canvas.length) {
   </div>
   <div class="clearfix margin_bottom_medium">
     <?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'label'=>'Publicar',
+	    'label'=>'Siguiente',
 	    'type'=>'danger',
 		'buttonType' => 'ajaxSubmit',
 	    'htmlOptions'=> array(

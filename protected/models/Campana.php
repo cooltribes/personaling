@@ -44,6 +44,10 @@ class Campana extends CActiveRecord
 			array('nombre, recepcion_inicio, recepcion_fin, ventas_inicio, ventas_fin, fecha_creacion', 'required'),
 			array('estado', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>50),
+			array( 'recepcion_inicio','compare','compareValue' => date("Y-m-d H:i:s"),'operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que la fecha actual.'),
+			array( 'recepcion_fin','compare','compareAttribute' => 'recepcion_inicio','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
+			array( 'ventas_inicio','compare','compareAttribute' => 'recepcion_fin','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
+			array( 'ventas_fin','compare','compareAttribute' => 'ventas_inicio','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, recepcion_inicio, recepcion_fin, ventas_inicio, ventas_fin, fecha_creacion, estado', 'safe', 'on'=>'search'),

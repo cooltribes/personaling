@@ -1,13 +1,15 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'campana-form',
 	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
 	'type'=>'horizontal',
 )); ?>
-	<?php echo $form->errorSummary($model); ?>
+	
 
   <!-- SUBMENU OFF -->
   
     <div class="span9">
+    	<?php echo $form->errorSummary($model); ?>
     	<div class="bg_color3   margin_bottom_small padding_small box_1">
            <fieldset>
             <legend >Datos básicos: </legend>
@@ -310,10 +312,10 @@
               <label for="" class="control-label required"> </label>
               <div class=""controls controls-row"">
                 <label class="checkbox inline">
-                  <input type="radio" id="inlineCheckbox1" name="personal_shopper" value="todos">
+                  <input type="radio" id="ps_todos" name="personal_shopper" value="todos" checked>
                   Invitar a todos los Personal Shoppers </label>
                 <label class="checkbox inline">
-                  <input type="radio" id="inlineCheckbox1" name="personal_shopper" value="seleccionar">
+                  <input type="radio" id="ps_seleccionar" name="personal_shopper" value="seleccionar">
                   Elegir Personal Shoppers </label>
                 <div style="display:none" id="_em_" class="help-inline">ayuda aqui </div>
               </div>
@@ -328,6 +330,7 @@
     <div class="span3">
       <div class="padding_left"> 
       	<?php $this->widget('bootstrap.widgets.TbButton', array(
+      		'id'=>'boton_guardar',
 			'buttonType'=>'submit',
 			'type'=>'danger',
 			'size' => 'large',

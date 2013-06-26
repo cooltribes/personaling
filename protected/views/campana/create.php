@@ -38,6 +38,42 @@ $this->breadcrumbs=array(
 	$('#ventas_fin_month').on('change', validar_ventas_fin);
 	$('#ventas_fin_year').on('change', validar_ventas_fin);
 	
+	$(document).on('ready', set_dates);
+	
+	function set_dates(){
+        if($('#Campana_recepcion_inicio').val() != ''){
+          	var array_fecha_hora = $('#Campana_recepcion_inicio').val().split(' ');
+            var array_fecha = array_fecha_hora[0].split('-');
+            $('#recepcion_inicio_day').val(array_fecha[2]);
+            $('#recepcion_inicio_month').val(array_fecha[1]);
+            $('#recepcion_inicio_year').val(array_fecha[0]);
+        }
+        
+        if($('#Campana_recepcion_fin').val() != ''){
+          	var array_fecha_hora = $('#Campana_recepcion_fin').val().split(' ');
+            var array_fecha = array_fecha_hora[0].split('-');
+            $('#recepcion_fin_day').val(array_fecha[2]);
+            $('#recepcion_fin_month').val(array_fecha[1]);
+            $('#recepcion_fin_year').val(array_fecha[0]);
+        }
+        
+        if($('#Campana_ventas_inicio').val() != ''){
+          	var array_fecha_hora = $('#Campana_ventas_inicio').val().split(' ');
+            var array_fecha = array_fecha_hora[0].split('-');
+            $('#ventas_inicio_day').val(array_fecha[2]);
+            $('#ventas_inicio_month').val(array_fecha[1]);
+            $('#ventas_inicio_year').val(array_fecha[0]);
+        }
+        
+        if($('#Campana_ventas_fin').val() != ''){
+          	var array_fecha_hora = $('#Campana_ventas_fin').val().split(' ');
+            var array_fecha = array_fecha_hora[0].split('-');
+            $('#ventas_fin_day').val(array_fecha[2]);
+            $('#ventas_fin_month').val(array_fecha[1]);
+            $('#ventas_fin_year').val(array_fecha[0]);
+        }
+	}
+	
 	function validar_recepcion_inicio(){
 		var day = $('#recepcion_inicio_day').val();
 		var month = $('#recepcion_inicio_month').val();

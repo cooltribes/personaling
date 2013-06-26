@@ -3,7 +3,7 @@
 <?php echo Yii::app()->user->getFlash('profileMessage'); ?>
 </div>
 <?php endif; ?>
-<div class="container margin_top">
+<div class="container margin_top tu_perfil">
   <div class="row">
   	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
@@ -17,25 +17,14 @@
     )
 ); ?>	
 <!-- FLASH OFF --> 
-    <div class="span6 offset3">
-     <!-- MENU ON -->
-     <ul class="nav nav-pills margin_top">
-        					<li >
-						<?php echo CHtml::link('Datos Personales',array('profile/edit'));
-						?>
-					</li>
-					<li class="active">
-						<?php echo CHtml::link('Avatar',array('profile/avatar'));
-						?>
-					</li>
-					<li>
-						<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo'));
-						?>
-					</li>
-      </ul>
-     <!-- MENU OFF -->
+<!-- SIDEBAR ON -->
+  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+  <!-- SIDEBAR ON --> 
 
-      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+    <div class="span9">
+           
+
+      <article class="bg_color3  margin_bottom_small padding_small box_1">
         
 		<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			'id'=>'avatar-form',
@@ -88,6 +77,10 @@
 	
       </article>
     </div>
+    
+    
+  
+    
   </div>
 </div>
 <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.1.min.js"></script>

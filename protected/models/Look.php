@@ -15,7 +15,7 @@
  * @property integer $piel
  * @property string $created_on
  * @property integer $tipo
-
+ * @property integer $status
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -30,6 +30,12 @@ class Look extends CActiveRecord
 	 */
 	 const TIPO_CONSERVADOR = 2;
 	 const TIPO_ATREVIDO = 1;
+	 
+	 /** STATUS DEL LOOK **/
+	 const STATUS_CREADO = 0;
+	 const STATUS_ENVIADO = 1; 
+	 const STATUS_APROBADO = 2; 
+	 
 	 private $_precio = null; 
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
@@ -56,13 +62,13 @@ class Look extends CActiveRecord
 		return array(
 			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'required'),
-			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado', 'numerical', 'integerOnly'=>true),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado,status', 'safe', 'on'=>'search'),
 		);
 	}
 

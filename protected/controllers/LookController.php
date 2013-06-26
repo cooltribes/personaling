@@ -337,7 +337,7 @@ public function actionCategorias(){
 	}
 
 	public function actionCreate2()
-	{
+	{ 
 		$model = new PublicarForm;	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
@@ -353,6 +353,12 @@ public function actionCategorias(){
 		$model = Look::model()->findByPk($id);
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
+			
+			if (Yii::app()->user->isAdmin())
+				$model->status = Look::STATUS_APROBADO;
+			else
+				$model->status = Look::STATUS_ENVIADO;
+			
 			if($model->save())
             {
                 if (isset($_POST['categorias'])){
@@ -379,7 +385,10 @@ public function actionCategorias(){
                 else {
                     //$this->redirect(array('view','id'=>$model->id));
 				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha publicado."));	
+				if (Yii::app()->user->isAdmin())
+					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha publicado."));
+				else 	
+					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha enviado."));
                 }
             } 
 		}	

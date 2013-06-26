@@ -30,7 +30,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Panel de Control', 'url'=>array('/controlpanel/index')),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
-                array('label'=>'Looks', 'url'=>array('/look/admin')),
+                array('label'=>'Looks', 'url'=>'#', 'items'=>array(
+					array('label'=>'Looks', 'url'=>array('/look/admin')),
+					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+					)),
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Productos', 'url'=>array('/producto/admin')),
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
@@ -39,7 +42,6 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Ventas', 'url'=>array('/orden/admin')),
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
 					array('label'=>'Campañas', 'url'=>array('/campana')),
 					),
 				),

@@ -74,7 +74,6 @@ var uno=0;
 
     });
 </script>
-
 <?php
 $this->breadcrumbs=array(
 	'Productos'=>array('admin'),
@@ -87,10 +86,9 @@ $this->breadcrumbs=array(
   <div class="page-header">
     <h1>Editar Producto - Imágenes</small></h1>
   </div>
-  <!-- SUBMENU ON -->
+  <!-- SUBMENU ON --> 
   
-<?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>4)); ?>
-  
+  <?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>4)); ?>
   <?php 
   
    Yii::app()->clientScript->registerScript('form_sending', "
@@ -106,7 +104,7 @@ $this->breadcrumbs=array(
 	'type'=>'horizontal',
 	'htmlOptions' => array('enctype' => 'multipart/form-data'),
 )); ?>
-
+  
   <!-- SUBMENU OFF -->
   <div class="row margin_top">
     <div class="span9">
@@ -115,7 +113,7 @@ $this->breadcrumbs=array(
           <fieldset>
             <legend>Subir imágenes del producto: </legend>
             <div class="well well-large">
-             <?php
+              <?php
             	$this->widget('CMultiFileUpload', array(
                 'name' => 'url',
                 'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
@@ -124,15 +122,15 @@ $this->breadcrumbs=array(
             ));
 			
 			?>
-			 <?php echo $form->error($imagen, 'url'); ?>
-		<div class="margin_top_small"> 
-              <?php $this->widget('bootstrap.widgets.TbButton', array(
+              <?php echo $form->error($imagen, 'url'); ?>
+              <div class="margin_top_small">
+                <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'danger',
 			'label'=>'Subir imagen',
 		)); ?>
-		</div>
-			</div>
+              </div>
+            </div>
             <?php $this->endWidget(); ?>
           </fieldset>
         </form>
@@ -144,8 +142,8 @@ $this->breadcrumbs=array(
             <li>Arrastra las imagenes para organizarlas</li>
           </ul>
         </div>
-		<div class="clearfix productos_del_look">			
-			<?php
+        <div class="clearfix productos_del_look">
+          <?php
 			$imagenes = $model->imagenes;
 
 			if (count($imagenes) > 0) {
@@ -179,38 +177,69 @@ $this->breadcrumbs=array(
 	            )
 	        ));
 	        ?>
-
-				
-			<?php
+          <?php
 			}
         
         ?>
-        </div>	
         </div>
-        </ul>
       </div>
-      <div class="span3">
-      <div class="padding_left">
-           <?php $this->widget('bootstrap.widgets.TbButton', array(
+      </ul>
+    </div>
+    <div class="span3">
+      <div class="padding_left"> 
+        <!-- SIDEBAR OFF --> 
+        <script > 
+			// Script para dejar el sidebar fijo Parte 1
+			function moveScroller() {
+				var move = function() {
+					var st = $(window).scrollTop();
+					var ot = $("#scroller-anchor").offset().top;
+					var s = $("#scroller");
+					if(st > ot) {
+						s.css({
+							position: "fixed",
+							top: "70px"
+						});
+					} else {
+						if(st <= ot) {
+							s.css({
+								position: "relative",
+								top: "0"
+							});
+						}
+					}
+				};
+				$(window).scroll(move);
+				move();
+			}
+		</script>
+        <div id="scroller-anchor"></div>
+        <div id="scroller">
+          <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'danger',
 			'size' => 'large',
 			'block'=>'true',
 			'label'=>'Guardar',
 		)); ?>
-        <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Duplicar">Duplicar</a></li>
-        </ul>
+          <ul class="nav nav-stacked nav-tabs margin_top">
+            <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
+            <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-    </div>
-
-
-  
+      <script type="text/javascript"> 
+		// Script para dejar el sidebar fijo Parte 2
+			$(function() {
+				moveScroller();
+			 });
+		</script> 
+      <!-- SIDEBAR OFF --> 
       
-  
+    </div>
+  </div>
 </div>
-<!-- /container -->
+<!-- /container --> 
 <script type="text/javascript">
 // here is the magic
 function addColor(id)
@@ -245,4 +274,4 @@ function addColor(id)
  
 }
  
-</script>
+</script> 

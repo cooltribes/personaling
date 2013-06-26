@@ -209,3 +209,53 @@ $template = '{summary}
 
 <!------------------- MODAL WINDOW OFF ----------------->
 
+<!------------------- MODAL WINDOW ON -----------------> 
+
+<!-- Modal Ver Campaña -->
+<div id="modalVer" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header" id="modalVerHeader">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Nombre Campaña</h3>
+  </div>
+  <div class="modal-body" id="modalVerBody">
+ 
+ 	<p>Resumen de la campaña:</p>
+ 
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+	  <tr>
+	    <th scope="col">Descripción</th>
+	    <th scope="col">Detalle</th>
+	  </tr>
+	  <tr>
+	    <td>Recepción de los looks:</td>
+	    <td>del 17/10/1985 al 17/10/2013</td>
+	  </tr>
+	  <tr>
+	    <td>Actividad de la campaña:</td>
+	    <td>del 17/10/1985 al 17/10/2013</td>
+	  </tr>
+	  <tr>
+	    <td>Personal shopper invitados:</td>
+	    <td>500</td>
+	  </tr>
+	</table>
+  </div>
+  <div class="modal-footer">  <a href="admin_anadir_campana.php" title="editar" class="btn"><i class="icon-edit"></i> Editar</a> <a href="admin_campanas.php" title="Salir" class="btn" target="_blank"> Salir al listado de campañas</a> </div>
+</div>
+<!------------------- MODAL WINDOW OFF ----------------->
+
+<script>
+	function ver_campana(id_campana){
+		var path = location.pathname.split('/');
+		$.ajax({
+		      url: "/"+path[1]+"/campana/view",
+		      type: "post",
+		      data: { id : id_campana },
+		      success: function(data){
+		           $('#modalVer').html(data);
+		           $('#modalVer').modal();
+		      },
+		});
+	}
+</script>

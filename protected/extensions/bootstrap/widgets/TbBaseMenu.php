@@ -54,6 +54,9 @@ abstract class TbBaseMenu extends CMenu
 					$options = isset($item['itemOptions']) ? $item['itemOptions'] : array();
 					$classes = array();
 
+					if (isset($item['aditional']))
+						$classes[] = $item['aditional'];
+					
 					if ($item['active'] && $this->activeCssClass != '')
 						$classes[] = $this->activeCssClass;
 

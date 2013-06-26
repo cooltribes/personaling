@@ -80,6 +80,7 @@
 				$tabs[] = array(
             		'active'=>$estilo=='coctel'?true:false,
             		'label'=>$field->title,
+            		'aditional'=>'tab_falta',
             		//'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
@@ -87,24 +88,28 @@
 				$tabs[] = array(
             		'active'=>$estilo=='fiesta'?true:false,
             		'label'=>$field->title,
+            		'aditional'=>'tab_falta',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);        		
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'playa'));
 				$tabs[] = array(
             		'active'=>$estilo=='playa'?true:false,
             		'label'=>$field->title,
+            		'aditional'=>'tab_falta',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'sport'));
 				$tabs[] = array(
             		'active'=>$estilo=='sport'?true:false,
             		'label'=>$field->title,
+            		'aditional'=>'tab_falta',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
 				$field = ProfileField::model()->findByAttributes(array('varname'=>'trabajo'));
 				$tabs[] = array(
             		'active'=>$estilo=='trabajo'?true:false,
             		'label'=>$field->title,
+            		'aditional'=>'tab_falta',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
 				?>
@@ -149,11 +154,14 @@ $script = "
 		$(this).parents('fieldset').next('input').val($(this).attr('id').substring(8));
 		 //$('#Profile_tipo_cuerpo').val($(this).attr('id').substring(5));
 		div_id = $(this).parents('div.tab-pane').next().attr('id');
+		div_id_actual = $(this).parents('div.tab-pane').attr('id');
 		
 		if (div_id === undefined) {
 			$('#tuestilo-form').submit();
 		} else {
 			$('.nav-pills a[href=\"#'+div_id+'\"]').tab('show');
+			$('.nav-pills a[href=\"#'+div_id_actual+'\"]').parent().removeClass('tab_falta');
+			
 		}		 
 		// e.preventDefault();
 	 });

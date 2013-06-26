@@ -37,6 +37,8 @@ class TbMenu extends TbBaseMenu
 	 * @var boolean indicates whether dropdowns should be dropups instead.
 	 */
 	public $dropup = false;
+	
+	
 
 	/**
 	 * Initializes the widget.
@@ -57,7 +59,9 @@ class TbMenu extends TbBaseMenu
 
 		if ($this->dropup === true)
 			$classes[] = 'dropup';
-
+		
+		
+		
 		if (isset($this->scrollspy))
 		{
 			$scrollspy = is_string($this->scrollspy) ? array('target'=>$this->scrollspy) : $this->scrollspy;

@@ -1,5 +1,11 @@
 <?php
 
+$this->breadcrumbs=array(
+	'Usuarios'=>array('admin'),
+	'Editar',
+);
+
+
 function getMonthsArray()
     {
         

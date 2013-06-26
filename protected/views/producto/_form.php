@@ -141,12 +141,14 @@
 			'type'=>'danger',
 			'size' => 'large',
 			'block'=>'true',
-			'label'=>$model->isNewRecord ? 'Crear usuario' : 'Guardar cambios',
+			'label'=>$model->isNewRecord ? 'Crear producto' : 'Guardar cambios',
 		)); ?>
                 <ul class="nav nav-stacked nav-tabs margin_top">
-                    <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar formulario</a></li>
-                    <li><a href="#" title="Duplicar">Duplicar usuario</a></li>
-                    <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar usuario</a></li>
+                    <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
+                    <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
+                    <li><a title="Restablecer" id="limpiar">Limpiar formulario</a></li>
+                    <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
+                    <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
                 </ul>
                 
             </div>

@@ -159,8 +159,7 @@ $this->breadcrumbs=array(
         <hr/>
         <h5>Looks con estas prendas:</h5><br/>
        		<div id="looks" class="clearfix">
-        	
-        	</div>
+       		</div>
         </div>
     </div>
   </div>
@@ -196,18 +195,9 @@ $(document).ready(function(){
 				
 				if(data.status=="ok")
 				{
-					var cont;
-					//alert(data.datos);
-					
-					$.each(data.datos,function(clave,valor) {
-						if(valor!="undefined") 
-					  		cont = cont + valor;
-				
-					});
-					//alert(cont);
-					
-					//$('#looks.clearfix').append(cont);
-					$("#looks").html(cont); // cambiando el div
+
+					$('#looks.clearfix').prepend(data.datos);
+				//	$("#looks").html(cont); // cambiando el div
 					
 				}
 					

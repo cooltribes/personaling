@@ -17,6 +17,14 @@ $this->breadcrumbs=array(
 	'type'=>'horizontal',
 )); ?>
   <?php echo $form->errorSummary($model); ?>
+  
+  
+<?php
+	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
+	//<input id="accion" type="hidden" value="" />	
+?>
+
+  
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
@@ -86,11 +94,11 @@ $this->breadcrumbs=array(
 			'type'=>'danger',
 			'size' => 'large',
 			'block'=>'true',
+			'htmlOptions' => array('id'=>'normal'),
 			'label'=>'Guardar',
 		)); ?>
           <ul class="nav nav-stacked nav-tabs margin_top">
-            <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
-            <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
+            <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
             <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
           </ul>
         </div>
@@ -292,26 +300,36 @@ cinco = $("#Precio_tipoDescuento").val();
                     this.checked = false;
             }
         });
-			
-           $("#producto-form input[type=text]").val('');
-           
-           $("#Precio_combinacion_1").attr("checked");
-           
-           $("#Precio_tipoDescuento").val();
-           
-           $("#producto-form textarea").val("");
-           $("#producto-form textarea").value("");
-            
-           $("#producto-form select").val('-1');
-           $("#producto-form select").value('-1');
-           
-           $("#producto-form input[type=radio]").val('');
-           $("#producto-form input[type=radio]").value('');
-           
-           $("#producto-form input[type=checkbox]").val('');
-           $("#producto-form input[type=checkbox]").value('');
 
        });
+	
+	
+		$('#normal').on('click', function(event) {
+		event.preventDefault();
+		
+		// cambio el valor
+		$("#accion").attr("value", "normal");
+		//alert( $("#accion").attr("value") );
+		
+		// submit del form
+		$('#producto-form').submit();
+		
+		}
+	);
+	
+	
+	$('a#avanzar').on('click', function(event) {
+		
+		event.preventDefault();
+		
+		$("#accion").attr("value", "avanzar");
+		//alert( $("#accion").attr("value") );
+		
+		// submit del form
+		$('#producto-form').submit();
+		
+		}
+	);
 	
 	
 </script>

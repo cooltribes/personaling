@@ -240,10 +240,18 @@ class ProductoController extends Controller
 				
 				if($precio->save())
 				{
+					
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+						
+					if($_POST['accion'] == "normal") // si es el boton principal
+						$this->render('_view_precios',array('model'=>$model,'precio'=>$precio,));
+					
+					if($_POST['accion'] == "avanzar") // guardar y avanzar
+						$this->redirect(array('categorias','id'=>$model->id));
+
 				}
-				//	$this->redirect(array('view','id'=>$model->id));
+				
 			}
 		}
 
@@ -282,7 +290,17 @@ class ProductoController extends Controller
 			{
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+					
+					if($_POST['accion'] == "normal") // si es el boton principal
+						$this->render('_view_imagenes',array('model'=>$model,'imagen'=>$imagen,));
+					
+					if($_POST['accion'] == "avanzar") // guardar y avanzar
+						$this->redirect(array('seo','id'=>$model->id));
+					
 			}
+
+
+			
 		}//else
 		
 		$this->render('_view_imagenes',array(
@@ -1071,7 +1089,11 @@ class ProductoController extends Controller
 				
 				Yii::app()->user->setFlash('success', "Se ha relacionado el producto a las categorias.");
 				
-				echo("ok"); // realizo la relación
+				if($_POST['accion'] == 'normal')
+					echo("ok"); // realizo la relación
+				else if($_POST['accion'] == 'avanzar')
+					echo($idProducto); // realizo la relación
+					
 			}
 		}
 	}

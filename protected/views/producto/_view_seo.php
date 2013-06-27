@@ -95,10 +95,7 @@ $this->breadcrumbs=array(
 			'label'=>'Guardar',
 		)); ?>
           <ul class="nav nav-stacked nav-tabs margin_top">
-            <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
-            <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
-			<li><a  href="#"title="Restablecer" id="limpiar">Limpiar formulario</a></li>
-
+			 <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
           </ul>
         </div>
       </div>
@@ -120,5 +117,14 @@ $this->breadcrumbs=array(
 <?php $this->endWidget(); ?>
 
 <script type="text/javascript">
+		
+		$('a#limpiar').on('click', function() {
+			
+			$('#producto-form').each (function(){
+			  this.reset();
+			});
+
+       });
+		
 		
 </script>

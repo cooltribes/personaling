@@ -598,13 +598,10 @@ public function actionCategorias(){
 	{
 
 		
-		$look = new Look; 
-
-
-		
-		$dataProvider = $look->search();
+		$model = new Look; 
+		$dataProvider = $model->lookAdminAprobar();
 		$this->render('admin',
-		array('model'=>$look,
+		array('model'=>$model,
 		'dataProvider'=>$dataProvider,
 		));	
 

@@ -8,7 +8,7 @@
             <td><?php echo $data->getPrecio(); ?></td>
             <td>10</td>
             <td>6500,00</td>
-            <td>Por aprobar</td>
+            <td><?php echo $data->getStatus(); ?></td>
             <td><?php echo $data->created_on; ?></td>
             <td> Finaliza en: 17 Mayo 2013
                 <div class="progress margin_top_small  progress-danger">

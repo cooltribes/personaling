@@ -208,7 +208,7 @@ class Look extends CActiveRecord
 		    'totalItemCount'=>$count,
 		    
 
-		));
+		));  
 	 }
 	 /**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -218,7 +218,7 @@ class Look extends CActiveRecord
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-
+ 
 		$criteria=new CDbCriteria;  
 
 		$criteria->compare('id',$this->id);
@@ -237,6 +237,20 @@ class Look extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	/* look para el admin por aprobar o aprobados */
+	public function lookAdminAprobar()
+	{
+		
+		$criteria=new CDbCriteria;  
+
+		
+		$criteria->compare('status',1,false,'OR');
+		$criteria->compare('status',2,false,'OR');
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));		
 	}
 	public function getCategorias()  
 	{
@@ -272,5 +286,11 @@ class Look extends CActiveRecord
 	public function getTipo()
 	{
 		return $this->tipo == self::TIPO_CONSERVADOR?'Consevador':'Atrevido';
+	}
+	/* regresar el texto del status del look */
+	public function getStatus()
+	{
+		$textos = array('Creado','Enviado','Aprovado');
+		return $textos[$this->status];
 	}
 }

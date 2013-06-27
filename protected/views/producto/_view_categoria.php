@@ -13,6 +13,9 @@
 
 ?>
 
+<input id="accion" type="hidden" value="" />	
+
+
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Producto - Categorias</small></h1>
@@ -113,6 +116,10 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 		</script>
         <div id="scroller-anchor"></div>
         <div id="scroller">
+    
+    
+    <input id="accion" type="hidden" value="" />	
+        	
           <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'ajaxButton',
 			'type'=>'danger',
@@ -126,11 +133,14 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 				 var checkValues = $(':checkbox:checked').map(function() {
 			        return this.id;
 			    }).get().join();
-				
-				//alert(checkValues);
+
+			    $('#accion').attr('value', 'normal');
+			    var accion = $('#accion').attr('value');
+			    
+			    //alert(checkValues);
 				var producto = $('#producto').attr('value');
 			
-			this.data += '&idProd='+producto+'&check='+checkValues;
+			this.data += '&idProd='+producto+'&check='+checkValues+'&accion='+accion;
 			}",
 			
 			'data'=>array('a'=>'5'),
@@ -143,8 +153,45 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 			),
 			)); ?>
           <ul class="nav nav-stacked nav-tabs margin_top">
+          	
+          	<li>
+          		
+          		 <?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'ajaxButton',
+			'type'=>'danger',
+			'label'=>'Guardar y avanzar',
+			'url'=>array('producto/recatprod'), // ReCatProd Relacion Categorias a producto
+			'htmlOptions'=>array('id'=>'avanzar','class'=>''),
+			'ajaxOptions'=>array(
+			'type' => 'POST',
+			'beforeSend' => "function( request )
+			{
+				 var checkValues = $(':checkbox:checked').map(function() {
+			        return this.id;
+			    }).get().join();
+				
+			    $('#accion').attr('value', 'avanzar');
+			    var accion = $('#accion').attr('value');
+				
+				//alert(checkValues);
+				var producto = $('#producto').attr('value');
+			
+			this.data += '&idProd='+producto+'&check='+checkValues+'&accion='+accion;
+			}",
+			
+			'data'=>array('a'=>'5'),
+			'success'=>"function(data){
+				
+					window.location.href = '../tallacolor/'+data+'';
+				
+			}",
+			),
+			)); ?>
+          		
+          		
+          	</li>
+          	
             <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
-            <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
           </ul>
         </div>
       </div>

@@ -121,7 +121,14 @@ class ProductoController extends Controller
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
-					$this->redirect(array('create','id'=>$exist->id));
+					if($_POST['accion'] == "normal") // si es el boton principal
+						$this->redirect(array('create','id'=>$exist->id));
+					
+					if($_POST['accion'] == "avanzar") // guardar y avanzar
+						$this->redirect(array('precios','id'=>$exist->id));
+					
+					if($_POST['accion'] == "nuevo") // guardar y nuevo
+						$this->redirect(array('create'));
 					
 			}
 			else // nuevo
@@ -135,13 +142,21 @@ class ProductoController extends Controller
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
+					if($_POST['accion'] == "normal") // si es el boton principal
+						$this->redirect(array('create','id'=>$model->id));
+					
+					if($_POST['accion'] == "avanzar") // guardar y avanzar
+						$this->redirect(array('precios','id'=>$model->id));
+					
+					if($_POST['accion'] == "nuevo") // guardar y nuevo
+						$this->redirect(array('create'));
+					
+					
 				}
 			}
-			
-			
-				//$this->redirect(array('view','id'=>$model->id));
-		}
-//echo $model->fFin;
+	
+	}
+
 		$this->render('create',array(
 			'model'=>$model,
 		));

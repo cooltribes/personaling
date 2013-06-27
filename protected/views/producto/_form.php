@@ -7,6 +7,13 @@
 
 <!-- SUBMENU OFF -->
 
+
+<?php
+	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
+	//<input id="accion" type="hidden" value="" />	
+?>
+
+
 <div class="row margin_top">
     <div class="span9">
         <div class="bg_color3   margin_bottom_small padding_small box_1">
@@ -141,12 +148,13 @@
 			'type'=>'danger',
 			'size' => 'large',
 			'block'=>'true',
+			'htmlOptions' => array('id'=>'normal'),
 			'label'=>$model->isNewRecord ? 'Crear producto' : 'Guardar cambios',
 		)); ?>
                 <ul class="nav nav-stacked nav-tabs margin_top">
-                    <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
-                    <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
-                    <li><a title="Restablecer" id="limpiar">Limpiar formulario</a></li>
+                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
+                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
+                    <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
                     <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
                     <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
                 </ul>
@@ -160,14 +168,14 @@
 			$(function() {
 				moveScroller();
 			 });
-		</script> 
+		</script>
             <!-- SIDEBAR OFF --> 
        
     </div>
 </div>
 <script>
 
-		$('#limpiar').on('click', function() {
+		$('a#limpiar').on('click', function() {
 			
 			$('#producto-form').each (function(){
 			  this.reset();
@@ -187,29 +195,49 @@
                     this.checked = false;
             }
         });
-			
-			
-           $("#producto-form input[type=text]").val('');
-           $("#producto-form input[type=text]").value('');
-           
-           $("#producto-form textarea").val("");
-           $("#producto-form textarea").value("");
-            
-           $("#producto-form select").val('-1');
-           $("#producto-form select").value('-1');
-           
-           $("#producto-form input[type=radio]").val('0');
-             $("#producto-form input[type=radio]").value('0');
-           
-           $("#producto-form input[type=checkbox]").val('false');
-           $("#producto-form input[type=checkbox]").value('false');
-           
-           $("#producto-form")[0].reset();
-           $("#producto-form")[3].reset();
-           
-
            
        });
+	
+	
+	$('#normal').on('click', function(event) {
+		event.preventDefault();
+		
+		// cambio el valor
+		$("#accion").attr("value", "normal");
+		
+		// submit del form
+		$('#producto-form').submit();
+		
+		}
+	);
+	
+	
+	$('a#avanzar').on('click', function(event) {
+		
+		event.preventDefault();
+		
+		$("#accion").attr("value", "avanzar");
+		//alert( $("#accion").attr("value") );
+		
+		// submit del form
+		$('#producto-form').submit();
+		
+		}
+	);
+	
+	
+	$('a#nuevo').on('click', function(event) {
+		
+		event.preventDefault();
+		
+		$("#accion").attr("value", "nuevo");
+		//alert( $("#accion").attr("value") );
+		
+		// submit del form
+		$('#producto-form').submit();
+		}
+	);
+	
 	
 </script>
 <?php $this->endWidget(); ?>

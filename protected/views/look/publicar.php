@@ -285,6 +285,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         </div>
+        <?php if ($model->status == Look::STATUS_CREADO || Yii::app()->user->isAdmin()){ ?>
         <div class="form-actions"> 
         	<a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> 
         	
@@ -295,6 +296,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			    'size'=>'large', // null, 'large', 'small' or 'mini'
 			)); ?>
         </div>
+        <?php } ?>
+         <?php if ($model->status == Look::STATUS_ENVIADO && !Yii::app()->user->isAdmin()){ ?>
+         	Tu look esta pendiente por aprobar, Gracias
+         <?php } ?>
+        
      <?php $this->endWidget(); ?>
       <!------------------- MODAL WINDOW OFF -----------------> 
       

@@ -216,15 +216,15 @@ class TiendaController extends Controller
 		// tengo los dos looks. Ahora a generar lo que voy a devolver para que genere las imagenes.
 		
 		$ret = array();
-		array_push($ret,"<br>");
-		
+		$base = Yii::app()->baseUrl;
+
 		if($l1 != "")
-			array_push($ret,'<a href="../look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="/site/look/getImage/'.$l1->id.'" alt="Look"></a>');
+			array_push($ret,'<a href="../look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
 		
 		array_push($ret,"<br><br>");
 		
 		if($l2 != "")
-			array_push($ret,'<a href="../look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="/site/look/getImage/'.$l2->id.'" alt="Look"></a>');
+			array_push($ret,'<a href="../look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
 		
 		//array_push($ret,CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$l1->id)), "Look", array("width" => "400", "height" => "400", 'class'=>'img-polaroid')) );
 		

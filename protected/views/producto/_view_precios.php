@@ -91,7 +91,7 @@ $this->breadcrumbs=array(
           <ul class="nav nav-stacked nav-tabs margin_top">
             <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
             <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
-            <li><a href="#" title="Restablecer" id="limpiar">Limpiar formulario</a></li>
+            <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
           </ul>
         </div>
       </div>
@@ -272,7 +272,7 @@ cinco = $("#Precio_tipoDescuento").val();
 });
 
 
-		$('#limpiar').on('click', function() {
+		$('a#limpiar').on('click', function() {
 			
 			$('#producto-form').each (function(){
 			  this.reset();

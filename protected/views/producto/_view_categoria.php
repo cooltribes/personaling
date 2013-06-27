@@ -145,7 +145,6 @@ $this->widget('bootstrap.widgets.TbAlert', array(
           <ul class="nav nav-stacked nav-tabs margin_top">
             <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
             <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
-            <li><a  href="#"title="Restablecer" id="limpiar">Limpiar formulario</a></li>
           </ul>
         </div>
       </div>

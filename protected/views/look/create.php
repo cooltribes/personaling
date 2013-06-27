@@ -226,9 +226,20 @@ while (i <  canvas.length) {
 	)); ?>
   </div>
   <hr/>
+  <?php
+  	// retrieve the models from db
+	$models = Campana::model()->findAll(array('status' => '1'));
+	 
+	// format models as $key=>$value with listData
+	$list = CHtml::listData($models, 'id', 'nombre');
+  ?>
   <div class="row">
     <section class="span8">
       <div class="well">
+      	<?php echo CHtml::dropDownList('campana_id', $model, 
+              $list,
+              array('empty' => 'Seleccione una campaña'));
+		?>
         <h4> Titulo de la Campana  - Desde 00/00/2012 hasta 00/00/2012 </h4>
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         <hr/>

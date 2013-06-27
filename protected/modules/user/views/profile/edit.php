@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
-	UserModule::t("Profile")=>array('micuenta'),
-	UserModule::t("Edit"),
-);     
+//$this->breadcrumbs=array(
+//	UserModule::t("Profile")=>array('micuenta'),
+//	UserModule::t("Edit"),
+//);     
 function getMonthsArray()
     {
         
@@ -53,7 +53,7 @@ function getMonthsArray()
     }
 ?>
 
-<div class="container margin_top">
+<div class="container margin_top tu_perfil">
   <div class="row">
 	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
@@ -66,37 +66,13 @@ function getMonthsArray()
         ),
     )
 ); ?>	
-<!-- FLASH OFF -->   
-    <div class="span6 offset3">
-     <!-- MENU ON -->
-		<div class="navbar">
-			<div class="navbar-inner margin_bottom">
-				<ul class="nav ">
-					<li class="active">
-						<?php echo CHtml::link('Datos Personales',array('profile/edit'));
-						?>
-					</li>
-					<li>
-						<?php echo CHtml::link('Avatar',array('profile/avatar'));
-						?>
-					</li>
-					<li>
-						<?php echo CHtml::link('Tu Tipo',array('profile/edittutipo'));
-						?>
-					</li>
-					<li>
-						<?php 
-						if (UserModule::isPersonalShopper()){
-							echo CHtml::link('Personal Shopper',array('profile/editShopper'));
-						}
-						?>
-					</li>
-				</ul>
-			</div>
-		</div>
-     <!-- MENU OFF -->
-   
 
+<!-- SIDEBAR ON -->
+  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+  <!-- SIDEBAR ON --> 
+  
+<!-- FLASH OFF -->   
+    <div class="span9">
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1" style="width: 86%; margin: 0 auto;">
         
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(

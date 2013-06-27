@@ -1,11 +1,11 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Change Password");
-$this->breadcrumbs=array(
-	UserModule::t("Mi cuenta") => array('micuenta'),
-	UserModule::t("Change Password"),
-);
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Cambiar Contraseña");
+//$this->breadcrumbs=array(
+//	UserModule::t("Mi cuenta") => array('micuenta'),
+//	UserModule::t("Change Password"),
+//);
 
 ?>
-<div class="container margin_top">
+<div class="container margin_top tu_perfil"> 
 	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
@@ -18,12 +18,13 @@ $this->breadcrumbs=array(
     )
 ); ?>	
 <!-- FLASH OFF --> 	
-  <!-- SUBMENU ON -->
- <?php $this->renderPartial("_menu"); ?>
-  <!-- SUBMENU OFF -->	
+ 
   <div class="row">
-    <div class="span6 offset3">
-      <h1>Cambiar contraseña</h1>
+   <!-- SIDEBAR ON -->
+  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+  <!-- SIDEBAR ON --> 
+    <div class="span9 ">
+      <h1>Cambia tu contraseña</h1>
       
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -38,7 +39,6 @@ $this->breadcrumbs=array(
 		)); ?>
           <fieldset>
             <legend >Ingresa los datos a continuación: </legend>
-            <p class="note">Campos con <span class="required">*</span> son requeridos.</p>
             <div class="control-group"> 
            
             <label for="RegistrationForm_email" class="control-label required">Ingresa tu contraseña actual: <span class="required">*</span></label>

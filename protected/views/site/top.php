@@ -12,15 +12,13 @@
     <li><a href="#">Looks en promoción</a></li>
   </ul>
   <div class="row margin_bottom_large">
-    <div class="span12"> 
+    <div class="span12" id="lo_mas_top"> 
       
       <!-- Carousel items -->
       
       <?php // OJO que esto hay que ponerlo DINAMICO //?>
-      <div id="carousel_looks_recomendados" class="carousel slide ">
-        <div class="carousel-inner">
-          <div id="list-auth-items" class="list-view">
-            <div id="b" class="items row" >
+
+            <div class="items row ">
             	 <?php
  foreach($dataProvider->getData() as $record) {
  	$look = Look::model()->findByPk($record['look_id']);
@@ -49,7 +47,7 @@
                       <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
                       <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                         <!-- AddThis Button BEGIN -->
-                        
+                        	
                         <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
                         <li><a class="addthis_button_tweet"></a></li>
                         <li><a class="addthis_button_pinterest_pinit"></a></li>
@@ -67,12 +65,8 @@
               <?php 
               }
 } ?>
-              
-            </div>
-          </div>
-        </div>
-        <!-- Carousel nav --> 
-        <a class="carousel-control left margin_top_small bx-prev" href="#myCarousel" data-slide="prev">‹</a> <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">›</a> </div>
+              </div>
+            
     </div>
   </div>
   <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">

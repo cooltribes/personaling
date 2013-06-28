@@ -227,10 +227,30 @@ while (i <  canvas.length) {
 	)); ?>
   </div>
   <hr/>
+  <?php
+  	// retrieve the models from db
+	$models = Campana::model()->findAllByAttributes(array('estado' => '1'));
+	 
+	// format models as $key=>$value with listData
+	$list = CHtml::listData($models, 'id', 'nombre');
+  ?>
+  <?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id'=>'form_productos',
+    //'type'=>'horizontal',
+    'htmlOptions'=>array('class'=>'personaling_form'),
+    //'type'=>'stacked',
+    'type'=>'inline',
+)); ?>
   <div class="row">
     <section class="span8">
-      <div class="well">
-        <h4> Titulo de la Campana  - Desde 00/00/2012 hasta 00/00/2012 </h4>
+      <div class="well"> <h4><?php echo $form->labelEx($model,'campana_id', array('class' => 'control-label')); ?>
+      	<?php echo $form->dropDownList($model, 'campana_id',
+              $list,
+              array('empty' => 'Seleccione una campaña'));
+		?>
+		<div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
+		</h4>
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         <hr/>
         <!-- CANVAS ON -->
@@ -336,14 +356,7 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
       	<input id="productos_id" type="hidden" value="1,2,3,4" />
       </form>
       -->
-      <?php /** @var BootActiveForm $form */
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-    'id'=>'form_productos',
-    //'type'=>'horizontal',
-    'htmlOptions'=>array('class'=>'personaling_form'),
-    //'type'=>'stacked',
-    'type'=>'inline',
-)); ?>
+      
       <?php echo CHtml::hiddenField('productos_id'); ?> <?php echo CHtml::hiddenField('colores_id'); ?> <?php echo CHtml::hiddenField('left'); ?> <?php echo CHtml::hiddenField('top'); ?>
       <?php echo CHtml::hiddenField('width'); ?> <?php echo CHtml::hiddenField('height'); ?> <?php echo CHtml::hiddenField('tipo'); ?>
       
@@ -596,61 +609,67 @@ function addPublicar(tipo)
 	var width_a = '';
 	var count_a = 0;
 	
-	$('.canvas input[name="producto_id"]').each(function(item){
-		productos_id += $(this).val()+',';
-		color_id += $(this).next().val()+',';
-		position = $(this).parent().position();
-		image = $(this).parent().find('img');
-		width += image.width() + ',';
-		height += image.height() + ',';
-		left += position.left + ',';
-		top += position.top + ',';
-		count++;
-	});
+	if($('#Look_campana_id').val() != ''){
+		$('#campana_id_error').hide('slow');
+		$('.canvas input[name="producto_id"]').each(function(item){
+			productos_id += $(this).val()+',';
+			color_id += $(this).next().val()+',';
+			position = $(this).parent().position();
+			image = $(this).parent().find('img');
+			width += image.width() + ',';
+			height += image.height() + ',';
+			left += position.left + ',';
+			top += position.top + ',';
+			count++;
+		});
+		
+		// para los adornos
+		
+		$('.canvas input[name="adorno_id"]').each(function(item){
+			adornos_id += $(this).val()+',';
+			position = $(this).parent().position();
+			image = $(this).parent().find('img');
+			width_a += image.width() + ',';
+			height_a += image.height() + ',';
+			left_a += position.left + ',';
+			top_a += position.top + ',';
+			count_a++;
+		});
+		
+		productos_id = productos_id.substring(0, productos_id.length-1);
+		adornos_id = adornos_id.substring(0, adornos_id.length-1);
+		//alert(productos_id);
+		//alert(left);
+		//productos_id = "1,2,3,4";
+		
+		$("#productos_id").val(productos_id);
+		$("#colores_id").val(color_id.substring(0, color_id.length-1));
+		$("#left").val(left.substring(0, left.length-1));
+		$("#top").val(top.substring(0, top.length-1));
+		$("#height").val(height.substring(0, height.length-1));
+		$("#width").val(width.substring(0, width.length-1));
+		$("#tipo").val(tipo);
+		
+		// ahora los de los adornos
+		$("#adornos_id").val(adornos_id);
+		$("#left_a").val(left_a.substring(0, left_a.length-1));
+		$("#top_a").val(top_a.substring(0, top_a.length-1));
+		$("#height_a").val(height_a.substring(0, height_a.length-1));
+		$("#width_a").val(width_a.substring(0, width_a.length-1));
+		
+		//count = 6;
+		//alert(productos_id);
+		if (count >= 3){
+			$("#form_productos").submit();
+		} else {
+			bootbox.alert("Debes tener al menos seis productos");
+		}
 	
-	// para los adornos
-	
-	$('.canvas input[name="adorno_id"]').each(function(item){
-		adornos_id += $(this).val()+',';
-		position = $(this).parent().position();
-		image = $(this).parent().find('img');
-		width_a += image.width() + ',';
-		height_a += image.height() + ',';
-		left_a += position.left + ',';
-		top_a += position.top + ',';
-		count_a++;
-	});
-	
-	productos_id = productos_id.substring(0, productos_id.length-1);
-	adornos_id = adornos_id.substring(0, adornos_id.length-1);
-	//alert(productos_id);
-	//alert(left);
-	//productos_id = "1,2,3,4";
-	
-	$("#productos_id").val(productos_id);
-	$("#colores_id").val(color_id.substring(0, color_id.length-1));
-	$("#left").val(left.substring(0, left.length-1));
-	$("#top").val(top.substring(0, top.length-1));
-	$("#height").val(height.substring(0, height.length-1));
-	$("#width").val(width.substring(0, width.length-1));
-	$("#tipo").val(tipo);
-	
-	// ahora los de los adornos
-	$("#adornos_id").val(adornos_id);
-	$("#left_a").val(left_a.substring(0, left_a.length-1));
-	$("#top_a").val(top_a.substring(0, top_a.length-1));
-	$("#height_a").val(height_a.substring(0, height_a.length-1));
-	$("#width_a").val(width_a.substring(0, width_a.length-1));
-	
-	//count = 6;
-	//alert(productos_id);
-	if (count >= 3){
-		$("#form_productos").submit();
-	} else {
-		bootbox.alert("Debes tener al menos seis productos");
-	}
-
-    return false; 
+	    return false; 
+    }else{
+    	$('#campana_id_error').html('Debes seleccionar una campaña');
+    	$('#campana_id_error').show('slow');
+    }
 }
  
 </script> 

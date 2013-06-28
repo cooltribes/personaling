@@ -20,7 +20,7 @@
 	),
 )); ?>
         <fieldset>
-          <legend >Perfil Corporal: </legend>
+          <legend >Estilos: </legend>
           <div class="control-group">
             <div class="controls controls-row">
               <?php $field = ProfileField::model()->findByAttributes(array('varname'=>'coctel')); ?>

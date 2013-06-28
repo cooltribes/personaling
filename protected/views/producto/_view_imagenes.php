@@ -105,6 +105,13 @@ $this->breadcrumbs=array(
 	'htmlOptions' => array('enctype' => 'multipart/form-data'),
 )); ?>
   
+  
+  <?php
+	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
+	//<input id="accion" type="hidden" value="" />	
+?>
+
+  
   <!-- SUBMENU OFF -->
   <div class="row margin_top">
     <div class="span9">
@@ -220,11 +227,11 @@ $this->breadcrumbs=array(
 			'type'=>'danger',
 			'size' => 'large',
 			'block'=>'true',
+			'htmlOptions' => array('id'=>'normal'),
 			'label'=>'Guardar',
 		)); ?>
           <ul class="nav nav-stacked nav-tabs margin_top">
-            <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
-            <li><a href="#" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
+             <li><a href="../seo/<?php echo $model->id; ?>" id="avanzar" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
           </ul>
         </div>
       </div>
@@ -273,5 +280,33 @@ function addColor(id)
     return false; 
  
 }
- 
+
+
+	$('#normal').on('click', function(event) {
+		event.preventDefault();
+		
+		// cambio el valor
+		$("#accion").attr("value", "normal");
+		//alert( $("#accion").attr("value") );
+		
+		// submit del form
+		$('#producto-form').submit();
+		
+		}
+	);
+	
+	/*
+	$('a#avanzar').on('click', function(event) {
+		
+		event.preventDefault();
+		
+		$("#accion").attr("value", "avanzar");
+		//alert( $("#accion").attr("value") );
+		
+		// submit del form
+		$('#producto-form').submit();
+		
+		}
+	);
+ */
 </script> 

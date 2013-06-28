@@ -1,15 +1,18 @@
-<?php //$this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Eliminar tu cuenta");
 //$this->breadcrumbs=array(
 //	UserModule::t("Mi cuenta")=>array('micuenta'),
 //	UserModule::t("Eliminar"),
 //);
 ?>
-<div class="container margin_top"> 
-  <!-- SUBMENU ON -->
-   <?php $this->renderPartial("_menu"); ?>
-  <!-- SUBMENU OFF -->
+<div class="container margin_top tu_perfil"> 
+ 
   <div class="row">
-    <div class="span6 offset3">
+  
+     <!-- SIDEBAR ON -->
+  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+  <!-- SIDEBAR ON --> 
+
+    <div class="span9">
       <h1>Eliminar Cuenta</h1>
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -25,7 +28,7 @@
           
           
           <fieldset>
-            <p class="lead" >Al borrar tu Cuenta de Personaling,  estas aceptando los siguientes apartados:</p>
+            <p class="lead margin_top_medium" >Al borrar tu Cuenta de Personaling,  estas aceptando los siguientes apartados:</p>
             <ul class="padding_left_medium">
             	
 <li>Borrar tu Cuenta sera algo PERMANENTE.
@@ -56,7 +59,7 @@
             <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
             'label'=> 'Borrar Cuenta',
     		'buttonType' => 'button',
-    		'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+    		'type'=>'', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
     		'size'=>'large', // null, 'large', 'small' or 'mini'
     		'htmlOptions' => array('id'=>'btn_borrar'),
 )); ?> 

@@ -1,10 +1,10 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
-	UserModule::t("Tu Cuenta")=>array('micuenta'),
-	UserModule::t("Privacidad"),
-);
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Edita tu Privacidad");
+//$this->breadcrumbs=array(
+//	UserModule::t("Tu Cuenta")=>array('micuenta'),
+//	UserModule::t("Privacidad"),
+//);
 ?>
-<div class="container margin_top">
+<div class="container margin_top tu_perfil">
 	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
@@ -17,12 +17,12 @@ $this->breadcrumbs=array(
     )
 ); ?>	
 <!-- FLASH OFF --> 
-  <!-- SUBMENU ON -->
-  <?php $this->renderPartial("_menu"); ?>
-  <!-- SUBMENU OFF -->
   <div class="row">
-    <div class="span6 offset3">
-      <h1>Privacidad</h1>
+   <!-- SIDEBAR ON -->
+  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+  <!-- SIDEBAR ON --> 
+    <div class="span9">
+      <h1>Edita tu Privacidad</h1>
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'privacidad-form',
@@ -57,7 +57,7 @@ $this->breadcrumbs=array(
             <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
             'label'=> 'Guardar',
     		'buttonType' => 'submit',
-    		'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+    		'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
     		'size'=>'large', // null, 'large', 'small' or 'mini'
 )); ?> </div>
           </fieldset>

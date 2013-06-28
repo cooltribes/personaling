@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 24/06/2013 */ 
+/* Project name: Personaling  al 27/06/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -314,6 +314,7 @@ strong, th{ color:#555;}
 .table-striped tbody tr:nth-child(2n+1) td{
 	 background-color: lighten(@color10,4%);
 }
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{ background:@color1}
 
 .table-striped  th{
 	font-size: 12px;
@@ -1363,7 +1364,9 @@ ul.yiiPager .last
 		.span6:nth-child(2n+1){ margin-left:0}
 	}
 	.nav-stacked li{ background-color:@color3;}
-	
+	.dropdown-menu{ min-height:inherit;}
+	.dropdown-submenu > a:after{ margin-right:0}
+	.nav > li > a:hover{ background:@color1;}
 	ul{
 		min-height:100px;
 		margin-bottom:20px;
@@ -1701,7 +1704,14 @@ ul.yiiPager .last
 		background-color: #222222;
 		}
 	}
-
+#privacidad{
+	.margin_top;
+	input[type="checkbox"]{
+		 display: inline-block;
+   		 float: left;
+   		 margin-right: 0.5em;
+		}
+	}
 /*------------ Backend OFF --------------*/
 
 /* Estilos de prueba */

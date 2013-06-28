@@ -4,12 +4,14 @@ $this->breadcrumbs=array(
 	UserModule::t("Notificaciones"),
 );
 ?>
-<div class="container margin_top"> 
-  <!-- SUBMENU ON -->
-  <?php $this->renderPartial("_menu"); ?>
-  <!-- SUBMENU OFF -->
+<div class="container margin_top tu_perfil"> 
+ 
   <div class="row">
-    <div class="span6 offset3">
+  
+   <!-- SIDEBAR ON -->
+  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+  <!-- SIDEBAR ON --> 
+    <div class="span9">
       <h1>Notificaciones</h1>
       <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <form method="post" action="" id="registration-form"   class="form-stacked personaling_form" enctype="multipart/form-data">

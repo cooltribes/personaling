@@ -38,7 +38,7 @@
 				        echo "</div>";
 				        
 				        echo '<div class="tel margin_top_small"><span class="type"><strong>Telefono</strong>:</span> '.$dir->telefono.' </div>';
-				        echo '<div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>';
+				      //  echo '<div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>';
 				        echo '</div>';
 						echo '</div>';
 						

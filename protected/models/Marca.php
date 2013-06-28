@@ -68,7 +68,7 @@ class Marca extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
-			'descripcion' => 'Descripcion',
+			'descripcion' => 'Descripción',
 			'urlImagen' => 'Url Imagen',
 		);
 	}

@@ -118,8 +118,37 @@ $this->breadcrumbs=array(
 		});",CClientScript::POS_READY
 	);
 	
-	?>
 	
+	// Codigo para actualizar el list view cuando presionen ENTER
+	
+	Yii::app()->clientScript->registerScript('query',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		
+		$(document).keypress(function(e) {
+		    if(e.which == 13) {
+		        ajaxRequest = $('#formu').serialize();
+				clearTimeout(ajaxUpdateTimeout);
+				
+				ajaxUpdateTimeout = setTimeout(function () {
+					$.fn.yiiListView.update(
+					'list-auth-items',
+					{
+					type: 'POST',	
+					url: '" . CController::createUrl('tienda/filtrar') . "',
+					data: ajaxRequest}
+					
+					)
+					},
+			
+			300);
+			return false;
+		    }
+		});",CClientScript::POS_READY
+	);	
+	
+	
+	?>
 	
 	<!-- para filtrar por color -->
     <?php

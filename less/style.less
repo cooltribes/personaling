@@ -1415,88 +1415,6 @@ ul.yiiPager .last
 		}
 }
 
-#carousel_looks_recomendados {
-	width:100%;
-	overflow:hidden;
-	height:460px;
-	.items{
-			position: absolute;
-			width: 2000%;
-	}
-	#list-auth-items{
-		padding-top: 20px;
-		position: relative;
-		overflow: hidden;
-		width: 1210px;
-		height: 460px;
-	}
-	.span4{
-				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
-				padding-bottom:9px;
-}
-	.item{
-		display:inline-block;
-		padding:0;
-		border: 1px solid #ddd;
-		position:relative;
-		.transition_all;
-			
-			&:hover{
-				.box_shadow_personaling;
-				
-				}
-			.share_like{
-				position:absolute;
-				top:1em;
-				right:1em;
-				opacity:.7;
-				.btn-link{ 
-					padding:0; 
-					margin:0;
-					color:#666;}
-				.btn-link-active .entypo{color:@color1 !important;}
-				}
-			.share_like:hover{
-				opacity:1;
-				.btn-link{ .color1}
-			}
-			.label{
-				position:absolute;
-				top:.5em;
-				background-color:@color1;
-				.border_radius(@radius:0);
-				left:0;}
-			.vcard {
-				background: none repeat scroll 0 0 #EEEEEE;
-    			border-top: 1px solid #DDDDDD;
-				.muted{ margin-top:.8em;}
-				.muted, h5{ 
-						font-size:.8em;
-						line-height:1.3em;
-						}
-				.avatar {
-						
-							width:40px;
-							height:40px;
-							margin:.4em 0 .5em .5em;
-						
-					}
-				.precio{
-					text-align: right;
-					font-weight: 300;
-					font-size: 1.8em;
-					display: block;
-					margin-right:.5em;
-					margin-top: .6em;
-					color: #555;
-					small{ font-size:.6em;}
-					 }
-				
-			}
-		
-		}
-	}
-
 .kineticjs-content{
 	canvas{ 
 			position:relative !important;
@@ -1559,6 +1477,78 @@ ul.yiiPager .last
 		a{ .color2}
 		}
 	}
+
+
+#lo_mas_top {
+
+	.span4{
+				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				padding-bottom:9px;
+				.margin_bottom;
+}
+	.item{
+		display:inline-block;
+		padding:0;
+		border: 1px solid #ddd;
+		
+		.transition_all;
+			
+			&:hover{
+				.box_shadow_personaling;
+				
+				}
+			.share_like{
+				position:absolute;
+				top:1em;
+				right:1em;
+				opacity:.7;
+				.btn-link{ 
+					padding:0; 
+					margin:0;
+					color:#666;}
+				.btn-link-active .entypo{color:@color1 !important;}
+				}
+			.share_like:hover{
+				opacity:1;
+				.btn-link{ .color1}
+			}
+			.label{
+				position:absolute;
+				top:.5em;
+				background-color:@color1;
+				.border_radius(@radius:0);
+				left:0;}
+			.vcard {
+				background: none repeat scroll 0 0 #EEEEEE;
+    			border-top: 1px solid #DDDDDD;
+				.muted{ margin-top:.8em;}
+				.muted, h5{ 
+						font-size:.8em;
+						line-height:1.3em;
+						}
+				.avatar {
+						
+							width:40px;
+							height:40px;
+							margin:.4em 0 .5em .5em;
+						
+					}
+				.precio{
+					text-align: right;
+					font-weight: 300;
+					font-size: 1.8em;
+					display: block;
+					margin-right:.5em;
+					margin-top: .6em;
+					color: #555;
+					small{ font-size:.6em;}
+					 }
+				
+			}
+		
+		}
+	}
+
 
 /*------------ LO MAS TOP OFF ------------*/
 
@@ -1655,13 +1645,33 @@ ul.yiiPager .last
 	.canvas{
 		background:#fff;
 		.ui-draggable:hover{
-				span{display:block;}
+				.rotar, .elimniar{display:block;}
+				
 				}
 		.ui-draggable{
-				span{
+				.eliminar{
 					position: absolute;
 					top:10px;
 					right:10px;
+					background:#fff;
+					color:#666;
+					.border_radius(@radius:20px);
+					width:20px;
+					cursor:pointer;
+					height:20px;
+					display:none;
+					font-size:12px;
+					text-align:center;
+					box-shadow:0 0 2px rgba(0,0,0,.4);
+					-moz-box-shadow:0 0 2px rgba(0,0,0,.4);
+					-webkit-box-shadow:0 0 2px rgba(0,0,0,.4);
+					-ms-box-shadow:0 0 2px rgba(0,0,0,.4);
+
+					}	
+				.rotar{
+					position: absolute;
+					bottom:10px;
+					left:10px;
 					background:#fff;
 					color:#666;
 					.border_radius(@radius:20px);

@@ -1,7 +1,7 @@
 <?php  
   $baseUrl = Yii::app()->baseUrl; 
-  $cs = Yii::app()->getClientScript();
-  $cs->registerScriptFile($baseUrl.'/js/slider.js');
+  //$cs = Yii::app()->getClientScript();
+  //$cs->registerScriptFile($baseUrl.'/js/slider.js');
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
 ?>
 <div class="container margin_top">
@@ -12,18 +12,17 @@
     <li><a href="#">Looks en promoción</a></li>
   </ul>
   <div class="row margin_bottom_large">
-    <div class="span12"> 
+    <div class="span12" id="lo_mas_top"> 
       
       <!-- Carousel items -->
       
       <?php // OJO que esto hay que ponerlo DINAMICO //?>
-      <div id="carousel_looks_recomendados" class="carousel slide ">
-        <div class="carousel-inner">
-          <div id="list-auth-items" class="list-view">
-            <div id="b" class="items row" >
+
+            <div class="items row ">
             	 <?php
  foreach($dataProvider->getData() as $record) {
  	$look = Look::model()->findByPk($record['look_id']);
+	 if (isset($look)){
  ?>
              
               <div class="span4">
@@ -48,7 +47,7 @@
                       <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
                       <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                         <!-- AddThis Button BEGIN -->
-                        
+                        	
                         <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
                         <li><a class="addthis_button_tweet"></a></li>
                         <li><a class="addthis_button_pinterest_pinit"></a></li>
@@ -63,13 +62,11 @@
               </div>
              
 
-              <?php } ?>
-              
-            </div>
-          </div>
-        </div>
-        <!-- Carousel nav --> 
-        <a class="carousel-control left margin_top_small bx-prev" href="#myCarousel" data-slide="prev">‹</a> <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">›</a> </div>
+              <?php 
+              }
+} ?>
+              </div>
+            
     </div>
   </div>
   <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
@@ -103,12 +100,23 @@
         <div class="span12">
           <h3 class="margin_bottom_small">Prendas más vendidas</h3>
           <div class="thumbnails">
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_7.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_8.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_9.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_7.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_8.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_9.jpg"></a></li>
+            	 <?php
+ foreach($dataProvider_productos->getData() as $record) {
+ 	$producto = Producto::model()->findByPk($record['producto_id']);
+	 if (isset($producto)){
+ ?>            
+            <li class="span2">
+            	
+            <a href="#">
+            	
+            	<?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
+            	<?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
+            	
+            </a>
+            	
+            </li>
+<? } } ?>            
+
           </div>
         </div>
       </div>

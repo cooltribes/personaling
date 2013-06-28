@@ -90,7 +90,8 @@ function handleDrop(e) {
 		nuevo_objeto.css('left',x);
 		//nuevo_objeto.find('img').unwrap();
 		nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
-		nuevo_objeto.append('<span>x</span>');
+		nuevo_objeto.append('<span class="eliminar"><i class=" icon-remove"></i></span>');
+		nuevo_objeto.append('<div class="rotar"> <i class=" icon-repeat"><i></div>');
 		
 		//alert(nuevo_objeto.html());
 		var ident = nuevo_objeto.find('img').attr('src');

@@ -1,7 +1,7 @@
 <?php  
   $baseUrl = Yii::app()->baseUrl; 
-  $cs = Yii::app()->getClientScript();
-  $cs->registerScriptFile($baseUrl.'/js/slider.js');
+  //$cs = Yii::app()->getClientScript();
+  //$cs->registerScriptFile($baseUrl.'/js/slider.js');
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
 ?>
 <div class="container margin_top">
@@ -24,6 +24,7 @@
             	 <?php
  foreach($dataProvider->getData() as $record) {
  	$look = Look::model()->findByPk($record['look_id']);
+	 if (isset($look)){
  ?>
              
               <div class="span4">
@@ -63,7 +64,9 @@
               </div>
              
 
-              <?php } ?>
+              <?php 
+              }
+} ?>
               
             </div>
           </div>
@@ -103,12 +106,23 @@
         <div class="span12">
           <h3 class="margin_bottom_small">Prendas más vendidas</h3>
           <div class="thumbnails">
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_7.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_8.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_9.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_7.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_8.jpg"></a></li>
-            <li class="span2"> <a href="#"><img width="170" height="170" src="../images/producto_sample_9.jpg"></a></li>
+            	 <?php
+ foreach($dataProvider_productos->getData() as $record) {
+ 	$producto = Producto::model()->findByPk($record['producto_id']);
+	 if (isset($producto)){
+ ?>            
+            <li class="span2">
+            	
+            <a href="#">
+            	
+            	<?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
+            	<?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
+            	
+            </a>
+            	
+            </li>
+<? } } ?>            
+
           </div>
         </div>
       </div>

@@ -7,11 +7,7 @@ $looks_recomendados = $look->match($model);
 ?>
 
 <div class="container margin_top tu_perfil">
-    <div class="page-header">
-        <h1>Tu perfil de usuario</h1>
-        
-    </div>
-
+   
 
 	<?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
@@ -27,65 +23,16 @@ $looks_recomendados = $look->match($model);
 
 
     <div class="row">
-        <aside class="span3">
-            <div>
-                <div class="card">
-                	<?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); ?>
-                	
-                    <div class="card_content vcard">
-                        <h4 class="fn"><?php echo $profile->first_name." ".$profile->last_name; ?></h4>
-                        <p class="muted">Miembro desde: <?php echo Yii::app()->dateFormatter->format("d MMM y",strtotime($model->create_at)); ?></p>
-                    </div>
-                </div>
-                <hr/>
-                <h5>Tu actividad</h5>
-                <aside class="card">
-                    <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_encantan; ?></span>
-                        <p>Looks que te Encantan</p>
-                    </div>
-                    <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $productos_encantan; ?></span>
-                        <p>Productos que te Encantan</p>
-                    </div>
-                    <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_recomendados->totalItemCount; ?></span>
-                        <p>Looks recomendados para ti</p>
-                    </div>
-                </aside>
-                <hr/>
-                <h5>Tus Compras</h5>
-                <ul class="nav nav-stacked text_align_center" >
-                	<?php
-      	
-			      	$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
-			      
-			      	if($sum >= 0){
-			      	?>
-			      		<li><?php echo Yii::app()->numberFormatter->formatDecimal($sum); ?> Bs. de Balance en tu Cuenta</li>
-			      	<?php
-			      	}
-			      	else
-			      	{
-			      	?>
-			      		<li><?php echo Yii::app()->numberFormatter->formatDecimal($sum); ?> Bs. que adeudas.</li>
-			      	<?php
-			      	}
-			      	?>
-			        <li>XX Puntos Ganados</li>
-			        
-			        <?php
-			        $total;
-				
-					$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
-					$total = Yii::app()->db->createCommand($sql)->queryScalar();
-			      	?>
-			      	<li><?php echo $total; ?> Pedidos Activos</li>
-			        <li>XX Devoluciones Pendientes</li>
-                </ul>
-            </div>
-        </aside>
+           <!-- SIDEBAR ON -->
+  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+  <!-- SIDEBAR ON --> 
+
         
         <!-- aquí empieza lo de las direcciones -->
         
         <div class="span9 ">
+        <h1>Tus direcciones</h1>
+        
 
             <section class="bg_color3 margin_bottom_small padding_small box_1">
             <?php	

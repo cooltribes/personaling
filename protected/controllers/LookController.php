@@ -587,11 +587,21 @@ public function actionCategorias(){
 					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
 				}
 		} else {
-       $this->render('create',array(
-				'model'=>$model,
-				'categorias'=>$categorias,
-			)
-		);
+			$criteria=new CDbCriteria;
+			$criteria->condition = 'estado = 1';
+			$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+			
+			$models = Campana::model()->findAll($criteria);
+			
+			if(sizeof($models) > 0){
+		        $this->render('create',array(
+						'model'=>$model,
+						'categorias'=>$categorias,
+					)
+				);
+			}else{
+				$this->render('no_campanas');
+			}
 		}
 	}
 	public function actionAdmin()

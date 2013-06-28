@@ -61,14 +61,14 @@ class Look extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
-			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'required'),
-			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status', 'numerical', 'integerOnly'=>true),
+			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id', 'required'),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado,status', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado,status, campana_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -84,6 +84,7 @@ class Look extends CActiveRecord
 			'productos' => array(self::MANY_MANY, 'Producto', '{{look_has_producto}}(look_id, producto_id)'),
 			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'campana' => array(self::BELONGS_TO, 'Campana', 'campana_id'),
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'),
@@ -108,6 +109,7 @@ class Look extends CActiveRecord
 			'destacado' => 'Destacado',
 			'created_on' => 'Created On',
 			'tipo' => 'Tipo',
+			'campana_id' => 'Campaña',
 		);
 	}
 	public function matchOcaciones($user)
@@ -233,6 +235,7 @@ class Look extends CActiveRecord
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('tipo',$this->tipo);
 		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('campana_id',$this->campana_id,true);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

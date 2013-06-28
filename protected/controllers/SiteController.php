@@ -144,9 +144,11 @@ class SiteController extends Controller
 		// using the default layout 'protected/views/layouts/main.php'
 		$user = User::model()->findByPk(Yii::app()->user->id);
 		$looks = new Look;
+		$productos = new Producto;
 		
 		$this->render('top',array(
 					'dataProvider' => $looks->masvendidos(),
+					'dataProvider_productos' => $productos->masvendidos(6),
 					'user'=>$user,	
 				));
 	}	

@@ -69,11 +69,11 @@ class Seo extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'mTitulo' => 'M Titulo',
-			'mDescripcion' => 'M Descripcion',
-			'pClave' => 'P Clave',
+			'mTitulo' => 'Titulo',
+			'mDescripcion' => 'Descripción',
+			'pClave' => 'Palabras Clave',
 			'urlAmigable' => 'Url Amigable',
-			'tbl_producto_id' => 'Tbl Producto',
+			'tbl_producto_id' => 'Producto ID',
 		);
 	}
 

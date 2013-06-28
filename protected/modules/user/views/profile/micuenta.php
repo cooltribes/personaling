@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
+//$this->breadcrumbs=array(
 	//UserModule::t("Profile")=>array('profile'),
-	UserModule::t("Mi cuenta"),
-);
+	//UserModule::t("Mi cuenta"),
+//);
 $look = new Look;
 $looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
 $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));
@@ -76,6 +76,7 @@ $looks_recomendados = $look->match($model);
       
     </aside>
     <div class="span9 configuracion_perfil">
+    <h1>Panel de control</h1>
       <div class="well">
         <div class="row">
           <div class="span4">

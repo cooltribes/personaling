@@ -14,13 +14,13 @@
             <th scope="col" colspan="6"> Totales </th>
         </tr>
         <tr>
-            <td><p class="T_xlarge margin_top_xsmall">120 </p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotal(); ?> </p>
                 Totales</td>
-            <td><p class="T_xlarge margin_top_xsmall"> 144 </p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getActivos(); ?> </p>
                 Activos</td>
-            <td><p class="T_xlarge margin_top_xsmall"> 156</p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getInactivos(); ?> </p>
                 Inactivos</td>
-            <td><p class="T_xlarge margin_top_xsmall">150</p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(1); ?></p>
                 Enviados</td>
             <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
                 En tránsito </td>

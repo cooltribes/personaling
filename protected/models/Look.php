@@ -16,6 +16,7 @@
  * @property string $created_on
  * @property integer $tipo
  * @property integer $status
+ * @property integer $view_counter 
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -62,13 +63,13 @@ class Look extends CActiveRecord
 		return array(
 			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id', 'required'),
-			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id', 'numerical', 'integerOnly'=>true),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado,status, campana_id', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado,status, campana_id, view_counter', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -303,16 +304,16 @@ class Look extends CActiveRecord
 		return count($this->findAll());
 	}
 	/* total de look activos */
-	public function getActivos()
+	public function getAprovados()
 	{
 		
 		return $this->countByAttributes(array('status'=>2));
 	}	
 	/* total de look inactivos */
-	public function getInactivos()
+	public function getPorAprovar()
 	{
 		
-		return $this->countByAttributes(array(),   			'status <> :status ',
+		return $this->countByAttributes(array(),   			'status = :status ',
     		array(':status'=>2)
 			);
 	}	

@@ -90,6 +90,8 @@ class LookController extends Controller
 	public function actionView($id)
 	{
 		$model = Look::model()->findByPk($id);
+		$model->view_counter++;
+		$model->save();
 		$this->render('view',array(
 						'model'=>$model,
 						//'categorias'=>$categorias,

@@ -21,7 +21,7 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals'),
+				'actions'=>array('detallepedido','listado','modals','cancelar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -433,6 +433,42 @@ class OrdenController extends Controller
 		$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
 
 		echo $datos;
+	}
+
+	public function actionCancelar($id)
+	{
+			
+		$orden = Orden::model()->findByPK($id);
+		
+		if($orden->estado==1)
+		{
+			$orden->estado = 5;	// se canceló la orden
+					
+			if($orden->save())
+			{
+				// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+				$estado = new Estado;
+										
+				$estado->estado = 5;
+				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+				$estado->fecha = date("Y-m-d H:i:s");
+				$estado->orden_id = $orden->id;
+						
+				if($estado->save())
+				{
+					Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
+					
+					$this->redirect(array('listado'));
+					
+				}
+			}	
+		}
+		else
+		{
+			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
+			$this->redirect(array('listado'));
+		}
+		
 	}
 
 

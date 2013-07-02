@@ -56,8 +56,20 @@
 						echo CHtml::CheckBox('calendario','true', array (
                      						'checked'=>'checked',
                                         	'value'=>'on',
+                                        	'id'=>'abrirFechas',
                                         )); 
-						echo(" ¿Se publicará con fecha de Inicio y fin?");				
+						echo(" ¿Se publicará con fecha de Inicio y fin?");	
+						
+						echo("				
+						<script type='text/javascript'>	
+							$('#fechas').ready(function(){
+									
+								if($('#fechas').css('display') == 'none') 
+									$('#fechas').show('slow'); 
+								
+							});						
+						</script>
+						");			
 											
 					}
 					
@@ -66,6 +78,7 @@
               	?>
                         </div>
                     </div>
+                    
                     <div class="control-group">
                     	<div style="display: none" id="fechas">
                         <?php 
@@ -244,7 +257,7 @@
 $("#abrirFechas").click(function () {
   $("#fechas").toggle("slow");
 });
-	
-	
+
 </script>
+
 <?php $this->endWidget(); ?>

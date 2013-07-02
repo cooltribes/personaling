@@ -16,6 +16,12 @@
 	        <?php echo Yii::app()->user->getFlash('success'); ?>
 	    </div>
 	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
+	
 </div>
     <!-- Menu OFF -->
     

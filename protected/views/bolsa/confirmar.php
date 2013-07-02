@@ -39,7 +39,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Direccion de Envio</h4>
+        <h4 class="braker_bottom"> Dirección de Envio</h4>
         <?php 
         // direccion de envio 
         if(isset($tipoPago)){
@@ -60,7 +60,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     </section>
     <section class="span4">
       <div class="well ">
-        <h4>Metodo de Pago Seleccionado</h4>
+        <h4>Método de Pago Seleccionado</h4>
         <div class=" margin_bottom">
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
             <?php 

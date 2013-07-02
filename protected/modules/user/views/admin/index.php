@@ -39,8 +39,14 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
   <hr/>
   <div class="row margin_top margin_bottom ">
     <div class="span4">
-      <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
-        <input class="span3" id="prependedInput" type="text" placeholder="Buscar">
+    	<?php
+    	echo CHtml::beginForm(CHtml::normalizeUrl(array('index')), 'get', array('id'=>'search-form'))
+			. '<div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>'
+		    . CHtml::textField('nombre', (isset($_GET['string'])) ? $_GET['string'] : '', array('id'=>'textbox_buscar', 'class'=>'span3', 'placeholder'=>'Buscar'))
+		    . CHtml::endForm();
+		?>
+      
+        
       </div>
     </div>
     <div class="span3">
@@ -80,7 +86,7 @@ $template = '{summary}
 
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-user',
-	    'dataProvider'=>$model->search(),
+	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_user',
 	    'template'=>$template,
 /*	    'afterAjaxUpdate'=>" function(id, data) {
@@ -103,6 +109,27 @@ $template = '{summary}
 		)
 		),					
 	));    
+	
+	
+	Yii::app()->clientScript->registerScript('search',
+	    "var ajaxUpdateTimeout;
+	    var ajaxRequest;
+	    $('#textbox_buscar').keyup(function(){
+	        ajaxRequest = $(this).serialize();
+	        clearTimeout(ajaxUpdateTimeout);
+	        ajaxUpdateTimeout = setTimeout(function () {
+	            $.fn.yiiListView.update(
+	// this is the id of the CListView
+	                'list-user',
+	                {data: ajaxRequest}
+	            )
+	        },
+	// this is the delay
+	        300);
+	    });"
+	);
+		
+	
 	?> 
 	
   <hr/>

@@ -113,6 +113,20 @@ function handleDrop(e) {
 		    }
 		   // stop: handleDragStop
 			});
+			// EVENTO PARA ROTACION 
+			$('.rotar',contenedor).draggable({
+			    handle: '.rotar',
+			    opacity: 0.01, 
+			    helper: 'clone',
+			    drag: function(event, ui){
+			        var rotateCSS = 'rotate(' + ui.position.left + 'deg)';
+			
+			        $(this).parent().css({
+			            '-moz-transform': rotateCSS,
+			            '-webkit-transform': rotateCSS
+			        });
+			    }
+			});
 		
 			$("span",contenedor).last().click(function(){
 		  		$(this).parent().remove();

@@ -44,9 +44,25 @@ class AdminController extends Controller
         $model->unsetAttributes();  // clear any default values
         if(isset($_GET['User']))
             $model->attributes=$_GET['User'];
+		
+		$criteria=new CDbCriteria;
+		
+		if(isset($_GET['nombre'])){
+            //$model->nom=$_POST['nombre'];
+            $criteria->alias = 'User';
+            $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%'.$_GET['nombre'].'%" OR p.last_name LIKE "%'.$_GET['nombre'].'%" OR User.email LIKE "%'.$_GET['nombre'].'%")';
+		}
+		
+        $dataProvider = new CActiveDataProvider('User', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
+			),
+        ));
 
         $this->render('index',array(
             'model'=>$model,
+            'dataProvider'=>$dataProvider,
         ));
 		/*$dataProvider=new CActiveDataProvider('User', array(
 			'pagination'=>array(

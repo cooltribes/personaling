@@ -318,10 +318,39 @@ $this->breadcrumbs=array(
         <hr/>
       </div>
     </div>
+    
+    
     <div class="span3">
-      <div class="padding_left"> 
-      	
-		 <?php 
+        <div class="padding_left"> 
+            <!-- SIDEBAR OFF --> 
+            <script > 
+			// Script para dejar el sidebar fijo Parte 1
+			function moveScroller() {
+				var move = function() {
+					var st = $(window).scrollTop();
+					var ot = $("#scroller-anchor").offset().top;
+					var s = $("#scroller");
+					if(st > ot) {
+						s.css({
+							position: "fixed",
+							top: "70px"
+						});
+					} else {
+						if(st <= ot) {
+							s.css({
+								position: "relative",
+								top: "0"
+							});
+						}
+					}
+				};
+				$(window).scroll(move);
+				move();
+			}
+		</script>
+            <div id="scroller-anchor"></div>
+            <div id="scroller">
+                 <?php 
 		 /*
 		  $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType'=>'submit',
@@ -394,14 +423,32 @@ $this->breadcrumbs=array(
 					),
 				)); 
 		
-				?>      	
-        <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Restablecer">Restablecer</a></li>
-          <li><a href="#" title="Duplicar">Duplicar</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-trash"> </i>Borrar</a></li>
-        </ul>
-      </div>
+				?> 
+                <ul class="nav nav-stacked nav-tabs margin_top">
+                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente">Guardar y avanzar</a></li>
+                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
+                    <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
+                    <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
+                    <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
+                </ul>
+                
+            </div>
+           
+            
+        </div>
+          <script type="text/javascript"> 
+		// Script para dejar el sidebar fijo Parte 2
+			$(function() {
+				moveScroller();
+			 });
+		</script>
+            <!-- SIDEBAR OFF --> 
+       
     </div>
+    
+    
+    
+    
   </div>
 </div>
 <!-- /container --> 

@@ -296,4 +296,32 @@ class Look extends CActiveRecord
 		$textos = array('Creado','Enviado','Aprovado');
 		return $textos[$this->status];
 	}
+	/* total de look */
+	public function getTotal()
+	{
+		
+		return count($this->findAll());
+	}
+	/* total de look activos */
+	public function getActivos()
+	{
+		
+		return $this->countByAttributes(array('status'=>2));
+	}	
+	/* total de look inactivos */
+	public function getInactivos()
+	{
+		
+		return $this->countByAttributes(array(),   			'status <> :status ',
+    		array(':status'=>2)
+			);
+	}	
+	/* totoal por estado de orden */
+	public function getTotalxStatus($status)
+	{
+		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where estado = :status AND look_id != 0 group by tbl_orden_id, look_id;',
+			array(':status'=>$status)));
+		
+		
+	}	
 }

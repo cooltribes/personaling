@@ -612,7 +612,8 @@ public function actionCategorias(){
 		$dataProvider = $model->lookAdminAprobar();
 		$this->render('admin',
 		array('model'=>$model,
-		'dataProvider'=>$dataProvider,
+			'dataProvider'=>$dataProvider,
+			'look'=>$model,
 		));	
 
 	}// fin	

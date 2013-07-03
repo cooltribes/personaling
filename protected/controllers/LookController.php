@@ -588,7 +588,7 @@ public function actionCategorias(){
 				}
 		} else {
 			$criteria=new CDbCriteria;
-			$criteria->condition = 'estado = 1';
+			$criteria->condition = 'estado = 1 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
 			$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
 			
 			$models = Campana::model()->findAll($criteria);

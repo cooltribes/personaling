@@ -39,6 +39,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 3)
 		echo "Pago Confirmado";
 	
+	if($orden->estado == 5)
+		echo "Orden Cancelada";	
+	
 	if($orden->estado == 6)
 		echo "Pago Rechazado";
 
@@ -100,6 +103,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 3)
 		echo "Bs. ya pagados";
 	
+	if($orden->estado == 5)
+		echo "Orden Cancelada";	
+	
 	if($orden->estado == 7)
 		echo "Bs. que faltan.";
 	
@@ -140,7 +146,8 @@ $usuario = User::model()->findByPk($orden->user_id);
           	
           	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
           	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
-			
+						
+			if($orden->estado != 5){
 			
 			echo("
 	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
@@ -194,7 +201,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 					}//foreach
 				
 				echo("</table></div>");
-			
+				}
 		  	?>    
      
       <div class="well well-small margin_top well_personaling_small">
@@ -315,6 +322,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($est->estado==3)
 					echo("<td>Pago Confirmado</td>");
+				
+				if($est->estado == 5)
+					echo "<td>Orden Cancelada</td>";	
 				
 				if($est->estado==6)
 					echo("<td>Pago Rechazado</td>");

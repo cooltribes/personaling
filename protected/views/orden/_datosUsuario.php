@@ -19,6 +19,9 @@
 		if($data->estado == 3)
 			echo "<td>Pago Confirmado</td>";
 		
+		if($data->estado == 5)
+			echo "<td>Orden Cancelada</td>";
+		
 		if($data->estado == 6)
 			echo "<td>Pago Rechazado</td>";
 		
@@ -52,8 +55,17 @@
 			            
             echo "<li><a tabindex='-1' href='detallepedido/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
             	<li class='divider'></li>
-            	<li><a tabindex='-1' href='#'><i class='icon-ban-circle'></i> Cancelar Orden</a></li>
-          	</ul>
+            	<li>
+            	";
+            	
+			echo CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
+			    $this->createUrl('orden/cancelar',array('id'=>$data->id)),
+			    array(
+			    'id'=>'link'.$data->id)
+			);		
+
+            //echo "</li><li><a tabindex='-1' href='#'><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
+          	echo "</ul>
         	</div></td>	
 			";
 			

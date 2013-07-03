@@ -83,11 +83,11 @@
         <!-- Columna Secundaria ON-->
         <div class="span4 columna_secundaria"> 
           <!-- Boton de comprar  -->
-          <div class="row call2action">
-            <div class="span2">
-              <h4 class="precio" ><span>Subtotal</span><div id="price">Bs. <?php echo $model->getPrecio(); ?></div></h4>
+          <div class="row-fluid call2action">
+            <div class="span6">
+              <h4 class="precio" ><div id="price"><span>Subtotal</span> Bs. <?php echo $model->getPrecio(); ?></div></h4>
             </div>
-            <div class="span2">
+            <div class="span6">
               <div class=""> 
                 <!--	<a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa</a> -->
                 <?php 
@@ -96,7 +96,7 @@
 				    'buttonType'=>'ajaxButton',
 				    'type'=>'warning',
 				    'label'=>'Comprar',
-				    //'block'=>'true',
+				    'block'=>'true',
 				   	'size'=> 'large',
 				   // 'url'=>array('producto/tallacolor'),
 				   'url'=> CController::createUrl('bolsa/agregar') ,

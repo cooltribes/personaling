@@ -21,13 +21,8 @@
 
 .btn-warning {
   color: #ffffff;
-  background-image: -moz-linear-gradient(top, #ff9600, #ed8f1c);
-  background-image: -ms-linear-gradient(top, #ff9600, #ed8f1c);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9600), to(#ed8f1c));
-  background-image: -webkit-linear-gradient(top, #ff9600, #ed8f1c);
-  background-image: -o-linear-gradient(top, #ff9600, #ed8f1c);
-  background-image: linear-gradient(top, #ff9600, #ed8f1c);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#'ff9600, endColorstr='#'ed8f1c, GradientType=0);
+  background: #ff9600 !important;
+ 
 }
 
 .btn-warning:hover,

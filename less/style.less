@@ -1,5 +1,5 @@
-/* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 27/06/2013 */ 
+ /* Author: Cooltribes - Juan Pernia (@juanrules)  */
+/* Project name: Personaling  al 02/07/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -447,7 +447,7 @@ src: url('../fonts/entypo.woff'),
 	.navbar-inner{ 
 		position:relative;
 		background: #EEEEEE;
-		border-color: #FFFFFF #DDDDDD #DDDDDD;
+		border-color: #FFFFFF #DDDDDD rgba(240, 233, 241, 0.8);
 		border-top: 1px solid #FFFFFF;
 		box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
 		-ms-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
@@ -470,13 +470,25 @@ src: url('../fonts/entypo.woff'),
 		 .btn-group{
 			margin-top:0}
 		}
-		
+	.sub_menu{
+		background:rgba(240, 233, 241, 0.8);
+		border:1px solid darken(@color10,5%);
+		border-top:0;
+			label{
+				padding:0.7em 1em  0  0;
+				font-size:.9em;
+				color: #9d969d;
+				
+				}
+			input[type="checkbox"]{
+				margin:-1px 5px 0 0;
+				}
+			}
 	.menu_4_columnas{ width:620px; padding-bottom: 1em;}
 	.menu_3_columnas{ width:480px; padding-bottom: 1em;}
 	.menu_2_columnas{ width:320px; padding-bottom: 1em;}
 	.dropdown-menu {
 			a, label{
-				font-size: 0.8em;
 				line-height: 1.3em;
 				padding: 3px 10px;
 					}
@@ -689,7 +701,7 @@ src: url('../fonts/entypo.woff'),
 
 	
 }
-.carousel-indicators {
+  .carousel-indicators {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -970,7 +982,7 @@ src: url('../fonts/entypo.woff'),
 			padding-bottom:1em;
 			border-bottom:1px solid #ddd;
 			.btn-danger:before, .btn-warning:before{
-				content:'\E73D';
+				content:'\1F512';
 				font-size:2em;
 				margin-right:7px;		
 				font-family:entypo;
@@ -981,16 +993,20 @@ src: url('../fonts/entypo.woff'),
 				/*height:2.3em;
 	            line-height:2.3em;*/ 
 				font-size:1em;
-				
+				border:0;
+				font-family:'Open Sans', sans-serif;
 				.color3;
 				.entypo{ font-size:2em;.color3;}
+				
 				}
 			.precio{
 					font-weight:300;
+					font-size:1.7em;
+					margin-top:.5em;
 					.entypo{
 						color:#ff9600;
 					}
-					span{ font-size: 0.7em;
+					span{ font-size: 0.6em;
     					  font-weight: bold;
 						 
 						 }
@@ -1019,10 +1035,13 @@ src: url('../fonts/entypo.woff'),
 					
 					.metadata_top, .metadata_bottom{
 						.transition_all;
-						opacity:0;
 						width:95%;
 						font-size:.7em;
 						background:rgba(255,255,255,.7);
+						/* Opciones provisionales de opacidad y sombra ON */
+						opacity:.2	;
+						
+						/* Opciones provisionales de opacidad y sombra OFF */
 						select{
 							display:block;
 							z-index:10;
@@ -1049,6 +1068,11 @@ src: url('../fonts/entypo.woff'),
 									.padding_left_small;
 									display:block;}
 					}
+					/* Opciones provisionales de opacidad y sombra ON */
+					box-shadow:0 1px 3px rgba(0,0,0,0.3);
+					-moz-box-shadow:0 1px 3px rgba(0,0,0,0.3);
+					-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.3);
+					/* Opciones provisionales de opacidad y sombra OFF */	
 					&:hover { 
 						box-shadow:0 1px 3px rgba(0,0,0,0.3);
 						-moz-box-shadow:0 1px 3px rgba(0,0,0,0.3);
@@ -1552,6 +1576,91 @@ ul.yiiPager .last
 
 
 /*------------ LO MAS TOP OFF ------------*/
+
+/*------------ TU PERSONAL SHOPPER ON ----------*/
+#carousel_looks_recomendados {
+	width:100%;
+	overflow:hidden;
+	height:460px;
+	.items{
+			position: absolute;
+			width: 2000%;
+	}
+	#list-auth-items{
+		padding-top: 20px;
+		position: relative;
+		overflow: hidden;
+		width: 1210px;
+		height: 460px;
+	}
+	.span4{
+				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				padding-bottom:9px;
+}
+	.item{
+		display:inline-block;
+		padding:0;
+		border: 1px solid #ddd;
+		position:relative;
+		.transition_all;
+			
+			&:hover{
+				.box_shadow_personaling;
+				
+				}
+			.share_like{
+				position:absolute;
+				top:1em;
+				right:1em;
+				opacity:.7;
+				.btn-link{ 
+					padding:0; 
+					margin:0;
+					color:#666;}
+				.btn-link-active .entypo{color:@color1 !important;}
+				}
+			.share_like:hover{
+				opacity:1;
+				.btn-link{ .color1}
+			}
+			.label{
+				position:absolute;
+				top:.5em;
+				background-color:@color1;
+				.border_radius(@radius:0);
+				left:0;}
+			.vcard {
+				background: none repeat scroll 0 0 #EEEEEE;
+    			border-top: 1px solid #DDDDDD;
+				.muted{ margin-top:.8em;}
+				.muted, h5{ 
+						font-size:.8em;
+						line-height:1.3em;
+						}
+				.avatar {
+						
+							width:40px;
+							height:40px;
+							margin:.4em 0 .5em .5em;
+						
+					}
+				.precio{
+					text-align: right;
+					font-weight: 300;
+					font-size: 1.8em;
+					display: block;
+					margin-right:.5em;
+					margin-top: .6em;
+					color: #555;
+					small{ font-size:.6em;}
+					 }
+				
+			}
+		
+		}
+	}
+/*------------ TU PERSONAL SHOPPER ON ----------*/
+
 
 /*------------ TEAM ON ------------*/
 

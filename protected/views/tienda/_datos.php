@@ -27,10 +27,10 @@ $prePub="";
 				{
 					$a = CHtml::image($ima->getUrl(), "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
 				
-						echo("<td><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
-						<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a>
-						<span class='precio'>Bs. ".$prePub."</span><br/>
-						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></article></a></td>");
+						echo("<td><article class='span3'><div class='producto'> ".$a." <a href='#myModal' role='button' class='btn  btn-block btn-small vista_rapida  hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+						<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
+						<span class='precio'>Bs. ".$prePub."</span>
+						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
 						
 						$con=$id;
 						$entro=1;
@@ -41,10 +41,10 @@ $prePub="";
 					
 					$a = CHtml::image($ima->getUrl(), "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
 					
-					echo("<a href='../producto/detalle/".$data->id."' title='".$data->nombre."'><article class='span3'> ".$a." <h3>".$data->nombre."</h3>
-					<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a>
-					<span class='precio'>Bs. ".$prePub."</span><br/>
-					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></article></a>");
+					echo("<article class='span3'><div class='producto'> ".$a." <a href='#myModal' role='button' class='btn btn-block btn-small vista_rapida hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+					<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
+					<span class='precio'>Bs. ".$prePub."</span>
+					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
 					
 					$con=$id;
 						

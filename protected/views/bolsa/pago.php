@@ -32,27 +32,15 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
           </div>
         </div>
-        <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
+        <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito" checked>
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
             <h4>Banesco</h4>
             <ul>
-              <li>Cuenta Corriente Nº XXXXX-YYY-ZZZ</li>
-              <li>PERSONALING C.A</li>
-              <li> RIF Nº J-RRRRR</li>
-            </ul>
-            <h4>Mercantil</h4>
-            <ul>
-              <li>Cuenta Corriente Nº XXXXX-YYY-ZZZ</li>
-              <li>PERSONALING C.A</li>
-              <li> RIF Nº J-RRRRR</li>
-            </ul>
-            <h4>Provincial</h4>
-            <ul>
-              <li>Cuenta Corriente Nº XXXXX-YYY-ZZZ</li>
-              <li>PERSONALING C.A</li>
-              <li> RIF Nº J-RRRRR</li>
+              <li>Cuenta Corriente Nº 0134-0277-98-2771093092</li>
+              <li>PERSONALING C.A.</li>
+              <li>RIF Nº J-40236088-6</li>
             </ul>
           </div>
         </div>
@@ -295,7 +283,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               ?>
               </tr>
             </table>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed " id="tabla_resumen">
               <tr>
                 <th class="text_align_left">Subtotal:</th>
                 <td><?php
@@ -334,10 +322,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   Bs.</td>
               </tr>
               <tr>
-                <th class="text_align_left">Descuento:</th>
-                <td class="text_align_right"><?php echo $totalDe; ?> Bs.</td>
-              </tr>
-              <tr>
                 <th class="text_align_left">Envío:</th>
                 <td class="text_align_right"><?php echo $envio; ?> Bs.</td>
               </tr>
@@ -346,15 +330,27 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <td class="text_align_right"><?php echo $iva; ?> Bs.</td>
               </tr>
               <tr>
+                <th class="text_align_left">Descuento:</th>
+                <td class="text_align_right" id="descuento"><?php echo $totalDe; ?> Bs.</td>
+              </tr>
+              <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>
-                <td class="text_align_right"><h4><?php echo $t; ?> Bs.</h4></td>
+                <td class="text_align_right"><h4 id="precio_total"><?php echo $t; ?> Bs.</h4></td>
               </tr>
             </table>
-            <div>
-              <label class="checkbox">
-                <input type="checkbox" name="optionsRadios" id="optionsRadios1" value="option1" >
-                Usar Balance de Tarjetas de Regalo <strong>(Bs.255)</strong> </label>
-            </div>
+            <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
+            <?php
+            $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+			if($balance > 0){
+	            ?>
+	            <div>
+	              <label class="checkbox">
+	                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
+	                Usar Balance disponible: <strong><?php echo Yii::app()->numberFormatter->formatDecimal($balance); ?> Bs.</strong> </label>
+	            </div>
+	            <?php
+			}
+            ?>
             <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button>
             <!-- Forma de pago ON -->
             <div class="padding_left_small collapse" id="collapse2">
@@ -366,6 +362,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <input type="text" maxlength="128"  placeholder="Numero de la tarjeta de Regalo"  class="span3">
                 <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-mini">Agregar Tarjeta de Regalo</a>
                 <input type="hidden" id="tipo_pago" name="tipo_pago" value="1" />
+                <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
               
             </div>
             <!-- Forma de pago OFF -->
@@ -502,5 +499,26 @@ else
 
     });
 
-
+	function calcular_total(total, balance){
+		if(balance > 0){
+			//console.log('Total: '+total+' - Balance: '+balance);
+			if($('#usar_balance').is(':checked')){
+				$('#usar_balance_hidden').val('1');
+				//console.log('checked');
+				if(balance >= total){
+					$('#descuento').html(total+' Bs.');
+					$('#precio_total').html('0 Bs.');
+				}else{
+					$('#descuento').html(balance.toFixed(2)+' Bs.');
+					$('#precio_total').html((total-balance).toFixed(2)+' Bs.');
+				}
+			}else{
+				$('#usar_balance_hidden').val('0');
+				//console.log('not checked');
+				$('#descuento').html('0 Bs.');
+				$('#precio_total').html(total+' Bs.');
+			}
+		}
+		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
+	}
 </script>

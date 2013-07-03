@@ -11,8 +11,8 @@
       <td><h5 class="no_margin_bottom"> <?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></h5>
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
         <?php echo $data->personal_shopper?'Personal Shopper':''; ?> </small></td>
-      <td><small>eMail: <?php echo $data->email; ?><br/>
-        Telefono: <?php echo $data->profile->tlf_celular; ?> <br/>
+      <td><small><?php echo $data->email; ?><br/>
+        Telf.: <?php echo $data->profile->tlf_celular; ?> <br/>
         Ciudad: <?php echo $data->profile->ciudad; ?>
         
      </small>
@@ -25,7 +25,7 @@
       <td><?php if ($data->getLastvisit()) echo  date("d/m/Y",$data->getLastvisit()); else echo 'N/D'; ?></td>
       <td><?php if ($data->getCreatetime()) echo  date("d/m/Y",$data->getCreatetime()); else echo 'N/D'; ?></td>
       <td>
-      <div class="dropdown"> <a class="dropdown-toggle btn btn-small" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_pedidos_detalles.php"> <i class="icon-cog"></i></a> 
+      <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_pedidos_detalles.php" title="acciones"> <i class="icon-cog"></i></a> 
           <!-- Link or button to toggle dropdown -->
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <li>

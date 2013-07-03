@@ -51,6 +51,9 @@ echo"<tr>";
 	
 	if($data->estado == 3)
 		echo "<td>Pago Confirmado</td>";
+	
+	if($data->estado == 5)
+		echo "<td>Orden Cancelada</td>";
 		
 	if($data->estado == 7)
 		echo "<td>Pago Insuficiente</td>";	

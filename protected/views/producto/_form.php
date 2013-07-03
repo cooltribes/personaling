@@ -56,8 +56,20 @@
 						echo CHtml::CheckBox('calendario','true', array (
                      						'checked'=>'checked',
                                         	'value'=>'on',
+                                        	'id'=>'abrirFechas',
                                         )); 
-						echo(" ¿Se publicará con fecha de Inicio y fin?");				
+						echo(" ¿Se publicará con fecha de Inicio y fin?");	
+						
+						echo("				
+						<script type='text/javascript'>	
+							$('#fechas').ready(function(){
+									
+								if($('#fechas').css('display') == 'none') 
+									$('#fechas').show('slow'); 
+								
+							});						
+						</script>
+						");			
 											
 					}
 					
@@ -66,6 +78,7 @@
               	?>
                         </div>
                     </div>
+                    
                     <div class="control-group">
                     	<div style="display: none" id="fechas">
                         <?php 
@@ -154,8 +167,8 @@
 			'label'=>$model->isNewRecord ? 'Crear producto' : 'Guardar cambios',
 		)); ?>
                 <ul class="nav nav-stacked nav-tabs margin_top">
-                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
-                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
+                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente">Guardar y avanzar</a></li>
+                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
                     <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
                     <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
@@ -244,7 +257,7 @@
 $("#abrirFechas").click(function () {
   $("#fechas").toggle("slow");
 });
-	
-	
+
 </script>
+
 <?php $this->endWidget(); ?>

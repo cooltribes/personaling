@@ -20,14 +20,15 @@ var op25 = 0.25;
 var op50 = 0.50;
 var op75 = 0.75;
 */
+var mouse_over = false;
 var op25 = 1;
 var op50 = 1;
 var op75 = 1;
 var op100 = 1;
 var op0 = 1;
 var mover_mouse = false; // opcion para mover el slider con el mouse over
-var core = 134;
-var init_center = 1060;
+var core = 370+30; //134
+var init_center = 1200; //1080
 var windowWidth = window.screen.width < window.outerWidth ?
                   window.screen.width : window.outerWidth;	
 var windowHeight = window.screen.height < window.outerHeight ?
@@ -113,7 +114,7 @@ if (!is_touch_device()){
 			  	   if (posicion >= medio + cuarto)
 					   rightInterval = setInterval(function(){
 							if (!$("#b").is(":animated"))
-								doRight(500);
+								doLeft(500);
 						}, 100);
 					else
 					   rightInterval = setInterval(function(){
@@ -246,7 +247,7 @@ function init_slider(){
 	$("#b").append($("#b").html());
 	if (ie10){
 		$("#b > div").eq(count+3).removeClass("image_bw").addClass("image_not_bw").css({opacity: '1'});
-		x= -1080	
+		x= -init_center	
 	} else {
 		if (navigator.userAgent.match(/iPhone/i)){
 			$("#b > div").eq(count+1).removeClass("image_bw").addClass("image_not_bw").css({opacity: '1'});
@@ -257,7 +258,7 @@ function init_slider(){
 				if (Math.abs(window.orientation) === 90){
 					
 				$("#b > div").eq(count+3).removeClass("image_bw").addClass("image_not_bw").css({opacity: '1'});
-				x= -1080;
+				x= -init_center;
 				} else {
 				$("#b > div").eq(count+2).removeClass("image_bw").addClass("image_not_bw").css({opacity: '1'});
 				x= -1050;					
@@ -270,7 +271,7 @@ function init_slider(){
 					x= -1030;
 				} else {
 					$("#b > div").eq(count+3).removeClass("image_bw").addClass("image_not_bw").css({opacity: '1'});
-					x= -1080;
+					x= -init_center;
 				}
 			}
 		}

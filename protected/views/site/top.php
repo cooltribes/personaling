@@ -16,7 +16,7 @@
                     <li><a href="#tab3" data-toggle="tab">Looks en promoción</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="tab1">
+                    <div class="tab-pane active" id="tab1" >
                         <div class="items row ">
                         <?php
  foreach($dataProvider->getData() as $record) {
@@ -25,7 +25,19 @@
  ?>
                         <div class="span4">
                             <article class="item" >
-                                <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
+                            	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
+                            	
+                                <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "370", "height" => "400", 'class'=>'')); ?>
+                                <?php
+                                //"style"=>"display: none",              	
+                                    $script = "$('#"."imglook".$look->id."').load(function(){
+  												//alert('cargo');
+  												$('#imgloading".$look->id."').hide();
+  												$(this).show();
+  												//$('#loader_img').hide();
+									});";
+              						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
+              					?>   
                                 <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
                                     <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>

@@ -381,6 +381,11 @@ class BolsaController extends Controller
 			//var_dump($_POST);
 			if(isset($_POST['tipo_pago'])){
 				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+					Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
+				}else{
+					Yii::app()->getSession()->add('usarBalance','0');
+				}
 				//echo '<br/>'.$_POST['tipo_pago'];
 				$this->render('confirmar');
 			}
@@ -586,6 +591,30 @@ class BolsaController extends Controller
 							$orden->direccionEnvio_id = $dirEnvio->id;	
 							
 							if($orden->save()){
+								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+									if($balance_usuario > 0){
+										$balance = new Balance;
+										if($balance_usuario >= $_POST['total']){
+											$orden->descuento = $_POST['total'];
+											$orden->total = 0;
+											$orden->estado = 2; // en espera de confirmación
+											$balance->total = $_POST['total']*(-1);
+										}else{
+											$orden->descuento = $balance_usuario;
+											$orden->total = $_POST['total'] - $balance_usuario;
+											$balance->total = $balance_usuario*(-1);
+										}
+										$orden->save();
+										
+										//$balance->total = $orden->descuento*(-1);
+										$balance->orden_id = $orden->id;
+										$balance->user_id = $usuario;
+										$balance->tipo = 1;
+										$balance->save();
+									}
+								}
+								
 								$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));	
 								
 								// añadiendo a orden producto
@@ -647,7 +676,9 @@ class BolsaController extends Controller
 							// cuando finalice entonces envia id de la orden para redireccionar
 							echo CJSON::encode(array(
 								'status'=> 'ok',
-								'orden'=> $orden->id
+								'orden'=> $orden->id,
+								'total'=> $orden->total,
+								'descuento'=>$orden->descuento
 							));
 							
 							

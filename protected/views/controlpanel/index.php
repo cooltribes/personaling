@@ -6,6 +6,7 @@ $usuarios_totales = User::model()->count();
 $looks_totales = Look::model()->count();
 $productos_activos = Producto::model()->countByAttributes(array('status'=>1,'estado'=>0));
 $ventas = Orden::model()->count();
+$looks_aprobar = Look::model()->countByAttributes(array('status'=>1)); // por aprobar
 
 	$ordenes = Orden::model()->findAll();
 	$sumatoria = 0;
@@ -67,7 +68,7 @@ $promedio = $sumatoria / $ventas;
           <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Looks por aprobar</strong>:</td>
-              <td>18</td>
+              <td><?php echo $looks_aprobar; ?></td>
             </tr>
             <tr>
               <td><strong> Looks por publicar</strong>:</td>

@@ -50,10 +50,11 @@
                                 </div>
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                                    
                                     <div class="btn-group">
                                         <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
                                         <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                                            <!-- AddThis Button BEGIN -->
+                                            <!-- AddThis Button BEGIN 
                                             
                                             <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
                                             <li><a class="addthis_button_tweet"></a></li>
@@ -61,7 +62,7 @@
                                         </ul>
                                         <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
                                         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                                        <!-- AddThis Button END --> 
+                                             AddThis Button END --> 
                                         
                                     </div>
                                 </div>
@@ -76,7 +77,63 @@
                         <p>Howdy, I'm in Section 2.</p>
                     </div>
                      <div class="tab-pane" id="tab3">
-                        <p>Howdy, I'm in Section 3.</p>
+                        <div class="items row ">
+                        <?php
+ 							//foreach($dataProvider_destacados->getData() as $record) {
+ 							//$look = Look::model()->findByPk($record['look_id']);
+ 							$iterator = new CDataProviderIterator($dataProvider_destacados);
+							foreach($iterator as $look) {
+	 						if (isset($look)){
+ 						?>
+                        <div class="span4">
+                            <article class="item" >
+                            	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
+                            	
+                                <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "370", "height" => "400", 'class'=>'')); ?>
+                                <?php
+                                //"style"=>"display: none",              	
+                                    $script = "$('#"."imglook".$look->id."').load(function(){
+  												//alert('cargo');
+  												$('#imgloading".$look->id."').hide();
+  												$(this).show();
+  												//$('#loader_img').hide();
+									});";
+              						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
+              					?>   
+                                <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
+                                <div class="hidden-phone margin_top_small vcard row-fluid">
+                                    <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
+                                    <div class="span5"> <span class="muted">Look creado por: </span>
+                                        <h5><a class="url" title="profile" href="#"><span class="fn">
+                                            <?php //echo $look->title; ?>
+                                            <?php echo $look->user->profile->first_name; ?> </span></a></h5>
+                                    </div>
+                                    <div class="span5"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                                </div>
+                                <div class="share_like">
+                                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                                    
+                                    <div class="btn-group">
+                                        <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                                        <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                                            <!-- AddThis Button BEGIN 
+                                            
+                                            <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                                            <li><a class="addthis_button_tweet"></a></li>
+                                            <li><a class="addthis_button_pinterest_pinit"></a></li>
+                                        </ul>
+                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
+                                             AddThis Button END --> 
+                                        
+                                    </div>
+                                </div>
+                                <span class="label label-important">Promoción</span> </article>
+                        </div>
+                        <?php 
+              				}
+						} ?>
+                    </div>
                     </div>
                 </div>
             </div>

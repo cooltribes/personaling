@@ -38,21 +38,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <div class="well well-small" >
             <h4>Banesco</h4>
             <ul>
-              <li>Cuenta Corriente Nº XXXXX-YYY-ZZZ</li>
-              <li>PERSONALING C.A</li>
-              <li> RIF Nº J-RRRRR</li>
-            </ul>
-            <h4>Mercantil</h4>
-            <ul>
-              <li>Cuenta Corriente Nº XXXXX-YYY-ZZZ</li>
-              <li>PERSONALING C.A</li>
-              <li> RIF Nº J-RRRRR</li>
-            </ul>
-            <h4>Provincial</h4>
-            <ul>
-              <li>Cuenta Corriente Nº XXXXX-YYY-ZZZ</li>
-              <li>PERSONALING C.A</li>
-              <li> RIF Nº J-RRRRR</li>
+              <li>Cuenta Corriente Nº 0134-0277-98-2771093092</li>
+              <li>PERSONALING C.A.</li>
+              <li>RIF Nº J-40236088-6</li>
             </ul>
           </div>
         </div>

@@ -46,8 +46,20 @@
 ?>
               <div class="span4">
                 <article class="item" >
-                  <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
-                  <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
+					<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>                            	
+                  	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
+                  
+                  	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
+                  	<?php
+                    //"style"=>"display: none",              	
+                        $script = "$('#"."imglook".$look->id."').load(function(){
+									//alert('cargo');
+									$('#imgloading".$look->id."').hide();
+									$(this).show();
+									//$('#loader_img').hide();
+						});";
+  						Yii::app()->clientScript->registerScript('img_ps_script'.$look->id,$script);
+  					?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
                     <div class="span2 avatar ">
                     	

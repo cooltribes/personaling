@@ -80,13 +80,12 @@ class OrdenController extends Controller
 	{
 		$orden = new Orden;
 		
-		//if (isset($_POST['query']))
-		//{
-			//echo($_POST['query']);	
-			//$producto->nombre = $_POST['query'];
-		//}	
-		
-		$dataProvider = $orden->search();
+		if (isset($_POST['query']))
+		{
+			$dataProvider = $orden->filtrado($_POST['query']);
+		}
+		else
+			$dataProvider = $orden->search();		
 		
 		$this->render('admin',
 		array('orden'=>$orden,

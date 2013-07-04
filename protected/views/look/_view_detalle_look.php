@@ -61,12 +61,9 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed">
                 <tr>
                     <th scope="row">Vistas</th>
-                    <td>120</td>
+                    <td><?php echo $model->view_counter; ?></td>
                 </tr>
-                <tr>
-                    <th scope="row">Looks que lo usan</th>
-                    <td>18</td>
-                </tr>
+                
             </table>
         </div>
     </div>

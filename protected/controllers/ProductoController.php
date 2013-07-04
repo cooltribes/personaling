@@ -392,7 +392,7 @@ class ProductoController extends Controller
 			
 		$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
 		$producto = Producto::model()->findByPk($id);
-		$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$id,'orden'=>'1'));
+		$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$id,'orden'=>'1'));		
 			
 		$datos="";
 		$datos=$datos."	<div class='modal-header'>"; 
@@ -465,9 +465,11 @@ class ProductoController extends Controller
 		$datos=$datos."<td> 120";
         $datos=$datos."</td></tr>";
         
+		$looks_usan = LookHasProducto::model()->countByAttributes(array('producto_id'=>$id));
+		
         $datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Looks que lo usan</th>";
-		$datos=$datos."<td> 18";
+		$datos=$datos."<td> ".$looks_usan;
 		$datos=$datos."</td></tr>";
 		$datos=$datos."</table>";
 		$datos=$datos."</div></div>";

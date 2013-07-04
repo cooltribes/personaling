@@ -633,6 +633,7 @@ function addPublicar(tipo)
 			productos_id += $(this).val()+',';
 			color_id += $(this).next().val()+',';
 			position = $(this).parent().position();
+			alert($(this).parent().css('-webkit-transform'));
 			image = $(this).parent().find('img');
 			width += image.width() + ',';
 			height += image.height() + ',';

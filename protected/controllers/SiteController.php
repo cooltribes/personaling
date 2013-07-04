@@ -149,6 +149,7 @@ class SiteController extends Controller
 		$this->render('top',array(
 					'dataProvider' => $looks->masvendidos(3),
 					'dataProvider_productos' => $productos->masvendidos(6),
+					'dataProvider_destacados' => $looks->lookDestacados(3),
 					'user'=>$user,	
 				));
 	}	

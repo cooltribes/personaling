@@ -16,14 +16,14 @@
         <tr>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotal(); ?> </p>
                 Totales</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getAprovados(); ?> </p>
-                Aprovados</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getPorAprovar(); ?> </p>
-                Por Aprovar</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
-                Por Enviar</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?></p>
-                Cancelados </td>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getActivos(); ?> </p>
+                Activos</td>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getInactivos(); ?> </p>
+                Inactivos</td>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(1); ?></p>
+                Enviados</td>
+            <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
+                En tránsito </td>
             <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
                 Devueltos</td>
         </tr>

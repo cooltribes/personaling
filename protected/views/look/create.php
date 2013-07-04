@@ -119,7 +119,10 @@ function handleDrop(e) {
 			    opacity: 0.01, 
 			    helper: 'clone',
 			    drag: function(event, ui){
-			        var rotateCSS = 'rotate(' + ui.position.left + 'deg)';
+			        var grados = ui.position.left*-1;
+			        if (grados > 360)
+			        	grados = grados - 360;
+			        var rotateCSS = 'rotate(' + grados + 'deg)';
 			
 			        $(this).parent().css({
 			            '-moz-transform': rotateCSS,
@@ -375,14 +378,21 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
       </form>
       -->
       
-      <?php echo CHtml::hiddenField('productos_id'); ?> <?php echo CHtml::hiddenField('colores_id'); ?> <?php echo CHtml::hiddenField('left'); ?> <?php echo CHtml::hiddenField('top'); ?>
-      <?php echo CHtml::hiddenField('width'); ?> <?php echo CHtml::hiddenField('height'); ?> <?php echo CHtml::hiddenField('tipo'); ?>
+      <?php echo CHtml::hiddenField('productos_id'); ?> 
+      <?php echo CHtml::hiddenField('colores_id'); ?> 
+      <?php echo CHtml::hiddenField('left'); ?> 
+      <?php echo CHtml::hiddenField('top'); ?>
+      <?php echo CHtml::hiddenField('width'); ?> 
+      <?php echo CHtml::hiddenField('height'); ?> 
+      <?php echo CHtml::hiddenField('tipo'); ?>
+      <?php echo CHtml::hiddenField('angle'); ?>
       
       <?php echo CHtml::hiddenField('adornos_id'); ?>
       <?php echo CHtml::hiddenField('left_a'); ?>
       <?php echo CHtml::hiddenField('top_a'); ?>
       <?php echo CHtml::hiddenField('width_a'); ?>
       <?php echo CHtml::hiddenField('height_a'); ?>
+      <?php echo CHtml::hiddenField('angle_a'); ?>
 
       <?php $this->endWidget(); ?>
     </section>
@@ -618,6 +628,7 @@ function addPublicar(tipo)
 	var top = '';
 	var height = '';
 	var width = ''; 
+	var angle = '';
 	var count = 0;
 	
 	var adornos_id = '';
@@ -633,7 +644,23 @@ function addPublicar(tipo)
 			productos_id += $(this).val()+',';
 			color_id += $(this).next().val()+',';
 			position = $(this).parent().position();
-			alert($(this).parent().css('-webkit-transform'));
+			/* CALCULO DEL ANGULO */
+			tr = $(this).parent().css('-webkit-transform');
+			
+			
+			if(tr != 'none'){
+				var values = tr.split('(')[1];
+				    values = values.split(')')[0];
+				    values = values.split(',');
+				var a = values[0];
+				var b = values[1];
+				var c = values[2];
+				var d = values[3];
+				angle += (Math.round(Math.atan2(b, a) * (180/Math.PI)) ) + ',';
+			} else {
+				angle += '0,';
+			}
+			//alert(angle);			
 			image = $(this).parent().find('img');
 			width += image.width() + ',';
 			height += image.height() + ',';
@@ -667,6 +694,7 @@ function addPublicar(tipo)
 		$("#top").val(top.substring(0, top.length-1));
 		$("#height").val(height.substring(0, height.length-1));
 		$("#width").val(width.substring(0, width.length-1));
+		$("#angle").val(angle.substring(0, angle.length-1));
 		$("#tipo").val(tipo);
 		
 		// ahora los de los adornos

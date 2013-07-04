@@ -485,18 +485,21 @@ public function actionCategorias(){
 			$model->tipo = 0;
 			$model->user_id = Yii::app()->user->id;
 			
+			$model->campana_id = 1; ///////****** OJO :: HAY QUE ARREGLAR ESTO ******/////////
+			
 			if($model->save()){
 				$colores_id = explode(',',$_POST['colores_id']);
 				$left = explode(',',$_POST['left']);
 				$top = explode(',',$_POST['top']);
 				$width = explode(',',$_POST['width']);
 				$height = explode(',',$_POST['height']);
-				
+				$angle = explode(',',$_POST['angle']);
 				// para los valores de los adornos
 				$left_a = explode(',',$_POST['left_a']);
 				$top_a = explode(',',$_POST['top_a']);
 				$width_a = explode(',',$_POST['width_a']);
 				$height_a = explode(',',$_POST['height_a']);
+				$angle_a = explode(',',$_POST['angle_a']);
 
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
 						
@@ -507,11 +510,11 @@ public function actionCategorias(){
 						$lookhasproducto->producto_id = $producto_id;
 						$lookhasproducto->color_id = $colores_id[$index];
 						$lookhasproducto->cantidad = 1;
-						$lookhasproducto->left = $left[$index];
-						$lookhasproducto->top = $top[$index];
+						$lookhasproducto->left = round($left[$index]);
+						$lookhasproducto->top = round($top[$index]);
 						$lookhasproducto->width = $width[$index];
 						$lookhasproducto->height = $height[$index];
-						
+						$lookhasproducto->angle = $angle[$index];
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}

@@ -7,7 +7,21 @@ $accessToken = $mp->get_access_token();
 //var_dump($accessToken);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
-
+	$descuento = Yii::app()->getSession()->get('descuento');
+	$total = Yii::app()->getSession()->get('total');
+	if(Yii::app()->getSession()->get('usarBalance') == '1'){
+		$balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+		if($balance > 0){
+			if($balance >= $total){
+				$descuento = $total;
+				$total = 0;
+			}else{
+				$descuento = $balance;
+				$total = $total - $balance;
+			}
+		}
+	}
+	echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
 <div class="container margin_top">
@@ -35,6 +49,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
   <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
   <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
+  <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
   <div class="row margin_top_medium">
     <section class="span4"> 
       <!-- Direcciones ON -->
@@ -102,10 +117,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <td><?php echo Yii::app()->getSession()->get('subtotal'); ?> Bs.</td>
             </tr>
             <tr>
-              <th class="text_align_left">Descuento:</th>
-              <td><?php echo Yii::app()->getSession()->get('descuento'); ?> Bs.</td>
-            </tr>
-            <tr>
               <th class="text_align_left">Envío:</th>
               <td><?php echo Yii::app()->getSession()->get('envio'); ?> Bs.</td>
             </tr>
@@ -114,8 +125,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <td><?php echo Yii::app()->getSession()->get('iva'); ?> Bs.</td>
             </tr>
             <tr>
+              <th class="text_align_left">Descuento:</th>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($descuento);; ?> Bs.</td>
+            </tr>
+            <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo Yii::app()->getSession()->get('total'); ?> Bs.</h4></td>
+              <td><h4><?php echo Yii::app()->numberFormatter->formatDecimal($total);; ?> Bs.</h4></td>
             </tr>
           </table>
           <?php
@@ -128,7 +143,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				            "title" => "Look seleccionado + productos individuales",
 				            "quantity" => 1,
 				            "currency_id" => "VEF",
-				            "unit_price" => Yii::app()->getSession()->get('total')
+				            "unit_price" => $total
 				            //"unit_price" => 23
 				        )
 				    ),
@@ -172,7 +187,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				//<hr/>
 				?>
         </div>
-        <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+        <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
       <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank">Ver Políticas de Envíos y Devoluciones</a></p>
       <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
@@ -206,14 +221,15 @@ else
 		var envio = $("#envio").attr("value");
 		var iva = $("#iva").attr("value");
 		var total = $("#total").attr("value");
+		var usar_balance = $("#usar_balance").attr("value");
 
  		$.ajax({
 	        type: "post",
 	        dataType: 'json',
 	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total}, 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance}, 
 	        success: function (data) {
-				
+				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
 				if(data.status=="ok")
 				{
 					window.location="pedido/"+data.orden+"";

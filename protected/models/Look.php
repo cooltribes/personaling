@@ -196,19 +196,22 @@ class Look extends CActiveRecord
 	/**
 	 * Mas vendidos
 	 */
-	 public function masvendidos()
+	 public function masvendidos($limit = 3)
 	 {
 /*			
 		$criteria=new CDbCriteria;  
-		$criteria->compare('tipo',1);
+		$criteria->compare('tipo',1); 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 */		
-		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";
-		$count = 5; 	
+		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC";
+		$count = 10; 	
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
+		   	'pagination'=>array(
+				'pageSize'=>$limit,
+			),	
 		    
 
 		));  

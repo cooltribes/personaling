@@ -48,7 +48,7 @@
               		if (($model->fInicio=="" && $model->fFin=="") || ($model->fInicio=="0000-00-00 00:00:00" && $model->fFin=="0000-00-00 00:00:00" && $model->nombre!=""))
 					{
 						echo("<label class='checkbox'>
-                  <input type='checkbox''>
+                  <input type='checkbox' id='abrirFechas'>
                   ¿Se publicará con fecha de Inicio y fin?</label>");
 					}
 					else if($model->fInicio!="0000-00-00 00:00:00" && $model->fFin!="0000-00-00 00:00:00")
@@ -56,8 +56,20 @@
 						echo CHtml::CheckBox('calendario','true', array (
                      						'checked'=>'checked',
                                         	'value'=>'on',
+                                        	'id'=>'abrirFechas',
                                         )); 
-						echo(" ¿Se publicará con fecha de Inicio y fin?");				
+						echo(" ¿Se publicará con fecha de Inicio y fin?");	
+						
+						echo("				
+						<script type='text/javascript'>	
+							$('#fechas').ready(function(){
+									
+								if($('#fechas').css('display') == 'none') 
+									$('#fechas').show('slow'); 
+								
+							});						
+						</script>
+						");			
 											
 					}
 					
@@ -66,9 +78,11 @@
               	?>
                         </div>
                     </div>
+                    
                     <div class="control-group">
+                    	<div style="display: none" id="fechas">
                         <?php 
-               
+                
                	if($model->fInicio=="0000-00-00 00:00:00")
 			   	{
                		echo $form->datepickerRow($model, 'fInicio',
@@ -86,8 +100,7 @@
 					echo $form->timepickerRow($model, 'horaInicio', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>'));
             	}
             ?>
-                    </div>
-                    <div class="control-group">
+
                         <?php 
             	if($model->fFin=="0000-00-00 00:00:00")
 			   	{
@@ -109,6 +122,8 @@
 
             ?>
                     </div>
+				</div>
+					
                 </fieldset>
             </form>
         </div>
@@ -152,8 +167,8 @@
 			'label'=>$model->isNewRecord ? 'Crear producto' : 'Guardar cambios',
 		)); ?>
                 <ul class="nav nav-stacked nav-tabs margin_top">
-                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
-                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto" id="limpiar">Guardar y crear nuevo producto</a></li>
+                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente">Guardar y avanzar</a></li>
+                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
                     <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
                     <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
@@ -239,5 +254,10 @@
 	);
 	
 	
+$("#abrirFechas").click(function () {
+  $("#fechas").toggle("slow");
+});
+
 </script>
+
 <?php $this->endWidget(); ?>

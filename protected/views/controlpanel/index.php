@@ -6,11 +6,22 @@ $usuarios_totales = User::model()->count();
 $looks_totales = Look::model()->count();
 $productos_activos = Producto::model()->countByAttributes(array('status'=>1,'estado'=>0));
 $ventas = Orden::model()->count();
+$looks_aprobar = Look::model()->countByAttributes(array('status'=>1)); // por aprobar
 
-$sql = "SELECT sum(total) as total FROM db_personaling.tbl_orden";
+	$ordenes = Orden::model()->findAll();
+	$sumatoria = 0;
+	
+	foreach($ordenes as $uno)
+	{
+		if($uno->estado != 5)
+			$sumatoria = $sumatoria + $uno->total;	
+	}
+
+/* forma anterior */	
+$sql = "SELECT sum(total) as total FROM tbl_orden";
 $dinero_ventas = Yii::app()->db->createCommand($sql)->queryScalar();
 
-$promedio = $dinero_ventas / $ventas;
+$promedio = $sumatoria / $ventas;
 
 ?>
 
@@ -30,7 +41,7 @@ $promedio = $dinero_ventas / $ventas;
          <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Ventas Totales</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($dinero_ventas); ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($sumatoria); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong> Promedio de Ventas</strong>:</td>
@@ -57,7 +68,7 @@ $promedio = $dinero_ventas / $ventas;
           <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Looks por aprobar</strong>:</td>
-              <td>18</td>
+              <td><?php echo $looks_aprobar; ?></td>
             </tr>
             <tr>
               <td><strong> Looks por publicar</strong>:</td>

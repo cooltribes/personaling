@@ -41,11 +41,11 @@ class Balance extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('user_id, orden_id', 'required'),
-			array('user_id, orden_id', 'numerical', 'integerOnly'=>true),
+			array('user_id, orden_id, tipo', 'numerical', 'integerOnly'=>true),
 			array('total', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, total, orden_id, user_id', 'safe', 'on'=>'search'),
+			array('id, total, orden_id, user_id, tipo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,6 +71,7 @@ class Balance extends CActiveRecord
 			'total' => 'Total',
 			'orden_id' => 'Orden',
 			'user_id' => 'User',
+			'tipo' => 'Tipo',
 		);
 	}
 
@@ -89,6 +90,7 @@ class Balance extends CActiveRecord
 		$criteria->compare('total',$this->total);
 		$criteria->compare('orden_id',$this->orden_id);
 		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('tipo',$this->tipo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

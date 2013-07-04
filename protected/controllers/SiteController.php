@@ -147,7 +147,7 @@ class SiteController extends Controller
 		$productos = new Producto;
 		
 		$this->render('top',array(
-					'dataProvider' => $looks->masvendidos(),
+					'dataProvider' => $looks->masvendidos(3),
 					'dataProvider_productos' => $productos->masvendidos(6),
 					'user'=>$user,	
 				));

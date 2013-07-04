@@ -105,39 +105,37 @@ class LookController extends Controller
 	public function actionGetImage($id)
 	{ 
 		 	   
+
 		 $look = Look::model()->findByPk($id);
+		 
+		 $w = 670;
+		 if (isset($_GET['w']))
+		 	$w = $_GET['w'];
+		 $diff_w = 670/$w;
+		 
+		 $h = 670;
+		 if (isset($_GET['h']))
+		 	$h = $_GET['h'];
+		 $diff_h = 670/$h;
+		 
 		 $imagenes = array();
 		 $i = 0;
 		 
 		 foreach($look->lookhasproducto as $lookhasproducto){
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
-		 	//echo substr_replace($producto->mainimage->url, '_thumb', strrchr($producto->mainimage->url,'.'), 0);
 		 	if (isset($image_url)){
-				 //	$imagenes[$i]->path = Yii::app()->getBasePath() .'/..' . substr_replace($image_url, '_thumb', strrpos($image_url,'.'), 0);
 				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
-					//$imagenes[$i]->image = imagecreatefromstring(file_get_contents($imagenes[$i]->path));
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;
 					$imagenes[$i]->height = $lookhasproducto->height;
 			} 
-			//else {
-			//	echo $lookhasproducto->producto->id;
-			//}
 			$i++;
 		 }	
 		 
 		 foreach($look->lookHasAdorno as $lookhasadorno){
-		 	
 		 	$image_url = $lookhasadorno->adorno->getImageUrl(array('ext'=>'png'));
-
-	  		 
-			//Yii::getPathOfAlias('webroot').'/images/adorno/'.$model->path_image		 
 			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
-
-		 //	if (isset($image_url)){
-		//		 	$imagenes[$i]->path = Yii::app()->getBasePath()."/images/adorno/".$ador->path_image;
-			 
 		 	if (isset($image_url)){
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
@@ -145,38 +143,16 @@ class LookController extends Controller
 					$imagenes[$i]->width = $lookhasadorno->width;
 					$imagenes[$i]->height = $lookhasadorno->height;
 			} 
-			//else {
-			//	echo $lookhasproducto->producto->id;
-			//}
+
 			$i++;
 		 }	
-		 
-/*
-		$images = array();
-		$i = 0;
-		$large_width = 0;
-		$large_height = 0;
-		$total_width = 0;
-		foreach ($images_path as $image_path){
-			$images[$i] = imagecreatefromstring(file_get_contents($image_path));
-			$width = imagesx($images[$i]);
-			$height = imagesy($images[$i]);
-			if ($large_width<$width) $large_width=$width;
-			if ($large_height<$height) $large_height=$height;
-    		$total_width += $width;
-			$i++;
-		}
-*/
 
-		$canvas = imagecreatetruecolor(670, 670);
+		$canvas = imagecreatetruecolor($w, $h);
 		$white = imagecolorallocate($canvas, 255, 255, 255);
 		imagefill($canvas, 0, 0, $white);
 		$inicio_x = 0;
 		foreach($imagenes as $image){
-
 			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
-			
-			
 			 switch($ext) {
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
@@ -188,27 +164,16 @@ class LookController extends Controller
 			          $src = imagecreatefrompng($image->path);
 			          break;
 			      }			
-			 
-			// echo(" ".$ext."-".$src."   ");
-
-			$img = imagecreatetruecolor($image->width,$image->height); 
+			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h); 
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true ); 
-
-    		imagecopyresized($img,$src,0,0,0,0,$image->width,$image->height,imagesx($src), imagesy($src));
-
-			imagecopy($canvas, $img, $image->left, $image->top, 0, 0, imagesx($img), imagesy($img));
-
+    		imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
+			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
 		}
-
-		
 		header('Content-Type: image/png');
-		
+		header('Cache-Control: max-age=86400, public');
 		imagepng($canvas);
-		 
 		imagedestroy($canvas);
-		
-		
 	}
 
 	public function actionGetImage2($id)

@@ -25,7 +25,7 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','detalles','validar'),
+				'actions'=>array('index','admin','detalles','validar','enviar'),
 				'users'=>array('admin'),
 				'expression' => 'Yii::app()->user->isAdmin()',
 			),
@@ -470,6 +470,36 @@ class OrdenController extends Controller
 		
 	}
 
+	/*
+	 *  Action para añadir el tracking y cambiar el estado a enviado
+	 * */
+
+	public function actionEnviar()
+	{
+		$orden = Orden::model()->findByPK($_POST['id']);
+		
+		$orden->tracking = $_POST['guia'];
+		$orden->estado=4; // enviado
+		
+		if($orden->save())
+			{
+				// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+				$estado = new Estado;
+										
+				$estado->estado = 4;
+				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+				$estado->fecha = date("Y-m-d H:i:s");
+				$estado->orden_id = $orden->id;
+						
+				if($estado->save())
+				{
+					Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
+					
+					echo "ok";
+				}
+		}	
+		
+	}
 
 	// Uncomment the following methods and override them if needed
 	/*

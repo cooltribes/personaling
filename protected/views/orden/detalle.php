@@ -396,11 +396,30 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Documento</th>
           <th scope="col">Número</th>
         </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Factura</td>
-          <td>12345</td>
-        </tr>
+        <?php
+        $factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
+		if($factura){
+	        ?>
+	        <tr>
+	          <td>
+	          	<?php
+	          	echo date('d/m/Y', strtotime($factura->fecha));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo CHtml::link('Factura', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
+	          	?>
+	          </td>
+	        </tr>
+	        <?php
+		}
+        ?>
         <tr>
           <td>21/12/2012 </td>
           <td>Recibo de Pago</td>

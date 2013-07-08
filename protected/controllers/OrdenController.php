@@ -25,7 +25,7 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','detalles','validar','enviar'),
+				'actions'=>array('index','admin','detalles','validar','enviar','factura'),
 				'users'=>array('admin'),
 				'expression' => 'Yii::app()->user->isAdmin()',
 			),
@@ -99,6 +99,13 @@ class OrdenController extends Controller
 		$orden = Orden::model()->findByPk($id);
 		
 		$this->render('detalle', array('orden'=>$orden,));
+	}
+	
+	public function actionFactura($id)
+	{
+		$factura = Factura::model()->findByPk($id);
+		
+		$this->render('factura', array('factura'=>$factura));
 	}
 	
 	public function actionValidar()

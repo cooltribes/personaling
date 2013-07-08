@@ -392,7 +392,7 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
       <?php echo CHtml::hiddenField('top_a'); ?>
       <?php echo CHtml::hiddenField('width_a'); ?>
       <?php echo CHtml::hiddenField('height_a'); ?>
-      <?php echo CHtml::hiddenField('angle_a'); ?>
+      <?php echo CHtml::hiddenField('angle_a'); ?> 
 
       <?php $this->endWidget(); ?>
     </section>

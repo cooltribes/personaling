@@ -15,6 +15,7 @@
  * @property integer $status
  * @property integer $destacado
  * @property integer $marca_id
+ * @property integer $view_counter 
  */
 class Producto extends CActiveRecord
 {
@@ -63,7 +64,7 @@ class Producto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('estado, marca_id', 'numerical', 'integerOnly'=>true),
+			array('estado, marca_id, view_counter', 'numerical', 'integerOnly'=>true),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
 			array('nombre, codigo, marca_id, descripcion', 'required'),
@@ -119,6 +120,7 @@ class Producto extends CActiveRecord
 			'status' => 'Status',
 			'destacado' => '¿Destacar?',
 			'marca_id' => 'Marca',
+			'view_counter' => 'Contador',
 		);
 	}
 

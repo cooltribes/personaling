@@ -31,7 +31,32 @@ $promedio = $sumatoria / $ventas;
   </div>
   <div class="row">
     <div class="span12">
-      <div class="bg_color3 margin_bottom_small padding_small box_1"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/stats_sample.png" alt="estadisticas"/> </div>
+      <div class="bg_color3 margin_bottom_small padding_small box_1">
+
+
+<?php
+      	
+      	$this->Widget('ext.highcharts.HighchartsWidget', array(
+		   'options'=>array(
+		   	  'chart' => array('type' =>'areaspline'), // column, area, line, spline, areaspline, bar, pie, scatter
+		      'title' => array('text' => 'Ventas / Tiempo'),
+		      'xAxis' => array(
+		         'categories' => array('Abril', 'Mayo', 'Junio', 'Julio', 'Agosto')
+		      ),
+		      'yAxis' => array(
+		         'title' => array('text' => 'Ventas')
+		      ),
+		      'series' => array(
+		        // array('name' => 'Jane', 'data' => array(1, 0, 4)),
+		         array('name' => 'Totales', 'data' => array(110, 240, 587, 452, 241))
+		      )
+		   )
+		));
+
+
+?>
+
+      	<img src="<?php echo Yii::app()->baseUrl; ?>/images/stats_sample.png" alt="estadisticas"/> </div>
       <div class="row">
         <div class="span6 margin_top">
          <div class="well well_personaling_big"> 
@@ -81,6 +106,55 @@ $promedio = $sumatoria / $ventas;
           </table>
 </div>        </div>
         <div class="span5 offset1 margin_top">
+        	
+        	<?php
+ 
+$this->Widget('ext.highcharts.HighchartsWidget', array(
+   'options'=>array(
+      'chart'=> array(
+            'plotBackgroundColor'=> null,
+            'plotBorderWidth'=> null,
+            'plotShadow'=> false
+        ),
+      'title' => array('text' => 'Ventas / Tiempo'),
+        'tooltip'=>array(
+                'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>: "+ this.percentage +" %"; }'
+                     ),
+        'plotOptions'=>array(
+            'pie'=>array(
+                'allowPointSelect'=> true,
+                'cursor'=>'pointer',
+                'dataLabels'=>array(
+                    'enabled'=> true,
+                    'color'=>'#000000',
+                    'connectorColor'=>'#000000',
+                    'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>:"+this.percentage +" %"; }'  
+ 
+                                   )
+                        )
+                 ),
+ 
+      'series' => array(
+         array('type'=>'pie','name' => 'Ventas / Tiempo',
+         		'data' => array(
+         			array('Abril',110), 
+         			array('Mayo',240),
+         			array('Junio',587),
+         			array('Julio',452),
+         			array(
+                    	'name'=>'Agosto',
+                    	'y'=>241,
+                    	'sliced'=>true,
+                    	'selected'=>true
+                    ))),
+ 
+      )
+ 
+   )
+));
+ 
+?>
+        	
           <h4 class="margin_bottom_small">FUENTE DE REGISTROS</h4>
           <img src="<?php echo Yii::app()->baseUrl; ?>/images/stats2.png" alt="estadisticas "> </div>
       </div>

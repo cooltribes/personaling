@@ -462,7 +462,7 @@ class ProductoController extends Controller
      	$datos=$datos."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-condensed'>";
         $datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Vistas</th>";
-		$datos=$datos."<td> 120";
+		$datos=$datos."<td> ".$producto->view_counter;
         $datos=$datos."</td></tr>";
         
 		$looks_usan = LookHasProducto::model()->countByAttributes(array('producto_id'=>$id));
@@ -905,6 +905,17 @@ class ProductoController extends Controller
 	{
 		$producto = Producto::model()->findByPk($id);
 		
+		$contador = $producto->view_counter + 1;
+
+		Producto::model()->updateByPk($id, array(
+					'view_counter' => $contador
+					));
+		/*
+		if($producto->save())
+			error_log("entro o guardo");
+		else
+			print_r($producto->getErrors()); */
+			
 		$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$id));
 		if($seo){
 			$this->pageDesc = $seo->mDescripcion;

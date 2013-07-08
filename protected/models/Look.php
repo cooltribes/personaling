@@ -245,6 +245,23 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	/* looks destacados */
+	public function lookDestacados($limit = 6) 
+	{
+		
+		$criteria=new CDbCriteria;  
+
+		
+		
+		$criteria->compare('destacado',1);
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>$limit,
+			),	
+		));		
+	}
 	/* look para el admin por aprobar o aprobados */
 	public function lookAdminAprobar()
 	{

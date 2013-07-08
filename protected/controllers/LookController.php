@@ -564,6 +564,7 @@ public function actionCategorias(){
 		        $this->render('create',array(
 						'model'=>$model,
 						'categorias'=>$categorias,
+						'models'=>$models,
 					)
 				);
 			}else{

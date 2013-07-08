@@ -37,7 +37,7 @@ $this->breadcrumbs=array(
             <div class="control-group">
               		<?php echo $form->textFieldRow($seo, 'mDescripcion', array('class'=>'span5')); ?>
                 <div class="controls">
-                <div class=" muted">Descripcion del producto para mostrar a los buscadores web</div>
+                <div class=" muted">Descripción del producto para mostrar a los buscadores web</div>
                 </div>
              </div>
             <div class="control-group">

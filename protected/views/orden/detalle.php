@@ -10,6 +10,17 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 ?>
 
+	<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
+
 <div class="container margin_top">
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1>
@@ -38,6 +49,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	if($orden->estado == 3)
 		echo "Pago Confirmado";
+
+	if($orden->estado == 4)
+		echo "Pedido Enviado";
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";	
@@ -102,6 +116,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	if($orden->estado == 3)
 		echo "Bs. ya pagados";
+
+	if($orden->estado == 4)
+		echo "Bs. ya pagados";	
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";	
@@ -204,6 +221,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 				}
 		  	?>    
      
+     <?
+     	if($orden->estado == 4) // enviado
+     	{
+     ?>
+     
       <div class="well well-small margin_top well_personaling_small">
         <h3 class="braker_bottom "> Transporte </h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -226,7 +248,13 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
-      </div>
+      </div>      
+      <?php
+		} // envío
+      
+      ?>
+      
+      
       <div class="row-fluid">
         <div class="span6">
           <h3 class="braker_bottom margin_top">Dirección de envío</h3>
@@ -291,13 +319,21 @@ $usuario = User::model()->findByPk($orden->user_id);
 			}
 			
         	?>
-
-        <div class="alert alert-block form-inline ">
-          <h4 class="alert-heading "> Enviar pedido:</h4>
-          <p>
-            <input name="" type="text" placeholder="Numero de Tracking">
-            <a href="#" class="btn" title="Rechazar pago">Enviar</a> </p>
+		
+		<?php 
+			if($orden->estado == 3) // dinero confirmado
+			{
+		?>
+		<div class="alert alert-block form-inline ">
+        	<h4 class="alert-heading "> Enviar pedido:</h4>
+          	<p>
+            <input name="" id="tracking" type="text" placeholder="Numero de Tracking">
+            <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
         </div>
+        <?php
+			}
+        ?>
+        
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
             <th scope="col">Estado</th>
@@ -322,6 +358,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($est->estado==3)
 					echo("<td>Pago Confirmado</td>");
+				
+				if($est->estado==4)
+					echo("<td>Pedido enviado</td>");
 				
 				if($est->estado == 5)
 					echo "<td>Orden Cancelada</td>";	
@@ -357,11 +396,30 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Documento</th>
           <th scope="col">Número</th>
         </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Factura</td>
-          <td>12345</td>
-        </tr>
+        <?php
+        $factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
+		if($factura){
+	        ?>
+	        <tr>
+	          <td>
+	          	<?php
+	          	echo date('d/m/Y', strtotime($factura->fecha));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo CHtml::link('Factura', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
+	          	?>
+	          </td>
+	        </tr>
+	        <?php
+		}
+        ?>
         <tr>
           <td>21/12/2012 </td>
           <td>Recibo de Pago</td>
@@ -685,4 +743,24 @@ $usuario = User::model()->findByPk($orden->user_id);
 		
 	}
 	
+	function enviarPedido(id){
+		
+		var guia = $('#tracking').attr('value');
+		
+		$.ajax({
+	        type: "post", 
+	        url: "../enviar", // action 
+	        data: { 'guia':guia, 'id':id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();
+				}
+	       	}//success
+	       })	
+	      
+	   //  alert(guia);	
+		
+	}
+		
 </script>

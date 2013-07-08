@@ -245,14 +245,6 @@ while (i <  canvas.length) {
   </div>
   <hr/>
   <?php
-  	// retrieve the models from db
-  	$criteria=new CDbCriteria;
-	$criteria->condition = 'estado = 1';
-	$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
-	
-	$models = Campana::model()->findAll($criteria);
-	 
-	// format models as $key=>$value with listData
 	$list = CHtml::listData($models, 'id', 'nombre');
   ?>
   <?php /** @var BootActiveForm $form */

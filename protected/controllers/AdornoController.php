@@ -81,7 +81,7 @@ class AdornoController extends Controller
 						
 						
 						//var_dump($adorno);
-						$adorno->save();
+						if($adorno->save()){
 		                
 		
 		                $nombre = Yii::getPathOfAlias('webroot').'/images/adorno/'.$adorno->id;
@@ -109,7 +109,7 @@ class AdornoController extends Controller
 								$image->save($nombre.'.png');
 							}
 							
-							Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
+							Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente"));
 							
 							if($extension != '.jpeg'){
 								$image = Yii::app()->image->load($nombre.$extension);
@@ -124,12 +124,15 @@ class AdornoController extends Controller
 		                } else {
 		                    $adorno->delete();
 		                }
+		                }else{
+		                	Yii::app()->user->setFlash('error',UserModule::t("Elemento gráfico no pudo ser guardado"));
+		                }
 		            //}// foreach
 		        }else{
 		        	if($adorno->save()){
-		        		Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente."));
+		        		Yii::app()->user->setFlash('success',UserModule::t("Elemento gráfico guardado exitosamente"));
 		        	}else{
-		        		Yii::app()->user->setFlash('error',UserModule::t("Elemento gráfico no pudo ser guardado."));
+		        		Yii::app()->user->setFlash('error',UserModule::t("Elemento gráfico no pudo ser guardado"));
 		        	}
 		        }// isset
 			

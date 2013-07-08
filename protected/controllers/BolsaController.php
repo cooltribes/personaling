@@ -333,6 +333,14 @@ class BolsaController extends Controller
 								if($estado->save())
 									echo "";
 								
+								// Generar factura
+								$factura = new Factura;
+								$factura->fecha = date('Y-m-d');
+								$factura->direccion_fiscal_id = Yii::app()->getSession()->get('idDireccion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+								$factura->direccion_envio_id = Yii::app()->getSession()->get('idDireccion');
+								$factura->orden_id = $orden->id;
+								$factura->save();
+								
 								// Enviar correo con resumen de la compra
 								$user = User::model()->findByPk($usuario);
 								$message            = new YiiMailMessage;
@@ -658,6 +666,14 @@ class BolsaController extends Controller
 								
 								if($estado->save())
 									echo "";
+								
+								// Generar factura
+								$factura = new Factura;
+								$factura->fecha = date('Y-m-d');
+								$factura->direccion_fiscal_id = $_POST['idDireccion'];  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+								$factura->direccion_envio_id = $_POST['idDireccion'];
+								$factura->orden_id = $orden->id;
+								$factura->save();
 								
 								// Enviar correo con resumen de la compra
 								$user = User::model()->findByPk($usuario);

@@ -485,7 +485,7 @@ public function actionCategorias(){
 			$model->tipo = 0;
 			$model->user_id = Yii::app()->user->id;
 			
-			$model->campana_id = 1; ///////****** OJO :: HAY QUE ARREGLAR ESTO ******/////////
+			$model->campana_id = $_POST['Look']['campana_id'];
 			
 			if($model->save()){
 				$colores_id = explode(',',$_POST['colores_id']);

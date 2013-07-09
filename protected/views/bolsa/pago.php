@@ -36,11 +36,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
-            <h4>Banesco</h4>
+            <h4>Banco Banesco</h4>
             <ul>
-              <li>Cuenta Corriente Nº 0134-0277-98-2771093092</li>
-              <li>PERSONALING C.A.</li>
-              <li>RIF Nº J-40236088-6</li>
+              <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
+              <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
+              <li><strong>RIF:</strong> Nº J-40236088-6</li>
+              <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
             </ul>
           </div>
         </div>

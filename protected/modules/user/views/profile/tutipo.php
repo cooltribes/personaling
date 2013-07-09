@@ -5,17 +5,16 @@ $this->breadcrumbs=array(
 );
 ?>
 <?php */?>
+
 <div class="container margin_top tu_perfil">
   <div class="row">
-  
-  <?php if (isset($editar) && $editar){ ?>
-     <!-- SIDEBAR ON -->
-  <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
-  <!-- SIDEBAR ON --> 
-     <?php } ?>   
+    <?php if (isset($editar) && $editar){ ?>
+    <!-- SIDEBAR ON -->
+    <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
+    <!-- SIDEBAR ON -->
+    <?php } ?>
     <div class="<?php echo (isset($editar) && $editar)?'span9':'span12'; ?>">
-
-<?php
+      <?php
 function replace_accents($string) 
 { 
   return str_replace( array(' ','à','á','â','ã','ä', 'ç', 'è','é','ê','ë', 'ì','í','î','ï', 'ñ', 'ò','ó','ô','õ','ö', 'ù','ú','û','ü', 'ý','ÿ', 'À','Á','Â','Ã','Ä', 'Ç', 'È','É','Ê','Ë', 'Ì','Í','Î','Ï', 'Ñ', 'Ò','Ó','Ô','Õ','Ö', 'Ù','Ú','Û','Ü', 'Ý'), array('','a','a','a','a','a', 'c', 'e','e','e','e', 'i','i','i','i', 'n', 'o','o','o','o','o', 'u','u','u','u', 'y','y', 'A','A','A','A','A', 'C', 'E','E','E','E', 'I','I','I','I', 'N', 'O','O','O','O','O', 'U','U','U','U', 'Y'), $string); 
@@ -31,11 +30,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 ); 
 
 ?>
-	
-             <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
-
+      <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
       <article class="margin_top  margin_bottom_small ">
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',
 	'htmlOptions'=>array('class'=>'personaling_form'),
     //'type'=>'stacked',
@@ -45,92 +42,78 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 		'validateOnSubmit'=>true,
 	),
 )); ?>
-          <fieldset>
-            <legend>Características básicas: </legend>
-            <div class="control-group">
-              <div class="controls row-fluid">
-                              <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
-                              <?php $clase2 = (isset($editar) && $editar)?'span10':'span2'; ?>
-
-                <div class="<?php echo $clase; ?>">
-                
-                
-                  <?php 
+        <fieldset>
+          <legend>Características básicas: </legend>
+          <div class="control-group">
+            <div class="controls row-fluid" id="caracteristicas">
+              <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
+              <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
+              <div class="<?php echo $clase; ?>">
+                <?php 
                   	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
 				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
                   ?>
-                </div> 
-                <div class="<?php echo $clase; ?>">
-                  <?php 
+              </div>
+              <div class="<?php echo $clase; ?>">
+                <?php 
                   	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
 				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
                   ?>
-                </div>
-                <div class="<?php echo $clase; ?>">
-                  <?php 
+              </div>
+              <div class="<?php echo $clase; ?>">
+                <?php 
                   	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
 				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
                   ?>
-                </div>
-                <div class="<?php echo $clase; ?>">
-                  <?php 
+              </div>
+              <div class="<?php echo $clase; ?>">
+                <?php 
                   	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
 				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
                   ?>
-                </div>
-                <div class="<?php echo $clase; ?>">
-                  <?php 
+              </div>
+              <div class="<?php echo $clase; ?>">
+                <?php 
                   	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
 				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
                   ?>
-                </div>                
               </div>
             </div>
-              <legend class="margin_top">Forma de tu cuerpo</legend>
-            <div class="control-group">
-              <div class="controls row-fluid">
-               
-                <?php 
+          </div>
+          <legend class="margin_top">Forma de tu cuerpo</legend>
+          <div class="control-group">
+            <div class="controls row-fluid">
+              <?php 
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));
 			   echo $form->hiddenField($profile,$field->varname);
 			   $nombre_tmp = $field->varname;
 			   if (isset($profile->$nombre_tmp)) $valor_tmp = $profile->$nombre_tmp; else $valor_tmp = 0;
 				?>
-                <ul class="thumbnails" id="tipo_cuerpo">
-                
+              <ul class="thumbnails" id="tipo_cuerpo">
                 <?php foreach (Profile::range($field->range) as $key => $tipo){ ?>
-                	
                 <li class="span3 <?php if ($valor_tmp == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> 
-                  	
-                  	
-                    
-                    <?php echo  CHtml::image(Yii::app()->baseUrl . '/images/'.replace_accents($tipo).'.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
+                  <div class="thumbnail"> <?php echo  CHtml::image(Yii::app()->baseUrl . '/images/'.replace_accents($tipo).'.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
                     <div class="caption text_align_center CAPS">
                       <p><?php echo $tipo; ?></p>
                     </div>
                   </div>
-                  </a> 
-               </li>
+                  </a> </li>
                 <?php } ?>
-                
               </ul>
-                
-                
-              </div>
             </div>
-            <div class="form-actions">             			
-            	<?php $this->widget('bootstrap.widgets.TbButton', array(
+          </div>
+          <div class="form-actions">
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType' => 'submit',
 						    'label'=>isset($editar)?'Guardar':'Siguiente',
 						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						    'size'=>'large', // null, 'large', 'small' or 'mini'
 							'htmlOptions' => array('class'=>'pull-right'), 
 							
-						)); ?> 
-			</div>
-          </fieldset>
-       <?php $this->endWidget(); ?>
+						)); ?>
+          </div>
+        </fieldset>
+        <?php $this->endWidget(); ?>
       </article>
     </div>
   </div>

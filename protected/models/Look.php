@@ -89,6 +89,7 @@ class Look extends CActiveRecord
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'),
+			
 		);
 	} 
  
@@ -333,7 +334,7 @@ class Look extends CActiveRecord
 	public function getPorAprovar()
 	{
 		
-		return $this->countByAttributes(array(),   			'status = :status ',
+		return $this->countByAttributes(array(),'status = :status ',
     		array(':status'=>2)
 			);
 	}	
@@ -342,6 +343,14 @@ class Look extends CActiveRecord
 	{
 		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where estado = :status AND look_id != 0 group by tbl_orden_id, look_id;',
 			array(':status'=>$status)));
+		
+		
+	}	
+	/* totoal por estado de orden */
+	public function getLookxStatus($status)
+	{
+		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where estado = :status AND look_id = :look_id group by tbl_orden_id, look_id;',
+			array(':status'=>$status,':look_id'=>$this->id)));
 		
 		
 	}	

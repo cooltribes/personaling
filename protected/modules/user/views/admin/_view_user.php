@@ -18,7 +18,7 @@
      </small>
         
         </td>
-      <td>0</td>
+      <td><?php echo $data->ordenCount; ?></td>
       <td><?php echo $data->direccionCount; ?></td>
       <td>0 Bs.</td>
       <td><?php echo $data->visit; ?></td>

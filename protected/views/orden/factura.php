@@ -58,33 +58,41 @@ $direccion_envio = Direccion::model()->findByPk($factura->direccion_envio_id);
                   <th scope="col">Total</th>
                 </tr>
                 <?php
-                foreach ($$factura->orden->productos as $ptc) {
+                foreach ($factura->orden->productos as $ptc) {
+                	$orden_ptc = OrdenHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptc->id, 'tbl_orden_id'=>$factura->orden->id));
+					$producto = Producto::model()->findByPk($ptc->producto_id);
+					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+					
                     ?>
                     <tr>
-	                  <td>COD100</td>
-	                  <td>Camisa Lazo semitransparente de Rayas</td>
-	                  <td>1</td>
-	                  <td>Bs. 800</td>
-	                  <td>Bs. 800</td>
+	                  <td><?php echo $ptc->sku; ?></td>
+	                  <td><?php echo $producto->nombre; ?></td>
+	                  <td><?php echo $orden_ptc->cantidad; ?></td>
+	                  <td>Bs. <?php echo number_format($precio->precioVenta, 2, ',', '.'); ?></td>
+	                  <td>Bs. <?php echo number_format($orden_ptc->cantidad*$precio->precioVenta, 2, ',', '.'); ?></td>
 	                </tr>
 					<?php
                 }
                 ?>
                 <tr>
                   <td colspan="4"><div class="text_align_right"><strong>Subtotal</strong>:</div></td>
-                  <td>Bs. 600</td>
+                  <td>Bs. <?php echo number_format($factura->orden->subtotal, 2, ',', '.'); ?></td>
+                </tr>
+                <tr>
+                  <td colspan="4"><div class="text_align_right"><strong>I.V.A. sobre base imponible</strong></div></td>
+                  <td>Bs. <?php echo number_format($factura->orden->iva, 2, ',', '.'); ?></td>
+                </tr>
+                <tr>
+                  <td colspan="4"><div class="text_align_right"><strong>Envío</strong>:</div></td>
+                  <td>Bs. <?php echo number_format($factura->orden->envio, 2, ',', '.'); ?></td>
                 </tr>
                 <tr>
                   <td colspan="4"><div class="text_align_right"><strong>Descuento</strong>:</div></td>
-                  <td>Bs. 600</td>
-                </tr>
-                <tr>
-                  <td colspan="4"><div class="text_align_right"><strong>I.V.A. sobre base imponible Bs</strong>.</div></td>
-                  <td>Bs. 600</td>
+                  <td>Bs. <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>
                 </tr>
                 <tr>
                   <th colspan="4"><div class="text_align_right">TOTAL</div></th>
-                  <th>Bs. 600</th>
+                  <th>Bs. <?php echo number_format($factura->orden->total, 2, ',', '.'); ?></th>
                 </tr>
               </table></td>
           </tr>

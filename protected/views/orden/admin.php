@@ -47,9 +47,11 @@ echo $num;
 	?>
 	</p>
         Pago Confirmado</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
-        Preparandose <br/>
-        para enviar </td>
+        <?php
+        $to = Orden::model()->countByAttributes(array('estado'=>4));
+        ?>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $to; ?> </p>
+        Enviados </td>
       <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
         Recibidos</td>
       <td><p class="T_xlarge margin_top_xsmall"> 182 </p>

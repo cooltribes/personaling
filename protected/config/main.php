@@ -78,6 +78,10 @@ return array(
 
 	// application components
 	'components'=>array(
+    	'curl' => array(
+            'class' => 'ext.Curl',
+            'options' => array(),
+        ),	
 		'twitter' => array(
                 'class' => 'ext.yiitwitteroauth.YiiTwitter',
                 'consumer_key' => 'oLqFHegtKHu8SvXtICuEuA',

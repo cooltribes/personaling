@@ -19,7 +19,7 @@ function handleDragStart(e) {
 	
   this.style.opacity = '0.4';  // this / e.target is the source node.
    dragSrcEl = this;
-
+ 
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', this.innerHTML);
   if (this.id.substring(0,12) == "div_producto"){

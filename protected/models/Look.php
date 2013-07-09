@@ -316,7 +316,7 @@ class Look extends CActiveRecord
 	public function getStatus()
 	{
 		$textos = array('Creado','Enviado','Aprovado');
-		return $textos[$this->status];
+		return $textos[$this->status]; 
 	}
 	/* total de look */
 	public function getTotal()

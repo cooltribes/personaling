@@ -115,9 +115,10 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom"> Conecta tus Redes Sociales </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li>Facebook</li>
-              <li>Twitter</li>
-              <li>Pinterest</li>
+              <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
+              <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
+              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li>
+           
             </ul>
           </div>
         </div>
@@ -180,14 +181,14 @@ $looks_recomendados = $look->match($model);
             <h2 class="braker_bottom"> Libreta de Direcciones </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Gestionar direcciones de Envios y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
-              <li>Anadir nueva direccion</li>
+              <li><a href="#" title="Agregar una nueva dirección">Añadir nueva dirección (LINK MUERTO)</a></li>
             </ul>
           </div>
           <div class="span4">
             <h2 class="braker_bottom"> Notificaciones </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>
-              <li>Desuscribir de la lista correos</li>
+              <li><a href="#" title="Desuscribirse de la lista de correos">Desuscribir de la lista correos (LINK MUERTO)</a></li>
             </ul>
             <h2 class="braker_bottom"> Privacidad </h2>
             <ul class="nav nav-stacked nav-tabs">

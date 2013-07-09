@@ -32,7 +32,7 @@ $this->pageTitle=Yii::app()->name;
     </div>
   </div>
 </div>
-<div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
+<?php /*?><div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
 
 <!-- Modal -->
 <div id="startupchile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -125,7 +125,7 @@ $this->pageTitle=Yii::app()->name;
       <div class="pull-right text_align_right padding_right_small"> <span class="color1"> Compártenos en tus redes sociales!</span> </div>
     </div>
   </div>
-</div>
+</div><?php */?>
 
 <!-- Modal ON -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -16,7 +16,7 @@
 @color7: #22F28A; /* Verde chillon */
 @color8: #685b5b;
 @color9: #9b9894;
-@color10: #f0e9f1; /* Lila */
+@color10: #E7E3E7; /* Lila */
 @color11: #8b5293; /* Morado chillon */
 
 
@@ -584,7 +584,7 @@ src: url('../fonts/entypo.woff'),
 
 .personaling_form{
 	input[type="text"],input[type="email"],input[type="password"]{ padding:8px;}
-	select{ height:40px;}
+	select{ height:30px;}
 	
 	}
 /*------------ Forms OFF --------------*/
@@ -736,6 +736,24 @@ src: url('../fonts/entypo.woff'),
 /*------------- Home OFF -------------*/
 
 /*------------- Registro OFF -------------*/
+
+#registration-form{
+	label[for="Profile_sex"]{
+	width:31.6239%;
+	}
+	#Profile_last_name{.margin_bottom_medium}
+	input[type="checkbox"]{
+		margin-right: 5px;
+		margin-top: 2px;
+	}
+	input[type="text"], input[type="password"]{
+		min-height:40px}
+}
+#caracteristicas{ /* Hack para la etiqueta de altura en Tutipo */
+	#Profile_altura{
+		display:block
+	}
+}
 
 .thumbnails > li .thumbnail{.transition_all	}
  .thumbnails > li .thumbnail:hover {

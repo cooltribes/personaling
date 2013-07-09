@@ -89,14 +89,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			else {
 			echo "<legend>No tiene direcciones registradas</legend>";					
 			}
- 	echo "
-          </fieldset>
-        </form>
-      </section>
-		";
+ 	
       ?>
-      
-      
+       </fieldset>
+        </form>
+          </section>
 
       
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(

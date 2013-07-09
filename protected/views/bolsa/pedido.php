@@ -7,83 +7,68 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 //echo $orden->pago_id;
 
 ?>
+
 <div class="container margin_top">
-  <div class="row">
-  
-  
-  
-    <div class="span8 offset2">
-      
-      
-      <?php
+<div class="row">
+  <div class="span8 offset2">
+    <?php
       
       if($orden->estado==1) // pendiente de pago
 	  {
 	  	if($pago->tipo == 1){
 	      ?>
-	      
-	      <div class="alert alert-success margin_top_medium margin_bottom"><h1>Tu Pedido ha sido recibido con éxito.</h1> <p>
-	          A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p></div>
-	      <section class="bg_color3 margin_bottom_small padding_small box_1">
-	        
-	        <h2>Siguiente paso</h2><hr/>
-	        <p><strong>Para completar tu comprar debes:</strong></p>
-	        <ol>
-	          <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
-	            <br>
-	            <ul>
-	              <li><strong>Banesco</strong><br>
-	                Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-	                PERSONALING C.A<br>
-	                RIF Nº J-RRRRR<br>
-	                <br>
-	              </li>
-	            </ul>
-	            <ul>
-	              <li><strong>Mercantil<br>
-	                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-	                PERSONALING C.A<br>
-	                RIF Nº J-RRRRR<br>
-	                <br>
-	              </li>
-	              <li> <strong>Provincial<br>
-	                </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-	                PERSONALING C.A<br>
-	                RIF Nº J-RRRRR<br>
-	                <br>
-	              </li>
-	            </ul>
-	          </li>
-	          <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
-	          <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
-	          <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
-	        </ol>
-	        <hr/>
-	        <div class="clearfix"><div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div> <div class="pull-right">
-	        	Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div></div>
-	
-	      </section>
-	      <?php
+    <div class="alert alert-success margin_top_medium margin_bottom">
+      <h1>Tu Pedido ha sido recibido con éxito.</h1>
+      <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+    </div>
+    <section class="bg_color3 margin_bottom_small padding_small box_1">
+      <h2>Siguiente paso</h2>
+      <hr/>
+      <p><strong>Para completar tu comprar debes:</strong></p>
+      <ol>
+        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en la siguiente cuenta bancaria: <br>
+          <br>
+          <ul class="margin_bottom_medium">
+            <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
+            <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
+            <li><strong>RIF:</strong> Nº J-40236088-6</li>
+            <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
+          </ul>
+        </li>
+        <li class="margin_bottom_medium"><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
+        <li class="margin_bottom_medium"><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
+        <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
+      </ol>
+      <hr/>
+      <div class="clearfix">
+        <div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div>
+        <div class="pull-right"> Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div>
+      </div>
+    </section>
+    <?php
       	}else if($pago->tipo == 4){
       		?>
-	      
-	      <div class="alert alert-success margin_top_medium margin_bottom"><h1>Tu Pedido ha sido recibido con éxito.</h1> <p>
-	          A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p></div>
-	      <section class="bg_color3 margin_bottom_small padding_small box_1">
-	        
-	        <h2>Siguiente paso</h2><hr/>
-	        <p><strong>Para completar tu comprar debes:</strong></p>
-	        <ol>
-	          <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via MercadoPago. <br>
-	          </li>
-	          <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
-	          <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
-	          <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
-	        </ol>
-	        <hr/>
-	        <div class="clearfix"><div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div> <div class="pull-right">
-	      </section>
-	      <?php
+    <div class="alert alert-success margin_top_medium margin_bottom">
+      <h1>Tu Pedido ha sido recibido con éxito.</h1>
+      <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+    </div>
+    <section class="bg_color3 margin_bottom_small padding_small box_1">
+    <h2>Siguiente paso</h2>
+    <hr/>
+    <p><strong>Para completar tu comprar debes:</strong></p>
+    <ol>
+      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via MercadoPago. <br>
+      </li>
+      <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
+      <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
+      <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
+    </ol>
+    <hr/>
+    <div class="clearfix">
+      <div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div>
+      <div class="pull-right">
+        </section>
+        <?php
       	}
       }// caso 1
       
@@ -103,36 +88,36 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 	  }
       
       ?>
-      <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-        <h3>Resumen del pedido </h3>
-        <p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p> 
-        <p> <strong>Fecha estimada de entrega</strong>: 01/01/2013</p>
-        <hr/>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <th class="text_align_left">Subtotal:</th>
-            <td><?php echo $orden->subtotal; ?> Bs.</td>
-          </tr>
-          <tr>
-            <th class="text_align_left">Descuento:</th>
-            <td><?php echo $orden->descuento; ?> Bs.</td>
-          </tr>
-          <tr>
-            <th class="text_align_left">Envío:</th>
-            <td><?php echo $orden->envio; ?> Bs.</td>
-          </tr>
-          <tr>
-            <th class="text_align_left">I.V.A. (12%):</th>
-            <td><?php echo $orden->iva; ?> Bs.</td>
-          </tr>
-          <tr>
-            <th class="text_align_left"><h4>Total:</h4></th>
-            <td><h4><?php echo $orden->total; ?> Bs.</h4></td>
-          </tr>
-        </table>
-        <hr/>
-        <p>Hemos enviado un resumen de la compra a tu correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
-        <?php
+        <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+          <h3>Resumen del pedido </h3>
+          <p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p>
+          <p> <strong>Fecha estimada de entrega</strong>: 01/01/2013</p>
+          <hr/>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <th class="text_align_left">Subtotal:</th>
+              <td><?php echo $orden->subtotal; ?> Bs.</td>
+            </tr>
+            <tr>
+              <th class="text_align_left">Descuento:</th>
+              <td><?php echo $orden->descuento; ?> Bs.</td>
+            </tr>
+            <tr>
+              <th class="text_align_left">Envío:</th>
+              <td><?php echo $orden->envio; ?> Bs.</td>
+            </tr>
+            <tr>
+              <th class="text_align_left">I.V.A. (12%):</th>
+              <td><?php echo $orden->iva; ?> Bs.</td>
+            </tr>
+            <tr>
+              <th class="text_align_left"><h4>Total:</h4></th>
+              <td><h4><?php echo $orden->total; ?> Bs.</h4></td>
+            </tr>
+          </table>
+          <hr/>
+          <p>Hemos enviado un resumen de la compra a tu correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
+          <?php
         
         $s1 = "select count( * ) as total from tbl_orden_has_productotallacolor where look_id != 0 and tbl_orden_id = ".$orden->id."";
 		$look = Yii::app()->db->createCommand($s1)->queryScalar();
@@ -141,10 +126,10 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 		$ind = Yii::app()->db->createCommand($s2)->queryScalar();
 			
         ?>
-        <h3 class="margin_top">Detalles del Pedido</h3>
-        <!-- Look ON -->
-        
-        <?php
+          <h3 class="margin_top">Detalles del Pedido</h3>
+          <!-- Look ON -->
+          
+          <?php
         
         if($look!=0) // hay looks
 		{
@@ -332,21 +317,13 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 		}// si hay indiv
 		
         ?>
-
-            </tbody>
+          </tbody>
           </table>
-          
-          </section>
-          <hr/>
-          <a href="../../tienda/index" class="btn btn-danger" title="seguir comprando">Seguir comprando</a>
-        </div>
-        
-      
-     
-       </div>
-      
+        </section>
+        <hr/>
+        <a href="../../tienda/index" class="btn btn-danger" title="seguir comprando">Seguir comprando</a> </div>
+    </div>
   </div>
-  
 </div>
 <!-- /container -->
 <?php 
@@ -375,8 +352,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -384,17 +360,15 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         <!--[if lte IE 7]>
             <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
 <![endif]-->
-        <div class="controls">
-        	<?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
-		<div class="control-group"> 
+      <div class="control-group"> 
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -402,8 +376,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -411,25 +384,20 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto')); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
       <div class="controls controls-row"> 
         <!--[if lte IE 7]>
             <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
-<![endif]-->
-<?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?>
-<?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
-<?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
-      </div>
+<![endif]--> 
+        <?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?> <?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?> <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?> </div>
       <div class="control-group"> 
         <!--[if lte IE 7]>
             <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls">
-        	<?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
+        <div class="controls"> <?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
@@ -439,10 +407,9 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
     </form>
   </div>
 </div>
-
 <input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
 
-<!-- // Modal Window -->
+<!-- // Modal Window --> 
 
 <script>
 	

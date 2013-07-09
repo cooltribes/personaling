@@ -12,6 +12,15 @@
  * @property string $ventas_fin
  * @property string $fecha_creacion
  * @property integer $estado
+ * 
+ * 
+ * Estados
+ * 1: Programada
+ * 2: Recepción
+ * 3: Revisión
+ * 4: Ventas
+ * 5: Finalizada
+ * 
  */
 class Campana extends CActiveRecord
 {

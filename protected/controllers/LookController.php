@@ -372,6 +372,10 @@ public function actionCategorias(){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
+			if (isset($_POST['Look']['campana_id'])){
+				$model->campana_id =$_POST['Look']['campana_id'];
+				$model->save();
+			}
 			/*	
 			$model->title = "Look Nuevo";
 			$model->altura = 0;
@@ -458,11 +462,20 @@ public function actionCategorias(){
 			//		Yii::trace('edit a look, Error:'.print_r($model->getErrors(), true), 'registro');
 			//}
 		} else {
-       $this->render('create',array(
-				'model'=>$model,
-				'categorias'=>$categorias,
-			)
-		);
+			$user = User::model()->findByPk(Yii::app()->user->id);
+			$criteria=new CDbCriteria;
+			$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
+			if($user->superuser != '1'){
+				$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+			}
+			$models = Campana::model()->findAll($criteria);
+			
+	        $this->render('create',array(
+					'model'=>$model,
+					'categorias'=>$categorias,
+					'models'=>$models,
+				)
+			);
 		}
 	}
 	public function actionCreate()
@@ -557,9 +570,12 @@ public function actionCategorias(){
 					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');
 				}
 		} else {
+			$user = User::model()->findByPk(Yii::app()->user->id);
 			$criteria=new CDbCriteria;
-			$criteria->condition = 'estado = 1 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
-			$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+			$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
+			if($user->superuser != '1'){
+				$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+			}
 			
 			$models = Campana::model()->findAll($criteria);
 			

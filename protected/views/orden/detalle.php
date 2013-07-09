@@ -417,14 +417,26 @@ $usuario = User::model()->findByPk($orden->user_id);
 	          	?>
 	          </td>
 	        </tr>
+	        <tr>
+	          <td>
+	          	<?php
+	          	echo date('d/m/Y', strtotime($factura->fecha));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo CHtml::link('Recibo de Pago', $this->createUrl('recibo', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
+	          	?>
+	          </td>
+	        </tr>
 	        <?php
 		}
         ?>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Recibo de Pago</td>
-          <td>23123</td>
-        </tr>
         <tr>
           <td>21/12/2012 </td>
           <td>Etiqueta de direccion</td>

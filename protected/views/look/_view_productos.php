@@ -1,4 +1,4 @@
-<ul class="thumbnails">
+<div class="row-fluid"><ul class="thumbnails">
               <?php
               foreach($productos as $producto){
               	/*
@@ -16,7 +16,7 @@
 					foreach($tallacolores as $tallacolor){
 						if ( $producto->getImageUrl($tallacolor->color_id)!="http://placehold.it/180"){
               ?>
-              <li class="span2" > 
+              <li class="span6" > 
               	<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$tallacolor->color_id; ?>">
               		<div class="new" id="div<?php echo $producto->id."_".$tallacolor->color_id; ?>">
               		
@@ -84,4 +84,4 @@
 				} // if
 			} // foreach
 				?>
-</ul>              
+</ul>              </div>

@@ -28,7 +28,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'items'=>array(
  
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
-                array('label'=>'Panel de Control', 'url'=>array('/controlpanel/index')),
+                array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
+					array('label'=>'General', 'url'=>array('/controlpanel/index')),
+					array('label'=>'Ventas', 'url'=>array('/adorno/index')),
+					array('label'=>'Usuarios', 'url'=>array('/adorno/index')),
+					array('label'=>'Catálogos', 'url'=>array('/adorno/index')),
+					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
+					)),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
 					array('label'=>'Looks', 'url'=>array('/look/admin')),

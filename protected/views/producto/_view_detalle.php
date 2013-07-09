@@ -154,28 +154,51 @@
               	<?php
 
               	$valores = Array();
-				              	
-				foreach ($producto->preciotallacolor as $talCol) {
-              		
-              		if($talCol->cantidad > 0) // que haya disp
+              	$cantcolor = Array();
+              	$cont1 = 0;
+              	
+				// revisando cuantos colores distintos hay
+				foreach ($producto->preciotallacolor as $talCol){ 
+					if($talCol->cantidad > 0)
 					{
-						$color = Color::model()->findByPk($talCol->color_id);		
-						
-						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
+						$color = Color::model()->findByPk($talCol->color_id);
+					
+						if(in_array($color->id, $cantcolor)){	// no hace nada para que no se repita el valor			
 						}
-						else{
-							echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='/site/images/colores/".$color->path_image."'></div>"; 
-							array_push($valores, $color->id);
+						else {
+							array_push($cantcolor, $color->id);
+							$cont1++;
 						}
 						
-						/*
-						<a href="#" title="color"><img  src="http://placehold.it/40/22F28A/22F28A"/></a>
-	              		<a href="#" title="color"><img  src="http://placehold.it/40/3691AD/3691AD"/></a>
-	              		<a href="#" title="color"> <img  src="http://placehold.it/40/AD3682/AD3682"/></a>
-	              		<a href="#" title="color"><img  src="http://placehold.it/40/FF9600/FF9600"/></a>
-						* */
 					}
-   				}
+				}
+
+				if( $cont1 == 1) // Si solo hay un color seleccionelo
+				{
+					$color = Color::model()->findByPk($cantcolor[0]);							
+					echo "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+					
+				}
+				else{
+					// echo $totales;
+
+					foreach ($producto->preciotallacolor as $talCol) {
+	              		
+	              		if($talCol->cantidad > 0) // que haya disp
+						{
+							$color = Color::model()->findByPk($talCol->color_id);		
+							
+							if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
+							}
+							else{
+								echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+								array_push($valores, $color->id);
+							}
+						}
+	   				}
+				
+				} // else            	
+				
               	?>
               </div>
             </div>
@@ -185,29 +208,47 @@
               	<?php
 
               	$valores = Array();
-				              	
-				foreach ($producto->preciotallacolor as $talCol) {
+				$canttallas= Array();
+              	$cont2 = 0;
               	
-					if($talCol->cantidad > 0) // que haya disp
+				// revisando cuantas tallas distintas hay
+				foreach ($producto->preciotallacolor as $talCol){ 
+					if($talCol->cantidad > 0)
 					{
-					
 						$talla = Talla::model()->findByPk($talCol->talla_id);
-	
-						if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
+					
+						if(in_array($talla->id, $canttallas)){	// no hace nada para que no se repita el valor			
 						}
 						else{
-							echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
-							array_push($valores, $talla->id);
+							array_push($canttallas, $talla->id);
+							$cont2++;
 						}
 						
-						/*
-						<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-		              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-		              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-		              	<a href="#" title="tallas"> <img  src="http://placehold.it/40x40"/></a>
-						* */
 					}
-   				}
+				}
+
+				if( $cont2 == 1) // Si solo hay un color seleccionelo
+				{
+					$talla = Talla::model()->findByPk($canttallas[0]);
+					echo "<div value='solo' id=".$talla->id." style='cursor: pointer' class='tallass active' title='talla'>".$talla->valor."</div>"; 
+				}
+				else{            	
+					foreach ($producto->preciotallacolor as $talCol) {
+	              	
+						if($talCol->cantidad > 0) // que haya disp
+						{
+							$talla = Talla::model()->findByPk($talCol->talla_id);
+		
+							if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
+							}
+							else{
+								echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
+								array_push($valores, $talla->id);
+							}
+						}
+	   				}
+					
+	   			}// else
               	?>         	     	
               </div>
             </div>
@@ -326,6 +367,15 @@ $('.imagen_principal').zoom({url: imgZ});
    		ev.preventDefault();
    		//alert($(this).attr("id"));
    		
+   		var prueba = $("#vTa div.tallass.active").attr('value');
+
+		if(prueba == 'solo')
+   		{
+   			$(this).addClass('coloress active'); // añado la clase active al seleccionado
+   			$("#vTa div.tallass.active").attr('value','0');
+   		}
+   		else{
+   		
    		// para quitar el active en caso de que ya alguno estuviera seleccionado
    		$("#vCo").find("div").siblings().removeClass('active');
    		
@@ -353,11 +403,11 @@ $('.imagen_principal').zoom({url: imgZ});
 					});
 					//alert(cont); 
 					
-					$("#vTa").fadeOut("slow",function(){
+					$("#vTa").fadeOut(100,function(){
 			     		$("#vTa").html(cont); // cambiando el div
 			     	});
 			
-			      	$("#vTa").fadeIn("slow",function(){});
+			      	$("#vTa").fadeIn(20,function(){});
 							   
 					
 					// ahora cambiar las imagenes a las del color 
@@ -427,15 +477,24 @@ $('.imagen_principal').zoom({url: imgZ});
 
 	       	}//success
 	       })
-	     
+	       
+	     } // else
    		
    	});   
    
 
    	$(".tallass").click(function(ev){ // click en tallas -> recarga los colores para esa talla
    		ev.preventDefault();
-   		//alert("TALLAS");
-   		//alert($(this).attr("id")); 
+
+   		
+   		var prueba = $("#vCo div.coloress.active").attr('value');
+   		
+   		if(prueba == 'solo')
+   		{
+   			$(this).addClass('tallass active'); // añado la clase active al seleccionado
+   			$("#vCo div.coloress.active").attr('value','0');
+   		}
+   		else{
    		
    		// para quitar el active en caso de que ya alguno estuviera seleccionado
    		$("#vTa").find("div").siblings().removeClass('active');
@@ -464,17 +523,19 @@ $('.imagen_principal').zoom({url: imgZ});
 					});
 					//alert(cont); 
 					
-					$("#vCo").fadeOut("slow",function(){
+					$("#vCo").fadeOut(100,function(){
 			     		$("#vCo").html(cont); // cambiando el div
 			     	});
 			
-			      	$("#vCo").fadeIn("slow",function(){});
+			      	$("#vCo").fadeIn(20,function(){});
 					
 					//$("#vTa").html(cont);
 							        	
 		        }
 	       	}//success
 	       })
+	       
+   		}//else
    		
    	}); // tallas
    	 

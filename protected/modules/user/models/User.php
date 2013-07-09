@@ -99,9 +99,12 @@ class User extends CActiveRecord
             $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
 		$relations['direccion'] = array(self::HAS_MANY, 'Direccion', 'user_id');
 		
-					$relations['direccionCount'] = array(self::STAT, 'Direccion', 'user_id',
+		$relations['direccionCount'] = array(self::STAT, 'Direccion', 'user_id',
                 'select'=> 'COUNT(*)',
-                );
+        	);
+		$relations['ordenCount'] = array(self::STAT, 'Orden', 'user_id',
+                'select'=> 'COUNT(*)',
+        	);
         return $relations;
 	}
 

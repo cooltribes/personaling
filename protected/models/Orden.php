@@ -4,7 +4,7 @@
  * 1 - En espera de pago
  * 2 - En espera de confirmación
  * 3 - Pago Confirmado
- * 4 - Preparandose para el envío
+ * 4 - Enviado
  * 5 - Cancelado
  * 6 - Pago Rechazado
  * 7 - Pago insuficiente
@@ -29,7 +29,7 @@
  * @property integer $pago_id
  * @property integer $detalle_id
  * @property integer $direccionEnvio_id
- *
+ * @property string $tracking
  * The followings are the available model relations:
  * @property DireccionEnvio $direccionEnvio
  * @property Pago $pago
@@ -68,7 +68,7 @@ class Orden extends CActiveRecord
 			array('subtotal, descuento, envio, iva, descuentoRegalo, total', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id', 'safe', 'on'=>'search'),
+			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tracking', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -107,6 +107,7 @@ class Orden extends CActiveRecord
 			'pago_id' => 'Pago',
 			'detalle_id' => 'Detalle',
 			'direccionEnvio_id' => 'Direccion Envio',
+			'tracking' => 'Número de guía',
 		);
 	}
 
@@ -135,7 +136,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('pago_id',$this->pago_id);
 		$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
-
+		$criteria->compare('tracking',$this->tracking);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -162,6 +164,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('pago_id',$this->pago_id);
 		$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
+		$criteria->compare('tracking',$this->tracking);
 		
 		$criteria->addCondition('estado != 6');
 
@@ -189,6 +192,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('pago_id',$this->pago_id);
 		$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
+		$criteria->compare('tracking',$this->tracking);		
 		$criteria->join ='JOIN tbl_users ON tbl_users.id = t.user_id AND (t.id LIKE "%'.$query.'%" OR tbl_users.username LIKE "%'.$query.'%" )';
 		
 	//	$criteria->addCondition('t.id LIKE :valor','OR');

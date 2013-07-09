@@ -21,7 +21,7 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar'),
+				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -108,6 +108,23 @@ class OrdenController extends Controller
 		$this->render('factura', array('factura'=>$factura));
 	}
 	
+	public function actionRecibo($id)
+	{
+		$factura = Factura::model()->findByPk($id);
+		
+		$this->render('recibo', array('factura'=>$factura));
+	}
+	
+	public function actionImprimir($id)
+	{
+		$factura = Factura::model()->findByPk($id);
+		$mPDF1 = Yii::app()->ePdf->mpdf('', 'Letter-L', 0,'',15,15,16,16,9,9,'L');
+		$mPDF1->WriteHTML($this->renderPartial('recibo', array('factura'=>$factura), true));
+		$mPDF1->Output();	
+		
+		//$this->render('recibo', array('factura'=>$factura));
+	}
+	
 	public function actionValidar()
 	{
 		// Elementos para enviar el correo, depende del estado en que quede la orden
@@ -116,6 +133,7 @@ class OrdenController extends Controller
 		
 		$detalle = Detalle::model()->findByPk($_POST['id']);
 		$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
+		$factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
 		
 		$user = User::model()->findByPk($orden->user_id);
 		//$subject = 'Recupera tu contraseña de Personaling';
@@ -142,6 +160,10 @@ class OrdenController extends Controller
 					$orden->estado = 3;
 					
 					if($orden->save()){
+						if($factura){
+							$factura->estado = 2;
+							$factura->save();
+						}
 						// Subject y body para el correo
 						$subject = 'Pago aceptado';
 						$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
@@ -219,6 +241,10 @@ class OrdenController extends Controller
 								
 								$orden->estado = 3; // aprobado el pago
 								$orden->save();
+								if($factura){
+									$factura->estado = 2;
+									$factura->save();
+								}
 								$subject = 'Pago aceptado';
 								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
 								
@@ -242,6 +268,10 @@ class OrdenController extends Controller
 								
 								$orden->estado = 3;
 								$orden->save();
+								if($factura){
+									$factura->estado = 2;
+									$factura->save();
+								}
 								$subject = 'Pago aceptado';
 								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
 								

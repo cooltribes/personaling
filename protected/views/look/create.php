@@ -1,8 +1,8 @@
 <?php
-$this->breadcrumbs=array(
-	'Looks'=>array('admin'),
-	'Crear',
-);
+//$this->breadcrumbs=array(
+//	'Looks'=>array('admin'),
+//	'Crear',
+//);
 
 ?>
 <style>
@@ -19,7 +19,7 @@ function handleDragStart(e) {
 	
   this.style.opacity = '0.4';  // this / e.target is the source node.
    dragSrcEl = this;
-
+ 
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', this.innerHTML);
   if (this.id.substring(0,12) == "div_producto"){
@@ -203,24 +203,11 @@ while (i <  canvas.length) {
 */
 </script>
 <div class="container margin_top" id="crear_look">
-  <div class="page-header">
-    <h1>Crear look</h1>
-    <!-- FLASH ON -->
-    <?php $this->widget('bootstrap.widgets.TbAlert', array(
-        'block'=>true, // display a larger alert block?
-        'fade'=>true, // use transitions?
-        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
-        'alerts'=>array( // configurations per alert type
-            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-        ),
-    )
-); ?>
-    <!-- FLASH OFF --> 
-    
-  </div>
-  <div class="clearfix margin_bottom_medium">
-    <?php $this->widget('bootstrap.widgets.TbButton', array(
+  <div class="row">
+    <div class="span4">
+      <h1>Crear look</h1>
+    </div>
+    <div class="span8 margin_top_small"><?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'label'=>'Siguiente',
 	    'type'=>'danger',
 		'buttonType' => 'ajaxSubmit',
@@ -241,8 +228,21 @@ while (i <  canvas.length) {
 				'class'=>'pull-right', 
 		        'onclick'=>"{addPublicar(0);}"
 		       ),	    
-	)); ?>
+	)); ?></div>
   </div>
+  <!-- FLASH ON -->
+  <?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); ?>
+  <!-- FLASH OFF -->
+  
   <hr/>
   <?php
 	$list = CHtml::listData($models, 'id', 'nombre');
@@ -257,13 +257,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 )); ?>
   <div class="row">
     <section class="span8">
-      <div class="well"> <h4><?php echo $form->labelEx($model,'campana_id', array('class' => 'control-label')); ?>
-      	<?php echo $form->dropDownList($model, 'campana_id',
+      <div class="well">
+        <h4><?php echo $form->labelEx($model,'campana_id', array('class' => 'control-label')); ?> <?php echo $form->dropDownList($model, 'campana_id',
               $list,
               array('empty' => 'Seleccione una campaña'));
 		?>
-		<div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
-		</h4>
+          <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
+        </h4>
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         <hr/>
         <!-- CANVAS ON -->
@@ -315,23 +315,20 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
           <?php 
 				} 
 				?>
-        <?php
+          <?php
         	
         foreach($model->lookHasAdorno as $hasAd){
 	        $adorno = Adorno::model()->findByPk($hasAd->adorno_id);
 				
 			?>
-	        <div class="new ui-draggable" id="adorno<?php echo $adorno->id; ?>" style="position: absolute; top: <?php echo $hasAd->top;?>px; left: <?php echo $hasAd->left;?>px;">
-	        
-	        <?php
+          <div class="new ui-draggable" id="adorno<?php echo $adorno->id; ?>" style="position: absolute; top: <?php echo $hasAd->top;?>px; left: <?php echo $hasAd->left;?>px;">
+            <?php
 				$image = CHtml::image(Yii::app()->baseUrl.'/images/adorno/'.$adorno->path_image, $adorno->nombre, array("width" => $hasAd->width, "height" => $hasAd->height));				
 				echo $image;
 			?>
-	        
-	        <input type="hidden" name="adorno_id" value="<?php echo $adorno->id; ?>">
-	        <span>x</span>
-	        </div>
-	        <?php 
+            <input type="hidden" name="adorno_id" value="<?php echo $adorno->id; ?>">
+            <span>x</span> </div>
+          <?php 
 	        
 	        $script = "	$('#adorno".$adorno->id."').draggable( {
 	    		cursor: 'move',
@@ -368,24 +365,9 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
       <form method="POST" id="form_productos">
       	<input id="productos_id" type="hidden" value="1,2,3,4" />
       </form>
-      -->
+      --> 
       
-      <?php echo CHtml::hiddenField('productos_id'); ?> 
-      <?php echo CHtml::hiddenField('colores_id'); ?> 
-      <?php echo CHtml::hiddenField('left'); ?> 
-      <?php echo CHtml::hiddenField('top'); ?>
-      <?php echo CHtml::hiddenField('width'); ?> 
-      <?php echo CHtml::hiddenField('height'); ?> 
-      <?php echo CHtml::hiddenField('tipo'); ?>
-      <?php echo CHtml::hiddenField('angle'); ?>
-      
-      <?php echo CHtml::hiddenField('adornos_id'); ?>
-      <?php echo CHtml::hiddenField('left_a'); ?>
-      <?php echo CHtml::hiddenField('top_a'); ?>
-      <?php echo CHtml::hiddenField('width_a'); ?>
-      <?php echo CHtml::hiddenField('height_a'); ?>
-      <?php echo CHtml::hiddenField('angle_a'); ?> 
-
+      <?php echo CHtml::hiddenField('productos_id'); ?> <?php echo CHtml::hiddenField('colores_id'); ?> <?php echo CHtml::hiddenField('left'); ?> <?php echo CHtml::hiddenField('top'); ?> <?php echo CHtml::hiddenField('width'); ?> <?php echo CHtml::hiddenField('height'); ?> <?php echo CHtml::hiddenField('tipo'); ?> <?php echo CHtml::hiddenField('angle'); ?> <?php echo CHtml::hiddenField('adornos_id'); ?> <?php echo CHtml::hiddenField('left_a'); ?> <?php echo CHtml::hiddenField('top_a'); ?> <?php echo CHtml::hiddenField('width_a'); ?> <?php echo CHtml::hiddenField('height_a'); ?> <?php echo CHtml::hiddenField('angle_a'); ?>
       <?php $this->endWidget(); ?>
     </section>
     <section class="span4">
@@ -397,10 +379,10 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="tab1">
-            <div class="row">
+            <div class="row-fluid">
               <form id="formu" class="no_margin_bottom form-search">
-                <div class="span2">
-                  <select id="padreId" class="span2" name="padreId">
+                <div class="span6">
+                  <select id="padreId" class="span12" name="padreId">
                     <option value="0">Buscar por Categoria</option>
                     <?php 
 
@@ -431,24 +413,23 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
 	}
 ?>
                   </select>
-        <?php
+                  <?php
         	$marcas = Marca::model()->findAll(array('order'=>'nombre'));
         	
-        ?>         
+        ?>
                   
-        <!-- marcas -->
-        <div class="margin_top_small margin_bottom_small">
-        	<select id="marcas" class="span2" name="marcas">
-        		<option selected>Buscar por Marca</option>
-        		<?php
+                  <!-- marcas -->
+                  <div class="margin_top_small margin_bottom_small">
+                    <select id="marcas" class="span12" name="marcas">
+                      <option selected>Buscar por Marca</option>
+                      <?php
         			foreach($marcas as $uno){
         				echo "<option value='".$uno->id."'> ".$uno->nombre." </option>";
         			}
         		?>
-        	</select>	
-        </div>
-         
-	<?php
+                    </select>
+                  </div>
+                  <?php
 	Yii::app()->clientScript->registerScript('marca',
 		"
 		$('#marcas').change(function(){". CHtml::ajax(
@@ -481,8 +462,6 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
 	);
 	
 	?>
-                  
-                  
                 </div>
                 <?php
 	Yii::app()->clientScript->registerScript('busqueda',
@@ -517,14 +496,11 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
 	);
 	
 	?>
-                <div class="span2"> 
-                
-                <div class="dropdown">
-                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-Filtrar por Colores <span class="caret"></span></a>
-  <!-- Link or button to toggle dropdown -->
-  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-  <?php 
+                <div class="span6">
+                  <div class="dropdown"> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
+                    <!-- Link or button to toggle dropdown -->
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                      <?php 
   $colores = Color::model()->findAll();
   foreach($colores as $color){
   	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20'));
@@ -558,12 +534,11 @@ Filtrar por Colores <span class="caret"></span></a>
 						);
 	echo '</li>';
   }
-  ?>	
-  </ul>
-</div>
-
-</div>
-		                        
+  ?>
+                    </ul>
+                  </div>
+                </div>
+                
                 <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
             </div>
@@ -574,10 +549,9 @@ Filtrar por Colores <span class="caret"></span></a>
           </div>
           <div class="tab-pane" id="tab2">
             <p>
-        <div id="div_prendas">
+            <div id="div_prendas">
               <?php $this->renderPartial('_view_adornos',array('productos'=>Adorno::model()->findAll())) ?>
             </div>
-            	
             </p>
           </div>
           <div class="tab-pane" id="tab3">

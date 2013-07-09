@@ -29,6 +29,54 @@ $promedio = $sumatoria / $ventas;
   <div class="page-header">
     <h1>Panel de Control</h1>
   </div>
+  <div>
+  	<?php
+  	/*
+  	$url = "http://www.grupozoom.com/servicios/servicios.php?tipo_menu=tarifas";
+	$data = array("servicio"=>1,
+				"procesar"=>1,
+				"txtcodguia"=>'',
+				"optretirarofi"=>0,
+				"txtciudadori"=>"ANACO",
+				"cmbciudadori"=>"24",
+				"codciudaddes"=>"48",
+				"codoficinaopedes"=>"2",
+				"codtraslado"=>3,
+				"txtpeso"=>"30000",
+				"txtciudaddes"=>"AGUA BLANCA",
+				"txtcodservicio"=>0,
+				"cmboficinades"=>"",
+				"txtnumeropie"=>8,
+				"pesomax"=>"",
+				"nombreofides"=>"",
+				"txtpesobru"=>7,
+				"txtvalordec"=>60,
+				"txtvalormin"=>50,
+				
+			);
+  	$output = Yii::app()->curl->post($url, $data);
+	$doc = new DOMDocument();
+	$doc->loadHTML($output);
+	//echo $data;
+	$anchor_tags = $doc->getElementsByTagName('table');
+	
+	foreach ($anchor_tags as $tag) {
+		
+		
+	if ($tag->getAttribute('class') == 'ContentArea'){
+			echo $tag->nodeValue;
+		}
+		
+	}
+	//echo $output;
+	*/
+	$url = "https://api.instapago.com/payment";
+	$data = array(
+		"KeyId"	=> "",
+	);
+  	?>
+  	
+  </div>
   <div class="row">
     <div class="span12">
       <div class="bg_color3 margin_bottom_small padding_small box_1">

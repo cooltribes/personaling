@@ -152,7 +152,7 @@ abstract class TbBaseMenu extends CMenu
 			$item['label'] .= ' <span class="caret"></span>';
 		}
 			/* MODIFICACION DE RAFA PARA PODER COLOCARLE UNA CLASE A UN BOTON CON LABEL REGSITRATE */
-			if (strpos($item['label'],'Registrate')!==false){
+			if (strpos($item['label'],'Regístrate')!==false){
 				if (isset($item['linkOptions']['class']))
 						$item['linkOptions']['class'] .= ' btn-danger';
 				else

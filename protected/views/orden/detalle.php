@@ -241,10 +241,10 @@ $usuario = User::model()->findByPk($orden->user_id);
           <tr>
             <td>21/12/2012 - 12:21 PM</td>
             <td>Delivery</td>
-            <td>DHL</td>
+            <td>Zoom</td>
             <td>0,00 Kg.</td>
-            <td>100,00 Bs.</td>
-            <td>1234567891012345</td>
+            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
         </table>

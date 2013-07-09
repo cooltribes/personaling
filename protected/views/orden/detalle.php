@@ -241,10 +241,10 @@ $usuario = User::model()->findByPk($orden->user_id);
           <tr>
             <td>21/12/2012 - 12:21 PM</td>
             <td>Delivery</td>
-            <td>DHL</td>
+            <td>Zoom</td>
             <td>0,00 Kg.</td>
-            <td>100,00 Bs.</td>
-            <td>1234567891012345</td>
+            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
@@ -417,14 +417,26 @@ $usuario = User::model()->findByPk($orden->user_id);
 	          	?>
 	          </td>
 	        </tr>
+	        <tr>
+	          <td>
+	          	<?php
+	          	echo date('d/m/Y', strtotime($factura->fecha));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo CHtml::link('Recibo de Pago', $this->createUrl('recibo', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	?>
+	          </td>
+	          <td>
+	          	<?php
+	          	echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
+	          	?>
+	          </td>
+	        </tr>
 	        <?php
 		}
         ?>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Recibo de Pago</td>
-          <td>23123</td>
-        </tr>
         <tr>
           <td>21/12/2012 </td>
           <td>Etiqueta de direccion</td>

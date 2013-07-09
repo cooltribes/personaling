@@ -19,6 +19,9 @@
 		if($data->estado == 3)
 			echo "<td>Pago Confirmado</td>";
 		
+		if($data->estado == 4)
+			echo "<td>Orden Enviada</td>";
+			
 		if($data->estado == 5)
 			echo "<td>Orden Cancelada</td>";
 		

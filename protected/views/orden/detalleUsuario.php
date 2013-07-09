@@ -37,9 +37,15 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	if($orden->estado == 3)
 		echo "Pago Confirmado";
+	
+	if($orden->estado == 4)
+		echo "Pedido Enviado";	
 			
 	if($orden->estado == 5)
 		echo "Orden Cancelada";
+	
+	if($orden->estado == 6)
+		echo "Pago Rechazado";	
 		
 	if($orden->estado == 7)
 		echo "Pago Insuficiente";
@@ -91,6 +97,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	if($orden->estado == 3)
 		echo "Bs. ya pagados";
+
+	if($orden->estado == 4)
+		echo "Bs. ya pagados";				
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";
@@ -178,6 +187,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 				echo("</table></div>");
 				}
 		  	?>    
+      
+     <?
+     	if($orden->estado == 4) // enviado
+     	{
+     ?>      
       	
       <div class="well well-small margin_top well_personaling_small">
         <h3 class="braker_bottom "> Envio </h3>
@@ -193,13 +207,18 @@ $usuario = User::model()->findByPk($orden->user_id);
           <tr>
             <td>21/12/2012 - 12:21 PM</td>
             <td>Delivery</td>
-            <td>DHL</td>
+            <td>Zoom</td>
             <td>0,00 Kg.</td>
-            <td>180,00 Bs.</td>
-            <td>1234567891012345</td>
+            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo $orden->tracking; ?></td>
           </tr>
         </table>
       </div>
+      <?php
+      
+		}
+      ?>
+      
       <div class="row-fluid">
       	<div class="span6">
           <h3 class="braker_bottom margin_top">Dirección de envío</h3>
@@ -256,6 +275,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($est->estado==3)
 					echo("<td>Pago Confirmado</td>");
+				
+				if($est->estado == 4)
+					echo("<td>Pedido Enviado</td>");
 				
 				if($est->estado==5)
 					echo("<td>Orden Cancelada</td>");

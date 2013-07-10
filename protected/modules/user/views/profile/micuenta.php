@@ -85,7 +85,7 @@ $looks_recomendados = $look->match($model);
               <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
               <li> <?php echo CHtml::link('Tu avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
-              <li> <a href="#" title="Tu perfil publico">Tu perfil publico</a></li>
+              <li> <a href="#" title="Tu perfil público">Tu perfil público</a></li>
             </ul>
           </div>
           <div class="span4">
@@ -180,7 +180,7 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom"> Libreta de Direcciones </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Gestionar direcciones de Envios y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
+              <li><?php echo CHtml::link('Gestionar direcciones de Envíos y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
               <li><a href="#" title="Agregar una nueva dirección">Añadir nueva dirección (LINK MUERTO)</a></li>
             </ul>
           </div>
@@ -188,11 +188,11 @@ $looks_recomendados = $look->match($model);
             <h2 class="braker_bottom"> Notificaciones </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>
-              <li><a href="#" title="Desuscribirse de la lista de correos">Desuscribir de la lista correos (LINK MUERTO)</a></li>
+              <li><a href="#" title="Desuscribirse de la lista de correos">Darte de baja de la lista correos (LINK MUERTO)</a></li>
             </ul>
             <h2 class="braker_bottom"> Privacidad </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Informacion publica',array('privacidad'),array("title"=>"Cambia tu Informacion publica")); ?></li>
+              <li><?php echo CHtml::link('Información Pública',array('privacidad'),array("title"=>"Cambia tu información pública")); ?></li>
               <li><?php echo CHtml::link('Eliminar Cuenta',array('delete'),array("title"=>"Eliminar Cuenta")); ?> </li>
             </ul>
           </div>

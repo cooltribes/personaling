@@ -137,7 +137,11 @@ $usuario = User::model()->findByPk($orden->user_id);
     <div class="span7">
       <h3 class="braker_bottom margin_top"> Información del cliente</h3>
       <div class="row">
-        <div class="span1"><img src="http://placehold.it/90" title="Nombre del usuario"></div>
+        <div class="span1">
+        	<?php
+        	echo CHtml::image($usuario->getAvatar(), '', array('width'=>'90', 'height'=>'90'));
+        	?>
+        </div>
         <div class="span6">
           <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> C.I. <?php echo $usuario->profile->cedula; ?></small></h2>
           <div class="row">

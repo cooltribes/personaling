@@ -109,7 +109,7 @@ class Campana extends CActiveRecord
 		$criteria->compare('ventas_inicio',$this->ventas_inicio,true);
 		$criteria->compare('ventas_fin',$this->ventas_fin,true);
 		$criteria->compare('fecha_creacion',$this->fecha_creacion,true);
-		$criteria->compare('estado',$this->estado);
+		//$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

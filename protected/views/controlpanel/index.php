@@ -154,9 +154,25 @@ $promedio = $sumatoria / $ventas;
           </table>
 </div>        </div>
         <div class="span5 offset1 margin_top">
-        	
+        	 <h4 class="margin_bottom_small">FUENTE DE REGISTROS</h4>
+        	 
         	<?php
- 
+
+$sql = "SELECT count( * ) as total FROM tbl_users where twitter_id != '' ";
+$a = Yii::app()->db->createCommand($sql)->queryScalar();
+
+$sql = "SELECT count( * ) as total FROM tbl_users where facebook_id != '' ";
+$b= Yii::app()->db->createCommand($sql)->queryScalar();
+
+$sql = "SELECT count( * ) as total FROM tbl_users where twitter_id = NULL and twitter_id = NULL ";
+$c = Yii::app()->db->createCommand($sql)->queryScalar();
+		
+$total = User::model()->count();
+
+$tw = $a / $total; // porcentaje por twitter
+$fb = $b / $total; // porcentaje por facebook
+$nor = ($total - $a - $b) / $total; // via normal por email
+		 
 $this->Widget('ext.highcharts.HighchartsWidget', array(
    'options'=>array(
       'chart'=> array(
@@ -164,7 +180,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
             'plotBorderWidth'=> null,
             'plotShadow'=> false
         ),
-      'title' => array('text' => 'Ventas / Tiempo'),
+      'title' => array('text' => 'Fuentes de Registros'),
         'tooltip'=>array(
                 'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>: "+ this.percentage +" %"; }'
                      ),
@@ -185,13 +201,11 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
       'series' => array(
          array('type'=>'pie','name' => 'Ventas / Tiempo',
          		'data' => array(
-         			array('Abril',110), 
-         			array('Mayo',240),
-         			array('Junio',587),
-         			array('Julio',452),
+         			array('Twitter',$tw), 
+         			array('Facebook',$fb),
          			array(
-                    	'name'=>'Agosto',
-                    	'y'=>241,
+                    	'name'=>'Normal',
+                    	'y'=>$nor,
                     	'sliced'=>true,
                     	'selected'=>true
                     ))),
@@ -203,8 +217,8 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
  
 ?>
         	
-          <h4 class="margin_bottom_small">FUENTE DE REGISTROS</h4>
-          <img src="<?php echo Yii::app()->baseUrl; ?>/images/stats2.png" alt="estadisticas "> </div>
+         
+
       </div>
     </div>
   </div>

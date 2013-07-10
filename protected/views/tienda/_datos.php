@@ -7,6 +7,8 @@ $prePub="";
 
 	$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'1'));
 	
+	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));
+	
 	// limitando a que se muestren los status 1 y estado 0
 	
 	   	if($data->precios){
@@ -26,22 +28,27 @@ $prePub="";
             	if(isset($like)) // le ha dado like
 				{
 					$a = CHtml::image($ima->getUrl(), "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
-				
-						echo("<td><article class='span3'><div class='producto'> ".$a." <a href='#myModal' role='button' class='btn  btn-block btn-small vista_rapida  hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+					
+				//	$b = $segunda->getUrl();
+					
+						echo("<td><article class='span3'><div class='producto'> 
+						<input id='idprod' value='".$data->id."' type='hidden' >
+						".$a." <a href='#myModal' role='button' class='btn  btn-block btn-small vista_rapida  hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
 						<span class='precio'>Bs. ".$prePub."</span>
 						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
 						
 						$con=$id;
 						$entro=1;
-					
 				}
 				else
 				{
 					
 					$a = CHtml::image($ima->getUrl(), "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
 					
-					echo("<article class='span3'><div class='producto'> ".$a." <a href='#myModal' role='button' class='btn btn-block btn-small vista_rapida hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+					echo("<article class='span3'><div class='producto' >
+					<input id='idprod' value='".$data->id."' type='hidden' >
+					".$a." <a href='#myModal' role='button' class='btn btn-block btn-small vista_rapida hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 					<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
 					<span class='precio'>Bs. ".$prePub."</span>
 					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
@@ -60,6 +67,7 @@ $prePub="";
 
 ?>
 <script>
+
 
 function encantar(id)
    	{

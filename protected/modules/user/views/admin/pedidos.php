@@ -11,38 +11,40 @@
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
             <legend>Pedidos</legend>
-            <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
-              <tbody>
-                <tr>
-                  <th scope="col">Fecha</th>
+            
+            <?php
+			$template = '{summary}
+			  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+			  <tbody>
+			    <tr>
+			      <th scope="col">Fecha</th>
                   <th scope="col">Monto</th>
                   <th scope="col">Estado</th>
                   <th scope="col">Método de pago</th>
                   <th scope="col">Acciones</th>
-                </tr>
-                <tr>
-                  <td>21/12/2012 - 12:21 PM</td>
-                  <td>8.890,00 Bs.</td>
-                  <td>En espera de pago</td>
-                  <td>Deposito / Transferencia</td>
-                  <td><a title="Ver" href="admin_editar_pedidos.php"><i class="icon-eye-open"></i></a></td>
-                </tr>
-                <tr>
-                  <td>21/12/2012 - 12:21 PM</td>
-                  <td>8.890,00 Bs.</td>
-                  <td>Recibido</td>
-                  <td>TDC</td>
-                  <td><a title="Ver" href="admin_editar_pedidos.php"><i class="icon-eye-open"></i></a></td>
-                </tr>
-                <tr>
-                  <td>21/12/2012 - 12:21 PM</td>
-                  <td>8.890,00 Bs.</td>
-                  <td>En espera por confirmación</td>
-                  <td>TDD</td>
-                  <td><a title="Ver" href="admin_editar_pedidos.php"><i class="icon-eye-open"></i></a></td>
-                </tr>
-              </tbody>
-            </table>
+			    </tr>
+			    {items}
+				</tbody>
+			    </table>
+			    {pager}
+				';
+			
+					$this->widget('zii.widgets.CListView', array(
+				    'id'=>'list-pedidos',
+				    'dataProvider'=>$dataProvider,
+				    'itemView'=>'_view_pedido',
+				    'template'=>$template,
+				    'enableSorting'=>'true',
+				    'afterAjaxUpdate'=>" function(id, data) {
+										} ",
+					'pager'=>array(
+						'header'=>'',
+						'htmlOptions'=>array(
+						'class'=>'pagination pagination-right',
+					)
+					),					
+				));    
+				?>
           </fieldset>
         </form>
       </div>

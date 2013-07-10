@@ -145,12 +145,22 @@ if(isset($_POST['Profile']))
 		));		
 	}
 
-	public function actionPedidos()
+	public function actionPedidos($id)
 	{
 		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		
+        $dataProvider = new CActiveDataProvider('Orden', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
+			),
+        ));
+		
 		$this->render('pedidos',array(
 			'model'=>$model,
-			
+			'dataProvider'=>$dataProvider,
 		));
 	}
 	public function actionDirecciones()

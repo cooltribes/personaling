@@ -38,6 +38,7 @@ class Curl extends CComponent {
 
     public function post($url, $data = array()) {
         $this->setOption(CURLOPT_POST, true);
+       // $this->setOption(CURLOPT_CUSTOMREQUEST, "PUT");
         $this->setOption(CURLOPT_POSTFIELDS, $data);
         return $this->_exec($url);
     }
@@ -52,9 +53,49 @@ class Curl extends CComponent {
         $this->setOption(CURLOPT_PUT, true);
         $this->setOption(CURLOPT_INFILE, $f);
         $this->setOption(CURLOPT_INFILESIZE, strlen($data));
-
-        return $this->_exec($this->buildUrl($url, $params));
+		
+		
+		//$f_response = fopen(Yii::app()->baseUrl.'/images/request.txt', 'w');
+		$f_response = fopen('/home/personaling/public_html/site/images/request.txt', 'w');
+		
+		    
+		    $this->setOption(CURLOPT_RETURNTRANSFER , 1);
+		    $this->setOption(CURLOPT_FOLLOWLOCATION , 1);
+		    $this->setOption(CURLOPT_VERBOSE        , 1);
+		    $this->setOption(CURLOPT_STDERR         , $f_response);
+		
+		fclose($f_response);	
+		//$url = $this->buildUrl($url, $params);	
+        return $this->_exec($url);
     }
+	public function put2($url, $json_data, $params = array()) {
+			
+
+
+		$f_response = fopen('/home/personaling/public_html/site/images/request.txt', 'w');
+		$this->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
+		$this->setOption(CURLOPT_SSL_VERIFYHOST, 0);
+		$this->setOption(CURLOPT_SSL_VERIFYPEER, 0);
+		$this->setOption(CURLOPT_USERPWD,"069C794A-6917-4283-B26F-2AFC7F685A96");
+		$this->setOption(CURLOPT_POST, 1);
+		//$this->setOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
+		$this->setOption(CURLOPT_POSTFIELDS, $json_data);
+		$this->setOption(CURLOPT_RETURNTRANSFER, 1);
+		    
+		    
+		    $this->setOption(CURLOPT_FOLLOWLOCATION , 1);
+		    $this->setOption(CURLOPT_VERBOSE        , 1);
+		    $this->setOption(CURLOPT_STDERR         , $f_response);
+		
+		fclose($f_response);	
+		$url = $this->buildUrl($url, $params);	
+        return $this->_exec($url);
+    }
+	 
+	public function getstatus(){
+		
+		return curl_getinfo($this->_ch, CURLINFO_HTTP_CODE);
+	}
 
     public function buildUrl($url, $data = array()) {
         $parsed = parse_url($url);

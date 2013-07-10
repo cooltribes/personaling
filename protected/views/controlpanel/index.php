@@ -69,11 +69,34 @@ $promedio = $sumatoria / $ventas;
 		
 	}
 	//echo $output;
-	*/
-	$url = "https://api.instapago.com/payment";
-	$data = array(
-		"KeyId"	=> "",
+	*/ 
+	$url = "https://api.instapago.com/api/payment";
+	$data_array = array(
+		"KeyId"=> "069C794A-6917-4283-B26F-2AFC7F685A96",
+		"PublicKeyId"=>"5274e829763cd383270512b87a6c947e",
+		"Amount"=>"200.00",
+		"Description"=>"Compra de Look de Pruea",
+		"CardHolder"=>"Rafael Angel Palma C",
+		"CardNumber"=>"5412474301594501",
+		"CVV"=>"108",
+		"ExpirationDate"=>"08/2017",
+		"StatusId"=>"2",
+		"Address"=>"Calle 16 Carrera 22 Qta Reina",
+		"City"=>"San Cristobal",		
+		"ZipCode"=>"5001",
+		"State"=>"Tachira",
 	);
+	$data = json_encode($data_array);
+	
+	$string = "KeyId=069C794A-6917-4283-B26F-2AFC7F685A96&PublicKeyId=5274e829763cd383270512b87a6c947e&Amount=200.00&Description=Compra+de+Look+de+Pruea&CardHolder=Rafael+Angel+Palma+C&CardNumber=5412474301594501&CVC=108&ExpirationDate=08%2F2017&StatusId=2&Address=Calle+16+Carrera+22+Qta+Reina&City=San+Cristobal&ZipCode=5001&State=Tachira";
+	//$output = Yii::app()->curl->put($url, $data);
+	//$output = Yii::app()->curl->put($url, $data,$data_array);
+	$output = Yii::app()->curl->put2($url, $string);
+	//$output = Yii::app()->curl->put2($url, $data);
+	//$output = Yii::app()->curl->put2($url, $data_array);
+	
+	echo $output;
+	//echo Yii::app()->curl->getstatus();
   	?>
   	
   </div>

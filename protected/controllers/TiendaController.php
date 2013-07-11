@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -230,12 +230,12 @@ class TiendaController extends Controller
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',
-			'datos'=> $ret
+			'datos'=> $ret  
 			));
 		exit;
 	}
-
-/*
+ 
+/* 
  * Se trae el url de la segunda imagen 
  * */
 	public function actionSegunda(){
@@ -251,7 +251,23 @@ class TiendaController extends Controller
 	
 	}
 
-
+	public function actionLook(){
+			
+		$criteria = new CDbCriteria;
+		$total = Look::model()->count();
+		 
+		$pages = new CPagination($total);
+		$pages->pageSize = 9;
+		$pages->applyLimit($criteria);
+		$looks = Look::model()->findAll($criteria);
+		 
+		$this->render('look', array(
+			'looks' => $looks,
+			'pages' => $pages,
+		));			
+			
+		
+	}
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()

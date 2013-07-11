@@ -320,3 +320,57 @@ function randomFrom(arr){
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
     </div>
+    
+<script>
+
+$(document).ready(function() {
+  // Handler for .ready() called.
+	  
+	var imag;
+	var original;
+	  
+	$('.producto').hover(
+	function() {
+	
+	imag = $(this).children("img");
+	original = $(this).children("img").attr('src');
+			
+		var id = $(this).children("#idprod").attr('value');
+	
+			// llamada ajax para buscar la segunda imagen
+				$.ajax({
+		        type: "post",
+		        url: "segunda", // action
+		        data: { 'id': id, 'orden': 2}, 
+		        success: function (data) {
+				
+				if(data=="no")
+				{}
+				else{	
+					imag.fadeOut("slow",function(){	
+						imag.attr('src',data);
+					});
+				
+					imag.fadeIn("slow",function(){});
+				} // else
+				
+		       	}//success
+		       })
+		
+	},
+	function() {
+		
+		imag.fadeOut("slow",function(){	
+			imag.attr('src',original);
+		});
+				
+		imag.fadeIn("slow",function(){});
+		
+	}
+	); 
+ 
+  
+  
+});
+	
+</script>

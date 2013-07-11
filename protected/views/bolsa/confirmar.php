@@ -95,13 +95,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
       <div class="well well_personaling_big">
-        <h5><?php echo Yii::app()->getSession()->get('totalLook'); ?> Look seleccionado<br/>
+        <h5>Look seleccionado(s): <?php echo Yii::app()->getSession()->get('totalLook'); ?><br/>
           <?php  
            	if(Yii::app()->getSession()->get('totalProductosLook') != 0){
            		echo Yii::app()->getSession()->get('totalProductosLook')." productos que componen los Looks<br/>";
            	}
 			
-			echo Yii::app()->getSession()->get('totalIndiv')." Productos individuales " 
+			echo 'Productos individuales: '.Yii::app()->getSession()->get('totalIndiv');
 			?>
         </h5>
         <hr/>

@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -233,6 +233,22 @@ class TiendaController extends Controller
 			'datos'=> $ret
 			));
 		exit;
+	}
+
+/*
+ * Se trae el url de la segunda imagen 
+ * */
+	public function actionSegunda(){
+		
+		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$_POST['id'],'orden'=>$_POST['orden']));
+		
+		$url = $segunda->getUrl(array('type'=>'thumb'));
+		
+		if(isset($segunda))
+			echo $url;		
+		else
+			echo "no";
+	
 	}
 
 

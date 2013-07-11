@@ -62,7 +62,7 @@ function getMonthsArray()
     <h1>Editar Usuario</h1>
   </div>
   <!-- SUBMENU ON -->
-  <?php $this->renderPartial('_menu', array('model'=>$model)); ?>
+  <?php $this->renderPartial('_menu', array('model'=>$model, 'activo'=>1)); ?>
   <!-- SUBMENU OFF -->
   <div class="row margin_top">
     <div class="span9">

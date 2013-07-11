@@ -216,7 +216,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
 ));
  
 ?>
-        	
+	
          
       </div>
     </div>

@@ -25,7 +25,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
   <h1>Editar Carrito</h1>
 </div>
 <!-- SUBMENU ON -->
-<?php $this->renderPartial('_menu', array('model'=>$model, 'activo'=>6)); ?>
+<?php $this->renderPartial('_menu', array('model'=>$model, 'activo'=>7)); ?>
 <!-- SUBMENU OFF -->
 <div class="row margin_top">
   <div class="span9">

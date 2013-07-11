@@ -47,10 +47,13 @@
                      'id'=>$model->id,)); ?>
         </li>
         <li class="<?php if($activo == 8) echo 'active'; ?>">
-    		<?php echo CHtml::link('Favoritos',array('favoritos',
+    		<?php echo CHtml::link('Looks Favoritos',array('looks',
                      'id'=>$model->id,)); ?>
-        </li>                        
-   
+        </li>
+        <li class="<?php if($activo == 9) echo 'active'; ?>">
+    		<?php echo CHtml::link('Productos Favoritos',array('productos',
+                     'id'=>$model->id,)); ?>
+        </li>
       </ul>
     </div>
   </div>

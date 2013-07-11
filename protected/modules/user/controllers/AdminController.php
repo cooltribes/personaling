@@ -26,7 +26,7 @@ class AdminController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 
-				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar'),
+				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks'),
 
 				'users'=>UserModule::getAdmins(),
 			),
@@ -144,6 +144,25 @@ if(isset($_POST['Profile']))
 			'profile'=>$profile,
 		));		
 	}
+	
+	public function actionLooks($id)
+	{
+		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		
+        $dataProvider = new CActiveDataProvider('LookEncantan', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
+			),
+        ));
+		
+		$this->render('looks',array(
+			'model'=>$model,
+			'dataProvider'=>$dataProvider,
+		));
+	}
 
 	public function actionPedidos($id)
 	{
@@ -163,6 +182,26 @@ if(isset($_POST['Profile']))
 			'dataProvider'=>$dataProvider,
 		));
 	}
+	
+	public function actionProductos($id)
+	{
+		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		
+        $dataProvider = new CActiveDataProvider('UserEncantan', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
+			),
+        ));
+		
+		$this->render('productos',array(
+			'model'=>$model,
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	
 	public function actionDirecciones()
 	{
 		$model=$this->loadModel();
@@ -180,12 +219,14 @@ if(isset($_POST['Profile']))
 		));
 	}
 			
-	public function actionCarrito()
+	public function actionCarrito($id)
 	{
 		$model=$this->loadModel();
+		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$id));
 		$this->render('carrito',array(
 			'model'=>$model,
-			
+			'bolsa'=>$bolsa,
+			'usuario'=>$id,
 		));
 	}
 	public function actionCorporal()

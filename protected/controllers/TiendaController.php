@@ -175,7 +175,7 @@ class TiendaController extends Controller
 			'accion'=>'hijo'
 		));
 	  }
-}
+} 
 
 	public function actionImageneslooks(){
 		

@@ -162,12 +162,27 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				?>
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php
-              }else{
+              }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
+              			
+					 echo CHtml::link("<i class='icon-locked icon-white'></i> Pagar con tarjeta de crédito",
+					    $this->createUrl('modal',array('id'=>'pago')),
+					    array(// for htmlOptions
+					      'onclick'=>' {'.CHtml::ajax( array(
+					      'url'=>CController::createUrl('modal',array('tipo'=>"2")),
+					           'success'=>"js:function(data){ $('#myModal').html(data);
+										$('#myModal').modal(); }")).
+					         'return false;}',
+					    'class'=>'btn btn-warning',
+					    'id'=>'pago')
+					);	
+
+				}
+				else {
               	?>
-          <a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
-          <hr/>
-          <?php
-              }
+          			<a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
+          			<hr/>
+          		<?php
+              	}
               //<a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
               //<hr/>
 			  ?>
@@ -198,6 +213,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   </div>
 </div>
 <!-- /container -->
+
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+<?php $this->endWidget(); ?>
 
 <?php 
 

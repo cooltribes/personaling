@@ -512,11 +512,12 @@ $('.imagen_principal').zoom({url: imgZ});
 	        	
 		        if(data.status == 'ok')
 		        {
+		        	var base = "<?php echo Yii::app()->baseUrl; ?>";		
 		        	//alert(data.datos);
 					var cont="";
 					$.each(data.datos,function(clave,valor) {
 					  	//0 -> id, 1 -> valor
-					  	cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='"+valor[1]+"'><img src='/site/images/colores/"+valor[2]+"'></div>";
+					  	cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='"+valor[1]+"'><img src='"+ base +"/images/colores/"+valor[2]+"'></div>";
 					  	
 					});
 					//alert(cont); 

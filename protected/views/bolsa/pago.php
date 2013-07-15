@@ -48,7 +48,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <input type="radio" name="optionsRadios" id="tarjeta" value="option2" data-toggle="collapse" data-target="#pagoTarjeta">
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
         <div class="collapse" id="pagoTarjeta">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">
+        	 <div class="well well-small" >
+            Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
+          </div>
+        </div>
+         <!-- <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">
             <tr>
               <th scope="col" colspan="4">&nbsp;</th>
               <th scope="col">Nombre en la Tarjeta</th>
@@ -75,14 +79,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
           <!-- Forma de pago ON -->
 
-          <div class="collapse" id="collapseOne">
+          <!-- <div class="collapse" id="collapseOne">
             <form class="personaling_form well well-small margin_top_medium">
               <h5 class="braker_bottom">Nueva tarjeta de crédito</h5>
               <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Nombre en la tarjeta <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+              <!--   <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Nombre en la tarjeta"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -92,7 +96,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label class="control-label required">Nombre impreso en la tarjeta <span class="required">*</span></label>
 <![endif]-->
 
-                <div class="controls">
+             <!--    <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Nombre impreso en la tarjeta"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -101,7 +105,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Fecha de Vencimiento <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+            <!--     <div class="controls">
                   <select>
                     <option>1</option>
                     <option>2</option>
@@ -123,7 +127,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Codigo de Seguridad <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+         <!--        <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Codigo de Seguridad"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -132,7 +136,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Cedula de Identidad <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+          <!--       <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Cedula de Identidad"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -141,7 +145,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Numero de Telefono <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+       <!--          <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Numero de Telefono"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -150,9 +154,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </form>
           </div>
           <!-- Forma de pago OFF -->
-
+<!-- 
         </div>
-      </div>
+      </div> -->
       <?php /*?><div class="box_1 padding_small">
         <h3>Incluir nuevas opciones de pago</h3>
         <!-- Forma de pago ON -->
@@ -254,7 +258,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 // echo CHtml::hiddenField('tipoPago','1');
 ?>
     <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
-    <?php Yii::app()->getSession()->add('tipoPago',1); ?>
+    <?php //Yii::app()->getSession()->add('tipoPago',1); ?>
     <div class="span5 margin_bottom padding_top_xsmall">
     	<form action="confirmar" method="POST">
       <div class="margin_left">

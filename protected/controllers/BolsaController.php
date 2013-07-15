@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
+				'actions'=>array('modal','index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -807,5 +807,115 @@ class BolsaController extends Controller
 		}
 	}
 
+
+	/*
+	 * modal
+	 * */
+	public function actionModal()
+	{
+		$tarjeta = new TarjetaCredito;
 		
+		$datos="";
+		
+		$datos=$datos."<div class='modal-header'>";
+		$datos=$datos."Agregar datos de tarjeta de crédito";
+    	$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='modal-body'>";
+		
+		$datos=$datos.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">';
+  		$datos=$datos.'<tr>';			
+		$datos=$datos.'<th scope="col" colspan="4">&nbsp;</th>';
+		$datos=$datos.'<th scope="col">Número</th>';		
+		$datos=$datos.'<th scope="col">Nombre en la Tarjeta</th>';
+		$datos=$datos.'<th scope="col">Fecha de Vencimiento</th>';
+		$datos=$datos.'</tr>';		
+		$datos=$datos.'<tr>';
+		$datos=$datos.'<td><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" ></td>';
+		$datos=$datos.'<td><i class="icon-picture"></i></td>';
+		$datos=$datos.'<td>Mastercard</td>';
+		$datos=$datos.'<td>XXXX XXXX XXXX 6589</td>';
+		$datos=$datos.'<td>JOHANN MARQUEZ</td>';
+		$datos=$datos.'<th scope="col"><td>12/2018</td></th>';
+		$datos=$datos.'</tr>';
+		$datos=$datos.'<table>';
+				
+		
+		$datos=$datos.'<button type="button" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>';
+    	
+		$datos=$datos.'<div class="collapse" id="collapseOne">';
+		$datos=$datos.'<form class="">';
+        $datos=$datos.'<h5 class="braker_bottom">Nueva tarjeta de crédito</h5>';
+		
+		$datos=$datos.'<div class="control-group">';
+        $datos=$datos.'<div class="controls">';     
+		$datos=$datos. CHtml::activeTextField($tarjeta,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+    	
+  		$datos=$datos.'<div class="control-group">';
+        $datos=$datos.'<div class="controls">';     
+		$datos=$datos. CHtml::activeTextField($tarjeta,'numero',array('id'=>'numero','class'=>'span5','placeholder'=>'Número de la tarjeta'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+  
+  		$datos=$datos.'<div class="control-group">';
+        $datos=$datos.'<div class="controls">';     
+		$datos=$datos. CHtml::activeTextField($tarjeta,'codigo',array('id'=>'codigo','class'=>'span2','placeholder'=>'Código de seguridad'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+  
+  		$datos=$datos.'<div class="control-group">';
+		$datos=$datos.'<label class="control-label required">Fecha de Vencimiento</label>';
+        $datos=$datos.'<div class="controls">';     
+	  	$datos=$datos. CHtml::dropDownList('mes','',array('Mes','01','02','03','04','05','06','07','08','09','10','11','12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes'));
+        $datos=$datos. CHtml::dropDownList('ano','',array('Año','13','14','15','16','17','18','19'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'direccion',array('id'=>'direccion','class'=>'span5','placeholder'=>'Dirección')) ;
+		$datos=$datos."<div style='display:none' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'ciudad',array('id'=>'ciudad','class'=>'span5','placeholder'=>'Ciudad'));
+        $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'estado',array('id'=>'ciudad','class'=>'span5','placeholder'=>'Estado'));
+        $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'zip',array('id'=>'zip','class'=>'span2','placeholder'=>'Código Postal'));
+        $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."</div>"; // modal body
+		
+		$datos=$datos."<div class='modal-footer'>";
+		
+		$datos=$datos."<div class=''><a onclick='enviar()' class='btn-large btn btn-danger'> Pagar </a></div>";
+    	$datos=$datos."</form>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<input type='hidden' id='idTarjeta' value='no' />"; // despues aqui se mandaria el id si la persona escoge una tarjeta que ya utilizó
+		
+		$datos=$datos."</div>"; // footer
+		
+		
+		echo $datos;
+		
+		
+	}
 }

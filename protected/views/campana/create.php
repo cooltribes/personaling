@@ -100,7 +100,7 @@ $this->breadcrumbs=array(
 		if(day != '-1' && month != '-1' && year != '-1'){
 			console.log('pasa');
 			if(validar_fecha(day, month, year)){
-				$('#Campana_recepcion_fin').val(year+'-'+month+'-'+day+' 00:00:01');
+				$('#Campana_recepcion_fin').val(year+'-'+month+'-'+day+' 23:59:59');
 			}else{
 				$('#recepcion_fin_day').val('-1');
 				$('#recepcion_fin_month').val('-1');
@@ -134,7 +134,7 @@ $this->breadcrumbs=array(
 		//console.log('validar');
 		if(day != '-1' && month != '-1' && year != '-1'){
 			if(validar_fecha(day, month, year)){
-				$('#Campana_ventas_fin').val(year+'-'+month+'-'+day+' 00:00:01');
+				$('#Campana_ventas_fin').val(year+'-'+month+'-'+day+' 23:59:59');
 			}else{
 				$('#ventas_fin_day').val('-1');
 				$('#ventas_fin_month').val('-1');

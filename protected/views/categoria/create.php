@@ -166,7 +166,15 @@ $this->breadcrumbs=array(
                 <div style="display:none" class="help-inline">ayuda aqui </div>
               </div>
             </div>
-            
+            <div class="control-group">
+            	<label  class="control-label ">Peso </label>
+            	<div class="controls">
+              		<?php echo $form->textField($model,'peso',array('class'=>'span5','maxlength'=>20,'placeholder'=>'Ej.: 1.5')); 
+              		// <input type="text" placeholder="Nombre"  class="span5">
+              		?>
+                <?php echo $form->error($model,'peso'); ?>
+              </div>
+            </div>
             
           </fieldset>
         </form>

@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -142,11 +142,33 @@ class TiendaController extends Controller
 	 * 
 	 * 
 	 * */ 
-	 
+	public function actionOcasiones(){
+
+	  	$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;		
+	  if ($categorias){
+		 echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'padre',
+			'div'=> $this->renderPartial('_view_ocasiones',array('categorias'=>$categorias),true,true)
+		));
+		exit;
+	  }else {
+	  		echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'hijo'
+		));
+	  }		
+	} 
+	
 	public function actionCategorias(){
 	
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
-	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+	  	$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
@@ -253,7 +275,13 @@ class TiendaController extends Controller
 
 	public function actionLook(){
 			
+		$search = "";	
+		if(isset($_GET['search']))
+			$search =  	$_GET['search'];
 		$criteria = new CDbCriteria;
+		$criteria->compare('title',$search,true,'OR');
+		$criteria->compare('description',$search,true,'OR');
+		
 		$total = Look::model()->count();
 		 
 		$pages = new CPagination($total);

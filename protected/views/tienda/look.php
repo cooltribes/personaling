@@ -15,10 +15,46 @@
           <li class="filtros-header">Filtrar por:</li>
           <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ocasiones <b class="caret"></b></a>
             <ul class="dropdown-menu ">
-              <li> <a href="#" title="De fiesta">De fiesta</a> </li>
-              <li><a href="#" title="Oficina">Oficina</a> </li>
-                <li><a ref="#" title="Haciendo Deporte">Haciendo Deporte </a></li>
-              <li><a href="#" title="Diario">Diario</a> </li>
+		<?php $categorias = Categoria::model()->findAllByAttributes(array('padreId'=>'2')); ?>
+        <?php 
+        
+        if(count($categorias))
+				foreach($categorias as $categoria){
+					
+		?>              
+              <li> 
+        <?php echo CHtml::ajaxLink($categoria->nombre,
+							 Yii::app()->createUrl( 'tienda/ocasiones'),
+							 array( // ajaxOptions
+						    'type' => 'POST',
+						    'dataType'=>'json',
+						    'beforeSend' => "function( request )
+						                     {
+						                       // Set up any pre-sending stuff like initializing progress indicators
+						                     }",
+						    'success' => "function( data )
+						                  {
+						                    // handle return data
+						                    //alert( data );
+						                   // alert(data.accion);
+						                    $('#div_ocasiones').html(data.div);
+						                  }",
+						    'data' => array( 'padreId' => $categoria->id )
+						  ),
+						  array( //htmlOptions
+						   // 'href' => Yii::app()->createUrl( 'tienda/ocasiones' ),
+						   'href'=>'#',
+						    //'class' => 'thumbnail',
+						    'id' => 'categoria'.$categoria->id,
+						    'draggable'=>"false",
+						  )
+						  );    
+		?>  	
+              	 
+              </li>
+<?php } ?>              
+
+            
             </ul>
           </li>
           <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <b class="caret"></b></a>
@@ -32,55 +68,32 @@
             </ul>
           </li>
         </ul>
-        <form class="navbar-search pull-right hidden-phone">
+       
+        	<?php /** @var BootActiveForm $form */
+				$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+				     'id'=>'searchForm',
+  					  'type'=>'search',
+  					  'method'=>'get',
+				    'htmlOptions'=>array( 'class'=>'navbar-search pull-right hidden-phone'),
+				)); ?>
           <div class="input-append">
           <?php // Recordar que aqui va el componente Select2 de la extension del Bootstrap para Yii. La misma que esta en Talla y colores del admin ?>
-            <input type="text" placeholder="Buscar por Personal Shopper">
+          
+            <?php // echo $form->textFieldRow($model, 'textField', array('placeholder'=>"Buscar por Personal Shopper",'class'=>'')); ?>
+            <?php echo CHtml::textField('search','',array('placeholder'=>"Buscar por Personal Shopper")); ?>
             <div class="btn-group">
-              <button tabindex="-1" class="btn btn-danger">Buscar</button>
+          
+              <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'label'=>'Buscar','type'=>'danger')); ?>
             </div>
           </div>
-        </form>
+        <?php $this->endWidget(); ?>
       </nav>
       <!--/.nav-collapse --> 
     </div>
-    <div class="navbar-inner sub_menu"  >
+    <div class="navbar-inner sub_menu" id="div_ocasiones"  >
     
     <?php //Este submenu carga las categorias segun lo seleccinonado arriba, por ejemplo de fiesta: coctel, familia, etc ?>
-      <nav class="  ">
-        <ul class="nav">
-          <li>
-            <label>
-              <input type="checkbox">
-              Reunion Familiar</label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox">
-              Graduacion</label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox">
-              Cita Romántica</label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox">
-              Boda</label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox">
-              Plan de amigas</label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox">
-              Coctel </label>
-          </li>
-        </ul>
-      </nav>
+     
       <!--/.nav-collapse --> 
     </div>
   </div>
@@ -96,8 +109,8 @@
 		<?php //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span4 look">
       <article > 
-      	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>                            	
-                  	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
+      	<?php echo CHtml::image('../images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
+                  	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
                   
                   	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
                   	
@@ -113,13 +126,15 @@
   						Yii::app()->clientScript->registerScript('img_ps_script'.$look->id,$script);
 					 * 
 					 */
+					 
+					 /*
 					 echo "<script>
 					 $('#"."imglook".$look->id."').load(function(){
 									$('#imgloading".$look->id."').hide();
 									$(this).show();
 						});
 					 </script>";
-					 
+					 */
   					?>
         <div class="hidden-phone margin_top_small vcard row-fluid">
           <div class="span2  ">
@@ -145,6 +160,17 @@
         </article>
     </div>		
 	<?php endforeach; ?>
+	<script>
+	$('.imglook').on("load",function(){
+		console.log('clicking');
+		$(this).parent().prev("img").hide();
+		$(this).show();
+	});
+	$(document).on('click','.imgloading', function(){
+    console.log('clicking');
+   // FB.Canvas.scrollTo(0,0);        
+	});
+</script>
 	</div>
 	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#looks',

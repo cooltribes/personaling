@@ -48,6 +48,7 @@ class Categoria extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('padreId', 'numerical', 'integerOnly'=>true),
+			array('peso', 'numerical', 'integerOnly'=>false),
 			array('nombre, pClaves, urlSugerida', 'length', 'max'=>100),
 			array('urlImagen', 'length', 'max'=>150),
 			array('nombre, padreId, descripcion, estado', 'required'),
@@ -58,7 +59,7 @@ class Categoria extends CActiveRecord
 			array('mDescripcion', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, padreId, nombre, urlImagen, mTitulo, mDescripcion, estado, descripcion, urlSugerida, pClaves', 'safe', 'on'=>'search'),
+			array('id, padreId, nombre, urlImagen, mTitulo, mDescripcion, estado, descripcion, urlSugerida, pClaves, peso', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -90,6 +91,7 @@ class Categoria extends CActiveRecord
 			'urlSugerida' => 'Url Sugerida',
 			'pClaves' => 'Palabras Claves',
 			'estado' => 'Estado',
+			'peso' => 'Peso',
 		);
 	}
 
@@ -114,6 +116,7 @@ class Categoria extends CActiveRecord
 		$criteria->compare('pClaves',$this->pClaves,true);
 		$criteria->compare('urlSugerida',$this->urlSugerida,true);
 		$criteria->compare('estado',$this->estado,true);
+		$criteria->compare('peso',$this->peso,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

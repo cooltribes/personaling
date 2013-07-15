@@ -77,7 +77,7 @@ class CategoriaController extends Controller
 			$model->estado = $_POST['Categoria']['estado'];
 			$model->descripcion = $_POST['Categoria']['descripcion'];
 			
-			echo($model->nombre);
+			//echo($model->nombre);
 			
 			if($model->save()){
 

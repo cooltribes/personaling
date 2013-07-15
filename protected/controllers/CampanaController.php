@@ -34,6 +34,9 @@ class CampanaController extends Controller
 		if(isset($_POST['Campana'])){
 			$campana->attributes = $_POST['Campana'];
 			$campana->fecha_creacion = date('Y-m-d H:i:s');
+			if(strtotime($campana->recepcion_inicio) <= time()){
+				$campana->estado = 2;
+			}
 			
 			if($campana->save()){
 				if($_POST['personal_shopper'] == 'todos'){

@@ -58,7 +58,7 @@
       <?php echo CHtml::hiddenField('valido','1'); ?>
       <?php echo CHtml::hiddenField('avatar_x','0'); ?>
       <?php echo CHtml::hiddenField('avatar_y','0'); ?>
-      <div id="dropTarget">O arrasta la imagen hasta aqui</div>
+<?php /*?>      <div id="dropTarget">O arrasta la imagen hasta aqui</div><?php */?>
       <output id="filesInfo"></output>
       
          <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(

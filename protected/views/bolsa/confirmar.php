@@ -21,7 +21,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			}
 		}
 	}
-	echo 'Total: '.$total.' - Descuento: '.$descuento;
+	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
 <div class="container margin_top">
@@ -50,6 +50,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
   <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
   <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
+  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
   <div class="row margin_top_medium">
     <section class="span4"> 
       <!-- Direcciones ON -->
@@ -114,23 +115,27 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo Yii::app()->getSession()->get('subtotal'); ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo Yii::app()->getSession()->get('envio'); ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo Yii::app()->getSession()->get('iva'); ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Descuento:</th>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($descuento);; ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+            </tr>
+            <tr>
+              <th class="text_align_left">Seguro:</th>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('seguro'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo Yii::app()->numberFormatter->formatDecimal($total);; ?> Bs.</h4></td>
+              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
             </tr>
           </table>
           <?php
@@ -241,12 +246,13 @@ else
 		var iva = $("#iva").attr("value");
 		var total = $("#total").attr("value");
 		var usar_balance = $("#usar_balance").attr("value");
+		var seguro = $("#seguro").attr("value");
 
  		$.ajax({
 	        type: "post",
 	        dataType: 'json',
 	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance}, 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance, 'seguro':seguro}, 
 	        success: function (data) {
 				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
 				if(data.status=="ok")
@@ -260,7 +266,7 @@ else
 	
 	function enviar_mp(json)
 	{
-		alert("return");
+		//alert("return");
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");
 		var subtotal = $("#subtotal").attr("value");
@@ -268,6 +274,7 @@ else
 		var envio = $("#envio").attr("value");
 		var iva = $("#iva").attr("value");
 		var total = $("#total").attr("value");
+		var seguro = $("#seguro").attr("value");
 
  		 if (json.collection_status=='approved'){
     alert ('Pago acreditado');
@@ -277,7 +284,7 @@ else
 	        type: "post",
 	        dataType: 'json',
 	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id}, 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id,'seguro':seguro}, 
 	        success: function (data) {
 				
 				if(data.status=="ok")

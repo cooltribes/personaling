@@ -282,12 +282,20 @@ class TiendaController extends Controller
 	public function actionLook(){
 			
 
-		if (isset($_POST['ocasiones'])){
+		if (isset($_POST['check_ocasiones'])){
 					
 			$criteria = new CDbCriteria;
 			$criteria->with = array('categorias');	
 			$criteria->together = true;
-			$criteria->compare('categorias_categorias.categoria_id',$_POST['ocasiones'],true,'OR');
+			$condicion = "";
+			
+			foreach ($_POST['check_ocasiones'] as $categoria_id)
+				$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
+			$condicion = substr($condicion, 0, -3);
+			$criteria->addCondition($condicion);
+			 
+			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
+			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
 			$total = Look::model()->count();
 			$pages = new CPagination($total);
 			$pages->pageSize = 9;
@@ -303,6 +311,7 @@ class TiendaController extends Controller
 			Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;			
 			echo CJSON::encode(array(
 	                'status'=>'success', 
+	                'condicion'=>$condicion,
 	                'div'=>$this->renderPartial('_look', array('looks' => $looks,
 				'pages' => $pages,), true,true)));
 		} else  {

@@ -136,11 +136,12 @@ $this->renderPartial('_look',array(
 // here is the magic
 function refresh()
 {
-	
+	//alert($('.check_ocasiones').serialize());
+	//alert($('.check_ocasiones').length)
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
-           // 'data'=> "js:$(this).serialize()",
-            'data' => array( 'ocasiones' => 55 ),
+            'data'=> "js:$('.check_ocasiones').serialize()",
+            //'data' => array( 'ocasiones' => 55 ),
             'type'=>'post',
             'dataType'=>'json',
             'success'=>"function(data)
@@ -153,6 +154,7 @@ function refresh()
                 }
                 else
                 {
+                   	alert(data.condicion);
                    $('#tienda_looks').html(data.div);
                    // setTimeout(\"$('#dialogColor').modal('hide') \",3000);
                 }

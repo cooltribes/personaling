@@ -21,8 +21,10 @@ $looks_aprobar = Look::model()->countByAttributes(array('status'=>1)); // por ap
 $sql = "SELECT sum(total) as total FROM tbl_orden";
 $dinero_ventas = Yii::app()->db->createCommand($sql)->queryScalar();
 
-$promedio = $sumatoria / $ventas;
-
+if($ventas != 0)
+	$promedio = $sumatoria / $ventas;
+else
+	$promedio = 0;
 ?>
 
 <div class="container margin_top">

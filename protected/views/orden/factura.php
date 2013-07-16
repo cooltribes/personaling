@@ -87,6 +87,10 @@ $direccion_envio = Direccion::model()->findByPk($factura->direccion_envio_id);
                   <td>Bs. <?php echo number_format($factura->orden->envio, 2, ',', '.'); ?></td>
                 </tr>
                 <tr>
+                  <td colspan="4"><div class="text_align_right"><strong>Seguro</strong>:</div></td>
+                  <td>Bs. <?php echo number_format($factura->orden->seguro, 2, ',', '.'); ?></td>
+                </tr>
+                <tr>
                   <td colspan="4"><div class="text_align_right"><strong>Descuento</strong>:</div></td>
                   <td>Bs. <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>
                 </tr>

@@ -3,9 +3,7 @@
 </form> 
 
 <ul class="thumbnails">
-              <?php
-              foreach($categorias as $categoria){
-              ?>
+              <?php foreach($categorias as $categoria){ ?>
               <li class="span1" > 
               		<?php
               		

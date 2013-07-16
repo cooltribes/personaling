@@ -17,9 +17,9 @@
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotal(); ?> </p>
                 Totales</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getAprovados(); ?> </p>
-                Aprovados</td>
+                Aprobados</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getPorAprovar(); ?> </p>
-                Por Aprovar</td>
+                Por Aprobar</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
                 Por Enviar</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?></p>

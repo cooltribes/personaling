@@ -314,6 +314,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         $iva = (($totalPr - $totalDe)*0.12);
 
                         $t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio;
+                        
+						$seguro = $t*0.013;
+						
+						$t += $seguro;
 
                         // variables de sesion
                         Yii::app()->getSession()->add('subtotal',$totalPr);
@@ -321,26 +325,31 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         Yii::app()->getSession()->add('envio',$envio);
                         Yii::app()->getSession()->add('iva',$iva);
                         Yii::app()->getSession()->add('total',$t);
+						Yii::app()->getSession()->add('seguro',$seguro);  
 
-                        echo $totalPr;
+                        echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   Bs.</td>
               </tr>
               <tr>
                 <th class="text_align_left">Envío:</th>
-                <td class="text_align_right"><?php echo $envio; ?> Bs.</td>
+                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left">I.V.A. (12%):</th>
-                <td class="text_align_right"><?php echo $iva; ?> Bs.</td>
+                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left">Descuento:</th>
-                <td class="text_align_right" id="descuento"><?php echo $totalDe; ?> Bs.</td>
+                <td class="text_align_right" id="descuento"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+              </tr>
+              <tr>
+                <th class="text_align_left">Seguro:</th>
+                <td class="text_align_right" id="seguro"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($seguro, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>
-                <td class="text_align_right"><h4 id="precio_total"><?php echo $t; ?> Bs.</h4></td>
+                <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
               </tr>
             </table>
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
@@ -351,7 +360,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            <div>
 	              <label class="checkbox">
 	                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-	                Usar Balance disponible: <strong><?php echo Yii::app()->numberFormatter->formatDecimal($balance); ?> Bs.</strong> </label>
+	                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong> </label>
 	            </div>
 	            <?php
 			}
@@ -511,17 +520,17 @@ else
 				$('#usar_balance_hidden').val('1');
 				//console.log('checked');
 				if(balance >= total){
-					$('#descuento').html(total+' Bs.');
-					$('#precio_total').html('0 Bs.');
+					$('#descuento').html('Bs. '+total);
+					$('#precio_total').html('Bs. 0');
 				}else{
-					$('#descuento').html(balance.toFixed(2)+' Bs.');
-					$('#precio_total').html((total-balance).toFixed(2)+' Bs.');
+					$('#descuento').html('Bs. '+balance.toFixed(2));
+					$('#precio_total').html('Bs. '+(total-balance).toFixed(2));
 				}
 			}else{
 				$('#usar_balance_hidden').val('0');
 				//console.log('not checked');
-				$('#descuento').html('0 Bs.');
-				$('#precio_total').html(total+' Bs.');
+				$('#descuento').html('Bs. 0');
+				$('#precio_total').html('Bs. '+total.toFixed(2));
 			}
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');

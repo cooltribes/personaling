@@ -375,7 +375,6 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
         <ul class="nav nav-tabs">
           <li class="active"><a href="#tab1" data-toggle="tab" title="Todos los productos">Productos</a></li>
           <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks">Adornos</a></li>
-          <li><a href="#tab3" data-toggle="tab" title="Looks que has hecho">Tus Looks</a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="tab1">
@@ -499,7 +498,7 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
                 <div class="span6">
                   <div class="dropdown"> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="crear_look_colores">
                       <?php 
   $colores = Color::model()->findAll();
   foreach($colores as $color){
@@ -554,9 +553,7 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
             </div>
             </p>
           </div>
-          <div class="tab-pane" id="tab3">
-            <p>También se cargaria por Ajax (lo que se tenga que cargar)</p>
-          </div>
+          
         </div>
       </div>
     </section>

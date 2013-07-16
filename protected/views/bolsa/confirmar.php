@@ -50,7 +50,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
   <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
   <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
+<<<<<<< HEAD
   <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
+=======
+  <input type="hidden" id="idCard" value="0" /> 
+	
+>>>>>>> f5cd0fbe386a96e546173e00529fa328949c52ec
   <div class="row margin_top_medium">
     <section class="span4"> 
       <!-- Direcciones ON -->
@@ -219,7 +224,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 </div>
 <!-- /container -->
 
-<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
 
 <?php $this->endWidget(); ?>
 
@@ -262,6 +267,91 @@ else
 	       	}//success
 	       })
  			
+	}
+	
+	function enviarTarjeta()
+	{
+   		var idDireccion = $("#idDireccion").attr("value");
+		var tipoPago = $("#tipoPago").attr("value");
+		var subtotal = $("#subtotal").attr("value");
+		var descuento = $("#descuento").attr("value");
+		var envio = $("#envio").attr("value");
+		var iva = $("#iva").attr("value");
+		var total = $("#total").attr("value");
+		var usar_balance = $("#usar_balance").attr("value");
+		
+		/* lo de la tarjeta */
+		
+		var idCard = $("#idCard").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
+		var nom = $("#nombre").attr("value");
+		var num = $("#numero").attr("value");
+		var cod = $("#codigo").attr("value");
+		var mes = $("#mes").attr("value");
+		var ano = $("#ano").attr("value");
+		var dir = $("#direccion").attr("value");
+		var ciud = $("#ciudad").attr("value");
+		var est = $("#estado").attr("value");
+		var zip = $("#zip").attr("value");
+		
+		if(idCard=="0") // si no se eligió tarjeta sino que escribio los datos de una nueva tarjeta
+		{
+			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
+			{
+				alert("Por favor complete los datos.");
+			}
+			else
+			{
+			
+			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
+			
+				$.ajax({
+		        type: "post",
+		        dataType: 'json',
+		        url: "comprar", // action 
+		        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 
+		        		'subtotal':subtotal, 'descuento':descuento,
+		        		'envio':envio, 'iva':iva,
+		        		'total':total, 'usar_balance':usar_balance,
+		        		'idCard':idCard,'nom':nom,'num':num,'cod':cod,
+		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud,
+		        		'est':est,'zip':zip
+		        		}, 
+		        success: function (data) {
+					//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
+					if(data.status=="ok")
+					{
+						console.log(data.respCard);
+						//alert(data.respCard);
+						window.location="pedido/"+data.orden+"";
+					}
+		       	}//success
+		       })
+			
+			
+			}
+		}
+		else
+		{
+			// cuando se escoja una tarjeta de las que ya haya usado
+		}
+			
+			/*
+		
+
+ 		$.ajax({
+	        type: "post",
+	        dataType: 'json',
+	        url: "comprar", // action 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance}, 
+	        success: function (data) {
+				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
+				if(data.status=="ok")
+				{
+					window.location="pedido/"+data.orden+"";
+				}
+	       	}//success
+	       })
+ 			*/
 	}
 	
 	function enviar_mp(json)

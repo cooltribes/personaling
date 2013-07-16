@@ -291,7 +291,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         	
         	<?php $this->widget('bootstrap.widgets.TbButton', array(
 				'buttonType'=>'submit',
-			    'label'=>Yii::app()->user->isAdmin()?'Aprovar':'Enviar',
+			    'label'=>Yii::app()->user->isAdmin()?'Aprobar':'Enviar',
 			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			    'size'=>'large', // null, 'large', 'small' or 'mini'
 			)); ?>

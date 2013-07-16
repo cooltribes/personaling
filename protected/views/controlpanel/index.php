@@ -72,8 +72,28 @@ $promedio = $sumatoria / $ventas;
 	*/ 
 	//$url = "https://api.instapago.com/api/payment";
 	
-	
-	
+/*
+	$data_array = array(
+		"Amount"=>"200.00", // MONTO DE LA COMPRA
+		"Description"=>"Compra de Look de Pruea", // DESCRIPCION 
+		"CardHolder"=>"Rafael Angel Palma C", // NOMBRE EN TARJETA
+		"CardNumber"=>"1234123412341234", // NUMERO DE TARJETA
+		"CVC"=>"124", //CODIGO DE SEGURIDAD
+		"ExpirationDate"=>"10/2016", // FECHA DE VENCIMIENTO
+		"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+		"Address"=>"Calle 16 Carrera 22 Qta Reina", // DIRECCION
+		"City"=>"San Cristobal", // CIUDAD
+		"ZipCode"=>"5001", // CODIGO POSTAL
+		"State"=>"Tachira", //ESTADO
+	);
+
+	$output = Yii::app()->curl->putPago($data_array);
+
+	echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
+	echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
+	echo "Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
+	echo "Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO	
+	*/
   	?>
   	
   </div>

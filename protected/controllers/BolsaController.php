@@ -538,10 +538,11 @@ class BolsaController extends Controller
 	{
 		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
 		 {
+		 	$respCard = "";
 		 	$usuario = Yii::app()->user->id; 
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 			
-			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4){ // transferencia o MP
+			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4 || $_POST['tipoPago']==2){ // transferencia o MP
 				$detalle = new Detalle;
 			
 				if($detalle->save())
@@ -578,6 +579,108 @@ class BolsaController extends Controller
 						
 						$detalle->save();
 					}
+					
+					if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
+						
+						if($_POST['idCard'] == 0) // creo una tarjeta nueva
+						{
+							$exp = $_POST['mes']."/".$_POST['ano'];
+							
+							$data_array = array(
+								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
+								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
+								"CardHolder"=>$_POST['nom'], // NOMBRE EN TARJETA
+								"CardNumber"=>$_POST['num'], // NUMERO DE TARJETA
+								"CVC"=>$_POST['cod'], //CODIGO DE SEGURIDAD
+								"ExpirationDate"=>$exp, // FECHA DE VENCIMIENTO
+								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+								"Address"=>$_POST['dir'], // DIRECCION
+								"City"=>$_POST['ciud'], // CIUDAD
+								"ZipCode"=>$_POST['zip'], // CODIGO POSTAL
+								"State"=>$_POST['est'], //ESTADO
+							);
+							
+							$output = Yii::app()->curl->putPago($data_array); // se ejecuto
+							
+							if($output->code == 201){ // PAGO AUTORIZADO
+								
+								$detalle->nTarjeta = $_POST['num'];
+								$detalle->nTransferencia = $output->id;
+								$detalle->nombre = $_POST['nom'];
+								$detalle->codigo = $_POST['cod'];
+								$detalle->vencimiento = $exp;
+								$detalle->monto = $_POST['total'];
+								$detalle->fecha = date("Y-m-d H:i:s");
+								$detalle->banco = 'TDC';
+								$detalle->estado = 1; // aceptado
+								
+								if($detalle->save()){
+												
+									$tarjeta = new TarjetaCredito;
+								
+									$tarjeta->nombre = $_POST['nom'];
+									$tarjeta->numero = $_POST['num'];
+									$tarjeta->codigo = $_POST['cod'];
+									$tarjeta->vencimiento = $exp;
+									$tarjeta->direccion = $_POST['dir'];
+									$tarjeta->ciudad = $_POST['ciud'];
+									$tarjeta->zip = $_POST['zip'];
+									$tarjeta->estado = $_POST['est'];
+									$tarjeta->user_id = $usuario;		
+										
+									if($tarjeta->save())
+									{
+										$estado = new Estado;
+									
+										$estado->estado = 1;
+										$estado->user_id = $usuario;
+										$estado->fecha = date("Y-m-d");
+										$estado->orden_id = $orden->id;
+										
+										if($estado->save())
+											{
+												// otro estado de una vez ya que ya se pagó el dinero 
+												$estado = new Estado;
+									
+												$estado->estado = 3;
+												$estado->user_id = $usuario;
+												$estado->fecha = date("Y-m-d");
+												$estado->orden_id = $orden->id;
+												
+												if($estado->save())
+													echo "";
+												
+											}// estado
+									}// tarjeta
+								}//detalle
+								
+							}// 201
+							
+							$respCard = $respCard."Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
+							$respCard = $respCard."Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
+							$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
+							$respCard = $respCard."Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO
+
+						}
+						else // escogio una tarjeta
+						{
+							/*
+							 * 	$detalle->nTransferencia = $_POST['id_transaccion'];
+								$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
+								$detalle->cedula = $dirEnvio->cedula;
+								$detalle->monto = $_POST['total'];
+								$detalle->fecha = date("Y-m-d H:i:s");
+								$detalle->banco = 'TDC';
+								
+								$detalle->estado = 0;
+								
+								$detalle->save();
+							 * 
+							 * */
+
+						}
+					
+					}
 
 						if($dirEnvio->save()){
 							// ya esta todo para realizar la orden
@@ -598,6 +701,11 @@ class BolsaController extends Controller
 							$orden->pago_id = $pago->id;
 							$orden->detalle_id = $detalle->id;
 							$orden->direccionEnvio_id = $dirEnvio->id;	
+							
+							if($respCard!="") // Pagó con TDC
+							{
+								$orden->estado = 3; // Estado: Pago Confirmado
+							}
 							
 							if($orden->save()){
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
@@ -658,15 +766,20 @@ class BolsaController extends Controller
 								}
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								$estado = new Estado;
+								// se agrega este estado en el caso de que no se haya pagado por TDC
+								if($respCard=="")
+								{
+									$estado = new Estado;
 									
-								$estado->estado = 1;
-								$estado->user_id = $usuario;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
+									$estado->estado = 1;
+									$estado->user_id = $usuario;
+									$estado->fecha = date("Y-m-d");
+									$estado->orden_id = $orden->id;
+									
+									if($estado->save())
+										echo "";
+								}
 								
-								if($estado->save())
-									echo "";
 								
 								// Generar factura
 								$factura = new Factura;
@@ -695,6 +808,7 @@ class BolsaController extends Controller
 								'status'=> 'ok',
 								'orden'=> $orden->id,
 								'total'=> $orden->total,
+								'respCard' => $respCard,
 								'descuento'=>$orden->descuento
 							));
 							
@@ -826,7 +940,7 @@ class BolsaController extends Controller
 		
 		$datos=$datos.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">';
   		$datos=$datos.'<tr>';			
-		$datos=$datos.'<th scope="col" colspan="4">&nbsp;</th>';
+		$datos=$datos.'<th scope="col" colspan="3">&nbsp;</th>';
 		$datos=$datos.'<th scope="col">Número</th>';		
 		$datos=$datos.'<th scope="col">Nombre en la Tarjeta</th>';
 		$datos=$datos.'<th scope="col">Fecha de Vencimiento</th>';
@@ -837,7 +951,7 @@ class BolsaController extends Controller
 		$datos=$datos.'<td>Mastercard</td>';
 		$datos=$datos.'<td>XXXX XXXX XXXX 6589</td>';
 		$datos=$datos.'<td>JOHANN MARQUEZ</td>';
-		$datos=$datos.'<th scope="col"><td>12/2018</td></th>';
+		$datos=$datos.'<td>12/2018</td>';
 		$datos=$datos.'</tr>';
 		$datos=$datos.'<table>';
 				
@@ -869,8 +983,8 @@ class BolsaController extends Controller
   		$datos=$datos.'<div class="control-group">';
 		$datos=$datos.'<label class="control-label required">Fecha de Vencimiento</label>';
         $datos=$datos.'<div class="controls">';     
-	  	$datos=$datos. CHtml::dropDownList('mes','',array('Mes','01','02','03','04','05','06','07','08','09','10','11','12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes'));
-        $datos=$datos. CHtml::dropDownList('ano','',array('Año','13','14','15','16','17','18','19'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año'));
+	  	$datos=$datos. CHtml::dropDownList('mes','',array('Mes'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes'));
+        $datos=$datos. CHtml::dropDownList('ano','',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año'));
         $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
 		$datos=$datos.'</div></div>';
 		
@@ -890,7 +1004,7 @@ class BolsaController extends Controller
 		
 		$datos=$datos."<div class='control-group'>";
 		$datos=$datos."<div class='controls'>";
-		$datos=$datos. CHtml::activeTextField($tarjeta,'estado',array('id'=>'ciudad','class'=>'span5','placeholder'=>'Estado'));
+		$datos=$datos. CHtml::activeTextField($tarjeta,'estado',array('id'=>'estado','class'=>'span5','placeholder'=>'Estado'));
         $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
@@ -906,7 +1020,7 @@ class BolsaController extends Controller
 		
 		$datos=$datos."<div class='modal-footer'>";
 		
-		$datos=$datos."<div class=''><a onclick='enviar()' class='btn-large btn btn-danger'> Pagar </a></div>";
+		$datos=$datos."<div class=''><a onclick='enviarTarjeta()' class='pull-left btn-large btn btn-danger'> Pagar </a></div>";
     	$datos=$datos."</form>";
 		$datos=$datos."</div>";
 		

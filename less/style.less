@@ -1,5 +1,5 @@
  /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 09/07/2013 */ 
+/* Project name: Personaling  al 15/07/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -18,7 +18,7 @@
 @color9: #9b9894;
 @color10: #E7E3E7; /* Lila */
 @color11: #8b5293; /* Morado chillon */
-
+@color12: #1abc9c; /* Verde Muteado */
 
 /*--- "." ---*/
 .color1{ color:@color1;}
@@ -32,6 +32,7 @@
 .color9{ color:@color9;}
 .color10{ color:@color10;}
 .color11{ color:@color11;}
+.color12{ color:@color12;}
 
 .bg_color1{ background-color:@color1;}
 .bg_color2{ background-color:@color2;}
@@ -44,6 +45,7 @@
 .bg_color9{ background-color:@color9;}
 .bg_color10{ background-color:@color10;}
 .bg_color11{ background-color:@color11;}
+.bg_color12{ background-color:@color12;}
 
 
 
@@ -208,7 +210,7 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .no_margin_left{ margin-left:0;}
 .no_margin_right{ margin-right:0;}
 .no_margin_top{ margin-top:0;}
-.no_margin_bottom{ margin-bottom:0;}
+.no_margin_bottom{ margin-bottom:0 !important;}
 
 /* Paddings */
 .padding_top_large{padding-top:4.68em}
@@ -949,6 +951,11 @@ src: url('../fonts/entypo.woff'),
 		}
 	
 }
+.modal_grande{
+	width:760px;
+	margin:-250px 0 0 -380px;
+	}
+
 /*------------- Proceso de Compra OFF -------------*/
 
 /*------------ Detalle del Look ON --------------*/
@@ -1144,15 +1151,15 @@ src: url('../fonts/entypo.woff'),
 		font-weight: 300;
 		display: block;		
 		}
-	.span3:hover , .span6:hover 
+	.span3:hover , .span6:hover , .item_producto:hover
 	{
 		.ver_detalle, .agregar_a_bolsa{
 			opacity:1;
 			}
 	}
-	.item_tienda:nth-child(odd) {
+	.item_tienda:nth-child(odd), .item_producto:nth-child(3n+1) {
     margin-left:0;}
-	.span3, .item_tienda{
+	.span3, .item_tienda, .item_producto{
 		margin-bottom:50px;
 		text-align:center;
 		background:url(../images/shdow_productos_tienda.png) no-repeat center bottom ;
@@ -1261,8 +1268,13 @@ src: url('../fonts/entypo.woff'),
 			.color1;
 				}
 		}
-	
+	.item_producto{
+	img{
+		max-width:100%;
+		}
 	}
+}
+
 
 /* Brakers */
 .braker_horz_bottom_1{ 
@@ -1433,11 +1445,6 @@ ul.yiiPager .last
 				}
 			}
 
-
-
-
-
-
 	
 	}
 }
@@ -1445,7 +1452,7 @@ ul.yiiPager .last
 
 /*----------- Tienda LOOKS ON -------------*/
 
-#tienda_looks{
+#tienda_looks, #perfil_looks{
 	margin-top:0;
 	
 		article{
@@ -1509,7 +1516,6 @@ ul.yiiPager .last
 			}
 		}
 }
-
 
 /*----------- Tienda LOOKS OFF -------------*/
 
@@ -1593,6 +1599,12 @@ ul.yiiPager .last
 		}
 #filesToUpload{
 	}
+.card .row-fluid .span4:nth-child(3n+1) { margin-left:0;}
+.card .row-fluid .span4 { margin-bottom:0.5em;}
+#perfil_looks{
+	.span6:nth-child(2n+1){ margin-left:0;}
+	}
+
 /*------------ Perfil OFF ------------*/
 
 /*------------ LO MAS TOP ON ------------*/
@@ -1907,7 +1919,7 @@ img[alt="Loading"]{
 	.canvas{
 		background:#fff;
 		.ui-draggable:hover{
-				.rotar, .elimniar{display:block;}
+				.rotar, .eliminar {display:block;}
 				
 				}
 		.ui-draggable{
@@ -1952,6 +1964,17 @@ img[alt="Loading"]{
 			}
 		}
 	
+	}
+#crear_look_colores{
+	img{
+		width:25px;
+		margin-left: 5px;
+    	margin-right: 5px;
+		}
+		li{
+			border-bottom:1px solid #ddd;
+			a{padding:.3em;}
+			}
 	}
 	
 .well_personaling_big{

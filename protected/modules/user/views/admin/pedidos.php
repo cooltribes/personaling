@@ -6,7 +6,7 @@
   <?php $this->renderPartial('_menu', array('model'=>$model, 'activo'=>6)); ?>
   <!-- SUBMENU OFF -->
   <div class="row margin_top">
-    <div class="span9">
+    <div class="span12">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
@@ -49,7 +49,7 @@
         </form>
       </div>
     </div>
-    <div class="span3">
+    <?php /*?><div class="span3">
       <div class="padding_left"> 
         <!-- SIDEBAR OFF --> 
         <script > 
@@ -89,7 +89,7 @@
       
        
       </div>
-    </div>
+    </div><?php */?>
   </div>
 </div>
 <!-- /container -->

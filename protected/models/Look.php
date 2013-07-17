@@ -89,6 +89,7 @@ class Look extends CActiveRecord
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'),
+			
 		);
 	} 
  
@@ -245,6 +246,23 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	/* looks destacados */
+	public function lookDestacados($limit = 6) 
+	{
+		
+		$criteria=new CDbCriteria;  
+
+		
+		
+		$criteria->compare('destacado',1);
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>$limit,
+			),	
+		));		
+	}
 	/* look para el admin por aprobar o aprobados */
 	public function lookAdminAprobar()
 	{
@@ -297,8 +315,8 @@ class Look extends CActiveRecord
 	/* regresar el texto del status del look */
 	public function getStatus()
 	{
-		$textos = array('Creado','Enviado','Aprovado');
-		return $textos[$this->status];
+		$textos = array('Creado','Enviado','Aprobado');
+		return $textos[$this->status]; 
 	}
 	/* total de look */
 	public function getTotal()
@@ -316,7 +334,7 @@ class Look extends CActiveRecord
 	public function getPorAprovar()
 	{
 		
-		return $this->countByAttributes(array(),   			'status = :status ',
+		return $this->countByAttributes(array(),'status = :status ',
     		array(':status'=>2)
 			);
 	}	
@@ -325,6 +343,14 @@ class Look extends CActiveRecord
 	{
 		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where estado = :status AND look_id != 0 group by tbl_orden_id, look_id;',
 			array(':status'=>$status)));
+		
+		
+	}	
+	/* totoal por estado de orden */
+	public function getLookxStatus($status)
+	{
+		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where estado = :status AND look_id = :look_id group by tbl_orden_id, look_id;',
+			array(':status'=>$status,':look_id'=>$this->id)));
 		
 		
 	}	

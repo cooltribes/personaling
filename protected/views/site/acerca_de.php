@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
     <div class="box_1 bg_mancha_1 ">
       <div class="padding_medium">
         <div class="page-header">
-          <h1>Acerca de nosotros: Personaling</h1>
+          <h1>Acerca Personaling</h1>
         </div>
         <div class="row">
           <div class="span5">
@@ -23,7 +23,7 @@ $this->breadcrumbs=array(
             <p>Dirigido al público venezolano, Personaling.com desea abrir el camino del comercio de moda online en nuestro país. </p>
           </div>
           <div class="span5">
-            <iframe width="560" height="315" src="http://www.youtube.com/embed/xNj80lfwpEs" frameborder="0" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="//www.youtube.com/embed/WPdC3MbvZwA" frameborder="0" allowfullscreen></iframe>
           </div>
         </div>
       </div>

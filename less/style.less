@@ -1,5 +1,5 @@
  /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 02/07/2013 */ 
+/* Project name: Personaling  al 15/07/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN -------------------------------
@@ -16,9 +16,9 @@
 @color7: #22F28A; /* Verde chillon */
 @color8: #685b5b;
 @color9: #9b9894;
-@color10: #f0e9f1; /* Lila */
+@color10: #E7E3E7; /* Lila */
 @color11: #8b5293; /* Morado chillon */
-
+@color12: #1abc9c; /* Verde Muteado */
 
 /*--- "." ---*/
 .color1{ color:@color1;}
@@ -32,6 +32,7 @@
 .color9{ color:@color9;}
 .color10{ color:@color10;}
 .color11{ color:@color11;}
+.color12{ color:@color12;}
 
 .bg_color1{ background-color:@color1;}
 .bg_color2{ background-color:@color2;}
@@ -44,6 +45,7 @@
 .bg_color9{ background-color:@color9;}
 .bg_color10{ background-color:@color10;}
 .bg_color11{ background-color:@color11;}
+.bg_color12{ background-color:@color12;}
 
 
 
@@ -208,7 +210,7 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .no_margin_left{ margin-left:0;}
 .no_margin_right{ margin-right:0;}
 .no_margin_top{ margin-top:0;}
-.no_margin_bottom{ margin-bottom:0;}
+.no_margin_bottom{ margin-bottom:0 !important;}
 
 /* Paddings */
 .padding_top_large{padding-top:4.68em}
@@ -584,7 +586,7 @@ src: url('../fonts/entypo.woff'),
 
 .personaling_form{
 	input[type="text"],input[type="email"],input[type="password"]{ padding:8px;}
-	select{ height:40px;}
+	select{ height:30px;}
 	
 	}
 /*------------ Forms OFF --------------*/
@@ -737,6 +739,24 @@ src: url('../fonts/entypo.woff'),
 
 /*------------- Registro OFF -------------*/
 
+#registration-form{
+	label[for="Profile_sex"]{
+	width:31.6239%;
+	}
+	#Profile_last_name{.margin_bottom_medium}
+	input[type="checkbox"]{
+		margin-right: 5px;
+		margin-top: 2px;
+	}
+	input[type="text"], input[type="password"]{
+		min-height:40px}
+}
+#caracteristicas{ /* Hack para la etiqueta de altura en Tutipo */
+	#Profile_altura{
+		display:block
+	}
+}
+
 .thumbnails > li .thumbnail{.transition_all	}
  .thumbnails > li .thumbnail:hover {
 	border-color:lighten(@color6,30%);
@@ -761,7 +781,6 @@ src: url('../fonts/entypo.woff'),
 /*------------- Detalle de Producto ON -------------*/
 
 .detalle_producto{
-	
 		.columna_secundaria{			
 				.braker_horz_top_1{ 
 					.padding_top;
@@ -782,21 +801,25 @@ src: url('../fonts/entypo.woff'),
 			padding-bottom:1em;
 			border-bottom:1px solid #ddd;
 			
-			
 			.btn-danger, .btn-warning{
-				height:2.3em;
 	            line-height:2.3em;
+				border:0;
 				.color3;
 				.entypo{ font-size:2em;.color3;}
 				&:hover{ text-decoration:underline; }
 				}
 			.precio{
+				    font-size: 1.7em;
+				    margin-top: 0;
+					font-family:'Open Sans', san-serif;
 					font-weight:300;
 					.entypo{
 						color:#ff9600;
 					}
-					span{ font-size: 0.8em;
+					span{ font-size: 0.5em;
     					  font-weight: bold;
+						  color:#999;
+						  display:block;
 						 
 						 }
 				}
@@ -928,6 +951,11 @@ src: url('../fonts/entypo.woff'),
 		}
 	
 }
+.modal_grande{
+	width:760px;
+	margin:-250px 0 0 -380px;
+	}
+
 /*------------- Proceso de Compra OFF -------------*/
 
 /*------------ Detalle del Look ON --------------*/
@@ -978,7 +1006,7 @@ src: url('../fonts/entypo.woff'),
 			.margin_bottom;
 		}
 		.call2action{
-			margin-bottom:2em;
+			margin-bottom:1em;
 			padding-bottom:1em;
 			border-bottom:1px solid #ddd;
 			.btn-danger:before, .btn-warning:before{
@@ -1002,12 +1030,15 @@ src: url('../fonts/entypo.woff'),
 			.precio{
 					font-weight:300;
 					font-size:1.7em;
-					margin-top:.5em;
+					margin-top:0;
 					.entypo{
 						color:#ff9600;
 					}
-					span{ font-size: 0.6em;
-    					  font-weight: bold;
+					span{ 
+							font-size: 0.5em;
+							display:block;
+    						font-weight: bold;
+							color:#999;
 						 
 						 }
 				}
@@ -1120,15 +1151,15 @@ src: url('../fonts/entypo.woff'),
 		font-weight: 300;
 		display: block;		
 		}
-	.span3:hover , .span6:hover 
+	.span3:hover , .span6:hover , .item_producto:hover
 	{
 		.ver_detalle, .agregar_a_bolsa{
 			opacity:1;
 			}
 	}
-	.item_tienda:nth-child(odd) {
+	.item_tienda:nth-child(odd), .item_producto:nth-child(3n+1) {
     margin-left:0;}
-	.span3, .item_tienda{
+	.span3, .item_tienda, .item_producto{
 		margin-bottom:50px;
 		text-align:center;
 		background:url(../images/shdow_productos_tienda.png) no-repeat center bottom ;
@@ -1237,8 +1268,13 @@ src: url('../fonts/entypo.woff'),
 			.color1;
 				}
 		}
-	
+	.item_producto{
+	img{
+		max-width:100%;
+		}
 	}
+}
+
 
 /* Brakers */
 .braker_horz_bottom_1{ 
@@ -1409,11 +1445,6 @@ ul.yiiPager .last
 				}
 			}
 
-
-
-
-
-
 	
 	}
 }
@@ -1421,7 +1452,7 @@ ul.yiiPager .last
 
 /*----------- Tienda LOOKS ON -------------*/
 
-#tienda_looks{
+#tienda_looks, #perfil_looks{
 	margin-top:0;
 	
 		article{
@@ -1485,7 +1516,6 @@ ul.yiiPager .last
 			}
 		}
 }
-
 
 /*----------- Tienda LOOKS OFF -------------*/
 
@@ -1569,6 +1599,12 @@ ul.yiiPager .last
 		}
 #filesToUpload{
 	}
+.card .row-fluid .span4:nth-child(3n+1) { margin-left:0;}
+.card .row-fluid .span4 { margin-bottom:0.5em;}
+#perfil_looks{
+	.span6:nth-child(2n+1){ margin-left:0;}
+	}
+
 /*------------ Perfil OFF ------------*/
 
 /*------------ LO MAS TOP ON ------------*/
@@ -1692,6 +1728,10 @@ ul.yiiPager .last
 /*------------ LO MAS TOP OFF ------------*/
 
 /*------------ TU PERSONAL SHOPPER ON ----------*/
+img[alt="Loading"]{
+	display: block;
+    padding: 12em;
+}
 #carousel_looks_recomendados {
 	width:100%;
 	overflow:hidden;
@@ -1858,18 +1898,28 @@ ul.yiiPager .last
 		}
 }
 
-/* Crear look ON */
+/* ----------- Crear look ON --------------*/
+
+#div_categorias, #div_prendas{
+	height:800px;
+	overflow:scroll;
+	li.span6:nth-child(2n+1){
+		margin-left:0;
+		}
+	li{ text-align:center}
+	}
+
 #crear_look{
 	h4{
 		.color1;
 		.margin_bottom_medium;
-		.margin_top;}
+		.margin_top_medium;}
 	.canvas img{
 		margin:20px;}
 	.canvas{
 		background:#fff;
 		.ui-draggable:hover{
-				.rotar, .elimniar{display:block;}
+				.rotar, .eliminar {display:block;}
 				
 				}
 		.ui-draggable{
@@ -1914,6 +1964,17 @@ ul.yiiPager .last
 			}
 		}
 	
+	}
+#crear_look_colores{
+	img{
+		width:25px;
+		margin-left: 5px;
+    	margin-right: 5px;
+		}
+		li{
+			border-bottom:1px solid #ddd;
+			a{padding:.3em;}
+			}
 	}
 	
 .well_personaling_big{

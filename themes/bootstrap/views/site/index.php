@@ -11,6 +11,7 @@ $this->pageTitle=Yii::app()->name;
 	position: absolute;
 	top:5em;
 	left:0;
+	display:none;
 }
 </style>
 
@@ -31,7 +32,7 @@ $this->pageTitle=Yii::app()->name;
     </div>
   </div>
 </div>
-<div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
+<?php /*?><div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
 
 <!-- Modal -->
 <div id="startupchile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -124,16 +125,16 @@ $this->pageTitle=Yii::app()->name;
       <div class="pull-right text_align_right padding_right_small"> <span class="color1"> Compártenos en tus redes sociales!</span> </div>
     </div>
   </div>
-</div>
+</div><?php */?>
 
 <!-- Modal ON -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Video Explicativo sobre personaling.com</h3>
+    <h3 id="myModalLabel">Video Promocional de Personaling.com</h3>
   </div>
   <div class="modal-body">
-    <iframe width="100%" height="400" src="http://www.youtube.com/embed/xNj80lfwpEs" frameborder="0" allowfullscreen></iframe>
+    <iframe width="100%" height="400" src="//www.youtube.com/embed/WPdC3MbvZwA" frameborder="0" allowfullscreen></iframe>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>

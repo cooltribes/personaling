@@ -88,16 +88,16 @@
             <legend >O llena los campos a continuación: </legend>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls">
-	<?php echo $form->textFieldRow($model,'email',array("class"=>"span5")); 
+	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
 	echo $form->error($model,'email');
 	?>
 	</div>
 </div>
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls">	
-	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span5')); 
+	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span12')); 
 	echo $form->error($model,'password');
 	?>
 	</div>
@@ -111,7 +111,7 @@
 				//echo $field->varname;
 			?>
 <div class="control-group">
-	<div class="controls controls-row">
+	<div class="controls row-fluid">
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;
@@ -127,13 +127,13 @@
 			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {
 				
-			echo $form->labelEx($profile,$field->varname, array('class'=>'span1'));	
+			echo $form->labelEx($profile,$field->varname, array('class'=>'span4'));	
 			
-			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
+			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span2'));
 			echo ' ';
-			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span2'));
+			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span4'));
 			echo ' ';
-			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
+			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span2'));
 			echo ' ';
 			echo $form->hiddenField($profile,$field->varname);
 			echo CHtml::hiddenField('facebook_id', '', array('id'=>'facebook_id', 'name'=>'facebook_id'));
@@ -143,7 +143,7 @@
 				
 		} else {
 			
-			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12 ','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			echo $form->error($profile,$field->varname);
 		}
 		
@@ -156,8 +156,7 @@
 		}
 ?>
             <hr/>
-            <label class="checkbox"> <input type="checkbox"> Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. </label>
-
+             Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
 	<div class="form-actions"> 
 		
 			

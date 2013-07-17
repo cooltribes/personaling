@@ -21,11 +21,11 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar'),
+				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','detalles','validar'),
+				'actions'=>array('index','admin','detalles','validar','enviar','factura'),
 				'users'=>array('admin'),
 				'expression' => 'Yii::app()->user->isAdmin()',
 			),
@@ -101,6 +101,30 @@ class OrdenController extends Controller
 		$this->render('detalle', array('orden'=>$orden,));
 	}
 	
+	public function actionFactura($id)
+	{
+		$factura = Factura::model()->findByPk($id);
+		
+		$this->render('factura', array('factura'=>$factura));
+	}
+	
+	public function actionRecibo($id)
+	{
+		$factura = Factura::model()->findByPk($id);
+		
+		$this->render('recibo', array('factura'=>$factura));
+	}
+	
+	public function actionImprimir($id)
+	{
+		$factura = Factura::model()->findByPk($id);
+		$mPDF1 = Yii::app()->ePdf->mpdf('', 'Letter-L', 0,'',15,15,16,16,9,9,'L');
+		$mPDF1->WriteHTML($this->renderPartial('recibo', array('factura'=>$factura), true));
+		$mPDF1->Output();	
+		
+		//$this->render('recibo', array('factura'=>$factura));
+	}
+	
 	public function actionValidar()
 	{
 		// Elementos para enviar el correo, depende del estado en que quede la orden
@@ -109,6 +133,7 @@ class OrdenController extends Controller
 		
 		$detalle = Detalle::model()->findByPk($_POST['id']);
 		$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
+		$factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
 		
 		$user = User::model()->findByPk($orden->user_id);
 		//$subject = 'Recupera tu contraseña de Personaling';
@@ -135,6 +160,10 @@ class OrdenController extends Controller
 					$orden->estado = 3;
 					
 					if($orden->save()){
+						if($factura){
+							$factura->estado = 2;
+							$factura->save();
+						}
 						// Subject y body para el correo
 						$subject = 'Pago aceptado';
 						$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
@@ -212,6 +241,10 @@ class OrdenController extends Controller
 								
 								$orden->estado = 3; // aprobado el pago
 								$orden->save();
+								if($factura){
+									$factura->estado = 2;
+									$factura->save();
+								}
 								$subject = 'Pago aceptado';
 								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
 								
@@ -235,6 +268,10 @@ class OrdenController extends Controller
 								
 								$orden->estado = 3;
 								$orden->save();
+								if($factura){
+									$factura->estado = 2;
+									$factura->save();
+								}
 								$subject = 'Pago aceptado';
 								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
 								
@@ -470,6 +507,73 @@ class OrdenController extends Controller
 		
 	}
 
+	/*
+	 *  Action para añadir el tracking y cambiar el estado a enviado
+	 * */
+
+	public function actionEnviar()
+	{
+		$orden = Orden::model()->findByPK($_POST['id']);
+		
+		$orden->tracking = $_POST['guia'];
+		$orden->estado=4; // enviado
+		
+		if($orden->save())
+			{
+				// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+				$estado = new Estado;
+										
+				$estado->estado = 4;
+				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+				$estado->fecha = date("Y-m-d H:i:s");
+				$estado->orden_id = $orden->id;
+						
+				if($estado->save())
+				{
+						$user = User::model()->findByPk($orden->user_id);		
+						$message            = new YiiMailMessage;
+						$message->view = "mail_template";
+						$subject = 'Tu compra en Pesonaling #'.$orden->id.' ha sido enviada';
+						$body = "Nos complace informar que tu pedido #".$orden->id." ha sido enviado <br/>
+								<br/>
+								Empresa: Zoom <br/>
+								Número de seguimiento: ".$orden->tracking." <br/> 
+								";
+						$params              = array('subject'=>$subject, 'body'=>$body);
+						$message->subject    = $subject;
+						$message->setBody($params, 'text/html');                
+						$message->addTo($user->email);
+						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						Yii::app()->mail->send($message);
+						
+					/*
+						// Enviar correo cuando se envia la compra
+						$user = User::model()->findByPk($orden->user_id);
+						$message             = new YiiMailMessage;
+						//this points to the file test.php inside the view path
+						$message->view = "mail_template";
+						$subject = 'Tu compra en Pesonaling #'.$orden->id.' ha sido enviada';
+						$body = "Nos complace informarte que tu pedido #".$orden->id." ha sido enviado </br>
+								</br>
+								Empresa: Zoom </br>
+								Número de seguimiento: ".$orden->tracking." </br> 
+								";
+						$params              = array('body'=>$body);
+						$message->subject    = $subject;
+						$message->setBody($params, 'text/html');
+						$message->addTo($user->email);
+						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						
+						Yii::app()->mail->send($message);					
+					*/
+					
+					Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
+					
+					echo "ok";
+				}
+		}	
+		
+	}
 
 	// Uncomment the following methods and override them if needed
 	/*

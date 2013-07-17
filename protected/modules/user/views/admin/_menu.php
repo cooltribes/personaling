@@ -14,43 +14,46 @@
  <div class="navbar margin_top">
     <div class="navbar-inner">
       <ul class="nav">
-        <li class="active">
+        <li class="<?php if($activo == 1) echo 'active'; ?>">
         	
         	<?php echo CHtml::link('Datos Básicos',array('update',
                                      'id'=>$model->id,)); ?>
         </li>
-		<li>
+		<li class="<?php if($activo == 2) echo 'active'; ?>">
 			
 		<?php echo CHtml::link('Perfil Corporal',array('corporal',
                                      'id'=>$model->id,)); ?>
 		</li>
-        <li>
+        <li class="<?php if($activo == 3) echo 'active'; ?>">
         	
         		<?php echo CHtml::link('Estilos',array('estilos',
                                      'id'=>$model->id,)); ?>	
         </li>
 
-        <li>
+        <li class="<?php if($activo == 4) echo 'active'; ?>">
     		<?php echo CHtml::link('Avatar',array('avatar',
                      'id'=>$model->id,)); ?>
         </li>
-        <li>
+        <li class="<?php if($activo == 5) echo 'active'; ?>">
     		<?php echo CHtml::link('Direcciones',array('direcciones',
                      'id'=>$model->id,)); ?>
         </li> 
-        <li>
+        <li class="<?php if($activo == 6) echo 'active'; ?>">
     		<?php echo CHtml::link('Pedidos',array('pedidos',
                      'id'=>$model->id,)); ?>
         </li>
-        <li>
+        <li class="<?php if($activo == 7) echo 'active'; ?>">
     		<?php echo CHtml::link('Carrito',array('carrito',
                      'id'=>$model->id,)); ?>
         </li>
-        <li>
-    		<?php echo CHtml::link('Favoritos',array('favoritos',
+        <li class="<?php if($activo == 8) echo 'active'; ?>">
+    		<?php echo CHtml::link('Looks Favoritos',array('looks',
                      'id'=>$model->id,)); ?>
-        </li>                        
-   
+        </li>
+        <li class="<?php if($activo == 9) echo 'active'; ?>">
+    		<?php echo CHtml::link('Productos Favoritos',array('productos',
+                     'id'=>$model->id,)); ?>
+        </li>
       </ul>
     </div>
   </div>

@@ -2,6 +2,31 @@
 
 class CampanaController extends Controller
 {
+	public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+		);
+	}
+
+		/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */ 
+	public function accessRules()
+	{
+		return array(
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view'),
+				'users'=>array('admin'),
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+		);
+	}
+	
 	public function actionCreate()
 	{
 		$campana = new Campana;
@@ -9,6 +34,9 @@ class CampanaController extends Controller
 		if(isset($_POST['Campana'])){
 			$campana->attributes = $_POST['Campana'];
 			$campana->fecha_creacion = date('Y-m-d H:i:s');
+			if(strtotime($campana->recepcion_inicio) <= time()){
+				$campana->estado = 2;
+			}
 			
 			if($campana->save()){
 				if($_POST['personal_shopper'] == 'todos'){

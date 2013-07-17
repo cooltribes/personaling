@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -142,11 +142,39 @@ class TiendaController extends Controller
 	 * 
 	 * 
 	 * */ 
-	 
+	public function actionOcasiones(){
+
+	  	$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+		
+		
+				
+	  if ($categorias){
+		 echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'padre',
+			'div'=> $this->renderPartial('_view_ocasiones',array('categorias'=>$categorias),true,true)
+		));
+		exit;
+	  }else {
+	  		echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'hijo'
+		));
+	  }		
+	} 
+	
 	public function actionCategorias(){
 	
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
-	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+	  	$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
@@ -175,7 +203,7 @@ class TiendaController extends Controller
 			'accion'=>'hijo'
 		));
 	  }
-}
+} 
 
 	public function actionImageneslooks(){
 		
@@ -230,12 +258,85 @@ class TiendaController extends Controller
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',
-			'datos'=> $ret
+			'datos'=> $ret  
 			));
 		exit;
 	}
+ 
+/* 
+ * Se trae el url de la segunda imagen 
+ * */
+	public function actionSegunda(){
+		
+		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$_POST['id'],'orden'=>$_POST['orden']));
+		
+		$url = $segunda->getUrl(array('type'=>'thumb'));
+		
+		if(isset($segunda))
+			echo $url;		
+		else
+			echo "no";
+	
+	}
 
+	public function actionLook(){
+			
 
+		if (isset($_POST['check_ocasiones'])){
+					
+			$criteria = new CDbCriteria;
+			$criteria->with = array('categorias');	
+			$criteria->together = true;
+			$condicion = "";
+			
+			foreach ($_POST['check_ocasiones'] as $categoria_id)
+				$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
+			$condicion = substr($condicion, 0, -3);
+			$criteria->addCondition($condicion);
+			 
+			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
+			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
+			$total = Look::model()->count();
+			$pages = new CPagination($total);
+			$pages->pageSize = 9;
+			$pages->applyLimit($criteria);
+			$looks = Look::model()->findAll($criteria);
+			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+			Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;			
+			echo CJSON::encode(array(
+	                'status'=>'success', 
+	                'condicion'=>$condicion,
+	                'div'=>$this->renderPartial('_look', array('looks' => $looks,
+				'pages' => $pages,), true,true)));
+		} else  {
+			$search = "";	
+			if(isset($_GET['search']))
+				$search =  	$_GET['search'];
+			
+			$criteria = new CDbCriteria;
+			$criteria->compare('title',$search,true,'OR');
+			$criteria->compare('description',$search,true,'OR');
+			
+			$total = Look::model()->count();
+			 
+			$pages = new CPagination($total);
+			$pages->pageSize = 9;
+			$pages->applyLimit($criteria);
+			$looks = Look::model()->findAll($criteria);
+			$this->render('look', array(
+				'looks' => $looks,
+				'pages' => $pages,
+			));		
+		}	
+			
+		
+	}
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()

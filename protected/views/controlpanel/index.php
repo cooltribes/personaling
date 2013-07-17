@@ -21,17 +21,112 @@ $looks_aprobar = Look::model()->countByAttributes(array('status'=>1)); // por ap
 $sql = "SELECT sum(total) as total FROM tbl_orden";
 $dinero_ventas = Yii::app()->db->createCommand($sql)->queryScalar();
 
-$promedio = $sumatoria / $ventas;
-
+if($ventas != 0)
+	$promedio = $sumatoria / $ventas;
+else
+	$promedio = 0;
 ?>
 
 <div class="container margin_top">
   <div class="page-header">
     <h1>Panel de Control</h1>
   </div>
+  <div>
+  	<?php
+  	/*
+  	$url = "http://www.grupozoom.com/servicios/servicios.php?tipo_menu=tarifas";
+	$data = array("servicio"=>1,
+				"procesar"=>1,
+				"txtcodguia"=>'',
+				"optretirarofi"=>0,
+				"txtciudadori"=>"ANACO",
+				"cmbciudadori"=>"24",
+				"codciudaddes"=>"48",
+				"codoficinaopedes"=>"2",
+				"codtraslado"=>3,
+				"txtpeso"=>"30000",
+				"txtciudaddes"=>"AGUA BLANCA",
+				"txtcodservicio"=>0,
+				"cmboficinades"=>"",
+				"txtnumeropie"=>8,
+				"pesomax"=>"",
+				"nombreofides"=>"",
+				"txtpesobru"=>7,
+				"txtvalordec"=>60,
+				"txtvalormin"=>50,
+				
+			);
+  	$output = Yii::app()->curl->post($url, $data);
+	$doc = new DOMDocument();
+	$doc->loadHTML($output);
+	//echo $data;
+	$anchor_tags = $doc->getElementsByTagName('table');
+	
+	foreach ($anchor_tags as $tag) {
+		
+		
+	if ($tag->getAttribute('class') == 'ContentArea'){
+			echo $tag->nodeValue;
+		}
+		
+	}
+	//echo $output;
+	*/ 
+	//$url = "https://api.instapago.com/api/payment";
+	
+/*
+	$data_array = array(
+		"Amount"=>"200.00", // MONTO DE LA COMPRA
+		"Description"=>"Compra de Look de Pruea", // DESCRIPCION 
+		"CardHolder"=>"Rafael Angel Palma C", // NOMBRE EN TARJETA
+		"CardNumber"=>"1234123412341234", // NUMERO DE TARJETA
+		"CVC"=>"124", //CODIGO DE SEGURIDAD
+		"ExpirationDate"=>"10/2016", // FECHA DE VENCIMIENTO
+		"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+		"Address"=>"Calle 16 Carrera 22 Qta Reina", // DIRECCION
+		"City"=>"San Cristobal", // CIUDAD
+		"ZipCode"=>"5001", // CODIGO POSTAL
+		"State"=>"Tachira", //ESTADO
+	);
+
+	$output = Yii::app()->curl->putPago($data_array);
+
+	echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
+	echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
+	echo "Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
+	echo "Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO	
+	*/
+  	?>
+  	
+  </div>
   <div class="row">
     <div class="span12">
-      <div class="bg_color3 margin_bottom_small padding_small box_1"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/stats_sample.png" alt="estadisticas"/> </div>
+      <div class="bg_color3 margin_bottom_small padding_small box_1">
+
+
+<?php
+      	
+      	$this->Widget('ext.highcharts.HighchartsWidget', array(
+		   'options'=>array(
+		   	  'chart' => array('type' =>'areaspline'), // column, area, line, spline, areaspline, bar, pie, scatter
+		      'title' => array('text' => 'Ventas / Tiempo'),
+		      'xAxis' => array(
+		         'categories' => array('Abril', 'Mayo', 'Junio', 'Julio', 'Agosto')
+		      ),
+		      'yAxis' => array(
+		         'title' => array('text' => 'Ventas')
+		      ),
+		      'series' => array(
+		        // array('name' => 'Jane', 'data' => array(1, 0, 4)),
+		         array('name' => 'Totales', 'data' => array(110, 240, 587, 452, 241))
+		      )
+		   )
+		));
+
+
+?>
+
+      	<img src="<?php echo Yii::app()->baseUrl; ?>/images/stats_sample.png" alt="estadisticas"/> </div>
       <div class="row">
         <div class="span6 margin_top">
          <div class="well well_personaling_big"> 
@@ -81,8 +176,70 @@ $promedio = $sumatoria / $ventas;
           </table>
 </div>        </div>
         <div class="span5 offset1 margin_top">
-          <h4 class="margin_bottom_small">FUENTE DE REGISTROS</h4>
-          <img src="<?php echo Yii::app()->baseUrl; ?>/images/stats2.png" alt="estadisticas "> </div>
+        	 <h4 class="margin_bottom_small">FUENTE DE REGISTROS</h4>
+        	 
+        	<?php
+
+$sql = "SELECT count( * ) as total FROM tbl_users where twitter_id != '' ";
+$a = Yii::app()->db->createCommand($sql)->queryScalar();
+
+$sql = "SELECT count( * ) as total FROM tbl_users where facebook_id != '' ";
+$b= Yii::app()->db->createCommand($sql)->queryScalar();
+
+$sql = "SELECT count( * ) as total FROM tbl_users where twitter_id = NULL and twitter_id = NULL ";
+$c = Yii::app()->db->createCommand($sql)->queryScalar();
+		
+$total = User::model()->count();
+
+$tw = $a / $total; // porcentaje por twitter
+$fb = $b / $total; // porcentaje por facebook
+$nor = ($total - $a - $b) / $total; // via normal por email
+		 
+$this->Widget('ext.highcharts.HighchartsWidget', array(
+   'options'=>array(
+      'chart'=> array(
+            'plotBackgroundColor'=> null,
+            'plotBorderWidth'=> null,
+            'plotShadow'=> false
+        ),
+      'title' => array('text' => 'Fuentes de Registros'),
+        'tooltip'=>array(
+                'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>: "+ this.percentage +" %"; }'
+                     ),
+        'plotOptions'=>array(
+            'pie'=>array(
+                'allowPointSelect'=> true,
+                'cursor'=>'pointer',
+                'dataLabels'=>array(
+                    'enabled'=> true,
+                    'color'=>'#000000',
+                    'connectorColor'=>'#000000',
+                    'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>:"+this.percentage +" %"; }'  
+ 
+                                   )
+                        )
+                 ),
+ 
+      'series' => array(
+         array('type'=>'pie','name' => 'Ventas / Tiempo',
+         		'data' => array(
+         			array('Twitter',$tw), 
+         			array('Facebook',$fb),
+         			array(
+                    	'name'=>'Normal',
+                    	'y'=>$nor,
+                    	'sliced'=>true,
+                    	'selected'=>true
+                    ))),
+ 
+      )
+ 
+   )
+));
+ 
+?>
+	
+         
       </div>
     </div>
   </div>

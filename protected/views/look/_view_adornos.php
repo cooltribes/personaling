@@ -1,4 +1,4 @@
-<ul class="thumbnails">
+<div class="row-fluid"><ul class="thumbnails">
               <?php
               foreach($productos as $producto){
 
@@ -6,7 +6,7 @@
 
 					
               ?>
-              <li class="span2" > 
+              <li class="span6" > 
               	<div class=" column" draggable="true" id="div_adorno<?php echo $producto->id; ?>">
               		<div class="new" id="adorno<?php echo $producto->id; ?>">
               		
@@ -34,4 +34,4 @@
 				
 			
 				?>
-</ul>              
+</ul></div>

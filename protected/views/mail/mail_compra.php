@@ -422,26 +422,13 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     <p><strong>Para completar tu comprar debes:</strong></p>
                                                                     <ol>
                                                                         <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
-                                                                            <br>
+                                                                            <br/>
                                                                             <ul>
-                                                                                <li><strong>Banesco</strong><br>
-                                                                                    Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-                                                                                    PERSONALING C.A<br>
-                                                                                    RIF Nº J-RRRRR<br>
-                                                                                    <br>
-                                                                                </li>
-                                                                            </ul>
-                                                                            <ul>
-                                                                                <li><strong>Mercantil<br>
-                                                                                    </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-                                                                                    PERSONALING C.A<br>
-                                                                                    RIF Nº J-RRRRR<br>
-                                                                                    <br>
-                                                                                </li>
-                                                                                <li> <strong>Provincial<br>
-                                                                                    </strong>Cuenta Corriente Nº XXXXX-YYY-ZZZ<br>
-                                                                                    PERSONALING C.A<br>
-                                                                                    RIF Nº J-RRRRR<br>
+                                                                                <li><strong>Banesco</strong><br/>
+                                                                                    Cuenta Corriente Nº 0134 0277 98 2771093092<br/>
+                                                                                    A nombre de PERSONALING C.A<br/>
+                                                                                    RIF: J-40236088-6<br/>
+                                                                                    Correo electrónico: ventas@personaling.com<br/>
                                                                                     <br>
                                                                                 </li>
                                                                             </ul>
@@ -484,23 +471,27 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                                                                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
                                                                         <th  style="text-align:left">Subtotal:</th>
-                                                                        <td><?php echo $orden->subtotal; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left">Descuento:</th>
-                                                                        <td><?php echo $orden->descuento; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left">Envío:</th>
-                                                                        <td><?php echo $orden->envio; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left">I.V.A. (12%):</th>
-                                                                        <td><?php echo $orden->iva; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="text-align:left">Seguro:</th>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->seguro, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left"><h4>Total:</h4></th>
-                                                                        <td><h4><?php echo $orden->total; ?> Bs.</h4></td>
+                                                                        <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
                                                                     </tr>
                                                                 </table>
                                                                 <hr/>

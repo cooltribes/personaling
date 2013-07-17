@@ -6,7 +6,7 @@
             <td><strong>P.S.</strong>: <?php echo $data->user->profile->first_name; ?><br/>
                 <strong>Marcas</strong>: Mango, Suite Blanco, Aldo, Accessorize y Desigual </td>
             <td><?php echo $data->getPrecio(); ?></td>
-            <td>10</td>
+            <td><?php echo $data->getLookxStatus(3); ?></td>
             <td>6500,00</td>
             <td><?php echo $data->getStatus(); ?></td>
             <td><?php echo $data->created_on; ?></td>

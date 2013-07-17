@@ -36,18 +36,23 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
-            <h4>Banesco</h4>
+            <h4>Banco Banesco</h4>
             <ul>
-              <li>Cuenta Corriente Nº 0134-0277-98-2771093092</li>
-              <li>PERSONALING C.A.</li>
-              <li>RIF Nº J-40236088-6</li>
+              <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
+              <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
+              <li><strong>RIF:</strong> Nº J-40236088-6</li>
+              <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
             </ul>
           </div>
         </div>
         <input type="radio" name="optionsRadios" id="tarjeta" value="option2" data-toggle="collapse" data-target="#pagoTarjeta">
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
         <div class="collapse" id="pagoTarjeta">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">
+        	 <div class="well well-small" >
+            Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
+          </div>
+        </div>
+         <!-- <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">
             <tr>
               <th scope="col" colspan="4">&nbsp;</th>
               <th scope="col">Nombre en la Tarjeta</th>
@@ -74,14 +79,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
           <!-- Forma de pago ON -->
 
-          <div class="collapse" id="collapseOne">
+          <!-- <div class="collapse" id="collapseOne">
             <form class="personaling_form well well-small margin_top_medium">
               <h5 class="braker_bottom">Nueva tarjeta de crédito</h5>
               <div class="control-group">
                 <!--[if lte IE 7]>
             <label class="control-label required">Nombre en la tarjeta <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+              <!--   <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Nombre en la tarjeta"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -91,7 +96,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <label class="control-label required">Nombre impreso en la tarjeta <span class="required">*</span></label>
 <![endif]-->
 
-                <div class="controls">
+             <!--    <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Nombre impreso en la tarjeta"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -100,7 +105,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Fecha de Vencimiento <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+            <!--     <div class="controls">
                   <select>
                     <option>1</option>
                     <option>2</option>
@@ -122,7 +127,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Codigo de Seguridad <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+         <!--        <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Codigo de Seguridad"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -131,7 +136,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Cedula de Identidad <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+          <!--       <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Cedula de Identidad"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -140,7 +145,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <!--[if lte IE 7]>
             <label class="control-label required">Numero de Telefono <span class="required">*</span></label>
 <![endif]-->
-                <div class="controls">
+       <!--          <div class="controls">
                   <input type="text" maxlength="128"  placeholder="Numero de Telefono"  class="span5">
                   <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                 </div>
@@ -149,9 +154,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </form>
           </div>
           <!-- Forma de pago OFF -->
-
+<!-- 
         </div>
-      </div>
+      </div> -->
       <?php /*?><div class="box_1 padding_small">
         <h3>Incluir nuevas opciones de pago</h3>
         <!-- Forma de pago ON -->
@@ -253,7 +258,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 // echo CHtml::hiddenField('tipoPago','1');
 ?>
     <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
-    <?php Yii::app()->getSession()->add('tipoPago',1); ?>
+    <?php //Yii::app()->getSession()->add('tipoPago',1); ?>
     <div class="span5 margin_bottom padding_top_xsmall">
     	<form action="confirmar" method="POST">
       <div class="margin_left">
@@ -309,6 +314,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         $iva = (($totalPr - $totalDe)*0.12);
 
                         $t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio;
+                        
+						$seguro = $t*0.013;
+						
+						$t += $seguro;
 
                         // variables de sesion
                         Yii::app()->getSession()->add('subtotal',$totalPr);
@@ -316,26 +325,31 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         Yii::app()->getSession()->add('envio',$envio);
                         Yii::app()->getSession()->add('iva',$iva);
                         Yii::app()->getSession()->add('total',$t);
+						Yii::app()->getSession()->add('seguro',$seguro);  
 
-                        echo $totalPr;
+                        echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   Bs.</td>
               </tr>
               <tr>
                 <th class="text_align_left">Envío:</th>
-                <td class="text_align_right"><?php echo $envio; ?> Bs.</td>
+                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left">I.V.A. (12%):</th>
-                <td class="text_align_right"><?php echo $iva; ?> Bs.</td>
+                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left">Descuento:</th>
-                <td class="text_align_right" id="descuento"><?php echo $totalDe; ?> Bs.</td>
+                <td class="text_align_right" id="descuento"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+              </tr>
+              <tr>
+                <th class="text_align_left">Seguro:</th>
+                <td class="text_align_right" id="seguro"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($seguro, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>
-                <td class="text_align_right"><h4 id="precio_total"><?php echo $t; ?> Bs.</h4></td>
+                <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
               </tr>
             </table>
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
@@ -346,7 +360,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            <div>
 	              <label class="checkbox">
 	                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-	                Usar Balance disponible: <strong><?php echo Yii::app()->numberFormatter->formatDecimal($balance); ?> Bs.</strong> </label>
+	                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong> </label>
 	            </div>
 	            <?php
 			}
@@ -506,17 +520,17 @@ else
 				$('#usar_balance_hidden').val('1');
 				//console.log('checked');
 				if(balance >= total){
-					$('#descuento').html(total+' Bs.');
-					$('#precio_total').html('0 Bs.');
+					$('#descuento').html('Bs. '+total);
+					$('#precio_total').html('Bs. 0');
 				}else{
-					$('#descuento').html(balance.toFixed(2)+' Bs.');
-					$('#precio_total').html((total-balance).toFixed(2)+' Bs.');
+					$('#descuento').html('Bs. '+balance.toFixed(2));
+					$('#precio_total').html('Bs. '+(total-balance).toFixed(2));
 				}
 			}else{
 				$('#usar_balance_hidden').val('0');
 				//console.log('not checked');
-				$('#descuento').html('0 Bs.');
-				$('#precio_total').html(total+' Bs.');
+				$('#descuento').html('Bs. 0');
+				$('#precio_total').html('Bs. '+total.toFixed(2));
 			}
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');

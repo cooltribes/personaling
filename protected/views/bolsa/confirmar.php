@@ -21,7 +21,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			}
 		}
 	}
-	echo 'Total: '.$total.' - Descuento: '.$descuento;
+	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
 <div class="container margin_top">
@@ -50,6 +50,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
   <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
   <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
+<<<<<<< HEAD
+  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
+=======
+  <input type="hidden" id="idCard" value="0" /> 
+	
+>>>>>>> f5cd0fbe386a96e546173e00529fa328949c52ec
   <div class="row margin_top_medium">
     <section class="span4"> 
       <!-- Direcciones ON -->
@@ -95,13 +101,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
       <div class="well well_personaling_big">
-        <h5><?php echo Yii::app()->getSession()->get('totalLook'); ?> Look seleccionado<br/>
+        <h5>Look seleccionado(s): <?php echo Yii::app()->getSession()->get('totalLook'); ?><br/>
           <?php  
            	if(Yii::app()->getSession()->get('totalProductosLook') != 0){
            		echo Yii::app()->getSession()->get('totalProductosLook')." productos que componen los Looks<br/>";
            	}
 			
-			echo Yii::app()->getSession()->get('totalIndiv')." Productos individuales " 
+			echo 'Productos individuales: '.Yii::app()->getSession()->get('totalIndiv');
 			?>
         </h5>
         <hr/>
@@ -114,23 +120,27 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo Yii::app()->getSession()->get('subtotal'); ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo Yii::app()->getSession()->get('envio'); ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo Yii::app()->getSession()->get('iva'); ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Descuento:</th>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($descuento);; ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+            </tr>
+            <tr>
+              <th class="text_align_left">Seguro:</th>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('seguro'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo Yii::app()->numberFormatter->formatDecimal($total);; ?> Bs.</h4></td>
+              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
             </tr>
           </table>
           <?php
@@ -162,12 +172,27 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				?>
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php
-              }else{
+              }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
+              			
+					 echo CHtml::link("<i class='icon-locked icon-white'></i> Pagar con tarjeta de crédito",
+					    $this->createUrl('modal',array('id'=>'pago')),
+					    array(// for htmlOptions
+					      'onclick'=>' {'.CHtml::ajax( array(
+					      'url'=>CController::createUrl('modal',array('tipo'=>"2")),
+					           'success'=>"js:function(data){ $('#myModal').html(data);
+										$('#myModal').modal(); }")).
+					         'return false;}',
+					    'class'=>'btn btn-warning',
+					    'id'=>'pago')
+					);	
+
+				}
+				else {
               	?>
-          <a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
-          <hr/>
-          <?php
-              }
+          			<a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
+          			<hr/>
+          		<?php
+              	}
               //<a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
               //<hr/>
 			  ?>
@@ -199,6 +224,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 </div>
 <!-- /container -->
 
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+<?php $this->endWidget(); ?>
+
 <?php 
 
 }// si esta logueado
@@ -222,6 +251,92 @@ else
 		var iva = $("#iva").attr("value");
 		var total = $("#total").attr("value");
 		var usar_balance = $("#usar_balance").attr("value");
+		var seguro = $("#seguro").attr("value");
+
+ 		$.ajax({
+	        type: "post",
+	        dataType: 'json',
+	        url: "comprar", // action 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance, 'seguro':seguro}, 
+	        success: function (data) {
+				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
+				if(data.status=="ok")
+				{
+					window.location="pedido/"+data.orden+"";
+				}
+	       	}//success
+	       })
+ 			
+	}
+	
+	function enviarTarjeta()
+	{
+   		var idDireccion = $("#idDireccion").attr("value");
+		var tipoPago = $("#tipoPago").attr("value");
+		var subtotal = $("#subtotal").attr("value");
+		var descuento = $("#descuento").attr("value");
+		var envio = $("#envio").attr("value");
+		var iva = $("#iva").attr("value");
+		var total = $("#total").attr("value");
+		var usar_balance = $("#usar_balance").attr("value");
+		
+		/* lo de la tarjeta */
+		
+		var idCard = $("#idCard").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
+		var nom = $("#nombre").attr("value");
+		var num = $("#numero").attr("value");
+		var cod = $("#codigo").attr("value");
+		var mes = $("#mes").attr("value");
+		var ano = $("#ano").attr("value");
+		var dir = $("#direccion").attr("value");
+		var ciud = $("#ciudad").attr("value");
+		var est = $("#estado").attr("value");
+		var zip = $("#zip").attr("value");
+		
+		if(idCard=="0") // si no se eligió tarjeta sino que escribio los datos de una nueva tarjeta
+		{
+			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
+			{
+				alert("Por favor complete los datos.");
+			}
+			else
+			{
+			
+			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
+			
+				$.ajax({
+		        type: "post",
+		        dataType: 'json',
+		        url: "comprar", // action 
+		        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 
+		        		'subtotal':subtotal, 'descuento':descuento,
+		        		'envio':envio, 'iva':iva,
+		        		'total':total, 'usar_balance':usar_balance,
+		        		'idCard':idCard,'nom':nom,'num':num,'cod':cod,
+		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud,
+		        		'est':est,'zip':zip
+		        		}, 
+		        success: function (data) {
+					//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
+					if(data.status=="ok")
+					{
+						console.log(data.respCard);
+						//alert(data.respCard);
+						window.location="pedido/"+data.orden+"";
+					}
+		       	}//success
+		       })
+			
+			
+			}
+		}
+		else
+		{
+			// cuando se escoja una tarjeta de las que ya haya usado
+		}
+			
+			/*
+		
 
  		$.ajax({
 	        type: "post",
@@ -236,12 +351,12 @@ else
 				}
 	       	}//success
 	       })
- 			
+ 			*/
 	}
 	
 	function enviar_mp(json)
 	{
-		alert("return");
+		//alert("return");
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");
 		var subtotal = $("#subtotal").attr("value");
@@ -249,6 +364,7 @@ else
 		var envio = $("#envio").attr("value");
 		var iva = $("#iva").attr("value");
 		var total = $("#total").attr("value");
+		var seguro = $("#seguro").attr("value");
 
  		 if (json.collection_status=='approved'){
     alert ('Pago acreditado');
@@ -258,7 +374,7 @@ else
 	        type: "post",
 	        dataType: 'json',
 	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id}, 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id,'seguro':seguro}, 
 	        success: function (data) {
 				
 				if(data.status=="ok")

@@ -12,6 +12,15 @@
  * @property string $ventas_fin
  * @property string $fecha_creacion
  * @property integer $estado
+ * 
+ * 
+ * Estados
+ * 1: Programada
+ * 2: Recepción
+ * 3: Revisión
+ * 4: Ventas
+ * 5: Finalizada
+ * 
  */
 class Campana extends CActiveRecord
 {
@@ -44,7 +53,7 @@ class Campana extends CActiveRecord
 			array('nombre, recepcion_inicio, recepcion_fin, ventas_inicio, ventas_fin, fecha_creacion', 'required'),
 			array('estado', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>50),
-			array( 'recepcion_inicio','compare','compareValue' => date("Y-m-d H:i:s"),'operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que la fecha actual.'),
+			array( 'recepcion_inicio','compare','compareValue' => date("Y-m-d H:i:s", time()-(60*60*24)),'operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que la fecha actual.'),
 			array( 'recepcion_fin','compare','compareAttribute' => 'recepcion_inicio','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
 			array( 'ventas_inicio','compare','compareAttribute' => 'recepcion_fin','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
 			array( 'ventas_fin','compare','compareAttribute' => 'ventas_inicio','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
@@ -100,7 +109,7 @@ class Campana extends CActiveRecord
 		$criteria->compare('ventas_inicio',$this->ventas_inicio,true);
 		$criteria->compare('ventas_fin',$this->ventas_fin,true);
 		$criteria->compare('fecha_creacion',$this->fecha_creacion,true);
-		$criteria->compare('estado',$this->estado);
+		//$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

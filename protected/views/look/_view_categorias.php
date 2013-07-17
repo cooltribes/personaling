@@ -1,8 +1,8 @@
-<ul class="thumbnails">
+<div class="row-fluid"><ul class="thumbnails">
               <?php
               foreach($categorias as $categoria){
               ?>
-              <li class="span2" draggable="false" > 
+              <li class="span6" draggable="false" > 
               	<div>
               		
               		
@@ -47,5 +47,5 @@
 
               </li>
               <?php } ?>
-</ul>     
+</ul></div>     
          

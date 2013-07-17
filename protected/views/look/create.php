@@ -125,7 +125,7 @@ function handleDrop(e) {
 			            '-moz-transform': rotateCSS,
 			            '-webkit-transform': rotateCSS
 			        });
-			    }
+			    } 
 			});
 		
 			$("span",contenedor).last().click(function(){

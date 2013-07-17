@@ -64,7 +64,7 @@
          <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'danger',
-			'label'=>'Haz click aqui para subir la imágen',
+			'label'=>'Haz click aqui para subir la imagen',
 		)); ?>
       </div>
       </div>

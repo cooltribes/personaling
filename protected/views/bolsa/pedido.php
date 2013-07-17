@@ -86,12 +86,26 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 	  	";
 		
 	  }
+	  
+	  if($orden->estado==3) // Listo el pago
+	  {
+	  	echo "
+	  	
+	  	<div class='alert alert-success margin_top_medium margin_bottom'>
+	      <h1>Tu Pedido ha sido recibido con éxito.</h1>
+	     	<p>Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de credito.<br/>
+	     	Tu pedido será enviado en las próximas horas.</p>
+	    </div>
+
+	  	";
+		
+	  }
       
       ?>
         <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <h3>Resumen del pedido </h3>
           <p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p>
-          <p> <strong>Fecha estimada de entrega</strong>: 01/01/2013</p>
+          <p> <strong>Fecha estimada de entrega</strong>: <?php echo date("d/m/Y",strtotime($orden->fecha)); ?> - <?php echo  date('d/m/Y', strtotime($orden->fecha.'+1 week')); ?></p>
           <hr/>
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>

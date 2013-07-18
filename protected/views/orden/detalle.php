@@ -194,6 +194,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 						
 						if($pago->tipo == 1)
 							echo("<td>Deposito o Transferencia</td>");
+						if($pago->tipo == 2)
+							echo("<td>Tarjeta de credito</td>");
 							//hacer los demas tipos
 								
 						echo("<td>".$detalle->nTransferencia."</td>");	

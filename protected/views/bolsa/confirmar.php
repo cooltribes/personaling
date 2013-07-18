@@ -50,12 +50,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
   <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
   <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
-<<<<<<< HEAD
   <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
-=======
   <input type="hidden" id="idCard" value="0" /> 
-	
->>>>>>> f5cd0fbe386a96e546173e00529fa328949c52ec
+
   <div class="row margin_top_medium">
     <section class="span4"> 
       <!-- Direcciones ON -->
@@ -278,6 +275,7 @@ else
 		var envio = $("#envio").attr("value");
 		var iva = $("#iva").attr("value");
 		var total = $("#total").attr("value");
+		var seguro = $("#seguro").attr("value");
 		var usar_balance = $("#usar_balance").attr("value");
 		
 		/* lo de la tarjeta */
@@ -307,26 +305,69 @@ else
 				$.ajax({
 		        type: "post",
 		        dataType: 'json',
-		        url: "comprar", // action 
-		        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 
-		        		'subtotal':subtotal, 'descuento':descuento,
-		        		'envio':envio, 'iva':iva,
-		        		'total':total, 'usar_balance':usar_balance,
-		        		'idCard':idCard,'nom':nom,'num':num,'cod':cod,
-		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud,
-		        		'est':est,'zip':zip
+		        url: "credito", // action 
+		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
+		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
 		        		}, 
 		        success: function (data) {
-					//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
-					if(data.status=="ok")
+					
+					if(data.status==201) // pago aprobado
 					{
-						console.log(data.respCard);
-						//alert(data.respCard);
-						window.location="pedido/"+data.orden+"";
+						
+						$.ajax({
+					        type: "post",
+					        dataType: 'json',
+					        url: "comprar", // action 
+					        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
+					        		'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
+					        		'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro
+					        		}, 
+					        success: function (data) {
+								if(data.status=="ok")
+								{
+									window.location="pedido/"+data.orden+"";
+								}
+					       	}//success
+					      })
 					}
+					else
+					{
+						// no pasó la tarjeta
+						
+						if(data.status==400)
+						{
+							if(data.mensaje=="Credit card has Already Expired"){
+								//alert('La tarjeta que intentó usar ya expiró.');
+								window.location="error/1";
+							}
+
+							if(data.mensaje=="The CardNumber field is not a valid credit card number."){
+								//alert('El número de tarjeta que introdujó no es un número válido.');
+								window.location="error/2";
+							}
+						}
+						
+						if(data.status==401)
+						{
+							alert('error de autenticacion');
+							window.location="error/3";
+						}
+						
+						if(data.status==403)
+						{
+							alert('No pudimos completar su operación: '+data.mensaje);
+							window.location="error/"+data.mensaje;
+						}
+						
+						if(data.status==503)
+						{
+							alert('error interno');
+							window.location="error/4";
+						}
+					}
+					
 		       	}//success
 		       })
-			
 			
 			}
 		}

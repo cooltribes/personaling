@@ -51,8 +51,13 @@
           <div class="pull-right"> <small><?php echo $date_fin_publicacion; ?></small></div>
         </div></td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <?php
+      $creados = Look::model()->countByAttributes(array('status'=>0, 'campana_id'=>$data->id));
+	  $enviados = Look::model()->countByAttributes(array('status'=>1, 'campana_id'=>$data->id));
+	  $aprobados = Look::model()->countByAttributes(array('status'=>2, 'campana_id'=>$data->id));
+      ?>
+      <td><?php echo $creados+$enviados; ?></td>
+      <td><?php echo $aprobados; ?></td>
       <?php
       $ps = CampanaHasPersonalShopper::model()->countByAttributes(array('campana_id'=>$data->id));
       ?>

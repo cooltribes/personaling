@@ -24,7 +24,7 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('modal','credito','index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
+				'actions'=>array('modal','credito','index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','error','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -913,9 +913,9 @@ class BolsaController extends Controller
 			$msj = 'Error interno.';
 			$this->render('error',array('mensaje'=>$msj));
 		}	
-		else
+		else if($id==5)
 		{
-			$msj = 'No se pudo completar la operación: '.$id;
+			$msj = 'La tarjeta ha sido rechazada por el banco';
 			$this->render('error',array('mensaje'=>$msj));
 		}	
 		

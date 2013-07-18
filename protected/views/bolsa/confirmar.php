@@ -349,19 +349,19 @@ else
 						
 						if(data.status==401)
 						{
-							alert('error de autenticacion');
+							//alert('error de autenticacion');
 							window.location="error/3";
 						}
 						
 						if(data.status==403)
 						{
-							alert('No pudimos completar su operación: '+data.mensaje);
-							window.location="error/"+data.mensaje;
+							//alert('No pudimos completar su operación: '+data.mensaje);
+							window.location="error/5";
 						}
 						
 						if(data.status==503)
 						{
-							alert('error interno');
+							//alert('error interno');
 							window.location="error/4";
 						}
 					}

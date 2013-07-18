@@ -146,7 +146,7 @@ $this->breadcrumbs=array(
           <h3>Instrucciones:</h3>
           <ul>
             <li> Ten en cuenta que la primera imagen será la principal del producto</li>
-            <li>Arrastra las imagenes para organizarlas</li>
+            <li>Arrastra las imágenes para organizarlas</li>
           </ul>
         </div>
         <div class="clearfix productos_del_look">

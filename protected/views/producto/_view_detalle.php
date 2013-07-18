@@ -170,7 +170,7 @@
 						
 					}
 				}
-
+				
 				if( $cont1 == 1) // Si solo hay un color seleccionelo
 				{
 					$color = Color::model()->findByPk($cantcolor[0]);							

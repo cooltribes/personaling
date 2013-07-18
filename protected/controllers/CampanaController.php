@@ -19,7 +19,8 @@ class CampanaController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view'),
-				'users'=>array('admin'),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

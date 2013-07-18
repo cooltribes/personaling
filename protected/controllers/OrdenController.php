@@ -399,7 +399,13 @@ class OrdenController extends Controller
 	public function actionModals($id)
 	{
 		$orden = Orden::model()->findByPk($id);
-		$detPago = Detalle::model()->findByPk($orden->detalle_id);
+		
+		if($orden->estado == 7){
+			$detPago = new Detalle;
+		}
+		else {
+			$detPago = Detalle::model()->findByPk($orden->detalle_id);
+		}
 		
 		$datos="";
   		$datos=$datos."<div class='modal-header'>";
@@ -427,7 +433,8 @@ class OrdenController extends Controller
 		
 		$datos=$datos."<div class='control-group'>";
 		$datos=$datos."<div class='controls'>";
-		$datos=$datos. CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito'));
+		$datos=$datos. CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); 
+		//$datos=$datos. CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito'));
         $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
@@ -466,8 +473,12 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
 		
-		$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
-
+		if($orden->estado == 7){
+			$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
+		}
+		else {
+			$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
+		}
 		echo $datos;
 	}
 

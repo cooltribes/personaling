@@ -262,7 +262,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       
       
       <div class="row-fluid">
-        <div class="span6">
+        <div class="span12">
           <h3 class="braker_bottom margin_top">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
@@ -277,6 +277,8 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           <a href="#" class="btn"><i class="icon-edit"></i></a> </div>
+          
+        <!--  
         <div class="span6">
           <h3 class="braker_bottom margin_top">Dirección de Facturación</h3>
           <div class="vcard">
@@ -290,6 +292,8 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
             <a href="#" class="btn"><i class="icon-edit"></i></a> </div>
         </div>
+        -->
+        
       </div>
     </div>
     <div class="span5">

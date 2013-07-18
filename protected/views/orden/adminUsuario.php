@@ -97,7 +97,7 @@ $template = '{summary}
 		var monto = $("#monto").attr("value");
 		var idOrden = $("#idOrden").attr("value");
 		
-		if(nombre=="" || numeroTrans=="" || monto=="" || banco=="")
+		if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
 		{
 			alert("Por favor complete los datos.");
 		}

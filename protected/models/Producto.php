@@ -65,19 +65,20 @@ class Producto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('estado, marca_id, view_counter', 'numerical', 'integerOnly'=>true),
+			array('peso', 'numerical', 'min'=>0.1, 'tooSmall'=>'El peso debe ser mayor a 0'),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
-			array('nombre, codigo, marca_id, descripcion', 'required'),
+			array('nombre, codigo, marca_id, descripcion, peso', 'required'),
 			//array('proveedor', 'length', 'max'=>45),
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
-			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status', 'safe'),
+			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso', 'safe'),
 			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
 			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
 			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -121,6 +122,7 @@ class Producto extends CActiveRecord
 			'destacado' => '¿Destacar?',
 			'marca_id' => 'Marca',
 			'view_counter' => 'Contador',
+			'peso' => 'Peso',
 		);
 	}
 
@@ -146,6 +148,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('destacado',$this->destacado,true);
 		$criteria->compare('status',$this->status,true);
+		$criteria->compare('peso',$this->peso,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -170,6 +173,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('destacado',$this->destacado,true);
+		$criteria->compare('peso',$this->peso,true);
 		$criteria->with = array('categorias');
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
@@ -428,6 +432,7 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('destacado',$this->destacado,true);
+		$criteria->compare('peso',$this->peso,true);
 		$criteria->with = array('categorias');
 		$criteria->with = array('precios');
 		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';

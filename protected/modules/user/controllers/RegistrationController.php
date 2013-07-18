@@ -174,6 +174,7 @@ class RegistrationController extends Controller
  
             //get user details
             $twuser= $twitter->get("account/verify_credentials");
+			//var_dump($twuser);
 			$user = User::model()->notsafe()->findByAttributes(array('twitter_id'=>$twuser->id));
 			if(!$user){
 				//no existe, crear usuario y redirigir a formulario para que complete el registro

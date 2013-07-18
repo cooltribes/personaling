@@ -37,19 +37,19 @@ $this->breadcrumbs=array(
           <fieldset>
             <legend >O usa tus credenciales de personaling: </legend>
             
-            <div class="control-group">
+            <div class="control-group row-fluid">
             	 <div class="controls"> 
-            		<?php echo $form->textFieldRow($model,'username',array("class"=>"span5","placeholder"=>"correoelectronico@cuenta.com")); ?>
+            		<?php echo $form->textFieldRow($model,'username',array("class"=>"span12","placeholder"=>"correoelectronico@cuenta.com")); ?>
             		<?php echo $form->error($model,'username'); ?>
             	</div>  
             </div>
-             <div class="control-group"> 
+             <div class="control-group row-fluid"> 
              	<div class="controls">
             		<?php echo $form->passwordFieldRow($model,'password',array(
-            			'class'=>'span5',
+            			'class'=>'span12',
         				'hint'=>'Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>',
     				)); ?>
-                     <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar password">Olvidaste tu password?</a></span>
+                     <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar contraseña">Olvidaste tu contraseña?</a></span>
     				<?php echo $form->error($model,'password'); ?>
     			</div>
     		</div>

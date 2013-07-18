@@ -50,7 +50,7 @@
             	
 
     	 <div class="braker_horz_top_1 ">
-      <label for="fileToUpload">Elige la imágen que deseas subir</label><br />
+      <label for="fileToUpload">Elige la imagen que deseas subir</label><br />
            <!--
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
       -->

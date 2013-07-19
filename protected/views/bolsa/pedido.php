@@ -26,7 +26,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       <hr/>
       <p><strong>Para completar tu comprar debes:</strong></p>
       <ol>
-        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en la siguiente cuenta bancaria: <br>
+        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en la siguiente cuenta bancaria: <br>
           <br>
           <ul class="margin_bottom_medium">
             <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
@@ -57,7 +57,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
     <hr/>
     <p><strong>Para completar tu comprar debes:</strong></p>
     <ol>
-      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via MercadoPago. <br>
+      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via MercadoPago. <br>
       </li>
       <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
       <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>

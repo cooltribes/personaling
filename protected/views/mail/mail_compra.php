@@ -421,7 +421,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     <h2 class="h2">Siguiente paso</h2>
                                                                     <p><strong>Para completar tu comprar debes:</strong></p>
                                                                     <ol>
-                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
+                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
                                                                             <br/>
                                                                             <ul>
                                                                                 <li><strong>Banesco</strong><br/>
@@ -574,7 +574,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'<br/>
 		                  		</td>
-		                <td style="border-bottom:1px solid #dddddd;">Bs. '.$pre.'</td>
+		                <td style="border-bottom:1px solid #dddddd;">Bs. '.Yii::app()->numberFormatter->formatCurrency($pre).'</td>
 		                <td style="border-bottom:1px solid #dddddd;">'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
@@ -647,7 +647,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 				}
 						
-					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".$pre."</td>";
+					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre)."</td>";
 					echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>
 					</tr>";
 

@@ -82,7 +82,7 @@
 	?>
         <form id="formu" class="no_margin_bottom form-search">
           <select id="cate1" class="span3" name="cate1">
-            <option value="0">Buscar por Categoria</option>
+            <option value="0">Buscar por prenda</option>
             <?php 
 
 	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',),array('order'=>'nombre ASC'));

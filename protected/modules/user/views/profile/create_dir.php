@@ -154,22 +154,22 @@ $looks_recomendados = $look->match($usuario);
             </div>
             
             <div class="control-group"> 
-           	<?php echo $form->labelEx($model,'ciudad', array('class' => 'control-label')); ?>
+              <?php echo $form->labelEx($model,'provincia_id', array('class' => 'control-label')); ?>
               <div class="controls">
-              	<?php echo $form->textField($model,'ciudad',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Ciudad'));
-				echo $form->error($model,'ciudad');
-				?>
+              	<?php echo $form->dropDownList($model,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione un estado...'));?>
+              	<?php
+              	echo $form->error($model,'provincia_id');
+              	?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             
             <div class="control-group"> 
-              <?php echo $form->labelEx($model,'estado', array('class' => 'control-label')); ?>
+           	<?php echo $form->labelEx($model,'ciudad_id', array('class' => 'control-label')); ?>
               <div class="controls">
-              	<?php echo $form->textField($model,'estado',array('class'=>'span5','maxlength'=>45,'placeholder'=>'Estado'));
-              	echo $form->error($model,'estado');
-              	?>
+              	<?php echo $form->dropDownList($model,'ciudad_id', CHtml::listData(Ciudad::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione una ciudad...'));?>
+              	<?php echo $form->error($model,'ciudad_id'); ?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>

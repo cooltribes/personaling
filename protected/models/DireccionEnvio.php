@@ -11,8 +11,8 @@
  * @property string $dirUno
  * @property string $dirDos
  * @property string $telefono
- * @property string $ciudad
- * @property string $estado
+ * @property string $ciudad_id
+ * @property string $provincia_id
  * @property string $pais
  *
  * The followings are the available model relations:
@@ -46,13 +46,15 @@ class DireccionEnvio extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('ciudad_id, provincia_id', 'required'),
+			array('ciudad_id, provincia_id', 'numerical', 'integerOnly'=>true),
 			array('nombre, apellido', 'length', 'max'=>100),
 			array('cedula', 'length', 'max'=>20),
 			array('dirUno, dirDos', 'length', 'max'=>120),
-			array('ciudad, estado, pais, telefono', 'length', 'max'=>45),
+			array('pais, telefono', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad, estado, pais', 'safe', 'on'=>'search'),
+			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad_id, provincia_id, pais', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -81,8 +83,8 @@ class DireccionEnvio extends CActiveRecord
 			'dirUno' => 'Dir Uno',
 			'dirDos' => 'Dir Dos',
 			'telefono' => 'Telefono',
-			'ciudad' => 'Ciudad',
-			'estado' => 'Estado',
+			'ciudad_id' => 'Ciudad',
+			'provincia_id' => 'Estado',
 			'pais' => 'Pais',
 		);
 	}
@@ -105,8 +107,8 @@ class DireccionEnvio extends CActiveRecord
 		$criteria->compare('dirUno',$this->dirUno,true);
 		$criteria->compare('dirDos',$this->dirDos,true);
 		$criteria->compare('telefono',$this->telefono,true);		
-		$criteria->compare('ciudad',$this->ciudad,true);
-		$criteria->compare('estado',$this->estado,true);
+		$criteria->compare('ciudad_id',$this->ciudad_id,true);
+		$criteria->compare('provincia_id',$this->provincia_id,true);
 		$criteria->compare('pais',$this->pais,true);
 
 		return new CActiveDataProvider($this, array(

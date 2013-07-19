@@ -170,7 +170,7 @@
 		)); ?>
                 <ul class="nav nav-stacked nav-tabs margin_top">
                     <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente">Guardar y avanzar</a></li>
-                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
+                   <!-- <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li> -->
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
                     <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
                     <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
@@ -255,7 +255,7 @@
 		}
 	);
 	
-	
+	/*
 	$('a#nuevo').on('click', function(event) {
 		
 		event.preventDefault();
@@ -276,7 +276,7 @@
 		//$('#producto-form').submit();
 		}
 	);
-	
+	*/
 	
 $("#abrirFechas").click(function () {
   $("#fechas").toggle("slow");

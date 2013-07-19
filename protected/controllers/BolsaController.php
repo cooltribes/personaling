@@ -425,8 +425,8 @@ class BolsaController extends Controller
 				$dirEdit->dirUno = $_POST['Direccion']['dirUno'];
 				$dirEdit->dirDos = $_POST['Direccion']['dirDos'];
 				$dirEdit->telefono = $_POST['Direccion']['telefono'];
-				$dirEdit->ciudad = $_POST['Direccion']['ciudad'];
-				$dirEdit->estado = $_POST['Direccion']['estado'];
+				$dirEdit->ciudad_id = $_POST['Direccion']['ciudad_id'];
+				$dirEdit->provincia_id = $_POST['Direccion']['provincia_id'];
 				
 				if($_POST['Direccion']['pais']==1)
 					$dirEdit->pais = "Venezuela";
@@ -685,8 +685,8 @@ class BolsaController extends Controller
 					$dirEnvio->dirUno = $dir1->dirUno;
 					$dirEnvio->dirDos = $dir1->dirDos;
 					$dirEnvio->telefono = $dir1->telefono;
-					$dirEnvio->ciudad = $dir1->ciudad;
-					$dirEnvio->estado = $dir1->estado;
+					$dirEnvio->ciudad_id = $dir1->ciudad_id;
+					$dirEnvio->provincia_id = $dir1->provincia_id;
 					$dirEnvio->pais = $dir1->pais;
 					
 					if(isset($_POST['id_transaccion']) && $_POST['tipoPago'] == 4){ // Pago con Mercadopago

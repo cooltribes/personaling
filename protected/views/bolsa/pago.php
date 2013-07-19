@@ -294,7 +294,53 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <td><?php
                           $totalPr=Yii::app()->getSession()->get('subtotal');
                           $totalDe=Yii::app()->getSession()->get('descuento');
-                          $envio = Yii::app()->getSession()->get('envio');
+                          //$envio = Yii::app()->getSession()->get('envio');
+                          $envio = 0;
+						  $peso_total = 0;
+						  $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+						  
+						  //busco productos individuales en la bolsa
+						  $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
+						  foreach($bptcolor as $productotallacolor){
+								$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+								$peso_total += ($producto->peso*$productotallacolor->cantidad); 
+						  }
+						  
+						  // busco looks en la bolsa
+						  $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
+						  $num = Yii::app()->db->createCommand($sql)->queryScalar();
+						  
+						  if($num!=0){
+						  	foreach ($bolsa->looks() as $look_id){
+						  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
+								$look = Look::model()->findByPk($look_id);
+								foreach($bolsahasproductotallacolor as $productotallacolor){
+									$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+									$peso_total += ($producto->peso*$productotallacolor->cantidad); 
+								}
+							}
+						  }
+						
+						if($peso_total <= 0.5){
+							$envio = 80.08;
+						}else if($peso_total < 5){
+							$peso_adicional = ceil($peso_total-0.5);
+							$direccion = Direccion::model()->findByPk($idDireccion);
+							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+							$envio = 80.08 + ($peso_adicional*$ciudad_destino->ruta->precio);
+							if($envio > 163.52){
+								$envio = 163.52;
+							}
+						}else{
+							$peso_adicional = ceil($peso_total-5);
+							$direccion = Direccion::model()->findByPk($idDireccion);
+							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+							$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
+							if($envio > 327.04){
+								$envio = 327.04;
+							}
+						}
+						  
                         $i=0;
 
                         if (empty($precios)) // si no esta vacio

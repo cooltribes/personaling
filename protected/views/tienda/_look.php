@@ -4,9 +4,13 @@
 		<?php //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span4 look">
       <article > 
+      	<?php if ($pages->currentPage > 0){ ?>
+      	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
+      	<?php }else{ ?>
       	<?php echo CHtml::image('../images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
-                  	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
-                  
+        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
+        <?php } ?>
+        	         
                   	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
                   	
                   	<?php

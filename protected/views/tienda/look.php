@@ -171,7 +171,7 @@ function show_shopper(){
 function refresh()
 {
 	//alert($('.check_ocasiones').serialize());
-	//alert($('.check_ocasiones').length)
+	//alert($('.check_ocasiones').length) 
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
             'data'=> "js:$('.check_ocasiones, .check_shopper').serialize()",

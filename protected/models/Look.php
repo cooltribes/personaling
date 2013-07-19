@@ -327,15 +327,23 @@ class Look extends CActiveRecord
 	/* total de look activos */
 	public function getAprovados()
 	{
-		
+		 
 		return $this->countByAttributes(array('status'=>2));
 	}	
+	/* total de look por enviar */
+	public function getPorEnviar()
+	{
+		
+		return $this->countByAttributes(array(),'status = :status ',
+    		array(':status'=>0)
+			);
+	}
 	/* total de look inactivos */
 	public function getPorAprovar()
 	{
 		
 		return $this->countByAttributes(array(),'status = :status ',
-    		array(':status'=>2)
+    		array(':status'=>1)
 			);
 	}	
 	/* totoal por estado de orden */

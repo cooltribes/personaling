@@ -161,6 +161,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 							
 							if($pago->tipo == 1)
 								echo("<td>Deposito o Transferencia</td>");
+							if($pago->tipo == 2)
+								echo("<td>Tarjeta de credito</td>");
 								//hacer los demas tipos
 									
 							echo("<td>".$detalle->nTransferencia."</td>");	
@@ -220,7 +222,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       ?>
       
       <div class="row-fluid">
-      	<div class="span6">
+      	<div class="span12">
           <h3 class="braker_bottom margin_top">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
@@ -234,7 +236,8 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
             <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div></div>
-
+		
+		<!--
         <div class="span6">
           <h3 class="braker_bottom margin_top">Dirección de Facturación</h3>
           <div class="vcard">
@@ -246,8 +249,10 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
             <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
             <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
-    </div>
+    	</div>
         </div>
+       -->
+       
       </div>
     </div>
     <div class="span5">
@@ -655,7 +660,8 @@ else{
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
+        	<?php echo CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); ?>
+          	<?php //echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -721,7 +727,7 @@ else{
 		var monto = $("#monto").attr("value");
 		var idOrden = $("#idOrden").attr("value");
 
-		if(nombre=="" || numeroTrans=="" || monto=="" || banco=="")
+		if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
 		{
 			alert("Por favor complete los datos.");
 		}

@@ -39,6 +39,8 @@
 						                   // alert(data.accion);
 						                   $('.dropdown').removeClass('open');
 						                    $('#div_ocasiones').html(data.div);
+						                    $('#div_ocasiones').show();
+						                    $('#div_shopper').hide();
 						                  }",
 						    'data' => array( 'padreId' => $categoria->id )
 						  ),
@@ -58,6 +60,11 @@
             
             </ul>
           </li>
+          <li>
+          	<a href="#" onclick="js:show_shopper();" >Personal Shoppers </a>
+          	
+          </li>
+          <!--
           <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <b class="caret"></b></a>
             <ul class="dropdown-menu ">
               <li><a href="#" title="Para Mama">Para Mamá</a> </li>
@@ -68,6 +75,7 @@
               <li><a href="Crear_Perfil_Secundario_Usuaria_Mi_Tipo.php" title="Crear nuevo perfil secundario"><i class="icon-plus"></i> Crear un nuevo perfil</a> </li>
             </ul>
           </li>
+          -->
         </ul>
        
         	<?php /** @var BootActiveForm $form */
@@ -111,8 +119,24 @@
       </nav>
       <!--/.nav-collapse --> 
     </div>
-    <div class="navbar-inner sub_menu" id="div_ocasiones"  >
-    
+    <div class="navbar-inner sub_menu"  >
+    <div id="div_ocasiones"></div>
+    <div id="div_shopper" style="display: none">
+    	  <form id="form_shopper">
+ <nav class="  ">
+        <ul class="nav">
+        	<?php	 $personal_shopper = User::model()->findAll(array('condition'=>'personal_shopper=1'));	?>
+<?php foreach($personal_shopper as $shopper){?>
+          <li>
+            <label>
+              <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
+            </label>
+          </li>	
+<?php } ?>
+        </ul>
+      </nav>
+		 </form> 
+    </div>
     <?php //Este submenu carga las categorias segun lo seleccinonado arriba, por ejemplo de fiesta: coctel, familia, etc ?>
      
       <!--/.nav-collapse --> 
@@ -133,6 +157,10 @@ $this->renderPartial('_look',array(
 <!-- /container -->
 
 <script type="text/javascript">
+function show_shopper(){
+	$('#div_ocasiones').hide();
+	$('#div_shopper').show();
+}
 // here is the magic
 function refresh()
 {
@@ -140,7 +168,7 @@ function refresh()
 	//alert($('.check_ocasiones').length)
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
-            'data'=> "js:$('.check_ocasiones').serialize()",
+            'data'=> "js:$('.check_ocasiones, .check_shopper').serialize()",
             //'data' => array( 'ocasiones' => 55 ),
             'type'=>'post',
             'dataType'=>'json',
@@ -154,7 +182,7 @@ function refresh()
                 }
                 else
                 {
-                   	alert(data.condicion);
+                   //	alert(data.condicion);
                    $('#tienda_looks').html(data.div);
                    // setTimeout(\"$('#dialogColor').modal('hide') \",3000);
                 }

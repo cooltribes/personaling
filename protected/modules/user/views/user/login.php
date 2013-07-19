@@ -16,11 +16,11 @@ $this->breadcrumbs=array(
   <div class="row">
     <div class="span6 offset3">
       <h1>Inicia sesión</h1>
-      <div class="row  margin_top">
-              <div class="span3 margin_bottom"><a title="Inicia sesión con facebook" class="transition_all" onclick="check_fb()" href="#"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/login_facebook.png" width="230" height="39" alt="Inicia sesión con Facebook"></a></div>
+      <div  class="row-fluid  margin_top">
+              <div id="boton_facebook" class="span5 margin_bottom "><a title="Inicia sesión con facebook" class="transition_all" onclick="check_fb()" href="#">Inicia sesión con Facebook</a></div>
 
-        <div class="span3 margin_bottom"> <a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/login_twitter.png" width="230" height="39" alt="Inicia sesión con twitter"></a> 
-          <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
+              <div id="boton_twitter" class="span5 offset2 margin_bottom "><a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Inicia sesión con Twitter</a> 
+              <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
         </div>
       </div>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
@@ -37,19 +37,19 @@ $this->breadcrumbs=array(
           <fieldset>
             <legend >O usa tus credenciales de personaling: </legend>
             
-            <div class="control-group">
+            <div class="control-group row-fluid">
             	 <div class="controls"> 
-            		<?php echo $form->textFieldRow($model,'username',array("class"=>"span5","placeholder"=>"correoelectronico@cuenta.com")); ?>
+            		<?php echo $form->textFieldRow($model,'username',array("class"=>"span12","placeholder"=>"correoelectronico@cuenta.com")); ?>
             		<?php echo $form->error($model,'username'); ?>
             	</div>  
             </div>
-             <div class="control-group"> 
+             <div class="control-group row-fluid"> 
              	<div class="controls">
             		<?php echo $form->passwordFieldRow($model,'password',array(
-            			'class'=>'span5',
+            			'class'=>'span12',
         				'hint'=>'Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>',
     				)); ?>
-                     <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar password">Olvidaste tu password?</a></span>
+                     <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar contraseña">Olvidaste tu contraseña?</a></span>
     				<?php echo $form->error($model,'password'); ?>
     			</div>
     		</div>

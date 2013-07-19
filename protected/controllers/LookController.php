@@ -31,7 +31,8 @@ class LookController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks'),
-				'users'=>array('admin'),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
                'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle'),

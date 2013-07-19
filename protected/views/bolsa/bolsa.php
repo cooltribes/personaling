@@ -262,12 +262,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                 <div class=" margin_bottom">
                   <div class="tabla_resumen_bolsa">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
-                      <tr>
-                        <th class="text_align_left">Subtotal:</th>
-                        <td><?php
+                      <?php
                       	$totalPr=0;
                       	$totalDe=0;
-                      	$envio = 100;
+                      	$envio = 0;
 						$i=0;
 						
 						if (empty($precios)) // si no esta vacio
@@ -300,17 +298,15 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						Yii::app()->getSession()->add('total',$t);
 						Yii::app()->getSession()->add('seguro',$seguro);  
 						
-						echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
+						//echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                       	?>
-                          </td>
+                      <tr>
+                        <th class="text_align_left">Productos:</th>
+                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
                       </tr>
                       <tr>
                         <th class="text_align_left">Descuento:</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
-                      </tr>
-                      <tr>
-                        <th class="text_align_left">Envío:</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
                       </tr>
                       <tr>
                         <th class="text_align_left">I.V.A. (12%):</th>
@@ -321,7 +317,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($seguro, ''); ?></td>
                       </tr>
                       <tr>
-                        <th class="text_align_left"><h4>Total:</h4></th>
+                        <th class="text_align_left"><h4>Subtotal:</h4></th>
                         <td class="text_align_right"><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
                       </tr>
                     </table>

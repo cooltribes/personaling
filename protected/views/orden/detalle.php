@@ -84,7 +84,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	}
 	else{
 				
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id));
+		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
 		
 		if(isset($balance))
 		{

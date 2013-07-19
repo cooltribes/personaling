@@ -64,11 +64,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         	echo 'Tipo pago: '.$tipoPago;
 		}
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
+		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
         <p><strong>Dirección:</strong> <br/>
-          <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$direccion->ciudad.", ".$direccion->estado.". ".$direccion->pais); ?> </p>
+          <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
         <p> <strong>Telefono</strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
         

@@ -306,7 +306,7 @@ class TiendaController extends Controller
 			}
 			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
 			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
-			$total = Look::model()->count();
+			$total = Look::model()->count($criteria);
 			$pages = new CPagination($total);
 			$pages->pageSize = 9;
 			$pages->applyLimit($criteria);
@@ -321,7 +321,7 @@ class TiendaController extends Controller
 			Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;			
 			echo CJSON::encode(array(
 	                'status'=>'success', 
-	                'condicion'=>$condicion,
+	                'condicion'=>$total,
 	                'div'=>$this->renderPartial('_look', array('looks' => $looks,
 				'pages' => $pages,), true,true)));
 		} else  {

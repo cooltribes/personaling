@@ -28,15 +28,24 @@
 							 array( // ajaxOptions
 						    'type' => 'POST',
 						    'dataType'=>'json',
-						    'beforeSend' => "function( request )
+						    'beforeSend' => "function( request, opts )
 						                     {
 						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       if ($('#ocasion_actual').val() == '".$categoria->id."'){
+						                       	 	$('.dropdown').removeClass('open');
+						                       		$('#div_ocasiones').show();
+						                    		$('#div_shopper').hide();
+						                       	 request.abort();
+						                       } 
+						                       		
+						                       
 						                     }",
 						    'success' => "function( data )
 						                  {
 						                    // handle return data
 						                    //alert( data );
 						                   // alert(data.accion);
+						                   $('#ocasion_actual').val('".$categoria->id."');
 						                   $('.dropdown').removeClass('open');
 						                    $('#div_ocasiones').html(data.div);
 						                    $('#div_ocasiones').show();
@@ -89,8 +98,9 @@
           <?php // Recordar que aqui va el componente Select2 de la extension del Bootstrap para Yii. La misma que esta en Talla y colores del admin ?>
           
             <?php // echo $form->textFieldRow($model, 'textField', array('placeholder'=>"Buscar por Personal Shopper",'class'=>'')); ?>
-            <?php //echo CHtml::textField('search','',array('placeholder'=>"Buscar por Personal Shopper")); ?>
+            <?php echo CHtml::textField('search','',array('placeholder'=>"Buscar en todos los looks")); ?>
             	<?php
+              	/*
               	 $colores = User::model()->findAll(); //array('order'=>'first_name') ordena alfeticamente por nombre
 				 foreach($colores as $i => $row){
 					$data[$i]['text']= $row->profile->first_name.' '.$row->profile->last_name;
@@ -103,43 +113,39 @@
 		 'placeholder'=> "Buscar por Personal Shopper",
 		 'multiple'=>true,
 		 'data'=>$data,
-		 //'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
-		// 'data'=> CHtml::listData(Color::model()->findAll(),'id', 'valor'),
-		// 'width' => '40%',
+
 	),
 			)
-				);
+				);*/
 				?>
             <div class="btn-group">
           
-              <?php //$this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'label'=>'Buscar','type'=>'danger')); ?>
+              <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'label'=>'Buscar','type'=>'danger')); ?>
             </div>
           </div>
         <?php $this->endWidget(); ?>
       </nav>
       <!--/.nav-collapse --> 
     </div>
-    <div class="navbar-inner sub_menu"  >
-    <div id="div_ocasiones"></div>
-    <div id="div_shopper" style="display: none">
-    	  <form id="form_shopper">
- <nav class="  ">
-        <ul class="nav">
-        	<?php	 $personal_shopper = User::model()->findAll(array('condition'=>'personal_shopper=1'));	?>
-<?php foreach($personal_shopper as $shopper){?>
-          <li>
-            <label>
-              <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
-            </label>
-          </li>	
-<?php } ?>
-        </ul>
-      </nav>
-		 </form> 
-    </div>
-    <?php //Este submenu carga las categorias segun lo seleccinonado arriba, por ejemplo de fiesta: coctel, familia, etc ?>
-     
-      <!--/.nav-collapse --> 
+    <input type="hidden" value="" id="ocasion_actual" /> 
+    <div class="navbar-inner sub_menu">
+    	<div id="div_ocasiones"></div>
+		<div id="div_shopper" style="display: none">
+				<form id="form_shopper">
+					 <nav class="  ">
+					        <ul class="nav">
+					        	<?php $personal_shopper = User::model()->findAll(array('condition'=>'personal_shopper=1'));	?>
+								<?php foreach($personal_shopper as $shopper){?>
+					          <li>
+					            <label>
+					              <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
+					            </label>
+					          </li>	
+								<?php } ?>
+					        </ul>
+					 </nav>
+				 </form> 
+    	</div>    	    
     </div>
   </div>
 </div>
@@ -165,7 +171,7 @@ function show_shopper(){
 function refresh()
 {
 	//alert($('.check_ocasiones').serialize());
-	//alert($('.check_ocasiones').length)
+	//alert($('.check_ocasiones').length) 
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
             'data'=> "js:$('.check_ocasiones, .check_shopper').serialize()",

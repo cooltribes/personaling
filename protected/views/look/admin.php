@@ -20,15 +20,15 @@
                 Aprobados</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getPorAprovar(); ?> </p>
                 Por Aprobar</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getPorEnviar(); ?></p>
                 Por Enviar</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?></p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
                 Cancelados </td>
-            <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?> </p>
 
                 Devueltos</td>
         </tr>
-    </table>
+    </table> 
     <hr/>
     <div class="row margin_top margin_bottom ">
         <div class="span4">

@@ -124,13 +124,13 @@ $full_name = explode(' ', $twitter_user->name);
 			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {
 				
-			echo $form->labelEx($profile,$field->varname, array('class'=>'span1'));	
+			echo $form->labelEx($profile,$field->varname, array('class'=>'span4'));	
 			
-			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
+			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span3'));
 			echo ' ';
-			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span2'));
+			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span3'));
 			echo ' ';
-			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
+			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span2'));
 			echo ' ';
 			echo $form->hiddenField($profile,$field->varname);
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
@@ -158,7 +158,7 @@ $full_name = explode(' ', $twitter_user->name);
 		}
 ?>
             <hr/>
-            <label class="checkbox"> <input type="checkbox"> Al hacer clic en "Crear Cuenta" estas indicando que has leido y aceptado los <a href="#" title="terminos y condiciones">Terminos de Servicio</a> y la <a href="#" title="Politicas de Privacidad">Politica de Privacidad</a>. </label>
+            <p> Al hacer clic en "Crear Cuenta" estas indicando que has leido y aceptado los <a href="#" title="terminos y condiciones">Terminos de Servicio</a> y la <a href="#" title="Politicas de Privacidad">Politica de Privacidad</a>. </p>
 
 	<div class="form-actions"> 
 		

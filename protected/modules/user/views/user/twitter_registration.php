@@ -83,16 +83,16 @@ $full_name = explode(' ', $twitter_user->name);
           <fieldset>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls">
-	<?php echo $form->textFieldRow($model,'email',array("class"=>"span5")); 
+	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
 	echo $form->error($model,'email');
 	?>
 	</div>
 </div>
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls">	
-	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span5')); 
+	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span12')); 
 	echo $form->error($model,'password');
 	?>
 	</div>
@@ -107,7 +107,7 @@ $full_name = explode(' ', $twitter_user->name);
 			foreach($profileFields as $field) {
 				//echo $field->varname;
 			?>
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls controls-row">
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
@@ -124,13 +124,13 @@ $full_name = explode(' ', $twitter_user->name);
 			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {
 				
-			echo $form->labelEx($profile,$field->varname, array('class'=>'span1'));	
+			echo $form->labelEx($profile,$field->varname, array('class'=>'span4'));	
 			
-			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span1'));
+			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span3'));
 			echo ' ';
-			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span2'));
+			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span3'));
 			echo ' ';
-			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span1'));
+			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span2'));
 			echo ' ';
 			echo $form->hiddenField($profile,$field->varname);
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
@@ -139,11 +139,11 @@ $full_name = explode(' ', $twitter_user->name);
 				
 		} else {
 			if($field->varname == 'first_name'){
-				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[0]));
+				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[0]));
 			}else if($field->varname == 'last_name'){
-				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[1]));
+				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[1]));
 			}else{
-				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			}
 			
 			echo $form->error($profile,$field->varname);
@@ -152,13 +152,13 @@ $full_name = explode(' ', $twitter_user->name);
 		 
 				 ?>
 	</div>
-</div>
+</div12
 			<?php
 			}
 		}
 ?>
             <hr/>
-            <label class="checkbox"> <input type="checkbox"> Al hacer clic en "Crear Cuenta" estas indicando que has leido y aceptado los <a href="#" title="terminos y condiciones">Terminos de Servicio</a> y la <a href="#" title="Politicas de Privacidad">Politica de Privacidad</a>. </label>
+            <p> Al hacer clic en "Crear Cuenta" estas indicando que has leido y aceptado los <a href="#" title="terminos y condiciones">Terminos de Servicio</a> y la <a href="#" title="Politicas de Privacidad">Politica de Privacidad</a>. </p>
 
 	<div class="form-actions"> 
 		

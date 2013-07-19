@@ -55,14 +55,14 @@ $looks_recomendados = $look->match($model);
 				$dirs = Direccion::model()->findAllByAttributes(array('user_id'=>$model->id));
 				
 				foreach ($dirs as $dir ) {
-					
+					$ciudad = Ciudad::model()->findByPk($dir->ciudad_id);
 					echo '
                         <div class="well">
                             <p> <strong>'.$dir->nombre.' '.$dir->apellido.'</strong> <br/>
                                 <span class="muted small"> C.I. '.$dir->cedula.'</span></p>
                             <p> <strong>Telefono</strong>: '.$dir->telefono.' </p>
                             <p><strong>Dirección:</strong> <br/>
-                                '.$dir->dirUno.'. '.$dir->dirDos.'. '.$dir->ciudad.', '.$dir->estado.'. '.$dir->pais.'.
+                                '.$dir->dirUno.'. '.$dir->dirDos.'. '.$ciudad->nombre.', '.$ciudad->provincia->nombre.'. '.$dir->pais.'.
                           	</p>
                             <p>
                             ';

@@ -948,7 +948,7 @@ class BolsaController extends Controller
 			$detPago->estado = 0; // defecto
 			$detPago->orden_id = $_POST['idOrden'];
 							
-			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia'];
+			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia']." ".date("H:i:s");
 			
 			if($detPago->save())
 			{

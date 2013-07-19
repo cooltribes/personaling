@@ -83,16 +83,16 @@ $full_name = explode(' ', $twitter_user->name);
           <fieldset>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls">
-	<?php echo $form->textFieldRow($model,'email',array("class"=>"span5")); 
+	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
 	echo $form->error($model,'email');
 	?>
 	</div>
 </div>
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls">	
-	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span5')); 
+	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span12')); 
 	echo $form->error($model,'password');
 	?>
 	</div>
@@ -107,7 +107,7 @@ $full_name = explode(' ', $twitter_user->name);
 			foreach($profileFields as $field) {
 				//echo $field->varname;
 			?>
-<div class="control-group">
+<div class="control-group row-fluid">
 	<div class="controls controls-row">
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
@@ -139,11 +139,11 @@ $full_name = explode(' ', $twitter_user->name);
 				
 		} else {
 			if($field->varname == 'first_name'){
-				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[0]));
+				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[0]));
 			}else if($field->varname == 'last_name'){
-				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[1]));
+				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12','maxlength'=>(($field->field_size)?$field->field_size:255), 'value'=>$full_name[1]));
 			}else{
-				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			}
 			
 			echo $form->error($profile,$field->varname);
@@ -152,7 +152,7 @@ $full_name = explode(' ', $twitter_user->name);
 		 
 				 ?>
 	</div>
-</div>
+</div12
 			<?php
 			}
 		}

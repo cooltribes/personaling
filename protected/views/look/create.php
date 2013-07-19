@@ -293,7 +293,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					?>
             <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
             <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
-            <span>x</span> </div>
+            <span class="eliminar"><i class=" icon-remove"></i></span>
+			<div class="rotar"> <i class=" icon-repeat"><i></div>
+			 </div>
           <?php 
               	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',

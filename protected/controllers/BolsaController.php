@@ -24,12 +24,13 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('modal','index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','successMP'),
+				'actions'=>array('modal','credito','index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','error','successMP'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index'),
-				'users'=>array('admin'),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -424,8 +425,8 @@ class BolsaController extends Controller
 				$dirEdit->dirUno = $_POST['Direccion']['dirUno'];
 				$dirEdit->dirDos = $_POST['Direccion']['dirDos'];
 				$dirEdit->telefono = $_POST['Direccion']['telefono'];
-				$dirEdit->ciudad = $_POST['Direccion']['ciudad'];
-				$dirEdit->estado = $_POST['Direccion']['estado'];
+				$dirEdit->ciudad_id = $_POST['Direccion']['ciudad_id'];
+				$dirEdit->provincia_id = $_POST['Direccion']['provincia_id'];
 				
 				if($_POST['Direccion']['pais']==1)
 					$dirEdit->pais = "Venezuela";
@@ -530,61 +531,21 @@ class BolsaController extends Controller
 			// no va a llegar nadie que no esté logueado
 		}
 	}//fin
-
+	
+	
+	
 	/*
-	 * 
+	 * Pago con tarjeta de credito
 	 * */
-	public function actionComprar()
-	{
-		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
-		 {
-		 	$respCard = "";
-		 	$usuario = Yii::app()->user->id; 
-			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
-			
-			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4 || $_POST['tipoPago']==2){ // transferencia o MP
-				$detalle = new Detalle;
-			
-				if($detalle->save())
-				{
-					$pago = new Pago;
-					$pago->tipo = $_POST['tipoPago']; // trans
-					$pago->tbl_detalle_id = $detalle->id;
-					
-					if($pago->save()){
-					
-					// clonando la direccion
-					$dir1 = Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario));
-					$dirEnvio = new DireccionEnvio;
-					
-					$dirEnvio->nombre = $dir1->nombre;
-					$dirEnvio->apellido = $dir1->apellido;
-					$dirEnvio->cedula = $dir1->cedula;
-					$dirEnvio->dirUno = $dir1->dirUno;
-					$dirEnvio->dirDos = $dir1->dirDos;
-					$dirEnvio->telefono = $dir1->telefono;
-					$dirEnvio->ciudad = $dir1->ciudad;
-					$dirEnvio->estado = $dir1->estado;
-					$dirEnvio->pais = $dir1->pais;
-					
-					if(isset($_POST['id_transaccion']) && $_POST['tipoPago'] == 4){ // Pago con Mercadopago
-						$detalle->nTransferencia = $_POST['id_transaccion'];
-						$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
-						$detalle->cedula = $dirEnvio->cedula;
-						$detalle->monto = $_POST['total'];
-						$detalle->fecha = date("Y-m-d H:i:s");
-						$detalle->banco = 'Mecadopago';
+	public function actionCredito(){
+		
+			if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
 						
-						$detalle->estado = 0;
-						
-						$detalle->save();
-					}
-					
-					if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
-						
-						if($_POST['idCard'] == 0) // creo una tarjeta nueva
-						{
-							$exp = $_POST['mes']."/".$_POST['ano'];
+					if($_POST['idCard'] == 0) // creo una tarjeta nueva
+					{
+						$usuario = Yii::app()->user->id; 
+							
+						$exp = $_POST['mes']."/".$_POST['ano'];
 							
 							$data_array = array(
 								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
@@ -600,10 +561,12 @@ class BolsaController extends Controller
 								"State"=>$_POST['est'], //ESTADO
 							);
 							
-							$output = Yii::app()->curl->putPago($data_array); // se ejecuto
+						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
 							
 							if($output->code == 201){ // PAGO AUTORIZADO
-								
+							
+								$detalle = new Detalle;
+							
 								$detalle->nTarjeta = $_POST['num'];
 								$detalle->nTransferencia = $output->id;
 								$detalle->nombre = $_POST['nom'];
@@ -628,38 +591,34 @@ class BolsaController extends Controller
 									$tarjeta->estado = $_POST['est'];
 									$tarjeta->user_id = $usuario;		
 										
-									if($tarjeta->save())
-									{
-										$estado = new Estado;
+									$tarjeta->save();
 									
-										$estado->estado = 1;
-										$estado->user_id = $usuario;
-										$estado->fecha = date("Y-m-d");
-										$estado->orden_id = $orden->id;
+									
+									// cuando finalice entonces envia id de la orden para redireccionar
+									echo CJSON::encode(array(
+										'status'=> $output->code, // paso o no
+										'mensaje' => $output->message,
+										'idDetalle' => $detalle->id
 										
-										if($estado->save())
-											{
-												// otro estado de una vez ya que ya se pagó el dinero 
-												$estado = new Estado;
+									));
 									
-												$estado->estado = 3;
-												$estado->user_id = $usuario;
-												$estado->fecha = date("Y-m-d");
-												$estado->orden_id = $orden->id;
-												
-												if($estado->save())
-													echo "";
-												
-											}// estado
-									}// tarjeta
 								}//detalle
 								
 							}// 201
+							else
+							{	
+								// cuando finalice entonces envia id de la orden para redireccionar
+								echo CJSON::encode(array(
+									'status'=> $output->code, // paso o no
+									'mensaje' => $output->message									
+								));
+									
+							}
 							
-							$respCard = $respCard."Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
-							$respCard = $respCard."Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
-							$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
-							$respCard = $respCard."Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO
+							//$respCard = $respCard."Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
+						//	$respCard = $respCard."Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
+						//	$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
+						//	$respCard = $respCard."Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO
 
 						}
 						else // escogio una tarjeta
@@ -682,6 +641,68 @@ class BolsaController extends Controller
 					
 					}
 
+	
+	}
+	
+	
+	/*
+	 * 
+	 * */
+	public function actionComprar()
+	{
+		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
+		 {
+		 	$respCard = "";
+		 	$usuario = Yii::app()->user->id; 
+			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+			
+			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4 || $_POST['tipoPago']==2){ // transferencia o MP
+				
+				if($_POST['tipoPago']==2)
+				{
+					$detalle = Detalle::model()->findByPk($_POST['idDetalle']); // si viene de tarjeta de credito trae ya el detalle listo
+				}
+				else
+				{
+					$detalle = new Detalle;
+				}
+			
+				if($detalle->save())
+				{
+					$pago = new Pago;
+					$pago->tipo = $_POST['tipoPago']; // trans
+					$pago->tbl_detalle_id = $detalle->id;
+					
+					if($pago->save()){
+					
+					// clonando la direccion
+					$dir1 = Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario));
+					$dirEnvio = new DireccionEnvio;
+					
+					$dirEnvio->nombre = $dir1->nombre;
+					$dirEnvio->apellido = $dir1->apellido;
+					$dirEnvio->cedula = $dir1->cedula;
+					$dirEnvio->dirUno = $dir1->dirUno;
+					$dirEnvio->dirDos = $dir1->dirDos;
+					$dirEnvio->telefono = $dir1->telefono;
+					$dirEnvio->ciudad_id = $dir1->ciudad_id;
+					$dirEnvio->provincia_id = $dir1->provincia_id;
+					$dirEnvio->pais = $dir1->pais;
+					
+					if(isset($_POST['id_transaccion']) && $_POST['tipoPago'] == 4){ // Pago con Mercadopago
+						$detalle->nTransferencia = $_POST['id_transaccion'];
+						$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
+						$detalle->cedula = $dirEnvio->cedula;
+						$detalle->monto = $_POST['total'];
+						$detalle->fecha = date("Y-m-d H:i:s");
+						$detalle->banco = 'Mecadopago';
+						
+						$detalle->estado = 0;
+						
+						$detalle->save();
+					}
+					
+					
 						if($dirEnvio->save()){
 							// ya esta todo para realizar la orden
 							
@@ -693,6 +714,7 @@ class BolsaController extends Controller
 							$orden->iva = $_POST['iva'];
 							$orden->descuentoRegalo = 0;
 							$orden->total = $_POST['total'];
+							$orden->seguro = $_POST['seguro'];
 							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
 							$orden->estado = 1; // en espera de pago
 							$orden->bolsa_id = $bolsa->id; 
@@ -701,7 +723,7 @@ class BolsaController extends Controller
 							$orden->detalle_id = $detalle->id;
 							$orden->direccionEnvio_id = $dirEnvio->id;	
 							
-							if($respCard!="") // Pagó con TDC
+							if($detalle->nTarjeta!="") // Pagó con TDC
 							{
 								$orden->estado = 3; // Estado: Pago Confirmado
 							}
@@ -766,7 +788,7 @@ class BolsaController extends Controller
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 								// se agrega este estado en el caso de que no se haya pagado por TDC
-								if($respCard=="")
+								if($detalle->nTarjeta=="")
 								{
 									$estado = new Estado;
 									
@@ -778,7 +800,36 @@ class BolsaController extends Controller
 									if($estado->save())
 										echo "";
 								}
-								
+								else // si pago con tarjeta
+								{
+									
+									$estado = new Estado;
+									
+										$estado->estado = 1;
+										$estado->user_id = $usuario;
+										$estado->fecha = date("Y-m-d");
+										$estado->orden_id = $orden->id;
+										
+										if($estado->save())
+											{
+												// otro estado de una vez ya que ya se pagó el dinero 
+												$estado = new Estado;
+									
+												$estado->estado = 3;
+												$estado->user_id = $usuario;
+												$estado->fecha = date("Y-m-d");
+												$estado->orden_id = $orden->id;
+												
+												if($estado->save())
+												{
+													$detalle->orden_id = $orden->id;
+													$detalle->save();
+												}
+													
+												
+											}// estado
+									
+								}
 								
 								// Generar factura
 								$factura = new Factura;
@@ -839,6 +890,42 @@ class BolsaController extends Controller
 	}
 
 	/*
+	 *	Error 
+	 * */
+	public function actionError($id)
+	{
+		if($id==1)
+		{	
+			$msj = 'La tarjeta que intentó usar ya expiró.';
+			$this->render('error',array('mensaje'=>$msj));
+		}
+		else if($id==2)
+		{	
+			$msj = 'El número de tarjeta que introdujó no es un número válido.';
+			$this->render('error',array('mensaje'=>$msj));
+		}	
+		else if($id==3)
+		{
+			$msj = 'Error de autenticación.';
+			$this->render('error',array('mensaje'=>$msj));
+		}
+		else if($id==4)
+		{
+			$msj = 'Error interno.';
+			$this->render('error',array('mensaje'=>$msj));
+		}	
+		else if($id==5)
+		{
+			$msj = 'La tarjeta ha sido rechazada por el banco';
+			$this->render('error',array('mensaje'=>$msj));
+		}	
+		
+		//$orden = Orden::model()->findByPk($id);
+		//$pago = Pago::model()->findByPk($orden->pago_id);
+		//$this->render('pedido',array('orden'=>$orden));
+	}
+
+	/*
 	 * 
 	 * */
 	public function actionCpago()
@@ -861,7 +948,7 @@ class BolsaController extends Controller
 			$detPago->estado = 0; // defecto
 			$detPago->orden_id = $_POST['idOrden'];
 							
-			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia'];
+			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia']." ".date("H:i:s");
 			
 			if($detPago->save())
 			{

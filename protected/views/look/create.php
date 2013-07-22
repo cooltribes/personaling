@@ -91,7 +91,7 @@ function handleDrop(e) {
 		//nuevo_objeto.find('img').unwrap();
 		nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
 		nuevo_objeto.append('<span class="eliminar"><i class=" icon-remove"></i></span>');
-		nuevo_objeto.append('<div class="rotar"> <i class=" icon-repeat"><i></div>');
+		nuevo_objeto.append('<div class="rotar"> <i class=" icon-repeat"></i></div>');
 		
 		//alert(nuevo_objeto.html());
 		var ident = nuevo_objeto.find('img').attr('src');
@@ -128,7 +128,7 @@ function handleDrop(e) {
 			            '-moz-transform': rotateCSS,
 			            '-webkit-transform': rotateCSS
 			        });
-			    }
+			    } 
 			});
 		
 			$("span",contenedor).last().click(function(){
@@ -282,7 +282,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				
 				
               ?>
-          <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px;">
+          <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
             <?php
 					if ($producto->mainimage)
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
@@ -293,21 +293,46 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					?>
             <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
             <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
-            <span>x</span> </div>
+            <span class="eliminar"><i class=" icon-remove"></i></span>
+			<div class="rotar"> <i class=" icon-repeat"></i></div>
+			 </div>
           <?php 
               	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
   
 	} ); 
+	
+				$('#div".$producto->id."_".$hasproducto->color_id." > .rotar').draggable({
+			    handle: '.rotar',
+			    opacity: 0.01, 
+			    helper: 'clone',
+			    drag: function(event, ui){
+			        var grados = ui.position.left*-1;
+			        if (grados > 360)
+			        	grados = grados - 360;
+			        var rotateCSS = 'rotate(' + grados + 'deg)';
+			
+			        $(this).parent().css({
+			            '-moz-transform': rotateCSS,
+			            '-webkit-transform': rotateCSS
+			        });
+			    } 
+			});
+			
   $('#div".$producto->id."_".$hasproducto->color_id." > span').last().click(function(){
   	
   	$(this).parent().remove();
   });   
-$('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function () { $(this).resizable({
-      aspectRatio: 1
+	
+	$('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function () {
+		var height = $(this).attr('height');
+		var width = $(this).attr('width');
+		 $(this).resizable({
+      		aspectRatio: width/height
+    	});	
     });	
-    });	
+   
     
  ";
               	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$hasproducto->color_id,$script);
@@ -327,7 +352,8 @@ $('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function 
 				echo $image;
 			?>
             <input type="hidden" name="adorno_id" value="<?php echo $adorno->id; ?>">
-            <span>x</span> </div>
+            <span class="eliminar"><i class=" icon-remove"></i></span>
+			<div class="rotar"> <i class=" icon-repeat"></i></div> </div>
           <?php 
 	        
 	        $script = "	$('#adorno".$adorno->id."').draggable( {

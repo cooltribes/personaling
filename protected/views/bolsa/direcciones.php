@@ -33,6 +33,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             
             if(isset($direcciones)){
 	       		foreach($direcciones as $cadauna){
+	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
+					$provincia = Provincia::model()->findByPk($cadauna->provincia_id);
 
 			       $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 						'id'=>'direccionUsada',
@@ -59,7 +61,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		                <p><strong>Dirección:</strong> <br/>
 		                  ".$cadauna->dirUno." </br>
 		                  ".$cadauna->dirDos.". 
-		                  ".$cadauna->ciudad.", ".$cadauna->estado.". </br>
+		                  ".$ciudad->nombre.", ".$provincia->nombre.". </br>
 		                  ".$cadauna->pais." </p>
 		              </div>
 		              <div class='span2 margin_top_medium'>
@@ -168,21 +170,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </div>
             </div>
             <div class="control-group"> 
-           
+              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'ciudad',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Ciudad'));
-				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Ciudad" name="RegistrationForm[email]" class="span4">
-				 ?>
+              	<?php echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione un estado...'));?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="control-group"> 
-              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'estado',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Estado'));
-              	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Estado" name="RegistrationForm[email]" class="span4">
-              	?>
+              	<?php echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione una ciudad...'));?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>

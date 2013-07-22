@@ -41,23 +41,23 @@
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Correo electrónico y contraseña </a>
       <ul class="dropdown-menu">
-        <li><?php echo CHtml::link('Cambiar correo electronico',array('changeemail'),array("title"=>"Cambia tu correo electronico")); ?></li>
+        <li><?php echo CHtml::link('Cambiar correo electrónico',array('changeemail'),array("title"=>"Cambia tu correo electrónico")); ?></li>
         <li><?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
       </ul>
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Notificaciones </a>
       <ul class="dropdown-menu">
-        <li><?php echo CHtml::link('Gestionar direcciones de Envios y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
+        <li><?php echo CHtml::link('Gestionar direcciones de Envíos y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
       </ul>
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Libreta de Direcciones </a>
       <ul class="dropdown-menu">
-        <li><?php echo CHtml::link('Gestionar direcciones de Envios y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
+        <li><?php echo CHtml::link('Gestionar direcciones de Envíos y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
       </ul>
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Privacidad </a>
       <ul class="dropdown-menu">
-        <li><?php echo CHtml::link('Informacion publica',array('privacidad'),array("title"=>"Cambia tu Informacion publica")); ?></li>
+        <li><?php echo CHtml::link('Información póblica',array('privacidad'),array("title"=>"Cambia tu Informaciósn póblica")); ?></li>
         <li><?php echo CHtml::link('Eliminar Cuenta',array('delete'),array("title"=>"Eliminar Cuenta")); ?> </li>
       </ul>
     </li>

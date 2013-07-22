@@ -15,7 +15,8 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 </head>
 
-<body><div id="navegacion_principal">
+<body>
+  <div id="navegacion_principal">
 <?php  
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
 if (Yii::app()->user->id?UserModule::isAdmin():false){
@@ -55,7 +56,6 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
-                    array('label'=>'Configuracion', 'url'=>'#'),
                    
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),
@@ -111,7 +111,6 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
 					array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
-                    array('label'=>'Configuracion', 'url'=>'#'),
                     
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),

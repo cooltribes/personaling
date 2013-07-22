@@ -21,7 +21,8 @@ class TiendaController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','filtrar','categorias'),
-				'users'=>array('admin'),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -149,7 +150,13 @@ class TiendaController extends Controller
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;		
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+		
+		
+				
 	  if ($categorias){
 		 echo CJSON::encode(array(
 			'id'=> $_POST['padreId'],
@@ -275,24 +282,68 @@ class TiendaController extends Controller
 
 	public function actionLook(){
 			
-		$search = "";	
-		if(isset($_GET['search']))
-			$search =  	$_GET['search'];
-		$criteria = new CDbCriteria;
-		$criteria->compare('title',$search,true,'OR');
-		$criteria->compare('description',$search,true,'OR');
-		
-		$total = Look::model()->count();
-		 
-		$pages = new CPagination($total);
-		$pages->pageSize = 9;
-		$pages->applyLimit($criteria);
-		$looks = Look::model()->findAll($criteria);
-		 
-		$this->render('look', array(
-			'looks' => $looks,
-			'pages' => $pages,
-		));			
+
+		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])){
+					
+			$criteria = new CDbCriteria;
+			
+			
+			if (isset($_POST['check_ocasiones'])){
+			$condicion = "";	
+			$criteria->with = array('categorias');	
+			$criteria->together = true;
+			foreach ($_POST['check_ocasiones'] as $categoria_id)
+				$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
+			$condicion = substr($condicion, 0, -3);
+			$criteria->addCondition($condicion);
+			}
+			if (isset($_POST['check_shopper'])){
+			$condicion = "";		
+			foreach ($_POST['check_shopper'] as $user_id)
+				$condicion .= "user_id = ".$user_id." OR ";
+			$condicion = substr($condicion, 0, -3);
+			$criteria->addCondition($condicion);				
+			}
+			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
+			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
+			$total = Look::model()->count($criteria);
+			$pages = new CPagination($total);
+			$pages->pageSize = 9;
+			$pages->applyLimit($criteria);
+			$looks = Look::model()->findAll($criteria);
+			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+			Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;			
+			echo CJSON::encode(array(
+	                'status'=>'success', 
+	                'condicion'=>$total,
+	                'div'=>$this->renderPartial('_look', array('looks' => $looks,
+				'pages' => $pages,), true,true)));
+		} else  {
+			$search = "";	
+			if(isset($_GET['search']))
+				$search =  	$_GET['search'];
+			
+			$criteria = new CDbCriteria;
+			$criteria->compare('title',$search,true,'OR');
+			$criteria->compare('description',$search,true,'OR');
+			
+			$total = Look::model()->count();
+			 
+			$pages = new CPagination($total);
+			$pages->pageSize = 9;
+			$pages->applyLimit($criteria);
+			$looks = Look::model()->findAll($criteria);
+			$this->render('look', array(
+				'looks' => $looks,
+				'pages' => $pages,
+			));		
+		}	
 			
 		
 	}

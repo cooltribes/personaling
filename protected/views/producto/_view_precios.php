@@ -31,7 +31,9 @@ $this->breadcrumbs=array(
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
             <legend >Precios: </legend>
+            <!--
             <div class="control-group"> <?php echo $form->radioButtonListRow($precio, 'combinacion', array(0 => 'Aplicar datos a todas las combinaciones', 1 => 'Aplicar datos por separado a cada combinación',)); ?> <?php echo $form->error($precio,'combinacion'); ?> </div>
+            -->
             <div class="control-group">
               <?php  echo $form->textFieldRow($precio, 'costo', array('class'=>'span5')); ?>
               <div class="controls">

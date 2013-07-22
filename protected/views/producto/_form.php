@@ -1,6 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'producto-form',
 	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
 	'type'=>'horizontal',
 )); ?>
 <?php echo $form->errorSummary($model); ?>
@@ -39,6 +40,9 @@
                             <?php echo $form->error($model,'marca_id'); ?> </div>
                     </div>
                     <div class="control-group"> <?php echo $form->html5EditorRow($model, 'descripcion', array('class'=>'span5', 'rows'=>6, 'height'=>'200', 'options'=>array('color'=>true))); ?> <?php echo $form->error($model,'descripcion'); ?> </div>
+                    <div class="control-group"> <?php echo $form->labelEx($model,'peso', array('class' => 'control-label')); ?>
+                        <div class="controls"> <?php echo $form->textField($model,'peso',array('class'=>'span5','maxlength'=>10, 'placeholder' => 'Ej.: 1.5')); ?> <?php echo $form->error($model,'peso'); ?> </div>
+                    </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'estado', array(0 => 'Activo', 1 => 'Inactivo',)); ?> <?php echo $form->error($model,'estado'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'destacado', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'destacado'); ?> </div>
                     <div class="control-group">
@@ -78,7 +82,6 @@
               	?>
                         </div>
                     </div>
-                    
                     <div class="control-group">
                     	<div style="display: none" id="fechas">
                         <?php 
@@ -123,7 +126,6 @@
             ?>
                     </div>
 				</div>
-					
                 </fieldset>
             </form>
         </div>
@@ -168,7 +170,7 @@
 		)); ?>
                 <ul class="nav nav-stacked nav-tabs margin_top">
                     <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente">Guardar y avanzar</a></li>
-                    <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
+                   <!-- <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li> -->
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
                     <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
                     <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
@@ -220,11 +222,16 @@
 		// cambio el valor
 		$("#accion").attr("value", "normal");
 		
-		// submit del form
-		$('#producto-form').submit();
-		
+		//verificar peso
+		if($('#Producto_peso').val() > 0){
+			$('#Producto_peso_em_').hide();
+			// submit del form
+			$('#producto-form').submit();
+		}else{
+			$('#Producto_peso_em_').val('Debes ingresar un peso mayor a 0');
+			$('#Producto_peso_em_').show();
 		}
-	);
+	});
 	
 	
 	$('a#avanzar').on('click', function(event) {
@@ -234,13 +241,21 @@
 		$("#accion").attr("value", "avanzar");
 		//alert( $("#accion").attr("value") );
 		
+		//verificar peso
+		if($('#Producto_peso').val() > 0){
+			$('#Producto_peso_em_').hide();
+			// submit del form
+			$('#producto-form').submit();
+		}else{
+			$('#Producto_peso_em_').val('Debes ingresar un peso mayor a 0');
+			$('#Producto_peso_em_').show();
+		}
 		// submit del form
-		$('#producto-form').submit();
-		
+		//$('#producto-form').submit();
 		}
 	);
 	
-	
+	/*
 	$('a#nuevo').on('click', function(event) {
 		
 		event.preventDefault();
@@ -248,11 +263,20 @@
 		$("#accion").attr("value", "nuevo");
 		//alert( $("#accion").attr("value") );
 		
+		//verificar peso
+		if($('#Producto_peso').val() > 0){
+			$('#Producto_peso_em_').hide();
+			// submit del form
+			$('#producto-form').submit();
+		}else{
+			$('#Producto_peso_em_').val('Debes ingresar un peso mayor a 0');
+			$('#Producto_peso_em_').show();
+		}
 		// submit del form
-		$('#producto-form').submit();
+		//$('#producto-form').submit();
 		}
 	);
-	
+	*/
 	
 $("#abrirFechas").click(function () {
   $("#fechas").toggle("slow");

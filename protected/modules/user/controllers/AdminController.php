@@ -28,7 +28,8 @@ class AdminController extends Controller
 
 				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks'),
 
-				'users'=>UserModule::getAdmins(),
+								//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

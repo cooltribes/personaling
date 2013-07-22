@@ -421,7 +421,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     <h2 class="h2">Siguiente paso</h2>
                                                                     <p><strong>Para completar tu comprar debes:</strong></p>
                                                                     <ol>
-                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
+                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
                                                                             <br/>
                                                                             <ul>
                                                                                 <li><strong>Banesco</strong><br/>
@@ -471,23 +471,27 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                                                                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
                                                                         <th  style="text-align:left">Subtotal:</th>
-                                                                        <td><?php echo $orden->subtotal; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left">Descuento:</th>
-                                                                        <td><?php echo $orden->descuento; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left">Envío:</th>
-                                                                        <td><?php echo $orden->envio; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left">I.V.A. (12%):</th>
-                                                                        <td><?php echo $orden->iva; ?> Bs.</td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="text-align:left">Seguro:</th>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->seguro, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th style="text-align:left"><h4>Total:</h4></th>
-                                                                        <td><h4><?php echo $orden->total; ?> Bs.</h4></td>
+                                                                        <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
                                                                     </tr>
                                                                 </table>
                                                                 <hr/>
@@ -570,7 +574,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'<br/>
 		                  		</td>
-		                <td style="border-bottom:1px solid #dddddd;">Bs. '.$pre.'</td>
+		                <td style="border-bottom:1px solid #dddddd;">Bs. '.Yii::app()->numberFormatter->formatCurrency($pre).'</td>
 		                <td style="border-bottom:1px solid #dddddd;">'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
@@ -643,7 +647,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 				}
 						
-					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".$pre."</td>";
+					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre)."</td>";
 					echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>
 					</tr>";
 

@@ -36,7 +36,8 @@ class ProductoController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo'),
-				'users'=>array('admin'),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -115,7 +116,8 @@ class ProductoController extends Controller
 				 	'estado'=>$_POST['Producto']['estado'],
 				 	'fInicio'=>$_POST['Producto']['fInicio'],
 					'fFin'=>$_POST['Producto']['fFin'],
-					'destacado' => $_POST['Producto']['destacado']
+					'destacado' => $_POST['Producto']['destacado'],
+					'peso' => $_POST['Producto']['peso']
 					));
 					
 					Yii::app()->user->updateSession();
@@ -135,6 +137,7 @@ class ProductoController extends Controller
 			{
 				$model->attributes = $_POST['Producto'];
 				$model->destacado = $_POST['Producto']['destacado'];
+				$model->peso = $_POST['Producto']['peso'];
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
 				if($model->save())
@@ -196,14 +199,18 @@ class ProductoController extends Controller
 				{
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+					
+					if($_POST['accion'] == "normal") // si es el boton principal
+						$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
+					
+					if($_POST['accion'] == "nuevo") // guardar y nuevo
+						$this->redirect(array('create'));
 				}
 				//	$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
-		$this->render('_view_seo',array(
-			'model'=>$model,'seo'=>$seo,
-		));
+		$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
 	}
 
 	//acceso para la pestaña de precios

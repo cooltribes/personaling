@@ -10,8 +10,8 @@
  * @property string $cedula
  * @property string $dirUno
  * @property string $dirDos
- * @property string $ciudad
- * @property string $estado
+ * @property string $ciudad_id
+ * @property string $provincia_id
  * @property string $pais
  * @property string $telefono
  * @property integer $user_id
@@ -47,17 +47,17 @@ class Direccion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id', 'numerical', 'integerOnly'=>true),
+			array('user_id, ciudad_id, provincia_id', 'numerical', 'integerOnly'=>true),
 			array('nombre, apellido', 'length', 'max'=>70),
 			array('cedula', 'length', 'max'=>20),
 			array('dirUno, dirDos', 'length', 'max'=>120),
-			array('ciudad, estado, telefono', 'length', 'max'=>45),
+			array('telefono', 'length', 'max'=>45),
 			array('pais', 'length', 'max'=>80),
-			array('nombre, apellido, cedula, dirUno, ciudad, estado, pais, telefono', 'required'),
+			array('nombre, apellido, cedula, dirUno, ciudad_id, provincia_id, pais, telefono', 'required'),
 			array('pais','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Escoja un país.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad, estado, pais, user_id', 'safe', 'on'=>'search'),
+			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad_id, provincia_id, pais, user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -86,8 +86,8 @@ class Direccion extends CActiveRecord
 			'dirUno' => 'Dirección Línea 1',
 			'dirDos' => 'Dirección Línea 2',
 			'telefono' => 'Teléfono',
-			'ciudad' => 'Ciudad',
-			'estado' => 'Estado',
+			'ciudad_id' => 'Ciudad',
+			'provincia_id' => 'Estado',
 			'pais' => 'País',
 			'user_id' => 'User',
 		);
@@ -111,8 +111,8 @@ class Direccion extends CActiveRecord
 		$criteria->compare('dirUno',$this->dirUno,true);
 		$criteria->compare('dirDos',$this->dirDos,true);
 		$criteria->compare('telefono',$this->telefono,true);
-		$criteria->compare('ciudad',$this->ciudad,true);
-		$criteria->compare('estado',$this->estado,true);
+		$criteria->compare('ciudad_id',$this->ciudad_id,true);
+		$criteria->compare('provincia_id',$this->provincia_id,true);
 		$criteria->compare('pais',$this->pais,true);
 		$criteria->compare('user_id',$this->user_id);
 

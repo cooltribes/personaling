@@ -1,4 +1,4 @@
-/* Author: Cooltribes - Juan Pernia (@juanrules)  */
+ /* Author: Cooltribes - Juan Pernia (@juanrules)  */
 /* Project name: Personaling  al 15/07/2013 */ 
 
 /*==============================================================
@@ -743,28 +743,6 @@ src: url('../fonts/entypo.woff'),
 
 	input[type="text"], input[type="password"]{
 	min-height:40px}
-}
-
-#boton_facebook a,#boton_twitter a{
-	color: #fff;
-	display: block;
-	margin-left: 30px;	 
-	padding: 0.7em;
-}
-
-
-#boton_facebook{
-	background-color: #3B5998;
-	background-image: url(../images/icon_facebook_registrator.png);
-	background-position: left;
-	background-repeat: no-repeat;
-}
-
-#boton_twitter{
-	background-color: #4099FF;
-	background-image: url(../images/icon_twitter_registrator.png);
-	background-position: left;
-	background-repeat: no-repeat;
 
 }
 
@@ -776,14 +754,13 @@ src: url('../fonts/entypo.woff'),
 	label[for="Profile_sex"]{
 	width:31.6239%;
 	}
-	#Profile_first_name{ margin-bottom: 10px;}
 	#Profile_last_name{.margin_bottom_medium}
 	input[type="checkbox"]{
 		margin-right: 5px;
 		margin-top: 2px;
 	}
 	input[type="text"], input[type="password"]{
-		min-height:50px}
+		min-height:40px}
 }
 #caracteristicas{ /* Hack para la etiqueta de altura en Tutipo */
 	#Profile_altura{
@@ -1019,7 +996,6 @@ src: url('../fonts/entypo.woff'),
 					box-shadow:5px 5px 0 #ddd;
 				}
 				.label{
-					display:none; /* Estilo provisional hasta que se activen las promociones */
 					position:absolute;
 					top:10px;
 					left:2px;
@@ -1277,20 +1253,8 @@ src: url('../fonts/entypo.woff'),
 			margin-bottom:.3em;
 			font-size: 1em;
     		line-height: 1.3em;
-			height: 2.5em;
+			/*height: 2.5em;*/
 			overflow: hidden;
-			position:relative;
-			margin-top:0;
-			padding-top:.3em;
-			a{
-					bottom: 0;
-					display: block;
-					margin: 0 auto;
-					position: absolute;
-					width: 100%;
-				}
-			
-			
 			}
 		span.precio{
 			color:@color4;
@@ -1530,7 +1494,6 @@ ul.yiiPager .last
 				.btn-link{ .color1}
 			}
 			.label{
-				display:none; /* Estilo provisional hasta que se activen las promociones */
 				position:absolute;
 				top:.5em;
 				background-color:@color1;
@@ -1736,7 +1699,6 @@ ul.yiiPager .last
 				.btn-link{ .color1}
 			}
 			.label{
-				display:none; /* Estilo provisional hasta que se activen las promociones */
 				position:absolute;
 				top:.5em;
 				background-color:@color1;
@@ -1827,7 +1789,6 @@ img[alt="Loading"]{
 				.btn-link{ .color1}
 			}
 			.label{
-				display:none; /* Estilo provisional hasta que se activen las promociones */
 				position:absolute;
 				top:.5em;
 				background-color:@color1;
@@ -2057,24 +2018,6 @@ img[alt="Loading"]{
    		 margin-right: 0.5em;
 		}
 	}
-
-.boton_link{
-	background: none;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	color: @color1;
-	padding: 8px;
-	text-align: left;
-}
-.boton_link:hover{
-	transition: all ease 0.5s;
-	-moz-transition: all ease 0.5s;
-	-webkit-transition: all ease 0.5s;
-	-o-transition: all ease 0.5s;
-	-ms-transition: all ease 0.5s;
-
-}
-
 /*------------ Backend OFF --------------*/
 
 /* Estilos de prueba */
@@ -2173,7 +2116,6 @@ img[alt="Loading"]{
 		 width:1170px;
  	}
 
-
  }
 
 /* Mid desktop */
@@ -2184,10 +2126,6 @@ img[alt="Loading"]{
  	 #scroller-anchor #scroller{
 		 width:940px;
  	}
-	#boton_facebook a,#boton_twitter a{
-		font-size: 11px;
-		line-height: 14px;
-	}
 
 }
  
@@ -2199,10 +2137,6 @@ img[alt="Loading"]{
  	 #scroller-anchor #scroller{
 		 width:724px;
  	}
-	#boton_facebook a,#boton_twitter a{
-		font-size: 12px;
-		line-height: 14px;
-	}
 
 }
 /* Landscape phone to portrait tablet */

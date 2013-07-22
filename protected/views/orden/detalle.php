@@ -84,7 +84,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	}
 	else{
 				
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id));
+		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
 		
 		if(isset($balance))
 		{
@@ -194,6 +194,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 						
 						if($pago->tipo == 1)
 							echo("<td>Deposito o Transferencia</td>");
+						if($pago->tipo == 2)
+							echo("<td>Tarjeta de credito</td>");
 							//hacer los demas tipos
 								
 						echo("<td>".$detalle->nTransferencia."</td>");	
@@ -260,7 +262,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       
       
       <div class="row-fluid">
-        <div class="span6">
+        <div class="span12">
           <h3 class="braker_bottom margin_top">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
@@ -275,6 +277,8 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           <a href="#" class="btn"><i class="icon-edit"></i></a> </div>
+          
+        <!--  
         <div class="span6">
           <h3 class="braker_bottom margin_top">Dirección de Facturación</h3>
           <div class="vcard">
@@ -288,6 +292,8 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
             <a href="#" class="btn"><i class="icon-edit"></i></a> </div>
         </div>
+        -->
+        
       </div>
     </div>
     <div class="span5">

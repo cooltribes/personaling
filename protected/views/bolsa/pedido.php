@@ -26,7 +26,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       <hr/>
       <p><strong>Para completar tu comprar debes:</strong></p>
       <ol>
-        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en la siguiente cuenta bancaria: <br>
+        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en la siguiente cuenta bancaria: <br>
           <br>
           <ul class="margin_bottom_medium">
             <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
@@ -57,7 +57,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
     <hr/>
     <p><strong>Para completar tu comprar debes:</strong></p>
     <ol>
-      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo $orden->total; ?> via MercadoPago. <br>
+      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via MercadoPago. <br>
       </li>
       <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
       <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
@@ -86,33 +86,51 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 	  	";
 		
 	  }
+	  
+	  if($orden->estado==3) // Listo el pago
+	  {
+	  	echo "
+	  	
+	  	<div class='alert alert-success margin_top_medium margin_bottom'>
+	      <h1>Tu Pedido ha sido recibido con éxito.</h1>
+	     	<p>Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de credito.<br/>
+	     	Tu pedido será enviado en las próximas horas.</p>
+	    </div>
+
+	  	";
+		
+	  }
       
       ?>
         <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <h3>Resumen del pedido </h3>
           <p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p>
-          <p> <strong>Fecha estimada de entrega</strong>: 01/01/2013</p>
+          <p> <strong>Fecha estimada de entrega</strong>: <?php echo date("d/m/Y",strtotime($orden->fecha)); ?> - <?php echo  date('d/m/Y', strtotime($orden->fecha.'+1 week')); ?></p>
           <hr/>
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo $orden->subtotal; ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Descuento:</th>
-              <td><?php echo $orden->descuento; ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo $orden->envio; ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo $orden->iva; ?> Bs.</td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
+            </tr>
+            <tr>
+              <th class="text_align_left">Seguro:</th>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->seguro, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo $orden->total; ?> Bs.</h4></td>
+              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
             </tr>
           </table>
           <hr/>

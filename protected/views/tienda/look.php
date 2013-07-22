@@ -28,16 +28,28 @@
 							 array( // ajaxOptions
 						    'type' => 'POST',
 						    'dataType'=>'json',
-						    'beforeSend' => "function( request )
+						    'beforeSend' => "function( request, opts )
 						                     {
 						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       if ($('#ocasion_actual').val() == '".$categoria->id."'){
+						                       	 	$('.dropdown').removeClass('open');
+						                       		$('#div_ocasiones').show();
+						                    		$('#div_shopper').hide();
+						                       	 request.abort();
+						                       } 
+						                       		
+						                       
 						                     }",
 						    'success' => "function( data )
 						                  {
 						                    // handle return data
 						                    //alert( data );
 						                   // alert(data.accion);
+						                   $('#ocasion_actual').val('".$categoria->id."');
+						                   $('.dropdown').removeClass('open');
 						                    $('#div_ocasiones').html(data.div);
+						                    $('#div_ocasiones').show();
+						                    $('#div_shopper').hide();
 						                  }",
 						    'data' => array( 'padreId' => $categoria->id )
 						  ),
@@ -57,6 +69,11 @@
             
             </ul>
           </li>
+          <li>
+          	<a href="#" onclick="js:show_shopper();" >Personal Shoppers </a>
+          	
+          </li>
+          <!--
           <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <b class="caret"></b></a>
             <ul class="dropdown-menu ">
               <li><a href="#" title="Para Mama">Para Mamá</a> </li>
@@ -67,6 +84,7 @@
               <li><a href="Crear_Perfil_Secundario_Usuaria_Mi_Tipo.php" title="Crear nuevo perfil secundario"><i class="icon-plus"></i> Crear un nuevo perfil</a> </li>
             </ul>
           </li>
+          -->
         </ul>
        
         	<?php /** @var BootActiveForm $form */
@@ -80,7 +98,26 @@
           <?php // Recordar que aqui va el componente Select2 de la extension del Bootstrap para Yii. La misma que esta en Talla y colores del admin ?>
           
             <?php // echo $form->textFieldRow($model, 'textField', array('placeholder'=>"Buscar por Personal Shopper",'class'=>'')); ?>
-            <?php echo CHtml::textField('search','',array('placeholder'=>"Buscar por Personal Shopper")); ?>
+            <?php echo CHtml::textField('search','',array('placeholder'=>"Buscar en todos los looks")); ?>
+            	<?php
+              	/*
+              	 $colores = User::model()->findAll(); //array('order'=>'first_name') ordena alfeticamente por nombre
+				 foreach($colores as $i => $row){
+					$data[$i]['text']= $row->profile->first_name.' '.$row->profile->last_name;
+					$data[$i]['id'] = $row->id;
+				 }
+				$this->widget('bootstrap.widgets.TbSelect2',array(
+				'asDropDownList' => false,
+	'name' => 'clevertech',
+	'options' => array(
+		 'placeholder'=> "Buscar por Personal Shopper",
+		 'multiple'=>true,
+		 'data'=>$data,
+
+	),
+			)
+				);*/
+				?>
             <div class="btn-group">
           
               <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'label'=>'Buscar','type'=>'danger')); ?>
@@ -90,105 +127,79 @@
       </nav>
       <!--/.nav-collapse --> 
     </div>
-    <div class="navbar-inner sub_menu" id="div_ocasiones"  >
-    
-    <?php //Este submenu carga las categorias segun lo seleccinonado arriba, por ejemplo de fiesta: coctel, familia, etc ?>
-     
-      <!--/.nav-collapse --> 
+    <input type="hidden" value="" id="ocasion_actual" /> 
+    <div class="navbar-inner sub_menu">
+    	<div id="div_ocasiones"></div>
+		<div id="div_shopper" style="display: none">
+				<form id="form_shopper">
+					 <nav class="  ">
+					        <ul class="nav">
+					        	<?php $personal_shopper = User::model()->findAll(array('condition'=>'personal_shopper=1'));	?>
+								<?php foreach($personal_shopper as $shopper){?>
+					          <li>
+					            <label>
+					              <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
+					            </label>
+					          </li>	
+								<?php } ?>
+					        </ul>
+					 </nav>
+				 </form> 
+    	</div>    	    
     </div>
   </div>
 </div>
 
 <!-- SUBMENU OFF -->
-
 <div class="container" id="tienda_looks">
-  <div class="row" id="looks">
-  	
-	
-	<?php foreach($looks as $look): ?>
-		<?php //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
-<div class="span4 look">
-      <article > 
-      	<?php echo CHtml::image('../images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
-                  	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
-                  
-                  	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
-                  	
-                  	<?php
-                    /*
-                    //"style"=>"display: none",              	
-                        $script = "$('#"."imglook".$look->id."').load(function(){
-									//alert('cargo');
-									$('#imgloading".$look->id."').hide();
-									$(this).show();
-									//$('#loader_img').hide();
-						});";
-  						Yii::app()->clientScript->registerScript('img_ps_script'.$look->id,$script);
-					 * 
-					 */
-					 
-					 /*
-					 echo "<script>
-					 $('#"."imglook".$look->id."').load(function(){
-									$('#imgloading".$look->id."').hide();
-									$(this).show();
-						});
-					 </script>";
-					 */
-  					?>
-        <div class="hidden-phone margin_top_small vcard row-fluid">
-          <div class="span2  ">
-            <div class="avatar"> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
-          </div>
-          <div class="span6"> <span class="muted">Look creado por: </span>
-            <h5><a href="#" title="profile" class="url"><span class="fn"> <?php echo $look->user->profile->first_name; ?> </span></a></h5>
-          </div>
-          <div class="span4"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
-        </div>
-        <div class="share_like">
-          <button class="btn-link" title="Me encanta" href="#"><span class="entypo icon_personaling_big">♡</span></button>
-          <div class="btn-group">
-            <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
-            <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-            </ul>
-            
-            <!-- AddThis Button END --> 
-            
-          </div>
-        </div>
-        <span class="label label-important">Promoción</span> 
-        </article>
-    </div>		
-	<?php endforeach; ?>
-	<script>
-	$('.imglook').on("load",function(){
-		console.log('clicking');
-		$(this).parent().prev("img").hide();
-		$(this).show();
-	});
-	$(document).on('click','.imgloading', function(){
-    console.log('clicking');
-   // FB.Canvas.scrollTo(0,0);        
-	});
-</script>
-	</div>
-	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
-	    'contentSelector' => '#looks',
-	    'itemSelector' => 'div.look',
-	    'loadingText' => 'Loading...',
-	    'donetext' => 'This is the end... my only friend, the end',
-	  //  'afterAjaxUpdate' => 'alert("hola");',
-	    'pages' => $pages,
-	)); ?>    
-	
-    
-   
-	
-  </div>
+<?php 
+$this->renderPartial('_look',array(
+	'looks'=>$looks,
+	'pages'=>$pages,
+)); 
+?>
 </div>
+  
 <!-- /container -->
 
-
+<script type="text/javascript">
+function show_shopper(){
+	$('#div_ocasiones').hide();
+	$('#div_shopper').show();
+}
+// here is the magic
+function refresh()
+{
+	//alert($('.check_ocasiones').serialize());
+	//alert($('.check_ocasiones').length) 
+    <?php echo CHtml::ajax(array(
+            'url'=>array('tienda/look'),
+            'data'=> "js:$('.check_ocasiones, .check_shopper').serialize()",
+            //'data' => array( 'ocasiones' => 55 ),
+            'type'=>'post',
+            'dataType'=>'json',
+            'success'=>"function(data)
+            {
+                if (data.status == 'failure')
+                {
+                    $('#dialogColor div.divForForm').html(data.div);
+                          // Here is the trick: on submit-> once again this function!
+                    $('#dialogColor div.divForForm form').submit(addColor);
+                }
+                else
+                {
+                   //	alert(data.condicion);
+                   $('#tienda_looks').html(data.div);
+                   // setTimeout(\"$('#dialogColor').modal('hide') \",3000);
+                }
+ 
+            } ",
+            ))?>;
+    return false; 
+ 
+}
+ 
+</script>
 <script>
 function moveScroller() {
     var move = function() {

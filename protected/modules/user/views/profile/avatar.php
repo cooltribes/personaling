@@ -50,7 +50,7 @@
             	
 
     	 <div class="braker_horz_top_1 ">
-      <label for="fileToUpload">Elige la imágen que deseas subir</label><br />
+      <label for="fileToUpload">Elige la imagen que deseas subir</label><br />
            <!--
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
       -->
@@ -64,7 +64,7 @@
          <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'danger',
-			'label'=>'Haz click aqui para subir la imágen',
+			'label'=>'Haz click aqui para subir la imagen',
 		)); ?>
       </div>
       </div>

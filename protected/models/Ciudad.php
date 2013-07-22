@@ -1,29 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "{{direccionEnvio}}".
+ * This is the model class for table "{{ciudad}}".
  *
- * The followings are the available columns in table '{{direccionEnvio}}':
+ * The followings are the available columns in table '{{ciudad}}':
  * @property integer $id
  * @property string $nombre
- * @property string $apellido
- * @property string $cedula
- * @property string $dirUno
- * @property string $dirDos
- * @property string $telefono
- * @property string $ciudad_id
- * @property string $provincia_id
- * @property string $pais
+ * @property integer $provincia_id
+ * @property integer $ruta_id
  *
  * The followings are the available model relations:
- * @property Orden[] $ordens
+ * @property Provincia $provincia
+ * @property Ruta $ruta
  */
-class DireccionEnvio extends CActiveRecord
+class Ciudad extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return DireccionEnvio the static model class
+	 * @return Ciudad the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -35,7 +30,7 @@ class DireccionEnvio extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{direccionEnvio}}';
+		return '{{ciudad}}';
 	}
 
 	/**
@@ -46,15 +41,12 @@ class DireccionEnvio extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ciudad_id, provincia_id', 'required'),
-			array('ciudad_id, provincia_id', 'numerical', 'integerOnly'=>true),
-			array('nombre, apellido', 'length', 'max'=>100),
-			array('cedula', 'length', 'max'=>20),
-			array('dirUno, dirDos', 'length', 'max'=>120),
-			array('pais, telefono', 'length', 'max'=>45),
+			array('nombre, provincia_id, ruta_id', 'required'),
+			array('provincia_id, ruta_id', 'numerical', 'integerOnly'=>true),
+			array('nombre', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, apellido, cedula, dirUno, dirDos, ciudad_id, provincia_id, pais', 'safe', 'on'=>'search'),
+			array('id, nombre, provincia_id, ruta_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,7 +58,8 @@ class DireccionEnvio extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'ordens' => array(self::HAS_MANY, 'Orden', 'direccionEnvio_id'),
+			'provincia' => array(self::BELONGS_TO, 'Provincia', 'provincia_id'),
+			'ruta' => array(self::BELONGS_TO, 'Ruta', 'ruta_id'),
 		);
 	}
 
@@ -78,14 +71,8 @@ class DireccionEnvio extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
-			'apellido' => 'Apellido',
-			'cedula' => 'Cedula',
-			'dirUno' => 'Dir Uno',
-			'dirDos' => 'Dir Dos',
-			'telefono' => 'Telefono',
-			'ciudad_id' => 'Ciudad',
-			'provincia_id' => 'Estado',
-			'pais' => 'Pais',
+			'provincia_id' => 'Provincia',
+			'ruta_id' => 'Ruta',
 		);
 	}
 
@@ -102,14 +89,8 @@ class DireccionEnvio extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nombre',$this->nombre,true);
-		$criteria->compare('apellido',$this->apellido,true);
-		$criteria->compare('cedula',$this->cedula,true);
-		$criteria->compare('dirUno',$this->dirUno,true);
-		$criteria->compare('dirDos',$this->dirDos,true);
-		$criteria->compare('telefono',$this->telefono,true);		
-		$criteria->compare('ciudad_id',$this->ciudad_id,true);
-		$criteria->compare('provincia_id',$this->provincia_id,true);
-		$criteria->compare('pais',$this->pais,true);
+		$criteria->compare('provincia_id',$this->provincia_id);
+		$criteria->compare('ruta_id',$this->ruta_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

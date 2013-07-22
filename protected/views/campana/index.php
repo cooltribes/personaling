@@ -33,18 +33,26 @@ $this->breadcrumbs=array(
     <tr>
       <th scope="col" colspan="6"> Totales </th>
     </tr>
+    <?php
+    $total = Campana::model()->count();
+	$programadas = Campana::model()->countByAttributes(array('estado'=>1));
+	$recepcion = Campana::model()->countByAttributes(array('estado'=>2));
+	$revision = Campana::model()->countByAttributes(array('estado'=>3));
+	$ventas = Campana::model()->countByAttributes(array('estado'=>4));
+	$finalizadas = Campana::model()->countByAttributes(array('estado'=>5));
+    ?>
     <tr>
-      <td><p class="T_xlarge margin_top_xsmall">120 </p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $total; ?> </p>
         Totales</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 144 </p>
-        Programada</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 156</p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $programadas; ?> </p>
+        Programadas</td>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $recepcion; ?></p>
         Recepción</td>
-      <td><p class="T_xlarge margin_top_xsmall">150</p>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $revision; ?></p>
         Revisión</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $ventas; ?></p>
         Ventas </td>
-      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $finalizadas; ?> </p>
         Finalizadas</td>
     </tr>
   </table>

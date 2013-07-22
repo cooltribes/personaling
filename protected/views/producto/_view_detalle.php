@@ -170,7 +170,7 @@
 						
 					}
 				}
-
+				
 				if( $cont1 == 1) // Si solo hay un color seleccionelo
 				{
 					$color = Color::model()->findByPk($cantcolor[0]);							
@@ -253,8 +253,8 @@
           </div>
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
-              <li class="active"><a href="#detalles">Detalles</a></li>
-              <li><a href="#Envio">Envio</a></li>
+              <li class="active"><a href="#detalles" data-toggle="tab">Detalles</a></li>
+              <li><a href="#envio" data-toggle="tab">Envio</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="detalles">
@@ -267,7 +267,12 @@
                   <!-- <p><a href="#">Ver looks de esta marca</a></p>-->
                   <p><strong>Descripción</strong>: <?php echo $marca->descripcion; ?></p> </div>
               </div>
-              <div class="tab-pane" id="Envio">Envio</div>
+              <div class="tab-pane" id="envio">
+	            <div class="row">
+	            	<img class="span1" src="<?php echo Yii::app()->baseUrl; ?>/images/grupo_zoom_logo.png"/>
+	            	<p class="span3 padding_top_small">Nuestros envios se realizan a través del <strong>Grupo Zoom</strong></p>
+	            </div>
+	          </div>
             </div>
           </div>
           <div class="braker_horz_top_1">

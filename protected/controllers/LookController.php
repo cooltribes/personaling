@@ -464,7 +464,7 @@ public function actionCategorias(){
 			//}
 		} else {
 			
-			if ($model->status == 0){ // comprueba que el look no se haya enviado o aprovado
+			if ($model->status == 0 || UserModule::isAdmin()){ // comprueba que el look no se haya enviado o aprovado
 			$user = User::model()->findByPk(Yii::app()->user->id);
 			$criteria=new CDbCriteria;
 			$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';

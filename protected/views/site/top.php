@@ -231,7 +231,8 @@ function str_lreplace($search, $replace, $subject)
         <div class="row">
             <div class="span6"> <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_blanco.jpg" width="571" height="75" alt="Banner blanco" /> </div>
             <div class="span6">
-                <div  class="banner_1"> <a href="#"> Ver todos los looks</a>
+                <div  class="banner_1">
+                	<?php echo CHtml::link('Ver todos los looks', $this->createUrl('tienda/look')); ?>
                     <div class="pull-right"><a href="#"> <span class="entypo icon_personaling_big color11">&#59146;</span></a></div>
                 </div>
             </div>

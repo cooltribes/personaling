@@ -318,6 +318,19 @@ class Look extends CActiveRecord
 		$textos = array('Creado','Enviado','Aprobado');
 		return $textos[$this->status]; 
 	}
+	public function getTotalbyUser()
+	{
+		
+		return count($this->findAll(array('condition'=>'user_id = '.Yii::app()->user->id)));
+	}
+	
+	public function getxStatusbyUser($status) 
+	{
+		
+		return $this->countByAttributes(array(),'status = :status and user_id = :user_id ',
+    		array(':status'=>$status,':user_id'=>Yii::app()->user->id)
+			);
+	}	
 	/* total de look */
 	public function getTotal()
 	{

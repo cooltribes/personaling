@@ -12,8 +12,8 @@
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab1" data-toggle="tab">Looks más vendidos</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Próxima Campaña</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Looks en promoción</a></li>
+<!--                     <li><a href="#tab2" data-toggle="tab">Próxima Campaña</a></li>
+ -->                    <li><a href="#tab3" data-toggle="tab">Looks en promoción</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab1" >
@@ -73,9 +73,9 @@
 } ?>
                     </div>
                     </div>
-                    <div class="tab-pane" id="tab2">
+<!--                     <div class="tab-pane" id="tab2">
                         <p>Howdy, I'm in Section 2.</p>
-                    </div>
+                    </div> -->
                      <div class="tab-pane" id="tab3">
                         <div class="items row ">
                         <?php

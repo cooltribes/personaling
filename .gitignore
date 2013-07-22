@@ -11,3 +11,5 @@ _svn
 svn-commit*.tmp
 .DS_store
 *.xml
+
+sftp-config.json

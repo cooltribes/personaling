@@ -351,15 +351,6 @@ $this->breadcrumbs=array(
             <div id="scroller-anchor"></div>
             <div id="scroller">
                  <?php 
-		 /*
-		  $this->widget('bootstrap.widgets.TbButton', array(
-            				'buttonType'=>'submit',
-						    'label'=>'Guardar',
-						    'block'=>'true',
-						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-						    'size'=>'large', // null, 'large', 'small' or 'mini'
-						)); 
-		  * */
 		 
 		 $this->widget('bootstrap.widgets.TbButton', array(
 				    'buttonType'=>'ajaxButton',
@@ -367,65 +358,74 @@ $this->breadcrumbs=array(
 				    'label'=>'Guardar',
 				    'block'=>'true',
 				   	'size'=> 'large',
-				   // 'url'=>array('producto/tallacolor'),
-				   'url'=> CController::createUrl('producto/tallacolor',array('id'=>$model->id)) ,
+				    'url'=> CController::createUrl('producto/tallacolor',array('id'=>$model->id)) ,
 				    'htmlOptions'=>array('id'=>'buttonGuardar'),
 				    'ajaxOptions'=>array(
 				    	    'type' => 'POST',
 				    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
-		    				/*
-		    				'beforeSend' => "function( request )
-			                     {
-			                       var codigos = '';
-			                       $('.input-sku').each(function(index){
-			                       		codigos += $(this).val()+',';
-			                       });
-								   codigos = codigos.substring(0, codigos.length-1);
-			                       var cantidades = '';
-			                       $('.input-cant').each(function(index){
-			                       		cantidades +=$(this).val()+ ',';
-			                       });
-			                       cantidades = cantidades.substring(0, cantidades.length-1);
-			                       this.data += '&cantidades='+cantidades+'&codigos='+codigos;
-			                     }",
-							 * 
-							 */
-		                     'success' => "function( data )
+		                    'success' => "function( data )
 				                  {
-				                    // handle return data
-				                   // alert( data );
-				                   // $('#table_tallacolor').append(data);
+
 				                   data = JSON.parse( data );
-				                    if(data.status=='success'){
-				                        // $('#formResult').html('form submitted successfully.');
-				                        //alert('si');
-				                        // $('#Tallacolor-Form')[0].reset();
+				                   if(data.status=='success'){
 				                        $('.error').hide();
 				                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
-									}
-				                         else{
-				                         	id = data.id;
-											 delete data['id'];
-				                         	
+									}else{
+										id = data.id;
+										delete data['id'];
 				                        $.each(data, function(key, val) {
 				                        	key_tmp = key.split('_');
 											key_tmp.splice(1,0,id);
 				                        	key = key_tmp.join('_');
-											
-				                        	//alert('#Tallacolor-Form #'+key+'_em_');
-				                        	 
-				                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
-				                        $('#Tallacolor-Form #'+key+'_em_').show();
+					                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+					                        $('#Tallacolor-Form #'+key+'_em_').show();
 				                        });
-										}
+									}
 				                  }",
-				                //  'data'=>array('id'=>$model->id),
 					),
 				)); 
 		
 				?> 
                 <ul class="nav nav-stacked nav-tabs margin_top">
-                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente">Guardar y avanzar</a></li>
+                    <li>
+                    	
+                 <?php 
+		 
+		 
+				   
+				    echo CHtml::ajaxLink(
+					  "Guardar y avanzar",
+					 CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
+					  array(
+				   
+				    	    'type' => 'POST',
+				    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
+		                    'success' => "function( data )
+				                  {
+
+				                   data = JSON.parse( data );
+				                   if(data.status=='success'){
+				                   		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
+				                        //$('.error').hide();
+				                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+									}else{
+										id = data.id;
+										delete data['id'];
+				                        $.each(data, function(key, val) {
+				                        	key_tmp = key.split('_');
+											key_tmp.splice(1,0,id);
+				                        	key = key_tmp.join('_');
+					                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+					                        $('#Tallacolor-Form #'+key+'_em_').show();
+				                        });
+									}
+				                  }",
+					),
+					array('id'=>'buttonGuardar')
+				); 
+		
+				?>                     	
+                    </li>
                     <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
                     <li><a href="#" title="Duplicar">Duplicar Producto</a></li>

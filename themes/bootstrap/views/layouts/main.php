@@ -73,8 +73,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 		
 	if (Yii::app()->user->id){ 
-		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
-		$nombre = $profile->first_name.' '.$profile->last_name;
+		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));    
+		$user = User::model()->findByPk(Yii::app()->user->id);
+    $avatar ='';
+    if($user){ 
+      $avatar = "<img  src='".$user->getAvatar()."' class='img-circle avatar_menu' width='30' height='30' />   ";
+    }
+    $nombre = $profile->first_name.' '.$profile->last_name;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 
 		if(isset($bolsa))
@@ -82,6 +87,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 		
 	} else {
 		$nombre = 'N/A';
+    $avatar = '';
+
 	}
 	
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -89,6 +96,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         array(
             'class'=>'bootstrap.widgets.TbMenu',
             'htmlOptions'=>array('class'=>'pull-right'),
+            'encodeLabel'=>false,
             //'encodeLabel'=>false,
             'items'=>array(
   
@@ -102,15 +110,16 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
 				array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart',   'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                 array('label'=>$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
+                array('label'=>$avatar.$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
-					array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+					           array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
                     
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),

@@ -3,318 +3,7 @@
 <head>
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<style type="text/css">
-/* Mobile-specific Styles */
-@media only screen and (max-device-width: 480px) {
-table[class=w0], td[class=w0] {
-	width: 0 !important;
-}
-table[class=w10], td[class=w10], img[class=w10] {
-	width:10px !important;
-}
-table[class=w15], td[class=w15], img[class=w15] {
-	width:5px !important;
-}
-table[class=w30], td[class=w30], img[class=w30] {
-	width:10px !important;
-}
-table[class=w60], td[class=w60], img[class=w60] {
-	width:10px !important;
-}
-table[class=w125], td[class=w125], img[class=w125] {
-	width:80px !important;
-}
-table[class=w130], td[class=w130], img[class=w130] {
-	width:55px !important;
-}
-table[class=w140], td[class=w140], img[class=w140] {
-	width:90px !important;
-}
-table[class=w160], td[class=w160], img[class=w160] {
-	width:180px !important;
-}
-table[class=w170], td[class=w170], img[class=w170] {
-	width:100px !important;
-}
-table[class=w180], td[class=w180], img[class=w180] {
-	width:80px !important;
-}
-table[class=w195], td[class=w195], img[class=w195] {
-	width:80px !important;
-}
-table[class=w220], td[class=w220], img[class=w220] {
-	width:80px !important;
-}
-table[class=w240], td[class=w240], img[class=w240] {
-	width:180px !important;
-}
-table[class=w255], td[class=w255], img[class=w255] {
-	width:185px !important;
-}
-table[class=w275], td[class=w275], img[class=w275] {
-	width:135px !important;
-}
-table[class=w280], td[class=w280], img[class=w280] {
-	width:135px !important;
-}
-table[class=w300], td[class=w300], img[class=w300] {
-	width:140px !important;
-}
-table[class=w325], td[class=w325], img[class=w325] {
-	width:95px !important;
-}
-table[class=w360], td[class=w360], img[class=w360] {
-	width:140px !important;
-}
-table[class=w410], td[class=w410], img[class=w410] {
-	width:180px !important;
-}
-table[class=w470], td[class=w470], img[class=w470] {
-	width:200px !important;
-}
-table[class=w580], td[class=w580], img[class=w580] {
-	width:280px !important;
-}
-table[class=w640], td[class=w640], img[class=w640] {
-	width:300px !important;
-}
-table[class*=hide], td[class*=hide], img[class*=hide], p[class*=hide], span[class*=hide] {
-	display:none !important;
-}
-table[class=h0], td[class=h0] {
-	height: 0 !important;
-}
-p[class=footer-content-left] {
-	text-align: center !important;
-}
-#headline p {
-	font-size: 30px !important;
-}
-.article-content, #left-sidebar {
-	-webkit-text-size-adjust: 90% !important;
-	-ms-text-size-adjust: 90% !important;
-}
-.header-content, .footer-content-left {
-	-webkit-text-size-adjust: 80% !important;
-	-ms-text-size-adjust: 80% !important;
-}
-img {
-	height: auto;
-	line-height: 100%;
-}
-}
-/* Client-specific Styles */
-#outlook a {
-	padding: 0;
-}	/* Force Outlook to provide a "view in browser" button. */
-body {
-	width: 100% !important;
-}
-.ReadMsgBody {
-	width: 100%;
-}
-.ExternalClass {
-	width: 100%;
-	display:block !important;
-} /* Force Hotmail to display emails at full width */
-/* Reset Styles */
-/* Add 100px so mobile switch bar doesn't cover street address. */
-body {
-	background-color: #ececec;
-	margin: 0;
-	padding: 0;
-}
-img {
-	outline: none;
-	text-decoration: none;
-	display: block;
-}
-br, strong br, b br, em br, i br {
-	line-height:100%;
-}
-h1, h2, h3, h4, h5, h6 {
-	line-height: 100% !important;
-	-webkit-font-smoothing: antialiased;
-}
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-	color: blue !important;
-}
-h3{ color:#999999; font-size:12px; text-transform:uppercase; margin-top:10px;}
-h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-	color: red !important;
-}
-/* Preferably not the same color as the normal header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
-h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-	color: purple !important;
-}
-/* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */  
-table td, table tr {
-	border-collapse: collapse;
-}
-.yshortcuts, .yshortcuts a, .yshortcuts a:link, .yshortcuts a:visited, .yshortcuts a:hover, .yshortcuts a span {
-	color: black;
-	text-decoration: none !important;
-	border-bottom: none !important;
-	background: none !important;
-}	/* Body text color for the New Yahoo.  This example sets the font of Yahoo's Shortcuts to black. */
-/* This most probably won't work in all email clients. Don't include <code _tmplitem="499" > blocks in email. */
-code {
-	white-space: normal;
-	word-break: break-all;
-}
-#background-table {
-	background-color: #ececec;
-}
-/* Webkit Elements */
-#top-bar {
-	border-radius:6px 6px 0px 0px;
-	-moz-border-radius: 6px 6px 0px 0px;
-	-webkit-border-radius:6px 6px 0px 0px;
-	-webkit-font-smoothing: antialiased;
-	background-color: #a25f7f;
-	color: #ffffff;
-}
-#top-bar a {
-	font-weight: bold;
-	color: #ffffff;
-	text-decoration: none;
-}
-#footer {
-	border-radius:0px 0px 6px 6px;
-	-moz-border-radius: 0px 0px 6px 6px;
-	-webkit-border-radius:0px 0px 6px 6px;
-	-webkit-font-smoothing: antialiased;
-}
-/* Fonts and Content */
-body, td {
-	font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
-}
-.header-content, .footer-content-left, .footer-content-right {
-	-webkit-text-size-adjust: none;
-	-ms-text-size-adjust: none;
-}
-/* Prevent Webkit and Windows Mobile platforms from changing default font sizes on header and footer. */
-.header-content {
-	font-size: 12px;
-	color: #ffffff;
-}
-.header-content a {
-	font-weight: bold;
-	color: #ffffff;
-	text-decoration: none;
-}
-#headline p {
-	color: #d9fffd;
-	font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
-	font-size: 36px;
-	text-align: center;
-	margin-top:0px;
-	margin-bottom:30px;
-}
-#headline p a {
-	color: #d9fffd;
-	text-decoration: none;
-}
-.article-title {
-	font-size: 18px;
-	line-height:24px;
-	color: #6e1346;
-	font-weight:bold;
-	margin-top:0px;
-	margin-bottom:18px;
-	font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
-}
-.article-title a {
-	color: #6e1346;
-	text-decoration: none;
-}
-.article-title.with-meta {
-	margin-bottom: 0;
-}
-.article-meta {
-	font-size: 13px;
-	line-height: 20px;
-	color: #ccc;
-	font-weight: bold;
-	margin-top: 0;
-}
-.article-content {
-	font-size: 13px;
-	line-height: 18px;
-	color: #666666;
-	margin-top: 0px;
-	margin-bottom: 18px;
-	font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
-}
-.article-content a {
-	color: #a25f7f;
-	font-weight:bold;
-	text-decoration:none;
-}
-.article-content img {
-	max-width: 100%
-}
-.article-content ol, .article-content ul {
-	margin-top:0px;
-	margin-bottom:18px;
-	margin-left:19px;
-	padding:0;
-}
-.article-content li {
-	font-size: 13px;
-	line-height: 18px;
-	color: #666666;
-}
-.article-content li a {
-	color: #a25f7f;
-	text-decoration:underline;
-}
-.article-content p {
-	margin-bottom: 15px;
-}
-.footer-content-left {
-	font-size: 12px;
-	line-height: 15px;
-	color: #666666;
-	margin-top: 0px;
-	margin-bottom: 15px;
-}
-.footer-content-left a {
-	color: #666666;
-	font-weight: bold;
-	text-decoration: none;
-}
-.footer-content-right {
-	font-size: 11px;
-	line-height: 16px;
-	color: #666666;
-	margin-top: 0px;
-	margin-bottom: 15px;
-}
-.footer-content-right a {
-	color: #666666;
-	font-weight: bold;
-	text-decoration: none;
-}
-#footer {
-	background-color: #dddddd;
-	color: #666666;
-}
-#footer a {
-	color: #666666;
-	text-decoration: none;
-	font-weight: bold;
-}
-#permission-reminder {
-	white-space: normal;
-}
-#street-address {
-	color: #666666;
-	white-space: normal;
-}
-hr{ color:#dddddd; border-color:#dddddd;}
-th{ color:#999999; border-bottom:1px solid #ddd;}
-</style>
+
 <!--[if gte mso 9]>
 <style _tmplitem="499" >
 .article-content ol, .article-content ul {
@@ -421,14 +110,14 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     <h2 class="h2">Siguiente paso</h2>
                                                                     <p><strong>Para completar tu comprar debes:</strong></p>
                                                                     <ol>
-                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en una de las siguientes cuentas: <br>
+                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en la siguientes cuenta bancaria: <br>
                                                                             <br/>
                                                                             <ul>
                                                                                 <li><strong>Banesco</strong><br/>
-                                                                                    Cuenta Corriente Nº 0134 0277 98 2771093092<br/>
-                                                                                    A nombre de PERSONALING C.A<br/>
-                                                                                    RIF: J-40236088-6<br/>
-                                                                                    Correo electrónico: ventas@personaling.com<br/>
+                                                                                    <strong>Cuenta Corriente Nº</strong> 0134 0277 98 2771093092<br/>
+                                                                                    <strong>A nombre de</strong>: PERSONALING C.A<br/>
+                                                                                    <strong>RIF</strong>: J-40236088-6<br/>
+                                                                                    <strong>Correo electrónico:</strong> ventas@personaling.com<br/>
                                                                                     <br>
                                                                                 </li>
                                                                             </ul>
@@ -470,28 +159,28 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 </table>
                                                                                                                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
-                                                                        <th  style="text-align:left">Subtotal:</th>
+                                                                        <td  style="text-align:left"><b>Subtotal:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th style="text-align:left">Descuento:</th>
+                                                                        <td style="text-align:left"><b>Descuento:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th style="text-align:left">Envío:</th>
+                                                                        <td style="text-align:left"><b>Envío:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th style="text-align:left">I.V.A. (12%):</th>
+                                                                        <td style="text-align:left"><b>I.V.A. (12%):</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th style="text-align:left">Seguro:</th>
+                                                                        <td style="text-align:left"><b>Seguro:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->seguro, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th style="text-align:left"><h4>Total:</h4></th>
-                                                                        <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
+                                                                        <td style="text-align:left"><h4 class="color1">TOTAL:</h4></th>
+                                                                        <td><h4 class="color1"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
                                                                     </tr>
                                                                 </table>
                                                                 <hr/>

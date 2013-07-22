@@ -1030,17 +1030,36 @@ class BolsaController extends Controller
 		$datos=$datos.'<th scope="col">Número</th>';		
 		$datos=$datos.'<th scope="col">Nombre en la Tarjeta</th>';
 		$datos=$datos.'<th scope="col">Fecha de Vencimiento</th>';
-		$datos=$datos.'</tr>';		
-		$datos=$datos.'<tr>';
-		$datos=$datos.'<td><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" ></td>';
-		$datos=$datos.'<td><i class="icon-picture"></i></td>';
-		$datos=$datos.'<td>Mastercard</td>';
-		$datos=$datos.'<td>XXXX XXXX XXXX 6589</td>';
-		$datos=$datos.'<td>JOHANN MARQUEZ</td>';
-		$datos=$datos.'<td>12/2018</td>';
-		$datos=$datos.'</tr>';
-		$datos=$datos.'<table>';
+		$datos=$datos.'</tr>';	
+		
+		$tarjetas = TarjetaCredito::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id));
+		
+		if(isset($tarjetas))
+		{
+			foreach($tarjetas as $cada){
 				
+				$datos=$datos.'<tr>';
+				$datos=$datos.'<td><input type="radio" name="optionsRadios" id="'.$cada->id.'" value="option1" ></td>';
+				$datos=$datos.'<td><i class="icon-picture"></i></td>';
+				$datos=$datos.'<td>Mastercard</td>';
+				
+				$rest = substr($cada->numero, -4);
+				
+				$datos=$datos.'<td>XXXX XXXX XXXX '.$rest.'</td>';
+				$datos=$datos.'<td>'.$cada->nombre.'</td>';
+				$datos=$datos.'<td>'.$cada->vencimiento.'</td>';
+				$datos=$datos.'</tr>';
+			}	
+			$datos=$datos.'</table>';
+		}
+		else
+			{
+				$datos=$datos.'<tr>';
+				$datos=$datos.'<td>No tienes tarjetas de credito asociadas.</td>';
+				$datos=$datos.'</tr>';
+				$datos=$datos.'</table>';
+			}	
+			
 		
 		$datos=$datos.'<button type="button" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>';
     	

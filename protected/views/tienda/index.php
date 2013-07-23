@@ -31,20 +31,20 @@
 							var imag;
 							var original;
 							var segunda;
-
+							
 							$('.producto').hover(function(){
-								if ($(this).children('img').length > 1){
-								$(this).children('img').eq(0).hide();
+								if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).hide();
 								
-								$(this).children('img').eq(0).next().show();
+								$(this).find('img').eq(0).next().show();
 								}
 							},function(){
-								if ($(this).children('img').length > 1){
-								$(this).children('img').eq(0).show();
+								if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).show();
 								
-								$(this).children('img').eq(0).next().hide();
+								$(this).find('img').eq(0).next().hide();
 								}
-							}); 
+							}); 						
 							
 						});
 	    				
@@ -221,6 +221,10 @@
   </div>
 </div>
 
+    <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+	<?php $this->endWidget(); ?>
+
 <script> 
 
 $(document).ready(function(){	
@@ -275,7 +279,7 @@ function randomFrom(arr){
     <!-- Button to trigger modal -->
     
      
-    <!-- Modal -->
+    <!-- Modal 
     <div id="myModal" class="modal hide tienda_modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -346,6 +350,8 @@ function randomFrom(arr){
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
     </div>
+    -->
+
     
 <script>
 
@@ -362,16 +368,16 @@ $(document).ready(function() {
 	});
 	*/ 
 	$('.producto').hover(function(){
-		if ($(this).children("img").length > 1){
-		$(this).children("img").eq(0).hide();
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).hide();
 		
-		$(this).children("img").eq(0).next().show();
+		$(this).find("img").eq(0).next().show();
 		}
 	},function(){
-		if ($(this).children("img").length > 1){
-		$(this).children("img").eq(0).show();
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).show();
 		
-		$(this).children("img").eq(0).next().hide();
+		$(this).find("img").eq(0).next().hide();
 		}
 	}); 
 	/*

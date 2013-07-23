@@ -93,8 +93,11 @@ class LookController extends Controller
 		$model = Look::model()->findByPk($id);
 		$model->view_counter++;
 		$model->save();
+		$productoView = new ProductoView;
+		$productoView->user_id = Yii::app()->user->id;
 		$this->render('view',array(
 						'model'=>$model,
+						'ultimos_vistos'=> $productoView->lastView(),
 						//'categorias'=>$categorias,
 					)
 				);		

@@ -55,6 +55,11 @@ class ProductoController extends Controller
 		$this->pageTitle = 'Personaling - '.$model->nombre;
     	$this->pageDesc = $model->descripcion;
 		$this->display_seo();
+		$view = new ProductoView;
+		$view->producto_id = $id;
+		$view->user_id = Yii::app()->user->id;
+		if (!$view->save())
+			Yii::trace('ProductoController.php:62, Error:'.print_r($view->getErrors(), true), 'registro');
 		//$this->registerSEO($model);
 		$this->render('view',array(
 			'model'=>$model,
@@ -934,7 +939,11 @@ class ProductoController extends Controller
     	}
 		
 		$this->display_seo();
-
+		$view = new ProductoView;
+		$view->producto_id = $id;
+		$view->user_id = Yii::app()->user->id;
+		if (!$view->save())
+			Yii::trace('ProductoController.php:946, Error:'.print_r($view->getErrors(), true), 'registro');
 		$this->render('_view_detalle',array('producto'=>$producto));
 
 	}

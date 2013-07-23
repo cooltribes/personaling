@@ -93,11 +93,11 @@
                                 <?php
                                 //"style"=>"display: none",              	
                                     $script = "$('#"."imglook".$look->id."').load(function(){
-  												//alert('cargo');
+  												//alert('cargo'); 
   												$('#imgloading".$look->id."').hide();
   												$(this).show();
   												//$('#loader_img').hide();
-									});";
+									});"; 
               						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
               					?>   
                                 <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>

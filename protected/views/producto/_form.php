@@ -39,10 +39,10 @@
                 //echo $form->dropDownList($model, 'proveedor', array('Seleccione...', Producto::aldo, Producto::desigual, Producto::accessorize, Producto::suite, Producto::mango, Producto::helly, Producto::secret, Producto::bimba ,'Otra')); ?>
                             <?php echo $form->error($model,'marca_id'); ?> </div>
                     </div>
-                    <div class="control-group"> <?php echo $form->html5EditorRow($model, 'descripcion', array('class'=>'span5', 'rows'=>6, 'height'=>'200', 'options'=>array('color'=>true))); ?> <?php echo $form->error($model,'descripcion'); ?> </div>
                     <div class="control-group"> <?php echo $form->labelEx($model,'peso', array('class' => 'control-label')); ?>
                         <div class="controls"> <?php echo $form->textField($model,'peso',array('class'=>'span5','maxlength'=>10, 'placeholder' => 'Ej.: 1.5')); ?> <?php echo $form->error($model,'peso'); ?> </div>
                     </div>
+                    <div class="control-group"> <?php echo $form->html5EditorRow($model, 'descripcion', array('class'=>'span5', 'rows'=>6, 'height'=>'200', 'options'=>array('color'=>true))); ?> <?php //echo $form->error($model,'descripcion'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'estado', array(0 => 'Activo', 1 => 'Inactivo',)); ?> <?php echo $form->error($model,'estado'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'destacado', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'destacado'); ?> </div>
                     <div class="control-group">
@@ -223,12 +223,12 @@
 		$("#accion").attr("value", "normal");
 		
 		//verificar peso
-		if($('#Producto_peso').val() > 0){
+		if($('#Producto_peso').val() > 0 && $('#Producto_peso').val().length != 0){
 			$('#Producto_peso_em_').hide();
 			// submit del form
 			$('#producto-form').submit();
 		}else{
-			$('#Producto_peso_em_').val('Debes ingresar un peso mayor a 0');
+			$('#Producto_peso_em_').html('Debes ingresar un peso mayor a 0');
 			$('#Producto_peso_em_').show();
 		}
 	});
@@ -242,12 +242,12 @@
 		//alert( $("#accion").attr("value") );
 		
 		//verificar peso
-		if($('#Producto_peso').val() > 0){
+		if($('#Producto_peso').val() > 0 && $('#Producto_peso').val() != ''){
 			$('#Producto_peso_em_').hide();
 			// submit del form
 			$('#producto-form').submit();
 		}else{
-			$('#Producto_peso_em_').val('Debes ingresar un peso mayor a 0');
+			$('#Producto_peso_em_').html('Debes ingresar un peso mayor a 0');
 			$('#Producto_peso_em_').show();
 		}
 		// submit del form

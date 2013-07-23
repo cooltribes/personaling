@@ -50,7 +50,7 @@ $prePub="";
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 					//	$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
-					$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"","style"=>"display:none","width" => "270", "height" => "270"));
+					$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 					echo("<article class='span3'><div class='producto' >
 					<input id='idprod' value='".$data->id."' type='hidden' >
 					".$a.$b." <a href='#myModal' role='button' class='btn btn-block btn-small vista_rapida hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>

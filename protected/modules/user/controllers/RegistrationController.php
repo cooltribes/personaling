@@ -70,6 +70,13 @@ class RegistrationController extends Controller
 						}
 						
 						if ($model->save()) {
+							if(isset($_POST['facebook_request'])){
+								$invite = FacebookInvite::model()->findByAttributes(array('request_id'=>$_POST['facebook_request']));
+								if($invite){
+									$invite->estado = 1;
+									$invite->save();
+								}
+							}
 							$profile->user_id=$model->id;
 							$profile->save();
 							//if (Yii::app()->controller->module->sendActivationMail) {

@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -347,6 +347,177 @@ class TiendaController extends Controller
 			
 		
 	}
+
+
+	public function actionModal($id)
+	{
+		
+		$datos="";
+		
+		$producto = Producto::model()->findByPk($id);
+		
+		//$datos=$datos."<div id='myModal' class='modal hide tienda_modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+    	$datos=$datos."<div class='modal-header'>";
+		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>";
+		$datos=$datos."<h3 id='myModalLabel'>".$producto->nombre."</h3></div>";
+		$datos=$datos."<div class='modal-body'>";
+   
+   		$datos=$datos."<div class='row-fluid'>";
+   		$datos=$datos."<div class='span7'><div class='carousel slide' id='myCarousel'>";
+		$datos=$datos."<ol class='carousel-indicators'>";
+		$datos=$datos."<li class='' data-slide-to='0' data-target='#myCarousel'></li>";
+		$datos=$datos.'<li data-slide-to="1" data-target="#myCarousel" class="active"></li>';
+        $datos=$datos.'<li data-slide-to="2" data-target="#myCarousel" class=""></li>';
+       	$datos=$datos.'</ol>';
+        $datos=$datos.'<div class="carousel-inner">';
+       // $datos=$datos.'<div class="item">';
+		
+		$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
+		
+		foreach ($ima as $img){
+					
+			if($img->orden==1)
+			{ 
+				$colorPredet = $img->color_id;
+				
+				$datos=$datos.'<div class="item active">';	
+				$datos=$datos. CHtml::image($img->getUrl(array('ext'=>'jpg')), $producto->nombre, array("width" => "450", "height" => "450"));
+				$datos=$datos.'</div>';
+			}
+				
+			if($img->orden!=1){
+				if($colorPredet == $img->color_id)
+				{
+					$datos=$datos.'<div class="item">';
+					$datos=$datos.CHtml::image($img->getUrl(array('ext'=>'jpg')), $producto->nombre, array("width" => "450", "height" => "450"));
+					$datos=$datos.'</div>';
+				}
+			}// que no es la primera en el orden
+		}
+		
+        $datos=$datos.'</div>';
+        $datos=$datos.'<a data-slide="prev" href="#myCarousel" class="left carousel-control">‹</a>';
+        $datos=$datos.'<a data-slide="next" href="#myCarousel" class="right carousel-control">›</a>';
+        $datos=$datos.'</div></div>';
+        
+        $datos=$datos.'<div class="span5">';
+        $datos=$datos.'<div class="row-fluid call2action">';
+       	$datos=$datos.'<div class="span7">';
+		
+		foreach ($producto->precios as $precio) {
+   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span> Bs. '.Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento).'</h4>';
+   		}
+
+        $datos=$datos.'</div>';
+        
+        $datos=$datos.'<div class="span5">';
+        $datos=$datos.'<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
+        $datos=$datos.'</div></div>';
+        
+        $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';
+        $datos=$datos.'<div class="row-fluid">';
+        $datos=$datos.'<div class="span6">';
+        $datos=$datos.'<h5>Colores</h5>';
+        $datos=$datos.'<div class="clearfix colores" id="vCo">';
+        
+        	$valores = Array();
+            $cantcolor = Array();
+            $cont1 = 0;
+              	
+			// revisando cuantos colores distintos hay
+			foreach ($producto->preciotallacolor as $talCol){ 
+				if($talCol->cantidad > 0){
+					$color = Color::model()->findByPk($talCol->color_id);
+					
+					if(in_array($color->id, $cantcolor)){	// no hace nada para que no se repita el valor			
+					}
+					else {
+						array_push($cantcolor, $color->id);
+						$cont1++;
+					}	
+				}
+			}
+				
+			if( $cont1 == 1){ // Si solo hay un color seleccionelo
+				$color = Color::model()->findByPk($cantcolor[0]);							
+				$datos=$datos. "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
+			}
+			else{
+				foreach ($producto->preciotallacolor as $talCol) {
+		        	if($talCol->cantidad > 0){ // que haya disp
+						$color = Color::model()->findByPk($talCol->color_id);		
+								
+						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
+						}
+						else{
+							$datos=$datos. "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+							array_push($valores, $color->id);
+						}
+					}
+		   		}
+				
+			} // else 
+		
+		//$datos=$datos.'<div title="Rojo" class="coloress" style="cursor: pointer" id="8"><img src="/site/images/colores/C_Rojo.jpg"></div>              </div>';
+        $datos=$datos.'</div></div>';
+		
+        $datos=$datos.'<div class="span6">';
+        $datos=$datos.'<h5>Tallas</h5>';
+		$datos=$datos.'<div class="clearfix tallas" id="vTa">';
+		
+		$valores = Array();
+		$canttallas= Array();
+        $cont2 = 0;
+              	
+		// revisando cuantas tallas distintas hay
+		foreach ($producto->preciotallacolor as $talCol){ 
+			if($talCol->cantidad > 0){
+				$talla = Talla::model()->findByPk($talCol->talla_id);
+						
+				if(in_array($talla->id, $canttallas)){	// no hace nada para que no se repita el valor			
+				}
+				else{
+					array_push($canttallas, $talla->id);
+					$cont2++;
+				}
+							
+			}
+		}
+
+		if( $cont2 == 1){ // Si solo hay un color seleccionelo
+			$talla = Talla::model()->findByPk($canttallas[0]);
+			$datos=$datos. "<div value='solo' id=".$talla->id." style='cursor: pointer' class='tallass active' title='talla'>".$talla->valor."</div>"; 
+		}
+		else{            	
+			foreach ($producto->preciotallacolor as $talCol) {
+	        	if($talCol->cantidad > 0){ // que haya disp
+					$talla = Talla::model()->findByPk($talCol->talla_id);
+		
+					if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
+					}
+					else{
+						$datos=$datos. "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
+						array_push($valores, $talla->id);
+					}
+				}
+	   		}	
+	   	}// else
+		
+       // $datos=$datos.'<div title="talla" class="tallass" style="cursor: pointer" id="10">S</div>';         	     	
+        $datos=$datos.'</div></div></div>';
+          
+        $datos=$datos.'</div>';
+        $datos=$datos.'</div>';
+   
+   		$datos=$datos.'</div>';
+    	$datos=$datos.'<div class="modal-footer">';
+    	$datos=$datos.'<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>';
+    	$datos=$datos.'</div>';
+    //	$datos=$datos.'</div>';
+		
+		echo $datos;
+	}
+
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()

@@ -59,6 +59,8 @@
 <?php echo Yii::app()->user->getFlash('registration'); ?>
 </div>
 <?php else: ?>
+	
+	
 
 
 <div class="container margin_top">
@@ -87,6 +89,14 @@
           <fieldset>
             <legend >O llena los campos a continuación: </legend>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
+	<?php
+	if(isset($_GET['request_ids'])){
+		//echo $_GET['request_ids'];
+		$requests = explode(',', $_GET['request_ids']);
+		
+		echo CHtml::hiddenField('facebook_request',$requests[0]);
+	}
+	?>
 	
 <div class="control-group row-fluid">
 	<div class="controls">

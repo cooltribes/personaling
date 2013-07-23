@@ -321,11 +321,13 @@ public function actionCategorias(){
 		$model = Look::model()->findByPk($id);
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
-			
+
 			if (Yii::app()->user->isAdmin())
 				$model->status = Look::STATUS_APROBADO;
 			else
 				$model->status = Look::STATUS_ENVIADO;
+
+			 
 			
 			if($model->save())
             {

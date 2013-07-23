@@ -9,90 +9,65 @@ class ProfileController extends Controller
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_model;
+	
+	public function actionAvatar()
+	{
+		$model = $this->loadUser();
+	    if (isset($_POST['valido'])){
+				$id = $model->id;
+			// make the directory to store the pic:
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id))
+				{
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id,0777,true);
+	 			}	 
+				$images = CUploadedFile::getInstancesByName('filesToUpload');
+				 if (isset($images) && count($images) > 0) {
+		            foreach ($images as $image => $pic) {
+		            	$nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'. $id .'/'. $image;
+						$extension = '.'.$pic->extensionName;
+		            	$model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
+		            	if (!$model->save())	
+							Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');
+						if ($pic->saveAs($nombre ."_orig". $extension)) {
+		                	//echo $nombre;
+		                	$image = Yii::app()->image->load($nombre ."_orig". $extension);
+							$avatar_x = isset($_POST['avatar_x'])?$_POST['avatar_x']:0;
+							$avatar_x = $avatar_x*(-1);
+							$avatar_y = isset($_POST['avatar_y'])?$_POST['avatar_y']:0;
+							$avatar_y = $avatar_y*(-1);
+							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+							$image->resize(270,270,$proporcion)->crop(270, 270,$avatar_y,$avatar_x);
+							$image->save($nombre . $extension);
+		                	Yii::app()->user->updateSession();
+							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));	
+						}
+					}
+				 }  	
+		} 
+		 $this->render('avatar',array(
+	    	'model'=>$model,
+			//'profile'=>$model->profile,
+	    ));
+		
+		
+	}
+	
+	/*
+ * Borrar direccion 
+ */
+	public function actionBorrardireccion($id)
+	{
+		$direccion = Direccion::model()->findByPk($id);
+		
+		if($direccion->delete()){
+			Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+		}else{
+			Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+		}
+		$this->redirect(array('direcciones'));		
+	}
+	
 	/**
-	 * Shows a particular model.
-	 */
-	public function actionProfile()
-	{
-		$model = $this->loadUser();
-	    $this->render('profile',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
-	}
-/**
- * Configuracion de Privacidad  
- */
-	public function actionPrivacidad()
-	{
-		$model = $this->loadUser();
-		if (isset($_POST['privacidad'])){
-			
-			$privacidad = array_sum($_POST['privacidad']);
-			$model->privacy = $privacidad;
-			if ($model->save()){
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));				
-			} else {
-				Yii::trace('username:'.$model->username.' Error:'.print_r($model->getErrors(), true), 'registro');
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('error',UserModule::t("Changes not saved."));				
-			}
-			
-			
-		}
-	    $this->render('privacidad',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
-	}
-/**
- * Configuracion de Eliminar  
- */
-	public function actionDelete()
-	{
-		$model = $this->loadUser();
-		if (isset($_POST['acepto'])){
-			$model->status = -1;
-			if ($model->save()){
-				$this->redirect(array('/site/logout'));
-			}	
-		}
-	    $this->render('delete',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
-	}	
-/**
- * Configuracion de Notificaciones  
- */
-	public function actionNotificaciones()
-	{
-		$model = $this->loadUser();
-	    $this->render('notificaciones',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
-	}	
-/**
- * Mi cuenta  
- */
-	public function actionMicuenta()
-	{
-		$model = $this->loadUser();
-		if  (UserModule::isPersonalShopper()) 
-	    $this->render('micuenta_ps',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
-		else 
-	    $this->render('micuenta',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));			
-	}
-
-/**
  * Crear dir
  */
 	public function actionCrearDireccion($id = null)
@@ -120,23 +95,107 @@ class ProfileController extends Controller
 			'profile'=>$usuario->profile,
 		));
 	}
-
-/*
- * Borrar direccion 
- */
-	public function actionBorrardireccion($id)
-	{
-		$direccion = Direccion::model()->findByPk($id);
-		
-		if($direccion->delete()){
-			Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
-		}else{
-			Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+	
+	/**
+	 * Revisar si el usuario tiene un id de facebook asociado, si no agregarlo
+	 */
+	 
+	public function actionCheckFbUser($fb_id){
+		$usuario = $this->loadUser();
+		if(!$usuario->facebook_id){
+			$usuario->facebook_id = $fb_id;
+			$usuario->save();
 		}
-		$this->redirect(array('direcciones'));		
+	}
+	
+	/**
+	 * Change email
+	 */
+	public function actionChangeemail() {
+		$user = $this->loadUser();
+		$model = new UserChangeEmail;
+		$model->oldEmail = $user->email;
+		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='changeemail-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['UserChangeEmail'])) {
+					$model->attributes=$_POST['UserChangeEmail'];
+					if($model->validate()) {
+						$user->email = $model->newEmail;
+						$user->username = $model->newEmail;
+						//$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+						//$new_password->password = UserModule::encrypting($model->password);
+						//$new_password->activkey=UserModule::encrypting(microtime().$model->password);
+						if ($user->save()){
+							Yii::app()->user->setFlash('success',UserModule::t("Se guardo el nuevo Correo."));
+						} else {
+							Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
+							Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
+						}
+						//$this->redirect(array("profile"));
+					}
+			}
+			$this->render('changeemail',array('model'=>$model));
+	    }
 	}
 
-/**
+	/**
+	 * Change password
+	 */
+	public function actionChangepassword() {
+		$model = new UserChangePassword;
+		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='changepassword-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['UserChangePassword'])) {
+					$model->attributes=$_POST['UserChangePassword'];
+					if($model->validate()) {
+						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+						$new_password->password = UserModule::encrypting($model->password);
+						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
+						$new_password->save();
+						Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
+						//$this->redirect(array("profile"));
+					} else {
+						Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
+						Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
+					}
+			}
+			$this->render('changepassword',array('model'=>$model));
+	    }
+	}
+	
+	/**
+ * Configuracion de Eliminar  
+ */
+	public function actionDelete()
+	{
+		$model = $this->loadUser();
+		if (isset($_POST['acepto'])){
+			$model->status = -1;
+			if ($model->save()){
+				$this->redirect(array('/site/logout'));
+			}	
+		}
+	    $this->render('delete',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+	
+	/**
  * Direcciones
  */
 	public function actionDirecciones()
@@ -151,8 +210,90 @@ class ProfileController extends Controller
 			'profile'=>$model->profile,
 	    ));			
 	}
+	
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionEdit()
+	{
+		
+		$model = $this->loadUser();
+		//Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
+		$profile=$model->profile;
+		$profile->profile_type = 1;
+		// ajax validator
+		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
+		{
+			echo UActiveForm::validate(array($model,$profile));
+			Yii::app()->end();
+		}
+		
+		if(isset($_POST['Profile']))
+		{
+			//$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				//$model->save();
+				if ($profile->save()){
+                Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+				//$this->redirect(array('/user/profile'));
+				} else {
+					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			} else $profile->validate();
+		}
 
-/**
+		$this->render('edit',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
+	}
+
+	/**
+	Edita los campos del personal Shopper
+	 */
+	public function actionEditShopper()
+	{
+		
+		$model = $this->loadUser();
+		
+		$profile=$model->profile;
+		$profile->profile_type = 4;
+		
+		// ajax validator
+		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
+		{
+			echo UActiveForm::validate(array($model,$profile));
+			Yii::app()->end();
+		}
+		
+		if(isset($_POST['Profile']))
+		{
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				//$model->save();
+				if ($profile->save()){
+                	Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+				} else {
+					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			} else $profile->validate();
+		}
+
+		$this->render('editShopper',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
+	}
+	
+	/**
  * Editar tu estilo  
  */
 	public function actionEdittuestilo($id)
@@ -198,47 +339,178 @@ class ProfileController extends Controller
 			'estilo'=>$id,
 	    ));
 	}
-	public function actionAvatar()
+
+/**
+ * Editar tu tipo  
+ */
+	public function actionEdittutipo()
 	{
 		$model = $this->loadUser();
-	    if (isset($_POST['valido'])){
-				$id = $model->id;
-			// make the directory to store the pic:
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id))
+		$profile=$model->profile;
+		$profile->profile_type = 3;
+		//$profile=new Profile;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
+		{
+			echo CActiveForm::validate($profile);
+			Yii::app()->end();
+		}	
+		if(isset($_POST['Profile'])) {
+			$profile->attributes=$_POST['Profile'];
+			if($profile->validate())
+			{
+				if ($profile->save())
 				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id,0777,true);
-	 			}	 
-				$images = CUploadedFile::getInstancesByName('filesToUpload');
-				 if (isset($images) && count($images) > 0) {
-		            foreach ($images as $image => $pic) {
-		            	$nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'. $id .'/'. $image;
-						$extension = '.'.$pic->extensionName;
-		            	$model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
-		            	if (!$model->save())	
-							Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');
-						if ($pic->saveAs($nombre ."_orig". $extension)) {
-		                	//echo $nombre;
-		                	$image = Yii::app()->image->load($nombre ."_orig". $extension);
-							$avatar_x = isset($_POST['avatar_x'])?$_POST['avatar_x']:0;
-							$avatar_x = $avatar_x*(-1);
-							$avatar_y = isset($_POST['avatar_y'])?$_POST['avatar_y']:0;
-							$avatar_y = $avatar_y*(-1);
-							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
-							$image->resize(270,270,$proporcion)->crop(270, 270,$avatar_y,$avatar_x);
-							$image->save($nombre . $extension);
-		                	Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));	
-						}
-					}
-				 }  	
-		} 
-		 $this->render('avatar',array(
+					//$model->status_register = User::STATUS_REGISTER_TIPO;
+					//if ($model->save()){	
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));						
+						/*$this->render('tutipo',array(
+					    	'model'=>$model,
+							'profile'=>$model->profile,
+							'editar'=>true,
+					    ));*/
+						// Yii::app()->end();
+					//}else{ 
+					//	Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+					//}
+				} else {
+					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
+				}
+			} else {
+				Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
+				//Yii::trace('username:'.$model->username.' Error:'.$profile->getErrors(), 'registro');
+			}
+		}	
+	    $this->render('tutipo',array(
 	    	'model'=>$model,
-			//'profile'=>$model->profile,
+			'profile'=>$model->profile,
+			'editar'=>true,
 	    ));
 		
+	}
+
+	/**
+	 * Productos que le encantan a la usuaria
+	 */
+	public function actionEncantan() {
+		
+		$prodEncantan = new UserEncantan;
+		$prodEncantan->user_id = Yii::app()->user->id;
+		
+		$dataProvider = $prodEncantan->search();
+		
+		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider));
 		
 	}
+	
+	/**
+	 * Looks que le encantan
+	 */
+	public function actionLooksencantan()
+	{
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		$lookEncantan = LookEncantan::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id));
+		
+		$this->render('looksEncantan',array(
+					'looks' => $lookEncantan,
+					'user'=>$user,	
+				));
+	}
+	
+	/**
+ * Mi cuenta  
+ */
+	public function actionMicuenta()
+	{
+		$model = $this->loadUser();
+		if  (UserModule::isPersonalShopper()) 
+	    $this->render('micuenta_ps',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+		else 
+	    $this->render('micuenta',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));			
+	}
+	
+	/**
+ * Configuracion de Notificaciones  
+ */
+	public function actionNotificaciones()
+	{
+		$model = $this->loadUser();
+	    $this->render('notificaciones',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+	
+	/**
+ * Configuracion de Privacidad  
+ */
+	public function actionPrivacidad()
+	{
+		$model = $this->loadUser();
+		if (isset($_POST['privacidad'])){
+			
+			$privacidad = array_sum($_POST['privacidad']);
+			$model->privacy = $privacidad;
+			if ($model->save()){
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));				
+			} else {
+				Yii::trace('username:'.$model->username.' Error:'.print_r($model->getErrors(), true), 'registro');
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("Changes not saved."));				
+			}
+			
+			
+		}
+	    $this->render('privacidad',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+	
+	/**
+	 * Shows a particular model.
+	 */
+	public function actionProfile()
+	{
+		$model = $this->loadUser();
+	    $this->render('profile',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+	
+	/**
+	 * Guardar amigos invitados a través de facebook
+	 */
+	 
+	public function actionSaveInvite(){
+		$usuario = $this->loadUser();
+		if(isset($_POST['to'])){
+			foreach ($_POST['to'] as $fb_id) {
+				//echo 'user_id: '.$usuario->id.' - fb_id_invitado: '.$fb_id;
+				$invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$fb_id));
+				if(!$invite){
+					$invite = new FacebookInvite;
+					$invite->user_id = $usuario->id;
+					$invite->fb_id_invitado = $fb_id;
+					$invite->request_id = $_POST['request'];
+					$invite->fecha = date('Y-m-d H:i:s');
+					$invite->save();
+				}
+			}
+			Yii::app()->user->setFlash('success',"Amigos invitados");
+		}
+		//$this->redirect(array('profile/direcciones'), false);
+		//$this->refresh();
+	}
+	
 /**
  * Regsitro tu estilo  
  */
@@ -311,6 +583,8 @@ class ProfileController extends Controller
 			'profile'=>$model->profile,
 	    ));
 	}
+<<<<<<< HEAD
+=======
 /**
  * Editar tu tipo  
  */
@@ -467,6 +741,7 @@ class ProfileController extends Controller
 						//$new_password->password = UserModule::encrypting($model->password);
 						//$new_password->activkey=UserModule::encrypting(microtime().$model->password);
 						if ($user->save()){
+							$model->oldEmail = $user->email;
 							Yii::app()->user->setFlash('success',UserModule::t("Se guardo el nuevo Correo."));
 						} else {
 							Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
@@ -539,6 +814,7 @@ class ProfileController extends Controller
 				));
 	}
 
+>>>>>>> a2797c48d4d7b3fc3ba70c9ea9066991512f8315
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

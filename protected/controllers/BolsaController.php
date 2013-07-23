@@ -43,6 +43,7 @@ class BolsaController extends Controller
 		$usuario = Yii::app()->user->id;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 		
+		echo $bolsa->actualizar();
 		$this->render('bolsa', array('bolsa' => $bolsa));
 	}
 

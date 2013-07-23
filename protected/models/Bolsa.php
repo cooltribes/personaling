@@ -100,7 +100,23 @@ class Bolsa extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-
+	public function actualizar() //actualiza las cantidades a los productos
+	{
+		$bandera = false;	
+		foreach($this->bolsahasproductos as $producto)
+		{
+				
+			if ($producto->cantidad > $producto->preciotallacolor->cantidad)
+			{
+				$producto->cantidad = $producto->preciotallacolor->cantidad;
+				$bandera = true;
+				$producto->save();
+			}
+		}
+		//if ($bandera)
+		//	$this->save();
+		return $bandera;
+	}
 	public function looks()
 	{
 		

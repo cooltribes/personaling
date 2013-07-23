@@ -12,8 +12,8 @@
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
         <?php echo $data->personal_shopper?'Personal Shopper':''; ?> </small></td>
       <td><small><?php echo $data->email; ?><br/>
-        Telf.: <?php echo $data->profile->tlf_celular; ?> <br/>
-        Ciudad: <?php echo $data->profile->ciudad; ?>
+        <strong>Telf.</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
+        <strong>Ciudad</strong>: <?php echo $data->profile->ciudad; ?>
         
      </small>
         

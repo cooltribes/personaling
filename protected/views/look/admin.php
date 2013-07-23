@@ -25,7 +25,6 @@
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
                 Cancelados </td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?> </p>
-
                 Devueltos</td>
         </tr>
     </table> 

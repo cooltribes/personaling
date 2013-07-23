@@ -75,7 +75,7 @@ class LookController extends Controller
 		
 		$dataProvider = $look->search();
 		
-		$this->render('ps', array('model'=>$look,'dataProvider'=>$dataProvider,'tipo'=>'ps'));	
+		$this->render('ps', array('model'=>$look,'dataProvider'=>$dataProvider,'tipo'=>'ps','look'=>$look));	
 		
 	}
 	
@@ -321,11 +321,13 @@ public function actionCategorias(){
 		$model = Look::model()->findByPk($id);
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
-			
+
 			if (Yii::app()->user->isAdmin())
 				$model->status = Look::STATUS_APROBADO;
 			else
 				$model->status = Look::STATUS_ENVIADO;
+
+			 
 			
 			if($model->save())
             {
@@ -457,12 +459,14 @@ public function actionCategorias(){
 							'categorias'=>$categorias,
 						)
 					);
-				}		
+				}		 
 			
 			//} else{
 			//		Yii::trace('edit a look, Error:'.print_r($model->getErrors(), true), 'registro');
 			//}
 		} else {
+			
+			if ($model->status == 0 || UserModule::isAdmin()){ // comprueba que el look no se haya enviado o aprovado
 			$user = User::model()->findByPk(Yii::app()->user->id);
 			$criteria=new CDbCriteria;
 			$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
@@ -477,6 +481,11 @@ public function actionCategorias(){
 					'models'=>$models,
 				)
 			);
+			} else {
+				$this->redirect(array('look/publicar','id'=>$model->id)); 
+				Yii::app()->end();
+			}
+			
 		}
 	}
 	public function actionCreate()

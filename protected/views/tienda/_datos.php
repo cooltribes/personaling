@@ -65,7 +65,7 @@ $prePub="";
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 					//	$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
-					$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
+					$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"","style"=>"display:none","width" => "270", "height" => "270"));
 					echo("<article class='span3'><div class='producto' >
 					<input id='idprod' value='".$data->id."' type='hidden' ><a href='../producto/detalle/".$data->id."'>
 					".$a.$b." 

@@ -467,6 +467,7 @@ class ProfileController extends Controller
 						//$new_password->password = UserModule::encrypting($model->password);
 						//$new_password->activkey=UserModule::encrypting(microtime().$model->password);
 						if ($user->save()){
+							$model->oldEmail = $user->email;
 							Yii::app()->user->setFlash('success',UserModule::t("Se guardo el nuevo Correo."));
 						} else {
 							Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');

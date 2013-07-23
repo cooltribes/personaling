@@ -40,6 +40,7 @@ class Look extends CActiveRecord
 	 private $_precio = null; 
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
+	 public $has_ocasiones;
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -65,6 +66,7 @@ class Look extends CActiveRecord
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
+			array('has_ocasiones','required','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
@@ -112,6 +114,7 @@ class Look extends CActiveRecord
 			'created_on' => 'Created On',
 			'tipo' => 'Tipo',
 			'campana_id' => 'Campaña',
+			'has_ocasiones' => 'Ocasiones',
 		);
 	}
 	public function matchOcaciones($user)

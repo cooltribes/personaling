@@ -1,9 +1,9 @@
 <?php
 
-//$this->breadcrumbs=array(
-	//'Usuarios'=>array('admin'),
-	//'Editar',
-//);
+$this->breadcrumbs=array(
+	'Usuarios'=>array('admin'),
+	'Editar',
+);
 
 
 function getMonthsArray()
@@ -179,7 +179,35 @@ function getMonthsArray()
 						    'htmlOptions'=>array('onclick'=>'js:$("#registration-form").submit();')
 						)); ?>
             <ul class="nav nav-stacked nav-tabs margin_top">
-              <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
+              <li>
+              	<?php
+              	
+				echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i>Hacer Personal Shopper",
+					  Yii::app()->createUrl( 'user/admin/toggle_ps' ,array('id'=>$model->id)),
+					  array( // ajaxOptions
+					    'type' => 'POST',
+					    'dataType'=>'json',
+					    'beforeSend' => "function( request )
+					                     {
+					                       // Set up any pre-sending stuff like initializing progress indicators
+					                     }",
+					    'success' => "function( data )
+					                  {
+					                    // handle return data
+					                    alert( data.status );
+					                    alert(data.personal_shopper);
+					                  }",
+					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
+					  ),
+					  array( //htmlOptions
+					    'href' => Yii::app()->createUrl( 'user/admin/toggle_ps' ),
+					    //'class' => $class
+					  )
+					);
+?>
+              	              	
+              </li>
               <li><a href="#" title="Guardar"><i class="icon-bell"></i> Crear / Enviar Intivacion</a></li>
               <li><a href="#" title="Guardar"><i class="icon-bell"></i> Reenviar Invitación</a></li>
               <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>

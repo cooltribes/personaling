@@ -583,6 +583,238 @@ class ProfileController extends Controller
 			'profile'=>$model->profile,
 	    ));
 	}
+<<<<<<< HEAD
+=======
+/**
+ * Editar tu tipo  
+ */
+	public function actionEdittutipo()
+	{
+		$model = $this->loadUser();
+		$profile=$model->profile;
+		$profile->profile_type = 3;
+		//$profile=new Profile;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
+		{
+			echo CActiveForm::validate($profile);
+			Yii::app()->end();
+		}	
+		if(isset($_POST['Profile'])) {
+			$profile->attributes=$_POST['Profile'];
+			if($profile->validate())
+			{
+				if ($profile->save())
+				{
+					//$model->status_register = User::STATUS_REGISTER_TIPO;
+					//if ($model->save()){	
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));						
+						/*$this->render('tutipo',array(
+					    	'model'=>$model,
+							'profile'=>$model->profile,
+							'editar'=>true,
+					    ));*/
+						// Yii::app()->end();
+					//}else{ 
+					//	Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
+					//}
+				} else {
+					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
+				}
+			} else {
+				Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
+				//Yii::trace('username:'.$model->username.' Error:'.$profile->getErrors(), 'registro');
+			}
+		}	
+	    $this->render('tutipo',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+			'editar'=>true,
+	    ));
+		
+	}		
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionEdit()
+	{
+		
+		$model = $this->loadUser();
+		//Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
+		$profile=$model->profile;
+		$profile->profile_type = 1;
+		// ajax validator
+		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
+		{
+			echo UActiveForm::validate(array($model,$profile));
+			Yii::app()->end();
+		}
+		
+		if(isset($_POST['Profile']))
+		{
+			//$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				//$model->save();
+				if ($profile->save()){
+                Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+				//$this->redirect(array('/user/profile'));
+				} else {
+					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			} else $profile->validate();
+		}
+
+		$this->render('edit',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
+	}
+
+	/**
+	Edita los campos del personal Shopper
+	 */
+	public function actionEditShopper()
+	{
+		
+		$model = $this->loadUser();
+		
+		$profile=$model->profile;
+		$profile->profile_type = 4;
+		
+		// ajax validator
+		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
+		{
+			echo UActiveForm::validate(array($model,$profile));
+			Yii::app()->end();
+		}
+		
+		if(isset($_POST['Profile']))
+		{
+			$profile->attributes=$_POST['Profile'];
+			
+			if($profile->validate()) {
+				//$model->save();
+				if ($profile->save()){
+                	Yii::app()->user->updateSession();
+					Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+				} else {
+					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
+					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+				}
+			} else $profile->validate();
+		}
+
+		$this->render('editShopper',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
+	}
+
+
+	/**
+	 * Change email
+	 */
+	public function actionChangeemail() {
+		$user = $this->loadUser();
+		$model = new UserChangeEmail;
+		$model->oldEmail = $user->email;
+		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='changeemail-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['UserChangeEmail'])) {
+					$model->attributes=$_POST['UserChangeEmail'];
+					if($model->validate()) {
+						$user->email = $model->newEmail;
+						$user->username = $model->newEmail;
+						//$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+						//$new_password->password = UserModule::encrypting($model->password);
+						//$new_password->activkey=UserModule::encrypting(microtime().$model->password);
+						if ($user->save()){
+							$model->oldEmail = $user->email;
+							Yii::app()->user->setFlash('success',UserModule::t("Se guardo el nuevo Correo."));
+						} else {
+							Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
+							Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
+						}
+						//$this->redirect(array("profile"));
+					}
+			}
+			$this->render('changeemail',array('model'=>$model));
+	    }
+	}
+	
+	/**
+	 * Change password
+	 */
+	public function actionChangepassword() {
+		$model = new UserChangePassword;
+		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='changepassword-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['UserChangePassword'])) {
+					$model->attributes=$_POST['UserChangePassword'];
+					if($model->validate()) {
+						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+						$new_password->password = UserModule::encrypting($model->password);
+						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
+						$new_password->save();
+						Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
+						//$this->redirect(array("profile"));
+					} else {
+						Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
+						Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
+					}
+			}
+			$this->render('changepassword',array('model'=>$model));
+	    }
+	}
+
+	/**
+	 * Productos que le encantan a la usuaria
+	 */
+	public function actionEncantan() {
+		
+		$prodEncantan = new UserEncantan;
+		$prodEncantan->user_id = Yii::app()->user->id;
+		
+		$dataProvider = $prodEncantan->search();
+		
+		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider));
+		
+	}
+	
+	/**
+	 * Looks que le encantan
+	 */
+	public function actionLooksencantan()
+	{
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		$lookEncantan = LookEncantan::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id));
+		
+		$this->render('looksEncantan',array(
+					'looks' => $lookEncantan,
+					'user'=>$user,	
+				));
+	}
+
+>>>>>>> a2797c48d4d7b3fc3ba70c9ea9066991512f8315
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

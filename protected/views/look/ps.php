@@ -11,19 +11,19 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
         <tr>
             <th scope="col" colspan="6"> Totales </th>
-        </tr>
+        </tr> 
         <tr>
-            <td><p class="T_xlarge margin_top_xsmall">120 </p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalbyUser(); ?> </p>
                 Totales</td>
-            <td><p class="T_xlarge margin_top_xsmall"> 144 </p>
-                Activos</td>
-            <td><p class="T_xlarge margin_top_xsmall"> 156</p>
-                Inactivos</td>
-            <td><p class="T_xlarge margin_top_xsmall">150</p>
-                Enviados</td>
-            <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
-                En tránsito </td>
-            <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(2); ?> </p>
+                Aprobados</td>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(1); ?> </p>
+                Por Aprobar</td>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(0); ?></p>
+                Por Enviar</td>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
+                Cancelados </td>
+            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?> </p>
                 Devueltos</td>
         </tr>
     </table>

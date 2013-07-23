@@ -158,6 +158,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <div id="div_ocasiones">
         <h4>¿En que ocasión se puede usar este look?</h4>
         <?php $categorias = Categoria::model()->findAllByAttributes(array('padreId'=>'2')); ?>
+        <?php echo $form->hiddenField($model,'has_ocasiones'); ?>
+        <?php echo $form->error($model, 'has_ocasiones'); ?>
         <?php 
         
         if(count($categorias))
@@ -285,6 +287,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         </div>
+       
         <?php if ($model->status == Look::STATUS_CREADO || Yii::app()->user->isAdmin()){ ?>
         <div class="form-actions"> 
         	<a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> 
@@ -316,30 +319,22 @@ $script = "
 		 $('#div_ocasiones .active').each(function(){
 		 	if (selected != $(this).attr('href'))
 		 		ids += $(this).attr('href');
-			
 		 });
-		// alert($(this).hasClass('active'));
-		// alert(ids);
 		 if (!($(this).hasClass('active')))
 		 	ids += $(this).attr('href');
-		// alert(ids);
 		 $('#categorias').val(ids.substring(1));
-		 //return false;
+		 $('#Look_has_ocasiones').val(ids.substring(1));
 		 e.preventDefault();
 	 });
+	 
 	$('#div_tipo .btn-group').on('click', 'a', function(e) {
-		 //alert($(this).attr('href'));
 		 var ids = 0;
 		 $(this).siblings('.active').each(function(){
-		 	//alert($(this).attr('href').substring(1));
 		 	ids += parseInt($(this).attr('href').substring(1));
-			
 		 });
 		 if (!($(this).hasClass('active')))
 		 	ids += parseInt($(this).attr('href').substring(1));
-		
 		 $(this).parent().next('input').val(ids);
-		 //return false;
 		 e.preventDefault();
 	 });
 ";

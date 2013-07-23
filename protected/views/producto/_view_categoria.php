@@ -158,10 +158,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
           		
           		 <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'ajaxButton',
-			'type'=>'danger',
 			'label'=>'Guardar y avanzar',
 			'url'=>array('producto/recatprod'), // ReCatProd Relacion Categorias a producto
-			'htmlOptions'=>array('id'=>'avanzar','class'=>''),
+			'htmlOptions'=>array('id'=>'avanzar','class'=>'btn btn-block boton_link transition_all'),
 			'ajaxOptions'=>array(
 			'type' => 'POST',
 			'beforeSend' => "function( request )
@@ -191,7 +190,6 @@ $this->widget('bootstrap.widgets.TbAlert', array(
           		
           	</li>
           	
-            <li><a href="#" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
           </ul>
         </div>
       </div>

@@ -199,14 +199,18 @@ class ProductoController extends Controller
 				{
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+					
+					if($_POST['accion'] == "normal") // si es el boton principal
+						$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
+					
+					if($_POST['accion'] == "nuevo") // guardar y nuevo
+						$this->redirect(array('create'));
 				}
 				//	$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
-		$this->render('_view_seo',array(
-			'model'=>$model,'seo'=>$seo,
-		));
+		$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
 	}
 
 	//acceso para la pestaña de precios

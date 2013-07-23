@@ -12,8 +12,8 @@
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab1" data-toggle="tab">Looks más vendidos</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Próxima Campaña</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Looks en promoción</a></li>
+<!--                     <li><a href="#tab2" data-toggle="tab">Próxima Campaña</a></li>
+ -->                    <li><a href="#tab3" data-toggle="tab">Looks en promoción</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab1" >
@@ -73,9 +73,9 @@
 } ?>
                     </div>
                     </div>
-                    <div class="tab-pane" id="tab2">
+<!--                     <div class="tab-pane" id="tab2">
                         <p>Howdy, I'm in Section 2.</p>
-                    </div>
+                    </div> -->
                      <div class="tab-pane" id="tab3">
                         <div class="items row ">
                         <?php
@@ -93,11 +93,11 @@
                                 <?php
                                 //"style"=>"display: none",              	
                                     $script = "$('#"."imglook".$look->id."').load(function(){
-  												//alert('cargo');
+  												//alert('cargo'); 
   												$('#imgloading".$look->id."').hide();
   												$(this).show();
   												//$('#loader_img').hide();
-									});";
+									});"; 
               						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
               					?>   
                                 <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
@@ -231,7 +231,8 @@ function str_lreplace($search, $replace, $subject)
         <div class="row">
             <div class="span6"> <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_blanco.jpg" width="571" height="75" alt="Banner blanco" /> </div>
             <div class="span6">
-                <div  class="banner_1"> <a href="#"> Ver todos los looks</a>
+                <div  class="banner_1">
+                	<?php echo CHtml::link('Ver todos los looks', $this->createUrl('tienda/look')); ?>
                     <div class="pull-right"><a href="#"> <span class="entypo icon_personaling_big color11">&#59146;</span></a></div>
                 </div>
             </div>

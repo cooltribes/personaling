@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Tu Perfil");
 $this->breadcrumbs=array(
 	UserModule::t("Mi cuenta")=>array('micuenta'),
 	UserModule::t("Notificaciones"),

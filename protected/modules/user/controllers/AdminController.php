@@ -26,7 +26,7 @@ class AdminController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 
-				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks'),
+				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks','toggle_ps'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -88,6 +88,22 @@ class AdminController extends Controller
 		));
 	}
 
+	public function actionToggle_ps($id){
+		$model = User::model()->findByPk($id);
+		$model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle
+		if ($model->save()){
+		echo CJSON::encode(array(
+	            'status'=>'success',
+	            'personal_shopper'=>$model->personal_shopper,
+	     ));	
+	     }else{
+	     	Yii::trace('AdminController:100 Error toggle:'.print_r($model->getErrors(),true), 'registro');
+			echo CJSON::encode(array(
+	            'status'=>'error',
+	            'personal_shopper'=>$model->personal_shopper,
+	     ));
+	     }
+	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

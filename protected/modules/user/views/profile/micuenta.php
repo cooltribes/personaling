@@ -11,6 +11,7 @@ $looks_recomendados = $look->match($model);
 
 <div class="container margin_top tu_perfil">
   <div class="row">
+  	<div id="confirmacion_facebook" class="alert alert-success text_center_align" style="display: none;">Amigos invitados</div>
     <aside class="span3">
       <div class="card">
       	
@@ -68,11 +69,7 @@ $looks_recomendados = $look->match($model);
       </ul>
       <hr/>
       <h5>Invita a tus amig@s</h5>
-      <!-- AddThis Button BEGIN -->
-      <div class="addthis_toolbox addthis_default_style addthis_32x32_style text_align_center"> <a class="addthis_button_preferred_1"></a> <a class="addthis_button_preferred_2"></a> <a class="addthis_button_preferred_3"></a> <a class="addthis_button_preferred_4"></a> <a class="addthis_button_compact"></a> <a class="addthis_counter addthis_bubble_style"></a> </div>
-      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-      <!-- AddThis Button END --> 
+      <div id="boton_facebook" style="cursor: pointer;" onclick="invite_friends()"><a>Facebook</a></div>
       
     </aside>
     <div class="span9 configuracion_perfil">
@@ -201,3 +198,102 @@ $looks_recomendados = $look->match($model);
     </div>
   </div>
 </div>
+
+<script>
+	$(document).ready(function(){
+	    
+	    window.fbAsyncInit = function() {
+	        FB.init({
+	            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+	            channelUrl : 'http://personaling.com/site/user/registration', // Channel File
+	            status     : true, // check login status
+	            cookie     : true, // enable cookies to allow the server to access the session
+	            xfbml      : true,  // parse XFBML
+	            oauth      : true
+	        });
+	
+	    };
+	    
+	    (function(d){
+	        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	        if (d.getElementById(id)) {return;}
+	        js = d.createElement('script');js.id = id;js.async = true;
+	        js.src = "//connect.facebook.net/en_US/all.js";
+	        ref.parentNode.insertBefore(js, ref);
+	    }(document));
+	});
+
+	function invite_friends(){
+		FB.getLoginStatus(function(response){
+	        //console.log("response: "+response.status);
+	        if (response.status === 'connected') {
+	        	// está conectado a facebook y además ya tiene permiso de usar la aplicacion personaling
+					
+				console.log('Welcome!  Fetching your information.... ');
+	                    
+	                    FB.api('/me', function(response) {
+	                        //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+	                        $.ajax({
+								type: "get",
+								dataType: 'html',
+								url: "checkFbUser", // action 
+								data: { 'fb_id': response.id	}, 
+								success: function () {
+									//console.log('saved');
+								}//success
+							});
+	                    }, {scope: 'email,user_birthday'});
+	                    
+	          	FB.ui({method: 'apprequests',
+			      title: 'Personaling',
+			      message: 'Tu personal shopper digital.',
+			    }, fbCallback);
+	        } else {
+	            FB.login(function(response) {
+	                if (response.authResponse) {
+	                	//user is already logged in and connected (using information)
+	                    console.log('Welcome!  Fetching your information.... ');
+	                    
+	                    FB.api('/me', function(response) {
+	                        //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+	                         $.ajax({
+								type: "get",
+								dataType: 'html',
+								url: "checkFbUser", // action 
+								data: { 'fb_id': response.id	}, 
+								success: function () {
+									//console.log('saved');
+								}//success
+							});
+	                    });
+	                    
+	                    FB.ui({method: 'apprequests',
+					      title: 'Personaling',
+					      message: 'Tu personal shopper digital.',
+					    }, fbCallback);
+	                } else {
+	                    //console.log('User cancelled login or did not fully authorize.');
+	                }
+	            }, {scope: 'email,user_birthday'});
+	        }
+	    });
+	}
+	
+	function fbCallback(response){
+		//console.log(response);
+		if(response != null){
+			$.ajax({
+				type: "post",
+				dataType: 'html',
+				url: "saveInvite", // action 
+				data: { 'request': response.request, 'to': response.to }, 
+				success: function () {
+					console.log('invite saved');
+					$('#confirmacion_facebook').show('slow');
+					//location.reload();
+					//window.location="micuenta";
+				}//success
+			});
+		}
+	}
+</script>

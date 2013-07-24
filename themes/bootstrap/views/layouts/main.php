@@ -9,6 +9,8 @@
 
 <?php //Yii::app()->bootstrap->register(); ?>
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/botones.css" rel="stylesheet">
+
+
 <?php Yii::app()->less->register(); ?>
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
@@ -108,19 +110,19 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart',   'url'=>array('/bolsa/index'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart',   'url'=>array('/bolsa/index'), 'htmlOptions'=>array('class'=>'btn btn-danger') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$avatar.$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
+                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
+                     array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
-					           array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
-                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
-                    
+                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),
                 ),
@@ -132,6 +134,11 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 )); 
 }
 ?></div>
+
+<script type="text/javascript">
+
+</script>
+
 <!-- <div class="alert alert-error margin_top padding_top">Estas en el sitio de Pruebas T1</div> -->
 <div class="container" id="page">
   <?php if(isset($this->breadcrumbs)):?>

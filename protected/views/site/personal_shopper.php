@@ -18,7 +18,12 @@
       
       <!-- Carousel items -->
       <div id="carousel_looks_recomendados" class="carousel slide ">
-        <div class="carousel-inner">
+     <!-- Carousel nav --> 
+    <a class="carousel-control left margin_top_small margin_right_large_minus bx-prev" href="#myCarousel" data-slide="prev">&lsaquo;</a> 
+    <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">&rsaquo;</a> 
+       
+     <div class="carousel-inner">
+
           <?php          	
         /*    	
 		$this->widget('zii.widgets.CListView', array(
@@ -98,19 +103,24 @@
           </div>
         </div>
       </div>
-      <div class="braker_horz_top_1">
+
+       <div  class="btn btn-block span6 offset3"> <a href="#" > Ver todos los looks</a>
+<!--           <div class=" " ><a href="#"><span class="entypo icon_personaling_medium color11">&#59146;</span></a></div>
+ -->          
+
+      </div>
+      <div class="braker_horz_top_1 ">
         <div class="row">
           <div class="span6">
             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_blanco.jpg" width="571" height="75" alt="Banner blanco" /> 
           </div>
           <div class="span6">
-            <div  class="banner_1"> <a href="#"> Ver todos los looks</a>
+<!--             <div  class="banner_1"> <a href="#"> Ver todos los looks</a>
               <div class="pull-right"><a href="#"> <span class="entypo icon_personaling_big color11">&#59146;</span></a></div>
-            </div>
+            </div> -->
+            <img src="http://placehold.it/571x75">
           </div>
         </div>
       </div>
-    <!-- Carousel nav --> 
-    <a class="carousel-control left margin_top_small bx-prev" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">&rsaquo;</a> 
-    </div>
+   </div>
 </div>

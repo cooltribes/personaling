@@ -34,8 +34,23 @@ $prePub="";
 						//$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 						$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 						echo("<td><article class='span3'><div class='producto'> 
-						<input id='idprod' value='".$data->id."' type='hidden' >
-						".$a.$b." <a href='#myModal' role='button' class='btn  btn-block btn-small vista_rapida  hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+						<input id='idprod' value='".$data->id."' type='hidden' ><a href='../producto/detalle/".$data->id."'>
+						".$a.$b." 
+						
+						".CHtml::link("Vista Rápida",
+						    $this->createUrl('modal',array('id'=>$data->id)),
+						    array(// for htmlOptions
+						      'onclick'=>' {'.CHtml::ajax( array(
+						      'url'=>CController::createUrl('modal',array('id'=>$data->id)),
+						           'success'=>"js:function(data){ $('#myModal').html(data);
+											$('#myModal').modal(); }")).
+						         'return false;}',
+						    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
+						    'id'=>'prodencanta')
+						)."		
+												
+						</a>
+						<header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
 						<span class='precio'>Bs. ".$prePub."</span>
 						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
@@ -50,10 +65,25 @@ $prePub="";
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 					//	$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
-					$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"","style"=>"display:none","width" => "270", "height" => "270"));
+					$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 					echo("<article class='span3'><div class='producto' >
-					<input id='idprod' value='".$data->id."' type='hidden' >
-					".$a.$b." <a href='#myModal' role='button' class='btn btn-block btn-small vista_rapida hidden-phone' data-toggle='modal'>Vista Rápida</a><header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+					<input id='idprod' value='".$data->id."' type='hidden' ><a href='../producto/detalle/".$data->id."'>
+					".$a.$b." 
+						
+					".CHtml::link("Vista Rápida",
+					    $this->createUrl('modal',array('id'=>$data->id)),
+					    array(// for htmlOptions
+					      'onclick'=>' {'.CHtml::ajax( array(
+					      'url'=>CController::createUrl('modal',array('id'=>$data->id)),
+					           'success'=>"js:function(data){ $('#myModal').html(data);
+										$('#myModal').modal(); }")).
+					         'return false;}',
+					    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
+					    'id'=>'pago')
+					)."		
+						 
+					</a>
+					<header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 					<a href='../producto/detalle/".$data->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
 					<span class='precio'>Bs. ".$prePub."</span>
 					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");

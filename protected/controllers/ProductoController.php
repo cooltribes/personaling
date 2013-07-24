@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','colores','imagenColor','updateCantidad','encantar'), 
+				'actions'=>array('index','view','detalle','tallas','tallaspreview','colores','imagenColor','updateCantidad','encantar'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1161,6 +1161,56 @@ class ProductoController extends Controller
 
 	}
 	
+
+	/**
+ * Consigue las tallas para el preview
+ */
+	public function actionTallaspreview()
+	{
+		$tallas = array();
+		$imgs = array(); // donde se van a ir las imagenes
+		$div ="";
+		$imag="";
+		$cont=0;
+		
+		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
+		
+		foreach($ptc as $p)
+		{
+			if($p->cantidad>0) // que haya disponibilidad para mostrarlo
+			{
+				$ta = Talla::model()->findByPk($p->talla_id);
+				$div = $div."<div onclick='a(".$ta->id.")' id='".$ta->id."' style='cursor: pointer' class='tallass' title='talla'>".$ta->valor."</div>";
+			}
+		}
+		
+		$imagenes = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$_POST['idProd'],'color_id'=>$_POST['idTalla']),array('order'=>'orden ASC'));
+				
+			foreach ($imagenes as $img) {
+				$todos = array();				
+				
+				if($cont==0){
+					$imag=$imag.'<div class="item active">';
+					$imag=$imag.CHtml::image($img->getUrl(array('ext'=>'jpg')),'producto', array("width" => "450", "height" => "450"));
+					$imag=$imag.'</div>';	
+					$cont++;
+				}
+				else{
+					$imag=$imag.'<div class="item">';
+					$imag=$imag.CHtml::image($img->getUrl(array('ext'=>'jpg')),'producto', array("width" => "450", "height" => "450"));
+					$imag=$imag.'</div>';	
+				}
+
+			}
+		
+		echo CJSON::encode(array(
+			'status'=> 'ok',
+			'datos'=> $div,
+			'imagenes'=>$imag
+		));
+		exit;
+	}
+
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

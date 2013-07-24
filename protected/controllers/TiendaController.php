@@ -353,7 +353,7 @@ class TiendaController extends Controller
 
 
 	public function actionModal($id)
-	{
+	{ 
 		
 		$datos="";
 		
@@ -372,7 +372,7 @@ class TiendaController extends Controller
 		$datos=$datos.'<li data-slide-to="1" data-target="#myCarousel" class="active"></li>';
         $datos=$datos.'<li data-slide-to="2" data-target="#myCarousel" class=""></li>';
        	$datos=$datos.'</ol>';
-        $datos=$datos.'<div class="carousel-inner">';
+        $datos=$datos.'<div class="carousel-inner" id="carruselImag">';
        // $datos=$datos.'<div class="item">';
 		
 		$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
@@ -517,6 +517,61 @@ class TiendaController extends Controller
     	$datos=$datos.'<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>';
     	$datos=$datos.'</div>';
     //	$datos=$datos.'</div>';
+    
+    	$datos=$datos."<script>";
+		
+		$datos=$datos."$(document).ready(function() {";
+			$datos=$datos."$('.coloress').click(function(ev){"; // Click en alguno de los colores -> cambia las tallas disponibles para el color
+				$datos=$datos."ev.preventDefault();";
+				//$datos=$datos."alert($(this).attr('id'));";
+				
+				$datos=$datos.' var prueba = $("#vTa div.tallass.active").attr("value");';
+			$datos=$datos."if(prueba == 'solo'){";
+   				$datos=$datos."$(this).addClass('coloress active');"; // añado la clase active al seleccionado
+   				$datos=$datos."$('#vTa div.tallass.active').attr('value','0');";
+			$datos=$datos.'}';
+   			$datos=$datos.'else{';
+				$datos=$datos.'$("#vCo").find("div").siblings().removeClass("active");'; // para quitar el active en caso de que ya alguno estuviera seleccionado
+   				$datos=$datos.'var dataString = $(this).attr("id");';
+     			$datos=$datos.'var prod = $("#producto").attr("value");';
+     			$datos=$datos."$(this).removeClass('coloress');";
+  				$datos=$datos."$(this).addClass('coloress active');"; // añado la clase active al seleccionado
+				
+  				$datos=$datos. CHtml::ajax(array(
+            		'url'=>array('producto/tallaspreview'),
+		            'data'=>array('idTalla'=>"js:$(this).attr('id')",'idProd'=>$id),
+		            'type'=>'post',
+		            'dataType'=>'json',
+		            'success'=>"function(data)
+		            {
+						//alert(data.datos);
+						
+						$('#vTa').fadeOut(100,function(){
+			     			$('#vTa').html(data.datos); // cambiando el div
+			     		});
+			
+			      		$('#vTa').fadeIn(20,function(){});
+						
+						$('#carruselImag').fadeOut(100,function(){
+			     			$('#carruselImag').html(data.imagenes); 
+			     		});
+			
+			      		$('#carruselImag').fadeIn(20,function(){});
+						
+						//$('#carruselImag').html(data.imagenes);
+						
+		 				
+		            } ",
+		            ));
+		    	$datos=$datos." return false; ";
+
+				
+				$datos=$datos.'}'; // else
+				
+			$datos=$datos."});";// coloress click
+		$datos=$datos."});"; // ready
+		
+    	$datos=$datos."</script>";
 		
 		echo $datos;
 	}

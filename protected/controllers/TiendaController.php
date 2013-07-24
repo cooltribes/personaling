@@ -67,6 +67,7 @@ class TiendaController extends Controller
 	
 		if (isset($_POST['busqueda'])) // desde el input
 		{	
+			//echo $producto->nombre = '%'.$_POST['busqueda'].'%';
 			$producto->nombre = $_POST['busqueda'];
 		}
 	
@@ -74,8 +75,10 @@ class TiendaController extends Controller
 		
 		$todos = array();
 		$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
-		
+		//print_r($todos);
+		//$dataProvider = $producto->busqueda('');
 		$dataProvider = $producto->busqueda($todos);
+		//$dataProvider = $producto->search();
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,

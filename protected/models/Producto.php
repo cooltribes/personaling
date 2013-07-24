@@ -162,19 +162,24 @@ class Producto extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('codigo',$this->codigo,true);
-		$criteria->compare('t.nombre',$this->nombre,true);
-		$criteria->compare('t.estado',$this->estado,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('marca_id',$this->marca_id,true);
-		$criteria->compare('fInicio',$this->fInicio,true);
-		$criteria->compare('fFin',$this->fFin,true);
-		$criteria->compare('fecha',$this->fecha,true);
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('destacado',$this->destacado,true);
-		$criteria->compare('peso',$this->peso,true);
+		//$criteria->compare('id',$this->id);
+		//$criteria->compare('codigo',$this->codigo,true);
+		//$criteria->compare('nombre',$this->nombre,true,'OR',true);
+		
+		$criteria->compare('t.nombre',$this->nombre,true,'OR');
+		//$criteria->compare('t.descripcion',$this->nombre,true);
+		$criteria->compare('categorias.nombre',$this->nombre,true,'OR');
+		
+		//$criteria->compare('t.estado',$this->estado,true);
+		//$criteria->compare('marca_id',$this->marca_id,true);
+		//$criteria->compare('fInicio',$this->fInicio,true);
+		//$criteria->compare('fFin',$this->fFin,true);
+		//$criteria->compare('fecha',$this->fecha,true);
+		//$criteria->compare('status',$this->status,true);
+		//$criteria->compare('destacado',$this->destacado,true);
+		//$criteria->compare('peso',$this->peso,true);
 		$criteria->with = array('categorias');
+		
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
 		{
@@ -185,6 +190,7 @@ class Producto extends CActiveRecord
 			else // si tienes hijos
 				{
 					$criteria->addInCondition("tbl_categoria_id",$todos);
+					
 				}		
 		}else if($todos=="a")
 		{

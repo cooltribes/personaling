@@ -20,6 +20,9 @@
 <body>
   <div id="navegacion_principal">
 <?php  
+
+$total = 0; //variable para llevar el numero de notificaciones
+$cont_productos = 0 ; //variable para llevar el numero de productos
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
 if (Yii::app()->user->id?UserModule::isAdmin():false){
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -69,7 +72,6 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 )); 
 } else {
 	$cont_productos = 0;
-	$total;
 	
 		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
@@ -99,20 +101,19 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'class'=>'bootstrap.widgets.TbMenu',
             'htmlOptions'=>array('class'=>'pull-right'),
             'encodeLabel'=>false,
-            //'encodeLabel'=>false,
             'items'=>array(
   
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 
-                array('label'=>'Top', 'url'=>array('/site/top'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'), 'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                array('label'=>'Top', 'url'=>array('/site/top'),'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart',   'url'=>array('/bolsa/index'), 'htmlOptions'=>array('class'=>'btn btn-danger') ,'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
@@ -133,9 +134,92 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 }
-?></div>
+
+?>
+</div>
+<?php
+if(!Yii::app()->user->isGuest){
+	$user = User::model()->findByPk(Yii::app()->user->id);
+	
+	if($user->status == 0){
+		?>
+		<div id="notificacion_validar" class="alert alert-error margin_top padding_top text_align_center" style="margin-top: 3em;">
+			Tu cuenta no ha sido validada. 
+			<?php
+			echo CHtml::ajaxLink(
+				'Reenviar correo de validación.', 
+				$this->createUrl('user/registration/sendValidationEmail'), 
+				array('success'=>'function(data){
+					$("#notificacion_validar").html(data);
+					$("#notificacion_validar").removeClass();
+					$("#notificacion_validar").addClass("alert alert-success margin_top padding_top text_align_center");
+				}'), 
+				array()
+			);
+			?>
+		</div>
+		<?php
+	}
+}
+?>
+
 
 <script type="text/javascript">
+  
+  $(document).on('ready',HandlerReady);
+
+  function HandlerReady () {
+    $('#btn-notifications').popover(
+    {
+      title: 'Notificaciones',
+      content: '<div class="btn btn-block btn-small btn-info">Tienes '+ <?php echo $total ?>+' notificaciones por leer</div>',
+      placement: 'bottom',
+      trigger: 'hover',
+      html: true,
+    });
+
+    $('#btn-notifications').hover(function(){
+        $(this).popover('show');
+      },
+      function(){
+        $('.popover').hover(function(){},function(){
+          $('#btn-notifications').popover('hide');
+          });        
+      }
+    );
+
+    
+    textShoppingCart = '<div class="btn btn-block btn-small btn-info">Tienes '+ <?php echo $cont_productos ?>+' productos</div>';
+
+    if(<?php echo $cont_productos ?> == 0){
+      textShoppingCart = '<p><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
+    }
+ 
+
+    $('#btn-shoppingcart').popover(
+    {
+      html: true,
+      title: '<strong>Tu bolsa</strong>',
+      content: textShoppingCart,
+      placement: 'bottom',
+      trigger: 'hover',
+    });
+
+    $('#btn-shoppingcart').hover(function(){
+
+        $(this).popover('show');
+        $(this).addClass('bg_color13');
+      },
+      function(){
+
+        $('.popover').hover(function(){},function(){
+            $('#btn-shoppingcart').popover('hide');
+            $('#btn-shoppingcart').removeClass('bg_color13');
+          });        
+      }
+    );
+  }
+
 
 </script>
 

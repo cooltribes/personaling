@@ -26,4 +26,5 @@ $this->breadcrumbs=array(
     </section>
   </div>
 </div>
+</div>
 <?php endif; ?>

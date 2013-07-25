@@ -127,6 +127,23 @@ class RegistrationController extends Controller
 		    }//else
 	}// registration
 	
+	public function actionSendValidationEmail(){
+		$model = User::model()->notsafe()->findByPk(Yii::app()->user->id);
+		$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
+		
+		$message            = new YiiMailMessage;
+		$message->view = "mail_template";
+		$subject = 'Activa tu cuenta en Personaling';
+		$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+		$params              = array('subject'=>$subject, 'body'=>$body);
+		$message->subject    = $subject;
+		$message->setBody($params, 'text/html');                
+		$message->addTo($model->email);
+		$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+		Yii::app()->mail->send($message);
+		echo 'Enlace de validación enviado a <strong>'.$model->email.'</strong>';
+	}
+	
 	public function actionTwitterStart(){
 		 $twitter = Yii::app()->twitter->getTwitter();  
 	     $request_token = $twitter->getRequestToken();

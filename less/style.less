@@ -19,6 +19,10 @@
 @color10: #E7E3E7; /* Lila */
 @color11: #8b5293; /* Morado chillon */
 @color12: #1abc9c; /* Verde Muteado */
+@naranja: #ed751c;
+@azul: 	  #65BCDF;
+@verde:   #18af91;
+@rojo: 	  #BF5077;
 
 /*--- "." ---*/
 .color1{ color:@color1;}
@@ -46,7 +50,6 @@
 .bg_color10{ background-color:@color10;}
 .bg_color11{ background-color:@color11;}
 .bg_color12{ background-color:@color12;}
-.bg_color13{ background-color: lighten(@color5,10%);}
 
 
 
@@ -315,7 +318,7 @@ strong, th{ color:#555;}
 	}
 
 .table-striped tbody tr:nth-child(2n+1) td{
-	 background-color: lighten(@color10,4%);
+	 background-color: lighten(@color10,5%);
 }
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{ background:@color1}
 
@@ -323,23 +326,36 @@ strong, th{ color:#555;}
 	font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
-	background-color: @color10 !important;
-	color:darken(@color10,60%);
-	.text_light;
+	background-color: #C4BCCD !important;
+	color:darken(#C4BCCD,40%);
+	text-shadow:0 1px rgba(255, 255, 255, 0.2);
+	text-shadow:0 1px rgba(255, 255, 255, 0.2);
+	text-shadow:0 1px rgba(255, 255, 255, 0.2);
+	text-shadow:0 1px rgba(255, 255, 255, 0.2);
 
 }
 
-.table-bordered th, .table-bordered td {
-    border-left: 1px solid darken(@color10,5%);
-	border-top: 1px solid darken(@color10,5%);
+.table-bordered {
+	td{
+    border-left: 1px solid darken(@color10,3%);
+	border-top: 1px solid darken(@color10,3%);
+	}
+	th{
+	border-color:darken(#C4BCCD,9%);
+	
+
+	}
 }
 
 .table-bordered{ border-color:darken(@color10,5%);}
 
 
 
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th{ background-color:@color10}
-
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th{ background-color:lighten(@color10,3%)}
+.progress .bar{ background: @azul;}
+.progress{ .border_radius(@radius:0)}
+.progress-danger .bar, .progress .bar-danger{background: @rojo;}
+.progress-success .bar, .progress .bar-success{background: @verde;}
 
 /*------------ RESETS PARA BOOTSTRAP OFF --------------*/
 
@@ -430,7 +446,11 @@ src: url('../fonts/entypo.woff'),
 .navbar .nav > li > a.btn-danger{
 	.color3;
 	.text_shadow;
-	margin-top:-2px;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-webkit-box-shadow: none;
+	margin-top:0;
 	.transition_all
 
 	

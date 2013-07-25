@@ -31,7 +31,7 @@ else
   <div class="page-header">
     <h1>Panel de Control</h1>
   </div>
-  <div>
+  
   	<?php
   	/*
   	$url = "http://www.grupozoom.com/servicios/servicios.php?tipo_menu=tarifas";
@@ -98,7 +98,7 @@ else
 	*/
   	?>
   	
-  </div>
+  
   <div class="row">
     <div class="span12">
       <div class="bg_color3 margin_bottom_small padding_small box_1">
@@ -126,7 +126,7 @@ else
 
 ?>
 
-      	<img src="<?php echo Yii::app()->baseUrl; ?>/images/stats_sample.png" alt="estadisticas"/> </div>
+</div></div>
       <div class="row">
         <div class="span6 margin_top">
          <div class="well well_personaling_big"> 

@@ -133,6 +133,7 @@ class LookController extends Controller
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;
 					$imagenes[$i]->height = $lookhasproducto->height;
+					$imagenes[$i]->angle = $lookhasproducto->angle;
 			} 
 			$i++;
 		 }	
@@ -146,6 +147,7 @@ class LookController extends Controller
 					$imagenes[$i]->left = $lookhasadorno->left;
 					$imagenes[$i]->width = $lookhasadorno->width;
 					$imagenes[$i]->height = $lookhasadorno->height;
+					$imagenes[$i]->angle = $lookhasproducto->angle;
 			} 
 
 			$i++;
@@ -168,10 +170,17 @@ class LookController extends Controller
 			          $src = imagecreatefrompng($image->path);
 			          break;
 			      }			
-			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h); 
+			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
+			
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true ); 
+    		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
+			
     		imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
+			if ($image->angle){
+					
+				$img = imagerotate($img,$image->angle,$pngTransparency);
+			}
 			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
 		}
 		header('Content-Type: image/png');

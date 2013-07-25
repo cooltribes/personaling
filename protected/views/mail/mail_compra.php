@@ -336,7 +336,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 				}
 						
-					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre)."</td>";
+					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre, '')."</td>";
 					echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>
 					</tr>";
 

@@ -156,12 +156,12 @@ $template = '{summary}
 <!------------------- MODAL WINDOW ON -----------------> 
 
 <!-- Modal 1 -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="ps_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Personal shoppers participantes</h3>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" id="ps_modal_body">
     <h4>Nombre de la campaña: "Junio lluvioso"</h4>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
       <tbody>
@@ -182,7 +182,7 @@ $template = '{summary}
       </tbody>
     </table>
   </div>
-  <div class="modal-footer"> <a href="#" title="Cerrar" class="btn"  data-dismiss="modal"> cerrar</a> </div>
+  <div class="modal-footer"> <a href="#" title="Cerrar" class="btn"  data-dismiss="modal">Aceptar</a> </div>
 </div>
 
 <!-- Modal 2 -->

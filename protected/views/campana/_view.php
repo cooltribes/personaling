@@ -61,7 +61,17 @@
       <?php
       $ps = CampanaHasPersonalShopper::model()->countByAttributes(array('campana_id'=>$data->id));
       ?>
-      <td><a href="#myModal" role="button" data-toggle="modal"><?php echo $ps; ?></a></td>
+      <td>
+      	<?php
+      	if($ps > 0){
+	      	?>
+	      	<a style="cursor: pointer;" role="button" onclick="get_ps(<?php echo $data->id; ?>)"><?php echo $ps; ?></a>
+	      	<?php
+		}else{
+			echo '0';
+		}
+      	?>
+      </td>
       <td><a href="#myModal2" role="button" data-toggle="modal">0</a></td>
       <td>0,00</td>
       <td><div class="dropdown"> <a class="dropdown-toggle btn btn-small" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_campanas_crear.php"> <i class="icon-cog"></i></a> 
@@ -76,3 +86,18 @@
           </ul>
         </div></td>
     </tr>
+    
+<script>
+	function get_ps(campana_id){
+		$.ajax({
+	        type: "post",
+	        dataType: 'html',
+	        url: "campana/getPS", // action 
+	        data: { 'campana_id':campana_id }, 
+	        success: function (data) {
+				$('#ps_modal_body').html(data);
+				$('#ps_modal').modal();
+	       	}//success
+	       });
+	}
+</script>

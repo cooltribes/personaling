@@ -2,14 +2,7 @@
 
 class CampanaController extends Controller
 {
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
-
-		/**
+	 /**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
@@ -18,7 +11,7 @@ class CampanaController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view'),
+				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -155,6 +148,31 @@ class CampanaController extends Controller
 		$this->render('edit', array('campana'=>$campana));
 	}
 
+	public function actionGetPS(){
+		$campana = Campana::model()->findByPk($_POST['campana_id']);
+		$personal_shoppers = CampanaHasPersonalShopper::model()->findAllByAttributes(array('campana_id'=>$_POST['campana_id']));
+		$return = '<h4>Nombre de la campaña: '.$campana->nombre.'</h4>';
+		$return .= '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+				      <tbody>
+				        <tr>
+				          <th colspan="1" scope="col">Avatar</th>
+				          <th colspan="1" scope="col" width="80%">Nombre</th>
+				        </tr>';
+		//var_dump($personal_shoppers);
+		foreach ($personal_shoppers as $ps) {
+			$usuario = User::model()->findByPk($ps->user_id);
+			$return .= '<tr>
+				          <td><img src="'.$usuario->getAvatar().'" width="30" height="30"></td>
+				          <td>'.$usuario->profile->first_name.' '.$usuario->profile->last_name.'</td>
+				        </tr>';
+		}
+		
+		$return .= '</tbody>
+    			</table>';
+				
+		echo $return;
+	}
+
 	public function actionIndex()
 	{
 		$campana = new Campana; 
@@ -243,6 +261,13 @@ class CampanaController extends Controller
 			$return .= '</div></div>';
 			echo $return;
 		}
+	}
+
+	public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+		);
 	}
 
 	// Uncomment the following methods and override them if needed

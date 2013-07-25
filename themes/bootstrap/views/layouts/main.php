@@ -142,21 +142,25 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
   $(document).on('ready',HandlerReady);
 
   function HandlerReady () {
+    //Boton Notificaciones
     $('#btn-notifications').popover(
     {
-      title: 'Notificaciones',
-      content: '<div class="btn btn-block btn-small btn-info">Tienes '+ <?php echo $total ?>+' notificaciones por leer</div>',
+      title: '<strong>Notificaciones</strong>',
+      content: '<p class="text-center">Tienes '+ <?php echo $total ?>+' notificaciones por leer</p>',
       placement: 'bottom',
-      trigger: 'hover',
+      trigger: 'manual',
       html: true,
     });
 
     $('#btn-notifications').hover(function(){
         $(this).popover('show');
+        $(this).addClass('bg_color10');
       },
       function(){
+        // $('#btn-notifications').removeClass('bg_color10');
         $('.popover').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
+          $('#btn-notifications').removeClass('bg_color10');
           });        
       }
     );
@@ -168,28 +172,29 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
       textShoppingCart = '<p><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
     }
  
-
+    //Boton Shopping Cart
     $('#btn-shoppingcart').popover(
     {
       html: true,
       title: '<strong>Tu bolsa</strong>',
       content: textShoppingCart,
       placement: 'bottom',
-      trigger: 'hover',
+      trigger: 'manual',
     });
 
     $('#btn-shoppingcart').hover(function(){
 
         $(this).popover('show');
-        $(this).addClass('bg_color13');
+        $(this).addClass('bg_color10');
       },
       function(){
+        // $('#btn-shoppingcart').removeClass('bg_color10');
 
         $('.popover').hover(function(){},function(){
-            $('#btn-shoppingcart').popover('hide');
-            $('#btn-shoppingcart').removeClass('bg_color13');
-          });        
-      }
+              $('#btn-shoppingcart').popover('hide');
+              $('#btn-shoppingcart').removeClass('bg_color10');
+            });        
+        }
     );
   }
 

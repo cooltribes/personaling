@@ -185,7 +185,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 			else
 			{ 
 			 
-			 echo "<h4 class='braker_bottom margin_top'>No hay ningun producto individual en la bolsa.</h4>";
+			 echo "<h4 class='braker_bottom margin_top'>¿Qué esperas? Looks y prendas increíbles esperan por ti.</h4>";
 				
 			}
 		?>

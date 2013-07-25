@@ -181,13 +181,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     $('#btn-shoppingcart').hover(function(){
 
         $(this).popover('show');
-        $(this).addClass('color13');
+        $(this).addClass('bg_color13');
       },
       function(){
 
         $('.popover').hover(function(){},function(){
             $('#btn-shoppingcart').popover('hide');
-            $('#btn-shoppingcart').removeClass('color13');
+            $('#btn-shoppingcart').removeClass('bg_color13');
           });        
       }
     );

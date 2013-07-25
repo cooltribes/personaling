@@ -168,14 +168,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				);
 				$preferenceResult = $mp->create_preference($preference);
 				?>
-          <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
+          <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php
               }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
               			
 					 echo CHtml::link("<i class='icon-locked icon-white'></i> Pagar con tarjeta de crédito",
 					    $this->createUrl('modal',array('id'=>'pago')),
 					    array(// for htmlOptions
-					      'onclick'=>' {'.CHtml::ajax( array(
+					      'onclick'=>' { $("#pago").attr("disabled", true); '.CHtml::ajax( array(
 					      'url'=>CController::createUrl('modal',array('tipo'=>"2")),
 					           'success'=>"js:function(data){ $('#myModal').html(data);
 										$('#myModal').modal(); }")).
@@ -187,7 +187,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				}
 				else {
               	?>
-          			<a onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Pago Trans/Dep</a>
+          			<a id="boton_completar" onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Completar compra</a>
           			<hr/>
           		<?php
               	}
@@ -241,6 +241,7 @@ else
 	
 	function enviar()
 	{
+		$('#boton_completar').attr("disabled", true);
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");
 		var subtotal = $("#subtotal").attr("value");
@@ -398,6 +399,7 @@ else
 	
 	function enviar_mp(json)
 	{
+		$('#boton_mp').attr("disabled", true);
 		//alert("return");
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");

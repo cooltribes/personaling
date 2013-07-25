@@ -134,7 +134,34 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     ),
 )); 
 }
-?></div>
+
+?>
+</div>
+<?php
+if(!Yii::app()->user->isGuest){
+	$user = User::model()->findByPk(Yii::app()->user->id);
+	
+	if($user->status == 0){
+		?>
+		<div id="notificacion_validar" class="alert alert-error margin_top padding_top text_align_center" style="margin-top: 3em;">
+			Tu cuenta no ha sido validada. 
+			<?php
+			echo CHtml::ajaxLink(
+				'Reenviar correo de validación.', 
+				$this->createUrl('user/registration/sendValidationEmail'), 
+				array('success'=>'function(data){
+					$("#notificacion_validar").html(data);
+					$("#notificacion_validar").removeClass();
+					$("#notificacion_validar").addClass("alert alert-success margin_top padding_top text_align_center");
+				}'), 
+				array()
+			);
+			?>
+		</div>
+		<?php
+	}
+}
+?>
 
 
 <script type="text/javascript">

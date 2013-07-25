@@ -765,6 +765,17 @@ class BolsaController extends Controller
 									$prorden->cantidad = $prod->cantidad;
 									$prorden->look_id = $prod->look_id;
 									
+									$prtc = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
+									$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
+									
+									if($prod->look_id == 0){ // no es look
+										$prorden->precio = $precio->precioDescuento;
+									}
+									else{
+										$look = Look::model()->findByPk($prod->look_id);
+										$prorden->precio = $look->getPrecio();										
+									}
+									
 									if($prorden->save()){
 										//listo y que repita el proceso
 									}

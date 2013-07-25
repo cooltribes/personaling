@@ -569,11 +569,111 @@ class TiendaController extends Controller
 				$datos=$datos.'}'; // else
 				
 			$datos=$datos."});";// coloress click
+			
+			
+		$datos=$datos.'$(".tallass").click(function(ev){ '; // click en tallas -> recarga los colores para esa talla
+			$datos=$datos."ev.preventDefault();";
+			//$datos=$datos."alert($(this).attr('id'));";
+		
+			$datos=$datos.'var prueba = $("#vCo div.coloress.active").attr("value");';
+
+   			$datos=$datos."if(prueba == 'solo'){";
+   				$datos=$datos."$(this).addClass('tallass active');"; // añado la clase active al seleccionado
+   				$datos=$datos.'$("#vCo div.coloress.active").attr("value","0");';
+   			$datos=$datos."}";
+   			$datos=$datos."else{";
+		   		$datos=$datos.'$("#vTa").find("div").siblings().removeClass("active");'; // para quitar el active en caso de que ya alguno estuviera seleccionado
+		   		$datos=$datos.'var dataString = $(this).attr("id");';
+     			$datos=$datos.'var prod = $("#producto").attr("value");';
+     
+     			$datos=$datos."$(this).removeClass('tallass');";
+  				$datos=$datos."$(this).addClass('tallass active');"; // añado la clase active al seleccionado
+     
+     			$datos=$datos. CHtml::ajax(array(
+            		'url'=>array('producto/colorespreview'),
+		            'data'=>array('idColor'=>"js:$(this).attr('id')",'idProd'=>$id),
+		            'type'=>'post',
+		            'dataType'=>'json',
+		            'success'=>"function(data)
+		            {
+						//alert(data.datos);
+						
+						$('#vCo').fadeOut(100,function(){
+			     			$('#vCo').html(data.datos); // cambiando el div
+			     		});
+			
+				      	$('#vCo').fadeIn(20,function(){});				
+
+		            } ",
+		            ));
+		    		$datos=$datos." return false; ";     
+     
+				$datos=$datos."}"; //else
+			$datos=$datos."});"; // tallas click
+			
 		$datos=$datos."});"; // ready
 		
-    	$datos=$datos."</script>";
+		// fuera del ready
 		
-		echo $datos;
+		$datos=$datos."function a(id){";// seleccion de talla
+			$datos=$datos.'$("#vTa").find("div").siblings().removeClass("active");';
+			$datos=$datos.'$("#vTa").find("div#"+id+".tallass").removeClass("tallass");';
+			$datos=$datos.'$("#vTa").find("div#"+id).addClass("tallass active");';
+   		$datos=$datos."}";
+   
+   		$datos=$datos."function b(id){"; // seleccion de color
+   			$datos=$datos.'$("#vCo").find("div").siblings().removeClass("active");';
+   			$datos=$datos.'$("#vCo").find("div#"+id+".coloress").removeClass("coloress");';
+			$datos=$datos.'$("#vCo").find("div#"+id).addClass("coloress active");';		
+   		$datos=$datos."}";
+		
+		$datos=$datos."function c(){"; // comprobar quienes están seleccionados
+   		
+   			$datos=$datos.'var talla = $("#vTa").find(".tallass.active").attr("id");';
+   			$datos=$datos.'var color = $("#vCo").find(".coloress.active").attr("id");';
+   			$datos=$datos.'var producto = $("#producto").attr("value");';
+   		
+   			// llamada ajax para el controlador de bolsa
+ 		  
+ 			$datos=$datos."if(talla==undefined && color==undefined){"; // ninguno
+ 				$datos=$datos.'alert("Seleccione talla y color para poder añadir.");';
+ 			$datos=$datos."}";
+ 		
+ 			$datos=$datos."if(talla==undefined && color!=undefined){"; // falta talla 
+ 				$datos=$datos.'alert("Seleccione la talla para poder añadir a la bolsa.");';
+ 			$datos=$datos.'}';
+ 		
+ 			$datos=$datos.'if(talla!=undefined && color==undefined){'; // falta color
+ 				$datos=$datos.'alert("Seleccione el color para poder añadir a la bolsa.");';
+ 			$datos=$datos.'}';
+		
+			$datos=$datos.'if(talla!=undefined && color!=undefined){';
+		
+				$datos=$datos. CHtml::ajax(array(
+	            	'url'=>array('bolsa/agregar'),
+			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")'),
+			        'type'=>'post',
+			        'success'=>"function(data)
+			        {
+						if(data=='ok'){
+							//alert('redireccionar mañana');
+							window.location='../bolsa/index';
+						}
+						
+						if(data=='no es usuario'){
+							alert('Debes primero ingresar con tu cuenta de usuario o registrarte');
+						}
+						
+			        } ",
+		   		));
+				$datos=$datos." return false; ";     
+ 			$datos=$datos.'}'; // cerro   
+			
+		$datos=$datos.'}'; // c
+			
+    $datos=$datos."</script>";
+		
+	echo $datos;
 	}
 
 	// Uncomment the following methods and override them if needed

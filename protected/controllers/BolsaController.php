@@ -511,6 +511,7 @@ class BolsaController extends Controller
 		if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
 			
 			$model=new UserLogin;
+			$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
 			
 			if(isset($_POST['UserLogin']))
 			{
@@ -518,8 +519,25 @@ class BolsaController extends Controller
 				// validate user input and redirect to previous page if valid
 				
 				if($model->validate()) {
-					$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
-					$this->redirect(array('bolsa/direcciones'));
+					echo 'Status: '.$user->status;
+					if($user->status == 1){
+						$this->redirect(array('bolsa/direcciones'));
+					}else{
+						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 
+						$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $user->activkey, "email" => $user->email));
+		
+						$message            = new YiiMailMessage;
+						$message->view = "mail_template";
+						$subject = 'Activa tu cuenta en Personaling';
+						$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+						$params              = array('subject'=>$subject, 'body'=>$body);
+						$message->subject    = $subject;
+						$message->setBody($params, 'text/html');
+						$message->addTo($user->email);
+						$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+						Yii::app()->mail->send($message);
+						$this->refresh();
+					}
 				}else{
 					$this->render('login',array('model'=>$model));
 					Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta.")); 

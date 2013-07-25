@@ -41,11 +41,15 @@ class ProductoView extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('created_on','default',
+              'value'=>new CDbExpression('NOW()'),
+              'setOnEmpty'=>false,'on'=>'insert'),
 			array('producto_id, created_on, user_id', 'required'),
 			array('producto_id, user_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, producto_id, created_on, user_id', 'safe', 'on'=>'search'),
+
 		);
 	}
 
@@ -74,7 +78,30 @@ class ProductoView extends CActiveRecord
 			'user_id' => 'User',
 		);
 	}
+	public function lastView($limit = 2)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
 
+		$criteria=new CDbCriteria;
+
+		 //$criteria->limit = $limit; 
+		 $criteria->compare('user_id',$this->user_id);
+		 $criteria->distinct = true;
+		 $criteria->select = 'user_id,producto_id';
+		 $criteria->order = 'created_on DESC';
+		 //$criteria->offset = 0;
+		 //$criteria->limit = 2; 
+		 //$criteria->pagination = false;
+
+		return new CActiveDataProvider($this, array(
+			'pagination'=>array(
+                        'pageSize'=>$limit,
+                ),
+			'criteria'=>$criteria,
+			
+		));
+	}
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.

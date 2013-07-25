@@ -171,9 +171,9 @@
  	$producto = Producto::model()->findByPk($record['producto_id']);
 	 if (isset($producto)){
  ?>
-                        <li class="span2"> <a href="#">
+                        <li class="span2"> 
                             <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
-                            <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?> </a> </li>
+                            <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>  </li>
                         <? } } ?>
                     </div>
                 </div>

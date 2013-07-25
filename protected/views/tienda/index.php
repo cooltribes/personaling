@@ -31,20 +31,20 @@
 							var imag;
 							var original;
 							var segunda;
-
+							
 							$('.producto').hover(function(){
-								if ($(this).children('img').length > 1){
-								$(this).children('img').eq(0).hide();
+								if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).hide();
 								
-								$(this).children('img').eq(0).next().show();
+								$(this).find('img').eq(0).next().show();
 								}
 							},function(){
-								if ($(this).children('img').length > 1){
-								$(this).children('img').eq(0).show();
+								if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).show();
 								
-								$(this).children('img').eq(0).next().hide();
+								$(this).find('img').eq(0).next().hide();
 								}
-							}); 
+							}); 						
 							
 						});
 	    				
@@ -221,6 +221,10 @@
   </div>
 </div>
 
+    <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+	<?php $this->endWidget(); ?>
+
 <script> 
 
 $(document).ready(function(){	
@@ -275,7 +279,7 @@ function randomFrom(arr){
     <!-- Button to trigger modal -->
     
      
-    <!-- Modal -->
+    <!-- Modal 
     <div id="myModal" class="modal hide tienda_modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -346,6 +350,8 @@ function randomFrom(arr){
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
     </div>
+    -->
+
     
 <script>
 
@@ -355,46 +361,153 @@ $(document).ready(function() {
 	var imag;
 	var original;
 	var segunda;
-	/*$('.img_hover_out').hover(function(){
-		
-		$(this).hide(200);
-		$(this).next().show(200);
-	});
-	*/ 
+
 	$('.producto').hover(function(){
-		if ($(this).children("img").length > 1){
-		$(this).children("img").eq(0).hide();
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).hide();
 		
-		$(this).children("img").eq(0).next().show();
+		$(this).find("img").eq(0).next().show();
 		}
 	},function(){
-		if ($(this).children("img").length > 1){
-		$(this).children("img").eq(0).show();
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).show();
 		
-		$(this).children("img").eq(0).next().hide();
+		$(this).find("img").eq(0).next().hide();
 		}
-	}); 
-	/*
-	$('.producto').hover(
-	function() {
+	});
+
 	
-		var id = $(this).children("#idprod").attr('value');
-		
-		imag = $(this).children("#img-"+id);
-		segunda = $("#img2-"+id).attr('value');
-		
-		original = imag.attr('src');
+
+	$(".coloress").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
+   		ev.preventDefault();
+   		alert($(this).attr("id"));
+   		
+   		var prueba = $("#vTa div.tallass.active").attr('value');
+
+		if(prueba == 'solo')
+   		{
+   			$(this).addClass('coloress active'); // añado la clase active al seleccionado
+   			$("#vTa div.tallass.active").attr('value','0');
+   		}
+   		else{
+   		
+   		// para quitar el active en caso de que ya alguno estuviera seleccionado
+   		$("#vCo").find("div").siblings().removeClass('active');
+   		
+   		var dataString = $(this).attr("id");
+     	var prod = $("#producto").attr("value");
+
+     	$(this).removeClass('coloress');
+  		$(this).addClass('coloress active'); // añado la clase active al seleccionado
+  		   
+     	$.ajax({
+	        type: "post",
+	        url: "../tallas", // action Tallas de Producto
+	        data: { 'idTalla':dataString , 'idProd':prod}, 
+	        dataType:"json",
+	        success: function (data) {
+	        	
+		        if(data.status == 'ok')
+		        {
+		        	//alert(data.datos);
+					var cont="";
+					$.each(data.datos,function(clave,valor) {
+					  	//0 -> id, 1 -> valor
+					  	cont = cont + "<div onclick='a("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='tallass' title='talla'>"+valor[1]+"</div>";
+					  	
+					});
+					//alert(cont); 
+					
+					$("#vTa").fadeOut(100,function(){
+			     		$("#vTa").html(cont); // cambiando el div
+			     	});
 			
-		imag.attr('src',segunda);
-		
-	},
-	function() { 
-		imag.attr('src',original);
-	}
-	);
-	*/ 
+			      	$("#vTa").fadeIn(20,function(){});
+							   
+					
+					// ahora cambiar las imagenes a las del color 
+					
+						var zona="";
+						var thumbs="";
+						var contador=0;
+						
+					// luego muestro	
+						$.each(data.imagenes,function(clave,valor) {
+						  	//0 -> url | 1 -> orden | 2 -> id imagen
+						  	
+						  	// conseguir cual es el menor en el orden para determinar el color 	
+						  	if( contador == 0) {
+						  		var Url = "<?php echo Yii::app()->baseUrl; ?>" + valor[0];
+						  		
+								var n = Url.split(".");
+								//alert(n[0]); path			  		
+								//alert(n[1]); extension			  		
+						  		
+						  		if(n[1] == 'png')
+						  		{
+						  			Url = n[0] + ".jpg";
+						  		}
+						  		
+						  		zona="<img id='principal' src='"+Url+"' alt'producto'>";
+						  		contador++;
+						  	}
+						  	
+						  	var base = "<?php echo Yii::app()->baseUrl; ?>";						  	
+						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + valor[0]+"' alt='Imagen' style='cursor: pointer' >";
+						  	
+						  	objImage = new Image();
+						  	var source = ''+base +valor[0];
+						  	var imgZ = source.replace(".","_orig.");
+						  //	alert(imgZ);			
+							objImage.src = imgZ;
+							
+										  	
+						});
+						
+						//alert(thumbs); 		   
+						
+						// cambiando la imagen principal :@
+						$(".imagen_principal").fadeOut("10",function(){
+							$(".imagen_principal").html(zona);
+							
+								var source = $('#principal').attr("src");
+								var imgZ = source.replace(".","_orig.");
+								$('.imagen_principal').zoom();
+							
+						});
+						  	
+						$(".imagen_principal").fadeIn("10",function(){});
+						
+						
+						// cambiando los thumbnails
+						$(".imagenes_secundarias").fadeOut("slow",function(){ 
+							$(".imagenes_secundarias").html(thumbs); 
+						});
+						  	
+						$(".imagenes_secundarias").fadeIn("slow",function(){});
+						
+						
+							        	
+		        }
+
+	       	}//success
+	       })
+	       
+	     } // else
+   		
+   	});   
 
   
 });
+
+/*
+	$("div#myModal").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
+   		ev.preventDefault();
+   		
+   		//var a = $(this).find(".coloress").attr("id");
+   		alert($(this).attr("id"));
+		console.log("entró");
+   		
+   	});   */
 	
 </script>

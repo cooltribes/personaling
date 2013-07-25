@@ -98,7 +98,7 @@
                       
                     </div>
                   </div>
-                  <span class="label label-important">Promoción</span> </article>
+                  <!-- <span class="label label-important">Promoción</span>  --></article>
               </div>
               <?php	?>
             <!--     <div class="item">

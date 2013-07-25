@@ -290,8 +290,24 @@
           <div class="span4 offset2">
             <h3>Vistos recientemente</h3>
             <div class="row">
-              <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_11.jpg" ></a></div>
-              <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_12.jpg" ></a></div>
+                        <?php
+ 							//$iterator = new CDataProviderIterator($ultimos_vistos);
+							//foreach($iterator as $view):
+	 						//	if (isset($view)):
+						foreach($ultimos_vistos->getData() as $record) :
+ 	$producto = Producto::model()->findByPk($record['producto_id']);
+	 if (isset($producto)):		
+ 						?>              
+              <div class="span2"> 
+              	<?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "170", "height" => "170"));	?>
+                            <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
+              	
+              </div>
+              			<?php 
+              					endif; 
+              				endforeach; 
+              			?>
+             
             </div>
           </div>
         </div>

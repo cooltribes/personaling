@@ -135,16 +135,15 @@
 		} elseif ($field->field_type=="TEXT") {
 			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 			echo $form->error($profile,$field->varname);
-		} elseif ($field->field_type=="DATE") {
-				
-			echo $form->labelEx($profile,$field->varname, array('class'=>'span4'));	
-			
-			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span2'));
+		} elseif ($field->field_type=="DATE") {	
+			echo $form->labelEx($profile,$field->varname, array('class'=>'span3'));	
+			echo ' ';			
+			echo $form->DropDownList($profile,'day',getDaysArray(),array('class'=>'span3'));
 			echo ' ';
-			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span4'));
+			echo $form->DropDownList($profile,'month',getMonthsArray(),array('class'=>'span3'));
 			echo ' ';
-			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span2'));
-			echo ' ';
+			echo $form->DropDownList($profile,'year',getYearsArray(),array('class'=>'span3'));
+
 			echo $form->hiddenField($profile,$field->varname);
 			echo CHtml::hiddenField('facebook_id', '', array('id'=>'facebook_id', 'name'=>'facebook_id'));
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));

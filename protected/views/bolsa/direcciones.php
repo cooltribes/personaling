@@ -179,7 +179,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </div>
             <div class="control-group"> 
               <div class="controls">
-              	<?php echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione una ciudad...'));?>
+              	<?php 
+              	if($dir->provincia_id == ''){ 
+              		echo $form->dropDownListRow($dir,'ciudad_id', array(), array('empty' => 'Seleccione una ciudad...'));
+				}else{
+					echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array('provincia_id'=>$dir->provincia_id), array('order' => 'nombre')),'id','nombre'));
+				}
+              	?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -263,9 +269,21 @@ else
 	 * */
 	function editar(id)
 	{	
-	var idDireccion = id;
-	window.location="editardireccion/"+id+"";
+		var idDireccion = id;
+		window.location="editardireccion/"+id+"";
 	}
 	
-	
+	$('#Direccion_provincia_id').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "/"+path[1]+"/direccion/cargarCiudades",
+			      type: "post",
+			      data: { provincia_id : $(this).val() },
+			      success: function(data){
+			           $('#Direccion_ciudad_id').html(data);
+			      },
+			});
+		}
+	});
 </script>

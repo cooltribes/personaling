@@ -228,9 +228,11 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="adr">
             	<?php
             	$direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+            	$ciudad = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+				$provincia = Provincia::model()->findByPk($direccionEnvio->provincia_id);
             	?>
               <div class="street-address"><i class="icon-map-marker"></i><?php echo " ".$direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
-              <span class="locality"><?php echo $direccionEnvio->ciudad ?>, <?php echo $direccionEnvio->estado; ?>.</span>
+              <span class="locality"><?php echo $ciudad->nombre ?>, <?php echo $provincia->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>

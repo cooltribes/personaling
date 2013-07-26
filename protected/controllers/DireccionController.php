@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar'),
+				'actions'=>array('create','update','editar','cargarCiudades'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -54,6 +54,19 @@ class DireccionController extends Controller
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
+	}
+	
+	public function actionCargarCiudades(){
+		if(isset($_POST['provincia_id'])){
+			$ciudades = Ciudad::model()->findAllByAttributes(array('provincia_id'=>$_POST['provincia_id']), array('order'=>'nombre ASC'));
+			if(sizeof($ciudades) > 0){
+				$return = '';
+				foreach ($ciudades as $ciudad) {
+					$return .= '<option value="'.$ciudad->id.'">'.$ciudad->nombre.'</option>';
+				}
+				echo $return;
+			}
+		}
 	}
 
 	/**

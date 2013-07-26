@@ -72,7 +72,10 @@ class LookController extends Controller
 		{
 			$look->user_id = Yii::app()->user->id;
 		}	
-		
+		if(isset($_POST['buscar_look']))
+		{
+			$look->title = $_POST['buscar_look'];
+		}			
 		$dataProvider = $look->search();
 		
 		$this->render('ps', array('model'=>$look,'dataProvider'=>$dataProvider,'tipo'=>'ps','look'=>$look));	
@@ -618,6 +621,10 @@ public function actionCategorias(){
 
 		
 		$model = new Look; 
+if(isset($_POST['buscar_look']))
+		{
+			$model->title = $_POST['buscar_look'];
+		}		
 		$dataProvider = $model->lookAdminAprobar();
 		$this->render('admin',
 		array('model'=>$model,

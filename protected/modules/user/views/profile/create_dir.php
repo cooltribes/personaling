@@ -168,7 +168,13 @@ $looks_recomendados = $look->match($usuario);
             <div class="control-group"> 
            	<?php echo $form->labelEx($model,'ciudad_id', array('class' => 'control-label')); ?>
               <div class="controls">
-              	<?php echo $form->dropDownList($model,'ciudad_id', CHtml::listData(Ciudad::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione una ciudad...'));?>
+              	<?php
+              	if($model->provincia_id == ''){ 
+              		echo $form->dropDownList($model,'ciudad_id', array(), array('empty' => 'Seleccione una ciudad...'));
+				}else{
+					echo $form->dropDownList($model,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array('provincia_id'=>$model->provincia_id), array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione una ciudad...'));
+				}
+              	?>
               	<?php echo $form->error($model,'ciudad_id'); ?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -181,7 +187,7 @@ $looks_recomendados = $look->match($usuario);
               		
               	<?php 
               	 
-              	 if($model->pais=="Venezuela"){
+              	 /*if($model->pais=="Venezuela"){
               	 	echo $form->dropDownList($model, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
               	 		array('options' => array(1 => array('selected'=>true))));
               	 }
@@ -195,8 +201,8 @@ $looks_recomendados = $look->match($usuario);
               	 	echo $form->dropDownList($model, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
               	 		array('options' => array(3 => array('selected'=>true))));
               	 }
-				 else
-              	 	echo $form->dropDownList($model, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'));
+				 else*/
+              	 	echo $form->dropDownList($model, 'pais', array('Seleccione el País','Venezuela'=>'Venezuela','Colombia'=>'Colombia','Estados Unidos'=>'Estados Unidos'));
               	 
               	 echo $form->error($model,'pais');
               	 
@@ -228,3 +234,18 @@ $looks_recomendados = $look->match($usuario);
     </div>
 </div>
 <!-- /container -->
+<script>
+	$('#Direccion_provincia_id').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "/"+path[1]+"/direccion/cargarCiudades",
+			      type: "post",
+			      data: { provincia_id : $(this).val() },
+			      success: function(data){
+			           $('#Direccion_ciudad_id').html(data);
+			      },
+			});
+		}
+	});
+</script>

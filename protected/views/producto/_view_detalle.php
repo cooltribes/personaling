@@ -139,19 +139,8 @@
 	
 			?></h4>
             </div>
-            <div class="span2 hidden-phone">
-              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
-            </div>
-          </div>
-          <p class="muted t_small CAPS">Selecciona Color y talla </p>
-          
-          <div class="row-fluid">
-            <div class="span6">
-              <h5>Colores</h5>
-              <div id="vCo" class="clearfix colores">
-              	<?php
-
-              	$valores = Array();
+            <?php
+          $valores = Array();
               	$cantcolor = Array();
               	$cont1 = 0;
               	
@@ -170,6 +159,58 @@
 						
 					}
 				}
+				
+				
+			$valores = Array();
+				$canttallas= Array();
+              	$cont2 = 0;
+              	
+				// revisando cuantas tallas distintas hay
+				foreach ($producto->preciotallacolor as $talCol){ 
+					if($talCol->cantidad > 0)
+					{
+						$talla = Talla::model()->findByPk($talCol->talla_id);
+					
+						if(in_array($talla->id, $canttallas)){	// no hace nada para que no se repita el valor			
+						}
+						else{
+							array_push($canttallas, $talla->id);
+							$cont2++;
+						}
+						
+					}
+				}
+				
+			
+          ?>
+            <div class="span2 hidden-phone">
+            	<?php
+		          if($cont1 > 0 && $cont2 > 0){
+		          ?>
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
+              	<?php
+				  }else{
+				  	?>
+				  	<a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Agotado </a>
+				  	<?php
+				  }
+              	?>
+            </div>
+          </div>
+          
+          <?php
+          if($cont1 > 0 && $cont2 > 0){
+          ?>
+          
+          <p class="muted t_small CAPS">Selecciona Color y talla </p>
+          
+          <div class="row-fluid">
+            <div class="span6">
+              <h5>Colores</h5>
+              <div id="vCo" class="clearfix colores">
+              	<?php
+
+              	
 				
 				if( $cont1 == 1) // Si solo hay un color seleccionelo
 				{
@@ -205,25 +246,7 @@
               <div id="vTa" class="clearfix tallas">
               	<?php
 
-              	$valores = Array();
-				$canttallas= Array();
-              	$cont2 = 0;
               	
-				// revisando cuantas tallas distintas hay
-				foreach ($producto->preciotallacolor as $talCol){ 
-					if($talCol->cantidad > 0)
-					{
-						$talla = Talla::model()->findByPk($talCol->talla_id);
-					
-						if(in_array($talla->id, $canttallas)){	// no hace nada para que no se repita el valor			
-						}
-						else{
-							array_push($canttallas, $talla->id);
-							$cont2++;
-						}
-						
-					}
-				}
 
 				if( $cont2 == 1) // Si solo hay un color seleccionelo
 				{
@@ -251,6 +274,11 @@
               </div>
             </div>
              </div>
+             
+             <?php
+             }
+             ?>
+             
              <div class="call2action visible-phone"><hr/>
               	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
             </div>

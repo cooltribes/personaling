@@ -32,9 +32,37 @@
     <div class="row margin_top margin_bottom ">
         <div class="span4">
             <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
-                <input class="span3" id="prependedInput" type="text" placeholder="Buscar">
+                <input class="span3" id="buscar_look" type="text" placeholder="Buscar">
             </div>
         </div>
+  <?php
+	Yii::app()->clientScript->registerScript('query',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		
+		$(document).keypress(function(e) {
+		    if(e.which == 13) {
+		        ajaxRequest = $('#buscar_look').val();
+				clearTimeout(ajaxUpdateTimeout);
+				
+				ajaxUpdateTimeout = setTimeout(function () {
+					$.fn.yiiListView.update(
+					'list-auth-items',
+					{
+					type: 'POST',	
+					url: '" . CController::createUrl('look/admin') . "',
+					data: {buscar_look:ajaxRequest}}
+					
+					)
+					},
+			
+			300);
+			return false;
+		    }
+		});",CClientScript::POS_READY
+	);
+	
+?>        
         <div class="span3">
             <select class="span3">
                 <option>Filtros prestablecidos</option>

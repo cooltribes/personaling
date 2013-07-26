@@ -24,6 +24,8 @@
 $total = 0; //variable para llevar el numero de notificaciones
 $cont_productos = 0 ; //variable para llevar el numero de productos
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
+
+
 if (Yii::app()->user->id?UserModule::isAdmin():false){
 $this->widget('bootstrap.widgets.TbNavbar',array(
 	'type'=> 'inverse',
@@ -94,9 +96,12 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     $avatar = '';
 
 	}
-	
+
+
 $this->widget('bootstrap.widgets.TbNavbar',array(
+    'collapse' => true,
     'items'=>array(
+  
         array(
             'class'=>'bootstrap.widgets.TbMenu',
             'htmlOptions'=>array('class'=>'pull-right'),
@@ -111,9 +116,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
@@ -130,9 +135,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 'visible'=>!Yii::app()->user->isGuest,
 				),
             ),
-        ),
+        ), 
+
     ),
-)); 
+));
+
+
+
 }
 
 ?>
@@ -169,21 +178,25 @@ if(!Yii::app()->user->isGuest){
   $(document).on('ready',HandlerReady);
 
   function HandlerReady () {
+    //Boton Notificaciones
     $('#btn-notifications').popover(
     {
-      title: 'Notificaciones',
-      content: '<div class="btn btn-block btn-small btn-info">Tienes '+ <?php echo $total ?>+' notificaciones por leer</div>',
+      title: '<strong>Notificaciones</strong>',
+      content: '<p class="text-center">Tienes '+ <?php echo $total ?>+' notificaciones por leer</p>',
       placement: 'bottom',
-      trigger: 'hover',
+      trigger: 'manual',
       html: true,
     });
 
     $('#btn-notifications').hover(function(){
         $(this).popover('show');
+        $(this).addClass('bg_color10');
       },
       function(){
+        // $('#btn-notifications').removeClass('bg_color10');
         $('.popover').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
+          $('#btn-notifications').removeClass('bg_color10');
           });        
       }
     );
@@ -195,28 +208,29 @@ if(!Yii::app()->user->isGuest){
       textShoppingCart = '<p><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
     }
  
-
+    //Boton Shopping Cart
     $('#btn-shoppingcart').popover(
     {
       html: true,
       title: '<strong>Tu bolsa</strong>',
       content: textShoppingCart,
       placement: 'bottom',
-      trigger: 'hover',
+      trigger: 'manual',
     });
 
     $('#btn-shoppingcart').hover(function(){
 
         $(this).popover('show');
-        $(this).addClass('bg_color13');
+        $(this).addClass('bg_color10');
       },
       function(){
+        // $('#btn-shoppingcart').removeClass('bg_color10');
 
         $('.popover').hover(function(){},function(){
-            $('#btn-shoppingcart').popover('hide');
-            $('#btn-shoppingcart').removeClass('bg_color13');
-          });        
-      }
+              $('#btn-shoppingcart').popover('hide');
+              $('#btn-shoppingcart').removeClass('bg_color10');
+            });        
+        }
     );
   }
 
@@ -236,7 +250,7 @@ if(!Yii::app()->user->isGuest){
 
 <div id="wrapper_footer">
   <footer class="container">
-    <div class="row">
+    <div class="row hidden-phone">
       <div class="span3">
         <h3>Links rápidos</h3>
         <ul>
@@ -249,11 +263,11 @@ if(!Yii::app()->user->isGuest){
           
         </ul>
       </div>
-      <div class="span5">
+      <div class="span5 ">
         <h3> Sobre Personaling </h3>
         <p class="lead">Personaling, es un personal shopper digital, un portal de moda y belleza en donde las usuarias se dan de alta, definen su perfil físico y sus preferencias de estilo para descubrir looks recomendados por expert@s en moda (personal shoppers, celebrities, estilistas, fashionistas), podrán comprar el look completo en un click y recibirlo en su domicilio</p>
       </div>
-      <div class="span3 offset1">
+      <div class="span3 offset1 ">
         <h3>¡Síguenos! </h3>
         <div class="textwidget"> <a title="Personaling en facebook" href="https://www.facebook.com/Personaling"><img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="pinterest" href="https://pinterest.com/personaling/"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a> </div>
         <hr/>

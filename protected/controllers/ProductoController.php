@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','tallaspreview','colores','imagenColor','updateCantidad','encantar'), 
+				'actions'=>array('index','view','detalle','tallas','tallaspreview','colorespreview','colores','imagenColor','updateCantidad','encantar'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1209,6 +1209,35 @@ class ProductoController extends Controller
 			'imagenes'=>$imag
 		));
 		exit;
+	}
+
+
+/**
+ * Consigue los colores al presionar una talla en la vista rapida
+ */
+	public function actionColorespreview()
+	{
+		$div="";
+
+		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
+		
+		foreach($ptc as $p)
+		{
+			if($p->cantidad > 0) // que haya disponibilidad para mostrarlo
+			{
+				$base = Yii::app()->baseUrl;		
+				$co = Color::model()->findByPk($p->color_id);
+				
+				$div = $div."<div onclick='b(".$co->id.")' id='".$co->id."' style='cursor: pointer' class='coloress' title='".$co->valor."'><img src='".$base."/images/colores/".$co->path_image."'></div>";
+			}
+		}	
+		
+		echo CJSON::encode(array(
+			'status'=> 'ok',
+			'datos'=> $div
+		));
+		exit;
+
 	}
 
 

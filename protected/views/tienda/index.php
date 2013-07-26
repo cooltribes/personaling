@@ -9,6 +9,26 @@
 </div>
 <div class="margin_top" id="tienda">
   <div class="row">
+
+<!-- FILTROS MOBILE ON -->
+	<div class="visible-phone row-fluid margin_bottom_medium">
+		<h4>Buscar por:</h4>
+			<select class="span12">
+				<option>Categorias</option>
+				<option>Categorias</option>
+				<option>Categorias</option>
+			</select>
+			<select class="span12">
+				<option>Colores</option>
+				<option>Colores</option>
+				<option>Colores</option>
+			</select>
+	      
+	 </div>
+<!-- FILTROS MOBILE OFF -->
+
+<!-- PRODUCTOS ON -->
+
     <?php
 	$template = '
     <div class="span9 tienda_productos">
@@ -52,7 +72,11 @@
 	    'template'=>$template,
 	));    
 	?>
-    <div class="span3">
+	<!-- PRODUCTOS OFF -->
+	
+	<!-- FILTROS DESKTOP ON -->
+
+    <div class="span3 hidden-phone">
       <div class="shadow_1"> 
         <!-- para filtrar por seleccion de categoria -->
         <?php
@@ -218,6 +242,8 @@
        		</div>
         </div>
     </div>
+    	<!-- FILTROS DESKTOP OFF -->
+
   </div>
 </div>
 

@@ -29,7 +29,7 @@
             	<input id="producto" type="hidden" value="<?php echo $producto->id ?>" />
               <h1> <?php echo $producto->nombre; ?> <!-- <span class="label label-important"> ON SALE</span> --></h1>
             </div>
-            <div class="span2 share_like">
+            <div class="span2 share_like hidden-phone">
             	
             	<?php
             	$entro = 0;
@@ -57,7 +57,7 @@
 
                	?>
                	
-                <div class="btn-group">
+                <div class="btn-group hidden-phone">
                   <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                     <!-- AddThis Button BEGIN -->
@@ -139,14 +139,14 @@
 	
 			?></h4>
             </div>
-            <div class="span2">
-              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-lock icon-white"></i> Comprar </a>
+            <div class="span2 hidden-phone">
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
             </div>
           </div>
           <p class="muted t_small CAPS">Selecciona Color y talla </p>
           
-          <div class="row">
-            <div class="span2">
+          <div class="row-fluid">
+            <div class="span6">
               <h5>Colores</h5>
               <div id="vCo" class="clearfix colores">
               	<?php
@@ -200,7 +200,7 @@
               	?>
               </div>
             </div>
-            <div class="span2">
+            <div class="span6">
               <h5>Tallas</h5>
               <div id="vTa" class="clearfix tallas">
               	<?php
@@ -250,7 +250,11 @@
               	?>         	     	
               </div>
             </div>
-          </div>
+             </div>
+             <div class="call2action visible-phone"><hr/>
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
+            </div>
+         
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
               <li class="active"><a href="#detalles" data-toggle="tab">Detalles</a></li>
@@ -269,8 +273,8 @@
               </div>
               <div class="tab-pane" id="envio">
 	            <div class="row">
-	            	<img class="span1" src="<?php echo Yii::app()->baseUrl; ?>/images/grupo_zoom_logo.png"/>
-	            	<p class="span3 padding_top_small">Nuestros envios se realizan a través del <strong>Grupo Zoom</strong></p>
+	            	<div class="span1"><img  src="<?php echo Yii::app()->baseUrl; ?>/images/grupo_zoom_logo.png"/></div>
+	            	<div class="span2"><p class="padding_top_small">Nuestros envios se realizan a través del <strong>Grupo Zoom</strong></p></div>
 	            </div>
 	          </div>
             </div>
@@ -296,7 +300,7 @@ $cont=0;
 
 <?php if($count > 0){  ?>
 
-<div class="braker_horz_top_1">
+<div class="braker_horz_top_1 hidden-phone">
     <h3>Looks recomendados con este producto</h3>
     <div id="myCarousel" class="carousel slide"> 
       <!-- Carousel items -->

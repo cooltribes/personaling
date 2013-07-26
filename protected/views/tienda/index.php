@@ -213,8 +213,8 @@
 			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-        <h5>Looks con estas prendas:</h5><br/>
-       		<div id="looks" class="clearfix">
+        <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
+       		<div id="looks" class="clearfix hidden-phone">
        		</div>
         </div>
     </div>

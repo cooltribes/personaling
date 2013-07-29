@@ -180,19 +180,24 @@ if(!Yii::app()->user->isGuest){
     if(!Yii::app()->user->isGuest){
         $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 
-        // Consulta si hay Looks
-        $sql = "select count( *   ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
-        $cantidadLooks = Yii::app()->db->createCommand($sql)->queryScalar();
-
-        //Consulta si hay productos individuales
-        $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
-        $cantidadProductosIndiv = Yii::app()->db->createCommand($sql)->queryScalar();        
-
-        $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
+        if (!is_null($bolsa)){
+	        // Consulta si hay Looks
+	        $sql = "select count( *   ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
+	        $cantidadLooks = Yii::app()->db->createCommand($sql)->queryScalar();
+	 
+	        //Consulta si hay productos individuales
+	        $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
+	        $cantidadProductosIndiv = Yii::app()->db->createCommand($sql)->queryScalar();        
+	
+	        $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
+        } else {
+        	$cantidadLooks = 0;
+        	$cantidadProductosIndiv = 0;
+        }
 
     }
   ?> 
-
+ 
 <script type="text/javascript">
   
   $(document).on('ready',HandlerReady);

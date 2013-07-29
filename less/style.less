@@ -1,8 +1,8 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 15/07/2013 */ 
+/* Project name: Personaling  al 29/07/2013 */ 
 
 /*==============================================================
-----------------  FRAMEWORK - JUAN -------------------------------
+----------------  FRAMEWORK - JUAN (Con ajustes de Calosth) -------------------------------
 ==============================================================*/
 
 
@@ -16,13 +16,14 @@
 @color7: #22F28A; /* Verde chillon */
 @color8: #685b5b;
 @color9: #9b9894;
-@color10: #E7E3E7; /* Lila */
+@color10: #E7E3E7; /* gris lila */
 @color11: #8b5293; /* Morado chillon */
 @color12: #1abc9c; /* Verde Muteado */
 @naranja: #ed751c;
 @azul: 	  #65BCDF;
 @verde:   #18af91;
 @rojo: 	  #BF5077;
+@lila: 	  #C4BCCD;
 
 /*--- "." ---*/
 .color1{ color:@color1;}
@@ -318,7 +319,7 @@ h1,h2,h3,h4{font-weight:300}
 strong, th{ color:#555;}
 
 /*------------ RESETS PARA BOOTSTRAP ON --------------*/
-.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a, .navbar-inner, .table-bordered{
+.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a, .navbar-inner, .table-bordered, .popover{
 		.border_radius(@radius:0);
 	}
 
@@ -331,8 +332,8 @@ strong, th{ color:#555;}
 	font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
-	background-color: #C4BCCD !important;
-	color:darken(#C4BCCD,40%);
+	background-color: @lila !important;
+	color:darken(@lila,40%);
 	text-shadow:0 1px rgba(255, 255, 255, 0.2);
 	text-shadow:0 1px rgba(255, 255, 255, 0.2);
 	text-shadow:0 1px rgba(255, 255, 255, 0.2);
@@ -346,7 +347,7 @@ strong, th{ color:#555;}
 	border-top: 1px solid darken(@color10,3%);
 	}
 	th{
-	border-color:darken(#C4BCCD,9%);
+	border-color:darken(@lila,9%);
 	
 
 	}
@@ -372,6 +373,7 @@ strong, th{ color:#555;}
 
 
 }
+
 
 /*------------ RESETS PARA BOOTSTRAP OFF --------------*/
 
@@ -427,11 +429,41 @@ src: url('../fonts/entypo.woff'),
 
 
 #navegacion_principal{
-	 .nav > li > a{ padding:18px 15px;}	 
+	 .nav > li > a{ padding:18px 15px;
+	 				&:hover{ 
+	 					background-color: lighten(@lila,10%);
+	 					color:darken(@lila,50%);
+	 				}
+	 			}	
+	 .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{
+	 		background-color: lighten(@lila,3%);
+	 		color: darken(@lila,50%);
+	 } 
+	 .popover.bottom .arrow{border-bottom-color: lighten(@lila,15%);}
+	 .popover{
+	 	
+	 	.popover-title{
+	 		color:darken(@lila, 10%);
+	 		background-color: lighten(@lila,15%);
+	 		.border_radius(@radius:0);
+	 	}
+	 	ul{ margin-left: 0;}
+	 	li{
+	 		list-style: none;
+	 		border-bottom: 1px solid lighten(@lila,10%);
+	 		padding: .8em 0;
+	 		a{
+	 			text-decoration: none;
+	 			color:#999;
+	 			font-size: .8em;
+	 		&:last-child{ border-bottom: 0;}
+	 		}
+	 	}
 
+	 }
 	 .avatar_menu{
 	 	margin-right: 7px;
-	 	margin-top: -7px;
+	 	margin-top: -12px;
 	 	
 
 	 }			 
@@ -795,20 +827,19 @@ src: url('../fonts/entypo.woff'),
 	display: block;
 	margin-left: 30px;	 
 	padding: 0.7em;
+	&:hover{ background-color:@color1;}
 }
 
 
-#boton_facebook{
+#boton_facebook a{
 	background-color: #3B5998;
 	background-image: url(../images/icon_facebook_registrator.png);
-	background-position: left;
 	background-repeat: no-repeat;
 }
 
-#boton_twitter{
+#boton_twitter a{
 	background-color: #4099FF;
 	background-image: url(../images/icon_twitter_registrator.png);
-	background-position: left;
 	background-repeat: no-repeat;
 
 }

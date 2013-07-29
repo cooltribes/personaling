@@ -51,9 +51,20 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   		<?php $this->widget('bootstrap.widgets.TbButton', array(
 	'type'=>'info',
 	'buttonType'=> 'ajaxButton',
-	'label'=>'guardar',
+	'label'=>'Guardar', 
 	'url'=>'#',
-	 'ajaxOptions'=>array(
+	 'ajaxOptions'=>array( 
+	 				'beforeSend' => "function( request, opts )
+	 				{
+	 						alert('asf');
+	 					alert($('#Color_path_image').val());
+	 						if ($('#Color_path_image').val()==''){
+	 							alert('Disculpe, Tiene que subir una imagen');
+	 						 	request.abort();
+	 						 }
+	 					
+	 				} 				
+	 				"
                        // 'update' => '#yw5_tab_2',
                 ),
 )); ?>

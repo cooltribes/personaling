@@ -35,7 +35,7 @@ class ColorController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','upload'),
+				'actions'=>array('admin','delete','upload','getcolores'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -160,7 +160,7 @@ class ColorController extends Controller
 	 * Manages all models.
 	 */
 	public function actionAdmin()
-	{
+	{ 
 		$model=new Color('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Color']))
@@ -214,6 +214,15 @@ class ColorController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	public function actiongetColores()
+	{
+		$colores = Color::model()->findAll(array('order'=>'valor')); // ordena alfeticamente por nombre
+				 foreach($colores as $i => $row){
+					$data[$i]['text']= $row->valor;
+					$data[$i]['id'] = $row->id;
+				 }
+		echo CJSON::encode($data);
 	}
 }
 

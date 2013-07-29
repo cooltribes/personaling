@@ -198,7 +198,7 @@ if(!Yii::app()->user->isGuest){
 
     }
   ?> 
-
+ 
 <script type="text/javascript">
   
   $(document).on('ready',HandlerReady);

@@ -217,7 +217,7 @@ $(document).ready(function(){
     window.fbAsyncInit = function() {
         FB.init({
             appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
-            channelUrl : 'http://personaling.com/site/user/registration', // Channel File
+            channelUrl : 'http://personaling.com/test24/user/registration', // Channel File
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
             xfbml      : true,  // parse XFBML

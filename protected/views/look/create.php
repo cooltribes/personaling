@@ -58,16 +58,17 @@ function handleDrop(e) {
 	var mouse_position_x = e.dataTransfer.getData("mouse_position_x");
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
-    y = e.clientY - e.currentTarget.offsetTop - mouse_position_y;
-
+    y = e.clientY - e.currentTarget.offsetTop - $('#div_categorias').scrollTop() - mouse_position_y;
+	//alert('scroll: '+$('#div_categorias').scrollTop()+' clientY: '+e.clientY+' OffsetTop: '+e.currentTarget.offsetTop+' mouse: '+mouse_position_y);
+	//alert(y);
   if (e.stopPropagation) {
     e.stopPropagation(); // Stops some browsers from redirecting.
   }
-
+ 
   // Don't do anything if dropping the same column we're dragging.
   if (dragSrcEl != this) {
     // Set the source column's HTML to the HTML of the column we dropped on.
-    //dragSrcEl.innerHTML = this.innerHTML;
+    //dragSrcEl.innerHTML = this.innerHTML; 
     var contenedor = this;
     if (e.dataTransfer.getData('color_id')){
     	var urlVar = "<?php echo Yii::app()->createUrl('producto/getImage'); ?>";
@@ -264,7 +265,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
           <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
         </h4>
+        <!--
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
+        -->
         <hr/>
         <!-- CANVAS ON -->
         <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px">

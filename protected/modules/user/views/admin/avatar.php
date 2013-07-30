@@ -1,4 +1,8 @@
-
+<?php 
+  $this->breadcrumbs=array(
+  'Usuarios'=>array('admin'),
+  'Editar',);
+?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Avatar</h1>

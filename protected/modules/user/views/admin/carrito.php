@@ -18,7 +18,11 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 				  $total_look = 0;
 				  $total_productos_look = 0;
 ?>
-
+<?php 
+  $this->breadcrumbs=array(
+  'Usuarios'=>array('admin'),
+  'Editar',);
+?>
 
 <div class="container margin_top" id="carrito_compras">
 <div class="page-header">

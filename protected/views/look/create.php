@@ -39,7 +39,7 @@ function handleDragOver(e) {
   if (e.preventDefault) {
     e.preventDefault(); // Necessary. Allows us to drop.
   }
-
+ 
   e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
 
   return false;
@@ -55,10 +55,18 @@ function handleDragLeave(e) {
 }
 function handleDrop(e) {
 
+	//Calcular la posicion del scroll
+	
+	if ($('#tab1').hasClass('active')){
+		scrollTop = $('#div_categorias').scrollTop();
+	} else {
+		scrollTop = $('#div_prendas').scrollTop();	
+	}
+	
 	var mouse_position_x = e.dataTransfer.getData("mouse_position_x");
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
-    y = e.clientY - e.currentTarget.offsetTop - $('#div_categorias').scrollTop() - mouse_position_y;
+    y = e.clientY - e.currentTarget.offsetTop - scrollTop - mouse_position_y;
 	//alert('scroll: '+$('#div_categorias').scrollTop()+' clientY: '+e.clientY+' OffsetTop: '+e.currentTarget.offsetTop+' mouse: '+mouse_position_y);
 	//alert(y);
   if (e.stopPropagation) {

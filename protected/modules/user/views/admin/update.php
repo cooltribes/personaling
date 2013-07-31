@@ -88,6 +88,7 @@ function getMonthsArray()
               <div style="display:none" class="help-inline">ayuda aqui </div>
             </div>
           </div>
+          <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
           <legend >Datos básicos: </legend>
           <?php 
@@ -172,18 +173,50 @@ function getMonthsArray()
           <div id="scroller">
             <?php $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType'=>'button',
-						    'label'=>'Guardar',
+						    'label'=>'Guardar Cambios',
 						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						    'size'=>'large', // null, 'large', 'small' or 'mini'
 						    'block'=>'true',
 						    'htmlOptions'=>array('onclick'=>'js:$("#registration-form").submit();')
 						)); ?>
             <ul class="nav nav-stacked nav-tabs margin_top">
+              <li><a href="#" title="Limpiar Formulario" id="limpiar"><i class="icon-repeat"></i> Limpiar Formulario</a></li>
               <li>
               	<?php
               	
 				echo CHtml::ajaxLink(
-					  "<i class='icon-user'></i>Hacer Personal Shopper",
+					  "<i class='icon-user'></i> Hacer Administrador",
+					  Yii::app()->createUrl( 'user/admin/toggle_admin' ,array('id'=>$model->id)),
+					  array( // ajaxOptions
+					    'type' => 'POST',
+					    'dataType'=>'json',
+					    'beforeSend' => "function( request )
+					                     {
+					                       // Set up any pre-sending stuff like initializing progress indicators
+					                     }",
+					    'success' => "function( data )
+					                  {
+					                    // handle return data
+					                   // alert( data.status );
+					                   // alert(data.admin);
+					                    if (data.status == 'success')
+					                    	$('#User_superuser').val(data.admin);
+					                  }",
+					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
+					  ),
+					  array( //htmlOptions
+					    'href' => Yii::app()->createUrl( 'user/admin/toggle_ps' ),
+					    //'class' => $class
+					  )
+					);
+?>
+              	              	
+              </li>
+              <li>
+              	<?php
+              	
+				echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Hacer Personal Shopper",
 					  Yii::app()->createUrl( 'user/admin/toggle_ps' ,array('id'=>$model->id)),
 					  array( // ajaxOptions
 					    'type' => 'POST',
@@ -195,8 +228,10 @@ function getMonthsArray()
 					    'success' => "function( data )
 					                  {
 					                    // handle return data
-					                    alert( data.status );
-					                    alert(data.personal_shopper);
+					                   // alert( data.status );
+					                   // alert(data.personal_shopper);
+					                    if (data.status == 'success')
+					                    	$('#User_personal_shopper').val(data.personal_shopper);
 					                  }",
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),
@@ -219,6 +254,29 @@ function getMonthsArray()
 			$(function() {
 				moveScroller();
 			 });
+
+		$('a#limpiar').on('click', function() {
+			
+			$('#registration-form').each (function(){
+			  this.reset();
+			});
+			
+			 $('#registration-form').find(':input').each(function() {
+            switch(this.type) {
+                case 'password':
+                case 'select-multiple':
+                case 'select-one':
+                case 'text':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+
+       });			
 		</script> 
         <!-- SIDEBAR OFF --> 
         

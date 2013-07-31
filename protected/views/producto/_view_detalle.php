@@ -303,7 +303,7 @@
 				<div class="row-fluid">
 					<div class="span3">
 					<?php
-	                echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65"),array("class" => "img-rounded"));
+	                echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65"));
 					?>   
 					</div>               
                   	<div class="span9">

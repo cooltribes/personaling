@@ -463,17 +463,32 @@ public function actionCategorias(){
 					
 					 
 				}
-				if ($_POST['tipo']==1){
+				if ($_POST['tipo']==1){ 
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();
 				} else {
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha guardado."));	
-					$this->render('create',array(
+					
+					if ($model->status == 0 || UserModule::isAdmin()){ // comprueba que el look no se haya enviado o aprovado
+					$user = User::model()->findByPk(Yii::app()->user->id);
+					$criteria=new CDbCriteria;
+					$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
+					if($user->superuser != '1'){
+						$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+					}
+					$models = Campana::model()->findAll($criteria);
+					
+			        $this->render('create',array(
 							'model'=>$model,
 							'categorias'=>$categorias,
+							'models'=>$models,
 						)
 					);
+					} else {
+						$this->redirect(array('look/publicar','id'=>$model->id)); 
+						Yii::app()->end();
+					}
 				}		 
 			
 			//} else{

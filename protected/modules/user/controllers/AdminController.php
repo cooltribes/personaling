@@ -26,7 +26,7 @@ class AdminController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 
-				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks','toggle_ps'),
+				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks','toggle_ps','toggle_admin'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -88,6 +88,23 @@ class AdminController extends Controller
 		));
 	}
 
+	public function actionToggle_admin($id){
+		$model = User::model()->findByPk($id);
+		$model->superuser = 1-$model->superuser; // hacer el toggle
+		if ($model->save()){
+		echo CJSON::encode(array(
+	            'status'=>'success',
+	            'admin'=>$model->superuser,
+	     ));	
+	     }else{
+	     	Yii::trace('AdminController:100 Error toggle:'.print_r($model->getErrors(),true), 'registro');
+			echo CJSON::encode(array(
+	            'status'=>'error',
+	            'admin'=>$model->superuser,
+	     ));
+	     }
+	}
+	
 	public function actionToggle_ps($id){
 		$model = User::model()->findByPk($id);
 		$model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle
@@ -97,7 +114,7 @@ class AdminController extends Controller
 	            'personal_shopper'=>$model->personal_shopper,
 	     ));	
 	     }else{
-	     	Yii::trace('AdminController:100 Error toggle:'.print_r($model->getErrors(),true), 'registro');
+	     	Yii::trace('AdminController:117 Error toggle:'.print_r($model->getErrors(),true), 'registro');
 			echo CJSON::encode(array(
 	            'status'=>'error',
 	            'personal_shopper'=>$model->personal_shopper,

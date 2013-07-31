@@ -7,7 +7,7 @@
 		//);
 ?>
 <?php  
-  $baseUrl = Yii::app()->baseUrl; 
+  $baseUrl = Yii::app()->baseUrl;
   $cs = Yii::app()->getClientScript();
   $cs->registerScriptFile($baseUrl.'/js/slider.js');
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
@@ -107,7 +107,7 @@
 
       </div>
 
-       <div  class="btn btn-block span6 offset3"> <a href="#" > Ver todos los looks</a>
+       <div  class="btn btn-block span6 offset3"> <a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks</a>
 
 
       </div>

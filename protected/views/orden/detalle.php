@@ -268,9 +268,11 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="adr">
             	<?php
             	$direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+				$ciudad_envio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+				$provincia_envio = Provincia::model()->findByPk($direccionEnvio->provincia_id);
             	?>
               <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
-              <span class="locality"><?php // echo $direccionEnvio->ciudad ?>, <?php //echo $direccionEnvio->estado; ?>.</span>
+              <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
@@ -339,6 +341,22 @@ $usuario = User::model()->findByPk($orden->user_id);
           	<p>
             <input name="" id="tracking" type="text" placeholder="Numero de Tracking">
             <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
+            Tipo de guía: 
+            <?php
+            switch ($orden->tipo_guia) {
+                case 0:
+                    echo '0,5 Kg.';
+                    break;
+                case 1:
+                    echo '5 Kg.';
+                    break;
+				case 2:
+                    echo '10 Kg.';
+                    break;
+                default:
+                    break;
+            }
+            ?>
         </div>
         <?php
 			}

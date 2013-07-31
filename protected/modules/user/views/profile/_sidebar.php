@@ -57,7 +57,7 @@
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Privacidad </a>
       <ul class="dropdown-menu">
-        <li><?php echo CHtml::link('Información póblica',array('privacidad'),array("title"=>"Cambia tu Informaciósn póblica")); ?></li>
+        <li><?php echo CHtml::link('Información pública',array('privacidad'),array("title"=>"Cambia tu Informaciósn pública")); ?></li>
         <li><?php echo CHtml::link('Eliminar Cuenta',array('delete'),array("title"=>"Eliminar Cuenta")); ?> </li>
       </ul>
     </li>

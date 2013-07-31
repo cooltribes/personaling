@@ -17,10 +17,8 @@
   <div class="row">
       
       <!-- Carousel items -->
-      <div id="carousel_looks_recomendados" class="carousel slide ">
-     <!-- Carousel nav --> 
-    <a class="carousel-control left margin_top_small margin_right_large_minus bx-prev" href="#myCarousel" data-slide="prev">&lsaquo;</a> 
-    <a class="carousel-control right margin_top_small bx-next" href="#myCarousel" data-slide="next">&rsaquo;</a> 
+    <div id="carousel_looks_recomendados" class="carousel slide ">
+
        
      <div class="carousel-inner">
 
@@ -102,6 +100,11 @@
             </div>
           </div>
         </div>
+
+        <!-- Carousel nav --> 
+        <a class="carousel-control left margin_top_small margin_left_xsmall_minus bx-prev" href="#carousel_looks_recomendados" data-slide="prev">&lsaquo;</a> 
+        <a class="carousel-control right margin_top_small  margin_right_xsmall_minus bx-next" href="#carousel_looks_recomendados" data-slide="next">&rsaquo;</a> 
+
       </div>
 
        <div  class="btn btn-block span6 offset3"> <a href="#" > Ver todos los looks</a>

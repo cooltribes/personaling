@@ -260,8 +260,8 @@ class BolsaController extends Controller
 					$dirEnvio->dirUno = $dir1->dirUno;
 					$dirEnvio->dirDos = $dir1->dirDos;
 					$dirEnvio->telefono = $dir1->telefono;
-					$dirEnvio->ciudad = $dir1->ciudad;
-					$dirEnvio->estado = $dir1->estado;
+					$dirEnvio->ciudad_id = $dir1->ciudad_id;
+					$dirEnvio->provincia_id = $dir1->provincia_id;
 					$dirEnvio->pais = $dir1->pais;
 					
 					if(isset($_GET['collection_id']) && Yii::app()->getSession()->get('tipoPago') == 4){ // Pago con Mercadopago

@@ -104,7 +104,9 @@
 	);
 	
 	?>
-        <form id="formu" class="no_margin_bottom form-search">
+        <form id="formu" class="no_margin_bottom form-search form-horizontal">
+
+          
           <select id="cate1" class="span3" name="cate1">
             <option value="0">Buscar por prenda</option>
             <?php 
@@ -137,8 +139,8 @@
 ?>
           </select>
           <p></p>
-          <div class="input-append">
-            <input id="busqueda" name="busqueda" class="" type="text" placeholder="Buscar por palabras clave">
+          <div class="input-append span3">
+            <input id="busqueda" name="busqueda" type="text" placeholder="Buscar por palabras clave">
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
         </form>

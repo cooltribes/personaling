@@ -127,7 +127,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=>array(
                     array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                     array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/')),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
@@ -231,6 +232,8 @@ if(!Yii::app()->user->isGuest){
     //------------Generar html para poner en Popover ON---------------//
     <?php if(!Yii::app()->user->isGuest){
 
+      $contadorItems = 0 ;
+
       //Si hay Looks en la bolsa del usuario
       if($cantidadLooks!=0){
 
@@ -239,6 +242,11 @@ if(!Yii::app()->user->isGuest){
           $bolsa_Reverse = array_reverse($bolsa->looks());
           
           foreach ($bolsa_Reverse as $look_id) {
+
+              if($contadorItems > 5){
+                break;
+              }
+
               $bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
               $look = Look::model()->findByPk($look_id);
               echo '<li>';
@@ -258,25 +266,36 @@ if(!Yii::app()->user->isGuest){
                   }
               }
               echo '</div>';
-              echo "</li>';";
+              echo "</li>";
+              $contadorItems ++;
           }
-          
+          if($cantidadProductosIndiv!=0){
+              echo "';";
+          }
       }
       elseif($cantidadProductosIndiv!=0){
-          echo "listaCarrito = '<ul>'";
+          echo "listaCarrito = '<ul>';";
       }
 
       //Si hay producto individuales en la bolsa del usuario
       if( $cantidadProductosIndiv != 0 ){
           if(isset($bptcolor)){ 
-            foreach($bptcolor as $detalles){ // cada producto en la bolsa
-                echo "\n    listaCarrito = listaCarrito + '<li>";              
+            echo "\n    listaCarrito = listaCarrito + '";
+
+            $bptcolor_Rev = array_reverse($bptcolor);
+
+            foreach($bptcolor_Rev as $detalles){ // cada producto en la bolsa
+
+              if($contadorItems >= 5){
+                break;
+              }
+
                 $todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);                
                 $producto = Producto::model()->findByPk($todo->producto_id);
                 $talla = Talla::model()->findByPk($todo->talla_id);
                 $color = Color::model()->findByPk($todo->color_id);                  
                 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-
+                echo "<li>";
                 echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/producto/detalle/'.$todo->producto_id.'" >'.$producto->nombre.'</a>';
                 echo '<div class="row-fluid">';
                 
@@ -285,9 +304,12 @@ if(!Yii::app()->user->isGuest){
                     echo '<div class="span2">'.$htmlimage.'</div>';
                 }                
                 echo '</div>';                
-                echo "</li></ul> ';";
+                echo "</li>";
+                $contadorItems ++;
+
             }
-          }      
+            echo "</ul>';";    
+          }  
       }
       elseif( $cantidadLooks != 0 ){
           echo "</ul>';";

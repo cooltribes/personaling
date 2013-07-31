@@ -285,19 +285,34 @@
          
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
-              <li class="active"><a href="#detalles" data-toggle="tab">Detalles</a></li>
+              <li class="active"><a href="#descripcion" data-toggle="tab">Descripción</a></li>
+              <li><a href="#detalles" data-toggle="tab">Detalles</a></li>
               <li><a href="#envio" data-toggle="tab">Envio</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="detalles">
+              <div class="tab-pane active" id="descripcion">
+                <div class="clearfix">   
+                  <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> </div>
+              </div>
+              <div class="tab-pane" id="detalles">
                 <div class="clearfix">
-                  <h4><?php
-					$marca = Marca::model()->findByPk($producto->marca_id); 
-				   
-					 ?></h4>
-                  <p><strong><?php echo $marca->nombre; ?></strong></p>
-                  <!-- <p><a href="#">Ver looks de esta marca</a></p>-->
-                  <p><strong>Descripción</strong>: <?php echo $marca->descripcion; ?></p> </div>
+                  	<?php
+						$marca = Marca::model()->findByPk($producto->marca_id); 				   
+					?>
+
+				<div class="row-fluid">
+					<div class="span3">
+					<?php
+	                echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65"),array("class" => "img-rounded"));
+					?>   
+					</div>               
+                  	<div class="span9">
+    	          		<p><strong><?php echo $marca->nombre; ?></strong></p>
+	                    <p><strong>Descripción</strong>: <?php echo $marca->descripcion; ?></p> 
+						<p><strong>Peso</strong> <?php echo  $producto->peso; ?> </p>
+                  	</div>
+				</div>
+              </div>
               </div>
               <div class="tab-pane" id="envio">
 	            <div class="row">

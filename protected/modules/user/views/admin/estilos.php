@@ -96,7 +96,7 @@
 						    'htmlOptions'=>array('onclick'=>'js:$("#tuestilo-form").submit();')
 						)); ?>
             <ul class="nav nav-stacked nav-tabs margin_top">
-              <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
+              <li><a href="#" title="Restablecer" id="limpiar"><i class="icon-repeat"></i> Limpiar Formulario</a></li>
               <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>
               <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
             </ul>
@@ -107,6 +107,12 @@
 			$(function() {
 				moveScroller();
 			 });
+
+      $('#limpiar').on('click', function() {
+        $('#tuestilo-form').each (function(){
+          this.reset();
+        });
+      });      
 		</script> 
         <!-- SIDEBAR OFF --> 
         

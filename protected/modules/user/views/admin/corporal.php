@@ -99,7 +99,7 @@
            
       	
         <ul class="nav nav-stacked nav-tabs margin_top">
-         <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
+         <li><a href="#" title="Limpiar Formulario" id="limpiar"><i class="icon-repeat"></i> Limpiar Formulario</a></li>
           <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>
           <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
         </ul>
@@ -107,4 +107,13 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+    $('#limpiar').on('click', function() {
+      $('#tutipo-form').each (function(){
+        this.reset();
+      });
+    });
+
+</script>
 <!-- /container -->

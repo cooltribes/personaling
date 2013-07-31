@@ -172,13 +172,14 @@ function getMonthsArray()
           <div id="scroller">
             <?php $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType'=>'button',
-						    'label'=>'Guardar',
+						    'label'=>'Guardar Cambios',
 						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						    'size'=>'large', // null, 'large', 'small' or 'mini'
 						    'block'=>'true',
 						    'htmlOptions'=>array('onclick'=>'js:$("#registration-form").submit();')
 						)); ?>
             <ul class="nav nav-stacked nav-tabs margin_top">
+              <li><a href="#" title="Limpiar Formulario" id="limpiar"><i class="icon-repeat"></i> Limpiar Formulario</a></li>
               <li>
               	<?php
               	
@@ -219,6 +220,29 @@ function getMonthsArray()
 			$(function() {
 				moveScroller();
 			 });
+
+		$('a#limpiar').on('click', function() {
+			
+			$('#registration-form').each (function(){
+			  this.reset();
+			});
+			
+			 $('#registration-form').find(':input').each(function() {
+            switch(this.type) {
+                case 'password':
+                case 'select-multiple':
+                case 'select-one':
+                case 'text':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+
+       });			
 		</script> 
         <!-- SIDEBAR OFF --> 
         

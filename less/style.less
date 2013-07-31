@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 29/07/2013 */ 
+/* Project name: Personaling  al 30/07/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN (Con ajustes de Calosth) -------------------------------
@@ -825,8 +825,7 @@ src: url('../fonts/entypo.woff'),
 #boton_facebook a,#boton_twitter a{
 	color: #fff;
 	display: block;
-	margin-left: 30px;	 
-	padding: 0.7em;
+	padding: 0.7em 0.7em 0.7em 40px;
 	&:hover{ background-color:@color1;}
 }
 
@@ -1662,7 +1661,7 @@ ul.yiiPager .last
 	.nav-stacked li{ background-color:@color3;}
 	.dropdown-menu{ min-height:inherit;}
 	.dropdown-submenu > a:after{ margin-right:0}
-	.nav > li > a:hover{ background:@color1;}
+	.nav > li > a:hover{ background:@color1; color:@color3;}
 	ul{
 		min-height:100px;
 		margin-bottom:20px;
@@ -1943,6 +1942,92 @@ img[alt="Loading"]{
 		
 		}
 	}
+	
+/*-------------------------------
+	 PROVSIONAL DEL CARROUSEL PARA REMOVER CUANDO TERMINEN EL VIDEO
+	 ------------------------ */
+	 
+	#carousel_looks_recomendados_provisional {
+	
+	.items{
+			
+	}
+	#list-auth-items{
+		
+	}
+	.span4{
+				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				padding-bottom:9px;
+				box-shadow: 0 0 2px  #ddd;
+				-moz-box-shadow: 0 0 2px  #ddd;
+				-webkit-box-shadow: 0 0 2px  #ddd;
+				border-top:1px solid #ddd;
+}
+	.item{
+		
+		
+			
+			&:hover{
+				.box_shadow_personaling;
+				
+				}
+			.share_like{
+				position:absolute;
+				top:1em;
+				right:1em;
+				opacity:.7;
+				.btn-link{ 
+					padding:0; 
+					margin:0;
+					color:#666;}
+				.btn-link-active .entypo{color:@color1 !important;}
+				}
+			.share_like:hover{
+				opacity:1;
+				.btn-link{ .color1}
+			}
+			.label{
+				display:none; /* Estilo provisional hasta que se activen las promociones */
+				position:absolute;
+				top:.5em;
+				background-color:@color1;
+				.border_radius(@radius:0);
+				left:0;}
+			.vcard {
+				background: none repeat scroll 0 0 #EEEEEE;
+    			border-top: 1px solid #DDDDDD;
+				.muted{ margin-top:.8em;}
+				.muted, h5{ 
+						font-size:.8em;
+						line-height:1.3em;
+						}
+				.avatar {
+						
+							width:40px;
+							height:40px;
+							margin:.4em 0 .5em .5em;
+						
+					}
+				.precio{
+					text-align: right;
+					font-weight: 300;
+					font-size: 1.8em;
+					display: block;
+					margin-right:.5em;
+					margin-top: .6em;
+					color: #555;
+					small{ font-size:.6em;}
+					 }
+				
+			}
+		
+		}
+	}
+	
+	/*-------------------------------
+	 PROVSIONAL DEL CARROUSEL PARA REMOVER CUANDO TERMINEN EL VIDEO
+	 ------------------------ */
+
 /*------------ TU PERSONAL SHOPPER ON ----------*/
 
 

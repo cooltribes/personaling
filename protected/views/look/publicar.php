@@ -33,28 +33,38 @@ $this->breadcrumbs=array(
         <thead>
           <tr>
             <th colspan="2">Producto</th>
-            <th>Cantidad</th>
+           <!-- <th>Cantidad</th> -->
           </tr>
         </thead>
         <tbody>
+        	<?php
+ 			if (count($model->lookhasproducto)):
+        		foreach($model->lookhasproducto as $hasproducto):
+              		$producto = $hasproducto->producto;     
+			?>   	
           <tr>
-            <td><img class="margin_bottom" src="http://placehold.it/70x70"></td>
-            <td><strong>Vestido Stradivarius</strong></td>
+            <td>
+            	<?php
+					if ($producto->mainimage)
+					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => 70, "height" => 70));
+					else 
+					$image = CHtml::image("http://placehold.it/180");	
+					echo $image;
+					
+				?>
+            	
+            </td>
+            <td><strong><?php echo $producto->nombre; ?></strong></td>
+            <!--
             <td width="8%"><input type="text" class="span1" value="10" placeholder="Cant." maxlength="2">
               <a class="btn btn-mini" href="#">Actualizar</a></td>
+             -->
           </tr>
-          <tr>
-            <td><img class="margin_bottom" src="http://placehold.it/70x70"></td>
-            <td><strong>Camisa The New Pornographers</strong></td>
-            <td><input type="text" class="span1" value="0" placeholder="Cant." maxlength="2">
-              <a class="btn btn-mini" href="#">Actualizar</a></td>
-          </tr>
-          <tr>
-            <td><img class="margin_bottom" src="http://placehold.it/70x70"></td>
-            <td><strong>Pantalón Ok Go</strong></td>
-            <td><input type="text" class="span1" value="5" placeholder="Cant." maxlength="2">
-              <a class="btn btn-mini" href="#">Actualizar</a></td>
-          </tr>
+          <?php
+          		endforeach;
+			endif;
+          ?>
+          
         </tbody>
       </table>
       

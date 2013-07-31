@@ -88,6 +88,7 @@ function getMonthsArray()
               <div style="display:none" class="help-inline">ayuda aqui </div>
             </div>
           </div>
+          <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
           <legend >Datos básicos: </legend>
           <?php 
@@ -184,7 +185,38 @@ function getMonthsArray()
               	<?php
               	
 				echo CHtml::ajaxLink(
-					  "<i class='icon-user'></i>Hacer Personal Shopper",
+					  "<i class='icon-user'></i> Hacer Administrador",
+					  Yii::app()->createUrl( 'user/admin/toggle_admin' ,array('id'=>$model->id)),
+					  array( // ajaxOptions
+					    'type' => 'POST',
+					    'dataType'=>'json',
+					    'beforeSend' => "function( request )
+					                     {
+					                       // Set up any pre-sending stuff like initializing progress indicators
+					                     }",
+					    'success' => "function( data )
+					                  {
+					                    // handle return data
+					                   // alert( data.status );
+					                   // alert(data.admin);
+					                    if (data.status == 'success')
+					                    	$('#User_superuser').val(data.admin);
+					                  }",
+					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
+					  ),
+					  array( //htmlOptions
+					    'href' => Yii::app()->createUrl( 'user/admin/toggle_ps' ),
+					    //'class' => $class
+					  )
+					);
+?>
+              	              	
+              </li>
+              <li>
+              	<?php
+              	
+				echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Hacer Personal Shopper",
 					  Yii::app()->createUrl( 'user/admin/toggle_ps' ,array('id'=>$model->id)),
 					  array( // ajaxOptions
 					    'type' => 'POST',
@@ -196,8 +228,10 @@ function getMonthsArray()
 					    'success' => "function( data )
 					                  {
 					                    // handle return data
-					                    alert( data.status );
-					                    alert(data.personal_shopper);
+					                   // alert( data.status );
+					                   // alert(data.personal_shopper);
+					                    if (data.status == 'success')
+					                    	$('#User_personal_shopper').val(data.personal_shopper);
 					                  }",
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),

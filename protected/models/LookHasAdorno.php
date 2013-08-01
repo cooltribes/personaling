@@ -45,10 +45,10 @@ class LookHasAdorno extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('look_id, adorno_id, top, left, width, height', 'required'),
-			array('look_id, adorno_id, top, left, width, height', 'numerical', 'integerOnly'=>true),
+			array('look_id, adorno_id, top, left, width, height,angle,index', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, look_id, adorno_id, top, left, width, height', 'safe', 'on'=>'search'),
+			array('id, look_id, adorno_id, top, left, width, height,angle,index', 'safe', 'on'=>'search'),
 		);
 	}
 

@@ -557,7 +557,7 @@ public function actionCategorias(){
 				$zindex_a = explode(',',$_POST['index_a']);
 
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
-						
+						 
 					$temporal = LookHasProducto::model()->findByPk(array('look_id'=>$model->id,'producto_id'=>$producto_id));
 					if (!isset($temporal)){
 						$lookhasproducto = new LookHasProducto;
@@ -570,7 +570,7 @@ public function actionCategorias(){
 						$lookhasproducto->width = $width[$index];
 						$lookhasproducto->height = $height[$index];
 						$lookhasproducto->angle = $angle[$index];
-						$lookhasproducto->index = $zindex[$index];
+						$lookhasproducto->zindex = $zindex[$index];
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}
@@ -590,7 +590,7 @@ public function actionCategorias(){
 						$lookhasadorno->width = $width_a[$index];
 						$lookhasadorno->height = $height_a[$index];
 						$lookhasadorno->angle = $angle_a[$index];
-						$lookhasadorno->index = $zindex_a[$index];
+						$lookhasadorno->zindex = $zindex_a[$index];
 						
 					if (!$lookhasadorno->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');

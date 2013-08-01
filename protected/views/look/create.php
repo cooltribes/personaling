@@ -86,7 +86,7 @@ function handleDrop(e) {
     	var dataVar = {'id':e.dataTransfer.getData('adorno_id')}
     }
     
-    $.ajax({
+    $.ajax({ 
 	  url: urlVar,
 	  data: dataVar
 	}).done(function( html ) {
@@ -125,12 +125,16 @@ function handleDrop(e) {
 		    			compara = 0;
 		    		else
 		    			compara = $(this).css('z-index');
-		    		if (compara > mayor)
+		    			
+		    		if (parseInt(compara) > parseInt(mayor))
 		    			mayor = compara;
 		    		
 		    	});
+		    	//alert(mayor);
+		    	//ui.helper.css('z-index',parseInt(mayor)+1); 
+		    	mayor++;
+		    	ui.helper.css('z-index',mayor);
 		    	
-		    	ui.helper.css('z-index',parseInt(mayor)+1); 
 		    }
 		   // stop: handleDragStop
 			});
@@ -799,6 +803,7 @@ function addPublicar(tipo)
 		
 		//count = 6;
 		//alert(productos_id);
+		//count = count + count_a;
 		if (count >= 3){
 			$("#form_productos").submit();
 		} else {

@@ -15,9 +15,9 @@
  * The followings are the available model relations:
  * @property Look $look
  * @property Adorno $adorno
- */
+ */ 
 class LookHasAdorno extends CActiveRecord
-{
+{ 
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -45,10 +45,10 @@ class LookHasAdorno extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('look_id, adorno_id, top, left, width, height', 'required'),
-			array('look_id, adorno_id, top, left, width, height,angle,index', 'numerical', 'integerOnly'=>true),
+			array('look_id, adorno_id, top, left, width, height,angle,zindex', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, look_id, adorno_id, top, left, width, height,angle,index', 'safe', 'on'=>'search'),
+			array('id, look_id, adorno_id, top, left, width, height,angle,zindex', 'safe', 'on'=>'search'),
 		);
 	}
 

@@ -78,9 +78,9 @@ class Look extends CActiveRecord
 	/**
 	 * @return array relational rules.
 	 */
-	public function relations()
+	public function relations() 
 	{
-		// NOTE: you may need to adjust the relation name and the related
+		// NOTE: you may need to adjust the relation name and the related 
 		// class name for the relations automatically generated below.
 		return array(
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_look_id'),
@@ -89,7 +89,7 @@ class Look extends CActiveRecord
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'campana' => array(self::BELONGS_TO, 'Campana', 'campana_id'),
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
-			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
+			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id','order'=>'zindex ASC'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'),
 			
 		);

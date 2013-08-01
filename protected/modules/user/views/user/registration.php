@@ -100,13 +100,20 @@
 	
 <div class="control-group row-fluid">
 	<div class="controls">
+	<!--[if IE 9]> 
+		<label>Correo:</label>
+	<![endif]--> 
 	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
 	echo $form->error($model,'email');
 	?>
 	</div>
 </div>
+
 <div class="control-group row-fluid">
 	<div class="controls">	
+	<!--[if IE 9]> 
+		<label>Contraseña:</label>
+	<![endif]--> 
 	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span12')); 
 	echo $form->error($model,'password');
 	?>
@@ -133,6 +140,7 @@
 			//echo $form->error($profile,$field->varname);
 			
 		} elseif ($field->field_type=="TEXT") {
+
 			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 			echo $form->error($profile,$field->varname);
 		} elseif ($field->field_type=="DATE") {	
@@ -151,7 +159,24 @@
 				 
 				
 		} else {
-			
+
+			//------------- condicion para mostar label en IE9 ON ----------------//
+			if( $field->varname == 'first_name' ){
+				?>
+				<!--[if IE 9]> 
+					<label>Nombre:</label>
+				<![endif]--> 
+				<?php  
+			}
+			elseif ($field->varname == 'last_name') {
+				?>
+				<!--[if IE 9]> 
+					<label>Apellido:</label>
+				<![endif]--> 
+				<?php  
+			}
+			//------------- condicion para mostar label en IE9 OFF ----------------//
+
 			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span12 ','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			echo $form->error($profile,$field->varname);
 		}
@@ -192,7 +217,7 @@ $(document).ready(function(){
     window.fbAsyncInit = function() {
         FB.init({
             appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
-            channelUrl : 'http://personaling.com/site/user/registration', // Channel File
+            channelUrl : 'http://personaling.com/test24/user/registration', // Channel File
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
             xfbml      : true,  // parse XFBML

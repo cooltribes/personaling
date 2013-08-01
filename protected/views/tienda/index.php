@@ -9,6 +9,26 @@
 </div>
 <div class="margin_top" id="tienda">
   <div class="row">
+
+<!-- FILTROS MOBILE ON -->
+	<div class="visible-phone row-fluid margin_bottom_medium">
+		<h4>Buscar por:</h4>
+			<select class="span12">
+				<option>Categorias</option>
+				<option>Categorias</option>
+				<option>Categorias</option>
+			</select>
+			<select class="span12">
+				<option>Colores</option>
+				<option>Colores</option>
+				<option>Colores</option>
+			</select>
+	      
+	 </div>
+<!-- FILTROS MOBILE OFF -->
+
+<!-- PRODUCTOS ON -->
+
     <?php
 	$template = '
     <div class="span9 tienda_productos">
@@ -52,7 +72,11 @@
 	    'template'=>$template,
 	));    
 	?>
-    <div class="span3">
+	<!-- PRODUCTOS OFF -->
+	
+	<!-- FILTROS DESKTOP ON -->
+
+    <div class="span3 hidden-phone">
       <div class="shadow_1"> 
         <!-- para filtrar por seleccion de categoria -->
         <?php
@@ -80,7 +104,9 @@
 	);
 	
 	?>
-        <form id="formu" class="no_margin_bottom form-search">
+        <form id="formu" class="no_margin_bottom form-search form-horizontal">
+
+          
           <select id="cate1" class="span3" name="cate1">
             <option value="0">Buscar por prenda</option>
             <?php 
@@ -114,7 +140,7 @@
           </select>
           <p></p>
           <div class="input-append">
-            <input id="busqueda" name="busqueda" class="" type="text" placeholder="Buscar por palabras clave">
+            <input id="busqueda" name="busqueda" type="text" placeholder="Buscar por palabras clave">
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
         </form>
@@ -213,11 +239,13 @@
 			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-        <h5>Looks con estas prendas:</h5><br/>
-       		<div id="looks" class="clearfix">
+        <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
+       		<div id="looks" class="clearfix hidden-phone">
        		</div>
         </div>
     </div>
+    	<!-- FILTROS DESKTOP OFF -->
+
   </div>
 </div>
 

@@ -29,7 +29,7 @@
             	<input id="producto" type="hidden" value="<?php echo $producto->id ?>" />
               <h1> <?php echo $producto->nombre; ?> <!-- <span class="label label-important"> ON SALE</span> --></h1>
             </div>
-            <div class="span2 share_like">
+            <div class="span2 share_like hidden-phone">
             	
             	<?php
             	$entro = 0;
@@ -57,7 +57,7 @@
 
                	?>
                	
-                <div class="btn-group">
+                <div class="btn-group hidden-phone">
                   <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                     <!-- AddThis Button BEGIN -->
@@ -139,19 +139,8 @@
 	
 			?></h4>
             </div>
-            <div class="span2">
-              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-lock icon-white"></i> Comprar </a>
-            </div>
-          </div>
-          <p class="muted t_small CAPS">Selecciona Color y talla </p>
-          
-          <div class="row">
-            <div class="span2">
-              <h5>Colores</h5>
-              <div id="vCo" class="clearfix colores">
-              	<?php
-
-              	$valores = Array();
+            <?php
+          $valores = Array();
               	$cantcolor = Array();
               	$cont1 = 0;
               	
@@ -170,6 +159,58 @@
 						
 					}
 				}
+				
+				
+			$valores = Array();
+				$canttallas= Array();
+              	$cont2 = 0;
+              	
+				// revisando cuantas tallas distintas hay
+				foreach ($producto->preciotallacolor as $talCol){ 
+					if($talCol->cantidad > 0)
+					{
+						$talla = Talla::model()->findByPk($talCol->talla_id);
+					
+						if(in_array($talla->id, $canttallas)){	// no hace nada para que no se repita el valor			
+						}
+						else{
+							array_push($canttallas, $talla->id);
+							$cont2++;
+						}
+						
+					}
+				}
+				
+			
+          ?>
+            <div class="span2 hidden-phone">
+            	<?php
+		          if($cont1 > 0 && $cont2 > 0){
+		          ?>
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
+              	<?php
+				  }else{
+				  	?>
+				  	<a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Agotado </a>
+				  	<?php
+				  }
+              	?>
+            </div>
+          </div>
+          
+          <?php
+          if($cont1 > 0 && $cont2 > 0){
+          ?>
+          
+          <p class="muted t_small CAPS">Selecciona Color y talla </p>
+          
+          <div class="row-fluid">
+            <div class="span6">
+              <h5>Colores</h5>
+              <div id="vCo" class="clearfix colores">
+              	<?php
+
+              	
 				
 				if( $cont1 == 1) // Si solo hay un color seleccionelo
 				{
@@ -200,30 +241,12 @@
               	?>
               </div>
             </div>
-            <div class="span2">
+            <div class="span6">
               <h5>Tallas</h5>
               <div id="vTa" class="clearfix tallas">
               	<?php
 
-              	$valores = Array();
-				$canttallas= Array();
-              	$cont2 = 0;
               	
-				// revisando cuantas tallas distintas hay
-				foreach ($producto->preciotallacolor as $talCol){ 
-					if($talCol->cantidad > 0)
-					{
-						$talla = Talla::model()->findByPk($talCol->talla_id);
-					
-						if(in_array($talla->id, $canttallas)){	// no hace nada para que no se repita el valor			
-						}
-						else{
-							array_push($canttallas, $talla->id);
-							$cont2++;
-						}
-						
-					}
-				}
 
 				if( $cont2 == 1) // Si solo hay un color seleccionelo
 				{
@@ -250,27 +273,51 @@
               	?>         	     	
               </div>
             </div>
-          </div>
+             </div>
+             
+             <?php
+             }
+             ?>
+             
+             <div class="call2action visible-phone"><hr/>
+              	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
+            </div>
+         
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
-              <li class="active"><a href="#detalles" data-toggle="tab">Detalles</a></li>
+              <li class="active"><a href="#descripcion" data-toggle="tab">Descripción</a></li>
+              <li><a href="#detalles" data-toggle="tab">Detalles</a></li>
               <li><a href="#envio" data-toggle="tab">Envio</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="detalles">
+              <div class="tab-pane active" id="descripcion">
+                <div class="clearfix">   
+                  <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> </div>
+              </div>
+              <div class="tab-pane" id="detalles">
                 <div class="clearfix">
-                  <h4><?php
-					$marca = Marca::model()->findByPk($producto->marca_id); 
-				   
-					 ?></h4>
-                  <p><strong><?php echo $marca->nombre; ?></strong></p>
-                  <!-- <p><a href="#">Ver looks de esta marca</a></p>-->
-                  <p><strong>Descripción</strong>: <?php echo $marca->descripcion; ?></p> </div>
+                  	<?php
+						$marca = Marca::model()->findByPk($producto->marca_id); 				   
+					?>
+
+				<div class="row-fluid">
+					<div class="span3">
+					<?php
+	                echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65"));
+					?>   
+					</div>               
+                  	<div class="span9">
+    	          		<p><strong><?php echo $marca->nombre; ?></strong></p>
+	                    <p><strong>Descripción</strong>: <?php echo $marca->descripcion; ?></p> 
+						<p><strong>Peso</strong> <?php echo  $producto->peso; ?> </p>
+                  	</div>
+				</div>
+              </div>
               </div>
               <div class="tab-pane" id="envio">
 	            <div class="row">
-	            	<img class="span1" src="<?php echo Yii::app()->baseUrl; ?>/images/grupo_zoom_logo.png"/>
-	            	<p class="span3 padding_top_small">Nuestros envios se realizan a través del <strong>Grupo Zoom</strong></p>
+	            	<div class="span1"><img  src="<?php echo Yii::app()->baseUrl; ?>/images/grupo_zoom_logo.png"/></div>
+	            	<div class="span2"><p class="padding_top_small">Nuestros envios se realizan a través del <strong>Grupo Zoom</strong></p></div>
 	            </div>
 	          </div>
             </div>
@@ -296,7 +343,7 @@ $cont=0;
 
 <?php if($count > 0){  ?>
 
-<div class="braker_horz_top_1">
+<div class="braker_horz_top_1 hidden-phone">
     <h3>Looks recomendados con este producto</h3>
     <div id="myCarousel" class="carousel slide"> 
       <!-- Carousel items -->

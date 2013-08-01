@@ -275,6 +275,7 @@ class Look extends CActiveRecord
 		
 		$criteria->compare('status',1,false,'OR');
 		$criteria->compare('status',2,false,'OR');
+		$criteria->compare('title',$this->title,true);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

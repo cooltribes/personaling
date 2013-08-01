@@ -1,13 +1,11 @@
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Tus Pedidos</h1>
-      <hr/>
-    <!-- Menu ON -->
+    <h1>Tus Notificaciones</h1>
     
-    <div class="navbar">
-  <div class="navbar-inner margin_bottom margin_top_medium">
-    <ul class="nav ">
-      <li class="active"><a href="#" title="Tus pedidos activos">Pedidos activos</a></li>
+    <div class="">
+  <div class=" margin_bottom margin_top_medium">
+    <ul class="nav  nav-tabs">
+      <li class="active"><a href="#" title="Tus pedidos activos">Mensajes</a></li>
       <li><a href="#" title="tu avatar">Historial de pedidos</a></li>
     </ul>
   </div>
@@ -27,51 +25,139 @@
     
   </div>
   
+
+  <section class= "row-fluid well">
+  	<!-- Lista de Mensajes  -->
+  	<div class="span4">
+	  	<div class="padding_medium bg_color3">
+
+	  		<a  href="#">	
+		  		 <article class="row-fluid">
+		  		 	<div class="span10">
+				  		<span> <strong>De:</strong> Hodor </span>
+			  		  	<p> <strong>Mensaje:</strong> Hodor hodor, hordor hodor... </p>
+		  		  </div>
+		  		  	<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		   		</article>  
+	  		 </a>
+	  		 <hr/>
+	  		<a  href="#">	
+		  		<article class="row-fluid">
+		  			<div class="span10">
+			  			<span> <strong>De:</strong> Administrador </span>
+			  			<p> <strong>Mensaje: </strong> Tu pedido ha sido rechazado... </p>
+		  			</div>
+		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		  		</article>
+	  		</a>
+	  		<hr/>
+	  		<a  href="#">	
+		  		<article class="row-fluid">
+		  			<div class="span10">
+		  				<span> <strong>De:</strong> Chuck Norris </span>
+		  				<p> <strong>Mensaje:</strong> Tu pedido ha sido bautizado...  </p> 
+		  			</div>
+		  			<span class="entypo icon_personaling_medium span2"> &#59230; </span>
+	  			</article>  
+	  		</a>
+	  		<hr/>
+	  		<a href="">
+		  		<article class="row-fluid">
+		  			<div class="span10">
+			  			<span> <strong>De:</strong> Administrador </span>
+			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido actualizado...</p>
+		  			</div>
+		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>	
+		  		</article>
+	  		</a>
+	  		<hr/>
+	  		<a  href="#">	
+		  		<article class="row-fluid">
+		  			<div class="span10">
+			  			<span> <strong>De:</strong> Administrador </span>
+			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido explotado... </p>
+		  			</div>
+		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		  		</article>
+	  		</a>
+	  		<hr/>
+	  		<a  href="#">	
+		  		<article class="row-fluid">
+		  			<div class="span10">
+			  			<span> <strong>De:</strong> Yondri </span>
+			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido bautizado... </p>
+		  			</div>
+		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		  		</article>  		  		  		
+	  		</a>
+	  	</div>
+  	</div>
+
+  	<!-- Cuerpo del mensaje -->
+  	<div class="span8 ">
+	  	<div class="padding_medium bg_color3 ">
+
+	  		<p> <strong>Asunto:</strong> The king himself could not attend</p>
+	  		<p> <strong>Fecha:</strong> 23 de Septiembre de 2013</p>
+	  		<p>
+	  			If you have five dollars and Chuck Norris has five dollars, Chuck Norris has more money than you.
+	 			The Great Wall of China was originally created to keep Chuck Norris out. It failed misserably.
+	 			Chuck Norris ordered a Big Mac at Burger King, and got one.
+	  		</p>
+	  		<form class=" margin_top_medium ">
+		  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
+		  		<button class="btn btn-danger"> Enviar </button>
+	  		</form>
+	  	</div>
+  	</div>
+  </section>
+
+
+
     <?php
   
-$template = '{summary}
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-    <tr>
-      <th scope="col">Número de Orden</th>
-      <th scope="col">Fecha</th>
-      <th scope="col">Monto (En Bs.)</th>
-      <th scope="col">Estado</th>
-      <th scope="col">Acciones</th>
-    </tr>
-    {items}
-    </table>
-    {pager}
-	';
+// $template = '{summary}
+// 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+//     <tr>
+//       <th scope="col">Número de Orden</th>
+//       <th scope="col">Fecha</th>
+//       <th scope="col">Monto (En Bs.)</th>
+//       <th scope="col">Estado</th>
+//       <th scope="col">Acciones</th>
+//     </tr>
+//     {items}
+//     </table>
+//     {pager}
+// 	';
     
-  $this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datosUsuario',
-	    'template'=>$template,
-	    'enableSorting'=>'true',
-	    'afterAjaxUpdate'=>" function(id, data) {
+//   $this->widget('zii.widgets.CListView', array(
+// 	    'id'=>'list-auth-items',
+// 	    'dataProvider'=>$dataProvider,
+// 	    'itemView'=>'_datosUsuario',
+// 	    'template'=>$template,
+// 	    'enableSorting'=>'true',
+// 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	
-							$('#todos').click(function() { 
-				            	inputs = $('table').find('input').filter('[type=checkbox]');
+// 							$('#todos').click(function() { 
+// 				            	inputs = $('table').find('input').filter('[type=checkbox]');
 				 
-				 				if($(this).attr('checked')){
-				                     inputs.attr('checked', true);
-				               	}else {
-				                     inputs.attr('checked', false);
-				               	} 	
-							});
+// 				 				if($(this).attr('checked')){
+// 				                     inputs.attr('checked', true);
+// 				               	}else {
+// 				                     inputs.attr('checked', false);
+// 				               	} 	
+// 							});
 						   
-							} ",
-		'pager'=>array(
-			'header'=>'',
-			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
-		)
-		),					
-	));
+// 							} ",
+// 		'pager'=>array(
+// 			'header'=>'',
+// 			'htmlOptions'=>array(
+// 			'class'=>'pagination pagination-right',
+// 		)
+// 		),					
+// 	));
 	
 	?>
-  
 
   <hr/>
 </div>

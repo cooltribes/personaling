@@ -15,15 +15,20 @@
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
+
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
+
 </head>
 
-<body>
+<body class="<?php echo $this->getBodyClasses(); ?>">
   <div id="navegacion_principal">
 <?php  
 
 $total = 0; //variable para llevar el numero de notificaciones
 $cont_productos = 0 ; //variable para llevar el numero de productos
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
+
+
 if (Yii::app()->user->id?UserModule::isAdmin():false){
 $this->widget('bootstrap.widgets.TbNavbar',array(
 	'type'=> 'inverse',
@@ -94,8 +99,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     $avatar = '';
 
 	}
-	
+
+
 $this->widget('bootstrap.widgets.TbNavbar',array(
+    'collapse' => true,
     'items'=>array(
         array(
             'class'=>'bootstrap.widgets.TbMenu',
@@ -111,16 +118,17 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$avatar.$nombre, 'url'=>'#','htmlOptions'=>array('tittle'=>'rafa'), 'items'=>array(
+                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=>array(
                     array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                     array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/')),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
@@ -130,9 +138,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 'visible'=>!Yii::app()->user->isGuest,
 				),
             ),
-        ),
+        ), 
+
     ),
-)); 
+));
+
+
+
 }
 
 ?>
@@ -163,65 +175,200 @@ if(!Yii::app()->user->isGuest){
 }
 ?>
 
+<!-- Popovers ON -->
 
+ <?php   
+    if(!Yii::app()->user->isGuest){
+        $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+
+        if (!is_null($bolsa)){
+	        // Consulta si hay Looks
+	        $sql = "select count( *   ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
+	        $cantidadLooks = Yii::app()->db->createCommand($sql)->queryScalar();
+	 
+	        //Consulta si hay productos individuales
+	        $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
+	        $cantidadProductosIndiv = Yii::app()->db->createCommand($sql)->queryScalar();        
+	
+	        $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
+        } else {
+        	$cantidadLooks = 0;
+        	$cantidadProductosIndiv = 0;
+        }
+
+    }
+  ?> 
+ 
 <script type="text/javascript">
   
   $(document).on('ready',HandlerReady);
 
   function HandlerReady () {
+    //Boton Notificaciones
     $('#btn-notifications').popover(
     {
-      title: 'Notificaciones',
-      content: '<div class="btn btn-block btn-small btn-info">Tienes '+ <?php echo $total ?>+' notificaciones por leer</div>',
+      title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
+      content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
       placement: 'bottom',
-      trigger: 'hover',
+      trigger: 'manual',
       html: true,
     });
 
-    $('#btn-notifications').hover(function(){
+    $('#btn-notifications').hoverIntent(function(){
         $(this).popover('show');
+        $(this).addClass('bg_color10');
+        $('.popover').addClass('active_two');
       },
       function(){
-        $('.popover').hover(function(){},function(){
+        $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
+          $('#btn-notifications').removeClass('bg_color10');
           });        
       }
     );
 
     
-    textShoppingCart = '<div class="btn btn-block btn-small btn-info">Tienes '+ <?php echo $cont_productos ?>+' productos</div>';
+    var listaCarrito;
 
+    //------------Generar html para poner en Popover ON---------------//
+    <?php if(!Yii::app()->user->isGuest){
+
+      $contadorItems = 0 ;
+
+      //Si hay Looks en la bolsa del usuario
+      if($cantidadLooks!=0){
+
+          $clases = '" unstyled clearfix"';
+          echo "listaCarrito = '<ul class=".$clases." >";
+          $bolsa_Reverse = array_reverse($bolsa->looks());
+          
+          foreach ($bolsa_Reverse as $look_id) {
+
+              if($contadorItems > 5){
+                break;
+              }
+
+              $bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
+              $look = Look::model()->findByPk($look_id);
+              echo '<li>';
+              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
+              echo '<div class="row-fluid">';
+
+              //invertir array para mostrar en orden cronológico de compras
+
+              foreach ($bolsahasproductotallacolor as $productotallacolor) {
+                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
+                  $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+                  if($imagen){
+                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
+                      echo '<div class="span2">'.$htmlimage.'</div>';
+                  }
+              }
+              echo '</div>';
+              echo "</li>";
+              $contadorItems ++;
+          }
+          if($cantidadProductosIndiv!=0){
+              echo "';";
+          }
+      }
+      elseif($cantidadProductosIndiv!=0){
+          echo "listaCarrito = '<ul>';";
+      }
+
+      //Si hay producto individuales en la bolsa del usuario
+      if( $cantidadProductosIndiv != 0 ){
+          if(isset($bptcolor)){ 
+            echo "\n    listaCarrito = listaCarrito + '";
+
+            $bptcolor_Rev = array_reverse($bptcolor);
+
+            foreach($bptcolor_Rev as $detalles){ // cada producto en la bolsa
+
+              if($contadorItems >= 5){
+                break;
+              }
+
+                $todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);                
+                $producto = Producto::model()->findByPk($todo->producto_id);
+                $talla = Talla::model()->findByPk($todo->talla_id);
+                $color = Color::model()->findByPk($todo->color_id);                  
+                $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+                echo "<li>";
+                echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/producto/detalle/'.$todo->producto_id.'" >'.$producto->nombre.'</a>';
+                echo '<div class="row-fluid">';
+                
+                if($imagen){
+                    $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
+                    echo '<div class="span2">'.$htmlimage.'</div>';
+                }                
+                echo '</div>';                
+                echo "</li>";
+                $contadorItems ++;
+
+            }
+            echo "</ul>';";    
+          }  
+      }
+      elseif( $cantidadLooks != 0 ){
+          echo "</ul>';";
+      }
+
+
+    }
+    ?>
+
+    //------------Generar html para poner en Popover OFF---------------//
+
+    textShoppingCart = '<a href="/site/bolsa/index" class="btn btn-block btn-small btn-warning">Ver carrito</a>';
+
+    if( listaCarrito != "" ){
+        textShoppingCart = listaCarrito + textShoppingCart;
+    }  
     if(<?php echo $cont_productos ?> == 0){
       textShoppingCart = '<p><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
     }
  
-
+    //Boton Shopping Cart
     $('#btn-shoppingcart').popover(
     {
       html: true,
-      title: '<strong>Tu bolsa</strong>',
+      title: '<strong>Tu Carrito ('+ <?php echo $cont_productos  ?>+')</strong>',
       content: textShoppingCart,
       placement: 'bottom',
-      trigger: 'hover',
+      trigger: 'manual',
     });
 
-    $('#btn-shoppingcart').hover(function(){
+    $('#btn-shoppingcart').hoverIntent(function(){
 
         $(this).popover('show');
-        $(this).addClass('bg_color13');
+        $(this).addClass('bg_color10');
+        $('.popover').addClass('active_one');
       },
       function(){
+        // $('#btn-shoppingcart').removeClass('bg_color10');
+        $('.active_one').mouseleave(function(){
+              console.log("Salió");
+              $('#btn-shoppingcart').popover('hide');
+              $('#btn-shoppingcart').removeClass('bg_color10');
+            });        
+        }
 
-        $('.popover').hover(function(){},function(){
-            $('#btn-shoppingcart').popover('hide');
-            $('#btn-shoppingcart').removeClass('bg_color13');
-          });        
-      }
+
     );
+    $('#dropdownUser').hoverIntent(function(){
+        $(this).addClass('open');
+    },function(){
+        $(this).removeClass('open');
+    });
   }
 
 
+
 </script>
+<!-- Popovers OFF -->
 
 <!-- <div class="alert alert-error margin_top padding_top">Estas en el sitio de Pruebas T1</div> -->
 <div class="container" id="page">
@@ -236,7 +383,7 @@ if(!Yii::app()->user->isGuest){
 
 <div id="wrapper_footer">
   <footer class="container">
-    <div class="row">
+    <div class="row hidden-phone">
       <div class="span3">
         <h3>Links rápidos</h3>
         <ul>
@@ -249,11 +396,11 @@ if(!Yii::app()->user->isGuest){
           
         </ul>
       </div>
-      <div class="span5">
+      <div class="span5 ">
         <h3> Sobre Personaling </h3>
         <p class="lead">Personaling, es un personal shopper digital, un portal de moda y belleza en donde las usuarias se dan de alta, definen su perfil físico y sus preferencias de estilo para descubrir looks recomendados por expert@s en moda (personal shoppers, celebrities, estilistas, fashionistas), podrán comprar el look completo en un click y recibirlo en su domicilio</p>
       </div>
-      <div class="span3 offset1">
+      <div class="span3 offset1 ">
         <h3>¡Síguenos! </h3>
         <div class="textwidget"> <a title="Personaling en facebook" href="https://www.facebook.com/Personaling"><img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="pinterest" href="https://pinterest.com/personaling/"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a> </div>
         <hr/>

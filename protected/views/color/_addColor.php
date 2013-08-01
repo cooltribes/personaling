@@ -77,10 +77,26 @@ array(
 	'type'=>'info',
 	//'buttonType'=> 'ajaxSubmit',
 	'buttonType'=> 'submit',
-	'label'=>'guardar',
+	'buttonType'=> 'button',
+	'label'=>'Guardar',
+	'htmlOptions'=>array(
+		'onclick'=>"validar()"
+	),
 	//'url'=>array('color/create'),
 
 )); ?>
 	
   </div>
+  <script>
+  	function validar(){
+  		//alert($('#Color_valor').val());
+	 					//alert($('#Color_path_image').val());
+	 						if ($('#Color_path_image').val()==''){
+	 							alert('Disculpe, Tiene que subir una imagen');
+	 						 	
+	 						 } else {
+	 						 	$('#PublicarForm').submit();
+	 						 }
+  	}
+  </script>
  <?php $this->endWidget(); ?> 

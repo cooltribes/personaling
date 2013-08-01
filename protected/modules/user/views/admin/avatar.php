@@ -1,4 +1,8 @@
-
+<?php 
+  $this->breadcrumbs=array(
+  'Usuarios'=>array('admin'),
+  'Editar',);
+?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Avatar</h1>
@@ -53,7 +57,7 @@
           <div id="scroller-anchor"></div>
           <div id="scroller"> <a href="#" title="Guardar" class="btn btn-danger btn-large btn-block">Guardar</a>
             <ul class="nav nav-stacked nav-tabs margin_top">
-              <li><a href="#" title="Restablecer"><i class="icon-repeat"></i> Restablecer</a></li>
+              <li><a href="#" title="Restablecer" id="limpiar"> <i class="icon-repeat"></i> Limpiar Formulario</a></li>
               <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>
               <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
             </ul>

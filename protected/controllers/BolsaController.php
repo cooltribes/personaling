@@ -42,9 +42,16 @@ class BolsaController extends Controller
 	{
 		$usuario = Yii::app()->user->id;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+		if (!is_null($bolsa)){
+			echo $bolsa->actualizar();
+			
+		} else {
+			$bolsa = new Bolsa;
+			$bolsa->user_id = $usuario;
+			$bolsa->save();
+		}
 		
-		echo $bolsa->actualizar();
-		$this->render('bolsa', array('bolsa' => $bolsa));
+		$this->render('bolsa', array('bolsa' => $bolsa)); 
 	}
 
 
@@ -253,8 +260,8 @@ class BolsaController extends Controller
 					$dirEnvio->dirUno = $dir1->dirUno;
 					$dirEnvio->dirDos = $dir1->dirDos;
 					$dirEnvio->telefono = $dir1->telefono;
-					$dirEnvio->ciudad = $dir1->ciudad;
-					$dirEnvio->estado = $dir1->estado;
+					$dirEnvio->ciudad_id = $dir1->ciudad_id;
+					$dirEnvio->provincia_id = $dir1->provincia_id;
 					$dirEnvio->pais = $dir1->pais;
 					
 					if(isset($_GET['collection_id']) && Yii::app()->getSession()->get('tipoPago') == 4){ // Pago con Mercadopago
@@ -287,7 +294,8 @@ class BolsaController extends Controller
 							$orden->user_id = $usuario;
 							$orden->pago_id = $pago->id;
 							$orden->detalle_id = $detalle->id;
-							$orden->direccionEnvio_id = $dirEnvio->id;	
+							$orden->direccionEnvio_id = $dirEnvio->id;
+							$orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
 							
 							if($orden->save()){
 								$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));	
@@ -348,7 +356,7 @@ class BolsaController extends Controller
 								$message            = new YiiMailMessage;
 						           //this points to the file test.php inside the view path
 						        $message->view = "mail_compra";
-								$subject = 'Tu compra en Pesonaling';
+								$subject = 'Tu compra en Personaling';
 						        $params              = array('subject'=>$subject, 'orden'=>$orden);
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
@@ -740,7 +748,8 @@ class BolsaController extends Controller
 							$orden->user_id = $usuario;
 							$orden->pago_id = $pago->id;
 							$orden->detalle_id = $detalle->id;
-							$orden->direccionEnvio_id = $dirEnvio->id;	
+							$orden->direccionEnvio_id = $dirEnvio->id;
+							$orden->tipo_guia = $_POST['tipo_guia'];
 							
 							if($detalle->nTarjeta!="") // Pagó con TDC
 							{
@@ -874,7 +883,7 @@ class BolsaController extends Controller
 								$message            = new YiiMailMessage;
 						           //this points to the file test.php inside the view path
 						        $message->view = "mail_compra";
-								$subject = 'Tu compra en Pesonaling';
+								$subject = 'Tu compra en Personaling';
 						        $params              = array('subject'=>$subject, 'orden'=>$orden);
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');

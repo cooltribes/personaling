@@ -193,10 +193,33 @@ $this->breadcrumbs=array(
 	'options' => array(
 		 'placeholder'=> "Seleccione un color",
 		 'multiple'=>true,
-		 'data'=>$data,
-		 //'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
+		 //'data'=>$data,
+		 ////'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
 		// 'data'=> CHtml::listData(Color::model()->findAll(),'id', 'valor'),
 		 'width' => '40%',
+		  
+		  'ajax' => array(  
+                                //'url'=> 'http://api.rottentomatoes.com/api/public/v1.0/movies.json',  
+                                'url'=> CController::createUrl('color/getColores'),  
+                            'dataType' => 'json',  
+                            'data' => 'js: function (term,page) {  
+                                        return {  
+                                        //term: term, // Add all the query string elements here seperated by ,  
+                                        search: term,
+                                        page_limit: 10,  
+                                               };  
+                                                             }',        
+                            'results' => 'js: function (data,page) {return {results: data};}',  
+                            ),  
+          //  'formatResult'    => 'js:function(data){  
+                                //var markup = data.id + " - ";  
+                               // markup += data.text;  
+			// 					var markup = data.text;
+          //                      return markup;  
+         //                   }',
+         //   'formatSelection' => 'js: function(data) {  
+          //                      return data.text;  
+          //                  }',
 	),
 			)
 				);

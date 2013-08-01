@@ -1,3 +1,8 @@
+<?php 
+  $this->breadcrumbs=array(
+  'Usuarios'=>array('admin'),
+  'Editar',);
+?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Direcciones</h1>
@@ -20,6 +25,8 @@
 				if(count($direcciones)>1)
 				{
 					foreach($direcciones as $dir)
+					$ciudad = Ciudad::model()->findByPk($dir->ciudad_id);
+					$provincia = Provincia::model()->findByPk($dir->provincia_id);
 					{
 						echo '<div class="well well-small clearfix">';
 						echo '<div class="pull-right">';
@@ -33,7 +40,7 @@
 				        echo '<div class="vcard">';
 				        echo '<div class="adr">';
 						echo '<div class="street-address"><i class="icon-map-marker"></i>'.$dir->dirUno.'. '.$dir->dirDos.'</div>';
-						echo '<span class="locality">'.$dir->ciudad.', '.$dir->estado.'</span>';
+						echo '<span class="locality">'.$ciudad->nombre.', '.$provincia->nombre.'</span>';
 						echo '<div class="country-name">'.$dir->pais.'</div>';
 				        echo "</div>";
 				        

@@ -72,7 +72,10 @@ class LookController extends Controller
 		{
 			$look->user_id = Yii::app()->user->id;
 		}	
-		
+		if(isset($_POST['buscar_look']))
+		{
+			$look->title = $_POST['buscar_look'];
+		}			
 		$dataProvider = $look->search();
 		
 		$this->render('ps', array('model'=>$look,'dataProvider'=>$dataProvider,'tipo'=>'ps','look'=>$look));	
@@ -133,6 +136,7 @@ class LookController extends Controller
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;
 					$imagenes[$i]->height = $lookhasproducto->height;
+					$imagenes[$i]->angle = $lookhasproducto->angle;
 			} 
 			$i++;
 		 }	
@@ -146,6 +150,7 @@ class LookController extends Controller
 					$imagenes[$i]->left = $lookhasadorno->left;
 					$imagenes[$i]->width = $lookhasadorno->width;
 					$imagenes[$i]->height = $lookhasadorno->height;
+					$imagenes[$i]->angle = $lookhasproducto->angle;
 			} 
 
 			$i++;
@@ -168,10 +173,17 @@ class LookController extends Controller
 			          $src = imagecreatefrompng($image->path);
 			          break;
 			      }			
-			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h); 
+			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
+			
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true ); 
+    		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
+			
     		imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
+			if ($image->angle){
+					
+				$img = imagerotate($img,$image->angle,$pngTransparency);
+			}
 			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
 		}
 		header('Content-Type: image/png');
@@ -451,17 +463,32 @@ public function actionCategorias(){
 					
 					 
 				}
-				if ($_POST['tipo']==1){
+				if ($_POST['tipo']==1){ 
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();
 				} else {
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha guardado."));	
-					$this->render('create',array(
+					
+					if ($model->status == 0 || UserModule::isAdmin()){ // comprueba que el look no se haya enviado o aprovado
+					$user = User::model()->findByPk(Yii::app()->user->id);
+					$criteria=new CDbCriteria;
+					$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
+					if($user->superuser != '1'){
+						$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+					}
+					$models = Campana::model()->findAll($criteria);
+					
+			        $this->render('create',array(
 							'model'=>$model,
 							'categorias'=>$categorias,
+							'models'=>$models,
 						)
 					);
+					} else {
+						$this->redirect(array('look/publicar','id'=>$model->id)); 
+						Yii::app()->end();
+					}
 				}		 
 			
 			//} else{
@@ -609,6 +636,10 @@ public function actionCategorias(){
 
 		
 		$model = new Look; 
+if(isset($_POST['buscar_look']))
+		{
+			$model->title = $_POST['buscar_look'];
+		}		
 		$dataProvider = $model->lookAdminAprobar();
 		$this->render('admin',
 		array('model'=>$model,

@@ -153,9 +153,63 @@ class Producto extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
-	}
-
+	} 
 	public function busqueda($todos)
+	{
+
+		$criteria=new CDbCriteria;
+		$criteria->compare('t.nombre',$this->nombre,true);
+		$criteria->compare('categorias.nombre',$this->nombre,true,'OR');
+		/*
+		$criteria->compare('id',$this->id);
+		$criteria->compare('codigo',$this->codigo,true);
+		$criteria->compare('t.nombre',$this->nombre,true);
+		$criteria->compare('t.estado',$this->estado,true);
+		$criteria->compare('descripcion',$this->descripcion,true);
+		$criteria->compare('marca_id',$this->marca_id,true);
+		$criteria->compare('fInicio',$this->fInicio,true);
+		$criteria->compare('fFin',$this->fFin,true);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('status',$this->status,true);
+		$criteria->compare('destacado',$this->destacado,true);
+		$criteria->compare('peso',$this->peso,true);
+		*/
+		
+		//$criteria->with = array('categorias');
+		//$criteria->with = array('precios');
+		$criteria->with = array('precios','categorias');
+		
+		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
+		
+		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
+		{
+			if(empty($todos)) // si no tiene hijos devuelve un array vacio por lo que debe buscar por el id de la categoria
+			{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+			}
+			else // si tienes hijos
+				{
+					$criteria->addInCondition("tbl_categoria_id",$todos);
+				}		
+		}else if($todos=="a")
+		{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+		}
+
+		$criteria->addCondition('precioDescuento != ""');
+		$criteria->addCondition('orden = 1');
+		
+		$criteria->order = "t.id ASC";
+		
+		$criteria->together = true;
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
+	}
+	public function busquedaOLD($todos)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
@@ -169,6 +223,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('t.nombre',$this->nombre,true,'OR');
 		//$criteria->compare('t.descripcion',$this->nombre,true);
 		$criteria->compare('categorias.nombre',$this->nombre,true,'OR');
+		//$criteria->compare('preciotallacolor.color_id',4,false,'OR');
 		
 		//$criteria->compare('t.estado',$this->estado,true);
 		//$criteria->compare('marca_id',$this->marca_id,true);
@@ -178,7 +233,9 @@ class Producto extends CActiveRecord
 		//$criteria->compare('status',$this->status,true);
 		//$criteria->compare('destacado',$this->destacado,true);
 		//$criteria->compare('peso',$this->peso,true);
-		$criteria->with = array('categorias');
+		$criteria->with = array('categorias','preciotallacolor');
+		//$criteria->with = array('preciotallacolor');
+		
 		
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
@@ -198,10 +255,11 @@ class Producto extends CActiveRecord
 		}
 			
 		
+		
 		$criteria->together = true;
 		
 		return new CActiveDataProvider($this, array(
-       'pagination'=>array('pageSize'=>12,),
+       'pagination'=>array('pageSize'=>24),
        'criteria'=>$criteria,
 	));
 		
@@ -477,7 +535,8 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 	 public function masvendidos($limit=10)
 	 {
 			
-		$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
+		//$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
+		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id where tbl_imagen.orden = 1 GROUP BY producto_id ORDER by productos DESC";
 		//if (isset($limit))
 		//	$sql.=" LIMIT 0,$limit";
 		//$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";

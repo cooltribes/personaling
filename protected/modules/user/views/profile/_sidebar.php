@@ -16,6 +16,8 @@
         <li> <?php echo CHtml::link('Avatar',array('profile/avatar'));?> </li>
         <li> <?php echo CHtml::link('Tu Tipo',array('profile/edittutipo'));?> </li>
         <?php if($model->personal_shopper==1) { ?><li> <?php echo CHtml::link('Tu Bio',array('profile/editShopper'));?> </li><?php }?>
+        <?php if($model->personal_shopper==1) { ?><li> <?php echo CHtml::link('Tu Banner',array('profile/banner'));?> </li><?php }?>
+
       </ul>
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#">Tus Pedidos </a>
@@ -57,7 +59,7 @@
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Privacidad </a>
       <ul class="dropdown-menu">
-        <li><?php echo CHtml::link('Información póblica',array('privacidad'),array("title"=>"Cambia tu Informaciósn póblica")); ?></li>
+        <li><?php echo CHtml::link('Información pública',array('privacidad'),array("title"=>"Cambia tu Informaciósn pública")); ?></li>
         <li><?php echo CHtml::link('Eliminar Cuenta',array('delete'),array("title"=>"Eliminar Cuenta")); ?> </li>
       </ul>
     </li>

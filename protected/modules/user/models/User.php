@@ -126,7 +126,7 @@ class User extends CActiveRecord
 			'personal_shopper' => UserModule::t("Personal Shopper"),
 			
 			'lastvisit_at' => UserModule::t("Last visit"),
-			'superuser' => UserModule::t("Superuser"),
+			'superuser' => UserModule::t("Administrador"),
 			'status' => UserModule::t("Status"),
 			'twitter_id' => UserModule::t("Twitter ID"),
 			'facebook_id' => UserModule::t("Facebook ID"),

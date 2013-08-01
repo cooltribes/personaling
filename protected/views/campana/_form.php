@@ -326,36 +326,64 @@
            </div>
     	
     </div>
-    
     <div class="span3">
-      <div class="padding_left"> 
-      	<?php $this->widget('bootstrap.widgets.TbButton', array(
-      		'id'=>'boton_guardar',
-			'buttonType'=>'submit',
-			'type'=>'danger',
-			'size' => 'large',
-			'block'=>'true',
-			'label'=>$model->isNewRecord ? 'Crear' : 'Guardar',
-		)); ?>
+        <div class="padding_left"> 
+        <script type="text/javascript"> 
+        // Script para dejar el sidebar fijo Parte 1
+        function moveScroller() {
+          var move = function() {
+            var st = $(window).scrollTop();
+            var ot = $("#scroller-anchor").offset().top;
+            var s = $("#scroller");
+            if(st > ot) {
+              s.css({
+                position: "fixed",
+                top: "70px"
+              });
+            } else {
+              if(st <= ot) {
+                s.css({
+                  position: "relative",
+                  top: "0"
+                });
+              }
+            }
+          };
+          $(window).scroll(move);
+          move();
+        }
+      </script>    
+      <div id="scroller-anchor"></div>
+      
+      <div class="span3" id="scroller">
+        	<?php $this->widget('bootstrap.widgets.TbButton', array(
+        		'id'=>'boton_guardar',
+  			'buttonType'=>'submit',
+  			'type'=>'danger',
+  			'size' => 'large',
+  			'block'=>'true',
+  			'label'=>$model->isNewRecord ? 'Crear' : 'Guardar',
+  		)); ?>
 
         <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
-          <li><a href="#" title="Duplicar">Duplicar</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar</a></li>
-        </ul>
-      	
-        <ul class="nav nav-stacked nav-tabs margin_top">
-          <li><a href="#" title="Restablecer">Restablecer</a></li>
-                      <li><a title="Pausar" href="admin_anadir_campana.php"> <i class="icon-pause"> </i> Pausar (solo debe salir Pausa o Play)</a></li>
+          <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
+        
+      <!--  <li><a title="Pausar" href="admin_anadir_campana.php"> <i class="icon-pause"> </i> Pausar (solo debe salir Pausa o Play)</a></li>
             <li><a title="Play" href="admin_anadir_campana.php"> <i class="icon-play"> </i> Reanudar campaña</a></li>
-
-          <li><a href="#" title="Duplicar">Duplicar campaña</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-trash"></i> Borrar campaña</a></li>
+ -->
+          <li><a href="#" title="Borrar"><i class="icon-trash"></i> Borrar campaña</a></li>
         </ul>
+
       </div>
+    <script type="text/javascript"> 
+    // Script para dejar el sidebar fijo Parte 2
+      $(function() {
+        moveScroller();
+       });
+    </script>
     </div>
     
-    
+
     
     
 

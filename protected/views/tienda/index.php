@@ -385,12 +385,12 @@ function randomFrom(arr){
 
 $(document).ready(function() {
   // Handler for .ready() called.
-	  
+  
 	var imag;
 	var original;
 	var segunda;
 
-	$('.producto').hover(function(){
+	$('.producto').hover(function(){		
 		if ($(this).find("img").length > 1){
 		$(this).find("img").eq(0).hide();
 		
@@ -403,5 +403,7 @@ $(document).ready(function() {
 		$(this).find("img").eq(0).next().hide();
 		}
 	});
+	
+});
 	
 </script>

@@ -544,7 +544,7 @@ class OrdenController extends Controller
 						$user = User::model()->findByPk($orden->user_id);		
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
-						$subject = 'Tu compra en Pesonaling #'.$orden->id.' ha sido enviada';
+						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
 						$body = "Nos complace informar que tu pedido #".$orden->id." ha sido enviado <br/>
 								<br/>
 								Empresa: Zoom <br/>

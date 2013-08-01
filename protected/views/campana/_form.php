@@ -365,21 +365,15 @@
   			'label'=>$model->isNewRecord ? 'Crear' : 'Guardar',
   		)); ?>
 
-          <ul class="nav nav-stacked nav-tabs margin_top">
-            <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
-            <li><a href="#" title="Duplicar">Duplicar</a></li>
-            <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar</a></li>
-          </ul>
-        	
-          <ul class="nav nav-stacked nav-tabs margin_top">
-            <li><a href="#" title="Restablecer">Restablecer</a></li>
-                        <li><a title="Pausar" href="admin_anadir_campana.php"> <i class="icon-pause"> </i> Pausar (solo debe salir Pausa o Play)</a></li>
-              <li><a title="Play" href="admin_anadir_campana.php"> <i class="icon-play"> </i> Reanudar campaña</a></li>
+        <ul class="nav nav-stacked nav-tabs margin_top">
+          <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
+        
+      <!--  <li><a title="Pausar" href="admin_anadir_campana.php"> <i class="icon-pause"> </i> Pausar (solo debe salir Pausa o Play)</a></li>
+            <li><a title="Play" href="admin_anadir_campana.php"> <i class="icon-play"> </i> Reanudar campaña</a></li>
+ -->
+          <li><a href="#" title="Borrar"><i class="icon-trash"></i> Borrar campaña</a></li>
+        </ul>
 
-            <li><a href="#" title="Duplicar">Duplicar campaña</a></li>
-            <li><a href="#" title="Guardar"><i class="icon-trash"></i> Borrar campaña</a></li>
-          </ul>
-        </div>
       </div>
     <script type="text/javascript"> 
     // Script para dejar el sidebar fijo Parte 2

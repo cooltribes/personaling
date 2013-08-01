@@ -117,8 +117,20 @@ function handleDrop(e) {
 		    cursor: 'move',
 		    containment: 'document',
 		    start: function( event, ui ) { 
-		    	ui.helper.siblings().css('z-index',9); 
-		    	ui.helper.css('z-index',10); 
+		    	// calcular el mayor z-index y sumarle uno
+		    	var mayor = 0;
+		    	ui.helper.siblings().each(function(index){
+		    		
+		    		if (isNaN($(this).css('z-index')))
+		    			compara = 0;
+		    		else
+		    			compara = $(this).css('z-index');
+		    		if (compara > mayor)
+		    			mayor = compara;
+		    		
+		    	});
+		    	
+		    	ui.helper.css('z-index',parseInt(mayor)+1); 
 		    }
 		   // stop: handleDragStop
 			});
@@ -293,7 +305,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				
 				
               ?>
-          <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
+          <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="z-index: <?php echo $hasproducto->index; ?>; position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
             <?php
 					if ($producto->mainimage)
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
@@ -311,6 +323,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
+    start: function( event, ui ) { 
+	// calcular el mayor z-index y sumarle uno
+	var mayor = 0;
+	ui.helper.siblings().each(function(index){
+		
+		if (isNaN($(this).css('z-index')))
+			compara = 0;
+		else
+			compara = $(this).css('z-index');
+		if (compara > mayor)
+			mayor = compara;
+		
+	});
+	
+	ui.helper.css('z-index',parseInt(mayor)+1); 
+}
   
 	} ); 
 	
@@ -357,7 +385,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	        $adorno = Adorno::model()->findByPk($hasAd->adorno_id);
 				
 			?>
-          <div class="new ui-draggable" id="adorno<?php echo $adorno->id; ?>" style="position: absolute; top: <?php echo $hasAd->top;?>px; left: <?php echo $hasAd->left;?>px;">
+          <div class="new ui-draggable" id="adorno<?php echo $adorno->id; ?>" style="z-index: <?php echo $hasAd->index; ?>; position: absolute; top: <?php echo $hasAd->top;?>px; left: <?php echo $hasAd->left;?>px;-webkit-transform: rotate(<?php echo $hasAd->angle; ?>deg);">
             <?php
 				$image = CHtml::image(Yii::app()->baseUrl.'/images/adorno/'.$adorno->path_image, $adorno->nombre, array("width" => $hasAd->width, "height" => $hasAd->height));				
 				echo $image;
@@ -370,6 +398,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	        $script = "	$('#adorno".$adorno->id."').draggable( {
 	    		cursor: 'move',
 	   	 		containment: 'document',
+	   	 				    start: function( event, ui ) { 
+		    	// calcular el mayor z-index y sumarle uno
+		    	var mayor = 0;
+		    	ui.helper.siblings().each(function(index){
+		    		
+		    		if (isNaN($(this).css('z-index')))
+		    			compara = 0;
+		    		else
+		    			compara = $(this).css('z-index');
+		    		if (compara > mayor)
+		    			mayor = compara;
+		    		
+		    	});
+		    	
+		    	ui.helper.css('z-index',parseInt(mayor)+1); 
+		    }
 	  			} ); 
 	 
 	 		$('#adorno".$adorno->id." > span').last().click(function(){
@@ -404,7 +448,23 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
       </form>
       --> 
       
-      <?php echo CHtml::hiddenField('productos_id'); ?> <?php echo CHtml::hiddenField('colores_id'); ?> <?php echo CHtml::hiddenField('left'); ?> <?php echo CHtml::hiddenField('top'); ?> <?php echo CHtml::hiddenField('width'); ?> <?php echo CHtml::hiddenField('height'); ?> <?php echo CHtml::hiddenField('tipo'); ?> <?php echo CHtml::hiddenField('angle'); ?> <?php echo CHtml::hiddenField('adornos_id'); ?> <?php echo CHtml::hiddenField('left_a'); ?> <?php echo CHtml::hiddenField('top_a'); ?> <?php echo CHtml::hiddenField('width_a'); ?> <?php echo CHtml::hiddenField('height_a'); ?> <?php echo CHtml::hiddenField('angle_a'); ?>
+      <?php echo CHtml::hiddenField('productos_id'); ?> 
+      <?php echo CHtml::hiddenField('colores_id'); ?> 
+      <?php echo CHtml::hiddenField('left'); ?> 
+      <?php echo CHtml::hiddenField('top'); ?> 
+      <?php echo CHtml::hiddenField('width'); ?> 
+      <?php echo CHtml::hiddenField('height'); ?> 
+      <?php echo CHtml::hiddenField('tipo'); ?> 
+      <?php echo CHtml::hiddenField('angle'); ?>
+      <?php echo CHtml::hiddenField('index'); ?> 
+      
+      <?php echo CHtml::hiddenField('adornos_id'); ?> 
+      <?php echo CHtml::hiddenField('left_a'); ?> 
+      <?php echo CHtml::hiddenField('top_a'); ?> 
+      <?php echo CHtml::hiddenField('width_a'); ?> 
+      <?php echo CHtml::hiddenField('height_a'); ?> 
+      <?php echo CHtml::hiddenField('angle_a'); ?>
+      <?php echo CHtml::hiddenField('index_a'); ?>
       <?php $this->endWidget(); ?>
     </section>
     <section class="span4">
@@ -629,6 +689,7 @@ function addPublicar(tipo)
 	var height = '';
 	var width = ''; 
 	var angle = '';
+	var index = '';
 	var count = 0;
 	
 	var adornos_id = '';
@@ -637,6 +698,8 @@ function addPublicar(tipo)
 	var height_a = '';
 	var width_a = '';
 	var count_a = 0;
+	var angle_a = '';
+	var index_a = '';
 	
 	if($('#Look_campana_id').val() != ''){
 		$('#campana_id_error').hide('slow');
@@ -646,8 +709,7 @@ function addPublicar(tipo)
 			position = $(this).parent().position();
 			/* CALCULO DEL ANGULO */
 			tr = $(this).parent().css('-webkit-transform');
-			
-			
+
 			if(tr != 'none'){
 				var values = tr.split('(')[1];
 				    values = values.split(')')[0];
@@ -660,6 +722,13 @@ function addPublicar(tipo)
 			} else {
 				angle += '0,';
 			}
+			/* CALCULO DEL Z-INDEX */
+			//index = $(this).parent().css('z-index');
+			if (isNaN($(this).parent().css('z-index')))
+				index += '0,';
+			else
+				index += $(this).parent().css('z-index') + ',';
+			
 			//alert(angle);			
 			image = $(this).parent().find('img');
 			width += image.width() + ',';
@@ -672,6 +741,27 @@ function addPublicar(tipo)
 		// para los adornos
 		
 		$('.canvas input[name="adorno_id"]').each(function(item){
+			/* CALCULO DEL ANGULO */
+			tr = $(this).parent().css('-webkit-transform');
+
+			if(tr != 'none'){
+				var values = tr.split('(')[1];
+				    values = values.split(')')[0];
+				    values = values.split(',');
+				var a = values[0];
+				var b = values[1];
+				var c = values[2];
+				var d = values[3];
+				angle_a += (Math.round(Math.atan2(b, a) * (180/Math.PI)) ) + ',';
+			} else {
+				angle_a += '0,';
+			}
+			/* CALCULO DEL Z-INDEX */
+			//index = $(this).parent().css('z-index');
+			if (isNaN($(this).parent().css('z-index')))
+				index_a += '0,';
+			else
+				index_a += $(this).parent().css('z-index') + ',';			
 			adornos_id += $(this).val()+',';
 			position = $(this).parent().position();
 			image = $(this).parent().find('img');
@@ -695,6 +785,7 @@ function addPublicar(tipo)
 		$("#height").val(height.substring(0, height.length-1));
 		$("#width").val(width.substring(0, width.length-1));
 		$("#angle").val(angle.substring(0, angle.length-1));
+		$("#index").val(index.substring(0, index.length-1));
 		$("#tipo").val(tipo);
 		
 		// ahora los de los adornos
@@ -703,6 +794,8 @@ function addPublicar(tipo)
 		$("#top_a").val(top_a.substring(0, top_a.length-1));
 		$("#height_a").val(height_a.substring(0, height_a.length-1));
 		$("#width_a").val(width_a.substring(0, width_a.length-1));
+		$("#angle_a").val(angle_a.substring(0, angle_a.length-1));
+		$("#index_a").val(index_a.substring(0, index_a.length-1));
 		
 		//count = 6;
 		//alert(productos_id);

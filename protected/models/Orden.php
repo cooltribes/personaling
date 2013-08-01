@@ -63,12 +63,12 @@ class Orden extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id', 'required'),
-			array('estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id', 'numerical', 'integerOnly'=>true),
+			array('bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia', 'required'),
+			array('estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia', 'numerical', 'integerOnly'=>true),
 			array('subtotal, descuento, envio, iva, descuentoRegalo, total, seguro', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tracking, seguro', 'safe', 'on'=>'search'),
+			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tracking, seguro, tipo_guia', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -108,7 +108,8 @@ class Orden extends CActiveRecord
 			'detalle_id' => 'Detalle',
 			'direccionEnvio_id' => 'Direccion Envio',
 			'tracking' => 'Número de guía',
-			'seguro' => 'Seguro'
+			'seguro' => 'Seguro',
+			'tipo_guia' => 'Tipo de guía'
 		);
 	}
 

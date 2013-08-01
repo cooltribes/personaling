@@ -11,7 +11,8 @@
  * * @property integer $width
  * * @property integer $height
  * * @property integer $angle
- * */
+ * * @property integer $index
+ *  * */
 class LookHasProducto extends CActiveRecord
 {
 	/**
@@ -41,10 +42,10 @@ class LookHasProducto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('look_id, producto_id', 'required'),
-			array('look_id, producto_id, top, left, width, height,angle', 'numerical', 'integerOnly'=>true),
+			array('look_id, producto_id, top, left, width, height,angle,index', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('look_id, producto_id, top, left, width, height,angle', 'safe', 'on'=>'search'),
+			array('look_id, producto_id, top, left, width, height,angle,index', 'safe', 'on'=>'search'),
 		);
 	}
 

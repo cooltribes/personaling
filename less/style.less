@@ -1,5 +1,5 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
-/* Project name: Personaling  al 29/07/2013 */ 
+/* Project name: Personaling  al 30/07/2013 */ 
 
 /*==============================================================
 ----------------  FRAMEWORK - JUAN (Con ajustes de Calosth) -------------------------------
@@ -319,7 +319,7 @@ h1,h2,h3,h4{font-weight:300}
 strong, th{ color:#555;}
 
 /*------------ RESETS PARA BOOTSTRAP ON --------------*/
-.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a, .navbar-inner, .table-bordered, .popover{
+.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a, .navbar-inner, .table-bordered, .popover, input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input, .dropdown-menu, .thumbnail{
 		.border_radius(@radius:0);
 	}
 
@@ -439,6 +439,12 @@ src: url('../fonts/entypo.woff'),
 	 		background-color: lighten(@lila,3%);
 	 		color: darken(@lila,50%);
 	 } 
+	 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner{ 
+	 	box-shadow: none;
+	 	-moz-box-shadow: none;
+	 	-webkit-box-shadow: none;
+	 	-ms-box-shadow: none;
+	 }
 	 .popover.bottom .arrow{border-bottom-color: lighten(@lila,15%);}
 	 .popover{
 	 	
@@ -825,8 +831,7 @@ src: url('../fonts/entypo.woff'),
 #boton_facebook a,#boton_twitter a{
 	color: #fff;
 	display: block;
-	margin-left: 30px;	 
-	padding: 0.7em;
+	padding: 0.7em 0.7em 0.7em 40px;
 	&:hover{ background-color:@color1;}
 }
 
@@ -1283,7 +1288,7 @@ src: url('../fonts/entypo.woff'),
 		
 		.producto{
 			.transition_all;
-			background-color:#eee;
+			background-color:#f7f7f7;
 			box-shadow:0 0 0 1px rgba(0, 0, 0, 0.1);
 			-moz-box-shadow:0 0 0 1px rgba(0, 0, 0, 0.1);
 			-webkit-box-shadow:0 0 0 1px rgba(0, 0, 0, 0.1);
@@ -1348,7 +1353,7 @@ src: url('../fonts/entypo.woff'),
 		img{
 			margin-bottom:.2em;
 			max-height:270px;
-			max-width:270px;
+			max-width:100%;
 			}
 		h3{
 			.CAPS;
@@ -1362,6 +1367,7 @@ src: url('../fonts/entypo.woff'),
 			position:relative;
 			margin-top:0;
 			padding-top:.3em;
+			font-weight: 500;
 			a{
 					bottom: 0;
 					display: block;
@@ -1373,7 +1379,7 @@ src: url('../fonts/entypo.woff'),
 			
 			}
 		span.precio{
-			color:@color4;
+			color:lighten(@color4,50%);
 			display:block;
 			margin-bottom:.1em;
 			
@@ -1662,7 +1668,7 @@ ul.yiiPager .last
 	.nav-stacked li{ background-color:@color3;}
 	.dropdown-menu{ min-height:inherit;}
 	.dropdown-submenu > a:after{ margin-right:0}
-	.nav > li > a:hover{ background:@color1;}
+	.nav > li > a:hover{ background:@color1; color:@color3;}
 	ul{
 		min-height:100px;
 		margin-bottom:20px;
@@ -1784,7 +1790,7 @@ ul.yiiPager .last
 #lo_mas_top {
 
 	.span4{
-				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				// background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
 				padding-bottom:9px;
 				.margin_bottom;
 	}
@@ -1877,7 +1883,7 @@ img[alt="Loading"]{
 		height: 460px;
 	}
 	.span4{
-				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				// background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
 				padding-bottom:9px;
 }
 	.item{
@@ -1943,6 +1949,92 @@ img[alt="Loading"]{
 		
 		}
 	}
+	
+/*-------------------------------
+	 PROVSIONAL DEL CARROUSEL PARA REMOVER CUANDO TERMINEN EL VIDEO
+	 ------------------------ */
+	 
+	#carousel_looks_recomendados_provisional {
+	
+	.items{
+			
+	}
+	#list-auth-items{
+		
+	}
+	.span4{
+				// background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				padding-bottom:9px;
+				box-shadow: 0 0 2px  #ddd;
+				-moz-box-shadow: 0 0 2px  #ddd;
+				-webkit-box-shadow: 0 0 2px  #ddd;
+				border-top:1px solid #ddd;
+}
+	.item{
+		
+		
+			
+			&:hover{
+				.box_shadow_personaling;
+				
+				}
+			.share_like{
+				position:absolute;
+				top:1em;
+				right:1em;
+				opacity:.7;
+				.btn-link{ 
+					padding:0; 
+					margin:0;
+					color:#666;}
+				.btn-link-active .entypo{color:@color1 !important;}
+				}
+			.share_like:hover{
+				opacity:1;
+				.btn-link{ .color1}
+			}
+			.label{
+				display:none; /* Estilo provisional hasta que se activen las promociones */
+				position:absolute;
+				top:.5em;
+				background-color:@color1;
+				.border_radius(@radius:0);
+				left:0;}
+			.vcard {
+				background: none repeat scroll 0 0 #EEEEEE;
+    			border-top: 1px solid #DDDDDD;
+				.muted{ margin-top:.8em;}
+				.muted, h5{ 
+						font-size:.8em;
+						line-height:1.3em;
+						}
+				.avatar {
+						
+							width:40px;
+							height:40px;
+							margin:.4em 0 .5em .5em;
+						
+					}
+				.precio{
+					text-align: right;
+					font-weight: 300;
+					font-size: 1.8em;
+					display: block;
+					margin-right:.5em;
+					margin-top: .6em;
+					color: #555;
+					small{ font-size:.6em;}
+					 }
+				
+			}
+		
+		}
+	}
+	
+	/*-------------------------------
+	 PROVSIONAL DEL CARROUSEL PARA REMOVER CUANDO TERMINEN EL VIDEO
+	 ------------------------ */
+
 /*------------ TU PERSONAL SHOPPER ON ----------*/
 
 
@@ -2049,8 +2141,9 @@ img[alt="Loading"]{
 	.canvas{
 		background:#fff;
 		.ui-draggable:hover{
+				border: 1px dashed #999;
 				.rotar, .eliminar {display:block;}
-				
+				 
 				}
 		.ui-draggable{
 				.eliminar{

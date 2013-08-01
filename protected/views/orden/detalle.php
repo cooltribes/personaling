@@ -268,9 +268,11 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="adr">
             	<?php
             	$direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+				$ciudad_envio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+				$provincia_envio = Provincia::model()->findByPk($direccionEnvio->provincia_id);
             	?>
               <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
-              <span class="locality"><?php // echo $direccionEnvio->ciudad ?>, <?php //echo $direccionEnvio->estado; ?>.</span>
+              <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
@@ -339,6 +341,22 @@ $usuario = User::model()->findByPk($orden->user_id);
           	<p>
             <input name="" id="tracking" type="text" placeholder="Numero de Tracking">
             <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
+            Tipo de guía: 
+            <?php
+            switch ($orden->tipo_guia) {
+                case 0:
+                    echo '0,5 Kg.';
+                    break;
+                case 1:
+                    echo '5 Kg.';
+                    break;
+				case 2:
+                    echo '10 Kg.';
+                    break;
+                default:
+                    break;
+            }
+            ?>
         </div>
         <?php
 			}
@@ -475,10 +493,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Nombre de la prenda</th>
           <th scope="col">Cant. en Existencia</th>
           <th scope="col">Cant. en Pedido</th>
-          <th scope="col">Precio Unitario</th>
-          <th scope="col">Subtotal</th>
-          <th scope="col">Descuento</th>
-          <th scope="col">Impuesto</th>
+          <th scope="col">Precio</th>
           <th scope="col">Accion</th>
         </tr>
         <?php
@@ -498,8 +513,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 						echo("<td>".$lookpedido->title."</td>"); // nombre
 						echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-						echo("<td>   </td>"); // precio unitario
-						
+						echo("<td>".$prod->precio."</td>"); // precio 
+						/*
 						setlocale(LC_MONETARY, 've_VE');
 						//$a = money_format('%i', $precio->precioVenta);
 						//$c = money_format('%i', $precio->ahorro);
@@ -513,6 +528,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 						
 						$e = $iva * $prod->cantidad;
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+						*/
 						
 						echo("
 						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
@@ -527,10 +543,6 @@ $usuario = User::model()->findByPk($orden->user_id);
 						
 						echo("</tr>");	
 					
-					
-					
-					
-					
 				}
 				else // individual
 				{
@@ -542,7 +554,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 					echo("<td>".$indiv->nombre."</td>"); // nombre
 					echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 					echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-					
+					echo("<td>".$prod->precio."</td>"); // precio
+					/*
 					setlocale(LC_MONETARY, 've_VE');
 					$a = money_format('%i', $precio->precioVenta);
 					$c = money_format('%i', $precio->ahorro);
@@ -559,6 +572,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 					
 					$e = $iva * $prod->cantidad;
 					echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
+					*/
 					
 					echo("
 						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 

@@ -297,6 +297,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                           //$envio = Yii::app()->getSession()->get('envio');
                           $envio = 0;
 						  $peso_total = 0;
+						  $tipo_guia = 0;
 						  $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 						  
 						  //busco productos individuales en la bolsa
@@ -331,6 +332,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							if($envio > 163.52){
 								$envio = 163.52;
 							}
+							$tipo_guia = 1;
 						}else{
 							$peso_adicional = ceil($peso_total-5);
 							$direccion = Direccion::model()->findByPk($idDireccion);
@@ -339,6 +341,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							if($envio > 327.04){
 								$envio = 327.04;
 							}
+							$tipo_guia = 2;
 						}
 						  
                         $i=0;
@@ -371,12 +374,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         Yii::app()->getSession()->add('envio',$envio);
                         Yii::app()->getSession()->add('iva',$iva);
                         Yii::app()->getSession()->add('total',$t);
-						Yii::app()->getSession()->add('seguro',$seguro);  
+						Yii::app()->getSession()->add('seguro',$seguro);
+						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
 
                         echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   </td>
               </tr>
+              <?php echo 'tipo guia: '.$tipo_guia; ?>
               <tr>
                 <th class="text_align_left">Envío:</th>
                 <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>

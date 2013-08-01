@@ -20,7 +20,7 @@
 
 </head>
 
-<body>
+<body class="<?php echo $this->getBodyClasses(); ?>">
   <div id="navegacion_principal">
 <?php  
 

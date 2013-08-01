@@ -547,12 +547,14 @@ public function actionCategorias(){
 				$width = explode(',',$_POST['width']);
 				$height = explode(',',$_POST['height']);
 				$angle = explode(',',$_POST['angle']);
+				$zindex = explode(',',$_POST['index']);
 				// para los valores de los adornos
 				$left_a = explode(',',$_POST['left_a']);
 				$top_a = explode(',',$_POST['top_a']);
 				$width_a = explode(',',$_POST['width_a']);
 				$height_a = explode(',',$_POST['height_a']);
 				$angle_a = explode(',',$_POST['angle_a']);
+				$zindex_a = explode(',',$_POST['index_a']);
 
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
 						
@@ -568,6 +570,7 @@ public function actionCategorias(){
 						$lookhasproducto->width = $width[$index];
 						$lookhasproducto->height = $height[$index];
 						$lookhasproducto->angle = $angle[$index];
+						$lookhasproducto->index = $zindex[$index];
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}
@@ -586,6 +589,8 @@ public function actionCategorias(){
 						$lookhasadorno->top = $top_a[$index];
 						$lookhasadorno->width = $width_a[$index];
 						$lookhasadorno->height = $height_a[$index];
+						$lookhasadorno->angle = $angle_a[$index];
+						$lookhasadorno->index = $zindex_a[$index];
 						
 					if (!$lookhasadorno->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');
@@ -600,11 +605,26 @@ public function actionCategorias(){
 				} else {
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha guardado."));	
-					$this->render('create',array(
-							'model'=>$model,
-							'categorias'=>$categorias,
-						)
-					);
+					
+					$user = User::model()->findByPk(Yii::app()->user->id);
+					$criteria=new CDbCriteria;
+					$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
+					if($user->superuser != '1'){
+						$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+					}
+					
+					$models = Campana::model()->findAll($criteria);
+					
+					if(sizeof($models) > 0){
+				        $this->render('create',array(
+								'model'=>$model,
+								'categorias'=>$categorias,
+								'models'=>$models,
+							)
+						);
+					}else{
+						$this->render('no_campanas');
+					}
 				}			
 			} else{
 					Yii::trace('create a look, Error:'.print_r($model->getErrors(), true), 'registro');

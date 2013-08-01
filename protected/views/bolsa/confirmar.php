@@ -51,6 +51,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
   <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
   <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
+  <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
   <input type="hidden" id="idCard" value="0" /> 
 
   <div class="row margin_top_medium">
@@ -58,6 +59,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <!-- Direcciones ON -->
       <div class="well">
         <h4 class="braker_bottom"> Dirección de Envio</h4>
+        <?php echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
         if(isset($tipoPago)){
@@ -251,12 +253,13 @@ else
 		var total = $("#total").attr("value");
 		var usar_balance = $("#usar_balance").attr("value");
 		var seguro = $("#seguro").attr("value");
+		var tipo_guia = $("#tipo_guia").attr("value");
 
  		$.ajax({
 	        type: "post",
 	        dataType: 'json',
 	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance, 'seguro':seguro}, 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance, 'seguro':seguro, 'tipo_guia':tipo_guia}, 
 	        success: function (data) {
 				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
 				if(data.status=="ok")
@@ -279,6 +282,7 @@ else
 		var total = $("#total").attr("value");
 		var seguro = $("#seguro").attr("value");
 		var usar_balance = $("#usar_balance").attr("value");
+		var tipo_guia = $("#tipo_guia").attr("value");
 		
 		/* lo de la tarjeta */
 		
@@ -322,7 +326,7 @@ else
 					        url: "comprar", // action 
 					        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
 					        		'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
-					        		'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro
+					        		'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro,'tipo_guia':tipo_guia
 					        		}, 
 					        success: function (data) {
 								if(data.status=="ok")
@@ -409,6 +413,7 @@ else
 		var iva = $("#iva").attr("value");
 		var total = $("#total").attr("value");
 		var seguro = $("#seguro").attr("value");
+		var tipo_guia = $("#tipo_guia").attr("value");
 
  		 if (json.collection_status=='approved'){
     alert ('Pago acreditado');
@@ -418,7 +423,7 @@ else
 	        type: "post",
 	        dataType: 'json',
 	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id,'seguro':seguro}, 
+	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id,'seguro':seguro,'tipo_guia':tipo_guia}, 
 	        success: function (data) {
 				
 				if(data.status=="ok")

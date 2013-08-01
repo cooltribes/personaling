@@ -5,18 +5,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //$usuario = Yii::app()->user->id;
 
 //$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
-
-
-$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-
-// bolsa tiene pro-talla-color
-$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
-                  $precios = array();
-				  $descuentos = array();
-				  $cantidades = array();
-				  $total_look = 0;
-				  $total_productos_look = 0;
+$num = 0;
+if($bolsa){
+	$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
+	$num = Yii::app()->db->createCommand($sql)->queryScalar();
+	
+	// bolsa tiene pro-talla-color
+	$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
+	                  $precios = array();
+					  $descuentos = array();
+					  $cantidades = array();
+					  $total_look = 0;
+					  $total_productos_look = 0;
+				  
+}
 ?>
 <?php 
   $this->breadcrumbs=array(
@@ -32,6 +34,9 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 <?php $this->renderPartial('_menu', array('model'=>$model, 'activo'=>7)); ?>
 <!-- SUBMENU OFF -->
 <div class="row margin_top">
+	<?php
+	if($bolsa){
+	?>
   <div class="span9">
     <div class="bg_color3   margin_bottom_small padding_small box_1">
       <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
@@ -316,7 +321,12 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
       </div>
     </div>
   </div>
-  <?php //} ?>
+  <?php }else{ //fin if bolsa ?>
+  	<div class="span12">
+    <div class="bg_color3   margin_bottom_small padding_small box_1">
+    	El usuario no tiene productos en el carrito de compra.
+    </div></div>
+  	<?php } ?>
 </div>
 </div>
 <!-- /container -->

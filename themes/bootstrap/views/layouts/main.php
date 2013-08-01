@@ -204,28 +204,28 @@ if(!Yii::app()->user->isGuest){
   $(document).on('ready',HandlerReady);
 
   function HandlerReady () {
-    //Boton Notificaciones
-    $('#btn-notifications').popover(
-    {
-      title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
-      content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
-      placement: 'bottom',
-      trigger: 'manual',
-      html: true,
-    });
+    // //Boton Notificaciones
+    // $('#btn-notifications').popover(
+    // {
+    //   title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
+    //   content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
+    //   placement: 'bottom',
+    //   trigger: 'manual',
+    //   html: true,
+    // });
 
-    $('#btn-notifications').hoverIntent(function(){
-        $(this).popover('show');
-        $(this).addClass('bg_color10');
-        $('.popover').addClass('active_two');
-      },
-      function(){
-        $('.active_two').hover(function(){},function(){
-          $('#btn-notifications').popover('hide');
-          $('#btn-notifications').removeClass('bg_color10');
-          });        
-      }
-    );
+    // $('#btn-notifications').hoverIntent(function(){
+    //     $(this).popover('show');
+    //     $(this).addClass('bg_color10');
+    //     $('.popover').addClass('active_two');
+    //   },
+    //   function(){
+    //     $('.active_two').hover(function(){},function(){
+    //       $('#btn-notifications').popover('hide');
+    //       $('#btn-notifications').removeClass('bg_color10');
+    //       });        
+    //   }
+    // );
 
     
     var listaCarrito;
@@ -349,11 +349,13 @@ if(!Yii::app()->user->isGuest){
       },
       function(){
         // $('#btn-shoppingcart').removeClass('bg_color10');
-        $('.active_one').mouseleave(function(){
-              console.log("Salió");
-              $('#btn-shoppingcart').popover('hide');
-              $('#btn-shoppingcart').removeClass('bg_color10');
-            });        
+        // $('.active_one').mouseleave(function(){
+        //       console.log("Salió");
+              // $('#btn-shoppingcart').popover('hide');
+              console.log($('#btn-shoppingcart').next());
+        //       $('#btn-shoppingcart').removeClass('bg_color10');
+        //     });        
+
         }
 
 

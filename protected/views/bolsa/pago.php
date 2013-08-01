@@ -375,7 +375,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                         echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
-                  Bs.</td>
+                  </td>
               </tr>
               <tr>
                 <th class="text_align_left">Envío:</th>

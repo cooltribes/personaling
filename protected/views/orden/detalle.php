@@ -168,7 +168,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
           	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						
-			if($orden->estado != 5){
+			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
 			
 			echo("
 	          	<div id='pago' class='well well-small margin_top well_personaling_small'>

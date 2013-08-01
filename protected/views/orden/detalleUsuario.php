@@ -123,7 +123,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 			$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
           	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 			
-			if($orden->estado != 5){
+			if($orden->estado != 1 && $orden->estado != 5){
 			
 			echo("
 	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
@@ -385,10 +385,6 @@ $usuario = User::model()->findByPk($orden->user_id);
         <tr>
           <th scope="col">Nombre de la prenda</th>
           <th scope="col">Cant.</th>
-          <th scope="col">P/U</th>
-          <th scope="col">Subtotal</th>
-		  <th scope="col">Impuesto</th>
-          <th scope="col">Descuento</th>
           <th scope="col">Total</th>
         </tr>
         
@@ -409,8 +405,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 						echo("<tr>");
 						echo("<td>".$lookpedido->title."</td>"); // nombre
 						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-						echo("<td></td>"); // p/u
+						echo("<td>".$prod->precio."</td>"); // precio 
 						
+						/*
 						setlocale(LC_MONETARY, 've_VE');
 						//$a = money_format('%i', $precio->precioVenta);
 						//$c = money_format('%i', $precio->ahorro);
@@ -427,6 +424,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 						$f = $b + $e;
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($f)."</td>"); //total
+						*/
 						
 						echo("</tr>");	
 
@@ -440,7 +438,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 					echo("<tr>");
 					echo("<td>".$indiv->nombre."</td>"); // nombre
 					echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-					echo("<td></td>"); // p/u
+					echo("<td>".$prod->precio."</td>"); // precio
+					/*
 					
 					setlocale(LC_MONETARY, 've_VE');
 					$a = money_format('%i', $precio->precioVenta);
@@ -459,6 +458,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 					$f = $des * $prod->cantidad;
 					echo("<td>".Yii::app()->numberFormatter->formatDecimal($f)."</td>"); //total
+					*/
 					
 					echo("</tr>");				
 				}				

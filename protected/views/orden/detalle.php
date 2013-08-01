@@ -475,10 +475,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Nombre de la prenda</th>
           <th scope="col">Cant. en Existencia</th>
           <th scope="col">Cant. en Pedido</th>
-          <th scope="col">Precio Unitario</th>
-          <th scope="col">Subtotal</th>
-          <th scope="col">Descuento</th>
-          <th scope="col">Impuesto</th>
+          <th scope="col">Precio</th>
           <th scope="col">Accion</th>
         </tr>
         <?php
@@ -498,8 +495,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 						echo("<td>".$lookpedido->title."</td>"); // nombre
 						echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-						echo("<td>   </td>"); // precio unitario
-						
+						echo("<td>".$prod->precio."</td>"); // precio 
+						/*
 						setlocale(LC_MONETARY, 've_VE');
 						//$a = money_format('%i', $precio->precioVenta);
 						//$c = money_format('%i', $precio->ahorro);
@@ -513,6 +510,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 						
 						$e = $iva * $prod->cantidad;
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+						*/
 						
 						echo("
 						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
@@ -527,10 +525,6 @@ $usuario = User::model()->findByPk($orden->user_id);
 						
 						echo("</tr>");	
 					
-					
-					
-					
-					
 				}
 				else // individual
 				{
@@ -542,7 +536,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 					echo("<td>".$indiv->nombre."</td>"); // nombre
 					echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 					echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-					
+					echo("<td>".$prod->precio."</td>"); // precio
+					/*
 					setlocale(LC_MONETARY, 've_VE');
 					$a = money_format('%i', $precio->precioVenta);
 					$c = money_format('%i', $precio->ahorro);
@@ -559,6 +554,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 					
 					$e = $iva * $prod->cantidad;
 					echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
+					*/
 					
 					echo("
 						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 

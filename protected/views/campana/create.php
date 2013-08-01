@@ -136,7 +136,7 @@ $this->breadcrumbs=array(
 			if(validar_fecha(day, month, year)){
 				$('#Campana_ventas_fin').val(year+'-'+month+'-'+day+' 23:59:59');
 			}else{
-				$('#ventas_fin_day').val('-1');
+				$('#ventas_fin_day').val('-1'); 
 				$('#ventas_fin_month').val('-1');
 				$('#ventas_fin_year').val('-1');
 			}

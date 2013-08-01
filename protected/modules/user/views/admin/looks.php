@@ -1,3 +1,8 @@
+<?php 
+  $this->breadcrumbs=array(
+  'Usuarios'=>array('admin'),
+  'Editar',);
+?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Usuario</small></h1>
@@ -6,7 +11,7 @@
   <?php $this->renderPartial('_menu', array('model'=>$model, 'activo'=>8)); ?>
   <!-- SUBMENU OFF -->
   <div class="row margin_top">
-    <div class="span9">
+    <div class="span12">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>

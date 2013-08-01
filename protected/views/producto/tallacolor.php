@@ -204,7 +204,8 @@ $this->breadcrumbs=array(
                             'dataType' => 'json',  
                             'data' => 'js: function (term,page) {  
                                         return {  
-                                        term: term, // Add all the query string elements here seperated by ,  
+                                        //term: term, // Add all the query string elements here seperated by ,  
+                                        search: term,
                                         page_limit: 10,  
                                                };  
                                                              }',        

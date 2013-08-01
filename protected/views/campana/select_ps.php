@@ -61,7 +61,7 @@ $this->breadcrumbs=array(
 			  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
 			  <tbody>
 			    <tr>
-			      <th scope="col"><input name="Check" type="checkbox" value="Check"></th>
+			      <th scope="col"><input name="Check" type="checkbox" id="checkbox_select_ps" value="Check"></th>
                   <th colspan="2" scope="col">Personal shoppers</th>
                   <th colspan="1" scope="col">E-mail</th>
                   <th colspan="1" scope="col">Looks vendidos</th>
@@ -176,6 +176,14 @@ $this->breadcrumbs=array(
 <?php $this->endWidget(); ?>
 
 <script>
+	$(document).ready(function(){
+		if (!$('input.check_ps[type=checkbox]:not(:checked)').length){
+		 	$('#checkbox_select_ps').attr('checked','checked');
+		}else{
+			$('#checkbox_select_ps').removeAttr('checked');
+		}
+	});
+
 	$('.check_ps').click(function(e){
 		var path = location.pathname.split('/');
 		if($(this).is(':checked')){
@@ -194,6 +202,36 @@ $this->breadcrumbs=array(
 		      data: { id : $(this).val() },
 		      success: function(){
 		          $(e.target).closest('tr').removeClass('success');
+		      },
+		    });
+	   	}
+	   	if (!$('input.check_ps[type=checkbox]:not(:checked)').length){
+		 	$('#checkbox_select_ps').attr('checked','checked');
+		}else{
+			$('#checkbox_select_ps').removeAttr('checked');
+		}
+	});
+	
+	$('#checkbox_select_ps').click(function(e){
+		var path = location.pathname.split('/');
+		if($(this).is(':checked')){
+			$.ajax({
+		      url: "/"+path[1]+"/campana/inviteAll",
+		      type: "post",
+		      data: { id : $(this).val() },
+		      success: function(){
+		           $('tr').addClass('success');
+		           $('.check_ps').attr('checked','checked');
+		      },
+		    });
+	   	}else{
+	   		$.ajax({
+		      url: "/"+path[1]+"/campana/uninviteAll",
+		      type: "post",
+		      data: { id : $(this).val() },
+		      success: function(){
+		          $('tr').removeClass('success');
+		          $('.check_ps').removeAttr('checked');
 		      },
 		    });
 	   	}

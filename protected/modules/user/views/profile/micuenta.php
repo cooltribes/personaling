@@ -178,7 +178,7 @@ $looks_recomendados = $look->match($model);
             <h2 class="braker_bottom"> Libreta de Direcciones </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Gestionar direcciones de Envíos y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
-              <li><a href="#" title="Agregar una nueva dirección">Añadir nueva dirección (LINK MUERTO)</a></li>
+              <li><a href="<?php echo Yii::app()->request->baseUrl ?>/user/profile/crearDireccion" title="Agregar una nueva dirección">Añadir nueva dirección</a></li>
             </ul>
           </div>
           <div class="span4">

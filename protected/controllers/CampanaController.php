@@ -11,7 +11,7 @@ class CampanaController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS'),
+				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS', 'inviteAll', 'uninviteAll'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -201,6 +201,27 @@ class CampanaController extends Controller
 			}
 		}
 	}
+	
+	public function actionInviteAll(){
+		//if(isset($_POST['id'])){
+		$personal_shoppers = User::model()->findAllByAttributes(array('personal_shopper'=>1));
+		foreach ($personal_shoppers as $ps) {
+			$campana_ps = CampanaHasPersonalShopper::model()->findByAttributes(array('campana_id'=>Yii::app()->session['campana_id'], 'user_id'=>$ps->id));
+			if(!$campana_ps){
+				$campana_ps = new CampanaHasPersonalShopper;
+				$campana_ps->campana_id = Yii::app()->session['campana_id'];
+				$campana_ps->user_id = $ps->id;
+				$campana_ps->fecha_invitacion = date('Y-m-d H:i:s');
+				if($campana_ps->save()){
+					echo 'saved';
+				}else{
+					print_r($campana_ps->getErrors());
+				}
+			}
+		}
+		//echo 'Campaña: '.Yii::app()->session['campana_id'].' - PS: '.sizeof($personal_shoppers);
+		//}
+	}
 
 	public function actionUninvite(){
 		if(isset($_POST['id'])){
@@ -209,6 +230,17 @@ class CampanaController extends Controller
 				$campana_ps->delete();
 			}
 		}
+	}
+	
+	public function actionUninviteAll(){
+		//if(isset($_POST['id'])){
+			$campanas_ps = CampanaHasPersonalShopper::model()->findAllByAttributes(array('campana_id'=>Yii::app()->session['campana_id']));
+			if(sizeof($campanas_ps) > 0){
+				foreach ($campanas_ps as $campana) {
+					$campana->delete();
+				}
+			}
+		//}
 	}
 	
 	public function actionView(){

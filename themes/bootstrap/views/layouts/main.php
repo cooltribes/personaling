@@ -217,9 +217,10 @@ if(!Yii::app()->user->isGuest){
     $('#btn-notifications').hoverIntent(function(){
         $(this).popover('show');
         $(this).addClass('bg_color10');
+        $('.popover').addClass('active_two');
       },
       function(){
-        $('.popover').hover(function(){},function(){
+        $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
           $('#btn-notifications').removeClass('bg_color10');
           });        
@@ -344,15 +345,18 @@ if(!Yii::app()->user->isGuest){
 
         $(this).popover('show');
         $(this).addClass('bg_color10');
+        $('.popover').addClass('active_one');
       },
       function(){
         // $('#btn-shoppingcart').removeClass('bg_color10');
-
-        $('.popover').hover(function(){},function(){
+        $('.active_one').mouseleave(function(){
+              console.log("Salió");
               $('#btn-shoppingcart').popover('hide');
               $('#btn-shoppingcart').removeClass('bg_color10');
             });        
         }
+
+
     );
     $('#dropdownUser').hoverIntent(function(){
         $(this).addClass('open');

@@ -319,7 +319,7 @@ h1,h2,h3,h4{font-weight:300}
 strong, th{ color:#555;}
 
 /*------------ RESETS PARA BOOTSTRAP ON --------------*/
-.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a, .navbar-inner, .table-bordered, .popover{
+.btn, .btn-group > .btn:first-child, .btn-group > .btn:last-child, .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a, .navbar-inner, .table-bordered, .popover, input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input, .dropdown-menu, .thumbnail{
 		.border_radius(@radius:0);
 	}
 
@@ -439,6 +439,12 @@ src: url('../fonts/entypo.woff'),
 	 		background-color: lighten(@lila,3%);
 	 		color: darken(@lila,50%);
 	 } 
+	 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner{ 
+	 	box-shadow: none;
+	 	-moz-box-shadow: none;
+	 	-webkit-box-shadow: none;
+	 	-ms-box-shadow: none;
+	 }
 	 .popover.bottom .arrow{border-bottom-color: lighten(@lila,15%);}
 	 .popover{
 	 	
@@ -1282,7 +1288,7 @@ src: url('../fonts/entypo.woff'),
 		
 		.producto{
 			.transition_all;
-			background-color:#eee;
+			background-color:#f7f7f7;
 			box-shadow:0 0 0 1px rgba(0, 0, 0, 0.1);
 			-moz-box-shadow:0 0 0 1px rgba(0, 0, 0, 0.1);
 			-webkit-box-shadow:0 0 0 1px rgba(0, 0, 0, 0.1);
@@ -1347,7 +1353,7 @@ src: url('../fonts/entypo.woff'),
 		img{
 			margin-bottom:.2em;
 			max-height:270px;
-			max-width:270px;
+			max-width:100%;
 			}
 		h3{
 			.CAPS;
@@ -1361,6 +1367,7 @@ src: url('../fonts/entypo.woff'),
 			position:relative;
 			margin-top:0;
 			padding-top:.3em;
+			font-weight: 500;
 			a{
 					bottom: 0;
 					display: block;
@@ -1372,7 +1379,7 @@ src: url('../fonts/entypo.woff'),
 			
 			}
 		span.precio{
-			color:@color4;
+			color:lighten(@color4,50%);
 			display:block;
 			margin-bottom:.1em;
 			
@@ -1783,7 +1790,7 @@ ul.yiiPager .last
 #lo_mas_top {
 
 	.span4{
-				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				// background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
 				padding-bottom:9px;
 				.margin_bottom;
 	}
@@ -1876,7 +1883,7 @@ img[alt="Loading"]{
 		height: 460px;
 	}
 	.span4{
-				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				// background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
 				padding-bottom:9px;
 }
 	.item{
@@ -1956,7 +1963,7 @@ img[alt="Loading"]{
 		
 	}
 	.span4{
-				background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
+				// background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
 				padding-bottom:9px;
 				box-shadow: 0 0 2px  #ddd;
 				-moz-box-shadow: 0 0 2px  #ddd;
@@ -2134,8 +2141,9 @@ img[alt="Loading"]{
 	.canvas{
 		background:#fff;
 		.ui-draggable:hover{
+				border: 1px dashed #999;
 				.rotar, .eliminar {display:block;}
-				
+				 
 				}
 		.ui-draggable{
 				.eliminar{

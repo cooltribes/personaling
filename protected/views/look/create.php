@@ -86,7 +86,7 @@ function handleDrop(e) {
     	var dataVar = {'id':e.dataTransfer.getData('adorno_id')}
     }
     
-    $.ajax({
+    $.ajax({ 
 	  url: urlVar,
 	  data: dataVar
 	}).done(function( html ) {
@@ -125,12 +125,16 @@ function handleDrop(e) {
 		    			compara = 0;
 		    		else
 		    			compara = $(this).css('z-index');
-		    		if (compara > mayor)
+		    			
+		    		if (parseInt(compara) > parseInt(mayor))
 		    			mayor = compara;
 		    		
 		    	});
+		    	//alert(mayor);
+		    	//ui.helper.css('z-index',parseInt(mayor)+1); 
+		    	mayor++;
+		    	ui.helper.css('z-index',mayor);
 		    	
-		    	ui.helper.css('z-index',parseInt(mayor)+1); 
 		    }
 		   // stop: handleDragStop
 			});
@@ -305,13 +309,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				
 				
               ?>
-          <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="z-index: <?php echo $hasproducto->index; ?>; position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
+          <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="z-index: <?php echo $hasproducto->zindex; ?>; position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
             <?php
 					if ($producto->mainimage)
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
-					echo $image;
+					echo $image; 
 					//echo $hasproducto->width.'/'.$hasproducto->height;
 					?>
             <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
@@ -385,7 +389,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	        $adorno = Adorno::model()->findByPk($hasAd->adorno_id);
 				
 			?>
-          <div class="new ui-draggable" id="adorno<?php echo $adorno->id; ?>" style="z-index: <?php echo $hasAd->index; ?>; position: absolute; top: <?php echo $hasAd->top;?>px; left: <?php echo $hasAd->left;?>px;-webkit-transform: rotate(<?php echo $hasAd->angle; ?>deg);">
+          <div class="new ui-draggable" id="adorno<?php echo $adorno->id; ?>" style="z-index: <?php echo $hasAd->zindex; ?>; position: absolute; top: <?php echo $hasAd->top;?>px; left: <?php echo $hasAd->left;?>px;-webkit-transform: rotate(<?php echo $hasAd->angle; ?>deg);">
             <?php
 				$image = CHtml::image(Yii::app()->baseUrl.'/images/adorno/'.$adorno->path_image, $adorno->nombre, array("width" => $hasAd->width, "height" => $hasAd->height));				
 				echo $image;
@@ -407,7 +411,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		    			compara = 0;
 		    		else
 		    			compara = $(this).css('z-index');
-		    		if (compara > mayor)
+		    		if (parseInt(compara) > parseInt(mayor))
 		    			mayor = compara;
 		    		
 		    	});
@@ -799,6 +803,7 @@ function addPublicar(tipo)
 		
 		//count = 6;
 		//alert(productos_id);
+		//count = count + count_a;
 		if (count >= 3){
 			$("#form_productos").submit();
 		} else {

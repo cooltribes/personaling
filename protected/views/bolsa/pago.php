@@ -379,7 +379,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                         echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
-                  Bs.</td>
+                  </td>
               </tr>
               <?php echo 'tipo guia: '.$tipo_guia; ?>
               <tr>

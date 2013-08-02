@@ -40,4 +40,12 @@ class Controller extends CController
 	        echo '<meta name="robots" content="noindex">'.PHP_EOL;
 	    }
 	}
+
+	public function behaviors() {
+		return array(
+	              'BodyClassBehavior' => array( 
+	                     'class' => 'ext.BodyClassBehavior.BodyClassBehavior'
+	              ),
+		);
+	}	
 }

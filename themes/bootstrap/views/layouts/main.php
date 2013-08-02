@@ -11,13 +11,13 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/botones.css" rel="stylesheet">
 
 
-<?php //Yii::app()->less->register(); ?>
+<?php Yii::app()->less->register(); ?>
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" />
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" /> -->
 </head>
 
 <body >
@@ -205,27 +205,27 @@ if(!Yii::app()->user->isGuest){
 
   function HandlerReady () {
     // //Boton Notificaciones
-    // $('#btn-notifications').popover(
-    // {
-    //   title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
-    //   content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
-    //   placement: 'bottom',
-    //   trigger: 'manual',
-    //   html: true,
-    // });
+    $('#btn-notifications').popover(
+    {
+      title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
+      content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
+      placement: 'bottom',
+      trigger: 'manual',
+      html: true,
+    });
 
-    // $('#btn-notifications').hoverIntent(function(){
-    //     $(this).popover('show');
-    //     $(this).addClass('bg_color10');
-    //     $('.popover').addClass('active_two');
-    //   },
-    //   function(){
-    //     $('.active_two').hover(function(){},function(){
-    //       $('#btn-notifications').popover('hide');
-    //       $('#btn-notifications').removeClass('bg_color10');
-    //       });        
-    //   }
-    // );
+    $('#btn-notifications').hoverIntent(function(){
+        $(this).popover('show');
+        $(this).addClass('bg_color10');
+        $('.popover').addClass('active_two');
+      },
+      function(){
+        $('.active_two').hover(function(){},function(){
+          $('#btn-notifications').popover('hide');
+          $('#btn-notifications').removeClass('bg_color10');
+          });        
+      }
+    );
 
     
     var listaCarrito;
@@ -339,37 +339,32 @@ if(!Yii::app()->user->isGuest){
       content: textShoppingCart,
       placement: 'bottom',
       trigger: 'manual',
+      offset: 300
     });
 
-    $('#btn-shoppingcart').hoverIntent({
-      selector: 'div'
-    });
 
-    $('#btn-shoppingcart').hoverIntent(function(){
+    $('#btn-shoppingcart').hoverIntent(
+      function(){
 
         $(this).popover('show');
         $(this).addClass('bg_color10');
-        $('.popover').addClass('active_one');
+        $('.popover').addClass('active_one');        
+
       },
       function(){
-        $('#btn-shoppingcart').removeClass('bg_color10');
-        $('#btn-shoppingcart').popover('hide');
-          console.log("salio");
-        // $('#btn-shoppingcart').mouseleave(function(){  
+        console.debug("Saliste");
+        $('#btn-shoppingcart').mouseleave(function(){  
 
-        //   $('.active_one').mouseleave(function(){
-        //     $('#btn-shoppingcart').popover('hide');
-        //     $('#element').popover('toggle');
-        //   // console.log( $('#btn-shoppingcart').next() );
-        //     $('#btn-shoppingcart').removeClass('bg_color10');
-        //   }); 
+          
+            $('.active_one').mouseenter(function(){
+            
+            $('#btn-shoppingcart').removeClass('bg_color10');
+            $('#btn-shoppingcart').popover('show');
+        }); 
 
-        // });       
+      });       
+    });
 
-      }
-
-
-    );
     $('#dropdownUser').hoverIntent(function(){
         $(this).addClass('open');
     },function(){

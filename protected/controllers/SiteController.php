@@ -27,7 +27,7 @@ class SiteController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('personal','update'),
+				'actions'=>array('personal','update','notificaciones'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -159,6 +159,12 @@ class SiteController extends Controller
 					'user'=>$user,	
 				));
 	}	
+
+	// Esta es la pagina de Notificaciones/Mensajes
+	public function actionNotificaciones(){
+
+		$this->render('notificaciones');
+	}		
 	/**
 	 * This is the action to handle external exceptions.
 	 */
@@ -200,6 +206,7 @@ class SiteController extends Controller
 		
 		$this->render('contact',array('model'=>$model));
 	}
+
 
 	/**
 	 * Displays the login page

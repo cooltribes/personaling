@@ -371,7 +371,7 @@ $cont=0;
       </div>
 
   </div>
-</div>
+</div> </div>
 
 <!-- /container -->
 <?php 

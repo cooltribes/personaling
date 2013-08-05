@@ -45,13 +45,13 @@ $looks_recomendados = $look->match($model);
       
       	if($sum >= 0){
       	?>
-      		<li><?php echo Yii::app()->numberFormatter->formatDecimal($sum); ?> Bs. de Balance en tu Cuenta</li>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. de Balance en tu Cuenta</li>
       	<?php
       	}
       	else
       	{
       	?>
-      		<li><?php echo Yii::app()->numberFormatter->formatDecimal($sum); ?> Bs. que adeudas.</li>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. que adeudas.</li>
       	<?php
       	}
       	?>
@@ -115,7 +115,7 @@ $looks_recomendados = $look->match($model);
               <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
               <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
               <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li>
-           
+           	  <li><?php echo CHtml::link('Invita a tus amig@s',array('invitaciones'),array("title"=>"Invita a tus amig@s")); ?></li>
             </ul>
           </div>
         </div>

@@ -354,7 +354,7 @@ public function actionCategorias(){
 			
 			if($model->save())
             {
-                if (isset($_POST['categorias'])){
+                if (isset($_POST['categorias'])){ 
                 	CategoriaHasLook::model()->deleteAll(
     					"`look_id` = :look_id",
     					array(':look_id' => $model->id)
@@ -426,6 +426,11 @@ public function actionCategorias(){
 				$top = explode(',',$_POST['top']);
 				$width = explode(',',$_POST['width']);
 				$height = explode(',',$_POST['height']);
+				$angle = explode(',',$_POST['angle']);
+				$zindex = explode(',',$_POST['index']);
+								
+				$angle_a = explode(',',$_POST['angle_a']);
+				$zindex_a = explode(',',$_POST['index_a']);				
 				LookHasProducto::model()->deleteAllByAttributes(array('look_id'=>$model->id));
 				foreach(explode(',',$_POST['productos_id']) as $index => $producto_id){
 					/*	
@@ -441,10 +446,12 @@ public function actionCategorias(){
 					$lookhasproducto->producto_id = $producto_id;
 					$lookhasproducto->color_id = $colores_id[$index];
 					$lookhasproducto->cantidad = 1;
-					$lookhasproducto->left = $left[$index];
-					$lookhasproducto->top = $top[$index];
+					$lookhasproducto->left = round($left[$index]);
+					$lookhasproducto->top = round($top[$index]);
 					$lookhasproducto->width = $width[$index];
 					$lookhasproducto->height = $height[$index];
+					$lookhasproducto->angle = $angle[$index]; 
+					$lookhasproducto->zindex = $zindex[$index];
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					
@@ -458,14 +465,15 @@ public function actionCategorias(){
 						$lookhasadorno = new LookHasAdorno;
 						$lookhasadorno->look_id = $model->id;
 						$lookhasadorno->adorno_id = $adorno_id;
-						$lookhasadorno->left = $left_a[$index];
-						$lookhasadorno->top = $top_a[$index];
+						$lookhasadorno->left = round($left_a[$index]);
+						$lookhasadorno->top = round($top_a[$index]);
 						$lookhasadorno->width = $width_a[$index];
 						$lookhasadorno->height = $height_a[$index];
-						
+						$lookhasadorno->angle = $angle_a[$index];
+						$lookhasadorno->zindex = $zindex_a[$index];						
 					if (!$lookhasadorno->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');
-					
+					 
 					}
 				}
 					

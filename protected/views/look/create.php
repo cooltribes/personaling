@@ -311,7 +311,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               ?>
           <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="z-index: <?php echo $hasproducto->zindex; ?>; position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
             <?php
-					if ($producto->mainimage)
+					if ($producto->mainimage)  
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	

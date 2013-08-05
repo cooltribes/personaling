@@ -16,8 +16,12 @@ $prePub="";
 	
 	
 	$a = CHtml::image(Yii::app()->baseUrl . $ima->url, "Imagen ", array("width" => "270", "height" => "270",'class'=>''));
+	
+if(isset($segunda))
 	$b = CHtml::image($segunda->getUrl(array('type'=>'thumb')), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-						
+else 
+	$b='';
+					
 			echo("<td><article class='span3'><div class='producto'> 
 				<input id='idprod' value='".$producto->id."' type='hidden' ><a href='../../producto/detalle/".$producto->id."'>
 				".$a.$b." 

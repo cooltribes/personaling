@@ -15,6 +15,7 @@
  * @property integer $piel
  * @property string $created_on
  * @property integer $tipo
+ * @property integer $user_id
  * @property integer $status
  * @property integer $view_counter 
  *
@@ -71,7 +72,7 @@ class Look extends CActiveRecord
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado,status, campana_id, view_counter', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -115,6 +116,7 @@ class Look extends CActiveRecord
 			'tipo' => 'Tipo',
 			'campana_id' => 'Campaña',
 			'has_ocasiones' => 'Ocasiones',
+			'user_id'=>'Usuario',
 		);
 	}
 	public function matchOcaciones($user)
@@ -249,6 +251,28 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	
+	public function busqueda()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+ 
+		$criteria=new CDbCriteria;  
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('created_on',$this->created_on,true);
+		$criteria->compare('user_id',$this->user_id,true);
+		
+		$criteria->order = "created_on DESC";
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	
+	
 	/* looks destacados */
 	public function lookDestacados($limit = 6) 
 	{

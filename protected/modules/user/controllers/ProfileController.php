@@ -20,8 +20,8 @@ class ProfileController extends Controller
 			'profile'=>$model->profile,
 	    ));
 	}
-/**
- * Configuracion de Privacidad  
+/** 
+ * Configuracion de Privacidad 
  */
 	public function actionPrivacidad()
 	{
@@ -47,9 +47,21 @@ class ProfileController extends Controller
 	    ));
 	}
 	
+	
+	/*
+	 * 
+	 * */
 	public function actionPerfil()
 	{
-		$this->render('perfil_ps');
+		$model = User::model()->findByPk($_GET['id']);
+		
+		if($model->personal_shopper == 1){
+			$this->render('perfil_ps',array('model'=>$model,));
+		}
+		else{
+			// redireccion cuando intenten mostrar un perfil via url u ocurra un error		
+		}
+		
 	}
 	
 	

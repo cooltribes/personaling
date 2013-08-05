@@ -4,11 +4,13 @@
   </div>
   <div class="row">
     <aside class="span3">
-      <div class="card"><img src="images/hipster_girl.jpg" width="270" height="270" alt="hipster">
+      <div class="card">
+      	<?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); //imagen ?>	
+        
         <div class="card_content vcard">
-          <h4 class="fn">Nombre y Apellido</h4>
-          <p><strong>Bio</strong>: totallconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </p>
-          <p class="muted">Miembro desde: 03/03/2013</p>
+          <h4 class="fn"><?php echo $model->profile->first_name.' '.$model->profile->last_name; ?></h4>
+          <p><strong>Bio</strong>: <?php echo $model->profile->bio; ?> </p>
+          <p class="muted">Miembro desde: <?php echo date("d/m/Y",strtotime($model->create_at)); ?></p>
           <?php /*?>
 	   ----------------------------------------------------------------------------------------------
 		  NOTA:   Boton de Seguir al PS que sera implementado en futuras versiones	
@@ -19,10 +21,33 @@
       <hr/>
       <h5>Actividad</h5>
       <aside class="card">
-        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">01</span>
+      	<?php
+      		
+			$looktotales = Look::model()->countByAttributes(array('user_id'=>$model->id));
+      		
+			$looks = Look::model()->findAllByAttributes(array('user_id'=>$model->id));
+			$productos = Array();
+			
+			foreach($looks as $cada)
+			{
+				$xd = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$cada->id));
+				
+				foreach($xd as $prod)
+				{
+					if(in_array($prod->producto_id, $productos)){
+					}
+					else{
+						array_push($productos,$prod->producto_id);
+					}
+				}
+				
+			}
+			
+      	?>
+        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looktotales; ?></span>
           <p>Looks creados</p>
         </div>
-        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall">23</span>
+        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo count($productos); ?></span>
           <p>Productos usados</p>
         </div>
         <hr/>

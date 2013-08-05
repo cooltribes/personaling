@@ -11,13 +11,13 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/botones.css" rel="stylesheet">
 
 
-<?php Yii::app()->less->register(); ?>
+<?php //Yii::app()->less->register(); ?>
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
-<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" /> -->
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" />
 </head>
 
 <body >
@@ -118,7 +118,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
@@ -208,7 +208,7 @@ if(!Yii::app()->user->isGuest){
     $('#btn-notifications').popover(
     {
       title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
-      content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
+      content: '<a href="/site/site/notificaciones"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
       placement: 'bottom',
       trigger: 'manual',
       html: true,
@@ -352,18 +352,11 @@ if(!Yii::app()->user->isGuest){
 
       },
       function(){
-        console.debug("Saliste");
-        $('#btn-shoppingcart').mouseleave(function(){  
-
-          
-            $('.active_one').mouseenter(function(){
-            
-            $('#btn-shoppingcart').removeClass('bg_color10');
-            $('#btn-shoppingcart').popover('show');
-        }); 
-
-      });       
-    });
+        $('.active_one').hover(function(){},function(){
+          $('#btn-shoppingcart').popover('hide');
+          $('#btn-shoppingcart').removeClass('bg_color10');
+          });        
+      });
 
     $('#dropdownUser').hoverIntent(function(){
         $(this).addClass('open');

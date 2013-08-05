@@ -86,23 +86,53 @@
     </div>
     <div class="span3">
       <div class="padding_left"> 
-                  	 
-            			<?php $this->widget('bootstrap.widgets.TbButton', array(
-            				'buttonType'=>'button',
-						    'label'=>'Guardar',
-						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-						    'size'=>'large', // null, 'large', 'small' or 'mini'
-						    'block'=>'true',
-						    'htmlOptions'=>array('onclick'=>'js:$("#tutipo-form").submit();')
-						)); ?>
-						
-           
-      	
-        <ul class="nav nav-stacked nav-tabs margin_top">
-         <li><a href="#" title="Limpiar Formulario" id="limpiar"><i class="icon-repeat"></i> Limpiar Formulario</a></li>
-          <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>
-          <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
-        </ul>
+
+          <script> 
+            // Script para dejar el sidebar fijo Parte 1
+            function moveScroller() {
+              var move = function() {
+                var st = $(window).scrollTop();
+                var ot = $("#scroller-anchor").offset().top;
+                var s = $("#scroller");
+                if(st > ot) {
+                  s.css({
+                    position: "fixed",
+                    width: "400px",
+                    top: "70px"
+                  });
+                } else {
+                  if(st <= ot) {
+                    s.css({
+                      position: "relative",
+                      top: "0"
+                    });
+                  }
+                }
+              };
+              $(window).scroll(move);
+              move();
+          }
+        </script>
+        <div id="scroller-anchor"></div>
+        <div id="scroller">    
+                              	 
+                			<?php $this->widget('bootstrap.widgets.TbButton', array(
+                				'buttonType'=>'button',
+    						    'label'=>'Guardar',
+    						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+    						    'size'=>'large', // null, 'large', 'small' or 'mini'
+    						    'block'=>'true',
+    						    'htmlOptions'=>array('onclick'=>'js:$("#tutipo-form").submit();')
+    						)); ?>
+    						
+               
+          	
+            <ul class="nav nav-stacked nav-tabs margin_top">
+              <li><a href="#" title="Limpiar Formulario" id="limpiar"><i class="icon-repeat"></i> Limpiar Formulario</a></li>
+              <li><a href="#" title="Guardar"><i class="icon-envelope"></i> Enviar mensaje</a></li>
+              <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
+            </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -114,6 +144,9 @@
         this.reset();
       });
     });
+    $(function() {
+        moveScroller();
+    });     
 
 </script>
 <!-- /container -->

@@ -791,7 +791,7 @@ function addPublicar(tipo)
 		$("#angle").val(angle.substring(0, angle.length-1));
 		$("#index").val(index.substring(0, index.length-1));
 		$("#tipo").val(tipo);
-		
+		 
 		// ahora los de los adornos
 		$("#adornos_id").val(adornos_id);
 		$("#left_a").val(left_a.substring(0, left_a.length-1));

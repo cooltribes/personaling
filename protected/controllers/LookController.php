@@ -137,6 +137,7 @@ class LookController extends Controller
 					$imagenes[$i]->width = $lookhasproducto->width;
 					$imagenes[$i]->height = $lookhasproducto->height;
 					$imagenes[$i]->angle = $lookhasproducto->angle;
+					$imagenes[$i]->zindex = $lookhasproducto->zindex;
 			} 
 			$i++;
 		 }	
@@ -150,19 +151,26 @@ class LookController extends Controller
 					$imagenes[$i]->left = $lookhasadorno->left;
 					$imagenes[$i]->width = $lookhasadorno->width;
 					$imagenes[$i]->height = $lookhasadorno->height;
-					$imagenes[$i]->angle = $lookhasproducto->angle;
+					$imagenes[$i]->angle = $lookhasadorno->angle;
+					$imagenes[$i]->zindex = $lookhasadorno->zindex;
 			} 
 
 			$i++;
 		 }	
-
+		
+		function sortByIndex($a, $b) {
+		    return $a->zindex - $b->zindex;
+		}
+		
+		usort($imagenes, 'sortByIndex');
+		
 		$canvas = imagecreatetruecolor($w, $h);
 		$white = imagecolorallocate($canvas, 255, 255, 255);
 		imagefill($canvas, 0, 0, $white);
 		$inicio_x = 0;
 		foreach($imagenes as $image){
 			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
-			 switch($ext) {
+			 switch($ext) { 
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
 			          break;
@@ -182,7 +190,7 @@ class LookController extends Controller
     		imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
 			if ($image->angle){
 					
-				$img = imagerotate($img,$image->angle,$pngTransparency);
+				$img = imagerotate($img,$image->angle*(-1),$pngTransparency);
 			}
 			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
 		}
@@ -575,7 +583,7 @@ public function actionCategorias(){
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					}
 				}
-				
+				 
 				/* adornos */
 				foreach(explode(',',$_POST['adornos_id']) as $index => $adorno_id){
 						
@@ -585,8 +593,8 @@ public function actionCategorias(){
 						$lookhasadorno = new LookHasAdorno;
 						$lookhasadorno->look_id = $model->id;
 						$lookhasadorno->adorno_id = $adorno_id;
-						$lookhasadorno->left = $left_a[$index];
-						$lookhasadorno->top = $top_a[$index];
+						$lookhasadorno->left = round($left_a[$index]);
+						$lookhasadorno->top = round($top_a[$index]);
 						$lookhasadorno->width = $width_a[$index];
 						$lookhasadorno->height = $height_a[$index];
 						$lookhasadorno->angle = $angle_a[$index];

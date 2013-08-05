@@ -11,16 +11,16 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/botones.css" rel="stylesheet">
 
 
-<?php Yii::app()->less->register(); ?>
+<?php //Yii::app()->less->register(); ?>
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
-
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" />
 </head>
 
-<body class="<?php echo $this->getBodyClasses(); ?>">
+<body >
   <div id="navegacion_principal">
 <?php  
 
@@ -118,7 +118,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
@@ -204,11 +204,11 @@ if(!Yii::app()->user->isGuest){
   $(document).on('ready',HandlerReady);
 
   function HandlerReady () {
-    //Boton Notificaciones
+    // //Boton Notificaciones
     $('#btn-notifications').popover(
     {
       title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
-      content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
+      content: '<a href="/site/site/notificaciones"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
       placement: 'bottom',
       trigger: 'manual',
       html: true,
@@ -339,25 +339,25 @@ if(!Yii::app()->user->isGuest){
       content: textShoppingCart,
       placement: 'bottom',
       trigger: 'manual',
+      offset: 300
     });
 
-    $('#btn-shoppingcart').hoverIntent(function(){
+
+    $('#btn-shoppingcart').hoverIntent(
+      function(){
 
         $(this).popover('show');
         $(this).addClass('bg_color10');
-        $('.popover').addClass('active_one');
+        $('.popover').addClass('active_one');        
+
       },
       function(){
-        // $('#btn-shoppingcart').removeClass('bg_color10');
-        $('.active_one').mouseleave(function(){
-              console.log("Salió");
-              $('#btn-shoppingcart').popover('hide');
-              $('#btn-shoppingcart').removeClass('bg_color10');
-            });        
-        }
+        $('.active_one').hover(function(){},function(){
+          $('#btn-shoppingcart').popover('hide');
+          $('#btn-shoppingcart').removeClass('bg_color10');
+          });        
+      });
 
-
-    );
     $('#dropdownUser').hoverIntent(function(){
         $(this).addClass('open');
     },function(){

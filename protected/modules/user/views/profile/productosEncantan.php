@@ -21,9 +21,37 @@
 	?>
   </div>
 </div>
+
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+<?php $this->endWidget(); ?>
+
 <!-- /container --> 
 
 <script>
+
+$(document).ready(function() {
+  // Handler for .ready() called.
+	  
+	var imag;
+	var original;
+	var segunda;
+
+	$('.producto').hover(function(){
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).hide();
+		
+		$(this).find("img").eq(0).next().show();
+		}
+	},function(){
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).show();
+		
+		$(this).find("img").eq(0).next().hide();
+		}
+	});
+	
+});
 
 function encantar(id)
    	{
@@ -72,7 +100,7 @@ function encantar(id)
    	
 </script> 
 
-<!-- Modal -->
+<!-- Modal -
 <div id="myModal" class="modal hide tienda_modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -123,4 +151,5 @@ function encantar(id)
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
   </div>
-</div>
+</div> -->
+

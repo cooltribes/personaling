@@ -47,7 +47,7 @@ class Bootstrap extends CApplicationComponent
 	 * @var boolean whether to register the Yii-specific CSS missing from Bootstrap.
 	 * @since 0.9.12
 	 */
-	public $yiiCss = true;
+	public $yiiCss = false;
 
 	/**
 	 * @var boolean whether to register the JQuery-specific CSS missing from Bootstrap.

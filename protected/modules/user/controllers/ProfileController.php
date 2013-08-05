@@ -12,6 +12,16 @@ class ProfileController extends Controller
 	/**
 	 * Shows a particular model.
 	 */
+	
+	public function actionInvitaciones()
+	{
+		$model = $this->loadUser();
+	    $this->render('invitaciones',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+	
 	public function actionProfile()
 	{
 		$model = $this->loadUser();
@@ -56,7 +66,15 @@ class ProfileController extends Controller
 		$model = User::model()->findByPk($_GET['id']);
 		
 		if($model->personal_shopper == 1){
-			$this->render('perfil_ps',array('model'=>$model,));
+			
+			//$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
+			$looks = new Look;
+			$looks->user_id = $_GET['id'];
+			$datalook = $looks->busqueda(); 			
+			$datalook->setPagination(array('pageSize'=>4));
+			
+						
+			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook));
 		}
 		else{
 			// redireccion cuando intenten mostrar un perfil via url u ocurra un error		

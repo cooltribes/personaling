@@ -28,69 +28,72 @@
 
   <section class= "row-fluid well">
   	<!-- Lista de Mensajes  -->
-  	<div class="span4 sidebar_list_mensajes">
-	  	<div class="padding_medium bg_color3">
-
-	  		<a  href="#">	
-		  		 <article class="row-fluid">
-		  		 	<div class="span10">
+  	<div class="span4 sidebar_list_mensajes bg_color3">
+			<a  href="#">	
+		  		<article class="row-fluid padding_xsmall">
+					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />
+		  		 	<div class="span8">
 				  		<span> <strong>De:</strong> Hodor </span>
 			  		  	<p> <strong>Mensaje:</strong> Hodor hodor, hordor hodor... </p>
-		  		  </div>
-		  		  	<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		  		  	</div>
+		  		  	<span class="entypo icon_personaling_medium span1">&#59230;</span>
 		   		</article>  
-	  		 </a>
+	 		</a>
 	  		 <hr/>
 	  		<a  href="#">	
-		  		<article class="row-fluid">
-		  			<div class="span10">
+		  		<article class="row-fluid padding_xsmall">
+					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
+		  			<div class="span8">
 			  			<span> <strong>De:</strong> Administrador </span>
 			  			<p> <strong>Mensaje: </strong> Tu pedido ha sido rechazado... </p>
 		  			</div>
-		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>
 		  		</article>
 	  		</a>
 	  		<hr/>
 	  		<a  href="#">	
-		  		<article class="row-fluid">
-		  			<div class="span10">
+		  		<article class="row-fluid padding_xsmall">
+					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
+		  			<div class="span8">
 		  				<span> <strong>De:</strong> Chuck Norris </span>
 		  				<p> <strong>Mensaje:</strong> Tu pedido ha sido bautizado...  </p> 
 		  			</div>
-		  			<span class="entypo icon_personaling_medium span2"> &#59230; </span>
+		  			<span class="entypo icon_personaling_medium span1"> &#59230; </span>
 	  			</article>  
 	  		</a>
 	  		<hr/>
 	  		<a href="">
-		  		<article class="row-fluid">
-		  			<div class="span10">
+		  		<article class="row-fluid padding_xsmall">
+					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
+		  			<div class="span8">
 			  			<span> <strong>De:</strong> Administrador </span>
 			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido actualizado...</p>
 		  			</div>
-		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>	
+		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>	
 		  		</article>
 	  		</a>
 	  		<hr/>
 	  		<a  href="#">	
-		  		<article class="row-fluid">
-		  			<div class="span10">
+		  		<article class="row-fluid padding_xsmall">
+					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
+		  			<div class="span8">
 			  			<span> <strong>De:</strong> Administrador </span>
 			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido explotado... </p>
 		  			</div>
-		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>
 		  		</article>
 	  		</a>
 	  		<hr/>
 	  		<a  href="#">	
-		  		<article class="row-fluid">
-		  			<div class="span10">
+		  		<article class="row-fluid padding_xsmall">
+					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
+		  			<div class="span8">
 			  			<span> <strong>De:</strong> Yondri </span>
 			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido bautizado... </p>
 		  			</div>
-		  			<span class="entypo icon_personaling_medium span2">&#59230;</span>
+		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>
 		  		</article>  		  		  		
 	  		</a>
-	  	</div>
   	</div>
 
   	<!-- Cuerpo del mensaje -->

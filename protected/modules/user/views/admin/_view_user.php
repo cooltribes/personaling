@@ -27,7 +27,7 @@
       <td>
       <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_pedidos_detalles.php" title="acciones"> <i class="icon-cog"></i></a> 
           <!-- Link or button to toggle dropdown -->
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
             <li>
 				<?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver',array("admin/view","id"=>$data->id));	?>          	
             </li>

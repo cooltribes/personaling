@@ -117,8 +117,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
-                array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+                array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine')),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
@@ -208,7 +208,7 @@ if(!Yii::app()->user->isGuest){
     $('#btn-notifications').popover(
     {
       title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
-      content: '<a href="/site/site/notificaciones"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
+      content: '<a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
       placement: 'bottom',
       trigger: 'manual',
       html: true,
@@ -223,8 +223,18 @@ if(!Yii::app()->user->isGuest){
         $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
           $('#btn-notifications').removeClass('bg_color10');
-          });        
+          });  
+
+        $('#magazine').hover(function(){
+          $('#btn-notifications').popover('hide');          
+        },function(){});
+
+        $('#btn-shoppingcart').hover(function(){
+          $('#btn-notifications').popover('hide');          
+        },function(){});
       }
+
+
     );
 
     
@@ -322,7 +332,7 @@ if(!Yii::app()->user->isGuest){
 
     //------------Generar html para poner en Popover OFF---------------//
 
-    textShoppingCart = '<a href="/site/bolsa/index" class="btn btn-block btn-small btn-warning">Ver carrito</a>';
+    textShoppingCart = '<a href="<?php echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-warning">Ver carrito</a>';
 
     if( listaCarrito != "" ){
         textShoppingCart = listaCarrito + textShoppingCart;
@@ -339,7 +349,7 @@ if(!Yii::app()->user->isGuest){
       content: textShoppingCart,
       placement: 'bottom',
       trigger: 'manual',
-      offset: 300
+      offset: 10
     });
 
 
@@ -352,10 +362,20 @@ if(!Yii::app()->user->isGuest){
 
       },
       function(){
+
         $('.active_one').hover(function(){},function(){
           $('#btn-shoppingcart').popover('hide');
           $('#btn-shoppingcart').removeClass('bg_color10');
-          });        
+        });        
+
+        $('#btn-notifications').hover(function(){
+          $('#btn-shoppingcart').popover('hide');          
+        },function(){});
+
+        $('#dropdownUser').hover(function(){
+          $('#btn-shoppingcart').popover('hide');          
+        },function(){});
+
       });
 
     $('#dropdownUser').hoverIntent(function(){
@@ -363,6 +383,10 @@ if(!Yii::app()->user->isGuest){
     },function(){
         $(this).removeClass('open');
     });
+    $('#dropdownUser').on('click',function(){
+        $(this).removeClass('open');      
+    });
+
   }
 
 

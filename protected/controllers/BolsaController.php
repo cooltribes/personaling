@@ -902,7 +902,12 @@ class BolsaController extends Controller
 							));
 							
 							
-							}//orden
+							}else{ //orden
+								echo CJSON::encode(array(
+								'status'=> 'error',
+								'error'=> $orden->getErrors(),
+							));
+							}
 						}//direccion de envio
 					} // pago
 				}// detalle

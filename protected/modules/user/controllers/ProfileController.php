@@ -12,6 +12,16 @@ class ProfileController extends Controller
 	/**
 	 * Shows a particular model.
 	 */
+	
+	public function actionInvitaciones()
+	{
+		$model = $this->loadUser();
+	    $this->render('invitaciones',array(
+	    	'model'=>$model,
+			'profile'=>$model->profile,
+	    ));
+	}
+	
 	public function actionProfile()
 	{
 		$model = $this->loadUser();

@@ -263,7 +263,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'<br/>
 		                  		</td>
-		                <td style="border-bottom:1px solid #dddddd;">Bs. '.Yii::app()->numberFormatter->formatCurrency($pre).'</td>
+		                <td style="border-bottom:1px solid #dddddd;">Bs. '.Yii::app()->numberFormatter->formatCurrency($pre, '').'</td>
 		                <td style="border-bottom:1px solid #dddddd;">'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}

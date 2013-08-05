@@ -69,7 +69,8 @@
 					if(st > ot) {
 						s.css({
 							position: "fixed",
-							top: "70px"
+							top: "70px",
+              width: "239px"
 						});
 					} else {
 						if(st <= ot) {

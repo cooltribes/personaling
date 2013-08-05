@@ -59,11 +59,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <!-- Direcciones ON -->
       <div class="well">
         <h4 class="braker_bottom"> Dirección de Envio</h4>
-        <?php echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
+        <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
         if(isset($tipoPago)){
-        	echo 'Tipo pago: '.$tipoPago;
+        	//echo 'Tipo pago: '.$tipoPago;
 		}
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
 		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
@@ -265,6 +265,8 @@ else
 				if(data.status=="ok")
 				{
 					window.location="pedido/"+data.orden+"";
+				}else if(data.status=='error'){
+					//console.log(data.error);
 				}
 	       	}//success
 	       })

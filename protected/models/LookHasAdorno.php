@@ -31,7 +31,7 @@ class LookHasAdorno extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	public function tableName() 
 	{
 		return '{{look_has_adorno}}';
 	}

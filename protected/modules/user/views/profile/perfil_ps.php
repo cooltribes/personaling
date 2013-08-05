@@ -87,137 +87,30 @@
       <div class="well margin_top">
         <h3 class="muted margin_bottom_small">Looks Actuales</h3>
         <div class="row-fluid items" id="perfil_looks">
-          <div class="span6">
-            <article class="item"> <a href="/site/look/3"><img width="370" height="400" alt="Look" src="http://www.personaling.com/site/look/getImage/3" class="" id="imglook3" style=""></a>
-              <div class="hidden-phone margin_top_small vcard row-fluid">
-                <div class="span2 avatar "> <img width="40" alt="Avatar" src="http://www.personaling.com/site/images/avatar_provisional_2.jpg" class="photo img-circle"> </div>
-                <div class="span5"> <span class="muted">Look creado por: </span>
-                  <h5><a href="#" title="profile" class="url"><span class="fn"> Administrator </span></a></h5>
-                </div>
-                <div class="span5"><span class="precio"><small>Bs.</small> 1.000</span></div>
-              </div>
-              <div class="share_like">
-                <button class="btn-link" title="Me encanta" href="#"><span class="entypo icon_personaling_big">â™¡</span></button>
-                <div class="btn-group">
-                  <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN 
-                                            
-                                            <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                                            <li><a class="addthis_button_tweet"></a></li>
-                                            <li><a class="addthis_button_pinterest_pinit"></a></li>
-                                        </ul>
-                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                                             AddThis Button END -->
-                    
-                  </ul>
-                </div>
-              </div>
-              <span class="label label-important">PromociÃ³n</span> </article>
-          </div>
-          <div class="span6">
-            <article class="item"> <a href="/site/look/3"><img width="370" height="400" alt="Look" src="http://www.personaling.com/site/look/getImage/3" class="" id="imglook3" style=""></a>
-              <div class="hidden-phone margin_top_small vcard row-fluid">
-                <div class="span2 avatar "> <img width="40" alt="Avatar" src="http://www.personaling.com/site/images/avatar_provisional_2.jpg" class="photo img-circle"> </div>
-                <div class="span5"> <span class="muted">Look creado por: </span>
-                  <h5><a href="#" title="profile" class="url"><span class="fn"> Administrator </span></a></h5>
-                </div>
-                <div class="span5"><span class="precio"><small>Bs.</small> 1.000</span></div>
-              </div>
-              <div class="share_like">
-                <button class="btn-link" title="Me encanta" href="#"><span class="entypo icon_personaling_big">â™¡</span></button>
-                <div class="btn-group">
-                  <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN 
-                                            
-                                            <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                                            <li><a class="addthis_button_tweet"></a></li>
-                                            <li><a class="addthis_button_pinterest_pinit"></a></li>
-                                        </ul>
-                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                                             AddThis Button END -->
-                    
-                  </ul>
-                </div>
-              </div>
-              <span class="label label-important">PromociÃ³n</span> </article>
-          </div>
-          <div class="span6">
-            <article class="item"> <img alt="Loading" src="../images/loading.gif" id="imgloading4" style="display: none;"> <a href="/site/look/4"><img width="370" height="400" alt="Look" src="http://www.personaling.com/site/look/getImage/3" class="" id="imglook4" style=""></a>
-              <div class="hidden-phone margin_top_small vcard row-fluid">
-                <div class="span2 avatar "> <img width="40" alt="Avatar" src="http://www.personaling.com/site/images/avatar_provisional_2.jpg" class="photo img-circle"> </div>
-                <div class="span5"> <span class="muted">Look creado por: </span>
-                  <h5><a href="#" title="profile" class="url"><span class="fn"> Administrator </span></a></h5>
-                </div>
-                <div class="span5"><span class="precio"><small>Bs.</small> 2.000</span></div>
-              </div>
-              <div class="share_like">
-                <button class="btn-link" title="Me encanta" href="#"><span class="entypo icon_personaling_big">â™¡</span></button>
-                <div class="btn-group">
-                  <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN 
-                                            
-                                            <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                                            <li><a class="addthis_button_tweet"></a></li>
-                                            <li><a class="addthis_button_pinterest_pinit"></a></li>
-                                        </ul>
-                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                                             AddThis Button END -->
-                    
-                  </ul>
-                </div>
-              </div>
-              <span class="label label-important">PromociÃ³n</span> </article>
-          </div>
-          <div class="span6">
-            <article class="item"> <img alt="Loading" src="../images/loading.gif" id="imgloading4" style="display: none;"> <a href="/site/look/4"><img width="370" height="400" alt="Look" src="http://www.personaling.com/site/look/getImage/3" class="" id="imglook4" style=""></a>
-              <div class="hidden-phone margin_top_small vcard row-fluid">
-                <div class="span2 avatar "> <img width="40" alt="Avatar" src="http://www.personaling.com/site/images/avatar_provisional_2.jpg" class="photo img-circle"> </div>
-                <div class="span5"> <span class="muted">Look creado por: </span>
-                  <h5><a href="#" title="profile" class="url"><span class="fn"> Administrator </span></a></h5>
-                </div>
-                <div class="span5"><span class="precio"><small>Bs.</small> 2.000</span></div>
-              </div>
-              <div class="share_like">
-                <button class="btn-link" title="Me encanta" href="#"><span class="entypo icon_personaling_big">â™¡</span></button>
-                <div class="btn-group">
-                  <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN 
-                                            
-                                            <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                                            <li><a class="addthis_button_tweet"></a></li>
-                                            <li><a class="addthis_button_pinterest_pinit"></a></li>
-                                        </ul>
-                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                                             AddThis Button END -->
-                    
-                  </ul>
-                </div>
-              </div>
-              <span class="label label-important">PromociÃ³n</span> </article>
-          </div>
-        </div>
-        <div class="clearfix">
-          <div class="pagination pull-right">
-            <ul>
-              <li><a href="#">Prev</a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li><a href="#">Next</a></li>
-            </ul>
-          </div>
-        </div>
+<?php
+
+	$template = ' 
+       {items}
+	   <div class="clearfix">
+        <div class="pagination pull-right">
+      		{pager}
+		</div>
+		</div>
+    ';
+	
+	$this->widget('zii.widgets.CListView', array(
+	    'id'=>'list-looks',
+	    'dataProvider'=>$datalooks,
+	    'itemView'=>'_datoslooks',
+	    'afterAjaxUpdate'=>" function(id, data) {
+						} ",
+	    'template'=>$template,
+	));   
+	?>
+	
+ 		</div>
       </div>
+      
       <div class="well">
         <h3 class="muted margin_bottom_small">Productos Recomendados</h3>
         <div class="items row-fluid tienda_productos">

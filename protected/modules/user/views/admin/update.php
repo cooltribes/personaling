@@ -1,4 +1,4 @@
-<?php
+	<?php
 
 $this->breadcrumbs=array(
 	'Usuarios'=>array('admin'),
@@ -153,13 +153,13 @@ function getMonthsArray()
 					if(st > ot) {
 						s.css({
 							position: "fixed",
-							top: "70px"
+							top: "70px",
 						});
 					} else {
 						if(st <= ot) {
 							s.css({
 								position: "relative",
-								top: "0"
+								top: "0",
 							});
 						}
 					}

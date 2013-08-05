@@ -342,6 +342,12 @@ public function actionCategorias(){
 	public function actionPublicar($id)
 	{
 		$model = Look::model()->findByPk($id);
+		$temporal = '';
+		foreach($model->categoriahaslook as $categoriahaslook){
+			$temporal .= $categoriahaslook->categoria_id.'#';
+		}
+		if ($temporal!='')
+			$model->has_ocasiones = substr($temporal, 0, -1);
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
 
@@ -450,18 +456,19 @@ public function actionCategorias(){
 					$lookhasproducto->top = round($top[$index]);
 					$lookhasproducto->width = $width[$index];
 					$lookhasproducto->height = $height[$index];
-					$lookhasproducto->angle = $angle[$index]; 
+					$lookhasproducto->angle = $angle[$index];  
 					$lookhasproducto->zindex = $zindex[$index];
 					if (!$lookhasproducto->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					
 					
-				/* adornos */
+				/* adornos */ 
+				LookHasAdorno::model()->deleteAllByAttributes(array('look_id'=>$model->id));
 				foreach(explode(',',$_POST['adornos_id']) as $index => $adorno_id){
 						
-					$temporal = LookHasAdorno::model()->findByAttributes(array('look_id'=>$model->id,'adorno_id'=>$adorno_id));
+					//$temporal = LookHasAdorno::model()->findByAttributes(array('look_id'=>$model->id,'adorno_id'=>$adorno_id));
 					
-					if (!isset($temporal)){
+					//if (!isset($temporal)){
 						$lookhasadorno = new LookHasAdorno;
 						$lookhasadorno->look_id = $model->id;
 						$lookhasadorno->adorno_id = $adorno_id;
@@ -474,7 +481,7 @@ public function actionCategorias(){
 					if (!$lookhasadorno->save())
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');
 					 
-					}
+					//}
 				}
 					
 					 

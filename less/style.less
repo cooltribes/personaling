@@ -1079,8 +1079,24 @@ src: url('../fonts/entypo.woff'),
 
 /*------------ Mensajes/Notificaciones ON --------------*/
 .sidebar_list_mensajes{
-	overflow: scroll;
-	max-height: 337px;
+	overflow-x: visible;
+	overflow-y: scroll;
+
+	height: 339px;
+	a{
+		color: #555;
+		text-decoration: none;
+	}
+
+	article:hover{
+		background-color: #E9E9E9;
+	}
+	hr{
+		margin: 0;
+	}
+}
+.avatar_mensaje{
+	float: left;
 }
 
 /*------------ Mensajes/Notificaciones OFF -------------*/

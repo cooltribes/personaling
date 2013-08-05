@@ -371,7 +371,7 @@
       <!--  <li><a title="Pausar" href="admin_anadir_campana.php"> <i class="icon-pause"> </i> Pausar (solo debe salir Pausa o Play)</a></li>
             <li><a title="Play" href="admin_anadir_campana.php"> <i class="icon-play"> </i> Reanudar campaña</a></li>
  -->
-          <li><a href="#" title="Borrar"><i class="icon-trash"></i> Borrar campaña</a></li>
+          <li><a href="#" title="Borrar"><i class="icon-trash"></i>Borrar campaña</a></li>
         </ul>
 
       </div>

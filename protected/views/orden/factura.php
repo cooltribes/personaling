@@ -1,7 +1,12 @@
 <?php
 $profile = Profile::model()->findByAttributes(array('user_id'=>$factura->orden->user_id));
 $direccion_fiscal = Direccion::model()->findByPk($factura->direccion_fiscal_id);
+$ciudad_fiscal = Ciudad::model()->findByPk($direccion_fiscal->ciudad_id);
+$provincia_fiscal = Provincia::model()->findByPk($direccion_fiscal->provincia_id);
+
 $direccion_envio = Direccion::model()->findByPk($factura->direccion_envio_id);
+$ciudad_envio = Ciudad::model()->findByPk($direccion_envio->ciudad_id);
+$provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
 ?>
 <div class="container-fluid">
   <div class="row-fluid">
@@ -26,10 +31,10 @@ $direccion_envio = Direccion::model()->findByPk($factura->direccion_envio_id);
               ?>
               <br/>
               <strong>Domicilio fiscal:</strong> <?php echo $direccion_fiscal->dirUno.' '.$direccion_fiscal->dirDos; ?><br/>
-              <?php echo $direccion_fiscal->ciudad.' - '.$direccion_fiscal->estado.'. '.$direccion_fiscal->pais; ?><br/>
+              <?php echo $ciudad_fiscal->nombre.' - '.$provincia_fiscal->nombre.'. '.$direccion_fiscal->pais; ?><br/>
               <strong>RIF:</strong> <?php echo $direccion_fiscal->cedula; ?></td>
             <td><p><strong>Enviar a: </strong><?php echo $direccion_envio->nombre.' '.$direccion_envio->apellido; ?><br/>
-                <strong>Dirección de envio: </strong><?php echo $direccion_envio->dirUno.' '.$direccion_envio->dirDos.'. '.$direccion_envio->ciudad.' - '.$direccion_envio->estado.'. '.$direccion_envio->pais; ?></p></td>
+                <strong>Dirección de envio: </strong><?php echo $direccion_envio->dirUno.' '.$direccion_envio->dirDos.'. '.$ciudad_envio->nombre.' - '.$provincia_envio->nombre.'. '.$direccion_envio->pais; ?></p></td>
           </tr>
           <tr>
             <td colspan="2"><strong>Estado</strong>: 

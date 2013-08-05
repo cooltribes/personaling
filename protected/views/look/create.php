@@ -311,7 +311,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               ?>
           <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="z-index: <?php echo $hasproducto->zindex; ?>; position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
             <?php
-					if ($producto->mainimage)
+					if ($producto->mainimage)  
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
@@ -791,7 +791,7 @@ function addPublicar(tipo)
 		$("#angle").val(angle.substring(0, angle.length-1));
 		$("#index").val(index.substring(0, index.length-1));
 		$("#tipo").val(tipo);
-		
+		 
 		// ahora los de los adornos
 		$("#adornos_id").val(adornos_id);
 		$("#left_a").val(left_a.substring(0, left_a.length-1));

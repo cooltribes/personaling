@@ -451,8 +451,8 @@ $this->breadcrumbs=array(
                     </li>
                     <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
-                    <li><a href="#" title="Duplicar">Duplicar Producto</a></li>
-                    <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li>
+                    <!-- <li><a href="#" title="Duplicar">Duplicar Producto</a></li> -->
+                    <!-- <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li> -->
                 </ul>
                 
             </div>

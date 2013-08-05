@@ -118,7 +118,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine'),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
@@ -205,27 +205,27 @@ if(!Yii::app()->user->isGuest){
 
   function HandlerReady () {
     // //Boton Notificaciones
-    // $('#btn-notifications').popover(
-    // {
-    //   title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
-    //   content: '<a href="/site/orden/listado"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
-    //   placement: 'bottom',
-    //   trigger: 'manual',
-    //   html: true,
-    // });
+    $('#btn-notifications').popover(
+    {
+      title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
+      content: '<a href="/site/site/notificaciones"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
+      placement: 'bottom',
+      trigger: 'manual',
+      html: true,
+    });
 
-    // $('#btn-notifications').hoverIntent(function(){
-    //     $(this).popover('show');
-    //     $(this).addClass('bg_color10');
-    //     $('.popover').addClass('active_two');
-    //   },
-    //   function(){
-    //     $('.active_two').hover(function(){},function(){
-    //       $('#btn-notifications').popover('hide');
-    //       $('#btn-notifications').removeClass('bg_color10');
-    //       });        
-    //   }
-    // );
+    $('#btn-notifications').hoverIntent(function(){
+        $(this).popover('show');
+        $(this).addClass('bg_color10');
+        $('.popover').addClass('active_two');
+      },
+      function(){
+        $('.active_two').hover(function(){},function(){
+          $('#btn-notifications').popover('hide');
+          $('#btn-notifications').removeClass('bg_color10');
+          });        
+      }
+    );
 
     
     var listaCarrito;
@@ -339,37 +339,25 @@ if(!Yii::app()->user->isGuest){
       content: textShoppingCart,
       placement: 'bottom',
       trigger: 'manual',
+      offset: 300
     });
 
-    $('#btn-shoppingcart').hoverIntent({
-      selector: 'div'
-    });
 
-    $('#btn-shoppingcart').hoverIntent(function(){
+    $('#btn-shoppingcart').hoverIntent(
+      function(){
 
         $(this).popover('show');
         $(this).addClass('bg_color10');
-        $('.popover').addClass('active_one');
+        $('.popover').addClass('active_one');        
+
       },
       function(){
-        $('#btn-shoppingcart').removeClass('bg_color10');
-        $('#btn-shoppingcart').popover('hide');
-          console.log("salio");
-        // $('#btn-shoppingcart').mouseleave(function(){  
+        $('.active_one').hover(function(){},function(){
+          $('#btn-shoppingcart').popover('hide');
+          $('#btn-shoppingcart').removeClass('bg_color10');
+          });        
+      });
 
-        //   $('.active_one').mouseleave(function(){
-        //     $('#btn-shoppingcart').popover('hide');
-        //     $('#element').popover('toggle');
-        //   // console.log( $('#btn-shoppingcart').next() );
-        //     $('#btn-shoppingcart').removeClass('bg_color10');
-        //   }); 
-
-        // });       
-
-      }
-
-
-    );
     $('#dropdownUser').hoverIntent(function(){
         $(this).addClass('open');
     },function(){

@@ -28,7 +28,7 @@
 
   <section class= "row-fluid well">
   	<!-- Lista de Mensajes  -->
-  	<div class="span4">
+  	<div class="span4 sidebar_list_mensajes">
 	  	<div class="padding_medium bg_color3">
 
 	  		<a  href="#">	
@@ -96,8 +96,8 @@
   	<!-- Cuerpo del mensaje -->
   	<div class="span8 ">
 	  	<div class="padding_medium bg_color3 ">
-
-	  		<p> <strong>Asunto:</strong> The king himself could not attend</p>
+			<p><strong>De:</strong> Jon Snow</p>
+	  		<p> <strong>Asunto:</strong> You know nothing Jon Snow</p>
 	  		<p> <strong>Fecha:</strong> 23 de Septiembre de 2013</p>
 	  		<p>
 	  			If you have five dollars and Chuck Norris has five dollars, Chuck Norris has more money than you.
@@ -106,7 +106,7 @@
 	  		</p>
 	  		<form class=" margin_top_medium ">
 		  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
-		  		<button class="btn btn-danger"> Enviar </button>
+		  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
 	  		</form>
 	  	</div>
   	</div>

@@ -20,7 +20,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" />
 </head>
 
-<body >
+<body class="<?php echo $this->getBodyClasses(); ?>">
   <div id="navegacion_principal">
 <?php  
 

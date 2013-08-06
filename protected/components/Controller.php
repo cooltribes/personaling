@@ -42,7 +42,7 @@ class Controller extends CController
 	}
 
 	public function behaviors() {
-		return array(
+		return array( 
 	              'BodyClassBehavior' => array( 
 	                     'class' => 'ext.BodyClassBehavior.BodyClassBehavior'
 	              ),

@@ -91,8 +91,11 @@
 
 	$template = ' 
        {items}
-      {pager}
-
+	   <div class="clearfix">
+        <div class="pagination pull-right">
+      		{pager}
+		</div>
+		</div>
     ';
 	
 	$this->widget('zii.widgets.CListView', array(

@@ -379,7 +379,9 @@ if(!Yii::app()->user->isGuest){
       });
 
     $('#dropdownUser').hoverIntent(function(){
-        $(this).addClass('open');
+        if( !($(this).attr('class') =='dropdown open') ){          
+          $(this).addClass('open');
+        }
     },function(){
         $(this).removeClass('open');
     });

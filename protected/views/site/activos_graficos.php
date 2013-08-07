@@ -19,7 +19,7 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
                            <div class="caption"> <h3>Logotipo</h3>
                             <a href="" class="btn btn-info btn-block" title="Logotipo en PNG">Descargar en PNG</a> <a href="" title="Logotipo en JPG" class="btn  btn-info btn-block">Descargar en     JPG</a>
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Logo.eps" class="btn btn-info btn-block" title="Logotipo en EPS">Descargar en EPS</a>
-                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_logo_kit.zip" title="Ausencia de color, Unicolor, Para fondos oscuros" class="btn btn-info btn-block">Kit del logo (Colores, blanco y negro...)</a>
+                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_logo_kit.zip" title="Ausencia de color, Unicolor, Para fondos oscuros" class="btn btn-info btn-block">Descargar Kit del logo (Colores, blanco y negro...)</a>
         
                         </div>
                         </div>
@@ -30,7 +30,7 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
                           <div class="caption">  <h3>Icono</h3>
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Icono/icono.png" class="btn  btn-info btn-block" title="Icono en PNG">Descargar en PNG</a> 
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Icono/icono.jpg" title="Icono en JPG" class="btn  btn-info btn-block">Descargar en JPG</a>
-                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_kit_icono.zip" title="Blonco y negro, positivo,..." class="btn btn-info btn-block">Kit del icono</a>
+                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_kit_icono.zip" title="Blonco y negro, positivo,..." class="btn btn-info btn-block">Descargar Kit del icono</a>
         
                          </div>
                         </div>

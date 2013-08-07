@@ -91,11 +91,14 @@
 
 	$template = ' 
        {items}
+	   </div>
+	   </div>
 	   <div class="clearfix">
-        <div class="pagination pull-right">
+        <div class="pull-right">
       		{pager}
 		</div>
 		</div>
+		
     ';
 	
 	$this->widget('zii.widgets.CListView', array(
@@ -108,8 +111,7 @@
 	));   
 	?>
 	
- 		</div>
-      </div>
+
       
       <div class="well">
         <h3 class="muted margin_bottom_small">Productos Recomendados</h3>

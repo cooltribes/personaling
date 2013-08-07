@@ -82,6 +82,44 @@ class ProfileController extends Controller
 		
 	}
 	
+	/**
+     * Revisar si el usuario tiene un id de facebook asociado, si no agregarlo
+     */
+
+    public function actionCheckFbUser($fb_id){
+        $usuario = $this->loadUser();
+        if(!$usuario->facebook_id){
+            $usuario->facebook_id = $fb_id;
+            $usuario->save();
+        }
+    }
+	
+	/**
+     * Guardar amigos invitados a través de facebook
+     */
+
+    public function actionSaveInvite(){
+        $usuario = $this->loadUser();
+        if(isset($_POST['to'])){
+            foreach ($_POST['to'] as $fb_id) {
+                //echo 'user_id: '.$usuario->id.' - fb_id_invitado: '.$fb_id;
+                $invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$fb_id));
+                if(!$invite){
+                    $invite = new FacebookInvite;
+                    $invite->user_id = $usuario->id;
+                    $invite->fb_id_invitado = $fb_id;
+                    $invite->request_id = $_POST['request'];
+                    $invite->fecha = date('Y-m-d H:i:s');
+                    $invite->save();
+                }
+            }
+            Yii::app()->user->setFlash('success',"Amigos invitados");
+        }
+        //$this->redirect(array('profile/direcciones'), false);
+        //$this->refresh();
+    }
+	
+	
 	
 /**
  * Configuracion de Eliminar  

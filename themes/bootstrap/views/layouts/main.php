@@ -220,6 +220,7 @@ if(!Yii::app()->user->isGuest){
         $('.popover').addClass('active_two');
       },
       function(){
+
         $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
           $('#btn-notifications').removeClass('bg_color10');
@@ -227,15 +228,16 @@ if(!Yii::app()->user->isGuest){
 
         $('#magazine').hover(function(){
           $('#btn-notifications').popover('hide');          
+          $('#btn-notifications').removeClass('bg_color10');
+
         },function(){});
 
         $('#btn-shoppingcart').hover(function(){
           $('#btn-notifications').popover('hide');          
+          $('#btn-notifications').removeClass('bg_color10');          
         },function(){});
-      }
 
-
-    );
+      });
 
     
     var listaCarrito;
@@ -369,11 +371,13 @@ if(!Yii::app()->user->isGuest){
         });        
 
         $('#btn-notifications').hover(function(){
-          $('#btn-shoppingcart').popover('hide');          
+          $('#btn-shoppingcart').popover('hide');  
+          $('#btn-shoppingcart').removeClass('bg_color10');                  
         },function(){});
 
         $('#dropdownUser').hover(function(){
-          $('#btn-shoppingcart').popover('hide');          
+          $('#btn-shoppingcart').popover('hide');      
+          $('#btn-shoppingcart').removeClass('bg_color10');              
         },function(){});
 
       });
@@ -385,6 +389,7 @@ if(!Yii::app()->user->isGuest){
     },function(){
         $(this).removeClass('open');
     });
+
     $('#dropdownUser').on('click',function(){
         $(this).removeClass('open');      
     });

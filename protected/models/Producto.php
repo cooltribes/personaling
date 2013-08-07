@@ -520,7 +520,7 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->addCondition('orden = 1');
 		
 		// $criteria->order = "t.id ASC";
-		$criteria->order = "fecha ASC";
+		$criteria->order = "fecha DESC";
 		
 		$criteria->together = true;
 		

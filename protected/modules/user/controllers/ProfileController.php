@@ -298,9 +298,19 @@ class ProfileController extends Controller
 							$avatar_x = $avatar_x*(-1);
 							$avatar_y = isset($_POST['avatar_y'])?$_POST['avatar_y']:0;
 							$avatar_y = $avatar_y*(-1);
+							
 							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
 							$image->resize(270,270,$proporcion)->crop(270, 270,$avatar_y,$avatar_x);
 							$image->save($nombre . $extension);
+							
+							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+							$image->resize(30,30,$proporcion)->crop(30, 30,$avatar_y,$avatar_x);
+							$image->save($nombre . "_x30". $extension);
+							
+							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+							$image->resize(60,60,$proporcion)->crop(60, 60,$avatar_y,$avatar_x);
+							$image->save($nombre . "_x60". $extension);
+							
 		                	Yii::app()->user->updateSession();
 							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));	
 						}

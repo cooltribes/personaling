@@ -357,36 +357,91 @@ class ProductoController extends Controller
 			
 							$image = Yii::app()->image->load($nombre . $extension);
 		                    $image->save($nombre . "_orig".$extension); 
+							
 							if ($extension == '.png')
 								$image->save($nombre ."_orig". $extension_ori);
 							
-
-		
-		                    $image = Yii::app()->image->load($nombre . $extension);
-		                    //$image->resize(200, 200)->quality(40);
-		                    $image->resize(200, 200);
-							//$image->crop(200,200);
+							/* thumb */
+							$image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(270, 270);
 		                    $image->save($nombre . "_thumb".$extension);
+							
 							if ($extension == '.png'){
-								$image->resize(200, 200)->quality(40);	
-								
-								$image->super_crop(200,200,"top","left");
-								
+								$image->resize(270, 270)->quality(40);	
+								$image->super_crop(270,270,"top","left");
 								$image->save($nombre .  "_thumb".$extension_ori);	
-								//echo $nombre .  "_thumb".$extension_ori;
 							}	
 							
-							$image = Yii::app()->image->load($nombre . $extension); 
-		                    $image->resize(770, 770);
-		                    $image->save($nombre . $extension);
+							/* thumb retina */
+							$image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(540, 540);
+		                    $image->save($nombre . "_x540".$extension);
+							
 							if ($extension == '.png'){
-								$image->resize(770, 770)->quality(40);	
-								$image->super_crop(770,770,"top","left");
+								$image->resize(540, 540)->quality(40);	
+								$image->super_crop(540,540,"top","left");
+								$image->save($nombre .  "_x540".$extension_ori);	
+							}	
+							
+							/* productos thumb */
+							$image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(90, 90);
+		                    $image->save($nombre . "_x90".$extension);
+							
+							if ($extension == '.png'){
+								$image->resize(90, 90)->quality(40);	
+								$image->super_crop(90,90,"top","left");
+								$image->save($nombre .  "_x90".$extension_ori);	
+							}
+							
+							/* productos thumb retina */
+							$image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(180, 180);
+		                    $image->save($nombre . "_x180".$extension);
+							
+							if ($extension == '.png'){
+								$image->resize(180, 180)->quality(40);	
+								$image->super_crop(180,180,"top","left");
+								$image->save($nombre .  "_x180".$extension_ori);	
+							}		
+							
+							/* pop over carrito */
+							$image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(30, 30);
+		                    $image->save($nombre . "_x30".$extension);
+							
+							if ($extension == '.png'){
+								$image->resize(30, 30)->quality(40);	
+								$image->super_crop(30,30,"top","left");
+								$image->save($nombre .  "_x30".$extension_ori);	
+							}	
+							
+							/* pop over carrito retina */
+							$image = Yii::app()->image->load($nombre . $extension);
+		                    $image->resize(60, 60);
+		                    $image->save($nombre . "_x60".$extension);
+							
+							if ($extension == '.png'){
+								$image->resize(60, 60)->quality(40);	
+								$image->super_crop(60,60,"top","left");
+								$image->save($nombre .  "_x60".$extension_ori);	
+							}	
+							
+							/* imagen principal del producto */
+							$image = Yii::app()->image->load($nombre . $extension); 
+		                    $image->resize(566, 566);
+		                    $image->save($nombre . $extension);
+							
+							if ($extension == '.png'){
+								$image->resize(566, 566)->quality(40);	
+								$image->super_crop(566,566,"top","left");
 								$image->save($nombre . $extension_ori);		
-							}										
+							}
+																	
 		                } else {
 		                    $imagen->delete();
 		                }
+						
 		            }// foreach
 		        }// isset
 		        else {

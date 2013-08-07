@@ -1,10 +1,15 @@
+<?php
+$create_time = strtotime($model->create_at);
+$create_date = date('j M Y', $create_time);
+?>
 <div class="container margin_top tu_perfil">
     <div class="row">
+    	<div id="confirmacion_facebook" class="alert alert-success text_center_align" style="display: none;">Invitaciones enviadas</div>
         <aside class="span3">
-            <div class="card margin_bottom_medium"> <img width="270" height="270" alt="Avatar" src="images/kitten.png">
+            <div class="card margin_bottom_medium"> <img width="270" height="270" alt="Avatar" src="<?php echo $model->getAvatar(); ?>">
                 <div class="card_content vcard">
-                    <h4 class="fn">Juan Pernia</h4>
-                    <p class="muted">Miembro desde: 8 abr 2013</p>
+                    <h4 class="fn"><?php echo $profile->first_name.' '.$profile->last_name; ?></h4>
+                    <p class="muted">Miembro desde: <?php echo $create_date; ?></p>
                 </div>
             </div>
             <div>
@@ -77,7 +82,7 @@
                     </div>
                     <div class="span2 text_align_center T_large">- o -</div>
                     <div class="span5">
-                        <div onclick="invite_friends()" style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a>Invítalos usando Twitter</a></div>
+                        <div onclick="invite_friends_twitter()" style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a>Invítalos usando Twitter</a></div>
                     </div>
                 </div>
                 <form  class="form-stacked braker_horz_top_1 no_margin_bottom">
@@ -147,3 +152,101 @@
 </div>
 </div>
 <!-- /container -->
+<script>
+	$(document).ready(function(){
+	    
+	    window.fbAsyncInit = function() {
+	        FB.init({
+	            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+	            channelUrl : 'http://personaling.com/site/user/registration', // Channel File
+	            status     : true, // check login status
+	            cookie     : true, // enable cookies to allow the server to access the session
+	            xfbml      : true,  // parse XFBML
+	            oauth      : true
+	        });
+	
+	    };
+	    
+	    (function(d){
+	        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	        if (d.getElementById(id)) {return;}
+	        js = d.createElement('script');js.id = id;js.async = true;
+	        js.src = "//connect.facebook.net/en_US/all.js";
+	        ref.parentNode.insertBefore(js, ref);
+	    }(document));
+	});
+
+	function invite_friends(){
+		FB.getLoginStatus(function(response){
+	        //console.log("response: "+response.status);
+	        if (response.status === 'connected') {
+	        	// está conectado a facebook y además ya tiene permiso de usar la aplicacion personaling
+					
+				console.log('Welcome!  Fetching your information.... ');
+	                    
+	                    FB.api('/me', function(response) {
+	                        //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+	                        $.ajax({
+								type: "get",
+								dataType: 'html',
+								url: "checkFbUser", // action 
+								data: { 'fb_id': response.id	}, 
+								success: function () {
+									//console.log('saved');
+								}//success
+							});
+	                    }, {scope: 'email,user_birthday'});
+	                    
+	          	FB.ui({method: 'apprequests',
+			      title: 'Personaling',
+			      message: 'Tu personal shopper digital.',
+			    }, fbCallback);
+	        } else {
+	            FB.login(function(response) {
+	                if (response.authResponse) {
+	                	//user is already logged in and connected (using information)
+	                    console.log('Welcome!  Fetching your information.... ');
+	                    
+	                    FB.api('/me', function(response) {
+	                        //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+	                         $.ajax({
+								type: "get",
+								dataType: 'html',
+								url: "checkFbUser", // action 
+								data: { 'fb_id': response.id	}, 
+								success: function () {
+									//console.log('saved');
+								}//success
+							});
+	                    });
+	                    
+	                    FB.ui({method: 'apprequests',
+					      title: 'Personaling',
+					      message: 'Tu personal shopper digital.',
+					    }, fbCallback);
+	                } else {
+	                    //console.log('User cancelled login or did not fully authorize.');
+	                }
+	            }, {scope: 'email,user_birthday'});
+	        }
+	    });
+	}
+	
+	function fbCallback(response){
+		//console.log(response);
+		if(response != null){
+			$.ajax({
+				type: "post",
+				dataType: 'html',
+				url: "saveInvite", // action 
+				data: { 'request': response.request, 'to': response.to }, 
+				success: function () {
+					console.log('invite saved');
+					$('#confirmacion_facebook').show('slow');
+					//location.reload();
+					//window.location="micuenta";
+				}//success
+			});
+		}
+	}
+</script>

@@ -165,7 +165,7 @@ function handleDrop(e) {
 		  	
 		  	$("img",contenedor).last().resizable({
 		    	aspectRatio: width/height
-		  	});
+		  	}).parent('.ui-wrapper').css('margin','0px');
 	 });
 	    
 });
@@ -373,7 +373,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		var width = $(this).attr('width');
 		 $(this).resizable({
       		aspectRatio: width/height
-    	});	
+    	}).parent('.ui-wrapper').css('margin','0px');	
     });	
    
     
@@ -427,8 +427,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			$('#adorno".$adorno->id." > img').on('load', function () {
 				$(this).resizable({
 					aspectRatio: 1
-				});	
+				}).parent('.ui-wrapper').css('margin','0px');	
 		    });	
+		    
 		 	";
 	        
 	        Yii::app()->clientScript->registerScript('drag'.$adorno->id,$script);

@@ -115,6 +115,7 @@ class LookController extends Controller
 
 		 $look = Look::model()->findByPk($id);
 		 
+		 /*
 		 $w = 670;
 		 if (isset($_GET['w']))
 		 	$w = $_GET['w'];
@@ -124,7 +125,11 @@ class LookController extends Controller
 		 if (isset($_GET['h']))
 		 	$h = $_GET['h'];
 		 $diff_h = 670/$h;
-		 
+		 */
+		 $w = 670;
+		 $diff_w = 1;
+		  $h = 670;
+		 $diff_h = 1;
 		 $imagenes = array();
 		 $i = 0;
 		 
@@ -157,10 +162,10 @@ class LookController extends Controller
 
 			$i++;
 		 }	
-		
+		//Yii::trace('create a image look, Trace:'.print_r($imagenes, true), 'registro');
 		function sortByIndex($a, $b) {
 		    return $a->zindex - $b->zindex;
-		}
+		} 
 		
 		usort($imagenes, 'sortByIndex');
 		
@@ -179,6 +184,7 @@ class LookController extends Controller
 			          break;
 			          case 'png':
 			          $src = imagecreatefrompng($image->path);
+						//Yii::trace('create a image look, Trace:'.$image->path, 'registro');  
 			          break;
 			      }			
 			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
@@ -186,17 +192,18 @@ class LookController extends Controller
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true ); 
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
-			
-    		imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
+    		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
+			imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+    		//imagecopyresized($img,$src,0,0,0,0,imagesx($src),imagesy($src),imagesx($src), imagesy($src));
 			if ($image->angle){
-					
+				//Yii::trace('create a image look,'.$image->angle.' Trace:'.$image->path, 'registro');  	
 				$img = imagerotate($img,$image->angle*(-1),$pngTransparency);
 			}
 			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
 		}
-		header('Content-Type: image/png');
+		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
-		imagepng($canvas);
+		imagepng($canvas,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
 		imagedestroy($canvas);
 	}
 
@@ -370,6 +377,7 @@ public function actionCategorias(){
 						$categoriahaslook->categoria_id = $categoria;
 						$categoriahaslook->look_id = $model->id;
 						$categoriahaslook->save();
+						
 						
                 	}
                 }	

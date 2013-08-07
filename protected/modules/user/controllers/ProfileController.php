@@ -82,6 +82,44 @@ class ProfileController extends Controller
 		
 	}
 	
+	/**
+     * Revisar si el usuario tiene un id de facebook asociado, si no agregarlo
+     */
+
+    public function actionCheckFbUser($fb_id){
+        $usuario = $this->loadUser();
+        if(!$usuario->facebook_id){
+            $usuario->facebook_id = $fb_id;
+            $usuario->save();
+        }
+    }
+	
+	/**
+     * Guardar amigos invitados a través de facebook
+     */
+
+    public function actionSaveInvite(){
+        $usuario = $this->loadUser();
+        if(isset($_POST['to'])){
+            foreach ($_POST['to'] as $fb_id) {
+                //echo 'user_id: '.$usuario->id.' - fb_id_invitado: '.$fb_id;
+                $invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$fb_id));
+                if(!$invite){
+                    $invite = new FacebookInvite;
+                    $invite->user_id = $usuario->id;
+                    $invite->fb_id_invitado = $fb_id;
+                    $invite->request_id = $_POST['request'];
+                    $invite->fecha = date('Y-m-d H:i:s');
+                    $invite->save();
+                }
+            }
+            Yii::app()->user->setFlash('success',"Amigos invitados");
+        }
+        //$this->redirect(array('profile/direcciones'), false);
+        //$this->refresh();
+    }
+	
+	
 	
 /**
  * Configuracion de Eliminar  
@@ -260,9 +298,19 @@ class ProfileController extends Controller
 							$avatar_x = $avatar_x*(-1);
 							$avatar_y = isset($_POST['avatar_y'])?$_POST['avatar_y']:0;
 							$avatar_y = $avatar_y*(-1);
+							
 							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
 							$image->resize(270,270,$proporcion)->crop(270, 270,$avatar_y,$avatar_x);
 							$image->save($nombre . $extension);
+							
+							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+							$image->resize(30,30,$proporcion)->crop(30, 30,$avatar_y,$avatar_x);
+							$image->save($nombre . "_x30". $extension);
+							
+							$proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+							$image->resize(60,60,$proporcion)->crop(60, 60,$avatar_y,$avatar_x);
+							$image->save($nombre . "_x60". $extension);
+							
 		                	Yii::app()->user->updateSession();
 							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));	
 						}
@@ -280,6 +328,38 @@ class ProfileController extends Controller
 // Subir o editar banner
 	public function actionBanner(){
 		$model = $this->loadUser();
+
+		if( isset($_POST['valido']) ){
+			$id = $model->id;
+
+			if(!is_dir( Yii::getPathOfAlias('webroot').'/images/banner/'.$id) ){
+				mkdir( Yii::getPathOfAlias('webroot').'/images/banner/'.$id ,0777,true );
+			}
+
+			$images = CUploadedFile::getInstancesByName('filesToUpload');
+			if(isset($images) && count($images) > 0){
+
+				foreach ($images as $image => $pic) {
+	            	$nombre = Yii::getPathOfAlias('webroot').'/images/banner/'.$id.'/'. $image;	
+	            	$extension = '.'.$pic->extensionName;
+					
+					if( $extension == '.jpg' || $extension == '.png' || $extension == '.gif' ){
+		            	if($pic->saveAs($nombre . $extension)){
+			                Yii::app()->user->updateSession();
+							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));		            		
+		            }
+		            else{
+			                Yii::app()->user->updateSession();
+							Yii::app()->user->setFlash('error',UserModule::t("La imágen debe ser jpg png o gif"));		            										            	
+		            }
+
+	            	}	            	
+				}
+
+			}
+
+		}
+
 		$this->render('banner');
 
 	}

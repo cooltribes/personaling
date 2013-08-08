@@ -77,8 +77,10 @@ class ProfileController extends Controller
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
-			$dataprod = $looks->ProductosLook($_GET['id']);
-			$dataprod->setPagination(array('pageSize'=>9)); 
+			$producto = new Producto;
+			
+			$dataprod = $producto->ProductosLook($_GET['id']); 
+			//$dataprod->setPagination(array('pageSize'=>9)); 
 						
 			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}
@@ -107,22 +109,26 @@ class ProfileController extends Controller
     public function actionSaveInvite(){
         $usuario = $this->loadUser();
         if(isset($_POST['to'])){
-            foreach ($_POST['to'] as $fb_id) {
+        	echo $_POST['request'].' - '.$_POST['to'].' - '.$_POST['nombre'];
+            //foreach ($_POST['to'] as $fb_id) {
                 //echo 'user_id: '.$usuario->id.' - fb_id_invitado: '.$fb_id;
-                $invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$fb_id));
+                $invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$_POST['to']));
                 if(!$invite){
                     $invite = new FacebookInvite;
                     $invite->user_id = $usuario->id;
-                    $invite->fb_id_invitado = $fb_id;
+                    $invite->fb_id_invitado = $_POST['to'];
                     $invite->request_id = $_POST['request'];
                     $invite->fecha = date('Y-m-d H:i:s');
 					if(isset($_POST['nombre'])){
 						$invite->nombre_invitado = $_POST['nombre'];
 					}
                     $invite->save();
+                }else{
+                	$invite->fecha = date('Y-m-d H:i:s');
+					$invite->save();
                 }
-            }
-            Yii::app()->user->setFlash('success',"Amigos invitados");
+            //}
+            //Yii::app()->user->setFlash('success',"Amigos invitados");
         }
         //$this->redirect(array('profile/direcciones'), false);
         //$this->refresh();

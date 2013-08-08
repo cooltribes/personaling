@@ -235,23 +235,27 @@ $create_date = date('j M Y', $create_time);
 	}
 	
 	function fbCallback(response){
-		console.log(response);
 		if(response != null){
+			/*var user_ids = response.to.split(",");*/
 			for(var i = 0; i < response.to.length; i++){
-				FB.api('/'+response.to[i], function(user) {
+				//console.log('id: '+response.to[i]);
+				var id_actual = response.to[i];
+				//console.log('variable: '+id_actual);
+				FB.api('/'+id_actual, function(user) {
+					//console.log('ID: '+user.id);
 					$.ajax({
 						type: "post",
 						dataType: 'html',
 						url: "saveInvite", // action 
-						data: { 'request': response.request, 'to': response.to[i], 'nombre': user.name }, 
-						success: function () {
-							console.log('invite saved');
+						data: { 'request': response.request, 'to': user.id, 'nombre': user.name }, 
+						success: function (data) {
+							//console.log('invite saved: '+data);
 							$('#confirmacion_facebook').show('slow');
 							//location.reload();
 							//window.location="micuenta";
 						}//success
 					});
-				}
+				});
 			}
 		}
 		/*if(response != null){

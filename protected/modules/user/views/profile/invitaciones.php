@@ -111,41 +111,42 @@ $create_date = date('j M Y', $create_time);
               
                 
             </div>
-            
-             <div class="box_1 margin_top_medium"> <h2 class=" color2 braker_bottom">Historial de invitaciones</h2><p>En la siguiente lista podrás ver el status de las invitaciones que has enviado y los puntos acumulados por cada una: </p>
-               
-                <table width="100%" class="table table-bordered table-hover table-striped" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <th>Nombre de usuario</th>
-                    <th>Fecha de invitación</th>
-                    <th>Estado</th>
-                    <th>Puntos</th>
-                </tr>
-                <tr>
-                    <td>John Snow</td>
-                    <td>17/10/1985</td>
-                    <td>Aceptado</td>
-                    <td>+3</td>
-                </tr>
-                <tr>
-                    <td>John Snow</td>
-                    <td>17/10/1985</td>
-                    <td>Aceptado</td>
-                    <td>+3</td>
-                </tr>
-                <tr>
-                    <td>John Snow</td>
-                    <td>17/10/1985</td>
-                    <td>Aceptado</td>
-                    <td>+3</td>
-                </tr>
-                <tr>
-                    <td>John Snow</td>
-                    <td>17/10/1985</td>
-                    <td>Aceptado</td>
-                    <td>+3</td>
-                </tr>
-            </table></div>
+            <?php
+            if($dataProvider->getItemCount() > 0){
+	            ?>
+	            <div class="box_1 margin_top_medium"> <h2 class=" color2 braker_bottom">Historial de invitaciones</h2><p>En la siguiente lista podrás ver el status de las invitaciones que has enviado y los puntos acumulados por cada una: </p>
+	            <?php
+				$template = '{summary}
+				  <table width="100%" class="table table-bordered table-hover table-striped" border="0" cellspacing="0" cellpadding="0">
+				    <tr>
+				      	<th>Nombre de usuario</th>
+	                    <th>Fecha de invitación</th>
+	                    <th>Estado</th>
+	                    <th>Puntos</th>
+				    </tr>
+				    {items}
+				    </table>
+				    {pager}
+					';
+				
+						$this->widget('zii.widgets.CListView', array(
+					    'id'=>'list-invitaciones',
+					    'dataProvider'=>$dataProvider,
+					    'itemView'=>'_view_invitacion',
+					    'template'=>$template,
+					    'enableSorting'=>'false',
+						'pager'=>array(
+							'header'=>'',
+							'htmlOptions'=>array(
+							'class'=>'pagination pagination-right',
+							)
+						),					
+					));    
+					?>
+	            </div>
+	            <?php
+            }
+            ?>
             
         </div>
     </div>
@@ -162,7 +163,8 @@ $create_date = date('j M Y', $create_time);
 	            status     : true, // check login status
 	            cookie     : true, // enable cookies to allow the server to access the session
 	            xfbml      : true,  // parse XFBML
-	            oauth      : true
+	            oauth      : true,
+	            frictionlessRequests : true
 	        });
 	
 	    };
@@ -199,7 +201,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	          	FB.ui({method: 'apprequests',
 			      title: 'Personaling',
-			      message: 'Tu personal shopper digital.',
+			      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
 			    }, fbCallback);
 	        } else {
 	            FB.login(function(response) {
@@ -222,7 +224,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	                    FB.ui({method: 'apprequests',
 					      title: 'Personaling',
-					      message: 'Tu personal shopper digital.',
+					      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
 					    }, fbCallback);
 	                } else {
 	                    //console.log('User cancelled login or did not fully authorize.');
@@ -233,13 +235,33 @@ $create_date = date('j M Y', $create_time);
 	}
 	
 	function fbCallback(response){
-		//console.log(response);
+		console.log(response);
 		if(response != null){
-			$.ajax({
+			for(var i = 0; i < response.to.length; i++){
+				FB.api('/'+response.to[i], function(user) {
+					$.ajax({
+						type: "post",
+						dataType: 'html',
+						url: "saveInvite", // action 
+						data: { 'request': response.request, 'to': response.to[i], 'nombre': user.name }, 
+						success: function () {
+							console.log('invite saved');
+							$('#confirmacion_facebook').show('slow');
+							//location.reload();
+							//window.location="micuenta";
+						}//success
+					});
+				}
+			}
+		}
+		/*if(response != null){
+			FB.api('/'+response.to, function(user) {
+				console.log('Nombre: ' + response.name + '.\nE-mail: ' + response.email);
+				$.ajax({
 				type: "post",
 				dataType: 'html',
 				url: "saveInvite", // action 
-				data: { 'request': response.request, 'to': response.to }, 
+				data: { 'request': response.request, 'to': response.to, 'nombre': user.name }, 
 				success: function () {
 					console.log('invite saved');
 					$('#confirmacion_facebook').show('slow');
@@ -247,6 +269,7 @@ $create_date = date('j M Y', $create_time);
 					//window.location="micuenta";
 				}//success
 			});
-		}
+			});
+		}*/
 	}
 </script>

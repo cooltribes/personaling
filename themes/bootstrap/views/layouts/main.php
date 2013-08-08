@@ -3,12 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en" />
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" />
 <title><?php echo CHtml::encode($this->pageTitle); ?></title>
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo Yii::app()->getBaseUrl(); ?>/favicon.ico">
 
 <?php //Yii::app()->bootstrap->register(); ?>
-<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/botones.css" rel="stylesheet">
+<!-- Le STYLES -->
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" />
 
 
 <?php //Yii::app()->less->register(); ?>
@@ -16,8 +16,9 @@
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
+
+
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" />
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">
@@ -155,7 +156,7 @@ if(!Yii::app()->user->isGuest){
 	
 	if($user->status == 0){
 		?>
-		<div id="notificacion_validar" class="alert alert-error margin_top padding_top text_align_center" style="margin-top: 3em;">
+		<div id="notificacion_validar" class="alert alert-error text_align_center">
 			Tu cuenta no ha sido validada. 
 			<?php
 			echo CHtml::ajaxLink(
@@ -220,6 +221,7 @@ if(!Yii::app()->user->isGuest){
         $('.popover').addClass('active_two');
       },
       function(){
+
         $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
           $('#btn-notifications').removeClass('bg_color10');
@@ -227,15 +229,16 @@ if(!Yii::app()->user->isGuest){
 
         $('#magazine').hover(function(){
           $('#btn-notifications').popover('hide');          
+          $('#btn-notifications').removeClass('bg_color10');
+
         },function(){});
 
         $('#btn-shoppingcart').hover(function(){
           $('#btn-notifications').popover('hide');          
+          $('#btn-notifications').removeClass('bg_color10');          
         },function(){});
-      }
 
-
-    );
+      });
 
     
     var listaCarrito;
@@ -369,11 +372,13 @@ if(!Yii::app()->user->isGuest){
         });        
 
         $('#btn-notifications').hover(function(){
-          $('#btn-shoppingcart').popover('hide');          
+          $('#btn-shoppingcart').popover('hide');  
+          $('#btn-shoppingcart').removeClass('bg_color10');                  
         },function(){});
 
         $('#dropdownUser').hover(function(){
-          $('#btn-shoppingcart').popover('hide');          
+          $('#btn-shoppingcart').popover('hide');      
+          $('#btn-shoppingcart').removeClass('bg_color10');              
         },function(){});
 
       });
@@ -385,6 +390,7 @@ if(!Yii::app()->user->isGuest){
     },function(){
         $(this).removeClass('open');
     });
+
     $('#dropdownUser').on('click',function(){
         $(this).removeClass('open');      
     });

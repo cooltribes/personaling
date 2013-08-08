@@ -91,11 +91,14 @@
 
 	$template = ' 
        {items}
+	   </div>
+	   </div>
 	   <div class="clearfix">
-        <div class="pagination pull-right">
+        <div class="pull-right">
       		{pager}
 		</div>
 		</div>
+		
     ';
 	
 	$this->widget('zii.widgets.CListView', array(
@@ -108,12 +111,36 @@
 	));   
 	?>
 	
- 		</div>
-      </div>
+
       
       <div class="well">
         <h3 class="muted margin_bottom_small">Productos Recomendados</h3>
         <div class="items row-fluid tienda_productos">
+        	
+ 	<?php
+
+		$template = ' 
+	       {items}
+		   </div>
+
+		   <div class="clearfix">
+	        <div class="pull-right">
+	      		{pager}
+			</div>
+			</div>
+			
+	    ';
+		
+		$this->widget('zii.widgets.CListView', array(
+		    'id'=>'list-prods',
+		    'dataProvider'=>$dataprods,
+		    'itemView'=>'_datosprod',
+		    'afterAjaxUpdate'=>" function(id, data) {
+							} ",
+		    'template'=>$template,
+		));   
+	?>
+        	
           <article class="span4 item_producto">
             <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/1/87.jpg" id="img-1" class="img_hover"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/1/88.jpg" style="display:none" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
               <header>

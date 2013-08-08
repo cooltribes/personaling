@@ -64,7 +64,10 @@ class Look extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//array(' altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo', 'numerical','min'=>1),
-			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id', 'required'),
+			array('created_on','default',
+              'value'=>new CDbExpression('NOW()'),
+              'setOnEmpty'=>false,'on'=>'insert'), 
+			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id,created_on', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('has_ocasiones','required','on'=>'update'),
@@ -92,9 +95,11 @@ class Look extends CActiveRecord
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'), 
+			'productos_todos' => array(self::HAS_MANY,'Producto',array('producto_id'=>'id'),'through'=>'lookhasproducto'),
 			
 		);
 	}  
+	
  
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -270,6 +275,39 @@ class Look extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function ProductosLook($personal)
+	{
+		// llega un ID de color
+
+		$criteria=new CDbCriteria;
+
+        $criteria->select = 't.*';
+    //    $criteria->join ='JOIN tbl_look_has_producto b ON tbl_look_has_producto.look_id = t.id';
+		$criteria->join ='JOIN tbl_producto ON tbl_producto.id = tbl_look_has_producto.producto_id';
+	
+	$criteria->with = array('lookhasproducto');
+	//$criteria->with = array('productos');
+		
+        //$criteria->addCondition('t.estado = 0');
+	//	$criteria->addCondition('c.id = b.producto_id AND a.id = b.look_id');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+		$criteria->addCondition('t.user_id = :tres');
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+	//	$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
+		$criteria->params = array(":tres" => $personal); // color que llega
+		$criteria->group = 'tbl_look_has_producto.producto_id';
+		$criteria->order = "t.created_on DESC";
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
 	}
 	
 	

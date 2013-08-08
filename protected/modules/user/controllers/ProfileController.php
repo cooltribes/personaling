@@ -16,9 +16,13 @@ class ProfileController extends Controller
 	public function actionInvitaciones()
 	{
 		$model = $this->loadUser();
+		$invitacion = new FacebookInvite;
+		$invitacion->user_id = $model->id;
+		$dataProvider = $invitacion->search();
 	    $this->render('invitaciones',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
+			'dataProvider'=>$dataProvider,
 	    ));
 	}
 	
@@ -73,8 +77,10 @@ class ProfileController extends Controller
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
+			$dataprod = $looks->ProductosLook($_GET['id']);
+			$dataprod->setPagination(array('pageSize'=>9)); 
 						
-			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook));
+			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}
 		else{
 			// redireccion cuando intenten mostrar un perfil via url u ocurra un error		
@@ -110,6 +116,9 @@ class ProfileController extends Controller
                     $invite->fb_id_invitado = $fb_id;
                     $invite->request_id = $_POST['request'];
                     $invite->fecha = date('Y-m-d H:i:s');
+					if(isset($_POST['nombre'])){
+						$invite->nombre_invitado = $_POST['nombre'];
+					}
                     $invite->save();
                 }
             }

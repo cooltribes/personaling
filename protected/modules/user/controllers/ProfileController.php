@@ -73,8 +73,10 @@ class ProfileController extends Controller
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
+			$dataprod = $looks->ProductosLook($_GET['id']);
+			$dataprod->setPagination(array('pageSize'=>9)); 
 						
-			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook));
+			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}
 		else{
 			// redireccion cuando intenten mostrar un perfil via url u ocurra un error		

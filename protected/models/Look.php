@@ -95,9 +95,11 @@ class Look extends CActiveRecord
 			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'), 
+			'productos_todos' => array(self::HAS_MANY,'Producto',array('producto_id'=>'id'),'through'=>'lookhasproducto'),
 			
 		);
 	}  
+	
  
 	/**
 	 * @return array customized attribute labels (name=>label)

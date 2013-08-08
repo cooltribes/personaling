@@ -485,54 +485,20 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 	public function ProductosLook($personal)
 	{
-		/*
-		// llega un ID de color
+		$sql = "SELECT c.* FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id group by b.producto_id order by a.created_on DESC";
+		
+		$sql2 = "SELECT count( distinct b.producto_id ) as total FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id order by a.created_on DESC";
+		$num = Yii::app()->db->createCommand($sql2)->queryScalar();
+		$count = $num;	
+		
+		return new CSqlDataProvider($sql, array(
+		    'totalItemCount'=>$count,
+			 'pagination'=>array(
+				'pageSize'=>9,
+			),		    
 
-		$criteria=new CDbCriteria;
-
-        $criteria->select = '*';
-    //    $criteria->join ='JOIN tbl_look_has_producto b ON tbl_look_has_producto.look_id = t.id';
-		$criteria->join ='JOIN tbl_look_has_producto ON tbl_look_has_producto.producto_id = t.id';
+		));  
 	
-//	$criteria->with = array('lookhasproducto');
-	$criteria->with = array('lookhasproducto');
-		
-        //$criteria->addCondition('t.estado = 0');
-	//	$criteria->addCondition('c.id = b.producto_id AND a.id = b.look_id');
-     //   $criteria->condition = 't.estado = :uno';
-	//	$criteria->condition = 't.status = :dos';
-		$criteria->addCondition('lookhasproducto.user_id = :tres');
-	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
-	//	$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
-    //    $criteria->params = array(":uno" => "2"); // estado
-	//	$criteria->params = array(":dos" => "1"); // status
-		$criteria->params = array(":tres" => $personal); // color que llega
-		$criteria->group = 't.id';
-		$criteria->order = "lookhasproducto.created_on DESC";
-		
-		$criteria->together = true;*/
-		
-		
-		  $crit = new CDbCriteria();
-                $crit->with = array('lookhasproducto');
-                $crit->alias = array(			self::tableName()=>'a',
-                                                'tbl_look_has_producto'=>'b',
-                                                'tbl_look'=>'c');
-                $crit->together = true;
-                $crit->select = array("*");
-                $crit->condition = array(
-                                                "a.id = b.producto_id",
-                                                "c.id = b.look_id",
-                                                "c.user_id = ':tres'");
-												
-                $crit->params = array(':tres'=>$personal);   
-                $crit->group = "a.id";
-		
-		return new CActiveDataProvider($this, array(
-       'pagination'=>array('pageSize'=>9,),
-       'criteria'=>$crit,
-	));
-		
 	}
 	
 

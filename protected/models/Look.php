@@ -74,7 +74,7 @@ class Look extends CActiveRecord
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			// Please remove those attributes that should not be searched. 
 			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter', 'safe', 'on'=>'search'),
 		);
 	}

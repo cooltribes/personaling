@@ -1,4 +1,31 @@
-<div class="row-fluid"><ul class="thumbnails">
+<div class="row-fluid">
+<?php
+					echo CHtml::ajaxLink(
+						  'Atras',
+						  Yii::app()->createUrl( 'look/categorias'),
+						  array( // ajaxOptions
+						    'type' => 'POST',
+						    'beforeSend' => "function( request )
+						                     {
+						                       // Set up any pre-sending stuff like initializing progress indicators
+						                     }",
+						    'success' => "function( data )
+						                  {
+						                    // handle return data
+						                    //alert( data );
+						                    $('#div_categorias').html(data);
+						                  }",
+						    'data' => array( 'padreId' => $categoria_padre, 'val2' => '2' )
+						  ),
+						  array( //htmlOptions
+						    'href' => Yii::app()->createUrl( 'look/categorias' ),
+						    'class' => 'thumbnail',
+						    'id' => 'categoria'.$categoria_padre,
+						    'draggable'=>"false",
+						  )
+						);
+					?>	
+	<ul class="thumbnails">
               <?php
               foreach($categorias as $categoria){
               ?>
@@ -47,5 +74,6 @@
 
               </li>
               <?php } ?>
-</ul></div>     
+</ul>
+</div>     
          

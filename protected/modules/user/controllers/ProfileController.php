@@ -77,7 +77,9 @@ class ProfileController extends Controller
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
-			$dataprod = $looks->ProductosLook($_GET['id']);
+			$producto = new Producto;
+			
+			$dataprod = $producto->ProductosLook($_GET['id']); 
 			$dataprod->setPagination(array('pageSize'=>9)); 
 						
 			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));

@@ -114,7 +114,9 @@ function handleDrop(e) {
 				$(contenedor).html(	nuevo_objeto );
 		    else
 		    	$(contenedor).append(nuevo_objeto);
-		    	
+		   // $(".new",contenedor).click( function(){
+		   // 	alert('clic');
+		    //});	
 			//Hace draggable al obejto	
 			$(".new",contenedor).draggable( {
 		    cursor: 'move',

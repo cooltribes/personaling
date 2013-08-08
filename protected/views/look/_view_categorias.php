@@ -1,7 +1,8 @@
 <div class="row-fluid">
 <?php
+					if ($categoria_padre > 0)
 					echo CHtml::ajaxLink(
-						  'Atras',
+						  'Atras ', 
 						  Yii::app()->createUrl( 'look/categorias'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
@@ -62,7 +63,7 @@
 						                    $('#div_categorias').html(data);
 						                    setTimeout(function() {
 											    $('#div_categorias').css('background','white');
-											}, 1);
+											}, 100);
 						                     
 						                  }",
 						    'data' => array( 'padreId' => $categoria->id, 'val2' => '2' )

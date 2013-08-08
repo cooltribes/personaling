@@ -12,11 +12,14 @@
 .canvas.over {
 	border: 1px dashed #000;
 }
+.content-loading  { 
+  background: white url('<?php echo Yii::app()->baseUrl.'/images/loading.gif'; ?>') center center no-repeat; 
+}
 </style>
 <script language="JavaScript">
 var dragSrcEl = '';
 function handleDragStart(e) {
-	
+$('.canvas').css('background',"white url('<?php echo Yii::app()->baseUrl.'/images/loading.gif'; ?>') center center no-repeat");
   this.style.opacity = '0.4';  // this / e.target is the source node.
    dragSrcEl = this;
  
@@ -165,7 +168,9 @@ function handleDrop(e) {
 		  	
 		  	$("img",contenedor).last().resizable({
 		    	aspectRatio: width/height
-		  	});
+		  	}).parent('.ui-wrapper').css('margin','0px');
+		  	
+		  	$('.canvas').css('background',"white");
 	 });
 	    
 });
@@ -373,7 +378,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		var width = $(this).attr('width');
 		 $(this).resizable({
       		aspectRatio: width/height
-    	});	
+    	}).parent('.ui-wrapper').css('margin','0px');	
     });	
    
     
@@ -427,8 +432,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			$('#adorno".$adorno->id." > img').on('load', function () {
 				$(this).resizable({
 					aspectRatio: 1
-				});	
+				}).parent('.ui-wrapper').css('margin','0px');	
 		    });	
+		    
 		 	";
 	        
 	        Yii::app()->clientScript->registerScript('drag'.$adorno->id,$script);
@@ -644,7 +650,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
             <hr/>
             <div id="div_categorias">
-              <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
+              <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>0)) ?>
             </div>
           </div>
           <div class="tab-pane" id="tab2">

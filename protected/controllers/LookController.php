@@ -126,9 +126,9 @@ class LookController extends Controller
 		 	$h = $_GET['h'];
 		 $diff_h = 670/$h;
 		 */
-		 $w = 670;
+		 $w = 710;
 		 $diff_w = 1;
-		  $h = 670;
+		  $h = 710;
 		 $diff_h = 1;
 		 $imagenes = array();
 		 $i = 0;
@@ -302,16 +302,17 @@ public function actionColores(){
 public function actionCategorias(){
 	
 	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  $categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
 	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
 	  if ($categorias){
-	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias),true,true);
+	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	  }else {
 	  	$productos = Producto::model()->with(array('categorias'=>array('condition'=>'tbl_categoria_id='.$_POST['padreId'])))->findAll();
-	  	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);
+	  	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	  	// echo 'rafa';
 	  }
 }

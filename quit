@@ -1,0 +1,262 @@
+[33mcommit 77e8c3109f18bc6bde788d8e177a60d1878e2a07[m
+Merge: 7f350e0 8b647af
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Wed Aug 7 18:55:11 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit 7f350e02ca92aad512ea1cb539b6d67739e2854a[m
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Wed Aug 7 18:54:33 2013 -0430
+
+    Optimizcion de imagen y arreglo en tamano de canvas y margen
+
+[33mcommit 8b647af6df4c9ef99a1a9f36175a89a71a4e693f[m
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Wed Aug 7 18:34:34 2013 -0430
+
+    Archivos graficos
+
+[33mcommit f3e7213d384f28ecc47d5ddad4cadc487e112adf[m
+Merge: 3cb1372 b53dcce
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Wed Aug 7 18:33:07 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit 3cb1372feebc39b321b4d7bb90b3d7fd6324643b[m
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Wed Aug 7 18:32:53 2013 -0430
+
+    Mejor organizacion de los elementos graficos
+
+[33mcommit b53dcce188714653acafc97a75a448cc578b5373[m
+Merge: 5af2e93 71d723f
+Author: juanrules <dduque@upsidecorp.ch>
+Date:   Wed Aug 7 18:24:19 2013 -0430
+
+    Merge branch 'master' of https://git.assembla.com/personaling
+
+[33mcommit 5af2e9332443e5be41370912095f58303e1c349a[m
+Author: juanrules <dduque@upsidecorp.ch>
+Date:   Wed Aug 7 18:23:10 2013 -0430
+
+    distintos tamaños para imagenes de productos
+
+[33mcommit b3fa64a9c756c95af3d4e282b5fc81f666101af0[m
+Author: juanrules <dduque@upsidecorp.ch>
+Date:   Wed Aug 7 18:22:45 2013 -0430
+
+    varias imagenes para avatar, distintos tamaños
+
+[33mcommit 71d723f82c1dfe1ca900ae962f84ba5121590668[m
+Merge: 0fc0741 680b55a
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Wed Aug 7 18:21:21 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit 0fc074147c037268001b84e03005a02e4d5644e4[m
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Wed Aug 7 18:21:14 2013 -0430
+
+    Nueva estructura de CSS, optimizacion del proceso de compra, nuevos activos graficos
+    
+    .- Se mejoro la esctructura del CSS para que la optimizacion del LESS
+    se mantenga
+    .- Nueva estructura de activos graficos
+    .- Se quitaron la barra de navegacion en el footer en el carrito de
+    compra
+
+[33mcommit 680b55ab1e2c3e8815927428c13db627bb3392a9[m
+Merge: 82ea402 cfa06e5
+Author: Carlos Linares <clinares@upsidecorp.ch>
+Date:   Wed Aug 7 16:37:03 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit 82ea40224e6a62da5128affde582965b322741c3[m
+Author: Carlos Linares <clinares@upsidecorp.ch>
+Date:   Wed Aug 7 16:35:34 2013 -0430
+
+    Funcionalidad subir banner, arreglo del popover menu
+    
+    Se agrego funcionalidad de subir banner
+    Arreglo del popover del menu
+
+[33mcommit cfa06e53a114ee444cea9183300d9a698976dba1[m
+Author: Yondri Roa <yroa@upsidecorp.ch>
+Date:   Wed Aug 7 15:55:58 2013 -0430
+
+    Invitaciones por facebook (2)
+
+[33mcommit cca246e195631c07678f5330781afcd0bfeb47b4[m
+Merge: 10d6f92 b8c7f3d
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Wed Aug 7 10:08:47 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit 10d6f924005502349773100ed29d0cea372ba979[m
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Wed Aug 7 10:08:36 2013 -0430
+
+    Activos graficos
+
+[33mcommit b8c7f3de2971dca8f0158975ee82eeab6df56155[m
+Merge: 211503a 28a17f1
+Author: Carlos Linares <clinares@upsidecorp.ch>
+Date:   Tue Aug 6 16:14:07 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit 211503a332ae076c063febc21e5cc1d56dadb187[m
+Author: Carlos Linares <clinares@upsidecorp.ch>
+Date:   Tue Aug 6 15:57:59 2013 -0430
+
+    OptimizaciÃ³n de dropdown del menu
+    
+    Se agrego condicion para el click del dropdown del menu
+
+[33mcommit 28a17f1c8660eb1561961c62f2fd2f375a3cf6dd[m
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Mon Aug 5 19:25:56 2013 -0430
+
+    General minor fixes
+
+[33mcommit 68abaa9806161d5942eb2ecb0969d1dd5f185c79[m
+Merge: 82bc416 fd85abf
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Mon Aug 5 18:58:56 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit fd85abf2778bfd756a01faedd2646474d030bdad[m
+Merge: 3d88622 62d7c56
+Author: juanrules <dduque@upsidecorp.ch>
+Date:   Mon Aug 5 18:26:02 2013 -0430
+
+    Merge branch 'master' of https://git.assembla.com/personaling
+
+[33mcommit 3d88622c75b8a6f5f1df14ea3e167dd3a88ebea9[m
+Author: juanrules <dduque@upsidecorp.ch>
+Date:   Mon Aug 5 18:25:01 2013 -0430
+
+    Perfil del PS
+
+[33mcommit 62d7c56542f5d76f78c4e64ef2e55c0079109ec3[m
+Author: Carlos Linares <clinares@upsidecorp.ch>
+Date:   Mon Aug 5 18:23:42 2013 -0430
+
+    Side bar baja con scroll en admin, html notificaciones, popover
+    
+    *Agregado bajado de sidebar a algunos menus de admin
+    *Reparado bug de accion de lista de usuario
+    *Arreglo No definitivo de popover
+
+[33mcommit ee262513243580579a5e2a9cc160bc533dec756a[m
+Merge: decb051 16369bf
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Mon Aug 5 18:20:13 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit decb0514bb187a8b2450e5c4098f0102202e37b0[m
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Mon Aug 5 18:19:01 2013 -0430
+
+    Mas bug de look
+
+[33mcommit 16369bfaa86c722aac42369e2743df59500fded3[m
+Merge: 3d5b632 86b422b
+Author: Yondri Roa <yroa@upsidecorp.ch>
+Date:   Mon Aug 5 17:11:09 2013 -0430
+
+    Merge branch 'master' of https://git.assembla.com/personaling
+
+[33mcommit 3d5b632f5cd90286064c30b7d4b4598fdefc1448[m
+Author: Yondri Roa <yroa@upsidecorp.ch>
+Date:   Mon Aug 5 17:09:57 2013 -0430
+
+    Arreglados varios bugs en el proceso de compra.
+
+[33mcommit 86b422b26131161c27413c8e3a28537b0dc243cc[m
+Merge: b51bbbe 549f358
+Author: juanrules <dduque@upsidecorp.ch>
+Date:   Mon Aug 5 17:01:31 2013 -0430
+
+    Merge branch 'master' of https://git.assembla.com/personaling
+
+[33mcommit b51bbbe60e7062feb3a1efaa5fa4388aede58585[m
+Author: juanrules <dduque@upsidecorp.ch>
+Date:   Mon Aug 5 17:00:38 2013 -0430
+
+    Perfil publico del personal shopper
+
+[33mcommit 82bc4169cd8485c86cdb6e138108841fb5c99dbe[m
+Merge: ce09854 549f358
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Mon Aug 5 15:25:24 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit ce098547ff1737d21863f2f6ffdbe5ca05ea71a0[m
+Author: Juan Pernia <jpernia@upsidecorp.ch>
+Date:   Mon Aug 5 15:25:07 2013 -0430
+
+    Activos graficos
+
+[33mcommit 549f3589d9ee28468905c446d2cb6c173f886fb0[m
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Mon Aug 5 12:40:56 2013 -0430
+
+    Mas arreglos en bug al crear look
+
+[33mcommit 8576c335be1b201e8b8f4efe95d7a696958a980d[m
+Merge: cb596a6 fb5712d
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Mon Aug 5 09:43:19 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit cb596a696e18d11fc435abc426308bf1bcd08953[m
+Merge: d75e850 35f547c
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Mon Aug 5 09:42:24 2013 -0430
+
+    Merge branch 'master' of git.assembla.com:personaling
+
+[33mcommit fb5712dedb03783fb9ff6382fa26b7b314c4e5d0[m
+Merge: 47e8add 35f547c
+Author: Yondri Roa <yroa@upsidecorp.ch>
+Date:   Mon Aug 5 09:42:23 2013 -0430
+
+    Merge branch 'master' of https://git.assembla.com/personaling
+
+[33mcommit d75e8507b069e7b5048e51a7b87f79cc75d1dac2[m
+Author: Rafael Palma <rpalma@upsidecorp.ch>
+Date:   Mon Aug 5 09:42:14 2013 -0430
+
+    Arreglo de bug en crear look
+
+[33mcommit 47e8addb1000b0d0bb52ff75d84941a7cd6016ff[m
+Author: Yondri Roa <yroa@upsidecorp.ch>
+Date:   Mon Aug 5 09:41:29 2013 -0430
+
+    Bugs de ciudades en recibos y facturas
+
+[33mcommit 35f547c4386ef659f859af0905da85ce9eff490b[m
+Author: Carlos Linares <clinares@upsidecorp.ch>
+Date:   Mon Aug 5 09:34:18 2013 -0430
+
+    Arreglo no definitivo de Popups
+    
+    Esta algo solventado lo de Popups, aÃºn falta
+
+[33mcommit 8c7ddd7f8efa8e9a9a80706c9391eb5d7d5fa270[m
+Author: Carlos Linares <clinares@upsidecorp.ch>
+Date:   Fri Aug 2 18:18:10 2013 -0430
+
+    Ocultado opciones Editar Producto, Agregado en Cont. Notificaciones
+    
+    * Ocultado Duplicar y Borrar

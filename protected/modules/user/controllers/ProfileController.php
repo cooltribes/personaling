@@ -342,7 +342,10 @@ class ProfileController extends Controller
 				foreach ($images as $image => $pic) {
 	            	$nombre = Yii::getPathOfAlias('webroot').'/images/banner/'.$id.'/'. $image;	
 	            	$extension = '.'.$pic->extensionName;
-					
+					$model->banner_url = '/images/banner/'. $id .'/'. $image .$extension;
+				 
+				 if (!$model->save())	
+						Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
 					if( $extension == '.jpg' || $extension == '.png' || $extension == '.gif' ){
 		            	if($pic->saveAs($nombre . $extension)){
 			                Yii::app()->user->updateSession();
@@ -360,7 +363,7 @@ class ProfileController extends Controller
 
 		}
 
-		$this->render('banner');
+		$this->render('banner', array('user'=>$model));
 
 	}
 

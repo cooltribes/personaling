@@ -26,7 +26,7 @@ class AdminController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 
-				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks','toggle_ps','toggle_admin'),
+				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks','toggle_ps','toggle_admin','resendvalidationemail'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -335,6 +335,27 @@ if(isset($_POST['Profile']))
 		));
 	}
 
+	public function actionReSendValidationEmail($id)
+	{
+		
+
+			$model = User::model()->notsafe()->findByPk( $id );
+			$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
+			
+			$message            = new YiiMailMessage;
+			$message->view = "mail_template";
+			$subject = 'Activa tu cuenta en Personaling';
+			$body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;			
+			$params              = array('subject'=>$subject, 'body'=>$body);
+			$message->subject    = $subject;
+			$message->setBody($params, 'text/html');                
+			$message->addTo($model->email);
+			$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+			Yii::app()->mail->send($message);
+			Yii::app()->user->setFlash('success',"El email de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
+			$this->redirect(array('/user/admin'));
+		
+	}
 
 	/**
 	 * Deletes a particular model.

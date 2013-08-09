@@ -255,10 +255,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               	?>
                   Productos individuales: <?php echo $indiv; ?></h5>
                 <hr/>
-                <label class="checkbox">
+<!--                 <label class="checkbox">
                   <input type="checkbox">
                   Envolver y enviar como regalo (9Bs. Adicionales) </label>
-                <hr/>
+                <hr/> -->
                 <div class=" margin_bottom">
                   <div class="tabla_resumen_bolsa">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">

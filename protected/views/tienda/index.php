@@ -140,7 +140,7 @@
           </select>
           <p></p>
           <div class="input-append">
-            <input id="busqueda" name="busqueda" type="text" placeholder="Buscar por palabras clave">
+            <input id="busqueda" name="busqueda" type="text" placeholder="Buscar por palabras clave" width=223px>
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
         </form>

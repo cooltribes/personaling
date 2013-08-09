@@ -8,10 +8,10 @@
 
 <?php //Yii::app()->bootstrap->register(); ?>
 <!-- Le STYLES -->
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" />
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" /> -->
 
 
-<?php //Yii::app()->less->register(); ?>
+<?php Yii::app()->less->register(); ?>
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
@@ -129,7 +129,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=>array(
                     array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
                     array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
-                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    

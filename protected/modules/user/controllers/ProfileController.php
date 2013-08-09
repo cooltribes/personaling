@@ -109,7 +109,6 @@ class ProfileController extends Controller
     public function actionSaveInvite(){
         $usuario = $this->loadUser();
         if(isset($_POST['to'])){
-        	echo $_POST['request'].' - '.$_POST['to'].' - '.$_POST['nombre'];
             //foreach ($_POST['to'] as $fb_id) {
                 //echo 'user_id: '.$usuario->id.' - fb_id_invitado: '.$fb_id;
                 $invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$_POST['to']));
@@ -123,8 +122,10 @@ class ProfileController extends Controller
 						$invite->nombre_invitado = $_POST['nombre'];
 					}
                     $invite->save();
+					//echo 'Request controller: '.$invite->request_id;
                 }else{
                 	$invite->fecha = date('Y-m-d H:i:s');
+					$invite->request_id = $_POST['request'];
 					$invite->save();
                 }
             //}
@@ -217,11 +218,18 @@ class ProfileController extends Controller
 	public function actionBorrardireccion($id)
 	{
 		$direccion = Direccion::model()->findByPk($id);
+		$user = $this->loadUser();
+		$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
+		$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
 		
-		if($direccion->delete()){
-			Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+		if($facturas1 == 0 && $facturas2 == 0){
+			if($direccion->delete()){
+				Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+			}else{
+				Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+			}
 		}else{
-			Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+			Yii::app()->user->setFlash('error',UserModule::t("La dirección seleccionada no se puede eliminar"));
 		}
 		$this->redirect(array('direcciones'));		
 	}

@@ -1,5 +1,5 @@
 <?php
-					if (isset($categoria_padre))
+					if (isset($categoria_padre) ){
 					echo CHtml::ajaxLink(
 						  'Atras',
 						  Yii::app()->createUrl( 'look/categorias'),
@@ -24,6 +24,7 @@
 						    'draggable'=>"false",
 						  )
 						);
+					}
 					?>	
 <div class="row-fluid"><ul class="thumbnails">
               <?php

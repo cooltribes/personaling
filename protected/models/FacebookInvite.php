@@ -100,7 +100,7 @@ class FacebookInvite extends CActiveRecord
 		$criteria->compare('request_id',$this->request_id);
 		$criteria->compare('nombre_invitado',$this->nombre_invitado);
 		$criteria->compare('fecha',$this->fecha,true);
-		$criteria->compare('estado',$this->estado);
+		//$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -129,7 +129,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=>array(
                     array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
                     array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
-                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    

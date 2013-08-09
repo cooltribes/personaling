@@ -218,11 +218,18 @@ class ProfileController extends Controller
 	public function actionBorrardireccion($id)
 	{
 		$direccion = Direccion::model()->findByPk($id);
+		$user = $this->loadUser();
+		$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
+		$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
 		
-		if($direccion->delete()){
-			Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+		if($facturas1 == 0 && $facturas2 == 0){
+			if($direccion->delete()){
+				Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+			}else{
+				Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+			}
 		}else{
-			Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+			Yii::app()->user->setFlash('error',UserModule::t("La dirección seleccionada no se puede eliminar"));
 		}
 		$this->redirect(array('direcciones'));		
 	}

@@ -80,7 +80,7 @@ class ProfileController extends Controller
 			$producto = new Producto;
 			
 			$dataprod = $producto->ProductosLook($_GET['id']); 
-			$dataprod->setPagination(array('pageSize'=>9)); 
+			//$dataprod->setPagination(array('pageSize'=>9)); 
 						
 			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}

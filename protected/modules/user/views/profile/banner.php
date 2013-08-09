@@ -40,8 +40,9 @@
                   <h1>Tu Banner</h1>
 <p>Puedes editar o cambiar tu banner usando las opciones a continuación:</p>
     	<div id="container" class="text_align_center margin_bottom margin_top" >
-    		
-    		<img src="http://placehold.it/870x90">
+    		<?php if( $user->banner_url != null ){ ?>
+        <img src="<?php echo Yii::app()->baseUrl.$user->banner_url; ?>">
+        <?php } ?>
         </div> <div class="text_align_center">
 <!--     		<div id="boton_original" class="btn">original</div> 
     		<div id="boton_mas" class="btn">+</div> 

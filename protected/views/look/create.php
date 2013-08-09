@@ -119,8 +119,10 @@ function handleDrop(e) {
 		    //});	
 			//Hace draggable al obejto	
 			$(".new",contenedor).draggable( {
+				//axis: 'y', 
+				containment: 'parent',
 		    cursor: 'move',
-		    containment: 'document',
+		   // containment: 'document',
 		    start: function( event, ui ) { 
 		    	// calcular el mayor z-index y sumarle uno
 		    	var mayor = 0;
@@ -145,6 +147,7 @@ function handleDrop(e) {
 			});
 			// EVENTO PARA ROTACION 
 			$('.rotar',contenedor).draggable({
+				
 			    handle: '.rotar',
 			    opacity: 0.01, 
 			    helper: 'clone',
@@ -301,7 +304,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         -->
         <hr/>
         <!-- CANVAS ON -->
-        <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px">
+        <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px" id="div_canvas">
           <?php 
         
         if (count($model->lookhasproducto)){

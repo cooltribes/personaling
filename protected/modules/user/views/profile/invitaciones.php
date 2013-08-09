@@ -74,7 +74,10 @@ $create_date = date('j M Y', $create_time);
                     <h1>Invita tus amig@s a Personaling</h1>
                 </div>
                             
-            
+            	<div class="span8 padding_bottom_small">
+            		<p>¡Bienvenida! Ya eres parte de Personaling.com; desde hoy tendrás a la distancia de un click las mejores marcas y asesoría de moda hecha por expertos.</p>
+            		<p>¿Quieres invitar a tus amigas a probar nuestro servicio de Personal Shopper? Anímate, ellas te lo agradecerán.</p>
+            	</div>
                 
                 <div class="row-fluid margin_bottom margin_top padding_top">
                     <div class="span5">
@@ -99,11 +102,11 @@ $create_date = date('j M Y', $create_time);
                             <div class="control-group">
                                 <label  class="control-label required">Escribe un mensaje personal: </label>
                                 <div class="controls">
-                                    <textarea class="span5" rows="4">Mira looks creados por Daniela Kosan, Chiquibquirá Delgado y más artistas.</textarea>
+                                    <textarea class="span5" rows="4">Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.</textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="span3"><img src="images/img_libreta.jpg" width="240" height="240" alt="Correos"></div></div>
+                        <div class="span3"><img src="<?php echo Yii::app()->baseUrl; ?>/images/img_libreta.jpg" width="240" height="240" alt="Correos"></div></div>
                         <div class="form-actions"> <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Enviar invitaciones</a> </div>
                     </fieldset>
                 </form>
@@ -240,14 +243,15 @@ $create_date = date('j M Y', $create_time);
 			for(var i = 0; i < response.to.length; i++){
 				//console.log('id: '+response.to[i]);
 				var id_actual = response.to[i];
-				//console.log('variable: '+id_actual);
+				var id_request = response.request;
+				//console.log('request: '+id_request);
 				FB.api('/'+id_actual, function(user) {
 					//console.log('ID: '+user.id);
 					$.ajax({
 						type: "post",
 						dataType: 'html',
 						url: "saveInvite", // action 
-						data: { 'request': response.request, 'to': user.id, 'nombre': user.name }, 
+						data: { 'request': id_request, 'to': user.id, 'nombre': user.name }, 
 						success: function (data) {
 							//console.log('invite saved: '+data);
 							$('#confirmacion_facebook').show('slow');

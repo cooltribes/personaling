@@ -51,7 +51,7 @@ class FacebookInvite extends CActiveRecord
 			array('user_id, fb_id_invitado, request_id, estado', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_id, fb_id_invitado, request_id, fecha, estado', 'safe', 'on'=>'search'),
+			array('id, user_id, fb_id_invitado, request_id, nombre_invitado, fecha, estado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,6 +77,7 @@ class FacebookInvite extends CActiveRecord
 			'user_id' => 'User',
 			'fb_id_invitado' => 'Fb Id Invitado',
 			'request_id' => 'Request',
+			'nombre_invitado' => 'Nombre Invitado',
 			'fecha' => 'Fecha',
 			'estado' => 'Estado',
 		);
@@ -97,8 +98,9 @@ class FacebookInvite extends CActiveRecord
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('fb_id_invitado',$this->fb_id_invitado);
 		$criteria->compare('request_id',$this->request_id);
+		$criteria->compare('nombre_invitado',$this->nombre_invitado);
 		$criteria->compare('fecha',$this->fecha,true);
-		$criteria->compare('estado',$this->estado);
+		//$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

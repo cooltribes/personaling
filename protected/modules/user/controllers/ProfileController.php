@@ -16,9 +16,13 @@ class ProfileController extends Controller
 	public function actionInvitaciones()
 	{
 		$model = $this->loadUser();
+		$invitacion = new FacebookInvite;
+		$invitacion->user_id = $model->id;
+		$dataProvider = $invitacion->search();
 	    $this->render('invitaciones',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
+			'dataProvider'=>$dataProvider,
 	    ));
 	}
 	
@@ -73,8 +77,12 @@ class ProfileController extends Controller
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
+			$producto = new Producto;
+			
+			$dataprod = $producto->ProductosLook($_GET['id']); 
+			//$dataprod->setPagination(array('pageSize'=>9)); 
 						
-			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook));
+			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}
 		else{
 			// redireccion cuando intenten mostrar un perfil via url u ocurra un error		
@@ -101,19 +109,27 @@ class ProfileController extends Controller
     public function actionSaveInvite(){
         $usuario = $this->loadUser();
         if(isset($_POST['to'])){
-            foreach ($_POST['to'] as $fb_id) {
+            //foreach ($_POST['to'] as $fb_id) {
                 //echo 'user_id: '.$usuario->id.' - fb_id_invitado: '.$fb_id;
-                $invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$fb_id));
+                $invite = FacebookInvite::model()->findByAttributes(array('user_id'=>$usuario->id, 'fb_id_invitado'=>$_POST['to']));
                 if(!$invite){
                     $invite = new FacebookInvite;
                     $invite->user_id = $usuario->id;
-                    $invite->fb_id_invitado = $fb_id;
+                    $invite->fb_id_invitado = $_POST['to'];
                     $invite->request_id = $_POST['request'];
                     $invite->fecha = date('Y-m-d H:i:s');
+					if(isset($_POST['nombre'])){
+						$invite->nombre_invitado = $_POST['nombre'];
+					}
                     $invite->save();
+					//echo 'Request controller: '.$invite->request_id;
+                }else{
+                	$invite->fecha = date('Y-m-d H:i:s');
+					$invite->request_id = $_POST['request'];
+					$invite->save();
                 }
-            }
-            Yii::app()->user->setFlash('success',"Amigos invitados");
+            //}
+            //Yii::app()->user->setFlash('success',"Amigos invitados");
         }
         //$this->redirect(array('profile/direcciones'), false);
         //$this->refresh();
@@ -202,11 +218,18 @@ class ProfileController extends Controller
 	public function actionBorrardireccion($id)
 	{
 		$direccion = Direccion::model()->findByPk($id);
+		$user = $this->loadUser();
+		$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
+		$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
 		
-		if($direccion->delete()){
-			Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+		if($facturas1 == 0 && $facturas2 == 0){
+			if($direccion->delete()){
+				Yii::app()->user->setFlash('success',UserModule::t("Dirección eliminada exitosamente."));
+			}else{
+				Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+			}
 		}else{
-			Yii::app()->user->setFlash('error',UserModule::t("La dirección no pudo ser eliminada."));
+			Yii::app()->user->setFlash('error',UserModule::t("La dirección seleccionada no se puede eliminar"));
 		}
 		$this->redirect(array('direcciones'));		
 	}

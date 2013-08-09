@@ -116,6 +116,31 @@
       <div class="well">
         <h3 class="muted margin_bottom_small">Productos Recomendados</h3>
         <div class="items row-fluid tienda_productos">
+        	
+ 	<?php
+
+		$template2 = ' 
+	       {items}
+		   </div>
+
+		   <div class="clearfix">
+	        <div class="pull-right">
+	      		{pager}
+			</div>
+			</div>
+			
+	    ';
+		
+		$this->widget('zii.widgets.CListView', array(
+		    'id'=>'list-prods',
+		    'dataProvider'=>$dataprods,
+		    'itemView'=>'_datosprod',
+		    'afterAjaxUpdate'=>" function(id, data) {
+							} ",
+		    'template'=>$template2,
+		));   
+	?>
+      <!--  	
           <article class="span4 item_producto">
             <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/1/87.jpg" id="img-1" class="img_hover"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/1/88.jpg" style="display:none" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
               <header>
@@ -130,69 +155,8 @@
                 <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/10">ðŸ”</a></header>
               <span class="precio">Bs. 2.500</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(10)" id="like10">â™¡</a></div>
           </article>
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/11/78.jpg" id="img-11" class="img_hover"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Medias veladas" href="../producto/detalle/11">Medias veladas</a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/11">ðŸ”</a></header>
-              <span class="precio">Bs. 150</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(11)" id="like11">â™¡</a></div>
-          </article>
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/15/80.jpg" id="img-15" class="img_hover"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Top multicolor" href="../producto/detalle/15">Top multicolor</a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/15">ðŸ”</a></header>
-              <span class="precio">Bs. 300</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(15)" id="like15">â™¡</a></div>
-          </article>
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/20/93.jpg" id="img-20" class="img_hover" style="display: inline;"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/20/94.jpg" style="display: none;" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Tacones de Corcho " href="../producto/detalle/20">Tacones de Corcho </a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/20">ðŸ”</a></header>
-              <span class="precio">Bs. 180</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(20)" id="like20">â™¡</a></div>
-          </article>
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/24/101.jpg" id="img-24" class="img_hover"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/24/102.jpg" style="display:none" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Tshirt" href="../producto/detalle/24">Tshirt</a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/24">ðŸ”</a></header>
-              <span class="precio">Bs. 400</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(24)" id="like24">â™¡</a></div>
-          </article>
-           <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/15/80.jpg" id="img-15" class="img_hover"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Top multicolor" href="../producto/detalle/15">Top multicolor</a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/15">ðŸ"</a></header>
-              <span class="precio">Bs. 300</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(15)" id="like15">â™¡</a></div>
-          </article>
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/20/93.jpg" id="img-20" class="img_hover" style="display: inline;"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/20/94.jpg" style="display: none;" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Tacones de Corcho " href="../producto/detalle/20">Tacones de Corcho </a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/20">ðŸ"</a></header>
-              <span class="precio">Bs. 180</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(20)" id="like20">â™¡</a></div>
-          </article>
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/24/101.jpg" id="img-24" class="img_hover"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/24/102.jpg" style="display:none" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Tshirt" href="../producto/detalle/24">Tshirt</a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/24">ðŸ"</a></header>
-              <span class="precio">Bs. 400</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(24)" id="like24">â™¡</a></div>
-          </article>
-        </div>
-        <div class="clearfix">
-          <div class="pagination pull-right">
-            <ul>
-              <li><a href="#">Prev</a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li><a href="#">Next</a></li>
-            </ul>
-          </div>
-        </div>
+-->
+
       </div>
     </div>
   </div>

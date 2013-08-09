@@ -14,31 +14,31 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
         <div class="clearfix">
 <h2>Elementos del Branding:</h2>
             <ul class="thumbnails margin_top">
-                    <li class="span3">
+                    <li class="span4">
                         <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/logo_slogan_preview.jpg"  alt="">
                            <div class="caption"> <h3>Logotipo</h3>
-                            <a href="" class="btn btn-info btn-block" title="Logotipo en PNG">Descargar en PNG</a> <a href="" title="Logotipo en JPG" class="btn  btn-info btn-block">Descargar en     JPG</a>
+                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Logo_conSlogan.png" class="btn btn-info btn-block" title="Logotipo en PNG">Descargar en PNG</a> <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/logo_sinslogan.jpg" title="Logotipo en JPG" class="btn  btn-info btn-block">Descargar en     JPG</a>
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Logo.eps" class="btn btn-info btn-block" title="Logotipo en EPS">Descargar en EPS</a>
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_logo_kit.zip" title="Ausencia de color, Unicolor, Para fondos oscuros" class="btn btn-info btn-block">Descargar Kit del logo (Colores, blanco y negro...)</a>
         
                         </div>
                         </div>
                     </li>
-                     <li class="span3">
+                     <li class="span4">
                         <div class="thumbnail"> 
                             <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/icono_preview.jpg"  alt="">
                           <div class="caption">  <h3>Icono</h3>
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Icono/icono.png" class="btn  btn-info btn-block" title="Icono en PNG">Descargar en PNG</a> 
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Icono/icono.jpg" title="Icono en JPG" class="btn  btn-info btn-block">Descargar en JPG</a>
-                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_kit_icono.zip" title="Blonco y negro, positivo,..." class="btn btn-info btn-block">Descargar Kit del icono</a>
+                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Icono/Personaling_kit_icono.zip" title="Blonco y negro, positivo,..." class="btn btn-info btn-block">Descargar Kit del icono</a>
         
                          </div>
                         </div>
                     </li>
-                    <li class="span3">
+                    <li class="span4">
                                                 <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/manual_preview.jpg"  alt="">
                                                   <div class="caption">  <h3>Manual de Identidad Gráfica</h3>
-                                                    <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Manual_identidad_grafica/Personaling_Manual.pdf" class="btn  btn-info btn-block" title="Manchas y objetos">Descargar ZIP</a></p></div>
+                                                    <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Manual_identidad_grafica/Personaling_Manual.pdf" class="btn  btn-info btn-block" title="Manchas y objetos">Descargar PDF</a></p></div>
                                                 </div>
                                             </li>
                     
@@ -46,20 +46,20 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
                 </ul></div>
                 <h2>Material POP</h2>
 <ul class="thumbnails margin_top">
- <li class="span3">
+ <li class="span4">
                         <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer_preview.jpg"  alt="">
                           <div class="caption">  <h3>Flyer</h3>
                             <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer/Personaling_flyer.zip" class="btn  btn-info btn-block" title="Icono en PNG">Descargar ZIP</a> </p></div>
                         </div>
                     </li>
 
-                    <li class="span3">
+                    <li class="span4">
                         <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/bag_preview.jpg"  alt="">
                           <div class="caption">  <h3>Shopping Bag</h3>
                             <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/bag/Personaling_shopping_bag.zip" class="btn  btn-info btn-block" title="Icono en PNG">Descargar ZIP</a></p></div>
                         </div>
                     </li>
-                     <li class="span3">
+                     <li class="span4">
                                     <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/elementos_graficos_preview.jpg"  alt="">
                                       <div class="caption">  <h3>Elementos gráficos</h3>
                                         <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Elementos_graficos/Personaling_elementos_graficos.zip" class="btn  btn-info btn-block" title="Manchas y objetos">Descargar ZIP</a></p></div>

@@ -1,13 +1,15 @@
 <div class="row-fluid">
 <?php
+					if ($categoria_padre > 0)
 					echo CHtml::ajaxLink(
-						  'Atras',
+						  'Atras ', 
 						  Yii::app()->createUrl( 'look/categorias'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
 						    'beforeSend' => "function( request )
 						                     {
 						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       
 						                     }",
 						    'success' => "function( data )
 						                  {
@@ -42,6 +44,7 @@
               			$image = CHtml::image("http://placehold.it/140");
 
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
+					$gif_url = '"'.Yii::app()->baseUrl.'/images/loading.gif"';
 					echo CHtml::ajaxLink(
 						  $image,
 						  Yii::app()->createUrl( 'look/categorias'),
@@ -50,12 +53,18 @@
 						    'beforeSend' => "function( request )
 						                     {
 						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       $('#div_categorias').css('background','white url(".$gif_url.") center center no-repeat');
+						                       //alert('white url(".$gif_url.") center center no-repeat');
 						                     }",
 						    'success' => "function( data )
 						                  {
 						                    // handle return data
 						                    //alert( data );
 						                    $('#div_categorias').html(data);
+						                    setTimeout(function() {
+											    $('#div_categorias').css('background','white');
+											}, 100);
+						                     
 						                  }",
 						    'data' => array( 'padreId' => $categoria->id, 'val2' => '2' )
 						  ),

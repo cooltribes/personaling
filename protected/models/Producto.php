@@ -101,6 +101,8 @@ class Producto extends CActiveRecord
 			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
                 'select'=> 'SUM(cantidad)',
                 ),
+            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+            
 		);
 	}
  
@@ -479,6 +481,26 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 	));
 		
 	}
+	
+		
+	public function ProductosLook($personal)
+	{
+		$sql = "SELECT c.* FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id group by b.producto_id order by a.created_on DESC";
+		
+		$sql2 = "SELECT count( distinct b.producto_id ) as total FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id order by a.created_on DESC";
+		$num = Yii::app()->db->createCommand($sql2)->queryScalar();
+		$count = $num;	
+		
+		return new CSqlDataProvider($sql, array(
+		    'totalItemCount'=>$count,
+			 'pagination'=>array(
+				'pageSize'=>9,
+			),		    
+
+		));  
+	
+	}
+	
 
 	public function nueva($todos)
 	{

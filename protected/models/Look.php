@@ -74,7 +74,7 @@ class Look extends CActiveRecord
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			// Please remove those attributes that should not be searched. 
 			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter', 'safe', 'on'=>'search'),
 		);
 	}
@@ -275,6 +275,41 @@ class Look extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function ProductosLook($personal)
+	{
+		// llega un ID de color
+
+		$criteria=new CDbCriteria;
+
+        $criteria->select = '*';
+    //    $criteria->join ='JOIN tbl_look_has_producto b ON tbl_look_has_producto.look_id = t.id';
+	//	$criteria->join ='JOIN tbl_producto ON tbl_producto.id = tbl_look_has_producto.producto_id';
+	
+//	$criteria->with = array('lookhasproducto');
+	$criteria->with = array('productos_todos');
+		
+        //$criteria->addCondition('t.estado = 0');
+	//	$criteria->addCondition('c.id = b.producto_id AND a.id = b.look_id');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+		$criteria->addCondition('t.user_id = :tres');
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+	//	$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
+		$criteria->params = array(":tres" => $personal); // color que llega
+		$criteria->group = 'producto_id';
+		$criteria->order = "t.created_on DESC";
+		
+		$criteria->together = true;
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
 	}
 	
 	

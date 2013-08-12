@@ -321,7 +321,6 @@ $this->breadcrumbs=array(
                      'success' => "function( data )
 		                  {
 		                    // handle return data
-		                    //alert( data );
 		                    $('#fieldset_tallacolor').html(data);
 		                  }",
 		                  'data'=>array('id'=>$model->id),
@@ -414,38 +413,84 @@ $this->breadcrumbs=array(
                     	
                  <?php 
 		 
-		 
-				   
-				    echo CHtml::ajaxLink(
-					  "Guardar y avanzar",
-					 CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
-					  array(
-				   
-				    	    'type' => 'POST',
-				    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
-		                    'success' => "function( data )
-				                  {
+					echo CHtml::ajaxLink(
+					 "Guardar y avanzar",
+					CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
+					  array( // ajaxOptions
+					    'type' => 'POST',
+					    'beforeSend' => "function( request )
+					                     {
+											$('#fieldset_tallacolor input').each(function(){
+										    if($.trim($(this).val()) == ''){
+										        alert('asdsad');
+										    }
+											});					                     	
+					                     
+					                     }",
+					    'success' => "function( data )
+					                  {
+						                   data = JSON.parse( data );
+						                   if(data.status=='success'){
+						                   		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
+						                        //$('.error').hide();
+						                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+											}else{
+												id = data.id;
+												delete data['id'];
+						                        $.each(data, function(key, val) {
+						                        	key_tmp = key.split('_');
+													key_tmp.splice(1,0,id);
+						                        	key = key_tmp.join('_');
+							                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+							                        $('#Tallacolor-Form #'+key+'_em_').show();
+						                        });
+											}
+					                  }",
+					    'data' => "js:$('#Tallacolor-Form').serialize()",
+					  ),
+					  array( //htmlOptions
+					    'href' => CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
+					  ),
+					  array('id'=>'buttonGuardar')
+					);		 
 
-				                   data = JSON.parse( data );
-				                   if(data.status=='success'){
-				                   		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
-				                        //$('.error').hide();
-				                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
-									}else{
-										id = data.id;
-										delete data['id'];
-				                        $.each(data, function(key, val) {
-				                        	key_tmp = key.split('_');
-											key_tmp.splice(1,0,id);
-				                        	key = key_tmp.join('_');
-					                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
-					                        $('#Tallacolor-Form #'+key+'_em_').show();
-				                        });
-									}
-				                  }",
-					),
-					array('id'=>'buttonGuardar')
-				); 
+
+				   
+				 //    echo CHtml::ajaxLink(
+					//   "Guardar y avanzar",
+					//  CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
+					//   array(
+				   
+				 //    	    'type' => 'POST',
+				 //    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
+				 //    	    'beforeSend '=> 'function()
+				 //    	    {
+				 //    	    	alert("hola");
+				    	    
+				 //    	    }',				                  
+		   //                  'success' => "function( data )
+				 //                  {
+
+				     //               data = JSON.parse( data );
+				     //               if(data.status=='success'){
+				     //               		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
+				     //                    //$('.error').hide();
+				     //                    //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+									// }else{
+									// 	id = data.id;
+									// 	delete data['id'];
+				     //                    $.each(data, function(key, val) {
+				     //                    	key_tmp = key.split('_');
+									// 		key_tmp.splice(1,0,id);
+				     //                    	key = key_tmp.join('_');
+					    //                     $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+					    //                     $('#Tallacolor-Form #'+key+'_em_').show();
+				     //                    });
+									// }
+				 //                  }",
+					// ),
+					// array('id'=>'buttonGuardar')
+				//); 
 		
 				?>                     	
                     </li>
@@ -557,3 +602,11 @@ $script = "
 ";
 ?>
 <?php Yii::app()->clientScript->registerScript('botones',$script); ?>
+
+<script type="text/javascript">
+	$('input, textArea').each(function(){
+    if($.trim($(this).val()) == ''){
+        console.log(this,'is empty');
+    }
+	});
+</script>

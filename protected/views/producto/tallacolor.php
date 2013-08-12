@@ -422,7 +422,7 @@ $this->breadcrumbs=array(
 					                     {
 											$('#fieldset_tallacolor input').each(function(){
 										    if($.trim($(this).val()) == ''){
-										        alert('asdsad');
+										        alert('Vacio');
 										    }
 											});					                     	
 					                     

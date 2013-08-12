@@ -380,8 +380,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   </td>
-              </tr>
-              <?php echo 'tipo guia: '.$tipo_guia; ?>
+              </tr>          
               <tr>
                 <th class="text_align_left">Envío:</th>
                 <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
@@ -412,7 +411,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            <?php
 			}
             ?>
-            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button>
+            <!-- <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button> -->
             <!-- Forma de pago ON -->
             <div class="padding_left_small collapse" id="collapse2">
               

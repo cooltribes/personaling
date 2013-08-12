@@ -26,11 +26,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       
 	  	$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
 	  ?>
+	  <?php if( count( $direcciones ) > 0 ){ ?>
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <fieldset>
             <legend >Direcciones utilizadas anteriormente: </legend>
             <?php
-            
+            }
             if(isset($direcciones)){
 	       		foreach($direcciones as $cadauna){
 	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
@@ -93,9 +94,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			}
  	
       ?>
+ 	<?php if( count( $direcciones ) > 0 ){ ?>	      
        </fieldset>
-        </form>
-          </section>
+      </form>
+    </section>
+    <?php } ?>
 
       
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(

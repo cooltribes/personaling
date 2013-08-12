@@ -255,10 +255,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               	?>
                   Productos individuales: <?php echo $indiv; ?></h5>
                 <hr/>
-                <label class="checkbox">
+<!--                 <label class="checkbox">
                   <input type="checkbox">
                   Envolver y enviar como regalo (9Bs. Adicionales) </label>
-                <hr/>
+                <hr/> -->
                 <div class=" margin_bottom">
                   <div class="tabla_resumen_bolsa">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
@@ -288,7 +288,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						
 						$seguro = $t*0.013;
 						
-						$t += $seguro;
+						//$t += $seguro;
 			 			
 						// variables de sesion
 						Yii::app()->getSession()->add('subtotal',$totalPr);
@@ -311,10 +311,6 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       <tr>
                         <th class="text_align_left">I.V.A. (12%):</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
-                      </tr>
-                      <tr>
-                        <th class="text_align_left">Seguro:</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($seguro, ''); ?></td>
                       </tr>
                       <tr>
                         <th class="text_align_left"><h4>Subtotal:</h4></th>

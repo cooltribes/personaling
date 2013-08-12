@@ -384,7 +384,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <?php echo 'tipo guia: '.$tipo_guia; ?>
               <tr>
                 <th class="text_align_left">Envío:</th>
-                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
+                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left">I.V.A. (12%):</th>
@@ -393,10 +393,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <tr>
                 <th class="text_align_left">Descuento:</th>
                 <td class="text_align_right" id="descuento"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
-              </tr>
-              <tr>
-                <th class="text_align_left">Seguro:</th>
-                <td class="text_align_right" id="seguro"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($seguro, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>

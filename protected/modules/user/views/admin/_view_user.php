@@ -1,4 +1,9 @@
+    
+<?php if($data->status == 0){ ?>
+    <tr class="warning">
+<?php } else{ ?>
     <tr>
+<?php } ?>
       <td><input name="Check" type="checkbox" value="Check"></td>
       <td>
       	<?php
@@ -13,10 +18,13 @@
         <?php echo $data->personal_shopper?'Personal Shopper':''; ?> </small></td>
       <td><small><?php echo $data->email; ?><br/>
         <strong>Telf.</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
-        <strong>Ciudad</strong>: <?php echo $data->profile->ciudad; ?>
-        
+        <strong>Ciudad</strong>: <?php echo $data->profile->ciudad; ?> <br/>
+        <?php if($data->status == 0){ ?>
+        <strong class="text-warning text-center">Cuenta no validada</strong>
+        <?php } ?>          
      </small>
         
+
         </td>
       <td><?php echo $data->ordenCount; ?></td>
       <td><?php echo $data->direccionCount; ?></td>
@@ -29,19 +37,25 @@
           <!-- Link or button to toggle dropdown -->
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
             <li>
-				<?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver',array("admin/view","id"=>$data->id));	?>          	
+        <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver',array("admin/view","id"=>$data->id)); ?>            
             </li>
       <li>
-      	
-       <?php echo CHtml::link('<i class="icon-edit">  </i>  Editar',array("admin/update","id"=>$data->id));	?>
+        
+       <?php echo CHtml::link('<i class="icon-edit">  </i>  Editar',array("admin/update","id"=>$data->id)); ?>
       </li>
       <li><a title="Cambiar contraseña" href="#">  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
+      <?php if($data->status == 0){ ?>
+      <li>
+        <?php echo CHtml::link('<i class="icon-refresh">  </i>  Reenviar Email de Verificación',array("admin/resendvalidationemail","id"=>$data->id)); ?>
+      </li>
+      <?php } ?>
       <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>
       <li><a title="Cargar Saldo" href="#">  <i class="icon-gift">  </i>  Cargar Saldo</a>
             <li class="divider"></li>
       <li><a title="Eliminar" href="#">  <i class="icon-trash">  </i>  Eliminar</a></li>
           </ul>
         </div>
-          
+      <?php if($data->status == 0){ ?>
+      <?php } ?>
       </td>
     </tr>

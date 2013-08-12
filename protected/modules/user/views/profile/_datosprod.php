@@ -14,6 +14,8 @@ $prod = Producto::model()->findByPk($data['id']);
 			}
 		}
 
+			$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$data['id']));
+
 			$a = CHtml::image($ima->getUrl(), "Imagen ", array("class"=>"img_hover","width" => "270", "height" => "270",'id'=>'img-'.$data['id']));
 			$b = '';
 			
@@ -30,7 +32,7 @@ $prod = Producto::model()->findByPk($data['id']);
 					$this->createUrl('modal',array('id'=>$data['id'])),
 						array(// for htmlOptions
 							'onclick'=>' {'.CHtml::ajax( array(
-						    'url'=>CController::createUrl('modal',array('id'=>$data['id'])),
+						    'url'=>CController::createUrl('modalshopper',array('id'=>$data['id'])),
 						    	'success'=>"js:function(data){ $('#myModal').html(data);
 											$('#myModal').modal(); }")).
 						         'return false;}',
@@ -41,18 +43,14 @@ $prod = Producto::model()->findByPk($data['id']);
 				</a>
 				<header><h3><a href='".Yii::app()->baseUrl."/producto/detalle/".$data['id']."' title='".$data['nombre']."'>".$data['nombre']."</a></h3>
 				<a href='".Yii::app()->baseUrl."/producto/detalle/".$data['id']."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
-				<span class='precio'>Bs. ".$prePub."</span>
-				<a id='like".$data['id']."' onclick='encantar(".$data['id'].")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
-
+				<span class='precio'>Bs. ".$prePub."</span>");
+				
+			if(isset($like)) // le ha dado like	
+				echo "<a id='like".$data['id']."' onclick='encantar(".$data['id'].")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>";
+			else 
+				echo "<a id='like".$data['id']."' onclick='encantar(".$data['id'].")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&#9825;</a></div></article></td>";
+				
+			
 
 ?>    
-      <!--    
-            <div class="producto"> <img width="270" height="270" alt="Imagen" src="http://personaling.com/site/images/producto/1/87.jpg" id="img-1" class="img_hover">
-            	<img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/1/88.jpg" style="display:none" class="img_hover_out"> 
-            	<a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Blusa Roja " href="../producto/detalle/1">Blusa Roja </a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/1">&#128269;</a></header>
-              <span class="precio">Bs. 200</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(1)" id="like1">&hearts;</a></div>
-          </article>
-          -->
+

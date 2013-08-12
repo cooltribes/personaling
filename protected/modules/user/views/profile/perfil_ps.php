@@ -52,22 +52,47 @@
         </div>
         <hr/>
       </aside>
-      <?php /*?>
-	   ----------------------------------------------------------------------------------------------
-		  NOTA: Sidebar con marcas preferidas y seguidores que será implementado en futuras versiones
-	   ----------------------------------------------------------------------------------------------
+
+<?php 
+
+$sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_producto b, tbl_producto c, tbl_marca d where a.user_id=".$model->id." and a.id = b.look_id and b.producto_id = c.id and d.id = c.marca_id group by d.id order by cant DESC";
+
+	$marcas = new CSqlDataProvider($sql, array(
+		    'TotalItemCount'=>6,
+		     'pagination'=>array(
+				'pageSize'=>6,
+			),		    
+		));  
+
+?>
+
       <h5>Marcas Preferidas</h5>
       <div class="card padding_xsmall">
         <ul class="row-fluid no_margin_left no_margin_bottom">
-          <li class="span4"><img width="84" alt="Nombre del usuario" src="http://placehold.it/90"></li>
-          <li class="span4"><img width="84" alt="Nombre del usuario" src="http://placehold.it/90"></li>
-          <li class="span4"><img width="84" alt="Nombre del usuario" src="http://placehold.it/90"></li>
-          <li class="span4"><img width="84" alt="Nombre del usuario" src="http://placehold.it/90"></li>
-          <li class="span4"><img width="84" alt="Nombre del usuario" src="http://placehold.it/90"></li>
-          <li class="span4"><img width="84" alt="Nombre del usuario" src="http://placehold.it/90"></li>
+        	
+        <?
+        foreach($marcas->getData() as $cadauna) {
+        	
+        	$marca = Marca::model()->findByPk($cadauna['id']); // Look::model()->findByPk($record['look_id']);
+			$ima = CHtml::image(Yii::app()->baseUrl.'/images/marca/'.$marca->id.'_thumb.jpg', $marca->nombre, array('width'=>84, 'height'=>84));
+ 			
+        
+        	 echo '<li class="span4">'.$ima.'</li>'; 
+          // <img width="84" alt="'.$marca->nombre.'" src="http://placehold.it/90">
+        }
+        // <li class="span4"><img width="84" alt="Nombre del usuario" src="http://placehold.it/90"></li>
+        ?>	
+          
         </ul>
       </div>
       <hr/>
+	   
+	   <?php /*?>
+	    * 
+	    * ----------------------------------------------------------------------------------------------
+		  NOTA: Sidebar con marcas preferidas y seguidores que será implementado en futuras versiones
+	   ----------------------------------------------------------------------------------------------
+	    * 
       <h5>Seguid@s</h5>
       <div class="card padding_xsmall no_margin_left no_margin_bottom">
         <div class="row-fluid">
@@ -122,6 +147,7 @@
 		$template2 = ' 
 	       {items}
 		   </div>
+		   </div>
 
 		   <div class="clearfix">
 	        <div class="pull-right">
@@ -136,84 +162,156 @@
 		    'dataProvider'=>$dataprods,
 		    'itemView'=>'_datosprod',
 		    'afterAjaxUpdate'=>" function(id, data) {
+						
+					$(document).ready(function() {
+  
+						var imag;
+						var original;
+						var segunda;
+
+						$('.producto').hover(function(){		
+							if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).hide();
+		
+								$(this).find('img').eq(0).next().show();
+							}
+						},function(){
+							if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).show();
+		
+								$(this).find('img').eq(0).next().hide();
+							}
+						});
+	
+				});
+
+
+			function encantar(id)
+   			{
+   				var idProd = id;
+
+   			
+   				$.ajax({
+			        type: 'post',
+			        url: '<?php echo Yii::app()->baseUrl; ?>/producto/encantar', // action Tallas de Producto
+			        data: { 'idProd':idProd}, 
+			        success: function (data) {
+				
+						if(data=='ok')
+						{					
+							var a = '♥';
+						
+							//$('#meEncanta').removeClass('btn-link');
+							$('a#like'+id).addClass('like-active');
+							$('a#like'+id).text(a);
+						
+						}
+					
+						if(data=='no'){
+							alert('Debes ingresar con tu cuenta de usuario o registrarte antes de dar Me Encanta a un producto');
+						}
+					
+						if(data=='borrado')
+						{
+							var a = '♡';
+							
+							$('a#like'+id).removeClass('like-active');
+							$('a#like'+id).text(a);
+						}
+					
+	       			}//success
+	       		})
+   		
+   		}	 
+				
 							} ",
 		    'template'=>$template2,
 		));   
 	?>
-      <!--  	
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/1/87.jpg" id="img-1" class="img_hover"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/1/88.jpg" style="display:none" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Blusa Roja " href="../producto/detalle/1">Blusa Roja </a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/1">ðŸ”</a></header>
-              <span class="precio">Bs. 200</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(1)" id="like1">â™¡</a></div>
-          </article>
-          <article class="span4 item_producto">
-            <div class="producto"> <img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/10/75.jpg" id="img-10" class="img_hover" style="display: inline;"><img width="270" height="270" alt="Imagen " src="http://personaling.com/site/images/producto/10/76.jpg" style="display: none;" class="img_hover_out"> <a data-toggle="modal" class="btn btn-block btn-small vista_rapida hidden-phone" role="button" href="#myModal">Vista RÃ¡pida</a>
-              <header>
-                <h3><a title="Jeans prelavado" href="../producto/detalle/10">Jeans prelavado</a></h3>
-                <a title="Ver detalle" class="ver_detalle entypo icon_personaling_big" href="../producto/detalle/10">ðŸ”</a></header>
-              <span class="precio">Bs. 2.500</span> <a class="entypo like icon_personaling_big" title="Me encanta" style="cursor:pointer" onclick="encantar(10)" id="like10">â™¡</a></div>
-          </article>
--->
 
-      </div>
+
     </div>
   </div>
 </div>
+
+    <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+	<?php $this->endWidget(); ?>
+
 <!-- /container --> 
 
-<!-------------- MODAL ON ---------------->
-<div id="myModal" class="modal hide tienda_modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
-    <h3 id="myModalLabel">Nombre del producto</h3>
-  </div>
-  <div class="modal-body">
-    <div class="row-fluid">
-      <div class="span7">
-        <div class="carousel slide" id="myCarousel">
-          <ol class="carousel-indicators">
-            <li class="" data-slide-to="0" data-target="#myCarousel"></li>
-            <li data-slide-to="1" data-target="#myCarousel" class="active"></li>
-            <li data-slide-to="2" data-target="#myCarousel" class=""></li>
-          </ol>
-          <div class="carousel-inner">
-            <div class="item"> <img alt="Nombre del producto" src="http://www.personaling.com/site/images/producto/54/149_orig.jpg" width="450px" height="450px" /> </div>
-            <div class="item active"> <img alt="Nombre del producto" src="http://www.personaling.com/site/images/producto/25/129_orig.jpg"  width="450px" height="450px" /> </div>
-            <div class="item"> <img alt="Nombre del producto" src="http://www.personaling.com/site/images/producto/15/80.jpg"  width="450px" height="450px" /> </div>
-          </div>
-          <a data-slide="prev" href="#myCarousel" class="left carousel-control">â€¹</a> <a data-slide="next" href="#myCarousel" class="right carousel-control">â€º</a> </div>
-      </div>
-      <div class="span5">
-        <div class="row-fluid call2action">
-          <div class="span7">
-            <h4 class="precio"><span>Subtotal</span> Bs. 
-              150</h4>
-          </div>
-          <div class="span5"> <a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a> </div>
-        </div>
-        <p class="muted t_small CAPS">Selecciona Color y talla </p>
-        <div class="row-fluid">
-          <div class="span6">
-            <h5>Colores</h5>
-            <div class="clearfix colores" id="vCo">
-              <div title="Rojo" class="coloress" style="cursor: pointer" id="8"><img src="/site/images/colores/C_Rojo.jpg"></div>
-            </div>
-          </div>
-          <div class="span6">
-            <h5>Tallas</h5>
-            <div class="clearfix tallas" id="vTa">
-              <div title="talla" class="tallass" style="cursor: pointer" id="10">S</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-  </div>
-</div>
 
-<!-------------- MODAL OFF ---------------->
+<script>
+
+$(document).ready(function() {
+  // Handler for .ready() called.
+  
+	var imag;
+	var original;
+	var segunda;
+
+	$('.producto').hover(function(){		
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).hide();
+		
+		$(this).find("img").eq(0).next().show();
+		}
+	},function(){
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).show();
+		
+		$(this).find("img").eq(0).next().hide();
+		}
+	});
+	
+});
+
+
+function encantar(id)
+   	{
+   		var idProd = id;
+   		//alert("id:"+idProd);		
+   		
+   		$.ajax({
+	        type: "post",
+	        url: "<?php echo Yii::app()->baseUrl; ?>/producto/encantar", // action Tallas de Producto
+	        data: { 'idProd':idProd}, 
+	        success: function (data) {
+				
+				if(data=="ok")
+				{					
+					var a = "♥";
+					
+					//$("#meEncanta").removeClass("btn-link");
+					$("a#like"+id).addClass("like-active");
+					$("a#like"+id).text(a);
+					
+				}
+				
+				if(data=="no")
+				{
+					alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar Me Encanta a un producto");
+					//window.location="../../user/login";
+				}
+				
+				if(data=="borrado")
+				{
+					var a = "♡";
+					
+					//alert("borrando");
+					
+					$("a#like"+id).removeClass("like-active");
+					//$("#meEncanta").addClass("btn-link-active");
+					$("a#like"+id).text(a);
+
+				}
+					
+	       	}//success
+	       })
+   		
+   		
+   	}  
+   	
+
+	
+</script>

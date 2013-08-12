@@ -22,7 +22,7 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','top','error','contacto','login','logout','acerca_de','activos_graficos','condiciones_de_envios_y_encomiendas',
+				'actions'=>array('index','top','error','contacto','login','logout','acerca_de','activos_graficos','publicaciones_de_prensa','condiciones_de_envios_y_encomiendas',
 				'formas_de_pago','politicas_y_privacidad','terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes','equipo_personaling'), 
 				'users'=>array('*'),
 			),
@@ -103,6 +103,11 @@ class SiteController extends Controller
 	public function actionActivos_Graficos()
 	{
 		$this->render('activos_graficos');
+	}
+
+	public function actionPublicaciones_de_Prensa()
+	{
+		$this->render('publicaciones_de_prensa');
 	}
 
 	/**

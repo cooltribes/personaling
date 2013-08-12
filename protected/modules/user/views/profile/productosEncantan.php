@@ -60,7 +60,7 @@ function encantar(id)
    		
    		$.ajax({
 	        type: "post",
-	        url: "../producto/encantar", // action Tallas de Producto
+	        url: "<?php echo Yii::app()->baseUrl; ?>/producto/encantar", // action Tallas de Producto
 	        data: { 'idProd':idProd}, 
 	        success: function (data) {
 				

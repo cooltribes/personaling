@@ -330,13 +330,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				?>
                     <?php
                 	
-                	if($total_look!=0)
-					{
-						echo '<div class="alert alert-info margin_top_small">';
-						echo "Con la compra  del Look completo estas ahorrando 184 Bs.";
-						echo '</div>';
+     //            	if($total_look!=0)
+					// {
+					// 	echo '<div class="alert alert-info margin_top_small">';
+					// 	echo "Con la compra  del Look completo estas ahorrando 184 Bs.";
+					// 	echo '</div>';
 
-					}
+					// }
                 	
                 	?>
                   </div>

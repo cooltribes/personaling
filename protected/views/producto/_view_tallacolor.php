@@ -34,7 +34,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 
                 <td>
                 	
-                	<?php echo $form->textFieldRow($item, "[$i]sku", array('placeholder'=>'SKU','class'=>'input-small')); ?>
+                	<?php echo $form->textFieldRow($item, "[$i]sku", array('placeholder'=>'SKU','class'=>'input-small sku')); ?>
                 	<?php echo $form->error($item,"[$i]sku"); ?>
                 </td>
                 <td>

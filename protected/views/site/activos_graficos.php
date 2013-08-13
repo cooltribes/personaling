@@ -17,9 +17,9 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
                     <li class="span4">
                         <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/logo_slogan_preview.jpg"  alt="">
                            <div class="caption"> <h3>Logotipo</h3>
-                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Logo_conSlogan.png" class="btn btn-info btn-block" title="Logotipo en PNG">Descargar en PNG</a> <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/logo_sinslogan.jpg" title="Logotipo en JPG" class="btn  btn-info btn-block">Descargar en     JPG</a>
+                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Logo_conSlogan.png" class="btn btn-info btn-block" title="Logotipo en PNG">Descargar en PNG</a> <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/logo_conslogan.jpg" title="Logotipo en JPG" class="btn  btn-info btn-block">Descargar en     JPG</a>
                             <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Logo.eps" class="btn btn-info btn-block" title="Logotipo en EPS">Descargar en EPS</a>
-                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_logo_kit.zip" title="Ausencia de color, Unicolor, Para fondos oscuros" class="btn btn-info btn-block">Descargar Kit del logo (Colores, blanco y negro...)</a>
+                            <a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Logo/Personaling_logo_kit.rar" title="Ausencia de color, Unicolor, Para fondos oscuros" class="btn btn-info btn-block">Descargar Kit del logo (Colores, blanco y negro...)</a>
         
                         </div>
                         </div>

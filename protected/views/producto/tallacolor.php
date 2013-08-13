@@ -414,7 +414,6 @@ $this->breadcrumbs=array(
                     	
                  <?php 
 		 
-<<<<<<< HEAD
 					echo CHtml::ajaxLink(
 					 "Guardar y avanzar",
 					CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
@@ -422,11 +421,23 @@ $this->breadcrumbs=array(
 					    'type' => 'POST',
 					    'beforeSend' => "function( request )
 					                     {
-											$('#fieldset_tallacolor input').each(function(){
-										    if($.trim($(this).val()) == ''){
-										        alert('Vacio');
-										    }
-											});					                     	
+											campoVacio = 0;
+											$('.sku').each(function(){
+											    if($.trim($(this).val()) == ''){
+											        campoVacio = 1;
+											    }
+											});	
+											
+											if(campoVacio == 1){
+												$('#myModal').modal({
+ 													 keyboard: false
+												});
+												$('#myModalConfirmacion').modal('toggle');
+
+												var seguir = 0;
+												console.log($('#myModalConfirmacion .si').on('click',function(){ return false; }));
+												return false;
+											}
 					                     
 					                     }",
 					    'success' => "function( data )
@@ -454,43 +465,38 @@ $this->breadcrumbs=array(
 					    'href' => CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
 					  ),
 					  array('id'=>'buttonGuardar')
-					);		 
-
-
-=======
-		 
->>>>>>> parent of 4e35f53... Modificando mensaje de cambios en talla color como admin
+					);		 		 
 				   
-				    echo CHtml::ajaxLink(
-					  "Guardar y avanzar",
-					 CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
-					  array(
+				//     echo CHtml::ajaxLink(
+				// 	  "Guardar y avanzar",
+				// 	 CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
+				// 	  array(
 				   
-				    	    'type' => 'POST',
-				    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
-		                    'success' => "function( data )
-				                  {
+				//     	    'type' => 'POST',
+				//     	    'data'=> "js:$('#Tallacolor-Form').serialize()",
+		  //                   'success' => "function( data )
+				//                   {
 
-				                   data = JSON.parse( data );
-				                   if(data.status=='success'){
-				                   		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
-				                        //$('.error').hide();
-				                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
-									}else{
-										id = data.id;
-										delete data['id'];
-				                        $.each(data, function(key, val) {
-				                        	key_tmp = key.split('_');
-											key_tmp.splice(1,0,id);
-				                        	key = key_tmp.join('_');
-					                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
-					                        $('#Tallacolor-Form #'+key+'_em_').show();
-				                        });
-									}
-				                  }",
-					),
-					array('id'=>'buttonGuardar')
-				); 
+				//                    data = JSON.parse( data );
+				//                    if(data.status=='success'){
+				//                    		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
+				//                         //$('.error').hide();
+				//                         //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+				// 					}else{
+				// 						id = data.id;
+				// 						delete data['id'];
+				//                         $.each(data, function(key, val) {
+				//                         	key_tmp = key.split('_');
+				// 							key_tmp.splice(1,0,id);
+				//                         	key = key_tmp.join('_');
+				// 	                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+				// 	                        $('#Tallacolor-Form #'+key+'_em_').show();
+				//                         });
+				// 					}
+				//                   }",
+				// 	),
+				// 	array('id'=>'buttonGuardar')
+				// ); 
 		
 				?>                     	
                     </li>
@@ -520,6 +526,22 @@ $this->breadcrumbs=array(
   </div>
 </div>
 <!-- /container --> 
+<!-- MODAL WINDOW CONFIRMACION ON -->
+<div id="myModalConfirmacion" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Confirmación</h3>
+  </div>
+  <div class="modal-body">
+    <p>Algunos campos de código SKU están vacios, las combinaciones sin SKU no se guardaran</p>
+    <p>¿Desea continuar?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+    <button class="btn btn-danger si">Si</button>
+  </div>
+</div>
+<!-- MODAL WINDOW CONFIRMACION OFF -->
 
 <!------------------- MODAL WINDOW ON -----------------> 
 

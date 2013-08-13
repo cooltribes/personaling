@@ -50,17 +50,21 @@ class LoginController extends Controller
 						else
 							$this->redirect(Yii::app()->user->returnUrl);
 					} else {
-						if ($user->status_register == User::STATUS_REGISTER_ESTILO){
-							//Yii::trace('username:'.$model->username.' Error ESTILO: '.$user->status_register, 'registro');
-						if (Yii::app()->user->returnUrl=='/index.php')
-							$this->redirect(Yii::app()->controller->module->returnUrl);
-						else
-							$this->redirect(Yii::app()->user->returnUrl);
-						} elseif ($user->status_register == User::STATUS_REGISTER_TIPO) {
-							$this->redirect(array("/user/profile/tuestilo"));
-						} elseif ($user->status_register == User::STATUS_REGISTER_NEW){
-							//Yii::trace('username:'.$model->username.' Error NEW: '.$user->status_register, 'registro');
-							$this->redirect(array("/user/profile/tutipo"));
+						if($user->profile->sex == 2) 
+							$this->redirect(array('/tienda/look'));
+						else{
+							if ($user->status_register == User::STATUS_REGISTER_ESTILO){
+								//Yii::trace('username:'.$model->username.' Error ESTILO: '.$user->status_register, 'registro');
+							if (Yii::app()->user->returnUrl=='/index.php')
+								$this->redirect(Yii::app()->controller->module->returnUrl);
+							else
+								$this->redirect(Yii::app()->user->returnUrl);
+							} elseif ($user->status_register == User::STATUS_REGISTER_TIPO) {
+								$this->redirect(array("/user/profile/tuestilo"));
+							} elseif ($user->status_register == User::STATUS_REGISTER_NEW){
+								//Yii::trace('username:'.$model->username.' Error NEW: '.$user->status_register, 'registro');
+								$this->redirect(array("/user/profile/tutipo"));
+							}
 						}
 					}
 				}

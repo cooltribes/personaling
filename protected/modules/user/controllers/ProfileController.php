@@ -13,6 +13,37 @@ class ProfileController extends Controller
 	 * Shows a particular model.
 	 */
 	
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('modal','modalshopper'),
+				'users'=>array('*'),
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan'),
+				'users'=>array('@'),
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array(),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
+			),
+			array('allow', // acciones validas para el personal Shopper
+               'actions' => array('banner'),
+               'expression' => 'UserModule::isPersonalShopper()'
+            ),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			), 
+		);
+	}
+	
 	public function actionInvitaciones()
 	{
 		$model = $this->loadUser();

@@ -1,4 +1,4 @@
-<?php /* @var $this Controller */ ?>
+  <?php /* @var $this Controller */ ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -119,7 +119,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine')),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        //array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
@@ -388,7 +388,17 @@ if(!Yii::app()->user->isGuest){
           $(this).addClass('open');
         }
     },function(){
-        $(this).removeClass('open');
+        $('.content').hover(function(){
+          $('#dropdownUser').removeClass('open');
+        },function(){});        
+
+        $('#btn-notifications').hover(function(){
+          $('#dropdownUser').removeClass('open');
+        },function(){});
+
+        $('#btn-shoppingcart').hover(function(){
+          $('#dropdownUser').removeClass('open');
+        },function(){});        
     });
 
     $('#dropdownUser').on('click',function(){

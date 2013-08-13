@@ -182,7 +182,7 @@ $looks_recomendados = $look->match($usuario);
             </div>
             
             <div class="control-group"> 
-            <?php echo $form->labelEx($model,'pais', array('class' => 'control-label')); ?>
+            <?php // echo $form->labelEx($model,'pais', array('class' => 'control-label')); ?>
               <div class="controls">
               		
               	<?php 
@@ -201,12 +201,14 @@ $looks_recomendados = $look->match($usuario);
               	 	echo $form->dropDownList($model, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
               	 		array('options' => array(3 => array('selected'=>true))));
               	 }
-				 else*/
+				 else
               	 	echo $form->dropDownList($model, 'pais', array('Seleccione el País','Venezuela'=>'Venezuela','Colombia'=>'Colombia','Estados Unidos'=>'Estados Unidos'));
               	 
               	 echo $form->error($model,'pais');
-              	 
+              	 */
               	 ?>
+
+				<input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="Venezuela" />
 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>

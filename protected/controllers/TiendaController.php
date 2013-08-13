@@ -54,37 +54,70 @@ class TiendaController extends Controller
 		$producto->status = 1; // que no haya sido borrado logicamente
 		$producto->estado = 0; // que no esté inactivo
 
-		if (isset($_POST['cate1'])) // desde el select
-		{
-			//if($_POST['cate1']!=0)	
-				$producto->categoria_id = $_POST['cate1'];			
-		}
-		
-		if (isset($_POST['idact'])) // actualizacion desde los ajaxlink
-		{
-			 $producto->categoria_id = $_POST['idact'];			
-		}		
-	
-		if (isset($_POST['busqueda'])) // desde el input
-		{	
-			//echo $producto->nombre = '%'.$_POST['busqueda'].'%';
-			$producto->nombre = $_POST['busqueda'];
-		}
-	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
-		$todos = array();
-		$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
-		//print_r($todos);
-		//$dataProvider = $producto->busqueda('');
-		$dataProvider = $producto->busqueda($todos);
-		//$dataProvider = $producto->search();
-		$this->render('index',
-		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
-		));	
+			if (isset($_POST['cate1'])){ // desde el select
+				$producto->categoria_id = $_POST['cate1'];		
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));			
+				Yii::app()->getSession()->add('categoria', $_POST['cate1']);
+				Yii::app()->getSession()->add('valor',1);
+			}
 			
-	}
+			if (isset($_POST['idact'])){ // actualizacion desde los ajaxlink
+				 $producto->categoria_id = $_POST['idact'];		
+				 Yii::app()->getSession()->add('categoria', $_POST['idact']);
+				 Yii::app()->getSession()->add('valor',1);
+			}		
+		
+			if (isset($_POST['busqueda'])){ // desde el input
+				$producto->nombre = $_POST['busqueda'];
+				Yii::app()->getSession()->add('nombre', $_POST['busqueda']);
+				Yii::app()->getSession()->add('valor',1);
+			}
+
+			if( isset($_GET['Producto_page']) )
+			{
+				if ( Yii::app()->getSession()->get('categoria') )
+					$producto->categoria_id = Yii::app()->getSession()->get('categoria');
+					
+				if ( Yii::app()->getSession()->get('nombre') )
+					$producto->nombre = Yii::app()->getSession()->get('nombre');
+				
+				$todos = array();
+				$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));	
+				$dataProvider = $producto->busqueda($todos);
+		
+				$this->render('index',
+				array('index'=>$producto,
+				'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+				));	
+			
+			}
+			/*
+			if(Yii::app()->getSession()->get('valor') == 1) // ya hubo una busqueda. asegurando que los resultados sean los que se debian buscar
+			{
+				if ( Yii::app()->getSession()->get('categoria') )
+					$producto->categoria_id = Yii::app()->getSession()->get('categoria');
+					
+				if ( Yii::app()->getSession()->get('nombre') )
+					$producto->nombre = Yii::app()->getSession()->get('nombre');
+				
+				
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));	
+		
+			}
+			*/
+			$todos = array();
+			$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+	
+			$dataProvider = $producto->busqueda($todos);
+	
+			$this->render('index',
+			array('index'=>$producto,
+			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+			));	
+			}
 	
 	
 	public function actionColores()
@@ -219,6 +252,8 @@ class TiendaController extends Controller
 		
 		$l1 ="";
 		$l2 ="";
+		$l11 ="";
+		$l22 ="";
 		
 		if(isset($look1)){		
 			foreach($look1 as $uno)
@@ -227,6 +262,11 @@ class TiendaController extends Controller
 				{				
 					$l1 = Look::model()->findByPk($uno->look_id);
 					$mos1=1;
+				}
+				else if($mos1 == 1)
+				{
+					$l11 = Look::model()->findByPk($uno->look_id);
+					$mos1=2;
 				}
 				else
 					break;
@@ -238,8 +278,18 @@ class TiendaController extends Controller
 			{
 				if($mos2 == 0)
 				{
-					$l2 = Look::model()->findByPk($dos->look_id);
-					$mos2=1;
+					if($l1->id == $dos->look_id){
+						$mos2=0;
+					}
+					else{
+						$l2 = Look::model()->findByPk($dos->look_id);
+						$mos2=1;	
+					}
+				}
+				else if($mos2 == 1)
+				{
+					$l22 = Look::model()->findByPk($dos->look_id);
+					$mos2=2;
 				}
 				else
 					break;
@@ -251,12 +301,17 @@ class TiendaController extends Controller
 		$base = Yii::app()->baseUrl;
 
 		if($l1 != "")
-			array_push($ret,'<a href="../look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
+		else
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l11->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l11->id.'" src="'.$base.'/look/getImage/'.$l11->id.'" alt="Look"></a>');
 		
 		array_push($ret,"<br><br>");
 		
 		if($l2 != "")
-			array_push($ret,'<a href="../look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
+		else 
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l22->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l22->id.'" src="'.$base.'/look/getImage/'.$l22->id.'" alt="Look"></a>');
+		
 		
 		//array_push($ret,CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$l1->id)), "Look", array("width" => "400", "height" => "400", 'class'=>'img-polaroid')) );
 		

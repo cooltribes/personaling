@@ -197,15 +197,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             
               <div class="controls">
               	
-              	 <?php echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
-              	 /*
-				  * <select>
-                  <option>Venezuela</option>
-                  <option>Colombia</option>
-                  <option>USA</option>
-                </select>
-				  * */
-              	 ?>
+              	 <?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              	
+ 	 			 ?>
+ 	 			 
+ 	 			 <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="Venezuela" />
+ 	 			 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>

@@ -389,10 +389,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <th class="text_align_left">I.V.A. (12%):</th>
                 <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
               </tr>
+              <?php if($totalDe != 0){ // si no hay descuento ?> 
               <tr>
                 <th class="text_align_left">Descuento:</th>
                 <td class="text_align_right" id="descuento"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
+              <?php } ?>
               <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>
                 <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
@@ -454,7 +456,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 else
 {
     // redirecciona al login porque se murió la sesión
-    header('Location: /site/user/login');
+    header('Location: /user/login');
 }
 
 

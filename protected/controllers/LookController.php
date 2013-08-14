@@ -376,15 +376,20 @@ public function actionCategorias(){
     					"`look_id` = :look_id",
     					array(':look_id' => $model->id)
 					);
+					//$temporal = '';
+					$model->has_ocasiones = $_POST['categorias'];
                 	foreach(explode('#',$_POST['categorias']) as $categoria){
                 		$categoriahaslook = new CategoriaHasLook;
 						$categoriahaslook->categoria_id = $categoria;
 						$categoriahaslook->look_id = $model->id;
-						$categoriahaslook->save();
-						
-						
+						if (!$categoriahaslook->save()){
+							 Yii::trace('save categoriahaslook'.print_r($_POST['categorias'],true).', 384 Error:'.print_r($categoriahaslook->getErrors(), true), 'registro');
+						}
+						//$temporal .= $categoriahaslook->categoria_id.'#';
                 	}
-                }	
+					//if ($temporal!='')
+					//	$model->has_ocasiones = substr($temporal, 0, -1);
+                }	 
                 if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
@@ -403,6 +408,10 @@ public function actionCategorias(){
                 }
             } 
 		}	
+$model = Look::model()->findByPk($id);
+if (isset($_POST['categorias'])){ 
+ $model->has_ocasiones = $_POST['categorias'];
+}
 	    $this->render('publicar',array(
 			'model'=>$model,
 			

@@ -2,12 +2,13 @@
 
 class User extends CActiveRecord
 {
-	const STATUS_NOACTIVE=0;
-	const STATUS_ACTIVE=1;
-	const STATUS_BANNED=-1;
+	const STATUS_NOACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	const STATUS_BANNED = -1;
+        const STATUS_DELETED = 2;
 	
 	//TODO: Delete for next version (backward compatibility)
-	const STATUS_BANED=-1;
+	//const STATUS_BANED=-1;
 	
 	const STATUS_REGISTER_NEW = 0;
 	const STATUS_REGISTER_TIPO = 1;
@@ -19,7 +20,10 @@ class User extends CActiveRecord
 		const PRIVACIDAD_AVATAR = 2;	
 		const PRIVACIDAD_LOOKS = 4;
 		const PRIVACIDAD_SHOPPERS = 8;
-		
+                
+        //Vector de estados para dropdown
+            public static $statuses = array(self::STATUS_NOACTIVE => 'Inactivo', self::STATUS_ACTIVE => 'Activo',
+            self::STATUS_BANNED => 'Bloqueado', self::STATUS_DELETED => 'Eliminado');
  
 	/**
 	 * The followings are the available columns in table 'users':
@@ -246,4 +250,15 @@ class User extends CActiveRecord
 	   //echo $this->birthday;
 	   return parent::beforeValidate();
 	}
+        
+    public function getStatus($key = null) {
+        
+        if($key !== null)        
+            return self::$statuses[$key];
+            
+        
+        return self::$statuses;
+        
+        
+    }
 }

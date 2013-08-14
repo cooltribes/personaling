@@ -233,7 +233,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 else
 {
 	// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
+	header('Location: /user/login');	
 }
 
 

@@ -162,10 +162,12 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                         <td  style="text-align:left"><b>Subtotal:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
                                                                     </tr>
+                                                                    <?php if($orden->descuento != 0){ // si no hay descuento ?> 
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Descuento:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
                                                                     </tr>
+                                                                    <?php } ?>
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Envío:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>

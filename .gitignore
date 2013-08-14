@@ -13,3 +13,5 @@ svn-commit*.tmp
 *.xml
 
 sftp-config.json
+/nbproject/private/
+nbproject

@@ -15,29 +15,50 @@ $this->breadcrumbs=array(
     <tr>
       <td><p class="T_xlarge margin_top_xsmall">
 <?php
+/*
 $sql = "select count( * ) as total from tbl_producto where status=1";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
+// echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('status'=>1));
+
 ?>
 		</p>
         Totales</td>
       <td><p class="T_xlarge margin_top_xsmall">
 <?php
+/*
 $sql = "select count( * ) as total from tbl_producto where estado=0 and status=1";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
+//echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('estado'=>0,'status'=>1));
 ?>
       	</p>
         Activos</td>
       <td><p class="T_xlarge margin_top_xsmall"> 
 <?php
+/*
 $sql = "select count( * ) as total from tbl_producto where estado=1 and status=1";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
+//echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('estado'=>1,'status'=>1));
 ?>
 		</p>
         Inactivos</td>
-      <td><p class="T_xlarge margin_top_xsmall">150</p>
+      <td><p class="T_xlarge margin_top_xsmall">
+      	
+<?php
+$sql = "select sum(cantidad) from tbl_orden_has_productotallacolor a, tbl_orden b where a.tbl_orden_id = b.id and b.estado = 4"; // estado 4 es enviado
+$num = Yii::app()->db->createCommand($sql)->queryScalar();
+echo $num;
+?>     	
+      	 	
+      </p>
         Enviados</td>
       <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
         En tránsito </td>

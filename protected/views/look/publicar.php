@@ -186,6 +186,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <div class="controls">
             <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => $categoria->childrenButtons($model->getCategorias()),
 				)); ?>
@@ -227,6 +228,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->contextura),
 				)); ?>
@@ -242,6 +244,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->pelo),
 				)); ?>
@@ -257,6 +260,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->altura),
 				)); ?>
@@ -271,6 +275,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->ojos),
 				)); ?>
@@ -285,6 +290,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->tipo_cuerpo),
 				)); ?>
@@ -299,6 +305,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->piel),
 				)); ?>

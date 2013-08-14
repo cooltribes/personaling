@@ -108,7 +108,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <?php if (Yii::app()->user->isAdmin()){ ?>
-        <!-- Para el admin ON -->
+        
+        <!-- Para el admin ON 
+        
         <div class="control-group ">
           <div class="controls">
              <?php echo $form->checkBoxRow($model, 'destacado'); ?>
@@ -162,8 +164,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </select>
           </div>
         </div>
-        <!-- Para el admin OFF -->
+        
+         Para el admin OFF -->
         <?php  } ?>
+        
         <hr/>
         <div id="div_ocasiones">
         <h4>¿En que ocasión se puede usar este look?</h4>
@@ -177,6 +181,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					
 		?>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos_ocasiones" >
           <label class="control-label required"><?php echo $categoria->nombre; ?>:</label>
           <div class="controls">
             <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -216,6 +221,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <div id="div_tipo">
         <h4>Escoge al tipo de usuaria que favorece</h4>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿A qué tipo de cuerpo le favorece más?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
@@ -229,6 +235,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Con qué color de cabello quedaría mejor?</label>
           <div class="controls">
           		
@@ -244,6 +251,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Cuánto debe medir la mujer que use este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
@@ -257,6 +265,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Con qué color de ojos queda mejor?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
@@ -270,6 +279,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Qué tipo de cuerpo debería usarlo?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
@@ -283,6 +293,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Qué color de piel se adapta mejor a este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
@@ -322,6 +333,39 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </div>
 <?php 
 $script = "
+	$('.select_todos_ocasiones').on('click',function(e){
+		if ($(this).is(':checked')){
+			$(this).parent().find('.btn').addClass('active');
+		}
+		else {
+			$(this).parent().find('.btn').removeClass('active');
+		}
+		var ids = '';
+		$('#div_ocasiones .active').each(function(){
+			ids += $(this).attr('href');
+		});
+		//alert(ids);
+		$('#categorias').val(ids.substring(1));
+		$('#Look_has_ocasiones').val(ids.substring(1));			
+	});
+	
+	$('.select_todos').on('click',function(e){
+		if ($(this).is(':checked')){
+			$(this).parent().find('.btn').addClass('active');
+			 var ids = 0;
+			$(this).parent().find('.btn').each(function(index){
+				ids += parseInt($(this).attr('href').substring(1));
+			});
+			$(this).parent().find('.btn').parent().next('input').val(ids);
+			
+		}
+		else {
+			$(this).parent().find('.btn').removeClass('active');
+			$(this).parent().find('.btn').parent().next('input').val(0);
+			
+		}
+	});
+	
 	$('#div_ocasiones').on('click', 'a', function(e) {
 		 
 		 var ids = '';

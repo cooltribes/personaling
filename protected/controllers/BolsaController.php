@@ -41,17 +41,26 @@ class BolsaController extends Controller
 	public function actionIndex()
 	{
 		$usuario = Yii::app()->user->id;
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
-		if (!is_null($bolsa)){
-			echo $bolsa->actualizar();
-			
-		} else {
-			$bolsa = new Bolsa;
-			$bolsa->user_id = $usuario;
-			$bolsa->save();
-		}
 		
-		$this->render('bolsa', array('bolsa' => $bolsa)); 
+		if(!Yii::app()->user->isGuest){
+					
+			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+			
+			if (!is_null($bolsa)){
+				echo $bolsa->actualizar();
+				
+			} else {
+				$bolsa = new Bolsa;
+				$bolsa->user_id = $usuario;
+				$bolsa->save();
+			}
+			
+			$this->render('bolsa', array('bolsa' => $bolsa)); 
+		}
+		else{
+			$this->redirect(array('/user/login'));
+		}
+	
 	}
 
 

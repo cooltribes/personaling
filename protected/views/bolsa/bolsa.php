@@ -304,10 +304,12 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                         <th class="text_align_left">Productos:</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
                       </tr>
+                      <?php if($totalDe != 0){ // si no hay descuento ?> 
                       <tr>
                         <th class="text_align_left">Descuento:</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
                       </tr>
+                      <?php } ?>
                       <tr>
                         <th class="text_align_left">I.V.A. (12%):</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
@@ -380,7 +382,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 else
 	{
 		// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
+	header('Location: /user/login');	
 	}
 ?>
 <!-- /container --> 

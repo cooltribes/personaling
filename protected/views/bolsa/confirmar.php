@@ -130,10 +130,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <th class="text_align_left">I.V.A. (12%):</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
             </tr>
+            <?php if($descuento != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left">Descuento:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
-            </tr>
+           	</tr>
+           	<?php } ?>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
               <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>

@@ -39,18 +39,32 @@ echo"<tr>";
 		echo "<td></td>"; // precio
 	
 	//$inv = Inventario::model()->findByAttributes(array('tbl_producto_id' => $data->id));
-
+/*
 	if($data->inventario)
 	{
 		echo "<td>".$data->inventario->cantidad."</td>"; // total
 		echo "<td>".$data->inventario->disponibilidad."</td>"; // disp
 	}
-	else {
-		echo "<td></td>"; // total
-		echo "<td></td>"; // disp
-	}
+	else {*/
+	
+$sql = "select SUM(cantidad) as total from tbl_producto a, tbl_precioTallaColor b where a.id = b.producto_id and a.id =".$data->id; 
+$num = Yii::app()->db->createCommand($sql)->queryScalar();
 
-   	echo "<td></td>"; // vendido
+$sql = "select sum(c.cantidad) from tbl_producto a, tbl_precioTallaColor b, tbl_orden_has_productotallacolor c, tbl_orden d where a.id = b.producto_id
+		and b.id = c.preciotallacolor_id and d.id = c.tbl_orden_id and d.estado = 4 and a.id =".$data->id;
+		 
+$vend = Yii::app()->db->createCommand($sql)->queryScalar();
+
+$total = $num - $vend;
+	
+		echo "<td>".$total."</td>"; // total
+		echo "<td>".$num."</td>"; // disponible
+	//}
+if($vend!="")
+   	echo "<td>".$vend."</td>"; // vendido
+else
+	echo "<td> 0 </td>";
+	
    	echo "<td></td>"; // ventas bs
    	
    if($data->estado==0)

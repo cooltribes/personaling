@@ -175,7 +175,7 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		if (isset($_POST['acepto'])){
-			$model->status = -1;
+			$model->status = User::STATUS_DELETED;
 			if ($model->save()){
 				$this->redirect(array('/site/logout'));
 			}	

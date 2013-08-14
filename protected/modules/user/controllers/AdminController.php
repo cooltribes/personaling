@@ -26,7 +26,10 @@ class AdminController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 
-				'actions'=>array('admin','delete','create','update','view','corporal','estilos','pedidos','carrito','direcciones','avatar', 'productos', 'looks','toggle_ps','toggle_admin','resendvalidationemail'),
+				'actions'=>array('admin','delete','create','update',
+                                    'view','corporal','estilos','pedidos','carrito',
+                                    'direcciones','avatar', 'productos', 'looks','toggle_ps',
+                                    'toggle_admin','resendvalidationemail','toggle_banned'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -121,6 +124,31 @@ class AdminController extends Controller
 	     ));
 	     }
 	}
+       /**
+        * Bloquear al usuario, queda en estado STATUS_BANNED
+        * @param type $id id del usuario
+        * 
+        */ 
+       public function actionToggle_banned($id) {
+            $model = User::model()->findByPk($id);
+            $model->status = -($model->status);
+
+            if ($model->save()) {
+                echo CJSON::encode(array(
+                    'status' => 'success',
+                    'user_status' => User::getStatus($model->status),
+                ));
+            } else {
+                Yii::trace('AdminController:118 Error Toggle_banned:' . print_r($model->getErrors(), true), 'registro');
+                echo CJSON::encode(array(
+                    'status' => 'error',
+                    'error' => $model->getErrors(),
+                ));
+            }
+           
+        }
+        
+        
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

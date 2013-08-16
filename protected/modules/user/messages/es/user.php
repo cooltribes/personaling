@@ -20,7 +20,7 @@ return array(
 	'You registered from {site_name}' => 'Se registró a partir {site_name}',
 	'Please activate you account go to {activation_url}' => 'Por favor, active su cuenta ir al enlace {activation_url}',
     'You account is not activated.' => "Su cuenta no está activada.",
-    'You account is blocked.' => 'Su cuenta está bloqueada.',
+    'Your account is blocked.' => 'Tu cuenta está bloqueada. Por favor comunícate con el administrador a través del correo info@personaling.com',
     'Password is incorrect.' => '¡Upss! tu contraseña es incorrecta.',
     'E-mail' => 'Correo electrónico',
     'Verification Code' => 'Código de verificación',

@@ -366,6 +366,16 @@ $cont=0;
 			}// foreach
 			
 		} // count
+else if($count == 0){
+	?>
+	<div class="braker_horz_top_1 hidden-phone">
+    <h3>Looks recomendados con este producto</h3>
+    
+    <?php
+	echo CHtml::image(Yii::app()->request->baseUrl.'/images/Ups_Personaling.jpg',"Imagen ", array("width" => "370", "height" => "370",'class'=>'img_1'));
+	
+}		
+		
 			?>  
           	         </div>
       </div>

@@ -20,7 +20,7 @@ class UserIdentity extends CUserIdentity
 	 * @return boolean whether authentication succeeds.
 	 */
 	public function authenticate()
-	{
+	{           
 		if (strpos($this->username,"@")) {
 			$user=User::model()->notsafe()->findByAttributes(array('email'=>$this->username));
 		} else {
@@ -36,7 +36,7 @@ class UserIdentity extends CUserIdentity
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else if($user->status==0&&Yii::app()->getModule('user')->loginNotActiv==false)
 			$this->errorCode=self::ERROR_STATUS_NOTACTIV;
-		else if($user->status==-1)
+		else if($user->status== User::STATUS_BANNED)
 			$this->errorCode=self::ERROR_STATUS_BAN;
 		else {
 			$this->_id=$user->id;

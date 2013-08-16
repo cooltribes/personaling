@@ -45,7 +45,8 @@ class LoginForm extends CFormModel
 	 * This is the 'authenticate' validator as declared in rules().
 	 */
 	public function authenticate($attribute,$params)
-	{
+	{           
+                    
 		if(!$this->hasErrors())
 		{
 			$this->_identity=new UserIdentity($this->username,$this->password);

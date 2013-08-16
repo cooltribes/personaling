@@ -51,7 +51,8 @@ $this->breadcrumbs=array(
     				)); ?>
                      <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar contraseña">Olvidaste tu contraseña?</a></span>
     				<?php echo $form->error($model,'password'); ?>
-    			</div>
+                                <?php echo $form->error($model,'status'); ?>
+                </div>
     		</div>
             <?php echo $form->checkBoxRow($model,'rememberMe'); ?>
             

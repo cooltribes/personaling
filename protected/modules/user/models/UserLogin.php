@@ -50,7 +50,8 @@ class UserLogin extends CFormModel
 	{
 		if(!$this->hasErrors())  // we only want to authenticate when no input errors
 		{
-			$identity=new UserIdentity($this->username,$this->password);
+                    
+                        $identity=new UserIdentity($this->username,$this->password);
 			$identity->authenticate();
 			switch($identity->errorCode)
 			{
@@ -67,8 +68,8 @@ class UserLogin extends CFormModel
 				case UserIdentity::ERROR_STATUS_NOTACTIV:
 					$this->addError("status",UserModule::t("You account is not activated."));
 					break;
-				case UserIdentity::ERROR_STATUS_BAN:
-					$this->addError("status",UserModule::t("You account is blocked."));
+				case UserIdentity::ERROR_STATUS_BAN:                                        
+					$this->addError("status",UserModule::t("Your account is blocked."));
 					break;
 				case UserIdentity::ERROR_PASSWORD_INVALID:
 					$this->addError("password",UserModule::t("Password is incorrect."));

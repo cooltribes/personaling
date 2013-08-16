@@ -46,7 +46,7 @@ $this->breadcrumbs=array(
               </div>
               </div>
             <div class="control-group">
-              <label class="control-label required">Ropa</label>
+              <label class="control-label required">Camisas</label>
               <div class="controls">
                 <!-- 
                 <div class="btn-group" data-toggle="buttons-checkbox">
@@ -95,7 +95,7 @@ $this->breadcrumbs=array(
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label required">Ropa</label>
+              <label class="control-label required">Vestidos</label>
               <div class="controls">
                 
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -434,9 +434,16 @@ $this->breadcrumbs=array(
 												});
 												$('#myModalConfirmacion').modal('toggle');
 
-												var seguir = 0;
-												console.log($('#myModalConfirmacion .si').on('click',function(){ return false; }));
-												return false;
+												var seguir = false;
+												$('#myModalConfirmacion .si').click(function(e){ 
+
+													seguir = true;
+													$(this).delya(3000);
+												});
+												
+												return seguir;																						
+												
+												
 											}
 					                     
 					                     }",

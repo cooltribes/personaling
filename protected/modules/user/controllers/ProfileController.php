@@ -115,9 +115,39 @@ class ProfileController extends Controller
 						
 			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}
-		else{
-			// redireccion cuando intenten mostrar un perfil via url u ocurra un error		
-		}
+		else if($model->personal_shopper == 0){
+                    //Cuando es usuario normal
+                    
+                        //$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
+			
+                        $looksEncantan = new LookEncantan;
+                        $looksEncantan->user_id = $model->id;
+                        $dataLooksEncantan = $looksEncantan->search();
+                    
+                        $look = new Look;
+			$look->user_id = $model->id;
+                        
+			$datalooks = $look->busqueda(); 
+                        
+//                        echo "<pre>";
+//                        print_r($dataLooksEncantan->getTotalItemCount());
+//                        echo "</pre>";
+//                        exit();
+                        
+			$datalooks->setPagination(array('pageSize'=>4));
+			
+			$producto = new Producto;
+			
+			$dataprod = $producto->ProductosLook($_GET['id']); 
+			//$dataprod->setPagination(array('pageSize'=>9)); 
+						
+			$this->render('perfil_user',array('model'=>$model,'datalooks'=>$datalooks,'dataprods'=>$dataprod));
+                   
+                    
+					
+		}else{
+                    // redireccion cuando intenten mostrar un perfil via url u ocurra un error
+                }
 		
 	}
 	

@@ -222,6 +222,8 @@ if(!Yii::app()->user->isGuest){
       },
       function(){
 
+
+      });
         $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
           $('#btn-notifications').removeClass('bg_color10');
@@ -237,8 +239,6 @@ if(!Yii::app()->user->isGuest){
           $('#btn-notifications').popover('hide');          
           $('#btn-notifications').removeClass('bg_color10');          
         },function(){});
-
-      });
 
     
     var listaCarrito;
@@ -371,35 +371,27 @@ if(!Yii::app()->user->isGuest){
           $('#btn-shoppingcart').removeClass('bg_color10');
         });        
 
-        $('#btn-notifications').hover(function(){
-          $('#btn-shoppingcart').popover('hide');  
-          $('#btn-shoppingcart').removeClass('bg_color10');                  
-        },function(){});
-
-        $('#dropdownUser').hover(function(){
-          $('#btn-shoppingcart').popover('hide');      
-          $('#btn-shoppingcart').removeClass('bg_color10');              
-        },function(){});
-
       });
 
+    $('#dropdownUser, #btn-notifications,#magazine').hover(function(){
+      $('#btn-shoppingcart').popover('hide');      
+      $('#btn-shoppingcart').removeClass('bg_color10');              
+    },function(){});
+    
     $('#dropdownUser').hoverIntent(function(){
         if( !($(this).attr('class') =='dropdown open') ){          
           $(this).addClass('open');
         }
     },function(){
-        $('.content').hover(function(){
-          $('#dropdownUser').removeClass('open');
-        },function(){});        
-
-        $('#btn-notifications').hover(function(){
-          $('#dropdownUser').removeClass('open');
-        },function(){});
-
-        $('#btn-shoppingcart').hover(function(){
-          $('#dropdownUser').removeClass('open');
-        },function(){});        
+      // $('#dropdownUser').removeClass('open');
+      $('#page').hover(function(){
+        $('#dropdownUser').removeClass('open');
+      },function(){});        
     });
+
+    $('#btn-shoppingcart, #btn-notifications').hover(function(){
+      $('#dropdownUser').removeClass('open');
+    },function(){});        
 
     $('#dropdownUser').on('click',function(){
         $(this).removeClass('open');      

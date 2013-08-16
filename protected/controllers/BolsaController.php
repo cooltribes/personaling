@@ -618,8 +618,8 @@ class BolsaController extends Controller
 									$tarjeta = new TarjetaCredito;
 								
 									$tarjeta->nombre = $_POST['nom'];
-									$tarjeta->numero = $_POST['num'];
-									$tarjeta->codigo = $_POST['cod'];
+									$tarjeta->numero = $detalle->nTarjeta;
+									$tarjeta->codigo = $detalle->codigo;
 									$tarjeta->vencimiento = $exp;
 									$tarjeta->direccion = $_POST['dir'];
 									$tarjeta->ciudad = $_POST['ciud'];
@@ -659,22 +659,53 @@ class BolsaController extends Controller
 						}
 						else // escogio una tarjeta
 						{
-							/*
-							 * 	$detalle->nTransferencia = $_POST['id_transaccion'];
-								$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
-								$detalle->cedula = $dirEnvio->cedula;
+							
+							$card = TarjetaCredito::model()->findByPk($_POST['idCard']);
+							$usuario = Yii::app()->user->id; 
+							
+							$data_array = array(
+								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
+								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
+								"CardHolder"=>$card->nombre, // NOMBRE EN TARJETA
+								"CardNumber"=>$card->numero, // NUMERO DE TARJETA
+								"CVC"=>$card->codigo, //CODIGO DE SEGURIDAD
+								"ExpirationDate"=>$card->vencimiento, // FECHA DE VENCIMIENTO
+								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+								"Address"=>$card->direccion, // DIRECCION
+								"City"=>$card->ciudad, // CIUDAD
+								"ZipCode"=>$card->zip, // CODIGO POSTAL
+								"State"=>$card->estado, //ESTADO
+							);
+							
+						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
+							
+							if($output->code == 201){ // PAGO AUTORIZADO
+							
+								$detalle = new Detalle;
+							
+								$detalle->nTarjeta = $card->numero;
+								$detalle->nTransferencia = $output->id;
+								$detalle->nombre = $card->nombre;
+								$detalle->codigo = $card->codigo;
+								$detalle->vencimiento = $card->vencimiento;
 								$detalle->monto = $_POST['total'];
 								$detalle->fecha = date("Y-m-d H:i:s");
 								$detalle->banco = 'TDC';
+								$detalle->estado = 1; // aceptado
 								
-								$detalle->estado = 0;
-								
-								$detalle->save();
-							 * 
-							 * */
-
-						}
+								if($detalle->save()){
+									// cuando finalice entonces envia id de la orden para redireccionar
+									echo CJSON::encode(array(
+										'status'=> $output->code, // paso o no
+										'mensaje' => $output->message,
+										'idDetalle' => $detalle->id										
+									));
+								}
 					
+							}
+						}
+
+
 					}
 
 	
@@ -1092,7 +1123,7 @@ class BolsaController extends Controller
 			foreach($tarjetas as $cada){
 				
 				$datos=$datos.'<tr>';
-				$datos=$datos.'<td><input type="radio" name="optionsRadios" id="'.$cada->id.'" value="option1" ></td>';
+				$datos=$datos.'<td><input class="radioss" type="radio" name="optionsRadios" id="tarjeta" value="'.$cada->id.'" ></td>';
 				$datos=$datos.'<td><i class="icon-picture"></i></td>';
 				$datos=$datos.'<td>Mastercard</td>';
 				
@@ -1114,7 +1145,7 @@ class BolsaController extends Controller
 			}	
 			
 		
-		$datos=$datos.'<button type="button" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>';
+		$datos=$datos.'<button type="button" id="nueva" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>';
     	
 		$datos=$datos.'<div class="collapse" id="collapseOne">';
 		$datos=$datos.'<form class="">';
@@ -1178,13 +1209,31 @@ class BolsaController extends Controller
 		
 		$datos=$datos."<div class='modal-footer'>";
 		
-		$datos=$datos."<div class=''><a onclick='enviarTarjeta()' class='pull-left btn-large btn btn-danger'> Pagar </a></div>";
+		$datos=$datos."<div class=''><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-danger'> Pagar </a></div>";
     	$datos=$datos."</form>";
 		$datos=$datos."</div>";
 		
-		$datos=$datos."<input type='hidden' id='idTarjeta' value='no' />"; // despues aqui se mandaria el id si la persona escoge una tarjeta que ya utilizó
+		$datos=$datos."<input type='hidden' id='idTarjeta' value='0' />"; // despues aqui se mandaria el id si la persona escoge una tarjeta que ya utilizó
 		
 		$datos=$datos."</div>"; // footer
+		
+		$datos=$datos."<script>";
+		$datos=$datos."$(document).ready(function() {";
+		
+			$datos=$datos.'$("#nueva").click(function() { ';
+				$datos=$datos."$('.table').find('input:radio:checked').prop('checked',false);";
+				$datos=$datos.'$("#tarjeta").prop("checked", false);';
+				$datos=$datos.'$("#idTarjeta").val(0);'; // lo regreso a 0 para que sea tarjeta nueva
+			$datos=$datos.'});';
+		
+			$datos=$datos.'$(".radioss").click(function() { ';
+				$datos=$datos."var numero = $(this).attr('value');";
+				//$datos=$datos." alert(numero); ";
+        		$datos=$datos.'$("#idTarjeta").val(numero);';
+        	$datos=$datos."});";
+		
+		$datos=$datos."});"; 
+		$datos=$datos."</script>"; 
 		
 		
 		echo $datos;

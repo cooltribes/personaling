@@ -30,18 +30,24 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks','softdelete'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			), 
 		);
+	}
+	public function actionsoftDelete($id)
+	{
+		$model = Look::model()->findByPk($id);
+		$model->softDelete();
+		$this->redirect(array('look/admin'));
 	}
 	public function actionUpdatePrice()
 	{

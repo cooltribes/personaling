@@ -256,28 +256,21 @@
       </div>
       <div class="braker_horz_top_1">
         <h3>Otros Looks que te pueden gustar</h3>
-        <div id="myCarousel" class="carousel slide"> 
-          
-          <!-- Carousel items -->
-          <div class="carousel-inner">
-            <div class="active item">
-              <div class="row">
-                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="row">
-                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_2.jpg" width="370" height="370" alt="Nombre del Look"></div>
-                <div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_3.jpg" width="370" height="370" alt="Nombre del Look"></div>
-              </div>
-            </div>
-          </div>
-          <!-- Carousel nav --> 
-          <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a> <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a> </div>
+			<div class="row">
+<?php
+	foreach($dataProvider->getData() as $record)
+	{
+		$lookrecomendado = Look::model()->findByPk($record['id']);
+		
+?>
+		<div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
+<?php
+
+	}
+?>
+      		</div>
       </div>
+      
       <div class="braker_horz_top_1">
         <div class="row">
           <div class="span6">

@@ -54,7 +54,23 @@ class Look extends CActiveRecord
 	{
 		return '{{look}}';
 	}
-
+	 public function defaultScope() {
+	        return array(
+	            'condition' => 'deleted = 0', 
+	        ); 
+	    }
+    public function scopes()
+    {
+        return array(
+            'aprovados'=>array(
+                'condition'=>'status=2',
+            ),
+            'poraprovar'=>array(
+                'condition'=>'status=1',
+                
+            ),
+        );
+    }	 
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -68,14 +84,14 @@ class Look extends CActiveRecord
               'value'=>new CDbExpression('NOW()'),
               'setOnEmpty'=>false,'on'=>'insert'), 
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id,created_on', 'required'),
-			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter', 'numerical', 'integerOnly'=>true),
+			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter,deleted', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('has_ocasiones','required','on'=>'update'),
 			array('title', 'length', 'max'=>45),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter,deleted,deleted_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -166,7 +182,7 @@ class Look extends CActiveRecord
 		
 		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
-		$sql='SELECT id FROM tbl_look WHERE (
+		$sql='SELECT id FROM tbl_look WHERE deleted = 0 AND  (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
 			if('.$user->profile->contextura.' & contextura !=0,1,0)+
 			if('.$user->profile->pelo.' & pelo !=0,1,0)+
@@ -175,7 +191,7 @@ class Look extends CActiveRecord
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 6 
 		UNION ALL '.
-		'SELECT id FROM tbl_look WHERE (
+		'SELECT id FROM tbl_look WHERE deleted = 0 AND (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
 			if('.$user->profile->contextura.' & contextura !=0,1,0)+
 			if('.$user->profile->pelo.' & pelo !=0,1,0)+
@@ -311,6 +327,30 @@ class Look extends CActiveRecord
 	));
 		
 	}
+        
+        /**
+	 * Retorna una lista de looks haciendo join con looksEncantan en base a un usuario $userId.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function busquedaEncantan($userId)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;  
+
+		$criteria->join = "JOIN tbl_lookEncantan le on le.user_id = :userID and le.look_id = id";
+                $criteria->params = array(":userID" => $userId);
+		
+		$criteria->order = "created_on DESC";
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+                        'pagination'=>array(
+				'pageSize'=>4,
+			),
+		));
+	}
 	
 	
 	/* looks destacados */
@@ -430,7 +470,7 @@ class Look extends CActiveRecord
 	/* totoal por estado de orden */
 	public function getTotalxStatus($status)
 	{
-		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where estado = :status AND look_id != 0 group by tbl_orden_id, look_id;',
+		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where  estado = :status AND look_id != 0 group by tbl_orden_id, look_id;',
 			array(':status'=>$status)));
 		
 		
@@ -438,9 +478,20 @@ class Look extends CActiveRecord
 	/* totoal por estado de orden */
 	public function getLookxStatus($status)
 	{
-		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where estado = :status AND look_id = :look_id group by tbl_orden_id, look_id;',
+		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id where  estado = :status AND look_id = :look_id group by tbl_orden_id, look_id;',
 			array(':status'=>$status,':look_id'=>$this->id)));
 		
 		
 	}	
+	public function softDelete () {
+
+                //$model = $this->getOwner();
+
+                $this->deleted = 1;
+                $this->deleted_on = date('Y-m-d h:i:s');
+                if (!$this->save())
+					Yii::trace('delete a look, Error:'.print_r($this->getErrors(), true), 'registro');
+                return false;
+
+        }
 }

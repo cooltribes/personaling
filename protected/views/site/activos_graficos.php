@@ -48,8 +48,9 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
 <ul class="thumbnails margin_top">
  <li class="span4">
                         <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer_preview.jpg"  alt="">
-                          <div class="caption">  <h3>Flyer</h3>
-                            <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer/Personaling_flyer.zip" class="btn  btn-info btn-block" title="Icono en PNG">Descargar ZIP</a> </p></div>
+                          <div class="caption">  <h3>Flyer y Sticker</h3>
+                            <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer/Personaling_flyer.zip" class="btn  btn-info btn-block" title="Icono en PNG">Descargar ZIP</a> </p>
+                            <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer/Sticker.jpg" class="btn  btn-info btn-block" title="Icono en PNG">Descargar Sticker</a> </p></div>
                         </div>
                     </li>
 

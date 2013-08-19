@@ -30,18 +30,24 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks','softdelete'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			), 
 		);
+	}
+	public function actionsoftDelete($id)
+	{
+		$model = Look::model()->findByPk($id);
+		$model->softDelete();
+		$this->redirect(array('look/admin'));
 	}
 	public function actionUpdatePrice()
 	{
@@ -382,15 +388,20 @@ public function actionCategorias(){
     					"`look_id` = :look_id",
     					array(':look_id' => $model->id)
 					);
+					//$temporal = '';
+					$model->has_ocasiones = $_POST['categorias'];
                 	foreach(explode('#',$_POST['categorias']) as $categoria){
                 		$categoriahaslook = new CategoriaHasLook;
 						$categoriahaslook->categoria_id = $categoria;
 						$categoriahaslook->look_id = $model->id;
-						$categoriahaslook->save();
-						
-						
+						if (!$categoriahaslook->save()){
+							 Yii::trace('save categoriahaslook'.print_r($_POST['categorias'],true).', 384 Error:'.print_r($categoriahaslook->getErrors(), true), 'registro');
+						}
+						//$temporal .= $categoriahaslook->categoria_id.'#';
                 	}
-                }	
+					//if ($temporal!='')
+					//	$model->has_ocasiones = substr($temporal, 0, -1);
+                }	 
                 if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
@@ -409,6 +420,10 @@ public function actionCategorias(){
                 }
             } 
 		}	
+$model = Look::model()->findByPk($id);
+if (isset($_POST['categorias'])){ 
+ $model->has_ocasiones = $_POST['categorias'];
+}
 	    $this->render('publicar',array(
 			'model'=>$model,
 			

@@ -101,7 +101,7 @@ class ProfileController extends Controller
 		$model = User::model()->findByPk($_GET['id']);
 		
 		if($model->personal_shopper == 1){
-			
+		
 			//$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
 			$looks = new Look;
 			$looks->user_id = $_GET['id'];
@@ -116,33 +116,16 @@ class ProfileController extends Controller
 			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}
 		else if($model->personal_shopper == 0){
-                    //Cuando es usuario normal
-                    
-                        //$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
-			
-                        $looksEncantan = new LookEncantan;
-                        $looksEncantan->user_id = $model->id;
-                        $dataLooksEncantan = $looksEncantan->search();
-                    
-                        $look = new Look;
-			$look->user_id = $model->id;
+                        //Cuando es usuari@ normal                    	
+                       		
+                        $looksEncantan = new Look;                        
+                        $dataLooksEncantan = $looksEncantan->busquedaEncantan($model->id);
                         
-			$datalooks = $look->busqueda(); 
                         
-//                        echo "<pre>";
-//                        print_r($dataLooksEncantan->getTotalItemCount());
-//                        echo "</pre>";
-//                        exit();
-                        
-			$datalooks->setPagination(array('pageSize'=>4));
-			
-			$producto = new Producto;
-			
-			$dataprod = $producto->ProductosLook($_GET['id']); 
-			//$dataprod->setPagination(array('pageSize'=>9)); 
-						
-			$this->render('perfil_user',array('model'=>$model,'datalooks'=>$datalooks,'dataprods'=>$dataprod));
-                   
+                        $prodEncantan = new Producto;	
+                        $dataProdsEncantan = $prodEncantan->produtosEncantan($model->id);
+					
+			$this->render('perfil_user',array('model'=>$model,'datalooks'=>$dataLooksEncantan,'dataprods'=>$dataProdsEncantan));                   
                     
 					
 		}else{

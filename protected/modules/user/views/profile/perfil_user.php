@@ -19,26 +19,12 @@
       <aside class="card">
       	<?php
       		
-			$looktotales = Look::model()->countByAttributes(array('user_id'=>$model->id));
-      		
+			$looktotales = $datalooks->getTotalItemCount();
+                        
 			$looks = Look::model()->findAllByAttributes(array('user_id'=>$model->id));
-			$productos = Array();
-			
-			foreach($looks as $cada)
-			{
-				$xd = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$cada->id));
-				
-				foreach($xd as $prod)
-				{
-					if(in_array($prod->producto_id, $productos)){
-					}
-					else{
-						array_push($productos,$prod->producto_id);
-					}
-				}
-				
-			}
-			
+                        
+			$productos = $dataprods->getData();
+                        
       	?>
         <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looktotales; ?></span>
           <p>Looks que te encantan</p>
@@ -48,26 +34,14 @@
         </div>
         <hr/>
       </aside>
-
-        <?php 
-
-        $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_producto b, tbl_producto c, tbl_marca d where a.user_id=".$model->id." and a.id = b.look_id and b.producto_id = c.id and d.id = c.marca_id group by d.id order by cant DESC";
-
-                $marcas = new CSqlDataProvider($sql, array(
-                            'TotalItemCount'=>6,
-                             'pagination'=>array(
-                                        'pageSize'=>6,
-                                ),		    
-                        ));  
-
-        ?>
+        
     </aside>
       
     <div class="span9 "> 
       <div class="well">
         <h3 class="muted margin_bottom_small">Looks que te Encantan</h3>
         <div class="row-fluid items" id="perfil_looks">
-            <?php
+            <?php  
             $template = ' 
                {items}
                    </div>
@@ -97,7 +71,7 @@
         <h3 class="muted margin_bottom_small">Productos que te Encantan</h3>
         <div class="items row-fluid tienda_productos">        	
  	<?php
-
+        //exit();
 		$template2 = ' 
 	       {items}
 		   </div>

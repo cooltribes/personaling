@@ -315,6 +315,27 @@ class Look extends CActiveRecord
 	));
 		
 	}
+        
+        /**
+	 * Retorna una lista de looks haciendo join con looksEncantan en base a un usuario $userId.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function busquedaEncantan($userId)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;  
+
+		$criteria->join = "JOIN tbl_lookEncantan le on le.user_id = :userID and le.look_id = id";
+                $criteria->params = array(":userID" => $userId);
+		
+		$criteria->order = "created_on DESC";
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
 	
 	
 	/* looks destacados */

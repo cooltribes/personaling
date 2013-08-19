@@ -170,7 +170,7 @@ class Look extends CActiveRecord
 		
 		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
-		$sql='SELECT id FROM tbl_look WHERE (
+		$sql='SELECT id FROM tbl_look WHERE deleted = 0 AND  (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
 			if('.$user->profile->contextura.' & contextura !=0,1,0)+
 			if('.$user->profile->pelo.' & pelo !=0,1,0)+
@@ -179,7 +179,7 @@ class Look extends CActiveRecord
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 6 
 		UNION ALL '.
-		'SELECT id FROM tbl_look WHERE (
+		'SELECT id FROM tbl_look WHERE deleted = 0 AND (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
 			if('.$user->profile->contextura.' & contextura !=0,1,0)+
 			if('.$user->profile->pelo.' & pelo !=0,1,0)+

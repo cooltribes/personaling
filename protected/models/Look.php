@@ -62,10 +62,10 @@ class Look extends CActiveRecord
     public function scopes()
     {
         return array(
-            'aprovados'=>array(
+            'aprobados'=>array(
                 'condition'=>'status=2',
             ),
-            'poraprovar'=>array(
+            'poraprobar'=>array(
                 'condition'=>'status=1',
                 
             ),

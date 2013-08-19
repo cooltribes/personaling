@@ -59,6 +59,18 @@ class Look extends CActiveRecord
 	            'condition' => 'deleted = 0', 
 	        ); 
 	    }
+    public function scopes()
+    {
+        return array(
+            'aprovados'=>array(
+                'condition'=>'status=2',
+            ),
+            'poraprovar'=>array(
+                'condition'=>'status=1',
+                
+            ),
+        );
+    }	 
 	/**
 	 * @return array validation rules for model attributes.
 	 */

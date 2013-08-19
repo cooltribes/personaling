@@ -16,20 +16,11 @@
       </div>
       <hr/>
       <h5>Actividad</h5>
-      <aside class="card">
-      	<?php
-      		
-			$looktotales = $datalooks->getTotalItemCount();
-                        
-			$looks = Look::model()->findAllByAttributes(array('user_id'=>$model->id));
-                        
-			$productos = $dataprods->getData();
-                        
-      	?>
-        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looktotales; ?></span>
+      <aside class="card">      	
+        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $datalooks->getTotalItemCount(); ?></span>
           <p>Looks que te encantan</p>
         </div>
-        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo count($productos); ?></span>
+        <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $dataprods->getTotalItemCount(); ?></span>
           <p>Productos que te encantan</p>
         </div>
         <hr/>

@@ -70,7 +70,7 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
       </select>
     </div>
     <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
-    <div class="span2"><a href="#" class="btn btn-success">Crear usuario</a></div>
+    <div class="span2"><a href="#modalNuevoUsuario" class="btn btn-success" data-toggle="modal">Crear usuario</a></div>
   </div>
     <hr/>
    <?php
@@ -156,4 +156,78 @@ $template = '{summary}
       </div>
 </div>
 <!-- /container -->
+
+<div id="modalNuevoUsuario" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Registrar usuario</h3>
+  </div>
+  <div class="modal-body">
+      <?php
+      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+          'id' => 'newuser-form',
+          'htmlOptions' => array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'),
+          'type' => 'horizontal',
+          // 'type'=>'inline',
+          'enableClientValidation' => true,
+          'clientOptions' => array(
+              'validateOnSubmit' => true,
+          ),
+      ));
+      ?>
+<!--    <form class="form-horizontal">
+      <fieldset>  
+        <div class="control-group">
+          <label class="control-label">Crear Usuario</label>
+          <div class="controls">
+            <select>
+              <option>Usuario</option>
+              <option>Personal Shopper</option>
+              <option>Administrador</option>
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputPassword">Correo Electrónico</label>
+          <div class="controls">
+            <input type="text" placeholder="Correo Electrónico">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputPassword">Contraseña</label>
+          <div class="controls">
+            <input type="password" placeholder="Contraseña">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputPassword">Nombre</label>
+          <div class="controls">
+            <input type="text" placeholder="Nombre">
+          </div>
+        </div>    
+        <div class="control-group">
+          <label class="control-label" for="inputPassword">Apellido</label>
+          <div class="controls">
+            <input type="text" placeholder="Apellido">
+          </div>
+        </div>               
+      </fieldset>
+    </form>-->
+    <?php $this->endWidget(); ?>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    <button class="btn btn-danger">Crear</button>
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'buttonType' => 'button',
+        'label' => 'Crear',
+        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+        //'size' => 'large', // null, 'large', 'small' or 'mini'
+        //'block' => 'true',
+        'htmlOptions' => array('onclick' => 'js:$("#newuser-form").submit();')
+    ));
+    ?>
+  </div>
+</div>
 

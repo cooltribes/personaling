@@ -297,7 +297,6 @@ function getMonthsArray()
                   ?>
               </li>
               
-              <li><a href="#" title="Eliminar"><i class="icon-remove"></i> Eliminar</a></li>
               
             </ul>
           </div>

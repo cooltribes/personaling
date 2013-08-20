@@ -64,8 +64,71 @@ class AdminController extends Controller
 			),
         ));
 
+        $modelUser = new User;
+        $profile=new Profile;
+        
+        $profile->regMode = true;
+        $this->performAjaxValidation(array($model,$profile));
+        
+        if(isset($_POST['User']) && isset($_POST['Profile'])
+           && isset($_POST['tipoUsuario']) && isset($_POST['genero']))
+        {               
+            
+            $modelUser->attributes=$_POST['User'];
+            $modelUser->username = $modelUser->email;
+            $modelUser->password = $this->passGenerator();
+            $modelUser->activkey=Yii::app()->controller->module->encrypting(microtime().$modelUser->password);
+            
+            if($_POST['tipoUsuario'] == 1){ //personalShopper
+              $modelUser->superuser = 1; 
+            }else if($_POST['tipoUsuario'] == 2){ //Admin
+              $modelUser->personal_shopper = 1;  
+            }
+            
+            $profile->attributes=$_POST['Profile'];
+            $profile->user_id=0;    
+            $profile->day = 8;
+            $profile->month = 8;
+            $profile->year = 1990;
+            
+            $profile->birthday = '';//date("Y-m-d");
+            $profile->sex = $_POST['genero'];       
+            
+//            echo $profile->birthday;
+//            exit();
+            
+            if($modelUser->validate() && $profile->validate()) {
+                echo" good";
+                exit();
+                
+                    $model->password=Yii::app()->controller->module->encrypting($model->password);
+                    if($model->save()) {
+                            $profile->user_id=$model->id;
+                            $profile->save();
+                    }
+                    //$this->redirect(array('view','id'=>$model->id));
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+            } else {
+                //$profile->validate();
+                
+             echo "<pre>";
+            print_r($modelUser->getErrors());
+            echo "</pre><br>";
+            echo "<pre>";
+            print_r($profile->getErrors());
+            echo "</pre><br>";
+            exit();
+                
+            }
+            
+            
+            
+        }
         $this->render('index',array(
             'model'=>$model,
+            'modelUser' => $modelUser,
+            'profile' => $profile,
             'dataProvider'=>$dataProvider,
         ));
 		/*$dataProvider=new CActiveDataProvider('User', array(
@@ -435,5 +498,17 @@ if(isset($_POST['Profile']))
 		}
 		return $this->_model;
 	}
+        
+    protected function passGenerator($length = 8) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $n = strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++) {
+            $index = rand(0, $n - 1);
+            $result .= substr($chars, $index, 1);
+        }
+
+        return $result;
+    } 
 	
 }

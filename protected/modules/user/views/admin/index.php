@@ -157,16 +157,30 @@ $template = '{summary}
 </div>
 <!-- /container -->
 
-<div id="modalNuevoUsuario" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Registrar usuario</h3>
-  </div>
-  <div class="modal-body">
+
+
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array(
+                                'id' => 'modalNuevoUsuario',
+                            ),
+                            array(
+                                'class' => 'modal hide fade',
+                                'tabindex' => "-1",
+                                'role' => "dialog",
+                                'aria-labelledby' => "myModalLabel",
+                                'aria-hidden' => "true",
+                                'style' => "display: none;",
+                            
+                            ))?>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Registrar usuario</h3>
+    </div>
+    <div class="modal-body">
       <?php
       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-          'id' => 'newuser-form',
-          'htmlOptions' => array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'),
+          'id' => 'newUser-form',
+          'htmlOptions' => array('enctype' => 'multipart/form-data'),
           'type' => 'horizontal',
           // 'type'=>'inline',
           'enableClientValidation' => true,
@@ -175,49 +189,41 @@ $template = '{summary}
           ),
       ));
       ?>
-<!--    <form class="form-horizontal">
-      <fieldset>  
+    <?php echo $form->errorSummary(array($modelUser,$profile)); ?>
+      <fieldset> 
+        
+          
         <div class="control-group">
           <label class="control-label">Crear Usuario</label>
           <div class="controls">
-            <select>
-              <option>Usuario</option>
-              <option>Personal Shopper</option>
-              <option>Administrador</option>
-            </select>
+            <?php echo CHtml::dropDownList("tipoUsuario", '', array(
+                                        0 => 'Usuario',
+                                        1 => 'Personal Shopper',
+                                        2 => 'Administrador')); ?>
           </div>
         </div>
+        
+        <?php echo $form->textFieldRow($modelUser,'email',array('placeholder'=>'Correo Electrónico',)); ?>    
+        
+        <?php echo $form->textFieldRow($profile,'first_name', array('placeholder'=>'Nombre',)); ?>   
+          
+        <?php echo $form->textFieldRow($profile,'last_name', array('placeholder'=>'Apellido',)); ?>  
+        
         <div class="control-group">
-          <label class="control-label" for="inputPassword">Correo Electrónico</label>
+          <label class="control-label">Sexo</label>
           <div class="controls">
-            <input type="text" placeholder="Correo Electrónico">
+            <?php echo CHtml::dropDownList("genero", '', array(1 => 'Mujer', 2 => 'Hombre')); ?>
           </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="inputPassword">Contraseña</label>
-          <div class="controls">
-            <input type="password" placeholder="Contraseña">
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="inputPassword">Nombre</label>
-          <div class="controls">
-            <input type="text" placeholder="Nombre">
-          </div>
-        </div>    
-        <div class="control-group">
-          <label class="control-label" for="inputPassword">Apellido</label>
-          <div class="controls">
-            <input type="text" placeholder="Apellido">
-          </div>
-        </div>               
+        </div>  
+        
+        
+                      
       </fieldset>
-    </form>-->
+    
     <?php $this->endWidget(); ?>
   </div>
   <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-    <button class="btn btn-danger">Crear</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>    
     <?php
     $this->widget('bootstrap.widgets.TbButton', array(
         'buttonType' => 'button',
@@ -225,9 +231,11 @@ $template = '{summary}
         'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
         //'size' => 'large', // null, 'large', 'small' or 'mini'
         //'block' => 'true',
-        'htmlOptions' => array('onclick' => 'js:$("#newuser-form").submit();')
+        'htmlOptions' => array('onclick' => 'js:$("#newUser-form").submit();')
     ));
     ?>
-  </div>
-</div>
+  </div>                    
+
+<?php $this->endWidget()?>
+
 

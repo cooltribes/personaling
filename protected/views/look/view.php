@@ -335,15 +335,15 @@ $cont=0;
 
       <div class="braker_horz_top_1">
         <div class="row">
-          <div class="span6">
+<!--           <div class="span6">
             <h3>Otros Productos que te pueden gustar</h3>
             <div class="row">
               <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_7.jpg" ></a></div>
               <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_8.jpg" ></a></div>
               <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_9.jpg" ></a></div>
             </div>
-          </div>
-          <div class="span4 offset2">
+          </div> -->
+          <div class="span10 offset2">
             <h3>Vistos recientemente</h3>
             <div class="row">
                         <?php

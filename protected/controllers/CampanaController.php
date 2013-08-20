@@ -42,7 +42,7 @@ class CampanaController extends Controller
 						$campana_ps->fecha_invitacion = date('Y-m-d H:i:s');
 						$campana_ps->save();
 					}
-					Yii::app()->user->setFlash('success','Campaña guardada con éxito');
+					Yii::app()->user->setFlash('success','Campaña guardada con éxito'); 
 					$this->redirect(array('index'));
 				}else if($_POST['personal_shopper'] == 'seleccionar'){
 					Yii::app()->session['campana_id'] = $campana->id;
@@ -52,6 +52,7 @@ class CampanaController extends Controller
 					    ),
 					));
 					$this->render('select_ps', array('campana'=>$campana, 'dataProvider'=>$dataProvider));
+					Yii::app()->end();
 				}
 			}else{
 				Yii::app()->user->setFlash('error','No se pudo guardar la campaña');
@@ -112,13 +113,14 @@ class CampanaController extends Controller
 					Yii::app()->session['campana_id'] = $campana->id;
 					$dataProvider=new CActiveDataProvider('User', array(
 					    'criteria'=>array(
-					            'condition'=>'personal_shopper=1',
+					            'condition'=>'personal_shopper=1', 
 					    ),
 					));
 					$this->render('select_ps', array('campana'=>$campana, 'dataProvider'=>$dataProvider));
+					Yii::app()->end();
 				}
 				}else{
-					Yii::app()->user->setFlash('success','Campaña guardada con éxito');
+					Yii::app()->user->setFlash('success','Campaña guardada con éxito'); 
 					$this->redirect(array('index'));
 				}
 			}else{

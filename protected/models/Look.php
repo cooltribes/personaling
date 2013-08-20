@@ -59,6 +59,18 @@ class Look extends CActiveRecord
 	            'condition' => 'deleted = 0', 
 	        ); 
 	    }
+    public function scopes()
+    {
+        return array(
+            'aprobados'=>array(
+                'condition'=>'status=2',
+            ),
+            'poraprobar'=>array(
+                'condition'=>'status=1',
+                
+            ),
+        );
+    }	 
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -170,7 +182,7 @@ class Look extends CActiveRecord
 		
 		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
-		$sql='SELECT id FROM tbl_look WHERE (
+		$sql='SELECT id FROM tbl_look WHERE deleted = 0 AND  (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
 			if('.$user->profile->contextura.' & contextura !=0,1,0)+
 			if('.$user->profile->pelo.' & pelo !=0,1,0)+
@@ -179,7 +191,7 @@ class Look extends CActiveRecord
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 6 
 		UNION ALL '.
-		'SELECT id FROM tbl_look WHERE (
+		'SELECT id FROM tbl_look WHERE deleted = 0 AND (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
 			if('.$user->profile->contextura.' & contextura !=0,1,0)+
 			if('.$user->profile->pelo.' & pelo !=0,1,0)+
@@ -314,6 +326,30 @@ class Look extends CActiveRecord
        'criteria'=>$criteria,
 	));
 		
+	}
+        
+        /**
+	 * Retorna una lista de looks haciendo join con looksEncantan en base a un usuario $userId.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function busquedaEncantan($userId)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;  
+
+		$criteria->join = "JOIN tbl_lookEncantan le on le.user_id = :userID and le.look_id = id";
+                $criteria->params = array(":userID" => $userId);
+		
+		$criteria->order = "created_on DESC";
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+                        'pagination'=>array(
+				'pageSize'=>4,
+			),
+		));
 	}
 	
 	

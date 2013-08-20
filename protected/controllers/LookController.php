@@ -104,9 +104,15 @@ class LookController extends Controller
 		$model->save();
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
+		
+		$looks = new Look;
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		
 		$this->render('view',array(
 						'model'=>$model,
 						'ultimos_vistos'=> $productoView->lastView(),
+						'dataProvider' => $looks->match($user),
+						'user'=>$user,	
 						//'categorias'=>$categorias,
 					)
 				);		

@@ -260,12 +260,12 @@ class TiendaController extends Controller
 			{
 				if($mos1 == 0)
 				{				
-					$l1 = Look::model()->findByPk($uno->look_id);
+					$l1 = Look::model()->aprobados()->findByPk($uno->look_id);
 					$mos1=1;
 				}
 				else if($mos1 == 1)
 				{
-					$l11 = Look::model()->findByPk($uno->look_id);
+					$l11 = Look::model()->aprobados()->findByPk($uno->look_id);
 					$mos1=2;
 				}
 				else
@@ -282,13 +282,13 @@ class TiendaController extends Controller
 						$mos2=0;
 					}
 					else{
-						$l2 = Look::model()->findByPk($dos->look_id);
+						$l2 = Look::model()->aprobados()->findByPk($dos->look_id);
 						$mos2=1;	
 					}
 				}
 				else if($mos2 == 1)
 				{
-					$l22 = Look::model()->findByPk($dos->look_id);
+					$l22 = Look::model()->aprobados()->findByPk($dos->look_id);
 					$mos2=2;
 				}
 				else

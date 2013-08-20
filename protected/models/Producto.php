@@ -573,4 +573,26 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		));  
 	 }
 
+         /**
+	 * Productos que encantan a un usuario $userId
+	 */
+	 public function produtosEncantan($userId)
+	 {
+		$criteria=new CDbCriteria;  
+
+		$criteria->join = "JOIN tbl_userEncantan pe on pe.user_id = :userID and pe.producto_id = id";
+                $criteria->params = array(":userID" => $userId);		
+		
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+                        'pagination'=>array(
+				'pageSize'=>9,
+			),
+		));             
+             
+		
+	 }
+
+         
 }

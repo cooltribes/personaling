@@ -105,10 +105,12 @@ class Look extends CActiveRecord
 		return array(
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_look_id'),
 			'productos' => array(self::MANY_MANY, 'Producto', '{{look_has_producto}}(look_id, producto_id)'),
-			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
+			
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'campana' => array(self::BELONGS_TO, 'Campana', 'campana_id'),
-			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_look(categoria_id, look_id)'),
+			'categoriahaslook' => array(self::HAS_MANY, 'CategoriaHasLook', 'look_id'),
+			'categorias' => array(self::MANY_MANY, 'Categoria', '{{categoria_has_look}}(look_id, categoria_id)'),
+			//'categorias' => array(self::MANY_MANY, 'Categoria', array('categoria_id'=>'id'),'through'=>'categoriahaslook'),
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'), 
 			'productos_todos' => array(self::HAS_MANY,'Producto',array('producto_id'=>'id'),'through'=>'lookhasproducto'),
@@ -140,11 +142,16 @@ class Look extends CActiveRecord
 			'user_id'=>'Usuario',
 		);
 	}
-	public function matchOcaciones($user)
-	{
+	public function matchOcaciones($user) 
+	{ 
+		//echo "rafa";
+		//echo $this->title;	
+		 
+		//print_r($this->categoriahaslook);
+		//print_r($this->categorias);
 		foreach ($this->categorias as $categoria){
 			$algo = $this->_ocasiones[$categoria->padreId];
-			//echo '/'.$user->profile->$algo;
+			echo '/'.$user->profile->$algo;
 			if ($user->profile->$algo == $this->tipo)
 				return true;
 		}

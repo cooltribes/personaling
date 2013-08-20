@@ -42,10 +42,14 @@
             <div id="b" class="items">
               <?php
  foreach($dataProvider->getData() as $record) {
+ 	
  ?>
               <?php	
 	$look = Look::model()->findByPk($record['id']);
+	//echo  $record['id'];
+	//echo Yii::app()->user->id;
 	if($look->matchOcaciones(User::model()->findByPk(Yii::app()->user->id))){
+		
 ?>
               <div class="span4">
                 <article class="item" >

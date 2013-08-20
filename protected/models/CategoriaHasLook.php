@@ -23,7 +23,7 @@ class CategoriaHasLook extends CActiveRecord
 	 * @return string the associated database table name
 	 */
 	public function tableName()
-	{
+	{ 
 		return '{{categoria_has_look}}';
 	}
 

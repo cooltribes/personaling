@@ -105,20 +105,40 @@ else
 
 
 <?php
+ 
+$ya = date('Y-m-d H:i:s', strtotime('now'));
+      	
+$sql = "select fecha from tbl_orden limit 1";
+$primera = Yii::app()->db->createCommand($sql)->queryScalar();
+      	
+// de la primera venta hasta hace un mes
+      	
+$sql = "select count(*) from tbl_orden where fecha between '".$primera."' and '".date('Y-m-d H:i:s', strtotime($ya. ' -1 month'))."' ";
+$monthago = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+
+// de la primera venta hasta hoy
+
+$sql = "select count(*) from tbl_orden where fecha between '".$primera."' and '".$ya."' ";
+$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
+
+$uno = date('d-m-Y', strtotime($ya. ' -1 month'));
+$dos = date('d-m-Y', strtotime('now'));
+
+echo $primera."<br>".$ya;
       	
       	$this->Widget('ext.highcharts.HighchartsWidget', array(
 		   'options'=>array(
 		   	  'chart' => array('type' =>'areaspline'), // column, area, line, spline, areaspline, bar, pie, scatter
 		      'title' => array('text' => 'Ventas / Tiempo'),
 		      'xAxis' => array(
-		         'categories' => array('Abril', 'Mayo', 'Junio', 'Julio', 'Agosto')
+		         'categories' => array($uno, $dos)
 		      ),
 		      'yAxis' => array(
 		         'title' => array('text' => 'Ventas')
 		      ),
 		      'series' => array(
 		        // array('name' => 'Jane', 'data' => array(1, 0, 4)),
-		         array('name' => 'Totales', 'data' => array(110, 240, 587, 452, 241))
+		         array('name' => 'Total', 'data' => array($monthago,$ahora))
 		      )
 		   )
 		));

@@ -124,8 +124,6 @@ $ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 $uno = date('d-m-Y', strtotime($ya. ' -1 month'));
 $dos = date('d-m-Y', strtotime('now'));
 
-echo $primera."<br>".$ya;
-      	
       	$this->Widget('ext.highcharts.HighchartsWidget', array(
 		   'options'=>array(
 		   	  'chart' => array('type' =>'areaspline'), // column, area, line, spline, areaspline, bar, pie, scatter

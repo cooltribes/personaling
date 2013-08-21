@@ -144,14 +144,14 @@ class Look extends CActiveRecord
 	}
 	public function matchOcaciones($user) 
 	{ 
-		//echo "rafa";
+		//echo "rafa"; 
 		//echo $this->title;	
 		 
 		//print_r($this->categoriahaslook);
 		//print_r($this->categorias);
 		foreach ($this->categorias as $categoria){
 			$algo = $this->_ocasiones[$categoria->padreId];
-			echo '/'.$user->profile->$algo;
+			//echo '/'.$user->profile->$algo; 
 			if ($user->profile->$algo == $this->tipo)
 				return true;
 		}
@@ -422,6 +422,13 @@ class Look extends CActiveRecord
 			$_items = count($this->productos);
 			return $_items;
 		}
+	}
+	public function getMontoVentas($format=true)
+	{
+		if ($format)
+			return Yii::app()->numberFormatter->formatDecimal($this->getPrecio(false)*$this->getLookxStatus(3));
+		else
+			return $this->getPrecio(false)*$this->getLookxStatus(3);
 	}
 	public function getTipo()
 	{

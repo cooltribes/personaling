@@ -257,8 +257,58 @@ class User extends CActiveRecord
             return self::$statuses[$key];
             
         
-        return self::$statuses;
-        
+       return self::$statuses;       
         
     }
+    
+    public function getMonthsArray()
+    {
+        
+         $months['01'] = "Enero";
+		 $months['02'] = "Febrero";
+		 $months['03'] = "Marzo";
+		 $months['04'] = "Abril";
+		 $months['05'] = "Mayo";
+		 $months['06'] = "Junio";
+		 $months['07'] = "Julio";
+		 $months['08'] = "Agosto";
+		 $months['09'] = "Septiembre";
+		 $months['10'] = "Octubre";
+		 $months['11'] = "Noviembre";
+		 $months['12'] = "Diciembre";
+    
+
+        return array(0 => 'Mes:') + $months;
+    }
+
+     public function getDaysArray()
+    {
+		$days['01'] = '01';
+		$days['02'] = '02';
+		$days['03'] = '03';
+		$days['04'] = '04';
+		$days['05'] = '05';
+		$days['06'] = '06';
+		$days['07'] = '07';
+		$days['08'] = '08';
+		$days['09'] = '09';
+        for($dayNum = 10; $dayNum <= 31; $dayNum++){
+            $days[$dayNum] = $dayNum;
+        }
+
+        return array(0 => 'Dia:') + $days;
+    }
+
+     public function getYearsArray()
+    {
+        $thisYear = date('Y', time());
+
+        for($yearNum = $thisYear; $yearNum >= 1920; $yearNum--){
+            $years[$yearNum] = $yearNum;
+        }
+
+        return array(0 => 'Año:') + $years;
+    }
+    
+    
 }

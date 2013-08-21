@@ -44,39 +44,115 @@ class AdminController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new User('search');
-        $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['User']))
-            $model->attributes=$_GET['User'];
-		
-		$criteria=new CDbCriteria;
-		
-		if(isset($_GET['nombre'])){
-            //$model->nom=$_POST['nombre'];
-            $criteria->alias = 'User';
-            $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%'.$_GET['nombre'].'%" OR p.last_name LIKE "%'.$_GET['nombre'].'%" OR User.email LIKE "%'.$_GET['nombre'].'%")';
-		}
-		
-        $dataProvider = new CActiveDataProvider('User', array(
-            'criteria'=>$criteria,
-        	'pagination'=>array(
-				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
-			),
-        ));
+            $model = new User('search');
+            $model->unsetAttributes();  // clear any default values
+            if (isset($_GET['User']))
+                $model->attributes = $_GET['User'];
 
-        $this->render('index',array(
-            'model'=>$model,
-            'dataProvider'=>$dataProvider,
-        ));
-		/*$dataProvider=new CActiveDataProvider('User', array(
-			'pagination'=>array(
-				'pageSize'=>Yii::app()->controller->module->user_page_size,
-			),
-		));
+            $criteria = new CDbCriteria;
 
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));//*/
+            if (isset($_GET['nombre'])) {
+                //$model->nom=$_POST['nombre'];
+                $criteria->alias = 'User';
+                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+            }
+
+            $dataProvider = new CActiveDataProvider('User', array(
+                'criteria' => $criteria,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
+
+            //Modelos para el formulario de crear Usuario
+            $modelUser = new User;
+            $profile = new Profile;
+            $profile->regMode = true;
+
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'newUser-form') {
+                echo UActiveForm::validate(array($modelUser, $profile));
+                Yii::app()->end();
+            }
+
+            if (isset($_POST['User']) && isset($_POST['Profile']) && isset($_POST['tipoUsuario']) && isset($_POST['genero'])) {
+
+                $modelUser->attributes = $_POST['User'];
+                $modelUser->username = $modelUser->email;
+                $modelUser->password = $this->passGenerator();
+                $modelUser->activkey = Yii::app()->controller->module->encrypting(microtime() . $modelUser->password);
+
+                if ($_POST['tipoUsuario'] == 1) { //personalShopper
+                    $modelUser->superuser = 1;
+                } else if ($_POST['tipoUsuario'] == 2) { //Admin
+                    $modelUser->personal_shopper = 1;
+                }
+
+                $profile->attributes = $_POST['Profile'];
+                $profile->user_id = 0;                
+    //            
+                $profile->sex = $_POST['genero'];
+
+
+
+                if ($modelUser->validate() && $profile->validate()) {
+                    
+                    $originalPass = $modelUser->password;
+                    $modelUser->password = Yii::app()->controller->module->encrypting($modelUser->password);
+
+                    if ($modelUser->save()) {
+                        $profile->user_id = $modelUser->id;
+                        $profile->save();
+
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('success', UserModule::t("El usuario ha sido creado."));
+
+                        //Enviar Correo
+                        
+                        $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $modelUser->activkey, "email" => $modelUser->email));
+
+                        $message = new YiiMailMessage;
+                        $message->view = "mail_template";
+                        $subject = 'Registro Personaling';
+                        $body = '<h2>Te damos la bienvenida a Personaling.</h2>' . 
+                                '<br/>Tu contraseña provisional es: <strong>'.$originalPass.'</strong><br/>' .
+                                'Puedes cambiarla accediento a tu cuenta y luego haciendo click '. 
+                                'en la opción Cambiar Contraseña.<br/><br/>Recibes este correo porque se'.
+                                'ha registrado tu dirección en Personaling.'. 
+                                'Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> ' . $activation_url;
+                        $params = array('subject' => $subject, 'body' => $body);
+                        $message->subject = $subject;
+                        $message->setBody($params, 'text/html');
+                        $message->addTo($modelUser->email);
+                        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                        Yii::app()->mail->send($message);
+
+                        $modelUser->unsetAttributes();
+                        $profile->unsetAttributes();
+                        $profile->day = $profile->month = $profile->month = '';
+                    }
+                    //$this->redirect(array('view','id'=>$model->id));
+                } else {
+                    $profile->validate();
+                    $profile->birthday = '';
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('error', UserModule::t("Ha habido un error creando el usuario."));
+
+    //             echo "<pre>";
+    //            print_r($modelUser->getErrors());
+    //            echo "</pre><br>";
+    //            echo "<pre>";
+    //            print_r($profile->getErrors());
+    //            echo "</pre><br>";
+    //            exit();
+                }
+            }
+            $this->render('index', array(
+                'model' => $model,
+                'modelUser' => $modelUser,
+                'profile' => $profile,
+                'dataProvider' => $dataProvider,
+            ));
+        
 	}
 
 
@@ -435,5 +511,17 @@ if(isset($_POST['Profile']))
 		}
 		return $this->_model;
 	}
+        
+    protected function passGenerator($length = 8) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $n = strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++) {
+            $index = rand(0, $n - 1);
+            $result .= substr($chars, $index, 1);
+        }
+
+        return $result;
+    } 
 	
 }

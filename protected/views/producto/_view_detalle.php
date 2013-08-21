@@ -272,8 +272,11 @@
 	   			}// else
               	?>         	     	
               </div>
+              <div class="braker_top margin_top_small">
+              	<a href="#myModal" role="button" class="btn btn-mini btn-link color9" data-toggle="modal">Ver guia de tallas</a>
+              </div>
             </div>
-             </div>
+           </div>
              
              <?php
              }
@@ -384,6 +387,224 @@ else if($count == 0){
 </div> </div>
 
 <!-- /container -->
+
+<!-- Modal Guia Talla -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Guía de tallas Personaling</h3>
+  </div>
+  <div class="modal-body">
+    <div id="size-guide">
+      <article id="main" role="main">
+        <header>
+<!--           <h4 class="braker_bottom"><strong>Talla de Pantalones</strong> <span>- Medidas</span></h4>
+          <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar est et feugiat sodales. Proin egestas, neque nec varius condimentum, nunc eros placerat tellus, ac accu. </p> -->
+			<em>
+        <p>¿Cómo se cuál es mi talla?</p>
+			   <p>Primero necesitarás tener a la mano:  </p>
+      </em>
+      
+      <p><strong>Una cinta métrica.</strong> </p>
+      <p><strong>Mucha honestidad</strong></p>
+
+			<p><em>Ahora, debes tomarte las medidas de la siguiente forma: </em></p>
+
+			<p><strong>Pecho: Debes rodearte con la cinta métrica por encima de la parte más voluminosa del pecho y pasando justo por la parte baja de las axilas. <strong></p>
+
+			<p><strong>Cintura: Debes buscar la forma natural de tu cuerpo y descubrir donde queda tu cintura; luego de eso rodéala con la cinta métrica. <strong></p>
+
+			<p><strong>Caderas: Debes pasar la cinta métrica por la parte más saliente de tu trasero. <strong></p>
+
+			<p><strong><em>¡Ojo! No debes usar ninguna prenda voluminosa a la hora de medir.  </em><strong></p>
+
+			<em><p>¿Qué hago con esas medidas?</p> </em>
+
+			<em><p>Aquí te dejamos una tabla con una conversión  aproximada basada en las medidas europeas.</p> </em>   
+			          
+        </header>
+        <section>
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+                <th>UK Size</th>
+                <th colspan="2">Busto</th>
+                <th colspan="2">Cintura</th>
+                <th colspan="2">Caderas</th>
+              </tr>
+              <tr>
+                <th></th>
+                <th>Pulgadas</th>
+                <th>CM</th>
+                <th>Pulgadas</th>
+                <th>CM</th>
+                <th>Pulgadas</th>
+                <th>CM</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>6</strong></td>
+                <td>31</td>
+                <td>78.5</td>
+                <td>23.75</td>
+                <td>60.5</td>
+                <td>33.75</td>
+                <td>86</td>
+              </tr>
+              <tr>
+                <td><strong>8</strong></td>
+                <td>32</td>
+                <td>81</td>
+                <td>24.75</td>
+                <td>63</td>
+                <td>34.75</td>
+                <td>88.5</td>
+              </tr>
+              <tr>
+                <td><strong>10</strong></td>
+                <td>34</td>
+                <td>86</td>
+                <td>26.75</td>
+                <td>68</td>
+                <td>36.75</td>
+                <td>93.5</td>
+              </tr>
+              <tr>
+                <td><strong>12</strong></td>
+                <td>36</td>
+                <td>91</td>
+                <td>28.75</td>
+                <td>73</td>
+                <td>38.75</td>
+                <td>98.5</td>
+              </tr>
+              <tr>
+                <td><strong>14</strong></td>
+                <td>38</td>
+                <td>96</td>
+                <td>30.75</td>
+                <td>78</td>
+                <td>40.75</td>
+                <td>103.5</td>
+              </tr>
+              <tr>
+                <td><strong>16</strong></td>
+                <td>40</td>
+                <td>101</td>
+                <td>32.75</td>
+                <td>83</td>
+                <td>42.75</td>
+                <td>108.5</td>
+              </tr>
+              <tr>
+                <td><strong>18</strong></td>
+                <td>43</td>
+                <td>108.5</td>
+                <td>35.75</td>
+                <td>90.5</td>
+                <td>45.75</td>
+                <td>116</td>
+              </tr>
+            </tbody>
+          </table>
+         
+        </section>
+      </article>
+      <aside>
+        
+            <h4 class="braker_bottom margin_top"><strong>Guia de conversion de Tallas Internacionales</strong></h4>
+        
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <tbody>
+              <tr>
+                <th><strong>UK</strong></th>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>10</td>
+                <td>12</td>
+                <td>14</td>
+                <td>16</td>
+                <td>18</td>
+                <td>20</td>
+                <td>22</td>
+                <td>24</td>
+                <td>26</td>
+              </tr>
+              <tr>
+                <th><strong>EU</strong></th>
+                <td>32</td>
+                <td>34</td>
+                <td>36</td>
+                <td>38</td>
+                <td>40</td>
+                <td>42</td>
+                <td>44</td>
+                <td>46</td>
+                <td>48</td>
+                <td>50</td>
+                <td>52</td>
+                <td>54</td>
+              </tr>
+              <tr>
+                <th><strong>US</strong></th>
+                <td>0</td>
+                <td>2</td>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>10</td>
+                <td>12</td>
+                <td>14</td>
+                <td>16</td>
+                <td>18</td>
+                <td>20</td>
+                <td>22</td>
+              </tr>
+              <tr>
+                <th><strong>AU</strong></th>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>10</td>
+                <td>12</td>
+                <td>14</td>
+                <td>16</td>
+                <td>18</td>
+                <td>20</td>
+                <td>22</td>
+                <td>24</td>
+                <td>26</td>
+              </tr>
+            </tbody>
+          </table>
+        <h4 class="braker_bottom margin_top"><strong>Cómo medirse</strong></h4>
+        <p>Para escoger la talla correcta para ti puedes medirte de la siguiente forma:</p>
+        <div class="row-fluid margin_top_medium">
+          <div class="span4 offset1">
+          <img src="http://images.asos.com/webcontent/sizeguide/womens-tshirts-and-tops.jpg" width="150" alt="Women's t-shirts &amp; tops size guide - how to choose the right size t-shirt &amp; top" /> 
+         
+         </div>
+          
+          <div class="span7"><dl>
+            <dt>1. Busto</dt>
+            <dd>Measure around fullest part</dd>
+            <dt>2. Cintura</dt>
+            <dd>Measure around natural waistline</dd>
+            <dt>3. Cadera</dt>
+            <dd>Measure 20cm down from the natural waistline</dd>
+          </dl></div>
+         
+         
+         </div>
+      </aside>
+    </div>
+  </div>
+  <div class="modal-footer">  <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+  </div>
+</div><!-- Modal Guia Talla OFF -->
+
 <?php 
 
 //$cs = Yii::app()->getClientScript();

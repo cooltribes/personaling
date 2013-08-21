@@ -44,7 +44,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						'clientOptions'=>array(
 							'validateOnSubmit'=>true, 
 						),
-						'htmlOptions'=>array('class'=>'form-horizontal'),
+						'htmlOptions'=>array('class'=>'form-horizontal  direccion'.$cadauna->id ),
 					));
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
@@ -79,18 +79,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 					echo"
 		                <br/>
 		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>Editar</a> <br/>
-		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar'>Eliminar</a></p>
+		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar' data-loading-text='Eliminando...' id='eliminar".$cadauna->id."'>Eliminar</a></p>
 		              </div>
 		            </div>
-		            <hr/>
-			  		";
+			  		<div class='mensaje".$cadauna->id."' ></div>
+		            <hr/>";
 			  		
-			  	$this->endWidget();
-			  		
+			  		$this->endWidget();
+
 			  	}
 	  		}
 			else {
-			echo "<legend>No tiene direcciones registradas</legend>";					
+				echo "<legend>No tiene direcciones registradas</legend>";					
 			}
  	
       ?>
@@ -245,19 +245,31 @@ else
 	{
 		
 	var idDireccion = id;
-
+	$("#eliminar"+id).button('loading'); // lanza mensaje de estado del boton eliminando
 	// llamada ajax para el controlador de bolsa	   
      	$.ajax({
 	        type: "post",
 	        url: "eliminardireccion", 
 	        data: { 'idDir':idDireccion }, 
 	        success: function (data) {
-	        	
 				if(data=="ok")
 				{
-					window.location.reload()
+					//Dirección eliminada exitosamente
+					$('.direccion'+id).replaceWith('<div class="alert alert-succes">Dirección eliminada exitosamente<a class="close" href="#" data-dismiss="alert">&times;</a></div>');						
 				}
-					
+				if(data=="bad")
+				{
+					//La dirección seleccionada no se puede eliminar
+					$(".mensaje"+id).addClass("alert alert-error");	
+					$(".mensaje"+id).text('Ésta dirección no se puede eliminar');
+				}
+				if(data=="wrong")
+				{
+					//La dirección no pudo ser eliminada
+					$(".mensaje"+id).addClass("alert alert-error");
+					$(".mensaje"+id).text('La dirección no pudo ser eliminada');	
+				}								
+	        	$("#eliminar"+id).button('reset');					
 	       	}//success
 	       })
 

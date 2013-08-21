@@ -45,12 +45,14 @@ $this->breadcrumbs=array(
           <tr>
             <td>
             	<?php
+					/*
 					if ($producto->mainimage)
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => 70, "height" => 70));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
 					echo $image;
-					
+					*/
+					echo CHtml::image($producto->getImageUrl($hasproducto->color_id), "Imagen", array("width" => "70", "height" => "70"));
 				?>
             	
             </td>

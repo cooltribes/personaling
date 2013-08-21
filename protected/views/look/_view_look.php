@@ -7,7 +7,7 @@
                 <strong>Marcas</strong>: Mango, Suite Blanco, Aldo, Accessorize y Desigual </td>
             <td><?php echo $data->getPrecio(); ?></td>
             <td><?php echo $data->getLookxStatus(3); ?></td>
-            <td>6500,00</td>
+            <td><?php echo $data->getMontoVentas(); ?></td>
             <td><?php echo $data->getStatus(); ?></td>
             <td><?php echo $data->created_on; ?></td>
             <td> Finaliza en: 17 Mayo 2013

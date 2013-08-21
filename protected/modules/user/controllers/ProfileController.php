@@ -285,9 +285,9 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		
-		if  (UserModule::isPersonalShopper()) 
+		/*if  (UserModule::isPersonalShopper()) 
 	    	echo "";
-		else
+		else*/
 	    $this->render('direcciones',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,

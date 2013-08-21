@@ -1,5 +1,7 @@
 <?php
 
+/* @var $form TbActiveForm */
+
 //$this->breadcrumbs=array(
 	//'Usuarios',
 //);
@@ -183,13 +185,14 @@ $template = '{summary}
           'htmlOptions' => array('enctype' => 'multipart/form-data'),
           'type' => 'horizontal',
           // 'type'=>'inline',
-          'enableClientValidation' => true,
+          //'enableClientValidation' => true,
+          'enableAjaxValidation' => true,
           'clientOptions' => array(
               'validateOnSubmit' => true,
           ),
       ));
       ?>
-    <?php echo $form->errorSummary(array($modelUser,$profile)); ?>
+      <?php echo $form->errorSummary(array($modelUser,$profile)); ?>
       <fieldset> 
         
           
@@ -209,6 +212,28 @@ $template = '{summary}
           
         <?php echo $form->textFieldRow($profile,'last_name', array('placeholder'=>'Apellido',)); ?>  
         
+       <div class="control-group">
+           
+           <?php
+           echo CHtml::label('Fecha de Nacimiento *', CHtml::activeId($profile, 'birthday'), array('class' => 'control-label required'));
+           ?>
+           
+               <div class="controls row">    
+                    <?php            
+                    echo $form->DropDownList($profile, 'day', User::getDaysArray(), array('class' => 'span1'));
+                    echo ' ';
+                    echo $form->DropDownList($profile, 'month', User::getMonthsArray(), array('class' => 'span1'));
+                    echo ' ';
+                    echo $form->DropDownList($profile, 'year', User::getYearsArray(), array('class' => 'span1'));
+                    echo $form->hiddenField($profile, 'birthday'); 
+                    echo $form->error($profile, 'birthday');
+                    ?>
+               </div>
+
+           
+       </div>     
+          
+          
         <div class="control-group">
           <label class="control-label">Sexo</label>
           <div class="controls">

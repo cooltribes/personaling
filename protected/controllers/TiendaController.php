@@ -251,6 +251,8 @@ class TiendaController extends Controller
 		
 		$band = 0;
 		$band1 = 0;
+		$band2 = 0;
+		$band3 = 0;
 		
 		$l1 ="";
 		$l2 ="";
@@ -261,21 +263,81 @@ class TiendaController extends Controller
 			foreach($look1 as $uno){
 				if($band == 0){				
 					$l1 = Look::model()->aprobados()->findByPk($uno->look_id);
-					$band=1;
+					
+					if(isset($l1))
+						$band=1;
+					
+				}
+			}
+		}else if(isset($look3)){		
+			foreach($look3 as $uno){
+				if($band2 == 0){				
+					$l3 = Look::model()->aprobados()->findByPk($uno->look_id);
+					
+					if(isset($l3))
+						$band2=1;
+					
 				}
 			}
 		}
 		
+		
+		
 		if(isset($look2)){
 			foreach($look2 as $dos){
 				if($band1 == 0){
-					/* if($l1->id == $dos->look_id){ // si son iguales no haga nada y busque otro
-						$band1=0;
+					if($band==1) // hay l1
+					{
+						if($l1->id == $dos->look_id){ // si son iguales no haga nada y busque otro
+							$band1=0;
+						}
+						else{
+							$l2 = Look::model()->aprobados()->findByPk($dos->look_id);
+						
+							if(isset($l2))
+								$band1=1;
+						}		
 					}
-					else{*/
-						$l2 = Look::model()->aprobados()->findByPk($dos->look_id);
-						$band1=1;	
-					//}
+					else if($band2 == 1) // hay l3
+					{
+						if($l3->id == $dos->look_id ){ // si son iguales no haga nada y busque otro
+							$band1=0;
+						} else{
+							$l2 = Look::model()->aprobados()->findByPk($dos->look_id);
+							
+							if(isset($l2))
+								$band1=1;
+						}	
+					}
+				}
+			}
+		}else if(isset($look4)){		
+			foreach($look4 as $dos){
+				if($band3 == 0){
+					if($band==1) // hay l1
+					{
+						if($l1->id == $dos->look_id){ // si son iguales no haga nada y busque otro
+							$band3=0;
+						}
+						else{
+							$l4 = Look::model()->aprobados()->findByPk($dos->look_id);
+						
+							if(isset($l4))
+								$band3=1;
+						}		
+					}
+					else if($band2 == 1) // hay l3
+					{
+						if($l3->id == $dos->look_id ){ // si son iguales no haga nada y busque otro
+							$band3=0;
+						} else{
+							$l4 = Look::model()->aprobados()->findByPk($dos->look_id);
+							
+							if(isset($l4))
+								$band3=1;
+						}	
+					}
+					
 				}
 			}
 		}
@@ -289,18 +351,24 @@ class TiendaController extends Controller
 
 		if($l1 != "")
 			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
+		else if($l3 != "")
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l3->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l3->id.'" src="'.$base.'/look/getImage/'.$l3->id.'" alt="Look"></a>');
 		
+	
 		array_push($ret,"<br><br>");
 		
 		if($l2 != "")
 			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
-
+		else if($l4 != "")
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l4->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l4->id.'" src="'.$base.'/look/getImage/'.$l4->id.'" alt="Look"></a>');
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',
 			'datos'=> $ret,
 			'uno'=>$l1,
-			'dos'=>$l2  
+			'dos'=>$l2,
+			'tres'=>$l3,
+			'cuatro'=>$l4
 			));
 		exit;
 	}

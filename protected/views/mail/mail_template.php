@@ -94,7 +94,7 @@
                                   <td class="w580" width="580"><p align="left" class="article-title">
                                       <singleline label="Title"><?php //echo $subject; ?></singleline>
                                     </p>
-                                    <div align="left" width="580" class="article-content w580">
+                                    <div align="left" width="580" class="article-content w580" style=" word-wrap: break-word; width: 580px;">
                                       <multiline label="Description" width="580">
                                       <?php echo $body; ?>
                                       </multiline>

@@ -404,21 +404,28 @@ else if($count == 0){
         <p>¿Cómo se cuál es mi talla?</p>
 			   <p>Primero necesitarás tener a la mano:  </p>
       </em>
-      
-      <p><strong>Una cinta métrica.</strong> </p>
-      <p><strong>Mucha honestidad</strong></p>
-
+      <ul class="unstyled">
+        <li><p><strong>Una cinta métrica.</strong> </p></li>
+        <li><p><strong>Mucha honestidad</strong></p></li>
+      </ul>
 			<p><em>Ahora, debes tomarte las medidas de la siguiente forma: </em></p>
+        <div class="row-fluid margin_top_medium margin_bottom_medium">
+          <div class="span4 offset1">
+            <img src="<?php echo  $baseUrl ?>/images/model_guiadetallas.jpg"  alt="Modelo de Guia de Tallas" />      
+          </div>
+            
+        <div class="span7">
+                <p><strong>Busto:</strong> Debes rodearte con la cinta métrica por encima de la parte más voluminosa del pecho y pasando justo por la parte baja de las axilas.</p>
 
-			<p><strong>Pecho: Debes rodearte con la cinta métrica por encima de la parte más voluminosa del pecho y pasando justo por la parte baja de las axilas. <strong></p>
+                <p><strong>Cintura:</strong> Debes buscar la forma natural de tu cuerpo y descubrir donde queda tu cintura; luego de eso rodéala con la cinta métrica. </p>
 
-			<p><strong>Cintura: Debes buscar la forma natural de tu cuerpo y descubrir donde queda tu cintura; luego de eso rodéala con la cinta métrica. <strong></p>
+                <p><strong>Caderas:</strong> Debes pasar la cinta métrica por la parte más saliente de tu trasero. </p>
+        </div>
+     
+     </div>
 
-			<p><strong>Caderas: Debes pasar la cinta métrica por la parte más saliente de tu trasero. <strong></p>
-
-			<p><strong><em>¡Ojo! No debes usar ninguna prenda voluminosa a la hora de medir.  </em><strong></p>
-
-			<em><p>¿Qué hago con esas medidas?</p> </em>
+			<em><p>
+        ¿Qué hago con esas medidas?</p> </em>
 
 			<em><p>Aquí te dejamos una tabla con una conversión  aproximada basada en las medidas europeas.</p> </em>   
 			          
@@ -427,84 +434,60 @@ else if($count == 0){
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <thead>
               <tr>
-                <th>UK Size</th>
-                <th colspan="2">Busto</th>
-                <th colspan="2">Cintura</th>
-                <th colspan="2">Caderas</th>
+                <th>Talla Europea</th>
+                <th >Busto</th>
+                <th >Cintura</th>
+                <th >Caderas</th>
               </tr>
               <tr>
                 <th></th>
-                <th>Pulgadas</th>
-                <th>CM</th>
-                <th>Pulgadas</th>
-                <th>CM</th>
-                <th>Pulgadas</th>
-                <th>CM</th>
+                <th>Centímetros (cm)</th>
+                <th>Centímetros (cm)</th>
+                <th>Centímetros (cm)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>6</strong></td>
-                <td>31</td>
-                <td>78.5</td>
-                <td>23.75</td>
-                <td>60.5</td>
-                <td>33.75</td>
+                <td><strong>EU 34</strong></td>
+                <td>76</td>
+                <td>58</td>
+                <td>83,5</td>
+              </tr>
+              <tr>
+                <td><strong>EU 36</strong></td>
+                <td>78,5</td>
+                <td>60,5</td>
                 <td>86</td>
               </tr>
               <tr>
-                <td><strong>8</strong></td>
-                <td>32</td>
+                <td><strong>EU 38</strong></td>
                 <td>81</td>
-                <td>24.75</td>
                 <td>63</td>
-                <td>34.75</td>
                 <td>88.5</td>
               </tr>
               <tr>
-                <td><strong>10</strong></td>
-                <td>34</td>
+                <td><strong>EU 40</strong></td>
                 <td>86</td>
-                <td>26.75</td>
                 <td>68</td>
-                <td>36.75</td>
-                <td>93.5</td>
+                <td>93,5</td>
               </tr>
               <tr>
-                <td><strong>12</strong></td>
-                <td>36</td>
+                <td><strong>EU 42</strong></td>
                 <td>91</td>
-                <td>28.75</td>
                 <td>73</td>
-                <td>38.75</td>
-                <td>98.5</td>
+                <td>98,5</td>
               </tr>
               <tr>
-                <td><strong>14</strong></td>
-                <td>38</td>
+                <td><strong>EU 44</strong></td>
                 <td>96</td>
-                <td>30.75</td>
                 <td>78</td>
-                <td>40.75</td>
-                <td>103.5</td>
+                <td>103,5</td>
               </tr>
               <tr>
-                <td><strong>16</strong></td>
-                <td>40</td>
+                <td><strong>EU 46</strong></td>
                 <td>101</td>
-                <td>32.75</td>
                 <td>83</td>
-                <td>42.75</td>
-                <td>108.5</td>
-              </tr>
-              <tr>
-                <td><strong>18</strong></td>
-                <td>43</td>
-                <td>108.5</td>
-                <td>35.75</td>
-                <td>90.5</td>
-                <td>45.75</td>
-                <td>116</td>
+                <td>108,5</td>
               </tr>
             </tbody>
           </table>
@@ -513,91 +496,203 @@ else if($count == 0){
       </article>
       <aside>
         
-            <h4 class="braker_bottom margin_top"><strong>Guia de conversion de Tallas Internacionales</strong></h4>
+            <h4 class="braker_bottom margin_top"><strong>Guía de Tallas</strong></h4>
         
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <tbody>
               <tr>
-                <th><strong>UK</strong></th>
-                <td>4</td>
-                <td>6</td>
-                <td>8</td>
-                <td>10</td>
-                <td>12</td>
-                <td>14</td>
-                <td>16</td>
-                <td>18</td>
-                <td>20</td>
-                <td>22</td>
-                <td>24</td>
-                <td>26</td>
+                <th><strong>Europa</strong></th>
+                <td>PT</td>
+                <td>XS</td>
+                <td>S</td>
+                <td>M</td>
+                <td>L</td>
+                <td>XL</td>
+                <td>XXL</td>
               </tr>
               <tr>
-                <th><strong>EU</strong></th>
+                <th><strong>Alemania</strong></th>
+                <td>PT</td>
+                <td>XS</td>
+                <td>S</td>
+                <td>M</td>
+                <td>L</td>
+                <td>XL</td>
+                <td>XXL</td>
+              </tr>
+              <tr>
+                <th><strong>Canada</strong></th>
+                <td>PT</td>
+                <td>SS/2</td>
+                <td>XS/4</td>
+                <td>S/6</td>
+                <td>M/8</td>
+                <td>L/10</td>
+                <td>XL/12</td>
+              </tr>
+              <tr>
+                <th><strong>México</strong></th>
+                <td>PT</td>
+                <td>ECH</td>
+                <td>CH</td>
+                <td>M</td>
+                <td>G</td>
+                <td>EG</td>
+                <td>EEG</td>
+              </tr>
+              <tr>
+                <th><strong>Reino Unido</strong></th>
+                <td>PT</td>
+                <td>XS/6</td>
+                <td>S/8</td>
+                <td>M/10</td>
+                <td>L/12</td>
+                <td>XL/14</td>
+                <td>XXL/16</td>
+              </tr>    
+              <tr>
+                <th><strong>U.S.A</strong></th>
+                <td>PT</td>
+                <td>XXS/2</td>
+                <td>XS/4</td>
+                <td>S/6</td>
+                <td>M/8</td>
+                <td>L/10</td>
+                <td>XL/12</td>
+              </tr>                          
+            </tbody>
+          </table>
+
+          <h4 class="braker_bottom margin_top"><strong>Pantalones:</strong></h4>
+        
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <tbody>
+              <tr>
+                <th><strong>Europa</strong></th>
                 <td>32</td>
                 <td>34</td>
                 <td>36</td>
+                <td>37</td>
                 <td>38</td>
+                <td>39</td>
                 <td>40</td>
                 <td>42</td>
                 <td>44</td>
                 <td>46</td>
-                <td>48</td>
-                <td>50</td>
-                <td>52</td>
-                <td>54</td>
               </tr>
               <tr>
-                <th><strong>US</strong></th>
+                <th><strong>Alemania</strong></th>
+                <td>32</td>
+                <td>34</td>
+                <td>36</td>
+                <td>37</td>
+                <td>38</td>
+                <td>39</td>
+                <td>40</td>
+                <td>42</td>
+                <td>44</td>
+                <td>46</td>
+              </tr>
+              <tr>
+                <th><strong>México</strong></th>
                 <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>9</td>
+                <td>11</td>
+                <td>13</td>
+              </tr>
+              <tr>
+                <th><strong>Reino Unido</strong></th>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+                <td>11</td>
+                <td>12</td>
+                <td>14</td>
+                <td>16</td>
+                <td>18</td>
+              </tr>  
+              <tr>
+                <th><strong>U.S.A</strong></th>
+                <td>1</td>
                 <td>2</td>
                 <td>4</td>
+                <td>5</td>
                 <td>6</td>
+                <td>7</td>
                 <td>8</td>
                 <td>10</td>
                 <td>12</td>
                 <td>14</td>
-                <td>16</td>
-                <td>18</td>
-                <td>20</td>
-                <td>22</td>
+              </tr>                                        
+            </tbody>
+          </table>   
+
+          <h4 class="braker_bottom margin_top"><strong>Zapatos:</strong></h4>
+        
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <tbody>
+              <tr>
+                <th><strong>Europa</strong></th>
+                <td>35</td>
+                <td>36</td>
+                <td>37</td>
+                <td>38</td>
+                <td>39</td>
+                <td>40</td>
+                <td>41</td>
+                <td>42</td>
+                <td>43</td>
+                <td>44</td>
               </tr>
               <tr>
-                <th><strong>AU</strong></th>
+                <th><strong>México</strong></th>
+                <td>2</td>
+                <td>3/</td>
                 <td>4</td>
+                <td>5</td>
                 <td>6</td>
+                <td>6/</td>
+                <td>7</td>
                 <td>8</td>
-                <td>10</td>
-                <td>12</td>
-                <td>14</td>
-                <td>16</td>
-                <td>18</td>
-                <td>20</td>
-                <td>22</td>
-                <td>24</td>
-                <td>26</td>
+                <td></td>
+                <td></td>
               </tr>
+              <tr>
+                <th><strong>Reino Unido</strong></th>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td></td>
+                <td></td>
+              </tr>  
+              <tr>
+                <th><strong>U.S.A</strong></th>
+                <td>5</td>
+                <td>6</td>
+                <td>6/</td>
+                <td>7/</td>
+                <td>8/</td>
+                <td>9</td>
+                <td>9/</td>
+                <td>10</td>
+                <td></td>
+                <td></td>
+              </tr>                                        
             </tbody>
-          </table>
-        <h4 class="braker_bottom margin_top"><strong>Cómo medirse</strong></h4>
-        <p>Para escoger la talla correcta para ti puedes medirte de la siguiente forma:</p>
-        <div class="row-fluid margin_top_medium">
-          <div class="span4 offset1">
-          <img src="http://images.asos.com/webcontent/sizeguide/womens-tshirts-and-tops.jpg" width="150" alt="Women's t-shirts &amp; tops size guide - how to choose the right size t-shirt &amp; top" /> 
-         
-         </div>
-          
-          <div class="span7"><dl>
-            <dt>1. Busto</dt>
-            <dd>Measure around fullest part</dd>
-            <dt>2. Cintura</dt>
-            <dd>Measure around natural waistline</dd>
-            <dt>3. Cadera</dt>
-            <dd>Measure 20cm down from the natural waistline</dd>
-          </dl></div>
-         
-         
-         </div>
+          </table>                   
       </aside>
     </div>
   </div>

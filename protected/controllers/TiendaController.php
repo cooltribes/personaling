@@ -245,79 +245,62 @@ class TiendaController extends Controller
 	public function actionImageneslooks(){
 		
 		$look1 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro1']));
-		$look2 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro2']));
+		$look2 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro2']));	
+		$look3 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro3']));
+		$look4 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro4']));
 		
-		$mos1 = 0;
-		$mos2 = 0;
+		$band = 0;
+		$band1 = 0;
 		
 		$l1 ="";
 		$l2 ="";
-		$l11 ="";
-		$l22 ="";
+		$l3 ="";
+		$l4 ="";
 		
 		if(isset($look1)){		
-			foreach($look1 as $uno)
-			{
-				if($mos1 == 0)
-				{				
+			foreach($look1 as $uno){
+				if($band == 0){				
 					$l1 = Look::model()->aprobados()->findByPk($uno->look_id);
-					$mos1=1;
+					$band=1;
 				}
-				else if($mos1 == 1)
-				{
-					$l11 = Look::model()->aprobados()->findByPk($uno->look_id);
-					$mos1=2;
-				}
-				else
-					break;
 			}
 		}
 		
 		if(isset($look2)){
-			foreach($look2 as $dos)
-			{
-				if($mos2 == 0)
-				{
-					if($l1->id == $dos->look_id){
-						$mos2=0;
+			foreach($look2 as $dos){
+				if($band1 == 0){
+					/* if($l1->id == $dos->look_id){ // si son iguales no haga nada y busque otro
+						$band1=0;
 					}
-					else{
+					else{*/
 						$l2 = Look::model()->aprobados()->findByPk($dos->look_id);
-						$mos2=1;	
-					}
+						$band1=1;	
+					//}
 				}
-				else if($mos2 == 1)
-				{
-					$l22 = Look::model()->aprobados()->findByPk($dos->look_id);
-					$mos2=2;
-				}
-				else
-					break;
 			}
 		}
-		// tengo los dos looks. Ahora a generar lo que voy a devolver para que genere las imagenes.
+		
+		
+		
+		// tengo los looks. Ahora a generar lo que voy a devolver para que genere las imagenes.
 		
 		$ret = array();
 		$base = Yii::app()->baseUrl;
 
 		if($l1 != "")
 			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
-		else
-			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l11->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l11->id.'" src="'.$base.'/look/getImage/'.$l11->id.'" alt="Look"></a>');
 		
 		array_push($ret,"<br><br>");
 		
 		if($l2 != "")
 			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
-		else 
-			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l22->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l22->id.'" src="'.$base.'/look/getImage/'.$l22->id.'" alt="Look"></a>');
-		
-		
-		//array_push($ret,CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$l1->id)), "Look", array("width" => "400", "height" => "400", 'class'=>'img-polaroid')) );
+
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',
-			'datos'=> $ret  
+			'datos'=> $ret,
+			'uno'=>$l1,
+			'dos'=>$l2  
 			));
 		exit;
 	}

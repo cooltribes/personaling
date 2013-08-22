@@ -110,15 +110,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <?php if (Yii::app()->user->isAdmin()){ ?>
-        
-        <!-- Para el admin ON 
-        
         <div class="control-group ">
           <div class="controls">
              <?php echo $form->checkBoxRow($model, 'destacado'); ?>
              <?php echo $form->error($model,'destacado'); ?>
           </div>
-        </div>
+        </div>        
+        <!-- Para el admin ON 
+        
+
         <div class="control-group ">
           <div class="controls">
             <label class="checkbox">

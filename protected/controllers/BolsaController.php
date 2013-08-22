@@ -420,12 +420,29 @@ class BolsaController extends Controller
 		
 		public function actionEliminardireccion()
 		{
-			if(isset($_POST['idDir']))
-			{
-				$direccion = Direccion::model()->findByPk($_POST['idDir']);
-				$direccion->delete();
+			// if(isset($_POST['idDir']))
+			// {
+			// 	$direccion = Direccion::model()->findByPk($_POST['idDir']);
+			// 	$direccion->delete();
 				
-				echo "ok";
+			// 	echo "ok";
+			// }
+			$id = $_POST['idDir'];
+			$direccion = Direccion::model()->findByPk( $id  );
+			$user = User::model()->findByPk( Yii::app()->user->id );
+			if($user){
+				$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
+				$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
+				
+				if($facturas1 == 0 && $facturas2 == 0){
+					if($direccion->delete()){
+						echo "ok";
+					}else{
+						echo "wrong";
+					}
+				}else{
+					echo "bad";
+				}
 			}
 		}
 		

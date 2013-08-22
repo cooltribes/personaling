@@ -272,8 +272,11 @@
 	   			}// else
               	?>         	     	
               </div>
+              <div class="braker_top margin_top_small">
+              	<a href="#myModal" role="button" class="btn btn-mini btn-link color9" data-toggle="modal">Ver guia de tallas</a>
+              </div>
             </div>
-             </div>
+           </div>
              
              <?php
              }
@@ -354,13 +357,15 @@ $cont=0;
 				if($cont<3){
 					if($cadauno->width != "" && $cadauno->height != ""){
 					
-					$lk = Look::model()->findByPk($cadauno->look_id);
+					$lk = Look::model()->aprobados()->findByPk($cadauno->look_id);
 					
-					echo('<div class="span4">'); 
-					echo("<a href='".CController::createUrl('look/view',array('id'=>$cadauno->look_id))."' title='".$lk->title."'>");
-					echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>'img_1'));
-					echo("</a></div>");
-					$cont++; // solo 3 veces
+						if(isset($lk)){
+							echo('<div class="span4">'); 
+							echo("<a href='".CController::createUrl('look/view',array('id'=>$cadauno->look_id))."' title='".$lk->title."'>");
+							echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>'img_1'));
+							echo("</a></div>");
+							$cont++; // solo 3 veces
+						}
 					}
 				}
 			}// foreach
@@ -384,6 +389,319 @@ else if($count == 0){
 </div> </div>
 
 <!-- /container -->
+
+<!-- Modal Guia Talla -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Guía de tallas Personaling</h3>
+  </div>
+  <div class="modal-body">
+    <div id="size-guide">
+      <article id="main" role="main">
+        <header>
+<!--           <h4 class="braker_bottom"><strong>Talla de Pantalones</strong> <span>- Medidas</span></h4>
+          <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar est et feugiat sodales. Proin egestas, neque nec varius condimentum, nunc eros placerat tellus, ac accu. </p> -->
+			<em>
+        <p>¿Cómo se cuál es mi talla?</p>
+			   <p>Primero necesitarás tener a la mano:  </p>
+      </em>
+      <ul class="unstyled">
+        <li><p><strong>Una cinta métrica.</strong> </p></li>
+        <li><p><strong>Mucha honestidad</strong></p></li>
+      </ul>
+			<p><em>Ahora, debes tomarte las medidas de la siguiente forma: </em></p>
+        <div class="row-fluid margin_top_medium margin_bottom_medium">
+          <div class="span4 offset1">
+            <img src="<?php echo  $baseUrl ?>/images/model_guiadetallas.jpg"  alt="Modelo de Guia de Tallas" />      
+          </div>
+            
+        <div class="span7">
+                <p><strong>Busto:</strong> Debes rodearte con la cinta métrica por encima de la parte más voluminosa del pecho y pasando justo por la parte baja de las axilas.</p>
+
+                <p><strong>Cintura:</strong> Debes buscar la forma natural de tu cuerpo y descubrir donde queda tu cintura; luego de eso rodéala con la cinta métrica. </p>
+
+                <p><strong>Caderas:</strong> Debes pasar la cinta métrica por la parte más saliente de tu trasero. </p>
+        </div>
+     
+     </div>
+
+			<em><p>
+        ¿Qué hago con esas medidas?</p> </em>
+
+			<em><p>Aquí te dejamos una tabla con una conversión  aproximada basada en las medidas europeas.</p> </em>   
+			          
+        </header>
+        <section>
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Talla Europea</th>
+                <th >Busto</th>
+                <th >Cintura</th>
+                <th >Caderas</th>
+              </tr>
+              <tr>
+                <th></th>
+                <th>Centímetros (cm)</th>
+                <th>Centímetros (cm)</th>
+                <th>Centímetros (cm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>EU 34</strong></td>
+                <td>76</td>
+                <td>58</td>
+                <td>83,5</td>
+              </tr>
+              <tr>
+                <td><strong>EU 36</strong></td>
+                <td>78,5</td>
+                <td>60,5</td>
+                <td>86</td>
+              </tr>
+              <tr>
+                <td><strong>EU 38</strong></td>
+                <td>81</td>
+                <td>63</td>
+                <td>88.5</td>
+              </tr>
+              <tr>
+                <td><strong>EU 40</strong></td>
+                <td>86</td>
+                <td>68</td>
+                <td>93,5</td>
+              </tr>
+              <tr>
+                <td><strong>EU 42</strong></td>
+                <td>91</td>
+                <td>73</td>
+                <td>98,5</td>
+              </tr>
+              <tr>
+                <td><strong>EU 44</strong></td>
+                <td>96</td>
+                <td>78</td>
+                <td>103,5</td>
+              </tr>
+              <tr>
+                <td><strong>EU 46</strong></td>
+                <td>101</td>
+                <td>83</td>
+                <td>108,5</td>
+              </tr>
+            </tbody>
+          </table>
+         
+        </section>
+      </article>
+      <aside>
+        
+            <h4 class="braker_bottom margin_top"><strong>Guía de Tallas</strong></h4>
+        
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <tbody>
+              <tr>
+                <th><strong>Europa</strong></th>
+                <td>PT</td>
+                <td>XS</td>
+                <td>S</td>
+                <td>M</td>
+                <td>L</td>
+                <td>XL</td>
+                <td>XXL</td>
+              </tr>
+              <tr>
+                <th><strong>Alemania</strong></th>
+                <td>PT</td>
+                <td>XS</td>
+                <td>S</td>
+                <td>M</td>
+                <td>L</td>
+                <td>XL</td>
+                <td>XXL</td>
+              </tr>
+              <tr>
+                <th><strong>Canada</strong></th>
+                <td>PT</td>
+                <td>SS/2</td>
+                <td>XS/4</td>
+                <td>S/6</td>
+                <td>M/8</td>
+                <td>L/10</td>
+                <td>XL/12</td>
+              </tr>
+              <tr>
+                <th><strong>México</strong></th>
+                <td>PT</td>
+                <td>ECH</td>
+                <td>CH</td>
+                <td>M</td>
+                <td>G</td>
+                <td>EG</td>
+                <td>EEG</td>
+              </tr>
+              <tr>
+                <th><strong>Reino Unido</strong></th>
+                <td>PT</td>
+                <td>XS/6</td>
+                <td>S/8</td>
+                <td>M/10</td>
+                <td>L/12</td>
+                <td>XL/14</td>
+                <td>XXL/16</td>
+              </tr>    
+              <tr>
+                <th><strong>U.S.A</strong></th>
+                <td>PT</td>
+                <td>XXS/2</td>
+                <td>XS/4</td>
+                <td>S/6</td>
+                <td>M/8</td>
+                <td>L/10</td>
+                <td>XL/12</td>
+              </tr>                          
+            </tbody>
+          </table>
+
+          <h4 class="braker_bottom margin_top"><strong>Pantalones:</strong></h4>
+        
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <tbody>
+              <tr>
+                <th><strong>Europa</strong></th>
+                <td>32</td>
+                <td>34</td>
+                <td>36</td>
+                <td>37</td>
+                <td>38</td>
+                <td>39</td>
+                <td>40</td>
+                <td>42</td>
+                <td>44</td>
+                <td>46</td>
+              </tr>
+              <tr>
+                <th><strong>Alemania</strong></th>
+                <td>32</td>
+                <td>34</td>
+                <td>36</td>
+                <td>37</td>
+                <td>38</td>
+                <td>39</td>
+                <td>40</td>
+                <td>42</td>
+                <td>44</td>
+                <td>46</td>
+              </tr>
+              <tr>
+                <th><strong>México</strong></th>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>9</td>
+                <td>11</td>
+                <td>13</td>
+              </tr>
+              <tr>
+                <th><strong>Reino Unido</strong></th>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+                <td>11</td>
+                <td>12</td>
+                <td>14</td>
+                <td>16</td>
+                <td>18</td>
+              </tr>  
+              <tr>
+                <th><strong>U.S.A</strong></th>
+                <td>1</td>
+                <td>2</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>10</td>
+                <td>12</td>
+                <td>14</td>
+              </tr>                                        
+            </tbody>
+          </table>   
+
+          <h4 class="braker_bottom margin_top"><strong>Zapatos:</strong></h4>
+        
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
+            <tbody>
+              <tr>
+                <th><strong>Europa</strong></th>
+                <td>35</td>
+                <td>36</td>
+                <td>37</td>
+                <td>38</td>
+                <td>39</td>
+                <td>40</td>
+                <td>41</td>
+                <td>42</td>
+                <td>43</td>
+                <td>44</td>
+              </tr>
+              <tr>
+                <th><strong>México</strong></th>
+                <td>2</td>
+                <td>3/</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>6/</td>
+                <td>7</td>
+                <td>8</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th><strong>Reino Unido</strong></th>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td></td>
+                <td></td>
+              </tr>  
+              <tr>
+                <th><strong>U.S.A</strong></th>
+                <td>5</td>
+                <td>6</td>
+                <td>6/</td>
+                <td>7/</td>
+                <td>8/</td>
+                <td>9</td>
+                <td>9/</td>
+                <td>10</td>
+                <td></td>
+                <td></td>
+              </tr>                                        
+            </tbody>
+          </table>                   
+      </aside>
+    </div>
+  </div>
+  <div class="modal-footer">  <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+  </div>
+</div><!-- Modal Guia Talla OFF -->
+
 <?php 
 
 //$cs = Yii::app()->getClientScript();

@@ -45,12 +45,14 @@ $this->breadcrumbs=array(
           <tr>
             <td>
             	<?php
+					/*
 					if ($producto->mainimage)
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => 70, "height" => 70));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
 					echo $image;
-					
+					*/
+					echo CHtml::image($producto->getImageUrl($hasproducto->color_id), "Imagen", array("width" => "70", "height" => "70"));
 				?>
             	
             </td>
@@ -108,15 +110,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <?php if (Yii::app()->user->isAdmin()){ ?>
-        
-        <!-- Para el admin ON 
-        
         <div class="control-group ">
           <div class="controls">
              <?php echo $form->checkBoxRow($model, 'destacado'); ?>
              <?php echo $form->error($model,'destacado'); ?>
           </div>
-        </div>
+        </div>        
+        <!-- Para el admin ON 
+        
+
         <div class="control-group ">
           <div class="controls">
             <label class="checkbox">

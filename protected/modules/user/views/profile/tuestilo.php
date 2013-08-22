@@ -7,7 +7,7 @@
             				$nombre_tmp = $field->varname;
 			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
 			$return = '<fieldset>
-            <legend>Debes escoger un estilo que defina tu forma de vestir. </legend>
+            <legend>Escoge un estilo que defina tu forma de vestir. </legend>
 		
            
             <ul class="thumbnails">';

@@ -225,24 +225,62 @@ else
               <div class="tab-pane" id="dia">
 	            <div class="clearfix">
 	            	<?php
+					
+					$ya = date('Y-m-d', strtotime('now'));
+					      	
+					$sql = "select fecha from tbl_orden limit 1";
+					$primera = Yii::app()->db->createCommand($sql)->queryScalar();
+					      	
+					// un mes y un dia	
+					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 month -1 day'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+					$cuatrosem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					//  a 3 semanas
+					      	
+					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. ' -3 week'))."' ";
+					$tressem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// a 2 semanas
+					      	
+					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -3 week'))."' and '".date('Y-m-d', strtotime($ya. ' -2 week'))."' ";
+					$dossem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// a una semana
+					      	
+					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -2 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 week'))."' ";
+					$unosem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// de la primera venta hasta hoy
+					
+					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' ";
+					$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
+					
+					
+					$uno = date('d-m-Y', strtotime($ya. ' -1 month'));
+					$dos = date('d-m-Y', strtotime('now'));
+					$tres = date('d-m-Y', strtotime('-3 week'));
+					$cuatro = date('d-m-Y', strtotime('-2 week'));
+					$cinco = date('d-m-Y', strtotime('-1 week'));
+					
+					
 						$this->Widget('ext.highcharts.HighchartsWidget', array(
 							'options'=>array(
 								'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
-								'title' => array('text' => 'Ventas diarias'),
+								'title' => array('text' => 'Ventas por semanas'),
 								'xAxis' => array(
-									'categories' => array('a', 'b')
+									'categories' => array($uno, $tres, $cuatro, $cinco, $dos)
 									),
 								'yAxis' => array(
 										'title' => array('text' => 'Ventas')
 									),
 								'series' => array(
-										array('name' => 'Total', 'data' => array(10,40))
+										array('name' => 'Total', 'data' => array($cuatrosem, $tressem, $dossem, $unosem, $ahora))
 									)
 							)
 						));
 						
 						
-						?>
+					?>
 	            </div>
 	          </div>
 	          

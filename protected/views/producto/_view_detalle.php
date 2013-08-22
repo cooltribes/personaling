@@ -357,13 +357,15 @@ $cont=0;
 				if($cont<3){
 					if($cadauno->width != "" && $cadauno->height != ""){
 					
-					$lk = Look::model()->findByPk($cadauno->look_id);
+					$lk = Look::model()->aprobados()->findByPk($cadauno->look_id);
 					
-					echo('<div class="span4">'); 
-					echo("<a href='".CController::createUrl('look/view',array('id'=>$cadauno->look_id))."' title='".$lk->title."'>");
-					echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>'img_1'));
-					echo("</a></div>");
-					$cont++; // solo 3 veces
+						if(isset($lk)){
+							echo('<div class="span4">'); 
+							echo("<a href='".CController::createUrl('look/view',array('id'=>$cadauno->look_id))."' title='".$lk->title."'>");
+							echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>'img_1'));
+							echo("</a></div>");
+							$cont++; // solo 3 veces
+						}
 					}
 				}
 			}// foreach

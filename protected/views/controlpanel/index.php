@@ -104,45 +104,107 @@ else
       <div class="bg_color3 margin_bottom_small padding_small box_1">
 
 
-<?php
+            <ul class="nav nav-tabs" id="myTab">
+              <li class="active"><a href="#mes" data-toggle="tab">Mensual</a></li>
+              <li><a href="#semana" data-toggle="tab">Semanal</a></li>
+              <li><a href="#dia" data-toggle="tab">Diario</a></li>
+            </ul>
+            
+            <div class="tab-content">
+            	
+              <div class="tab-pane active" id="mes" >
+                <div class="clearfix" style="width: 100%;height: 100%;">   
+                 	<?php
  
-$ya = date('Y-m-d H:i:s', strtotime('now'));
-      	
-$sql = "select fecha from tbl_orden limit 1";
-$primera = Yii::app()->db->createCommand($sql)->queryScalar();
-      	
-// de la primera venta hasta hace un mes
-      	
-$sql = "select count(*) from tbl_orden where fecha between '".$primera."' and '".date('Y-m-d H:i:s', strtotime($ya. ' -1 month'))."' ";
-$monthago = (int) Yii::app()->db->createCommand($sql)->queryScalar();
-
-// de la primera venta hasta hoy
-
-$sql = "select count(*) from tbl_orden where fecha between '".$primera."' and '".$ya."' ";
-$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
-
-$uno = date('d-m-Y', strtotime($ya. ' -1 month'));
-$dos = date('d-m-Y', strtotime('now'));
-
-      	$this->Widget('ext.highcharts.HighchartsWidget', array(
-		   'options'=>array(
-		   	  'chart' => array('type' =>'areaspline'), // column, area, line, spline, areaspline, bar, pie, scatter
-		      'title' => array('text' => 'Ventas / Tiempo'),
-		      'xAxis' => array(
-		         'categories' => array($uno, $dos)
-		      ),
-		      'yAxis' => array(
-		         'title' => array('text' => 'Ventas')
-		      ),
-		      'series' => array(
-		        // array('name' => 'Jane', 'data' => array(1, 0, 4)),
-		         array('name' => 'Total', 'data' => array($monthago,$ahora))
-		      )
-		   )
-		));
-
-
-?>
+					$ya = date('Y-m-d H:i:s', strtotime('now'));
+					      	
+					$sql = "select fecha from tbl_orden limit 1";
+					$primera = Yii::app()->db->createCommand($sql)->queryScalar();
+					      	
+					// de la primera venta hasta hace un mes
+					      	
+					$sql = "select count(*) from tbl_orden where fecha between '".$primera."' and '".date('Y-m-d H:i:s', strtotime($ya. ' -1 month'))."' ";
+					$monthago = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// de la primera venta hasta hoy
+					
+					$sql = "select count(*) from tbl_orden where fecha between '".$primera."' and '".$ya."' ";
+					$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
+					
+					$uno = date('d-m-Y', strtotime($ya. ' -1 month'));
+					$dos = date('d-m-Y', strtotime('now'));
+					
+					      	$this->Widget('ext.highcharts.HighchartsWidget', array(
+							   'options'=>array(
+							   	  'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
+							      'title' => array('text' => 'Ventas en el último mes.'),
+							      'xAxis' => array(
+							         'categories' => array($uno, $dos)
+							      ),
+							      'yAxis' => array(
+							         'title' => array('text' => 'Ventas')
+							      ),
+							      'series' => array(
+							        // array('name' => 'Jane', 'data' => array(1, 0, 4)),
+							         array('name' => 'Total', 'data' => array($monthago,$ahora))
+							      )
+							   )
+							));
+					
+					
+					?>
+        		</div>
+              </div>
+              
+              <div class="tab-pane" id="semana">
+                <div class="clearfix">
+					<?php
+						$this->Widget('ext.highcharts.HighchartsWidget', array(
+							'options'=>array(
+								'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
+								'title' => array('text' => 'Ventas por semanas'),
+								'xAxis' => array(
+									'categories' => array('a', 'b')
+									),
+								'yAxis' => array(
+										'title' => array('text' => 'Ventas')
+									),
+								'series' => array(
+										array('name' => 'Total', 'data' => array(10,40))
+									)
+							)
+						));
+						
+						
+						?>
+              	</div>
+              </div>
+              
+              <div class="tab-pane" id="dia">
+	            <div class="clearfix">
+	            	<?php
+						$this->Widget('ext.highcharts.HighchartsWidget', array(
+							'options'=>array(
+								'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
+								'title' => array('text' => 'Ventas diarias'),
+								'xAxis' => array(
+									'categories' => array('a', 'b')
+									),
+								'yAxis' => array(
+										'title' => array('text' => 'Ventas')
+									),
+								'series' => array(
+										array('name' => 'Total', 'data' => array(10,40))
+									)
+							)
+						));
+						
+						
+						?>
+	            </div>
+	          </div>
+	          
+            </div>
 
 </div></div>
       <div class="row">

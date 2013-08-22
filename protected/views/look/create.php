@@ -597,8 +597,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
-						    'class' => 'thumbnail',
-						  
+						    'class' => 'thumbnail',									    						  
 						    'draggable'=>"false",
 						  )
 						).

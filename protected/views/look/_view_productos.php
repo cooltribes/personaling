@@ -1,7 +1,7 @@
 <?php
 					if (isset($categoria_padre) ){
 					echo CHtml::ajaxLink(
-						  'Atras',
+						  'Atrás',
 						  Yii::app()->createUrl( 'look/categorias'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
@@ -19,7 +19,7 @@
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
-						    'class' => 'thumbnail',
+						    'class' => 'thumbnail btn btn-block',
 						    'id' => 'categoria'.$categoria_padre,
 						    'draggable'=>"false",
 						  )

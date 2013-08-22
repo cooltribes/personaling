@@ -1,4 +1,4 @@
-<tr>
+ <tr>
       <td><input name="check" type="checkbox" value=""></td>
       <td><?php echo $data->id; ?></td>
       <td><h4><?php echo $data->nombre; ?></h4></td>
@@ -72,10 +72,10 @@
 		}
       	?>
       </td>
-      <td>
+      <td>     
       	
       	   	
-      	<a href="#myModal2" role="button" data-toggle="modal" onclick="get_marca(<?php echo $data->id; ?>>0</a>
+      	<a href="#marca_modal" role="button" data-toggle="modal" onclick="get_marca(<?php echo $data->id; ?>)">0</a>
       	
       </td>
       	
@@ -104,6 +104,18 @@
 	        success: function (data) {
 				$('#ps_modal_body').html(data);
 				$('#ps_modal').modal();
+	       	}//success
+	       });
+	}
+	function get_marca(campana_id){
+		$.ajax({
+	        type: "post",
+	        dataType: 'html',
+	        url: "campana/getMarca", // action 
+	        data: { 'campana_id':campana_id }, 
+	        success: function (data) {
+				$('#marca_modal_body').html(data);
+				$('#marca_modal').modal();
 	       	}//success
 	       });
 	}

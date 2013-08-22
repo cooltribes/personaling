@@ -74,8 +74,15 @@
       </td>
       <td>     
       	
-      	   	
-      	<a href="#marca_modal" role="button" data-toggle="modal" onclick="get_marca(<?php echo $data->id; ?>)">0</a>
+      	<?php
+      	
+			$sql = "select count(distinct(m.nombre)) from tbl_campana c, tbl_look l, tbl_look_has_producto lp, tbl_producto p, tbl_marca m where c.id=".$data->id." and c.id=l.campana_id and l.id=lp.look_id and lp.producto_id=p.id and p.marca_id=m.id";
+			$num = Yii::app()->db->createCommand($sql)->queryScalar();
+			
+			
+			      	
+      	?>
+      	<a role="button" data-toggle="modal" onclick="get_marca(<?php echo $data->id; ?>)"><?php echo $num?></a>
       	
       </td>
       	
@@ -108,6 +115,7 @@
 	       });
 	}
 	function get_marca(campana_id){
+		
 		$.ajax({
 	        type: "post",
 	        dataType: 'html',

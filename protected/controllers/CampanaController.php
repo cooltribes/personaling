@@ -11,7 +11,7 @@ class CampanaController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS', 'inviteAll', 'uninviteAll'),
+				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS', 'inviteAll', 'uninviteAll','getMarca'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -176,39 +176,50 @@ class CampanaController extends Controller
 
 	public function actionGetMarca(){
 		$campana = Campana::model()->findByPk($_POST['campana_id']);
-		$looks= Look::model()->findAllByAttributes(array('campana_id'=>$_POST['campana_id']));
-		$i=0;
+		
+
+		$looks=Array();
+		$marcas=Array();
+		
+		$looks= Look::model()->findAllByAttributes(array('campana_id'=>$campana->id));
+	
+		$lk;
+		
 		foreach ($looks as $look) {
-			$lhps[$i]= LookHasProducto::model()->findAllByAttributes(array('look_id'=>$look->id));
-			$i++;
-		}
-		$i=0;
-		foreach ($lphs as $lph) {
-			$productos[$i]= Producto::model()->findByPk($lhp->producto_id);
-			$i++;
-		}
-		$i=0;
-		foreach ($productos as $producto) {
-			$marcas[$i]= Marca::model()->findByPk($producto->marca_id);	
-			$i++;
-		}
+				 
+			$lk= LookHasProducto::model()->findAllByAttributes(array('look_id'=>$look->id));
+			
+			foreach ($lk as $lhp) {
+				$producto= Producto::model()->findByPk($lhp->producto_id);
+			
+				$mr= Marca::model()->findByPk($producto->marca_id);	
 					
-		$return = '<h4>Nombre de la campaña: '.$campana->nombre.'</h4>';
+				if(!in_array($mr->id, $marcas)){
+					array_push($marcas,$mr->id);
+				}
+			}
+		}
+			
+		$return= '<h4>Nombre de la campaña: '.$campana->nombre.'</h4>';
 		$return .= '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
 				      <tbody>
 				        <tr>
 				          <th colspan="1" scope="col">Avatar</th>
 				          <th colspan="1" scope="col" width="80%">Nombre</th>
 				        </tr>';
-		//var_dump($personal_shoppers);
-		foreach ($marcas as $marca) {
+		
+		
+		if(!empty($marcas)){
+	
+		foreach ($marcas as $marcaid) {
 			
-			$return .= '<tr>
-				          <td><img src="'.CHtml::image(Yii::app()->baseUrl.'/images/marca/'.$data->id.'_thumb.jpg', $data->nombre).'" width="30" height="30"></td>
+		$marca= Marca::model()->findByPk($marcaid);	
+		$return.= '<tr>
+				          <td>'.CHtml::image(Yii::app()->baseUrl.'/images/marca/'.$marca->id.'_thumb.jpg', $marca->nombre).'</td>
 				          <td>'.$marca->nombre.'</td>
 				        </tr>';
+			}
 		}
-		
 		$return .= '</tbody>
     			</table>';
 				

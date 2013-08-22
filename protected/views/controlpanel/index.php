@@ -233,49 +233,48 @@ else
 					      	
 					// un mes y un dia	
 					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 month -1 day'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
-					$cuatrosem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					$treintaun = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
-					//  a 3 semanas
-					      	
-					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. ' -3 week'))."' ";
-					$tressem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					// de aqui en adelante diario
+					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. '-1 month +1 day'))."' ";
+					$treinta = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
-					// a 2 semanas
-					      	
-					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -3 week'))."' and '".date('Y-m-d', strtotime($ya. ' -2 week'))."' ";
-					$dossem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					$todos = Array();
+					$fecha = Array();
 					
-					// a una semana
-					      	
-					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -2 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 week'))."' ";
-					$unosem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					for($i=30 ; $i>0 ; $i--)
+					{		
+						$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. '-'.$i.' day'))."' and '".date('Y-m-d', strtotime($ya. '-'.($i-1).' day'))."' ";
+						array_push($todos, (int) Yii::app()->db->createCommand($sql)->queryScalar());
+						
+						//echo $sql."<br>";
+						
+						array_push($fecha,date('d-m', strtotime($ya. '-'.($i-1).' day')));
+					}				
 					
-					// de la primera venta hasta hoy
-					
-					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' ";
+					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 day'))."' and '".$ya."' ";
 					$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
 					
-					
-					$uno = date('d-m-Y', strtotime($ya. ' -1 month'));
-					$dos = date('d-m-Y', strtotime('now'));
-					$tres = date('d-m-Y', strtotime('-3 week'));
-					$cuatro = date('d-m-Y', strtotime('-2 week'));
-					$cinco = date('d-m-Y', strtotime('-1 week'));
-					
-					
+					$uno = date('d-m', strtotime($ya. ' -1 month'));
+					$tres = date('d-m', strtotime('-1 month +1 day'));
+
 						$this->Widget('ext.highcharts.HighchartsWidget', array(
 							'options'=>array(
-								'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
+								'chart' => array('type' =>'areaspline','width'=>1170), // column, area, line, spline, areaspline, bar, pie, scatter
 								'title' => array('text' => 'Ventas por semanas'),
 								'xAxis' => array(
-									'categories' => array($uno, $tres, $cuatro, $cinco, $dos)
+									'categories' => array($uno,$tres,$fecha[0],$fecha[1],$fecha[2],$fecha[3],$fecha[4],$fecha[5],$fecha[6],$fecha[7],$fecha[8],$fecha[9],$fecha[10],
+															$fecha[11],$fecha[12],$fecha[13],$fecha[14],$fecha[15],$fecha[16],$fecha[17],$fecha[18],$fecha[19],$fecha[20],
+															$fecha[21],$fecha[22],$fecha[23],$fecha[24],$fecha[25],$fecha[26],$fecha[27],$fecha[28],$fecha[29])
 									),
 								'yAxis' => array(
 										'title' => array('text' => 'Ventas')
 									),
 								'series' => array(
-										array('name' => 'Total', 'data' => array($cuatrosem, $tressem, $dossem, $unosem, $ahora))
-									)
+									array('name' => 'Total', 'data' => array($treintaun, $treinta,$todos[0],$todos[1],$todos[2],$todos[3],$todos[4],$todos[5],$todos[6],$todos[7],$todos[8],$todos[9],$todos[10]
+																			,$todos[11],$todos[12],$todos[13],$todos[14],$todos[15],$todos[16],$todos[17],$todos[18],$todos[19],$todos[20]
+																			,$todos[21],$todos[22],$todos[23],$todos[24],$todos[25],$todos[26],$todos[27],$todos[28],$todos[29]))
+								)
 							)
 						));
 						

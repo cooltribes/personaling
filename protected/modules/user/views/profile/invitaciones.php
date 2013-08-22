@@ -1,4 +1,7 @@
 <?php
+
+/** @var $form bootstrap.widgets.TbActiveForm */
+
 $create_time = strtotime($model->create_at);
 $create_date = date('j M Y', $create_time);
 ?>
@@ -88,7 +91,14 @@ $create_date = date('j M Y', $create_time);
                         <div onclick="invite_friends_twitter()" style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a>Invítalos usando Twitter</a></div>
                     </div>
                 </div>
-                <form  class="form-stacked braker_horz_top_1 no_margin_bottom">
+                <?php 
+                      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                          'id'=>'emailInvite-form',
+                          'action' => $this->createUrl('sendEmailInvs'),
+                          'htmlOptions'=>array('class'=>'form-stacked braker_horz_top_1 no_margin_bottom'),
+                      ));
+                ?>
+<!--                <form  class="form-stacked braker_horz_top_1 no_margin_bottom">-->
                     <fieldset>
                         <legend >O invítal@s por correo electrónico: </legend>
                         <div class="row">
@@ -100,17 +110,44 @@ $create_date = date('j M Y', $create_time);
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label  class="control-label required">Escribe un mensaje personal: </label>
+                                <label class="control-label required">Ingresa los emails de tus amig@s: </label>
                                 <div class="controls">
-                                    <textarea class="span5" rows="4">Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.</textarea>
+                                    <?php
+                                    $this->widget('application.extensions.BulkMail.BulkMail',
+                                            array(
+                                                'model' => $model,
+                                                'field' => 'emails',
+                                                'form' => $form,
+                                            )
+                                    );
+                                    ?>
                                 </div>
                             </div>
+                            <div class="control-group">
+                                <label class="control-label required">Escribe un mensaje personal: </label>
+                                <div class="controls">
+                                    <?php 
+                                   echo CHtml::textArea('invite-message',
+                                   'Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.',
+                                   array('class' => 'span5', 'rows' => '4'));
+                                   ?>
+                                </div>    
+                            </div>                            
                         </div>
                         <div class="span3"><img src="<?php echo Yii::app()->baseUrl; ?>/images/img_libreta.jpg" width="240" height="240" alt="Correos"></div></div>
-                        <div class="form-actions"> <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Enviar invitaciones</a> </div>
+                        <div class="form-actions"> 
+                            <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Enviar invitaciones</a> 
+                            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                                                'buttonType'=>'submit',
+                                                'label'=>'Enviar invitaciones',
+                                                'htmlOptions' => array(
+                                                    'class' => 'btn-large btn-danger'
+                                                ),
+                                                )); ?>
+                        </div>
                     </fieldset>
-                </form>
-                
+<!--                </form>-->
+                <?php $this->endWidget(); ?>
               
                 
             </div>

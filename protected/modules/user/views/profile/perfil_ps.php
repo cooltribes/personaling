@@ -133,6 +133,12 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 	    'afterAjaxUpdate'=>" function(id, data) {
 						} ",
 	    'template'=>$template,
+	    'pager'=>array(
+			'header'=>'IR A LA PAGINA',
+			'htmlOptions'=>array(
+			'class'=>'pagination pagination-right',
+			)
+		),
 	));   
 	?>
 	
@@ -226,6 +232,12 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 				
 							} ",
 		    'template'=>$template2,
+		    'pager'=>array(
+				'header'=>'',
+				'htmlOptions'=>array(
+				'class'=>'pagination pagination-right',
+				)
+			),
 		));   
 	?>
 

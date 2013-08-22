@@ -173,6 +173,50 @@ class CampanaController extends Controller
 		echo $return;
 	}
 
+
+	public function actionGetMarca(){
+		$campana = Campana::model()->findByPk($_POST['campana_id']);
+		$looks= Look::model()->findAllByAttributes(array('campana_id'=>$_POST['campana_id']));
+		$i=0;
+		foreach ($looks as $look) {
+			$lhps[$i]= LookHasProducto::model()->findAllByAttributes(array('look_id'=>$look->id));
+			$i++;
+		}
+		$i=0;
+		foreach ($lphs as $lph) {
+			$productos[$i]= Producto::model()->findByPk($lhp->producto_id);
+			$i++;
+		}
+		$i=0;
+		foreach ($productos as $producto) {
+			$marcas[$i]= Marca::model()->findByPk($producto->marca_id);	
+			$i++;
+		}
+					
+		$return = '<h4>Nombre de la campaña: '.$campana->nombre.'</h4>';
+		$return .= '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+				      <tbody>
+				        <tr>
+				          <th colspan="1" scope="col">Avatar</th>
+				          <th colspan="1" scope="col" width="80%">Nombre</th>
+				        </tr>';
+		//var_dump($personal_shoppers);
+		foreach ($marcas as $marca) {
+			
+			$return .= '<tr>
+				          <td><img src="'.CHtml::image(Yii::app()->baseUrl.'/images/marca/'.$data->id.'_thumb.jpg', $data->nombre).'" width="30" height="30"></td>
+				          <td>'.$marca->nombre.'</td>
+				        </tr>';
+		}
+		
+		$return .= '</tbody>
+    			</table>';
+				
+		echo $return;
+	}
+	
+
+
 	public function actionIndex()
 	{
 		$campana = new Campana; 

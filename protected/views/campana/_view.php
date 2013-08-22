@@ -72,7 +72,14 @@
 		}
       	?>
       </td>
-      <td><a href="#myModal2" role="button" data-toggle="modal">0</a></td>
+      <td>
+      	
+      	   	
+      	<a href="#myModal2" role="button" data-toggle="modal" onclick="get_marca(<?php echo $data->id; ?>>0</a>
+      	
+      </td>
+      	
+      	
       <td>0,00</td>
       <td><div class="dropdown"> <a class="dropdown-toggle btn btn-small" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_campanas_crear.php"> <i class="icon-cog"></i></a> 
           <!-- Link or button to toggle dropdown -->

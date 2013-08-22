@@ -56,6 +56,44 @@ class ProfileController extends Controller
 			'dataProvider'=>$dataProvider,
 	    ));
 	}
+        
+         /**
+	 * Envia las invitaciones por email
+	 */
+	public function actionSendEmailInvs()
+	{
+		
+            echo "<pre>";
+                print_r($_POST);
+                echo "</pre><br>";
+//                echo "<pre>";
+//                print_r($profile->getErrors());
+//                echo "</pre><br>";
+                exit();
+            
+            $registration_url = '';    
+                
+            $message = new YiiMailMessage;
+            $message->view = "mail_invite";
+            $subject = 'Invitación a Personaling';
+            $body = '<h2>Has sido invitado a Personaling.</h2>' .
+                    '<br/>Tienes una invitacion por parte de <strong>' . $originalPass . '</strong>'.
+                    'para unirte a Personaling<br/>Puedes registrarte haciendo click en el ' .
+                    'enlace que aparece a continuación:<br/> ' . $registration_url;
+            $params = array('subject' => $subject, 'body' => $body);
+            $message->subject = $subject;
+            $message->setBody($params, 'text/html');
+            
+            $message->addTo($modelUser->email);
+            
+            
+            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+            //Yii::app()->mail->send($message);
+            
+            
+            $this->redirect($this->createUrl('profile/micuenta'));               
+                
+	}
 	
 	public function actionProfile()
 	{
@@ -751,11 +789,9 @@ class ProfileController extends Controller
 				$this->redirect(Yii::app()->controller->module->loginUrl);
 		}
 		return $this->_model;
-	}
+	}        
 	
-	
-	
-		public function actionModal($id)
+	public function actionModal($id)
 	{ 
 		
 		$datos="";

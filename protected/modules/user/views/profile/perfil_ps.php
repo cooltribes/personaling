@@ -119,7 +119,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 	   </div>
 	   </div>
 	   <div class="clearfix">
-        <div class="pull-right">
+        <div class="list-view">
       		{pager}
 		</div>
 		</div>
@@ -134,9 +134,9 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 						} ",
 	    'template'=>$template,
 	    'pager'=>array(
-			'header'=>'IR A LA PAGINA',
+			'header'=>'Ir a la página: ',
 			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
+			'class'=>'yiiPager ',
 			)
 		),
 	));   
@@ -156,7 +156,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 		   </div>
 
 		   <div class="clearfix">
-	        <div class="pull-right">
+	        <div class="list-view">
 	      		{pager}
 			</div>
 			</div>
@@ -233,9 +233,9 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 							} ",
 		    'template'=>$template2,
 		    'pager'=>array(
-				'header'=>'',
+				'header'=>'Ir a la página:',
 				'htmlOptions'=>array(
-				'class'=>'pagination pagination-right',
+				'class'=>'yiiPager ',
 				)
 			),
 		));   

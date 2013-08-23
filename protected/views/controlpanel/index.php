@@ -230,7 +230,7 @@ else
 					      	
 					$sql = "select fecha from tbl_orden limit 1";
 					$primera = Yii::app()->db->createCommand($sql)->queryScalar();
-					      	
+					       	
 					// un mes y un dia	
 					$sql = "select count(*) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 month -1 day'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
 					$treintaun = (int) Yii::app()->db->createCommand($sql)->queryScalar();

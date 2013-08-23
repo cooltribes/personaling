@@ -128,8 +128,12 @@ $template = '{summary}
 	Yii::app()->clientScript->registerScript('search',
 	    "var ajaxUpdateTimeout;
 	    var ajaxRequest;
-	    $('#textbox_buscar').keyup(function(){
-	        ajaxRequest = $(this).serialize();
+	    $('#textbox_buscar').keyup(function(e){
+	    	
+			
+			if(e.which != 13) {
+				
+				ajaxRequest = $(this).serialize();
 	        clearTimeout(ajaxUpdateTimeout);
 	        ajaxUpdateTimeout = setTimeout(function () {
 	            $.fn.yiiListView.update(
@@ -140,6 +144,16 @@ $template = '{summary}
 	        },
 	// this is the delay
 	        300);
+		        
+		    }
+	        	/*else{
+	        		
+	        		window.location.href = document.URL;
+	        	}*/
+				
+				
+				
+	        
 	    });"
 	);
 		
@@ -262,5 +276,10 @@ $template = '{summary}
   </div>                    
 
 <?php $this->endWidget()?>
-
-
+<script>
+	$('#search-form').attr('action','');
+	$('#search-form').submit(function () {
+		 return false;
+		});
+	
+</script>

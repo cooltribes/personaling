@@ -100,7 +100,7 @@ else
   	
   
   <div class="row">
-    <div class="span12">
+    <div class="span12 graficos_controlpanel">
       <div class="bg_color3 margin_bottom_small padding_small box_1">
 
 

@@ -350,9 +350,9 @@ $c = Yii::app()->db->createCommand($sql)->queryScalar();
 		
 $total = User::model()->count();
 
-$tw = $a / $total; // porcentaje por twitter
-$fb = $b / $total; // porcentaje por facebook
-$nor = ($total - $a - $b) / $total; // via normal por email
+$tw = (int) $a / $total; // porcentaje por twitter
+$fb = (int) $b / $total; // porcentaje por facebook
+$nor = (int) ($total - $a - $b) / $total; // via normal por email
 		 
 $this->Widget('ext.highcharts.HighchartsWidget', array(
    'options'=>array(

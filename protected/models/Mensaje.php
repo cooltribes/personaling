@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Estado: 0=Sin Leer / 1=Leido
+ * Visible: 0=visible / 1=No
+ * 
+ */
+
+
 /**
  * This is the model class for table "{{mensaje}}".
  *

@@ -23,7 +23,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 <div class="container margin_top">
   <div class="page-header">
-    <h1>PEDIDO #<?php echo $orden->id; ?></h1>
+    <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
@@ -658,57 +658,54 @@ $usuario = User::model()->findByPk($orden->user_id);
         <div class="control-group">
           <select>
             <option>Elija un mensaje estandar</option>
+            <option>1</option>
             <option>2</option>
             <option>3</option>
             <option>4</option>
-            <option>5</option>
           </select>
         </div>
         <div class="control-group">
-          <textarea name="Mensaje" cols="" class="span7" rows="4"></textarea>
+        	<input type="text" id="asunto" placeholder="Asunto Del Mensaje" />
+          	<textarea id="cuerpo" name="cuerpo" cols="" class="span7" rows="4" placeholder="Mensaje"></textarea>
         </div>
         <div class="control-group">
           <label class="checkbox">
-            <input type="checkbox" value="">
-            Notificar al Cliente por eMail </label>
+          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por eMail </label>
           <label class="checkbox">
-            <input type="checkbox" value="">
-            Hacer visible en el Frontend</label>
+            <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
         </div>
-        <div class="form-actions"><a href="#" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
+        <div class="form-actions"><a onclick="mensaje(<?php echo $orden->user_id; ?>)" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
       </form>
     </div>
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
-      <ul class="media-list">
-        <li class="media braker_bottom">
-          <div class="media-body">
-            <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
-            <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-            
-          </div>
-        </li>
-        <li class="media braker_bottom">
-          <div class="media-body">
-            <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
-            <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-            
-          </div>
-        </li>
-        <li class="media braker_bottom">
-          <div class="media-body">
-            <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
-            <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-            
-          </div>
-        </li>
-      </ul>
+      <?php
+      
+      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+      	
+		if(count($mensajes) > 0)
+		{
+			?>	
+			<ul class="media-list">
+			<?php
+				foreach($mensajes as $msj)
+				{
+					echo '<li class="media braker_bottom">
+          					<div class="media-body">';
+					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
+					echo '<p>'.$msj->cuerpo.'</p>';					
+				}
+			?>
+			</ul>
+			<?php
+		}
+		else {
+			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+		}
+      
+      ?>
+      
     </div>
     
     <!-- MENSAJES OFF --> 
@@ -738,6 +735,40 @@ $usuario = User::model()->findByPk($orden->user_id);
 <!------------------- MODAL WINDOW OFF ----------------->
 
 <script>
+	
+	function mensaje(user_id){
+		
+		var asunto = $('#asunto').attr('value');
+		var cuerpo = $('#cuerpo').attr('value');
+		
+		var orden_id = $('#orden_id').attr('value');
+		
+		if($('#notificar').attr('checked') == "checked")
+			var notificar = 1; // $('#notificar').attr('checked');
+		else
+			var notificar = 0;
+		
+		if($('#visible').attr('checked') == "checked")	
+			var visible = 1; // $('#visible').attr('checked');
+		else
+			var visible = 0;
+		
+		// alert("a: "+asunto+" , c:"+cuerpo+" , n:"+notificar+" ,v:"+visible+ " ,id:"+user_id);
+		
+		$.ajax({
+	        type: "post", 
+	        url: "<?php echo Yii::app()->baseUrl; ?>/orden/mensajes", // action 
+	        data: { 'asunto':asunto, 'cuerpo':cuerpo, 'notificar':notificar, 'visible':visible, 'user_id':user_id, 'orden_id':orden_id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();	
+				}
+	       	}//success
+	       }) 
+				
+	}
+	
 	
 	function aceptar(id){
 

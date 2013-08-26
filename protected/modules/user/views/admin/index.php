@@ -58,6 +58,7 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
 			. '<div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>'
 		    . CHtml::textField('nombre', (isset($_GET['string'])) ? $_GET['string'] : '', array('id'=>'textbox_buscar', 'class'=>'span3', 'placeholder'=>'Buscar'))
 		    . CHtml::endForm();
+			
 		?>
       
         

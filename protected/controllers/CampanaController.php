@@ -234,9 +234,9 @@ class CampanaController extends Controller
 	{
 		$campana = new Campana; 
 
-		if (isset($_POST['query']))
+		if (isset($_GET['nombre']))
 		{
-			$campana->nombre = $_POST['query'];
+			$campana->nombre = $_GET['nombre'];
 		}
 		
 		$dataProvider = $campana->search();

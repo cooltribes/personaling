@@ -61,37 +61,60 @@ class ProfileController extends Controller
 	 * Envia las invitaciones por email
 	 */
 	public function actionSendEmailInvs()
-	{
-		
-            echo "<pre>";
-                print_r($_POST);
-                echo "</pre><br>";
-//                echo "<pre>";
-//                print_r($profile->getErrors());
-//                echo "</pre><br>";
-                exit();
+	{	
+            $result = array();
             
-            $registration_url = '';    
+            if(isset($_POST['User']['emails']) ){ //&& isset($_POST['invite-message'])){
                 
-            $message = new YiiMailMessage;
-            $message->view = "mail_invite";
-            $subject = 'Invitación a Personaling';
-            $body = '<h2>Has sido invitado a Personaling.</h2>' .
-                    '<br/>Tienes una invitacion por parte de <strong>' . $originalPass . '</strong>'.
-                    'para unirte a Personaling<br/>Puedes registrarte haciendo click en el ' .
-                    'enlace que aparece a continuación:<br/> ' . $registration_url;
-            $params = array('subject' => $subject, 'body' => $body);
-            $message->subject = $subject;
-            $message->setBody($params, 'text/html');
+                $emails = $_POST['User']['emails'];                
+                $textoMensaje = isset($_POST['invite-message'])? $_POST['invite-message'] : "";
+                
+                $model = $this->loadUser();  
+                
+                foreach ($emails as $email) {
+                    
+                    //$requestId = UserModule::encrypting($email.$id);
+                    $registration_url = $this->createAbsoluteUrl('/user/registration', array("requestId" => 'RI', "email" => 'mail'));
+                    
+                    $message = new YiiMailMessage;
+                    $message->view = "mail_invite";
+                    $subject = 'Invitación a Personaling';
+                    $body = '<h2>¡Hola! Has sido invitad@ a Personaling.</h2>' .
+                            '<br/>Tienes una invitacion por parte de <strong>' . $model->profile->first_name . '</strong> ' .
+                            'para unirte a Personaling:<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
+                            'Puedes registrarte haciendo click en el ' .
+                            'enlace que aparece a continuación:<br/> ' . $registration_url;
+                    $params = array('subject' => $subject, 'body' => $body);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+
+                    $message->addTo($email);
+
+
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    Yii::app()->mail->send($message);   
+                    
+                    //$result['emails'][] = $email;
+                                       
+                }
+                
+                $result['status'] = 'success';
+                $result['redirect'] = $this->createUrl('profile/micuenta');
+                
+                
+            }else{
+               $result['status'] = 'error';
+               $result['message'] = 'Debes ingresar al menos una dirección email';
+            }
             
-            $message->addTo($modelUser->email);
+//            echo "<pre>";
+//            print_r($_POST);
+//            echo "</pre><br>";
+//            exit();
             
-            
-            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-            //Yii::app()->mail->send($message);
-            
-            
-            $this->redirect($this->createUrl('profile/micuenta'));               
+            //echo function_exists('json_encode') ? json_encode($_POST) : CJSON::encode($_POST);                
+            echo function_exists('json_encode') ? json_encode($result) : CJSON::encode($result);                
+            Yii::app()->end();       
                 
 	}
 	

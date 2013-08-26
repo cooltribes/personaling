@@ -553,6 +553,41 @@ Para una futura iteración
         <div class="form-actions"><a href="#" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
       </form>
     </div>
+ * 
+ * */
+ ?>
+  <div class="span5">
+      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
+      
+  <?php
+      
+      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+      	
+		if(count($mensajes) > 0)
+		{
+			?>	
+			<ul class="media-list">
+			<?php
+				foreach($mensajes as $msj)
+				{
+					echo '<li class="media braker_bottom">
+          					<div class="media-body">';
+					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
+					echo '<p>'.$msj->cuerpo.'</p>';					
+				}
+			?>
+			</ul>
+			<?php
+		}
+		else {
+			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+		}
+      
+      ?>
+ 
+ 	</div>
+  <!--
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
       <ul class="media-list">
@@ -562,7 +597,7 @@ Para una futura iteración
             <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
             <!-- Nested media object --> 
-            
+    <!--         
           </div>
         </li>
         <li class="media braker_bottom">
@@ -571,7 +606,7 @@ Para una futura iteración
             <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
             <!-- Nested media object --> 
-            
+    <!--         
           </div>
         </li>
         <li class="media braker_bottom">
@@ -587,9 +622,8 @@ Para una futura iteración
     </div>
     
     
-  </div>
+ <!-- </div> 
  <!-- MENSAJES OFF --> 
-<?php */?>
 
 </div>
 <!-- /container --> 

@@ -25,7 +25,7 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','detalles','validar','enviar','factura'),
+				'actions'=>array('index','admin','detalles','validar','enviar','factura','mensajes'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -585,6 +585,48 @@ class OrdenController extends Controller
 		}	
 		
 	}
+
+	public function actionMensajes()
+	{
+		$notificar = $_POST['notificar'];
+			
+		$mensaje = new Mensaje;
+		
+		$mensaje->asunto = $_POST['asunto'];
+		$mensaje->cuerpo = $_POST['cuerpo'];
+		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 0 visible, 1 no
+		$mensaje->user_id = $_POST['user_id'];
+		$mensaje->orden_id = $_POST['orden_id']; 
+		$mensaje->fecha =  date('Y-m-d H:i:s', strtotime('now'));
+		$mensaje->estado = 0; // sin leer
+		
+		if($mensaje->save())
+		{
+			if($notificar == 1) // pidió notificar por email 	
+			{
+				$usuario = User::model()->findByPk($_POST['user_id']); 
+				
+				$message = new YiiMailMessage;
+                $message->view = "mail_template";
+                $subject = 'Tienes un mensaje nuevo en Personaling';
+                $body = '<h2>Tienes un mensaje en Personaling.</h2>' . 
+                        '<br/><br/>' .
+                        'El Administrador del sistema te ha enviado un mensaje referente a tu compra <br/>'. 
+                        'Ingresa con tu usuario y revisa tus notificaciones.';
+				$params = array('subject' => $subject, 'body' => $body);
+                $message->subject = $subject;
+                $message->setBody($params, 'text/html');
+                $message->addTo($usuario->email);
+                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                Yii::app()->mail->send($message);	
+			}		
+			
+			Yii::app()->user->setFlash('success', 'Se ha enviado el mensaje correctamente.');
+			echo "ok";	
+		}	
+		
+	}
+		
 
 	// Uncomment the following methods and override them if needed
 	/*

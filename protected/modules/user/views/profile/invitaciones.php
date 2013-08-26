@@ -106,7 +106,7 @@ $create_date = date('j M Y', $create_time);
                             <div class="control-group">
                                 <label class="control-label required">Ingresa los emails de tus amig@s: </label>
                                 <div class="controls">
-                                    <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="correoelectronico@cuenta.com" name="RegistrationForm[email]" class="span5">
+                                    <input type="text" value="nelson@nelson.com" maxlength="128" id="RegistrationForm_email" placeholder="correoelectronico@cuenta.com" name="RegistrationForm[email]" class="span5">
                                 </div>
                             </div>
                             <div class="control-group">
@@ -121,6 +121,7 @@ $create_date = date('j M Y', $create_time);
                                             )
                                     );
                                     ?>
+                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> Debes ingresar al menos una dirección email </span>
                                 </div>
                             </div>
                             <div class="control-group">
@@ -131,19 +132,20 @@ $create_date = date('j M Y', $create_time);
                                    'Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.',
                                    array('class' => 'span5', 'rows' => '4'));
                                    ?>
+                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
                                 </div>    
                             </div>                            
                         </div>
                         <div class="span3"><img src="<?php echo Yii::app()->baseUrl; ?>/images/img_libreta.jpg" width="240" height="240" alt="Correos"></div></div>
                         <div class="form-actions"> 
-                            <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Enviar invitaciones</a> 
-                            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                            <a id="enviarInvitaciones" class="btn-large btn btn-danger">Enviar invitaciones</a> 
+                            <?php /*$this->widget('bootstrap.widgets.TbButton', array(
                                                 'buttonType'=>'submit',
                                                 'label'=>'Enviar invitaciones',
                                                 'htmlOptions' => array(
                                                     'class' => 'btn-large btn-danger'
                                                 ),
-                                                )); ?>
+                                                ));*/ ?>
                         </div>
                     </fieldset>
 <!--                </form>-->
@@ -318,3 +320,47 @@ $create_date = date('j M Y', $create_time);
 		}*/
 	}
 </script>
+<script type="text/javascript">
+/*<![CDATA[*/
+    $('#enviarInvitaciones').click(function(ev){
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $this->createUrl('sendEmailInvs') ?>',
+            dataType: 'json',
+            data: $('#emailInvite-form').serialize(),
+            success: function(data){
+                console.log(data);
+            },
+            beforeSend: function(){
+                
+                var result = true;
+                
+                var emails = $('input[type=hidden]').filter('[name*="emails"]');
+                
+                //si no hay emails
+                if(!emails.size()){
+                 $('#emailInvite-form_bulkEmailList').parent().parent().addClass('error');
+                 $('#User_emails_em_').show();               
+                    
+                 result = false;   
+                }
+                
+                //Si no hay mensaje
+//                var message = $('#invite-message');
+//                if(message.val() === ""){
+//                    message.parent().parent().addClass('error');
+//                    $('#invite_mess_em_').show();               
+//                    result = false;   
+//                }
+                
+                return result;               
+            },
+            error: function(jqXHR, textStatus, error){
+                console.log("Error: \n");
+                console.log(jqXHR);
+            }
+            });
+    });
+/*]]>*/
+</script>
+    

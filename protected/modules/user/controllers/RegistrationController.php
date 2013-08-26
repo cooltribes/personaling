@@ -89,7 +89,7 @@ class RegistrationController extends Controller
 								$message            = new YiiMailMessage;
 							    $message->view = "mail_template";
 								$subject = 'Registro Personaling';
-								$body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+								$body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> <a href="'.$activation_url.'">'.$activation_url.'</a>';
 							    $params              = array('subject'=>$subject, 'body'=>$body);
 							    $message->subject    = $subject;
 							    $message->setBody($params, 'text/html');                
@@ -149,7 +149,7 @@ class RegistrationController extends Controller
 		$message            = new YiiMailMessage;
 		$message->view = "mail_template";
 		$subject = 'Activa tu cuenta en Personaling';
-		$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+		$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> <a href="'.$activation_url.'">'.$activation_url.'</a>';
 		$params              = array('subject'=>$subject, 'body'=>$body);
 		$message->subject    = $subject;
 		$message->setBody($params, 'text/html');                

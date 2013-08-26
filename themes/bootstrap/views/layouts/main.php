@@ -443,7 +443,8 @@ if(!Yii::app()->user->isGuest){
         <div class="textwidget"> <a title="Personaling en facebook" href="https://www.facebook.com/Personaling"><img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="pinterest" href="https://pinterest.com/personaling/"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a> </div>
         <hr/>
         <p>Somos ganadores de</p>
-        <img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_concursos.png" alt="Logos de Concursos">
+        <a href="http://ve.wayra.org/"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra"></a>
+        <a href="#"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas"></a>
         <p class="margin_top_small">Partners</p>
         <img class="margin_top_small_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners">
       </div>

@@ -205,22 +205,34 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					var st = $(window).scrollTop();
 					var ot = $("#scroller-anchor").offset().top;
 					var s = $("#scroller");
-					if(st > ot) {
-						s.css({
-							position: "fixed",
-							top: "70px"
-						});
-					} else {
-						if(st <= ot) {
+					if( (st + 600) <= ($(document).height() -  $('#wrapper_footer footer').height()) ){
+						console.log()
+						if(st > ot ) {
 							s.css({
-								position: "relative",
-								top: "0"
+								position: "fixed",
+								top: "70px"
 							});
+						} else {
+							if(st <= ot ) {
+								s.css({
+									position: "relative",
+									top: "0"
+								});
+							}
 						}
 					}
+					else{
+						console.log("chao");	
+						var Hcotenido = ( ($(document).height() -  $('#wrapper_footer footer').height()) - 792 ).toString() + "px";
+						s.css({
+							position: "relative",
+							top: Hcotenido
+						});							
+					}
 				};
+				
 				$(window).scroll(move);
-				move();
+
 			}
 		</script>
           <div id="scroller-anchor"></div>
@@ -352,7 +364,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             <script type="text/javascript"> 
 		// Script para dejar el sidebar fijo Parte 2
 			$(function() {
-				moveScroller();
+				if ($(window).scrollTop() < 430) {
+					moveScroller();
+				}
 			 });
 		</script> 
           <!-- SIDEBAR OFF --> 

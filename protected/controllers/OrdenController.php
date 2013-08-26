@@ -594,7 +594,7 @@ class OrdenController extends Controller
 		
 		$mensaje->asunto = $_POST['asunto'];
 		$mensaje->cuerpo = $_POST['cuerpo'];
-		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 0 visible, 1 no
+		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 1 visible, 0 no
 		$mensaje->user_id = $_POST['user_id'];
 		$mensaje->orden_id = $_POST['orden_id']; 
 		$mensaje->fecha =  date('Y-m-d H:i:s', strtotime('now'));

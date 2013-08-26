@@ -59,8 +59,15 @@ $this->breadcrumbs=array(
   <hr/>
   <div class="row margin_top margin_bottom ">
     <div class="span4">
-      <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
-        <input class="span3" id="prependedInput" type="text" placeholder="Buscar">
+    	<?php
+    	echo CHtml::beginForm(CHtml::normalizeUrl(array('index')), 'get', array('id'=>'search-form'))
+			. '<div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>'
+		    . CHtml::textField('nombre', (isset($_GET['string'])) ? $_GET['string'] : '', array('id'=>'textbox_buscar', 'class'=>'span3', 'placeholder'=>'Buscar'))
+		    . CHtml::endForm();
+		?>
+    	
+    	
+
       </div>
     </div>
     <div class="span3">
@@ -116,7 +123,7 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view',
 	    'template'=>$template,
-	    'enableSorting'=>'true',
+	/*    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	
 							$('#todos').click(function() { 
@@ -130,13 +137,49 @@ $template = '{summary}
 							});
 						   
 							} ",
-		'pager'=>array(
+*/		'pager'=>array(
 			'header'=>'',
 			'htmlOptions'=>array(
 			'class'=>'pagination pagination-right',
 		)
 		),					
 	));    
+	
+	
+		Yii::app()->clientScript->registerScript('search',
+	    "var ajaxUpdateTimeout;
+	    var ajaxRequest;
+	    $('#textbox_buscar').keyup(function(e){
+	    	
+			
+			if(e.which != 13) {
+				
+				ajaxRequest = $(this).serialize();
+	        clearTimeout(ajaxUpdateTimeout);
+	        ajaxUpdateTimeout = setTimeout(function () {
+	            $.fn.yiiListView.update(
+	// this is the id of the CListView
+	                'list-campanas',
+	                {data: ajaxRequest}
+	            )
+	        },
+	// this is the delay
+	        300);
+		        
+		    }
+	        	/*else{
+	        		
+	        		window.location.href = document.URL;
+	        	}*/
+				
+				
+				
+	        
+	    });"
+	);
+	
+	
+	
 	?>
   
   <hr/>
@@ -266,4 +309,9 @@ $template = '{summary}
 		      },
 		});
 	}
+	$('#search-form').attr('action','');
+	$('#search-form').submit(function () {
+		 return false;
+		});
+	
 </script>

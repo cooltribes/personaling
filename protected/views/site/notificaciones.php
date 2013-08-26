@@ -29,77 +29,36 @@
   <section class= "row-fluid well">
   	<!-- Lista de Mensajes  -->
   	<div class="span4 sidebar_list_mensajes bg_color3">
-			<a  href="#">	
+  		
+  		<?php
+  			
+  			$mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1)); // buscaria todos los mensajes que estén como visibles del usuario para listarlos
+  			
+  			if(count($mensajes) > 0){
+				foreach($mensajes as $msj)
+				{
+  		?>
+			<a onclick="buscarmensaje(<?php echo $msj->id; ?>)" style="cursor: pointer;">	
 		  		<article class="row-fluid padding_xsmall">
 					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />
 		  		 	<div class="span8">
-				  		<span> <strong>De:</strong> Hodor </span>
-			  		  	<p> <strong>Mensaje:</strong> Hodor hodor, hordor hodor... </p>
+				  		<span> <strong>De:</strong> Admin</span>
+			  		  	<p> <strong>Asunto: </strong> <?php echo $msj->asunto; ?></p>
 		  		  	</div>
 		  		  	<span class="entypo icon_personaling_medium span1">&#59230;</span>
 		   		</article>  
 	 		</a>
-	  		 <hr/>
-	  		<a  href="#">	
-		  		<article class="row-fluid padding_xsmall">
-					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
-		  			<div class="span8">
-			  			<span> <strong>De:</strong> Administrador </span>
-			  			<p> <strong>Mensaje: </strong> Tu pedido ha sido rechazado... </p>
-		  			</div>
-		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>
-		  		</article>
-	  		</a>
-	  		<hr/>
-	  		<a  href="#">	
-		  		<article class="row-fluid padding_xsmall">
-					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
-		  			<div class="span8">
-		  				<span> <strong>De:</strong> Chuck Norris </span>
-		  				<p> <strong>Mensaje:</strong> Tu pedido ha sido bautizado...  </p> 
-		  			</div>
-		  			<span class="entypo icon_personaling_medium span1"> &#59230; </span>
-	  			</article>  
-	  		</a>
-	  		<hr/>
-	  		<a href="">
-		  		<article class="row-fluid padding_xsmall">
-					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
-		  			<div class="span8">
-			  			<span> <strong>De:</strong> Administrador </span>
-			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido actualizado...</p>
-		  			</div>
-		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>	
-		  		</article>
-	  		</a>
-	  		<hr/>
-	  		<a  href="#">	
-		  		<article class="row-fluid padding_xsmall">
-					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
-		  			<div class="span8">
-			  			<span> <strong>De:</strong> Administrador </span>
-			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido explotado... </p>
-		  			</div>
-		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>
-		  		</article>
-	  		</a>
-	  		<hr/>
-	  		<a  href="#">	
-		  		<article class="row-fluid padding_xsmall">
-					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />		  			
-		  			<div class="span8">
-			  			<span> <strong>De:</strong> Yondri </span>
-			  			<p> <strong>Mensaje:</strong> Tu pedido ha sido bautizado... </p>
-		  			</div>
-		  			<span class="entypo icon_personaling_medium span1">&#59230;</span>
-		  		</article>  		  		  		
-	  		</a>
+	 		<hr/>
+	 		<?php
+				}
+			}
+	 		?>	  		
   	</div>
 
   	<!-- Cuerpo del mensaje -->
-  	<div class="span8 ">
+  	<div class="span8" id="mensajeActual">
 	  	<div class="padding_medium bg_color3 ">
-			<p><strong>De:</strong> Jon Snow</p>
+			<!-- <p><strong>De:</strong> Jon Snow</p>
 	  		<p> <strong>Asunto:</strong> You know nothing Jon Snow</p>
 	  		<p> <strong>Fecha:</strong> 23 de Septiembre de 2013</p>
 	  		<p>
@@ -111,56 +70,15 @@
 		  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
 		  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
 	  		</form>
+	  	-->
+	  	
+	  	<p> <strong> Haz click en uno de tus mensajes para visualizar su contenido. </strong> </p>
+	  	
+	  	
 	  	</div>
   	</div>
   </section>
 
-
-
-    <?php
-  
-// $template = '{summary}
-// 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-//     <tr>
-//       <th scope="col">Número de Orden</th>
-//       <th scope="col">Fecha</th>
-//       <th scope="col">Monto (En Bs.)</th>
-//       <th scope="col">Estado</th>
-//       <th scope="col">Acciones</th>
-//     </tr>
-//     {items}
-//     </table>
-//     {pager}
-// 	';
-    
-//   $this->widget('zii.widgets.CListView', array(
-// 	    'id'=>'list-auth-items',
-// 	    'dataProvider'=>$dataProvider,
-// 	    'itemView'=>'_datosUsuario',
-// 	    'template'=>$template,
-// 	    'enableSorting'=>'true',
-// 	    'afterAjaxUpdate'=>" function(id, data) {
-						    	
-// 							$('#todos').click(function() { 
-// 				            	inputs = $('table').find('input').filter('[type=checkbox]');
-				 
-// 				 				if($(this).attr('checked')){
-// 				                     inputs.attr('checked', true);
-// 				               	}else {
-// 				                     inputs.attr('checked', false);
-// 				               	} 	
-// 							});
-						   
-// 							} ",
-// 		'pager'=>array(
-// 			'header'=>'',
-// 			'htmlOptions'=>array(
-// 			'class'=>'pagination pagination-right',
-// 		)
-// 		),					
-// 	));
-	
-	?>
 
   <hr/>
 </div>
@@ -172,51 +90,24 @@
 
 <script>
 	
-	function enviar()
+	function buscarmensaje(id)
 	{	
-		var idDetalle = $("#idDetalle").attr("value");
-		var nombre= $("#nombre").attr("value");
-		var numeroTrans = $("#numeroTrans").attr("value");
-		var dia = $("#dia").attr("value");
-		var mes = $("#mes").attr("value");
-		var ano = $("#ano").attr("value");
-		var comentario = $("#comentario").attr("value");
-		var banco = $("#banco").attr("value");
-		var cedula = $("#cedula").attr("value");
-		var monto = $("#monto").attr("value");
-		var idOrden = $("#idOrden").attr("value");
-		
-		if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
-		{
-			alert("Por favor complete los datos.");
-		}
-		else
-		{
 
  		$.ajax({
 	        type: "post", 
-	        url: "../bolsa/cpago", // action de controlador de bolsa cpago
-	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
+	        url: "mensaje", // action 
+	        data: { 'msj_id':id}, 
 	        success: function (data) {
 				
-				if(data=="ok")
-				{
-					window.location.reload();
-					//alert("guardado"); 
-					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
-				}
-				else
-				if(data=="no")
-				{
-					alert("Datos invalidos.");
-				}
-				
+				$("#mensajeActual").fadeOut(100,function(){
+			     	$("#mensajeActual").html(data); // cambiando el div
+			     });
+			
+			      $("#mensajeActual").fadeIn(20,function(){});
+
 	       	}//success
 	       })
- 		}	
-		
-		
-	}
-	
-	
+	       
+ 	}	
+
 </script>

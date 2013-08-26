@@ -27,7 +27,7 @@ class SiteController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('personal','update','notificaciones'),
+				'actions'=>array('personal','update','notificaciones','mensaje'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -247,4 +247,30 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+	
+	
+	/**
+	 * Arma el cuerpo del mensaje que se va a mostrar y lo devuelve como texto para colocarlo en el frontend
+	 */
+	public function actionMensaje()
+	{
+		
+		$mensaje = Mensaje::model()->findByPk($_POST['msj_id']);
+		$div = "";
+		
+		$div = $div.'<div class="padding_medium bg_color3 ">';
+		$div = $div."<p><strong>De:</strong> Admin</p>";
+		$div = $div."<p> <strong>Asunto:</strong> ".$mensaje->asunto."</p>";
+		$div = $div."<p> <strong>Fecha:</strong> ".date('d/m/Y', strtotime($mensaje->fecha))." </p>";
+		$div = $div."<p> ".$mensaje->cuerpo." </p>";
+	/*	$div = $div.'<form class=" margin_top_medium ">
+				  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
+				  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
+			  		</form>'; */
+		$div = $div."</div>";
+		
+		echo $div;
+		
+	}
+	
 }

@@ -309,4 +309,9 @@ $template = '{summary}
 		      },
 		});
 	}
+	$('#search-form').attr('action','');
+	$('#search-form').submit(function () {
+		 return false;
+		});
+	
 </script>

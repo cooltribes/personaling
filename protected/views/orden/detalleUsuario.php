@@ -358,21 +358,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	        <?php
 		}
         ?>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Etiqueta de direccion</td>
-          <td>1231234</td>
-        </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Orden de devolucion</td>
-          <td>45648</td>
-        </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Tarjeta de regalo</td>
-          <td>123546</td>
-        </tr>
+
       </table></div>
     </div>
   </div>
@@ -736,7 +722,7 @@ else{
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
-      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
+      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Depositooo</a> </div>
       <p class="well well-small"> <strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>
     </form>

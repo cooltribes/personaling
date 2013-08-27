@@ -2,7 +2,7 @@
 
 /*
  * Estado: 0=Sin Leer / 1=Leido
- * Visible: 0=visible / 1=No
+ * Visible: 1=visible / 0=No
  * 
  */
 

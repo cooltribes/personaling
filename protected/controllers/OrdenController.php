@@ -467,8 +467,7 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='form-actions'><a onclick='enviar()' class='btn btn-danger'>Confirmar Deposito</a></div>";
-      	$datos=$datos."<p class='well well-small'><strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>";
+      	$datos=$datos."<p class='text_align_center'><a title='Formas de Pago' href='".Yii::app()->baseUrl."/site/formas_de_pago'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>";
     	$datos=$datos."</form>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
@@ -594,7 +593,7 @@ class OrdenController extends Controller
 		
 		$mensaje->asunto = $_POST['asunto'];
 		$mensaje->cuerpo = $_POST['cuerpo'];
-		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 0 visible, 1 no
+		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 1 visible, 0 no
 		$mensaje->user_id = $_POST['user_id'];
 		$mensaje->orden_id = $_POST['orden_id']; 
 		$mensaje->fecha =  date('Y-m-d H:i:s', strtotime('now'));

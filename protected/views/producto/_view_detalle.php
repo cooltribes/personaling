@@ -286,6 +286,7 @@
               	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
             </div>
          
+						<?php  $marca = Marca::model()->findByPk($producto->marca_id); ?>
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
               <li class="active"><a href="#descripcion" data-toggle="tab">Descripción</a></li>
@@ -294,13 +295,21 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="descripcion">
-                <div class="clearfix">   
-                  <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> </div>
+                <div class="clearfix row-fluid">   
+                  <div class="span4">
+                  <p class="margin_left_small"><strong><?php echo $marca->nombre; ?></strong></p>                    
+                  <?php
+                  echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65","class" => "margin_left_small"));
+                  ?>   
+                  </div>
+                  <div class="span6">
+                    <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> 
+                  </div>
+                </div>
               </div>
               <div class="tab-pane" id="detalles">
                 <div class="clearfix">
-                  	<?php
-						$marca = Marca::model()->findByPk($producto->marca_id); 				   
+                    <?php
 					?>
 
 				<div class="row-fluid">
@@ -326,8 +335,13 @@
             </div>
           </div>
           <div class="braker_horz_top_1">
+            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> 
+            <a class="addthis_button_tweet"></a>
+            <a class="addthis_button_pinterest_pinit boton_pinterest"></a>            
+            <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>             
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
-              Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
+              Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
               <hr />
           </div>
         </div>

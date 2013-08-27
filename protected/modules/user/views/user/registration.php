@@ -247,9 +247,11 @@ function check_fb(){
                         console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
                         console.log(response.birthday);
                         
-                  		$("#registration-form").fadeOut(100,function(){
+                        
+                  	//	$("#registration-form").fadeOut(100,function(){
 	     					
 	     					$('#facebook_id').val(response.id);
+	     					$('#RegistrationForm_password').val('1234');
 	     					$('#RegistrationForm_email').val(response.email); 
 	                        $('#Profile_first_name').val(response.first_name);
 	                        $('#Profile_last_name').val(response.last_name);
@@ -271,18 +273,16 @@ function check_fb(){
 	                        	$('#Profile_sex_0').attr('checked',true);
 	                        }
 	     	
-	     				});
+	     				$('#registration-form').submit(); 
+	     	
+	     			//	});
 	
-	    				$("#registration-form").fadeIn(100,function(){});
-                        
-                        
-                        /*
-                        
-						var pass=12345;
-
+	    			//	$("#registration-form").fadeIn(100,function(){});         
+                       
+					/*
                         $.ajax({
-                          url: '', // accion
-                          data: {email : response.email, birthday: response.birthday, gender : response.gender, first: response.first_name, last: response.last_name, password: pass},
+                          url: 'registration', // accion
+                          data: {'facebook_id': response.id, 'email' : response.email, 'birthday': response.birthday, 'gender' : response.gender, 'first': response.first_name, 'last': response.last_name},
                           type: 'POST',
                           dataType: 'html',
                           success: function(data) {
@@ -303,9 +303,10 @@ function check_fb(){
                         console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
 						console.log(response.user_birthday);
 						
-						$("#registration-form").fadeOut(100,function(){
+						//$("#registration-form").fadeOut(100,function(){
 	     					
 	     					$('#facebook_id').val(response.id);
+	     					$('#RegistrationForm_password').val('1234');
 	     					$('#RegistrationForm_email').val(response.email); 
 	                        $('#Profile_first_name').val(response.first_name);
 	                        $('#Profile_last_name').val(response.last_name);
@@ -327,9 +328,11 @@ function check_fb(){
 	                        	$('#Profile_sex_0').attr('checked',true);
 	                        }
 	     	
-	     				});
+	     				$('#registration-form').submit(); 	
+	     					
+	     			//	});
 	
-	    				$("#registration-form").fadeIn(100,function(){});
+	    			//	$("#registration-form").fadeIn(100,function(){});
 						
 						/*
 						var pass=12345;

@@ -88,10 +88,11 @@ class Look extends CActiveRecord
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('has_ocasiones','required','on'=>'update'),
 			array('title', 'length', 'max'=>45),
+			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
 			array('description, created_on', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter,deleted,deleted_on', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -503,9 +504,105 @@ class Look extends CActiveRecord
 
                 $this->deleted = 1;
                 $this->deleted_on = date('Y-m-d h:i:s');
+				$this->scenario = 'softdelete';
                 if (!$this->save())
 					Yii::trace('delete a look, Error:'.print_r($this->getErrors(), true), 'registro');
                 return false;
 
         }
+	public function createImage(){
+
+		 $look = $this;
+		 
+		 /*
+		 $w = 670;
+		 if (isset($_GET['w']))
+		 	$w = $_GET['w'];
+		 $diff_w = 670/$w;
+		 
+		 $h = 670;
+		 if (isset($_GET['h']))
+		 	$h = $_GET['h'];
+		 $diff_h = 670/$h;
+		 */
+		 $w = 710;
+		 $diff_w = 1;
+		  $h = 710;
+		 $diff_h = 1;
+		 $imagenes = array();
+		 $i = 0;
+		 
+		 foreach($look->lookhasproducto as $lookhasproducto){
+		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
+		 	if (isset($image_url)){
+				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
+					$imagenes[$i]->top = $lookhasproducto->top;
+					$imagenes[$i]->left = $lookhasproducto->left;
+					$imagenes[$i]->width = $lookhasproducto->width;
+					$imagenes[$i]->height = $lookhasproducto->height;
+					$imagenes[$i]->angle = $lookhasproducto->angle;
+					$imagenes[$i]->zindex = $lookhasproducto->zindex;
+			} 
+			$i++;
+		 }	
+		 
+		 foreach($look->lookHasAdorno as $lookhasadorno){
+		 	$image_url = $lookhasadorno->adorno->getImageUrl(array('ext'=>'png'));
+			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
+		 	if (isset($image_url)){
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
+					$imagenes[$i]->top = $lookhasadorno->top;
+					$imagenes[$i]->left = $lookhasadorno->left;
+					$imagenes[$i]->width = $lookhasadorno->width;
+					$imagenes[$i]->height = $lookhasadorno->height;
+					$imagenes[$i]->angle = $lookhasadorno->angle;
+					$imagenes[$i]->zindex = $lookhasadorno->zindex;
+			} 
+
+			$i++;
+		 }	
+		//Yii::trace('create a image look, Trace:'.print_r($imagenes, true), 'registro');
+		function sortByIndex($a, $b) {
+		    return $a->zindex - $b->zindex;
+		} 
+		
+		usort($imagenes, 'sortByIndex');
+		
+		$canvas = imagecreatetruecolor($w, $h);
+		$white = imagecolorallocate($canvas, 255, 255, 255);
+		imagefill($canvas, 0, 0, $white);
+		$inicio_x = 0;
+		foreach($imagenes as $image){
+			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
+			 switch($ext) { 
+			          case 'gif':
+			          $src = imagecreatefromgif($image->path);
+			          break;
+			          case 'jpg':
+			          $src = imagecreatefromjpeg($image->path);
+			          break;
+			          case 'png':
+			          $src = imagecreatefrompng($image->path);
+						//Yii::trace('create a image look, Trace:'.$image->path, 'registro');  
+			          break;
+			      }			
+			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
+			
+			imagealphablending( $img, false );
+			imagesavealpha( $img, true ); 
+    		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
+    		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
+			imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+    		//imagecopyresized($img,$src,0,0,0,0,imagesx($src),imagesy($src),imagesx($src), imagesy($src));
+			if ($image->angle){
+				//Yii::trace('create a image look,'.$image->angle.' Trace:'.$image->path, 'registro');  	
+				$img = imagerotate($img,$image->angle*(-1),$pngTransparency);
+			}
+			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
+		}
+		//header('Content-Type: image/png'); 
+		//header('Cache-Control: max-age=86400, public');
+		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+		imagedestroy($canvas);		
+	}
 }

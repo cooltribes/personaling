@@ -43,7 +43,7 @@ class LookController extends Controller
 			), 
 		);
 	}
-	public function actionsoftDelete($id)
+	public function actionSoftDelete($id)
 	{
 		$model = Look::model()->findByPk($id);
 		$model->softDelete();
@@ -654,7 +654,7 @@ if (isset($_POST['categorias'])){
 					}
 				}
 				
-				
+				$model->createImage();
 				if ($_POST['tipo']==1){
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();

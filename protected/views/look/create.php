@@ -328,12 +328,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					//echo $image; 
 					//echo $hasproducto->width.'/'.$hasproducto->height;
 			?> 
-			<?php echo CHtml::image($producto->getImageUrl($hasproducto->color_id), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height)); ?>
+			<?php echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height)); ?>
             <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
             <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
             <span class="eliminar"><i class=" icon-remove"></i></span>
 			<div class="rotar"> <i class=" icon-repeat"></i></div>
-			 </div>
+			 </div> 
           <?php 
               	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',

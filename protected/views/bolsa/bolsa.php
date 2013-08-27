@@ -132,17 +132,26 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					  {
 					  	$todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);
 						
-					  		$producto = Producto::model()->findByPk($todo->producto_id);
+							$producto = Producto::model()->findByPk($todo->producto_id);
 					  		$talla = Talla::model()->findByPk($todo->talla_id);
 					  		$color = Color::model()->findByPk($todo->color_id);
 							
-							$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+							// $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
+							$imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
 					
 							echo "<tr>";		
 							
-					if($imagen){					  	
-						$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-						echo "<td>".$aaa."</td>";
+					if($imagen){
+						
+						$con = 0;
+						
+						foreach($imagen as $ima){
+							if($con == 0){	
+								$con++;						  	
+								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+								echo "<td>".$aaa."</td>";
+							}
+						}
 					}else
 						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 							

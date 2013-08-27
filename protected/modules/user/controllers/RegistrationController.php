@@ -60,7 +60,7 @@ class RegistrationController extends Controller
 		    	
 				//Yii::app()->end();
 				
-		    	if(isset($_POST['RegistrationForm'])) {
+		    	if(isset($_POST['RegistrationForm'])) { 
 					//$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
 					//echo 'rafa'.$_POST['Profile']['birthday'];	
 					$model->attributes=$_POST['RegistrationForm'];
@@ -72,21 +72,29 @@ class RegistrationController extends Controller
 					//$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
 					//echo 'lore'.$profile->birthday;
 					
+					
 					if($model->validate()&&$profile->validate())
 					{
-						//echo 'entro';	
 						$soucePassword = $model->password;
 						$model->activkey=UserModule::encrypting(microtime().$model->password);
 						$model->password=UserModule::encrypting($model->password);
 						$model->verifyPassword=UserModule::encrypting($model->verifyPassword);
 						$model->superuser=0;
 						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
+						
 						if(isset($_POST['twitter_id'])){
 							$model->twitter_id = $_POST['twitter_id'];
 						}
 						if(isset($_POST['facebook_id'])){
 							$model->facebook_id = $_POST['facebook_id'];
+							
+							$model->password = $this->passGenerator();
+							$soucePassword = $model->password;
+							$clave = $model->password;
+							$model->activkey = UserModule::encrypting(microtime().$model->password);
+							$model->password = UserModule::encrypting($model->password);
 						}
+						
 						
 						if ($model->save()) {
 							if(isset($_POST['facebook_request'])){
@@ -99,21 +107,46 @@ class RegistrationController extends Controller
 							$profile->user_id=$model->id;
 							$profile->save();
 							//if (Yii::app()->controller->module->sendActivationMail) {
-								$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
-								
-								$message            = new YiiMailMessage;
-							    $message->view = "mail_template";
-								$subject = 'Registro Personaling';
-								$body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>  <a href="'.$activation_url.'">Haz click aquí</a>';
-							    $params              = array('subject'=>$subject, 'body'=>$body);
-							    $message->subject    = $subject;
-							    $message->setBody($params, 'text/html');                
-							    $message->addTo($model->email);
-								$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-							    Yii::app()->mail->send($message);
+									
+								if(isset($_POST['facebook_id'])) // de facebook hay que enviar la clave
+								{
+									$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
+									
+									$message            = new YiiMailMessage;
+								    $message->view = "mail_template";
+									$subject = 'Registro Personaling';
+									$body = '<h2>Te damos la bienvenida a Personaling.</h2>
+											<br/>Tu contraseña provisional es: <strong>'.$clave.'</strong><br/>' .
+                               				'Puedes cambiarla accediendo a tu cuenta y luego haciendo click '. 
+                                			'en la opción Cambiar Contraseña.<br/><br/>
+                                			Recibes este correo porque se ha registrado tu dirección en Personaling.
+											Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+								    $params              = array('subject'=>$subject, 'body'=>$body);
+								    $message->subject    = $subject;
+								    $message->setBody($params, 'text/html');                
+								    $message->addTo($model->email);
+									$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+								    Yii::app()->mail->send($message);
+								}
+								else		
+								{		
+									$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
+									
+									$message            = new YiiMailMessage;
+								    $message->view = "mail_template";
+									$subject = 'Registro Personaling';
+									$body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+								    $params              = array('subject'=>$subject, 'body'=>$body);
+								    $message->subject    = $subject;
+								    $message->setBody($params, 'text/html');                
+								    $message->addTo($model->email);
+									$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+								    Yii::app()->mail->send($message);
+
 								//UserModule::sendRegistrationMail($model->id, $activation_url);
 								//UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
-							//}
+								}
+								
 							
 							if ((Yii::app()->controller->module->loginNotActiv||(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false))&&Yii::app()->controller->module->autoLogin) {
 									$identity=new UserIdentity($model->username,$soucePassword);
@@ -273,5 +306,18 @@ class RegistrationController extends Controller
             echo 'Else';
         }
 	}
+
+	public function passGenerator($length = 8) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $n = strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++) {
+            $index = rand(0, $n - 1);
+            $result .= substr($chars, $index, 1);
+        }
+
+        return $result;
+    } 
+
 	
 }

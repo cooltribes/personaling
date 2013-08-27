@@ -467,8 +467,7 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='form-actions'><a onclick='enviar()' class='btn btn-danger'>Confirmar Deposito</a></div>";
-      	$datos=$datos."<p class='well well-small'><strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>";
+      	$datos=$datos."<p class='text_align_center'><a title='Formas de Pago' href='".Yii::app()->baseUrl."/site/formas_de_pago'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>";
     	$datos=$datos."</form>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";

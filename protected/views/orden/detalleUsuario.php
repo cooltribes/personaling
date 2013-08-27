@@ -8,7 +8,16 @@ $this->breadcrumbs=array(
 $usuario = User::model()->findByPk($orden->user_id); 
 
 ?>
-
+	<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1>
@@ -722,9 +731,8 @@ else{
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
-      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Depositooo</a> </div>
-      <p class="well well-small"> <strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>
+      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
+      <p class='text_align_center'><a title='Formas de Pago' href='".Yii::app()->baseUrl."/site/formas_de_pago'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
     </form>
   </div>
 </div>

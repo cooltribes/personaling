@@ -38,7 +38,7 @@
                    </div>
                    </div>
                    <div class="clearfix">
-                <div class="pull-right">
+                <div class="list-view">
                         {pager}
                         </div>
                         </div>
@@ -69,7 +69,7 @@
 		   </div>
 
 		   <div class="clearfix">
-	        <div class="pull-right">
+	        <div class="list-view">
 	      		{pager}
 			</div>
 			</div>

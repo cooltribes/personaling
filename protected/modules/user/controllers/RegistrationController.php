@@ -1,5 +1,8 @@
 <?php
 
+// Lib para conectar con el API de MailChimp
+include("MailChimp.php");
+
 class RegistrationController extends Controller
 {
 	public $defaultAction = 'registration';
@@ -20,8 +23,20 @@ class RegistrationController extends Controller
 	 * Registration user
 	 */
 	public function actionRegistration() {
-            $model = new RegistrationForm;
-            $profile=new Profile;
+            $model   = new RegistrationForm;
+            $profile = new Profile;
+            $MailChimp = new MailChimp('78347e50bf7c6299b77dd84fbc24e5be-us7');
+			$MailChimp->call('lists/subscribe', array(
+			                'id'                => 'be789a5ad1',
+			                'email'             => array('email'=>'clinares@upsidecorp.com'),
+			                'merge_vars'        => array('FNAME'=>'Carlos', 'LNAME'=>'Linares'),
+			                'birthday'			=> '23/12',
+			                'double_optin'      => true,
+			                'mc_language'		=>'es',
+			                'update_existing'   => true,
+			                'replace_interests' => false,
+			                'send_welcome'      => false,
+			            ));            
             $profile->regMode = true;
             
 			// ajax validator

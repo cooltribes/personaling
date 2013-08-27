@@ -108,7 +108,10 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
       </div>
       <hr/><?php */?>
     </aside>
-    <div class="span9 "> <img src="http://placehold.it/87	0x90" alt="Banner de Nombre del Personal Shopper"/>
+    <div class="span9 "> 
+    	
+    	<?php echo CHtml::image($model->getBanner(),'Banner',array("width"=>"870", "height"=>"90")); //imagen ?>
+    	
       <div class="well margin_top">
         <h3 class="muted margin_bottom_small">Looks Actuales</h3>
         <div class="row-fluid items" id="perfil_looks">

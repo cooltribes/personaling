@@ -226,6 +226,13 @@ class User extends CActiveRecord
 			return Yii::app()->baseUrl.'/images/avatar_provisional_3.jpg';
 		return Yii::app()->baseUrl.'/images/avatar_provisional_2.jpg';
 	}
+	public function getBanner(){
+		if ($this->banner_url != '')
+			return Yii::app()->baseUrl.$this->banner_url;
+		
+		return 'http://placehold.it/87	0x90';
+	}
+	
     public function getCreatetime() {
         return strtotime($this->create_at);
     }

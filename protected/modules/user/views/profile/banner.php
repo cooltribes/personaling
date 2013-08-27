@@ -55,17 +55,19 @@
            <!--
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
       -->
-      <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small"/>
+      <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small" />
       <?php echo CHtml::hiddenField('valido','1'); ?>
-      <?php echo CHtml::hiddenField('avatar_x','0'); ?>
-      <?php echo CHtml::hiddenField('avatar_y','0'); ?>
+      <div id="extension"><div class="alert in alert-block fade alert-error" style="margin-top:20px">El archivo debe ser de formato JPG, GIF o PNG.</div></div>
+      <div id="dimension"><div class="alert in alert-block fade alert-error" >Las dimensiones de la imagen deben ser 870 x 90</div></div>
+      <?php // echo CHtml::hiddenField('avatar_x','0'); ?>
+      <?php // echo CHtml::hiddenField('avatar_y','0'); ?>
 <?php /*?>      <div id="dropTarget">O arrasta la imagen hasta aqui</div><?php */?>
       <output id="filesInfo"></output>
       
          <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
+			'buttonType'=>'button',
 			'type'=>'danger',
-			'label'=>'Haz click aqui para subir la imagen',
+			'label'=>'Haz click aqui para subir la imagen'
 		)); ?>
       </div>
       </div>
@@ -94,6 +96,9 @@
 <script>
 var ImagenW;
 var ImagenH;
+var W;
+var H;
+var E;
       function drawImage(imageObj,tempW,tempH) { 
         document.getElementById("container").innerHTML = "";
         var stage = new Kinetic.Stage({
@@ -333,6 +338,32 @@ function fileSelect(evt) {
         alert('The File APIs are not fully supported in this browser.');
     }
 }
+
+ var _URL = window.URL || window.webkitURL;
+$("#filesToUpload").change(function (e) {
+    var file, img;
+    $('#extension').hide();
+	$('#dimension').hide();
+    if ((file = this.files[0])) {
+        img = new Image();
+        img.onload = function () {
+            var a=this.width ;
+            var b=this.height;
+            W=a;
+            H=b;
+          
+            
+        };
+   		
+     
+       img.src = _URL.createObjectURL(file);
+    }
+   E = $( "#filesToUpload" ).val().split('.').pop();
+    
+});
+
+
+
 function fileDrop(evt) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -441,12 +472,44 @@ function fileDrop(evt) {
     }
 }
  
+
+ 
+ 
 function dragOver(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     evt.dataTransfer.dropEffect = 'copy';
 }
 $(document).ready(function() { 
+	var dim=false;
+	var ext=false;
+	$('#extension').hide();
+	$('#dimension').hide();
+	$( "#yw1" ).click(function(e) {
+		e.preventDefault();
+
+		if(W==870 && H==90){
+			dim=true;			
+		}
+		if(!(E!="JPG"&&E!="PNG"&&E!="GIF"&&E!="jpg"&&E!="png"&&E!="gif")){
+			ext=true;	
+		}
+		if(dim && ext)			
+			$("#avatar-form").submit();
+		else{
+				if(!dim){
+					if(ext){$('#dimension').css('margin-top','20px');}
+					$('#dimension').show();
+					}
+				if(!ext){
+					$('#extension').show();
+					}	
+		}
+  
+
+});
+
+
 /*
       var imageObj = new Image();
       imageObj.onload = function() {
@@ -455,10 +518,12 @@ $(document).ready(function() {
       imageObj.src = 'http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg';
 
 */
-  var dropTarget = document.getElementById('dropTarget');
-  dropTarget.addEventListener('dragover', dragOver, false);
-  dropTarget.addEventListener('drop', fileDrop, false);
-  document.getElementById('filesToUpload').addEventListener('change', fileSelect, false);
+
+	
+ // var dropTarget = document.getElementById('dropTarget');
+ // dropTarget.addEventListener('dragover', dragOver, false);
+ // dropTarget.addEventListener('drop', fileDrop, false);
+ // document.getElementById('filesToUpload').addEventListener('change', fileSelect, false);
       
 });
 

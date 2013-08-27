@@ -474,17 +474,19 @@ class ProfileController extends Controller
 				 
 				 if (!$model->save())	
 						Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
-					if( $extension == '.jpg' || $extension == '.png' || $extension == '.gif' ){
+					
 		            	if($pic->saveAs($nombre . $extension)){
+			                   
+		          
 			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));		            		
-		            }
-		            else{
-			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('error',UserModule::t("La imágen debe ser jpg png o gif"));		            										            	
-		            }
+							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));			            										            	
+		            
 
-	            	}	            	
+	            	}
+						else{
+								Yii::app()->user->updateSession();
+								Yii::app()->user->setFlash('error',UserModule::t("La imágen debe ser jpg png o gif"));	
+									                	            		}	            	
 				}
 
 			}

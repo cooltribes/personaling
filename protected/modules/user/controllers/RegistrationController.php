@@ -127,6 +127,7 @@ class RegistrationController extends Controller
 								    $message->addTo($model->email);
 									$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 								    Yii::app()->mail->send($message);
+
 								//UserModule::sendRegistrationMail($model->id, $activation_url);
 								//UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
 								}
@@ -181,7 +182,7 @@ class RegistrationController extends Controller
 		$message            = new YiiMailMessage;
 		$message->view = "mail_template";
 		$subject = 'Activa tu cuenta en Personaling';
-		$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+		$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/><br/>  <a href="'.$activation_url.'">Haz click aquí</a>';
 		$params              = array('subject'=>$subject, 'body'=>$body);
 		$message->subject    = $subject;
 		$message->setBody($params, 'text/html');                

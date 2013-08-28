@@ -535,6 +535,7 @@ class Look extends CActiveRecord
 		 foreach($look->lookhasproducto as $lookhasproducto){
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	if (isset($image_url)){
+		 			$imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
@@ -550,6 +551,7 @@ class Look extends CActiveRecord
 		 	$image_url = $lookhasadorno->adorno->getImageUrl(array('ext'=>'png'));
 			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
 		 	if (isset($image_url)){
+		 			$imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
 					$imagenes[$i]->left = $lookhasadorno->left;

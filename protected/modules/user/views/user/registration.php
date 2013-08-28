@@ -191,7 +191,7 @@
 ?>
 	<div class="control-group">
 		<label class="checkbox">
-	  		<input type="checkbox" value="">
+	  		<input type="checkbox" value="suscribir" name="Profile[suscribir]" checked>
 	  		Suscribirme a la lista de correo de Personaling
 		</label>
 	</div>

@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal','doble'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -46,6 +46,24 @@ class TiendaController extends Controller
 		));	
 			
 	}
+	
+	public function actionDoble()
+	{
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		$producto = new Producto;		
+		$producto->status = 1; // no borrados
+		$producto->estado = 0; // solo productos activos
+		
+		$a ="a"; 
+		
+		$dataProvider = $producto->nueva($a);
+		$this->render('index',
+		array('index'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	
+			
+	}
+	
 	
 		public function actionFiltrar()
 	{

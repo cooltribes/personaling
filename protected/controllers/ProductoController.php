@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo'),
+				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','prueba'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -1295,7 +1295,167 @@ class ProductoController extends Controller
 
 	}
 
+	// prueba de carga
+	public function actionPrueba()
+	{
+		$tabla = "";
+		
+		
+		if( isset($_POST['valido']) ){ // enviaron un archivo
+			
+		$archivo = CUploadedFile::getInstancesByName('url');
+			
+			if(isset($archivo) && count($archivo) > 0){
 
+				foreach ($archivo as $arc => $xls) {
+					
+	            	$nombre = Yii::getPathOfAlias('webroot').'/docs/xlsImported/'. date('d-m-Y-H:i:s', strtotime('now')) ;
+	            	$extension = '.'.$xls->extensionName;
+				//	$model->banner_url = '/images/banner/'. $id .'/'. $image .$extension;
+				 
+			//	 if (!$model->save())	
+			//			Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
+					
+		            if($xls->saveAs($nombre . $extension)){
+			                Yii::app()->user->updateSession();
+							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado exitosamente."));			            										            	
+	            	}
+					else{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("Error al cargar el archivo."));	
+					}	            	
+				}
+
+			}
+			
+			// ==============================================================================
+			
+			$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
+ 
+			$tabla = $tabla . "<table>";
+			 
+			foreach( $sheet_array as $row ) {
+			    $tabla = $tabla . "<tr>";
+			    
+			    foreach( $row as $column )
+			        $tabla = $tabla . "<td>$column</td>";
+				
+			    $tabla = $tabla . "</tr>";
+			}
+			 
+			$tabla = $tabla . "</table>";
+			$tabla = $tabla ."<br/>";
+			
+			$anterior;
+			
+			foreach( $sheet_array as $row ) {
+			    
+				$tabla = $tabla.'<br/><br/>';
+				
+				if($row['A']!="" && $row['A']!="Nombre") // para que no tome la primera ni vacios
+				{
+					/*
+					$tabla = $tabla.'Nombre: '.$row['A'].
+									' Descripcion: '.$row['B'].
+									' Referencia: '.$row['C'].
+									' Marca: '.$row['D'].
+									' Peso: '.$row['E'].
+									' Costo: '.$row['F'].
+									' Precio: '.$row['G'].
+									' Categorias: '.$row['H'].
+									' Categorias: '.$row['I'].
+									' Categorias: '.$row['J'].
+									' Talla: '.$row['K'].
+									' Color: '.$row['L'].
+									' Cantidad: '.$row['M'].
+									' Sku: '.$row['N'].
+									' M Desc: '.$row['O'].
+									' M Tag: '.$row['P'].
+									'<br/>';
+					*/				
+					$anterior = $row;
+					
+					
+					$producto = Producto::model()->findByAttributes(array('codigo'=>$row['C']));
+					
+					if(isset($producto)) // la referencia existe, hay que actualizar los campos
+					{
+						
+					}
+					else // no existe la referencia, es producto nuevo
+					{
+						$producto = new Producto;
+						
+						$producto->nombre = $row['A'];
+						$producto->codigo = $row['C'];
+						$producto->estado = 1; // inactivo
+						$producto->descripcion = $row['B'];
+						$producto->fecha = date('Y-m-d H:i:s', strtotime('now'));
+						$producto->peso = $row['E'];
+						$producto->status = 1; // no está eliminado
+						
+						$marca = Marca::model()->findByAttributes(array('nombre'=>$row['D']));
+						$producto->marca_id = $marca->id;
+						
+						if($producto->save())
+						{
+							// apartir de aqui tengo el id del producto
+							$precio = new Precio;
+							
+							$precio->costo = $row['F'];
+							$precio->precioVenta = $row['G'];
+							$precio->tbl_producto_id = $producto->id;
+							
+							if($precio->save())
+							{
+								$cat = new CategoriaHasProducto;
+								
+								if($row['H'] != ""){
+									$x = Categoria::model()->findByAttributes(array('nombre'=>$row['H']));
+									$cat->tbl_producto_id = $producto->id;
+									$cat->tbl_categoria_id = $x->id;
+								}
+								
+								// y asi para cada una de las categorias restantes
+								
+							}
+							
+						}
+						
+						
+					}
+					
+				}
+				else if($row['A']=="") // si está vacia la primera
+				{
+					if($row['K']!="" && $row['L']!="" && $row['M']!="" && $row['N']!=""){
+								
+						$tabla = $tabla .'esta combinacion pertenece al producto: '.$anterior['A'].' <br/>';
+						$tabla = $tabla.'Talla: '.$row['K'].
+										' Color: '.$row['L'].
+										' Cantidad: '.$row['M'].
+										' Sku: '.$row['N'].
+										'<br/>';
+										
+										
+										
+					}
+				}
+				
+				
+			}
+			
+			
+		//	echo $sheet_array[1]['A'];	
+
+		}
+
+		$this->render('prueba_subida',array(
+			'tabla'=>$tabla,
+		));
+
+	}
+	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

@@ -28,11 +28,11 @@
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#">Tu Estilo </a>
       <ul class="dropdown-menu">
-        <li><?php echo CHtml::link('Coctel',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Coctel")); ?></li>
+        <li><?php echo CHtml::link('Diario',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Diario")); ?></li>
         <li><?php echo CHtml::link('Fiesta',array('profile/edittuestilo','id'=>'fiesta'),array("title"=>"Edita tu estilo Fiesta")); ?></li>
-        <li><?php echo CHtml::link('Playa',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Playa")); ?></li>
-        <li><?php echo CHtml::link('Sport',array('profile/edittuestilo','id'=>'Sport'),array("title"=>"Edita tu estilo Sport")); ?></li>
-        <li><?php echo CHtml::link('Trabajo',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Trabajo")); ?></li>
+        <li><?php echo CHtml::link('Vacaciones',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Vacaciones")); ?></li>
+        <li><?php echo CHtml::link('Haciendo Deporte',array('profile/edittuestilo','id'=>'Sport'),array("title"=>"Edita tu estilo Haciendo Deporte")); ?></li>
+        <li><?php echo CHtml::link('Oficina',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Oficina")); ?></li>
       </ul>
     </li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Tus Encantos/Favoritos </a>

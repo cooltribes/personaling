@@ -24,21 +24,9 @@ class RegistrationController extends Controller
 	 */
 	public function actionRegistration() {
             $model   = new RegistrationForm;
-            $profile = new Profile;
-            $MailChimp = new MailChimp('78347e50bf7c6299b77dd84fbc24e5be-us7');
-			$MailChimp->call('lists/subscribe', array(
-			                'id'                => 'be789a5ad1',
-			                'email'             => array('email'=>'clinares@upsidecorp.com'),
-			                'merge_vars'        => array('FNAME'=>'Carlos', 'LNAME'=>'Linares'),
-			                'birthday'			=> '23/12',
-			                'double_optin'      => true,
-			                'mc_language'		=>'es',
-			                'update_existing'   => true,
-			                'replace_interests' => false,
-			                'send_welcome'      => false,
-			            ));            
-            $profile->regMode = true;
-            
+            $profile = new Profile;           
+            $profile->regMode = true;   
+                
 			// ajax validator
 			if(isset($_POST['ajax']) && $_POST['ajax']==='registration-form')
 			{
@@ -147,7 +135,23 @@ class RegistrationController extends Controller
 								//UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
 								}
 								
-							
+
+								// Para registrar en la lista de correo
+								if(isset($_POST['Profile']['suscribir'])){
+								//API key provisional para lista de prueba										
+					            $MailChimp = new MailChimp('78347e50bf7c6299b77dd84fbc24e5be-us7');
+					            $result = $MailChimp->call('lists/subscribe', array(
+					                            'id'                => 'be789a5ad1',
+					                            'email'             => array('email'=>$_POST['RegistrationForm']['email']),
+					                            'merge_vars'        => array('FNAME'=>$_POST['Profile']['first_name'], 'LNAME'=>$_POST['Profile']['last_name']),
+					                            'birthday'          => $_POST['Profile']['month'].'/'.$_POST['Profile']['year'],
+					                            'mc_language'       =>'es',
+					                            'update_existing'   => true,
+					                            'replace_interests' => false,
+					                        ));   
+					            }
+
+
 							if ((Yii::app()->controller->module->loginNotActiv||(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false))&&Yii::app()->controller->module->autoLogin) {
 									$identity=new UserIdentity($model->username,$soucePassword);
 									$identity->authenticate();

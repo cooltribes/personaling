@@ -6,11 +6,19 @@
     function getTabs($field,$profile){
             				$nombre_tmp = $field->varname;
 			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
-			$return = '<fieldset>
-            <legend>Escoge un estilo que defina tu forma de vestir. </legend>
-		
-           
-            <ul class="thumbnails">';
+			if($field->title){}
+            $return = '<fieldset>';
+            if($field->title == 'Diario')
+                $return .='<legend>Con cuál estilo te identificas más para tu día a día </legend>';
+            if($field->title == 'Fiesta')
+                $return .='<legend>Con cuál de estos looks te irias de fiesta </legend>';
+            if($field->title == 'Vacaciones')
+                $return .='<legend>Para ir a la playa, con cuál de estos looks te pondrías </legend>';                            		
+            if($field->title == 'Haciendo Deporte')
+                $return .='<legend>Con cuál estilo te identificas más para hacer deporte </legend>';            
+            if($field->title == 'Oficina')
+                $return .='<legend> Con cuál de estos looks te irias a la oficina </legend>';             
+             $return .='<ul class="thumbnails">';
 			//<img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
             foreach (Profile::range($field->range) as $key => $value){
 

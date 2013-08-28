@@ -123,8 +123,34 @@ class LookController extends Controller
 	}
 	public function actionGetImage($id)
 	{ 
-		 	   
+		$filename = Yii::getPathOfAlias('webroot').'/images/look/'.$id.'.png'; 	   
+		if (file_exists($filename)) {
+			 $w = 710;
+			 if (isset($_GET['w']))
+			 	$w = $_GET['w'];
+			 
+			 
+			 $h = 710;
+			 if (isset($_GET['h']))
+			 	$h = $_GET['h'];
+							$ratio_orig = 1;
 
+                        if ($w/$h > $ratio_orig) {
+                           $w = $h*$ratio_orig;
+                        } else {
+                           $h = $w/$ratio_orig;
+                        }
+			//echo Yii::app()->baseUrl.'/images/look/'.$id.'.png';
+			 $image_p = imagecreatetruecolor($w, $h);
+			$src = imagecreatefrompng($filename);
+			imagecopyresampled( $image_p, $src, 0, 0, 0, 0, $w, $h, 710, 710);
+			header('Content-Type: image/png'); 
+			header('Cache-Control: max-age=86400, public');
+			imagejpeg($image_p, null, 100);
+			//readfile($filename);
+			//imagepng($src,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+			imagedestroy($src);			
+		} else {
 		 $look = Look::model()->findByPk($id);
 		 
 		 /*
@@ -148,6 +174,7 @@ class LookController extends Controller
 		 foreach($look->lookhasproducto as $lookhasproducto){
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	if (isset($image_url)){
+		 			$imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
@@ -163,6 +190,7 @@ class LookController extends Controller
 		 	$image_url = $lookhasadorno->adorno->getImageUrl(array('ext'=>'png'));
 			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
 		 	if (isset($image_url)){
+		 			$imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
 					$imagenes[$i]->left = $lookhasadorno->left;
@@ -215,8 +243,10 @@ class LookController extends Controller
 		}
 		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
+		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9);
 		imagepng($canvas,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
 		imagedestroy($canvas);
+		}
 	}
 
 	public function actionGetImage2($id)

@@ -121,6 +121,9 @@ return array(
         ),
 	    ),
 		 * */
+		 'yexcel' => array(
+		    'class' => 'ext.yexcel.Yexcel'
+		),
 	    
 	    'less'=>array(
 	      'class'=>'ext.less.components.Less',

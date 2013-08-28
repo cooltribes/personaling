@@ -512,7 +512,7 @@ if(isset($_POST['Profile']))
 		return $this->_model;
 	}
         
-    public function passGenerator($length = 8) {
+   	protected function passGenerator($length = 8) {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $n = strlen($chars);
 

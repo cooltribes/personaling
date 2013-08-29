@@ -217,7 +217,15 @@ class ColorController extends Controller
 	}
 	public function actiongetColores()
 	{
-		$colores = Color::model()->findAll(array('order'=>'valor')); // ordena alfeticamente por nombre
+		if (isset($_GET['search'])){
+			$search = 	$_GET['search'];
+			
+			$colores = Color::model()->findAll(
+				"valor LIKE :color",
+				array(':color'=>"$search%")); // ordena alfeticamente por nombre			
+		} else {
+			$colores = Color::model()->findAll(array('order'=>'valor')); // ordena alfeticamente por nombre
+		}
 				 foreach($colores as $i => $row){
 					$data[$i]['text']= $row->valor;
 					$data[$i]['id'] = $row->id;

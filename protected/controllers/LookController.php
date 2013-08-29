@@ -144,7 +144,7 @@ class LookController extends Controller
 			 $image_p = imagecreatetruecolor($w, $h);
 			$src = imagecreatefrompng($filename);
 			imagecopyresampled( $image_p, $src, 0, 0, 0, 0, $w, $h, 710, 710);
-			header('Content-Type: image/png'); 
+			header('Content-Type: image/jpeg'); 
 			header('Cache-Control: max-age=86400, public');
 			imagejpeg($image_p, null, 100);
 			//readfile($filename);

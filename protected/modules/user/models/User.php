@@ -258,8 +258,8 @@ class User extends CActiveRecord
 	   return parent::beforeValidate();
 	}
         
-    public function getStatus($key = null) {
-        
+    public static function getStatus($key = null) {
+         
         if($key !== null)        
             return self::$statuses[$key];
             

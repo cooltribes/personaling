@@ -35,7 +35,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','prueba'),
+				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -883,6 +883,8 @@ class ProductoController extends Controller
  * Manejador de Colors y Tallas
  */
 	public function actionTallacolor($id){
+			//	$pree = Preciotallacolor::model()->findByPk(7);
+		//$pree->validate();
 		//if(isset($_GET['id'])){
 			//if(!$inventario = Inventario::model()->findByAttributes(array('tbl_producto_id'=>$id)))
 			//	$inventario=new Inventario;
@@ -1295,11 +1297,10 @@ class ProductoController extends Controller
 
 	}
 
-	// prueba de carga
-	public function actionPrueba()
+	// importar desde excel
+	public function actionImportar()
 	{
-		$tabla = "";
-		
+		$tabla = "";		
 		
 		if( isset($_POST['valido']) ){ // enviaron un archivo
 			
@@ -1318,7 +1319,7 @@ class ProductoController extends Controller
 					
 		            if($xls->saveAs($nombre . $extension)){
 			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado exitosamente."));			            										            	
+							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado y procesado exitosamente."));			            										            	
 	            	}
 					else{
 						Yii::app()->user->updateSession();
@@ -1332,7 +1333,7 @@ class ProductoController extends Controller
 			
 			$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
  
-			$tabla = $tabla . "<table>";
+			$tabla = $tabla . "<table class='table table-bordered table-hover table-striped'>";
 			 
 			foreach( $sheet_array as $row ) {
 			    $tabla = $tabla . "<tr>";
@@ -1347,6 +1348,8 @@ class ProductoController extends Controller
 			$tabla = $tabla ."<br/>";
 			
 			$anterior;
+			$pr_id;
+			
 			
 			foreach( $sheet_array as $row ) {
 			    
@@ -1380,44 +1383,213 @@ class ProductoController extends Controller
 					
 					if(isset($producto)) // la referencia existe, hay que actualizar los campos
 					{
-						
-					}
-					else // no existe la referencia, es producto nuevo
-					{
-						$producto = new Producto;
-						
-						$producto->nombre = $row['A'];
-						$producto->codigo = $row['C'];
-						$producto->estado = 1; // inactivo
-						$producto->descripcion = $row['B'];
-						$producto->fecha = date('Y-m-d H:i:s', strtotime('now'));
-						$producto->peso = $row['E'];
-						$producto->status = 1; // no está eliminado
-						
-						$marca = Marca::model()->findByAttributes(array('nombre'=>$row['D']));
-						$producto->marca_id = $marca->id;
-						
-						if($producto->save())
-						{
-							// apartir de aqui tengo el id del producto
-							$precio = new Precio;
+						$pr_id = $producto->id;	
 							
+						$marca = Marca::model()->findByAttributes(array('nombre'=>$row['D']));
+						
+						Producto::model()->updateByPk($producto->id, array(
+						 	'nombre' =>  $row['A'],
+						 	'marca_id'=>$marca->id,
+						 	'descripcion'=>$row['B'],
+							'peso' => $row['E'],
+							'status' => 1
+						));
+						
+						// ahora los precios
+						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+						
+						if(isset($precio)){
+							$precio->costo = $row['F'];
+							$precio->precioVenta = $row['G'];
+						}
+						else {
+							$precio = new Precio;
 							$precio->costo = $row['F'];
 							$precio->precioVenta = $row['G'];
 							$precio->tbl_producto_id = $producto->id;
+						}
+						
+						if($precio->save())
+						{
+							$cuales = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
 							
-							if($precio->save())
-							{
-								$cat = new CategoriaHasProducto;
+							if(isset($cuales)){
+								foreach($cuales as $cu){
+									$cu->delete();
+								}
+							}
+														
+							$cat = new CategoriaHasProducto;
+							$cat2 = new CategoriaHasProducto;
+							$cat3 = new CategoriaHasProducto;
 								
 								if($row['H'] != ""){
 									$x = Categoria::model()->findByAttributes(array('nombre'=>$row['H']));
 									$cat->tbl_producto_id = $producto->id;
 									$cat->tbl_categoria_id = $x->id;
+									
+									$cat->save();
 								}
 								
-								// y asi para cada una de las categorias restantes
+								if($row['I'] != ""){
+									$x = Categoria::model()->findByAttributes(array('nombre'=>$row['I']));
+									$cat2->tbl_producto_id = $producto->id;
+									$cat2->tbl_categoria_id = $x->id;
+									
+									$cat2->save();
+								}
 								
+								if($row['J'] != ""){
+									$x = Categoria::model()->findByAttributes(array('nombre'=>$row['J']));
+									$cat3->tbl_producto_id = $producto->id;
+									$cat3->tbl_categoria_id = $x->id;
+									
+									$cat3->save();
+								}	
+							
+							// ahora precio talla color
+								
+								$ptc = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$producto->id, 'sku'=>$row['N'], 'talla_id'=>$row['K'], 'color_id'=>$row['L']));
+								
+								if(isset($ptc)) // existe el sku, hay que actualizar
+								{
+									$a = $ptc->cantidad;
+									
+									$ptc->cantidad = $a + $row['M'];
+									$ptc->save();		
+								}
+								else { // nueva combinacion
+									$pre = new Preciotallacolor;
+									//$pree = PrecioTallaColor::model()->findByPk(7);
+									$pre->cantidad = $row['M'];
+									$pre->sku = $row['N'];
+									$pre->producto_id = $producto->id;
+									
+									$talla = Talla::model()->findByAttributes(array('valor'=>$row['K']));
+									$color = Color::model()->findByAttributes(array('valor'=>$row['L']));
+									
+									$pre->talla_id = $talla->id;
+									$pre->color_id = $color->id;
+									//foreach($pre->attributes as $attribute=>$key)
+									//	echo $attribute." ".$key.' ';
+									
+									//$pree->validate();
+									$pre->save();
+									
+								//	Yii::app()->end();
+								}
+							
+							// seo
+														
+								$seo = new Seo;
+								$seo->mTitulo = $producto->nombre;
+								$seo->mDescripcion = $row['O'];
+								$seo->pClave = $row['P'];
+								$seo->tbl_producto_id = $producto->id;
+								
+								$seo->save();
+								
+		$tabla = $tabla.'se agregó el producto con id '.$producto->id.', de nombre: '.$producto->nombre.', precio_id: '.$precio->id.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
+						
+						}
+						
+													
+					}
+					else // no existe la referencia, es producto nuevo
+					{
+						$prod = new Producto;
+						
+						$prod->nombre = $row['A'];
+						$prod->codigo = $row['C'];
+						$prod->estado = 1; // inactivo
+						$prod->descripcion = $row['B'];
+						$prod->fecha = date('Y-m-d H:i:s', strtotime('now'));
+						$prod->peso = $row['E'];
+						$prod->status = 1; // no está eliminado
+						
+						$marca = Marca::model()->findByAttributes(array('nombre'=>$row['D']));
+						$prod->marca_id = $marca->id;
+						
+						if($prod->save())
+						{
+								
+							$pr_id = $prod->id;		
+								
+							// apartir de aqui tengo el id del producto
+							$precio = new Precio;
+							
+							$precio->costo = $row['F'];
+							$precio->precioVenta = $row['G'];
+							$precio->tbl_producto_id = $prod->id;
+							
+							if($precio->save())
+							{
+								$cat = new CategoriaHasProducto;
+								$cat2 = new CategoriaHasProducto;
+								$cat3 = new CategoriaHasProducto;
+								
+								if($row['H'] != ""){
+									$x = Categoria::model()->findByAttributes(array('nombre'=>$row['H']));
+									$cat->tbl_producto_id = $prod->id;
+									$cat->tbl_categoria_id = $x->id;
+									
+									$cat->save();
+								}
+								
+								if($row['I'] != ""){
+									$x = Categoria::model()->findByAttributes(array('nombre'=>$row['I']));
+									$cat2->tbl_producto_id = $prod->id;
+									$cat2->tbl_categoria_id = $x->id;
+									
+									$cat2->save();
+								}
+								
+								if($row['J'] != ""){
+									$x = Categoria::model()->findByAttributes(array('nombre'=>$row['J']));
+									$cat3->tbl_producto_id = $prod->id;
+									$cat3->tbl_categoria_id = $x->id;
+									
+									$cat3->save();
+								}
+								
+								// ahora precio talla color
+								
+								$ptc = Preciotallacolor::model()->findByAttributes(array('sku'=>$row['N'], 'talla_id'=>$row['K'], 'color_id'=>$row['L']));
+								
+								if(isset($ptc)) // existe el sku, hay que actualizar
+								{
+									$a = $ptc->cantidad;
+									
+									$ptc->cantidad = $a + $row['M'];
+									$ptc->save();		
+								}
+								else { // nueva combinacion
+									$pre = new Preciotallacolor;
+									$pre->cantidad = $row['M'];
+									$pre->sku = $row['N'];
+									$pre->producto_id = $prod->id;
+									
+									$talla = Talla::model()->findByAttributes(array('valor'=>$row['K']));
+									$color = Color::model()->findByAttributes(array('valor'=>$row['L']));
+									
+									$pre->talla_id = $talla->id;
+									$pre->color_id = $color->id;
+									
+									$pre->save();
+								}
+								
+								// seo
+														
+								$seo = new Seo;
+								$seo->mTitulo = $prod->nombre;
+								$seo->mDescripcion = $row['O'];
+								$seo->pClave = $row['P'];
+								$seo->tbl_producto_id = $prod->id;
+								
+								$seo->save();
+								
+		$tabla = $tabla.'se agregó el producto con id '.$producto->id.', de nombre: '.$producto->nombre.', precio_id: '.$precio->id.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
+						
 							}
 							
 						}
@@ -1437,20 +1609,46 @@ class ProductoController extends Controller
 										' Sku: '.$row['N'].
 										'<br/>';
 										
-										
-										
+							// ahora precio talla color
+								
+							$ptc = Preciotallacolor::model()->findByAttributes(array('sku'=>$row['N'], 'producto_id'=>$pr_id ,'talla_id'=>$row['K'], 'color_id'=>$row['L']));
+								
+								if(isset($ptc)) // existe el sku, hay que actualizar
+								{
+									$a = $ptc->cantidad;
+									
+									$ptc->cantidad = $a + $row['M'];
+									$ptc->save();	
+									
+									$tabla = $tabla.'se actualizaaron cantidades para el Producto-Talla-Color id '.$ptc->id.'<br/>';	
+								}
+								else { // nueva combinacion
+									$pre = new Preciotallacolor;
+									$pre->cantidad = $row['M'];
+									$pre->sku = $row['N'];
+									$pre->producto_id = $pr_id;
+									
+									$talla = Talla::model()->findByAttributes(array('valor'=>$row['K']));
+									$color = Color::model()->findByAttributes(array('valor'=>$row['L']));
+									
+									$pre->talla_id = $talla->id;
+									$pre->color_id = $color->id;
+									
+									$pre->save();
+									
+									$tabla = $tabla.'se actualizaaron cantidades para el Producto-Talla-Color id '.$pre->id.'<br/>';
+								}
+					
 					}
 				}
 				
 				
 			}
-			
-			
-		//	echo $sheet_array[1]['A'];	
+
 
 		}
 
-		$this->render('prueba_subida',array(
+		$this->render('importar_productos',array(
 			'tabla'=>$tabla,
 		));
 

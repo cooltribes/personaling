@@ -1,6 +1,6 @@
   	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
-        'block'=>true, // display a larger alert block?
+        'block'=>true, // display a larger alert block? 
         'fade'=>true, // use transitions?
         'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
         'alerts'=>array( // configurations per alert type
@@ -15,7 +15,7 @@
 <?php
 
   $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'action' => CController::createUrl('prueba'),
+	'action' => CController::createUrl('importar'),
 	'id'=>'excel-form',
 	'enableAjaxValidation'=>false,
 	'type'=>'horizontal',

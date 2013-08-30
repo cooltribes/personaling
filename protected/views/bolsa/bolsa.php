@@ -130,7 +130,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				  
 	                  foreach($bptcolor as $detalles) // cada producto en la bolsa
 					  {
-					  	$todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);
+					  	$todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);
 						
 							$producto = Producto::model()->findByPk($todo->producto_id);
 					  		$talla = Talla::model()->findByPk($todo->talla_id);
@@ -364,7 +364,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                 	?>
                   </div>
                 </div>
-                <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+                <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day'));?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
               </div>  
           
           

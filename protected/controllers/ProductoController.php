@@ -1013,7 +1013,7 @@ class ProductoController extends Controller
 		$tallas = array();
 		$imgs = array(); // donde se van a ir las imagenes
 		
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{
@@ -1059,7 +1059,7 @@ class ProductoController extends Controller
 	{
 		$colores = array();
 		
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{
@@ -1230,7 +1230,7 @@ class ProductoController extends Controller
 		$imag="";
 		$cont=0;
 		
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{
@@ -1276,7 +1276,7 @@ class ProductoController extends Controller
 	{
 		$div="";
 
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{
@@ -1401,12 +1401,14 @@ class ProductoController extends Controller
 						if(isset($precio)){
 							$precio->costo = $row['F'];
 							$precio->precioVenta = $row['G'];
+							$precio->precioDescuento = $row['G'];
 						}
 						else {
 							$precio = new Precio;
 							$precio->costo = $row['F'];
 							$precio->precioVenta = $row['G'];
 							$precio->tbl_producto_id = $producto->id;
+							$precio->precioDescuento = $row['G'];
 						}
 						
 						if($precio->save())
@@ -1521,6 +1523,7 @@ class ProductoController extends Controller
 							$precio->costo = $row['F'];
 							$precio->precioVenta = $row['G'];
 							$precio->tbl_producto_id = $prod->id;
+							$precio->precioDescuento = $row['G'];
 							
 							if($precio->save())
 							{
@@ -1588,7 +1591,7 @@ class ProductoController extends Controller
 								
 								$seo->save();
 								
-		$tabla = $tabla.'se agregó el producto con id '.$producto->id.', de nombre: '.$producto->nombre.', precio_id: '.$precio->id.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
+		$tabla = $tabla.'se agregó el producto con id '.$prod->id.', de nombre: '.$prod->nombre.', precio_id: '.$precio->id.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
 						
 							}
 							

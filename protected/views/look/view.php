@@ -58,12 +58,12 @@
                   <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
                   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
                   <!-- AddThis Button END -->
-
+ 
                 </div>
               </div>
             </div>
           </div>
-          <div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "770", "height" => "770", 'class'=>'img_1')); ?> </div>
+          <div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div>
           <div class="hidden-phone row-fluid vcard">
             <div class="span2 avatar ">
             <a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$model->user->id; ?>" title="perfil" class="url">

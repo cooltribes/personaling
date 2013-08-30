@@ -551,7 +551,7 @@ class TiendaController extends Controller
             $cantcolor = Array();
             $cont1 = 0;
               	
-			// revisando cuantos colores distintos hay
+			// revisando cuantos colores distintos hay 
 			foreach ($producto->preciotallacolor as $talCol){ 
 				if($talCol->cantidad > 0){
 					$color = Color::model()->findByPk($talCol->color_id);

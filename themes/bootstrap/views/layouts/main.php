@@ -264,25 +264,27 @@ if(!Yii::app()->user->isGuest){
 
               $bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
               $look = Look::model()->findByPk($look_id);
-              echo '<li>';
-              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
-              echo '<div class="row-fluid">';
-
-              //invertir array para mostrar en orden cronológico de compras
-
-              foreach ($bolsahasproductotallacolor as $productotallacolor) {
-                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
-                  $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
-                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-                  if($imagen){
-                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
-                      echo '<div class="span2">'.$htmlimage.'</div>';
-                  }
+			  if (isset($look)){
+	              echo '<li>';
+	              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
+	              echo '<div class="row-fluid">';
+	
+	              //invertir array para mostrar en orden cronológico de compras
+	
+	              foreach ($bolsahasproductotallacolor as $productotallacolor) {
+	                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
+	                  $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+	                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+	                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+	                  if($imagen){
+	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
+	                      echo '<div class="span2">'.$htmlimage.'</div>';
+	                  }
+	              }
+	              echo '</div>';
+	              echo "</li>";
+	              $contadorItems ++;
               }
-              echo '</div>';
-              echo "</li>";
-              $contadorItems ++;
           }
           if($cantidadProductosIndiv!=0){
               echo "';";
@@ -305,7 +307,7 @@ if(!Yii::app()->user->isGuest){
                 break;
               }
 
-                $todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);                
+                $todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);                
                 $producto = Producto::model()->findByPk($todo->producto_id);
                 $talla = Talla::model()->findByPk($todo->talla_id);
                 $color = Color::model()->findByPk($todo->color_id);                  

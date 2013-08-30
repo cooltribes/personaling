@@ -1,3 +1,16 @@
+<?php
+function str_lreplace($search, $replace, $subject)
+{
+    $pos = strrpos($subject, $search);
+
+    if($pos !== false)
+    {
+        $subject = substr_replace($subject, $replace, $pos, strlen($search));
+    }
+
+    return $subject;
+}
+?>
 <?php  
 	$this->pageTitle=Yii::app()->name . ' - Lo más Top';  
 	$baseUrl = Yii::app()->baseUrl; 
@@ -18,10 +31,10 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab1" >
                         <div class="items row ">
-                        <?php
+<?php
  foreach($dataProvider->getData() as $record) {
  	$look = Look::model()->findByPk($record['look_id']);
-	 if (isset($look)){
+	if (isset($look)){
  ?>
                         <div class="span4">
                             <article class="item" >
@@ -70,7 +83,8 @@
                         </div>
                         <?php 
               }
-} ?>
+} 
+?>
                     </div>
                     </div>
 <!--                     <div class="tab-pane" id="tab2">
@@ -78,13 +92,13 @@
                     </div> -->
                      <div class="tab-pane" id="tab3">
                         <div class="items row ">
-                        <?php
- 							//foreach($dataProvider_destacados->getData() as $record) {
- 							//$look = Look::model()->findByPk($record['look_id']);
- 							$iterator = new CDataProviderIterator($dataProvider_destacados);
-							foreach($iterator as $look) {
-	 						if (isset($look)){
- 						?>
+<?php
+	//foreach($dataProvider_destacados->getData() as $record) {
+	//$look = Look::model()->findByPk($record['look_id']);
+	$iterator = new CDataProviderIterator($dataProvider_destacados);
+	foreach($iterator as $look) {
+		if (isset($look)){
+?>
                         <div class="span4">
                             <article class="item" >
                             	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
@@ -130,9 +144,9 @@
                                 </div>
                                 <span class="label label-important">Promoción</span> </article>
                         </div>
-                        <?php 
-              				}
-						} ?>
+<?php 
+	}
+} ?>
                     </div>
                     </div>
                 </div>
@@ -166,15 +180,19 @@
                 <div class="span12">
                     <h3 class="margin_bottom_small">Prendas más vendidas</h3>
                     <div class="thumbnails">
-                        <?php
- foreach($dataProvider_productos->getData() as $record) {
- 	$producto = Producto::model()->findByPk($record['producto_id']);
-	 if (isset($producto)){
- ?>
-                        <li class="span2"> 
-                            <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
-                            <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>  </li>
-                        <? } } ?>
+<?php
+foreach( $dataProvider_productos->getData() as $record ){
+	$producto = Producto::model()->findByPk($record['producto_id']);
+	if (isset($producto)){
+?>
+                    <li class="span2"> 
+                        <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
+                        <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>  
+                    </li>
+<?php 
+	}  
+ } 
+?>
                     </div>
                 </div>
             </div>
@@ -186,23 +204,13 @@
             <div class="span12">
                 <div class="thumbnails">
                     <?php
-function str_lreplace($search, $replace, $subject)
-{
-    $pos = strrpos($subject, $search);
 
-    if($pos !== false)
-    {
-        $subject = substr_replace($subject, $replace, $pos, strlen($search));
-    }
-
-    return $subject;
-}
-	$posts_parent = WpPosts::model()->findAllByAttributes(array('post_type'=>'post','post_status'=>'publish'),array('order'=>'post_date DESC'));
-	$count = 0;
-	foreach($posts_parent as $posts_parent){
-		$posts_attachment = WpPosts::model()->findByAttributes(array('post_parent'=>$posts_parent->ID));
-		if(isset($posts_attachment)){
-			$count++;
+$posts_parent = WpPosts::model()->findAllByAttributes(array('post_type'=>'post','post_status'=>'publish'),array('order'=>'post_date DESC'));
+$count = 0;
+foreach($posts_parent as $posts_parent){
+	$posts_attachment = WpPosts::model()->findByAttributes(array('post_parent'=>$posts_parent->ID));
+	if(isset($posts_attachment)){
+		$count++;
 			//echo 'a';
 		?>
                     <li class="span3">
@@ -219,7 +227,7 @@ function str_lreplace($search, $replace, $subject)
                     </li>
                     <?php 
 		}
-		if ($count >= 4)
+		if ($count >= 4) 
 			break;
 	}
 ?>

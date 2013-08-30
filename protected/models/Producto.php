@@ -341,9 +341,9 @@ class Producto extends CActiveRecord
 		//	$co = Color::model()->findByPk($p->color_id);
 		//}
 		if ($talla == null)
-			$ptc = PrecioTallaColor::model()->findAllByAttributes(array('producto_id'=>$this->id));
+			$ptc = Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$this->id));
 		else
-			$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$talla,'producto_id'=>$this->id));
+			$ptc = Preciotallacolor::model()->findAllByAttributes(array('talla_id'=>$talla,'producto_id'=>$this->id));
 		$datos = array();
 		foreach($ptc as $p)
 		{
@@ -364,7 +364,7 @@ class Producto extends CActiveRecord
 		//foreach ($this->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color))) as $producto){
 		//	$co = Color::model()->findByPk($p->color_id);
 		//}
-$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id));
+$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id));
 		$datos = array();
 		foreach($ptc as $p)
 		{

@@ -1013,7 +1013,7 @@ class ProductoController extends Controller
 		$tallas = array();
 		$imgs = array(); // donde se van a ir las imagenes
 		
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{
@@ -1059,7 +1059,7 @@ class ProductoController extends Controller
 	{
 		$colores = array();
 		
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{
@@ -1230,7 +1230,7 @@ class ProductoController extends Controller
 		$imag="";
 		$cont=0;
 		
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{
@@ -1276,7 +1276,7 @@ class ProductoController extends Controller
 	{
 		$div="";
 
-		$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
+		$ptc = Preciotallacolor::model()->findAllByAttributes(array('talla_id'=>$_POST['idColor'],'producto_id'=>$_POST['idProd']));
 		
 		foreach($ptc as $p)
 		{

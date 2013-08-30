@@ -14,7 +14,7 @@
             <div class="span6">
                 <input id="idLook" type="hidden" value="<?php echo $model->id ?>" />
               <h1><?php echo $model->title; ?></h1>
-              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> | Disponible hasta: 18/03/2013 | 100% Disponible</small></p>
+              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> | 100% Disponible</small></p>
             </div>
             <div class="span2 share_like">
               <div class="pull-right">
@@ -31,7 +31,7 @@
                     ?>
 
                         <button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
-                            <span id="like" class="entypo icon_personaling_big">&hearts;</span>
+                            <span id="like" class="entypo icon_personaling_big">&hearts; </span>  <small class='btn-mini' > Me encanta </small> 
                         </button>
                        <?php
 
@@ -40,14 +40,14 @@
                     if($entro==0) // no le ha dado like
                     {
                         echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
-                           <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
+                           <span id='like' class='entypo icon_personaling_big'>&#9825;</span> <small class='btn-mini' > Me encanta </small>
                            </button>";
                     }
 
                    ?>
 
                 <div class="btn-group">
-                  <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class=""><!-- &#59157; -->Compartir</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                     <!-- AddThis Button BEGIN -->
 

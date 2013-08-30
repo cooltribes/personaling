@@ -111,7 +111,7 @@
 
       </div>
 
-       <div  class="btn btn-block btn-warning padding_xsmall span6 offset3"> <a class="color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks</a>
+       <div  class="btn btn-block btn-morado-tiffany transition_all padding_xsmall span6 offset3"> <a class="color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks</a>
 
 
       </div>

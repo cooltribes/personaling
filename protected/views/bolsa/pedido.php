@@ -191,7 +191,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						{
 							array_push($vacio,$cadalook);
 							
-							$tod = PrecioTallaColor::model()->findByPk($cadauno->preciotallacolor_id);
+							$tod = Preciotallacolor::model()->findByPk($cadauno->preciotallacolor_id);
 							$talla = Talla::model()->findByPk($tod->talla_id);
 							$color = Color::model()->findByPk($tod->color_id);
 							
@@ -298,7 +298,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 				
 				if($individual->look_id==0){
 				
-				$todo = PrecioTallaColor::model()->findByPk($individual->preciotallacolor_id);
+				$todo = Preciotallacolor::model()->findByPk($individual->preciotallacolor_id);
 						
 				$producto = Producto::model()->findByPk($todo->producto_id);
 				$talla = Talla::model()->findByPk($todo->talla_id);

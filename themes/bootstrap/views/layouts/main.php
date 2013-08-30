@@ -307,7 +307,7 @@ if(!Yii::app()->user->isGuest){
                 break;
               }
 
-                $todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);                
+                $todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);                
                 $producto = Producto::model()->findByPk($todo->producto_id);
                 $talla = Talla::model()->findByPk($todo->talla_id);
                 $color = Color::model()->findByPk($todo->color_id);                  

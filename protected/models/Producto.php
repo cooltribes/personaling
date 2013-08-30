@@ -69,7 +69,7 @@ class Producto extends CActiveRecord
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
 			array('nombre, codigo, marca_id, descripcion, peso', 'required'),
-			//array('proveedor', 'length', 'max'=>45),
+			//array('proveedor', 'length', 'max'=>45), 
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso', 'safe'),

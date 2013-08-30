@@ -64,17 +64,19 @@ class ProfileController extends Controller
 	{	
             $result = array();
             
-            if(isset($_POST['User']['emails']) ){ //&& isset($_POST['invite-message'])){
+            if(isset($_POST['User']['emailList']) ){ //&& isset($_POST['invite-message'])){
                 
-                $emails = $_POST['User']['emails'];                
+                $emails = $_POST['User']['emailList'];                
                 $textoMensaje = isset($_POST['invite-message'])? $_POST['invite-message'] : "";
                 
                 $model = $this->loadUser();  
                 
+                //Cada email de la lista de invitados
                 foreach ($emails as $email) {
                     
-                    //$requestId = UserModule::encrypting($email.$id);
-                    $registration_url = $this->createAbsoluteUrl('/user/registration', array("requestId" => 'RI', "email" => 'mail'));
+                    $requestId = UserModule::encrypting($email.$model->id);
+                    
+                    $registration_url = $this->createAbsoluteUrl('/user/registration', array("email" => $email, "requestId" => $requestId));
                     
                     $message = new YiiMailMessage;
                     $message->view = "mail_invite";
@@ -90,29 +92,42 @@ class ProfileController extends Controller
 
                     $message->addTo($email);
 
-
                     $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                     Yii::app()->mail->send($message);   
                     
-                    //$result['emails'][] = $email;
-                                       
+                    //Guardar la invitacion en BD
+                    $invitation = EmailInvite::model()->findByAttributes(array('user_id'=>$model->id, 'request_id'=>$requestId));                                       
+                    
+                    if(!$invitation){
+                        $invitation = new EmailInvite();
+                        $invitation->user_id = $model->id;
+                        $invitation->email_invitado = $email;                    
+                        $invitation->request_id = $requestId;
+                        $invitation->fecha = date('Y-m-d H:i:s');
+//                        if(isset($_POST['nombre'])){
+//                            $invite->nombre_invitado = $_POST['nombre'];
+//                        }                       
+                                            
+                    }else{
+                        $invitation->fecha = date('Y-m-d H:i:s');
+                        $invitation->save();
+                    }
+//                    print_r($invitation->getErrors());
+//                    echo "<pre>";
+//                    print_r($invitation->attributes);
+//                    echo "</pre><br>";
                 }
                 
                 $result['status'] = 'success';
                 $result['redirect'] = $this->createUrl('profile/micuenta');
-                
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('success', '¡Se ha enviado tu invitación!');
                 
             }else{
                $result['status'] = 'error';
                $result['message'] = 'Debes ingresar al menos una dirección email';
             }
-            
-//            echo "<pre>";
-//            print_r($_POST);
-//            echo "</pre><br>";
-//            exit();
-            
-            //echo function_exists('json_encode') ? json_encode($_POST) : CJSON::encode($_POST);                
+          
             echo function_exists('json_encode') ? json_encode($result) : CJSON::encode($result);                
             Yii::app()->end();       
                 
@@ -120,11 +135,12 @@ class ProfileController extends Controller
 	
 	public function actionProfile()
 	{
-		$model = $this->loadUser();
-	    $this->render('profile',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
+//		$model = $this->loadUser();
+//	    $this->render('perfil_user',array(//$this->render('profile',array(
+//	    	'model'=>$model,
+//			'profile'=>$model->profile,
+//	    ));
+            $this->actionPerfil();
 	}
 /** 
  * Configuracion de Privacidad 
@@ -159,8 +175,14 @@ class ProfileController extends Controller
 	 * */
 	public function actionPerfil()
 	{
-		$model = User::model()->findByPk($_GET['id']);
-		
+            if(!isset($_GET['id'])){
+              $id = Yii::app()->user->id;                        
+            }else{
+              $id = $_GET['id'];  
+            }
+            
+            $model = User::model()->findByPk($id);
+                
 		if($model->personal_shopper == 1){
 		
 			//$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					

@@ -136,7 +136,7 @@ CSS;
 			$htmlCode = <<<HTML
 				<div id="{$this->container}">
 					<div id="{$this->container}Content"></div>
-					<input type="text" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
+					<input type="text" placeholder="correoelectronico@cuenta.com" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
 				</div>
 HTML;
 			echo $htmlCode;

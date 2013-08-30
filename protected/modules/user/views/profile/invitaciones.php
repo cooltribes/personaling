@@ -102,13 +102,7 @@ $create_date = date('j M Y', $create_time);
                     <fieldset>
                         <legend >O invítal@s por correo electrónico: </legend>
                         <div class="row">
-                        <div class="span5">
-                            <div class="control-group">
-                                <label class="control-label required">Ingresa los emails de tus amig@s: </label>
-                                <div class="controls">
-                                    <input type="text" value="nelson@nelson.com" maxlength="128" id="RegistrationForm_email" placeholder="correoelectronico@cuenta.com" name="RegistrationForm[email]" class="span5">
-                                </div>
-                            </div>
+                        <div class="span5">                            
                             <div class="control-group">
                                 <label class="control-label required">Ingresa los emails de tus amig@s: </label>
                                 <div class="controls">
@@ -116,8 +110,8 @@ $create_date = date('j M Y', $create_time);
                                     $this->widget('application.extensions.BulkMail.BulkMail',
                                             array(
                                                 'model' => $model,
-                                                'field' => 'emails',
-                                                'form' => $form,
+                                                'field' => 'emailList',
+                                                'form' => $form,                                                
                                             )
                                     );
                                     ?>
@@ -330,13 +324,15 @@ $create_date = date('j M Y', $create_time);
             data: $('#emailInvite-form').serialize(),
             success: function(data){
                 console.log(data);
-            },
-            beforeSend: function(){
+                if(data.status === "success"){                    
+                    window.location = data.redirect;
+                }
                 
+            },
+            beforeSend: function(){                
                 var result = true;
                 
-                var emails = $('input[type=hidden]').filter('[name*="emails"]');
-                
+                var emails = $('input[type=hidden]').filter('[name*="emailList"]');                
                 //si no hay emails
                 if(!emails.size()){
                  $('#emailInvite-form_bulkEmailList').parent().parent().addClass('error');
@@ -357,7 +353,7 @@ $create_date = date('j M Y', $create_time);
             },
             error: function(jqXHR, textStatus, error){
                 console.log("Error: \n");
-                console.log(jqXHR);
+                console.log(jqXHR.responseText);
             }
             });
     });

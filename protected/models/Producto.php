@@ -69,7 +69,7 @@ class Producto extends CActiveRecord
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
 			array('nombre, codigo, marca_id, descripcion, peso', 'required'),
-			//array('proveedor', 'length', 'max'=>45),
+			//array('proveedor', 'length', 'max'=>45), 
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso', 'safe'),
@@ -341,9 +341,9 @@ class Producto extends CActiveRecord
 		//	$co = Color::model()->findByPk($p->color_id);
 		//}
 		if ($talla == null)
-			$ptc = PrecioTallaColor::model()->findAllByAttributes(array('producto_id'=>$this->id));
+			$ptc = Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$this->id));
 		else
-			$ptc = PrecioTallaColor::model()->findAllByAttributes(array('talla_id'=>$talla,'producto_id'=>$this->id));
+			$ptc = Preciotallacolor::model()->findAllByAttributes(array('talla_id'=>$talla,'producto_id'=>$this->id));
 		$datos = array();
 		foreach($ptc as $p)
 		{
@@ -364,7 +364,7 @@ class Producto extends CActiveRecord
 		//foreach ($this->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color))) as $producto){
 		//	$co = Color::model()->findByPk($p->color_id);
 		//}
-$ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id));
+$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id));
 		$datos = array();
 		foreach($ptc as $p)
 		{
@@ -559,7 +559,7 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 	 {
 			
 		//$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
-		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id where tbl_imagen.orden = 1 GROUP BY producto_id ORDER by productos DESC";
+		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id where tbl_imagen.orden = 1 GROUP BY producto_id ORDER by productos DESC";
 		//if (isset($limit))
 		//	$sql.=" LIMIT 0,$limit";
 		//$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";

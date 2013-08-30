@@ -157,7 +157,7 @@ if(!Yii::app()->user->isGuest){
 	
 	if($user->status == 0){
 		?>
-		<div id="notificacion_validar" class="alert alert-error text_align_center">
+		<div id="notificacion_validar" class="alert-block alert-error text_align_center">
 			Tu cuenta no ha sido validada. 
 			<?php
 			echo CHtml::ajaxLink(

@@ -33,6 +33,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 		  	foreach ($bolsa->looks() as $look_id){
 		  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
 				$look = Look::model()->findByPk($look_id);
+				if(isset($look)){
 				$total_look++;
 				
 				 
@@ -98,7 +99,8 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
             <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
           </div>
           <!-- Look OFF -->
-          <?	 
+          <?
+          }	 
 			}
 		  }
 

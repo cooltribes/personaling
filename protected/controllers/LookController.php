@@ -46,7 +46,8 @@ class LookController extends Controller
 	public function actionSoftDelete($id)
 	{
 		$model = Look::model()->findByPk($id);
-		$model->softDelete();
+		if ($model->status!=Look::STATUS_APROBADO)
+			$model->softDelete();
 		$this->redirect(array('look/admin'));
 	}
 	public function actionUpdatePrice()

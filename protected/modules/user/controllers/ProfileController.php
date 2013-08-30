@@ -506,7 +506,7 @@ class ProfileController extends Controller
 		$profile=$model->profile;
 		$profile->profile_type = 2;
 		//$profile=new Profile;
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-registro-form')
 		{
 			echo CActiveForm::validate($profile);
 			Yii::app()->end();
@@ -528,7 +528,7 @@ class ProfileController extends Controller
 				}
 			}
 		}	
-	    $this->render('tuestilo',array(
+	    $this->render('tuestilo_registro',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
 	    ));

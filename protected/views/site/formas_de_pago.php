@@ -3,7 +3,7 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Formas de Pago';
 $this->breadcrumbs=array(
 	'Formas de pago',
 );

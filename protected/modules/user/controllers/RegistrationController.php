@@ -97,7 +97,7 @@ class RegistrationController extends Controller
                             $profile->save();
                             //if (Yii::app()->controller->module->sendActivationMail) {
 
-                            if (isset($_POST['facebook_id'])) { // de facebook hay que enviar la clave
+                            if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // de facebook hay que enviar la clave
                                 $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
 
                                 $message = new YiiMailMessage;
@@ -121,7 +121,9 @@ class RegistrationController extends Controller
                                 $message = new YiiMailMessage;
                                 $message->view = "mail_template";
                                 $subject = 'Registro Personaling';
-                                $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> ' . $activation_url;
+                                $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling.
+                                			Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
+                                			<a href="' . $activation_url.'"> Haz click aquí </a>';
                                 $params = array('subject' => $subject, 'body' => $body);
                                 $message->subject = $subject;
                                 $message->setBody($params, 'text/html');

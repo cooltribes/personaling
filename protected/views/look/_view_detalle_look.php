@@ -94,7 +94,9 @@
 			'url' => CController::createUrl('look/view',array('id'=>$model->id)),
 			'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
-		)); ?>
+		));
+		
+		 ?>
     	
     	
     	<!-- <a href="" title="ver" class="btn btn-info" target="_blank"><i class="icon-eye-open icon-white"></i> Ver</a> -->

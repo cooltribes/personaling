@@ -399,25 +399,40 @@ class TiendaController extends Controller
 			}
 		}
 		
-		
+		$contador = 0;
 		
 		// tengo los looks. Ahora a generar lo que voy a devolver para que genere las imagenes.
 		
 		$ret = array();
 		$base = Yii::app()->baseUrl;
 
-		if($l1 != "")
+		if($l1 != ""){
 			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
-		else if($l3 != "")
+			array_push($ret,"<br><br>");
+			$contador++;
+		}
+		
+		if($l3 != ""){
 			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l3->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l3->id.'" src="'.$base.'/look/getImage/'.$l3->id.'" alt="Look"></a>');
+			array_push($ret,"<br><br>");
+			$contador++;
+		}
 		
-	
-		array_push($ret,"<br><br>");
+		if($l2 != ""){
+			if($contador < 2){
+				array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
+				array_push($ret,"<br><br>");
+				$contador++;
+			}	
+		}
 		
-		if($l2 != "")
-			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
-		else if($l4 != "")
-			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l4->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l4->id.'" src="'.$base.'/look/getImage/'.$l4->id.'" alt="Look"></a>');
+		if($l4 != ""){
+			if($contador < 2){
+				array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l4->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l4->id.'" src="'.$base.'/look/getImage/'.$l4->id.'" alt="Look"></a>');
+				array_push($ret,"<br><br>");
+				$contador++;
+			}
+		}
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',

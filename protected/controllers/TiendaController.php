@@ -53,12 +53,15 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
-		
+		if(isset(Yii::app()->session['idColor'])){
+			unset(Yii::app()->session['idColor']);
+			
+		}
 		$a ="a"; 
 		
 		$dataProvider = $producto->nueva($a);
-		$this->render('index',
-		array('index'=>$producto,
+		$this->render('doble',
+		array('doble'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
 			
@@ -161,6 +164,42 @@ class TiendaController extends Controller
 		));	
 			
 	}
+	
+	
+	public function actionColores2()
+	{
+		
+		$producto = new Producto;
+		$producto->status = 1; // que no haya sido borrado logicamente
+		$producto->estado = 0; // que no esté inactivo
+	
+		$color="";
+		
+		if(isset($_POST['idColor'])) // llega como parametro el id del color presionado
+		{
+			Yii::app()->session['idColor']=$_POST['idColor'];	
+		}		
+			
+			
+		if(isset(Yii::app()->session['idColor'])) // llega como parametro el id del color presionado
+		{
+			$color = explode('#',Yii::app()->session['idColor']);
+			
+			unset($color[0]);	
+		}	
+		
+		
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
+	
+		$dataProvider = $producto->multipleColor($color);
+		$this->render('doble',
+		array('doble'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	
+			
+	}
+	
+	
 	
 
 	public function getAllChildren($models){
@@ -552,7 +591,7 @@ class TiendaController extends Controller
             $cont1 = 0;
               	
 			// revisando cuantos colores distintos hay
-			foreach ($producto->preciotallacolor as $talCol){ 
+			foreach ($producto->Preciotallacolor as $talCol){ 
 				if($talCol->cantidad > 0){
 					$color = Color::model()->findByPk($talCol->color_id);
 					
@@ -570,7 +609,7 @@ class TiendaController extends Controller
 				$datos=$datos. "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
 			}
 			else{
-				foreach ($producto->preciotallacolor as $talCol) {
+				foreach ($producto->Preciotallacolor as $talCol) {
 		        	if($talCol->cantidad > 0){ // que haya disp
 						$color = Color::model()->findByPk($talCol->color_id);		
 								
@@ -597,7 +636,7 @@ class TiendaController extends Controller
         $cont2 = 0;
               	
 		// revisando cuantas tallas distintas hay
-		foreach ($producto->preciotallacolor as $talCol){ 
+		foreach ($producto->Preciotallacolor as $talCol){ 
 			if($talCol->cantidad > 0){
 				$talla = Talla::model()->findByPk($talCol->talla_id);
 						

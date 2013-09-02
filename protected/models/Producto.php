@@ -482,6 +482,63 @@ $ptc = PrecioTallaColor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 	}
 	
+		public function multipleColor($idColor)
+	{
+		// llega un array de ID de color
+		
+		$colores="";
+		$i=0;
+		$criteria=new CDbCriteria;
+
+        $criteria->select = 't.*';
+        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
+        $criteria->addCondition('t.estado = 0');
+		$criteria->addCondition('t.status = 1');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+
+	if(is_array($idColor)){
+		foreach($idColor as $col){
+			if($i==0)
+				$colores.='(tbl_precioTallaColor.color_id = '.$col.' ';
+			
+			if($i>0 && $i<count($idColor)-1)
+				$colores.='OR tbl_precioTallaColor.color_id = '.$col.' ';
+			
+			if($i==count($idColor)-1)
+				$colores.='OR tbl_precioTallaColor.color_id = '.$col.' )';
+			
+			if(count($idColor)==1)
+				$colores='tbl_precioTallaColor.color_id = '.$col;
+			
+			$i++;
+					
+		}
+		$criteria->addCondition($colores);
+	}
+	else {
+		print_r($idColor);
+	}
+		
+			
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+		$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
+		
+		$criteria->group = 't.id';
+
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
+	}
+	
+	
+	
+	
 		
 	public function ProductosLook($personal)
 	{

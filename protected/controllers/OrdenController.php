@@ -95,10 +95,12 @@ class OrdenController extends Controller
                 $criteria->order = 'fecha DESC';
                 $dataProvider->setCriteria($criteria);
                 
+                $filter = new Filter;
 		
 		$this->render('admin',
 		array('orden'=>$orden,
 		'dataProvider'=>$dataProvider,
+                    'filter' => $filter,
 		));
 
 	}

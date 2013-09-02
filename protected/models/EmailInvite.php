@@ -1,22 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "{{bolsa_has_productotallacolor}}".
+ * This is the model class for table "{{email_invite}}".
  *
- * The followings are the available columns in table '{{bolsa_has_productotallacolor}}':
- * @property integer $bolsa_id
- * @property integer $preciotallacolor_id
- * @property integer $cantidad
+ * The followings are the available columns in table '{{email_invite}}':
+ * @property integer $id
+ * @property integer $user_id
+ * @property string $email_invitado
+ * @property string $request_id
+ * @property string $nombre_invitado
+ * @property string $fecha
+ * @property integer $estado
  *
  * The followings are the available model relations:
- * @property PrecioTallaColor $preciotallacolor
+ * @property Users $user
  */
-class BolsaHasProductotallacolor extends CActiveRecord
+class EmailInvite extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return BolsaHasProductotallacolor the static model class
+	 * @return EmailInvite the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -28,7 +32,7 @@ class BolsaHasProductotallacolor extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{bolsa_has_productotallacolor}}';
+		return '{{email_invite}}';
 	}
 
 	/**
@@ -39,11 +43,13 @@ class BolsaHasProductotallacolor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bolsa_id, preciotallacolor_id', 'required'),
-			array('bolsa_id, preciotallacolor_id, cantidad', 'numerical', 'integerOnly'=>true),
+			array('user_id, email_invitado, request_id, fecha', 'required'),
+			array('user_id, estado', 'numerical', 'integerOnly'=>true),
+			array('email_invitado, request_id', 'length', 'max'=>128),
+			array('nombre_invitado', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('bolsa_id, preciotallacolor_id, cantidad', 'safe', 'on'=>'search'),
+			array('id, user_id, email_invitado, request_id, nombre_invitado, fecha, estado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,8 +61,7 @@ class BolsaHasProductotallacolor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'preciotallacolor' => array(self::BELONGS_TO, 'Preciotallacolor', 'preciotallacolor_id'),
-			//'color' => array(self::BELONGS_TO, 'Color', array('color_id'=>'id'),'through'=>'preciotallacolor'),
+			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
 	}
 
@@ -66,9 +71,13 @@ class BolsaHasProductotallacolor extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'bolsa_id' => 'Bolsa',
-			'preciotallacolor_id' => 'Preciotallacolor',
-			'cantidad' => 'Cantidad',
+			'id' => 'ID',
+			'user_id' => 'User',
+			'email_invitado' => 'Email Invitado',
+			'request_id' => 'Request',
+			'nombre_invitado' => 'Nombre Invitado',
+			'fecha' => 'Fecha',
+			'estado' => 'Estado',
 		);
 	}
 
@@ -83,9 +92,13 @@ class BolsaHasProductotallacolor extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('bolsa_id',$this->bolsa_id);
-		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
-		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('id',$this->id);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('email_invitado',$this->email_invitado,true);
+		$criteria->compare('request_id',$this->request_id,true);
+		$criteria->compare('nombre_invitado',$this->nombre_invitado,true);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

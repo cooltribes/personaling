@@ -46,7 +46,8 @@ class LookController extends Controller
 	public function actionSoftDelete($id)
 	{
 		$model = Look::model()->findByPk($id);
-		$model->softDelete();
+		if ($model->status!=Look::STATUS_APROBADO)
+			$model->softDelete();
 		$this->redirect(array('look/admin'));
 	}
 	public function actionUpdatePrice()
@@ -125,6 +126,19 @@ class LookController extends Controller
 	{ 
 		$filename = Yii::getPathOfAlias('webroot').'/images/look/'.$id.'.png'; 	   
 		if (file_exists($filename)) {
+			//session_start(); 
+			header("Cache-Control: private, max-age=10800, pre-check=10800");
+			header("Pragma: private");
+			header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));	
+					if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) 
+					       && 
+					  (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == filemtime($filename))) {
+					  // send the last mod time of the file back
+					  header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($filename)).' GMT', 
+					  true, 304);
+					  exit;
+					}
+					  
 			 $w = 710;
 			 if (isset($_GET['w']))
 			 	$w = $_GET['w'];
@@ -144,8 +158,12 @@ class LookController extends Controller
 			 $image_p = imagecreatetruecolor($w, $h);
 			$src = imagecreatefrompng($filename);
 			imagecopyresampled( $image_p, $src, 0, 0, 0, 0, $w, $h, 710, 710);
-			header('Content-Type: image/png'); 
-			header('Cache-Control: max-age=86400, public');
+			//header('Pragma: public');
+			//header('Cache-Control: max-age=86400');
+			//header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
+			//header('Content-Type: image/jpeg'); 
+header("Content-type: image/jpeg");
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT');
 			imagejpeg($image_p, null, 100);
 			//readfile($filename);
 			//imagepng($src,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen

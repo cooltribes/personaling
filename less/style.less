@@ -810,7 +810,21 @@ src: url('../fonts/entypo.woff'),
 
 }
 
-#notificacion_validar{ margin-top: 4em}
+#notificacion_validar{
+  background-color: @color1;
+  color: white;
+  margin-top: 4em;
+  position: fixed;
+  top: 3px;
+  width: 100%;
+  z-index: 100;
+  a{ 
+    color: #FAE441;
+  }
+  strong{
+    color: white;
+  }
+}
 /*------------ HEADER OFF --------------*/
 
 /*------------ Footer OFF --------------*/
@@ -1153,12 +1167,22 @@ src: url('../fonts/entypo.woff'),
     .share_like{
             margin-top:1.7em;
             .btn-link{
-                height:50px;
+                height:60px;
                 margin-top:-30px;
                             .icon_personaling_big{
                                 height:50px;
                             }
             }
+           #meEncanta{
+                span{
+                  display: block;
+                  margin-top: 12px;
+                }
+                small{
+                  display: block;
+                  margin-top: -22px;
+                }
+            }            
             .btn-link-active .entypo{color:@color1 !important;}
     }
     .imagen_principal{
@@ -1279,6 +1303,8 @@ src: url('../fonts/entypo.woff'),
 
 /*------------- Proceso de Compra OFF -------------*/
 
+
+
 /*------------ Mensajes/Notificaciones ON --------------*/
 .sidebar_list_mensajes{
     overflow-x: visible;
@@ -1313,12 +1339,22 @@ src: url('../fonts/entypo.woff'),
     .share_like{
             margin-top:3.3em;
             .btn-link{
-                height:50px;
+                height:60px;
                 margin-top:-30px;
 
                         .icon_personaling_big{ height:50px;}
                 }
             .btn-link-active .entypo{color:@color1 !important;}
+            #meEncanta{
+                span{
+                  display: block;
+                  margin-top: 12px;
+                }
+                small{
+                  display: block;
+                  margin-top: -22px;
+                }
+            }
 
         }
     .columna_principal{
@@ -2292,7 +2328,12 @@ img[alt="Loading"]{
     /*-------------------------------
      PROVSIONAL DEL CARROUSEL PARA REMOVER CUANDO TERMINEN EL VIDEO
      ------------------------ */
-
+.btn-morado-tiffany{
+  background: #6C1B4F;
+}
+.btn-morado-tiffany:hover{
+  background: #18AF91;
+}
 /*------------ TU PERSONAL SHOPPER ON ----------*/
 
 
@@ -2574,6 +2615,66 @@ img[alt="Loading"]{
 
 /*---------------- ESTATICAS OFF ------------*/
 
+/*------------- Escoge tu estilo registro ON -------------*/
+#tuestilo-registro-form{
+    .tab_uno  a,.tab_dos  a,.tab_tres  a,.tab_cuatro  a,.tab_cinco  a{
+      background-color: white;
+      border: 0; // poner eso en uno general
+      height: 19px;
+      margin: 0;
+      width: 95px;        
+    }
+    .tab_uno  a {
+      background: url(../images/1_M.png) no-repeat;
+    }
+    .tab_dos  a {
+      background: url(../images/2_M.png) no-repeat;
+    }
+    .tab_tres  a {
+      background: url(../images/3_M.png) no-repeat;
+    }
+    .tab_cuatro  a {
+      background: url(../images/4_M.png) no-repeat;
+    }
+    .tab_cinco  a {
+      background: url(../images/5_M.png) no-repeat;
+    }  
+
+    .tab_falta.tab_uno  a {
+      background: url(../images/1M.png) no-repeat;
+    }
+    .tab_falta.tab_dos  a {
+      background: url(../images/2_S_M.png) no-repeat;
+    }
+    .tab_falta.tab_tres  a {
+      background: url(../images/3_S_M.png) no-repeat;
+    }
+    .tab_falta.tab_cuatro  a {
+      background: url(../images/4_S_M.png) no-repeat;
+    }
+    .tab_falta.tab_cinco  a {
+      background: url(../images/5_S_M.png) no-repeat;
+    }
+
+    .tab_uno.active  a {
+      background: url(../images/1_M_L.png) no-repeat;
+    } 
+    .tab_dos.active  a {
+      background: url(../images/2_M_L.png) no-repeat;
+    }    
+    .tab_tres.active  a {
+      background: url(../images/3_M_L.png) no-repeat;
+    } 
+    .tab_cuatro.active  a {
+      background: url(../images/4_M_L.png) no-repeat;
+    } 
+    .tab_cinco.active  a {
+      background: url(../images/5_M_L.png) no-repeat;
+    }             
+}
+
+
+/*------------- Escoge tu estilo registro OFF -------------*/
 
 
 

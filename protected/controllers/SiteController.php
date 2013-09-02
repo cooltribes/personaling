@@ -256,6 +256,13 @@ class SiteController extends Controller
 	{
 		
 		$mensaje = Mensaje::model()->findByPk($_POST['msj_id']);
+		
+		if($mensaje->estado == 0) // no se ha leido
+		{
+			$mensaje->estado = 1;
+			$mensaje-save();
+		}
+		
 		$div = "";
 		
 		$div = $div.'<div class="padding_medium bg_color3 ">';

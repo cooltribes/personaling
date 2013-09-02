@@ -1,4 +1,5 @@
   <?php /* @var $this Controller */ ?>
+  <?php //date_default_timezone_set('America/Los_Angeles'); ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -156,7 +157,7 @@ if(!Yii::app()->user->isGuest){
 	
 	if($user->status == 0){
 		?>
-		<div id="notificacion_validar" class="alert alert-error text_align_center">
+		<div id="notificacion_validar" class="alert-block alert-error text_align_center">
 			Tu cuenta no ha sido validada. 
 			<?php
 			echo CHtml::ajaxLink(
@@ -263,25 +264,27 @@ if(!Yii::app()->user->isGuest){
 
               $bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
               $look = Look::model()->findByPk($look_id);
-              echo '<li>';
-              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
-              echo '<div class="row-fluid">';
-
-              //invertir array para mostrar en orden cronológico de compras
-
-              foreach ($bolsahasproductotallacolor as $productotallacolor) {
-                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
-                  $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
-                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-                  if($imagen){
-                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
-                      echo '<div class="span2">'.$htmlimage.'</div>';
-                  }
+			  if (isset($look)){
+	              echo '<li>';
+	              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
+	              echo '<div class="row-fluid">';
+	
+	              //invertir array para mostrar en orden cronológico de compras
+	
+	              foreach ($bolsahasproductotallacolor as $productotallacolor) {
+	                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
+	                  $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+	                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+	                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+	                  if($imagen){
+	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
+	                      echo '<div class="span2">'.$htmlimage.'</div>';
+	                  }
+	              }
+	              echo '</div>';
+	              echo "</li>";
+	              $contadorItems ++;
               }
-              echo '</div>';
-              echo "</li>";
-              $contadorItems ++;
           }
           if($cantidadProductosIndiv!=0){
               echo "';";
@@ -304,7 +307,7 @@ if(!Yii::app()->user->isGuest){
                 break;
               }
 
-                $todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);                
+                $todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);                
                 $producto = Producto::model()->findByPk($todo->producto_id);
                 $talla = Talla::model()->findByPk($todo->talla_id);
                 $color = Color::model()->findByPk($todo->color_id);                  
@@ -435,7 +438,7 @@ if(!Yii::app()->user->isGuest){
       </div>
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
-        <p class="lead">Personaling, es un personal shopper digital, un portal de moda y belleza en donde las usuarias se dan de alta, definen su perfil físico y sus preferencias de estilo para descubrir looks recomendados por expert@s en moda (personal shoppers, celebrities, estilistas, fashionistas), podrán comprar el look completo en un click y recibirlo en su domicilio</p>
+        <p class="lead">Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.</p>
         <img class="margin_top_medium_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
       </div>
       <div class="span3 offset1 ">

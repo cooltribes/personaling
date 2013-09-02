@@ -147,7 +147,7 @@ class Bolsa extends CActiveRecord
 	{
 		
 			$carrito = $this;
-			$ptcolor = PrecioTallaColor::model()->findByAttributes(array('producto_id'=>$producto_id,'talla_id'=>$talla_id,'color_id'=>$color_id));
+			$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$producto_id,'talla_id'=>$talla_id,'color_id'=>$color_id));
 			
 			//revisar si está o no en el carrito
 			

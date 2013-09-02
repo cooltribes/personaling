@@ -258,8 +258,8 @@ class User extends CActiveRecord
 	   return parent::beforeValidate();
 	}
         
-    public function getStatus($key = null) {
-        
+    public static function getStatus($key = null) {
+         
         if($key !== null)        
             return self::$statuses[$key];
             
@@ -268,7 +268,7 @@ class User extends CActiveRecord
         
     }
     
-    public function getMonthsArray()
+    public static function getMonthsArray()
     {
         
          $months['01'] = "Enero";
@@ -278,7 +278,7 @@ class User extends CActiveRecord
 		 $months['05'] = "Mayo";
 		 $months['06'] = "Junio";
 		 $months['07'] = "Julio";
-		 $months['08'] = "Agosto";
+		 $months['08'] = "Agosto"; 
 		 $months['09'] = "Septiembre";
 		 $months['10'] = "Octubre";
 		 $months['11'] = "Noviembre";
@@ -288,7 +288,7 @@ class User extends CActiveRecord
         return array(0 => 'Mes:') + $months;
     }
 
-     public function getDaysArray()
+     public static function getDaysArray()
     {
 		$days['01'] = '01';
 		$days['02'] = '02';
@@ -306,7 +306,7 @@ class User extends CActiveRecord
         return array(0 => 'Dia:') + $days;
     }
 
-     public function getYearsArray()
+     public static  function getYearsArray()
     {
         $thisYear = date('Y', time());
 

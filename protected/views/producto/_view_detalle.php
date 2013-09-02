@@ -42,7 +42,7 @@
 					$entro=1;
 					?>
 						<button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
-               				<span id="like" class="entypo icon_personaling_big">&hearts;</span>
+               				<span id="like" class="entypo icon_personaling_big">&hearts;</span> <small class='btn-mini' > Me encanta </small>
                			</button>
                		<?php	
 					
@@ -51,14 +51,14 @@
 					if($entro==0)
 					{
 						echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
-               			<span id='like' class='entypo icon_personaling_big'>&#9825;</span>
+               			<span id='like' class='entypo icon_personaling_big'>&#9825;</span><small class='btn-mini' > Me encanta </small>
                			</button>";
 					}
 
                	?>
                	
                 <div class="btn-group hidden-phone">
-                  <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class=""><!-- &#59157; -->Compartir</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                     <!-- AddThis Button BEGIN -->
                     

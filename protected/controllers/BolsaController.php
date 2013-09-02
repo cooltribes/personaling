@@ -82,14 +82,14 @@ class BolsaController extends Controller
 			$bolsa->save();
 		}
 		if (isset($_POST['look_id'])){
-			foreach($_POST['producto'] as $key => $value){
-				list($producto_id,$color_id) = split("_",$value);
+			foreach($_POST['producto'] as $key => $value){ 
+				list($producto_id,$color_id) = explode("_",$value);
 				echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 			}
 		} else {
 			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
 		}
-		 /*	
+		 /*	 
 		$usuario = Yii::app()->user->id;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 		
@@ -181,7 +181,7 @@ class BolsaController extends Controller
 		
 			$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
 			
-			$pr = PrecioTallaColor::model()->findByPk($_POST['prtc']);
+			$pr = Preciotallacolor::model()->findByPk($_POST['prtc']);
 			
 			$mientras = $pr->cantidad;
 			if(($mientras - $_POST['cantidad']) < 0){
@@ -327,10 +327,10 @@ class BolsaController extends Controller
 								//descontando del inventario
 								foreach($productosBolsa as $prod)
 								{
-									$uno = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id);
+									$uno = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id);
 									$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
 									
-									PrecioTallaColor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+									Preciotallacolor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
 									// descuenta y se repite									
 								}
 								
@@ -849,7 +849,7 @@ class BolsaController extends Controller
 									$prorden->cantidad = $prod->cantidad;
 									$prorden->look_id = $prod->look_id;
 									
-									$prtc = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
+									$prtc = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
 									$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
 									
 									if($prod->look_id == 0){ // no es look
@@ -868,10 +868,10 @@ class BolsaController extends Controller
 								//descontando del inventario
 								foreach($productosBolsa as $prod)
 								{
-									$uno = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id);
+									$uno = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id);
 									$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
 									
-									PrecioTallaColor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+									Preciotallacolor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
 									// descuenta y se repite									
 								}
 								

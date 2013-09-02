@@ -504,7 +504,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($prod->look_id != 0) // si es look
 				{
-					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+					$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 					
 					$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
 					$precio = $lookpedido->getPrecio(false);
@@ -546,7 +546,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				}
 				else // individual
 				{
-					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+					$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 					$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
 					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
 					

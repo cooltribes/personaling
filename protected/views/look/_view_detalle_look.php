@@ -71,7 +71,7 @@
     	
     	
     <?php $this->widget('bootstrap.widgets.TbButton', array(
-			'label'=>'Elimiar',
+			'label'=>'Eliminar',
 			'icon'=>'trash',
 			'url' => CController::createUrl('look/softDelete',array('id'=>$model->id)),
 		

@@ -563,6 +563,17 @@ class Look extends CActiveRecord
 
 			$i++;
 		 }	
+		 
+		  $imagenes[$i] = new stdClass();
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
+					$imagenes[$i]->top = 0;
+					$imagenes[$i]->left = 630;
+					$imagenes[$i]->width = 70;
+					$imagenes[$i]->height = 70;
+					$imagenes[$i]->angle = 0;
+					$imagenes[$i]->zindex = 1000;
+		 
+		 
 		//Yii::trace('create a image look, Trace:'.print_r($imagenes, true), 'registro');
 		function sortByIndex($a, $b) {
 		    return $a->zindex - $b->zindex;

@@ -111,7 +111,8 @@ $create_date = date('j M Y', $create_time);
                                             array(
                                                 'model' => $model,
                                                 'field' => 'emailList',
-                                                'form' => $form,                                                
+                                                'form' => $form, 
+                                                 'cssEntry' => "background-color: #ad3682; color: white;  display: inline-block;"                                               
                                             )
                                     );
                                     ?>

@@ -2559,13 +2559,39 @@ img[alt="Loading"]{
 
 /* ----------- Estadisticas Administrador OFF --------------*/
 
+/* ----------- Publicar Look Administrador ON --------------*/
+#div_ocasiones{
+    a.active{
+        background-color: #222222;
+    }  
+}
+/* ----------- Publicar Look Administrador OFF --------------*/
 /* ----------- Invitar amigos OFF --------------*/
 
-#emailInvite-form_bulkEmails input[type=text]{
-    background: red;
-    border: 0;
+#emailInvite-form_bulkEmails{
+    border: 1px white solid;
+    
+    box-shadow: 0 0 10px white inset;
+    -moz-box-shadow: 0 0 10px white inset;
+    -o-box-shadow: 0 0 10px white inset;
+    -webkit-box-shadow: 0 0 10px white inset;  
+
+    box-box-sizing: border-box;
+    -moz-box-box-sizing: border-box;
+    -o-box-box-sizing: border-box;
+    -webkit-box-box-sizing: border-box; 
     outline: 0;
+    outline-offset: -2px;
+    &:focus{
+      outline: 0;
+    }
 }
+
+.emailInvite-form_emailEntry{
+  background-color: @color6;
+  
+}
+
 /* ----------- Invitar amigos OFF --------------*/
 
 /*------------ Backend OFF --------------*/

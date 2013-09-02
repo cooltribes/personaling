@@ -95,6 +95,7 @@
 
          $this->widget('bootstrap.widgets.TbButton', array(
                     'buttonType'=>'ajaxButton',
+                    'id'=>'btn-compra'
                     'type'=>'warning',
                     'label'=>'Comprar',
                     'block'=>'true',
@@ -109,6 +110,7 @@
                             'beforeSend' => "function( request )
                                  {
                                    /*
+                                   $('#btn-comprar').attr('disabled', true);
                                    var color_id = '';
                                    $('.colores').each(function(index){
                                            color_id += $(this).val()+',';

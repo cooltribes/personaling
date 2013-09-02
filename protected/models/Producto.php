@@ -485,7 +485,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		public function multipleColor($idColor)
 	{
 		// llega un array de ID de color
-		
+		 
 		$colores="";
 		$i=0;
 		$criteria=new CDbCriteria;
@@ -496,29 +496,36 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->addCondition('t.status = 1');
      //   $criteria->condition = 't.estado = :uno';
 	//	$criteria->condition = 't.status = :dos';
+	
 
+	print_r($idColor);
 	if(is_array($idColor)){
-		foreach($idColor as $col){
-			if($i==0)
-				$colores.='(tbl_precioTallaColor.color_id = '.$col.' ';
+		if(count($idColor)>0){	
 			
-			if($i>0 && $i<count($idColor)-1)
-				$colores.='OR tbl_precioTallaColor.color_id = '.$col.' ';
-			
-			if($i==count($idColor)-1)
-				$colores.='OR tbl_precioTallaColor.color_id = '.$col.' )';
-			
-			if(count($idColor)==1)
-				$colores='tbl_precioTallaColor.color_id = '.$col;
-			
-			$i++;
-					
+			foreach($idColor as $col){
+				if(count($idColor)==1){
+					$colores='tbl_precioTallaColor.color_id = '.$col;	
+					break;			
+				}	
+				
+				if($i==0)
+					$colores.='(tbl_precioTallaColor.color_id = '.$col.' ';
+				
+				if($i>0 && $i<count($idColor)-1)
+					$colores.='OR tbl_precioTallaColor.color_id = '.$col.' ';
+				
+				if($i==count($idColor)-1)
+					$colores.='OR tbl_precioTallaColor.color_id = '.$col.' )';
+				
+				$i++;
+						
+			}
+			$criteria->addCondition($colores);
 		}
-		$criteria->addCondition($colores);
 	}
-	else {
-		print_r($idColor);
-	}
+
+		
+	
 		
 			
 	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';

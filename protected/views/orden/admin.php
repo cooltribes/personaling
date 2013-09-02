@@ -140,6 +140,8 @@ echo $num;
     </div>
   </div>
   <hr/>
+  <?php //$this->renderPartial('_filters', array('users'=>3)); ?>
+  <hr/>
 
   <?php
   

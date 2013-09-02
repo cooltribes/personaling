@@ -211,7 +211,13 @@
 		var axe;
 		$('.color').click(function(){
 			window.idColor.trim();
-			window.idColor = window.idColor+'#'+$(this).attr('id');
+			if(window.idColor.indexOf('#'+$(this).attr('id'))==-1){
+					window.idColor = window.idColor+'#'+$(this).attr('id');				
+			}
+			else{
+				window.idColor = window.idColor.replace('#'+$(this).attr('id'),'');				
+			}
+			alert(window.idColor);
 			clearTimeout(ajaxUpdateTimeout);
 			
 			ajaxUpdateTimeout = setTimeout(function () {

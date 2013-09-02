@@ -1019,7 +1019,8 @@ $('.imagen_principal').zoom({url: imgZ});
  		   
  		if(talla!=undefined && color!=undefined)
  		{
- 			
+    $('#agregar').click(false);
+ 		$('#agregar').attr("disabled", true);
  		$.ajax({
 	        type: "post",
 	        url: "../../bolsa/agregar", // action Tallas de Producto

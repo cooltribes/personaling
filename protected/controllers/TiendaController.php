@@ -770,9 +770,9 @@ class TiendaController extends Controller
  			$datos=$datos.'if(talla!=undefined && color==undefined){'; // falta color
  				$datos=$datos.'alert("Seleccione el color para poder añadir a la bolsa.");';
  			$datos=$datos.'}';
-		
+			
 			$datos=$datos.'if(talla!=undefined && color!=undefined){';
-		
+			$datos=$datos.'$("#agregar").click(function(e){e.preventDefault();});$("#agregar").addClass("disabled"); ';
 				$datos=$datos. CHtml::ajax(array(
 	            	'url'=>array('bolsa/agregar'),
 			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")'),

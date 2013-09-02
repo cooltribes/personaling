@@ -47,7 +47,7 @@
 				BulkMail.saveEditEmailForm = function(divIndex) {
 					var email = $("#{$this->inputFieldEdit}_" + divIndex).val();
 					$("#{$this->entryNameContainer}_" + divIndex).html(
-						email + " [ <a href='javascript:BulkMail.removeMailEntry(" + divIndex + ")'>X</a> ]" + 
+						email + "  <a href='javascript:BulkMail.removeMailEntry(" + divIndex + ")'>&times;</a> " + 
 						"<input type='hidden' value='" + email + "' name='{$this->formName}[{$this->field}][]'>"
 					);
 					window.setTimeout(function() {
@@ -73,7 +73,7 @@
 							this.emailsCount++;
 							$("#{$this->container}Content").append(
 								"<div id='{$this->entryNameContainer}_" + this.emailsCount + "' class='{$this->entryNameContainer}' onClick='BulkMail.showEditEmailForm(" + this.emailsCount + ", \"" + emails[emailIndex] + "\")'>" +    
-									emails[emailIndex] + " [ <a href='javascript:BulkMail.removeMailEntry(" + this.emailsCount + ")'>X</a> ]" + 
+									emails[emailIndex] + "  <a href='javascript:BulkMail.removeMailEntry(" + this.emailsCount + ")'>&times;</a> " + 
 									"<input type='hidden' value='" + emails[emailIndex] + "' name='{$this->formName}[{$this->field}][]'>" +
 								"</div>");
 						}

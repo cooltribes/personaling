@@ -79,13 +79,22 @@ class OrdenController extends Controller
 	public function actionAdmin()
 	{
 		$orden = new Orden;
+                
+                //print_r($_POST);
+                //exit();
 		
 		if (isset($_POST['query']))
 		{
 			$dataProvider = $orden->filtrado($_POST['query']);
 		}
 		else
-			$dataProvider = $orden->search();		
+			$dataProvider = $orden->search();
+                
+                //Ordenar por fecha descendiente
+                $criteria = $dataProvider->getCriteria();
+                $criteria->order = 'fecha DESC';
+                $dataProvider->setCriteria($criteria);
+                
 		
 		$this->render('admin',
 		array('orden'=>$orden,

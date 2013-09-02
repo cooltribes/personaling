@@ -117,19 +117,15 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
               <th class="text_align_left">Descuento:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
             </tr>
-            <?php } ?> 
+            <?php } ?>            
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">I.V.A. (12%):</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
-            </tr>
-            <tr>
-              <th class="text_align_left">Seguro:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->seguro, ''); ?></td>
-            </tr>
+            </tr>            
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
               <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>

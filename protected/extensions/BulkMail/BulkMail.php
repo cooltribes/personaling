@@ -12,10 +12,10 @@
 
 		//optional
 		public $regEx = "/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi";
-		public $cssEntry = "background-color: #FFEFB2; border: 1px solid #EEEEEE; display: inline-block; padding: 2px; margin: 2px;";
+		public $cssEntry = "background-color: #AD3682; border: 1px solid #EEEEEE; color:white; display: inline-block; padding: 2px; margin: 2px;";
 		public $cssInputNew = "border: 0px solid; width: 98%; padding: 2px; font-size: 16px;";
 		public $cssContainer = "border: 1px solid #9b9b9b;";
-		public $cssEditInputField = "";
+		public $cssEditInputField = "background-color: white; border:0; outline:0;";
 
 		// mandatory fields
 		public $field = NULL;

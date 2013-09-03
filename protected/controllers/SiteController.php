@@ -260,7 +260,7 @@ class SiteController extends Controller
 		if($mensaje->estado == 0) // no se ha leido
 		{
 			$mensaje->estado = 1;
-			$mensaje-save();
+			$mensaje->save(); 
 		}
 		
 		$div = "";

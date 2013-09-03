@@ -238,9 +238,10 @@ class Look extends CActiveRecord
 		$criteria->compare('tipo',1); 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-		));
-*/		
-		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC";
+		));*/
+		
+				
+		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor a, tbl_look b where a.look_id != 0 and b.deleted = 0 and b.id = a.look_id group by a.look_id order by count(distinct tbl_orden_id) DESC";
 		$count = 10; 	
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,

@@ -138,7 +138,7 @@ echo $num;
       </select>-->
     </div>
     <div class="span3">
-      <a href="#" class="btn " title="Crear nuevo filtro">Crear filtro</a>
+      <a href="#" class="btn crear-filtro" title="Crear nuevo filtro">Crear filtro</a>
     </div>
   </div>
   <hr/>

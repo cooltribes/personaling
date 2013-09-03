@@ -6,7 +6,7 @@
 function add_row(e){
     
     e.preventDefault();
-    $('#container-filter').append( $('<div/>').html($('#filter').html()) );
+    $('#filters-container').append( $('<div/>').html($('#filter').html()) );
     
 	//alert($('#filter').html());
 	//$('#container-filter').add( $('<div/>',{'class':'some','id':'filter2','html': $('#filter').html()} ) );
@@ -19,9 +19,9 @@ function add_row(e){
 //	});
 	$('.span_add').last().click(add_row);
 	$('.span_add').hide().last().show();
-//	$('.span_delete').last().show();
-//	$('.combo_relation').show();
-//	$('.combo_relation').last().hide();	
+	$('.span_delete').last().show();
+	$('.dropdown_relation').show();
+	$('.dropdown_relation').last().hide();	
 
 //console.log("agregada");
 	
@@ -29,7 +29,32 @@ function add_row(e){
 
 $(function() { 
 
-
+//Agregar fila al filtro
 $('.span_add').click(add_row);
+
+//Mostrar los campos
+$('.crear-filtro').click(function(e){
+    e.preventDefault();
+    $('#filters-view').slideDown();
+});
+
+//Buscar
+    $('#btn_search_event').click(function() {
+        ajaxRequest = $('#query').serialize();
+        clearTimeout(ajaxUpdateTimeout);
+
+        ajaxUpdateTimeout = setTimeout(function() {
+            $.fn.yiiListView.update(
+                    'list-auth-items',
+                    {
+                        type: 'POST',
+                        //url: '" . CController::createUrl('orden / admin') . "',
+                                data: ajaxRequest}
+
+            )
+        },
+                300);
+        return false;
+    });
 
 });

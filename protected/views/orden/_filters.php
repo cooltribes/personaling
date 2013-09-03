@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom ">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
 <?php
 
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -33,12 +33,12 @@
     <h4>Nuevo filtro:</h4>
     
     <fieldset>
-        <div id="container-filter" class="clearfix">
+        <div id="filters-container" class="clearfix">
             <div id="filter">
                 <div class="control-group">
                     <div class="controls" >
-                        <?php
-                        echo Chtml::dropDownList('dropdown_filter', '', array('username' => 'Estado',
+                        <div class="span3" >
+                            <?php echo Chtml::dropDownList('dropdown_filter', '', array('username' => 'Estado',
                             'lastname' => 'Fecha de Compra',
                             'firstname' => 'Cantidad de Looks',
                             'email' => 'Cantidad de Prendas',
@@ -46,17 +46,29 @@
                             'city' => 'Método de Pago',
                             'cellphone' => 'Usuaria',
                             'birthdate' => 'N° de pedido',
-                                ), array('empty' => '-- Seleccione --', 'class' => 'combo_filter span3'));
-
-                        echo Chtml::dropDownList('dropdown_operator', '', array('>' => '>', '>=' => '>=', '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), array('empty' => 'Operador', 'class' => 'combo_operator span3'));
-
-                        echo Chtml::textField('textfield_filter', '', array('class' => 'text_filter span3'));
-
-                        echo Chtml::dropDownList('dropdown_relation', '', array('AND' => 'Y', 'OR' => 'O'), array('class' => 'combo_relation span3', 'style' => 'display:none'));
-                        ?>
+                                ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
+                        </div>
+                        <div class="span2" >
+                            <?php echo Chtml::dropDownList('dropdown_operator', '', array('>' => '>', '>=' => '>=',
+                            '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
+                                array('empty' => 'Operador', 'class' => 'dropdown_operator span2')); ?>
+                        </div>
+                        <div class="span2" >
+                            <?php echo Chtml::textField('textfield_value', '', array('class' => 'textfield_value span2')); ?>  
+                        </div>
+                        <div class="span2" >
+                           <?php
+                        echo Chtml::dropDownList('dropdown_relation', '', array('AND' => 'Y', 'OR' => 'O'),
+                                array('class' => 'dropdown_relation span2', 'style' => 'display:none'));
+                        ?> 
+                        </div>
                         
-                        <a href="#" class="btn span_add" style="float: right" title="Agregar nuevo campo"> + </a>
-                        <a href="#" class="btn span_delete" style="display:none; float: right" title="Eliminar campo"> - </a>
+                            <a href="#" class="btn span_add" style="float: right" title="Agregar nuevo campo"> + </a>
+                            <a href="#" class="btn span_delete" style="display:none; float: right" title="Eliminar campo"> - </a> 
+                        
+                        
+                        
+                       
                         
                         
 

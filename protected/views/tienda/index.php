@@ -239,7 +239,7 @@
 			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-        <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
+       <br/>
        		<div id="looks" class="clearfix hidden-phone">
        		</div>
         </div>
@@ -283,8 +283,11 @@ $(document).ready(function(){
 				
 				if(data.status=="ok")
 				{
-
-					$('#looks.clearfix').prepend(data.datos);
+					if(data.datos != ""){
+						 $('#looks.clearfix').prepend(data.datos);
+						 $('#looks.clearfix').prepend('<h5 class="hidden-phone">Looks con estas prendas:</h5>');
+					}
+					
 				//	$("#looks").html(cont); // cambiando el div
 					
 				}

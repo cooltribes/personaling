@@ -16,7 +16,7 @@ $this->breadcrumbs=array(
         <div class="page-header">
           <h1>Condiciones de Envíos y Encomiendas</h1>
         </div>
-        <p>Al registrarte o realizar una casdaompra  en nuestra tienda <a href="http://www.personaling.com" title="personaling">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
+        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
         <ol>
           <li>Los envíos de Personaling.com se harán solamente dentro del  territorio venezolano, con excepción del Estado Nueva Esparta,  y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
           <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>

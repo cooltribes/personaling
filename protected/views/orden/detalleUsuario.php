@@ -65,7 +65,31 @@ $usuario = User::model()->findByPk($orden->user_id);
         Estado actual</td>
       <td><p class="T_xlarge margin_top_xsmall"> 4 </p>
         Documentos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 4</p>
+        
+     <?php
+      $ind_tot = 0;
+	  $look_tot = 0;
+      $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+	
+		foreach ($compra as $tot) {
+			
+			if($tot->look_id == 0)
+			{
+				$ind_tot++;
+			}else{
+				
+				$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
+				foreach($lhp as $cada){
+					$look_tot++;	
+				}
+			}
+			
+		}
+      
+      ?>
+        
+        
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo ($ind_tot + $look_tot); ?></p>
         Prendas<br/></td>
       <td><p class="T_xlarge margin_top_xsmall"><?php 
       

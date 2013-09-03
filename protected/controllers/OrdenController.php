@@ -106,18 +106,18 @@ class OrdenController extends Controller
 	}
 	
 
-	public function actionModalventas(){
+	public function actionModalventas($id){
 		$html='';
-		$html=$html.'<div class="modal hide fade">';
+		// $html=$html.'<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
   		$html=$html.'<div class="modal-header">';
     	$html=$html.'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-    	$html=$html.'<h3>Pedido #__ - Vista de prendas pedidas</h3>';
+    	$html=$html.'<h3>Vista de prendas pedidas</h3>';
   		$html=$html.'</div>';
   		$html=$html.'<div class="modal-body">';
     	$html=$html.'';
     	// Tabla ON
     	//Header de la tabla ON
-   		$html=$html.'<div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>';
+   		$html=$html.'<div class="well well-small margin_top well_personaling_small"><h3>Pedido #'.$id.'</h3>';
       	$html=$html.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
         $html=$html.'<thead><tr>';
         $html=$html.'<th scope="col">Nombre de la prenda</th>';
@@ -131,34 +131,83 @@ class OrdenController extends Controller
         
         $html=$html.'<tr>';
         // Primera columna ON
-        $html=$html.'<td> Vestido <br/> ';
-        $html=$html.'Color: Gris Rata <br/>';
-        $html=$html.'Talla: M ';
-        $html=$html.'</td></tr>';
+        $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
+        $html=$html.'<small><strong>Talla:</strong> M </small> ';
+        $html=$html.'</td>';
         // Primera columna OFF
         // Segunda columna ON
         $html=$html.'<td>';
-		$html=$html.'__';
+		$html=$html.'5';
         $html=$html.'</td>';
         // Segunda columna OFF
         // Tercera columna ON
         $html=$html.'<td>';
-		$html=$html.'__';
+		$html=$html.'52,00 Bs.';
         $html=$html.'</td>';
         // Tercera columna OFF
         // Cuarta columna ON
         $html=$html.'<td>';
-		$html=$html.'__';
+		$html=$html.'104,00 Bs.';
         $html=$html.'</td>';
         // Cuarta columna OFF        
 
         $html=$html.'<tr>';
         
+        $html=$html.'<tr>';
+        // Primera columna ON
+        $html=$html.'<td><strong>Ruana</strong><br/> ';
+        $html=$html.'<small><strong>Color:</strong> Horrible </small> <br/>';
+        $html=$html.'<small><strong>Talla:</strong> 3 </small> ';
+        $html=$html.'</td>';
+        // Primera columna OFF
+        // Segunda columna ON
+        $html=$html.'<td>';
+		$html=$html.'5';
+        $html=$html.'</td>';
+        // Segunda columna OFF
+        // Tercera columna ON
+        $html=$html.'<td>';
+		$html=$html.'520,00 Bs.';
+        $html=$html.'</td>';
+        // Tercera columna OFF
+        // Cuarta columna ON
+        $html=$html.'<td>';
+		$html=$html.'1040,00 Bs.';
+        $html=$html.'</td>';
+        // Cuarta columna OFF        
+
+        $html=$html.'<tr>';
+
+        $html=$html.'<tr>';
+        // Primera columna ON
+        $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
+        $html=$html.'<small><strong>Talla:</strong> M </small> ';
+        $html=$html.'</td>';
+        // Primera columna OFF
+        // Segunda columna ON
+        $html=$html.'<td>';
+		$html=$html.'5';
+        $html=$html.'</td>';
+        // Segunda columna OFF
+        // Tercera columna ON
+        $html=$html.'<td>';
+		$html=$html.'52,00 Bs.';
+        $html=$html.'</td>';
+        // Tercera columna OFF
+        // Cuarta columna ON
+        $html=$html.'<td>';
+		$html=$html.'104,00 Bs.';
+        $html=$html.'</td>';
+        // Cuarta columna OFF        
+
+        $html=$html.'<tr>';        
+
         //Cuerpo de la tabla OFF
         $html=$html.'</tbody></table></div>';
         // Tabla OFF
   		$html=$html.'</div>';
-		$html=$html.'</div>';
 		echo $html;
 
 	}

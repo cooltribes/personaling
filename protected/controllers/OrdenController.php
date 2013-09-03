@@ -25,7 +25,7 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','detalles','validar','enviar','factura','mensajes'),
+				'actions'=>array('index','admin','modalventas','detalles','validar','enviar','factura','mensajes'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -103,6 +103,64 @@ class OrdenController extends Controller
 
 	}
 	
+
+	public function actionModalventas(){
+		$html='';
+		$html=$html.'<div class="modal hide fade">';
+  		$html=$html.'<div class="modal-header">';
+    	$html=$html.'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+    	$html=$html.'<h3>Pedido #__ - Vista de prendas pedidas</h3>';
+  		$html=$html.'</div>';
+  		$html=$html.'<div class="modal-body">';
+    	$html=$html.'';
+    	// Tabla ON
+    	//Header de la tabla ON
+   		$html=$html.'<div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>';
+      	$html=$html.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
+        $html=$html.'<thead><tr>';
+        $html=$html.'<th scope="col">Nombre de la prenda</th>';
+        $html=$html.'<th scope="col">Cantidad</th>';
+        $html=$html.'<th scope="col">Precio por unidad</th>';
+        $html=$html.'<th scope="col">Precio total</th>';
+        $html=$html.'</tr>';
+        $html=$html.'</thead><tbody>';
+        //Header de la tabla OFF
+        //Cuerpo de la tabla ON
+        
+        $html=$html.'<tr>';
+        // Primera columna ON
+        $html=$html.'<td> Vestido <br/> ';
+        $html=$html.'Color: Gris Rata <br/>';
+        $html=$html.'Talla: M ';
+        $html=$html.'</td></tr>';
+        // Primera columna OFF
+        // Segunda columna ON
+        $html=$html.'<td>';
+		$html=$html.'__';
+        $html=$html.'</td>';
+        // Segunda columna OFF
+        // Tercera columna ON
+        $html=$html.'<td>';
+		$html=$html.'__';
+        $html=$html.'</td>';
+        // Tercera columna OFF
+        // Cuarta columna ON
+        $html=$html.'<td>';
+		$html=$html.'__';
+        $html=$html.'</td>';
+        // Cuarta columna OFF        
+
+        $html=$html.'<tr>';
+        
+        //Cuerpo de la tabla OFF
+        $html=$html.'</tbody></table></div>';
+        // Tabla OFF
+  		$html=$html.'</div>';
+		$html=$html.'</div>';
+		echo $html;
+
+	}
+
 	public function actionDetalles($id)
 	{
 		$orden = Orden::model()->findByPk($id);

@@ -3,7 +3,6 @@
 	//$this->breadcrumbs=array(
 	//'Tienda',
 	//);
-
 ?>
 <div class="page-header">
 <h1>Tienda</h1>
@@ -43,7 +42,7 @@
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos2',
+	    'itemView'=>'_datos',
 	    'afterAjaxUpdate'=>" function(id, data) {
 	    							
 						$(document).ready(function() {
@@ -93,7 +92,7 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/filtrar2') . "',
+				url: '" . CController::createUrl('tienda/filtrar') . "',
 				data: ajaxRequest}
 				
 				)
@@ -161,7 +160,7 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/filtrar2') . "',
+				url: '" . CController::createUrl('tienda/filtrar') . "',
 				data: ajaxRequest}
 				
 				)
@@ -189,7 +188,7 @@
 					'list-auth-items',
 					{
 					type: 'POST',	
-					url: '" . CController::createUrl('tienda/filtrar2') . "',
+					url: '" . CController::createUrl('tienda/filtrar') . "',
 					data: ajaxRequest}
 					
 					)
@@ -208,16 +207,9 @@
     <?php
 	Yii::app()->clientScript->registerScript('color',
 		"var ajaxUpdateTimeout;
-		var axe;
+		var idColor; 
 		$('.color').click(function(){
-			window.idColor.trim();
-			if(window.idColor.indexOf('#'+$(this).attr('id'))==-1){
-					window.idColor = window.idColor+'#'+$(this).attr('id');				
-			}
-			else{
-				window.idColor = window.idColor.replace('#'+$(this).attr('id'),'');				
-			}
-			
+			idColor = $(this).attr('id');
 			clearTimeout(ajaxUpdateTimeout);
 			
 			ajaxUpdateTimeout = setTimeout(function () {
@@ -225,9 +217,8 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores2') . "',
-				data: {'idColor':window.idColor,
-						'idCategoria':window.idCategoria}
+				url: '" . CController::createUrl('tienda/colores') . "',
+				data: {'idColor':idColor}
 				}
 				
 				)
@@ -235,21 +226,17 @@
 		
 		300);
 		return false;
-		});
-		
-		
-		
-		",CClientScript::POS_READY
+		});",CClientScript::POS_READY
 	);
 	
 	?>
         <div class="tienda_iconos" id="uno">
-          <?php $this->renderPartial('_view_categorias2',array('categorias'=>$categorias)) ?>
+          <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
         <h5>Buscar por colores</h5>
         <div class="clearfix tienda_colores">
-			 <?php $this->renderPartial('_view_colores2',array('categorias'=>$categorias)) ?>
+			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
         <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
@@ -323,7 +310,7 @@ function randomFrom(arr){
     <!-- Modal 
     <div id="myModal" class="modal hide tienda_modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Nombre del producto</h3>
     </div>
     <div class="modal-body">
@@ -349,8 +336,8 @@ function randomFrom(arr){
                    
                   </div>
                 </div>
-                <a data-slide="prev" href="#myCarousel" class="left carousel-control">â€¹</a>
-                <a data-slide="next" href="#myCarousel" class="right carousel-control">â€º</a>
+                <a data-slide="prev" href="#myCarousel" class="left carousel-control">‹</a>
+                <a data-slide="next" href="#myCarousel" class="right carousel-control">›</a>
               </div></div>
               <div class="span5">
           <div class="row-fluid call2action">
@@ -395,19 +382,14 @@ function randomFrom(arr){
 
     
 <script>
-var idColor="";
-var idCategoria="";
+
 $(document).ready(function() {
   // Handler for .ready() called.
   
 	var imag;
 	var original;
 	var segunda;
-	
-	
 
-	
-	
 	$('.producto').hover(function(){		
 		if ($(this).find("img").length > 1){
 		$(this).find("img").eq(0).hide();
@@ -421,19 +403,7 @@ $(document).ready(function() {
 		$(this).find("img").eq(0).next().hide();
 		}
 	});
-	$('.tienda_colores > img').on('click',function(){
-		
-		if(!$(this).hasClass('selected')){			
-			$(this).addClass('selected');
-			$(this).css({'outline': '2px groove #6d2d56'});
-		}
-		else{
-			$(this).css({'outline': 0});
-			$(this).removeClass('selected');
-		}
-		
-	});
-
+	
 });
 	
 </script>

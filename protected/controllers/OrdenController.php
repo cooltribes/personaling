@@ -78,34 +78,130 @@ class OrdenController extends Controller
 	 * */
 	public function actionAdmin()
 	{
-		$orden = new Orden;
+            
+//            echo "<pre>";
+//            print_r($_POST);
+//            echo "</pre>";            
+//            echo count($_POST['textfield_value']);           
+//            echo 
+//            exit();   
+            
+            $orden = new Orden;
+            $dataProvider = $orden->search();
+            
+            if (isset($_POST['query'])){
                 
-                //print_r($_POST);
-                //exit();
-		
-		if (isset($_POST['query']))
-		{
-			$dataProvider = $orden->filtrado($_POST['query']);
-		}
-		else
-			$dataProvider = $orden->search();
+                $dataProvider = $orden->filtrado($_POST['query']); 
                 
-                //Ordenar por fecha descendiente
-                $criteria = $dataProvider->getCriteria();
-                $criteria->order = 'fecha DESC';
-                $dataProvider->setCriteria($criteria);
+            }   
+            
+            //Filtros personalizados
+            $filters = array();
+            
+            //Para guardar el filtro
+            $filter = new Filter;
+            
+            
+            if(isset($_POST['dropdown_filter'])){           
                 
-                $filter = new Filter;
-		
-		$this->render('admin',
-		array('orden'=>$orden,
-		'dataProvider'=>$dataProvider,
-                    'filter' => $filter,
-		));
+                //Validar y tomar los filtros válidos
+                for($i=0; $i < count($_POST['dropdown_filter']); $i++){
+                    if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
+                            && trim($_POST['textfield_value'][$i]) != '' && $_POST['dropdown_relation'][$i]){
+
+                        $filters['fields'][] = $_POST['dropdown_filter'][$i];
+                        $filters['ops'][] = $_POST['dropdown_operator'][$i];
+                        $filters['vals'][] = $_POST['textfield_value'][$i];
+                        $filters['rels'][] = $_POST['dropdown_relation'][$i];                    
+
+                    }
+                }                                 
+                
+                if (isset($filters['fields'])) {                    
+                
+                    $dataProvider = $orden->buscarPorFiltros($filters);                    
+                     //Guardar el filtro
+                     if (isset($_POST['save']) && isset($_POST['name'])){
+                        
+                         $filter = Filter::model()->findByAttributes(array('name' => $_POST['name']));
+                         
+                         if(!$filter){
+                             $filter = new Filter;
+                             $filter->name = $_POST['name'];
+                         }
+                         
+                         if($filter->save()){
+                             for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                $filterDetails[] = new FilterDetail();
+                                $filterDetails[$i]->id_filter = $filter->id_filter; 
+                                $filterDetails[$i]->column = $filters['fields'][$i];
+                                $filterDetails[$i]->operator = $filters['ops'][$i];
+                                $filterDetails[$i]->value = $filters['vals'][$i];
+                                $filterDetails[$i]->relation = $filters['rels'][$i];
+                                $filterDetails[$i]->save();
+                                       
+                //                $filters['fields'][$i];
+                //                $filters['ops'][$i];
+                //                $filters['vals'][$i];
+                //                $filters['rels'][$i];
+
+                                }
+                         }
+                         
+                     }
+//                    $filter->id_filter = 0;
+//                    
+//                    $filterDetails = array();
+//                    
+//                    for ($i = 0; $i < count($filters['fields']); $i++) {
+//                        
+//                        $filterDetails[] = new FilterDetail();
+//                        
+//                        $filterDetails[$i]->id_filter = 0; 
+//    //                $filters['fields'][$i];
+//    //                $filters['ops'][$i];
+//    //                $filters['vals'][$i];
+//    //                $filters['rels'][$i];
+//                        
+//                    }                   
+//                    for ($i = 0; $i < count($filters['fields']); $i++) {
+//                        
+//                        $filterDetails[]
+//                        
+//                        
+//                    }
+                    
+                }
+            }
+
+            
+            //Ordenar por fecha descendiente
+            $criteria = $dataProvider->getCriteria();
+            $criteria->order = 'fecha DESC';
+            $dataProvider->setCriteria($criteria);            
+
+            $this->render('admin', array('orden' => $orden,
+                'dataProvider' => $dataProvider,
+                'filter' => $filter,
+            ));
 
 	}
 	
+        
+        /**          
+         * Obtiene el filtro con id $id          
+         */
 
+        public function actionGetFilter($id) {
+            
+            
+            
+            
+            
+            
+        }
+        
 	public function actionModalventas($id){
 		$html='';
 		// $html=$html.'<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
@@ -132,6 +228,7 @@ class OrdenController extends Controller
         $html=$html.'<tr>';
         // Primera columna ON
         $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Marca:</strong> Nidea </small> <br/>';
         $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
         $html=$html.'<small><strong>Talla:</strong> M </small> ';
         $html=$html.'</td>';
@@ -157,6 +254,7 @@ class OrdenController extends Controller
         $html=$html.'<tr>';
         // Primera columna ON
         $html=$html.'<td><strong>Ruana</strong><br/> ';
+        $html=$html.'<small><strong>Marca:</strong> Nidea </small> <br/>';
         $html=$html.'<small><strong>Color:</strong> Horrible </small> <br/>';
         $html=$html.'<small><strong>Talla:</strong> 3 </small> ';
         $html=$html.'</td>';
@@ -182,6 +280,7 @@ class OrdenController extends Controller
         $html=$html.'<tr>';
         // Primera columna ON
         $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Marca:</strong> Nidea </small> <br/>';
         $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
         $html=$html.'<small><strong>Talla:</strong> M </small> ';
         $html=$html.'</td>';

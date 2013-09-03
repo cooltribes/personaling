@@ -369,7 +369,7 @@ class Producto extends CActiveRecord
 		//foreach ($this->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color))) as $producto){
 		//	$co = Color::model()->findByPk($p->color_id);
 		//}
-$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id));
+$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id),'cantidad > 0');
 		$datos = array();
 		foreach($ptc as $p)
 		{
@@ -487,7 +487,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 	}
 	
-		public function multipleColor($idColor)
+		public function multipleColor($idColor, $idact)
 	{
 		// llega un array de ID de color
 		 
@@ -496,14 +496,14 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria=new CDbCriteria;
 
         $criteria->select = 't.*';
-        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
+        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
         $criteria->addCondition('t.estado = 0');
 		$criteria->addCondition('t.status = 1');
      //   $criteria->condition = 't.estado = :uno';
 	//	$criteria->condition = 't.status = :dos';
 	
 
-	print_r($idColor);
+	
 	if(is_array($idColor)){
 		if(count($idColor)>0){	
 			
@@ -526,8 +526,19 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 						
 			}
 			$criteria->addCondition($colores);
+			print_r($idColor);
 		}
 	}
+	
+	if(isset(Yii::app()->session['idact'])){
+		
+		$categoria= 'tbl_categoria_has_tbl_producto.tbl_categoria_id ='.$idact;
+		$criteria->addCondition($categoria);
+		echo "IDACT".$idact;
+		
+	}
+	
+	
 
 		
 	

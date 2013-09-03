@@ -12,16 +12,21 @@ function add_row(e){
 	//$('#container-filter').add( $('<div/>',{'class':'some','id':'filter2','html': $('#filter').html()} ) );
 	
 
-//	$('.span_delete').click(function(e){
-//		$(this).parent('div').remove();
-//		$('.combo_relation').last().hide();	
-//		$('.span_add').last().show();
-//	});
-	$('.span_add').last().click(add_row);
-	$('.span_add').hide().last().show();
-	$('.span_delete').last().show();
-	$('.dropdown_relation').show();
-	$('.dropdown_relation').last().hide();	
+    $('.span_delete').click(function(e) {
+        $(this).parent().parent().parent('div').remove();
+//       if($(this).parent('div'))
+        $('.dropdown_relation').last().hide();
+        $('.span_add').last().show();
+
+
+        return false;
+    });
+        
+    $('.span_add').last().click(add_row);
+    $('.span_add').hide().last().show();
+    $('.span_delete').last().show();
+    $('.dropdown_relation').show();
+    $('.dropdown_relation').last().hide();
 
 //console.log("agregada");
 	
@@ -38,23 +43,6 @@ $('.crear-filtro').click(function(e){
     $('#filters-view').slideDown();
 });
 
-//Buscar
-    $('#btn_search_event').click(function() {
-        ajaxRequest = $('#query').serialize();
-        clearTimeout(ajaxUpdateTimeout);
 
-        ajaxUpdateTimeout = setTimeout(function() {
-            $.fn.yiiListView.update(
-                    'list-auth-items',
-                    {
-                        type: 'POST',
-                        //url: '" . CController::createUrl('orden / admin') . "',
-                                data: ajaxRequest}
-
-            )
-        },
-                300);
-        return false;
-    });
 
 });

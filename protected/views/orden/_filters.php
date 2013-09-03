@@ -38,7 +38,7 @@
                 <div class="control-group">
                     <div class="controls" >
                         <div class="span3" >
-                            <?php echo Chtml::dropDownList('dropdown_filter', '', array('username' => 'Estado',
+                            <?php echo Chtml::dropDownList('dropdown_filter[]', '', array('username' => 'Estado',
                             'lastname' => 'Fecha de Compra',
                             'firstname' => 'Cantidad de Looks',
                             'email' => 'Cantidad de Prendas',
@@ -49,22 +49,22 @@
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
                         <div class="span2" >
-                            <?php echo Chtml::dropDownList('dropdown_operator', '', array('>' => '>', '>=' => '>=',
+                            <?php echo Chtml::dropDownList('dropdown_operator[]', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador', 'class' => 'dropdown_operator span2')); ?>
                         </div>
                         <div class="span2" >
-                            <?php echo Chtml::textField('textfield_value', '', array('class' => 'textfield_value span2')); ?>  
+                            <?php echo Chtml::textField('textfield_value[]', '', array('class' => 'textfield_value span2')); ?>  
                         </div>
                         <div class="span2" >
                            <?php
-                        echo Chtml::dropDownList('dropdown_relation', '', array('AND' => 'Y', 'OR' => 'O'),
+                        echo Chtml::dropDownList('dropdown_relation[]', '', array('AND' => 'Y', 'OR' => 'O'),
                                 array('class' => 'dropdown_relation span2', 'style' => 'display:none'));
                         ?> 
                         </div>
                         
                             <a href="#" class="btn span_add" style="float: right" title="Agregar nuevo campo"> + </a>
-                            <a href="#" class="btn span_delete" style="display:none; float: right" title="Eliminar campo"> - </a> 
+                            <a href="#" class="btn btn-danger span_delete" style="display:none; float: right" title="Eliminar campo"> - </a> 
                         
                         
                         
@@ -96,4 +96,42 @@
         $this->endWidget();
         ?>
 
+    <div class="span2 pull-right">
+        <a href="#" class="btn crear-filtro" title="Borrar Filtro">Borrar Filtro</a>
+    </div>
+    <div class="span3 pull-right">
+        <a href="#" class="btn crear-filtro span2" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Filtro</a> 
+    </div>
+    <div class="span1 pull-right">
+        <a href="#" id="filter-search" class="btn btn-danger" title="Buscar coin el filtro actual">Buscar</a>  
+    </div>
+    
+    
+    
+    
 </div>
+<script type="text/javascript">
+/*<![CDATA[*/
+   //Buscar
+    $('#filter-search').click(function() {
+        ajaxRequest = $('#form_filtros').serialize();
+        clearTimeout(ajaxUpdateTimeout);
+
+        ajaxUpdateTimeout = setTimeout(
+        function() {
+            $.fn.yiiListView.update(
+                    'list-auth-items',
+                    {
+                        type: 'POST',
+                        //url: '" . CController::createUrl('orden / admin') . "',
+                        data: ajaxRequest}
+
+            )
+        },
+        300);
+
+    console.log(ajaxRequest);
+        return false;
+    });
+/*]]>*/
+</script>

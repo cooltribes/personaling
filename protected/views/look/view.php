@@ -95,7 +95,7 @@
 
          $this->widget('bootstrap.widgets.TbButton', array(
                     'buttonType'=>'ajaxButton',
-                    'id'=>'btn-compra',
+                    'id'=>'btn-compra', 
                     'type'=>'warning',
                     'label'=>'Comprar',
                     'block'=>'true',

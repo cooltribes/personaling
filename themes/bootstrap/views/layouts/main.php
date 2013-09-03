@@ -11,7 +11,8 @@
 <!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" /> -->
 
 
-<?php Yii::app()->less->register(); ?>
+ <?php Yii::app()->less->register(); ?>
+ <script src="http://cooltribes.com/wp-content/themes/Jpernia-cooltribes/js/less-1.3.0.min.js"></script>
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
@@ -205,6 +206,9 @@ if(!Yii::app()->user->isGuest){
   $(document).on('ready',HandlerReady);
 
   function HandlerReady () {
+
+
+    
     // //Boton Notificaciones
     $('#btn-notifications').popover(
     {
@@ -388,7 +392,23 @@ if(!Yii::app()->user->isGuest){
           $(this).addClass('open');
         }
     },function(){
-        $(this).removeClass('open');
+
+        $('#yw3').hover(function(){}, function (){
+          $('#dropdownUser').removeClass('open');
+        });
+
+        $('#btn-notifications').hover(function(){
+         $('#dropdownUser').removeClass('open');
+        },function(){});
+
+        $('#btn-shoppingcart').hover(function(){
+         $('#dropdownUser').removeClass('open');
+        },function(){}); 
+
+        $('#content').hover(function(){
+         $('#dropdownUser').removeClass('open');
+        },function(){});         
+
     });
 
     $('#dropdownUser').on('click',function(){

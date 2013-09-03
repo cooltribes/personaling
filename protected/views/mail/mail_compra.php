@@ -85,24 +85,23 @@
                             <td class="w640" width="640" bgcolor="#ffffff"><table class="w640" width="640" cellpadding="0" cellspacing="0" border="0">
                                     <tbody>
                                         <tr>
-                                            <td class="w30" width="30"></td>
+                                            <td class="w30" width="30" style="width:30px"></td>
                                             <td class="w580" width="580"><table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
                                                     <tbody>
                                                         <tr>
                                                             <td class="w580" width="580"><!-- CONTENIDO ON -->
                                                                 
                                                                 <?php
-$user = User::model()->findByPk(Yii::app()->user->id);
-$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
-//echo $orden->pago_id;
-
-?>
+                                                                    $user = User::model()->findByPk(Yii::app()->user->id);
+                                                                    $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+                                                                    //echo $orden->pago_id;
+                                                                ?>
                                                                 <?php
       
-      if($orden->estado==1) // pendiente de pago
-	  {
-	  	if($pago->tipo == 1){
-	      ?>
+                                                                if($orden->estado==1) // pendiente de pago
+                                                        	    {
+                                                        	  	  if($pago->tipo == 1){
+                                                        	   ?>
                                                                 <div class="alert alert-success margin_top_medium margin_bottom">
                                                                         <h1 class="h1">Tu Pedido ha sido recibido con éxito.</h1>
                                                                 </div>
@@ -110,7 +109,9 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     <h2 class="h2">Siguiente paso</h2>
                                                                     <p><strong>Para completar tu comprar debes:</strong></p>
                                                                     <ol>
-                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del D-mm-YYYY en la siguientes cuenta bancaria: <br>
+                                                                        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?>
+                                                                        			via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?>
+                                                                        			en la siguientes cuenta bancaria: <br>
                                                                             <br/>
                                                                             <ul>
                                                                                 <li><strong>Banesco</strong><br/>
@@ -162,10 +163,12 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                         <td  style="text-align:left"><b>Subtotal:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
                                                                     </tr>
+                                                                    <?php if($orden->descuento != 0){ // si no hay descuento ?> 
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Descuento:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
                                                                     </tr>
+                                                                    <?php } ?>
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Envío:</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
@@ -238,7 +241,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						{
 							array_push($vacio,$cadalook);
 							
-							$tod = PrecioTallaColor::model()->findByPk($cadauno->preciotallacolor_id);
+							$tod = Preciotallacolor::model()->findByPk($cadauno->preciotallacolor_id);
 							$talla = Talla::model()->findByPk($tod->talla_id);
 							$color = Color::model()->findByPk($tod->color_id);
 							
@@ -307,7 +310,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 				
 				if($individual->look_id==0){
 				
-				$todo = PrecioTallaColor::model()->findByPk($individual->preciotallacolor_id);
+				$todo = Preciotallacolor::model()->findByPk($individual->preciotallacolor_id);
 						
 				$producto = Producto::model()->findByPk($todo->producto_id);
 				$talla = Talla::model()->findByPk($todo->talla_id);
@@ -327,7 +330,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 					<td style='border-bottom:1px solid #dddddd;'>
 					<strong>".$producto->nombre."</strong> <br/>
 					<strong>Color</strong>: ".$color->valor."<br/>
-					<strong>Talla</strong>: ".$talla->valor."</br>
+					<strong>Talla</strong>: ".$talla->valor."<br/>
 					</td>
 					";	
 				
@@ -336,13 +339,18 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 				}
 						
-					echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre, '')."</td>";
-					echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>
-					</tr>";
+				echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre, '')."</td>";
+				echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>";
+				echo "</tr>";
 
 			}
 				
-			}// foreach de productos		
+			}// foreach de productos	
+            echo '</tbody>
+                  </table>
+                  
+                  
+                  </div>';  
 		}// si hay indiv
 		
         ?>
@@ -363,9 +371,9 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                         <tr>
                             <td class="w640" width="640" height="15" bgcolor="#ffffff"></td>
                         </tr>
-                        <tr>
+                        <tr >
                             <td class="w640" width="640"><table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#6E1346">
-                                    <tbody>
+                                    <tbody >
                                         <tr>
                                             <td class="w30" width="30"></td>
                                             <td class="w580 h0" width="360" height="30"></td>

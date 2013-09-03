@@ -30,18 +30,25 @@ class LookController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks','softdelete'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			), 
 		);
+	}
+	public function actionSoftDelete($id)
+	{
+		$model = Look::model()->findByPk($id);
+		if ($model->status!=Look::STATUS_APROBADO)
+			$model->softDelete();
+		$this->redirect(array('look/admin'));
 	}
 	public function actionUpdatePrice()
 	{
@@ -98,9 +105,15 @@ class LookController extends Controller
 		$model->save();
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
+		
+		$looks = new Look;
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		
 		$this->render('view',array(
 						'model'=>$model,
 						'ultimos_vistos'=> $productoView->lastView(),
+						'dataProvider' => $looks->match($user),
+						'user'=>$user,	
 						//'categorias'=>$categorias,
 					)
 				);		
@@ -111,8 +124,51 @@ class LookController extends Controller
 	}
 	public function actionGetImage($id)
 	{ 
-		 	   
+		$filename = Yii::getPathOfAlias('webroot').'/images/look/'.$id.'.png'; 	   
+		if (file_exists($filename)) {
+			//session_start(); 
+			header("Cache-Control: private, max-age=10800, pre-check=10800");
+			header("Pragma: private");
+			header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));	
+					if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) 
+					       && 
+					  (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == filemtime($filename))) {
+					  // send the last mod time of the file back
+					  header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($filename)).' GMT', 
+					  true, 304);
+					  exit;
+					}
+					  
+			 $w = 710;
+			 if (isset($_GET['w']))
+			 	$w = $_GET['w'];
+			 
+			 
+			 $h = 710;
+			 if (isset($_GET['h']))
+			 	$h = $_GET['h'];
+							$ratio_orig = 1;
 
+                        if ($w/$h > $ratio_orig) {
+                           $w = $h*$ratio_orig;
+                        } else {
+                           $h = $w/$ratio_orig;
+                        }
+			//echo Yii::app()->baseUrl.'/images/look/'.$id.'.png';
+			 $image_p = imagecreatetruecolor($w, $h);
+			$src = imagecreatefrompng($filename);
+			imagecopyresampled( $image_p, $src, 0, 0, 0, 0, $w, $h, 710, 710);
+			//header('Pragma: public');
+			//header('Cache-Control: max-age=86400');
+			//header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
+			//header('Content-Type: image/jpeg'); 
+header("Content-type: image/jpeg");
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT');
+			imagejpeg($image_p, null, 100);
+			//readfile($filename);
+			//imagepng($src,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+			imagedestroy($src);			
+		} else {
 		 $look = Look::model()->findByPk($id);
 		 
 		 /*
@@ -136,6 +192,7 @@ class LookController extends Controller
 		 foreach($look->lookhasproducto as $lookhasproducto){
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	if (isset($image_url)){
+		 			$imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
@@ -151,6 +208,7 @@ class LookController extends Controller
 		 	$image_url = $lookhasadorno->adorno->getImageUrl(array('ext'=>'png'));
 			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
 		 	if (isset($image_url)){
+		 			$imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
 					$imagenes[$i]->left = $lookhasadorno->left;
@@ -162,6 +220,17 @@ class LookController extends Controller
 
 			$i++;
 		 }	
+		 
+		 
+		 $imagenes[$i] = new stdClass();
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
+					$imagenes[$i]->top = 0;
+					$imagenes[$i]->left = 630;
+					$imagenes[$i]->width = 70;
+					$imagenes[$i]->height = 70;
+					$imagenes[$i]->angle = 0;
+					$imagenes[$i]->zindex = 1000;
+		 
 		//Yii::trace('create a image look, Trace:'.print_r($imagenes, true), 'registro');
 		function sortByIndex($a, $b) {
 		    return $a->zindex - $b->zindex;
@@ -203,8 +272,10 @@ class LookController extends Controller
 		}
 		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
+		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9);
 		imagepng($canvas,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
 		imagedestroy($canvas);
+		}
 	}
 
 	public function actionGetImage2($id)
@@ -376,15 +447,20 @@ public function actionCategorias(){
     					"`look_id` = :look_id",
     					array(':look_id' => $model->id)
 					);
+					//$temporal = '';
+					$model->has_ocasiones = $_POST['categorias'];
                 	foreach(explode('#',$_POST['categorias']) as $categoria){
                 		$categoriahaslook = new CategoriaHasLook;
 						$categoriahaslook->categoria_id = $categoria;
 						$categoriahaslook->look_id = $model->id;
-						$categoriahaslook->save();
-						
-						
+						if (!$categoriahaslook->save()){
+							 Yii::trace('save categoriahaslook'.print_r($_POST['categorias'],true).', 384 Error:'.print_r($categoriahaslook->getErrors(), true), 'registro');
+						}
+						//$temporal .= $categoriahaslook->categoria_id.'#';
                 	}
-                }	
+					//if ($temporal!='')
+					//	$model->has_ocasiones = substr($temporal, 0, -1);
+                }	 
                 if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
@@ -403,6 +479,10 @@ public function actionCategorias(){
                 }
             } 
 		}	
+$model = Look::model()->findByPk($id);
+if (isset($_POST['categorias'])){ 
+ $model->has_ocasiones = $_POST['categorias'];
+}
 	    $this->render('publicar',array(
 			'model'=>$model,
 			
@@ -633,7 +713,7 @@ public function actionCategorias(){
 					}
 				}
 				
-				
+				$model->createImage();
 				if ($_POST['tipo']==1){
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();

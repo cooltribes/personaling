@@ -1,5 +1,7 @@
 <?php
 
+/* @var $form TbActiveForm */
+
 //$this->breadcrumbs=array(
 	//'Usuarios',
 //);
@@ -56,6 +58,7 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
 			. '<div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>'
 		    . CHtml::textField('nombre', (isset($_GET['string'])) ? $_GET['string'] : '', array('id'=>'textbox_buscar', 'class'=>'span3', 'placeholder'=>'Buscar'))
 		    . CHtml::endForm();
+			
 		?>
       
         
@@ -70,7 +73,7 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
       </select>
     </div>
     <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
-    <div class="span2"><a href="#" class="btn btn-success">Crear usuario</a></div>
+    <div class="span2"><a href="#modalNuevoUsuario" class="btn btn-success" data-toggle="modal">Crear usuario</a></div>
   </div>
     <hr/>
    <?php
@@ -126,8 +129,12 @@ $template = '{summary}
 	Yii::app()->clientScript->registerScript('search',
 	    "var ajaxUpdateTimeout;
 	    var ajaxRequest;
-	    $('#textbox_buscar').keyup(function(){
-	        ajaxRequest = $(this).serialize();
+	    $('#textbox_buscar').keyup(function(e){
+	    	
+			
+			if(e.which != 13) {
+				
+				ajaxRequest = $(this).serialize();
 	        clearTimeout(ajaxUpdateTimeout);
 	        ajaxUpdateTimeout = setTimeout(function () {
 	            $.fn.yiiListView.update(
@@ -138,6 +145,16 @@ $template = '{summary}
 	        },
 	// this is the delay
 	        300);
+		        
+		    }
+	        	/*else{
+	        		
+	        		window.location.href = document.URL;
+	        	}*/
+				
+				
+				
+	        
 	    });"
 	);
 		
@@ -157,3 +174,113 @@ $template = '{summary}
 </div>
 <!-- /container -->
 
+
+
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array(
+                                'id' => 'modalNuevoUsuario',
+                            ),
+                            array(
+                                'class' => 'modal hide fade',
+                                'tabindex' => "-1",
+                                'role' => "dialog",
+                                'aria-labelledby' => "myModalLabel",
+                                'aria-hidden' => "true",
+                                'style' => "display: none;",
+                            
+                            ))?>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Registrar usuario</h3>
+    </div>
+    <div class="modal-body">
+      <?php
+      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+          'id' => 'newUser-form',
+          'htmlOptions' => array('enctype' => 'multipart/form-data'),
+          'type' => 'horizontal',
+          // 'type'=>'inline',
+          //'enableClientValidation' => true,
+          'enableAjaxValidation' => true,
+          'clientOptions' => array(
+              'validateOnSubmit' => true,
+          ),
+      ));
+      ?>
+      <?php echo $form->errorSummary(array($modelUser,$profile)); ?>
+      <fieldset> 
+        
+          
+        <div class="control-group">
+          <label class="control-label">Crear Usuario</label>
+          <div class="controls">
+            <?php echo CHtml::dropDownList("tipoUsuario", '', array(
+                                        0 => 'Usuario',
+                                        1 => 'Personal Shopper',
+                                        2 => 'Administrador')); ?>
+          </div>
+        </div>
+        
+        <?php echo $form->textFieldRow($modelUser,'email',array('placeholder'=>'Correo Electrónico',)); ?>    
+        
+        <?php echo $form->textFieldRow($profile,'first_name', array('placeholder'=>'Nombre',)); ?>   
+          
+        <?php echo $form->textFieldRow($profile,'last_name', array('placeholder'=>'Apellido',)); ?>  
+        
+       <div class="control-group">
+           
+           <?php
+           echo CHtml::label('Fecha de Nacimiento *', CHtml::activeId($profile, 'birthday'), array('class' => 'control-label required'));
+           ?>
+           
+               <div class="controls row">    
+                    <?php            
+                    echo $form->DropDownList($profile, 'day', User::getDaysArray(), array('class' => 'span1'));
+                    echo ' ';
+                    echo $form->DropDownList($profile, 'month', User::getMonthsArray(), array('class' => 'span1'));
+                    echo ' ';
+                    echo $form->DropDownList($profile, 'year', User::getYearsArray(), array('class' => 'span1'));
+                    echo $form->hiddenField($profile, 'birthday'); 
+                    echo $form->error($profile, 'birthday');
+                    ?>
+               </div>
+
+           
+       </div>     
+          
+          
+        <div class="control-group">
+          <label class="control-label">Sexo</label>
+          <div class="controls">
+            <?php echo CHtml::dropDownList("genero", '', array(1 => 'Mujer', 2 => 'Hombre')); ?>
+          </div>
+        </div>  
+        
+        
+                      
+      </fieldset>
+    
+    <?php $this->endWidget(); ?>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>    
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'buttonType' => 'button',
+        'label' => 'Crear',
+        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+        //'size' => 'large', // null, 'large', 'small' or 'mini'
+        //'block' => 'true',
+        'htmlOptions' => array('onclick' => 'js:$("#newUser-form").submit();')
+    ));
+    ?>
+  </div>                    
+
+<?php $this->endWidget()?>
+<script>
+	$('#search-form').attr('action','');
+	$('#search-form').submit(function () {
+		 return false;
+		});
+	
+</script>

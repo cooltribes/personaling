@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal','doble'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -47,6 +47,27 @@ class TiendaController extends Controller
 			
 	}
 	
+	public function actionDoble()
+	{
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		$producto = new Producto;		
+		$producto->status = 1; // no borrados
+		$producto->estado = 0; // solo productos activos
+		if(isset(Yii::app()->session['idColor'])){
+			unset(Yii::app()->session['idColor']);
+			
+		}
+		$a ="a"; 
+		
+		$dataProvider = $producto->nueva($a);
+		$this->render('doble',
+		array('doble'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	
+			
+	}
+	
+	
 		public function actionFiltrar()
 	{
 		
@@ -54,37 +75,70 @@ class TiendaController extends Controller
 		$producto->status = 1; // que no haya sido borrado logicamente
 		$producto->estado = 0; // que no esté inactivo
 
-		if (isset($_POST['cate1'])) // desde el select
-		{
-			//if($_POST['cate1']!=0)	
-				$producto->categoria_id = $_POST['cate1'];			
-		}
-		
-		if (isset($_POST['idact'])) // actualizacion desde los ajaxlink
-		{
-			 $producto->categoria_id = $_POST['idact'];			
-		}		
-	
-		if (isset($_POST['busqueda'])) // desde el input
-		{	
-			//echo $producto->nombre = '%'.$_POST['busqueda'].'%';
-			$producto->nombre = $_POST['busqueda'];
-		}
-	
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
-		$todos = array();
-		$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
-		//print_r($todos);
-		//$dataProvider = $producto->busqueda('');
-		$dataProvider = $producto->busqueda($todos);
-		//$dataProvider = $producto->search();
-		$this->render('index',
-		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
-		));	
+			if (isset($_POST['cate1'])){ // desde el select
+				$producto->categoria_id = $_POST['cate1'];		
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));			
+				Yii::app()->getSession()->add('categoria', $_POST['cate1']);
+				Yii::app()->getSession()->add('valor',1);
+			}
 			
-	}
+			if (isset($_POST['idact'])){ // actualizacion desde los ajaxlink
+				 $producto->categoria_id = $_POST['idact'];		
+				 Yii::app()->getSession()->add('categoria', $_POST['idact']);
+				 Yii::app()->getSession()->add('valor',1);
+			}		
+		
+			if (isset($_POST['busqueda'])){ // desde el input
+				$producto->nombre = $_POST['busqueda'];
+				Yii::app()->getSession()->add('nombre', $_POST['busqueda']);
+				Yii::app()->getSession()->add('valor',1);
+			}
+
+			if( isset($_GET['Producto_page']) )
+			{
+				if ( Yii::app()->getSession()->get('categoria') )
+					$producto->categoria_id = Yii::app()->getSession()->get('categoria');
+					
+				if ( Yii::app()->getSession()->get('nombre') )
+					$producto->nombre = Yii::app()->getSession()->get('nombre');
+				
+				$todos = array();
+				$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));	
+				$dataProvider = $producto->busqueda($todos);
+		
+				$this->render('index',
+				array('index'=>$producto,
+				'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+				));	
+			
+			}
+			/*
+			if(Yii::app()->getSession()->get('valor') == 1) // ya hubo una busqueda. asegurando que los resultados sean los que se debian buscar
+			{
+				if ( Yii::app()->getSession()->get('categoria') )
+					$producto->categoria_id = Yii::app()->getSession()->get('categoria');
+					
+				if ( Yii::app()->getSession()->get('nombre') )
+					$producto->nombre = Yii::app()->getSession()->get('nombre');
+				
+				
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));	
+		
+			}
+			*/
+			$todos = array();
+			$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+	
+			$dataProvider = $producto->busqueda($todos);
+	
+			$this->render('index',
+			array('index'=>$producto,
+			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+			));	
+			}
 	
 	
 	public function actionColores()
@@ -110,6 +164,42 @@ class TiendaController extends Controller
 		));	
 			
 	}
+	
+	
+	public function actionColores2()
+	{
+		
+		$producto = new Producto;
+		$producto->status = 1; // que no haya sido borrado logicamente
+		$producto->estado = 0; // que no esté inactivo
+	
+		$color="";
+		
+		if(isset($_POST['idColor'])) // llega como parametro el id del color presionado
+		{
+			Yii::app()->session['idColor']=$_POST['idColor'];	
+		}		
+			
+			
+		if(isset(Yii::app()->session['idColor'])) // llega como parametro el id del color presionado
+		{
+			$color = explode('#',Yii::app()->session['idColor']);
+			
+			unset($color[0]);	
+		}	
+		
+		
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
+	
+		$dataProvider = $producto->multipleColor($color);
+		$this->render('doble',
+		array('doble'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	
+			
+	}
+	
+	
 	
 
 	public function getAllChildren($models){
@@ -212,57 +302,145 @@ class TiendaController extends Controller
 	public function actionImageneslooks(){
 		
 		$look1 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro1']));
-		$look2 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro2']));
+		$look2 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro2']));	
+		$look3 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro3']));
+		$look4 = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$_POST['pro4']));
 		
-		$mos1 = 0;
-		$mos2 = 0;
+		$band = 0;
+		$band1 = 0;
+		$band2 = 0;
+		$band3 = 0;
 		
 		$l1 ="";
 		$l2 ="";
+		$l3 ="";
+		$l4 ="";
 		
 		if(isset($look1)){		
-			foreach($look1 as $uno)
-			{
-				if($mos1 == 0)
-				{				
-					$l1 = Look::model()->findByPk($uno->look_id);
-					$mos1=1;
+			foreach($look1 as $uno){
+				if($band == 0){				
+					$l1 = Look::model()->aprobados()->findByPk($uno->look_id);
+					
+					if(isset($l1))
+						$band=1;
+					
 				}
-				else
-					break;
+			}
+		}else if(isset($look3)){		
+			foreach($look3 as $uno){
+				if($band2 == 0){				
+					$l3 = Look::model()->aprobados()->findByPk($uno->look_id);
+					
+					if(isset($l3))
+						$band2=1;
+					
+				}
 			}
 		}
 		
+		
+		
 		if(isset($look2)){
-			foreach($look2 as $dos)
-			{
-				if($mos2 == 0)
-				{
-					$l2 = Look::model()->findByPk($dos->look_id);
-					$mos2=1;
+			foreach($look2 as $dos){
+				if($band1 == 0){
+					if($band==1) // hay l1
+					{
+						if($l1->id == $dos->look_id){ // si son iguales no haga nada y busque otro
+							$band1=0;
+						}
+						else{
+							$l2 = Look::model()->aprobados()->findByPk($dos->look_id);
+						
+							if(isset($l2))
+								$band1=1;
+						}		
+					}
+					else if($band2 == 1) // hay l3
+					{
+						if($l3->id == $dos->look_id ){ // si son iguales no haga nada y busque otro
+							$band1=0;
+						} else{
+							$l2 = Look::model()->aprobados()->findByPk($dos->look_id);
+							
+							if(isset($l2))
+								$band1=1;
+						}	
+					}
 				}
-				else
-					break;
+			}
+		}else if(isset($look4)){		
+			foreach($look4 as $dos){
+				if($band3 == 0){
+					if($band==1) // hay l1
+					{
+						if($l1->id == $dos->look_id){ // si son iguales no haga nada y busque otro
+							$band3=0;
+						}
+						else{
+							$l4 = Look::model()->aprobados()->findByPk($dos->look_id);
+						
+							if(isset($l4))
+								$band3=1;
+						}		
+					}
+					else if($band2 == 1) // hay l3
+					{
+						if($l3->id == $dos->look_id ){ // si son iguales no haga nada y busque otro
+							$band3=0;
+						} else{
+							$l4 = Look::model()->aprobados()->findByPk($dos->look_id);
+							
+							if(isset($l4))
+								$band3=1;
+						}	
+					}
+					
+				}
 			}
 		}
-		// tengo los dos looks. Ahora a generar lo que voy a devolver para que genere las imagenes.
+		
+		$contador = 0;
+		
+		// tengo los looks. Ahora a generar lo que voy a devolver para que genere las imagenes.
 		
 		$ret = array();
 		$base = Yii::app()->baseUrl;
 
-		if($l1 != "")
-			array_push($ret,'<a href="../look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
+		if($l1 != ""){
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
+			array_push($ret,"<br><br>");
+			$contador++;
+		}
 		
-		array_push($ret,"<br><br>");
+		if($l3 != ""){
+			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l3->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l3->id.'" src="'.$base.'/look/getImage/'.$l3->id.'" alt="Look"></a>');
+			array_push($ret,"<br><br>");
+			$contador++;
+		}
 		
-		if($l2 != "")
-			array_push($ret,'<a href="../look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
+		if($l2 != ""){
+			if($contador < 2){
+				array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
+				array_push($ret,"<br><br>");
+				$contador++;
+			}	
+		}
 		
-		//array_push($ret,CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$l1->id)), "Look", array("width" => "400", "height" => "400", 'class'=>'img-polaroid')) );
+		if($l4 != ""){
+			if($contador < 2){
+				array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l4->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l4->id.'" src="'.$base.'/look/getImage/'.$l4->id.'" alt="Look"></a>');
+				array_push($ret,"<br><br>");
+				$contador++;
+			}
+		}
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',
-			'datos'=> $ret  
+			'datos'=> $ret,
+			'uno'=>$l1,
+			'dos'=>$l2,
+			'tres'=>$l3,
+			'cuatro'=>$l4
 			));
 		exit;
 	}
@@ -427,8 +605,11 @@ class TiendaController extends Controller
             $cantcolor = Array();
             $cont1 = 0;
               	
-			// revisando cuantos colores distintos hay
-			foreach ($producto->preciotallacolor as $talCol){ 
+
+			// revisando cuantos colores distintos hay 
+			foreach ($producto->Preciotallacolor as $talCol){ 
+
+
 				if($talCol->cantidad > 0){
 					$color = Color::model()->findByPk($talCol->color_id);
 					
@@ -446,7 +627,7 @@ class TiendaController extends Controller
 				$datos=$datos. "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
 			}
 			else{
-				foreach ($producto->preciotallacolor as $talCol) {
+				foreach ($producto->Preciotallacolor as $talCol) {
 		        	if($talCol->cantidad > 0){ // que haya disp
 						$color = Color::model()->findByPk($talCol->color_id);		
 								
@@ -473,7 +654,7 @@ class TiendaController extends Controller
         $cont2 = 0;
               	
 		// revisando cuantas tallas distintas hay
-		foreach ($producto->preciotallacolor as $talCol){ 
+		foreach ($producto->Preciotallacolor as $talCol){ 
 			if($talCol->cantidad > 0){
 				$talla = Talla::model()->findByPk($talCol->talla_id);
 						
@@ -646,9 +827,9 @@ class TiendaController extends Controller
  			$datos=$datos.'if(talla!=undefined && color==undefined){'; // falta color
  				$datos=$datos.'alert("Seleccione el color para poder añadir a la bolsa.");';
  			$datos=$datos.'}';
-		
+			
 			$datos=$datos.'if(talla!=undefined && color!=undefined){';
-		
+			$datos=$datos.'$("#agregar").click(function(e){e.preventDefault();});$("#agregar").addClass("disabled"); ';
 				$datos=$datos. CHtml::ajax(array(
 	            	'url'=>array('bolsa/agregar'),
 			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")'),

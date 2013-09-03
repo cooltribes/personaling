@@ -70,9 +70,9 @@
       <div class="row-fluid margin_bottom margin_top">
             <div id="boton_facebook" class="span5 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
 
-        	<div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a> 
+        	<!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
-        </div>
+        <!-- </div> -->
       </div>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
 
@@ -189,6 +189,12 @@
 			}
 		}
 ?>
+	<div class="control-group">
+		<label class="checkbox">
+	  		<input type="checkbox" value="suscribir" name="Profile[suscribir]" checked>
+	  		Suscribirme a la lista de correo de Personaling
+		</label>
+	</div>
             <hr/>
              Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
 	<div class="form-actions"> 
@@ -247,9 +253,11 @@ function check_fb(){
                         console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
                         console.log(response.birthday);
                         
-                  		$("#registration-form").fadeOut(100,function(){
+                        
+                  	//	$("#registration-form").fadeOut(100,function(){
 	     					
 	     					$('#facebook_id').val(response.id);
+	     					$('#RegistrationForm_password').val('1234');
 	     					$('#RegistrationForm_email').val(response.email); 
 	                        $('#Profile_first_name').val(response.first_name);
 	                        $('#Profile_last_name').val(response.last_name);
@@ -271,18 +279,16 @@ function check_fb(){
 	                        	$('#Profile_sex_0').attr('checked',true);
 	                        }
 	     	
-	     				});
+	     				$('#registration-form').submit(); 
+	     	
+	     			//	});
 	
-	    				$("#registration-form").fadeIn(100,function(){});
-                        
-                        
-                        /*
-                        
-						var pass=12345;
-
+	    			//	$("#registration-form").fadeIn(100,function(){});         
+                       
+					/*
                         $.ajax({
-                          url: '', // accion
-                          data: {email : response.email, birthday: response.birthday, gender : response.gender, first: response.first_name, last: response.last_name, password: pass},
+                          url: 'registration', // accion
+                          data: {'facebook_id': response.id, 'email' : response.email, 'birthday': response.birthday, 'gender' : response.gender, 'first': response.first_name, 'last': response.last_name},
                           type: 'POST',
                           dataType: 'html',
                           success: function(data) {
@@ -303,9 +309,10 @@ function check_fb(){
                         console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
 						console.log(response.user_birthday);
 						
-						$("#registration-form").fadeOut(100,function(){
+						//$("#registration-form").fadeOut(100,function(){
 	     					
 	     					$('#facebook_id').val(response.id);
+	     					$('#RegistrationForm_password').val('1234');
 	     					$('#RegistrationForm_email').val(response.email); 
 	                        $('#Profile_first_name').val(response.first_name);
 	                        $('#Profile_last_name').val(response.last_name);
@@ -327,9 +334,11 @@ function check_fb(){
 	                        	$('#Profile_sex_0').attr('checked',true);
 	                        }
 	     	
-	     				});
+	     				$('#registration-form').submit(); 	
+	     					
+	     			//	});
 	
-	    				$("#registration-form").fadeIn(100,function(){});
+	    			//	$("#registration-form").fadeIn(100,function(){});
 						
 						/*
 						var pass=12345;

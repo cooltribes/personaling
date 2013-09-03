@@ -15,29 +15,50 @@ $this->breadcrumbs=array(
     <tr>
       <td><p class="T_xlarge margin_top_xsmall">
 <?php
+/*
 $sql = "select count( * ) as total from tbl_producto where status=1";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
+// echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('status'=>1));
+
 ?>
 		</p>
         Totales</td>
       <td><p class="T_xlarge margin_top_xsmall">
 <?php
+/*
 $sql = "select count( * ) as total from tbl_producto where estado=0 and status=1";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
+//echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('estado'=>0,'status'=>1));
 ?>
       	</p>
         Activos</td>
       <td><p class="T_xlarge margin_top_xsmall"> 
 <?php
+/*
 $sql = "select count( * ) as total from tbl_producto where estado=1 and status=1";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
+//echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('estado'=>1,'status'=>1));
 ?>
 		</p>
         Inactivos</td>
-      <td><p class="T_xlarge margin_top_xsmall">150</p>
+      <td><p class="T_xlarge margin_top_xsmall">
+      	
+<?php
+$sql = "select sum(cantidad) from tbl_orden_has_productotallacolor a, tbl_orden b where a.tbl_orden_id = b.id and b.estado = 4"; // estado 4 es enviado
+$num = Yii::app()->db->createCommand($sql)->queryScalar();
+echo $num;
+?>     	
+      	 	
+      </p>
         Enviados</td>
       <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
         En tránsito </td>
@@ -267,14 +288,14 @@ $template = '{summary}
 function compara_fechas($fecha1,$fecha2)
 {
       if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha1))
-              list($dia1,$mes1,$año1)=split("/",$fecha1);
+              list($dia1,$mes1,$año1)=explode("/",$fecha1);
       if (preg_match("/[0-9]{1,2}-[0-9]{1,2}-([0-9][0-9]){1,2}/",$fecha1))
-              list($dia1,$mes1,$año1)=split("-",$fecha1);
+              list($dia1,$mes1,$año1)=explode("-",$fecha1);
       if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha2))
-              list($dia2,$mes2,$año2)=split("/",$fecha2);
+              list($dia2,$mes2,$año2)=explode("/",$fecha2);
       if (preg_match("/[0-9]{1,2}-[0-9]{1,2}-([0-9][0-9]){1,2}/",$fecha2))
-              list($dia2,$mes2,$año2)=split("-",$fecha2);
-        $dif = mktime(0,0,0,$mes1,$dia1,$año1) - mktime(0,0,0, $mes2,$dia2,$año2);
+              list($dia2,$mes2,$año2)=explode("-",$fecha2);
+        $dif = mktime(0,0,0,$mes1,$dia1,$año1) - mktime(0,0,0, $mes2,$dia2,$año2); 
         return ($dif);
 }
 ?>

@@ -68,7 +68,18 @@
         </div>
     </div>
     <div class="modal-footer"> 
-    	<a href="#" title="eliminar" class="btn"><i class="icon-trash"></i> Eliminar</a> 
+    	
+    	
+    <?php $this->widget('bootstrap.widgets.TbButton', array(
+			'label'=>'Eliminar',
+			'icon'=>'trash',
+			'url' => CController::createUrl('look/softDelete',array('id'=>$model->id)),
+		
+			//'buttonType' => 'ajaxButton',
+			
+			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			//'size'=>'large', // null, 'large', 'small' or 'mini'
+		)); ?>    	
     	<a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> 
     <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'label'=>'Editar',
@@ -83,7 +94,9 @@
 			'url' => CController::createUrl('look/view',array('id'=>$model->id)),
 			'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
-		)); ?>
+		));
+		
+		 ?>
     	
     	
     	<!-- <a href="" title="ver" class="btn btn-info" target="_blank"><i class="icon-eye-open icon-white"></i> Ver</a> -->

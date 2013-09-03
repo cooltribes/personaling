@@ -83,4 +83,9 @@ class LookEncantan extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        
+        
+        
+        
 }

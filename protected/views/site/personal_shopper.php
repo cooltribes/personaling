@@ -42,10 +42,14 @@
             <div id="b" class="items">
               <?php
  foreach($dataProvider->getData() as $record) {
+ 	
  ?>
               <?php	
 	$look = Look::model()->findByPk($record['id']);
+	//echo  $record['id'];
+	//echo Yii::app()->user->id;
 	if($look->matchOcaciones(User::model()->findByPk(Yii::app()->user->id))){
+		
 ?>
               <div class="span4">
                 <article class="item" >
@@ -73,7 +77,7 @@
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
-                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -107,7 +111,7 @@
 
       </div>
 
-       <div  class="btn btn-block span6 offset3"> <a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks</a>
+       <div  class="btn btn-block btn-morado-tiffany transition_all padding_xsmall span6 offset3"> <a class="color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks</a>
 
 
       </div>

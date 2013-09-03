@@ -90,6 +90,17 @@ function getMonthsArray()
           </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
+          <div class="control-group">
+            <label for="" class="control-label ">Estado: </label>  
+            <div class="controls">  
+                <?php echo CHtml::textField('Status', User::getStatus($model->status),
+                        array('disabled'=>'disabled',
+                              'id' => 'User_status',
+                              'class' => 'span2'));
+                //$form->textFieldRow($model,'status',array('class'=>'span5', 'value' => User::getStatus($model->status)));
+                //$form->dropDownListRow($model,'status', User::getStatus(),array('class'=>'span2')); 
+                                    ?> 
+            </div></div>
           <legend >Datos básicos: </legend>
           <?php 
 		$profileFields=$profile->getFields();
@@ -214,7 +225,7 @@ function getMonthsArray()
               </li>
               <li>
               	<?php
-              	
+              	 
 				echo CHtml::ajaxLink(
 					  "<i class='icon-user'></i> Hacer Personal Shopper",
 					  Yii::app()->createUrl( 'user/admin/toggle_ps' ,array('id'=>$model->id)),
@@ -245,7 +256,48 @@ function getMonthsArray()
               </li>
               <li><a href="#" title="Guardar"><i class="icon-bell"></i> Crear / Enviar Intivacion</a></li>
               <li><a href="#" title="Guardar"><i class="icon-bell"></i> Reenviar Invitación</a></li>
-              <li><a href="#" title="Desactivar"><i class="icon-off"></i> Desactivar</a></li>
+              
+              <li>
+                  
+                  <?php
+                  $text = ($model->status == User::STATUS_BANNED)? 'Desbloquear':'Bloquear';
+                  echo CHtml::ajaxLink(
+                      "<i class='icon-off'></i> {$text}",
+                      Yii::app()->createUrl('user/admin/toggle_banned', array('id' => $model->id)), 
+                      array(// ajaxOptions
+                      'type' => 'POST',
+                      'dataType' => 'json',
+                      'beforeSend' => "function( request )
+                                     {
+                                       // Set up any pre-sending stuff like initializing progress indicators
+                                     }",
+                      'success' => "function( data )
+                                  {     
+                                    
+                                    if (data.status == 'success'){
+                                        $('#User_status').val(data.user_status);
+                                        
+                                        var text = data.user_status == 'Bloqueado'? 'Desbloquear':'Bloquear';
+                                        var child = $('#ban_link').children();                                      
+                                        
+                                        $('#ban_link').html(child).append(' '+text);                                        
+                                    }
+                                    else if(data.status == 'error')
+                                    {
+                                        console.log(data.error);
+                                    }
+                                  }",
+                         
+                          ), 
+                          array(//htmlOptions
+                                'href' => Yii::app()->createUrl('user/admin/toggle_banned'),
+                                 'id' => 'ban_link'
+                          )
+                  );
+                  ?>
+              </li>
+              
+              
             </ul>
           </div>
         </div>

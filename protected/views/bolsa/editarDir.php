@@ -106,7 +106,7 @@
               <div class="controls">
               	
               	 <?php 
-              	 
+              	 /*
               	 if($dir->pais=="Venezuela"){
               	 	echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
               	 		array('options' => array(1 => array('selected'=>true))));
@@ -122,8 +122,11 @@
               	 		array('options' => array(3 => array('selected'=>true))));
               	 }
 	 	
-              	 
+              	 */
               	 ?>
+              	 
+              	  <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="Venezuela" />
+              	 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>

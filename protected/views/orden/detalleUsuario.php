@@ -8,7 +8,16 @@ $this->breadcrumbs=array(
 $usuario = User::model()->findByPk($orden->user_id); 
 
 ?>
-
+	<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1>
@@ -56,7 +65,31 @@ $usuario = User::model()->findByPk($orden->user_id);
         Estado actual</td>
       <td><p class="T_xlarge margin_top_xsmall"> 4 </p>
         Documentos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 4</p>
+        
+     <?php
+      $ind_tot = 0;
+	  $look_tot = 0;
+      $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+	
+		foreach ($compra as $tot) {
+			
+			if($tot->look_id == 0)
+			{
+				$ind_tot++;
+			}else{
+				
+				$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
+				foreach($lhp as $cada){
+					$look_tot++;	
+				}
+			}
+			
+		}
+      
+      ?>
+        
+        
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo ($ind_tot + $look_tot); ?></p>
         Prendas<br/></td>
       <td><p class="T_xlarge margin_top_xsmall"><?php 
       
@@ -358,21 +391,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	        <?php
 		}
         ?>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Etiqueta de direccion</td>
-          <td>1231234</td>
-        </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Orden de devolucion</td>
-          <td>45648</td>
-        </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Tarjeta de regalo</td>
-          <td>123546</td>
-        </tr>
+
       </table></div>
     </div>
   </div>
@@ -397,7 +416,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				if($prod->look_id != 0) // si es look
 				{
 
-					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+					$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 					
 					$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
 					$precio = $lookpedido->getPrecio(false);
@@ -431,7 +450,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				}
 				else // individual
 				{
-					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+					$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 					$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
 					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
 					
@@ -553,6 +572,41 @@ Para una futura iteración
         <div class="form-actions"><a href="#" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
       </form>
     </div>
+ * 
+ * */
+ ?>
+  <div class="span5">
+      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
+      
+  <?php
+      
+      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+      	
+		if(count($mensajes) > 0)
+		{
+			?>	
+			<ul class="media-list">
+			<?php
+				foreach($mensajes as $msj)
+				{
+					echo '<li class="media braker_bottom">
+          					<div class="media-body">';
+					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
+					echo '<p>'.$msj->cuerpo.'</p>';					
+				}
+			?>
+			</ul>
+			<?php
+		}
+		else {
+			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+		}
+      
+      ?>
+ 
+ 	</div>
+  <!--
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
       <ul class="media-list">
@@ -562,7 +616,7 @@ Para una futura iteración
             <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
             <!-- Nested media object --> 
-            
+    <!--         
           </div>
         </li>
         <li class="media braker_bottom">
@@ -571,7 +625,7 @@ Para una futura iteración
             <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
             <!-- Nested media object --> 
-            
+    <!--         
           </div>
         </li>
         <li class="media braker_bottom">
@@ -587,9 +641,8 @@ Para una futura iteración
     </div>
     
     
-  </div>
+ <!-- </div> 
  <!-- MENSAJES OFF --> 
-<?php */?>
 
 </div>
 <!-- /container --> 
@@ -703,8 +756,7 @@ else{
         </div>
       </div>
       <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
-      <p class="well well-small"> <strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>
+      <p class='text_align_center'><a title='Formas de Pago' href='".Yii::app()->baseUrl."/site/formas_de_pago'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
     </form>
   </div>
 </div>

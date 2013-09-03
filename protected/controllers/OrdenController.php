@@ -25,7 +25,7 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','detalles','validar','enviar','factura'),
+				'actions'=>array('index','admin','modalventas','detalles','validar','enviar','factura','mensajes'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -79,21 +79,139 @@ class OrdenController extends Controller
 	public function actionAdmin()
 	{
 		$orden = new Orden;
+                
+                //print_r($_POST);
+                //exit();
 		
 		if (isset($_POST['query']))
 		{
 			$dataProvider = $orden->filtrado($_POST['query']);
 		}
 		else
-			$dataProvider = $orden->search();		
+			$dataProvider = $orden->search();
+                
+                //Ordenar por fecha descendiente
+                $criteria = $dataProvider->getCriteria();
+                $criteria->order = 'fecha DESC';
+                $dataProvider->setCriteria($criteria);
+                
+                $filter = new Filter;
 		
 		$this->render('admin',
 		array('orden'=>$orden,
 		'dataProvider'=>$dataProvider,
+                    'filter' => $filter,
 		));
 
 	}
 	
+
+	public function actionModalventas($id){
+		$html='';
+		// $html=$html.'<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+  		$html=$html.'<div class="modal-header">';
+    	$html=$html.'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+    	$html=$html.'<h3>Vista de prendas pedidas</h3>';
+  		$html=$html.'</div>';
+  		$html=$html.'<div class="modal-body">';
+    	$html=$html.'';
+    	// Tabla ON
+    	//Header de la tabla ON
+   		$html=$html.'<div class="well well-small margin_top well_personaling_small"><h3>Pedido #'.$id.'</h3>';
+      	$html=$html.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
+        $html=$html.'<thead><tr>';
+        $html=$html.'<th scope="col">Nombre de la prenda</th>';
+        $html=$html.'<th scope="col">Cantidad</th>';
+        $html=$html.'<th scope="col">Precio por unidad</th>';
+        $html=$html.'<th scope="col">Precio total</th>';
+        $html=$html.'</tr>';
+        $html=$html.'</thead><tbody>';
+        //Header de la tabla OFF
+        //Cuerpo de la tabla ON
+        
+        $html=$html.'<tr>';
+        // Primera columna ON
+        $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
+        $html=$html.'<small><strong>Talla:</strong> M </small> ';
+        $html=$html.'</td>';
+        // Primera columna OFF
+        // Segunda columna ON
+        $html=$html.'<td>';
+		$html=$html.'5';
+        $html=$html.'</td>';
+        // Segunda columna OFF
+        // Tercera columna ON
+        $html=$html.'<td>';
+		$html=$html.'52,00 Bs.';
+        $html=$html.'</td>';
+        // Tercera columna OFF
+        // Cuarta columna ON
+        $html=$html.'<td>';
+		$html=$html.'104,00 Bs.';
+        $html=$html.'</td>';
+        // Cuarta columna OFF        
+
+        $html=$html.'<tr>';
+        
+        $html=$html.'<tr>';
+        // Primera columna ON
+        $html=$html.'<td><strong>Ruana</strong><br/> ';
+        $html=$html.'<small><strong>Color:</strong> Horrible </small> <br/>';
+        $html=$html.'<small><strong>Talla:</strong> 3 </small> ';
+        $html=$html.'</td>';
+        // Primera columna OFF
+        // Segunda columna ON
+        $html=$html.'<td>';
+		$html=$html.'5';
+        $html=$html.'</td>';
+        // Segunda columna OFF
+        // Tercera columna ON
+        $html=$html.'<td>';
+		$html=$html.'520,00 Bs.';
+        $html=$html.'</td>';
+        // Tercera columna OFF
+        // Cuarta columna ON
+        $html=$html.'<td>';
+		$html=$html.'1040,00 Bs.';
+        $html=$html.'</td>';
+        // Cuarta columna OFF        
+
+        $html=$html.'<tr>';
+
+        $html=$html.'<tr>';
+        // Primera columna ON
+        $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
+        $html=$html.'<small><strong>Talla:</strong> M </small> ';
+        $html=$html.'</td>';
+        // Primera columna OFF
+        // Segunda columna ON
+        $html=$html.'<td>';
+		$html=$html.'5';
+        $html=$html.'</td>';
+        // Segunda columna OFF
+        // Tercera columna ON
+        $html=$html.'<td>';
+		$html=$html.'52,00 Bs.';
+        $html=$html.'</td>';
+        // Tercera columna OFF
+        // Cuarta columna ON
+        $html=$html.'<td>';
+		$html=$html.'104,00 Bs.';
+        $html=$html.'</td>';
+        // Cuarta columna OFF        
+
+        $html=$html.'<tr>';        
+
+        //Cuerpo de la tabla OFF
+        $html=$html.'</tbody></table></div>';
+        // Tabla OFF
+  		$html=$html.'</div>';
+		echo $html;
+
+	}
+
 	public function actionDetalles($id)
 	{
 		$orden = Orden::model()->findByPk($id);
@@ -467,8 +585,7 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='form-actions'><a onclick='enviar()' class='btn btn-danger'>Confirmar Deposito</a></div>";
-      	$datos=$datos."<p class='well well-small'><strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>";
+      	$datos=$datos."<p class='text_align_center'><a title='Formas de Pago' href='".Yii::app()->baseUrl."/site/formas_de_pago'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>";
     	$datos=$datos."</form>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
@@ -585,6 +702,48 @@ class OrdenController extends Controller
 		}	
 		
 	}
+
+	public function actionMensajes()
+	{
+		$notificar = $_POST['notificar'];
+			
+		$mensaje = new Mensaje;
+		
+		$mensaje->asunto = $_POST['asunto'];
+		$mensaje->cuerpo = $_POST['cuerpo'];
+		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 1 visible, 0 no
+		$mensaje->user_id = $_POST['user_id'];
+		$mensaje->orden_id = $_POST['orden_id']; 
+		$mensaje->fecha =  date('Y-m-d H:i:s', strtotime('now'));
+		$mensaje->estado = 0; // sin leer
+		
+		if($mensaje->save())
+		{
+			if($notificar == 1) // pidió notificar por email 	
+			{
+				$usuario = User::model()->findByPk($_POST['user_id']); 
+				
+				$message = new YiiMailMessage;
+                $message->view = "mail_template";
+                $subject = 'Tienes un mensaje nuevo en Personaling';
+                $body = '<h2>Tienes un mensaje en Personaling.</h2>' . 
+                        '<br/><br/>' .
+                        'El Administrador del sistema te ha enviado un mensaje referente a tu compra <br/>'. 
+                        'Ingresa con tu usuario y revisa tus notificaciones.';
+				$params = array('subject' => $subject, 'body' => $body);
+                $message->subject = $subject;
+                $message->setBody($params, 'text/html');
+                $message->addTo($usuario->email);
+                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                Yii::app()->mail->send($message);	
+			}		
+			
+			Yii::app()->user->setFlash('success', 'Se ha enviado el mensaje correctamente.');
+			echo "ok";	
+		}	
+		
+	}
+		
 
 	// Uncomment the following methods and override them if needed
 	/*

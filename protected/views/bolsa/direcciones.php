@@ -26,11 +26,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       
 	  	$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
 	  ?>
+	  <?php if( count( $direcciones ) > 0 ){ ?>
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <fieldset>
             <legend >Direcciones utilizadas anteriormente: </legend>
             <?php
-            
+            }
             if(isset($direcciones)){
 	       		foreach($direcciones as $cadauna){
 	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
@@ -43,7 +44,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						'clientOptions'=>array(
 							'validateOnSubmit'=>true, 
 						),
-						'htmlOptions'=>array('class'=>'form-horizontal'),
+						'htmlOptions'=>array('class'=>'form-horizontal  direccion'.$cadauna->id ),
 					));
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
@@ -78,24 +79,26 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 					echo"
 		                <br/>
 		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>Editar</a> <br/>
-		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar'>Eliminar</a></p>
+		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar' data-loading-text='Eliminando...' id='eliminar".$cadauna->id."'>Eliminar</a></p>
 		              </div>
 		            </div>
-		            <hr/>
-			  		";
+			  		<div class='mensaje".$cadauna->id."' ></div>
+		            <hr/>";
 			  		
-			  	$this->endWidget();
-			  		
+			  		$this->endWidget();
+
 			  	}
 	  		}
 			else {
-			echo "<legend>No tiene direcciones registradas</legend>";					
+				echo "<legend>No tiene direcciones registradas</legend>";					
 			}
  	
       ?>
+ 	<?php if( count( $direcciones ) > 0 ){ ?>	      
        </fieldset>
-        </form>
-          </section>
+      </form>
+    </section>
+    <?php } ?>
 
       
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
@@ -194,15 +197,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             
               <div class="controls">
               	
-              	 <?php echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
-              	 /*
-				  * <select>
-                  <option>Venezuela</option>
-                  <option>Colombia</option>
-                  <option>USA</option>
-                </select>
-				  * */
-              	 ?>
+              	 <?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              	
+ 	 			 ?>
+ 	 			 
+ 	 			 <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="Venezuela" />
+ 	 			 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
@@ -233,7 +233,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 else
 {
 	// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
+	header('Location: /user/login');	
 }
 
 
@@ -245,19 +245,31 @@ else
 	{
 		
 	var idDireccion = id;
-
+	$("#eliminar"+id).button('loading'); // lanza mensaje de estado del boton eliminando
 	// llamada ajax para el controlador de bolsa	   
      	$.ajax({
 	        type: "post",
 	        url: "eliminardireccion", 
 	        data: { 'idDir':idDireccion }, 
 	        success: function (data) {
-	        	
 				if(data=="ok")
 				{
-					window.location.reload()
+					//Dirección eliminada exitosamente
+					$('.direccion'+id).replaceWith('<div class="alert alert-succes">Dirección eliminada exitosamente<a class="close" href="#" data-dismiss="alert">&times;</a></div>');						
 				}
-					
+				if(data=="bad")
+				{
+					//La dirección seleccionada no se puede eliminar
+					$(".mensaje"+id).addClass("alert alert-error");	
+					$(".mensaje"+id).text('Ésta dirección no se puede eliminar');
+				}
+				if(data=="wrong")
+				{
+					//La dirección no pudo ser eliminada
+					$(".mensaje"+id).addClass("alert alert-error");
+					$(".mensaje"+id).text('La dirección no pudo ser eliminada');	
+				}								
+	        	$("#eliminar"+id).button('reset');					
 	       	}//success
 	       })
 

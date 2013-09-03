@@ -89,16 +89,17 @@
                       <td class="w580" width="580"><repeater>
                           <layout label="Text only">
                             <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                              <tbody>
+                              <tbody width="580">
                                 <tr>
                                   <td class="w580" width="580"><p align="left" class="article-title">
                                       <singleline label="Title"><?php //echo $subject; ?></singleline>
                                     </p>
-                                    <div align="left" class="article-content">
-                                      <multiline label="Description">
+                                    <div align="left" width="580" class="article-content w580" style=" word-wrap: break-word; width: 580px;">
+                                      <multiline label="Description" width="580">
                                       <?php echo $body; ?>
-</multiline>
-                                    </div></td>
+                                      </multiline>
+                                    </div>
+                                  </td>
                                 </tr>
                                 <tr>
                                   <td class="w580" width="580" height="10"></td>

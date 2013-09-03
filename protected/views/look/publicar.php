@@ -45,12 +45,14 @@ $this->breadcrumbs=array(
           <tr>
             <td>
             	<?php
+					/*
 					if ($producto->mainimage)
 					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => 70, "height" => 70));
 					else 
 					$image = CHtml::image("http://placehold.it/180");	
 					echo $image;
-					
+					*/
+					echo CHtml::image($producto->getImageUrl($hasproducto->color_id), "Imagen", array("width" => "70", "height" => "70"));
 				?>
             	
             </td>
@@ -108,13 +110,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <?php if (Yii::app()->user->isAdmin()){ ?>
-        <!-- Para el admin ON -->
         <div class="control-group ">
           <div class="controls">
              <?php echo $form->checkBoxRow($model, 'destacado'); ?>
              <?php echo $form->error($model,'destacado'); ?>
           </div>
-        </div>
+        </div>        
+        <!-- Para el admin ON 
+        
+
         <div class="control-group ">
           <div class="controls">
             <label class="checkbox">
@@ -162,8 +166,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </select>
           </div>
         </div>
-        <!-- Para el admin OFF -->
+        
+         Para el admin OFF -->
         <?php  } ?>
+        
         <hr/>
         <div id="div_ocasiones">
         <h4>¿En que ocasión se puede usar este look?</h4>
@@ -177,10 +183,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					
 		?>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos_ocasiones" >
           <label class="control-label required"><?php echo $categoria->nombre; ?>:</label>
           <div class="controls">
             <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => $categoria->childrenButtons($model->getCategorias()),
 				)); ?>
@@ -216,11 +224,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <div id="div_tipo">
         <h4>Escoge al tipo de usuaria que favorece</h4>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿A qué tipo de cuerpo le favorece más?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->contextura),
 				)); ?>
@@ -229,12 +239,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Con qué color de cabello quedaría mejor?</label>
           <div class="controls">
           		
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->pelo),
 				)); ?>
@@ -244,11 +256,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Cuánto debe medir la mujer que use este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->altura),
 				)); ?>
@@ -257,11 +271,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Con qué color de ojos queda mejor?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->ojos),
 				)); ?>
@@ -270,11 +286,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Qué tipo de cuerpo debería usarlo?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->tipo_cuerpo),
 				)); ?>
@@ -283,11 +301,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
+        	<input type="checkbox" class="select_todos" >
           <label class="control-label required">¿Qué color de piel se adapta mejor a este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
+            'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
 				    'buttons' => Profile::rangeButtons($field->range,$model->piel),
 				)); ?>
@@ -322,6 +342,39 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </div>
 <?php 
 $script = "
+	$('.select_todos_ocasiones').on('click',function(e){
+		if ($(this).is(':checked')){
+			$(this).parent().find('.btn').addClass('active');
+		}
+		else {
+			$(this).parent().find('.btn').removeClass('active');
+		}
+		var ids = '';
+		$('#div_ocasiones .active').each(function(){
+			ids += $(this).attr('href');
+		});
+		//alert(ids);
+		$('#categorias').val(ids.substring(1));
+		$('#Look_has_ocasiones').val(ids.substring(1));			
+	});
+	
+	$('.select_todos').on('click',function(e){
+		if ($(this).is(':checked')){
+			$(this).parent().find('.btn').addClass('active');
+			 var ids = 0;
+			$(this).parent().find('.btn').each(function(index){
+				ids += parseInt($(this).attr('href').substring(1));
+			});
+			$(this).parent().find('.btn').parent().next('input').val(ids);
+			
+		}
+		else {
+			$(this).parent().find('.btn').removeClass('active');
+			$(this).parent().find('.btn').parent().next('input').val(0);
+			
+		}
+	});
+	
 	$('#div_ocasiones').on('click', 'a', function(e) {
 		 
 		 var ids = '';

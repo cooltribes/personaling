@@ -33,6 +33,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 		  	foreach ($bolsa->looks() as $look_id){
 		  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
 				$look = Look::model()->findByPk($look_id);
+				if(isset($look)){
 				$total_look++;
 				
 				 
@@ -55,7 +56,10 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                 	$color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
 					$talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
 					$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-					$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+					//$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+					$doblimg= CHtml::image($producto->getImageUrl($productotallacolor->preciotallacolor->color_id), "Imagen", array("width" => "70", "height" => "70"));
+					
+					
                 	//$test = PrecioTallaColor::model()->findByPK($productotallacolor->preciotallacolor->id);
 					//if(isset($test)){
 					//	echo $test->color_id;
@@ -74,11 +78,13 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                 	?>
                 <tr>
                   <?php
-                  if($imagen){					  	
-						$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-						echo "<td>".$aaa."</td>";
+                  if($doblimg){					  	
+						//$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+						echo "<td>".$doblimg."</td>";
+						
 					}else{
 						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+						
 					}
 					?>
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
@@ -98,7 +104,8 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
             <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
           </div>
           <!-- Look OFF -->
-          <?	 
+          <?php
+          }	 
 			}
 		  }
 
@@ -130,19 +137,28 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				  
 	                  foreach($bptcolor as $detalles) // cada producto en la bolsa
 					  {
-					  	$todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);
+					  	$todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);
 						
-					  		$producto = Producto::model()->findByPk($todo->producto_id);
+							$producto = Producto::model()->findByPk($todo->producto_id);
 					  		$talla = Talla::model()->findByPk($todo->talla_id);
 					  		$color = Color::model()->findByPk($todo->color_id);
 							
-							$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+							// $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
+							$imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
 					
 							echo "<tr>";		
 							
-					if($imagen){					  	
-						$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-						echo "<td>".$aaa."</td>";
+					if($imagen){
+						
+						$con = 0;
+						
+						foreach($imagen as $ima){
+							if($con == 0){	
+								$con++;						  	
+								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+								echo "<td>".$aaa."</td>";
+							}
+						}
 					}else
 						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 							
@@ -205,22 +221,34 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					var st = $(window).scrollTop();
 					var ot = $("#scroller-anchor").offset().top;
 					var s = $("#scroller");
-					if(st > ot) {
-						s.css({
-							position: "fixed",
-							top: "70px"
-						});
-					} else {
-						if(st <= ot) {
+					if( (st + 600) <= ($(document).height() -  $('#wrapper_footer footer').height()) ){
+						console.log()
+						if(st > ot ) {
 							s.css({
-								position: "relative",
-								top: "0"
+								position: "fixed",
+								top: "70px"
 							});
+						} else {
+							if(st <= ot ) {
+								s.css({
+									position: "relative",
+									top: "0"
+								});
+							}
 						}
 					}
+					else{
+						console.log("chao");	
+						var Hcotenido = ( ($(document).height() -  $('#wrapper_footer footer').height()) - 792 ).toString() + "px";
+						s.css({
+							position: "relative",
+							top: Hcotenido
+						});							
+					}
 				};
+				
 				$(window).scroll(move);
-				move();
+
 			}
 		</script>
           <div id="scroller-anchor"></div>
@@ -304,10 +332,12 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                         <th class="text_align_left">Productos:</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
                       </tr>
+                      <?php if($totalDe != 0){ // si no hay descuento ?> 
                       <tr>
                         <th class="text_align_left">Descuento:</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
                       </tr>
+                      <?php } ?>
                       <tr>
                         <th class="text_align_left">I.V.A. (12%):</th>
                         <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
@@ -330,18 +360,18 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				?>
                     <?php
                 	
-                	if($total_look!=0)
-					{
-						echo '<div class="alert alert-info margin_top_small">';
-						echo "Con la compra  del Look completo estas ahorrando 184 Bs.";
-						echo '</div>';
+     //            	if($total_look!=0)
+					// {
+					// 	echo '<div class="alert alert-info margin_top_small">';
+					// 	echo "Con la compra  del Look completo estas ahorrando 184 Bs.";
+					// 	echo '</div>';
 
-					}
+					// }
                 	
                 	?>
                   </div>
                 </div>
-                <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+                <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day'));?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
               </div>  
           
           
@@ -350,7 +380,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
             <script type="text/javascript"> 
 		// Script para dejar el sidebar fijo Parte 2
 			$(function() {
-				moveScroller();
+				if ($(window).scrollTop() < 430) {
+					moveScroller();
+				}
 			 });
 		</script> 
           <!-- SIDEBAR OFF --> 
@@ -375,13 +407,11 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
   ?>
 </div>
 <?php
-
-}// si esta logueado
-else
-	{
+// si esta logueado
+} else{
 		// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
-	}
+	header('Location: /user/login');	
+}
 ?>
 <!-- /container --> 
 

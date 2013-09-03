@@ -19,9 +19,11 @@
       <td><small><?php echo $data->email; ?><br/>
         <strong>Telf.</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
         <strong>Ciudad</strong>: <?php echo $data->profile->ciudad; ?> <br/>
-        <?php if($data->status == 0){ ?>
+        <?php if($data->status == User::STATUS_NOACTIVE){ ?>
         <strong class="text-warning text-center">Cuenta no validada</strong>
-        <?php } ?>          
+        <?php }else if($data->status == User::STATUS_BANNED){ ?>          
+        <strong class="text-error text-center">Cuenta bloqueada</strong>
+        <?php } ?>   
      </small>
         
 
@@ -37,7 +39,7 @@
           <!-- Link or button to toggle dropdown -->
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
             <li>
-        <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver',array("admin/view","id"=>$data->id)); ?>            
+        <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver',array("profile/perfil","id"=>$data->id)); ?>            
             </li>
       <li>
         

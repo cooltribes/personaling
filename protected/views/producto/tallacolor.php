@@ -46,7 +46,7 @@ $this->breadcrumbs=array(
               </div>
               </div>
             <div class="control-group">
-              <label class="control-label required">Ropa</label>
+              <label class="control-label required">Camisas</label>
               <div class="controls">
                 <!-- 
                 <div class="btn-group" data-toggle="buttons-checkbox">
@@ -95,7 +95,7 @@ $this->breadcrumbs=array(
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label required">Ropa</label>
+              <label class="control-label required">Vestidos</label>
               <div class="controls">
                 
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -297,7 +297,7 @@ $this->breadcrumbs=array(
 		    'buttonType'=>'ajaxButton',
 		    'type'=>'primary',
 		    'label'=>'Generar',
-		    'loadingText'=>'loading...',
+		    'loadingText'=>'Cargando...',
 		    'url'=>array('producto/addtallacolor'),
 		    'htmlOptions'=>array('id'=>'buttonStateful'),
 		    'ajaxOptions'=>array(
@@ -321,8 +321,13 @@ $this->breadcrumbs=array(
                      'success' => "function( data )
 		                  {
 		                    // handle return data
-		                    //alert( data );
 		                    $('#fieldset_tallacolor').html(data);
+							$('.sku').each(function(){
+							    if($.trim($(this).val()) == ''){
+							    	console.log( $(this).$(':parent').addClass('success'));
+							        $(this).$(':parent').addClass('success');
+							    }
+							});			                    
 		                  }",
 		                  'data'=>array('id'=>$model->id),
 			),
@@ -392,7 +397,9 @@ $this->breadcrumbs=array(
 				                   data = JSON.parse( data );
 				                   if(data.status=='success'){
 				                        $('.error').hide();
-				                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+				                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+				                        $('#MensajeError').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+
 									}else{
 										id = data.id;
 										delete data['id'];
@@ -411,91 +418,45 @@ $this->breadcrumbs=array(
 				?> 
                 <ul class="nav nav-stacked nav-tabs margin_top">
                     <li>
-                    	
-                 <?php 
-		 
-<<<<<<< HEAD
-					echo CHtml::ajaxLink(
-					 "Guardar y avanzar",
-					CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
-					  array( // ajaxOptions
-					    'type' => 'POST',
-					    'beforeSend' => "function( request )
-					                     {
-											$('#fieldset_tallacolor input').each(function(){
-										    if($.trim($(this).val()) == ''){
-										        alert('Vacio');
-										    }
-											});					                     	
-					                     
-					                     }",
-					    'success' => "function( data )
-					                  {
-						                   data = JSON.parse( data );
-						                   if(data.status=='success'){
-						                   		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
-						                        //$('.error').hide();
-						                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
-											}else{
-												id = data.id;
-												delete data['id'];
-						                        $.each(data, function(key, val) {
-						                        	key_tmp = key.split('_');
-													key_tmp.splice(1,0,id);
-						                        	key = key_tmp.join('_');
-							                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
-							                        $('#Tallacolor-Form #'+key+'_em_').show();
-						                        });
-											}
-					                  }",
-					    'data' => "js:$('#Tallacolor-Form').serialize()",
-					  ),
-					  array( //htmlOptions
-					    'href' => CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
-					  ),
-					  array('id'=>'buttonGuardar')
-					);		 
-
-
-=======
-		 
->>>>>>> parent of 4e35f53... Modificando mensaje de cambios en talla color como admin
+                    	<a id="guardaravanzar" href="#"  title="Guardar y avanzar" >Guardar y avanzar</a>
+                 <?php 		 		 
 				   
-				    echo CHtml::ajaxLink(
-					  "Guardar y avanzar",
-					 CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
-					  array(
+				//     echo CHtml::ajaxLink(
+				// 	  "Guardar y avanzar",
+				// 	 CController::createUrl('producto/tallacolor',array('id'=>$model->id)),
+				// 	  array(
 				   
-				    	    'type' => 'POST',
-				    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
-		                    'success' => "function( data )
-				                  {
+				//     	    'type' => 'POST',
+				//     	    'data'=> "js:$('#Tallacolor-Form').serialize()",
+		  //                   'success' => "function( data )
+				//                   {
 
-				                   data = JSON.parse( data );
-				                   if(data.status=='success'){
-				                   		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
-				                        //$('.error').hide();
-				                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
-									}else{
-										id = data.id;
-										delete data['id'];
-				                        $.each(data, function(key, val) {
-				                        	key_tmp = key.split('_');
-											key_tmp.splice(1,0,id);
-				                        	key = key_tmp.join('_');
-					                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
-					                        $('#Tallacolor-Form #'+key+'_em_').show();
-				                        });
-									}
-				                  }",
-					),
-					array('id'=>'buttonGuardar')
-				); 
+				//                    data = JSON.parse( data );
+				//                    if(data.status=='success'){
+				//                    		window.location.href = '".Controller::createUrl('producto/imagenes',array('id'=>$model->id))."';
+				//                         //$('.error').hide();
+				//                         //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+				// 					}else{
+				// 						id = data.id;
+				// 						delete data['id'];
+				//                         $.each(data, function(key, val) {
+				//                         	key_tmp = key.split('_');
+				// 							key_tmp.splice(1,0,id);
+				//                         	key = key_tmp.join('_');
+				// 	                        $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+				// 	                        $('#Tallacolor-Form #'+key+'_em_').show();
+				//                         });
+				// 					}
+				//                   }",
+				// 	),
+				// 	array('id'=>'buttonGuardar')
+				// ); 
 		
 				?>                     	
                     </li>
                     <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar</a></li>
+                    <li id='MensajeError'></li>
                     <!-- <li><a href="#" title="Duplicar">Duplicar Producto</a></li> -->
                     <!-- <li><a href="#" title="Guardar"><i class="icon-trash"> </i> Borrar Producto</a></li> -->
                 </ul>
@@ -520,6 +481,22 @@ $this->breadcrumbs=array(
   </div>
 </div>
 <!-- /container --> 
+<!-- MODAL WINDOW CONFIRMACION ON -->
+<div id="myModalConfirmacion" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Confirmación</h3>
+  </div>
+  <div class="modal-body">
+    <p>Algunos campos de código SKU están vacios, las combinaciones sin SKU no se guardaran</p>
+    <p>¿Desea continuar?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+    <button class="btn btn-danger si" data-loading-text="Cargando...">Si</button>
+  </div>
+</div>
+<!-- MODAL WINDOW CONFIRMACION OFF -->
 
 <!------------------- MODAL WINDOW ON -----------------> 
 
@@ -602,3 +579,62 @@ $script = "
 ";
 ?>
 <?php Yii::app()->clientScript->registerScript('botones',$script); ?>
+
+
+<!-- Script mensaje de confirmación ON -->
+<script type="text/javascript">
+
+$('#guardaravanzar').on('click',function(){
+
+	var campoVacio = false;
+	$('.sku').each(function(){
+	    if($.trim($(this).val()) == ''){
+	        campoVacio = true;
+	    }
+	});	
+
+	if(campoVacio){
+		$('#myModal').modal({
+			 keyboard: false
+		});
+		$('#myModalConfirmacion').modal('toggle');
+
+		$('#myModalConfirmacion .si').click(function(e){ 
+			handlerAjax();		
+		});
+	}	
+	else{
+		handlerAjax();
+	}
+
+});
+
+function handlerAjax(){
+	$.ajax({
+	'type':'POST',
+	'success':function( data )
+	{
+       data = JSON.parse( data );
+       if(data.status=='success'){
+       		window.location.href = '/site/producto/imagenes/1';
+            //$('.error').hide();
+            //$('#yw0').html('<div class="alert in alert-block fade alert-success">Se guardaron las cantidades</div>');
+		}else{
+			id = data.id;
+			delete data['id'];
+            $.each(data, function(key, val) {
+            	key_tmp = key.split('_');
+				key_tmp.splice(1,0,id);
+            	key = key_tmp.join('_');
+                $('#Tallacolor-Form #'+key+'_em_').text(val);                                                    
+                $('#Tallacolor-Form #'+key+'_em_').show();
+            });
+		}
+	},
+	'data':$('#Tallacolor-Form').serialize(),
+	'url':'/site/producto/tallacolor/1',
+	'cache':false});
+	return false;
+}
+</script>
+<!-- Script mensaje de confirmación OFF -->

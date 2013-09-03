@@ -239,7 +239,7 @@
 			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-        <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
+       <br/>
        		<div id="looks" class="clearfix hidden-phone">
        		</div>
         </div>
@@ -266,7 +266,7 @@ $(document).ready(function(){
 	
 	var uno;
 	
-	for(uno=0; uno<2; uno++)
+	for(uno=0; uno<4; uno++)
 	{
 		dosel.push(randomFrom(todos));	
 	}
@@ -278,13 +278,16 @@ $(document).ready(function(){
 	        type: "post",
 	        url: "imageneslooks", // action 
 	        dataType:"json",
-	        data: { 'pro1':todos[dosel[0]], 'pro2':todos[dosel[1]]}, 
+	        data: { 'pro1':todos[dosel[0]], 'pro2':todos[dosel[1]], 'pro3':todos[dosel[2]], 'pro4':todos[dosel[3]]}, 
 	        success: function (data) {
 				
 				if(data.status=="ok")
 				{
-
-					$('#looks.clearfix').prepend(data.datos);
+					if(data.datos != ""){
+						 $('#looks.clearfix').prepend(data.datos);
+						 $('#looks.clearfix').prepend('<h5 class="hidden-phone">Looks con estas prendas:</h5>');
+					}
+					
 				//	$("#looks").html(cont); // cambiando el div
 					
 				}

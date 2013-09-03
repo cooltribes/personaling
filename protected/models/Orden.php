@@ -171,6 +171,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('seguro',$this->seguro);
 		
 		$criteria->addCondition('estado != 6');
+                $criteria->order = 'fecha DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

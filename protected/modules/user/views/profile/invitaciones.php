@@ -1,4 +1,7 @@
 <?php
+
+/** @var $form bootstrap.widgets.TbActiveForm */
+
 $create_time = strtotime($model->create_at);
 $create_date = date('j M Y', $create_time);
 ?>
@@ -17,52 +20,52 @@ $create_date = date('j M Y', $create_time);
                     <li class="nav-header">Opciones de edición</li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tu perfil</a>
                         <ul class="dropdown-menu">
-                            <li> <a href="/site/user/profile/edit">Datos Personales</a> </li>
-                            <li> <a href="/site/user/profile/avatar">Avatar</a> </li>
-                            <li> <a href="/site/user/profile/edittutipo">Tu Tipo</a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edit">Datos Personales</a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/avatar">Avatar</a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittutipo">Tu Tipo</a> </li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tus Pedidos </a>
                         <ul class="dropdown-menu">
-                            <li> <a href="/site/orden/listado" title="Tus pedidos activos">Pedidos Activos</a></li>
-                            <li> <a href="/site/orden/listado" title="Tus pedidos nuevos y anteriores">Historial de Pedidos</a></li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/orden/listado" title="Tus pedidos activos">Pedidos Activos</a></li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/orden/listado" title="Tus pedidos nuevos y anteriores">Historial de Pedidos</a></li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tu Estilo </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/site/user/profile/edittuestilo/id/coctel" title="Edita tu estilo Coctel">Coctel</a></li>
-                            <li><a href="/site/user/profile/edittuestilo/id/fiesta" title="Edita tu estilo Fiesta">Fiesta</a></li>
-                            <li><a href="/site/user/profile/edittuestilo/id/playa" title="Edita tu estilo Playa">Playa</a></li>
-                            <li><a href="/site/user/profile/edittuestilo/id/Sport" title="Edita tu estilo Sport">Sport</a></li>
-                            <li><a href="/site/user/profile/edittuestilo/id/trabajo" title="Edita tu estilo Trabajo">Trabajo</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/coctel" title="Edita tu estilo Coctel">Coctel</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/fiesta" title="Edita tu estilo Fiesta">Fiesta</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/playa" title="Edita tu estilo Playa">Playa</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/Sport" title="Edita tu estilo Sport">Sport</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/trabajo" title="Edita tu estilo Trabajo">Trabajo</a></li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Tus Encantos/Favoritos </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/site/user/profile/looksencantan" title="Looks que te encantan">Looks</a></li>
-                            <li><a href="/site/user/profile/encantan" title="Productos que te encantan">Productos</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/looksencantan" title="Looks que te encantan">Looks</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/encantan" title="Productos que te encantan">Productos</a></li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Correo electrónico y contraseña </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/site/user/profile/changeemail" title="Cambia tu correo electrónico">Cambiar correo electrónico</a></li>
-                            <li><a href="/site/user/profile/changepassword" title="Cambia tu contraseña">Cambiar Contraseña</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/changeemail" title="Cambia tu correo electrónico">Cambiar correo electrónico</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/changepassword" title="Cambia tu contraseña">Cambiar Contraseña</a></li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Notificaciones </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/site/user/profile/direcciones" title="Gestiona tus direcciones">Gestionar direcciones de Envíos y Pagos.</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/direcciones" title="Gestiona tus direcciones">Gestionar direcciones de Envíos y Pagos.</a></li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Libreta de Direcciones </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/site/user/profile/direcciones" title="Gestiona tus direcciones">Gestionar direcciones de Envíos y Pagos.</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/direcciones" title="Gestiona tus direcciones">Gestionar direcciones de Envíos y Pagos.</a></li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Privacidad </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/site/user/profile/privacidad" title="Cambia tu Informaciósn pública">Información pública</a></li>
-                            <li><a href="/site/user/profile/delete" title="Eliminar Cuenta">Eliminar Cuenta</a> </li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/privacidad" title="Cambia tu Informaciósn pública">Información pública</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/delete" title="Eliminar Cuenta">Eliminar Cuenta</a> </li>
                         </ul>
                     </li>
                 </ul>
@@ -88,29 +91,62 @@ $create_date = date('j M Y', $create_time);
                         <div onclick="invite_friends_twitter()" style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a>Invítalos usando Twitter</a></div>
                     </div>
                 </div>
-                <form  class="form-stacked braker_horz_top_1 no_margin_bottom">
+                <?php 
+                      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                          'id'=>'emailInvite-form',
+                          'action' => $this->createUrl('sendEmailInvs'),
+                          'htmlOptions'=>array('class'=>'form-stacked braker_horz_top_1 no_margin_bottom'),
+                      ));
+                ?>
+<!--                <form  class="form-stacked braker_horz_top_1 no_margin_bottom">-->
                     <fieldset>
                         <legend >O invítal@s por correo electrónico: </legend>
                         <div class="row">
-                        <div class="span5">
+                        <div class="span5">                            
                             <div class="control-group">
                                 <label class="control-label required">Ingresa los emails de tus amig@s: </label>
                                 <div class="controls">
-                                    <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="correoelectronico@cuenta.com" name="RegistrationForm[email]" class="span5">
+                                    <?php
+                                    $this->widget('application.extensions.BulkMail.BulkMail',
+                                            array(
+                                                'model' => $model,
+                                                'field' => 'emailList',
+                                                'form' => $form,
+                                                'cssInputNew' => ''
+                                                
+
+                                            )
+                                    );
+                                    ?>
+                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> Debes ingresar al menos una dirección email </span>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label  class="control-label required">Escribe un mensaje personal: </label>
+                                <label class="control-label required">Escribe un mensaje personal: </label>
                                 <div class="controls">
-                                    <textarea class="span5" rows="4">Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.</textarea>
-                                </div>
-                            </div>
+                                    <?php 
+                                   echo CHtml::textArea('invite-message',
+                                   'Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.',
+                                   array('class' => 'span5', 'rows' => '4'));
+                                   ?>
+                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
+                                </div>    
+                            </div>                            
                         </div>
                         <div class="span3"><img src="<?php echo Yii::app()->baseUrl; ?>/images/img_libreta.jpg" width="240" height="240" alt="Correos"></div></div>
-                        <div class="form-actions"> <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Enviar invitaciones</a> </div>
+                        <div class="form-actions"> 
+                            <a id="enviarInvitaciones" class="btn-large btn btn-danger">Enviar invitaciones</a> 
+                            <?php /*$this->widget('bootstrap.widgets.TbButton', array(
+                                                'buttonType'=>'submit',
+                                                'label'=>'Enviar invitaciones',
+                                                'htmlOptions' => array(
+                                                    'class' => 'btn-large btn-danger'
+                                                ),
+                                                ));*/ ?>
+                        </div>
                     </fieldset>
-                </form>
-                
+<!--                </form>-->
+                <?php $this->endWidget(); ?>
               
                 
             </div>
@@ -281,3 +317,49 @@ $create_date = date('j M Y', $create_time);
 		}*/
 	}
 </script>
+<script type="text/javascript">
+/*<![CDATA[*/
+    $('#enviarInvitaciones').click(function(ev){
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $this->createUrl('sendEmailInvs') ?>',
+            dataType: 'json',
+            data: $('#emailInvite-form').serialize(),
+            success: function(data){
+                console.log(data);
+                if(data.status === "success"){                    
+                    window.location = data.redirect;
+                }
+                
+            },
+            beforeSend: function(){                
+                var result = true;
+                
+                var emails = $('input[type=hidden]').filter('[name*="emailList"]');                
+                //si no hay emails
+                if(!emails.size()){
+                 $('#emailInvite-form_bulkEmailList').parent().parent().addClass('error');
+                 $('#User_emails_em_').show();               
+                    
+                 result = false;   
+                }
+                
+                //Si no hay mensaje
+//                var message = $('#invite-message');
+//                if(message.val() === ""){
+//                    message.parent().parent().addClass('error');
+//                    $('#invite_mess_em_').show();               
+//                    result = false;   
+//                }
+                
+                return result;               
+            },
+            error: function(jqXHR, textStatus, error){
+                console.log("Error: \n");
+                console.log(jqXHR.responseText);
+            }
+            });
+    });
+/*]]>*/
+</script>
+    

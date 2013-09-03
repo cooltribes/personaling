@@ -41,17 +41,26 @@ class BolsaController extends Controller
 	public function actionIndex()
 	{
 		$usuario = Yii::app()->user->id;
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
-		if (!is_null($bolsa)){
-			echo $bolsa->actualizar();
-			
-		} else {
-			$bolsa = new Bolsa;
-			$bolsa->user_id = $usuario;
-			$bolsa->save();
-		}
 		
-		$this->render('bolsa', array('bolsa' => $bolsa)); 
+		if(!Yii::app()->user->isGuest){
+					
+			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+			
+			if (!is_null($bolsa)){
+				echo $bolsa->actualizar();
+				
+			} else {
+				$bolsa = new Bolsa;
+				$bolsa->user_id = $usuario;
+				$bolsa->save();
+			}
+			
+			$this->render('bolsa', array('bolsa' => $bolsa)); 
+		}
+		else{
+			$this->redirect(array('/user/login'));
+		}
+	
 	}
 
 
@@ -73,14 +82,14 @@ class BolsaController extends Controller
 			$bolsa->save();
 		}
 		if (isset($_POST['look_id'])){
-			foreach($_POST['producto'] as $key => $value){
-				list($producto_id,$color_id) = split("_",$value);
+			foreach($_POST['producto'] as $key => $value){ 
+				list($producto_id,$color_id) = explode("_",$value);
 				echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 			}
 		} else {
 			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
 		}
-		 /*	
+		 /*	 
 		$usuario = Yii::app()->user->id;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 		
@@ -172,7 +181,7 @@ class BolsaController extends Controller
 		
 			$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
 			
-			$pr = PrecioTallaColor::model()->findByPk($_POST['prtc']);
+			$pr = Preciotallacolor::model()->findByPk($_POST['prtc']);
 			
 			$mientras = $pr->cantidad;
 			if(($mientras - $_POST['cantidad']) < 0){
@@ -318,10 +327,10 @@ class BolsaController extends Controller
 								//descontando del inventario
 								foreach($productosBolsa as $prod)
 								{
-									$uno = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id);
+									$uno = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id);
 									$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
 									
-									PrecioTallaColor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+									Preciotallacolor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
 									// descuenta y se repite									
 								}
 								
@@ -411,12 +420,29 @@ class BolsaController extends Controller
 		
 		public function actionEliminardireccion()
 		{
-			if(isset($_POST['idDir']))
-			{
-				$direccion = Direccion::model()->findByPk($_POST['idDir']);
-				$direccion->delete();
+			// if(isset($_POST['idDir']))
+			// {
+			// 	$direccion = Direccion::model()->findByPk($_POST['idDir']);
+			// 	$direccion->delete();
 				
-				echo "ok";
+			// 	echo "ok";
+			// }
+			$id = $_POST['idDir'];
+			$direccion = Direccion::model()->findByPk( $id  );
+			$user = User::model()->findByPk( Yii::app()->user->id );
+			if($user){
+				$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
+				$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
+				
+				if($facturas1 == 0 && $facturas2 == 0){
+					if($direccion->delete()){
+						echo "ok";
+					}else{
+						echo "wrong";
+					}
+				}else{
+					echo "bad";
+				}
 			}
 		}
 		
@@ -609,8 +635,8 @@ class BolsaController extends Controller
 									$tarjeta = new TarjetaCredito;
 								
 									$tarjeta->nombre = $_POST['nom'];
-									$tarjeta->numero = $_POST['num'];
-									$tarjeta->codigo = $_POST['cod'];
+									$tarjeta->numero = $detalle->nTarjeta;
+									$tarjeta->codigo = $detalle->codigo;
 									$tarjeta->vencimiento = $exp;
 									$tarjeta->direccion = $_POST['dir'];
 									$tarjeta->ciudad = $_POST['ciud'];
@@ -650,22 +676,53 @@ class BolsaController extends Controller
 						}
 						else // escogio una tarjeta
 						{
-							/*
-							 * 	$detalle->nTransferencia = $_POST['id_transaccion'];
-								$detalle->nombre = $dirEnvio->nombre.' '.$dirEnvio->apellido;
-								$detalle->cedula = $dirEnvio->cedula;
+							
+							$card = TarjetaCredito::model()->findByPk($_POST['idCard']);
+							$usuario = Yii::app()->user->id; 
+							
+							$data_array = array(
+								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
+								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
+								"CardHolder"=>$card->nombre, // NOMBRE EN TARJETA
+								"CardNumber"=>$card->numero, // NUMERO DE TARJETA
+								"CVC"=>$card->codigo, //CODIGO DE SEGURIDAD
+								"ExpirationDate"=>$card->vencimiento, // FECHA DE VENCIMIENTO
+								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+								"Address"=>$card->direccion, // DIRECCION
+								"City"=>$card->ciudad, // CIUDAD
+								"ZipCode"=>$card->zip, // CODIGO POSTAL
+								"State"=>$card->estado, //ESTADO
+							);
+							
+						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
+							
+							if($output->code == 201){ // PAGO AUTORIZADO
+							
+								$detalle = new Detalle;
+							
+								$detalle->nTarjeta = $card->numero;
+								$detalle->nTransferencia = $output->id;
+								$detalle->nombre = $card->nombre;
+								$detalle->codigo = $card->codigo;
+								$detalle->vencimiento = $card->vencimiento;
 								$detalle->monto = $_POST['total'];
 								$detalle->fecha = date("Y-m-d H:i:s");
 								$detalle->banco = 'TDC';
+								$detalle->estado = 1; // aceptado
 								
-								$detalle->estado = 0;
-								
-								$detalle->save();
-							 * 
-							 * */
-
-						}
+								if($detalle->save()){
+									// cuando finalice entonces envia id de la orden para redireccionar
+									echo CJSON::encode(array(
+										'status'=> $output->code, // paso o no
+										'mensaje' => $output->message,
+										'idDetalle' => $detalle->id										
+									));
+								}
 					
+							}
+						}
+
+
 					}
 
 	
@@ -792,7 +849,7 @@ class BolsaController extends Controller
 									$prorden->cantidad = $prod->cantidad;
 									$prorden->look_id = $prod->look_id;
 									
-									$prtc = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
+									$prtc = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
 									$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
 									
 									if($prod->look_id == 0){ // no es look
@@ -811,10 +868,10 @@ class BolsaController extends Controller
 								//descontando del inventario
 								foreach($productosBolsa as $prod)
 								{
-									$uno = PrecioTallaColor::model()->findByPk($prod->preciotallacolor_id);
+									$uno = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id);
 									$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
 									
-									PrecioTallaColor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+									Preciotallacolor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
 									// descuenta y se repite									
 								}
 								
@@ -1083,7 +1140,7 @@ class BolsaController extends Controller
 			foreach($tarjetas as $cada){
 				
 				$datos=$datos.'<tr>';
-				$datos=$datos.'<td><input type="radio" name="optionsRadios" id="'.$cada->id.'" value="option1" ></td>';
+				$datos=$datos.'<td><input class="radioss" type="radio" name="optionsRadios" id="tarjeta" value="'.$cada->id.'" ></td>';
 				$datos=$datos.'<td><i class="icon-picture"></i></td>';
 				$datos=$datos.'<td>Mastercard</td>';
 				
@@ -1105,7 +1162,7 @@ class BolsaController extends Controller
 			}	
 			
 		
-		$datos=$datos.'<button type="button" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>';
+		$datos=$datos.'<button type="button" id="nueva" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>';
     	
 		$datos=$datos.'<div class="collapse" id="collapseOne">';
 		$datos=$datos.'<form class="">';
@@ -1169,13 +1226,31 @@ class BolsaController extends Controller
 		
 		$datos=$datos."<div class='modal-footer'>";
 		
-		$datos=$datos."<div class=''><a onclick='enviarTarjeta()' class='pull-left btn-large btn btn-danger'> Pagar </a></div>";
+		$datos=$datos."<div class=''><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-danger'> Pagar </a></div>";
     	$datos=$datos."</form>";
 		$datos=$datos."</div>";
 		
-		$datos=$datos."<input type='hidden' id='idTarjeta' value='no' />"; // despues aqui se mandaria el id si la persona escoge una tarjeta que ya utilizó
+		$datos=$datos."<input type='hidden' id='idTarjeta' value='0' />"; // despues aqui se mandaria el id si la persona escoge una tarjeta que ya utilizó
 		
 		$datos=$datos."</div>"; // footer
+		
+		$datos=$datos."<script>";
+		$datos=$datos."$(document).ready(function() {";
+		
+			$datos=$datos.'$("#nueva").click(function() { ';
+				$datos=$datos."$('.table').find('input:radio:checked').prop('checked',false);";
+				$datos=$datos.'$("#tarjeta").prop("checked", false);';
+				$datos=$datos.'$("#idTarjeta").val(0);'; // lo regreso a 0 para que sea tarjeta nueva
+			$datos=$datos.'});';
+		
+			$datos=$datos.'$(".radioss").click(function() { ';
+				$datos=$datos."var numero = $(this).attr('value');";
+				//$datos=$datos." alert(numero); ";
+        		$datos=$datos.'$("#idTarjeta").val(numero);';
+        	$datos=$datos."});";
+		
+		$datos=$datos."});"; 
+		$datos=$datos."</script>"; 
 		
 		
 		echo $datos;

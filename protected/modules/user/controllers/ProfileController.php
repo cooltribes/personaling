@@ -13,6 +13,37 @@ class ProfileController extends Controller
 	 * Shows a particular model.
 	 */
 	
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('modal','modalshopper'),
+				'users'=>array('*'),
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan'),
+				'users'=>array('@'),
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array(),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
+			),
+			array('allow', // acciones validas para el personal Shopper
+               'actions' => array('banner'),
+               'expression' => 'UserModule::isPersonalShopper()'
+            ),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			), 
+		);
+	}
+	
 	public function actionInvitaciones()
 	{
 		$model = $this->loadUser();
@@ -25,14 +56,91 @@ class ProfileController extends Controller
 			'dataProvider'=>$dataProvider,
 	    ));
 	}
+        
+         /**
+	 * Envia las invitaciones por email
+	 */
+	public function actionSendEmailInvs()
+	{	
+            $result = array();
+            
+            if(isset($_POST['User']['emailList']) ){ //&& isset($_POST['invite-message'])){
+                
+                $emails = $_POST['User']['emailList'];                
+                $textoMensaje = isset($_POST['invite-message'])? $_POST['invite-message'] : "";
+                
+                $model = $this->loadUser();  
+                
+                //Cada email de la lista de invitados
+                foreach ($emails as $email) {
+                    
+                    $requestId = UserModule::encrypting($email.$model->id);
+                    
+                    $registration_url = $this->createAbsoluteUrl('/user/registration', array("email" => $email, "requestId" => $requestId));
+                    
+                    $message = new YiiMailMessage;
+                    $message->view = "mail_invite";
+                    $subject = 'Invitación a Personaling';
+                    $body = '<h2>¡Hola! Has sido invitad@ a Personaling.</h2>' .
+                            '<br/>Tienes una invitacion por parte de <strong>' . $model->profile->first_name . '</strong> ' .
+                            'para unirte a Personaling:<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
+                            'Puedes registrarte haciendo click en el ' .
+                            'enlace que aparece a continuación:<br/> ' . $registration_url;
+                    $params = array('subject' => $subject, 'body' => $body);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+
+                    $message->addTo($email);
+
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    Yii::app()->mail->send($message);   
+                    
+                    //Guardar la invitacion en BD
+                    $invitation = EmailInvite::model()->findByAttributes(array('user_id'=>$model->id, 'request_id'=>$requestId));                                       
+                    
+                    if(!$invitation){
+                        $invitation = new EmailInvite();
+                        $invitation->user_id = $model->id;
+                        $invitation->email_invitado = $email;                    
+                        $invitation->request_id = $requestId;
+                        $invitation->fecha = date('Y-m-d H:i:s');
+//                        if(isset($_POST['nombre'])){
+//                            $invite->nombre_invitado = $_POST['nombre'];
+//                        }                       
+                                            
+                    }else{
+                        $invitation->fecha = date('Y-m-d H:i:s');
+                        $invitation->save();
+                    }
+//                    print_r($invitation->getErrors());
+//                    echo "<pre>";
+//                    print_r($invitation->attributes);
+//                    echo "</pre><br>";
+                }
+                
+                $result['status'] = 'success';
+                $result['redirect'] = $this->createUrl('profile/micuenta');
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('success', '¡Se ha enviado tu invitación!');
+                
+            }else{
+               $result['status'] = 'error';
+               $result['message'] = 'Debes ingresar al menos una dirección email';
+            }
+          
+            echo function_exists('json_encode') ? json_encode($result) : CJSON::encode($result);                
+            Yii::app()->end();       
+                
+	}
 	
 	public function actionProfile()
 	{
-		$model = $this->loadUser();
-	    $this->render('profile',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
+//		$model = $this->loadUser();
+//	    $this->render('perfil_user',array(//$this->render('profile',array(
+//	    	'model'=>$model,
+//			'profile'=>$model->profile,
+//	    ));
+            $this->actionPerfil();
 	}
 /** 
  * Configuracion de Privacidad 
@@ -67,10 +175,16 @@ class ProfileController extends Controller
 	 * */
 	public function actionPerfil()
 	{
-		$model = User::model()->findByPk($_GET['id']);
-		
+            if(!isset($_GET['id'])){
+              $id = Yii::app()->user->id;                        
+            }else{
+              $id = $_GET['id'];  
+            }
+            
+            $model = User::model()->findByPk($id);
+                
 		if($model->personal_shopper == 1){
-			
+		
 			//$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
 			$looks = new Look;
 			$looks->user_id = $_GET['id'];
@@ -84,9 +198,22 @@ class ProfileController extends Controller
 						
 			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));
 		}
-		else{
-			// redireccion cuando intenten mostrar un perfil via url u ocurra un error		
-		}
+		else if($model->personal_shopper == 0){
+                        //Cuando es usuari@ normal                    	
+                       		
+                        $looksEncantan = new Look;                        
+                        $dataLooksEncantan = $looksEncantan->busquedaEncantan($model->id);
+                        
+                        
+                        $prodEncantan = new Producto;	
+                        $dataProdsEncantan = $prodEncantan->produtosEncantan($model->id);
+					
+			$this->render('perfil_user',array('model'=>$model,'datalooks'=>$dataLooksEncantan,'dataprods'=>$dataProdsEncantan));                   
+                    
+					
+		}else{
+                    // redireccion cuando intenten mostrar un perfil via url u ocurra un error
+                }
 		
 	}
 	
@@ -144,7 +271,7 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		if (isset($_POST['acepto'])){
-			$model->status = -1;
+			$model->status = User::STATUS_DELETED;
 			if ($model->save()){
 				$this->redirect(array('/site/logout'));
 			}	
@@ -241,9 +368,9 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		
-		if  (UserModule::isPersonalShopper()) 
+		/*if  (UserModule::isPersonalShopper()) 
 	    	echo "";
-		else
+		else*/
 	    $this->render('direcciones',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
@@ -369,17 +496,19 @@ class ProfileController extends Controller
 				 
 				 if (!$model->save())	
 						Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
-					if( $extension == '.jpg' || $extension == '.png' || $extension == '.gif' ){
+					
 		            	if($pic->saveAs($nombre . $extension)){
+			                   
+		          
 			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));		            		
-		            }
-		            else{
-			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('error',UserModule::t("La imágen debe ser jpg png o gif"));		            										            	
-		            }
+							Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));			            										            	
+		            
 
-	            	}	            	
+	            	}
+						else{
+								Yii::app()->user->updateSession();
+								Yii::app()->user->setFlash('error',UserModule::t("La imágen debe ser jpg png o gif"));	
+									                	            		}	            	
 				}
 
 			}
@@ -399,7 +528,7 @@ class ProfileController extends Controller
 		$profile=$model->profile;
 		$profile->profile_type = 2;
 		//$profile=new Profile;
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tuestilo-registro-form')
 		{
 			echo CActiveForm::validate($profile);
 			Yii::app()->end();
@@ -421,7 +550,7 @@ class ProfileController extends Controller
 				}
 			}
 		}	
-	    $this->render('tuestilo',array(
+	    $this->render('tuestilo_registro',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
 	    ));
@@ -707,11 +836,9 @@ class ProfileController extends Controller
 				$this->redirect(Yii::app()->controller->module->loginUrl);
 		}
 		return $this->_model;
-	}
+	}        
 	
-	
-	
-		public function actionModal($id)
+	public function actionModal($id)
 	{ 
 		
 		$datos="";

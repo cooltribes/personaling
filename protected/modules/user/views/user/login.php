@@ -19,9 +19,9 @@ $this->breadcrumbs=array(
       <div  class="row-fluid  margin_top">
               <div id="boton_facebook" class="span5 margin_bottom "><a title="Inicia sesión con facebook" class="transition_all" onclick="check_fb()" href="#">Inicia sesión con Facebook</a></div>
 
-              <div id="boton_twitter" class="span5 offset2 margin_bottom "><a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Inicia sesión con Twitter</a> 
+              <!-- <div id="boton_twitter" class="span5 offset2 margin_bottom "><a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Inicia sesión con Twitter</a>  -->
               <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
-        </div>
+        <!-- </div> -->
       </div>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -51,7 +51,8 @@ $this->breadcrumbs=array(
     				)); ?>
                      <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar contraseña">Olvidaste tu contraseña?</a></span>
     				<?php echo $form->error($model,'password'); ?>
-    			</div>
+                                <?php echo $form->error($model,'status'); ?>
+                </div>
     		</div>
             <?php echo $form->checkBoxRow($model,'rememberMe'); ?>
             

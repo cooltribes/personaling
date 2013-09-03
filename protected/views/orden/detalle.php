@@ -23,7 +23,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 <div class="container margin_top">
   <div class="page-header">
-    <h1>PEDIDO #<?php echo $orden->id; ?></h1>
+    <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
@@ -70,7 +70,31 @@ $usuario = User::model()->findByPk($orden->user_id);
         Documentos</td>
       <td><p class="T_xlarge margin_top_xsmall"> 2</p>
         Mensajes<br/></td>
-      <td><p class="T_xlarge margin_top_xsmall">150</p>
+        
+        <?php
+      $ind_tot = 0;
+	  $look_tot = 0;
+      $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+	
+		foreach ($compra as $tot) {
+			
+			if($tot->look_id == 0)
+			{
+				$ind_tot++;
+			}else{
+				
+				$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
+				foreach($lhp as $cada){
+					$look_tot++;	
+				}
+			}
+			
+		}
+      
+      ?>
+        
+        
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo ($ind_tot + $look_tot); ?></p>
         Prendas</td>
       <td><p class="T_xlarge margin_top_xsmall"><?php
       
@@ -502,91 +526,92 @@ $usuario = User::model()->findByPk($orden->user_id);
         	
 			foreach ($productos as $prod) {
 				
-				if($prod->look_id != 0) // si es look
-				{
-					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
-					
-					$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
-					$precio = $lookpedido->getPrecio(false);
+					if($prod->look_id != 0) // si es look
+					{
+						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+						
+						$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
+						$precio = $lookpedido->getPrecio(false);
+							
+							echo("<tr>");
+							echo("<td>".$lookpedido->title."</td>"); // nombre
+							echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
+							echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
+							echo("<td>".$prod->precio."</td>"); // precio 
+							/*
+							setlocale(LC_MONETARY, 've_VE');
+							//$a = money_format('%i', $precio->precioVenta);
+							//$c = money_format('%i', $precio->ahorro);
+							//$des = money_format('%i', $precio->precioDescuento);
+							$iva = $precio * 0.12;
+							
+							$b = $precio * $prod->cantidad;					
+							echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
+							
+							echo("<td> desc look </td>"); //descuento del look
+							
+							$e = $iva * $prod->cantidad;
+							echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+							*/
+							
+							echo("
+							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
+			              	<!-- Link or button to toggle dropdown -->
+			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+			                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
+			                	<li class='divider'></li>
+			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
+			              	</ul>
+			            	</div></td>
+							");
+							
+							echo("</tr>");	
+						
+					}
+					else // individual
+					{
+						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+						$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
 						
 						echo("<tr>");
-						echo("<td>".$lookpedido->title."</td>"); // nombre
+						echo("<td>".$indiv->nombre."</td>"); // nombre
 						echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-						echo("<td>".$prod->precio."</td>"); // precio 
+						echo("<td>".$prod->precio."</td>"); // precio
 						/*
 						setlocale(LC_MONETARY, 've_VE');
-						//$a = money_format('%i', $precio->precioVenta);
-						//$c = money_format('%i', $precio->ahorro);
-						//$des = money_format('%i', $precio->precioDescuento);
-						$iva = $precio * 0.12;
+						$a = money_format('%i', $precio->precioVenta);
+						$c = money_format('%i', $precio->ahorro);
 						
-						$b = $precio * $prod->cantidad;					
+						$iva = $precio->precioDescuento * 0.12;
+						
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($a)."</td>"); //precio individual sin descuento
+						
+						$b = $a * $prod->cantidad;					
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
 						
-						echo("<td> desc look </td>"); //descuento del look
+						$d = $c * $prod->cantidad;					
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($d)."</td>"); //descuento total
 						
 						$e = $iva * $prod->cantidad;
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
 						*/
 						
 						echo("
-						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
-		              	<!-- Link or button to toggle dropdown -->
-		              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-		                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
-		                	<li class='divider'></li>
-		                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
-		              	</ul>
-		            	</div></td>
+							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
+			              	<!-- Link or button to toggle dropdown -->
+			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+			                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
+			                	<li class='divider'></li>
+			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
+			              	</ul>
+			            	</div></td>
 						");
 						
-						echo("</tr>");	
-					
-				}
-				else // individual
-				{
-					$ptc = PrecioTallaColor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
-					$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
-					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
-					
-					echo("<tr>");
-					echo("<td>".$indiv->nombre."</td>"); // nombre
-					echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
-					echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-					echo("<td>".$prod->precio."</td>"); // precio
-					/*
-					setlocale(LC_MONETARY, 've_VE');
-					$a = money_format('%i', $precio->precioVenta);
-					$c = money_format('%i', $precio->ahorro);
-					
-					$iva = $precio->precioDescuento * 0.12;
-					
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($a)."</td>"); //precio individual sin descuento
-					
-					$b = $a * $prod->cantidad;					
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
-					
-					$d = $c * $prod->cantidad;					
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($d)."</td>"); //descuento total
-					
-					$e = $iva * $prod->cantidad;
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
-					*/
-					
-					echo("
-						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
-		              	<!-- Link or button to toggle dropdown -->
-		              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-		                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
-		                	<li class='divider'></li>
-		                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
-		              	</ul>
-		            	</div></td>
-					");
-					
-					echo("</tr>");				
-				}				
+						echo("</tr>");				
+					}	
+							
 				
 			}
         
@@ -658,57 +683,54 @@ $usuario = User::model()->findByPk($orden->user_id);
         <div class="control-group">
           <select>
             <option>Elija un mensaje estandar</option>
+            <option>1</option>
             <option>2</option>
             <option>3</option>
             <option>4</option>
-            <option>5</option>
           </select>
         </div>
         <div class="control-group">
-          <textarea name="Mensaje" cols="" class="span7" rows="4"></textarea>
+        	<input type="text" id="asunto" placeholder="Asunto Del Mensaje" />
+          	<textarea id="cuerpo" name="cuerpo" cols="" class="span7" rows="4" placeholder="Mensaje"></textarea>
         </div>
         <div class="control-group">
           <label class="checkbox">
-            <input type="checkbox" value="">
-            Notificar al Cliente por eMail </label>
+          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por eMail </label>
           <label class="checkbox">
-            <input type="checkbox" value="">
-            Hacer visible en el Frontend</label>
+            <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
         </div>
-        <div class="form-actions"><a href="#" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
+        <div class="form-actions"><a onclick="mensaje(<?php echo $orden->user_id; ?>)" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
       </form>
     </div>
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
-      <ul class="media-list">
-        <li class="media braker_bottom">
-          <div class="media-body">
-            <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
-            <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-            
-          </div>
-        </li>
-        <li class="media braker_bottom">
-          <div class="media-body">
-            <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
-            <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-            
-          </div>
-        </li>
-        <li class="media braker_bottom">
-          <div class="media-body">
-            <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
-            <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-            
-          </div>
-        </li>
-      </ul>
+      <?php
+      
+      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+      	
+		if(count($mensajes) > 0)
+		{
+			?>	
+			<ul class="media-list">
+			<?php
+				foreach($mensajes as $msj)
+				{
+					echo '<li class="media braker_bottom">
+          					<div class="media-body">';
+					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
+					echo '<p>'.$msj->cuerpo.'</p>';					
+				}
+			?>
+			</ul>
+			<?php
+		}
+		else {
+			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+		}
+      
+      ?>
+      
     </div>
     
     <!-- MENSAJES OFF --> 
@@ -738,6 +760,40 @@ $usuario = User::model()->findByPk($orden->user_id);
 <!------------------- MODAL WINDOW OFF ----------------->
 
 <script>
+	
+	function mensaje(user_id){
+		
+		var asunto = $('#asunto').attr('value');
+		var cuerpo = $('#cuerpo').attr('value');
+		
+		var orden_id = $('#orden_id').attr('value');
+		
+		if($('#notificar').attr('checked') == "checked")
+			var notificar = 1; // $('#notificar').attr('checked');
+		else
+			var notificar = 0;
+		
+		if($('#visible').attr('checked') == "checked")	
+			var visible = 1; // $('#visible').attr('checked');
+		else
+			var visible = 0;
+		
+		// alert("a: "+asunto+" , c:"+cuerpo+" , n:"+notificar+" ,v:"+visible+ " ,id:"+user_id);
+		
+		$.ajax({
+	        type: "post", 
+	        url: "<?php echo Yii::app()->baseUrl; ?>/orden/mensajes", // action 
+	        data: { 'asunto':asunto, 'cuerpo':cuerpo, 'notificar':notificar, 'visible':visible, 'user_id':user_id, 'orden_id':orden_id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();	
+				}
+	       	}//success
+	       }) 
+				
+	}
+	
 	
 	function aceptar(id){
 

@@ -321,18 +321,19 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               ?>
           <div class="new" id="div<?php echo $producto->id."_".$hasproducto->color_id; ?>" style="z-index: <?php echo $hasproducto->zindex; ?>; position: absolute; top: <?php echo $hasproducto->top;?>px; left: <?php echo $hasproducto->left;?>px; -webkit-transform: rotate(<?php echo $hasproducto->angle; ?>deg);">
             <?php
-					if ($producto->mainimage)  
-					$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
-					else 
-					$image = CHtml::image("http://placehold.it/180");	
-					echo $image; 
+					//if ($producto->mainimage)  
+					//$image = CHtml::image(Yii::app()->baseUrl . $producto->mainimage->url, "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
+					//else 
+					//$image = CHtml::image("http://placehold.it/180");	
+					//echo $image; 
 					//echo $hasproducto->width.'/'.$hasproducto->height;
-					?>
+			?> 
+			<?php echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height)); ?>
             <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
             <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
             <span class="eliminar"><i class=" icon-remove"></i></span>
 			<div class="rotar"> <i class=" icon-repeat"></i></div>
-			 </div>
+			 </div> 
           <?php 
               	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
@@ -596,8 +597,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
-						    'class' => 'thumbnail',
-						  
+						    'class' => 'thumbnail',									    						  
 						    'draggable'=>"false",
 						  )
 						).

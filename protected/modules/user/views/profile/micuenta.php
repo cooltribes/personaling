@@ -9,7 +9,23 @@ $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>
 $looks_recomendados = $look->match($model);
 ?>
 
+
+
 <div class="container margin_top tu_perfil">
+    
+    <?php
+    $this->widget('bootstrap.widgets.TbAlert', array(
+        'block' => true, // display a larger alert block?
+        'fade' => true, // use transitions?
+        'closeText' => '&times;', // close link text - if set to false, no close link is displayed
+        'alerts' => array(// configurations per alert type
+            'success' => array('block' => true, 'fade' => true, 'closeText' => '&times;'), // success, info, warning, error or danger
+            'error' => array('block' => true, 'fade' => true, 'closeText' => '&times;'), // success, info, warning, error or danger
+        ),
+            )
+    );
+    ?> 
+    
   <div class="row">
   	<div id="confirmacion_facebook" class="alert alert-success text_center_align" style="display: none;">Amigos invitados</div>
     <aside class="span3">
@@ -82,7 +98,7 @@ $looks_recomendados = $look->match($model);
               <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
               <li> <?php echo CHtml::link('Tu avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
-              <li> <a href="#" title="Tu perfil público">Tu perfil público</a></li>
+              <li><?php echo CHtml::link('Tu perfil público',array('profile/perfil'),array("title"=>"Ve tu perfil público")); ?> </li>
             </ul>
           </div>
           <div class="span4">
@@ -97,11 +113,11 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
             <h2 class="braker_bottom"> Tu Estilo </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Coctel',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Coctel")); ?></li>
+              <li><?php echo CHtml::link('Diario',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Diario")); ?></li>
               <li><?php echo CHtml::link('Fiesta',array('profile/edittuestilo','id'=>'fiesta'),array("title"=>"Edita tu estilo Fiesta")); ?></li>
-              <li><?php echo CHtml::link('Playa',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Playa")); ?></li>
-              <li><?php echo CHtml::link('Sport',array('profile/edittuestilo','id'=>'Sport'),array("title"=>"Edita tu estilo Sport")); ?></li>
-              <li><?php echo CHtml::link('Trabajo',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Trabajo")); ?></li>
+              <li><?php echo CHtml::link('Vacaciones',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Vacaciones")); ?></li>
+              <li><?php echo CHtml::link('Haciendo Deporte',array('profile/edittuestilo','id'=>'sport'),array("title"=>"Edita tu estilo Haciendo Deporte")); ?></li>
+              <li><?php echo CHtml::link('Oficina',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Oficina")); ?></li>
             </ul>
           </div>
           <div class="span4">
@@ -198,7 +214,6 @@ $looks_recomendados = $look->match($model);
     </div>
   </div>
 </div>
-
 <script>
 	$(document).ready(function(){
 	    

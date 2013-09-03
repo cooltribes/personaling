@@ -380,8 +380,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   </td>
-              </tr>
-              <?php echo 'tipo guia: '.$tipo_guia; ?>
+              </tr>          
               <tr>
                 <th class="text_align_left">Envío:</th>
                 <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
@@ -390,10 +389,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <th class="text_align_left">I.V.A. (12%):</th>
                 <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
               </tr>
+              <?php if($totalDe != 0){ // si no hay descuento ?> 
               <tr>
                 <th class="text_align_left">Descuento:</th>
                 <td class="text_align_right" id="descuento"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
+              <?php } ?>
               <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>
                 <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
@@ -412,7 +413,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            <?php
 			}
             ?>
-            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button>
+            <!-- <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button> -->
             <!-- Forma de pago ON -->
             <div class="padding_left_small collapse" id="collapse2">
               
@@ -455,7 +456,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 else
 {
     // redirecciona al login porque se murió la sesión
-    header('Location: /site/user/login');
+    header('Location: /user/login');
 }
 
 

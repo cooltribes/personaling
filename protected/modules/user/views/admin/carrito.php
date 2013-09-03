@@ -148,7 +148,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				  
 	                  foreach($bptcolor as $detalles) // cada producto en la bolsa
 					  {
-					  	$todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);
+					  	$todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);
 						
 					  		$producto = Producto::model()->findByPk($todo->producto_id);
 					  		$talla = Talla::model()->findByPk($todo->talla_id);

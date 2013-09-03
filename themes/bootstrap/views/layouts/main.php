@@ -1,4 +1,6 @@
-<?php /* @var $this Controller */ ?>
+
+  <?php /* @var $this Controller */ ?>
+  <?php //date_default_timezone_set('America/Los_Angeles'); ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -8,11 +10,10 @@
 
 <?php //Yii::app()->bootstrap->register(); ?>
 <!-- Le STYLES -->
-<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" /> -->
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" />
 
 
- <?php Yii::app()->less->register(); ?>
- <script src="http://cooltribes.com/wp-content/themes/Jpernia-cooltribes/js/less-1.3.0.min.js"></script>
+<?php //Yii::app()->less->register(); ?>
 <?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
 <!-- Le FONTS -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
@@ -119,7 +120,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
-                array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine')),
+                array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
 				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
@@ -157,7 +158,7 @@ if(!Yii::app()->user->isGuest){
 	
 	if($user->status == 0){
 		?>
-		<div id="notificacion_validar" class="alert alert-error text_align_center">
+		<div id="notificacion_validar" class="alert-block alert-error text_align_center">
 			Tu cuenta no ha sido validada. 
 			<?php
 			echo CHtml::ajaxLink(
@@ -206,9 +207,6 @@ if(!Yii::app()->user->isGuest){
   $(document).on('ready',HandlerReady);
 
   function HandlerReady () {
-
-
-    
     // //Boton Notificaciones
     $('#btn-notifications').popover(
     {
@@ -226,6 +224,8 @@ if(!Yii::app()->user->isGuest){
       },
       function(){
 
+
+      });
         $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
           $('#btn-notifications').removeClass('bg_color10');
@@ -241,8 +241,6 @@ if(!Yii::app()->user->isGuest){
           $('#btn-notifications').popover('hide');          
           $('#btn-notifications').removeClass('bg_color10');          
         },function(){});
-
-      });
 
     
     var listaCarrito;
@@ -267,25 +265,27 @@ if(!Yii::app()->user->isGuest){
 
               $bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
               $look = Look::model()->findByPk($look_id);
-              echo '<li>';
-              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
-              echo '<div class="row-fluid">';
-
-              //invertir array para mostrar en orden cronológico de compras
-
-              foreach ($bolsahasproductotallacolor as $productotallacolor) {
-                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
-                  $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
-                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-                  if($imagen){
-                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
-                      echo '<div class="span2">'.$htmlimage.'</div>';
-                  }
+			  if (isset($look)){
+	              echo '<li>';
+	              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
+	              echo '<div class="row-fluid">';
+	
+	              //invertir array para mostrar en orden cronológico de compras
+	
+	              foreach ($bolsahasproductotallacolor as $productotallacolor) {
+	                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
+	                  $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+	                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+	                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+	                  if($imagen){
+	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
+	                      echo '<div class="span2">'.$htmlimage.'</div>';
+	                  }
+	              }
+	              echo '</div>';
+	              echo "</li>";
+	              $contadorItems ++;
               }
-              echo '</div>';
-              echo "</li>";
-              $contadorItems ++;
           }
           if($cantidadProductosIndiv!=0){
               echo "';";
@@ -308,7 +308,7 @@ if(!Yii::app()->user->isGuest){
                 break;
               }
 
-                $todo = PrecioTallaColor::model()->findByPk($detalles->preciotallacolor_id);                
+                $todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);                
                 $producto = Producto::model()->findByPk($todo->producto_id);
                 $talla = Talla::model()->findByPk($todo->talla_id);
                 $color = Color::model()->findByPk($todo->color_id);                  
@@ -375,41 +375,27 @@ if(!Yii::app()->user->isGuest){
           $('#btn-shoppingcart').removeClass('bg_color10');
         });        
 
-        $('#btn-notifications').hover(function(){
-          $('#btn-shoppingcart').popover('hide');  
-          $('#btn-shoppingcart').removeClass('bg_color10');                  
-        },function(){});
-
-        $('#dropdownUser').hover(function(){
-          $('#btn-shoppingcart').popover('hide');      
-          $('#btn-shoppingcart').removeClass('bg_color10');              
-        },function(){});
-
       });
 
+    $('#dropdownUser, #btn-notifications,#magazine').hover(function(){
+      $('#btn-shoppingcart').popover('hide');      
+      $('#btn-shoppingcart').removeClass('bg_color10');              
+    },function(){});
+    
     $('#dropdownUser').hoverIntent(function(){
         if( !($(this).attr('class') =='dropdown open') ){          
           $(this).addClass('open');
         }
     },function(){
-
-        $('#yw3').hover(function(){}, function (){
-          $('#dropdownUser').removeClass('open');
-        });
-
-        $('#btn-notifications').hover(function(){
-         $('#dropdownUser').removeClass('open');
-        },function(){});
-
-        $('#btn-shoppingcart').hover(function(){
-         $('#dropdownUser').removeClass('open');
-        },function(){}); 
-
-        $('#content').hover(function(){
-         $('#dropdownUser').removeClass('open');
-        },function(){});         
-
+      // $('#dropdownUser').removeClass('open');
+      $('#page').hover(function(){
+        $('#dropdownUser').removeClass('open');
+      },function(){});        
     });
+
+    $('#btn-shoppingcart, #btn-notifications').hover(function(){
+      $('#dropdownUser').removeClass('open');
+    },function(){});        
 
     $('#dropdownUser').on('click',function(){
         $(this).removeClass('open');      
@@ -441,28 +427,32 @@ if(!Yii::app()->user->isGuest){
         <ul>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/formas_de_pago" title="Formas de Pago">Formas de Pago</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/condiciones_de_envios_y_encomiendas" title="Envíos y Encomiendas">Envíos y Encomiendas</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Politicas de Devoluciones">Politicas de Devoluciones</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="politicas y privacidad">Politicas y Privacidad</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Terminos de Servicio">Terminos de Servicio</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Politicas de Devoluciones">Políticas de Devoluciones</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="politicas y privacidad">Políticas y Privacidad</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas Frecuentes</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Terminos de Servicio">Términos de Servicio</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
           
         </ul>
       </div>
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
-        <p class="lead">Personaling, es un personal shopper digital, un portal de moda y belleza en donde las usuarias se dan de alta, definen su perfil físico y sus preferencias de estilo para descubrir looks recomendados por expert@s en moda (personal shoppers, celebrities, estilistas, fashionistas), podrán comprar el look completo en un click y recibirlo en su domicilio</p>
+        <p class="lead">Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.</p>
+        <img class="margin_top_medium_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
       </div>
       <div class="span3 offset1 ">
         <h3>¡Síguenos! </h3>
-        <div class="textwidget"> <a title="Personaling en facebook" href="https://www.facebook.com/Personaling"><img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="40" height="40" title="personaling en pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="pinterest" href="https://pinterest.com/personaling/"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a> </div>
+        <div class="textwidget"> <a title="Personaling en Facebook" href="https://www.facebook.com/Personaling"><img width="40" height="40" title="Personaling en Facebook" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Twitter" href="https://twitter.com/personaling"> <img width="40" height="40" title="Personaling en Twitter" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="Pinterest" href="https://pinterest.com/personaling/"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="40" height="40" title="Personaling en Instagram" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a>
+        <a title="Personaling en Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ"><img width="40" height="40" title="Personaling en Youtube" src="<?php echo Yii::app()->baseUrl ?>/images/icon_youtube.png"></a>
+          </div>
         <hr/>
-       <ul>
-                 <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
-
- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Ponte en  contacto</a></li>
-        <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
-</ul>
-        
+        <p>Somos ganadores de</p>
+        <a href="http://ve.wayra.org/es/startup/personaling"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
+        <a href="#"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
+        <p class="margin_top_small">Partners</p>
+        <img class="margin_top_small_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners">
       </div>
     </div>
     <hr/>

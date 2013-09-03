@@ -2,16 +2,16 @@
 
 /**
  * This is the model class for table "{{precioTallaColor}}".
- *
+ * 
  * The followings are the available columns in table '{{precioTallaColor}}':
  * @property integer $id
  * @property integer $cantidad
- * @property integer $tbl_producto_id
+ * @property integer $producto_id
  * @property integer $talla_id
  * @property integer $color_id
  * 
  */
-class PrecioTallaColor extends CActiveRecord
+class PrecioTallaColor extends CActiveRecord 
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -92,7 +92,7 @@ class PrecioTallaColor extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('cantidad',$this->cantidad);
-		$criteria->compare('producto_id',$this->tbl_producto_id);
+		$criteria->compare('producto_id',$this->producto_id);
 		$criteria->compare('talla_id',$this->talla_id);
 		$criteria->compare('color_id',$this->color_id);
 

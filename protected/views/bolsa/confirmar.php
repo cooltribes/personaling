@@ -52,7 +52,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
   <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
   <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
-  <input type="hidden" id="idCard" value="0" /> 
+  <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">
     <section class="span4"> 
@@ -130,10 +130,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <th class="text_align_left">I.V.A. (12%):</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
             </tr>
+            <?php if($descuento != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left">Descuento:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
-            </tr>
+           	</tr>
+           	<?php } ?>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
               <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
@@ -271,6 +273,8 @@ else
 	
 	function enviarTarjeta()
 	{
+		$('#boton_pago_tarjeta').attr("disabled", true);
+		
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");
 		var subtotal = $("#subtotal").attr("value");
@@ -284,7 +288,7 @@ else
 		
 		/* lo de la tarjeta */
 		
-		var idCard = $("#idCard").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
+		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
 		var nom = $("#nombre").attr("value");
 		var num = $("#numero").attr("value");
 		var cod = $("#codigo").attr("value");
@@ -377,26 +381,70 @@ else
 		}
 		else
 		{
-			// cuando se escoja una tarjeta de las que ya haya usado
-		}
 			
-			/*
-		
+			$.ajax({
+		        type: "post",
+		        dataType: 'json',
+		        url: "credito", // action 
+		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard }, 
+		        success: function (data) {
+					
+					if(data.status==201) // pago aprobado
+					{
+						
+						$.ajax({
+					        type: "post",
+					        dataType: 'json',
+					        url: "comprar", // action 
+					        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
+					        		'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
+					        		'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro,'tipo_guia':tipo_guia
+					        		}, 
+					        success: function (data) {
+								if(data.status=="ok")
+								{
+									window.location="pedido/"+data.orden+"";
+								}
+					       	}//success
+					      })
+					}
+					else
+					{
+						// no pasó la tarjeta			
+						if(data.status==400){
+							
+							if(data.mensaje=="Credit card has Already Expired"){
+								//alert('La tarjeta que intentó usar ya expiró.');
+								window.location="error/1";
+							}
 
- 		$.ajax({
-	        type: "post",
-	        dataType: 'json',
-	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance}, 
-	        success: function (data) {
-				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
-				if(data.status=="ok")
-				{
-					window.location="pedido/"+data.orden+"";
-				}
-	       	}//success
-	       })
- 			*/
+							if(data.mensaje=="The CardNumber field is not a valid credit card number."){
+								//alert('El número de tarjeta que introdujó no es un número válido.');
+								window.location="error/2";
+							}
+						}
+						
+						if(data.status==401){
+							//alert('error de autenticacion');
+							window.location="error/3";
+						}
+						
+						if(data.status==403){
+							//alert('No pudimos completar su operación: '+data.mensaje);
+							window.location="error/5";
+						}
+						
+						if(data.status==503){
+							//alert('error interno');
+							window.location="error/4";
+						}
+					}
+					
+		       	}//success
+		       })
+				
+		}
+	
 	}
 	
 	function enviar_mp(json)

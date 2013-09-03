@@ -56,6 +56,7 @@ $looks_recomendados = $look->match($model);
            <ul class="nav nav-stacked nav-tabs">
               <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
               <li> <?php echo CHtml::link('Tu avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
+              <li> <?php echo CHtml::link('Tu Banner',array('profile/banner'),array("title"=>"Edita tu Banner"));?> </li>                         
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
               <li> <a href="#" title="Tu perfil publico">Tu perfil publico</a></li>
               <li> <a href="#" title="Tu Tipo">Tu Tipo</a></li>
@@ -78,11 +79,11 @@ $looks_recomendados = $look->match($model);
         <div class="span4">
          <h2 class="braker_bottom">  Tu Estilo </h2>
            <ul class="nav nav-stacked nav-tabs">
-                  <li><?php echo CHtml::link('Coctel',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Coctel")); ?></li>
+                <li><?php echo CHtml::link('Diario',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Diario")); ?></li>
 	              <li><?php echo CHtml::link('Fiesta',array('profile/edittuestilo','id'=>'fiesta'),array("title"=>"Edita tu estilo Fiesta")); ?></li>
-	              <li><?php echo CHtml::link('Playa',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Playa")); ?></li>
-	              <li><?php echo CHtml::link('Sport',array('profile/edittuestilo','id'=>'Sport'),array("title"=>"Edita tu estilo Sport")); ?></li>
-	              <li><?php echo CHtml::link('Trabajo',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Trabajo")); ?></li>
+	              <li><?php echo CHtml::link('Vacaciones',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Vacaciones")); ?></li>
+	              <li><?php echo CHtml::link('Haciendo Deporte',array('profile/edittuestilo','id'=>'Sport'),array("title"=>"Edita tu estilo Haciendo Deporte")); ?></li>
+	              <li><?php echo CHtml::link('Oficina',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Oficina")); ?></li>
             </ul>
         
         </div>
@@ -180,8 +181,10 @@ $looks_recomendados = $look->match($model);
             </ul>
              <h2 class="braker_bottom">Libreta de Direcciones </h2>
            <ul class="nav nav-stacked nav-tabs"> 
-              <li><a href="#" title="Gestionar direcciones de Envios y Pagos">Gestionar direcciones de Envios y Pagos (LINK MUERTO).</a></li>
-              <li><a href="#" title="Agregar una nueva dirección">Añadir nueva dirección (LINK MUERTO)</a></li>
+              <li><?php echo CHtml::link('Gestionar direcciones de Envíos y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
+            
+              <!-- <li><a href="<?php echo Yii::app()->request->baseUrl ?>/user/profile/direcciones" title="Gestionar direcciones de Envios y Pagos">Gestionar direcciones de Envios y Pagos</a></li> -->
+              <li><a href="<?php echo Yii::app()->request->baseUrl ?>/user/profile/crearDireccion" title="Agregar una nueva dirección">Añadir nueva dirección</a></li>
             </ul>
           </div> 
           <div class="span4">

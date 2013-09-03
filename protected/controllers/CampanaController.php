@@ -11,7 +11,7 @@ class CampanaController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS', 'inviteAll', 'uninviteAll'),
+				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS', 'inviteAll', 'uninviteAll','getMarca'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -42,7 +42,7 @@ class CampanaController extends Controller
 						$campana_ps->fecha_invitacion = date('Y-m-d H:i:s');
 						$campana_ps->save();
 					}
-					Yii::app()->user->setFlash('success','Campaña guardada con éxito');
+					Yii::app()->user->setFlash('success','Campaña guardada con éxito'); 
 					$this->redirect(array('index'));
 				}else if($_POST['personal_shopper'] == 'seleccionar'){
 					Yii::app()->session['campana_id'] = $campana->id;
@@ -52,6 +52,7 @@ class CampanaController extends Controller
 					    ),
 					));
 					$this->render('select_ps', array('campana'=>$campana, 'dataProvider'=>$dataProvider));
+					Yii::app()->end();
 				}
 			}else{
 				Yii::app()->user->setFlash('error','No se pudo guardar la campaña');
@@ -112,13 +113,14 @@ class CampanaController extends Controller
 					Yii::app()->session['campana_id'] = $campana->id;
 					$dataProvider=new CActiveDataProvider('User', array(
 					    'criteria'=>array(
-					            'condition'=>'personal_shopper=1',
+					            'condition'=>'personal_shopper=1', 
 					    ),
 					));
 					$this->render('select_ps', array('campana'=>$campana, 'dataProvider'=>$dataProvider));
+					Yii::app()->end();
 				}
 				}else{
-					Yii::app()->user->setFlash('success','Campaña guardada con éxito');
+					Yii::app()->user->setFlash('success','Campaña guardada con éxito'); 
 					$this->redirect(array('index'));
 				}
 			}else{
@@ -173,13 +175,68 @@ class CampanaController extends Controller
 		echo $return;
 	}
 
+
+	public function actionGetMarca(){
+		$campana = Campana::model()->findByPk($_POST['campana_id']);
+		
+
+		$looks=Array();
+		$marcas=Array();
+		
+		$looks= Look::model()->findAllByAttributes(array('campana_id'=>$campana->id));
+	
+		$lk;
+		
+		foreach ($looks as $look) {
+				 
+			$lk= LookHasProducto::model()->findAllByAttributes(array('look_id'=>$look->id));
+			
+			foreach ($lk as $lhp) {
+				$producto= Producto::model()->findByPk($lhp->producto_id);
+			
+				$mr= Marca::model()->findByPk($producto->marca_id);	
+					
+				if(!in_array($mr->id, $marcas)){
+					array_push($marcas,$mr->id);
+				}
+			}
+		}
+			
+		$return= '<h4>Nombre de la campaña: '.$campana->nombre.'</h4>';
+		$return .= '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+				      <tbody>
+				        <tr>
+				          <th colspan="1" scope="col">Avatar</th>
+				          <th colspan="1" scope="col" width="80%">Nombre</th>
+				        </tr>';
+		
+		
+		if(!empty($marcas)){
+	
+		foreach ($marcas as $marcaid) {
+			
+		$marca= Marca::model()->findByPk($marcaid);	
+		$return.= '<tr>
+				          <td>'.CHtml::image(Yii::app()->baseUrl.'/images/marca/'.$marca->id.'_thumb.jpg', $marca->nombre).'</td>
+				          <td>'.$marca->nombre.'</td>
+				        </tr>';
+			}
+		}
+		$return .= '</tbody>
+    			</table>';
+				
+		echo $return;
+	}
+	
+
+
 	public function actionIndex()
 	{
 		$campana = new Campana; 
 
-		if (isset($_POST['query']))
+		if (isset($_GET['nombre']))
 		{
-			$campana->nombre = $_POST['query'];
+			$campana->nombre = $_GET['nombre'];
 		}
 		
 		$dataProvider = $campana->search();

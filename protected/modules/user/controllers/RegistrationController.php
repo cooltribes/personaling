@@ -1,5 +1,8 @@
 <?php
 
+// Lib para conectar con el API de MailChimp
+include("MailChimp.php");
+
 class RegistrationController extends Controller
 {
 	public $defaultAction = 'registration';
@@ -21,111 +24,189 @@ class RegistrationController extends Controller
 	 */
 	public function actionRegistration() {
             $model = new RegistrationForm;
-            $profile=new Profile;
+            $profile = new Profile;
             $profile->regMode = true;
-            
-			// ajax validator
-			if(isset($_POST['ajax']) && $_POST['ajax']==='registration-form')
-			{
-				//echo "rafa";	
-				//echo $_POST['Profile']['birthday'];	
-				//$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
-				//echo 'rafa'.$_POST['Profile']['birthday'];
-				echo UActiveForm::validate(array($model,$profile));
-				//$_POST['Profile']['birthday'] = $_POST['Profile']['birthday']['year'] .'-'. $_POST['Profile']['birthday']['month'] .'-'. $_POST['Profile']['birthday']['day'];
-				
-				//echo CActiveForm::validate($profile);
-				
-				Yii::app()->end();
-			}
-			
-		    if (Yii::app()->user->id) { 
-		    	$this->redirect(Yii::app()->controller->module->profileUrl);
-		    } else {
-		    	
-				//Yii::app()->end();
-				
-		    	if(isset($_POST['RegistrationForm'])) {
-					//$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
-					//echo 'rafa'.$_POST['Profile']['birthday'];	
-					$model->attributes=$_POST['RegistrationForm'];
-					$profile->attributes=((isset($_POST['Profile'])?$_POST['Profile']:array()));
-					//$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
-					//echo 'lore'.$profile->birthday;
-					
-					if($model->validate()&&$profile->validate())
-					{
-						//echo 'entro';	
-						$soucePassword = $model->password;
-						$model->activkey=UserModule::encrypting(microtime().$model->password);
-						$model->password=UserModule::encrypting($model->password);
-						$model->verifyPassword=UserModule::encrypting($model->verifyPassword);
-						$model->superuser=0;
-						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
-						if(isset($_POST['twitter_id'])){
-							$model->twitter_id = $_POST['twitter_id'];
-						}
-						if(isset($_POST['facebook_id'])){
-							$model->facebook_id = $_POST['facebook_id'];
-						}
-						
-						if ($model->save()) {
-							if(isset($_POST['facebook_request'])){
-								$invite = FacebookInvite::model()->findByAttributes(array('request_id'=>$_POST['facebook_request']));
-								if($invite){
-									$invite->estado = 1;
-									$invite->save();
-								}
-							}
-							$profile->user_id=$model->id;
-							$profile->save();
-							//if (Yii::app()->controller->module->sendActivationMail) {
-								$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
-								
-								$message            = new YiiMailMessage;
-							    $message->view = "mail_template";
-								$subject = 'Registro Personaling';
-								$body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
-							    $params              = array('subject'=>$subject, 'body'=>$body);
-							    $message->subject    = $subject;
-							    $message->setBody($params, 'text/html');                
-							    $message->addTo($model->email);
-								$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-							    Yii::app()->mail->send($message);
-								//UserModule::sendRegistrationMail($model->id, $activation_url);
-								//UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
-							//}
-							
-							if ((Yii::app()->controller->module->loginNotActiv||(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false))&&Yii::app()->controller->module->autoLogin) {
-									$identity=new UserIdentity($model->username,$soucePassword);
-									$identity->authenticate();
-									Yii::app()->user->login($identity,0);
-									//$this->redirect(Yii::app()->controller->module->returnUrl);
-									$this->redirect(array('/user/profile/tutipo'));
-							} else {
-								if (!Yii::app()->controller->module->activeAfterRegister&&!Yii::app()->controller->module->sendActivationMail) {
-									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
-								} elseif(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false) {
-									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please {{login}}.",array('{{login}}'=>CHtml::link(UserModule::t('Login'),Yii::app()->controller->module->loginUrl))));
-								} elseif(Yii::app()->controller->module->loginNotActiv) {
-									//Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email or login."));
-									$identity=new UserIdentity($model->email,$soucePassword);
-									$identity->authenticate();
-									Yii::app()->user->login($identity,0);
-									$this->redirect(array('/user/profile/tutipo'));									
-									
-								} else {
-									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email."));
-								}
-								$this->refresh();
-							}
-						}
-					} else $profile->validate();
-				}
 
-			    $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
-		    }//else
-	}// registration
+            // ajax validator
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'registration-form') {
+                //echo "rafa";	
+                //echo $_POST['Profile']['birthday'];	
+                //$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
+                //echo 'rafa'.$_POST['Profile']['birthday'];
+                echo UActiveForm::validate(array($model, $profile));
+                //$_POST['Profile']['birthday'] = $_POST['Profile']['birthday']['year'] .'-'. $_POST['Profile']['birthday']['month'] .'-'. $_POST['Profile']['birthday']['day'];
+                //echo CActiveForm::validate($profile);
+
+                Yii::app()->end();
+            }
+
+            if (Yii::app()->user->id) {
+                $this->redirect(Yii::app()->controller->module->profileUrl);
+            } else {
+
+                //Yii::app()->end();
+                if (isset($_GET['email'])) { //correo al que fue invitado
+                    $model->email = $_GET['email'];
+                }
+
+
+                if (isset($_POST['RegistrationForm'])) {
+                    //$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
+                    //echo 'rafa'.$_POST['Profile']['birthday'];	
+                    $model->attributes = $_POST['RegistrationForm'];
+                    $profile->attributes = ((isset($_POST['Profile']) ? $_POST['Profile'] : array()));
+    //                                        echo "<pre>";
+    //                                        print_r($_POST['Profile']);
+    //                                        echo "</pre><br>";
+    //                                        exit();
+                    //$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
+                    //echo 'lore'.$profile->birthday;
+
+
+                    if ($model->validate() && $profile->validate()) {
+                        $soucePassword = $model->password;
+                        $model->activkey = UserModule::encrypting(microtime() . $model->password);
+                        $model->password = UserModule::encrypting($model->password);
+                        $model->verifyPassword = UserModule::encrypting($model->verifyPassword);
+                        $model->superuser = 0;
+                        $model->status = ((Yii::app()->controller->module->activeAfterRegister) ? User::STATUS_ACTIVE : User::STATUS_NOACTIVE);
+
+                        if (isset($_POST['twitter_id'])) {
+                            $model->twitter_id = $_POST['twitter_id'];
+                        }
+                        if (isset($_POST['facebook_id'])) {
+                            $model->facebook_id = $_POST['facebook_id'];
+
+                            $model->password = $this->passGenerator();
+                            $soucePassword = $model->password;
+                            $clave = $model->password;
+                            $model->activkey = UserModule::encrypting(microtime() . $model->password);
+                            $model->password = UserModule::encrypting($model->password);
+                        }
+
+
+                        if ($model->save()) {
+                            if (isset($_POST['facebook_request'])) {
+                                $invite = FacebookInvite::model()->findByAttributes(array('request_id' => $_POST['facebook_request']));
+                                if ($invite) {
+                                    $invite->estado = 1;
+                                    $invite->save();
+                                }
+                            }
+                            $profile->user_id = $model->id;
+                            $profile->save();
+                            //if (Yii::app()->controller->module->sendActivationMail) {
+
+                            if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // de facebook hay que enviar la clave
+                                $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
+
+                                $message = new YiiMailMessage;
+                                $message->view = "mail_template";
+                                $subject = 'Registro Personaling';
+                                $body = '<h2>Te damos la bienvenida a Personaling.</h2>
+                                                                                            <br/>Tu contraseña provisional es: <strong>' . $clave . '</strong><br/>' .
+                                        'Puedes cambiarla accediendo a tu cuenta y luego haciendo click ' .
+                                        'en la opción Cambiar Contraseña.<br/><br/>
+                                                            Recibes este correo porque se ha registrado tu dirección en Personaling.
+                                                                                            Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> ' . $activation_url;
+                                $params = array('subject' => $subject, 'body' => $body);
+                                $message->subject = $subject;
+                                $message->setBody($params, 'text/html');
+                                $message->addTo($model->email);
+                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                                Yii::app()->mail->send($message);
+                            } else {
+                                $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
+
+                                $message = new YiiMailMessage;
+                                $message->view = "mail_template";
+                                $subject = 'Registro Personaling';
+                                $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling.
+                                			Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
+                                			<a href="' . $activation_url.'"> Haz click aquí </a>';
+                                $params = array('subject' => $subject, 'body' => $body);
+                                $message->subject = $subject;
+                                $message->setBody($params, 'text/html');
+                                $message->addTo($model->email);
+                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                                Yii::app()->mail->send($message);
+
+                                //UserModule::sendRegistrationMail($model->id, $activation_url);
+                                //UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
+                            }
+
+
+                            // Para registrar en la lista de correo
+                            if (isset($_POST['Profile']['suscribir'])) {
+                                //API key provisional para lista de prueba										
+                                $MailChimp = new MailChimp('78347e50bf7c6299b77dd84fbc24e5be-us7');
+                                $result = $MailChimp->call('lists/subscribe', array(
+                                    'id' => 'be789a5ad1',
+                                    'email' => array('email' => $_POST['RegistrationForm']['email']),
+                                    'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name']),
+                                    'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],
+                                    'mc_language' => 'es',
+                                    'update_existing' => true,
+                                    'replace_interests' => false,
+                                ));
+                            }
+
+
+                            //Si se registra por invitación
+                            if (isset($_GET['requestId']) && isset($_GET['email'])) { 
+                                
+                                $invitation = EmailInvite::model()->findByAttributes(array('request_id' => $_GET['requestId']));
+                                if($invitation && $invitation->email_invitado == $model->email){
+                                    $invitation->estado = 1;
+                                    $invitation->save();
+                                }
+                            }
+
+
+
+                            if ((Yii::app()->controller->module->loginNotActiv || (Yii::app()->controller->module->activeAfterRegister && Yii::app()->controller->module->sendActivationMail == false)) && Yii::app()->controller->module->autoLogin) {
+                                $identity = new UserIdentity($model->username, $soucePassword);
+                                $identity->authenticate();
+                                Yii::app()->user->login($identity, 0);
+                                //$this->redirect(Yii::app()->controller->module->returnUrl);
+
+                                if ($profile->sex == 1) // mujer
+                                    $this->redirect(array('/user/profile/tutipo'));
+                                else if ($profile->sex == 2) // hombre
+                                    $this->redirect(array('/tienda/look'));
+                            } else {
+                                if (!Yii::app()->controller->module->activeAfterRegister && !Yii::app()->controller->module->sendActivationMail) {
+                                    Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
+                                } elseif (Yii::app()->controller->module->activeAfterRegister && Yii::app()->controller->module->sendActivationMail == false) {
+                                    Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Please {{login}}.", array('{{login}}' => CHtml::link(UserModule::t('Login'), Yii::app()->controller->module->loginUrl))));
+                                } elseif (Yii::app()->controller->module->loginNotActiv) {
+                                    //Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email or login."));
+                                    $identity = new UserIdentity($model->email, $soucePassword);
+                                    $identity->authenticate();
+                                    Yii::app()->user->login($identity, 0);
+
+                                    if ($profile->sex == 1) // mujer
+                                        $this->redirect(array('/user/profile/tutipo'));
+                                    else if ($profile->sex == 2) // hombre
+                                        $this->redirect(array('/tienda/look'));
+
+                                    // $this->redirect(array('/user/profile/tutipo'));									
+                                } else {
+                                    Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Please check your email."));
+                                }
+                                $this->refresh();
+                            }
+                        }
+                    }
+                    else
+                        $profile->validate();
+                }
+
+                $this->render('/user/registration', array('model' => $model, 'profile' => $profile));
+            }//else
+    }
+
+// registration
 	
 	public function actionSendValidationEmail(){
 		$model = User::model()->notsafe()->findByPk(Yii::app()->user->id);
@@ -134,7 +215,7 @@ class RegistrationController extends Controller
 		$message            = new YiiMailMessage;
 		$message->view = "mail_template";
 		$subject = 'Activa tu cuenta en Personaling';
-		$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+		$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/><br/>  <a href="'.$activation_url.'">Haz click aquí</a>';
 		$params              = array('subject'=>$subject, 'body'=>$body);
 		$message->subject    = $subject;
 		$message->setBody($params, 'text/html');                
@@ -243,5 +324,18 @@ class RegistrationController extends Controller
             echo 'Else';
         }
 	}
+
+	public function passGenerator($length = 8) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $n = strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++) {
+            $index = rand(0, $n - 1);
+            $result .= substr($chars, $index, 1);
+        }
+
+        return $result;
+    } 
+
 	
 }

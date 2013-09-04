@@ -722,6 +722,8 @@ else if($count == 0){
 ?>
  
 <script>
+var comprando = true;
+
 $(document).ready(function(){
 
 var source = $('#principal').attr("src");
@@ -994,53 +996,57 @@ $('.imagen_principal').zoom({url: imgZ});
    
    function c(){ // comprobar quienes están seleccionados
    		
-   		var talla = $("#vTa").find(".tallass.active").attr("id");
-   		var color = $("#vCo").find(".coloress.active").attr("id");
-   		var producto = $("#producto").attr("value");
-   		
-   		// llamada ajax para el controlador de bolsa
- 		  
- 		if(talla==undefined && color==undefined) // ninguno
- 		{
- 			alert("Seleccione talla y color para poder añadir.");
- 		}
- 		
- 		if(talla==undefined && color!=undefined) // falta talla
- 		{
- 			alert("Seleccione la talla para poder añadir a la bolsa.");
- 		}
- 		
- 		if(talla!=undefined && color==undefined) // falta color
- 		{
- 			alert("Seleccione el color para poder añadir a la bolsa.");
- 		}   
- 		   
- 		if(talla!=undefined && color!=undefined)
- 		{
-    $('#agregar').click(false);
- 		$('#agregar').attr("disabled", true);
- 		$.ajax({
-	        type: "post",
-	        url: "../../bolsa/agregar", // action Tallas de Producto
-	        data: { 'producto':producto, 'talla':talla, 'color':color}, 
-	        success: function (data) {
-				
-				if(data=="ok")
-				{
-					//alert("redireccionar mañana");
-					window.location="../../bolsa/index";
-				}
-				
-				if(data=="no es usuario")
-				{
-					alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
-				}
+   		if (comprando == true){
+	   		var talla = $("#vTa").find(".tallass.active").attr("id");
+	   		var color = $("#vCo").find(".coloress.active").attr("id");
+	   		var producto = $("#producto").attr("value");
+	   		
+	   		// llamada ajax para el controlador de bolsa
+	 		  
+	 		if(talla==undefined && color==undefined) // ninguno
+	 		{
+	 			alert("Seleccione talla y color para poder añadir.");
+	 		}
+	 		
+	 		if(talla==undefined && color!=undefined) // falta talla
+	 		{
+	 			alert("Seleccione la talla para poder añadir a la bolsa.");
+	 		}
+	 		
+	 		if(talla!=undefined && color==undefined) // falta color
+	 		{
+	 			alert("Seleccione el color para poder añadir a la bolsa.");
+	 		}   
+	 		   
+	 		if(talla!=undefined && color!=undefined)
+	 		{
+	    	//$('#agregar').click(false);
+	 		$('#agregar').attr("disabled", true);
+	 		comprando = false;
+	 		$.ajax({
+		        type: "post",
+		        url: "../../bolsa/agregar", // action Tallas de Producto
+		        data: { 'producto':producto, 'talla':talla, 'color':color}, 
+		        success: function (data) {
+		        	comprando = true;
 					
-	       	}//success
-	       })
- 			
- 			
- 		}// cerro   
+					if(data=="ok")
+					{
+						//alert("redireccionar mañana");
+						window.location="../../bolsa/index";
+					}
+					
+					if(data=="no es usuario")
+					{
+						alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
+					}
+						
+		       	}//success
+		       })
+	 			
+	 			
+	 		}// cerro   
+ 		}
 
 
    }

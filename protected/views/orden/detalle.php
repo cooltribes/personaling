@@ -489,21 +489,6 @@ $usuario = User::model()->findByPk($orden->user_id);
 	        <?php
 		}
         ?>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Etiqueta de direccion</td>
-          <td>1231234</td>
-        </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Orden de devolucion</td>
-          <td>45648</td>
-        </tr>
-        <tr>
-          <td>21/12/2012 </td>
-          <td>Tarjeta de regalo</td>
-          <td>123546</td>
-        </tr>
       </table></div>
     </div>
   </div>

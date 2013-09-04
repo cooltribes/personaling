@@ -459,7 +459,7 @@ if(!Yii::app()->user->isGuest){
         <a title="Personaling en Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ"><img width="40" height="40" title="Personaling en Youtube" src="<?php echo Yii::app()->baseUrl ?>/images/icon_youtube.png"></a>
           </div>
         <hr/>
-        <p>Somos ganadores de</p>
+        <p>Nos Avalan</p>
         <a href="http://ve.wayra.org/es/startup/personaling"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
         <a href="#"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
         <p class="margin_top_small">Partners</p>

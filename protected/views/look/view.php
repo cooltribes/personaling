@@ -95,7 +95,7 @@
 
          $this->widget('bootstrap.widgets.TbButton', array(
                     'buttonType'=>'ajaxButton',
-                    'id'=>'btn-compra'
+                    'id'=>'btn-compra', 
                     'type'=>'warning',
                     'label'=>'Comprar',
                     'block'=>'true',
@@ -127,6 +127,7 @@
 
 
                                    //return false;
+                                   
                                    if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
                                         alert('debe seleccionar por lo menos una prenda');
                                         return false;
@@ -142,6 +143,9 @@
                                            }
 
                                    });
+                                   if ($('#btn-comprar').attr('disabled'))
+                                   		return false;
+                                   $('#btn-comprar').attr('disabled', true);
                                   // return false;
 
                                  }",

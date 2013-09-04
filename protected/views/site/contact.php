@@ -36,10 +36,10 @@ Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por 
 
 
 	<?php echo $form->errorSummary($model); ?>
-
+	<a href="#">hola</a>
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'Nombre'); ?>
-		<div class="controls"><?php echo $form->textField($model,'name'); ?>
+		<div class="controls"><?php echo $form->textField($model,'nombre'); ?>
 		<?php echo $form->error($model,'name'); ?></div>
 	</div>
 

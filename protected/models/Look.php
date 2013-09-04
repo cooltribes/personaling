@@ -240,7 +240,7 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 */		
-		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC";
+		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where deleted = 0 AND look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC";
 		$count = 10; 	
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,

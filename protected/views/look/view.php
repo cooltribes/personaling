@@ -31,7 +31,7 @@
                     ?>
 
                         <button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
-                            <span id="like" class="entypo icon_personaling_big">&hearts; </span>  <small class='btn-mini' > Me encanta </small> 
+                            <span id="like" class="entypo icon_personaling_big">&hearts;</span>
                         </button>
                        <?php
 
@@ -40,16 +40,16 @@
                     if($entro==0) // no le ha dado like
                     {
                         echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
-                           <span id='like' class='entypo icon_personaling_big'>&#9825;</span> <small class='btn-mini' > Me encanta </small>
+                           <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
                            </button>";
                     }
 
                    ?>
 
-                <div class="btn-group">
-                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class=""><!-- &#59157; -->Compartir</span></button>
+<!--                 <div class="btn-group">
+                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class="">&#59157;Compartir</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN -->
+                   
 
                     <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
                     <li><a class="addthis_button_tweet"></a></li>
@@ -57,9 +57,9 @@
                   </ul>
                   <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
                   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
-                  <!-- AddThis Button END -->
+                  
  
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

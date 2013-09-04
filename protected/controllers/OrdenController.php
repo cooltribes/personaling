@@ -228,6 +228,7 @@ class OrdenController extends Controller
         $html=$html.'<tr>';
         // Primera columna ON
         $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Marca:</strong> Nidea </small> <br/>';
         $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
         $html=$html.'<small><strong>Talla:</strong> M </small> ';
         $html=$html.'</td>';
@@ -253,6 +254,7 @@ class OrdenController extends Controller
         $html=$html.'<tr>';
         // Primera columna ON
         $html=$html.'<td><strong>Ruana</strong><br/> ';
+        $html=$html.'<small><strong>Marca:</strong> Nidea </small> <br/>';
         $html=$html.'<small><strong>Color:</strong> Horrible </small> <br/>';
         $html=$html.'<small><strong>Talla:</strong> 3 </small> ';
         $html=$html.'</td>';
@@ -278,6 +280,7 @@ class OrdenController extends Controller
         $html=$html.'<tr>';
         // Primera columna ON
         $html=$html.'<td><strong>Vestido</strong><br/> ';
+        $html=$html.'<small><strong>Marca:</strong> Nidea </small> <br/>';
         $html=$html.'<small><strong>Color:</strong> Gris Rata </small> <br/>';
         $html=$html.'<small><strong>Talla:</strong> M </small> ';
         $html=$html.'</td>';

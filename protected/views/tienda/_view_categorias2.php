@@ -1,3 +1,26 @@
+<script>$(document).ready(function() {
+  // Handler for .ready() called.
+  
+	var imag;
+	var original;
+	var segunda;
+	var val;
+	
+	
+	/*$('.ctgr').click(function(){
+			
+			//val=$('input#idact').val()+'#'+$(this).attr('id');
+			
+			
+			$('input#idact').val($(this).attr('id'));
+			alert($('input#idact').val());	
+		
+			
+			
+		
+	
+		});*/});
+	</script> 
 <form id="form1" name="form1">
   <input type="hidden" id="idact" >       
 </form> 
@@ -17,7 +40,7 @@
 					//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
 					echo CHtml::ajaxLink(
 						  $image,
-						  Yii::app()->createUrl('tienda/categorias'),
+						  Yii::app()->createUrl('tienda/categorias2'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
 						    'dataType'=>'json',
@@ -31,22 +54,23 @@
 						                   if(data.accion == 'padre')
 						                   {
 						                   		$('#uno').html(data.div);
-						                   		$('input#idact').val(data.id);	
+						                   		
 						                   	
 						                   		ajaxRequest = $('#idact').val();
+						                   
 						                   	
 												$.fn.yiiListView.update(
 													'list-auth-items',
 													{
 													type: 'POST',	
-													url: '" . CController::createUrl('tienda/filtrar') . "',
+													url: '" . CController::createUrl('tienda/colores2') . "',
 													data: {'idact':ajaxRequest}
 													}													
 												)	                   	
 						                   								                   	
 						                   }else if(data.accion == 'hijo')
 						                   {
-						                   		$('input#idact').val(data.id);	
+						                   			
 						                   	
 						                   		ajaxRequest = $('#idact').val();
 						                   	
@@ -54,7 +78,7 @@
 													'list-auth-items',
 													{
 													type: 'POST',	
-													url: '" . CController::createUrl('tienda/filtrar') . "',
+													url: '" . CController::createUrl('tienda/colores2') . "',
 													data: {'idact':ajaxRequest}
 													}													
 												)	                   	
@@ -64,8 +88,8 @@
 						    'data' => array( 'padreId' => $categoria->id, 'val2' => '2' )
 						  ),
 						  array( //htmlOptions
-						    'href' => Yii::app()->createUrl( 'tienda/categorias' ),
-						    //'class' => 'span1',
+						    'href' => Yii::app()->createUrl( 'tienda/categorias2' ),
+						    'class' => 'ctgr',
 						    'id' => 'categoria'.$categoria->id,
 						  )
 						);
@@ -76,5 +100,7 @@
 
               </li>
               <?php } ?>
-</ul>     
+</ul>    
+
+
                 

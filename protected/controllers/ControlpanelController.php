@@ -19,7 +19,7 @@ class ControlpanelController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','delete'),
+				'actions'=>array('index','delete','ventas'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -37,10 +37,17 @@ class ControlpanelController extends Controller
 			'accessControl', // perform access control for CRUD operations
 		);
 	}	
+	
 	public function actionIndex()
 	{
 		$this->render('index');
 	}
+
+	public function actionVentas()
+	{
+		$this->render('panel_ventas');
+	}
+
 
 	// Uncomment the following methods and override them if needed
 	/*

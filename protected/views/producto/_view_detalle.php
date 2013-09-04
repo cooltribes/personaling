@@ -101,7 +101,7 @@
 				
 					//imprimiendo igual la primera en thumbnail
 					$pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					echo CHtml::image($img->getUrl(), "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
+					echo CHtml::image( str_replace(".","_x90.",$img->getUrl()) , "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
 							
 				}
 				

@@ -38,7 +38,14 @@ class TiendaController extends Controller
 		$producto->estado = 0; // solo productos activos
 		
 		$a ="a"; 
-		
+		if(isset(Yii::app()->session['idColor'])){
+			unset(Yii::app()->session['idColor']);
+			
+		}
+		if(isset(Yii::app()->session['idact'])){
+			unset(Yii::app()->session['idact']);
+			
+		}
 		$dataProvider = $producto->nueva($a);
 		$this->render('index',
 		array('index'=>$producto,
@@ -55,6 +62,10 @@ class TiendaController extends Controller
 		$producto->estado = 0; // solo productos activos
 		if(isset(Yii::app()->session['idColor'])){
 			unset(Yii::app()->session['idColor']);
+			
+		}
+		if(isset(Yii::app()->session['idact'])){
+			unset(Yii::app()->session['idact']);
 			
 		}
 		$a ="a"; 
@@ -139,6 +150,82 @@ class TiendaController extends Controller
 			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 			));	
 			}
+
+
+	public function actionFiltrar2()
+	{
+		
+		$producto = new Producto;
+		$producto->status = 1; // que no haya sido borrado logicamente
+		$producto->estado = 0; // que no esté inactivo
+
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
+		
+			if (isset($_POST['cate1'])){ // desde el select
+				$producto->categoria_id = $_POST['cate1'];		
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));			
+				Yii::app()->getSession()->add('categoria', $_POST['cate1']);
+				Yii::app()->getSession()->add('valor',1);
+			}
+			
+			if (isset($_POST['idact'])){ // actualizacion desde los ajaxlink
+				 $producto->categoria_id = $_POST['idact'];		
+				 Yii::app()->getSession()->add('categoria', $_POST['idact']);
+				 Yii::app()->getSession()->add('valor',1);
+			}		
+		
+			if (isset($_POST['busqueda'])){ // desde el input
+				$producto->nombre = $_POST['busqueda'];
+				Yii::app()->getSession()->add('nombre', $_POST['busqueda']);
+				Yii::app()->getSession()->add('valor',1);
+			}
+
+			if( isset($_GET['Producto_page']) )
+			{
+				if ( Yii::app()->getSession()->get('categoria') )
+					$producto->categoria_id = Yii::app()->getSession()->get('categoria');
+					
+				if ( Yii::app()->getSession()->get('nombre') )
+					$producto->nombre = Yii::app()->getSession()->get('nombre');
+				
+				$todos = array();
+				$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));	
+				$dataProvider = $producto->busqueda($todos);
+		
+				$this->render('index',
+				array('index'=>$producto,
+				'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+				));	
+			
+			}
+			/*
+			if(Yii::app()->getSession()->get('valor') == 1) // ya hubo una busqueda. asegurando que los resultados sean los que se debian buscar
+			{
+				if ( Yii::app()->getSession()->get('categoria') )
+					$producto->categoria_id = Yii::app()->getSession()->get('categoria');
+					
+				if ( Yii::app()->getSession()->get('nombre') )
+					$producto->nombre = Yii::app()->getSession()->get('nombre');
+				
+				
+				$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id));	
+		
+			}
+			*/
+			$todos = array();
+			$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+	
+			$dataProvider = $producto->busqueda($todos);
+	
+			$this->render('doble',
+			array('doble'=>$producto,
+			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+			));	
+			}
+
+
+
 	
 	
 	public function actionColores()
@@ -174,12 +261,21 @@ class TiendaController extends Controller
 		$producto->estado = 0; // que no esté inactivo
 	
 		$color="";
+		$categoria="";
 		
 		if(isset($_POST['idColor'])) // llega como parametro el id del color presionado
 		{
 			Yii::app()->session['idColor']=$_POST['idColor'];	
 		}		
 			
+		if(isset(Yii::app()->session['idact'])) // llega como parametro el id del color presionado
+		{
+			
+			
+			$categoria=Yii::app()->session['idact'];
+		}
+			
+		
 			
 		if(isset(Yii::app()->session['idColor'])) // llega como parametro el id del color presionado
 		{
@@ -187,11 +283,12 @@ class TiendaController extends Controller
 			
 			unset($color[0]);	
 		}	
-		
+
+			
 		
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 	
-		$dataProvider = $producto->multipleColor($color);
+		$dataProvider = $producto->multipleColor($color,$categoria);
 		$this->render('doble',
 		array('doble'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
@@ -298,6 +395,44 @@ class TiendaController extends Controller
 		));
 	  }
 } 
+
+public function actionCategorias2(){
+	
+	  	$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+		
+		// para que también filtre del lado del list view
+		/*
+		$producto = new Producto;
+		$producto->status = 1;
+		$producto->categoria_id = $_POST['padreId']; // el id del que se le da click		
+		$todos = array(); 
+		$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
+		$dataProvider = $producto->busqueda($todos);
+		*/
+		
+	  if ($categorias){
+		 echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'padre',
+			'div'=> $this->renderPartial('_view_categorias2',array('categorias'=>$categorias),true,true)
+		));
+		Yii::app()->session['idact']=$_POST['padreId'];
+		exit;
+	  }else {
+	  		echo CJSON::encode(array(
+			'id'=> $_POST['padreId'],
+			'accion'=>'hijo'
+		));
+		Yii::app()->session['idact']=$_POST['padreId'];
+	  }
+	  
+} 
+
 
 	public function actionImageneslooks(){
 		

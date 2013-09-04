@@ -211,7 +211,7 @@
 		$('.color').click(function(){
 			idColor = $(this).attr('id');
 			clearTimeout(ajaxUpdateTimeout);
-			$(this).css({'outline': '2px groove #6d2d56'});
+			
 			ajaxUpdateTimeout = setTimeout(function () {
 				$.fn.yiiListView.update(
 				'list-auth-items',
@@ -239,7 +239,7 @@
 			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-       <br/>
+        <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
        		<div id="looks" class="clearfix hidden-phone">
        		</div>
         </div>
@@ -283,11 +283,8 @@ $(document).ready(function(){
 				
 				if(data.status=="ok")
 				{
-					if(data.datos != ""){
-						 $('#looks.clearfix').prepend(data.datos);
-						 $('#looks.clearfix').prepend('<h5 class="hidden-phone">Looks con estas prendas:</h5>');
-					}
-					
+
+					$('#looks.clearfix').prepend(data.datos);
 				//	$("#looks").html(cont); // cambiando el div
 					
 				}
@@ -313,7 +310,7 @@ function randomFrom(arr){
     <!-- Modal 
     <div id="myModal" class="modal hide tienda_modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Nombre del producto</h3>
     </div>
     <div class="modal-body">
@@ -339,8 +336,8 @@ function randomFrom(arr){
                    
                   </div>
                 </div>
-                <a data-slide="prev" href="#myCarousel" class="left carousel-control">â€¹</a>
-                <a data-slide="next" href="#myCarousel" class="right carousel-control">â€º</a>
+                <a data-slide="prev" href="#myCarousel" class="left carousel-control">‹</a>
+                <a data-slide="next" href="#myCarousel" class="right carousel-control">›</a>
               </div></div>
               <div class="span5">
           <div class="row-fluid call2action">

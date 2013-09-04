@@ -93,7 +93,7 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/filtrar') . "',
+				url: '" . CController::createUrl('tienda/filtrar2') . "',
 				data: ajaxRequest}
 				
 				)
@@ -161,7 +161,7 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/filtrar') . "',
+				url: '" . CController::createUrl('tienda/filtrar2') . "',
 				data: ajaxRequest}
 				
 				)
@@ -189,7 +189,7 @@
 					'list-auth-items',
 					{
 					type: 'POST',	
-					url: '" . CController::createUrl('tienda/filtrar') . "',
+					url: '" . CController::createUrl('tienda/filtrar2') . "',
 					data: ajaxRequest}
 					
 					)
@@ -217,7 +217,7 @@
 			else{
 				window.idColor = window.idColor.replace('#'+$(this).attr('id'),'');				
 			}
-			alert(window.idColor);
+			
 			clearTimeout(ajaxUpdateTimeout);
 			
 			ajaxUpdateTimeout = setTimeout(function () {
@@ -403,6 +403,9 @@ $(document).ready(function() {
 	var imag;
 	var original;
 	var segunda;
+	
+	
+
 	
 	
 	$('.producto').hover(function(){		

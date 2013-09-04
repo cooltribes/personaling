@@ -103,7 +103,7 @@
         <a href="#" class="btn crear-filtro span2" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Filtro</a> 
     </div>
     <div class="span1 pull-right">
-        <a href="#" id="filter-search" class="btn btn-danger" title="Buscar coin el filtro actual">Buscar</a>  
+        <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  
     </div>
     
     
@@ -113,9 +113,19 @@
 <script type="text/javascript">
 /*<![CDATA[*/
    //Buscar
-    $('#filter-search').click(function() {
+   
+   var ajaxUpdateTimeout;
+   var ajaxRequest;
+    $('#filter-search').click(function(e) {
+        
+        e.preventDefault();
+        
+        console.log($('#form_filtros'));
+        
         ajaxRequest = $('#form_filtros').serialize();
         clearTimeout(ajaxUpdateTimeout);
+
+        $('#form_filtros').submit();
 
         ajaxUpdateTimeout = setTimeout(
         function() {
@@ -123,8 +133,9 @@
                     'list-auth-items',
                     {
                         type: 'POST',
-                        //url: '" . CController::createUrl('orden / admin') . "',
-                        data: ajaxRequest}
+                        url: '<?php CController::createUrl('orden/admin') ?>',
+                        data: ajaxRequest
+                    }
 
             )
         },

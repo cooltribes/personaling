@@ -213,5 +213,44 @@ class Orden extends CActiveRecord
 		
 		
 	}
+        
+        /**
+         * 
+         */
+        public function buscarPorFiltros($filtros)
+	{
+		
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('subtotal',$this->subtotal);
+		$criteria->compare('descuento',$this->descuento);
+		$criteria->compare('envio',$this->envio);
+		$criteria->compare('iva',$this->iva);
+		$criteria->compare('descuentoRegalo',$this->descuentoRegalo);
+		$criteria->compare('total',$this->total);
+		$criteria->compare('estado',$this->estado);
+		$criteria->compare('fecha',$this->fecha);
+		$criteria->compare('bolsa_id',$this->bolsa_id);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('pago_id',$this->pago_id);
+		$criteria->compare('detalle_id',$this->detalle_id);
+		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
+		$criteria->compare('tracking',$this->tracking);	
+		$criteria->compare('seguro',$this->seguro);
+		$criteria->join ='JOIN tbl_users ON tbl_users.id = t.user_id AND (t.id LIKE "%'.$query.'%" OR tbl_users.username LIKE "%'.$query.'%" )';
+		
+	//	$criteria->addCondition('t.id LIKE :valor','OR');
+	//	$criteria->addCondition('tbl_users.username LIKE :valor','OR');
+		
+	// 	$criteria->params = array(":valor" => $query);
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+		
+		
+		
+	}
 	
 }

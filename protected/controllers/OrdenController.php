@@ -78,30 +78,56 @@ class OrdenController extends Controller
 	 * */
 	public function actionAdmin()
 	{
-		$orden = new Orden;
+            $orden = new Orden;
+
+//            echo "<pre>";
+//            print_r($_POST);
+//            echo "</pre>";            
+            $filters = array();
+            
+            if(isset($_POST['dropdown_filter'])){                
                 
-                //print_r($_POST);
-                //exit();
-		
-		if (isset($_POST['query']))
-		{
-			$dataProvider = $orden->filtrado($_POST['query']);
-		}
-		else
-			$dataProvider = $orden->search();
-                
-                //Ordenar por fecha descendiente
-                $criteria = $dataProvider->getCriteria();
-                $criteria->order = 'fecha DESC';
-                $dataProvider->setCriteria($criteria);
-                
-                $filter = new Filter;
-		
-		$this->render('admin',
-		array('orden'=>$orden,
-		'dataProvider'=>$dataProvider,
-                    'filter' => $filter,
-		));
+                for($i=0; $i < count($_POST['dropdown_filter']); $i++){
+                    if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
+                            && $_POST['textfield_value'][$i] && $_POST['dropdown_relation'][$i]){
+
+                        $filters['fields'][] = $_POST['dropdown_filter'][$i];
+                        $filters['ops'][] = $_POST['dropdown_operator'][$i];
+                        $filters['vals'][] = $_POST['textfield_value'][$i];
+                        $filters['rels'][] = $_POST['dropdown_relation'][$i];                    
+
+                    }
+                }  
+            }
+
+//            echo "<pre>";
+//            print_r($filters);
+//            echo "</pre>";
+            
+            if(isset($filters['fields'])){
+                $dataProvider = $orden->buscarPorFiltros($filters); 
+            }
+            
+            
+            //Yii::app()->end();
+
+            if (isset($_POST['query'])) {
+                $dataProvider = $orden->filtrado($_POST['query']);
+            }
+            else
+                $dataProvider = $orden->search();
+
+            //Ordenar por fecha descendiente
+            $criteria = $dataProvider->getCriteria();
+            $criteria->order = 'fecha DESC';
+            $dataProvider->setCriteria($criteria);
+
+            $filter = new Filter;
+
+            $this->render('admin', array('orden' => $orden,
+                'dataProvider' => $dataProvider,
+                'filter' => $filter,
+            ));
 
 	}
 	

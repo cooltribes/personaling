@@ -616,6 +616,7 @@ class Look extends CActiveRecord
 		//header('Content-Type: image/png'); 
 		//header('Cache-Control: max-age=86400, public');
 		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png', 'registro');
 		imagedestroy($canvas);		
 	}
 }

@@ -430,6 +430,7 @@ public function actionCategorias(){
 		}
 		if ($temporal!='')
 			$model->has_ocasiones = substr($temporal, 0, -1);
+		//echo $model->has_ocasiones;
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
 
@@ -479,13 +480,15 @@ public function actionCategorias(){
                 }
             } 
 		}	
-$model = Look::model()->findByPk($id);
-if (isset($_POST['categorias'])){ 
- $model->has_ocasiones = $_POST['categorias'];
-}
-	    $this->render('publicar',array(
+		$model = Look::model()->findByPk($id);
+		if (isset($_POST['categorias'])){ 
+	 		$model->has_ocasiones = $_POST['categorias'];
+		} else {
+			if ($temporal!='')
+				$model->has_ocasiones = substr($temporal, 0, -1);
+		}	
+		$this->render('publicar',array(
 			'model'=>$model,
-			
 			)
 		);
 				
@@ -578,6 +581,7 @@ if (isset($_POST['categorias'])){
 					
 					 
 				}
+				$model->createImage();
 				if ($_POST['tipo']==1){ 
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();

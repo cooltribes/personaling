@@ -211,7 +211,7 @@
 		$('.color').click(function(){
 			idColor = $(this).attr('id');
 			clearTimeout(ajaxUpdateTimeout);
-			$(this).css({'outline': '2px groove #6d2d56'});
+			//$(this).css({'outline': '2px groove #6d2d56'});
 			ajaxUpdateTimeout = setTimeout(function () {
 				$.fn.yiiListView.update(
 				'list-auth-items',

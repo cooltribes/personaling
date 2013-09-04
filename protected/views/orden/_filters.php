@@ -38,14 +38,14 @@
                 <div class="control-group">
                     <div class="controls" >
                         <div class="span3" >
-                            <?php echo Chtml::dropDownList('dropdown_filter[]', '', array('username' => 'Estado',
-                            'lastname' => 'Fecha de Compra',
-                            'firstname' => 'Cantidad de Looks',
+                            <?php echo Chtml::dropDownList('dropdown_filter[]', '', array('estado' => 'Estado',
+                            'fecha' => 'Fecha de Compra',
+                            'detalle_id' => 'Cantidad de Looks',
                             'email' => 'Cantidad de Prendas',
-                            'street' => 'Monto',
-                            'city' => 'Método de Pago',
-                            'cellphone' => 'Usuaria',
-                            'birthdate' => 'N° de pedido',
+                            'total' => 'Monto',
+                            'pago_id' => 'Método de Pago',
+                            'user_id' => 'Usuaria',
+                            'id' => 'N° de pedido',
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
                         <div class="span2" >
@@ -100,7 +100,7 @@
         <a href="#" class="btn crear-filtro" title="Borrar Filtro">Borrar Filtro</a>
     </div>
     <div class="span3 pull-right">
-        <a href="#" class="btn crear-filtro span2" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Filtro</a> 
+        <a href="#" id="filter-save" class="btn crear-filtro span2" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Filtro</a> 
     </div>
     <div class="span1 pull-right">
         <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  
@@ -118,14 +118,16 @@
    var ajaxRequest;
     $('#filter-search').click(function(e) {
         
-        e.preventDefault();
-        
-        console.log($('#form_filtros'));
-        
+        e.preventDefault(); 
+        console.log("hello");
         ajaxRequest = $('#form_filtros').serialize();
+                        
+        console.log(ajaxRequest);
+        
+        
         clearTimeout(ajaxUpdateTimeout);
 
-        $('#form_filtros').submit();
+       $('#form_filtros').submit();
 
         ajaxUpdateTimeout = setTimeout(
         function() {
@@ -134,14 +136,67 @@
                     {
                         type: 'POST',
                         url: '<?php CController::createUrl('orden/admin') ?>',
-                        data: ajaxRequest
-                    }
+                        data: ajaxRequest                       
+                        
+                     }   
 
             )
         },
         300);
 
-    console.log(ajaxRequest);
+        return false;
+    });
+    
+    $('#filter-save').click(function(e) {
+        
+        e.preventDefault(); 
+        
+        ajaxRequest = $('#form_filtros').serialize();        
+        
+           
+        bootbox.prompt("Indica un nombre para el filtro:", function(result) {                
+        if (result === null) {                                             
+
+        } else{
+            result = result.trim();                
+            if (result !== "") {                
+            //guardar el filtro
+            ajaxRequest += "&save=true&name="+result; 
+
+            console.log(ajaxRequest);
+        
+        
+            clearTimeout(ajaxUpdateTimeout);
+
+           // $('#form_filtros').submit();
+
+            ajaxUpdateTimeout = setTimeout(
+            function() {
+                $.fn.yiiListView.update(
+                        'list-auth-items',
+                        {
+                            type: 'POST',
+                            url: '<?php CController::createUrl('orden/admin') ?>',
+                            data: ajaxRequest
+
+                         }   
+
+                )
+            },
+            300);
+
+
+
+            }
+
+        }
+        });
+            
+            
+        
+        
+        
+
         return false;
     });
 /*]]>*/

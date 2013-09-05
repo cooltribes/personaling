@@ -92,12 +92,19 @@ echo"<tr>";
 function modal(id){
 
 	$.ajax({
+		type: "post",
 		'url' :'/site/orden/modalventas/'+id,
+		data: { 'ord':id}, 
 		'success': function(data){
 			$('#myModal').html(data);
 			$('#myModal').modal(); 
 		},
 		'cache' :false});
+
+
+	    
+		
+		
 }
 </script>
 

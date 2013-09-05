@@ -1167,22 +1167,12 @@ src: url('../fonts/entypo.woff'),
     .share_like{
             margin-top:1.7em;
             .btn-link{
-                height:60px;
+                height:50px;
                 margin-top:-30px;
                             .icon_personaling_big{
                                 height:50px;
                             }
             }
-           #meEncanta{
-                span{
-                  display: block;
-                  margin-top: 12px;
-                }
-                small{
-                  display: block;
-                  margin-top: -22px;
-                }
-            }            
             .btn-link-active .entypo{color:@color1 !important;}
     }
     .imagen_principal{
@@ -1339,22 +1329,12 @@ src: url('../fonts/entypo.woff'),
     .share_like{
             margin-top:3.3em;
             .btn-link{
-                height:60px;
+                height:50px;
                 margin-top:-30px;
 
-                        .icon_personaling_big{ height:50px;}
+                .icon_personaling_big{ height:50px;}
                 }
             .btn-link-active .entypo{color:@color1 !important;}
-            #meEncanta{
-                span{
-                  display: block;
-                  margin-top: 12px;
-                }
-                small{
-                  display: block;
-                  margin-top: -22px;
-                }
-            }
 
         }
     .columna_principal{
@@ -1384,7 +1364,7 @@ src: url('../fonts/entypo.woff'),
 
         .braker_horz_top_1{
             .padding_top;
-            .margin_top;
+            margin-top:1em;
             .margin_bottom;
             .boton_pinterest{
               position: relative;
@@ -2328,14 +2308,26 @@ img[alt="Loading"]{
     /*-------------------------------
      PROVSIONAL DEL CARROUSEL PARA REMOVER CUANDO TERMINEN EL VIDEO
      ------------------------ */
+
+/*------------ TU PERSONAL SHOPPER ON ----------*/
+
 .btn-morado-tiffany{
-  background: #6C1B4F;
+  background: @color1;
+  padding: .6em; 
+  .transition_all;
+  .icon-chevron-right{
+    margin-top: 3px;
+    .transition_all;
+  }
 }
 .btn-morado-tiffany:hover{
   background: #18AF91;
+  .icon-chevron-right{
+    margin-left: 360px;
+  }
 }
-/*------------ TU PERSONAL SHOPPER ON ----------*/
 
+/*------------ TU PERSONAL SHOPPER OFF ----------*/
 
 /*------------ TEAM ON ------------*/
 
@@ -2560,7 +2552,7 @@ img[alt="Loading"]{
 /* ----------- Estadisticas Administrador OFF --------------*/
 
 /* ----------- Publicar Look Administrador ON --------------*/
-#div_ocasiones{
+#div_ocasiones, #div_tipo{
     a.active{
         background-color: #222222;
     }  
@@ -2643,58 +2635,61 @@ img[alt="Loading"]{
 
 /*------------- Escoge tu estilo registro ON -------------*/
 #tuestilo-registro-form{
-    .tab_uno  a,.tab_dos  a,.tab_tres  a,.tab_cuatro  a,.tab_cinco  a{
+    #yw2{
+      margin-left: 122px;
+    }
+    .tab_1  a,.tab_2  a,.tab_3  a,.tab_4  a,.tab_5  a{
       background-color: white;
       border: 0; // poner eso en uno general
       height: 19px;
       margin: 0;
       width: 95px;        
     }
-    .tab_uno  a {
+    .tab_1  a {
       background: url(../images/1_M.png) no-repeat;
     }
-    .tab_dos  a {
+    .tab_2  a {
       background: url(../images/2_M.png) no-repeat;
     }
-    .tab_tres  a {
+    .tab_3  a {
       background: url(../images/3_M.png) no-repeat;
     }
-    .tab_cuatro  a {
+    .tab_4  a {
       background: url(../images/4_M.png) no-repeat;
     }
-    .tab_cinco  a {
+    .tab_5  a {
       background: url(../images/5_M.png) no-repeat;
     }  
 
-    .tab_falta.tab_uno  a {
+    .tab_falta.tab_1  a {
       background: url(../images/1M.png) no-repeat;
     }
-    .tab_falta.tab_dos  a {
+    .tab_falta.tab_2  a {
       background: url(../images/2_S_M.png) no-repeat;
     }
-    .tab_falta.tab_tres  a {
+    .tab_falta.tab_3  a {
       background: url(../images/3_S_M.png) no-repeat;
     }
-    .tab_falta.tab_cuatro  a {
+    .tab_falta.tab_4  a {
       background: url(../images/4_S_M.png) no-repeat;
     }
-    .tab_falta.tab_cinco  a {
+    .tab_falta.tab_5  a {
       background: url(../images/5_S_M.png) no-repeat;
     }
 
-    .tab_uno.active  a {
+    .tab_1.active  a {
       background: url(../images/1_M_L.png) no-repeat;
     } 
-    .tab_dos.active  a {
+    .tab_2.active  a {
       background: url(../images/2_M_L.png) no-repeat;
     }    
-    .tab_tres.active  a {
+    .tab_3.active  a {
       background: url(../images/3_M_L.png) no-repeat;
     } 
-    .tab_cuatro.active  a {
+    .tab_4.active  a {
       background: url(../images/4_M_L.png) no-repeat;
     } 
-    .tab_cinco.active  a {
+    .tab_5.active  a {
       background: url(../images/5_M_L.png) no-repeat;
     }             
 }

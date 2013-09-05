@@ -41,26 +41,25 @@
 					//echo "p:".$like->producto_id." us:".$like->user_id;
 					$entro=1;
 					?>
-						<button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
-               				<span id="like" class="entypo icon_personaling_big">&hearts;</span> <small class='btn-mini' > Me encanta </small>
-               			</button>
+            <button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
+                   <span id="like" class="entypo icon_personaling_big">&hearts;</span>
+            </button>
                		<?php	
 					
 				}
 					
 					if($entro==0)
 					{
-						echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
-               			<span id='like' class='entypo icon_personaling_big'>&#9825;</span><small class='btn-mini' > Me encanta </small>
-               			</button>";
+             echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
+                 <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
+                 </button>";
 					}
 
                	?>
                	
-                <div class="btn-group hidden-phone">
-                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class=""><!-- &#59157; -->Compartir</span></button>
+<!--                 <div class="btn-group hidden-phone">
+                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class="">&#59157; Compartir</span></button>
                   <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN -->
                     
                     <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
                     <li><a class="addthis_button_tweet"></a></li>
@@ -68,9 +67,8 @@
                   </ul>
                   <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
                   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                  <!-- AddThis Button END --> 
                   
-                </div>
+                </div> -->
             </div>
           </div>
           <div class="row">
@@ -101,7 +99,7 @@
 				
 					//imprimiendo igual la primera en thumbnail
 					$pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					echo CHtml::image($img->getUrl(), "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
+					echo CHtml::image( str_replace(".","_x90.",$img->getUrl()) , "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));					
 							
 				}
 				
@@ -724,6 +722,8 @@ else if($count == 0){
 ?>
  
 <script>
+var comprando = true;
+
 $(document).ready(function(){
 
 var source = $('#principal').attr("src");
@@ -996,53 +996,57 @@ $('.imagen_principal').zoom({url: imgZ});
    
    function c(){ // comprobar quienes están seleccionados
    		
-   		var talla = $("#vTa").find(".tallass.active").attr("id");
-   		var color = $("#vCo").find(".coloress.active").attr("id");
-   		var producto = $("#producto").attr("value");
-   		
-   		// llamada ajax para el controlador de bolsa
- 		  
- 		if(talla==undefined && color==undefined) // ninguno
- 		{
- 			alert("Seleccione talla y color para poder añadir.");
- 		}
- 		
- 		if(talla==undefined && color!=undefined) // falta talla
- 		{
- 			alert("Seleccione la talla para poder añadir a la bolsa.");
- 		}
- 		
- 		if(talla!=undefined && color==undefined) // falta color
- 		{
- 			alert("Seleccione el color para poder añadir a la bolsa.");
- 		}   
- 		   
- 		if(talla!=undefined && color!=undefined)
- 		{
-    $('#agregar').click(false);
- 		$('#agregar').attr("disabled", true);
- 		$.ajax({
-	        type: "post",
-	        url: "../../bolsa/agregar", // action Tallas de Producto
-	        data: { 'producto':producto, 'talla':talla, 'color':color}, 
-	        success: function (data) {
-				
-				if(data=="ok")
-				{
-					//alert("redireccionar mañana");
-					window.location="../../bolsa/index";
-				}
-				
-				if(data=="no es usuario")
-				{
-					alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
-				}
+   		if (comprando == true){
+	   		var talla = $("#vTa").find(".tallass.active").attr("id");
+	   		var color = $("#vCo").find(".coloress.active").attr("id");
+	   		var producto = $("#producto").attr("value");
+	   		
+	   		// llamada ajax para el controlador de bolsa
+	 		  
+	 		if(talla==undefined && color==undefined) // ninguno
+	 		{
+	 			alert("Seleccione talla y color para poder añadir.");
+	 		}
+	 		
+	 		if(talla==undefined && color!=undefined) // falta talla
+	 		{
+	 			alert("Seleccione la talla para poder añadir a la bolsa.");
+	 		}
+	 		
+	 		if(talla!=undefined && color==undefined) // falta color
+	 		{
+	 			alert("Seleccione el color para poder añadir a la bolsa.");
+	 		}   
+	 		   
+	 		if(talla!=undefined && color!=undefined)
+	 		{
+	    	//$('#agregar').click(false);
+	 		$('#agregar').attr("disabled", true);
+	 		comprando = false;
+	 		$.ajax({
+		        type: "post",
+		        url: "../../bolsa/agregar", // action Tallas de Producto
+		        data: { 'producto':producto, 'talla':talla, 'color':color}, 
+		        success: function (data) {
+		        	comprando = true;
 					
-	       	}//success
-	       })
- 			
- 			
- 		}// cerro   
+					if(data=="ok")
+					{
+						//alert("redireccionar mañana");
+						window.location="../../bolsa/index";
+					}
+					
+					if(data=="no es usuario")
+					{
+						alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
+					}
+						
+		       	}//success
+		       })
+	 			
+	 			
+	 		}// cerro   
+ 		}
 
 
    }

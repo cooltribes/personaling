@@ -1,3 +1,4 @@
+
   <?php /* @var $this Controller */ ?>
   <?php //date_default_timezone_set('America/Los_Angeles'); ?>
 <!DOCTYPE html>
@@ -28,6 +29,7 @@
 
 $total = 0; //variable para llevar el numero de notificaciones
 $cont_productos = 0 ; //variable para llevar el numero de productos
+$contadorMensaje = 0;
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
 
 
@@ -82,13 +84,24 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 	
 		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+
+    //Consulta de mensajes
+    $mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1));
+    if(count($mensajes) > 0){
+      foreach($mensajes as $msj)
+      {
+        if( $msj->estado == 0)
+          $contadorMensaje++;
+      }
+    }
 		
 	if (Yii::app()->user->id){ 
 		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));    
 		$user = User::model()->findByPk(Yii::app()->user->id);
     $avatar ='';
     if($user){ 
-      $avatar = "<img  src='".$user->getAvatar()."' class='img-circle avatar_menu' width='30' height='30' />   ";
+      $file = explode('.',$user->getAvatar());
+      $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
     }
     $nombre = $profile->first_name.' '.$profile->last_name;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
@@ -120,7 +133,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
-				        array('label'=>$total,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+				        array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
@@ -209,7 +222,7 @@ if(!Yii::app()->user->isGuest){
     // //Boton Notificaciones
     $('#btn-notifications').popover(
     {
-      title: '<strong>Notificaciones ('+ <?php echo $total ?>+')</strong>',
+      title: '<strong>Notificaciones ('+ <?php echo $contadorMensaje ?>+')</strong>',
       content: '<a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a>',
       placement: 'bottom',
       trigger: 'manual',
@@ -277,7 +290,7 @@ if(!Yii::app()->user->isGuest){
 	                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
 	                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
 	                  if($imagen){
-	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
+	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x32.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
 	                      echo '<div class="span2">'.$htmlimage.'</div>';
 	                  }
 	              }
@@ -317,7 +330,7 @@ if(!Yii::app()->user->isGuest){
                 echo '<div class="row-fluid">';
                 
                 if($imagen){
-                    $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "40", "height" => "40"));
+                    $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                     echo '<div class="span2">'.$htmlimage.'</div>';
                 }                
                 echo '</div>';                
@@ -426,10 +439,10 @@ if(!Yii::app()->user->isGuest){
         <ul>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/formas_de_pago" title="Formas de Pago">Formas de Pago</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/condiciones_de_envios_y_encomiendas" title="Envíos y Encomiendas">Envíos y Encomiendas</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Politicas de Devoluciones">Políticas de Devoluciones</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="politicas y privacidad">Políticas y Privacidad</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas Frecuentes</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Terminos de Servicio">Términos de Servicio</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
@@ -447,7 +460,7 @@ if(!Yii::app()->user->isGuest){
         <a title="Personaling en Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ"><img width="40" height="40" title="Personaling en Youtube" src="<?php echo Yii::app()->baseUrl ?>/images/icon_youtube.png"></a>
           </div>
         <hr/>
-        <p>Somos ganadores de</p>
+        <p>Nos Avalan</p>
         <a href="http://ve.wayra.org/es/startup/personaling"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
         <a href="#"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
         <p class="margin_top_small">Partners</p>

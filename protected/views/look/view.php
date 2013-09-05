@@ -4,7 +4,7 @@
 // );
 ?>
 
-<div class="container margin_top" id="carrito_compras">
+<div class="container margin_top_small" id="carrito_compras">
   <div class="row">
     <div class="span12">
       <div class="row detalle_look">
@@ -31,7 +31,7 @@
                     ?>
 
                         <button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
-                            <span id="like" class="entypo icon_personaling_big">&hearts; </span>  <small class='btn-mini' > Me encanta </small> 
+                            <span id="like" class="entypo icon_personaling_big">&hearts;</span>
                         </button>
                        <?php
 
@@ -40,30 +40,20 @@
                     if($entro==0) // no le ha dado like
                     {
                         echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
-                           <span id='like' class='entypo icon_personaling_big'>&#9825;</span> <small class='btn-mini' > Me encanta </small>
+                           <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
                            </button>";
                     }
 
                    ?>
 
-                <div class="btn-group">
-                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class=""><!-- &#59157; -->Compartir</span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    <!-- AddThis Button BEGIN -->
 
-                    <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                    <li><a class="addthis_button_tweet"></a></li>
-                    <li><a class="addthis_button_pinterest_pinit"></a></li>
-                  </ul>
-                  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
-                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
-                  <!-- AddThis Button END -->
- 
-                </div>
               </div>
             </div>
           </div>
-          <div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div>
+          <div class="row-fluid">
+            <div class="span12"><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
+
+          </div>
           <div class="hidden-phone row-fluid vcard">
             <div class="span2 avatar ">
             <a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$model->user->id; ?>" title="perfil" class="url">
@@ -252,16 +242,17 @@
           </div>
           <?php $this->endWidget(); ?>
           <!-- Productos del look OFF -->
-
-
-          <div class="braker_horz_top_1">
-            
-              <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-              <a class="addthis_button_tweet"></a>
-              <a class="addthis_button_pinterest_pinit boton_pinterest"></a>
+<hr/>
+  <div class="clearfix">
+     <a class="addthis_button_facebook_like pull-left" fb:like:layout="button_count"></a>
+                <a class="addthis_button_tweet pull-left"></a>
+                <a class="addthis_button_pinterest_pinit boton_pinterest pull-left"></a></div>
             
             <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
+          <div class="braker_horz_top_1">
+            
+           
             <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
             <hr/>
                         <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_accesorize.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
@@ -386,7 +377,7 @@ $cont=0;
       <div class="text_align_center">
         <hr/>
             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_aldo.jpg" width="970" height="90" alt="Banner blanco" />
- </div>
+      </div>
     </div>
 
     <!-- /container -->

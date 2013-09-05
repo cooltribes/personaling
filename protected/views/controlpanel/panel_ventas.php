@@ -25,11 +25,16 @@ $productos_enviados = Yii::app()->db->createCommand($sql)->queryScalar();
 
 	$ordenes = Orden::model()->findAllByAttributes(array(), 'estado = :valor1 or estado = :valor2', array(':valor1'=>3,':valor2'=>4));
 	$sumatoria = 0;
+	$impuestos = 0;
 	
 	foreach($ordenes as $uno)
 	{
 		$sumatoria = $sumatoria + $uno->total;	
+		$impuestos = $impuestos + $uno->iva;
 	}
+
+$a = substr($sumatoria,0,-1);
+$b = substr($impuestos,0,-1);
 
 /* forma anterior */	
 $sql = "SELECT sum(total) as total FROM tbl_orden";
@@ -39,7 +44,32 @@ if($ventas != 0)
 	$promedio = $sumatoria / $ventas;
 else
 	$promedio = 0;
+
+$c = substr($promedio,0,-1);
+
+	$pago_pendientes = 0;
+	$pend = Orden::model()->findAllByAttributes(array('estado'=>1));
+	$envios = 0;
+	
+	foreach($pend as $cada){
+		$pago_pendientes = $pago_pendientes + $cada->total;
+		$envios = $envios + $cada->envio + $cada->seguro;
+	}
+
+$d = substr($pago_pendientes,0,-1);
+
+$pendiente = Orden::model()->countByAttributes(array('estado'=>1));
+$e = $pago_pendientes / $pendiente;
+
+$f = substr($e,0,-1);
+$g = substr($envios,0,-1);
+
+$sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado = 1 and a.id = b.tbl_orden_id";
+$productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
+
 ?>  
+ 
+
   
   <!-- SUBMENU OFF -->
   <div class="row">
@@ -53,15 +83,15 @@ else
           <table width="100%" border="0" class="table table-bordered  table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Ventas Totales</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($sumatoria); ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$a); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong>Promedio de Ventas</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($promedio); ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$c); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong>Impuestos</strong>:</td>
-              <td>870</td>
+              <td><?php echo $b; ?> Bs.</td>
             </tr>
             <tr>
               <td><strong>Envíos</strong>:</td>
@@ -78,11 +108,11 @@ else
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Total Pagos Pendientes:</strong></td>
-              <td> 10.430 Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$d); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong>Promedio en Pagos Pendientes:</strong></td>
-              <td>450 Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($f); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong>Impuestos:</strong></td>
@@ -90,11 +120,11 @@ else
             </tr>
             <tr>
               <td><strong>Envios:</strong></td>
-              <td>150 Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$g); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong>Numero de Productos Pendientes:</strong></td>
-              <td>150 Bs.</td>
+              <td><?php echo $productos_pendientes; ?></td>
             </tr>
           </table>
         </div>
@@ -110,7 +140,8 @@ else
         <li><a data-toggle="tab" href="#tab3">Marcas mas vendidas</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
+      
+      <div class="tab-pane active" id="tab1" >
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Nombre del Look</th>
@@ -118,26 +149,38 @@ else
               <th scope="col">Cantidad</th>
               <th scope="col">Total Vendidos (Bs.)</th>
             </tr>
-            <tr>
-              <td><a href="#" title="Ver Look">Look claro de verano</a></td>
-              <td>4.000,00</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
-            </tr>
-            <tr>
-              <td><a href="#" title="Ver Look">Look claro de verano</a></td>
-              <td>4.000,00</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
-            </tr>
-            <tr>
-              <td><a href="#" title="Ver Look">Look claro de verano</a></td>
-              <td>4.000,00</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
-            </tr>
-          </table>
-        </div>
+            		
+      	<?php
+      		$x = new Look;
+			$looksmas = $x->masvendidos(5);
+			
+
+	foreach($looksmas->getData() as $record) {
+			
+		$lk = Look::model()->findByPk($record['look_id']);
+		
+		$pre = (float) $lk->getPrecio(false); 
+		$tt = (int) $record['looks'];
+		
+		$ppp = $pre * $tt;
+		
+		if (isset($lk)){
+		
+      	?>
+        	<tr>
+              <td><a href="<?php echo Yii::app()->baseUrl."/look/".$lk->id; ?>" title="Ver Look"><?php echo $lk->title; ?></a></td>
+              <td>Bs. <?php echo $lk->getPrecio(); ?></td>
+              <td><?php echo $record['looks']; ?></td>
+              <td>Bs. <?php echo $ppp; ?></td>
+          	</tr>
+	<?php
+		}
+	}
+	?>  
+	
+		</table>
+   	</div>
+	
         <div class="tab-pane" id="tab2">
         <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
@@ -145,27 +188,38 @@ else
               <th scope="col">Precio (Bs.)</th>
               <th scope="col">Cantidad</th>
               <th scope="col">Total Vendidos (Bs.)</th>
-            </tr>
+            </tr>	
+      	<?php
+      		$x = new Producto;
+			$prodmas = $x->masvendidos(5);
+			
+	
+		foreach($prodmas->getData() as $record) {
+				
+			$pro = Producto::model()->findByPk($record['producto_id']);
+			
+			$pre = Precio::model()->findByAttributes(array('tbl_producto_id'=>$pro->id));
+			$tt = (int) $record['productos'];
+			
+			$ppp = $pre->precioDescuento * $tt;
+			
+			if (isset($lk)){
+		
+      	?>      
+            
             <tr>
-              <td><a href="#" title="Ver producto">Blusa X</a></td>
-              <td>4.000,00</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
+              <td><a href="<?php echo Yii::app()->baseUrl."/producto/detalle/".$pro->id; ?>" title="Ver producto"><?php echo $pro->nombre; ?></a></td>
+              <td>Bs. <?php echo $pre->precioDescuento; ?></td>
+              <td><?php echo $record['productos']; ?></td>
+              <td>Bs. <?php echo $ppp; ?></td>
             </tr>
-            <tr>
-              <td><a href="#" title="Ver producto">Blusa X</a></td>
-              <td>4.000,00</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
-            </tr>
-            <tr>
-              <td><a href="#" title="Ver producto">Blusa X</a></td>
-              <td>4.000,00</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
-            </tr>
+       <?php      
+			}
+		}
+       ?>     
           </table>
         </div>
+        
         <div class="tab-pane" id="tab3">
         <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>

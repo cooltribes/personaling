@@ -82,7 +82,7 @@
 			
 			      	
       	?>
-      	<a role="button" data-toggle="modal" onclick="get_marca(<?php echo $data->id; ?>)"><?php echo $num?></a>
+      	<a role="button" data-toggle="modal" onclick="get_marca(<?php echo $data->id; ?>)" style="cursor: pointer"><?php echo $num?></a>
       	
       </td>
       	

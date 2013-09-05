@@ -30,7 +30,7 @@
 ////////***************** NEW ******************///////////////
 ?>
     <?php //echo $form->errorSummary(array($modelUser,$profile)); ?>
-    <h4>Nuevo filtro:</h4>
+    <h4>Nuevo Filtro:</h4>
     
     <fieldset>
         <div id="filters-container" class="clearfix">
@@ -41,7 +41,7 @@
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array('estado' => 'Estado',
                             'fecha' => 'Fecha de Compra',
                             'detalle_id' => 'Cantidad de Looks',
-                            'email' => 'Cantidad de Prendas',
+                            'detalle_id' => 'Cantidad de Prendas',
                             'total' => 'Monto',
                             'pago_id' => 'Método de Pago',
                             'user_id' => 'Usuaria',
@@ -97,10 +97,13 @@
         ?>
 
     <div class="span2 pull-right">
-        <a href="#" class="btn crear-filtro" title="Borrar Filtro">Borrar Filtro</a>
+        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
     </div>
     <div class="span3 pull-right">
-        <a href="#" id="filter-save" class="btn crear-filtro span2" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Filtro</a> 
+        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Nuevo Filtro</a> 
+    </div>
+    <div class="span2 pull-right" style="display: none">
+        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar Filtro</a> 
     </div>
     <div class="span1 pull-right">
         <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  
@@ -127,7 +130,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>');
+        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>', true);
             
     });
     
@@ -137,6 +140,12 @@
         getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val());        	
 	
     });
+    
+    $("#filter-remove").change(function(){
+
+            removeFilter('<?php echo CController::createUrl('orden/removeFilter') ?>', $(this).val());        	
+
+    });    
     
     
 /*]]>*/

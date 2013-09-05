@@ -100,7 +100,7 @@ class OrdenController extends Controller
             
             if(isset($_POST['dropdown_filter'])){           
                 
-                //Validar y tomar los filtros válidos
+                //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){
                     if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
                             && trim($_POST['textfield_value'][$i]) != '' && $_POST['dropdown_relation'][$i]){

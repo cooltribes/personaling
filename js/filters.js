@@ -4,9 +4,9 @@
  */
 
 /*Agrega una fila para el filtro*/
-function addRow(e){
+function addRow(){
     
-    e.preventDefault();
+    
     $('#filters-container').append( $('<div/>').html($('#filter').html()) );
     
 	//alert($('#filter').html());
@@ -23,7 +23,10 @@ function addRow(e){
         return false;
     });
         
-    $('.span_add').last().click(addRow);
+    $('.span_add').last().click(function(e){
+        e.preventDefault();
+        addRow();
+    });
     $('.span_add').hide().last().show();
     $('.span_delete').last().show();
     $('.dropdown_relation').show();
@@ -45,6 +48,66 @@ function getFilter(URL, ID){
 
     clearFilters();
     
+    if(ID && ID.trim() !== ''){  
+    
+        $.ajax(
+                URL,
+                {
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { 'id':ID },
+                    success: function(data){
+                        //console.log(data);
+                        if(data.status == 'success'){
+                            //console.log(data.filter);                                            
+                            var total = data.filter.length;
+                            for (var it = 1; it < total; it++) {
+                                addRow();
+                            };
+
+                            $.each(data.filter, function(i, item) {
+
+                                $('.dropdown_filter').eq(i).val(item.column);
+                                $('.dropdown_operator').eq(i).val(item.operator);
+                                $('.textfield_value').eq(i).val(item.value);
+
+                                $('.dropdown_relation').eq(i).val(item.relation); 
+
+                            });  
+                            //console.log($('#all-filters').val());
+                            //Poner titulo
+                            $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
+                            
+                            //Mostrar el botón guardar
+                            $('#filter-save2').parent('div').show();
+
+                        }else if(data.status == 'error'){
+                           console.log(data.error); 
+                           bootbox.alert(data.error);
+                        }
+                    },
+                    error: function( jqXHR, textStatus, errorThrown){
+                        console.log(jqXHR);
+                    }
+                }
+        );
+    }else{
+        
+    }   
+    
+}
+
+/*Eliminia un filtro dado por ID*/
+function removeFilter(URL, ID){
+    //	if ($('#span_new_filter').html() != 'Filter verbergen'){
+//		$('#div_add_filter').show();
+//		$('#YumUser_textfield_all').hide().val('');
+//		//$(this).hide();
+//		$('#span_new_filter').html('Filter verbergen');
+//	}
+
+    clearFilters();
+    
     $.ajax(
             URL,
             {
@@ -57,29 +120,12 @@ function getFilter(URL, ID){
                     }
                 },
                 success: function(data){
-                    console.log(data);
+                    //console.log(data);
                     if(data.status == 'success'){
-                        console.log(data.filter);                                            
-                        var total = data.filter.length;
-                        for (var it = 1; it < total; it++) {
-                            addRow('');
-                        };
                         
-//                        
-//                        $.each(result.data, function(i, item) {
-//                            //alert(data.data);
-//                            //alert(item.tx_detail);
-//                            //options.append($("<option />").val(item[0]).text(item[1]));
-//                            $('.combo_filter').eq(i - 1).val(item.tx_detail);
-//                            $('.combo_operator').eq(i - 1).val(item.tx_operator);
-//                            $('.text_filter').eq(i - 1).val(item.tx_value);
-//                            if (total > i)
-//                                $('.combo_relation').eq(i - 1).val(item.tx_relation);
-//                        });
+                        console.log("Filtro eliminado");
                         
-                        
-                        
-                        
+                                               
                         
                     }else if(data.status == 'error'){
                        console.log(data.error); 
@@ -92,28 +138,6 @@ function getFilter(URL, ID){
             }
         );
         
-//	var myJson = "{dummy:"+tsTimeStamp+",combo_save:'"+$(this).val()+"'}";
-//	$.getJSON("http://kundenrat.gmaare.migros.ch/migros/filter/filter.php",eval('('+myJson+')'), function(result){
-//		for (i=1;i<result.data.length;i++){
-//			add_fila('');
-//		};
-//		var total = result.data.length;
-//		$.each(result.data, function(i,item) {
-//			//alert(data.data);
-//			//alert(item.tx_detail);
-//        	//options.append($("<option />").val(item[0]).text(item[1]));
-//			$('.combo_filter').eq(i-1).val(item.tx_detail);
-//			$('.combo_operator').eq(i-1).val(item.tx_operator);
-//			$('.text_filter').eq(i-1).val(item.tx_value);
-//			if (total > i)
-//				$('.combo_relation').eq(i-1).val(item.tx_relation);
-//    	});			
-//
-//
-//
-//		
-//	});
-    
     
 }
 
@@ -123,10 +147,9 @@ var ajaxRequest;
 //Buscar por filtros
 function search(URL){
     
-    console.log("hello");
     ajaxRequest = $('#form_filtros').serialize();
 
-    console.log(ajaxRequest);
+    //console.log(ajaxRequest);
 
 
     clearTimeout(ajaxUpdateTimeout);
@@ -151,7 +174,7 @@ function search(URL){
 }
 
 //Buscar por filtros y guardar el filtro
-function searchAndSave(URL) {
+function searchAndSave(URL, newFilter) {
 
     ajaxRequest = $('#form_filtros').serialize();
 
@@ -165,7 +188,7 @@ function searchAndSave(URL) {
                 //guardar el filtro
                 ajaxRequest += "&save=true&name=" + result;
 
-                console.log(ajaxRequest);
+                //console.log(ajaxRequest);
 
 
                 clearTimeout(ajaxUpdateTimeout);
@@ -179,7 +202,7 @@ function searchAndSave(URL) {
                                     {
                                         type: 'POST',
                                         url: URL,
-                                                data: ajaxRequest
+                                        data: ajaxRequest
 
                                     }
 
@@ -203,27 +226,39 @@ function clearFilters() {
         if (i > 0) {
             $(this).remove();
         }
-
-        $('.dropdown_relation').last().hide();
-        $('.span_add').last().show();
+        
     });
-
+    
+    $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relatio').val('');
+    $('.dropdown_relation').last().hide();
+    $('.span_add').last().show();   
+    
+    
+    //Titulo
+    $('#form_filtros h4').html("Nuevo Filtro:");
+                            
+    //Ocultar el botón guardar
+    $('#filter-save2').parent('div').hide();
+        
 }
 
 $(function() { 
     
     //Agregar fila al filtro
-    $('.span_add').click(addRow);
+    $('.span_add').click(function(e){
+        e.preventDefault();
+        addRow();
+    });
 
     //Mostrar los campos - Crear nuevo filtro
     $('.crear-filtro').click(function(e){
         e.preventDefault();
         clearFilters();
+        //Resetear el dropdown de filtros
+        $("#all_filters").val('');
+        
         $('#filters-view').slideDown();
     });
-
-    
-    
 
 
 });

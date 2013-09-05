@@ -526,7 +526,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 						
 			}
 			$criteria->addCondition($colores);
-			print_r($idColor);
+			
 		}
 	}
 	
@@ -534,7 +534,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		$categoria= 'tbl_categoria_has_tbl_producto.tbl_categoria_id ='.$idact;
 		$criteria->addCondition($categoria);
-		echo "IDACT".$idact;
+		
 		
 	}
 	
@@ -601,7 +601,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('peso',$this->peso,true);
 		$criteria->with = array('categorias');
 		$criteria->with = array('precios');
-		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
+		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
 		{
@@ -620,6 +620,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 
 		$criteria->addCondition('precioDescuento != ""');
 		$criteria->addCondition('orden = 1');
+		$criteria->addCondition('cantidad > 0');
 		
 		// $criteria->order = "t.id ASC";
 		$criteria->order = "fecha DESC";

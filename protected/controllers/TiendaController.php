@@ -286,13 +286,24 @@ class TiendaController extends Controller
 
 			
 		
-		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
-	
-		$dataProvider = $producto->multipleColor($color,$categoria);
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		
+		if(count($color)==0&&(!isset(Yii::app()->session['idact']))){
+			$a="a";	
+			$dataProvider = $producto->nueva($a);
+			
+		}else{
+			
+				
+			$dataProvider = $producto->multipleColor($color,$categoria);
+		}
 		$this->render('doble',
 		array('doble'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
+		
+		
+		
 			
 	}
 	

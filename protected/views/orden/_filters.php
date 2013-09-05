@@ -112,92 +112,32 @@
 </div>
 <script type="text/javascript">
 /*<![CDATA[*/
-   //Buscar
    
-   var ajaxUpdateTimeout;
-   var ajaxRequest;
+   //Buscar      
     $('#filter-search').click(function(e) {
         
         e.preventDefault(); 
-        console.log("hello");
-        ajaxRequest = $('#form_filtros').serialize();
-                        
-        console.log(ajaxRequest);
         
+        search('<?php echo CController::createUrl('orden/admin') ?>');
         
-        clearTimeout(ajaxUpdateTimeout);
-
-       $('#form_filtros').submit();
-
-        ajaxUpdateTimeout = setTimeout(
-        function() {
-            $.fn.yiiListView.update(
-                    'list-auth-items',
-                    {
-                        type: 'POST',
-                        url: '<?php CController::createUrl('orden/admin') ?>',
-                        data: ajaxRequest                       
-                        
-                     }   
-
-            )
-        },
-        300);
-
-        return false;
     });
     
+    //Buscar y guardar
     $('#filter-save').click(function(e) {
         
         e.preventDefault(); 
         
-        ajaxRequest = $('#form_filtros').serialize();        
-        
-           
-        bootbox.prompt("Indica un nombre para el filtro:", function(result) {                
-        if (result === null) {                                             
-
-        } else{
-            result = result.trim();                
-            if (result !== "") {                
-            //guardar el filtro
-            ajaxRequest += "&save=true&name="+result; 
-
-            console.log(ajaxRequest);
-        
-        
-            clearTimeout(ajaxUpdateTimeout);
-
-           // $('#form_filtros').submit();
-
-            ajaxUpdateTimeout = setTimeout(
-            function() {
-                $.fn.yiiListView.update(
-                        'list-auth-items',
-                        {
-                            type: 'POST',
-                            url: '<?php CController::createUrl('orden/admin') ?>',
-                            data: ajaxRequest
-
-                         }   
-
-                )
-            },
-            300);
-
-
-
-            }
-
-        }
-        });
+        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>');
             
-            
-        
-        
-        
-
-        return false;
     });
+    
+    //Seleccionar un filtro preestablecido
+    $("#all_filters").change(function(){
+	
+        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val());        	
+	
+    });
+    
+    
 /*]]>*/
 </script>

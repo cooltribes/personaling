@@ -1124,11 +1124,21 @@ src: url('../fonts/entypo.woff'),
                             .margin_bottom_xsmall;
                             }
                         }
+                    //hack para alinear boton de pinterest
                     .boton_pinterest{
                       position: relative;
                       top: -25px;
-                      left: 187px;
-                    }                    
+                      left: 162px;
+                    }  
+                // hack para centrar fecha de entrega
+                .addthis{
+                  margin-top: -12px;
+                  margin-bottom: 0;
+                }
+                hr{
+                  margin: 0;
+                }
+
                 }
 
         .call2action{
@@ -1364,14 +1374,20 @@ src: url('../fonts/entypo.woff'),
 
         .braker_horz_top_1{
             .padding_top;
-            .margin_top;
+            margin-top:1em;
             .margin_bottom;
+            //hack para boton de pinterest
             .boton_pinterest{
               position: relative;
-              top: -25px;
-              left: 187px;
+              top: 0;
+              left: -25px;
             }            
-        }
+                // hack para centrar fecha de entrega
+        } 
+        .addthis{
+          margin-top: -10px;
+          margin-bottom: 0;
+        }         
         .call2action{
             margin-bottom:1em;
             padding-bottom:1em;
@@ -2308,14 +2324,26 @@ img[alt="Loading"]{
     /*-------------------------------
      PROVSIONAL DEL CARROUSEL PARA REMOVER CUANDO TERMINEN EL VIDEO
      ------------------------ */
+
+/*------------ TU PERSONAL SHOPPER ON ----------*/
+
 .btn-morado-tiffany{
-  background: #6C1B4F;
+  background: @color1;
+  padding: .6em; 
+  .transition_all;
+  .icon-chevron-right{
+    margin-top: 3px;
+    .transition_all;
+  }
 }
 .btn-morado-tiffany:hover{
   background: #18AF91;
+  .icon-chevron-right{
+    margin-left: 360px;
+  }
 }
-/*------------ TU PERSONAL SHOPPER ON ----------*/
 
+/*------------ TU PERSONAL SHOPPER OFF ----------*/
 
 /*------------ TEAM ON ------------*/
 
@@ -2546,6 +2574,15 @@ img[alt="Loading"]{
     }  
 }
 /* ----------- Publicar Look Administrador OFF --------------*/
+
+/* ----------- Paginadores en Administrador ON --------------*/
+.pager > .pagination > .selected > a{
+    background-color: #ad3682;
+    color: #fff;
+    font-weight: bold;
+}
+/* ----------- Paginadores en Administrador OFF --------------*/
+
 /* ----------- Invitar amigos OFF --------------*/
 
 #emailInvite-form_bulkEmails{

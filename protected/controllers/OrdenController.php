@@ -28,7 +28,7 @@ class OrdenController extends Controller
 
 			
 
-				'actions'=>array('index','admin', 'getFilter','modalventas','detalles','validar','enviar','factura','mensajes'),
+				'actions'=>array('index','admin', 'getFilter','modalventas','detalles','validar','enviar','factura','mensajes','entregar'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -809,6 +809,76 @@ class OrdenController extends Controller
 	/*
 	 *  Action para añadir el tracking y cambiar el estado a enviado
 	 * */
+
+		public function actionEntregar()
+	{
+		$orden = Orden::model()->findByPK($_POST['id']);
+		
+
+		$orden->estado=8; // Entregado
+		
+		if($orden->save())
+			{
+				/*	
+				//agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+				$estado = new Estado;
+										
+				$estado->estado = 4;
+				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+				$estado->fecha = date("Y-m-d H:i:s");
+				$estado->orden_id = $orden->id;
+						
+				if($estado->save())
+				{
+						$user = User::model()->findByPk($orden->user_id);		
+						$message            = new YiiMailMessage;
+						$message->view = "mail_template";
+						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
+						$body = "Nos complace informar que tu pedido #".$orden->id." ha sido enviado <br/>
+								<br/>
+								Empresa: Zoom <br/>
+								Número de seguimiento: ".$orden->tracking." <br/> 
+								";
+						$params              = array('subject'=>$subject, 'body'=>$body);
+						$message->subject    = $subject;
+						$message->setBody($params, 'text/html');                
+						$message->addTo($user->email);
+						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						Yii::app()->mail->send($message);
+						
+					/*
+						// Enviar correo cuando se envia la compra
+						$user = User::model()->findByPk($orden->user_id);
+						$message             = new YiiMailMessage;
+						//this points to the file test.php inside the view path
+						$message->view = "mail_template";
+						$subject = 'Tu compra en Pesonaling #'.$orden->id.' ha sido enviada';
+						$body = "Nos complace informarte que tu pedido #".$orden->id." ha sido enviado </br>
+								</br>
+								Empresa: Zoom </br>
+								Número de seguimiento: ".$orden->tracking." </br> 
+								";
+						$params              = array('body'=>$body);
+						$message->subject    = $subject;
+						$message->setBody($params, 'text/html');
+						$message->addTo($user->email);
+						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						
+						Yii::app()->mail->send($message);					
+					
+					
+					Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
+					
+					echo "ok";
+				}*/
+			Yii::app()->user->setFlash('success', 'Se ha registrado la entrega de la orden.');
+					
+					echo "ok";
+			}	
+		
+	}
+
+
 
 	public function actionEnviar()
 	{

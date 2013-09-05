@@ -11,7 +11,7 @@
   $cs = Yii::app()->getClientScript();
   $cs->registerScriptFile($baseUrl.'/js/slider.js');
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
-?><div class="page-header margin_top padding_top_medium">
+?><div class="page-header ">
       <h1>Looks recomendados para ti</h1>
 </div>
   <div class="row">
@@ -111,8 +111,9 @@
 
       </div>
 
-       <div  class="btn btn-block btn-morado-tiffany transition_all padding_xsmall span6 offset3"> <a class="color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks</a>
-
+       <div class="row"><div class="padding_xsmall span6 offset3"> 
+        <a class="btn btn-danger btn-block btn-morado-tiffany" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks <i class="icon-chevron-right icon-white"></i> </a>
+       </div>
 
       </div>
       <div class="braker_horz_top_1 hidden-phone">

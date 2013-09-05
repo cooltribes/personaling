@@ -25,7 +25,11 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','modalventas','detalles','validar','enviar','factura','mensajes'),
+
+			
+
+				'actions'=>array('index','admin', 'getFilter','modalventas','detalles','validar','enviar','factura','mensajes'),
+
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -79,12 +83,8 @@ class OrdenController extends Controller
 	public function actionAdmin()
 	{
             
-//            echo "<pre>";
-//            print_r($_POST);
-//            echo "</pre>";            
-//            echo count($_POST['textfield_value']);           
-//            echo 
-//            exit();   
+//            echo "<pre>";print_r($_POST);echo "</pre>";            
+//            echo count($_POST['textfield_value']);exit();   
             
             $orden = new Orden;
             $dataProvider = $orden->search();
@@ -150,27 +150,7 @@ class OrdenController extends Controller
                          }
                          
                      }
-//                    $filter->id_filter = 0;
-//                    
-//                    $filterDetails = array();
-//                    
-//                    for ($i = 0; $i < count($filters['fields']); $i++) {
-//                        
-//                        $filterDetails[] = new FilterDetail();
-//                        
-//                        $filterDetails[$i]->id_filter = 0; 
-//    //                $filters['fields'][$i];
-//    //                $filters['ops'][$i];
-//    //                $filters['vals'][$i];
-//    //                $filters['rels'][$i];
-//                        
-//                    }                   
-//                    for ($i = 0; $i < count($filters['fields']); $i++) {
-//                        
-//                        $filterDetails[]
-//                        
-//                        
-//                    }
+
                     
                 }
             }
@@ -193,16 +173,49 @@ class OrdenController extends Controller
          * Obtiene el filtro con id $id          
          */
 
-        public function actionGetFilter($id) {
+        public function actionGetFilter() {
             
+            $response = array();
+            if(isset($_POST['id'])){
+                $filter = Filter::model()->findByPk($_POST['id']);
+                
+                
+                if($filter){
+                
+                   
+                   $response['filter']  = $filter->filterDetails;
+                   $response['status'] = 'success';
+                    
+                }else{
+                  $response['status'] = 'error';
+                  $response['error'] = 'Filtro no encontrado';
+                }               
+                
+                
+            }
             
-            
-            
-            
+            echo CJSON::encode($response);
             
         }
         
 	public function actionModalventas($id){
+		
+			
+		
+	
+		$ordhasptc= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$id));
+		$productos=Array();
+		foreach($ordhasptc as $ohptc){
+			
+			$ptc= Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);	
+			
+			$pr=Producto::model()->findByPk($ptc->producto_id);
+			
+			array_push($productos,$pr->id);
+		}
+		echo count($productos);
+		
+		
 		$html='';
 		// $html=$html.'<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
   		$html=$html.'<div class="modal-header">';
@@ -211,10 +224,15 @@ class OrdenController extends Controller
   		$html=$html.'</div>';
   		$html=$html.'<div class="modal-body">';
     	$html=$html.'';
+		
+		
+		
+		
     	// Tabla ON
     	//Header de la tabla ON
    		$html=$html.'<div class="well well-small margin_top well_personaling_small"><h3>Pedido #'.$id.'</h3>';
-      	$html=$html.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
+		
+      	/*$html=$html.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
         $html=$html.'<thead><tr>';
         $html=$html.'<th scope="col">Nombre de la prenda</th>';
         $html=$html.'<th scope="col">Cantidad</th>';
@@ -304,10 +322,15 @@ class OrdenController extends Controller
         $html=$html.'<tr>';        
 
         //Cuerpo de la tabla OFF
-        $html=$html.'</tbody></table></div>';
+        $html=$html.'</tbody></table></div>';*/
         // Tabla OFF
-  		$html=$html.'</div>';
+  		$html=$html.'</div></div>';
 		echo $html;
+		
+		
+		
+	
+
 
 	}
 
@@ -842,7 +865,17 @@ class OrdenController extends Controller
 		}	
 		
 	}
-		
+	
+	public function actionGetprendas($ord){
+		$ordhasptc= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$ord));
+		$productos=Array();
+		foreach($ordhasptc as $ohptc){
+			$ptc= PrecioTallaColor::model()->findByPk($ohptc->preciotallacolor_id);	
+			$pr=Producto::model()->findByPk($ptc->producto_id);
+			array_push($productos,$pr->id);			
+		}
+		print_r($productos);				
+	}
 
 	// Uncomment the following methods and override them if needed
 	/*

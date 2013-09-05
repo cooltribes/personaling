@@ -8,6 +8,8 @@
  * 5 - Cancelado
  * 6 - Pago Rechazado
  * 7 - Pago insuficiente
+ * 8 - Recibido
+ * 9 - Devuelto
  * */
 
 

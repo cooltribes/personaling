@@ -74,7 +74,8 @@ class RegistrationController extends Controller
                         if (isset($_POST['twitter_id'])) {
                             $model->twitter_id = $_POST['twitter_id'];
                         }
-                        if (isset($_POST['facebook_id'])) {
+                        
+                        if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) {
                             $model->facebook_id = $_POST['facebook_id'];
 
                             $model->password = $this->passGenerator();

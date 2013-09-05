@@ -30,7 +30,7 @@ echo"<tr>";
 		
 	echo "<td><strong>Looks</strong>:     (".$looks.")<br><strong>Prendas</strong>: (".$indiv.")</td>"; // totales en look y indiv
 	
-	echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->total)."</td>"; // precio
+	echo "<td>".Yii::app()->numberFormatter->format("#,##0.00",$data->total)."</td>"; // precio
 	//echo "<td>".$data->total."</td>"; // monto total
 	//--------------------
 	$tipoPago = Pago::model()->findByAttributes(array('id'=>$data->pago_id));

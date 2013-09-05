@@ -7,9 +7,9 @@
   <div class="navbar margin_top">
   <div class="navbar-inner">
     <ul class="nav">
-  		<li><a href="#"  class="nav-header">Estadisticas:</a></li>
-      	<li class="active" ><a title="Transacciones" href="#">Transacciones</a></li>
-      	<li><a title="Pedidos" href="#">Pedidos</a></li>
+  		<li><a href="#" class="nav-header">Estadisticas:</a></li>
+      	<li class="active" ><a title="Transacciones" href="">Transacciones</a></li>
+      	<li><a title="Pedidos" href="<?php echo Yii::app()->baseUrl."/controlpanel/pedidos"; ?>">Pedidos</a></li>
     </ul>
   </div>
 </div>
@@ -203,8 +203,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 			
 			$ppp = $pre->precioDescuento * $tt;
 			
-			if (isset($lk)){
-		
+			if (isset($pro)){
       	?>      
             
             <tr>
@@ -227,21 +226,54 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
               <th scope="col">Items vendidos</th>
               <th scope="col">Total Vendidos (Bs.)</th>
             </tr>
+      <?php
+      		$x = new Marca;
+			$marcasmas = $x->masvendidos(5);
+
+		foreach($marcasmas->getData() as $record) {
+				
+			$indiv = Marca::model()->findByPk($record['marca']);
+			
+			
+			
+$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id, tbl_precio.precioDescuento FROM tbl_orden_has_productotallacolor
+		left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id
+		left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id
+		left join tbl_producto on tbl_producto.id = tbl_precioTallaColor.producto_id
+		left join tbl_marca on tbl_marca.id = tbl_producto.marca_id
+		left join tbl_precio on tbl_precio.tbl_producto_id = tbl_producto.id
+		where tbl_imagen.orden = 1 and tbl_producto.status = 1 and tbl_producto.estado = 0 and marca_id =".$indiv->id." GROUP BY producto_id ORDER by productos DESC";
+		
+		$count = 50; 	
+		
+		$data = new CSqlDataProvider($sql, array(
+		    'totalItemCount'=>$count,		    
+
+		));  	
+		
+		$totalp = 0;
+		
+		foreach($data->getData() as $cadauno)
+		{
+			$precio = $cadauno['precioDescuento'];
+			$cantidad = $cadauno['productos'];
+			
+			$totalp = $totalp + ($precio * $cantidad);
+		}	
+			
+			if (isset($marcasmas)){
+      	?>        
             <tr>
-              <td>ALDO</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
+              <td><?php echo $indiv->nombre; ?></td>
+              <td><?php echo $record['uno']; ?></td>
+              <td>Bs. <?php echo Yii::app()->numberFormatter->format("#,##0.00",$totalp); ?></td>
             </tr>
-            <tr>
-              <td>MNG</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
-            </tr>
-            <tr>
-              <td>Accesorize</td>
-              <td>5</td>
-              <td>Bs. 20.000,00</td>
-            </tr>
+       
+       <?php
+			}
+		}
+       ?>
+            
           </table>
         </div>
       </div>

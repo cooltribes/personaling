@@ -232,15 +232,9 @@ class Look extends CActiveRecord
 	 * Mas vendidos
 	 */
 	 public function masvendidos($limit = 3)
-	 {
-/*			
-		$criteria=new CDbCriteria;  
-		$criteria->compare('tipo',1); 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-*/		
-		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC";
+	 {		
+		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor a, tbl_look b where a.look_id != 0 and b.deleted = 0 and b.id = a.look_id group by a.look_id order by count(distinct tbl_orden_id) DESC";
+
 		$count = 10; 	
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
@@ -616,6 +610,7 @@ class Look extends CActiveRecord
 		//header('Content-Type: image/png'); 
 		//header('Cache-Control: max-age=86400, public');
 		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png', 'registro');
 		imagedestroy($canvas);		
 	}
 }

@@ -87,7 +87,7 @@
 				$tabs[] = array(
             		'active'=>$estilo=='coctel'?true:false,
             		// 'label'=>$field->title,
-            		'aditional'=>'tab_falta tab_uno tab',
+            		'aditional'=>'tab_falta tab_1 tab',
             		//'content'=>$form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range)),
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
@@ -95,35 +95,35 @@
 				$tabs[] = array(
             		'active'=>$estilo=='fiesta'?true:false,
             		// 'label'=>$field->title,
-            		'aditional'=>'tab_falta tab_dos tab',
+            		'aditional'=>'tab_falta  tab_2 tab',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);        		
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'playa'));
 				$tabs[] = array(
             		'active'=>$estilo=='playa'?true:false,
             		// 'label'=>$field->title,
-            		'aditional'=>'tab_falta tab_tres tab',
+            		'aditional'=>'tab_falta  tab_3 tab',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'sport'));
 				$tabs[] = array(
             		'active'=>$estilo=='sport'?true:false,
             		// 'label'=>$field->title,
-            		'aditional'=>'tab_falta tab_cuatro tab',
+            		'aditional'=>'tab_falta  tab_4 tab',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
 				$field = ProfileField::model()->findByAttributes(array('varname'=>'trabajo'));
 				$tabs[] = array(
             		'active'=>$estilo=='trabajo'?true:false,
             		// 'label'=>$field->title,
-            		'aditional'=>'tab_falta tab_cinco tab',
+            		'aditional'=>'tab_falta tab_5 tab',
             		'content'=> getTabs($field,$profile).$form->hiddenField($profile,$field->varname),
         		);
 				?>
 				<?php $this->widget('bootstrap.widgets.TbTabs', array(
-				'placement'=>'adove', // 'above', 'right', 'below' or 'left'
-    				'tabs'=>$tabs,
-    				'type'=>'pills'
+				    'placement'=>'left', // 'above', 'right', 'below' or 'left'
+                    'tabs'=>$tabs,
+                    'type'=>'pills',                
 				)); ?>
 				<?php
 				Yii::app()->clientScript->registerScript('change', "
@@ -172,22 +172,26 @@ $script = "
             
         }        
         // e.preventDefault();
-        $('.tab_uno.tab a, .tab_dos.tab a, .tab_tres.tab a,.tab_cuatro.tab a').css({ cursor: 'pointer' });
-        $('.tab_uno.tab a, .tab_dos.tab a, .tab_tres.tab a,.tab_cuatro.tab a').click(function(){
-            $(this).tab('show');
+
+        $('#yw2 > li').each(function(key){
+
+            if( contadorInteracciones >= key ) {
+                console.log(key);
+                $('.tab_'+( key+1 )+'.tab a ').click(function(){
+                    $(this).tab('show');
+                });   
+                $('.tab_'+( key+1 )+'.tab a ').css({ cursor: 'pointer' });  
+            }      
         });
-
-     
-
-        $('.tab_falta a').css({ cursor: 'default' });
-        $('.tab_falta a').click(function(e){  e.preventDefault(); return false; });
+        contadorInteracciones++;
 	 });
 	
 	
 ";
 ?>
 <?php Yii::app()->clientScript->registerScript('botones',$script); ?>
-<script type="text/javascript">
+<script>
     $('.tab_falta a').css({ cursor: 'default' });
     $('.tab_falta').click(false);
+    var contadorInteracciones = 1;
 </script>

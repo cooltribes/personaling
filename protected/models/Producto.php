@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Estado = 0 activo / 1 Inactivo
+ * status = 0 eliminado / 1 no eliminado
+ */ 
+
 /**
  * This is the model class for table "{{producto}}".
  *
@@ -364,7 +369,7 @@ class Producto extends CActiveRecord
 		//foreach ($this->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color))) as $producto){
 		//	$co = Color::model()->findByPk($p->color_id);
 		//}
-$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id));
+$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'producto_id'=>$this->id),'cantidad > 0');
 		$datos = array();
 		foreach($ptc as $p)
 		{
@@ -482,7 +487,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 	}
 	
-		public function multipleColor($idColor)
+		public function multipleColor($idColor, $idact)
 	{
 		// llega un array de ID de color
 		 
@@ -491,14 +496,14 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria=new CDbCriteria;
 
         $criteria->select = 't.*';
-        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
+        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
         $criteria->addCondition('t.estado = 0');
 		$criteria->addCondition('t.status = 1');
      //   $criteria->condition = 't.estado = :uno';
 	//	$criteria->condition = 't.status = :dos';
 	
 
-	print_r($idColor);
+	
 	if(is_array($idColor)){
 		if(count($idColor)>0){	
 			
@@ -521,8 +526,19 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 						
 			}
 			$criteria->addCondition($colores);
+			print_r($idColor);
 		}
 	}
+	
+	if(isset(Yii::app()->session['idact'])){
+		
+		$categoria= 'tbl_categoria_has_tbl_producto.tbl_categoria_id ='.$idact;
+		$criteria->addCondition($categoria);
+		echo "IDACT".$idact;
+		
+	}
+	
+	
 
 		
 	
@@ -623,7 +639,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 	 {
 			
 		//$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
-		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id where tbl_imagen.orden = 1 GROUP BY producto_id ORDER by productos DESC";
+		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id left join tbl_producto on tbl_producto.id = tbl_precioTallaColor.producto_id where tbl_imagen.orden = 1 and tbl_producto.status = 1 and tbl_producto.estado = 0 GROUP BY producto_id ORDER by productos DESC";
 		//if (isset($limit))
 		//	$sql.=" LIMIT 0,$limit";
 		//$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";

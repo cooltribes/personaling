@@ -82,9 +82,9 @@ class AdminController extends Controller
                 $modelUser->activkey = Yii::app()->controller->module->encrypting(microtime() . $modelUser->password);
 
                 if ($_POST['tipoUsuario'] == 1) { //personalShopper
-                    $modelUser->superuser = 1;
-                } else if ($_POST['tipoUsuario'] == 2) { //Admin
                     $modelUser->personal_shopper = 1;
+                } else if ($_POST['tipoUsuario'] == 2) { //Admin
+                    $modelUser->superuser = 1;
                 }
 
                 $profile->attributes = $_POST['Profile'];
@@ -202,7 +202,7 @@ class AdminController extends Controller
 	}
        /**
         * Bloquear al usuario, queda en estado STATUS_BANNED
-        * @param type $id id del usuario
+        * @param int $id id del usuario
         * 
         */ 
        public function actionToggle_banned($id) {

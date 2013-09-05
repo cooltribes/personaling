@@ -25,7 +25,7 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','modalventas','detalles','validar','enviar','factura','mensajes'),
+				'actions'=>array('index','admin', 'getFilter','modalventas','detalles','validar','enviar','factura','mensajes'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -79,12 +79,8 @@ class OrdenController extends Controller
 	public function actionAdmin()
 	{
             
-//            echo "<pre>";
-//            print_r($_POST);
-//            echo "</pre>";            
-//            echo count($_POST['textfield_value']);           
-//            echo 
-//            exit();   
+//            echo "<pre>";print_r($_POST);echo "</pre>";            
+//            echo count($_POST['textfield_value']);exit();   
             
             $orden = new Orden;
             $dataProvider = $orden->search();
@@ -150,27 +146,7 @@ class OrdenController extends Controller
                          }
                          
                      }
-//                    $filter->id_filter = 0;
-//                    
-//                    $filterDetails = array();
-//                    
-//                    for ($i = 0; $i < count($filters['fields']); $i++) {
-//                        
-//                        $filterDetails[] = new FilterDetail();
-//                        
-//                        $filterDetails[$i]->id_filter = 0; 
-//    //                $filters['fields'][$i];
-//    //                $filters['ops'][$i];
-//    //                $filters['vals'][$i];
-//    //                $filters['rels'][$i];
-//                        
-//                    }                   
-//                    for ($i = 0; $i < count($filters['fields']); $i++) {
-//                        
-//                        $filterDetails[]
-//                        
-//                        
-//                    }
+
                     
                 }
             }
@@ -193,12 +169,28 @@ class OrdenController extends Controller
          * Obtiene el filtro con id $id          
          */
 
-        public function actionGetFilter($id) {
+        public function actionGetFilter() {
             
+            $response = array();
+            if(isset($_POST['id'])){
+                $filter = Filter::model()->findByPk($_POST['id']);
+                
+                
+                if($filter){
+                
+                   
+                   $response['filter']  = $filter->filterDetails;
+                   $response['status'] = 'success';
+                    
+                }else{
+                  $response['status'] = 'error';
+                  $response['error'] = 'Filtro no encontrado';
+                }               
+                
+                
+            }
             
-            
-            
-            
+            echo CJSON::encode($response);
             
         }
         

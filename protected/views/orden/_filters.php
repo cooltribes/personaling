@@ -1,4 +1,12 @@
 <div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+
+<div class="span12">
+  <div class="alert" id="alert-msg" style="display: none">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div class="msg">loren ipsum</div>
+  </div>
+</div>          
+    
 <?php
 
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -10,26 +18,9 @@
     'id' => 'form_filtros'
     ));
 
-		/*
-		 echo CHtml::label('Anrede','sex');
-		 // echo CHtml::dropDownList($users,'sex', 
-		 echo $form->dropDownList( $users,'sex', 
-              array('Herr' => 'Herr', 'Frau' => 'Frau'),
-              array('empty' => '(Select a gender)', 'class' => 'combo_buscar'));
-			 echo CHtml::label('Geburtsdatum zwischen:','date_form');
-// echo CHtml::dropDownList($users,'username', 
- 
-//echo $form->dropDownList( $users,'username', 
-//              array('jpernia' => 'jpernia', 'chantal' => 'chantal'),
-//              array('empty' => '(Select a gender)', 'class' => 'combo_buscar'));	
-			  
-			echo $form->textField($users,'date_from');
-			echo $form->textField($users,'date_to');
-			echo CHtml::submitButton('Buscar', array('id' => 'btn_buscar'));
-			*/
-////////***************** NEW ******************///////////////
+		
 ?>
-    <?php //echo $form->errorSummary(array($modelUser,$profile)); ?>
+    
     <h4>Nuevo Filtro:</h4>
     
     <fieldset>
@@ -78,23 +69,7 @@
         </div>  
     </fieldset>
     
-                <?php
-//echo CHtml::label('Add','label-add');
-                /*
-                echo $form->hiddenField($users, 'hidden_filter_survey', '');
-                echo $form->hiddenField($users, 'hidden_textfield_survey', '');
-                echo $form->hiddenField($users, 'hidden_operator_survey', '');
-                echo $form->hiddenField($users, 'hidden_relation_survey', '');
-
-
-                echo '<div class="clearfix">';
-
-//echo Chtml::htmlButton('Add',array('class'=>'btn small','id'=>'btn_add_survay'));
-                echo '</div>';
-
-                 */
-        $this->endWidget();
-        ?>
+   <?php $this->endWidget(); ?>
 
     <div class="span2 pull-right">
         <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
@@ -141,9 +116,10 @@
 	
     });
     
-    $("#filter-remove").change(function(){
+    $("#filter-remove").click(function(e){
 
-            removeFilter('<?php echo CController::createUrl('orden/removeFilter') ?>', $(this).val());        	
+             e.preventDefault();
+             removeFilter('<?php echo CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
 
     });    
     

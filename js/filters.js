@@ -3,6 +3,16 @@
  * and open the template in the editor.
  */
 
+
+/*
+ * 
+ * Falta:
+ * al guardar nuevo, agregarlo al dropdown.
+ * mostrar alert al borrar un filtro. 
+ * 
+ * 
+ */
+
 /*Agrega una fila para el filtro*/
 function addRow(){
     
@@ -59,7 +69,8 @@ function getFilter(URL, ID){
                     success: function(data){
                         //console.log(data);
                         if(data.status == 'success'){
-                            //console.log(data.filter);                                            
+                           // console.log(data.filter);                                            
+                            
                             var total = data.filter.length;
                             for (var it = 1; it < total; it++) {
                                 addRow();
@@ -99,13 +110,7 @@ function getFilter(URL, ID){
 
 /*Eliminia un filtro dado por ID*/
 function removeFilter(URL, ID){
-    //	if ($('#span_new_filter').html() != 'Filter verbergen'){
-//		$('#div_add_filter').show();
-//		$('#YumUser_textfield_all').hide().val('');
-//		//$(this).hide();
-//		$('#span_new_filter').html('Filter verbergen');
-//	}
-
+   
     clearFilters();
     
     $.ajax(
@@ -123,9 +128,10 @@ function removeFilter(URL, ID){
                     //console.log(data);
                     if(data.status == 'success'){
                         
-                        console.log("Filtro eliminado");
-                        
-                                               
+                        console.log("Filtro eliminado"); 
+                        //$('#alert-msg')
+                        $('#all_filters').find("[value='"+ID+"']").remove();
+                                
                         
                     }else if(data.status == 'error'){
                        console.log(data.error); 
@@ -178,44 +184,40 @@ function searchAndSave(URL, newFilter) {
 
     ajaxRequest = $('#form_filtros').serialize();
 
-
-    bootbox.prompt("Indica un nombre para el filtro:", function(result) {
-        if (result === null) {
-
-        } else {
-            result = result.trim();
-            if (result !== "") {
-                //guardar el filtro
-                ajaxRequest += "&save=true&name=" + result;
-
-                //console.log(ajaxRequest);
-
-
-                clearTimeout(ajaxUpdateTimeout);
-
-                // $('#form_filtros').submit();
-
-                ajaxUpdateTimeout = setTimeout(
-                        function() {
-                            $.fn.yiiListView.update(
-                                    'list-auth-items',
-                                    {
-                                        type: 'POST',
-                                        url: URL,
-                                        data: ajaxRequest
-
-                                    }
-
-                            )
-                        },
-                        300);
-
-
+    if (newFilter) {
+        bootbox.prompt("Indica un nombre para el filtro:", function(result) {
+            
+            if (result === null) {
+                showAlert('warning', 'Debes indicar un nombre para el filtro');
+                
+            } else {
+                result = result.trim();
+                if (result !== "") {
+                    //guardar el filtro
+                    ajaxRequest += "&save=true&name=" + result;
+                    //console.log(ajaxRequest);
+                    clearTimeout(ajaxUpdateTimeout);
+                    // $('#form_filtros').submit();
+                    ajaxUpdateTimeout = setTimeout(
+                            function() {
+                                $.fn.yiiListView.update(
+                                        'list-auth-items',
+                                        {
+                                            type: 'POST',
+                                            url: URL,
+                                            data: ajaxRequest
+                                        }
+                                )
+                            },
+                            300);
+                }else{
+                    showAlert('warning', 'Debes indicar un nombre para el filtro');
+                }
 
             }
+        });
+    }
 
-        }
-    });
 
 }
 
@@ -241,6 +243,15 @@ function clearFilters() {
     $('#filter-save2').parent('div').hide();
         
 }
+
+//Mostrar alert
+function showAlert(type, message){
+   $('#alert-msg').addClass(type);
+   $('#alert-msg').children(".msg").text(message);
+   $('#alert-msg').show();
+   //$("html, body").animate({ scrollTop: 0 }, "slow");
+}
+
 
 $(function() { 
     

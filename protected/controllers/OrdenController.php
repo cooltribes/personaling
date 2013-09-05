@@ -205,13 +205,17 @@ class OrdenController extends Controller
 	
 		$ordhasptc= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$id));
 		$productos=Array();
-		foreach($ordhasptc as $ohptc){
+		$ptc=Array();
+		foreach($ordhasptc as $ohptc){				
 			
-			$ptc= Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);	
-			
-			$pr=Producto::model()->findByPk($ptc->producto_id);
-			
-			array_push($productos,$pr->id);
+				$ptc= Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
+				$pr=Producto::model()->findByPk($ptc->producto_id);
+				$var[0]=$pr->id;
+				$var[1]=$ptc->id;
+				$var[2]=$ohptc->precio;
+				$var[3]=$ohptc->cantidad;
+				array_push($productos,$var);
+					
 		}
 		echo count($productos);
 		
@@ -232,7 +236,7 @@ class OrdenController extends Controller
     	//Header de la tabla ON
    		$html=$html.'<div class="well well-small margin_top well_personaling_small"><h3>Pedido #'.$id.'</h3>';
 		
-      	/*$html=$html.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
+      	$html=$html.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
         $html=$html.'<thead><tr>';
         $html=$html.'<th scope="col">Nombre de la prenda</th>';
         $html=$html.'<th scope="col">Cantidad</th>';
@@ -240,9 +244,54 @@ class OrdenController extends Controller
         $html=$html.'<th scope="col">Precio total</th>';
         $html=$html.'</tr>';
         $html=$html.'</thead><tbody>';
+        
+		 foreach ($productos as $idp) {
+			 $producto=Producto::model()->findByPk($idp[0]);
+			 $marca=Marca::model()->findByPk($producto->marca_id);
+			 $ptc=PrecioTallaColor::model()->findByPk($idp[1]);
+			 $talla=Talla::model()->findByPk($ptc->talla_id);
+			 $color=Talla::model()->findByPk($ptc->color_id);
+			 
+			 
+			  $html=$html.'<tr>';
+	        // Primera columna ON
+	        $html=$html.'<td><strong>'.$producto->nombre.'</strong><br/> ';
+	        $html=$html.'<small><strong>Marca:</strong>'.$marca->nombre.'</small> <br/>';
+	        $html=$html.'<small><strong>Color:</strong>'.$color->valor.'</small> <br/>';
+	        $html=$html.'<small><strong>Talla:</strong>'.$talla->valor.'</small> <br/>';
+			$html=$html.'<small><strong>REF:</strong>'.$producto->codigo.'</small> ';
+	        $html=$html.'</td>';
+	        // Primera columna OFF
+	        // Segunda columna ON
+	        $html=$html.'<td>';
+			$html=$html.$idp[3];
+	        $html=$html.'</td>';
+	        // Segunda columna OFF
+	        // Tercera columna ON
+	        $html=$html.'<td>';
+			$html=$html.$idp[2].' Bs.';
+	        $html=$html.'</td>';
+	        // Tercera columna OFF
+	        // Cuarta columna ON
+	        $html=$html.'<td>';
+			$html=$html.$idp[2]*$idp[3];
+	        $html=$html.'</td>';
+	        // Cuarta columna OFF        
+
+        $html=$html.'<tr>';
+			 
+			 
+			 
+			 
+			 
+		 }
+		
+		
+		
+		
         //Header de la tabla OFF
         //Cuerpo de la tabla ON
-        
+        /*
         $html=$html.'<tr>';
         // Primera columna ON
         $html=$html.'<td><strong>Vestido</strong><br/> ';
@@ -320,9 +369,9 @@ class OrdenController extends Controller
         // Cuarta columna OFF        
 
         $html=$html.'<tr>';        
-
+*/
         //Cuerpo de la tabla OFF
-        $html=$html.'</tbody></table></div>';*/
+        $html=$html.'</tbody></table></div>';
         // Tabla OFF
   		$html=$html.'</div></div>';
 		echo $html;

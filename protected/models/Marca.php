@@ -93,4 +93,25 @@ class Marca extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+		/**
+	 * Mas vendidos
+	 */
+	 public function masvendidos($limit=10)
+	 {
+		
+		$sql = "select sum(a.cantidad) as uno , b.id as marca from tbl_orden_has_productotallacolor a, tbl_marca b, tbl_producto c, tbl_precioTallaColor d where a.preciotallacolor_id = d.id and c.id = d.producto_id and c.marca_id = b.id group by marca_id order by uno DESC";
+				
+		$count = 10; 	
+		
+		return new CSqlDataProvider($sql, array(
+		    'totalItemCount'=>$count,
+			 'pagination'=>array(
+				'pageSize'=>$limit,
+			),		    
+
+		));  
+	 }
+	
+	
 }

@@ -385,6 +385,9 @@ $usuario = User::model()->findByPk($orden->user_id);
         <?php
 			}
         ?>
+         <?php 
+         if($orden->estado == 4)
+         	echo"<div><a onclick='entregado(".$orden->id.")' class='btn margin_top margin_bottom pull-left'>Registrar Entrega</a></div>"; ?>
         
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
@@ -412,7 +415,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 					echo("<td>Pago Confirmado</td>");
 				
 				if($est->estado==4)
-					echo("<td>Pedido enviado</td>");
+					echo("<td>Pedido enviado</td>");			 
+				
 				
 				if($est->estado == 5)
 					echo "<td>Orden Cancelada</td>";	
@@ -422,6 +426,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($est->estado == 7)
 					echo "<td>Pago Insuficiente</td>";
+				
+				if($est->estado == 8)
+					echo "<td>Orden Entregada</td>";
+				
 				
 				$usu = User::model()->findByPk($est->user_id);
 				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
@@ -440,8 +448,11 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
+        
       </div>
+     
   <div class="well well-small margin_top well_personaling_small">  <h3 class="braker_bottom margin_top"> Documentos</h3>
+      
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
           <th scope="col">Fecha</th>
@@ -828,6 +839,26 @@ $usuario = User::model()->findByPk($orden->user_id);
 	        type: "post", 
 	        url: "../enviar", // action 
 	        data: { 'guia':guia, 'id':id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();
+				}
+	       	}//success
+	       })	
+	      
+	   //  alert(guia);	
+		
+	}
+	
+	function entregado(id){
+		
+	
+		
+		$.ajax({
+	        type: "post", 
+	        url: "../entregar", // action 
+	        data: { 'id':id}, 
 	        success: function (data) {
 				if(data=="ok")
 				{

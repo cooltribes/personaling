@@ -8,7 +8,12 @@
  * 5 - Cancelado
  * 6 - Pago Rechazado
  * 7 - Pago insuficiente
+<<<<<<< HEAD
  * 8 - Entregado
+=======
+ * 8 - Recibido
+ * 9 - Devuelto
+>>>>>>> e124ff78edaba4ca98a0a5ad6165fe4b225a4fbb
  * */
 
 

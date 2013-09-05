@@ -1,109 +1,24 @@
-<?php
-/* @var $this ControlPanelController */
-
-
-$usuarios_totales = User::model()->count();
-$looks_totales = Look::model()->count();
-$productos_activos = Producto::model()->countByAttributes(array('status'=>1,'estado'=>0));
-$ventas = Orden::model()->count();
-$looks_aprobar = Look::model()->countByAttributes(array('status'=>1)); // por aprobar
-
-	$ordenes = Orden::model()->findAll();
-	$sumatoria = 0;
-	
-	foreach($ordenes as $uno)
-	{
-		if($uno->estado != 5)
-			$sumatoria = $sumatoria + $uno->total;	
-	}
-
-/* forma anterior */	
-$sql = "SELECT sum(total) as total FROM tbl_orden";
-$dinero_ventas = Yii::app()->db->createCommand($sql)->queryScalar();
-
-if($ventas != 0)
-	$promedio = $sumatoria / $ventas;
-else
-	$promedio = 0;
-?>
 
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Panel de Control</h1>
+    <h1>Panel de Pedidos</h1>
   </div>
-  
-  	<?php
-  	/*
-  	$url = "http://www.grupozoom.com/servicios/servicios.php?tipo_menu=tarifas";
-	$data = array("servicio"=>1,
-				"procesar"=>1,
-				"txtcodguia"=>'',
-				"optretirarofi"=>0,
-				"txtciudadori"=>"ANACO",
-				"cmbciudadori"=>"24",
-				"codciudaddes"=>"48",
-				"codoficinaopedes"=>"2",
-				"codtraslado"=>3,
-				"txtpeso"=>"30000",
-				"txtciudaddes"=>"AGUA BLANCA",
-				"txtcodservicio"=>0,
-				"cmboficinades"=>"",
-				"txtnumeropie"=>8,
-				"pesomax"=>"",
-				"nombreofides"=>"",
-				"txtpesobru"=>7,
-				"txtvalordec"=>60,
-				"txtvalormin"=>50,
-				
-			);
-  	$output = Yii::app()->curl->post($url, $data);
-	$doc = new DOMDocument();
-	$doc->loadHTML($output);
-	//echo $data;
-	$anchor_tags = $doc->getElementsByTagName('table');
-	
-	foreach ($anchor_tags as $tag) {
-		
-		
-	if ($tag->getAttribute('class') == 'ContentArea'){
-			echo $tag->nodeValue;
-		}
-		
-	}
-	//echo $output;
-	*/ 
-	//$url = "https://api.instapago.com/api/payment";
-	
-/*
-	$data_array = array(
-		"Amount"=>"200.00", // MONTO DE LA COMPRA
-		"Description"=>"Compra de Look de Pruea", // DESCRIPCION 
-		"CardHolder"=>"Rafael Angel Palma C", // NOMBRE EN TARJETA
-		"CardNumber"=>"1234123412341234", // NUMERO DE TARJETA
-		"CVC"=>"124", //CODIGO DE SEGURIDAD
-		"ExpirationDate"=>"10/2016", // FECHA DE VENCIMIENTO
-		"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
-		"Address"=>"Calle 16 Carrera 22 Qta Reina", // DIRECCION
-		"City"=>"San Cristobal", // CIUDAD
-		"ZipCode"=>"5001", // CODIGO POSTAL
-		"State"=>"Tachira", //ESTADO
-	);
-
-	$output = Yii::app()->curl->putPago($data_array);
-
-	echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
-	echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
-	echo "Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
-	echo "Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO	
-	*/
-  	?>
-  	
-  
+     <!-- SUBMENU ON -->
+	<div class="navbar margin_top">
+		<div class="navbar-inner">
+    		<ul class="nav">
+  				<li><a href="#" class="nav-header">Estadisticas:</a></li>
+      			<li><a title="Transacciones" href="<?php echo Yii::app()->baseUrl."/controlpanel/ventas"; ?>">Transacciones</a></li>
+      			<li class="active" ><a title="Pedidos" href="">Pedidos</a></li>
+    		</ul>
+  		</div>
+	</div>
+  <!-- SUBMENU OFF -->
   <div class="row">
-    <div class="span12 graficos_controlpanel">
-      <div class="bg_color3 margin_bottom_small padding_small box_1">
-
-
+    <div class="span12">
+      <div class="bg_color3 margin_bottom_small padding_small box_1"> 
+			
+			
             <ul class="nav nav-tabs" id="myTab">
               <li class="active"><a href="#mes" data-toggle="tab">Mensual</a></li>
               <li><a href="#semana" data-toggle="tab">Semanal</a></li>
@@ -260,7 +175,7 @@ else
 
 						$this->Widget('ext.highcharts.HighchartsWidget', array(
 							'options'=>array(
-								'chart' => array('type' =>'areaspline','width'=>1170), // column, area, line, spline, areaspline, bar, pie, scatter
+								'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
 								'title' => array('text' => 'Ventas por semanas'),
 								'xAxis' => array(
 									'categories' => array($uno,$tres,$fecha[0],$fecha[1],$fecha[2],$fecha[3],$fecha[4],$fecha[5],$fecha[6],$fecha[7],$fecha[8],$fecha[9],$fecha[10],
@@ -283,125 +198,143 @@ else
 	            </div>
 	          </div>
 	          
-            </div>
-
-</div></div>
-      <div class="row">
-        <div class="span6 margin_top">
-         <div class="well well_personaling_big"> 
-                   <h4 class="margin_top CAPS">Estadisticas</h4>
-
-         
-         <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
+            </div>	
+				       	
+							   
+      </div>
+      <?php
+      	
+      	$proceso = Orden::model()->countByAttributes(array(), 'estado = :valor1 or estado = :valor2 or estado = :valor3', array(':valor1'=>1,':valor2'=>2,':valor3'=>7));
+      	$vendidos = Orden::model()->countByAttributes(array('estado'=>3));
+      	$cancelados = Orden::model()->countByAttributes(array(), 'estado = :valor1 or estado = :valor2', array(':valor1'=>5,':valor2'=>6));
+      	$enviados = Orden::model()->countByAttributes(array('estado'=>4));
+      	$completados = $vendidos + $enviados;
+      	
+      ?>
+      <div class="row margin_top">
+        <div class="span6 ">
+         <h4 class="CAPS braker_bottom margin_bottom_small">ESTADO DE PEDIDOS</h4>
+          <table width="100%" border="0" class="table table-bordered  table-striped"  cellspacing="0" cellpadding="0">
             <tr>
-              <td><strong>Ventas Totales</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($sumatoria); ?> Bs.</td>
+              <td><strong>En proceso</strong>:</td>
+              <td><?php echo $proceso; ?></td>
             </tr>
             <tr>
-              <td><strong> Promedio de Ventas</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($promedio); ?> Bs / Venta.</td>
+              <td><strong>Vendidos</strong>:</td>
+              <td><?php echo $vendidos; ?></td>
             </tr>
             <tr>
-              <td><strong>Numero de Usuarios registrados</strong>:</td>
-              <td><?php echo $usuarios_totales; ?></td>
+              <td><strong>Cancelados y Devueltos</strong>:</td>
+              <td><?php echo $cancelados; ?></td>
             </tr>
             <tr>
-              <td><strong> Numero de Looks creados</strong>:</td>
-              <td><?php echo $looks_totales; ?></td>
+              <td><strong>Enviados</strong>:</td>
+              <td><?php echo $enviados; ?></td>
             </tr>
             <tr>
-              <td><strong>Numero de Looks Activos</strong>:</td>
-              <td>24</td>
-            </tr>
-            <tr>
-              <td><strong> Numero de Productos Activos</strong>:</td>
-              <td><?php echo $productos_activos; ?></td>
-            </tr>
-          </table>
-          <h4 class="margin_top">ACCIONES PENDIENTES</h4>
-          <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
-            <tr>
-              <td><strong>Looks por aprobar</strong>:</td>
-              <td><?php echo $looks_aprobar; ?></td>
-            </tr>
-            <tr>
-              <td><strong> Looks por publicar</strong>:</td>
-              <td>35</td>
-            </tr>
-            <tr>
-              <td><strong>Mensajes por leer</strong>:</td>
-              <td>8</td>
+              <td><strong>Completados</strong>:</td>
+              <td><?php echo $completados; ?></td>
             </tr>
           </table>
-</div>        </div>
-        <div class="span5 offset1 margin_top">
-        	 <h4 class="margin_bottom_small">FUENTE DE REGISTROS</h4>
-        	 
+        </div>
+        <div class="span4 offset1">
         	<?php
+        	
+        		$this->Widget('ext.highcharts.HighchartsWidget', array(
+				   'options'=>array(
+				      	'chart'=> array(
+				            'plotBackgroundColor'=> null,
+				            'plotBorderWidth'=> null,
+				            'plotShadow'=> false
+				        ),
+				      	'title' => array('text' => ''),
+				      	'tooltip'=>array(
+				        	'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>: "+ parseFloat(this.percentage).toFixed(2) +" %"; }'
+						),
+				        'plotOptions'=>array(
+				            'pie'=>array(
+				                'allowPointSelect'=> true,
+				                'cursor'=>'pointer',
+				                'dataLabels'=>array(
+				                    'enabled'=> true,
+				                    'color'=>'#000000',
+				                    'connectorColor'=>'#000000',
+				                    'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>:"+ parseFloat(this.percentage).toFixed(2) +" %"; }'
+				                   
+				                                   )
+				                        )
+				                 ),
+				 
+				      'series' => array(
+				         array('type'=>'pie','name' => 'Ventas / Tiempo',
+				         		'data' => array(
+				         			array('En Proceso',(int)$proceso), 
+				         			array('Vendidos',(int)$vendidos),
+				         			array('Cancelados y Devueltos',(int)$cancelados),
+				         			array('Enviados',(int)$enviados),
+				         			array('Completados',(int)$completados)
+									)),
+				 
+				      )
+				 
+				   )
+			));
+        	
+        	?>
+        </div>
+      </div>
+      
+      
+      
+      
+      <h2 class="braker_bottom margin_bottom_small">Pedidos</h2>
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab1">Últimos 5 pedidos</a></li>
+    
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+          <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+            <tr>
+              <th scope="col">Cliente</th>
+              <th scope="col">Looks</th>
+              <th scope="col">Productos</th>
+              <th scope="col">Total</th>
+            </tr>
+      <?php      
+      
+      	$ultimasOrdenes = Orden::model()->findAll(array('limit'=>5,'order'=>'id DESC'));
 
-$sql = "SELECT count( * ) as total FROM tbl_users where twitter_id != '' ";
-$a = Yii::app()->db->createCommand($sql)->queryScalar();
+		foreach($ultimasOrdenes as $each){			  
+	 		$user = User::model()->findByPk($each->user_id);
+			
+			$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$each->id));
+			$tindiv = 0;
+			$tlooks = 0;
+			
+			foreach ($compra as $tot) {
+				if($tot->look_id == 0)
+					$tindiv++;
+				else
+					$tlooks++;
+				
+			}
 
-$sql = "SELECT count( * ) as total FROM tbl_users where facebook_id != '' ";
-$b= Yii::app()->db->createCommand($sql)->queryScalar();
-
-$sql = "SELECT count( * ) as total FROM tbl_users where twitter_id = NULL and twitter_id = NULL ";
-$c = Yii::app()->db->createCommand($sql)->queryScalar();
-		
-$total = User::model()->count();
-
-$tw = (int) $a / $total; // porcentaje por twitter
-$fb = (int) $b / $total; // porcentaje por facebook
-$nor = (int) ($total - $a - $b) / $total; // via normal por email
-		 
-$this->Widget('ext.highcharts.HighchartsWidget', array(
-   'options'=>array(
-      'chart'=> array(
-            'plotBackgroundColor'=> null,
-            'plotBorderWidth'=> null,
-            'plotShadow'=> false
-        ),
-      'title' => array('text' => 'Fuentes de Registros'),
-        'tooltip'=>array(
-                'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>: "+ parseFloat(this.percentage).toFixed(2) +" %"; }'
-                     ),
-        'plotOptions'=>array(
-            'pie'=>array(
-                'allowPointSelect'=> true,
-                'cursor'=>'pointer',
-                'dataLabels'=>array(
-                    'enabled'=> true,
-                    'color'=>'#000000',
-                    'connectorColor'=>'#000000',
-                    'formatter'=>'js:function() { return "<b>"+ this.point.name +"</b>:"+ parseFloat(this.percentage).toFixed(2) +" %"; }'  
- 
-                                   )
-                        )
-                 ),
- 
-      'series' => array(
-         array('type'=>'pie','name' => 'Ventas / Tiempo',
-         		'data' => array(
-         			array('Twitter',$tw), 
-         			array('Facebook',$fb),
-         			array(
-                    	'name'=>'Normal',
-                    	'y'=>$nor,
-                    	'sliced'=>true,
-                    	'selected'=>true
-                    ))),
- 
-      )
- 
-   )
-));
- 
-?>
-	
-         
+      ?>
+      		<tr>
+              <td><a href="#" title="Ver perfil"><?php echo $user->profile->first_name." ".$user->profile->last_name; ?></a></td>
+              <td><?php echo $tlooks; ?></td>
+              <td><?php echo $tindiv; ?></td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$each->total); ?></td>
+            </tr>
+     <?php
+		}
+     ?>       
+          </table>
+        </div>
+        
       </div>
     </div>
   </div>
 </div>
 <!-- /container -->
-

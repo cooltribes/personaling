@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Tipo 
+ * 1- Deposito o Transferencia
+ * 2- Tarjeta de Credito
+ * 4- MercadoPago
+ */ 
+ 
 /**
  * This is the model class for table "{{pago}}".
  *

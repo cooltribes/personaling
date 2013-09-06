@@ -7,8 +7,7 @@
 /*
  * 
  * Falta:
- * al guardar nuevo, agregarlo al dropdown.
- * mostrar alert al borrar un filtro. 
+ * confirmar borrar filtro. 
  * 
  * 
  */
@@ -46,9 +45,43 @@ function addRow(){
 	
 }
 
+//Borrar todos los campos
+function clearFilters() {
 
-/*Obtiene los campos pertenecientes a un filtro ID*/
-function getFilter(URL, ID){
+    $('#filters-container').children('div').each(function(i) {
+        if (i > 0) {
+            $(this).remove();
+        }
+        
+    });
+    
+    $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relatio').val('');
+    $('.dropdown_relation').last().hide();
+    $('.span_add').last().show();   
+    
+    
+    //Titulo
+    $('#form_filtros h4').html("Nuevo Filtro:");
+                            
+    //Ocultar el botón guardar
+    $('#filter-save2').parent('div').hide();
+    
+    //ocultar alert si está
+    $(".alert").fadeOut('slow');
+        
+}
+
+//Mostrar alert
+function showAlert(type, message){
+   $('#alert-msg').removeClass('alert-success alert-error') ;
+   $('#alert-msg').addClass("alert-"+type);
+   $('#alert-msg').children(".msg").html(message);
+   $('#alert-msg').show();
+   //$("html, body").animate({ scrollTop: 0 }, "slow");
+}
+
+/*Obtiene los campos pertenecientes a un filtro ID y realiza la búsqueda*/
+function getFilter(URL, ID, URL2){
     //	if ($('#span_new_filter').html() != 'Filter verbergen'){
 //		$('#div_add_filter').show();
 //		$('#YumUser_textfield_all').hide().val('');
@@ -91,10 +124,13 @@ function getFilter(URL, ID){
                             
                             //Mostrar el botón guardar
                             $('#filter-save2').parent('div').show();
+                            
+                            search(URL2);
+                            
 
                         }else if(data.status == 'error'){
                            console.log(data.error); 
-                           bootbox.alert(data.error);
+                           //bootbox.alert(data.error);
                         }
                     },
                     error: function( jqXHR, textStatus, errorThrown){
@@ -102,16 +138,12 @@ function getFilter(URL, ID){
                     }
                 }
         );
-    }else{
-        
     }   
     
 }
 
 /*Eliminia un filtro dado por ID*/
-function removeFilter(URL, ID){
-   
-    clearFilters();
+function removeFilter(URL, ID){     
     
     $.ajax(
             URL,
@@ -126,17 +158,15 @@ function removeFilter(URL, ID){
                 },
                 success: function(data){
                     //console.log(data);
-                    if(data.status == 'success'){
+                    if(data.status == 'success'){                       
                         
-                        console.log("Filtro eliminado"); 
-                        //$('#alert-msg')
                         $('#all_filters').find("[value='"+ID+"']").remove();
-                                
+                        clearFilters();        
                         
-                    }else if(data.status == 'error'){
-                       console.log(data.error); 
-                       bootbox.alert(data.error);
                     }
+                    
+                    showAlert(data.status, data.message);                    
+                    
                 },
                 error: function( jqXHR, textStatus, errorThrown){
                     console.log(jqXHR);
@@ -154,14 +184,8 @@ var ajaxRequest;
 function search(URL){
     
     ajaxRequest = $('#form_filtros').serialize();
-
-    //console.log(ajaxRequest);
-
-
     clearTimeout(ajaxUpdateTimeout);
-
     //$('#form_filtros').submit();
-
     ajaxUpdateTimeout = setTimeout(
             function() {
                 $.fn.yiiListView.update(
@@ -169,87 +193,105 @@ function search(URL){
                         {
                             type: 'POST',
                             url: URL,
-                                    data: ajaxRequest
-
+                            data: ajaxRequest
                         }
-
                 )
-            },
-            300);
-    
+            }, 300);    
 }
 
 //Buscar por filtros y guardar el filtro
-function searchAndSave(URL, newFilter) {
-
+function searchAndSave(URL, newFilter) {    
+    
+    //search(URL);
     ajaxRequest = $('#form_filtros').serialize();
-
+    //Si esta guardando un nuevo filtro                        
     if (newFilter) {
-        bootbox.prompt("Indica un nombre para el filtro:", function(result) {
-            
+        bootbox.prompt("Indica un nombre para el filtro:", function(result) {            
             if (result === null) {
-                showAlert('warning', 'Debes indicar un nombre para el filtro');
-                
+                //showAlert('error', 'Debes indicar un nombre para el filtro');                
             } else {
                 result = result.trim();
                 if (result !== "") {
                     //guardar el filtro
-                    ajaxRequest += "&save=true&name=" + result;
-                    //console.log(ajaxRequest);
-                    clearTimeout(ajaxUpdateTimeout);
+                    ajaxRequest += "&save=true&name=" + result;                    
                     // $('#form_filtros').submit();
-                    ajaxUpdateTimeout = setTimeout(
-                            function() {
-                                $.fn.yiiListView.update(
-                                        'list-auth-items',
-                                        {
-                                            type: 'POST',
-                                            url: URL,
-                                            data: ajaxRequest
-                                        }
-                                )
+                    $.ajax(
+                        URL,
+                        {
+                            type: 'POST',
+                            dataType: 'json',
+                            data: ajaxRequest,
+                            success: function(data){
+                                //console.log(data);
+                                if(data.status == 'success'){                                   
+                                    //$('#alert-msg')
+                                    $('#all_filters').append($("<option />").val(data.idFilter).text(result));
+                                    $('#all_filters').val(data.idFilter);
+                                    //$('#all_filters').change();
+                                    //Poner titulo
+                                     $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
+                            
+                                    //Mostrar el botón guardar
+                                    $('#filter-save2').parent('div').show();
+                                    search(URL);
+                                    
+                                }
+                                
+                                showAlert(data.status, data.message);
+                                
                             },
-                            300);
+                            error: function( jqXHR, textStatus, errorThrown){
+                                console.log(jqXHR);
+                            }
+                        }
+                    );
+                    
+                    
                 }else{
-                    showAlert('warning', 'Debes indicar un nombre para el filtro');
+                    showAlert('error', 'Debes indicar un nombre para el filtro');
                 }
 
             }
         });
+        
+    //si esta guardando el filtro acutal    
+    }else{       
+       var ID = $('#all_filters').val();
+       
+       ajaxRequest += "&save=true&id=" + ID; 
+       $.ajax(
+            URL,
+            {
+                type: 'POST',
+                dataType: 'json',
+                data: ajaxRequest,
+                beforeSend: function(){
+                    if(ID === null || ID.trim() === ''){
+                        return false;
+                    }
+                },
+                success: function(data){
+                    //console.log(data);
+                    if(data.status == 'success'){                                   
+                        //$('#alert-msg')
+//                        $('#all_filters').append($("<option />").val(data.idFilter).text(result));
+//                        $('#all_filters').val(data.idFilter);
+//                        $('#all_filters').change();
+                        search(URL);
+                    }
+
+                    showAlert(data.status, data.message);
+
+                },
+                error: function( jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR);
+                }
+            }
+      ); 
+        
     }
 
 
-}
-
-//Borrar todos los campos
-function clearFilters() {
-
-    $('#filters-container').children('div').each(function(i) {
-        if (i > 0) {
-            $(this).remove();
-        }
-        
-    });
-    
-    $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relatio').val('');
-    $('.dropdown_relation').last().hide();
-    $('.span_add').last().show();   
-    
-    
-    //Titulo
-    $('#form_filtros h4').html("Nuevo Filtro:");
-                            
-    //Ocultar el botón guardar
-    $('#filter-save2').parent('div').hide();
-        
-}
-
-//Mostrar alert
-function showAlert(type, message){
-   $('#alert-msg').addClass(type);
-   $('#alert-msg').children(".msg").text(message);
-   $('#alert-msg').show();
-   //$("html, body").animate({ scrollTop: 0 }, "slow");
 }
 
 
@@ -271,5 +313,31 @@ $(function() {
         $('#filters-view').slideDown();
     });
 
+    $(".alert").alert();
+    $(".alert .close").click(function(){
+        $(".alert").fadeOut('slow');
+    });
+    
+    /*Comparación dependiendo de la columna*/
+    $(".dropdown_filter").change(function(e){
+       var column = $(this);
+       var operator = column.parent('div').next();
+       var value = operator.next();
+       
+       
+       //si es fecha
+       if(column.val() === 'fecha'){
+           console.log("go");
+           value.find("#textfield_value").datepicker({
+               //showOn: 'both',
+           });
+       }
+        
+        //console.log(operator.children().val('>'));
+       console.log(value);
+        
+    });
+    
+    //$("#textfield_value").datepicker();
 
 });

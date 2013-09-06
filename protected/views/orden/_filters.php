@@ -1,8 +1,9 @@
 <div class="row margin_top margin_bottom" id="filters-view" style="display: block">
 
 <div class="span12">
-  <div class="alert" id="alert-msg" style="display: none">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <div class="alert in" id="alert-msg" style="display: none">
+    <button type="button" class="close" >&times;</button> 
+    <!--data-dismiss="alert"-->
     <div class="msg">loren ipsum</div>
   </div>
 </div>          
@@ -100,7 +101,7 @@
         
     });
     
-    //Buscar y guardar
+    //Buscar y guardar nuevo
     $('#filter-save').click(function(e) {
         
         e.preventDefault(); 
@@ -109,10 +110,19 @@
             
     });
     
+    //Buscar y guardar filtro actual
+    $('#filter-save2').click(function(e) {
+        
+        e.preventDefault(); 
+        
+        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>', false);
+            
+    });
+    
     //Seleccionar un filtro preestablecido
     $("#all_filters").change(function(){
 	
-        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val());        	
+        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('orden/admin') ?>');        	
 	
     });
     

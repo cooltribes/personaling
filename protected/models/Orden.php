@@ -233,8 +233,8 @@ class Orden extends CActiveRecord
 
             for ($i = 0; $i < count($filters['fields']); $i++) {
                 
-//             echo $filters['ops'][$i].$filters['vals'][$i]."<br>";
-                //echo $filters['rels'][$i]."<br>";
+                $column = $filters['fields'][$i];
+                $value = $filters['vals'][$i];
                 
                 if($i == 0){
                    $logicOp = $filters['rels'][$i]; 
@@ -242,7 +242,12 @@ class Orden extends CActiveRecord
                     $logicOp = $filters['rels'][$i-1];                
                 }                
                 
-                $criteria->compare($filters['fields'][$i], $filters['ops'][$i]." ".$filters['vals'][$i],
+                if($column == 'fecha'){
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
+                
+                $criteria->compare($column, $filters['ops'][$i]." ".$value,
                         false, $logicOp);
                 
 //                $filters['fields'][$i];
@@ -250,7 +255,8 @@ class Orden extends CActiveRecord
 //                $filters['vals'][$i];
 //                $filters['rels'][$i];
             }
-
+            
+            
             
 //            echo "Criteria:";
 //            
@@ -259,7 +265,7 @@ class Orden extends CActiveRecord
 //            echo "</pre>"; 
 //            
 //            echo "Condicion: ".$criteria->condition;
-//            exit();
+            //exit();
 //            
             
 //            $criteria->compare('id', $this->id);

@@ -52,7 +52,7 @@
       </li>
       <?php } ?>
       <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>
-      <li><a title="Cargar Saldo" href="#">  <i class="icon-gift">  </i>  Cargar Saldo</a>
+      <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
             <li class="divider"></li>
       <li><a title="Eliminar" href="#">  <i class="icon-trash">  </i>  Eliminar</a></li>
           </ul>
@@ -62,6 +62,8 @@
       </td>
     </tr>
     <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+        </div>
+    <div id='saldoCarga' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
         </div>
     
 <script >
@@ -94,7 +96,40 @@ function cambio(id){
 			},
 			'cache' :false});
 	}
+	else{
+		alert("Ambos campos deben coincidir");		
+	}
 
 }
+function carga(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'/site/user/admin/saldo',
+		data: { 'id':id}, 
+		'success': function(data){
+			$('#saldoCarga').html(data);
+			$('#saldoCarga').modal(); 
+		},
+		'cache' :false});
+
+}
+function saldo(id){	
+		var cant=$("#cant").val();
+		$.ajax({
+			type: "post",
+			'url' :'/site/user/admin/saldo',
+			data: { 'cant':cant,
+			'id':id}, 
+			'success': function(data){
+				
+			window.location.reload();
+			},
+			'cache' :false});
+}
+
+
+
+
 
 </script>

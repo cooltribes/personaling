@@ -129,7 +129,7 @@ echo $num;
     </div>
     <div class="span3">
         <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll(),
-                "id_filter", "name"), array('empty' => 'Filtros preestablecidos', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
 <!--      <select class="span3">
         <option>Filtros preestablecidos</option>
         <option>Filtro 1</option>

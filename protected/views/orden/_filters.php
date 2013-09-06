@@ -1,4 +1,12 @@
 <div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+
+<div class="span12">
+  <div class="alert" id="alert-msg" style="display: none">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div class="msg">loren ipsum</div>
+  </div>
+</div>          
+    
 <?php
 
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -10,27 +18,10 @@
     'id' => 'form_filtros'
     ));
 
-		/*
-		 echo CHtml::label('Anrede','sex');
-		 // echo CHtml::dropDownList($users,'sex', 
-		 echo $form->dropDownList( $users,'sex', 
-              array('Herr' => 'Herr', 'Frau' => 'Frau'),
-              array('empty' => '(Select a gender)', 'class' => 'combo_buscar'));
-			 echo CHtml::label('Geburtsdatum zwischen:','date_form');
-// echo CHtml::dropDownList($users,'username', 
- 
-//echo $form->dropDownList( $users,'username', 
-//              array('jpernia' => 'jpernia', 'chantal' => 'chantal'),
-//              array('empty' => '(Select a gender)', 'class' => 'combo_buscar'));	
-			  
-			echo $form->textField($users,'date_from');
-			echo $form->textField($users,'date_to');
-			echo CHtml::submitButton('Buscar', array('id' => 'btn_buscar'));
-			*/
-////////***************** NEW ******************///////////////
+		
 ?>
-    <?php //echo $form->errorSummary(array($modelUser,$profile)); ?>
-    <h4>Nuevo filtro:</h4>
+    
+    <h4>Nuevo Filtro:</h4>
     
     <fieldset>
         <div id="filters-container" class="clearfix">
@@ -41,7 +32,7 @@
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array('estado' => 'Estado',
                             'fecha' => 'Fecha de Compra',
                             'detalle_id' => 'Cantidad de Looks',
-                            'email' => 'Cantidad de Prendas',
+                            'detalle_id' => 'Cantidad de Prendas',
                             'total' => 'Monto',
                             'pago_id' => 'Método de Pago',
                             'user_id' => 'Usuaria',
@@ -78,29 +69,16 @@
         </div>  
     </fieldset>
     
-                <?php
-//echo CHtml::label('Add','label-add');
-                /*
-                echo $form->hiddenField($users, 'hidden_filter_survey', '');
-                echo $form->hiddenField($users, 'hidden_textfield_survey', '');
-                echo $form->hiddenField($users, 'hidden_operator_survey', '');
-                echo $form->hiddenField($users, 'hidden_relation_survey', '');
-
-
-                echo '<div class="clearfix">';
-
-//echo Chtml::htmlButton('Add',array('class'=>'btn small','id'=>'btn_add_survay'));
-                echo '</div>';
-
-                 */
-        $this->endWidget();
-        ?>
+   <?php $this->endWidget(); ?>
 
     <div class="span2 pull-right">
-        <a href="#" class="btn crear-filtro" title="Borrar Filtro">Borrar Filtro</a>
+        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
     </div>
     <div class="span3 pull-right">
-        <a href="#" id="filter-save" class="btn crear-filtro span2" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Filtro</a> 
+        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Nuevo Filtro</a> 
+    </div>
+    <div class="span2 pull-right" style="display: none">
+        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar Filtro</a> 
     </div>
     <div class="span1 pull-right">
         <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  
@@ -127,7 +105,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>');
+        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>', true);
             
     });
     
@@ -137,6 +115,13 @@
         getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val());        	
 	
     });
+    
+    $("#filter-remove").click(function(e){
+
+             e.preventDefault();
+             removeFilter('<?php echo CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
+
+    });    
     
     
 /*]]>*/

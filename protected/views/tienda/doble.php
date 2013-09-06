@@ -421,8 +421,10 @@ $(document).ready(function() {
 		$(this).find("img").eq(0).next().hide();
 		}
 	});
-	$('.tienda_colores > img').on('click',function(){
-		
+	$('.tienda_colores > img ').on('click',function(){
+			
+
+
 		if(!$(this).hasClass('selected')){			
 			$(this).addClass('selected');
 			$(this).css({'outline': '2px groove #6d2d56'});
@@ -432,7 +434,7 @@ $(document).ready(function() {
 			$(this).removeClass('selected');
 		}
 		
-	});
+	});	
 
 });
 	

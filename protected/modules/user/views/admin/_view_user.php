@@ -45,7 +45,7 @@
         
        <?php echo CHtml::link('<i class="icon-edit">  </i>  Editar',array("admin/update","id"=>$data->id)); ?>
       </li>
-      <li><a title="Cambiar contraseña" href="#">  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
+      <li><a title="Cambiar contraseña" href="#" onclick='modal( <?php echo $data->id; ?>)'>  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
       <?php if($data->status == 0){ ?>
       <li>
         <?php echo CHtml::link('<i class="icon-refresh">  </i>  Reenviar Email de Verificación',array("admin/resendvalidationemail","id"=>$data->id)); ?>
@@ -61,3 +61,40 @@
       <?php } ?>
       </td>
     </tr>
+    <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+        </div>
+    
+<script >
+function modal(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'/site/user/admin/contrasena',
+		data: { 'id':id}, 
+		'success': function(data){
+			$('#myModal').html(data);
+			$('#myModal').modal(); 
+		},
+		'cache' :false});
+
+}
+function cambio(id){
+	
+	if($("#psw1").val()==$("#psw2").val())
+	{	
+		var psw=$("#psw2").val();
+		$.ajax({
+			type: "post",
+			'url' :'/site/user/admin/contrasena',
+			data: { 'psw':psw,
+			'id':id}, 
+			'success': function(data){
+				
+			window.location.reload();
+			},
+			'cache' :false});
+	}
+
+}
+
+</script>

@@ -79,6 +79,10 @@ return array(
 
 	// application components
 	'components'=>array(
+	'assetManager' => array(
+            //'linkAssets' => true,
+           // 'forceCopy'=> false,
+        ),
     	'curl' => array(
             'class' => 'ext.Curl',
             'options' => array(), 

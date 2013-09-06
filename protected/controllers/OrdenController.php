@@ -24,11 +24,9 @@ class OrdenController extends Controller
 				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-			
-
-				'actions'=>array('index','admin', 'getFilter','modalventas','detalles','validar','enviar','factura','mensajes','entregar'),
+				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','validar','enviar','factura','mensajes','entregar'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -104,7 +102,7 @@ class OrdenController extends Controller
             
             if(isset($_POST['dropdown_filter'])){           
                 
-                //Validar y tomar los filtros válidos
+                //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){
                     if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
                             && trim($_POST['textfield_value'][$i]) != '' && $_POST['dropdown_relation'][$i]){
@@ -128,26 +126,31 @@ class OrdenController extends Controller
                          if(!$filter){
                              $filter = new Filter;
                              $filter->name = $_POST['name'];
-                         }
-                         
-                         if($filter->save()){
-                             for ($i = 0; $i < count($filters['fields']); $i++) {
+                             
+                             if($filter->save()){
+                                for ($i = 0; $i < count($filters['fields']); $i++) {
 
-                                $filterDetails[] = new FilterDetail();
-                                $filterDetails[$i]->id_filter = $filter->id_filter; 
-                                $filterDetails[$i]->column = $filters['fields'][$i];
-                                $filterDetails[$i]->operator = $filters['ops'][$i];
-                                $filterDetails[$i]->value = $filters['vals'][$i];
-                                $filterDetails[$i]->relation = $filters['rels'][$i];
-                                $filterDetails[$i]->save();
-                                       
-                //                $filters['fields'][$i];
-                //                $filters['ops'][$i];
-                //                $filters['vals'][$i];
-                //                $filters['rels'][$i];
+                                   $filterDetails[] = new FilterDetail();
+                                   $filterDetails[$i]->id_filter = $filter->id_filter; 
+                                   $filterDetails[$i]->column = $filters['fields'][$i];
+                                   $filterDetails[$i]->operator = $filters['ops'][$i];
+                                   $filterDetails[$i]->value = $filters['vals'][$i];
+                                   $filterDetails[$i]->relation = $filters['rels'][$i];
+                                   $filterDetails[$i]->save();
+
+                   //                $filters['fields'][$i];
+                   //                $filters['ops'][$i];
+                   //                $filters['vals'][$i];
+                   //                $filters['rels'][$i];
 
                                 }
+                             }
+                             
+                         }else{
+                           //Error YA EXISTE EL NOMBRE  
                          }
+                         
+                         
                          
                      }
 
@@ -177,13 +180,39 @@ class OrdenController extends Controller
             
             $response = array();
             if(isset($_POST['id'])){
-                $filter = Filter::model()->findByPk($_POST['id']);
+                $filter = Filter::model()->findByPk($_POST['id']);                
                 
-                
-                if($filter){
-                
+                if($filter){                
                    
                    $response['filter']  = $filter->filterDetails;
+                   $response['status'] = 'success';
+                    
+                }else{
+                  $response['status'] = 'error';
+                  $response['error'] = 'Filtro no encontrado';
+                }               
+                
+                
+            }
+            
+            echo CJSON::encode($response);
+            
+        }
+        
+        
+        /**
+         * Elimina un filtro
+         * */
+        
+        public function actionRemoveFilter() {
+            
+            $response = array();
+            if(isset($_POST['id'])){
+                $filter = Filter::model()->findByPk($_POST['id']);                
+                
+                if($filter){ 
+                    
+                   $filter->delete(); 
                    $response['status'] = 'success';
                     
                 }else{
@@ -217,7 +246,7 @@ class OrdenController extends Controller
 				array_push($productos,$var);
 					
 		}
-		echo count($productos);
+		
 		
 		
 		$html='';

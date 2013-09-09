@@ -7,10 +7,18 @@
 /*
  * 
  * Falta:
- * confirmar borrar filtro. 
+ * confirmar borrar filtro. ?
  * 
  * 
  */
+
+/*Vars*/
+
+var ajaxUpdateTimeout;
+var ajaxRequest;
+var idDateField = 0;
+
+
 
 /*Agrega una fila para el filtro*/
 function addRow(){
@@ -40,7 +48,8 @@ function addRow(){
     $('.span_delete').last().show();
     $('.dropdown_relation').show();
     $('.dropdown_relation').last().hide();
-
+    $(".dropdown_filter").last().change(changeFilter);
+    $(".dropdown_filter").last().change();
 //console.log("agregada");
 	
 }
@@ -56,9 +65,9 @@ function clearFilters() {
     });
     
     $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relatio').val('');
+    $('.dropdown_filter').change();
     $('.dropdown_relation').last().hide();
-    $('.span_add').last().show();   
-    
+    $('.span_add').last().show();      
     
     //Titulo
     $('#form_filtros h4').html("Nuevo Filtro:");
@@ -110,7 +119,7 @@ function getFilter(URL, ID, URL2){
                             };
 
                             $.each(data.filter, function(i, item) {
-
+                                console.log(item.operator);
                                 $('.dropdown_filter').eq(i).val(item.column);
                                 $('.dropdown_operator').eq(i).val(item.operator);
                                 $('.textfield_value').eq(i).val(item.value);
@@ -177,15 +186,12 @@ function removeFilter(URL, ID){
     
 }
 
-var ajaxUpdateTimeout;
-var ajaxRequest;
-
 //Buscar por filtros
 function search(URL){
     
     ajaxRequest = $('#form_filtros').serialize();
     clearTimeout(ajaxUpdateTimeout);
-    //$('#form_filtros').submit();
+    $('#form_filtros').submit();
     ajaxUpdateTimeout = setTimeout(
             function() {
                 $.fn.yiiListView.update(
@@ -294,6 +300,95 @@ function searchAndSave(URL, newFilter) {
 
 }
 
+function changeFilter(e){
+   var column = $(this);
+   var operator = column.parent('div').next();
+   var value = operator.next();
+
+
+   //si es fecha
+   if(column.val() === 'fecha'){
+
+       value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
+        .attr('name','textfield_value[]')
+        .attr('id', 'textfield_value'+(idDateField++))
+        .datepicker({
+            dateFormat: "dd-mm-yy"
+        })
+       );           
+       
+       operator.children().empty().html($("#Operadores").html());
+
+    //metodo de pago
+   }else if(column.val() === 'pago_id'){
+       
+       value.empty().append( 
+           $('<select />').html($("#metodosPago").html()).addClass('textfield_value span2')   
+           .attr('name','textfield_value[]')
+           .attr('id', 'textfield_value')
+        );
+       //agregar = y diferente     
+       operator.children().children().each(function(i, elem){
+           if($(elem).val() !== '')
+               $(elem).remove();
+       });
+       operator.children().append(
+           $("<option />").val('=').text('=')
+       ).append(
+           $("<option />").val('<>').text('<>')        
+       );
+
+    //Estado de la Orden
+   }else if(column.val() === 'estado'){
+       
+       value.empty().append( 
+           $('<select />').html($("#estadosOrden").html()).addClass('textfield_value span2')   
+           .attr('name','textfield_value[]')
+           .attr('id', 'textfield_value')
+        );
+       //agregar = y diferente     
+       operator.children().children().each(function(i, elem){
+           if($(elem).val() !== '')
+               $(elem).remove();
+       });
+       operator.children().append(
+           $("<option />").val('=').text('=')
+       ).append(
+           $("<option />").val('<>').text('<>')        
+       );
+
+    //campo normal
+   }else if(column.val() === 'user_id'){
+       
+       value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
+        .attr('name','textfield_value[]')
+        .attr('id', 'textfield_value')        
+       );
+           
+       //agregar = y LIKE    
+       operator.children().children().each(function(i, elem){
+           if($(elem).val() !== '')
+               $(elem).remove();
+       });
+       operator.children().append(
+           $("<option />").val('=').text('=')
+       ).append(
+           $("<option />").val('LIKE').text('Contenga')        
+       );
+
+    //campo normal
+   }else{
+      
+       value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
+        .attr('name','textfield_value[]')
+        .attr('id', 'textfield_value')        
+       );
+              
+       operator.children().empty().html($("#Operadores").html());
+       
+   }
+    
+}
 
 $(function() { 
     
@@ -318,26 +413,8 @@ $(function() {
         $(".alert").fadeOut('slow');
     });
     
-    /*Comparación dependiendo de la columna*/
-    $(".dropdown_filter").change(function(e){
-       var column = $(this);
-       var operator = column.parent('div').next();
-       var value = operator.next();
-       
-       
-       //si es fecha
-       if(column.val() === 'fecha'){
-           console.log("go");
-           value.find("#textfield_value").datepicker({
-               //showOn: 'both',
-           });
-       }
-        
-        //console.log(operator.children().val('>'));
-       console.log(value);
-        
-    });
+    /*Adaptar operador y valor dependiendo de la columna*/
+    $(".dropdown_filter").change(changeFilter);
     
-    //$("#textfield_value").datepicker();
 
 });

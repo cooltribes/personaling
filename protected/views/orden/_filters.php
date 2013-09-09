@@ -9,6 +9,21 @@
 </div>          
     
 <?php
+    //Métodos de pago
+    echo CHtml::dropDownList('metodosPago', '', array('1' => 'Depósito o Transferencia',
+    '2' => 'Tarjeta de Crédito', '4' => 'Mercado Pago'), array('style' => 'display:none'));
+    
+    echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
+                            '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
+                                array('empty' => 'Operador',
+                                    'style' => 'display:none'));
+    
+    echo CHtml::dropDownList('estadosOrden', '', array('1' => 'En espera de pago',
+    '2' => 'En espera de confirmación', '3' => 'Pago confirmado', '4' => 'Enviado',
+        '5' => 'Cancelado', '6' => 'Pago rechazado', '7' => 'Pago insuficiente',
+        '8' => 'Entregado', '9' => 'Devuelto'), array('style' => 'display:none'));
+    
+    
 
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
     
@@ -32,12 +47,12 @@
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array('estado' => 'Estado',
                             'fecha' => 'Fecha de Compra',
-                            'detalle_id' => 'Cantidad de Looks',
-                            'detalle_id' => 'Cantidad de Prendas',
+                            'looks' => 'Cantidad de Looks',
+                            'prendas' => 'Cantidad de Prendas',
                             'total' => 'Monto',
                             'pago_id' => 'Método de Pago',
                             'user_id' => 'Usuaria',
-                            'id' => 'N° de pedido',
+                            'id' => 'ID de pedido',
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
                         <div class="span2" >

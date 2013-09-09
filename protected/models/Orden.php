@@ -235,6 +235,7 @@ class Orden extends CActiveRecord
                 
                 $column = $filters['fields'][$i];
                 $value = $filters['vals'][$i];
+                $comparator = $filters['ops'][$i];
                 
                 if($i == 0){
                    $logicOp = $filters['rels'][$i]; 
@@ -247,7 +248,52 @@ class Orden extends CActiveRecord
                     $value = date('Y-m-d H:i:s', $value);
                 }
                 
-                $criteria->compare($column, $filters['ops'][$i]." ".$value,
+                if($column == 'looks'){
+                   
+                   $criteria->join = 'JOIN tbl_orden_has_productotallacolor as oprod ON oprod.tbl_orden_id = t.id AND oprod.look_id > 0'; 
+                   $criteria->group = 't.id';
+                   $criteria->having = 'count(oprod.tbl_orden_id) '.$comparator.' :cantLooks';                           
+                   $criteria->params['cantLooks'] = $value;
+                   
+                   continue;
+                }
+                
+                if($column == 'prendas'){
+                   
+                   $criteria->join = 'JOIN tbl_orden_has_productotallacolor as oprod ON oprod.tbl_orden_id = t.id AND oprod.look_id = 0'; 
+                   $criteria->group = 't.id';
+                   $criteria->having = 'count(oprod.tbl_orden_id) '.$comparator.' :cantPrendas';                           
+                   $criteria->params['cantPrendas'] = $value;
+                   
+                    continue;
+                }
+                
+                if($column == 'pago_id'){                
+                   
+                    if (strpos($criteria->join, 'tbl_pago') == false) {
+                        $criteria->join .= ' JOIN tbl_pago on tbl_pago.id = pago_id';
+                    }
+                    $criteria->join .= ' AND tbl_pago.tipo '.$comparator.' :tipoP';
+                    $criteria->params['tipoP'] = $value;                  
+                    
+                    continue;
+                }
+                
+                if($column == 'user_id'){
+                    
+                    $rest = ($comparator == '=') ? "= ".$value : "LIKE '%".$value."%'";
+                    
+                    $criteria->join .= ' JOIN tbl_users user on user.id = user_id AND user.username '.
+                            $rest;
+                    //$criteria->params['value'] = $value;                  
+                    
+                    
+                    continue;
+                }
+                
+                
+                
+                $criteria->compare($column, $comparator." ".$value,
                         false, $logicOp);
                 
 //                $filters['fields'][$i];
@@ -261,29 +307,13 @@ class Orden extends CActiveRecord
 //            echo "Criteria:";
 //            
 //            echo "<pre>";
-//            print_r($criteria->params);
+//            print_r($criteria->toArray());
 //            echo "</pre>"; 
 //            
 //            echo "Condicion: ".$criteria->condition;
-            //exit();
-//            
-            
-//            $criteria->compare('id', $this->id);
-//            $criteria->compare('subtotal', $this->subtotal);
-//            $criteria->compare('descuento', $this->descuento);
-//            $criteria->compare('envio', $this->envio);
-//            $criteria->compare('iva', $this->iva);
-//            $criteria->compare('descuentoRegalo', $this->descuentoRegalo);
-//            $criteria->compare('total', $this->total);
-//            $criteria->compare('estado', $this->estado);
-//            $criteria->compare('fecha', $this->fecha);
-//            $criteria->compare('bolsa_id', $this->bolsa_id);
-//            $criteria->compare('user_id', $this->user_id);
-//            $criteria->compare('pago_id', $this->pago_id);
-//            $criteria->compare('detalle_id', $this->detalle_id);
-//            $criteria->compare('direccionEnvio_id', $this->direccionEnvio_id);
-//            $criteria->compare('tracking', $this->tracking);
-//            $criteria->compare('seguro', $this->seguro);
+//            exit();
+           
+
 //            $criteria->join = 'JOIN tbl_users ON tbl_users.id = t.user_id AND (t.id LIKE "%' . $query . '%" OR tbl_users.username LIKE "%' . $query . '%" )';
 
             //	$criteria->addCondition('t.id LIKE :valor','OR');

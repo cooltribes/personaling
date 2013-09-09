@@ -52,7 +52,10 @@ echo $num;
         ?>
       <td><p class="T_xlarge margin_top_xsmall"> <?php echo $to; ?> </p>
         Enviados </td>
-      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+        <?php
+        $recibidos = Orden::model()->countByAttributes(array('estado'=>8));
+        ?>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $recibidos; ?>  </p>
         Recibidos</td>
       <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
         Devuelto</td>

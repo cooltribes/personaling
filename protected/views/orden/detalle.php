@@ -668,14 +668,15 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal); ?></td>
         </tr>
         <tr>
-          <td>Descuento</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
-        </tr>
-        <tr>
           <td>Envio y Transporte</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio); ?></td>
         </tr>
         <tr>
+          <td>Descuento</td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
+        </tr>
+        
+          <tr>
           <td>Impuesto</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva); ?></td>
         </tr>
@@ -683,6 +684,9 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td>Total</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></td>
         </tr>
+        
+        
+      
       </table></div>
     </div>
   </div>

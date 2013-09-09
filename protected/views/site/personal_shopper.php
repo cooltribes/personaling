@@ -77,7 +77,7 @@
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
-                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(true); ?></span></div>
                   </div>
                   <div class="share_like">
                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>

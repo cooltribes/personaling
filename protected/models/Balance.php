@@ -12,6 +12,19 @@
  * The followings are the available model relations:
  * @property Users $user
  */
+ 
+ //UN BALANCE CON ORDER_ID = 0; REPRESENTA UNA CARGA DE SALDO DESDE ADMIN
+ 
+ /* TIPO:
+  * 
+  * 0: Balance Positivo
+  * 1: Balance Negativo
+  * 2: Tarjeta de Regalo
+  * 3: Carga desde Admin
+  * 
+  * 
+  */
+ 
 class Balance extends CActiveRecord
 {
 	/**

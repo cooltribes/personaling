@@ -30,7 +30,7 @@
         </td>
       <td><?php echo $data->ordenCount; ?></td>
       <td><?php echo $data->direccionCount; ?></td>
-      <td>0 Bs.</td>
+      <td><?php $saldo=Profile::model()->getSaldo($data->id); echo $saldo." Bs.";?></td>
       <td><?php echo $data->visit; ?></td>
       <td><?php if ($data->getLastvisit()) echo  date("d/m/Y",$data->getLastvisit()); else echo 'N/D'; ?></td>
       <td><?php if ($data->getCreatetime()) echo  date("d/m/Y",$data->getCreatetime()); else echo 'N/D'; ?></td>
@@ -115,17 +115,37 @@ function carga(id){
 
 }
 function saldo(id){	
+		
 		var cant=$("#cant").val();
-		$.ajax({
+        if(cant.indexOf(',')==(cant.length-2))
+        	cant+='0';
+		if(cant.indexOf(',')==-1)
+			cant+=',00';
+        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+        if (pattern.test(cant)) { 
+          cant=cant.replace(',','.');
+          alert(cant);
+           $.ajax({
 			type: "post",
 			'url' :'/site/user/admin/saldo',
 			data: { 'cant':cant,
 			'id':id}, 
 			'success': function(data){
-				
-			window.location.reload();
+				window.location.reload();			
 			},
 			'cache' :false});
+        }else{
+        	alert("Formato de cantidad no válido");
+         }
+            
+          
+
+
+		
+		
+		
+		
+		
 }
 
 

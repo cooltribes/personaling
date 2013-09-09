@@ -23,7 +23,7 @@ class SiteController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','top','error','contacto','login','logout','acerca_de','activos_graficos','publicaciones_de_prensa','condiciones_de_envios_y_encomiendas',
-				'formas_de_pago','politicas_y_privacidad','terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes','equipo_personaling'), 
+				'formas_de_pago','politicas_y_privacidad','terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes','equipo_personaling','captcha'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -203,9 +203,12 @@ class SiteController extends Controller
 					"MIME-Version: 1.0\r\n".
 					"Content-type: text/plain; charset=UTF-8";
 
-				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
-				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
-				$this->refresh();
+				mail('info@personaling.com',$subject,"Este mensaje ha sido enviado desde el formulario de contacto de personaling: ".$model->body,$headers);
+				Yii::app()->user->setFlash('contact','Gracias por contactarnos. Te estaremos respondiendo a la brevedad.');
+				
+				$model=new ContactForm;
+				$this->render('contact',array('model'=>$model));
+				
 			}
 		}
 		

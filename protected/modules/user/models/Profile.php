@@ -250,4 +250,10 @@ class Profile extends UActiveRecord
 
 		return parent::afterFind();
 	}
+	
+	public function getSaldo($id){
+			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id." GROUP BY user_id ")->queryScalar();
+			$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
+			return $sum;
+	}
 }

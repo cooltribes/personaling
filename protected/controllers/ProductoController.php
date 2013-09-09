@@ -1491,7 +1491,10 @@ class ProductoController extends Controller
 								
 								$seo->save();
 								
-		$tabla = $tabla.'se agregó el producto con id '.$producto->id.', de nombre: '.$producto->nombre.', precio_id: '.$precio->id.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
+		$tabla = $tabla.'se agregó el producto con id '.$producto->id;
+		$tabla = $tabla.', de nombre: '.$producto->nombre;
+		$tabla = $tabla.', precio_id: '.$precio->id;
+		$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
 						
 						}
 						
@@ -1591,7 +1594,10 @@ class ProductoController extends Controller
 								
 								$seo->save();
 								
-		$tabla = $tabla.'se agregó el producto con id '.$prod->id.', de nombre: '.$prod->nombre.', precio_id: '.$precio->id.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
+		$tabla = $tabla.'se agregó el producto con id '.$prod->id; 
+		$tabla = $tabla.', de nombre: '.$prod->nombre;
+		$tabla = $tabla.', precio_id: '.$precio->id;
+		$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
 						
 							}
 							

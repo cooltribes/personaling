@@ -248,6 +248,7 @@
             <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix">  
+          <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-compatir" href="#"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> </div>            
           <!-- <div class=""> -->
           <a class="addthis_button_facebook_like pull-left" fb:like:layout="button_count"></a>
             <a class="addthis_button_tweet pull-left"></a>

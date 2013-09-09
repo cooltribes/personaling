@@ -23,7 +23,7 @@ Aqui
 
 <p>
 Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por favor contáctanos a través del siguiente formulario:</p>
-
+ 
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

@@ -62,6 +62,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 7)
 		echo "Pago Insuficiente";
 	
+	if($orden->estado == 8)
+		echo "Orden Entregada";
+	
 	// agregar demas estados
 ?>
 	</p>
@@ -870,5 +873,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	   //  alert(guia);	
 		
 	}
+	
+	
+	
+	
 		
 </script>

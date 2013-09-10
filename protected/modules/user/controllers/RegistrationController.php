@@ -105,11 +105,11 @@ class RegistrationController extends Controller
                                 $message->view = "mail_template";
                                 $subject = 'Registro Personaling';
                                 $body = '<h2>Te damos la bienvenida a Personaling.</h2>
-                                                                                            <br/>Tu contraseña provisional es: <strong>' . $clave . '</strong><br/>' .
+                                        <br/>Tu contraseña provisional es: <strong>' . $clave . '</strong><br/>' .
                                         'Puedes cambiarla accediendo a tu cuenta y luego haciendo click ' .
-                                        'en la opción Cambiar Contraseña.<br/><br/>
-                                                            Recibes este correo porque se ha registrado tu dirección en Personaling.
-                                                                                            Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/> ' . $activation_url;
+                                        'en la opción Cambiar Contraseña.<br/>
+                                        Recibes este correo porque se ha registrado tu dirección en Personaling.
+                                        Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $activation_url.'"> Haz click aquí </a>';
                                 $params = array('subject' => $subject, 'body' => $body);
                                 $message->subject = $subject;
                                 $message->setBody($params, 'text/html');

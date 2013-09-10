@@ -134,7 +134,7 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
     <h3 id="myModalLabel">Video Promocional de Personaling.com</h3>
   </div>
   <div class="modal-body">
-    <iframe width="100%" height="400" src="//www.youtube.com/embed/WPdC3MbvZwA" frameborder="0" allowfullscreen></iframe>
+    <iframe width="100%" height="400" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>

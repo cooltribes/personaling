@@ -326,9 +326,11 @@
               </div>
               <div class="tab-pane" id="envio">
 	            <div class="row">
-	            	<div class="span1"><img  src="<?php echo Yii::app()->baseUrl; ?>/images/grupo_zoom_logo.png"/></div>
-	            	<div class="span2"><p class="padding_top_small">Nuestros envios se realizan a través del <strong>Grupo Zoom</strong></p></div>
+	            	<div class="span3"><p class="padding_top_small">Nuestros envíos se realizan a través de:</p></div>
 	            </div>
+              <div class="row">
+                <div class="span3"><img height="60px"  src="<?php echo Yii::app()->baseUrl; ?>/images/logos_carriers.png"/></div>
+              </div>
 	          </div>
             </div>
           </div>

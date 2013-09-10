@@ -93,7 +93,26 @@ class CampanaController extends Controller
 			$campana->attributes = $_POST['Campana'];
 			//$campana->fecha_creacion = date('Y-m-d H:i:s');
 			
-			if($campana->save()){
+			if(date("Y-m-d H:i:s")<$campana->recepcion_inicio)
+				$campana->estado=1;
+			else{
+				if(date("Y-m-d H:i:s")>$campana->recepcion_inicio&&date("Y-m-d H:i:s")<$campana->recepcion_fin)
+					$campana->estado=2;
+				else{
+					if(date("Y-m-d H:i:s")>$campana->recepcion_fin&&date("Y-m-d H:i:s")<$campana->ventas_inicio)
+						$campana->estado=3;
+					else{
+						if(date("Y-m-d H:i:s")<$campana->ventas_fin&&date("Y-m-d H:i:s")>$campana->ventas_inicio)
+							$campana->estado=4;
+						else{
+							if(date("Y-m-d H:i:s")>$campana->ventas_fin)
+								$campana->estado=5;
+							}
+					}
+				}
+			}
+			
+		if($campana->save()){
 				if(isset($_POST['personal_shopper'])){
 				if($_POST['personal_shopper'] == 'todos'){
 					$list_ps = User::model()->findAllByAttributes(array('personal_shopper'=>1));

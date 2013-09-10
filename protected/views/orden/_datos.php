@@ -76,13 +76,29 @@ echo"<tr>";
           <!-- Link or button to toggle dropdown -->
           <ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
             <li><a tabindex='-1' href='detalles/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
-            <li><a tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
+            <li><a onclick='modal(".$data->id.")' tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
             <li><a tabindex='-1' href='#'><i class='icon-edit'></i> Cambiar estado</a></li>
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>
             <li class='divider'></li>
             <li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
           </ul>
         </div></td>
+        <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+        </div>
 	";
 		
 ?>
+<script >
+function modal(id){
+
+	$.ajax({
+		'url' :'/site/orden/modalventas/'+id,
+		'success': function(data){
+			$('#myModal').html(data);
+			$('#myModal').modal(); 
+		},
+		'cache' :false});
+}
+</script>
+
+

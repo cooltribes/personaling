@@ -526,91 +526,92 @@ $usuario = User::model()->findByPk($orden->user_id);
         	
 			foreach ($productos as $prod) {
 				
-				if($prod->look_id != 0) // si es look
-				{
-					$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
-					
-					$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
-					$precio = $lookpedido->getPrecio(false);
+					if($prod->look_id != 0) // si es look
+					{
+						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+						
+						$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
+						$precio = $lookpedido->getPrecio(false);
+							
+							echo("<tr>");
+							echo("<td>".$lookpedido->title."</td>"); // nombre
+							echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
+							echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
+							echo("<td>".$prod->precio."</td>"); // precio 
+							/*
+							setlocale(LC_MONETARY, 've_VE');
+							//$a = money_format('%i', $precio->precioVenta);
+							//$c = money_format('%i', $precio->ahorro);
+							//$des = money_format('%i', $precio->precioDescuento);
+							$iva = $precio * 0.12;
+							
+							$b = $precio * $prod->cantidad;					
+							echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
+							
+							echo("<td> desc look </td>"); //descuento del look
+							
+							$e = $iva * $prod->cantidad;
+							echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+							*/
+							
+							echo("
+							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
+			              	<!-- Link or button to toggle dropdown -->
+			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+			                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
+			                	<li class='divider'></li>
+			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
+			              	</ul>
+			            	</div></td>
+							");
+							
+							echo("</tr>");	
+						
+					}
+					else // individual
+					{
+						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
+						$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
 						
 						echo("<tr>");
-						echo("<td>".$lookpedido->title."</td>"); // nombre
+						echo("<td>".$indiv->nombre."</td>"); // nombre
 						echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-						echo("<td>".$prod->precio."</td>"); // precio 
+						echo("<td>".$prod->precio."</td>"); // precio
 						/*
 						setlocale(LC_MONETARY, 've_VE');
-						//$a = money_format('%i', $precio->precioVenta);
-						//$c = money_format('%i', $precio->ahorro);
-						//$des = money_format('%i', $precio->precioDescuento);
-						$iva = $precio * 0.12;
+						$a = money_format('%i', $precio->precioVenta);
+						$c = money_format('%i', $precio->ahorro);
 						
-						$b = $precio * $prod->cantidad;					
+						$iva = $precio->precioDescuento * 0.12;
+						
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($a)."</td>"); //precio individual sin descuento
+						
+						$b = $a * $prod->cantidad;					
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
 						
-						echo("<td> desc look </td>"); //descuento del look
+						$d = $c * $prod->cantidad;					
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($d)."</td>"); //descuento total
 						
 						$e = $iva * $prod->cantidad;
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
+						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
 						*/
 						
 						echo("
-						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
-		              	<!-- Link or button to toggle dropdown -->
-		              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-		                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
-		                	<li class='divider'></li>
-		                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
-		              	</ul>
-		            	</div></td>
+							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
+			              	<!-- Link or button to toggle dropdown -->
+			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+			                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
+			                	<li class='divider'></li>
+			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
+			              	</ul>
+			            	</div></td>
 						");
 						
-						echo("</tr>");	
-					
-				}
-				else // individual
-				{
-					$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
-					$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
-					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
-					
-					echo("<tr>");
-					echo("<td>".$indiv->nombre."</td>"); // nombre
-					echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
-					echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-					echo("<td>".$prod->precio."</td>"); // precio
-					/*
-					setlocale(LC_MONETARY, 've_VE');
-					$a = money_format('%i', $precio->precioVenta);
-					$c = money_format('%i', $precio->ahorro);
-					
-					$iva = $precio->precioDescuento * 0.12;
-					
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($a)."</td>"); //precio individual sin descuento
-					
-					$b = $a * $prod->cantidad;					
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
-					
-					$d = $c * $prod->cantidad;					
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($d)."</td>"); //descuento total
-					
-					$e = $iva * $prod->cantidad;
-					echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
-					*/
-					
-					echo("
-						<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
-		              	<!-- Link or button to toggle dropdown -->
-		              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-		                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
-		                	<li class='divider'></li>
-		                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
-		              	</ul>
-		            	</div></td>
-					");
-					
-					echo("</tr>");				
-				}				
+						echo("</tr>");				
+					}	
+							
 				
 			}
         

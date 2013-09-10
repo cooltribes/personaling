@@ -19,7 +19,7 @@ $this->breadcrumbs=array(
         'alerts'=>array('contact'),
     )); ?>
         <?php else: ?>
-        <p class="margin_top_medium">Es posible que lo que quieras preguntar este en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no esta allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. <strong>¡Gracias!</strong></p>
+        <p class="margin_top_medium">Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>.  Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. <strong>¡Gracias!</strong></p>
         <div class="form">
            
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -44,7 +44,7 @@ $this->breadcrumbs=array(
 
 	<?php if(CCaptcha::checkRequirements()): ?>
 		<?php echo $form->captchaRow($model,'verifyCode',array(
-            'hint'=>'Por favor escriba las letras que se muestran aqui arriba. No importa si estan en mayúscula o minúscula.',
+            'hint'=>'Por favor escriba las letras que se muestran aquí arriba. No importa si están en mayúscula o minúscula.',
         )); ?>
 	<?php endif; ?>
 

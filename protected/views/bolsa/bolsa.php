@@ -104,7 +104,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
             <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
           </div>
           <!-- Look OFF -->
-          <?
+          <?php
           }	 
 			}
 		  }
@@ -407,13 +407,11 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
   ?>
 </div>
 <?php
-
-}// si esta logueado
-else
-	{
+// si esta logueado
+} else{
 		// redirecciona al login porque se murió la sesión
 	header('Location: /user/login');	
-	}
+}
 ?>
 <!-- /container --> 
 

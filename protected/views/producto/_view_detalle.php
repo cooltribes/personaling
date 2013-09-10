@@ -1,4 +1,4 @@
-	<!-- FLASH ON --> 
+ 	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
         'fade'=>true, // use transitions?
@@ -108,7 +108,7 @@
 					{
 						//luego el resto para completar el scroll					
 						
-						echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Imagen ", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+						echo CHtml::image( str_replace(".","_x90.",$img->getUrl()), "Imagen", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
 						
 					}// color
 				}// que no es la primera en el orden
@@ -326,9 +326,11 @@
               </div>
               <div class="tab-pane" id="envio">
 	            <div class="row">
-	            	<div class="span1"><img  src="<?php echo Yii::app()->baseUrl; ?>/images/grupo_zoom_logo.png"/></div>
-	            	<div class="span2"><p class="padding_top_small">Nuestros envios se realizan a través del <strong>Grupo Zoom</strong></p></div>
+	            	<div class="span3"><p class="padding_top_small">Nuestros envíos se realizan a través de:</p></div>
 	            </div>
+              <div class="row">
+                <div class="span3"><img height="60px"  src="<?php echo Yii::app()->baseUrl; ?>/images/logos_carriers.png"/></div>
+              </div>
 	          </div>
             </div>
           </div>
@@ -831,9 +833,9 @@ $('.imagen_principal').zoom({url: imgZ});
 						  		zona="<img id='principal' src='"+Url+"' alt'producto'>";
 						  		contador++;
 						  	}
-						  	
-						  	var base = "<?php echo Yii::app()->baseUrl; ?>";						  	
-						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + valor[0]+"' alt='Imagen' style='cursor: pointer' >";
+						  	var base = "<?php echo Yii::app()->baseUrl; ?>";		
+                var thumb = valor[0].split('.');				  	
+						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + thumb[0] +'_x90.'+thumb[1]+"' alt='Imagen' style='cursor: pointer' >";
 						  	
 						  	objImage = new Image();
 						  	var source = ''+base +valor[0];

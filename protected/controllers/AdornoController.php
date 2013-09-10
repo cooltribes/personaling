@@ -39,10 +39,11 @@ class AdornoController extends Controller
 	{
 		$adorno = new Adorno; 
 
-		if (isset($_POST['query']))
+		if (isset($_GET['nombre']))
 		{
 			//echo($_POST['query']);	
-			$adorno->nombre = $_POST['query'];
+			$adorno->nombre = $_GET['nombre'];
+		
 		}
 		
 		$dataProvider = $adorno->search();
@@ -50,6 +51,8 @@ class AdornoController extends Controller
 			array('model'=>$adorno,
 			'dataProvider'=>$dataProvider,
 		));	
+		
+		
 	}
 	
 	public function actionCreate($id = null)

@@ -77,7 +77,7 @@
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
-                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(true); ?></span></div>
                   </div>
                   <div class="share_like">
           <button id="meEncanta<?php echo $look->id; ?>" onclick='encantar(<?php echo $look->id; ?>)' title="Me encanta" class="btn-link <?php echo $look->meEncanta()?"btn-link-active":""; ?>">

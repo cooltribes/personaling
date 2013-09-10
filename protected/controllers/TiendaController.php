@@ -30,7 +30,7 @@ class TiendaController extends Controller
 		);
 	}
 	
-	public function actionIndex()
+	public function actionDoble()
 	{
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
@@ -54,7 +54,7 @@ class TiendaController extends Controller
 			
 	}
 	
-	public function actionDoble()
+	public function actionIndex()
 	{
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
@@ -71,8 +71,8 @@ class TiendaController extends Controller
 		$a ="a"; 
 		
 		$dataProvider = $producto->nueva($a);
-		$this->render('doble',
-		array('doble'=>$producto,
+		$this->render('index',
+		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
 			

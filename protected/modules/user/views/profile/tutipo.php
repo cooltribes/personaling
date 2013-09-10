@@ -43,45 +43,47 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 	),
 )); ?>
         <fieldset>
-          <legend>Características básicas: </legend>
-          <div class="control-group">
-            <div class="controls row-fluid" id="caracteristicas">
-              <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
-              <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
-              <div class="<?php echo $clase; ?>">
-                <?php 
-                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
-				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
-                  ?>
+          <div id="numero1">
+            <legend>Características básicas: </legend>
+            <div class="control-group" >
+              <div class="controls row-fluid" id="caracteristicas">
+                <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
+                <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
               </div>
-              <div class="<?php echo $clase; ?>">
-                <?php 
-                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
-				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
-                  ?>
-              </div>
-              <div class="<?php echo $clase; ?>">
-                <?php 
-                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
-				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
-                  ?>
-              </div>
-              <div class="<?php echo $clase; ?>">
-                <?php 
-                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
-				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
-                  ?>
-              </div>
-              <div class="<?php echo $clase; ?>">
-                <?php 
-                  	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
-				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
-                  ?>
-              </div>
-            </div>
+          </div>
           </div>
           <legend class="margin_top">Forma de tu cuerpo</legend>
-          <div class="control-group">
+          <div class="control-group" id="numero2">
             <div class="controls row-fluid">
               <?php 
                 $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));
@@ -102,7 +104,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               </ul>
             </div>
           </div>
-          <div class="form-actions">
+          <div class="form-actions" >
             <?php $this->widget('bootstrap.widgets.TbButton', array(
             				'buttonType' => 'submit',
 						    'label'=>isset($editar)?'Guardar':'Siguiente',
@@ -147,3 +149,33 @@ $script = "
 ";
 ?>
 <?php Yii::app()->clientScript->registerScript('botones',$script); ?>
+
+<!-- contenido -->
+<ol id="joyRideTipContent">
+  <li data-id="numero1" data-button="Siguiente" >
+  <h3>Escoge las caracteristicas</h3>
+    <p>Escoge tus caracteristicas de cuerpo</p>  
+  </li>
+  <li data-id="tipo_cuerpo" data-options="tipLocation:left"  data-button="Siguiente">
+    <h3>Escoge la forma</h3>
+    <p>Selecciona tu forma de cuerpo  </p>
+  </li>
+  
+  <li data-id="yw1" data-options="tipLocation:top;tipAnimation:fade" data-button="Siguiente">
+    <h3>Presiona</h3>
+    <p>Ahora vamos a escoger tu estilo  </p>
+  </li>
+</ol>
+
+
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/joyride-2.1.css">
+<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>
+    <script>
+      $(window).load(function() {
+        $('#joyRideTipContent').joyride({
+          autoStart : true,
+          modal:true,
+          expose: true
+        });
+      });
+</script>

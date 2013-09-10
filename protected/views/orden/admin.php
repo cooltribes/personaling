@@ -134,7 +134,7 @@ echo $num;
     	
     </div>
     <div class="span3">
-        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll(),
+        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 1'),
                 "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
 <!--      <select class="span3">
         <option>Filtros preestablecidos</option>
@@ -148,7 +148,7 @@ echo $num;
     </div>
   </div>
   <hr/>
-  <?php $this->renderPartial('_filters', array('users'=>$filter)); ?>
+  <?php $this->renderPartial('_filters'); ?>
   <hr/>
 
   <?php

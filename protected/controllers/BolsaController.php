@@ -857,7 +857,10 @@ class BolsaController extends Controller
 									}
 									else{
 										$look = Look::model()->findByPk($prod->look_id);
-										$prorden->precio = $look->getPrecio();										
+										
+										if(isset($look))
+											$prorden->precio = $look->getPrecio(false);										
+										
 									}
 									
 									if($prorden->save()){

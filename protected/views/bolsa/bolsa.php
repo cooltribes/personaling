@@ -25,6 +25,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
       <div class="row">
         <article class="span7">
           <h1>Tu bolsa</h1>
+          <form id="form_productos">
           <?php 
           
           if($num!=0) // si hay looks 
@@ -90,12 +91,16 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
                     <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?></td>
-                  <?php
-                  echo "<td>Bs. ".$pre."</td>";
-					 	echo"<td width='8%'><input type='text' id='cant".$productotallacolor->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$productotallacolor->cantidad."' class='span1'/>
-	                    <a id=".$productotallacolor->preciotallacolor_id." onclick='actualizar(".$productotallacolor->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
-	                  	<td style='cursor: pointer' onclick='eliminar(".$productotallacolor->preciotallacolor_id.")' id='elim".$productotallacolor->preciotallacolor_id."'>&times;</td>";
-				?>
+                  
+                  <td>Bs. <?php echo $pre; ?></td>
+                  
+				<td width='8%'>
+					<input type='text' name="cant[<?php echo $productotallacolor->preciotallacolor_id; ?>][<?php echo $look->id; ?>]" maxlength='2' placeholder='Cant.' value='<?php echo $productotallacolor->cantidad; ?>' class='span1 cantidades'/>
+	            	<a id=<?php echo $productotallacolor->preciotallacolor_id; ?> onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+	            	
+	            </td>
+	            <td style='cursor: pointer' onclick='eliminar(<?php echo $productotallacolor->preciotallacolor_id; ?>)' id='elim<?php echo $productotallacolor->preciotallacolor_id; ?>'>&times;</td>
+				
                 </tr>
                 <?php } ?>
               </tbody>
@@ -180,10 +185,14 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					 	array_push($cantidades,$detalles->cantidad);
 						
 					 	echo "<td>Bs. ".$pre."</td>";
-					 	echo"<td width='8%'><input type='text' id='cant".$detalles->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$detalles->cantidad."' class='span1'/>
-	                    <a id=".$detalles->preciotallacolor_id." onclick='actualizar(".$detalles->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
-	                  	<td style='cursor: pointer' onclick='eliminar(".$detalles->preciotallacolor_id.")' id='elim".$detalles->preciotallacolor_id."'>&times;</td>
-	                	</tr>";
+						?>
+						
+					 	<td width='8%'><input type='text' name="cant[<?php echo $detalles->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $detalles->cantidad; ?>' class='span1 cantidades'/>
+	                    <a id=<?php echo $detalles->preciotallacolor_id; ?> onclick='actualizar(<?php echo $detalles->preciotallacolor_id; ?>)' class='btn btn-mini'>Actualizar</a></td>
+	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $detalles->preciotallacolor_id; ?>)' id='elim<?php echo $detalles->preciotallacolor_id; ?>'>&times;</td>
+	                	</tr>
+	                	
+	                	<?php
 				  	}// foreach
 				}//if isset    
 				else {
@@ -204,11 +213,14 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 			 echo "<h4 class='braker_bottom margin_top'>¿Qué esperas? Looks y prendas increíbles esperan por ti.</h4>";
 				
 			}
+			
 		?>
+		
           <?php
         if($pr!=0 || $num!=0) // si hay productos individuales o bien si hay looks (aqui se puede poner la comparacion de si hay looks)
 		{
 		?>
+		</form>
         </article>
         <div class="span5 margin_bottom margin_top_large padding_top_xsmall"> 
          <div class="margin_left">
@@ -347,6 +359,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                         <td class="text_align_right"><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
                       </tr>
                     </table>
+                    
                     <?php
                    $this->widget('bootstrap.widgets.TbButton', array(
 				    'label'=>'Completar compra',
@@ -369,6 +382,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					// }
                 	
                 	?>
+                	<a  onclick='actualizartodos()' class='btn btn-mini'>Actualizar todos</a>
                   </div>
                 </div>
                 <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day'));?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
@@ -416,12 +430,59 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 <!-- /container --> 
 
 <script>
-	
-	
-	function actualizar(id)
-	{
+	$('.cantidades').live('keyup',function(){
 		
-	var cantidad = $("#cant"+id+".span1").attr("value");
+		$(this).next("a").show();
+	});
+	function actualizartodos()
+	{
+
+	
+	//var data = $("input.cantidades").serializeArray();
+	var data = $('input.cantidades').serialize();
+	console.log(data);
+	
+	
+	
+	// llamada ajax para el controlador de bolsa	   
+     	$.ajax({
+	        type: "post",
+	        url: "actualizar", // action de actualizar
+	        //data: { 'prtc':id, 'cantidad':cantidad},
+	        //data: { cantidades:data}, 
+	        data : $('input.cantidades').serialize()+'&bolsa_id=<?php echo $bolsa->id; ?>',
+	        success: function (data) {
+				alert(data);
+				if(data=="ok")
+				{
+					//alert("cantidad actualizada"); 
+					window.location.reload()
+					
+				}
+				
+				if(data=="NO")
+				{
+					alert("Lo sentimos, no es posible actualizar la cantidad. La Cantidad es mayor a la existencia en inventario."); 
+					
+				}
+				
+					
+	       	}//success
+	       })
+			
+	}
+	function actualizar(boton)
+	{
+	//console.log($(boton).prev("input").val());
+	var cantidad = $(boton).prev("input").val();
+	console.log($(boton).prev("input").attr('name'));
+	temporal = $(boton).prev("input").attr('name').split('[');
+	var id = temporal[1].slice(0,-1);
+	var look_id = temporal[2].slice(0,-1);
+	console.log("look_id: "+look_id+" id: "+id+" cantidad: "+cantidad);
+	//var cantidad = $("#cant"+id+".span1").attr("value");
+
+
 	
 	if(cantidad<0)
 	{
@@ -432,7 +493,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
      	$.ajax({
 	        type: "post",
 	        url: "actualizar", // action de actualizar
-	        data: { 'prtc':id, 'cantidad':cantidad}, 
+	        data: { 'look_id':look_id,'prtc':id, 'cantidad':cantidad,bolsa_id:<?php echo $bolsa->id; ?>},
+	       
+	       
 	        success: function (data) {
 				
 				if(data=="ok")

@@ -80,9 +80,11 @@
                     <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+          <button id="meEncanta<?php echo $look->id; ?>" onclick='encantar(<?php echo $look->id; ?>)' title="Me encanta" class="btn-link <?php echo $look->meEncanta()?"btn-link-active":""; ?>">
+          	<span id="like<?php echo $look->id; ?>" class="entypo icon_personaling_big"><?php echo $look->meEncanta()?"♥":"♡"; ?></span>
+          </button>
                     <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big"></span></button>
                       <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                         <!-- AddThis Button BEGIN -->
                         
@@ -129,3 +131,48 @@
       </div>
    </div>
 </div>
+<script>
+	       function encantar(idLook)
+       {
+           //var idLook = $("#idLook").attr("value");
+           //alert("id:"+idLook);
+
+           $.ajax({
+            type: "post",
+            url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
+            data: { 'idLook':idLook},
+            success: function (data) {
+
+                if(data=="ok")
+                {
+                    var a = "♥";
+
+                    //$("#meEncanta").removeClass("btn-link");
+                    $("#meEncanta"+idLook).addClass("btn-link-active");
+                    $("span#like"+idLook).text(a);
+
+                }
+
+                if(data=="no")
+                {
+                    alert("Debe primero ingresar como usuario");
+                    //window.location="../../user/login";
+                }
+
+                if(data=="borrado")
+                {
+                    var a = "♡";
+
+                    //alert("borrando");
+
+                    $("#meEncanta"+idLook).removeClass("btn-link-active");
+                    $("span#like"+idLook).text(a);
+
+                }
+
+               }//success
+           })
+
+
+       }
+</script>

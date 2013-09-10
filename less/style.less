@@ -628,8 +628,12 @@ src: url('../fonts/entypo.woff'),
 #navegacion_principal{
      .nav > li > a{ padding:18px 15px;
                      &:hover{
-                         background-color: lighten(@lila,10%);
-                         color:darken(@lila,50%);
+                         background-color: @color1;
+                         color:@color3;
+                          text-shadow: none;
+                         -moz-text-shadow: none;
+                         -webkit-text-shadow: none;
+                         -ms-text-shadow: none;
                      }
                  }
      .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{
@@ -1129,7 +1133,27 @@ src: url('../fonts/entypo.woff'),
                       position: relative;
                       top: -25px;
                       left: 162px;
-                    }  
+                    }
+                #btn-compatir  {
+                  background-color: #E3DEDE;
+                  color: #5E4E5C;
+                  transition: all ease 0.5s;
+                  -moz-transition: all ease 0.5s;
+                  -webkit-transition: all ease 0.5s;
+                  -o-transition: all ease 0.5s;
+                  -ms-transition: all ease 0.5s;
+                  &:hover{
+                    background-color:  #DED9E3;    
+                    color: @color1;
+                  }
+                  span{
+                    line-height: 7px;
+                    vertical-align: text-top;
+                  }
+                  span.entypo{
+                    line-height: 20px;
+                  }
+                }
                 // hack para centrar fecha de entrega
                 .addthis{
                   margin-top: -12px;
@@ -1348,6 +1372,23 @@ src: url('../fonts/entypo.woff'),
 
         }
     .columna_principal{
+    .marcas_relacionadas{
+           background-color: #F9F9F9; ;
+           .padding_small;
+            margin-right:-20px;
+          .margin_top_xsmall;
+          h4{
+             font-size: .9em;
+              text-align: center;
+              text-transform: uppercase;
+          }
+          ul{ margin: 0}
+          li{
+            list-style: none;
+            .margin_bottom_xsmall;
+          }
+        }
+
         .imagen_principal{
             position:relative;
             .margin_bottom_medium;
@@ -1365,12 +1406,16 @@ src: url('../fonts/entypo.woff'),
 
                     }
             }
+
         }
 
 
     .columna_secundaria{
         .margin_bottom ;
         margin-top:5.5em;
+
+       
+
 
         .braker_horz_top_1{
             .padding_top;
@@ -1383,7 +1428,27 @@ src: url('../fonts/entypo.woff'),
               left: -25px;
             }            
                 // hack para centrar fecha de entrega
-        } 
+        }
+        #btn-compatir  {
+          background-color: #E3DEDE;
+          color: #5E4E5C;
+          transition: all ease 0.5s;
+          -moz-transition: all ease 0.5s;
+          -webkit-transition: all ease 0.5s;
+          -o-transition: all ease 0.5s;
+          -ms-transition: all ease 0.5s;
+          &:hover{
+            background-color:  #DED9E3;    
+            color: @color1;
+          }
+          span{
+            line-height: 7px;
+            vertical-align: text-top;
+          }
+          span.entypo{
+                    line-height: 20px;
+                  }
+        }         
         .addthis{
           margin-top: -10px;
           margin-bottom: 0;
@@ -1783,12 +1848,17 @@ ul.yiiPager .last
         height: 105px;
         overflow: hidden;
     }
+    .caption{
+      font-size: 0.76em;
+      text-align: center;
+      text-transform: uppercase;
+    }
 }
 .tienda_colores{
     img{
         float:left;
         margin:0 8px 8px 0;
-        width: 57px;
+        width: 44px;
         border: 1px solid #ddd;
         }
     }

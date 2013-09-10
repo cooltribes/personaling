@@ -29,7 +29,7 @@ class AdminController extends Controller
 				'actions'=>array('admin','delete','create','update',
                                     'view','corporal','estilos','pedidos','carrito',
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggle_admin','resendvalidationemail','toggle_banned'),
+                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -522,6 +522,69 @@ if(isset($_POST['Profile']))
         }
 
         return $result;
-    } 
+    }
+	
+	public function actionContrasena(){
+		$html="";	
+		if(isset($_POST['id'])&&!isset($_POST['psw']))
+			{	$id=$_POST['id'];
+				
+				$html='<div class="modal-header">';
+		    	$html=$html.'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+		    	$html=$html.'<h3>Cambiar Contraseña</h3>';
+		  		$html=$html.'</div>';
+		  		$html=$html.'<div class="modal-body">';
+				$html=$html. CHtml::PasswordField('psw1','',array('id'=>'psw1','class'=>'span5','placeholder'=>'Escribe la nueva contraseña')).
+				CHtml::PasswordField('psw2','',array('id'=>'psw2','class'=>'span5','placeholder'=>'Escribe la nueva contraseña')).
+				"<div><a onclick='cambio(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Guardar Cambio</a></div></div>";
+				echo $html;
+			}
+		if(isset($_POST['psw'])&&isset($_POST['id']))	{
+				$user=User::model()->findByPk($_POST['id']);
+				$user->password=Yii::app()->controller->module->encrypting($_POST['psw']);
+				if($user->save()){
+					Yii::app()->user->setFlash('success', UserModule::t("Cambio realizado exitosamente"));				
+				}					
+				
+			
+		}
+	}
+
+	public function actionSaldo(){
+		$html="";	
+		if(isset($_POST['id'])&&!isset($_POST['cant']))
+			{	$id=$_POST['id'];
+				
+				$saldo=Profile::model()->getSaldo($id);
+				
+				$html='<div class="modal-header">';
+		    	$html=$html.'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+		    	$html=$html.'<h3>Cargar Saldo</h3>';
+		  		$html=$html.'</div>';
+		  		$html=$html.'<div class="modal-body">';
+				$html=$html."<div class='pull-right'><h4>Saldo Actual: ".$saldo."</h4></div>";				
+				$html=$html. CHtml::TextField('cant','',array('id'=>'cant','class'=>'span5','placeholder'=>'Escribe la cantidad separando los decimales con coma (,)')).
+				"<div><a onclick='saldo(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Cargar Cantidad</a></div></div>";
+	
+				echo $html;
+			}
+		if(isset($_POST['cant'])&&isset($_POST['id']))	{
+			
+				$balance=new Balance;
+				$balance->total=$_POST['cant'];
+				$balance->orden_id=0;
+				$balance->user_id=$_POST['id'];
+				$balance->tipo=3;
+				if($balance->save()){
+					
+					//Yii::app()->user->setFlash('success', UserModule::t("Carga realizada exitosamente"));				
+				}
+				else{
+					echo $balance->id."TOT".$balance->total."ORD".$balance->orden_id."US".$balance->user_id."TIP".$balance->tipo;
+					//Yii::app()->user->setFlash('error', UserModule::t("No se pudo realizar carga"));
+				}
+							
+		}
+	} 
 	
 }

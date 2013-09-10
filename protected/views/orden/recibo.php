@@ -84,21 +84,24 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                   <td>Bs. <?php echo number_format($factura->orden->subtotal, 2, ',', '.'); ?></td>
                 </tr>
                 <tr>
-                  <td colspan="4"><div class="text_align_right"><strong>I.V.A. sobre base imponible</strong></div></td>
-                  <td>Bs. <?php echo number_format($factura->orden->iva, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
                   <td colspan="4"><div class="text_align_right"><strong>Envío</strong>:</div></td>
-                  <td>Bs. <?php echo number_format($factura->orden->envio, 2, ',', '.'); ?></td>
+                  <td>Bs. <?php echo number_format($factura->orden->envio+$factura->orden->seguro, 2, ',', '.'); ?></td>
                 </tr>
-                <tr>
-                  <td colspan="4"><div class="text_align_right"><strong>Seguro</strong>:</div></td>
-                  <td>Bs. <?php echo number_format($factura->orden->seguro, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
+                  <tr>
                   <td colspan="4"><div class="text_align_right"><strong>Descuento</strong>:</div></td>
                   <td>Bs. <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>
                 </tr>
+                
+                <tr>
+                  <td colspan="4"><div class="text_align_right"><strong>I.V.A. sobre base imponible</strong></div></td>
+                  <td>Bs. <?php echo number_format($factura->orden->iva, 2, ',', '.'); ?></td>
+                </tr>
+                
+               <!-- <tr>
+                  <td colspan="4"><div class="text_align_right"><strong>Seguro</strong>:</div></td>
+                  <td>Bs. <?php echo number_format($factura->orden->seguro, 2, ',', '.'); ?></td>
+                </tr>-->
+              
                 <tr>
                   <th colspan="4"><div class="text_align_right">TOTAL</div></th>
                   <th>Bs. <?php echo number_format($factura->orden->total, 2, ',', '.'); ?></th>

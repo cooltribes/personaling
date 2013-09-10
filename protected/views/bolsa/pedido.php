@@ -156,7 +156,9 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 			foreach ($ordenproducto as $cadauno) {
 				if($cadauno->look_id!=0){
 					$look = Look::model()->findByPk($cadauno->look_id);
-					array_push($todos,$look->id);
+					
+					if(isset($look))
+						array_push($todos,$look->id);
 				}
 			}
 			
@@ -192,7 +194,9 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 							$color = Color::model()->findByPk($tod->color_id);
 							
 							$producto = Producto::model()->findByPk($tod->producto_id);
-							$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+						//	$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+							
+							$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
 									
 							$pre="";
 						 	foreach ($producto->precios as $precio) {
@@ -300,13 +304,21 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 				$talla = Talla::model()->findByPk($todo->talla_id);
 				$color = Color::model()->findByPk($todo->color_id);
 							
-				$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+				$imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
+				$contador=0;
 								
 				echo "<tr>";		
 							
-				if($imagen){					  	
-					$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-					echo "<td>".$aaa."</td>";
+				if(isset($imagen)){
+					foreach($imagen as $img) {
+						if($contador==0){		 
+							$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							echo "<td>".$aaa."</td>";
+							$contador++;
+						}
+					}					  	
+						
+				
 				}else
 					echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 

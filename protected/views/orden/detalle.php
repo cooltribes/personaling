@@ -62,6 +62,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 7)
 		echo "Pago Insuficiente";
 	
+	if($orden->estado == 8)
+		echo "Orden Entregada";
+	
 	// agregar demas estados
 ?>
 	</p>
@@ -528,12 +531,15 @@ $usuario = User::model()->findByPk($orden->user_id);
 						
 						$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
 						$precio = $lookpedido->getPrecio(false);
-							
+						
 							echo("<tr>");
-							echo("<td>".$lookpedido->title."</td>"); // nombre
+							echo("<td><strong>".$lookpedido->title."</strong></td>"); // nombre
 							echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 							echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
 							echo("<td>".$prod->precio."</td>"); // precio 
+							
+								
+							
 							/*
 							setlocale(LC_MONETARY, 've_VE');
 							//$a = money_format('%i', $precio->precioVenta);
@@ -562,6 +568,19 @@ $usuario = User::model()->findByPk($orden->user_id);
 							");
 							
 							echo("</tr>");	
+							$prodslook= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$prod->tbl_orden_id, 'look_id'=>$prod->look_id));
+							foreach($prodslook as $prodlook){
+								$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook->preciotallacolor_id));
+								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
+								echo $prdlk->id;
+								echo("<tr>");
+								echo("<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$prdlk->nombre."</td>"); // nombre
+								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
+								echo("<td>".$prodlook->cantidad."</td>"); // cantidad en pedido
+								echo("<td>".$prodlook->precio."</td>"); // precio 
+								echo("<td></td></tr>");
+							}
+							
 						
 					}
 					else // individual
@@ -649,14 +668,15 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal); ?></td>
         </tr>
         <tr>
-          <td>Descuento</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
-        </tr>
-        <tr>
           <td>Envio y Transporte</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio); ?></td>
         </tr>
         <tr>
+          <td>Descuento</td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
+        </tr>
+        
+          <tr>
           <td>Impuesto</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva); ?></td>
         </tr>
@@ -664,6 +684,9 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td>Total</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></td>
         </tr>
+        
+        
+      
       </table></div>
     </div>
   </div>
@@ -870,5 +893,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	   //  alert(guia);	
 		
 	}
+	
+	
+	
+	
 		
 </script>

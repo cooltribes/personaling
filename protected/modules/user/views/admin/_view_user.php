@@ -30,7 +30,7 @@
         </td>
       <td><?php echo $data->ordenCount; ?></td>
       <td><?php echo $data->direccionCount; ?></td>
-      <td>0 Bs.</td>
+      <td><?php $saldo=Profile::model()->getSaldo($data->id); echo $saldo." Bs.";?></td>
       <td><?php echo $data->visit; ?></td>
       <td><?php if ($data->getLastvisit()) echo  date("d/m/Y",$data->getLastvisit()); else echo 'N/D'; ?></td>
       <td><?php if ($data->getCreatetime()) echo  date("d/m/Y",$data->getCreatetime()); else echo 'N/D'; ?></td>
@@ -45,14 +45,14 @@
         
        <?php echo CHtml::link('<i class="icon-edit">  </i>  Editar',array("admin/update","id"=>$data->id)); ?>
       </li>
-      <li><a title="Cambiar contraseña" href="#">  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
+      <li><a title="Cambiar contraseña" href="#" onclick='modal( <?php echo $data->id; ?>)'>  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
       <?php if($data->status == 0){ ?>
       <li>
         <?php echo CHtml::link('<i class="icon-refresh">  </i>  Reenviar Email de Verificación',array("admin/resendvalidationemail","id"=>$data->id)); ?>
       </li>
       <?php } ?>
       <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>
-      <li><a title="Cargar Saldo" href="#">  <i class="icon-gift">  </i>  Cargar Saldo</a>
+      <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
             <li class="divider"></li>
       <li><a title="Eliminar" href="#">  <i class="icon-trash">  </i>  Eliminar</a></li>
           </ul>
@@ -61,3 +61,95 @@
       <?php } ?>
       </td>
     </tr>
+    <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+        </div>
+    <div id='saldoCarga' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+        </div>
+    
+<script >
+function modal(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'/site/user/admin/contrasena',
+		data: { 'id':id}, 
+		'success': function(data){
+			$('#myModal').html(data);
+			$('#myModal').modal(); 
+		},
+		'cache' :false});
+
+}
+function cambio(id){
+	
+	if($("#psw1").val()==$("#psw2").val())
+	{	
+		var psw=$("#psw2").val();
+		$.ajax({
+			type: "post",
+			'url' :'/site/user/admin/contrasena',
+			data: { 'psw':psw,
+			'id':id}, 
+			'success': function(data){
+				
+			window.location.reload();
+			},
+			'cache' :false});
+	}
+	else{
+		alert("Ambos campos deben coincidir");		
+	}
+
+}
+function carga(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'/site/user/admin/saldo',
+		data: { 'id':id}, 
+		'success': function(data){
+			$('#saldoCarga').html(data);
+			$('#saldoCarga').modal(); 
+		},
+		'cache' :false});
+
+}
+function saldo(id){	
+		
+		var cant=$("#cant").val();
+        if(cant.indexOf(',')==(cant.length-2))
+        	cant+='0';
+		if(cant.indexOf(',')==-1)
+			cant+=',00';
+        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+        if (pattern.test(cant)) { 
+          cant=cant.replace(',','.');
+          alert(cant);
+           $.ajax({
+			type: "post",
+			'url' :'/site/user/admin/saldo',
+			data: { 'cant':cant,
+			'id':id}, 
+			'success': function(data){
+				window.location.reload();			
+			},
+			'cache' :false});
+        }else{
+        	alert("Formato de cantidad no válido");
+         }
+            
+          
+
+
+		
+		
+		
+		
+		
+}
+
+
+
+
+
+</script>

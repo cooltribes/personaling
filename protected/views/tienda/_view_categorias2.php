@@ -27,7 +27,7 @@
 
 <ul class="thumbnails">
               <?php foreach($categorias as $categoria){ ?>
-              <li class="span1" > 
+              <li class="span1 seleccionable" > 
               		<?php
               		
               		$a = $categoria->getImage($categoria->id);
@@ -101,6 +101,18 @@
               </li>
               <?php } ?>
 </ul>    
+<script >
+$('.seleccionable').on('click',function(){		
+	if(!$(this).hasClass('selected')){			
+		$(this).addClass('selected');
+		$(this).css({'outline': '2px groove #6d2d56'});
+	}
+	else{
+		$(this).css({'outline': 0});
+		$(this).removeClass('selected');
+	} 		
+});
+</script>
 
 
                 

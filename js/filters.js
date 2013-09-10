@@ -7,11 +7,18 @@
 /*
  * 
  * Falta:
- * al guardar nuevo, agregarlo al dropdown.
- * mostrar alert al borrar un filtro. 
+ * confirmar borrar filtro. ?
  * 
  * 
  */
+
+/*Vars*/
+
+var ajaxUpdateTimeout;
+var ajaxRequest;
+var idDateField = 0;
+
+
 
 /*Agrega una fila para el filtro*/
 function addRow(){
@@ -41,14 +48,49 @@ function addRow(){
     $('.span_delete').last().show();
     $('.dropdown_relation').show();
     $('.dropdown_relation').last().hide();
-
+    $(".dropdown_filter").last().change(changeFilter);
+    $(".dropdown_filter").last().change();
 //console.log("agregada");
 	
 }
 
+//Borrar todos los campos
+function clearFilters() {
 
-/*Obtiene los campos pertenecientes a un filtro ID*/
-function getFilter(URL, ID){
+    $('#filters-container').children('div').each(function(i) {
+        if (i > 0) {
+            $(this).remove();
+        }
+        
+    });
+    
+    $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relatio').val('');
+    $('.dropdown_filter').change();
+    $('.dropdown_relation').last().hide();
+    $('.span_add').last().show();      
+    
+    //Titulo
+    $('#form_filtros h4').html("Nuevo Filtro:");
+                            
+    //Ocultar el botón guardar
+    $('#filter-save2').parent('div').hide();
+    
+    //ocultar alert si está
+    $(".alert").fadeOut('slow');
+        
+}
+
+//Mostrar alert
+function showAlert(type, message){
+   $('#alert-msg').removeClass('alert-success alert-error') ;
+   $('#alert-msg').addClass("alert-"+type);
+   $('#alert-msg').children(".msg").html(message);
+   $('#alert-msg').show();
+   //$("html, body").animate({ scrollTop: 0 }, "slow");
+}
+
+/*Obtiene los campos pertenecientes a un filtro ID y realiza la búsqueda*/
+function getFilter(URL, ID, URL2){
     //	if ($('#span_new_filter').html() != 'Filter verbergen'){
 //		$('#div_add_filter').show();
 //		$('#YumUser_textfield_all').hide().val('');
@@ -77,7 +119,7 @@ function getFilter(URL, ID){
                             };
 
                             $.each(data.filter, function(i, item) {
-
+                                console.log(item.operator);
                                 $('.dropdown_filter').eq(i).val(item.column);
                                 $('.dropdown_operator').eq(i).val(item.operator);
                                 $('.textfield_value').eq(i).val(item.value);
@@ -91,10 +133,13 @@ function getFilter(URL, ID){
                             
                             //Mostrar el botón guardar
                             $('#filter-save2').parent('div').show();
+                            
+                            search(URL2);
+                            
 
                         }else if(data.status == 'error'){
                            console.log(data.error); 
-                           bootbox.alert(data.error);
+                           //bootbox.alert(data.error);
                         }
                     },
                     error: function( jqXHR, textStatus, errorThrown){
@@ -102,16 +147,12 @@ function getFilter(URL, ID){
                     }
                 }
         );
-    }else{
-        
     }   
     
 }
 
 /*Eliminia un filtro dado por ID*/
-function removeFilter(URL, ID){
-   
-    clearFilters();
+function removeFilter(URL, ID){     
     
     $.ajax(
             URL,
@@ -126,17 +167,15 @@ function removeFilter(URL, ID){
                 },
                 success: function(data){
                     //console.log(data);
-                    if(data.status == 'success'){
+                    if(data.status == 'success'){                       
                         
-                        console.log("Filtro eliminado"); 
-                        //$('#alert-msg')
                         $('#all_filters').find("[value='"+ID+"']").remove();
-                                
+                        clearFilters();        
                         
-                    }else if(data.status == 'error'){
-                       console.log(data.error); 
-                       bootbox.alert(data.error);
                     }
+                    
+                    showAlert(data.status, data.message);                    
+                    
                 },
                 error: function( jqXHR, textStatus, errorThrown){
                     console.log(jqXHR);
@@ -147,21 +186,12 @@ function removeFilter(URL, ID){
     
 }
 
-var ajaxUpdateTimeout;
-var ajaxRequest;
-
 //Buscar por filtros
 function search(URL){
     
     ajaxRequest = $('#form_filtros').serialize();
-
-    //console.log(ajaxRequest);
-
-
     clearTimeout(ajaxUpdateTimeout);
-
-    //$('#form_filtros').submit();
-
+    $('#form_filtros').submit();
     ajaxUpdateTimeout = setTimeout(
             function() {
                 $.fn.yiiListView.update(
@@ -169,89 +199,196 @@ function search(URL){
                         {
                             type: 'POST',
                             url: URL,
-                                    data: ajaxRequest
-
+                            data: ajaxRequest
                         }
-
                 )
-            },
-            300);
-    
+            }, 300);    
 }
 
 //Buscar por filtros y guardar el filtro
-function searchAndSave(URL, newFilter) {
-
+function searchAndSave(URL, newFilter) {    
+    
+    //search(URL);
     ajaxRequest = $('#form_filtros').serialize();
-
+    //Si esta guardando un nuevo filtro                        
     if (newFilter) {
-        bootbox.prompt("Indica un nombre para el filtro:", function(result) {
-            
+        bootbox.prompt("Indica un nombre para el filtro:", function(result) {            
             if (result === null) {
-                showAlert('warning', 'Debes indicar un nombre para el filtro');
-                
+                //showAlert('error', 'Debes indicar un nombre para el filtro');                
             } else {
                 result = result.trim();
                 if (result !== "") {
                     //guardar el filtro
-                    ajaxRequest += "&save=true&name=" + result;
-                    //console.log(ajaxRequest);
-                    clearTimeout(ajaxUpdateTimeout);
+                    ajaxRequest += "&save=true&name=" + result;                    
                     // $('#form_filtros').submit();
-                    ajaxUpdateTimeout = setTimeout(
-                            function() {
-                                $.fn.yiiListView.update(
-                                        'list-auth-items',
-                                        {
-                                            type: 'POST',
-                                            url: URL,
-                                            data: ajaxRequest
-                                        }
-                                )
+                    $.ajax(
+                        URL,
+                        {
+                            type: 'POST',
+                            dataType: 'json',
+                            data: ajaxRequest,
+                            success: function(data){
+                                //console.log(data);
+                                if(data.status == 'success'){                                   
+                                    //$('#alert-msg')
+                                    $('#all_filters').append($("<option />").val(data.idFilter).text(result));
+                                    $('#all_filters').val(data.idFilter);
+                                    //$('#all_filters').change();
+                                    //Poner titulo
+                                     $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
+                            
+                                    //Mostrar el botón guardar
+                                    $('#filter-save2').parent('div').show();
+                                    search(URL);
+                                    
+                                }
+                                
+                                showAlert(data.status, data.message);
+                                
                             },
-                            300);
+                            error: function( jqXHR, textStatus, errorThrown){
+                                console.log(jqXHR);
+                            }
+                        }
+                    );
+                    
+                    
                 }else{
-                    showAlert('warning', 'Debes indicar un nombre para el filtro');
+                    showAlert('error', 'Debes indicar un nombre para el filtro');
                 }
 
             }
         });
+        
+    //si esta guardando el filtro acutal    
+    }else{       
+       var ID = $('#all_filters').val();
+       
+       ajaxRequest += "&save=true&id=" + ID; 
+       $.ajax(
+            URL,
+            {
+                type: 'POST',
+                dataType: 'json',
+                data: ajaxRequest,
+                beforeSend: function(){
+                    if(ID === null || ID.trim() === ''){
+                        return false;
+                    }
+                },
+                success: function(data){
+                    //console.log(data);
+                    if(data.status == 'success'){                                   
+                        //$('#alert-msg')
+//                        $('#all_filters').append($("<option />").val(data.idFilter).text(result));
+//                        $('#all_filters').val(data.idFilter);
+//                        $('#all_filters').change();
+                        search(URL);
+                    }
+
+                    showAlert(data.status, data.message);
+
+                },
+                error: function( jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR);
+                }
+            }
+      ); 
+        
     }
 
 
 }
 
-//Borrar todos los campos
-function clearFilters() {
+function changeFilter(e){
+   var column = $(this);
+   var operator = column.parent('div').next();
+   var value = operator.next();
 
-    $('#filters-container').children('div').each(function(i) {
-        if (i > 0) {
-            $(this).remove();
-        }
-        
-    });
+
+   //si es fecha
+   if(column.val() === 'fecha'){
+
+       value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
+        .attr('name','textfield_value[]')
+        .attr('id', 'textfield_value'+(idDateField++))
+        .datepicker({
+            dateFormat: "dd-mm-yy"
+        })
+       );           
+       
+       operator.children().empty().html($("#Operadores").html());
+
+    //metodo de pago
+   }else if(column.val() === 'pago_id'){
+       
+       value.empty().append( 
+           $('<select />').html($("#metodosPago").html()).addClass('textfield_value span2')   
+           .attr('name','textfield_value[]')
+           .attr('id', 'textfield_value')
+        );
+       //agregar = y diferente     
+       operator.children().children().each(function(i, elem){
+           if($(elem).val() !== '')
+               $(elem).remove();
+       });
+       operator.children().append(
+           $("<option />").val('=').text('=')
+       ).append(
+           $("<option />").val('<>').text('<>')        
+       );
+
+    //Estado de la Orden
+   }else if(column.val() === 'estado'){
+       
+       value.empty().append( 
+           $('<select />').html($("#estadosOrden").html()).addClass('textfield_value span2')   
+           .attr('name','textfield_value[]')
+           .attr('id', 'textfield_value')
+        );
+       //agregar = y diferente     
+       operator.children().children().each(function(i, elem){
+           if($(elem).val() !== '')
+               $(elem).remove();
+       });
+       operator.children().append(
+           $("<option />").val('=').text('=')
+       ).append(
+           $("<option />").val('<>').text('<>')        
+       );
+
+    //campo normal
+   }else if(column.val() === 'user_id'){
+       
+       value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
+        .attr('name','textfield_value[]')
+        .attr('id', 'textfield_value')        
+       );
+           
+       //agregar = y LIKE    
+       operator.children().children().each(function(i, elem){
+           if($(elem).val() !== '')
+               $(elem).remove();
+       });
+       operator.children().append(
+           $("<option />").val('=').text('=')
+       ).append(
+           $("<option />").val('LIKE').text('Contenga')        
+       );
+
+    //campo normal
+   }else{
+      
+       value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
+        .attr('name','textfield_value[]')
+        .attr('id', 'textfield_value')        
+       );
+              
+       operator.children().empty().html($("#Operadores").html());
+       
+   }
     
-    $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relatio').val('');
-    $('.dropdown_relation').last().hide();
-    $('.span_add').last().show();   
-    
-    
-    //Titulo
-    $('#form_filtros h4').html("Nuevo Filtro:");
-                            
-    //Ocultar el botón guardar
-    $('#filter-save2').parent('div').hide();
-        
 }
-
-//Mostrar alert
-function showAlert(type, message){
-   $('#alert-msg').addClass(type);
-   $('#alert-msg').children(".msg").text(message);
-   $('#alert-msg').show();
-   //$("html, body").animate({ scrollTop: 0 }, "slow");
-}
-
 
 $(function() { 
     
@@ -271,5 +408,13 @@ $(function() {
         $('#filters-view').slideDown();
     });
 
+    $(".alert").alert();
+    $(".alert .close").click(function(){
+        $(".alert").fadeOut('slow');
+    });
+    
+    /*Adaptar operador y valor dependiendo de la columna*/
+    $(".dropdown_filter").change(changeFilter);
+    
 
 });

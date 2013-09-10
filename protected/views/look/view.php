@@ -51,7 +51,21 @@
             </div>
           </div>
           <div class="row-fluid">
-            <div class="span12"><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
+
+            <div class="span2">
+               <div class=" marcas_relacionadas">
+                  <h4>Componen <br/>este look</h4>
+                    <ul>
+                       <li><img src="http://placehold.it/170x50"/></li> 
+                       <li><img src="http://placehold.it/170x50"/></li> 
+                       <li><img src="http://placehold.it/170x50"/></li> 
+
+
+                    </ul>
+
+               </div>
+            </div>
+            <div class="span10"><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
 
           </div>
           <div class="hidden-phone row-fluid vcard">
@@ -248,6 +262,7 @@
             <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix">  
+          <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-compatir" href="#"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> </div>            
           <!-- <div class=""> -->
           <a class="addthis_button_facebook_like pull-left" fb:like:layout="button_count"></a>
             <a class="addthis_button_tweet pull-left"></a>

@@ -1,4 +1,4 @@
-	<!-- FLASH ON --> 
+ 	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
         'fade'=>true, // use transitions?
@@ -108,7 +108,7 @@
 					{
 						//luego el resto para completar el scroll					
 						
-						echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Imagen ", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+						echo CHtml::image( str_replace(".","_x90.",$img->getUrl()), "Imagen", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
 						
 					}// color
 				}// que no es la primera en el orden
@@ -336,7 +336,8 @@
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
               Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
           </div>
-          <div class="braker_horz_top_1 addthis">             
+          <div class="braker_horz_top_1 addthis"> 
+            <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-compatir" href="#"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> </div>
             <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> 
             <a class="addthis_button_tweet"></a>
             <a class="addthis_button_pinterest_pinit boton_pinterest"></a>            
@@ -830,9 +831,9 @@ $('.imagen_principal').zoom({url: imgZ});
 						  		zona="<img id='principal' src='"+Url+"' alt'producto'>";
 						  		contador++;
 						  	}
-						  	
-						  	var base = "<?php echo Yii::app()->baseUrl; ?>";						  	
-						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + valor[0]+"' alt='Imagen' style='cursor: pointer' >";
+						  	var base = "<?php echo Yii::app()->baseUrl; ?>";		
+                var thumb = valor[0].split('.');				  	
+						  	thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + thumb[0] +'_x90.'+thumb[1]+"' alt='Imagen' style='cursor: pointer' >";
 						  	
 						  	objImage = new Image();
 						  	var source = ''+base +valor[0];

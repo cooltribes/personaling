@@ -305,7 +305,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
             <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
-          <a href="#" class="btn"><i class="icon-edit"></i></a> </div>
+          <!-- <a href="#" class="btn"><i class="icon-edit"></i></a> --> </div>
           
         <!--  
         <div class="span6">
@@ -718,7 +718,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <label class="checkbox">
             <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
         </div>
-        <div class="form-actions"><a onclick="mensaje(<?php echo $orden->user_id; ?>)" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
+        <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  Enviar comentario</a> </div>
       </form>
     </div>
     <div class="span5">

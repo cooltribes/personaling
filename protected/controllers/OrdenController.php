@@ -83,7 +83,10 @@ class OrdenController extends Controller
             
 //            echo "<pre>";print_r($_POST);echo "</pre>";            
 //            echo count($_POST['textfield_value']);exit();   
-            
+//            $_SESSION['filters'] = '';
+//            if(isset($filters['fields'])){
+//              $_SESSION['filters'] = $filters;  
+//            }
             $orden = new Orden;
             $dataProvider = $orden->search();
             
@@ -113,48 +116,94 @@ class OrdenController extends Controller
                         $filters['rels'][] = $_POST['dropdown_relation'][$i];                    
 
                     }
-                }                                 
+                }     
+                //Respuesta ajax
+                $response = array();
                 
                 if (isset($filters['fields'])) {                    
                 
                     $dataProvider = $orden->buscarPorFiltros($filters);                    
-                     //Guardar el filtro
-                     if (isset($_POST['save']) && isset($_POST['name'])){
-                        
-                         $filter = Filter::model()->findByAttributes(array('name' => $_POST['name']));
+                     
+                     //si va a guardar
+                     if (isset($_POST['save'])){                        
                          
-                         if(!$filter){
-                             $filter = new Filter;
-                             $filter->name = $_POST['name'];
-                             
-                             if($filter->save()){
+                         //si es nuevo
+                         if (isset($_POST['name'])){
+                            
+                            $filter = Filter::model()->findByAttributes(array('name' => $_POST['name'])); 
+                            if (!$filter) {
+                                $filter = new Filter;
+                                $filter->name = $_POST['name'];
+
+                                if ($filter->save()) {
+                                    for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                        $filterDetails[] = new FilterDetail();
+                                        $filterDetails[$i]->id_filter = $filter->id_filter;
+                                        $filterDetails[$i]->column = $filters['fields'][$i];
+                                        $filterDetails[$i]->operator = $filters['ops'][$i];
+                                        $filterDetails[$i]->value = $filters['vals'][$i];
+                                        $filterDetails[$i]->relation = $filters['rels'][$i];
+                                        $filterDetails[$i]->save();
+                                    }
+                                    
+                                    $response['status'] = 'success';
+                                    $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';
+                                    $response['idFilter'] = $filter->id_filter;                                    
+                                    
+                                }
+                                
+                            //si ya existe
+                            } else {
+                                $response['status'] = 'error';
+                                $response['message'] = 'No se pudo guardar el filtro, el nombre <b>"'.
+                                        $filter->name.'"</b> ya existe'; 
+                            }
+
+                          /* si esta guardadndo uno existente */
+                         }else if(isset($_POST['id'])){
+                            
+                            $filter = Filter::model()->findByPk($_POST['id']); 
+
+                            if ($filter) {
+                                
+                                //borrar los existentes
+                                foreach ($filter->filterDetails as $detail){
+                                    $detail->delete();
+                                }
+                                
                                 for ($i = 0; $i < count($filters['fields']); $i++) {
 
-                                   $filterDetails[] = new FilterDetail();
-                                   $filterDetails[$i]->id_filter = $filter->id_filter; 
-                                   $filterDetails[$i]->column = $filters['fields'][$i];
-                                   $filterDetails[$i]->operator = $filters['ops'][$i];
-                                   $filterDetails[$i]->value = $filters['vals'][$i];
-                                   $filterDetails[$i]->relation = $filters['rels'][$i];
-                                   $filterDetails[$i]->save();
-
-                   //                $filters['fields'][$i];
-                   //                $filters['ops'][$i];
-                   //                $filters['vals'][$i];
-                   //                $filters['rels'][$i];
-
+                                    $filterDetails[] = new FilterDetail();
+                                    $filterDetails[$i]->id_filter = $filter->id_filter;
+                                    $filterDetails[$i]->column = $filters['fields'][$i];
+                                    $filterDetails[$i]->operator = $filters['ops'][$i];
+                                    $filterDetails[$i]->value = $filters['vals'][$i];
+                                    $filterDetails[$i]->relation = $filters['rels'][$i];
+                                    $filterDetails[$i]->save();
                                 }
-                             }
-                             
-                         }else{
-                           //Error YA EXISTE EL NOMBRE  
-                         }
-                         
-                         
-                         
-                     }
 
-                    
+                                $response['status'] = 'success';
+                                $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';                                
+                            //si NO existe el ID
+                            } else {
+                                $response['status'] = 'error';
+                                $response['message'] = 'El filtro no existe'; 
+                            }
+                             
+                         }
+                        
+                         echo CJSON::encode($response); 
+                         Yii::app()->end();
+                         
+                     }//fin si esta guardando
+
+                //si no hay filtros válidos    
+                }else if (isset($_POST['save'])){
+                    $response['status'] = 'error';
+                    $response['message'] = 'No has seleccionado ningún criterio para filtrar'; 
+                    echo CJSON::encode($response); 
+                    Yii::app()->end();
                 }
             }
 
@@ -189,7 +238,7 @@ class OrdenController extends Controller
                     
                 }else{
                   $response['status'] = 'error';
-                  $response['error'] = 'Filtro no encontrado';
+                  $response['message'] = 'Filtro no encontrado';
                 }               
                 
                 
@@ -214,10 +263,13 @@ class OrdenController extends Controller
                     
                    $filter->delete(); 
                    $response['status'] = 'success';
+                   $response['message'] = 'Se ha eliminado el filtro <b>'.
+                           $filter->name.'</b>';
+                   
                     
                 }else{
                   $response['status'] = 'error';
-                  $response['error'] = 'Filtro no encontrado';
+                  $response['message'] = 'Filtro no encontrado';
                 }               
                 
                 

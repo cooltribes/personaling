@@ -141,7 +141,16 @@ echo $num;
               array('class'=>'span3')?>
 
     </div>
-    <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
+    <div class="span2"><a href="#" class="btn">Crear nuevo filtro</a></div>
+    <div class="span1">
+	<?php $this->widget('bootstrap.widgets.TbButton', array(
+	    'buttonType' => 'link',
+	    'label'=>'Importar',
+	    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+	    'size'=>'normal', // null, 'large', 'small' or 'mini'
+	    'url' => 'importar',
+	)); ?>    	
+    </div>
     <div class="span2">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'buttonType' => 'link',

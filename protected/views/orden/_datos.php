@@ -61,7 +61,10 @@ echo"<tr>";
 		echo "<td>Orden Cancelada</td>";
 		
 	if($data->estado == 7)
-		echo "<td>Pago Insuficiente</td>";	
+		echo "<td>Pago Insuficiente</td>";
+        
+        if($data->estado == 8)
+		echo "<td>Entregado</td>";
 	
 	// agregar demas estados
 	

@@ -509,11 +509,15 @@ $usuario = User::model()->findByPk($orden->user_id);
   <hr/>
   <!-- INFORMACION DEL PEDIDO ON -->
   <div class="row">
-    <div class="span7">
+    <div class="span12">
    <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
+          <th scope="col">Referencia</th>
           <th scope="col">Nombre de la prenda</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Color</th>
+          <th scope="col">Talla</th>
           <th scope="col">Cant. en Existencia</th>
           <th scope="col">Cant. en Pedido</th>
           <th scope="col">Precio</th>
@@ -533,7 +537,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 						$precio = $lookpedido->getPrecio(false);
 						
 							echo("<tr>");
+							echo("<td><strong>Referencia</strong></td>");// Referencia
 							echo("<td><strong>".$lookpedido->title."</strong></td>"); // nombre
+
 							echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 							echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
 							echo("<td>".$prod->precio."</td>"); // precio 
@@ -590,7 +596,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
 						
 						echo("<tr>");
+						echo("<td><strong>Referencia</strong></td>");// Referencia
 						echo("<td>".$indiv->nombre."</td>"); // nombre
+						echo("<td>Marca</td>");// Marca
+						echo("<td>Color</td>");// Color
+						echo("<td>Talla</td>");// Talla						
 						echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
 						echo("<td>".$prod->precio."</td>"); // precio
@@ -632,6 +642,38 @@ $usuario = User::model()->findByPk($orden->user_id);
         
         ?>
 
+        <!-- Comienzo del resumen del pedido -->
+        <tr>
+          <th colspan="9" ><div class="text_align_right"><strong>Resumen</strong></div></th>
+        </tr>         
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
+          <td > 0</td> 
+        </tr>  
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>No. de Prendas</strong></div></td>
+          <td > 0</td>
+        </tr>
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
+          <td >000,00 Bs</td>
+        </tr>  
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
+          <td >000,00 Bs</td>
+        </tr>    
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Descuento</strong></div></td>
+          <td >000,00 Bs</td>
+        </tr>  
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Impuesto</strong></div></td>
+          <td >000,00 Bs</td>
+        </tr>   
+        <tr>
+          <th colspan="8" ><div class="text_align_right"><strong>Total</strong></div></th>
+          <th >000,00 Bs</th>
+        </tr>          
       </table>
       <?php
       $individuales=0;
@@ -651,8 +693,8 @@ $usuario = User::model()->findByPk($orden->user_id);
       
       ?>
       
-      <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div>
-    <div class="span5">
+     <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div>
+<!--     <div class="span5">
    <div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
@@ -688,7 +730,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         
       
       </table></div>
-    </div>
+    </div> -->
   </div>
   <!-- INFORMACION DEL PEDIDO OFF -->
   <hr/>

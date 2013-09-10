@@ -30,7 +30,7 @@ class TiendaController extends Controller
 		);
 	}
 	
-	public function actionIndex()
+	public function actionDoble()
 	{
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
@@ -54,7 +54,7 @@ class TiendaController extends Controller
 			
 	}
 	
-	public function actionDoble()
+	public function actionIndex()
 	{
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
@@ -71,8 +71,8 @@ class TiendaController extends Controller
 		$a ="a"; 
 		
 		$dataProvider = $producto->nueva($a);
-		$this->render('doble',
-		array('doble'=>$producto,
+		$this->render('index',
+		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
 			
@@ -753,7 +753,7 @@ public function actionCategorias2(){
               	
 
 			// revisando cuantos colores distintos hay 
-			foreach ($producto->Preciotallacolor as $talCol){ 
+			foreach ($producto->preciotallacolor as $talCol){ 
 
 
 				if($talCol->cantidad > 0){
@@ -773,7 +773,7 @@ public function actionCategorias2(){
 				$datos=$datos. "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
 			}
 			else{
-				foreach ($producto->Preciotallacolor as $talCol) {
+				foreach ($producto->preciotallacolor as $talCol) {
 		        	if($talCol->cantidad > 0){ // que haya disp
 						$color = Color::model()->findByPk($talCol->color_id);		
 								
@@ -800,7 +800,7 @@ public function actionCategorias2(){
         $cont2 = 0;
               	
 		// revisando cuantas tallas distintas hay
-		foreach ($producto->Preciotallacolor as $talCol){ 
+		foreach ($producto->preciotallacolor as $talCol){ 
 			if($talCol->cantidad > 0){
 				$talla = Talla::model()->findByPk($talCol->talla_id);
 						

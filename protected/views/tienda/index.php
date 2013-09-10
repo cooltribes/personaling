@@ -3,6 +3,7 @@
 	//$this->breadcrumbs=array(
 	//'Tienda',
 	//);
+
 ?>
 <div class="page-header">
 <h1>Tienda</h1>
@@ -42,7 +43,7 @@
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos',
+	    'itemView'=>'_datos2',
 	    'afterAjaxUpdate'=>" function(id, data) {
 	    							
 						$(document).ready(function() {
@@ -92,7 +93,7 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/filtrar') . "',
+				url: '" . CController::createUrl('tienda/filtrar2') . "',
 				data: ajaxRequest}
 				
 				)
@@ -160,7 +161,7 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/filtrar') . "',
+				url: '" . CController::createUrl('tienda/filtrar2') . "',
 				data: ajaxRequest}
 				
 				)
@@ -188,7 +189,7 @@
 					'list-auth-items',
 					{
 					type: 'POST',	
-					url: '" . CController::createUrl('tienda/filtrar') . "',
+					url: '" . CController::createUrl('tienda/filtrar2') . "',
 					data: ajaxRequest}
 					
 					)
@@ -207,18 +208,26 @@
     <?php
 	Yii::app()->clientScript->registerScript('color',
 		"var ajaxUpdateTimeout;
-		var idColor; 
+		var axe;
 		$('.color').click(function(){
-			idColor = $(this).attr('id');
+			window.idColor.trim();
+			if(window.idColor.indexOf('#'+$(this).attr('id'))==-1){
+					window.idColor = window.idColor+'#'+$(this).attr('id');				
+			}
+			else{
+				window.idColor = window.idColor.replace('#'+$(this).attr('id'),'');				
+			}
+			
 			clearTimeout(ajaxUpdateTimeout);
-			//$(this).css({'outline': '2px groove #6d2d56'});
+			
 			ajaxUpdateTimeout = setTimeout(function () {
 				$.fn.yiiListView.update(
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores') . "',
-				data: {'idColor':idColor}
+				url: '" . CController::createUrl('tienda/colores2') . "',
+				data: {'idColor':window.idColor,
+						'idCategoria':window.idCategoria}
 				}
 				
 				)
@@ -226,20 +235,24 @@
 		
 		300);
 		return false;
-		});",CClientScript::POS_READY
+		});
+		
+		
+		
+		",CClientScript::POS_READY
 	);
 	
 	?>
         <div class="tienda_iconos" id="uno">
-          <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias)) ?>
+          <?php $this->renderPartial('_view_categorias2',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
         <h5>Buscar por colores</h5>
         <div class="clearfix tienda_colores">
-			 <?php $this->renderPartial('_view_colores',array('categorias'=>$categorias)) ?>
+			 <?php $this->renderPartial('_view_colores2',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
-       <br/>
+        <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
        		<div id="looks" class="clearfix hidden-phone">
        		</div>
         </div>
@@ -283,11 +296,8 @@ $(document).ready(function(){
 				
 				if(data.status=="ok")
 				{
-					if(data.datos != ""){
-						 $('#looks.clearfix').prepend(data.datos);
-						 $('#looks.clearfix').prepend('<h5 class="hidden-phone">Looks con estas prendas:</h5>');
-					}
-					
+
+					$('#looks.clearfix').prepend(data.datos);
 				//	$("#looks").html(cont); // cambiando el div
 					
 				}
@@ -385,14 +395,19 @@ function randomFrom(arr){
 
     
 <script>
-
+var idColor="";
+var idCategoria="";
 $(document).ready(function() {
   // Handler for .ready() called.
   
 	var imag;
 	var original;
 	var segunda;
+	
+	
 
+	
+	
 	$('.producto').hover(function(){		
 		if ($(this).find("img").length > 1){
 		$(this).find("img").eq(0).hide();
@@ -406,7 +421,21 @@ $(document).ready(function() {
 		$(this).find("img").eq(0).next().hide();
 		}
 	});
-	
+	$('.tienda_colores > img ').on('click',function(){
+			
+
+
+		if(!$(this).hasClass('selected')){			
+			$(this).addClass('selected');
+			$(this).css({'outline': '2px groove #6d2d56'});
+		}
+		else{
+			$(this).css({'outline': 0});
+			$(this).removeClass('selected');
+		}
+		
+	});	
+
 });
 	
 </script>

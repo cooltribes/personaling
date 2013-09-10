@@ -45,7 +45,11 @@
           <div class="span4"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
         </div>
         <div class="share_like">
-          <button class="btn-link" title="Me encanta" href="#"><span class="entypo icon_personaling_big">♡</span></button>
+         
+          <button id="meEncanta<?php echo $look->id; ?>" onclick='encantar(<?php echo $look->id; ?>)' title="Me encanta" class="btn-link <?php echo $look->meEncanta()?"btn-link-active":""; ?>">
+          	<span id="like<?php echo $look->id; ?>" class="entypo icon_personaling_big"><?php echo $look->meEncanta()?"♥":"♡"; ?></span>
+          </button>
+          
           <div class="btn-group">
             <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
             <ul class="dropdown-menu addthis_toolbox addthis_default_style ">

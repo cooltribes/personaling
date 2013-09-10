@@ -353,7 +353,7 @@ $cont=0;
               <div class="span2"> <a href="#" ><img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_9.jpg" ></a></div>
             </div>
           </div> -->
-          <div class="span10 offset2">
+          <div class="span11">
             <h3>Vistos recientemente</h3>
             <div class="row">
                         <?php

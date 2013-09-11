@@ -380,7 +380,11 @@ class TiendaController extends Controller
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+		
+		
 		
 		// para que también filtre del lado del list view
 		/*
@@ -415,7 +419,8 @@ public function actionCategorias2(){
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
-		
+		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 		// para que también filtre del lado del list view
 		/*
 		$producto = new Producto;
@@ -846,7 +851,7 @@ public function actionCategorias2(){
     //	$datos=$datos.'</div>';
     
     	$datos=$datos."<script>";
-		
+		$datos.='var bandera=false;';
 		$datos=$datos."$(document).ready(function() {";
 			$datos=$datos."$('.coloress').click(function(ev){"; // Click en alguno de los colores -> cambia las tallas disponibles para el color
 				$datos=$datos."ev.preventDefault();";
@@ -975,6 +980,7 @@ public function actionCategorias2(){
  			$datos=$datos.'}';
 			
 			$datos=$datos.'if(talla!=undefined && color!=undefined){';
+			 $datos.= 'if(bandera==true) return false; bandera = true;';
 			$datos=$datos.'$("#agregar").click(function(e){e.preventDefault();});$("#agregar").addClass("disabled"); ';
 				$datos=$datos. CHtml::ajax(array(
 	            	'url'=>array('bolsa/agregar'),

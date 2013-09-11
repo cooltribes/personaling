@@ -760,10 +760,40 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                 }
                 
                 if($column == 'codigo'){
-                    $comparator = ($comparator == '=') ? "= " : "";
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
                     
-                    $criteria->compare($column, $comparator.$value,
+                    $criteria->compare($column, $value,
                         true, $logicOp);
+                    
+                    continue;
+                }
+                
+                if($column == 'categoria'){
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('categorias.nombre', $value,
+                        true, $logicOp);
+                    
+                    continue;
+                }
+                
+                if($column == 'sku'){
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('preciotallacolor.sku', $value,
+                        true, $logicOp);
+                    
+                    continue;
+                }
+                
+                if($column == 'precios'){
+                    
+                    //$value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('precios.precioVenta', $comparator." ".$value,
+                        false, $logicOp);
                     
                     continue;
                 }
@@ -782,7 +812,9 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
             $criteria->join .= $joinPagos;
             $criteria->join .= $joinUsers;
             $criteria->join .= $joinLooks;
-            $criteria->having .= $havingLooks;                          
+            $criteria->having .= $havingLooks;  
+            $criteria->with = array('categorias', 'preciotallacolor', 'precios');
+            $criteria->together = true;
             
             echo "Criteria:";
             

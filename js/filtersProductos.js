@@ -19,8 +19,6 @@ var ajaxUpdateTimeout;
 var ajaxRequest;
 var idDateField = 0;
 
-
-
 /*Agrega una fila para el filtro*/
 function addRow(){
     
@@ -300,7 +298,8 @@ function changeFilter(e){
 
 
    //si es fecha
-   if(column.val() === 'fecha'){
+   if(column.val() === 'fecha')
+   {
 
        value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
         .attr('name','textfield_value[]')
@@ -313,7 +312,8 @@ function changeFilter(e){
        operator.children().empty().html($("#Operadores").html());
 
     //metodo de pago
-   }else if(column.val() === 'pago_id'){
+   }else if(column.val() === 'pago_id')
+   {
        
        value.empty().append( 
            $('<select />').html($("#metodosPago").html()).addClass('textfield_value span2')   
@@ -332,7 +332,8 @@ function changeFilter(e){
        );
 
     //Estado de la Orden
-   }else if(column.val() === 'estado'){
+   }else if(column.val() === 'estado')
+   {
        
        value.empty().append( 
            $('<select />').html($("#estadosOrden").html()).addClass('textfield_value span2')   
@@ -351,7 +352,9 @@ function changeFilter(e){
        );
 
     //campo usuario
-   }else if(column.val() === 'user_id'){
+   }else if(column.val() === 'codigo' || column.val() === 'categoria'
+                || column.val() === 'sku')
+   {
        
        value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
         .attr('name','textfield_value[]')
@@ -370,7 +373,8 @@ function changeFilter(e){
        );
 
     //campo normal
-   }else{
+   }else
+   {
       
        value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   
         .attr('name','textfield_value[]')

@@ -46,10 +46,10 @@
                     <div class="controls" >
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
-                                'estado' => 'Categoría',
+                                'categoria' => 'Categoría',
                                 'sku' => 'SKU',
                                 'codigo' => 'Referencia',
-                                'prendas' => 'Precio',
+                                'precios' => 'Precio',
                                 'total' => 'Cantidad Total',
                                 'pago_id' => 'Cantidad Disponible',
                                 'user_id' => 'Cantidad Vendida',
@@ -143,7 +143,7 @@
     //Seleccionar un filtro preestablecido
     $("#all_filters").change(function(){
 	
-        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('orden/admin') ?>');        	
+        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('producto/admin') ?>');        	
 	
     });
     

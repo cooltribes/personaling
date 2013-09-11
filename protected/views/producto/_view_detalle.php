@@ -339,7 +339,26 @@
               Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
           </div>
           <div class="braker_horz_top_1 addthis"> 
-            <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-compatir" href="#"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> </div>
+          	
+          	<?php
+          		if(isset($like)) // le ha dado like
+				{
+          	?>
+            <div class="margin_bottom_medium"><a class="btn-small btn btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+            	<?php
+				}
+				else {
+				?>
+			 <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;	
+				<label id="total-likes">
+				<?php
+				} 
+            	// total de likes 
+                    $cuantos = UserEncantan::model()->countByAttributes(array('producto_id'=>$producto->id));  	
+					echo $cuantos;
+            	?>
+            	</label>
+            </div>
             <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> 
             <a class="addthis_button_tweet"></a>
             <a class="addthis_button_pinterest_pinit boton_pinterest"></a>            
@@ -1063,11 +1082,14 @@ $('.imagen_principal').zoom({url: imgZ});
    		
    		$.ajax({
 	        type: "post",
+	        dataType:"json",
 	        url: "../encantar", // action Tallas de Producto
 	        data: { 'idProd':idProd}, 
 	        success: function (data) {
+	        	
+	        //	alert(data); 
 				
-				if(data=="ok")
+				if(data.mensaje=="ok") 
 				{					
 					var a = "♥";
 					
@@ -1075,23 +1097,26 @@ $('.imagen_principal').zoom({url: imgZ});
 					$("#meEncanta").addClass("btn-link-active");
 					$("span#like").text(a);
 					
+					$("#total-likes").text(data.total); 
+					$("#btn-encanta").addClass("btn-danger");
 				}
 				
-				if(data=="no")
+				if(data.mensaje=="no")
 				{
 					alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
 					//window.location="../../user/login";
 				}
 				
-				if(data=="borrado")
+				if(data.mensaje=="borrado")
 				{
 					var a = "♡";
 					
 					//alert("borrando");
-					
+					$("#btn-encanta").removeClass("btn-danger");
 					$("#meEncanta").removeClass("btn-link-active");
 					$("span#like").text(a);
 					
+					$("#total-likes").text(data.total);					
 				}
 					
 	       	}//success

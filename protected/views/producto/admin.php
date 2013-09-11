@@ -162,6 +162,9 @@ echo $num;
     </div>
   </div>
   <hr/>
+  
+  <?php $this->renderPartial('_filters'); ?>
+  <hr/>
 <?php
 $template = '{summary}
   <table id="table" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">

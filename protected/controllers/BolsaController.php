@@ -169,36 +169,65 @@ class BolsaController extends Controller
  * */
 	public function actionActualizar(){
 			
-		if($_POST['cantidad']==0)
-		{
-			$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
-			$bolsa->delete();
 			
-			echo "ok";
-			
-		}
-		else if($_POST['cantidad']>0){
 		
-			$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
-			
-			$pr = Preciotallacolor::model()->findByPk($_POST['prtc']);
-			
-			$mientras = $pr->cantidad;
-			if(($mientras - $_POST['cantidad']) < 0){
-				echo "NO";
-			}
-			else
+		if (isset($_POST['cantidad'])){
+			$bolsa_id = $_POST['bolsa_id'];
+			$preciotallacolor_id = $_POST['prtc'];
+			$look_id = $_POST['look_id'];
+			if($_POST['cantidad']==0)
 			{
-				$bolsa->cantidad = $_POST['cantidad'];
+				//$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
+				$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$bolsa_id,'preciotallacolor_id'=>$preciotallacolor_id,'look_id'=>$look_id));
+				$bolsa->delete();
 				
-				if($bolsa->save())
+				echo "ok";
+				
+			} else if($_POST['cantidad']>0){
+			
+				//$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
+				$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$bolsa_id,'preciotallacolor_id'=>$preciotallacolor_id,'look_id'=>$look_id));
+				$pr = Preciotallacolor::model()->findByPk($preciotallacolor_id);
+				
+				$mientras = $pr->cantidad;
+				if(($mientras - $_POST['cantidad']) < 0){
+					echo "NO";
+				}
+				else
 				{
-					echo "ok";
+					$bolsa->cantidad = $_POST['cantidad'];
+					
+					if($bolsa->save())
+					{
+						echo "ok";
+					}
+				}
+	
+			}// mayor que 0
+		}
+		if (isset($_POST['cant'])){
+			foreach($_POST['cant'] as $preciotallacolor_id => $cant){
+				foreach($cant as $look_id => $cantidad){
+					echo "bolsa_id: ".$_POST['bolsa_id']." preciotallacolor_id: ".$preciotallacolor_id." look_id: ".$look_id;	
+					$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$_POST['bolsa_id'],'preciotallacolor_id'=>$preciotallacolor_id,'look_id'=>$look_id));
+					$pr = Preciotallacolor::model()->findByPk($preciotallacolor_id);
+					$mientras = $pr->cantidad;
+					if(($mientras - $cantidad) < 0){
+						echo "NO";
+					}
+					else
+					{
+						$bolsa->cantidad = $cantidad;
+						
+						if($bolsa->save())
+						{
+							echo "ok";
+						}
+					}
 				}
 			}
-
-		}// mayor que 0
-		
+				
+		}
 	} // actualizar
 	
 	/*

@@ -25,7 +25,7 @@
     
     
 
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersVentas.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersProductos.js");
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'action' => Yii::app()->createUrl($this->route),
@@ -45,15 +45,21 @@
                 <div class="control-group">
                     <div class="controls" >
                         <div class="span3" >
-                            <?php echo Chtml::dropDownList('dropdown_filter[]', '', array('estado' => 'Estado',
-                            'fecha' => 'Fecha de Compra',
-                            'looks' => 'Cantidad de Looks',
-                            'prendas' => 'Cantidad de Prendas',
-                            'total' => 'Monto',
-                            'pago_id' => 'Método de Pago',
-                            'user_id' => 'Usuaria',
-                            'id' => 'ID de pedido',
-                                ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
+                            <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
+                                'estado' => 'Categoría',
+                                'sku' => 'SKU',
+                                'codigo' => 'Referencia',
+                                'prendas' => 'Precio',
+                                'total' => 'Cantidad Total',
+                                'pago_id' => 'Cantidad Disponible',
+                                'user_id' => 'Cantidad Vendida',
+                                'id' => 'Ventas',
+                                'id1' => 'Estado',
+                                'id2' => 'Fecha de Carga',
+                                'id3' => 'Marca',
+                                'id4' => 'Visitas',
+                                 ),
+                            array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
                         <div class="span2" >
                             <?php echo Chtml::dropDownList('dropdown_operator[]', '', array('>' => '>', '>=' => '>=',
@@ -112,7 +118,7 @@
         
         e.preventDefault(); 
         
-        search('<?php echo CController::createUrl('orden/admin') ?>');
+        search('<?php echo CController::createUrl('producto/admin') ?>');
         
     });
     
@@ -121,7 +127,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>', true);
+        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', true);
             
     });
     
@@ -130,7 +136,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>', false);
+        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', false);
             
     });
     

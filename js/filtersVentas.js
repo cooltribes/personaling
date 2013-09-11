@@ -8,6 +8,7 @@
  * 
  * Falta:
  * confirmar borrar filtro. ?
+ * Paginacion
  * 
  * 
  */
@@ -26,16 +27,11 @@ function addRow(){
     
     $('#filters-container').append( $('<div/>').html($('#filter').html()) );
     
-	//alert($('#filter').html());
-	//$('#container-filter').add( $('<div/>',{'class':'some','id':'filter2','html': $('#filter').html()} ) );
-	
-
     $('.span_delete').click(function(e) {
         $(this).parent().parent().parent('div').remove();
-//       if($(this).parent('div'))
+
         $('.dropdown_relation').last().hide();
         $('.span_add').last().show();
-
 
         return false;
     });
@@ -50,7 +46,7 @@ function addRow(){
     $('.dropdown_relation').last().hide();
     $(".dropdown_filter").last().change(changeFilter);
     $(".dropdown_filter").last().change();
-//console.log("agregada");
+
 	
 }
 
@@ -64,7 +60,7 @@ function clearFilters() {
         
     });
     
-    $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relatio').val('');
+    $('.dropdown_filter, .dropdown_operator, .textfield_value, .dropdown_relation').val('');
     $('.dropdown_filter').change();
     $('.dropdown_relation').last().hide();
     $('.span_add').last().show();      
@@ -109,9 +105,7 @@ function getFilter(URL, ID, URL2){
                     dataType: 'json',
                     data: { 'id':ID },
                     success: function(data){
-                        //console.log(data);
                         if(data.status == 'success'){
-                           // console.log(data.filter);                                            
                             
                             var total = data.filter.length;
                             for (var it = 1; it < total; it++) {
@@ -119,27 +113,26 @@ function getFilter(URL, ID, URL2){
                             };
 
                             $.each(data.filter, function(i, item) {
-                                console.log(item.operator);
+                                
                                 $('.dropdown_filter').eq(i).val(item.column);
+                                $('.dropdown_filter').eq(i).change();
                                 $('.dropdown_operator').eq(i).val(item.operator);
                                 $('.textfield_value').eq(i).val(item.value);
 
                                 $('.dropdown_relation').eq(i).val(item.relation); 
 
                             });  
-                            //console.log($('#all-filters').val());
+                            
                             //Poner titulo
                             $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
                             
                             //Mostrar el botón guardar
                             $('#filter-save2').parent('div').show();
                             
-                            search(URL2);
-                            
+                            search(URL2);                            
 
                         }else if(data.status == 'error'){
                            console.log(data.error); 
-                           //bootbox.alert(data.error);
                         }
                     },
                     error: function( jqXHR, textStatus, errorThrown){
@@ -166,7 +159,7 @@ function removeFilter(URL, ID){
                     }
                 },
                 success: function(data){
-                    //console.log(data);
+                    
                     if(data.status == 'success'){                       
                         
                         $('#all_filters').find("[value='"+ID+"']").remove();
@@ -191,7 +184,7 @@ function search(URL){
     
     ajaxRequest = $('#form_filtros').serialize();
     clearTimeout(ajaxUpdateTimeout);
-    $('#form_filtros').submit();
+    //$('#form_filtros').submit();
     ajaxUpdateTimeout = setTimeout(
             function() {
                 $.fn.yiiListView.update(
@@ -214,7 +207,7 @@ function searchAndSave(URL, newFilter) {
     if (newFilter) {
         bootbox.prompt("Indica un nombre para el filtro:", function(result) {            
             if (result === null) {
-                //showAlert('error', 'Debes indicar un nombre para el filtro');                
+                
             } else {
                 result = result.trim();
                 if (result !== "") {
@@ -228,7 +221,7 @@ function searchAndSave(URL, newFilter) {
                             dataType: 'json',
                             data: ajaxRequest,
                             success: function(data){
-                                //console.log(data);
+                                
                                 if(data.status == 'success'){                                   
                                     //$('#alert-msg')
                                     $('#all_filters').append($("<option />").val(data.idFilter).text(result));
@@ -277,7 +270,7 @@ function searchAndSave(URL, newFilter) {
                     }
                 },
                 success: function(data){
-                    //console.log(data);
+                    
                     if(data.status == 'success'){                                   
                         //$('#alert-msg')
 //                        $('#all_filters').append($("<option />").val(data.idFilter).text(result));
@@ -357,7 +350,7 @@ function changeFilter(e){
            $("<option />").val('<>').text('<>')        
        );
 
-    //campo normal
+    //campo usuario
    }else if(column.val() === 'user_id'){
        
        value.empty().append($('<input />').attr('type', 'text').addClass('textfield_value span2')   

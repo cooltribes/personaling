@@ -223,6 +223,49 @@ function moveScroller() {
     $(window).scroll(move);
     move();
 }
+       function encantar(idLook)
+       {
+           //var idLook = $("#idLook").attr("value");
+           //alert("id:"+idLook);
+
+           $.ajax({
+            type: "post",
+            url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
+            data: { 'idLook':idLook},
+            success: function (data) {
+
+                if(data=="ok")
+                {
+                    var a = "♥";
+
+                    //$("#meEncanta").removeClass("btn-link");
+                    $("#meEncanta"+idLook).addClass("btn-link-active");
+                    $("span#like"+idLook).text(a);
+
+                }
+
+                if(data=="no")
+                {
+                    alert("Debe primero ingresar como usuario");
+                    //window.location="../../user/login";
+                }
+
+                if(data=="borrado")
+                {
+                    var a = "♡";
+
+                    //alert("borrando");
+
+                    $("#meEncanta"+idLook).removeClass("btn-link-active");
+                    $("span#like"+idLook).text(a);
+
+                }
+
+               }//success
+           })
+
+
+       }
 </script>
 <script type="text/javascript"> 
   $(function() {

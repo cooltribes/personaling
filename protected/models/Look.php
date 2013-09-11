@@ -353,7 +353,12 @@ class Look extends CActiveRecord
 			),
 		));
 	}
-	
+	/* devuelve verdadedo o falso si el look me encanta o no */
+	public function meEncanta($userId = 0){
+		if ($userId == 0)
+			$userId = Yii::app()->user->id;
+		return (null !== LookEncantan::model()->findByAttributes(array("user_id"=>$userId,"look_id"=>$this->id)));
+	}
 	
 	/* looks destacados */
 	public function lookDestacados($limit = 6) 

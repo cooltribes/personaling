@@ -178,6 +178,20 @@ class TiendaController extends Controller
 				$producto->nombre = $_POST['busqueda'];
 				Yii::app()->getSession()->add('nombre', $_POST['busqueda']);
 				Yii::app()->getSession()->add('valor',1);
+				
+				
+				
+		
+					$key=new Keyword;
+					$key->busqueda=$_POST['busqueda'];
+					if(isset($_POST['usid']))					
+						$key->user_id=$_POST['usid'];
+					else
+						$key->user_id=0;
+					$key->save();
+					
+				
+				
 			}
 
 			if( isset($_GET['Producto_page']) )
@@ -753,7 +767,7 @@ public function actionCategorias2(){
               	
 
 			// revisando cuantos colores distintos hay 
-			foreach ($producto->Preciotallacolor as $talCol){ 
+			foreach ($producto->preciotallacolor as $talCol){ 
 
 
 				if($talCol->cantidad > 0){
@@ -773,7 +787,7 @@ public function actionCategorias2(){
 				$datos=$datos. "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
 			}
 			else{
-				foreach ($producto->Preciotallacolor as $talCol) {
+				foreach ($producto->preciotallacolor as $talCol) {
 		        	if($talCol->cantidad > 0){ // que haya disp
 						$color = Color::model()->findByPk($talCol->color_id);		
 								
@@ -800,7 +814,7 @@ public function actionCategorias2(){
         $cont2 = 0;
               	
 		// revisando cuantas tallas distintas hay
-		foreach ($producto->Preciotallacolor as $talCol){ 
+		foreach ($producto->preciotallacolor as $talCol){ 
 			if($talCol->cantidad > 0){
 				$talla = Talla::model()->findByPk($talCol->talla_id);
 						

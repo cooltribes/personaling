@@ -130,11 +130,13 @@ class OrdenController extends Controller
                          //si es nuevo
                          if (isset($_POST['name'])){
                             
-                            $filter = Filter::model()->findByAttributes(array('name' => $_POST['name'])); 
+                            $filter = Filter::model()->findByAttributes(
+                                    array('name' => $_POST['name'], 'type' => '1') //Filtros para ventas
+                                    ); 
                             if (!$filter) {
                                 $filter = new Filter;
                                 $filter->name = $_POST['name'];
-
+                                $filter->type = 1;
                                 if ($filter->save()) {
                                     for ($i = 0; $i < count($filters['fields']); $i++) {
 
@@ -172,6 +174,7 @@ class OrdenController extends Controller
                                     $detail->delete();
                                 }
                                 
+                                //Crear los nuevos
                                 for ($i = 0; $i < count($filters['fields']); $i++) {
 
                                     $filterDetails[] = new FilterDetail();
@@ -215,7 +218,6 @@ class OrdenController extends Controller
 
             $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,
-                'filter' => $filter,
             ));
 
 	}

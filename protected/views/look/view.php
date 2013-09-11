@@ -262,7 +262,27 @@
             <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix">  
-          <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-compatir" href="#"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> </div>            
+          <?php
+            // total de likes 
+            $cuantos = LookEncantan::model()->countByAttributes(array('look_id'=>$model->id));
+                       
+          	if(isset($like)) // le ha dado like 
+				{
+          ?>
+          		<div class="margin_bottom_medium"><a class="btn-small btn btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&hearts;</span> Me encanta </a>
+          <?php
+				}
+			else {
+			?>
+			 <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta </a> 
+			<?php
+				}
+			?>	
+      &nbsp; <span id="total-likes" ><?php echo $cuantos; ?></span>
+          	
+          
+          	
+          </div>            
           <!-- <div class=""> -->
           <a class="addthis_button_facebook_like pull-left" fb:like:layout="button_count"></a>
             <a class="addthis_button_tweet pull-left"></a>
@@ -501,34 +521,41 @@ $cont=0;
 
            $.ajax({
             type: "post",
+            dataType:"json",
             url: "encantar", // action Tallas de look
             data: { 'idLook':idLook},
             success: function (data) {
-
-                if(data=="ok")
+			 
+			//alert(data );
+			
+                if(data.mensaje=="ok")
                 {
                     var a = "♥";
 
                     //$("#meEncanta").removeClass("btn-link");
                     $("#meEncanta").addClass("btn-link-active");
                     $("span#like").text(a);
-
+					
+					$("#total-likes").text(data.total);
+					$("#btn-encanta").addClass("btn-danger");
                 }
 
-                if(data=="no")
+                if(data.mensaje=="no") 
                 {
                     alert("Debe primero ingresar como usuario");
                     //window.location="../../user/login";
                 }
 
-                if(data=="borrado")
+                if(data.mensaje=="borrado")
                 {
                     var a = "♡";
 
                     //alert("borrando");
-
+					$("#btn-encanta").removeClass("btn-danger");
                     $("#meEncanta").removeClass("btn-link-active");
                     $("span#like").text(a);
+                    
+                    $("#total-likes").text(data.total);
 
                 }
 

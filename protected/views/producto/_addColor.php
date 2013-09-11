@@ -38,6 +38,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 'name' => 'url',
                 'model'=>$model,
      			'attribute'=>'path_image',
+     			'minSize' => 1024,
                 'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
                 'duplicate' => 'El archivo está duplicado.', // useful, i think
                 'denied' => 'Tipo de archivo invalido.', // useful, i think

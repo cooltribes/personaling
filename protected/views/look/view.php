@@ -262,7 +262,21 @@
             <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix">  
-          <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-compatir" href="#"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a>
+          <?php
+          	if(isset($like)) // le ha dado like 
+				{
+          ?>
+          		<div class="margin_bottom_medium"><a class="btn-small btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a>
+          <?php
+				}
+			else {
+			?>
+			 <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+			<?php
+				}
+			?>	
+          	
+          	
           	<label id="total-likes">
           		<?php
             	
@@ -527,6 +541,7 @@ $cont=0;
                     $("span#like").text(a);
 					
 					$("#total-likes").text(data.total);
+					$("#btn-encanta").addClass("btn-danger");
                 }
 
                 if(data.mensaje=="no") 
@@ -540,7 +555,7 @@ $cont=0;
                     var a = "♡";
 
                     //alert("borrando");
-
+					$("#btn-encanta").removeClass("btn-danger");
                     $("#meEncanta").removeClass("btn-link-active");
                     $("span#like").text(a);
                     

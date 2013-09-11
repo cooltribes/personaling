@@ -263,28 +263,24 @@
           </div>
           <div class="braker_horz_top_1 addthis clearfix">  
           <?php
+            // total de likes 
+            $cuantos = LookEncantan::model()->countByAttributes(array('look_id'=>$model->id));
+                       
           	if(isset($like)) // le ha dado like 
 				{
           ?>
-          		<div class="margin_bottom_medium"><a class="btn-small btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a>
+          		<div class="margin_bottom_medium"><a class="btn-small btn btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&hearts;</span> Me encanta </a>
           <?php
 				}
 			else {
 			?>
-			 <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+			 <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta </a> 
 			<?php
 				}
 			?>	
+      &nbsp; <span id="total-likes" ><?php echo $cuantos; ?></span>
           	
-          	
-          	<label id="total-likes">
-          		<?php
-            	
-            	// total de likes 
-                    $cuantos = LookEncantan::model()->countByAttributes(array('look_id'=>$model->id));
-					echo $cuantos;
-            	?>
-          	</label>
+          
           	
           </div>            
           <!-- <div class=""> -->

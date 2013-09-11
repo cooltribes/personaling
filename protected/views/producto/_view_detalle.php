@@ -353,13 +353,13 @@
 				<?php
 				}
 				?>
-				<label id="total-likes">
+				<span id="total-likes">
 				<?php 
             	// total de likes 
                     $cuantos = UserEncantan::model()->countByAttributes(array('producto_id'=>$producto->id));  	
 					echo $cuantos;
             	?>
-            	</label>
+        </span>
             </div>
             <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> 
             <a class="addthis_button_tweet"></a>

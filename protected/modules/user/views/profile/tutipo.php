@@ -94,12 +94,28 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               <ul class="thumbnails" id="tipo_cuerpo">
                 <?php foreach (Profile::range($field->range) as $key => $tipo){ ?>
                 <li class="span3 <?php if ($valor_tmp == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>"> <a href="#" title="Elegir este tipo de cuerpo">
-                  <div class="thumbnail"> <?php echo  CHtml::image(Yii::app()->baseUrl . '/images/'.replace_accents($tipo).'.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
+                  <div class="thumbnail" style="height:523px"> <?php echo  CHtml::image(Yii::app()->baseUrl . '/images/'.replace_accents($tipo).'.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
                     <div class="caption text_align_center CAPS">
-                      <p><?php echo $tipo; ?></p>
+                      <p ><?php echo $tipo; ?></p>
                     </div>
+                    <caption>
+                      <p class="  color6 text_align_center ">                  
+                      <?php if($key == 1) 
+                          echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
+                        if($key == 2) 
+                          echo "Tu cuerpo es reloj de arena o curvilíneo porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida"; 
+                        if($key == 4)         
+                          echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
+                        if($key == 8)         
+                          echo "Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas";                        
+                        ?>
+                       </p>
+                    </caption>                    
                   </div>
-                  </a> </li>
+                  </a> 
+
+                </li>
+
                 <?php } ?>
               </ul>
             </div>
@@ -152,11 +168,11 @@ $script = "
 
 <!-- contenido -->
 <ol id="joyRideTipContent">
-  <li data-id="numero1" data-button="Siguiente" >
-  <h3>Escoge las caracteristicas</h3>
+  <li data-id="numero1" data-button="Siguiente" data-options="tipAnimation:fade" >
+  <h3><strong>Escoge las caracteristicas</strong></h3>
     <p>Escoge tus caracteristicas de cuerpo</p>  
   </li>
-  <li data-id="tipo_cuerpo" data-options="tipLocation:left"  data-button="Siguiente">
+  <li data-id="numero2" data-options="tipLocation:left;tipAnimation:fade"  data-button="Siguiente">
     <h3>Escoge la forma</h3>
     <p>Selecciona tu forma de cuerpo  </p>
   </li>
@@ -173,8 +189,8 @@ $script = "
     <script>
       $(window).load(function() {
         $('#joyRideTipContent').joyride({
-          autoStart : true,
-          modal:true,
+          // autoStart : true,
+          modal: true,
           expose: true
         });
       });

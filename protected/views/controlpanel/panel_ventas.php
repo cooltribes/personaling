@@ -59,7 +59,11 @@ $c = substr($promedio,0,-1);
 $d = substr($pago_pendientes,0,-1);
 
 $pendiente = Orden::model()->countByAttributes(array('estado'=>1));
-$e = $pago_pendientes / $pendiente;
+
+if($pendiente != 0)
+	$e = $pago_pendientes / $pendiente;
+else 
+	$e = 0;
 
 $f = substr($e,0,-1);
 $g = substr($envios,0,-1);

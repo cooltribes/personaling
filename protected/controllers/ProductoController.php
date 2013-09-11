@@ -1316,8 +1316,16 @@ class ProductoController extends Controller
 			if(isset($like)) // si ya le dio like
 			{
 				$like->delete();
+				//echo "borrado";	
 				
-				echo "borrado";				
+				$total = UserEncantan::model()->countByAttributes(array('producto_id'=>$_POST['idProd']));  	
+				
+				echo CJSON::encode(array(
+					'mensaje'=> 'borrado',
+					'total'=> $total
+				));
+				exit; 
+									
 			}
 			else // esta logueado y es un like nuevo
 			{
@@ -1327,7 +1335,19 @@ class ProductoController extends Controller
 				$encanta->user_id = Yii::app()->user->id;
 				
 				if($encanta->save())
-					echo "ok"; // guardó y le encantó	
+				{
+					// echo "ok"; // guardó y le encantó
+					
+					$total = UserEncantan::model()->countByAttributes(array('producto_id'=>$_POST['idProd']));  	
+				
+					echo CJSON::encode(array(
+						'mensaje'=> 'ok',
+						'total'=> $total
+					));
+					exit;
+						
+			
+				}
 			}
 		}
 		else

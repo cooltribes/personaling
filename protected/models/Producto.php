@@ -674,6 +674,128 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
              
 		
 	 }
+         
+         /**
+         * Buscar por todos los filtros dados en el array $filters
+         */
+        public function buscarPorFiltros($filters) {
+//            echo "<pre>";
+//            print_r($filters);
+//            echo "</pre>";
+//            Yii::app()->end();
+
+            $criteria = new CDbCriteria;
+            $joinPagos = '';
+            $joinUsers = '';
+            $joinLooks = '';
+            $havingLooks = '';
+            $joinLooks = '';
+            $havingLooks = '';
+
+            for ($i = 0; $i < count($filters['fields']); $i++) {
+                
+                $column = $filters['fields'][$i];
+                $value = $filters['vals'][$i];
+                $comparator = $filters['ops'][$i];
+                
+                if($i == 0){
+                   $logicOp = 'AND'; 
+                }else{                
+                    $logicOp = $filters['rels'][$i-1];                
+                }                
+                
+                if($column == 'fecha'){
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
+                
+                if($column == 'looks'){
+                    
+                   if (!strpos($joinLooks, 'tbl_orden_has_productotallacolor')) {
+                        $joinLooks .= ' JOIN tbl_orden_has_productotallacolor as oprod ON oprod.tbl_orden_id = t.id AND oprod.look_id > 0';
+                        $criteria->group = 't.id';
+                        $havingLooks .= 'count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
+                   }else{
+                        $havingLooks .= ' '.$logicOp.' count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
+                   }  
+                                      
+                   continue;
+                }
+                
+                if($column == 'prendas'){
+                   
+                   if (!strpos($joinLooks, 'tbl_orden_has_productotallacolor')) {
+                        $joinLooks .= ' JOIN tbl_orden_has_productotallacolor as oprod ON oprod.tbl_orden_id = t.id AND oprod.look_id = 0';
+                        $criteria->group = 't.id';
+                        $havingLooks .= 'count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
+                   }else{
+                        $havingLooks .= ' '.$logicOp.' count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
+                   }   
+                   
+                    continue;
+                }
+                
+                if($column == 'pago_id'){                
+                   
+                    if (!strpos($joinPagos, 'tbl_pago')) {
+                        $joinPagos .= ' JOIN tbl_pago on tbl_pago.id = pago_id AND ( tbl_pago.tipo '.$comparator.' '.$value.' )';
+                    }else{
+                        $joinPagos = str_replace(")", $logicOp.' tbl_pago.tipo '.$comparator.' '.$value.' )', $joinPagos) ; 
+                    }           
+                    
+                    continue;
+                }
+                
+                if($column == 'user_id'){
+                    
+                    $rest = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
+                    
+                    if (!strpos($joinUsers, 'tbl_users')) {
+                        $joinUsers .= ' JOIN tbl_users on tbl_users.id = user_id AND ( tbl_users.username '.$rest.' )';
+                    }else{
+                        $joinUsers = str_replace(")", $logicOp.' tbl_users.username '.$rest.' )', $joinUsers) ; 
+                    }  
+                    
+                    continue;
+                }
+                
+                if($column == 'codigo'){
+                    $comparator = ($comparator == '=') ? "= " : "";
+                    
+                    $criteria->compare($column, $comparator.$value,
+                        true, $logicOp);
+                    
+                    continue;
+                }
+                
+                $criteria->compare($column, $comparator." ".$value,
+                        false, $logicOp);
+                
+//                $filters['fields'][$i];
+//                $filters['ops'][$i];
+//                $filters['vals'][$i];
+//                $filters['rels'][$i];
+            }
+                                   
+            
+            //$criteria->select = 'nelson';
+            $criteria->join .= $joinPagos;
+            $criteria->join .= $joinUsers;
+            $criteria->join .= $joinLooks;
+            $criteria->having .= $havingLooks;                          
+            
+            echo "Criteria:";
+            
+            echo "<pre>";
+            print_r($criteria->toArray());
+            echo "</pre>"; 
+//            exit();
+
+
+            return new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+            ));
+       }
 
          
 }

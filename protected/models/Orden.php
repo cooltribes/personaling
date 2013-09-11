@@ -304,9 +304,7 @@ class Orden extends CActiveRecord
                     continue;
                 }
                 
-                
-                
-                $criteria->compare($column, $comparator." ".$value,
+                $criteria->compare('t.'.$column, $comparator." ".$value,
                         false, $logicOp);
                 
 //                $filters['fields'][$i];
@@ -314,22 +312,7 @@ class Orden extends CActiveRecord
 //                $filters['vals'][$i];
 //                $filters['rels'][$i];
             }
-            
-//            $criteria->select = Orden::model()->getAttributes();
-//            
-//            $attr = Orden::model()->getAttributes();
-//            $cadena = '';
-//            foreach ($attr as $key => $value){
-//                $cadena .= 't.'.$key.', ' ;
-//              //echo "uno -> ".$key;
-////                echo "<pre>";
-////                print_r($value);
-////                echo "</pre>"; 
-//                
-//            }
-//            $cadena[strlen($cadena) - 1] = '';
-//            $cadena[strlen($cadena) - 2] = '';
-                       
+                                   
             
             $criteria->select = 't.*';
             $criteria->join .= $joinPagos;
@@ -345,13 +328,6 @@ class Orden extends CActiveRecord
 //            exit();
 //            echo "Condicion: ".$criteria->condition;
 //            
-           
-
-//            $criteria->join = 'JOIN tbl_users ON tbl_users.id = t.user_id AND (t.id LIKE "%' . $query . '%" OR tbl_users.username LIKE "%' . $query . '%" )';
-
-            //	$criteria->addCondition('t.id LIKE :valor','OR');
-            //	$criteria->addCondition('tbl_users.username LIKE :valor','OR');
-            // 	$criteria->params = array(":valor" => $query);
 
             return new CActiveDataProvider($this, array(
                 'criteria' => $criteria,

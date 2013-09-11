@@ -133,12 +133,10 @@ echo $num;
 		
 	</div>
     </div>
-    <div class="span3">
-
-       <?php $select=''; echo CHtml::dropDownList('listname', $select, 
-              array('M' => 'Male', 'F' => 'Female'),
-              array('empty' => '(Filtros Preestablecidos)')); 
-              array('class'=>'span3')?>
+    <div class="span3">   
+        
+        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 2'),
+                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
 
     </div>
     <div class="span2"><a href="#" class="btn">Crear nuevo filtro</a></div>

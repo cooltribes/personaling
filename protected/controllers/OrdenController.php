@@ -136,7 +136,7 @@ class OrdenController extends Controller
                             if (!$filter) {
                                 $filter = new Filter;
                                 $filter->name = $_POST['name'];
-
+                                $filter->type = 1;
                                 if ($filter->save()) {
                                     for ($i = 0; $i < count($filters['fields']); $i++) {
 
@@ -174,6 +174,7 @@ class OrdenController extends Controller
                                     $detail->delete();
                                 }
                                 
+                                //Crear los nuevos
                                 for ($i = 0; $i < count($filters['fields']); $i++) {
 
                                     $filterDetails[] = new FilterDetail();

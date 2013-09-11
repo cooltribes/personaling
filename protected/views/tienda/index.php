@@ -142,6 +142,8 @@
           <p></p>
           <div class="input-append">
             <input id="busqueda" name="busqueda" type="text" placeholder="Buscar por palabras clave" width=223px>
+             <input id="usid" name="usid" value="<?php echo Yii::app()->user->id; ?>" style="display:none"/>
+       
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
         </form>
@@ -162,7 +164,7 @@
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('tienda/filtrar2') . "',
-				data: ajaxRequest}
+							data: ajaxRequest}
 				
 				)
 				},

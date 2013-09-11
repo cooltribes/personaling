@@ -178,6 +178,20 @@ class TiendaController extends Controller
 				$producto->nombre = $_POST['busqueda'];
 				Yii::app()->getSession()->add('nombre', $_POST['busqueda']);
 				Yii::app()->getSession()->add('valor',1);
+				
+				
+				
+		
+					$key=new Keyword;
+					$key->busqueda=$_POST['busqueda'];
+					if(isset($_POST['usid']))					
+						$key->user_id=$_POST['usid'];
+					else
+						$key->user_id=0;
+					$key->save();
+					
+				
+				
 			}
 
 			if( isset($_GET['Producto_page']) )

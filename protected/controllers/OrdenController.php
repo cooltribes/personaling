@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','validar','enviar','factura','mensajes','entregar'),
+				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -284,7 +284,14 @@ class OrdenController extends Controller
 	public function actionModalventas($id){
 		
 			
-		
+	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;		
 	
 		$ordhasptc= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$id));
 		$productos=Array();
@@ -333,7 +340,7 @@ class OrdenController extends Controller
 			 $marca=Marca::model()->findByPk($producto->marca_id);
 			 $ptc=PrecioTallaColor::model()->findByPk($idp[1]);
 			 $talla=Talla::model()->findByPk($ptc->talla_id);
-			 $color=Talla::model()->findByPk($ptc->color_id);
+			 $color=Color::model()->findByPk($ptc->color_id);
 			 
 			 
 			  $html=$html.'<tr>';
@@ -472,6 +479,10 @@ class OrdenController extends Controller
 		
 		$this->render('detalle', array('orden'=>$orden,));
 	}
+
+    public function actionDevoluciones(){
+        $this->render('devoluciones');
+    }
 	
 	public function actionFactura($id)
 	{
@@ -902,18 +913,23 @@ class OrdenController extends Controller
 		
 		if($orden->save())
 			{
-				/*	
+				
 				//agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 				$estado = new Estado;
 										
-				$estado->estado = 4;
-				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+				$estado->estado = 8;
+				$estado->user_id = Yii::app()->user->id; // 
 				$estado->fecha = date("Y-m-d H:i:s");
 				$estado->orden_id = $orden->id;
 						
-				if($estado->save())
+					if($estado->save())
 				{
-						$user = User::model()->findByPk($orden->user_id);		
+					Yii::app()->user->setFlash('success',"La Entrega fué Registrada");
+					
+					echo "ok";	
+						
+					
+					/*	$user = User::model()->findByPk($orden->user_id);		
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
@@ -954,11 +970,14 @@ class OrdenController extends Controller
 					
 					echo "ok";
 				}*/
-			Yii::app()->user->setFlash('success', 'Se ha registrado la entrega de la orden.');
 					
-					echo "ok";
-			}	
-		
+			
+			}
+		else{
+			
+			Yii::app()->user->setFlash('success',"No se pudo registrar la Entrega");
+		}	
+		}
 	}
 
 

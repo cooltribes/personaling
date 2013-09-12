@@ -31,6 +31,12 @@
 		if($data->estado == 7)
 			echo "<td>Pago Insuficiente</td>";
 		
+		if($data->estado == 8)
+			echo "<td>Orden Entregada</td>";
+		
+		if($data->estado == 9)
+			echo "<td>Orden Devuelta</td>";
+		
 		// agregar demas estados
 		
 		echo "<td>

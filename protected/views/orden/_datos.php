@@ -96,7 +96,8 @@ function modal(id){
 
 	$.ajax({
 		type: "post",
-		'url' :'/site/orden/modalventas/'+id,
+		//'url' :'/site/orden/modalventas/'+id,
+		'url' : '<?php echo $this->createUrl('orden/modalventas',array('id'=>$data->id)); ?>',
 		data: { 'ord':id}, 
 		'success': function(data){
 			$('#myModal').html(data);

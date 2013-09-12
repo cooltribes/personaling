@@ -34,6 +34,15 @@
 						});
 					 </script>";
 					 */
+						 $script = "
+							var load_handler = function() {
+							    $('#imgloading".$look->id."').hide();
+							    $(this).show();
+							}
+							$('#"."imglook".$look->id."').filter(function() {
+							    return this.complete;
+							}).each(load_handler).end().load(load_handler);						 
+						 ";					 
   					?>
         <div class="hidden-phone margin_top_small vcard row-fluid">
           <div class="span2  ">

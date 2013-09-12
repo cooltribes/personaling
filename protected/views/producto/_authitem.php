@@ -55,6 +55,13 @@ $sql = "select sum(c.cantidad) from tbl_producto a, tbl_precioTallaColor b, tbl_
 		 
 $vend = Yii::app()->db->createCommand($sql)->queryScalar();
 
+
+$sql= "select sum(precio) from tbl_orden_has_productotallacolor where tbl_orden_has_productotallacolor.preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id =".$data->id.")";
+$totventas = Yii::app()->db->createCommand($sql)->queryScalar();
+
+
+
+
 $total = $num - $vend;
 	
 		echo "<td>".$total."</td>"; // total
@@ -65,7 +72,7 @@ if($vend!="")
 else
 	echo "<td> 0 </td>";
 	
-   	echo "<td></td>"; // ventas bs
+   	echo "<td>".number_format($totventas, 2, ',', '.')."</td>"; // ventas bs
    	
    if($data->estado==0)
 		echo "<td> Activo </td>";

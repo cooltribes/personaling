@@ -85,7 +85,7 @@ $looks_recomendados = $look->match($usuario);
       <section class="bg_color3 margin_bottom_small padding_small box_1">
 
           <fieldset>
-            <legend><? 	if($model->isNewRecord)
+            <legend><?php 	if($model->isNewRecord)
             				echo 'Crear nueva dirección';
 						else
 							echo 'Editar dirección';

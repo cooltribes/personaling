@@ -284,7 +284,14 @@ class OrdenController extends Controller
 	public function actionModalventas($id){
 		
 			
-		
+	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;		
 	
 		$ordhasptc= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$id));
 		$productos=Array();
@@ -333,7 +340,7 @@ class OrdenController extends Controller
 			 $marca=Marca::model()->findByPk($producto->marca_id);
 			 $ptc=PrecioTallaColor::model()->findByPk($idp[1]);
 			 $talla=Talla::model()->findByPk($ptc->talla_id);
-			 $color=Talla::model()->findByPk($ptc->color_id);
+			 $color=Color::model()->findByPk($ptc->color_id);
 			 
 			 
 			  $html=$html.'<tr>';

@@ -366,6 +366,8 @@ public function actionColores(){
 	Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 	Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
 	Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	
 	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['color_id'])))->findAll();
 	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);	
@@ -382,6 +384,8 @@ public function actionCategorias(){
 		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
 		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	  if ($categorias){
 	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	  }else {
@@ -404,6 +408,8 @@ public function actionCategorias(){
 			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
 			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 		 	
 		 	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);
 		  

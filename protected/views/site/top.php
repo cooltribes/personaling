@@ -43,12 +43,24 @@ function str_lreplace($search, $replace, $subject)
                                 <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "370", "height" => "400", 'class'=>'')); ?>
                                 <?php
                                 //"style"=>"display: none",              	
+                                    /*
                                     $script = "$('#"."imglook".$look->id."').load(function(){
   												//alert('cargo');
   												$('#imgloading".$look->id."').hide();
   												$(this).show();
   												//$('#loader_img').hide();
 									});";
+									 * 
+									 */
+									 $script = "
+										var load_handler = function() {
+										    $('#imgloading".$look->id."').hide();
+										    $(this).show();
+										}
+										$('#"."imglook".$look->id."').filter(function() {
+										    return this.complete;
+										}).each(load_handler).end().load(load_handler);						 
+									 ";									 
               						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
               					?>   
                                 <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>

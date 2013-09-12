@@ -223,7 +223,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				}
 		  	?>    
       
-     <?
+     <?php
      	if($orden->estado == 4) // enviado
      	{
      ?>      

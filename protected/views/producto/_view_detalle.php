@@ -295,8 +295,9 @@
               <div class="tab-pane active" id="descripcion">
                 <div class="clearfix row-fluid">   
                   <div class="span4">
-                  <p class="margin_left_small"><strong><?php echo $marca->nombre; ?></strong></p>                    
+                  <p class="margin_left_small"><strong><?php echo (null!==$marca)?$marca->nombre:'N/D'; ?></strong></p>                    
                   <?php
+                  if (null!==$marca)
                   echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65","class" => "margin_left_small"));
                   ?>   
                   </div>
@@ -313,12 +314,13 @@
 				<div class="row-fluid">
 					<div class="span3">
 					<?php
+					if (null!==$marca)
 	                echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65"));
 					?>   
 					</div>               
                   	<div class="span9">
-    	          		<p><strong><?php echo $marca->nombre; ?></strong></p>
-	                    <p><strong>Descripción</strong>: <?php echo $marca->descripcion; ?></p> 
+    	          		<p><strong><?php echo (null!==$marca)?$marca->nombre:'N/D'; ?></strong></p>
+	                    <p><strong>Descripción</strong>: <?php echo (null!==$marca)?$marca->descripcion:'N/D'; ?></p> 
 						<p><strong>Peso</strong> <?php echo  $producto->peso; ?> </p>
                   	</div>
 				</div>

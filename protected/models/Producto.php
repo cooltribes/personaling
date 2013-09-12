@@ -106,7 +106,7 @@ class Producto extends CActiveRecord
 			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
                 'select'=> 'SUM(cantidad)',
                 ),
-            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),                    
             
 		);
 	}
@@ -691,7 +691,9 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
             $havingLooks = '';
             $joinLooks = '';
             $havingLooks = '';
-
+            $criteria->with = array();
+            $criteria->select = array();
+            $criteria->select[] = "t.*";
             for ($i = 0; $i < count($filters['fields']); $i++) {
                 
                 $column = $filters['fields'][$i];
@@ -768,59 +770,98 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                     continue;
                 }
                 
-                if($column == 'categoria'){
+                if($column == 'categoria')
+                {
                     
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
                     $criteria->compare('categorias.nombre', $value,
                         true, $logicOp);
                     
+                    if(!in_array('categorias', $criteria->with))
+                    {
+                        $criteria->with[] = 'categorias';
+                    }
+                    
                     continue;
                 }
                 
-                if($column == 'sku'){
+                if($column == 'sku')
+                {
                     
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
                     $criteria->compare('preciotallacolor.sku', $value,
                         true, $logicOp);
                     
+                    if(!in_array('preciotallacolor', $criteria->with))
+                    {
+                        $criteria->with[] = 'preciotallacolor';
+                    }
+                   
+                    
                     continue;
                 }
                 
                 if($column == 'precios'){
                     
-                    //$value = ($comparator == '=') ? "=".$value."" : $value;
-                    
                     $criteria->compare('precios.precioVenta', $comparator." ".$value,
                         false, $logicOp);
+                    
+                    if(!in_array('precios', $criteria->with))
+                    {
+                        $criteria->with[] = 'precios';
+                    }
                     
                     continue;
                 }
                 
-                $criteria->compare($column, $comparator." ".$value,
+                if($column == 'total'){
+                    
+//                    $criteria->compare('preciotallacolorSum.total', $comparator." ".$value,
+//                        false, $logicOp);
+                    
+                    if(!in_array('preciotallacolor', $criteria->with))
+                    {
+                        $criteria->with[] = 'preciotallacolor';
+                    }
+                    
+                    if(!in_array('SUM(preciotallacolor.cantidad) as total', $criteria->select))
+                    {
+                        $criteria->select[] = 'SUM(preciotallacolor.cantidad) as total';
+                        $criteria->having .= "total ".$comparator." ".$value;
+                        //$criteria->compare('total', $comparator.$value);
+                               
+                        $criteria->group .= "t.id";
+                    }
+                    
+                    
+                    
+                    continue;
+                }
+                
+                
+                
+                $criteria->compare("t.".$column, $comparator." ".$value,
                         false, $logicOp);
                 
-//                $filters['fields'][$i];
-//                $filters['ops'][$i];
-//                $filters['vals'][$i];
-//                $filters['rels'][$i];
             }
                                    
             
-            //$criteria->select = 'nelson';
+            //$criteria->select = array('t.*', 'SUM(preciotallacolor.cantidad) as total');
             $criteria->join .= $joinPagos;
             $criteria->join .= $joinUsers;
             $criteria->join .= $joinLooks;
             $criteria->having .= $havingLooks;  
-            $criteria->with = array('categorias', 'preciotallacolor', 'precios');
+            //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
             $criteria->together = true;
+            $criteria->compare('t.status', '1'); //siempre los no eliminados
             
-            echo "Criteria:";
-            
-            echo "<pre>";
-            print_r($criteria->toArray());
-            echo "</pre>"; 
+//            echo "Criteria:";
+//            
+//            echo "<pre>";
+//            print_r($criteria->toArray());
+//            echo "</pre>"; 
 //            exit();
 
 

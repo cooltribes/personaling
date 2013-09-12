@@ -704,12 +704,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                    $logicOp = 'AND'; 
                 }else{                
                     $logicOp = $filters['rels'][$i-1];                
-                }                
-                
-                if($column == 'fecha'){
-                    $value = strtotime($value);
-                    $value = date('Y-m-d H:i:s', $value);
-                }
+                }  
                 
                 if($column == 'looks'){
                     
@@ -761,7 +756,9 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                     continue;
                 }
                 
-                if($column == 'codigo'){
+                /*Productos*/
+                if($column == 'codigo')
+                {
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
                     $criteria->compare($column, $value,
@@ -803,7 +800,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                     continue;
                 }
                 
-                if($column == 'precios'){
+                if($column == 'precios')
+                {
                     
                     $criteria->compare('precios.precioVenta', $comparator." ".$value,
                         false, $logicOp);
@@ -816,7 +814,29 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                     continue;
                 }
                 
-                if($column == 'total'){
+                if($column == 'total')
+                {
+                                        
+                    if(!in_array('preciotallacolor', $criteria->with))
+                    {
+                        $criteria->with[] = 'preciotallacolor';
+                    }
+                    
+                    if(!in_array('SUM(preciotallacolor.cantidad) as total', $criteria->select))
+                    {
+                        $criteria->select[] = 'SUM(preciotallacolor.cantidad) as total';                        
+                        //$criteria->compare('total', $comparator.$value);                               
+                        $criteria->group .= "t.id";
+                        $logicOp = "";
+                    }                    
+                    
+                    $criteria->having .= " ".$logicOp." total ".$comparator." ".$value;
+                    
+                    continue;
+                }
+                
+                if($column == 'ventas')
+                {
                     
 //                    $criteria->compare('preciotallacolorSum.total', $comparator." ".$value,
 //                        false, $logicOp);
@@ -840,7 +860,11 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                     continue;
                 }
                 
-                
+                if($column == 'fecha')
+                {
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
                 
                 $criteria->compare("t.".$column, $comparator." ".$value,
                         false, $logicOp);

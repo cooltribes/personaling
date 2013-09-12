@@ -50,7 +50,7 @@
                                 'total' => 'Cantidad Total',
                                 'disponible' => 'Cantidad Disponible',
                                 'vendida' => 'Cantidad Vendida',
-                                'id' => 'Ventas',
+                                'ventas' => 'Ventas',
                                 'estado' => 'Estado',
                                 'fecha' => 'Fecha de Carga',
                                 'marca_id' => 'Marca',

@@ -189,9 +189,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						?>
 						
 					 	<td width='8%'>
-					 		<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
-							<input type='text' name="cant[<?php echo $productotallacolor->preciotallacolor_id; ?>][<?php echo $look->id; ?>]" maxlength='2' placeholder='Cant.' value='<?php echo $productotallacolor->cantidad; ?>' class='span1 cantidades'/>
-			            	<a id=<?php echo $productotallacolor->preciotallacolor_id; ?> onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+					 		<input type="hidden" value="<?php echo $detalles->cantidad; ?>" />
+							<input type='text' name="cant[<?php echo $detalles->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $detalles->cantidad; ?>' class='span1 cantidades'/>
+			            	<a id=<?php echo $detalles->preciotallacolor_id; ?> onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	                    	
 	                    </td>
 	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $detalles->preciotallacolor_id; ?>)' id='elim<?php echo $detalles->preciotallacolor_id; ?>'>&times;</td>

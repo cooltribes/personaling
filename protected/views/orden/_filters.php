@@ -25,7 +25,7 @@
     
     
 
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersVentas.js");
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'action' => Yii::app()->createUrl($this->route),

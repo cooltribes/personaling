@@ -53,7 +53,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 		)); ?>
             <legend>Listado de Categorías</legend>
             <div class="span6">
-              <?
+              <?php
                $cat = Categoria::model()->findAllByAttributes(array('id'=>'1','padreId'=>'0'));
 
 

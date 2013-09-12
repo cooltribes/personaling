@@ -53,7 +53,7 @@ array(
                'action'=>Yii::app()->createUrl('color/upload'),
                'allowedExtensions'=>array("jpg"),//array("jpg","jpeg","gif","exe","mov" and etc...
                'sizeLimit'=>10*1024*1024,// maximum file size in bytes
-               'minSizeLimit'=>10*1024,// minimum file size in bytes
+               'minSizeLimit'=>1024,// minimum file size in bytes
                'onComplete'=>"js:function(id, fileName, responseJSON){ $('#Color_path_image').val(fileName); }",
                //'messages'=>array(
                //                  'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",

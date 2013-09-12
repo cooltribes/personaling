@@ -25,7 +25,7 @@
     
     
 
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersProductos.js");
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'action' => Yii::app()->createUrl($this->route),
@@ -46,10 +46,10 @@
                     <div class="controls" >
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
-                                'estado' => 'Categoría',
-                                'fecha' => 'SKU',
-                                'looks' => 'Referencia',
-                                'prendas' => 'Precio',
+                                'categoria' => 'Categoría',
+                                'sku' => 'SKU',
+                                'codigo' => 'Referencia',
+                                'precios' => 'Precio',
                                 'total' => 'Cantidad Total',
                                 'pago_id' => 'Cantidad Disponible',
                                 'user_id' => 'Cantidad Vendida',
@@ -118,7 +118,7 @@
         
         e.preventDefault(); 
         
-        search('<?php echo CController::createUrl('orden/admin') ?>');
+        search('<?php echo CController::createUrl('producto/admin') ?>');
         
     });
     
@@ -127,7 +127,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>', true);
+        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', true);
             
     });
     
@@ -136,14 +136,14 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('orden/admin') ?>', false);
+        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', false);
             
     });
     
     //Seleccionar un filtro preestablecido
     $("#all_filters").change(function(){
 	
-        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('orden/admin') ?>');        	
+        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('producto/admin') ?>');        	
 	
     });
     

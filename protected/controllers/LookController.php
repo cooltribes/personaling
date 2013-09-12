@@ -848,8 +848,16 @@ if(isset($_POST['buscar_look']))
 			if(isset($like)) // si ya le dio like
 			{
 				$like->delete();
+				// echo "borrado";
 				
-				echo "borrado";				
+				$total = LookEncantan::model()->countByAttributes(array('look_id'=>$_POST['idLook']));
+				
+				echo CJSON::encode(array( 
+					'mensaje'=> 'borrado',
+					'total'=> $total
+				));
+				exit;
+				
 			}
 			else // esta logueado y es un like nuevo
 			{
@@ -859,7 +867,19 @@ if(isset($_POST['buscar_look']))
 				$encanta->user_id = Yii::app()->user->id;
 				
 				if($encanta->save())
-					echo "ok"; // guardó y le encantó	
+				{
+					// echo "ok"; // guardó y le encantó	
+					
+					$total = LookEncantan::model()->countByAttributes(array('look_id'=>$_POST['idLook']));	
+				
+					echo CJSON::encode(array(
+						'mensaje'=> 'ok',
+						'total'=> $total
+					));
+					exit;
+
+				}
+					
 			}
 		}
 		else

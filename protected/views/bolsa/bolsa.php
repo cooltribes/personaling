@@ -95,6 +95,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                   <td>Bs. <?php echo $pre; ?></td>
                   
 				<td width='8%'>
+					<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
 					<input type='text' name="cant[<?php echo $productotallacolor->preciotallacolor_id; ?>][<?php echo $look->id; ?>]" maxlength='2' placeholder='Cant.' value='<?php echo $productotallacolor->cantidad; ?>' class='span1 cantidades'/>
 	            	<a id=<?php echo $productotallacolor->preciotallacolor_id; ?> onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	            	
@@ -187,8 +188,12 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					 	echo "<td>Bs. ".$pre."</td>";
 						?>
 						
-					 	<td width='8%'><input type='text' name="cant[<?php echo $detalles->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $detalles->cantidad; ?>' class='span1 cantidades'/>
-	                    <a id=<?php echo $detalles->preciotallacolor_id; ?> onclick='actualizar(<?php echo $detalles->preciotallacolor_id; ?>)' class='btn btn-mini'>Actualizar</a></td>
+					 	<td width='8%'>
+					 		<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
+							<input type='text' name="cant[<?php echo $productotallacolor->preciotallacolor_id; ?>][<?php echo $look->id; ?>]" maxlength='2' placeholder='Cant.' value='<?php echo $productotallacolor->cantidad; ?>' class='span1 cantidades'/>
+			            	<a id=<?php echo $productotallacolor->preciotallacolor_id; ?> onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+	                    	
+	                    </td>
 	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $detalles->preciotallacolor_id; ?>)' id='elim<?php echo $detalles->preciotallacolor_id; ?>'>&times;</td>
 	                	</tr>
 	                	
@@ -430,9 +435,17 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 <!-- /container --> 
 
 <script>
-	$('.cantidades').live('keyup',function(){
+	$('.cantidades').live('keyup',function(e){
 		
-		$(this).next("a").show();
+		var code = e.which; // recommended to use e.which, it's normalized across browsers
+    	if(code==13){
+    		actualizar($(this).next("a"));	
+    	} else {
+			if ($(this).val()!=$(this).prev().val())
+				$(this).next("a").show();
+			else
+				$(this).next("a").hide(); 
+		}
 	});
 	function actualizartodos()
 	{

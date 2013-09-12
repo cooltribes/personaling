@@ -461,10 +461,10 @@ if(!Yii::app()->user->isGuest){
           </div>
         <hr/>
         <p>Nos Avalan</p>
-        <a href="http://ve.wayra.org/es/startup/personaling"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
-        <a href="#"><img  src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
+        <a href="http://ve.wayra.org/es/startup/personaling"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
+        <a href="#"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
         <p class="margin_top_small">Afiliados a</p>
-        <img class="margin_top_small_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners">
+        <img class="margin_top_small_minus" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners">
       </div>
     </div>
     <hr/>

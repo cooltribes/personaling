@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','validar','enviar','factura','mensajes','entregar'),
+				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -472,6 +472,10 @@ class OrdenController extends Controller
 		
 		$this->render('detalle', array('orden'=>$orden,));
 	}
+
+    public function actionDevoluciones(){
+        $this->render('devoluciones');
+    }
 	
 	public function actionFactura($id)
 	{

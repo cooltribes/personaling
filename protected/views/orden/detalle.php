@@ -511,7 +511,7 @@ $usuario = User::model()->findByPk($orden->user_id);
   <div class="row">
     <div class="span12">
    <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped" align="center">
         <tr>
           <th scope="col">Referencia</th>
           <th scope="col">Nombre de la prenda</th>
@@ -524,7 +524,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Accion</th>
         </tr>
         <?php
-        
+        	$row=0;
         	$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id)); // productos de la orden
         	
 			foreach ($productos as $prod) {
@@ -536,13 +536,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 						$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
 						$precio = $lookpedido->getPrecio(false);
 						
-							echo("<tr>");
-							echo("<td><strong>Referencia</strong></td>");// Referencia
-							echo("<td><strong>".$lookpedido->title."</strong></td>"); // nombre
-
-							echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
-							echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-							echo("<td>".$prod->precio."</td>"); // precio 
+							echo("<tr style='outline: 1px solid #5e516c; border: 1px solid #5e516c'>"); // Aplicar fondo de tr, eliminar borde**
+							echo("<td></td>");
+							echo("<td colspan='6'><strong>".$lookpedido->title."</strong></td>");// Referencia
+							
+							echo("<td>".number_format($prod->precio, 2, ',', '.')."</td>"); // precio 
 							
 								
 							
@@ -574,36 +572,50 @@ $usuario = User::model()->findByPk($orden->user_id);
 							");
 							
 							echo("</tr>");	
-							$prodslook= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$prod->tbl_orden_id, 'look_id'=>$prod->look_id));
+							$prodslook= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$prod->tbl_orden_id, 'look_id'=>$prod->look_id), array('order'=>'look_id ASC'));
 							foreach($prodslook as $prodlook){
 								$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook->preciotallacolor_id));
 								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
-								echo $prdlk->id;
+								$marca=Marca::model()->findByPk($prdlk->marca_id);
+								$talla=Talla::model()->findByPk($ptclk->talla_id);
+								$color=Color::model()->findByPk($ptclk->color_id);
+							
 								echo("<tr>");
-								echo("<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$prdlk->nombre."</td>"); // nombre
+								echo("<td>".$prdlk->codigo."</td>"); // nombre
+								echo("<td>".$prdlk->nombre."</td>"); // nombre
+								echo("<td>".$marca->nombre."</td>");
+								echo("<td>".$color->valor."</td>");
+								echo("<td>".$talla->valor."</td>");
 								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
 								echo("<td>".$prodlook->cantidad."</td>"); // cantidad en pedido
-								echo("<td>".$prodlook->precio."</td>"); // precio 
+								echo("<td></td>");//.$prodlook->precio."</td>"); // precio 
 								echo("<td></td></tr>");
 							}
+							
 							
 						
 					}
 					else // individual
 					{
+						if($row==0){
+								echo("<tr style='outline: 1px solid #5e516c; border: 1px solid #5e516c'><td colspan='9'>PRENDAS INDIVIDUALES</td></tr>");
+								$row=1;
+						}	
 						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 						$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
 						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
-						
+						$marca=Marca::model()->findByPk($indiv->marca_id);
+						$talla=Talla::model()->findByPk($ptc->talla_id);
+						$color=Color::model()->findByPk($ptc->color_id);
 						echo("<tr>");
-						echo("<td><strong>Referencia</strong></td>");// Referencia
+						echo("<td>".$indiv->codigo."</td>");// Referencia
 						echo("<td>".$indiv->nombre."</td>"); // nombre
-						echo("<td>Marca</td>");// Marca
-						echo("<td>Color</td>");// Color
-						echo("<td>Talla</td>");// Talla						
+						echo("<td>".$marca->nombre."</td>");
+						echo("<td>".$color->valor."</td>");
+						echo("<td>".$talla->valor."</td>");					
 						echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-						echo("<td>".$prod->precio."</td>"); // precio
+						echo("<td>".number_format($prod->precio, 2, ',', '.')."</td>"); // precio
 						/*
 						setlocale(LC_MONETARY, 've_VE');
 						$a = money_format('%i', $precio->precioVenta);
@@ -639,43 +651,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 							
 				
 			}
-        
-        ?>
 
-        <!-- Comienzo del resumen del pedido -->
-        <tr>
-          <th colspan="9" ><div class="text_align_right"><strong>Resumen</strong></div></th>
-        </tr>         
-        <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
-          <td > 0</td> 
-        </tr>  
-        <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>No. de Prendas</strong></div></td>
-          <td > 0</td>
-        </tr>
-        <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
-          <td >000,00 Bs</td>
-        </tr>  
-        <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
-          <td >000,00 Bs</td>
-        </tr>    
-        <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Descuento</strong></div></td>
-          <td >000,00 Bs</td>
-        </tr>  
-        <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Impuesto</strong></div></td>
-          <td >000,00 Bs</td>
-        </tr>   
-        <tr>
-          <th colspan="8" ><div class="text_align_right"><strong>Total</strong></div></th>
-          <th >000,00 Bs</th>
-        </tr>          
-      </table>
-      <?php
       $individuales=0;
 	  $looks=0;
       $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
@@ -692,6 +668,48 @@ $usuario = User::model()->findByPk($orden->user_id);
 		}
       
       ?>
+        
+
+        <!-- Comienzo del resumen del pedido -->
+        
+
+        
+        
+        
+        
+        <tr>
+          <th colspan="9" ><div class="text_align_right"><strong>Resumen</strong></div></th>
+        </tr>         
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
+          <td ><?php echo $looks; ?></td> 
+        </tr>  
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>No. de Prendas Individuales</strong></div></td>
+          <td ><?php echo $individuales; ?></td>
+        </tr>
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
+          <td >Bs. <?php echo number_format($orden->subtotal, 2, ',', '.'); ?></td>
+        </tr>  
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
+          <td >Bs. <?php echo number_format($orden->envio+$factura->orden->seguro, 2, ',', '.'); ?></td>
+        </tr>    
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Descuento</strong></div></td>
+          <td >Bs. <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>
+        </tr>  
+        <tr>
+          <td colspan="8" ><div class="text_align_right"><strong>Impuesto</strong></div></td>
+          <td >Bs. <?php echo number_format($orden->iva, 2, ',', '.'); ?></td>
+        </tr>   
+        <tr>
+          <th colspan="8" ><div class="text_align_right"><strong>Total</strong></div></th>
+          <th >Bs. <?php echo number_format($orden->total, 2, ',', '.'); ?></th>
+        </tr>          
+      </table>
+  
       
      <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div>
 <!--     <div class="span5">

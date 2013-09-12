@@ -232,8 +232,8 @@ class TiendaController extends Controller
 	
 			$dataProvider = $producto->busqueda($todos);
 	
-			$this->render('doble',
-			array('doble'=>$producto,
+			$this->render('index',
+			array('index'=>$producto,
 			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 			));	
 			}
@@ -311,8 +311,8 @@ class TiendaController extends Controller
 				
 			$dataProvider = $producto->multipleColor($color,$categoria);
 		}
-		$this->render('doble',
-		array('doble'=>$producto,
+		$this->render('index',
+		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
 		

@@ -696,7 +696,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>  
         <tr>
           <td colspan="8" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
-          <td >Bs. <?php echo number_format($orden->envio+$factura->orden->seguro, 2, ',', '.'); ?></td>
+          <td >Bs. <?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?></td>
         </tr>    
         <tr>
           <td colspan="8" ><div class="text_align_right"><strong>Descuento</strong></div></td>

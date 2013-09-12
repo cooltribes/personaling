@@ -906,18 +906,23 @@ class OrdenController extends Controller
 		
 		if($orden->save())
 			{
-				/*	
+				
 				//agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 				$estado = new Estado;
 										
-				$estado->estado = 4;
-				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+				$estado->estado = 8;
+				$estado->user_id = Yii::app()->user->id; // 
 				$estado->fecha = date("Y-m-d H:i:s");
 				$estado->orden_id = $orden->id;
 						
-				if($estado->save())
+					if($estado->save())
 				{
-						$user = User::model()->findByPk($orden->user_id);		
+					Yii::app()->user->setFlash('success',"La Entrega fué Registrada");
+					
+					echo "ok";	
+						
+					
+					/*	$user = User::model()->findByPk($orden->user_id);		
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
@@ -958,11 +963,14 @@ class OrdenController extends Controller
 					
 					echo "ok";
 				}*/
-			Yii::app()->user->setFlash('success', 'Se ha registrado la entrega de la orden.');
 					
-					echo "ok";
-			}	
-		
+			
+			}
+		else{
+			
+			Yii::app()->user->setFlash('success',"No se pudo registrar la Entrega");
+		}	
+		}
 	}
 
 

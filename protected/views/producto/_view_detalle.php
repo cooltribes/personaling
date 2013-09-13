@@ -340,32 +340,38 @@
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
               Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
           </div>
-          <div class="braker_horz_top_1 addthis"> 
+          <div class="braker_horz_top_1 addthis row-fluid"> 
           	
           	<?php
           		if(isset($like)) // le ha dado like 
 				{
           	?>
-            <div class="margin_bottom_medium"><a class="btn-small btn btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+            <div class="span4"><a class="btn-mini btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
             	<?php
 				}
 				else {
 				?>
-			 <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+			 <div class="span4"><a class="btn-mini" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
 				<?php
 				}
 				?>
-				<span id="total-likes">
+				<small id="total-likes">
 				<?php 
             	// total de likes 
                     $cuantos = UserEncantan::model()->countByAttributes(array('producto_id'=>$producto->id));  	
 					echo $cuantos;
             	?>
-        </span>
+        </small>
             </div>
+            <div class="span2">
             <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> 
+            </div>
+            <div class="span2">
             <a class="addthis_button_tweet"></a>
-            <a class="addthis_button_pinterest_pinit boton_pinterest"></a>            
+            </div>
+            <div class="span2">
+            <a class="addthis_button_pinterest_pinit boton_pinterest"></a>       
+            </div>     
             <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
           </div>
@@ -769,14 +775,17 @@ $('.imagen_principal').zoom({url: imgZ});
      	var image = $("#principal");
      	var thumbnail = $(this).attr("src");
      	
+     	var cambio = thumbnail.replace("_x90.",".");
+     	
      	// primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
-     	var source = thumbnail;	
+     	var source = cambio;
 		var imgZ = source.replace(".","_orig.");
+		
      	$('.imagen_principal').zoom({url: imgZ});
           
         // cambio de la principal  	
      	$("#principal").fadeOut("slow",function(){
-     		$("#principal").attr("src", thumbnail);
+     		$("#principal").attr("src", cambio);
      	});
 
       	$("#principal").fadeIn("slow",function(){});
@@ -981,10 +990,11 @@ $('.imagen_principal').zoom({url: imgZ});
 	
 	function minis(idImagen){		
 		var thumbnail = $('#thumb'+idImagen).attr("src");
-		//alert(thumbnail);
 	    
+     	var cambio = thumbnail.replace("_x90.",".");
+
 	    // primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
-	    var source = thumbnail;
+	    var source = cambio;
 	    
 	    var n = source.split(".");
 		//alert(n[0]); 			  		
@@ -1000,7 +1010,7 @@ $('.imagen_principal').zoom({url: imgZ});
 
 		 // cambio de la principal  	 
 	     $("#principal").fadeOut("slow",function(){
-	     	$("#principal").attr("src", thumbnail);
+	     	$("#principal").attr("src", cambio);
 	     });
 	
 	     $("#principal").fadeIn("slow",function(){});

@@ -1,12 +1,13 @@
 <!--ontainer -->
 <div class="container margin_top">
-  <h1>Publicaciones de Prensa</h1>
+  <div class="page-header"><h1>Menciones en medios de comunicación</h1></div>
   <div class="row margin_top_large margin_bottom_large ">
     <div class="span12 ">
       <div class="row">
-        <article class="span6 margin_top_medium">
+        <article class="span6 ">
           <div class="row">
-            <img src="http://placehold.it/100x100" class="span1"/> 
+                        <img class="span1" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/globovision.jpeg" alt="Globovision"/>
+
             <blockquote> 
               <p class="span4">
                 <a href="http://globovision.com/articulo/wayra-acelerara-este-2013-tres-nuevos-proyectos-emprendedores">                  
@@ -23,9 +24,9 @@
             </blockquote>
           </div>
         </article>
-        <article class="span6 margin_top_medium">
+        <article class="span6 ">
           <div class="row">
-            <img src="http://placehold.it/100x100" class="span1"/>
+            <img class="span1" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/universal.jpeg" alt="El universal"/>
             <blockquote>
               <p class="span4">
                 <a href="http://www.eluniversal.com/universo-empresarial/130626/proyectos-emprendedores-de-wayra-imp">                  
@@ -39,12 +40,12 @@
                   </i>
                 </a>
               </p>
-            </blockquote>
+            </blockquote> 
           </div>
         </article>
-        <article class="span6 margin_top_medium">
+        <article class="span6 margin_top_large">
           <div class="row">
-            <img src="http://placehold.it/100x100" class="span1"/>
+            <img class="span1" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/onda.jpeg" alt="Onda La superestacion"/>
             <blockquote>
               <p class="span4">
                 <a href="http://ondalasuperestacion.com/2013/06/diseno-tecnologia-web-y-moda/">                  
@@ -61,9 +62,9 @@
             </blockquote>
           </div>
         </article>
-        <article class="span6 margin_top_medium">
+        <article class="span6 margin_top_large">
           <div class="row">
-            <img src="http://placehold.it/100x100" class="span1"/>
+            <img class="span1" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/onda.jpeg" alt="Onda la Superestacion"/>
             <blockquote>
               <p class="span4">
                 <a href="http://ondalasuperestacion.com/2013/07/personaling-proyecto-de-e-commerce-ganador-del-premio-wayra-2013/">                  
@@ -80,26 +81,11 @@
             </blockquote>
           </div>
         </article>
-        <article class="span6 margin_top_medium">
+        
+        <article class="span6 margin_top_large">
           <div class="row">
-            <img src="http://placehold.it/100x100" class="span1"/>
-            <blockquote>
-              <p class="span4">
-                <i> "Duis sollicitudin varius quam quis viverra. Nam in nisi dui. Nam suscipit quam sit amet justo ultricies placerat. Vivamus tristique nibh sit amet justo aliquet pellentesque" 
-                  <small>
-                    La Mega 102.1 en San Cristobal
-                    <cite title="Source Title">
-                    
-                    </cite>
-                  </small>
-                </i>
-              </p>
-            </blockquote>
-          </div>
-        </article>
-        <article class="span6 margin_top_medium">
-          <div class="row">
-            <img src="http://placehold.it/100x100" class="span1"/>
+                        <img class="span1" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/ojo.png" alt="Revista Ojo"/>
+
             <blockquote>
               <p class="span4">
                 <a href="http://revistaojo.com/2013/07/16/asesoria-de-moda-en-la-web-venezolana/">                  
@@ -118,6 +104,6 @@
         </article>        
       </div>
     </div>
-  </div>
+  </div></div>
 </div>
 <!-- /container

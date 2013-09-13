@@ -43,6 +43,7 @@ class Producto extends CActiveRecord
 	public $categoria_id="";
 	public $_precio = null;
 	
+        
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -106,7 +107,7 @@ class Producto extends CActiveRecord
 			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
                 'select'=> 'SUM(cantidad)',
                 ),
-            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),                    
             
 		);
 	}
@@ -685,13 +686,11 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 //            Yii::app()->end();
 
             $criteria = new CDbCriteria;
-            $joinPagos = '';
-            $joinUsers = '';
-            $joinLooks = '';
-            $havingLooks = '';
-            $joinLooks = '';
-            $havingLooks = '';
-
+            
+            $criteria->with = array();
+            $criteria->select = array();
+            $criteria->select[] = "t.*";
+            
             for ($i = 0; $i < count($filters['fields']); $i++) {
                 
                 $column = $filters['fields'][$i];
@@ -702,64 +701,11 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                    $logicOp = 'AND'; 
                 }else{                
                     $logicOp = $filters['rels'][$i-1];                
-                }                
+                }                  
                 
-                if($column == 'fecha'){
-                    $value = strtotime($value);
-                    $value = date('Y-m-d H:i:s', $value);
-                }
-                
-                if($column == 'looks'){
-                    
-                   if (!strpos($joinLooks, 'tbl_orden_has_productotallacolor')) {
-                        $joinLooks .= ' JOIN tbl_orden_has_productotallacolor as oprod ON oprod.tbl_orden_id = t.id AND oprod.look_id > 0';
-                        $criteria->group = 't.id';
-                        $havingLooks .= 'count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
-                   }else{
-                        $havingLooks .= ' '.$logicOp.' count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
-                   }  
-                                      
-                   continue;
-                }
-                
-                if($column == 'prendas'){
-                   
-                   if (!strpos($joinLooks, 'tbl_orden_has_productotallacolor')) {
-                        $joinLooks .= ' JOIN tbl_orden_has_productotallacolor as oprod ON oprod.tbl_orden_id = t.id AND oprod.look_id = 0';
-                        $criteria->group = 't.id';
-                        $havingLooks .= 'count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
-                   }else{
-                        $havingLooks .= ' '.$logicOp.' count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
-                   }   
-                   
-                    continue;
-                }
-                
-                if($column == 'pago_id'){                
-                   
-                    if (!strpos($joinPagos, 'tbl_pago')) {
-                        $joinPagos .= ' JOIN tbl_pago on tbl_pago.id = pago_id AND ( tbl_pago.tipo '.$comparator.' '.$value.' )';
-                    }else{
-                        $joinPagos = str_replace(")", $logicOp.' tbl_pago.tipo '.$comparator.' '.$value.' )', $joinPagos) ; 
-                    }           
-                    
-                    continue;
-                }
-                
-                if($column == 'user_id'){
-                    
-                    $rest = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
-                    
-                    if (!strpos($joinUsers, 'tbl_users')) {
-                        $joinUsers .= ' JOIN tbl_users on tbl_users.id = user_id AND ( tbl_users.username '.$rest.' )';
-                    }else{
-                        $joinUsers = str_replace(")", $logicOp.' tbl_users.username '.$rest.' )', $joinUsers) ; 
-                    }  
-                    
-                    continue;
-                }
-                
-                if($column == 'codigo'){
+                /*Productos*/
+                if($column == 'codigo')
+                {
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
                     $criteria->compare($column, $value,
@@ -768,59 +714,154 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                     continue;
                 }
                 
-                if($column == 'categoria'){
+                if($column == 'categoria')
+                {
                     
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
                     $criteria->compare('categorias.nombre', $value,
                         true, $logicOp);
                     
+                    if(!in_array('categorias', $criteria->with))
+                    {
+                        $criteria->with[] = 'categorias';
+                    }
+                    
                     continue;
                 }
                 
-                if($column == 'sku'){
+                if($column == 'sku')
+                {
                     
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
                     $criteria->compare('preciotallacolor.sku', $value,
                         true, $logicOp);
                     
-                    continue;
-                }
-                
-                if($column == 'precios'){
-                    
-                    //$value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare('precios.precioVenta', $comparator." ".$value,
-                        false, $logicOp);
+                    if(!in_array('preciotallacolor', $criteria->with))
+                    {
+                        $criteria->with[] = 'preciotallacolor';
+                    }
+                   
                     
                     continue;
                 }
                 
-                $criteria->compare($column, $comparator." ".$value,
+                if($column == 'precioVenta' || $column == 'precioDescuento')
+                {
+                    
+                    $criteria->compare('precios.'.$column, $comparator." ".$value,
+                        false, $logicOp);
+                    
+                    if(!in_array('precios', $criteria->with))
+                    {
+                        $criteria->with[] = 'precios';
+                    }
+                    
+                    continue;
+                }
+                
+                
+                if($column == 'total')
+                {
+                    
+                    //                    
+//                    if(!in_array('SUM(preciotallacolor.cantidad) as total', $criteria->select))
+//                    {
+//                        $criteria->select[] = 'SUM(preciotallacolor.cantidad) as total';                        
+//                        //$criteria->compare('total', $comparator.$value);                               
+//                        $criteria->group .= "t.id";
+//                        $logicOp = "";
+//                    }                    
+//                    
+//                    $criteria->having .= " ".$logicOp." total ".$comparator." ".$value;
+//                    $post_count_sql = "(select count(*) from $post_table pt where pt.author_id = t.id)";
+//                    if (!strpos($joinLooks, 'tbl_precioTallaColor')) {
+//                        $joinLooks .= ' JOIN tbl_precioTallaColor as preciotallacolor ON preciotallacolor.producto_id = t.id';
+//                        $criteria->select[] = 'SUM(preciotallacolor.cantidad) as total'; 
+//                        $criteria->group = 't.id';
+//                        $havingLooks .= 'total '.$comparator.' '.$value.'';
+//                    }else{
+//                        $havingLooks .= ' '.$logicOp.' count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
+//                    } 
+//                    if (!in_array('IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc', $criteria->select)) {
+//                        //$criteria->select[] = '(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) as total';
+//                        $criteria->select[] = '(select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id) as total';
+//                    }
+                    
+                    $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
+                            .$comparator.' '.$value.'');
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'disponible')
+                {
+                    
+                    $criteria->addCondition('
+                        IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
+                          - 
+                          IFNULL(
+                         (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                          where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                          orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
+                         0) '
+                            .$comparator.' '.$value.'');
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'vendida')
+                {
+                   
+                    $criteria->addCondition('(IFNULL(
+                        (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
+                        0)) '
+                    .$comparator.' '.$value.'');
+                    
+                    
+                    continue;
+                    
+                }                
+                
+                if($column == 'ventas')
+                {
+                    $criteria->addCondition('IFNULL(
+                        (select sum(o_ptc.precio * o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
+                        0)'
+                    .$comparator.' '.$value.'', $logicOp);                   
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'fecha')
+                {
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
+                
+                $criteria->compare("t.".$column, $comparator." ".$value,
                         false, $logicOp);
                 
-//                $filters['fields'][$i];
-//                $filters['ops'][$i];
-//                $filters['vals'][$i];
-//                $filters['rels'][$i];
             }
                                    
-            
-            //$criteria->select = 'nelson';
-            $criteria->join .= $joinPagos;
-            $criteria->join .= $joinUsers;
-            $criteria->join .= $joinLooks;
-            $criteria->having .= $havingLooks;  
-            $criteria->with = array('categorias', 'preciotallacolor', 'precios');
+             
+            //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
             $criteria->together = true;
+            $criteria->compare('t.status', '1'); //siempre los no eliminados
             
-            echo "Criteria:";
-            
-            echo "<pre>";
-            print_r($criteria->toArray());
-            echo "</pre>"; 
+//            echo "Criteria:";
+//            
+//            echo "<pre>";
+//            print_r($criteria->toArray());
+//            echo "</pre>"; 
 //            exit();
 
 

@@ -9,23 +9,20 @@
 </div>          
     
 <?php
-    //Métodos de pago
-    echo CHtml::dropDownList('metodosPago', '', array('1' => 'Depósito o Transferencia',
-    '2' => 'Tarjeta de Crédito', '4' => 'Mercado Pago'), array('style' => 'display:none'));
+    echo CHtml::dropDownList('estados', '', array('0' => 'Activo',
+    '1' => 'Inactivo'), array('style' => 'display:none'));
     
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
                                     'style' => 'display:none'));
     
-    echo CHtml::dropDownList('estadosOrden', '', array('1' => 'En espera de pago',
-    '2' => 'En espera de confirmación', '3' => 'Pago confirmado', '4' => 'Enviado',
-        '5' => 'Cancelado', '6' => 'Pago rechazado', '7' => 'Pago insuficiente',
-        '8' => 'Entregado', '9' => 'Devuelto'), array('style' => 'display:none'));
+    echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+                            array('style' => 'display:none'));
     
-    
-
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersProductos.js");
+    
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'action' => Yii::app()->createUrl($this->route),
@@ -49,15 +46,16 @@
                                 'categoria' => 'Categoría',
                                 'sku' => 'SKU',
                                 'codigo' => 'Referencia',
-                                'precios' => 'Precio',
+                                'precioVenta' => 'Precio de Venta',
+                                'precioDescuento' => 'Precio de Descuento',
                                 'total' => 'Cantidad Total',
-                                'pago_id' => 'Cantidad Disponible',
-                                'user_id' => 'Cantidad Vendida',
-                                'id' => 'Ventas',
-                                'id1' => 'Estado',
-                                'id2' => 'Fecha de Carga',
-                                'id3' => 'Marca',
-                                'id4' => 'Visitas',
+                                'disponible' => 'Cantidad Disponible',
+                                'vendida' => 'Cantidad Vendida',
+                                'ventas' => 'Ventas',
+                                'estado' => 'Estado',
+                                'fecha' => 'Fecha de Carga',
+                                'marca_id' => 'Marca',
+                                'view_counter' => 'Visitas',
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

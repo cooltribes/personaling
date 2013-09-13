@@ -46,7 +46,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	 * 
 	 */
 	?>
-<? $this->widget('ext.EAjaxUpload.EAjaxUpload',
+<?php $this->widget('ext.EAjaxUpload.EAjaxUpload',
 array(
         'id'=>'uploadFile',
         'config'=>array( 

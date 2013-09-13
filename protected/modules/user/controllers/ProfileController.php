@@ -175,6 +175,9 @@ class ProfileController extends Controller
 	 * */
 	public function actionPerfil()
 	{
+            	
+            if(!isset($_GET['alias'])){
+            	
             if(!isset($_GET['id'])){
               $id = Yii::app()->user->id;                        
             }else{
@@ -182,18 +185,31 @@ class ProfileController extends Controller
             }
             
             $model = User::model()->findByPk($id);
-                
+			} else {
+				$profile = Profile::model()->findByAttributes(array('url'=>$_GET['alias']));
+				
+				if (isset($profile)){
+					//echo $profile->first_name;
+					$model = $profile->user;
+					$id = $model->id;
+					//echo $model->username;
+				} else {
+					echo "no existe el usuario";
+					Yii::app()->end();
+				}
+			}
+        // Yii::app()->end();       
 		if($model->personal_shopper == 1){
 		
 			//$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
 			$looks = new Look;
-			$looks->user_id = $_GET['id'];
+			$looks->user_id = $id;
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
 			$producto = new Producto;
 			
-			$dataprod = $producto->ProductosLook($_GET['id']); 
+			$dataprod = $producto->ProductosLook($id); 
 			//$dataprod->setPagination(array('pageSize'=>9)); 
 						
 			$this->render('perfil_ps',array('model'=>$model,'datalooks'=>$datalook,'dataprods'=>$dataprod));

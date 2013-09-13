@@ -965,25 +965,31 @@ class ProductoController extends Controller
 			
 		}
 		$i = 0;
+		$tallacolor = array();
 		foreach($tallas as $talla){
 			if ($talla!=''){
 				foreach($colores as $color){
-					$tallacolor[$i]= new Preciotallacolor;
+					$preciotallacolor = '';
 					$color_tmp = Color::model()->findByAttributes(array('valor'=>$color));
 					if (isset($color_tmp)){
-						$tallacolor[$i]->color_id = $color_tmp->id;
-						$tallacolor[$i]->color = $color_tmp->valor;
+						$preciotallacolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$model->id,'talla_id'=>$talla,'color_id'=>$color_tmp->id));
+						if (!isset($preciotallacolor)){
+							$tallacolor[$i]= new Preciotallacolor;	
+							$tallacolor[$i]->color_id = $color_tmp->id;
+							$tallacolor[$i]->color = $color_tmp->valor;
+						}
 					}
-					//$talla_tmp = Talla::model()->findByAttributes(array('valor'=>$talla));
-					$talla_tmp = Talla::model()->findByPk($talla);
-					if (isset($talla_tmp)){
-						$tallacolor[$i]->talla_id = $talla_tmp->id;
-						$tallacolor[$i]->talla = $talla_tmp->valor;
+					if (!isset($preciotallacolor)){
+						$talla_tmp = Talla::model()->findByPk($talla);
+						if (isset($talla_tmp)){
+							$tallacolor[$i]->talla_id = $talla_tmp->id;
+							$tallacolor[$i]->talla = $talla_tmp->valor;
+						}
+						$tallacolor[$i]->cantidad = 0;
+						
+						$i++;
 					}
-					$tallacolor[$i]->cantidad = 0;
-					
-					$i++;
-				//$this->renderPartial('_view_tallacolor',array('color'=>$color,'talla'=>$talla));
+				
 				}
 			}
 		}

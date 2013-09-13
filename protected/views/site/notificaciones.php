@@ -33,13 +33,18 @@
   		<?php
   			
   			$mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1)); // buscaria todos los mensajes que estén como visibles del usuario para listarlos
-  			
   			if(count($mensajes) > 0){
-				foreach($mensajes as $msj)
+  				$mensajes_Reverse = array_reverse($mensajes);
+				foreach( $mensajes_Reverse as $msj)
 				{
+
   		?>
 			<a onclick="buscarmensaje(<?php echo $msj->id; ?>)" style="cursor: pointer;">	
-		  		<article class="row-fluid padding_xsmall">
+				<?php if($msj->estado == 0){ ?>
+		  			<article class="mensaje<?php echo $msj->id; ?> row-fluid bg_color10 padding_xsmall">
+				<?php } else{ ?>
+					<article class="mensaje<?php echo $msj->id; ?>  row-fluid padding_xsmall">
+						<?php } ?>
 					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />
 		  		 	<div class="span8">
 				  		<span> <strong>De:</strong> Admin</span>
@@ -57,24 +62,13 @@
 
   	<!-- Cuerpo del mensaje -->
   	<div class="span8" id="mensajeActual">
-	  	<div class="padding_medium bg_color3 ">
-			<!-- <p><strong>De:</strong> Jon Snow</p>
-	  		<p> <strong>Asunto:</strong> You know nothing Jon Snow</p>
-	  		<p> <strong>Fecha:</strong> 23 de Septiembre de 2013</p>
-	  		<p>
-	  			If you have five dollars and Chuck Norris has five dollars, Chuck Norris has more money than you.
-	 			The Great Wall of China was originally created to keep Chuck Norris out. It failed misserably.
-	 			Chuck Norris ordered a Big Mac at Burger King, and got one.
-	  		</p>
-	  		<form class=" margin_top_medium ">
-		  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
-		  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
-	  		</form>
-	  	-->
-	  	
-	  	<p> <strong> Haz click en uno de tus mensajes para visualizar su contenido. </strong> </p>
-	  	
-	  	
+  		<div>
+		  	<div class="padding_medium bg_color3 ">
+		  	
+		  	<p> <strong> Haz click en uno de tus mensajes para visualizar su contenido. </strong> </p>
+		  	
+		  	
+		  	</div>
 	  	</div>
   	</div>
   </section>
@@ -101,9 +95,12 @@
 				
 				$("#mensajeActual").fadeOut(100,function(){
 			     	$("#mensajeActual").html(data); // cambiando el div
+			     	$('.mensaje'+id).removeClass('bg_color10');
+			     	console.log(id);
 			     });
-			
-			      $("#mensajeActual").fadeIn(20,function(){});
+					
+
+			    $("#mensajeActual").fadeIn(20,function(){});
 
 	       	}//success
 	       })

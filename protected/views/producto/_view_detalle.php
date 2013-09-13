@@ -769,14 +769,17 @@ $('.imagen_principal').zoom({url: imgZ});
      	var image = $("#principal");
      	var thumbnail = $(this).attr("src");
      	
+     	var cambio = thumbnail.replace("_x90.",".");
+     	
      	// primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
-     	var source = thumbnail;	
+     	var source = cambio;
 		var imgZ = source.replace(".","_orig.");
+		
      	$('.imagen_principal').zoom({url: imgZ});
           
         // cambio de la principal  	
      	$("#principal").fadeOut("slow",function(){
-     		$("#principal").attr("src", thumbnail);
+     		$("#principal").attr("src", cambio);
      	});
 
       	$("#principal").fadeIn("slow",function(){});
@@ -981,10 +984,11 @@ $('.imagen_principal').zoom({url: imgZ});
 	
 	function minis(idImagen){		
 		var thumbnail = $('#thumb'+idImagen).attr("src");
-		//alert(thumbnail);
 	    
+     	var cambio = thumbnail.replace("_x90.",".");
+
 	    // primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
-	    var source = thumbnail;
+	    var source = cambio;
 	    
 	    var n = source.split(".");
 		//alert(n[0]); 			  		
@@ -1000,7 +1004,7 @@ $('.imagen_principal').zoom({url: imgZ});
 
 		 // cambio de la principal  	 
 	     $("#principal").fadeOut("slow",function(){
-	     	$("#principal").attr("src", thumbnail);
+	     	$("#principal").attr("src", cambio);
 	     });
 	
 	     $("#principal").fadeIn("slow",function(){});

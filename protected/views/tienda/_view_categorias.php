@@ -2,9 +2,9 @@
   <input type="hidden" id="idact" >       
 </form> 
 
-<ul class="row-fluid">
+<ul class="thumbnails">
               <?php foreach($categorias as $categoria){ ?>
-              <li class="span3" > 
+              <li class="span1" > 
               		<?php
               		
               		$a = $categoria->getImage($categoria->id);

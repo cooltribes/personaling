@@ -398,7 +398,13 @@ class User extends CActiveRecord {
 
                  $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
                         . $comparator . ' ' . $value . '');
-
+                        /*
+                         * (select SUM(total) from tbl_orden orden where orden.user_id = u.id 
+and 
+(orden.estado = 3 OR orden.estado = 4 OR orden.estado = 8)
+)
+                         * 
+                         */
                 continue;
             }
 

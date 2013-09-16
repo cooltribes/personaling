@@ -22,8 +22,10 @@ $enviados = Orden::model()->countByAttributes(array('estado'=>4)); // enviados
 $sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado = 4 and a.id = b.tbl_orden_id ";
 $productos_enviados = Yii::app()->db->createCommand($sql)->queryScalar();
 
-
-	$ordenes = Orden::model()->findAllByAttributes(array(), 'estado = :valor1 or estado = :valor2', array(':valor1'=>3,':valor2'=>4));
+	// el total de ordenes pagas o enviadas
+	$totalpromedio = Orden::model()->countByAttributes(array(), 'estado = :valor1 or estado = :valor2 or estado = :valor3', array(':valor1'=>3,':valor2'=>4,':valor3'=>8));
+	// cada una de esas ordenes
+	$ordenes = Orden::model()->findAllByAttributes(array(), 'estado = :valor1 or estado = :valor2 or estado = :valor3', array(':valor1'=>3,':valor2'=>4,':valor3'=>8));
 	$sumatoria = 0;
 	$impuestos = 0;
 	
@@ -40,8 +42,8 @@ $b = substr($impuestos,0,-1);
 $sql = "SELECT sum(total) as total FROM tbl_orden";
 $dinero_ventas = Yii::app()->db->createCommand($sql)->queryScalar();
 
-if($ventas != 0)
-	$promedio = $sumatoria / $ventas;
+if($totalpromedio != 0)
+	$promedio = $sumatoria / $totalpromedio;
 else
 	$promedio = 0;
 

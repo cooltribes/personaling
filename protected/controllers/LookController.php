@@ -46,8 +46,15 @@ class LookController extends Controller
 	public function actionSoftDelete($id)
 	{
 		$model = Look::model()->findByPk($id);
-		if ($model->status!=Look::STATUS_APROBADO)
+		if ($model->status!=Look::STATUS_APROBADO){
 			$model->softDelete();
+			Yii::app()->user->updateSession();
+            Yii::app()->user->setFlash('success', 'Look eliminado');
+		}
+		else{
+			Yii::app()->user->updateSession();
+            Yii::app()->user->setFlash('error', 'No se puede eliminar un look que ha sido aprovado');
+		}
 		$this->redirect(array('look/admin'));
 	}
 	public function actionUpdatePrice()

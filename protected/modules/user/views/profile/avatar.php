@@ -42,10 +42,11 @@
     	<div id="container" class="text_align_center margin_bottom margin_top" >
     		
     		 <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270","class"=>"img_1")); ?>
-    		</div> <div class="text_align_center">
-    		<div id="boton_original" class="btn">original</div> 
-    		<div id="boton_mas" class="btn">+</div> 
-    		<div id="boton_menos" class="btn">-</div> 
+    		</div>
+        <div class="text_align_center">
+      		<div id="boton_original" class="btn">original</div> 
+      		<div id="boton_mas" class="btn">+</div> 
+      		<div id="boton_menos" class="btn">-</div> 
     		</div>
             	
 

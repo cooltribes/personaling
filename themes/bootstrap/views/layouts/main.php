@@ -185,6 +185,7 @@ if(!Yii::app()->user->isGuest){
 			);
 			?>
 		</div>
+    <div style="height: 48px"></div>
 		<?php
 	}
 }
@@ -217,6 +218,23 @@ if(!Yii::app()->user->isGuest){
 <script type="text/javascript">
   
   $(document).on('ready',HandlerReady);
+
+  <?php 
+
+        // $htmlMensaje = '';
+
+        // if(count($mensajes) > 0){
+        //   $mensajes_Reverse = array_reverse($mensajes);
+        //   foreach( $mensajes_Reverse as $msj)
+        //   {
+        //     // $htmlMensaje.=$htmlMensaje.' <li>'.$msj.'</li> ';
+
+        //   }
+        // }
+
+
+  ?>
+
 
   function HandlerReady () {
     // //Boton Notificaciones

@@ -102,7 +102,7 @@
               <?php } ?>
 </ul>    
 <script >
-$('.seleccionable').on('click',function(){		
+$('.seleccionable').click(function(){		
 	if(!$(this).hasClass('selected')){			
 		$(this).addClass('selected');
 		$(this).css({'outline': '2px groove #6d2d56'});
@@ -111,6 +111,7 @@ $('.seleccionable').on('click',function(){
 		$(this).css({'outline': 0});
 		$(this).removeClass('selected');
 	} 		
+	$('.seleccionable').click(false);
 });
 </script>
 

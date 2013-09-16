@@ -53,6 +53,8 @@
       <?php } ?>
       <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>
       <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
+       <li> <?php echo CHtml::link('<i class="icon-shopping-cart">  </i>  Registrar Orden',array("admin/compra","id"=>$data->id)); ?>
+      
             <li class="divider"></li>
       <li><a title="Eliminar" href="#">  <i class="icon-trash">  </i>  Eliminar</a></li>
           </ul>

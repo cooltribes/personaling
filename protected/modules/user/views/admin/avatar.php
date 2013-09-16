@@ -36,17 +36,18 @@
 			),
 		)); ?>  
     <fieldset>
-                  <h1>Tu Avatar</h1>
+                  <h1>Tu Avatar</hpas1>
 <p>Puedes editar o cambiar el avatar usando las opciones a continuación:</p>
-    	<div id="container" class="text_align_center margin_bottom margin_top" >
+    	<div id="container" class="text_align_center margin_top" >
     		
     		 <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270","class"=>"img_1")); ?>
-    		</div> <div class="text_align_center">
-    		<div id="boton_original" class="btn">original</div> 
-    		<div id="boton_mas" class="btn">+</div> 
-    		<div id="boton_menos" class="btn">-</div> 
     		</div>
-            	
+  <!--       <div class="text_align_center">
+      		<div id="boton_original" class="btn">original</div> 
+      		<div id="boton_mas" class="btn">+</div> 
+      		<div id="boton_menos" class="btn">-</div> 
+    		</div>
+   -->          	
 
     	 <div class="braker_horz_top_1 ">
       <label for="fileToUpload">Elige la imagen que deseas subir</label><br />

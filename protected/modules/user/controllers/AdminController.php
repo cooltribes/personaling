@@ -29,7 +29,7 @@ class AdminController extends Controller
 				'actions'=>array('admin','delete','create','update',
                                     'view','corporal','estilos','pedidos','carrito',
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo'),
+                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo','compra'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -340,6 +340,57 @@ if(isset($_POST['Profile']))
 		));
 	}
 	
+	public function actionCompra($id)
+	{
+		
+		  	$q=" order by p.nombre";
+		  	
+            if (isset($_POST['query']))
+            {
+                $q=" AND p.nombre LIKE '%".$_POST['query']."%'";		
+			      	
+            }
+			
+			Yii::app()->session['usercompra']=$id;
+ 
+          	$sql='select p.id, im.tbl_producto_id, pr.tbl_producto_id  , p.nombre as Nombre, p.codigo, t.valor as Talla, m.nombre as Marca,
+          		pr.precioDescuento, ptc.id as ptcid, ptc.cantidad , im.url, ptc.talla_id, c.valor as Color
+				 from tbl_producto p JOIN tbl_precioTallaColor ptc ON ptc.producto_id = p.id 
+				JOIN tbl_imagen im ON im.tbl_producto_id = p.id AND im.color_id = ptc.color_id 
+				JOIN tbl_precio pr ON pr.tbl_producto_id = p.id 
+				JOIN tbl_marca m ON p.marca_id = m.id
+				JOIN tbl_talla t ON ptc.talla_id = t.id
+				JOIN tbl_color c ON ptc.color_id = c.id
+				WHERE ptc.cantidad > 0 AND p.status=1 AND p.estado=0'.$q;
+			$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+			// or using: $rawData=User::model()->findAll(); <--this better represents your question
+
+			$dataProvider=new CArrayDataProvider($rawData, array(
+			    'id'=>'data',
+			    'pagination'=>array(
+			        'pageSize'=>12,
+			    ),
+				 
+			    'sort'=>array(
+			        'attributes'=>array(
+			             'Nombre', 'Marca', 'Talla', 'Color'
+			        ),
+    ),
+			));
+			
+			
+			
+			 
+			
+			
+            $this->render('compra', array(   'dataProvider'=>$dataProvider,
+            ));	
+	}
+	
+	
+	
+	
+	
 	public function actionDirecciones()
 	{
 		$model=$this->loadModel();
@@ -605,8 +656,7 @@ if(isset($_POST['Profile']))
 		if(isset($_POST['id'])&&!isset($_POST['cant']))
 			{	$id=$_POST['id'];
 				
-				$saldo=Profile::model()->getSaldo($id);
-				
+				$saldo=Profile::model()->getSaldo($id);				
 				$html='<div class="modal-header">';
 		    	$html=$html.'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
 		    	$html=$html.'<h3>Cargar Saldo</h3>';

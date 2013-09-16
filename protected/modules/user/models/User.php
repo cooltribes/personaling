@@ -21,7 +21,7 @@ class User extends CActiveRecord {
     const PRIVACIDAD_SHOPPERS = 8;
 
     //Vector de estados para dropdown
-    public static $statuses = array(self::STATUS_NOACTIVE => 'Inactivo', self::STATUS_ACTIVE => 'Activo',
+    public static $statuses = array(self::STATUS_ACTIVE => 'Activo', self::STATUS_NOACTIVE => 'Inactivo', 
         self::STATUS_BANNED => 'Bloqueado', self::STATUS_DELETED => 'Eliminado');
 
     /**
@@ -304,106 +304,147 @@ class User extends CActiveRecord {
         return array(0 => 'Año:') + $years;
     }
 
-    
-      /**
-         * Buscar por todos los filtros dados en el array $filters
-         */
-        public function buscarPorFiltros($filters) {
-            echo "<pre>";
-            print_r($filters);
-            echo "</pre>";
-            Yii::app()->end();
+    /**
+     * Buscar por todos los filtros dados en el array $filters
+     */
+    public function buscarPorFiltros($filters) {
+        echo "<pre>";
+        print_r($filters);
+        echo "</pre>";
+//            Yii::app()->end();
 
-            $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria;
+
+        $criteria->with = array();
+        $criteria->select = array();
+        //$criteria->select[] = "t.*";
+
+        for ($i = 0; $i < count($filters['fields']); $i++) {
+
+            $column = $filters['fields'][$i];
+            $value = $filters['vals'][$i];
+            $comparator = $filters['ops'][$i];
+
+            if ($i == 0) 
+            {
+                $logicOp = 'AND';
+            } else {
+                $logicOp = $filters['rels'][$i - 1];
+            }
+
+            /* Usuarios */
+            if ($column == 'first_name' || $column == 'last_name'
+                    || $column == 'email' || $column == 'ciudad')
+            {
+                
+                $value = ($comparator == '=') ? "=" . $value . "" : $value;
+
+                $criteria->compare($column, $value, true, $logicOp);
+
+                continue;
+            }
             
-            $criteria->with = array();
-            $criteria->select = array();
-            $criteria->select[] = "t.*";
+            if ($column == 'telefono')
+            {                
+                
+                $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
+
+                $criteria->addCondition('(tlf_casa '.$value.' OR tlf_celular '.$value.')', $logicOp);
+
+                continue;
+            }
             
-            for ($i = 0; $i < count($filters['fields']); $i++) {
-                
-                $column = $filters['fields'][$i];
-                $value = $filters['vals'][$i];
-                $comparator = $filters['ops'][$i];
-                
-                if($i == 0){
-                   $logicOp = 'AND'; 
-                }else{                
-                    $logicOp = $filters['rels'][$i-1];                
-                }                  
-                
-                /*Productos*/
-                if($column == 'codigo')
+            if($column === 'tipoUsuario')
+            {
+                if($value === 'admin')
                 {
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    $criteria->compare("superuser", $comparator.'1', false, $logicOp);
+
+                }else if($value === 'ps')
+                {
+                    $criteria->compare("personal_shopper", $comparator.'1', false, $logicOp);
+
+                }else if($value === 'user')
+                {              
+                    $comparator = ($comparator == '=') ? '' : 'NOT ';
+                    $criteria->addCondition($comparator.'(superuser =  0 AND personal_shopper = 0)', $logicOp);
                     
-                    $criteria->compare($column, $value,
-                        true, $logicOp);
-                    
-                    continue;
                 }
                 
-                if($column == 'categoria')
+                continue;
+                
+            }
+            
+            if($column === 'fuenteR')
+            {                                
+                
+                if($value === 'face')
                 {
-                    
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare('categorias.nombre', $value,
-                        true, $logicOp);
-                    
-                    if(!in_array('categorias', $criteria->with))
-                    {
-                        $criteria->with[] = 'categorias';
-                    }
-                    
-                    continue;
+                   $comparator = $comparator === '=' ? 'NOT ' : '';                   
+
+                }else if($value === 'user')
+                {
+                    $comparator = $comparator === '=' ? '' : 'NOT ';
+
                 }
                 
-                if($column == 'sku')
-                {
-                    
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare('preciotallacolor.sku', $value,
-                        true, $logicOp);
-                    
-                    if(!in_array('preciotallacolor', $criteria->with))
-                    {
-                        $criteria->with[] = 'preciotallacolor';
-                    }
-                   
-                    
-                    continue;
+                $criteria->addCondition('facebook_id IS '.$comparator.'NULL', $logicOp);
+                
+                continue;
+                
+            }
+
+            if ($column == 'categoria') {
+
+                
+                $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
+
+                $criteria->compare('categorias.nombre', $value, true, $logicOp);
+
+                if (!in_array('categorias', $criteria->with)) {
+                    $criteria->with[] = 'categorias';
                 }
-                
-                if($column == 'precioVenta' || $column == 'precioDescuento')
-                {
-                    
-                    $criteria->compare('precios.'.$column, $comparator." ".$value,
-                        false, $logicOp);
-                    
-                    if(!in_array('precios', $criteria->with))
-                    {
-                        $criteria->with[] = 'precios';
-                    }
-                    
-                    continue;
-                }                
-                
-                if($column == 'total')
-                {
-                                       
-                    $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
-                            .$comparator.' '.$value.'');
-                    
-                    
-                    continue;
+
+                continue;
+            }
+
+            if ($column == 'sku') {
+
+                $value = ($comparator == '=') ? "=" . $value . "" : $value;
+
+                $criteria->compare('preciotallacolor.sku', $value, true, $logicOp);
+
+                if (!in_array('preciotallacolor', $criteria->with)) {
+                    $criteria->with[] = 'preciotallacolor';
                 }
-                
-                if($column == 'disponible')
-                {
-                    
-                    $criteria->addCondition('
+
+
+                continue;
+            }
+
+            if ($column == 'precioVenta' || $column == 'precioDescuento') {
+
+                $criteria->compare('precios.' . $column, $comparator . " " . $value, false, $logicOp);
+
+                if (!in_array('precios', $criteria->with)) {
+                    $criteria->with[] = 'precios';
+                }
+
+                continue;
+            }
+
+            if ($column == 'total') {
+
+                $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
+                        . $comparator . ' ' . $value . '');
+
+
+                continue;
+            }
+
+            if ($column == 'disponible') {
+
+                $criteria->addCondition('
                         IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
                           - 
                           IFNULL(
@@ -411,68 +452,61 @@ class User extends CActiveRecord {
                           where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                           orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                          0) '
-                            .$comparator.' '.$value.'');
-                    
-                    
-                    continue;
-                }
-                
-                if($column == 'vendida')
-                {
-                   
-                    $criteria->addCondition('(IFNULL(
+                        . $comparator . ' ' . $value . '');
+
+
+                continue;
+            }
+
+            if ($column == 'vendida') {
+
+                $criteria->addCondition('(IFNULL(
                         (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
                         where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                         orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                         0)) '
-                    .$comparator.' '.$value.'');
-                    
-                    
-                    continue;
-                    
-                }                
-                
-                if($column == 'ventas')
-                {
-                    $criteria->addCondition('IFNULL(
+                        . $comparator . ' ' . $value . '');
+
+
+                continue;
+            }
+
+            if ($column == 'ventas') {
+                $criteria->addCondition('IFNULL(
                         (select sum(o_ptc.precio * o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
                         where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                         orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                         0)'
-                    .$comparator.' '.$value.'', $logicOp);                   
-                    
-                    
-                    continue;
-                }
-                
-                if($column == 'fecha')
-                {
-                    $value = strtotime($value);
-                    $value = date('Y-m-d H:i:s', $value);
-                }
-                
-                $criteria->compare("t.".$column, $comparator." ".$value,
-                        false, $logicOp);
-                
+                        . $comparator . ' ' . $value . '', $logicOp);
+
+
+                continue;
             }
-                                   
-             
-            //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
-            $criteria->together = true;
-            $criteria->compare('t.status', '1'); //siempre los no eliminados
-            
-            echo "Criteria:";
-            
-            echo "<pre>";
-            print_r($criteria->toArray());
-            echo "</pre>"; 
-            exit();
+
+            if ($column == 'lastvisit_at') {
+                $value = strtotime($value);
+                $value = date('Y-m-d H:i:s', $value);
+            }
+
+            $criteria->compare($column, $comparator . " " . $value, false, $logicOp);
+        }
 
 
-            return new CActiveDataProvider($this, array(
-                'criteria' => $criteria,
-            ));
-       }
-    
-    
+        //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
+        $criteria->together = true;
+        //$criteria->compare('t.status', '1'); //siempre los no eliminados
+
+        echo "Criteria:";
+
+        echo "<pre>";
+        print_r($criteria->toArray());
+        echo "</pre>";
+//            exit();
+
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
+
 }

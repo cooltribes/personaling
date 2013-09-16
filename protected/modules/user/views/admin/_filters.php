@@ -9,13 +9,23 @@
 </div>          
     
 <?php
-    echo CHtml::dropDownList('estados', '', array('0' => 'Activo',
-    '1' => 'Inactivo'), array('style' => 'display:none'));
+    echo CHtml::dropDownList('status', '', User::getStatus(), array('style' => 'display:none'));
     
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
                                     'style' => 'display:none'));
+    echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
+                                                       'ps' => 'Personal Shopper',
+                                                       'user' => 'Usuario',),
+                            array('style' => 'display:none'));
+    
+    
+    echo CHtml::dropDownList('fuenteR', '', array('face' => 'Facebook',                                                       
+                                                  'user' => 'Registro Normal',
+                                                   ),
+                            array('style' => 'display:none'));
+    
     
     echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
@@ -44,15 +54,18 @@
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
                                 'id' => 'ID',
-                                'nombre' => 'Nombre',
-                                'apellido' => 'Apellido',
-                                'correo' => 'Correo',
+                                'first_name' => 'Nombre',
+                                'last_name' => 'Apellido',
+                                'email' => 'Correo',
                                 'telefono' => 'Teléfono',
-                                'estado' => 'Estado',
-                                /*'disponible' => 'Ciudad',
-                                'vendida' => 'Fuente de registro',
-                                'ventas' => 'Fecha de última compra',
-                                'estado' => 'Fecha de última visita',
+                                'status' => 'Estado',
+                                'tipoUsuario' => 'Tipo de usuario',
+                                'ciudad' => 'Ciudad',
+                                'fuenteR' => 'Fuente de registro',
+                                'visit' => 'Número de visitas',
+                                'lastvisit_at' => 'Fecha de última visita',
+                               /* 'ventas' => 'Fecha de última compra',
+                                
                                 'fecha' => 'Cantidad de looks comprados',
                                 'marca_id' => 'Monto comprado',
                                 'view_counter' => 'Looks comprados por Personal Shopper',*/
@@ -125,7 +138,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('admin') ?>', true);
+        searchAndSave('<?php echo CController::createUrl('') ?>', true);
             
     });
     
@@ -134,21 +147,21 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('admin') ?>', false);
+        searchAndSave('<?php echo CController::createUrl('') ?>', false);
             
     });
     
     //Seleccionar un filtro preestablecido
     $("#all_filters").change(function(){
 	
-        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('admin') ?>');        	
+        getFilter('<?php echo $this->createUrl('/orden/getFilter');//CController::createUrl('/orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('') ?>');        	
 	
     });
     
     $("#filter-remove").click(function(e){
 
              e.preventDefault();
-             removeFilter('<?php echo CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
+             removeFilter('<?php echo $this->createUrl('/orden/getFilter');//CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
 
     });    
     

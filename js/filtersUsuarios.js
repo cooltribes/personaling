@@ -8,20 +8,20 @@ function changeFilter(e){
    var column = $(this);
    
    //si es fecha
-   if(column.val() === 'fecha') //Fecha de carga
+   if(column.val() === 'lastvisit_at') //Fecha de carga
    {
        dateFilter(column);
     
-   }else if(column.val() === 'estado') //Estado del producto
+   }else if(column.val() === 'status' || column.val() === 'tipoUsuario'
+             || column.val() === 'fuenteR') //Estado del usuario, tipo usuario, fuenteRegistro
    {       
-       listFilter(column, 'estados');
+       
+        listFilter(column, column.val());
+        
 
-   }else if(column.val() === 'marca_id') //Marca del producto
-   {       
-       listFilter(column, 'marcas');
-
-   }else if(column.val() === 'codigo' || column.val() === 'categoria'
-                || column.val() === 'sku') 
+   }else if(column.val() === 'first_name' || column.val() === 'last_name'
+                || column.val() === 'email' || column.val() === 'telefono'
+                || column.val() === 'ciudad') 
    {
        textFilter(column);       
         

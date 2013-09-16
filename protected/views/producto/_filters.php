@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -21,7 +21,7 @@
                             array('style' => 'display:none'));
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUSuarios.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersProductos.js");
     
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(

@@ -62,7 +62,7 @@ echo $num;
         Enviados</td>
       <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
         En tránsito </td>
-      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo Producto::model()->getDevueltos(); ?> </p>
         Devueltos</td>
     </tr>
   </table>

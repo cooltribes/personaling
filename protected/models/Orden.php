@@ -179,7 +179,14 @@ class Orden extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	
+	public function getTotalByUser($id){
+		
+		$sql = "select sum(total) from tbl_orden where user_id = ".$id;
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $total;
+		
+	}
+
 	public function filtrado($query)
 	{
 		

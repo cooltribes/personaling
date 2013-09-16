@@ -347,7 +347,7 @@ if(isset($_POST['Profile']))
 		  	
             if (isset($_POST['query']))
             {
-                $q=" AND p.nombre LIKE '%".$_POST['query']."%'";		
+                $q=" AND p.nombre LIKE '%".$_POST['query']."%' ".$q;		
 			      	
             }
 			

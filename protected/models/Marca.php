@@ -112,6 +112,16 @@ class Marca extends CActiveRecord
 
 		));  
 	 }
+	  
+	 
+	 public function getMarca($id)
+	 {
+		$marca=Marca::model()->findByPk($id);
+		return $marca->nombre;
+		
+	}
+	 
+	 
 	
 	
 }

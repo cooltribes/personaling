@@ -21,7 +21,7 @@
                             array('style' => 'display:none'));
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersProductos.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUSuarios.js");
     
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(

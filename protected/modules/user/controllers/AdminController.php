@@ -146,6 +146,8 @@ class AdminController extends Controller
     //            exit();
                 }
             }
+            
+            
             $this->render('index', array(
                 'model' => $model,
                 'modelUser' => $modelUser,

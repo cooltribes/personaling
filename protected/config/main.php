@@ -166,9 +166,9 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=db_personaling',
+			'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personaling',
 			'emulatePrepare' => true,
-			'username' => 'db_personaling',
+			'username' => 'personaling',
 			'password' => 'Perso123Naling',
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',

@@ -394,16 +394,10 @@ class User extends CActiveRecord {
                 
             }
 
-            if ($column == 'categoria') {
+            if($column == 'montos') { 
 
-                
-                $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
-
-                $criteria->compare('categorias.nombre', $value, true, $logicOp);
-
-                if (!in_array('categorias', $criteria->with)) {
-                    $criteria->with[] = 'categorias';
-                }
+                 $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
+                        . $comparator . ' ' . $value . '');
 
                 continue;
             }

@@ -64,11 +64,12 @@
                                 'fuenteR' => 'Fuente de registro',
                                 'visit' => 'Número de visitas',
                                 'lastvisit_at' => 'Fecha de última visita',
-                               /* 'ventas' => 'Fecha de última compra',
+                                'monto' => 'Monto comprado',
+                                'lastorder_at' => 'Fecha de última compra',                                
+                                'looks' => 'Cantidad de looks comprados',                                
+                                'looks_ps' => 'Looks comprados por Personal Shopper',
+                                'looks_marca' => 'Looks comprados por Marca',
                                 
-                                'fecha' => 'Cantidad de looks comprados',
-                                'marca_id' => 'Monto comprado',
-                                'view_counter' => 'Looks comprados por Personal Shopper',*/
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

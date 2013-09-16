@@ -88,15 +88,27 @@ echo $num;
 		return false;
 		});",CClientScript::POS_READY
 	);
+	 
 	
-	
-	$template = '{summary}
+	$template = '
+				<style>
+					.summary{text-align:left}
+				</style>
+				<div style="width:100%">
+					<div  style="width:50%; float:left;"> 
+					{summary}
+					</div>
+					<div  style="width:50%; float:right"> 
+					{sorter}
+					</div>
+			 	 
+			 	
 			  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ta table-hover table-striped">
 			  <thead>
-			    <tr>
+			  <tr>
 			      
 			      <th>Imagen</th>
-                    <th>Descripcion</th>
+                    <th>Nombre</th>
                     <th>Marca</th>
                     <th>Color</th>
                     <th>Talla</th>
@@ -117,7 +129,11 @@ echo $num;
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_item',
-	    'template'=>$template
+	    'template'=>$template,
+	    'enableSorting'=>true,
+	    'sortableAttributes'=>array(
+                'Nombre', 'Marca', 'Talla', 'Color' 
+   	),
 	 					
 	));
 
@@ -317,14 +333,7 @@ function compara_fechas($fecha1,$fecha2)
 
 $(document).ready(function(){
 	
-	 $(".cant").onChange(function() { 
-            if(isNaN($(this).val())){ 
-            	$(this).val(''); 
-            	alert('BAH');}
-            	else{alert('BEH');}
-              	
-		});
-       
+			    
 	
             $("#todos").click(function() { 
             	

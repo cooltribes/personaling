@@ -85,4 +85,11 @@ class Color extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getColor($id)
+	 {
+		$color=Color::model()->findByPk($id);
+		return $color->valor;
+		 
+	}
 }

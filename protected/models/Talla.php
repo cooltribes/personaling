@@ -72,7 +72,7 @@ class Talla extends CActiveRecord
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-
+  
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
@@ -81,5 +81,12 @@ class Talla extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	public function getTalla($id)
+	 {
+		$talla=Talla::model()->findByPk($id);
+		return $talla->valor;
+		
 	}
 }

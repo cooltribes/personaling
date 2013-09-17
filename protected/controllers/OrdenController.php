@@ -1012,7 +1012,7 @@ class OrdenController extends Controller
 		}
 	}
 
-
+	
 
 	public function actionEnviar()
 	{
@@ -1118,6 +1118,8 @@ class OrdenController extends Controller
 		}	
 		
 	}
+
+	
 	
 	public function actionGetprendas($ord){
 		$ordhasptc= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$ord));

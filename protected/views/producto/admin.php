@@ -62,7 +62,7 @@ echo $num;
         Enviados</td>
       <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
         En tránsito </td>
-      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo Producto::model()->getDevueltos(); ?> </p>
         Devueltos</td>
     </tr>
   </table>
@@ -139,7 +139,7 @@ echo $num;
                 "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
 
     </div>
-    <div class="span2"><a href="#" class="btn">Crear nuevo filtro</a></div>
+    <div class="span2"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
     <div class="span1">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'buttonType' => 'link',

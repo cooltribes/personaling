@@ -194,7 +194,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               <ul class="no_bullets no_margin_left">
                 <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
                 <li><strong>Pedidos validos realizados</strong>: 0</li>
-                <li><strong>Total comprado desde su registro</strong>: 0,00 Bs. </li>
+                <li><strong>Total comprado desde su registro</strong>: <?php echo Yii::app()->numberFormatter->formatDecimal($orden->getTotalByUser($orden->user_id)); ?> </li>
               </ul>
             </div>
           </div>

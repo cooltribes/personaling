@@ -346,7 +346,7 @@
           		if(isset($like)) // le ha dado like 
 				{
           	?>
-            <div class="span4"><a class="btn-mini btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+            <div class="span4"><a class="btn-mini btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
             	<?php
 				}
 				else {
@@ -363,14 +363,14 @@
             	?>
         </small>
             </div>
-            <div class="span2">
+            <div class="span3">
             <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> 
             </div>
-            <div class="span2">
+            <div class="span3">
             <a class="addthis_button_tweet"></a>
             </div>
             <div class="span2">
-            <a class="addthis_button_pinterest_pinit boton_pinterest"></a>       
+            <a class="addthis_button_pinterest_pinit "></a>       
             </div>     
             <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
@@ -1112,7 +1112,7 @@ $('.imagen_principal').zoom({url: imgZ});
 					$("span#like").text(a);
 					
 					$("#total-likes").text(data.total); 
-					$("#btn-encanta").addClass("btn-danger");
+					$("#btn-encanta").addClass("btn-danger_modificado");
 				}
 				
 				if(data.mensaje=="no")
@@ -1126,7 +1126,7 @@ $('.imagen_principal').zoom({url: imgZ});
 					var a = "♡";
 					
 					//alert("borrando");
-					$("#btn-encanta").removeClass("btn-danger");
+					$("#btn-encanta").removeClass("btn-danger_modificado");
 					$("#meEncanta").removeClass("btn-link-active");
 					$("span#like").text(a);
 					

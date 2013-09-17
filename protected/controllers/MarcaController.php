@@ -139,11 +139,16 @@ class MarcaController extends Controller
 	public function actionDelete($id)
 	{
 		$marca = Marca::model()->findByPk($id);
-		
-		if($marca->delete()){
-			Yii::app()->user->setFlash('success',UserModule::t("Marca eliminada exitosamente."));
+		$sql = "select count(*) from tbl_orden_has_productotallacolor where preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id IN(select id  from tbl_producto WHERE marca_id = ".$id."))";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		if($num<1){
+			if($marca->delete()){
+				Yii::app()->user->setFlash('success',UserModule::t("Marca eliminada exitosamente."));
+			}else{
+				Yii::app()->user->setFlash('error',UserModule::t("Marca no pudo ser eliminada."));
+			}
 		}else{
-			Yii::app()->user->setFlash('error',UserModule::t("Marca no pudo ser eliminada."));
+			Yii::app()->user->setFlash('error',UserModule::t("Marca no puede ser eliminada. Existen productos asociados a ella."));
 		}
 		$this->redirect(array('admin'));		
 	}

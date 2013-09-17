@@ -353,16 +353,20 @@ if(isset($_POST['Profile']))
 			
 			Yii::app()->session['usercompra']=$id;
  
-          	$sql='select p.id, im.tbl_producto_id, pr.tbl_producto_id  , p.nombre as Nombre, p.codigo, t.valor as Talla, m.nombre as Marca,
-          		pr.precioDescuento, ptc.id as ptcid, ptc.cantidad , im.url, ptc.talla_id, c.valor as Color
-				 from tbl_producto p JOIN tbl_precioTallaColor ptc ON ptc.producto_id = p.id 
-				JOIN tbl_imagen im ON im.tbl_producto_id = p.id AND im.color_id = ptc.color_id 
-				JOIN tbl_precio pr ON pr.tbl_producto_id = p.id 
-				JOIN tbl_marca m ON p.marca_id = m.id
-				JOIN tbl_talla t ON ptc.talla_id = t.id
-				JOIN tbl_color c ON ptc.color_id = c.id
-				WHERE ptc.cantidad > 0 AND p.status=1 AND p.estado=0'.$q;
+          	$sql='select p.marca_id as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad  
+				from tbl_precioTallaColor ptc, tbl_producto p 
+				where ptc.cantidad >0 and p.estado=0 and p.`status`=1 and ptc.producto_id = p.id '.$q;
 			$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+			
+			
+			foreach($rawData as $row){
+				$row['Marca']=Marca::model()->getMarca($row['Marca']);
+				$row['Talla']=Talla::model()->getTalla($row['Talla']);
+				$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
+				$row['Color']=Color::model()->getColor($row['Color']);				 				
+			}
+			print_r($rawData);
+			break;
 			// or using: $rawData=User::model()->findAll(); <--this better represents your question
 
 			$dataProvider=new CArrayDataProvider($rawData, array(
@@ -466,7 +470,7 @@ if(isset($_POST['Profile']))
 			'model'=>$model,
 			'bolsa'=>$bolsa,
 			'usuario'=>$id,
-		));
+		)); 
 	}
 	public function actionCorporal()
 	{

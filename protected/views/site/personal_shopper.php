@@ -86,9 +86,10 @@
                     	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
                     </div>
                     <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn"> 
-                        <?php //echo $look->title; ?>
-                        <?php echo $look->user->profile->first_name; ?> </span></a></h5>
+                      <h5>
+                      	
+                      	<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
+                      	</h5>
                     </div>
                     <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(true); ?></span></div>
                   </div>

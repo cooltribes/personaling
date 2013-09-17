@@ -9,59 +9,22 @@
   <div class="page-header">
     <h1>Generar Orden de Compra</small></h1>
   </div>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
-    <tr>
-      <th scope="col" colspan="6"> Totales </th>
-    </tr>
-    <tr>
-      <td><p class="T_xlarge margin_top_xsmall">
-<?php
 
-echo Producto::model()->countByAttributes(array('status'=>1));
-
-?>
-		</p>
-        Totales</td>
-      <td><p class="T_xlarge margin_top_xsmall">
-<?php
-
-
-echo Producto::model()->countByAttributes(array('estado'=>0,'status'=>1));
-?>
-      	</p>
-        Activos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 
-<?php
-
-
-echo Producto::model()->countByAttributes(array('estado'=>1,'status'=>1));
-?>
-		</p>
-        Inactivos</td>
-      <td><p class="T_xlarge margin_top_xsmall">
-      	
-<?php
-$sql = "select sum(cantidad) from tbl_orden_has_productotallacolor a, tbl_orden b where a.tbl_orden_id = b.id and b.estado = 4"; // estado 4 es enviado
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
-?>     	
-      	 	
-      </p>
-        Enviados</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
-        En tránsito </td>
-      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
-        Devueltos</td>
-    </tr>
-  </table>
-  <hr/>
   
     <div class="row margin_top margin_bottom ">
     <div class="span12">
    
     <form class="no_margin_bottom form-search">
-    <input type="text" name="query" id="query" class="span3">
-    <a class="btn" id="btn_search_event">Buscar</a>
+    <div class="span4">
+    	<input type="text" name="query" id="query" class="span3">
+   		<a class="btn" id="btn_search_event">Buscar</a>
+   	</div>
+	<div class="span4">
+    	<a class="btn span2" id="ver_orden">Ver Orden</a>
+	</div>
+	<div class="span2">
+    	<a class="btn btn-info" id="continuar">Continuar</a>
+	</div>
 	</form>
 		
 	<?php
@@ -69,6 +32,7 @@ echo $num;
 		"var ajaxUpdateTimeout;
 		var ajaxRequest;
 		$('#btn_search_event').click(function(){
+			
 			
 			ajaxRequest = $('#query').serialize();
 			clearTimeout(ajaxUpdateTimeout);
@@ -79,7 +43,8 @@ echo $num;
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
-				data: ajaxRequest}
+				data: ajaxRequest,
+				}
 				
 				)
 				},
@@ -90,12 +55,9 @@ echo $num;
 	);
 	 
 	
-	$template = '
-				<style>
-					.summary{text-align:left}
-				</style>
+	$template = '<br/><br/>
 				<div style="width:100%">
-					<div  style="width:50%; float:left;"> 
+					<div  style="width:auto; float:left;"> 
 					{summary}
 					</div>
 					<div  style="width:50%; float:right"> 
@@ -121,6 +83,7 @@ echo $num;
 			    {items}
 				</tbody>
 			    </table>
+			   
 			    {pager}
 				';
 
@@ -131,6 +94,10 @@ echo $num;
 	    'itemView'=>'_item',
 	    'template'=>$template,
 	    'enableSorting'=>true,
+	    'afterAjaxUpdate'=> 'var length = arr.length;
+					for (var i = 0; i < length; i++) {
+			 			$(arr[i]).val(arr2[i]);
+					}',
 	    'sortableAttributes'=>array(
                 'Nombre', 'Marca', 'Talla', 'Color' 
    	),
@@ -172,141 +139,6 @@ echo $num;
 	
 	?>	
 		
-	
-    </div>
-    <div class="span3">   
-        
-        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 2'),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
-
-    </div>
-    <div class="span2"><a href="#" class="btn">Crear nuevo filtro</a></div>
-    <div class="span1">
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'buttonType' => 'link',
-	    'label'=>'Importar',
-	    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-	    'size'=>'normal', // null, 'large', 'small' or 'mini'
-	    'url' => 'importar',
-	)); ?>    	
-    </div>
-    <div class="span2">
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'buttonType' => 'link',
-	    'label'=>'Añadir producto',
-	    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-	    'size'=>'normal', // null, 'large', 'small' or 'mini'
-	    'url' => 'create',
-	)); ?>
-    </div>
-  </div>
-  <hr/>
-  
-  <?php $this->renderPartial('_filters'); ?>
-  <hr/>
-<?php
-$template = '{summary}
-  <table id="table" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-    <tr>
-      <th rowspan="2" scope="col"><input name="check" type="checkbox" id="todos"></th>
-      <th rowspan="2" scope="col">Producto</th>
-      <th rowspan="2" scope="col">Referencia</th>
-      <th rowspan="2" scope="col">Categoría</th>
-      <th rowspan="2" scope="col">Precio (Bs.)</th>
-      <th colspan="3" scope="col">Cantidad</th>
-      <th rowspan="2" scope="col">Ventas Bs.</th>
-      <th rowspan="2" scope="col">Estado</th>
-      <th rowspan="2" scope="col">Fecha de Carga</th>
-      <th rowspan="2" scope="col">Progreso de la campaña</th>
-      <th rowspan="2" scope="col">Acción</th>
-    </tr>
-    <tr>
-      <th scope="col">Total</th>
-      <th scope="col">Disp.</th>
-      <th scope="col">Vendido</th>
-    </tr>
-    {items}
-    </table>
-    {pager}
-	';
-    
-	?>
-
-	  <hr/>
-  <div class="row">
-    <div class="span3">
-      <select class="span3" id="accion">
-        <option id="accion">Acciones</option>
-        <option>Activar</option>
-        <option>Inactivar</option>
-        <option>Borrar</option>
-      </select>
-    </div>
-
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'ajaxButton',
-			'type'=>'danger',
-			'label'=>'Procesar',
-			'url'=>array('producto/varias'),
-			'htmlOptions'=>array('id'=>'procesar','class'=>'span0.5'),
-			'ajaxOptions'=>array(
-			'type' => 'POST',
-			'beforeSend' => "function( request )
-			{
-				 var checkValues = $(':checkbox:checked').map(function() {
-			        return this.id;
-			    }).get().join();
-				
-				var uno = $('#accion').val();
-			
-			this.data += '&accion='+uno+'&check='+checkValues;
-			}",
-			
-			'data'=>array('a'=>'5'),
-			'success'=>"function(data){
-				
-				if(data==1)
-					alert('No ha seleccionado ningún producto.');
-				
-				if(data==2)
-					alert('No ha seleccionado ninguna acción.');
-					
-					
-				if(data==3 || data==4){
-					
-						ajaxUpdateTimeout = setTimeout(function () {
-						$.fn.yiiListView.update(
-						'list-auth-items',
-						{
-						type: 'POST',	
-						url: '" . CController::createUrl('producto/admin') . "',
-						data: ajaxRequest}
-						
-						)
-						},0);
-					alert('Los productos han sido actualizados');
-					}
-				
-				if(data==5)
-				{
-					ajaxUpdateTimeout = setTimeout(function () {
-						$.fn.yiiListView.update(
-						'list-auth-items',
-						{
-						type: 'POST',	
-						url: '" . CController::createUrl('producto/admin') . "',
-						data: ajaxRequest}
-						
-						)
-						},0);
-				}
-				
-			}",
-			),
-			)); ?>
-
-    <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
-  </div>	  
 		  
   </div>
 <?php
@@ -331,11 +163,17 @@ function compara_fechas($fecha1,$fecha2)
 
 <script type="text/javascript">
 
+var arr=Array();
+var arr2=Array();
+
+ 
 $(document).ready(function(){
+	  
+	    
+	    	
 	
-			    
-	
-            $("#todos").click(function() { 
+	          
+	          $("#todos").click(function() { 
             	
                inputs = $('table').find('input').filter('[type=checkbox]');
  
@@ -348,5 +186,33 @@ $(document).ready(function(){
        
                 var selected = new Array();                   
 });
-  
+
+
+ $('body').on('input','.cant', function() { 
+     // get the current value of the input field.
+	    var a =  parseInt($(this).val());
+	    if(isNaN(a)){
+	    	$(this).val('0'); 
+	   		a=0;
+	   }
+	   var index=arr.indexOf($(this).attr('id'));
+	   if(index!=-1){
+	   		arr.splice(index, 1);
+	   		arr2.splice(index, 1);
+	   }
+	       
+	   if(a>0){	
+	   		arr.push($(this).attr('id'));
+	   		arr2.push($(this).val());
+	   		alert(arr.toString()+"\n"+arr2.toString());
+	   		   
+	   		
+	   }
+ });
+ 
+ 
+
+ 
+ 
+ 
 </script>	

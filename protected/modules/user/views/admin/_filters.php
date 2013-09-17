@@ -8,24 +8,31 @@
   </div>
 </div>          
     
-<?php 
-    //Métodos de pago
-    echo CHtml::dropDownList('metodosPago', '', array('1' => 'Depósito o Transferencia',
-    '2' => 'Tarjeta de Crédito', '4' => 'Mercado Pago'), array('style' => 'display:none'));
+<?php
+    echo CHtml::dropDownList('status', '', User::getStatus(), array('style' => 'display:none'));
     
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
                                     'style' => 'display:none'));
+    echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
+                                                       'ps' => 'Personal Shopper',
+                                                       'user' => 'Usuario',),
+                            array('style' => 'display:none'));
     
-    echo CHtml::dropDownList('estadosOrden', '', array('1' => 'En espera de pago',
-    '2' => 'En espera de confirmación', '3' => 'Pago confirmado', '4' => 'Enviado',
-        '5' => 'Cancelado', '6' => 'Pago rechazado', '7' => 'Pago insuficiente',
-        '8' => 'Entregado', '9' => 'Devuelto'), array('style' => 'display:none'));
+    
+    echo CHtml::dropDownList('fuenteR', '', array('face' => 'Facebook',                                                       
+                                                  'user' => 'Registro Normal',
+                                                   ),
+                            array('style' => 'display:none'));
     
     
-
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersProductos.js");
+    echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+                            array('style' => 'display:none'));
+    
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUsuarios.js");
+    
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'action' => Yii::app()->createUrl($this->route),
@@ -46,18 +53,23 @@
                     <div class="controls" >
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
-                                'categoria' => 'Categoría',
-                                'sku' => 'SKU',
-                                'codigo' => 'Referencia',
-                                'precios' => 'Precio',
-                                'total' => 'Cantidad Total',
-                                'pago_id' => 'Cantidad Disponible',
-                                'user_id' => 'Cantidad Vendida',
-                                'id' => 'Ventas',
-                                'id1' => 'Estado',
-                                'id2' => 'Fecha de Carga',
-                                'id3' => 'Marca',
-                                'id4' => 'Visitas',
+                                'id' => 'ID',
+                                'first_name' => 'Nombre',
+                                'last_name' => 'Apellido',
+                                'email' => 'Correo',
+                                'telefono' => 'Teléfono',
+                                'status' => 'Estado',
+                                'tipoUsuario' => 'Tipo de usuario',
+                                'ciudad' => 'Ciudad',
+                                'fuenteR' => 'Fuente de registro',
+                                'visit' => 'Número de visitas',
+                                'lastvisit_at' => 'Fecha de última visita',
+                                'monto' => 'Monto comprado',
+                                'lastorder_at' => 'Fecha de última compra',                                
+                                'looks' => 'Cantidad de looks comprados',                                
+                                'looks_ps' => 'Looks comprados por Personal Shopper',
+                                'looks_marca' => 'Looks comprados por Marca',
+                                
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
@@ -118,7 +130,7 @@
         
         e.preventDefault(); 
         
-        search('<?php echo CController::createUrl('producto/admin') ?>');
+        search('<?php echo CController::createUrl('') ?>');
         
     });
     
@@ -127,7 +139,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', true);
+        searchAndSave('<?php echo CController::createUrl('') ?>', true);
             
     });
     
@@ -136,21 +148,21 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', false);
+        searchAndSave('<?php echo CController::createUrl('') ?>', false);
             
     });
     
     //Seleccionar un filtro preestablecido
     $("#all_filters").change(function(){
 	
-        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('producto/admin') ?>');        	
+        getFilter('<?php echo $this->createUrl('/orden/getFilter');//CController::createUrl('/orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('') ?>');        	
 	
     });
     
     $("#filter-remove").click(function(e){
 
              e.preventDefault();
-             removeFilter('<?php echo CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
+             removeFilter('<?php echo $this->createUrl('/orden/getFilter');//CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
 
     });    
     

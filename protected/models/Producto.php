@@ -764,31 +764,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                 
                 if($column == 'total')
                 {
-                    
-                    //                    
-//                    if(!in_array('SUM(preciotallacolor.cantidad) as total', $criteria->select))
-//                    {
-//                        $criteria->select[] = 'SUM(preciotallacolor.cantidad) as total';                        
-//                        //$criteria->compare('total', $comparator.$value);                               
-//                        $criteria->group .= "t.id";
-//                        $logicOp = "";
-//                    }                    
-//                    
-//                    $criteria->having .= " ".$logicOp." total ".$comparator." ".$value;
-//                    $post_count_sql = "(select count(*) from $post_table pt where pt.author_id = t.id)";
-//                    if (!strpos($joinLooks, 'tbl_precioTallaColor')) {
-//                        $joinLooks .= ' JOIN tbl_precioTallaColor as preciotallacolor ON preciotallacolor.producto_id = t.id';
-//                        $criteria->select[] = 'SUM(preciotallacolor.cantidad) as total'; 
-//                        $criteria->group = 't.id';
-//                        $havingLooks .= 'total '.$comparator.' '.$value.'';
-//                    }else{
-//                        $havingLooks .= ' '.$logicOp.' count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
-//                    } 
-//                    if (!in_array('IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc', $criteria->select)) {
-//                        //$criteria->select[] = '(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) as total';
-//                        $criteria->select[] = '(select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id) as total';
-//                    }
-                    
+                                       
                     $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
                             .$comparator.' '.$value.'');
                     
@@ -807,7 +783,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                           where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                           orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                          0) '
-                            .$comparator.' '.$value.'');
+                            .$comparator.' '.$value.'', $logicOp);
                     
                     
                     continue;
@@ -821,7 +797,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                         where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                         orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                         0)) '
-                    .$comparator.' '.$value.'');
+                    .$comparator.' '.$value.'', $logicOp);
                     
                     
                     continue;
@@ -870,5 +846,19 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
             ));
        }
 
-         
+       public function getDevueltos()
+	{
+		$sql = "select count(*) from tbl_precioTallaColor where id IN(select preciotallacolor_id from tbl_orden_has_productotallacolor WHERE tbl_orden_id IN(select id from tbl_orden where estado= 9))";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}  
+	
+	public function getEnviados()
+	{
+		$sql = "select count(*) from tbl_precioTallaColor where id IN(select preciotallacolor_id from tbl_orden_has_productotallacolor WHERE tbl_orden_id IN(select id from tbl_orden where estado= 4))";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}  
+			 
+		 
 }

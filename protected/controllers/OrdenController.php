@@ -480,8 +480,15 @@ class OrdenController extends Controller
 		$this->render('detalle', array('orden'=>$orden,));
 	}
 
+	/*
+	 * Action para las devoluciones 
+	 * Recibe parametro id por get
+	 */	  
     public function actionDevoluciones(){
-        $this->render('devoluciones');
+    	
+		$orden = Orden::model()->findByPk($_GET['id']);
+		
+        $this->render('devoluciones',array('orden'=>$orden));
     }
 	
 	public function actionFactura($id)
@@ -980,7 +987,7 @@ class OrdenController extends Controller
 		}
 	}
 
-
+	
 
 	public function actionEnviar()
 	{
@@ -1086,6 +1093,8 @@ class OrdenController extends Controller
 		}	
 		
 	}
+
+	
 	
 	public function actionGetprendas($ord){
 		$ordhasptc= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$ord));

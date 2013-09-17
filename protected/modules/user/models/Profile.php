@@ -256,4 +256,17 @@ class Profile extends UActiveRecord
 			$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;
 	}
+	/* Obtener el url del perfil publico del usuario */
+	public function getUrl(){
+		
+		if ($this->url != '')	
+			return Yii::app()->baseUrl.'/'.$this->url;
+		return Yii::app()->createUrl('user/profile/perfil',array('id'=>$this->user_id));		
+	}
+	/* Obtener el nombre del ususario */
+	public function getNombre(){
+		return $this->first_name.' '.$this->last_name; 
+	}
+	  
+	 
 }

@@ -145,7 +145,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		echo "Bs. ya pagados";
 
 	if($orden->estado == 4)
-		echo "Bs. ya pagados";	
+		echo "Bs. ya pagados";
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";	
@@ -154,9 +154,20 @@ $usuario = User::model()->findByPk($orden->user_id);
 		echo "Bs. que faltan.";
 	
 	// agregar demas estados
-    
+     
         ?></td>
-      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
+      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a>
+      		<?php
+      		
+      		$url = Yii::app()->baseUrl."/orden/devoluciones/".$orden->id;
+      		
+      		$this->widget('bootstrap.widgets.TbButton', array(
+			    'label'=>'Hacer devolución.',
+			    'buttonType'=>'link',
+			    'url'=>$url,
+			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			)); ?>
+      </td>
     </tr>
   </table>
   <hr/>
@@ -183,7 +194,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               <ul class="no_bullets no_margin_left">
                 <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
                 <li><strong>Pedidos validos realizados</strong>: 0</li>
-                <li><strong>Total comprado desde su registro</strong>: 0,00 Bs. </li>
+                <li><strong>Total comprado desde su registro</strong>: <?php echo Yii::app()->numberFormatter->formatDecimal($orden->getTotalByUser($orden->user_id)); ?> </li>
               </ul>
             </div>
           </div>

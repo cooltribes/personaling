@@ -227,7 +227,7 @@ if(!Yii::app()->user->isGuest){
         //   $mensajes_Reverse = array_reverse($mensajes);
         //   foreach( $mensajes_Reverse as $msj)
         //   {
-        //     // $htmlMensaje.=$htmlMensaje.' <li>'.$msj.'</li> ';
+        //     // $htmlMensaje=$htmlMensaje.' <li>'.$msj->asunto.'</li> ';
 
         //   }
         // }

@@ -1,3 +1,9 @@
+<?php
+$this->breadcrumbs=array(
+	'Productos'=>array('admin'),
+	'Importar',
+);
+?>
   	<!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block? 
@@ -26,7 +32,10 @@
  <?php echo CHtml::hiddenField('valido','1'); ?>
 
 	<div class="row margin_top">
-    	<div class="span9">
+    	<div class="span12">
+    		<div class="page-header">
+    			<h1>Importar Productos</h1>
+  			</div>
       		<div class="bg_color3   margin_bottom_small padding_small box_1">
         		<fieldset>
             		<legend>Subir archivo a procesar: </legend>

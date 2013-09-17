@@ -87,12 +87,6 @@ function showAlert(type, message){
 
 /*Obtiene los campos pertenecientes a un filtro ID y realiza la búsqueda*/
 function getFilter(URL, ID, URL2){
-    //	if ($('#span_new_filter').html() != 'Filter verbergen'){
-//		$('#div_add_filter').show();
-//		$('#YumUser_textfield_all').hide().val('');
-//		//$(this).hide();
-//		$('#span_new_filter').html('Filter verbergen');
-//	}
 
     clearFilters();
     
@@ -184,7 +178,8 @@ function search(URL){
     
     ajaxRequest = $('#form_filtros').serialize();
     clearTimeout(ajaxUpdateTimeout);
-    //$('#form_filtros').submit();
+    //  $('#form_filtros').submit();
+    
     ajaxUpdateTimeout = setTimeout(
             function() {
                 $.fn.yiiListView.update(

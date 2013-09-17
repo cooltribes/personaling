@@ -65,16 +65,15 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
       </div>
     </div>
     <div class="span3">
-      <select class="span3">
-        <option>Filtros prestablecidos</option>
-        <option>Filtro 1</option>
-        <option>Filtro 2</option>
-        <option>Filtro 3</option>
-      </select>
+        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 3'),
+                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
     </div>
-    <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
+    <div class="span3"><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
     <div class="span2"><a href="#modalNuevoUsuario" class="btn btn-success" data-toggle="modal">Crear usuario</a></div>
   </div>
+
+    <hr/>
+        <?php  $this->renderPartial("_filters"); ?>
     <hr/>
    <?php
 $template = '{summary}
@@ -100,7 +99,7 @@ $template = '{summary}
 	';
 
 		$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-user',
+	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_user',
 	    'template'=>$template,
@@ -139,7 +138,7 @@ $template = '{summary}
 	        ajaxUpdateTimeout = setTimeout(function () {
 	            $.fn.yiiListView.update(
 	// this is the id of the CListView
-	                'list-user',
+	                'list-auth-items',
 	                {data: ajaxRequest}
 	            )
 	        },

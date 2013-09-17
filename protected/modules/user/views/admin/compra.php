@@ -43,7 +43,8 @@
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
-				data: ajaxRequest}
+				data: ajaxRequest,
+				}
 				
 				)
 				},
@@ -82,7 +83,7 @@
 			    {items}
 				</tbody>
 			    </table>
-			    
+			   
 			    {pager}
 				';
 
@@ -93,6 +94,10 @@
 	    'itemView'=>'_item',
 	    'template'=>$template,
 	    'enableSorting'=>true,
+	    'afterAjaxUpdate'=> 'var length = arr.length;
+					for (var i = 0; i < length; i++) {
+			 			$(arr[i]).val(arr2[i]);
+					}',
 	    'sortableAttributes'=>array(
                 'Nombre', 'Marca', 'Talla', 'Color' 
    	),
@@ -161,7 +166,29 @@ function compara_fechas($fecha1,$fecha2)
 var arr=Array();
 var arr2=Array();
 
-  $('body').on('input','.cant', function() { 
+ 
+$(document).ready(function(){
+	  
+	    
+	    	
+	
+	          
+	          $("#todos").click(function() { 
+            	
+               inputs = $('table').find('input').filter('[type=checkbox]');
+ 
+               if($(this).attr("checked")){
+                     inputs.attr('checked', true);
+               }else {
+                     inputs.attr('checked', false);
+               } 	
+		});
+       
+                var selected = new Array();                   
+});
+
+
+ $('body').on('input','.cant', function() { 
      // get the current value of the input field.
 	    var a =  parseInt($(this).val());
 	    if(isNaN(a)){
@@ -181,27 +208,11 @@ var arr2=Array();
 	   		   
 	   		
 	   }
-
-
-$(document).ready(function(){
-	  
-	    
-	    	
-	});
-	          
-	          $("#todos").click(function() { 
-            	
-               inputs = $('table').find('input').filter('[type=checkbox]');
+ });
  
-               if($(this).attr("checked")){
-                     inputs.attr('checked', true);
-               }else {
-                     inputs.attr('checked', false);
-               } 	
-		});
-       
-                var selected = new Array();                   
-});
+ 
 
-  
+ 
+ 
+ 
 </script>	

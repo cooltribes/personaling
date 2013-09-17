@@ -146,6 +146,126 @@ class AdminController extends Controller
     //            exit();
                 }
             }
+            
+            
+            
+             /*********************** Para los filtros *********************/
+             
+            //Filtros personalizados
+            $filters = array();
+            
+            //Para guardar el filtro
+            $filter = new Filter;            
+            
+            if(isset($_POST['dropdown_filter'])){           
+                
+                //Validar y tomar sólo los filtros válidos
+                for($i=0; $i < count($_POST['dropdown_filter']); $i++){
+                    if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
+                            && trim($_POST['textfield_value'][$i]) != '' && $_POST['dropdown_relation'][$i]){
+
+                        $filters['fields'][] = $_POST['dropdown_filter'][$i];
+                        $filters['ops'][] = $_POST['dropdown_operator'][$i];
+                        $filters['vals'][] = $_POST['textfield_value'][$i];
+                        $filters['rels'][] = $_POST['dropdown_relation'][$i];                    
+
+                    }
+                }     
+                //Respuesta ajax
+                $response = array();
+                
+                if (isset($filters['fields'])) {      
+                    
+                    $dataProvider = $model->buscarPorFiltros($filters);                    
+                    
+                     //si va a guardar
+                     if (isset($_POST['save'])){                        
+                         
+                         //si es nuevo
+                         if (isset($_POST['name'])){
+                            
+                            $filter = Filter::model()->findByAttributes(
+                                    array('name' => $_POST['name'], 'type' => '3') //Filtros para ventas
+                                    ); 
+                            if (!$filter) {
+                                $filter = new Filter;
+                                $filter->name = $_POST['name'];
+                                $filter->type = 3;
+                                
+                                if ($filter->save()) {
+                                    for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                        $filterDetails[] = new FilterDetail();
+                                        $filterDetails[$i]->id_filter = $filter->id_filter;
+                                        $filterDetails[$i]->column = $filters['fields'][$i];
+                                        $filterDetails[$i]->operator = $filters['ops'][$i];
+                                        $filterDetails[$i]->value = $filters['vals'][$i];
+                                        $filterDetails[$i]->relation = $filters['rels'][$i];
+                                        $filterDetails[$i]->save();
+                                    }
+                                    
+                                    $response['status'] = 'success';
+                                    $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';
+                                    $response['idFilter'] = $filter->id_filter;                                    
+                                    
+                                }
+                                
+                            //si ya existe
+                            } else {
+                                $response['status'] = 'error';
+                                $response['message'] = 'No se pudo guardar el filtro, el nombre <b>"'.
+                                        $filter->name.'"</b> ya existe'; 
+                            }
+
+                          /* si esta guardadndo uno existente */
+                         }else if(isset($_POST['id'])){
+                            
+                            $filter = Filter::model()->findByPk($_POST['id']); 
+
+                            if ($filter) {
+                                
+                                //borrar los existentes
+                                foreach ($filter->filterDetails as $detail){
+                                    $detail->delete();
+                                }
+                                
+                                for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                    $filterDetails[] = new FilterDetail();
+                                    $filterDetails[$i]->id_filter = $filter->id_filter;
+                                    $filterDetails[$i]->column = $filters['fields'][$i];
+                                    $filterDetails[$i]->operator = $filters['ops'][$i];
+                                    $filterDetails[$i]->value = $filters['vals'][$i];
+                                    $filterDetails[$i]->relation = $filters['rels'][$i];
+                                    $filterDetails[$i]->save();
+                                }
+
+                                $response['status'] = 'success';
+                                $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';                                
+                            //si NO existe el ID
+                            } else {
+                                $response['status'] = 'error';
+                                $response['message'] = 'El filtro no existe'; 
+                            }
+                             
+                         }
+                        
+                         echo CJSON::encode($response); 
+                         Yii::app()->end();
+                         
+                     }//fin si esta guardando
+
+                //si no hay filtros válidos    
+                }else if (isset($_POST['save'])){
+                    $response['status'] = 'error';
+                    $response['message'] = 'No has seleccionado ningún criterio para filtrar'; 
+                    echo CJSON::encode($response); 
+                    Yii::app()->end();
+                }
+            }
+            
+            
+            
             $this->render('index', array(
                 'model' => $model,
                 'modelUser' => $modelUser,
@@ -353,16 +473,20 @@ if(isset($_POST['Profile']))
 			
 			Yii::app()->session['usercompra']=$id;
  
-          	$sql='select p.id, im.tbl_producto_id, pr.tbl_producto_id  , p.nombre as Nombre, p.codigo, t.valor as Talla, m.nombre as Marca,
-          		pr.precioDescuento, ptc.id as ptcid, ptc.cantidad , im.url, ptc.talla_id, c.valor as Color
-				 from tbl_producto p JOIN tbl_precioTallaColor ptc ON ptc.producto_id = p.id 
-				JOIN tbl_imagen im ON im.tbl_producto_id = p.id AND im.color_id = ptc.color_id 
-				JOIN tbl_precio pr ON pr.tbl_producto_id = p.id 
-				JOIN tbl_marca m ON p.marca_id = m.id
-				JOIN tbl_talla t ON ptc.talla_id = t.id
-				JOIN tbl_color c ON ptc.color_id = c.id
-				WHERE ptc.cantidad > 0 AND p.status=1 AND p.estado=0'.$q;
+          	$sql='select p.marca_id as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad  
+				from tbl_precioTallaColor ptc, tbl_producto p 
+				where ptc.cantidad >0 and p.estado=0 and p.`status`=1 and ptc.producto_id = p.id '.$q;
 			$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+			
+			
+			foreach($rawData as $row){
+				$row['Marca']=Marca::model()->getMarca($row['Marca']);
+				$row['Talla']=Talla::model()->getTalla($row['Talla']);
+				$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
+				$row['Color']=Color::model()->getColor($row['Color']);				 				
+			}
+			print_r($rawData);
+			break;
 			// or using: $rawData=User::model()->findAll(); <--this better represents your question
 
 			$dataProvider=new CArrayDataProvider($rawData, array(
@@ -466,7 +590,7 @@ if(isset($_POST['Profile']))
 			'model'=>$model,
 			'bolsa'=>$bolsa,
 			'usuario'=>$id,
-		));
+		)); 
 	}
 	public function actionCorporal()
 	{

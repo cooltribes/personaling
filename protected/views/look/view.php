@@ -261,32 +261,38 @@
            
             <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
-          <div class="braker_horz_top_1 addthis clearfix">  
+          <div class="braker_horz_top_1 addthis clearfix row-fluid">  
           <?php
             // total de likes 
             $cuantos = LookEncantan::model()->countByAttributes(array('look_id'=>$model->id));
                        
-          	if(isset($like)) // le ha dado like 
-				{
-          ?>
-          		<div class="margin_bottom_medium"><a class="btn-small btn btn-danger" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&hearts;</span> Me encanta </a>
-          <?php
-				}
-			else {
-			?>
-			 <div class="margin_bottom_medium"><a class="btn-small btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta </a> 
-			<?php
-				}
-			?>	
+            if(isset($like)) // le ha dado like 
+				    { ?>
+          
+          		<div class="span4"><a class="btn-mini  btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&hearts;</span> Me encanta </a>
+            <?php
+				    }
+			      else {?>
+			       
+			       <div class=" span4"><a class="btn-mini" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta </a> 
+      			<?php
+      				}
+      			?>	
       &nbsp; <span id="total-likes" ><?php echo $cuantos; ?></span>
           	
           
           	
           </div>            
           <!-- <div class=""> -->
-          <a class="addthis_button_facebook_like pull-left" fb:like:layout="button_count"></a>
-            <a class="addthis_button_tweet pull-left"></a>
-            <a class="addthis_button_pinterest_pinit boton_pinterest pull-left"></a>
+          <div class="span3" id="btn-facebook" >
+            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+          </div>
+          <div  class="span3">
+          <a class="addthis_button_tweet"></a>
+          </div>
+          <div class="span2">
+          <a class="addthis_button_pinterest_pinit"></a>
+          </div>
           <!-- </div> -->
             
             <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
@@ -537,7 +543,7 @@ $cont=0;
                     $("span#like").text(a);
 					
 					$("#total-likes").text(data.total);
-					$("#btn-encanta").addClass("btn-danger");
+					$("#btn-encanta").addClass("btn-danger_modificado");
                 }
 
                 if(data.mensaje=="no") 
@@ -551,7 +557,7 @@ $cont=0;
                     var a = "♡";
 
                     //alert("borrando");
-					$("#btn-encanta").removeClass("btn-danger");
+					$("#btn-encanta").removeClass("btn-danger_modificado");
                     $("#meEncanta").removeClass("btn-link-active");
                     $("span#like").text(a);
                     

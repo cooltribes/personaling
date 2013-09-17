@@ -18,16 +18,19 @@
     echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
                                                        'ps' => 'Personal Shopper',
                                                        'user' => 'Usuario',),
-                            array('style' => 'display:none'));
-    
+                            array('style' => 'display:none'));    
     
     echo CHtml::dropDownList('fuenteR', '', array('face' => 'Facebook',                                                       
                                                   'user' => 'Registro Normal',
                                                    ),
+                            array('style' => 'display:none'));    
+    
+    echo CHtml::dropDownList('looks_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
     
-    
-    echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+    echo CHtml::dropDownList('looks_ps', '', CHtml::listData(User::model()->with(array(
+                               'profile'=>array(),
+                            ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name||\' \'||profile.last_name'),
                             array('style' => 'display:none'));
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");

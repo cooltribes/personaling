@@ -237,8 +237,6 @@ class Orden extends CActiveRecord
             $joinUsers = '';
             $joinLooks = '';
             $havingLooks = '';
-            $joinLooks = '';
-            $havingLooks = '';
 
             for ($i = 0; $i < count($filters['fields']); $i++) {
                 

@@ -178,7 +178,7 @@ function search(URL){
     
     ajaxRequest = $('#form_filtros').serialize();
     clearTimeout(ajaxUpdateTimeout);
-    //  $('#form_filtros').submit();
+      $('#form_filtros').submit();
     
     ajaxUpdateTimeout = setTimeout(
             function() {

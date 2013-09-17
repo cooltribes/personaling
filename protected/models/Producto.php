@@ -783,7 +783,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                           where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                           orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                          0) '
-                            .$comparator.' '.$value.'');
+                            .$comparator.' '.$value.'', $logicOp);
                     
                     
                     continue;
@@ -797,7 +797,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
                         where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                         orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                         0)) '
-                    .$comparator.' '.$value.'');
+                    .$comparator.' '.$value.'', $logicOp);
                     
                     
                     continue;

@@ -328,7 +328,9 @@ class User extends CActiveRecord {
             if ($i == 0) 
             {
                 $logicOp = 'AND';
-            } else {
+            } 
+            else
+            {
                 $logicOp = $filters['rels'][$i - 1];
             }
 
@@ -394,17 +396,15 @@ class User extends CActiveRecord {
                 
             }
 
-            if($column == 'montos') { 
+            if($column == 'monto') { 
 
-                 $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
-                        . $comparator . ' ' . $value . '');
-                        /*
-                         * (select SUM(total) from tbl_orden orden where orden.user_id = u.id 
-and 
-(orden.estado = 3 OR orden.estado = 4 OR orden.estado = 8)
-)
-                         * 
-                         */
+                 $criteria->addCondition('(IFNULL((select SUM(orden.total) 
+		from tbl_orden orden 
+		where orden.user_id = user.id 
+			AND 
+		(orden.estado = 3 OR orden.estado = 4 OR orden.estado = 8)), 0))  '
+                                        . $comparator . ' ' . $value . '', $logicOp);
+                        
                 continue;
             }
 

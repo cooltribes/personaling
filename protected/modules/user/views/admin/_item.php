@@ -7,6 +7,6 @@
 	echo "<td>".$data['Talla']."</td>";
 	echo "<td>".$data['precioDescuento']."</td>";
 	echo "<td>".$data['cantidad']."</td>";
-	echo "<td><input type='number' id='".$data['ptcid']."' value='0' class='input-mini cant' max='999' min='0' required='required' /></td></th>";
+	echo "<td><input type='number' id='".$data['ptcid']."' value='0' class='input-mini cant' max='".$data['cantidad']."'  min='0' required='required' /></td></th>";
 
 	?>

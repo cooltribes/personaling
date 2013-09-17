@@ -145,7 +145,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		echo "Bs. ya pagados";
 
 	if($orden->estado == 4)
-		echo "Bs. ya pagados";	
+		echo "Bs. ya pagados";
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";	
@@ -154,9 +154,20 @@ $usuario = User::model()->findByPk($orden->user_id);
 		echo "Bs. que faltan.";
 	
 	// agregar demas estados
-    
+     
         ?></td>
-      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
+      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a>
+      		<?php
+      		
+      		$url = Yii::app()->baseUrl."/orden/devoluciones/".$orden->id;
+      		
+      		$this->widget('bootstrap.widgets.TbButton', array(
+			    'label'=>'Hacer devolución.',
+			    'buttonType'=>'link',
+			    'url'=>$url,
+			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			)); ?>
+      </td>
     </tr>
   </table>
   <hr/>
@@ -183,7 +194,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               <ul class="no_bullets no_margin_left">
                 <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
                 <li><strong>Pedidos validos realizados</strong>: 0</li>
-                <li><strong>Total comprado desde su registro</strong>: 0,00 Bs. </li>
+                <li><strong>Total comprado desde su registro</strong>: <?php echo Yii::app()->numberFormatter->formatDecimal($orden->getTotalByUser($orden->user_id)); ?> </li>
               </ul>
             </div>
           </div>
@@ -536,9 +547,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 						$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
 						$precio = $lookpedido->getPrecio(false);
 						
-							echo("<tr style='outline: 1px solid #5e516c; border: 1px solid #5e516c'>"); // Aplicar fondo de tr, eliminar borde**
-							echo("<td></td>");
-							echo("<td colspan='6'><strong>".$lookpedido->title."</strong></td>");// Referencia
+							echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
+							// echo("<td></td>");
+							echo("<td colspan='7'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
 							echo("<td>".number_format($prod->precio, 2, ',', '.')."</td>"); // precio 
 							
@@ -600,7 +611,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 					else // individual
 					{
 						if($row==0){
-								echo("<tr style='outline: 1px solid #5e516c; border: 1px solid #5e516c'><td colspan='9'>PRENDAS INDIVIDUALES</td></tr>");
+								echo("<tr class='bg_color5'><td colspan='9'>Prendas Individuales</td></tr>");
 								$row=1;
 						}	
 						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
@@ -755,6 +766,70 @@ $usuario = User::model()->findByPk($orden->user_id);
   <!-- INFORMACION DEL PEDIDO OFF -->
   <hr/>
   
+
+  <!-- Productos devueltos ON -->
+   <div class="well well-small margin_top well_personaling_small">
+     <h3 class="braker_bottom margin_top">Productos devueltos</h3>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+        <tr>
+
+        	<th scope="col">Referencia</th>
+			<th scope="col">Nombre</th>
+			<th scope="col">Marca</th>
+			<th scope="col">Color</th>
+			<th scope="col">Talla</th>
+			<th scope="col">Motivo</th>  
+			<th scope="col">Precio</th>        
+        </tr>
+
+        <tr>
+        	<td>
+        		111
+        	</td>
+        	<td>Prenda bonita</td>
+        	<td>Lamarca</td>
+        	<td>Gris</td>
+        	<td> XL </td>
+        	<td> Dañada </td>
+        	<td >
+        		000,00
+        	</td>
+        </tr>
+        <tr>
+        	<td>
+        		111
+        	</td>
+        	<td>Prenda bonita</td>
+        	<td>Lamarca</td>
+        	<td>Gris</td>
+        	<td> XL </td>
+        	<td> Dañada </td>
+        	<td >
+        		000,00
+        	</td>
+        </tr>
+        <tr>
+        	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
+        </tr>        
+        <tr>
+        	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
+        	<td  class="text_align_right">000,00 Bs</td>
+        </tr>
+        <tr>
+        	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
+        	<td  class="text_align_right">000,00 Bs</td>
+        </tr>
+        <tr>
+        	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
+        	<th  class="text_align_right">000,00 Bs</th>
+        </tr>        
+    	</table>
+	</div>
+
+
+  <!-- Productos devueltos ON -->
+
+
   <!-- MENSAJES ON -->
   
   <div class="row">

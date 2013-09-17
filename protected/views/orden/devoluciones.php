@@ -3,7 +3,7 @@
 
 $this->breadcrumbs=array(
 	'Pedidos'=>array('admin'),
-	'Detalle'=>array('detalle'),
+	'Detalle'=>array('detalles','id'=>$orden->id),
 	'Devoluciones',
 );
 
@@ -32,7 +32,6 @@ $this->breadcrumbs=array(
 			<th scope="col">Nombre</th>
 			<th scope="col">Color</th>
 			<th scope="col">Talla</th>
-			<th scope="col">Cant. a devolver</th>
 			<th scope="col">Motivo</th>          
         </tr>
 
@@ -44,16 +43,25 @@ $this->breadcrumbs=array(
         	<td>Prenda bonita</td>
         	<td> Gris </td>
         	<td> 10 </td>
-        	<td class="span1">
-        		<!-- Cantidad  que puede devolver, se genera deacuerdo a el pedido -->
-        		<select class="input-mini">
-				  <option>1</option>
-				  <option>2</option>
-				  <option>3</option>
-				  <option>4</option>
-				  <option>5</option>
-				</select>
+        	<td class="span3">
+				<select class="input-medium">
+				  <option>Cambio de talla</option>
+				  <option>Cambio por otro articulo</option>
+				  <option>Devolución por prenda dañada</option>
+				  <option>Devolución por insatisfacción</option>
+				  <option>Devolución por pedido equivocado</option>
+				</select>        		
         	</td>
+        </tr>
+
+        <tr>
+        	<td>
+        		<input type="checkbox" value="">
+        	</td>
+        	<td>111</td>
+        	<td>Prenda bonita</td>
+        	<td> Gris </td>
+        	<td> 10 </td>
         	<td class="span3">
 				<select class="input-medium">
 				  <option>Motivo</option>
@@ -73,16 +81,6 @@ $this->breadcrumbs=array(
         	<td>Prenda bonita</td>
         	<td> Gris </td>
         	<td> 10 </td>
-        	<td class="span1">
-        		<!-- Cantidad  que puede devolver, se genera deacuerdo a el pedido -->
-        		<select class="input-mini">
-				  <option>1</option>
-				  <option>2</option>
-				  <option>3</option>
-				  <option>4</option>
-				  <option>5</option>
-				</select>
-        	</td>
         	<td class="span3">
 				<select class="input-medium">
 				  <option>Motivo</option>
@@ -95,43 +93,14 @@ $this->breadcrumbs=array(
         </tr>
 
         <tr>
-        	<td>
-        		<input type="checkbox" value="">
-        	</td>
-        	<td>111</td>
-        	<td>Prenda bonita</td>
-        	<td> Gris </td>
-        	<td> 10 </td>
-        	<td class="span1">
-        		<!-- Cantidad  que puede devolver, se genera deacuerdo a el pedido -->
-        		<select class="input-mini">
-				  <option>1</option>
-				  <option>2</option>
-				  <option>3</option>
-				  <option>4</option>
-				  <option>5</option>
-				</select>
-        	</td>
-        	<td class="span3">
-				<select class="input-medium">
-				  <option>Motivo</option>
-				  <option>Motivo 1</option>
-				  <option>Motivo 2</option>
-				  <option>Motivo 3</option>
-				  <option>Motivo 4</option>
-				</select>        		
-        	</td>
-        </tr>
-
-        <tr>
-        	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
+        	<th colspan="6"><div class="text_align_right"><strong>Resumen</strong></div></th>
         </tr>        
         <tr>
-        	<td colspan="6"><div class="text_align_right"><strong>Monto a devolver:</strong></div></td>
+        	<td colspan="5"><div class="text_align_right"><strong>Monto a devolver:</strong></div></td>
         	<td  class="text_align_right">000,00 Bs</td>
         </tr>
         <tr>
-        	<td colspan="6"><div class="text_align_right"><strong>Monto por envio a devolver:</strong></div></td>
+        	<td colspan="5"><div class="text_align_right"><strong>Monto por envio a devolver:</strong></div></td>
         	<td  class="text_align_right">000,00 Bs</td>
         </tr>
     	</table>

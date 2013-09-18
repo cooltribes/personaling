@@ -5,6 +5,12 @@
 */
 ?> 
 
+<script type="text/javascript">
+	var arr=Array();
+	var arr2=Array();
+	var init=Array();
+	var init2=Array();
+</script>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Generar Orden de Compra</small></h1>
@@ -19,15 +25,53 @@
     	<input type="text" name="query" id="query" class="span3">
    		<a class="btn" id="btn_search_event">Buscar</a>
    	</div>
+	</form>
 	<div class="span4">
     	<a class="btn span2" id="ver_orden">Ver Orden</a>
 	</div>
 	<div class="span2">
-    	<a class="btn btn-info" id="continuar">Continuar</a>
+	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+						'id'=>'productos'
+						
+					));
+						
+		            echo CHtml::hiddenField('ptcs','nothing');	    
+		            echo CHtml::hiddenField('vals','nothing');
+	
+	$this->widget('bootstrap.widgets.TbButton', array(
+            'buttonType'=>'submit',
+            'type'=>'info',
+            'label'=>'Continuar',
+        )); 
+	
+	$this->endWidget();
+	
+	
+	
+	?>
+	  	
 	</div>
-	</form>
+	
+	
 		
 	<?php
+	
+	$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+						'id'=>'productos',
+						'enableAjaxValidation'=>false,
+						'enableClientValidation'=>true,
+						'clientOptions'=>array(
+							'validateOnSubmit'=>true, 
+						),
+						
+					));
+						
+		            echo CHtml::hiddenField('ptcs','direccionVieja');	    
+		            echo CHtml::hiddenField('vals','direccionVieja');
+	
+	$this->endWidget();
+	
+	
 	Yii::app()->clientScript->registerScript('query1',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest;
@@ -86,6 +130,19 @@
 			   
 			    {pager}
 				';
+				
+				
+		
+	Yii::app()->clientScript->registerScript('handle_ajax_function', "
+			function setValues()
+			{
+				
+				for(var i=0; i<arr.length;i++){
+					$('#'+arr[i]).val(arr2[i]);
+				}
+			}
+			");
+
 
 
 		$this->widget('zii.widgets.CListView', array(
@@ -94,10 +151,9 @@
 	    'itemView'=>'_item',
 	    'template'=>$template,
 	    'enableSorting'=>true,
-	    'afterAjaxUpdate'=> 'var length = arr.length;
-					for (var i = 0; i < length; i++) {
-			 			$(arr[i]).val(arr2[i]);
-					}',
+	    'afterAjaxUpdate'=>'setValues',
+	    
+	    
 	    'sortableAttributes'=>array(
                 'Nombre', 'Marca', 'Talla', 'Color' 
    	),
@@ -138,7 +194,7 @@
 	
 	
 	?>	
-		
+	
 		  
   </div>
 <?php
@@ -163,8 +219,7 @@ function compara_fechas($fecha1,$fecha2)
 
 <script type="text/javascript">
 
-var arr=Array();
-var arr2=Array();
+
 
  
 $(document).ready(function(){
@@ -190,6 +245,7 @@ $(document).ready(function(){
 
  $('body').on('input','.cant', function() { 
      // get the current value of the input field.
+     	
 	    var a =  parseInt($(this).val());
 	    if(isNaN(a)){
 	    	$(this).val('0'); 
@@ -204,10 +260,9 @@ $(document).ready(function(){
 	   if(a>0){	
 	   		arr.push($(this).attr('id'));
 	   		arr2.push($(this).val());
-	   		alert(arr.toString()+"\n"+arr2.toString());
-	   		   
-	   		
-	   }
+	   		$('#ptcs').val(arr.toString());
+	   		$('#vals').val(arr2.toString());
+	   	}
  });
  
  

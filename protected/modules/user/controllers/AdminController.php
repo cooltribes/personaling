@@ -29,7 +29,7 @@ class AdminController extends Controller
 				'actions'=>array('admin','delete','create','update',
                                     'view','corporal','estilos','pedidos','carrito',
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo','compra'),
+                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo','compra','compradir','comprapago'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -460,63 +460,7 @@ if(isset($_POST['Profile']))
 		));
 	}
 	
-	public function actionCompra($id)
-	{
 		
-		  	$q=" order by p.nombre";
-		  	
-            if (isset($_POST['query']))
-            {
-                $q=" AND p.nombre LIKE '%".$_POST['query']."%' ".$q;		
-			      	
-            }
-			
-			Yii::app()->session['usercompra']=$id;
- 
-          	$sql='select p.marca_id as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad  
-				from tbl_precioTallaColor ptc, tbl_producto p 
-				where ptc.cantidad >0 and p.estado=0 and p.`status`=1 and ptc.producto_id = p.id '.$q;
-			$rawData=Yii::app()->db->createCommand($sql)->queryAll();
-			
-			$data=array();
-			foreach($rawData as $row){
-				$row['Marca']=Marca::model()->getMarca($row['Marca']);
-				$row['Talla']=Talla::model()->getTalla($row['Talla']);
-				$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
-				$row['Color']=Color::model()->getColor($row['Color']);
-				$row['precioDescuento']=Precio::model()->getPrecioDescuento($row['id']);	
-				array_push($data,$row);
-							 				
-			}
-			
-			// or using: $rawData=User::model()->findAll(); <--this better represents your question
-
-			$dataProvider=new CArrayDataProvider($data, array(
-			    'id'=>'data',
-			    'pagination'=>array(
-			        'pageSize'=>12,
-			    ),
-				 
-			    'sort'=>array(
-			        'attributes'=>array(
-			             'Nombre', 'Marca', 'Talla', 'Color'
-			        ),
-    ),
-			));
-			
-			
-			
-			 
-			
-			
-            $this->render('compra', array(   'dataProvider'=>$dataProvider,
-            ));	
-	}
-	
-	
-	
-	
-	
 	public function actionDirecciones()
 	{
 		$model=$this->loadModel();
@@ -811,6 +755,149 @@ if(isset($_POST['Profile']))
 				}
 							
 		}
-	} 
+	}
+	
+	
+	public function actionCompra($id)
+	{
+				if(isset($_POST['ptcs'])&&$_POST['ptcs']!='nothing')
+			{
+								
+				
+				Yii::app()->session['ptcs']=$_POST['ptcs'];
+				Yii::app()->session['vals']=$_POST['vals'];
+				$this->redirect(array('admin/compradir'));
+				
+			}
+			
+							
+			  	$q=" order by p.nombre";
+			  	
+	            if (isset($_POST['query']))
+	            {
+	                $q=" AND p.nombre LIKE '%".$_POST['query']."%' ".$q;		
+				      	
+	            }
+				
+				Yii::app()->session['usercompra']=$id;
+	 
+	          	$sql='select p.marca_id as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad  
+					from tbl_precioTallaColor ptc, tbl_producto p 
+					where ptc.cantidad >0 and p.estado=0 and p.`status`=1 and ptc.producto_id = p.id '.$q;
+				$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+				
+				$data=array();
+				foreach($rawData as $row){
+					$row['Marca']=Marca::model()->getMarca($row['Marca']);
+					$row['Talla']=Talla::model()->getTalla($row['Talla']);
+					$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
+					$row['Color']=Color::model()->getColor($row['Color']);
+					$row['precioDescuento']=Precio::model()->getPrecioDescuento($row['id']);	
+					array_push($data,$row);
+								 				
+				}
+				
+				// or using: $rawData=User::model()->findAll(); <--this better represents your question
+	
+				$dataProvider=new CArrayDataProvider($data, array(
+				    'id'=>'data',
+				    'pagination'=>array(
+				        'pageSize'=>12,
+				    ),
+					 
+				    'sort'=>array(
+				        'attributes'=>array(
+				             'Nombre', 'Marca', 'Talla', 'Color'
+				        ),
+	    ),
+				));
+				
+				
+				
+				 
+				
+				
+	            $this->render('compra', array(   'dataProvider'=>$dataProvider,
+	            ));	
+	   
+		
+	}
+	
+	
+	
+	
+	
+	
+	public function actionCompradir()
+		{
+			$dir = new Direccion;
+			
+			
+			if(isset($_POST['tipo']) && $_POST['tipo']=='direccionVieja')
+			{
+				//echo "Id:".$_POST['Direccion']['id'];
+				$dirEnvio = $_POST['Direccion']['id'];
+				
+				$this->render('comprapago',array('idDireccion'=>$dirEnvio));
+			}
+			else
+			if(isset($_POST['Direccion'])) // nuevo registro
+			{
+				//if($_POST['Direccion']['nombre']!="")
+			//	{
+				
+				// guardar en el modelo direccion
+				$dir->attributes=$_POST['Direccion'];
+				
+				if($dir->pais=="1")
+					$dir->pais = "Venezuela";
+				
+				if($dir->pais=="2")
+					$dir->pais = "Colombia";
+				
+				if($dir->pais=="3")
+					$dir->pais = "Estados Unidos"; 
+				
+				$dir->user_id = Yii::app()->user->id;
+				
+					if($dir->save())
+					{
+						$this->render('comprapago',array('idDireccion'=>$dir->id));
+						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
+					}
+					
+				//} // nombre
+			//	else {
+					//$this->render('direcciones',array('dir'=>$dir)); // regresa
+				//}
+				
+			}else // si está viniendo de la pagina anterior que muestre todo 
+			{
+				$this->render('compradir',array('dir'=>$dir));
+			}
+			
+
+		}
+
+	public function actionComprapago()
+		{
+			
+			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
+			{ 
+				$idDireccion = $_POST['idDireccion'];
+				$tipoPago = $_POST['tipoPago'];
+				echo "if";
+				$this->render('confirmar',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
+				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
+				// se le pasan los datos al action confirmar	
+			}else if(isset($_GET['id'])){ // de direcciones
+			echo "else";
+				$this->render('pago',array('id_direccion'=>$_GET['id']));
+			}
+			
+		
+		} 
+
+
 	
 }

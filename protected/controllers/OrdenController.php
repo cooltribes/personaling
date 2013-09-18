@@ -281,7 +281,7 @@ class OrdenController extends Controller
             
         }
         
-	public function actionModalventas(){
+	public function actionModalventas($id){
 		
 		$id=$_POST['ord'];
 	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
@@ -467,7 +467,8 @@ class OrdenController extends Controller
 		echo $html;
 		
 		
-
+		
+	
 
 
 	}
@@ -482,36 +483,10 @@ class OrdenController extends Controller
 	/*
 	 * Action para las devoluciones 
 	 * Recibe parametro id por get
-	 */	 
+	 */	  
     public function actionDevoluciones(){
     	
-		if(isset($_POST['orden']) && isset($_POST['check']))
-		{
-			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
-			
-			foreach($checks as $uno)
-			{
-				$orden = Orden::model()->findByPk($_POST['orden']);
-				$ptcolor = PrecioTallaColor::model()->findByAttributes(array('sku'=>$uno));
-				$ptc = OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$_POST['orden'],'preciotallacolor_id'=>$ptcolor->id)); // para asignarle el id
-				
-				$devuelto = new Devolucion;
-				
-				$devuelto->user_id = $orden->user_id;
-				$devuelto->orden_id = $orden->id;
-				$devuelto->preciotallacolor_id = $ptcolor->id;
-				 
-				
-				
-				
-			}
-			
-		}
-		
-		if(isset($_GET['id']))
-		{
-			$orden = Orden::model()->findByPk($_GET['id']);
-		}
+		$orden = Orden::model()->findByPk($_GET['id']);
 		
         $this->render('devoluciones',array('orden'=>$orden));
     }

@@ -16,7 +16,6 @@ echo"<tr>";
 	else
 		echo "<td></td>";
 	$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
-	
 	 $indiv=OrdenHasProductotallacolor::model()->countIndividuales($data->id);
 	 $looks=OrdenHasProductotallacolor::model()->countLooks($data->id);
 		
@@ -89,7 +88,7 @@ function modal(id){
 	$.ajax({
 		type: "post",
 		//'url' :'/site/orden/modalventas/'+id,
-		'url' : '<?php echo $this->createUrl('orden/modalventas'); ?>',
+		'url' : '<?php echo $this->createUrl('orden/modalventas',array('id'=>$data->id)); ?>',
 		data: { 'ord':id}, 
 		'success': function(data){
 			$('#myModal').html(data);

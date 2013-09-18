@@ -10,6 +10,7 @@
  * 7 - Pago insuficiente
  * 8 - Entregado
  * 9 - Devuelto
+ * 10 - Parcialmente devuelto
  * */
 
 

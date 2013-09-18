@@ -341,7 +341,7 @@ class OrdenController extends Controller
 			 $ptc=PrecioTallaColor::model()->findByPk($idp[1]);
 			 $talla=Talla::model()->findByPk($ptc->talla_id);
 			 $color=Color::model()->findByPk($ptc->color_id);
-			 
+			 $precio=Precio::model()->getPrecioDescuento($idp[0]);
 			 
 			  $html=$html.'<tr>';
 	        // Primera columna ON
@@ -359,12 +359,12 @@ class OrdenController extends Controller
 	        // Segunda columna OFF
 	        // Tercera columna ON
 	        $html=$html.'<td>';
-			$html=$html.$idp[2].' Bs.';
+			$html=$html.number_format($precio, 2, ',', '.')."  Bs.";
 	        $html=$html.'</td>';
 	        // Tercera columna OFF
 	        // Cuarta columna ON
 	        $html=$html.'<td>';
-			$html=$html.$idp[2]*$idp[3];
+			$html=$html.number_format($precio*$idp[3], 2, ',', '.')." Bs.";
 	        $html=$html.'</td>';
 	        // Cuarta columna OFF        
 
@@ -486,9 +486,60 @@ class OrdenController extends Controller
 	 */	  
     public function actionDevoluciones(){
     	
-		$orden = Orden::model()->findByPk($_GET['id']);
+
+		if(isset($_POST['orden']) && isset($_POST['check']))
+		{
+			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
+			$cont = 0; 
+			
+			foreach($checks as $uno)
+			{
+				$orden = Orden::model()->findByPk($_POST['orden']);
+				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno));
+				$ptc = OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$_POST['orden'],'preciotallacolor_id'=>$ptcolor->id)); // para asignarle el id
+				
+				$devuelto = new Devolucion;
+				
+				$devuelto->user_id = $orden->user_id;
+				$devuelto->orden_id = $orden->id;
+				$devuelto->preciotallacolor_id = $ptcolor->id;
+				$devuelto->motivo = $_POST['motivos'][$cont];
+				$devuelto->montodevuelto = $_POST['monto'];
+				$devuelto->montoenvio = 0;
+				
+				$devuelto->save();
+				
+				if($_POST['motivos'][$cont] != "Devolución por prenda dañada")
+				{
+					$ptcolor->cantidad ++; // devuelvo la prenda a inventario
+					$ptcolor->save();
+				}
+				
+				$ptc->devolucion_id = $devuelto->id;
+				$ptc->save();
+
+				$cont++;
+			}
+			
+			$devueltos = count($_POST['motivos']);
+			$total = OrdenHasProductotallacolor::model()->countByAttributes(array('tbl_orden_id'=>$_POST['orden']));
+			
+			if($devueltos == $total)
+				$orden->estado = 9; // devuelto					
+			else if($devueltos < $total)
+				$orden->estado = 10; // parcialmente devuelto
+			
+			$orden->save();
+			
+			echo "ok";
+		}
 		
-        $this->render('devoluciones',array('orden'=>$orden));
+		if(isset($_GET['id']))
+		{
+			$orden = Orden::model()->findByPk($_GET['id']);
+			$this->render('devoluciones',array('orden'=>$orden));
+		}
+        
     }
 	
 	public function actionFactura($id)

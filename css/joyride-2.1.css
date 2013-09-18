@@ -204,7 +204,7 @@ body {
   width: 100%;
   background: rgb(0,0,0);
   background: transparent;
-  background: rgba(0,0,0, 0.1);
+  background: rgba(0,0,0, 0.4);
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
   opacity: 0.5;

@@ -367,7 +367,7 @@ class ProductoController extends Controller
 		                    $image->save($nombre . "_thumb".$extension);
 							
 							if ($extension == '.png'){
-								$image->resize(270, 270)->quality(40);	
+								$image->resize(270, 270)->quality(95);	
 								$image->super_crop(270,270,"top","left");
 								$image->save($nombre .  "_thumb".$extension_ori);	
 							}	
@@ -378,7 +378,7 @@ class ProductoController extends Controller
 		                    $image->save($nombre . "_x540".$extension);
 							
 							if ($extension == '.png'){
-								$image->resize(540, 540)->quality(40);	
+								$image->resize(540, 540)->quality(95);	
 								$image->super_crop(540,540,"top","left");
 								$image->save($nombre .  "_x540".$extension_ori);	
 							}	
@@ -389,7 +389,7 @@ class ProductoController extends Controller
 		                    $image->save($nombre . "_x90".$extension);
 							
 							if ($extension == '.png'){
-								$image->resize(90, 90)->quality(40);	
+								$image->resize(90, 90)->quality(95);	
 								$image->super_crop(90,90,"top","left");
 								$image->save($nombre .  "_x90".$extension_ori);	
 							}
@@ -400,7 +400,7 @@ class ProductoController extends Controller
 		                    $image->save($nombre . "_x180".$extension);
 							
 							if ($extension == '.png'){
-								$image->resize(180, 180)->quality(40);	
+								$image->resize(180, 180)->quality(95);	
 								$image->super_crop(180,180,"top","left");
 								$image->save($nombre .  "_x180".$extension_ori);	
 							}		
@@ -411,7 +411,7 @@ class ProductoController extends Controller
 		                    $image->save($nombre . "_x30".$extension);
 							
 							if ($extension == '.png'){
-								$image->resize(30, 30)->quality(40);	
+								$image->resize(30, 30)->quality(60);	
 								$image->super_crop(30,30,"top","left");
 								$image->save($nombre .  "_x30".$extension_ori);	
 							}	
@@ -422,7 +422,7 @@ class ProductoController extends Controller
 		                    $image->save($nombre . "_x60".$extension);
 							
 							if ($extension == '.png'){
-								$image->resize(60, 60)->quality(40);	
+								$image->resize(60, 60)->quality(60);	
 								$image->super_crop(60,60,"top","left");
 								$image->save($nombre .  "_x60".$extension_ori);	
 							}	
@@ -433,7 +433,7 @@ class ProductoController extends Controller
 		                    $image->save($nombre . $extension);
 							
 							if ($extension == '.png'){
-								$image->resize(566, 566)->quality(40);	
+								$image->resize(566, 566)->quality(95);	
 								$image->super_crop(566,566,"top","left");
 								$image->save($nombre . $extension_ori);		
 							}

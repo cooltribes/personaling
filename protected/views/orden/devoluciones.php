@@ -64,31 +64,49 @@ $this->breadcrumbs=array(
 							foreach($prodslook as $prodlook){
 								$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook->preciotallacolor_id));
 								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
+								$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$prdlk->id));
 								
 								$marca=Marca::model()->findByPk($prdlk->marca_id);
 								$talla=Talla::model()->findByPk($ptclk->talla_id);
 								$color=Color::model()->findByPk($ptclk->color_id);
-									
-								echo("<tr>");
-								echo("<td><input id='".$ptclk->sku."' type='checkbox' value=''></td>");
-								echo("<td>".$ptclk->sku."</td>"); // nombre
-								echo("<td>".$prdlk->nombre."</td>"); // nombre
-								echo("<td>".$color->valor."</td>");
-								echo("<td>".$talla->valor."</td>");
-								echo('
-									<td class="span3">
-										<select id="motivo-'.$ptclk->sku.'" class="input-medium">
-										  <option>-- Seleccione --</option>
-										  <option>Cambio de talla</option>
-										  <option>Cambio por otro articulo</option>
-										  <option>Devolución por prenda dañada</option>
-										  <option>Devolución por insatisfacción</option>
-										  <option>Devolución por pedido equivocado</option>
-										</select>        		
-						        	</td>
-								');
-								echo("</tr>");
-								}// foreach
+								
+								if($prodlook->devolucion_id != 0)	
+								{
+									echo("<tr class='error>'");
+									echo("<input id='precio-".$ptclk->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+									echo("<td><input class='check' id='".$ptclk->sku."' type='checkbox' value=''></td>");
+									echo("<td>".$ptclk->sku."</td>"); // nombre
+									echo("<td>".$prdlk->nombre."</td>"); // nombre
+									echo("<td>".$color->valor."</td>");
+									echo("<td>".$talla->valor."</td>");
+									echo('<td>Ya se devolvió</td>');
+									echo("</tr>");
+								}
+								else
+								{
+									echo("<tr>");
+									echo("<input id='precio-".$ptclk->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+									echo("<td><input class='check' id='".$ptclk->sku."' type='checkbox' value=''></td>");
+									echo("<td>".$ptclk->sku."</td>"); // nombre
+									echo("<td>".$prdlk->nombre."</td>"); // nombre
+									echo("<td>".$color->valor."</td>");
+									echo("<td>".$talla->valor."</td>");
+									echo('
+										<td class="span3">
+											<select id="motivo-'.$ptclk->sku.'" class="input-medium">
+											  <option>-- Seleccione --</option>
+											  <option>Cambio de talla</option>
+											  <option>Cambio por otro articulo</option>
+											  <option>Devolución por prenda dañada</option>
+											  <option>Devolución por insatisfacción</option>
+											  <option>Devolución por pedido equivocado</option>
+											</select>        		
+							        	</td>
+									');
+									echo("</tr>");	
+								} 
+								
+							}// foreach
 						} // in array
 					}
 					else // individual
@@ -100,13 +118,15 @@ $this->breadcrumbs=array(
 							
 						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
 						$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+						$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
 						
 						$marca=Marca::model()->findByPk($indiv->marca_id);
 						$talla=Talla::model()->findByPk($ptc->talla_id);
 						$color=Color::model()->findByPk($ptc->color_id);
 						
 						echo("<tr>");
-						echo("<td><input id='".$ptc->sku."' type='checkbox' value=''></td>");
+						echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+						echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
 						echo("<td>".$ptc->sku."</td>");// Referencia
 						echo("<td>".$indiv->nombre."</td>"); // nombre
 						echo("<td>".$color->valor."</td>");
@@ -124,34 +144,58 @@ $this->breadcrumbs=array(
 					        	</td>
 							');
 						echo("</tr>");				
-					}	
-							
+					}				
 				
 			}
-      
+
       ?>
 
         <tr>
         	<th colspan="6"><div class="text_align_right"><strong>Resumen</strong></div></th>
         </tr>       
         <tr>
-        	<td colspan="5"><div class="text_align_right"><strong>Monto a devolver:</strong></div></td>
-        	<td  class="text_align_right">000,00 Bs</td>
+        	<td colspan="5"><div class="text_align_right"><strong>Monto a devolver Bs.:</strong></div></td>
+        	<td class="text_align_right"><input type="text" readonly="readonly" id="monto" value="000.00" /> </td>
         </tr>
         <tr>
         	<td colspan="5"><div class="text_align_right"><strong>Monto por envio a devolver:</strong></div></td>
         	<td  class="text_align_right">000,00 Bs</td>
         </tr>
     	</table>
-    	<div class="pull-right"><a onclick="devolver()" title="Añadir productos" style="cursor: pointer;" class="btn btn-warning">Hacer devolucion</a>
+    	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning">Hacer devolucion</a>
     	</div>
 	</div>
 
 </div> 
 <!-- /container --> 
 
-<script>
-	function devolver()
+<script type="text/javascript">
+	
+	var monto = 0;
+
+	$(".check").click(function() {
+		if($(this).is(':checked')){
+			//$(this).attr('id');
+			//sumar
+			
+			var id = $(this).attr('id');
+			monto = parseInt(monto) + parseInt($('#precio-'+id).attr('value'));
+			
+			$('#monto').val(monto);
+		}
+		else
+		{// restar
+			
+			var id = $(this).attr('id');
+			monto = parseInt(monto) - parseInt($('#precio-'+id).attr('value'));
+
+			$('#monto').val(monto);
+			
+		}
+	});
+	
+
+	function devolver() 
 	{
 		var motivos = new Array();
 		
@@ -165,17 +209,20 @@ $this->breadcrumbs=array(
 			alert("Prenda no seleccionada o Motivo de devolución no seleccionado para la prenda.");			
 		else
 		{
-			alert('check='+checkValues+" ,"+motivos[0]);
+			//alert('check='+checkValues+" ,"+motivos[0]);
 			
 			var id = $('#orden_id').attr('value');
-		
+			var monto = $('#monto').attr('value');
+			
 			$.ajax({
 		        type: "post", 
 		        url: "orden/devoluciones", // action 
-		        data: { 'orden':id, 'check':checkValues, 'motivos':motivos}, 
+		        data: { 'orden':id, 'check':checkValues, 'motivos':motivos, 'monto':monto}, 
 		        success: function (data) {
+					
 					if(data=="ok")
-						
+						window.location.reload();
+							
 		       	}//success
 			})	
 		

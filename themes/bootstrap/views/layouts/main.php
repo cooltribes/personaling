@@ -308,7 +308,7 @@ if(!Yii::app()->user->isGuest){
 	                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
 	                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
 	                  if($imagen){
-	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x32.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . $imagen->url, "Imagen ", array("width" => "30", "height" => "30"));
 	                      echo '<div class="span2">'.$htmlimage.'</div>';
 	                  }
 	              }
@@ -430,7 +430,7 @@ if(!Yii::app()->user->isGuest){
     $('#dropdownUser').on('click',function(){
         $(this).removeClass('open');      
     });
-
+ 
   }
 
 

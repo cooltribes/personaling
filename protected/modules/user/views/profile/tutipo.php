@@ -5,7 +5,17 @@ $this->breadcrumbs=array(
 );
 ?>
 <?php */?>
-
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/joyride-2.1.css">
+<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>
+    <script>
+      $(window).load(function() {
+        $('#joyRideTipContent').joyride({
+          autoStart : true,
+          modal: true,
+          expose: true
+        });
+      });
+</script>
 <div class="container margin_top tu_perfil">
   <div class="row">
     <?php if (isset($editar) && $editar){ ?>
@@ -184,14 +194,3 @@ $script = "
 </ol>
 
 
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/joyride-2.1.css">
-<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>
-    <script>
-      $(window).load(function() {
-        $('#joyRideTipContent').joyride({
-          // autoStart : true,
-          modal: true,
-          expose: true
-        });
-      });
-</script>

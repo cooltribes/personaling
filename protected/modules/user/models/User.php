@@ -317,9 +317,9 @@ class User extends CActiveRecord {
      * Buscar por todos los filtros dados en el array $filters
      */
     public function buscarPorFiltros($filters) {
-        echo "<pre>";
-        print_r($filters);
-        echo "</pre>";
+//        echo "<pre>";
+//        print_r($filters);
+//        echo "</pre>";
 //            Yii::app()->end();
 
         $criteria = new CDbCriteria;
@@ -418,6 +418,94 @@ class User extends CActiveRecord {
                 continue;
             }
 
+            if($column == 'looks')
+            { 
+
+               if (!in_array('ordenes', $criteria->with)) {
+                    $criteria->with['ordenes'] = array(
+                        'select'=> false,
+                        'joinType'=>'INNER JOIN',
+                        'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',                        
+                        
+                    );
+                }                
+                
+                if (!in_array('ordenes.productos', $criteria->with)) {
+                     
+                    $criteria->with['ordenes.productos'] = array(
+                    'select' => false,
+                    'joinType' => 'INNER JOIN',
+//                   'condition' => '(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',
+                      'group' => 'user.id'  
+                    );                   
+                     
+                 }else{                     
+                    if (!in_array('group', $criteria->with['ordenes.productos'])) {
+                     $criteria->with['ordenes.productos']['group'] = 'user.id';
+                    }                    
+                 }                 
+                
+                if(!strpos($criteria->condition, 'productos_productos.look_id > 0')){
+                   $criteria->addCondition('productos_productos.look_id > 0'); 
+                }
+                
+                if(!strlen($criteria->having)){
+                    $logicOp = '';
+                }
+                $criteria->having .= $logicOp.' SUM(productos_productos.cantidad) '. $comparator . ' ' . $value.' ';
+                        
+                continue;
+            }
+            
+            if($column == 'looks_ps')
+            { 
+
+               if (!in_array('ordenes', $criteria->with)) {
+                    $criteria->with['ordenes'] = array(
+                        'select'=> false,
+                        'joinType'=>'INNER JOIN',
+                        'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',                        
+                        
+                    );
+                }                
+                
+                if (!in_array('ordenes.productos', $criteria->with)) {
+                     
+                    $criteria->with['ordenes.productos'] = array(
+                    'select' => false,
+                    'joinType' => 'INNER JOIN',
+//                   'condition' => '(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',
+                      'group' => 'users.id'  
+                    );                   
+                     
+                 }else{                     
+                    if (!in_array('group', $criteria->with['ordenes.productos'])) {
+                     $criteria->with['ordenes.productos']['group'] = 'user.id';
+                    }                    
+                 }                 
+                
+                
+                 if (!strpos($criteria->join, 'tbl_look')) {
+                     
+                    // $criteria->join .= ' left outer JOIN tbl_look looks ON (looks.id = look_id) '; 
+                      //$criteria->with['tbl_look'] = array();
+                      $criteria->mergeWith(array(
+                          'join' => 'left outer JOIN tbl_look looks ON (looks.id = productos_productos.look_id)',
+                      ));
+                 }
+                                
+                 
+                if(!strpos($criteria->condition, 'productos_productos.look_id > 0')){
+                   $criteria->addCondition('productos_productos.look_id > 0'); 
+                }
+                    
+//                $criteria->compare('looks.user_id', $comparator . " " . $value, false, $logicOp);
+                
+                continue;
+            }
+            
+            
+            
             if ($column == 'lastorder_at')
             {
                 $value = strtotime($value);
@@ -444,10 +532,6 @@ class User extends CActiveRecord {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);
             }
-
-            
-            
-            
             
             $criteria->compare($column, $comparator . " " . $value, false, $logicOp);
         }
@@ -457,11 +541,11 @@ class User extends CActiveRecord {
         $criteria->together = true;
         //$criteria->compare('t.status', '1'); //siempre los no eliminados
 
-        echo "Criteria:";
-
-        echo "<pre>";
-        print_r($criteria->toArray());
-        echo "</pre>";
+//        echo "Criteria:";
+//
+//        echo "<pre>";
+//        print_r($criteria->toArray());
+//        echo "</pre>";
 //            exit();
 
 

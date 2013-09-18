@@ -30,7 +30,7 @@
     
     echo CHtml::dropDownList('looks_ps', '', CHtml::listData(User::model()->with(array(
                                'profile'=>array(),
-                            ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name||\' \'||profile.last_name'),
+                            ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
                             array('style' => 'display:none'));
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -71,7 +71,7 @@
                                 'lastorder_at' => 'Fecha de última compra',                                
                                 'looks' => 'Cantidad de looks comprados',                                
                                 'looks_ps' => 'Looks comprados por Personal Shopper',
-                                'looks_marca' => 'Looks comprados por Marca',
+                                'prods_marca' => 'Looks comprados por Marca',
                                 
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 

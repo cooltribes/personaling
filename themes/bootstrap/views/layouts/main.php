@@ -63,7 +63,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Ventas', 'url'=>array('/orden/admin')),
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-					array('label'=>'Campañas', 'url'=>array('/campana')),
+					array('label'=>'Campañas', 'url'=>array('/campana/index')),
 					),
 				),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
@@ -308,7 +308,7 @@ if(!Yii::app()->user->isGuest){
 	                  $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
 	                  $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
 	                  if($imagen){
-	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x32.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+	                      $htmlimage = CHtml::image(Yii::app()->baseUrl . $imagen->url, "Imagen ", array("width" => "30", "height" => "30"));
 	                      echo '<div class="span2">'.$htmlimage.'</div>';
 	                  }
 	              }

@@ -537,41 +537,17 @@ $usuario = User::model()->findByPk($orden->user_id);
         <?php
         	$row=0;
         	$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id)); // productos de la orden
-        	
-			foreach ($productos as $prod) {
+        	$lkids=OrdenHasProductotallacolor::model()->getLooks($orden->id);
+			foreach ($lkids as  $lkid){
 				
-					if($prod->look_id != 0) // si es look
-					{
-						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
-						
-						$lookpedido = Look::model()->findByPk($prod->look_id); // consigo nombre					
-						$precio = $lookpedido->getPrecio(false);
-						
-							echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
+				$lookpedido = Look::model()->findByPk($lkid['look_id']);
+				$precio = $lookpedido->getPrecio(false);
+				echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
 							// echo("<td></td>");
-							echo("<td colspan='7'><strong>".$lookpedido->title."</strong></td>");// Referencia
+				echo("<td colspan='7'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
-							echo("<td>".number_format($prod->precio, 2, ',', '.')."</td>"); // precio 
-							
-								
-							
-							/*
-							setlocale(LC_MONETARY, 've_VE');
-							//$a = money_format('%i', $precio->precioVenta);
-							//$c = money_format('%i', $precio->ahorro);
-							//$des = money_format('%i', $precio->precioDescuento);
-							$iva = $precio * 0.12;
-							
-							$b = $precio * $prod->cantidad;					
-							echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
-							
-							echo("<td> desc look </td>"); //descuento del look
-							
-							$e = $iva * $prod->cantidad;
-							echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto
-							*/
-							
-							echo("
+				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
+				echo("
 							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
 			              	<!-- Link or button to toggle dropdown -->
 			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
@@ -582,10 +558,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 			            	</div></td>
 							");
 							
-							echo("</tr>");	
-							$prodslook= OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$prod->tbl_orden_id, 'look_id'=>$prod->look_id), array('order'=>'look_id ASC'));
-							foreach($prodslook as $prodlook){
-								$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook->preciotallacolor_id));
+							echo("</tr>");
+				$prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
+				foreach($prodslook as $prodlook){
+					$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
 								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
 								$marca=Marca::model()->findByPk($prdlk->marca_id);
 								$talla=Talla::model()->findByPk($ptclk->talla_id);
@@ -599,56 +575,35 @@ $usuario = User::model()->findByPk($orden->user_id);
 								echo("<td>".$color->valor."</td>");
 								echo("<td>".$talla->valor."</td>");
 								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
-								echo("<td>".$prodlook->cantidad."</td>"); // cantidad en pedido
-								echo("<td>".number_format($prodlook->precio, 2, ',', '.')."</td>"); 
+								echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+								echo("<td></td>"); 
 								//echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
 								echo("<td></td></tr>");
-							}
-							
-							
-						
-					}
-					else // individual
-					{
-						if($row==0){
-								echo("<tr class='bg_color5'><td colspan='9'>Prendas Individuales</td></tr>");
-								$row=1;
-						}	
-						$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod->preciotallacolor_id)); // consigo existencia actual
-						$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
-						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
-						$marca=Marca::model()->findByPk($indiv->marca_id);
-						$talla=Talla::model()->findByPk($ptc->talla_id);
-						$color=Color::model()->findByPk($ptc->color_id);
-						echo("<tr>");
-						echo("<td>".$indiv->codigo."</td>");// Referencia
-						echo("<td>".$indiv->nombre."</td>"); // nombre
-						echo("<td>".$marca->nombre."</td>");
-						echo("<td>".$color->valor."</td>");
-						echo("<td>".$talla->valor."</td>");					
-						echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
-						echo("<td>".$prod->cantidad."</td>"); // cantidad en pedido
-						echo("<td>".number_format($prod->precio, 2, ',', '.')."</td>"); // precio
-						/*
-						setlocale(LC_MONETARY, 've_VE');
-						$a = money_format('%i', $precio->precioVenta);
-						$c = money_format('%i', $precio->ahorro);
-						
-						$iva = $precio->precioDescuento * 0.12;
-						
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($a)."</td>"); //precio individual sin descuento
-						
-						$b = $a * $prod->cantidad;					
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($b)."</td>"); // subtotal
-						
-						$d = $c * $prod->cantidad;					
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($d)."</td>"); //descuento total
-						
-						$e = $iva * $prod->cantidad;
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($e)."</td>"); // impuesto total
-						*/
-						
-						echo("
+				}				
+				
+			}
+			//INDIVIDUALES
+			
+			
+			echo("<tr class='bg_color5'><td colspan='9'>Prendas Individuales</td></tr>");
+			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
+			foreach($separados as $prod){
+				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
+				$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+				$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
+				$marca=Marca::model()->findByPk($indiv->marca_id);
+				$talla=Talla::model()->findByPk($ptc->talla_id);
+				$color=Color::model()->findByPk($ptc->color_id);
+				echo("<tr>");
+				echo("<td>".$indiv->codigo."</td>");// Referencia
+				echo("<td>".$indiv->nombre."</td>"); // nombre
+				echo("<td>".$marca->nombre."</td>");
+				echo("<td>".$color->valor."</td>");
+				echo("<td>".$talla->valor."</td>");					
+				echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
+				echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
+				echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
+				echo("
 							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
 			              	<!-- Link or button to toggle dropdown -->
 			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
@@ -659,27 +614,17 @@ $usuario = User::model()->findByPk($orden->user_id);
 			            	</div></td>
 						");
 						
-						echo("</tr>");				
-					}	
-							
-				
+						echo("</tr>");
 			}
+			
+		
+		
+			
 
-      $individuales=0;
-	  $looks=0;
+      $individuales=OrdenHasProductotallacolor::model()->countIndividuales($orden->id);
+	  $looks=OrdenHasProductotallacolor::model()->countLooks($orden->id);
       $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
-	
-		foreach ($compra as $tot) {
-			
-			if($tot->look_id == 0)
-			{
-				$individuales++;
-			}else{
-				$looks++;
-			}
-			
-		}
-      
+	   
       ?>
         
 
@@ -695,11 +640,11 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>         
         <tr>
           <td colspan="8" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
-          <td ><?php echo $looks; ?></td> 
+          <td ><?php echo($looks); ?></td> 
         </tr>  
         <tr>
           <td colspan="8" ><div class="text_align_right"><strong>No. de Prendas Individuales</strong></div></td>
-          <td ><?php echo $individuales; ?></td>
+          <td ><?php echo ($individuales); ?></td>
         </tr>
         <tr>
           <td colspan="8" ><div class="text_align_right"><strong>Subtotal</strong></div></td>

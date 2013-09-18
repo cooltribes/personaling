@@ -478,18 +478,20 @@ if(isset($_POST['Profile']))
 				where ptc.cantidad >0 and p.estado=0 and p.`status`=1 and ptc.producto_id = p.id '.$q;
 			$rawData=Yii::app()->db->createCommand($sql)->queryAll();
 			
-			
+			$data=array();
 			foreach($rawData as $row){
 				$row['Marca']=Marca::model()->getMarca($row['Marca']);
 				$row['Talla']=Talla::model()->getTalla($row['Talla']);
 				$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
-				$row['Color']=Color::model()->getColor($row['Color']);				 				
+				$row['Color']=Color::model()->getColor($row['Color']);
+				$row['precioDescuento']=Precio::model()->getPrecioDescuento($row['id']);	
+				array_push($data,$row);
+							 				
 			}
-			print_r($rawData);
-			break;
+			
 			// or using: $rawData=User::model()->findAll(); <--this better represents your question
 
-			$dataProvider=new CArrayDataProvider($rawData, array(
+			$dataProvider=new CArrayDataProvider($data, array(
 			    'id'=>'data',
 			    'pagination'=>array(
 			        'pageSize'=>12,

@@ -212,4 +212,13 @@ class Precio extends CActiveRecord
 
 	}
 	
+	public function getPrecioDescuento($producto)
+	 {
+		$precio= new Precio;	
+		if($precio=Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto)))
+			return $precio->precioDescuento;
+		else
+			return 0; 
+		
+	}
 }

@@ -283,7 +283,7 @@ class OrdenController extends Controller
         
 	public function actionModalventas($id){
 		
-			
+		$id=$_POST['ord'];
 	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
@@ -341,7 +341,7 @@ class OrdenController extends Controller
 			 $ptc=PrecioTallaColor::model()->findByPk($idp[1]);
 			 $talla=Talla::model()->findByPk($ptc->talla_id);
 			 $color=Color::model()->findByPk($ptc->color_id);
-			 
+			 $precio=Precio::model()->getPrecioDescuento($idp[0]);
 			 
 			  $html=$html.'<tr>';
 	        // Primera columna ON
@@ -359,12 +359,12 @@ class OrdenController extends Controller
 	        // Segunda columna OFF
 	        // Tercera columna ON
 	        $html=$html.'<td>';
-			$html=$html.$idp[2].' Bs.';
+			$html=$html.number_format($precio, 2, ',', '.')."  Bs.";
 	        $html=$html.'</td>';
 	        // Tercera columna OFF
 	        // Cuarta columna ON
 	        $html=$html.'<td>';
-			$html=$html.$idp[2]*$idp[3];
+			$html=$html.number_format($precio*$idp[3], 2, ',', '.')." Bs.";
 	        $html=$html.'</td>';
 	        // Cuarta columna OFF        
 
@@ -467,7 +467,8 @@ class OrdenController extends Controller
 		echo $html;
 		
 		
-
+		
+	
 
 
 	}
@@ -482,9 +483,10 @@ class OrdenController extends Controller
 	/*
 	 * Action para las devoluciones 
 	 * Recibe parametro id por get
-	 */	 
+	 */	  
     public function actionDevoluciones(){
     	
+
 		if(isset($_POST['orden']) && isset($_POST['check']))
 		{
 			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
@@ -537,7 +539,6 @@ class OrdenController extends Controller
 			$orden = Orden::model()->findByPk($_GET['id']);
 			$this->render('devoluciones',array('orden'=>$orden));
 		}
-		
         
     }
 	

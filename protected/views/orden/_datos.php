@@ -16,17 +16,8 @@ echo"<tr>";
 	else
 		echo "<td></td>";
 	$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
-	
-		foreach ($compra as $tot) {
-			
-			if($tot->look_id == 0)
-			{
-				$indiv++;
-			}else{
-				$looks++;
-			}
-			
-		}
+	 $indiv=OrdenHasProductotallacolor::model()->countIndividuales($data->id);
+	 $looks=OrdenHasProductotallacolor::model()->countLooks($data->id);
 		
 	echo "<td><strong>Looks</strong>:     (".$looks.")<br><strong>Prendas</strong>: (".$indiv.")</td>"; // totales en look y indiv
 	

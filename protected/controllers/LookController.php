@@ -53,7 +53,7 @@ class LookController extends Controller
 		}
 		else{
 			Yii::app()->user->updateSession();
-            Yii::app()->user->setFlash('error', 'No se puede eliminar un look que ha sido aprovado');
+            Yii::app()->user->setFlash('error', 'No se puede eliminar un look que ya ha sido aprobado');
 		}
 		$this->redirect(array('look/admin'));
 	}

@@ -96,4 +96,48 @@ class OrdenHasProductotallacolor extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function countLooks($id){
+			
+		$sql="select count(distinct(look_id)) as counter  from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id<>0";	
+		$looks=Yii::app()->db->createCommand($sql)->queryAll();
+		return $looks[0]['counter'];
+	} 
+	
+	public function countIndividuales($id){
+			
+		$sql="select count(preciotallacolor_id) as counter from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=0";	
+		$pr=Yii::app()->db->createCommand($sql)->queryAll();
+		return $pr[0]['counter'];
+	}
+	
+	public function getByLook($id, $look){
+			
+		$sql="select * from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=".$look;	
+		$looks=Yii::app()->db->createCommand($sql)->queryAll();
+		return $looks;
+	}
+	 
+	public function getLooks($id){
+			
+		$sql="select distinct(look_id) from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id<>0";	
+		$looks=Yii::app()->db->createCommand($sql)->queryAll();
+		return $looks;
+	}
+	public function getIndividuales($id){
+			
+		$sql="select * from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id = 0";	
+		$looks=Yii::app()->db->createCommand($sql)->queryAll();
+		return $looks;
+	}
+	
+		public function precioLook($id, $look){
+			
+		$sql="select precio from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=".$look." limit 0,1";	
+		$looks=Yii::app()->db->createCommand($sql)->queryAll();
+		return $looks[0]['precio'];
+		
+	}
+	 	
+	
 }

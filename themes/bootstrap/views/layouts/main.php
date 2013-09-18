@@ -430,7 +430,7 @@ if(!Yii::app()->user->isGuest){
     $('#dropdownUser').on('click',function(){
         $(this).removeClass('open');      
     });
-
+ 
   }
 
 

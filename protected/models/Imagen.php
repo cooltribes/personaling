@@ -140,5 +140,16 @@ class Imagen extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getImagen($producto,$color)
+	 {
+		$url= new Imagen;	
+		if($url=Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto,'color_id'=>$color)))
+			return $url->url;
+		else
+			return "http://placehold.it/180x180"; 
+		
+	}
+	 
 
 }

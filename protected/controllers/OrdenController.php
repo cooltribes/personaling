@@ -283,7 +283,7 @@ class OrdenController extends Controller
         
 	public function actionModalventas($id){
 		
-			
+		$id=$_POST['ord'];
 	  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;

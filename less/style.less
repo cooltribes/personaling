@@ -1128,21 +1128,32 @@ src: url('../fonts/entypo.woff'),
                             .margin_bottom_xsmall;
                             }
                         }
+
+                    #btn-encanta{
+                      border-radius: 0;
+                      background: #E3DEDE;
+                    }   
+                    .btn-danger_modificado{
+                      background: @color1 !important;
+                      color: #FFF !important;
+                    }      
                     #total-likes{
                       background: #C4BCCD;
-                      padding: 2px 6px;
-                      display: inline-block;
-                      height: 22px;
-                      left: -12px;
-                      position: relative;
                       color: #3C4141;              
-                    }                        
-                    //hack para alinear boton de pinterest
-                    .boton_pinterest{
+                      display: inline-block;
+                      font-size: 12px;
+                      height: 13px;
+                      line-height: 13px;
+                      left: -12px;
+                      padding: 2px 6px;
                       position: relative;
-                      top: -25px;
-                      left: 162px;
                     }
+                    // Para alinear y que no se amontonen
+                    #btn-facebook{
+                      margin-left: 0;
+                      margin-right: 9px;
+                    }                                          
+
                 #btn-compatir  {
                   background-color: #E3DEDE;
                   color: #5E4E5C;
@@ -1428,21 +1439,30 @@ src: url('../fonts/entypo.woff'),
         .braker_horz_top_1{
             .padding_top;
             margin-top:1em;
-            .margin_bottom;
-            //hack para boton de pinterest
-            .boton_pinterest{
-              position: relative;
-              top: 0;
-              left: -25px;
-            }            
+            .margin_bottom; 
+            #btn-encanta{
+              border-radius: 0;
+              background: #E3DEDE;
+            }   
+            .btn-danger_modificado{
+              background: @color1 !important;
+              color: #FFF !important;
+            }      
             #total-likes{
               background: #C4BCCD;
-              padding: 2px 6px;
-              display: inline-block;
-              height: 22px;
-              left: -12px;
-              position: relative;
               color: #3C4141;              
+              display: inline-block;
+              font-size: 12px;
+              height: 13px;
+              line-height: 13px;
+              left: -12px;
+              padding: 2px 6px;
+              position: relative;
+            }
+            // Para alinear y que no se amontonen
+            #btn-facebook{
+              margin-left: 0;
+              margin-right: 9px;
             }
 
         }

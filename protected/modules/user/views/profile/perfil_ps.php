@@ -70,7 +70,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
       <div class="card padding_xsmall">
         <ul class="row-fluid no_margin_left no_margin_bottom">
         	
-        <?
+        <?php
         foreach($marcas->getData() as $cadauna) {
         	
         	$marca = Marca::model()->findByPk($cadauna['id']); // Look::model()->findByPk($record['look_id']);

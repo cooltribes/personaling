@@ -9,6 +9,7 @@
  * @property integer $cantidad
  * @property integer $look_id
  * @property double $precio
+ * @property int $devolucion_id
  * 
  * The followings are the available model relations:
  * @property PrecioTallaColor $preciotallacolor
@@ -45,7 +46,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 			array('tbl_orden_id, preciotallacolor_id, cantidad, look_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('tbl_orden_id, preciotallacolor_id, cantidad, look_id, precio', 'safe', 'on'=>'search'),
+			array('tbl_orden_id, preciotallacolor_id, cantidad, look_id, precio, devolucion_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,6 +73,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 			'cantidad' => 'Cantidad',
 			'look_id' => 'Look',
 			'precio' => 'Precio',
+			'devolucion_id' => 'Id de devolución',
 		);
 	}
 
@@ -91,7 +93,8 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		$criteria->compare('cantidad',$this->cantidad);
 		$criteria->compare('look_id',$this->look_id);
 		$criteria->compare('precio',$this->precio);
-		
+		$criteria->compare('devolucion_id',$this->devolucion_id);
+				
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

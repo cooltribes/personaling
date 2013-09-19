@@ -21,7 +21,7 @@
   * 1: Balance Negativo
   * 2: Tarjeta de Regalo
   * 3: Carga desde Admin
-  * 
+  * 4: Saldo por devolución
   * 
   */
  

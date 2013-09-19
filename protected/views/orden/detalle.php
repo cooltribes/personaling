@@ -711,7 +711,11 @@ $usuario = User::model()->findByPk($orden->user_id);
   <!-- INFORMACION DEL PEDIDO OFF -->
   <hr/>
   
+  <?php
+  
+  $devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
 
+  ?>
   <!-- Productos devueltos ON -->
    <div class="well well-small margin_top well_personaling_small">
      <h3 class="braker_bottom margin_top">Productos devueltos</h3>
@@ -726,47 +730,48 @@ $usuario = User::model()->findByPk($orden->user_id);
 			<th scope="col">Motivo</th>  
 			<th scope="col">Precio</th>        
         </tr>
-
+	<?php
+	
+	if(isset($devuelto))
+	{
+		foreach($devuelto as $each)
+		{
+			
+			$ptc = Preciotallacolor::model()->findByPk($each->preciotallacolor_id);
+			$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+			$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
+						
+			$marca=Marca::model()->findByPk($indiv->marca_id);
+			$talla=Talla::model()->findByPk($ptc->talla_id);
+			$color=Color::model()->findByPk($ptc->color_id);
+	?>
         <tr>
-        	<td>
-        		111
-        	</td>
-        	<td>Prenda bonita</td>
-        	<td>Lamarca</td>
-        	<td>Gris</td>
-        	<td> XL </td>
-        	<td> Dañada </td>
-        	<td >
-        		000,00
-        	</td>
+        	<td><?php echo $ptc->sku; ?></td>
+        	<td><?php echo $indiv->nombre; ?></td>
+        	<td><?php echo $marca->nombre; ?></td>
+        	<td><?php echo $color->valor ?></td>
+        	<td><?php echo $talla->valor ?></td>
+        	<td><?php echo $each->motivo; ?></td>
+        	<td><?php echo $precio->precioDescuento; ?></td>
         </tr>
-        <tr>
-        	<td>
-        		111
-        	</td>
-        	<td>Prenda bonita</td>
-        	<td>Lamarca</td>
-        	<td>Gris</td>
-        	<td> XL </td>
-        	<td> Dañada </td>
-        	<td >
-        		000,00
-        	</td>
-        </tr>
+    <?php
+		}
+	}
+	?>    
         <tr>
         	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
         </tr>        
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-        	<td  class="text_align_right">000,00 Bs</td>
+        	<td  class="text_align_right"><?php echo $each->montodevuelto; ?> Bs</td>
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-        	<td  class="text_align_right">000,00 Bs</td>
+        	<td  class="text_align_right"><?php echo $each->montoenvio; ?> Bs</td>
         </tr>
         <tr>
         	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-        	<th  class="text_align_right">000,00 Bs</th>
+        	<th  class="text_align_right"><?php echo ($each->montodevuelto + $each->montoenvio); ?> Bs</th>
         </tr>        
     	</table>
 	</div>

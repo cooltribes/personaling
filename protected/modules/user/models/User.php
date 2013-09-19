@@ -488,7 +488,8 @@ class User extends CActiveRecord {
                  if (!strpos($criteria->join, 'tbl_look')) {
                      
                     // $criteria->join .= ' left outer JOIN tbl_look looks ON (looks.id = look_id) '; 
-                      //$criteria->with['tbl_look'] = array();
+//                      $criteria->with['Look'] = array();
+                     $criteria->together = true;
                       $criteria->mergeWith(array(
                           'join' => 'left outer JOIN tbl_look looks ON (looks.id = productos_productos.look_id)',
                       ));
@@ -498,6 +499,8 @@ class User extends CActiveRecord {
                 if(!strpos($criteria->condition, 'productos_productos.look_id > 0')){
                    $criteria->addCondition('productos_productos.look_id > 0'); 
                 }
+                
+                
                     
 //                $criteria->compare('looks.user_id', $comparator . " " . $value, false, $logicOp);
                 

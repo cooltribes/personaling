@@ -16,6 +16,7 @@ $this->breadcrumbs=array(
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Producto - Tallas y Colores</small></h1>
+    <h2><?php echo $model->nombre; ?></h2>
   </div>
   <!-- SUBMENU ON -->
   <?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>6)); ?>

@@ -468,7 +468,7 @@ class User extends CActiveRecord {
                         
                     );
                 }                
-                
+                /*
                 if (!in_array('ordenes.productos', $criteria->with)) {
                      
                     $criteria->with['ordenes.productos'] = array(
@@ -483,24 +483,29 @@ class User extends CActiveRecord {
                      $criteria->with['ordenes.productos']['group'] = 'user.id';
                     }                    
                  }                 
-                
+                */
                 
                  if (!strpos($criteria->join, 'tbl_look')) {
                      
-                    // $criteria->join .= ' left outer JOIN tbl_look looks ON (looks.id = look_id) '; 
-                      //$criteria->with['tbl_look'] = array();
+                   
+				   
+				    // $criteria->join .= ' left outer JOIN tbl_look looks ON (looks.id = look_id) '; 
+                      $criteria->with['ordenes.looks'] = array();
+                      /*
                       $criteria->mergeWith(array(
                           'join' => 'left outer JOIN tbl_look looks ON (looks.id = productos_productos.look_id)',
                       ));
+					   * 
+					   */
                  }
                                 
-                 
+               /*  
                 if(!strpos($criteria->condition, 'productos_productos.look_id > 0')){
                    $criteria->addCondition('productos_productos.look_id > 0'); 
-                }
+                }*/
                     
 //                $criteria->compare('looks.user_id', $comparator . " " . $value, false, $logicOp);
-                
+               
                 continue;
             }
             

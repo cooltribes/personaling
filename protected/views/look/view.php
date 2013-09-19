@@ -147,7 +147,7 @@
 
                                      if(data.indexOf('ok')>=0)
                                     {
-                                        window.location='../bolsa/index';
+                                        window.location='".$this->createUrl('bolsa/index')."';
                                     }
 
 

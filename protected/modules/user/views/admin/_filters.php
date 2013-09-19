@@ -25,7 +25,7 @@
                                                    ),
                             array('style' => 'display:none'));    
     
-    echo CHtml::dropDownList('looks_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
     
     echo CHtml::dropDownList('looks_ps', '', CHtml::listData(User::model()->with(array(

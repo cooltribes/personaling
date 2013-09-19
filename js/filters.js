@@ -123,6 +123,8 @@ function getFilter(URL, ID, URL2){
                             //Mostrar el botón guardar
                             $('#filter-save2').parent('div').show();
                             
+                            $('#filters-view').slideDown();
+                            
                             search(URL2);                            
 
                         }else if(data.status == 'error'){
@@ -178,7 +180,7 @@ function search(URL){
     
     ajaxRequest = $('#form_filtros').serialize();
     clearTimeout(ajaxUpdateTimeout);
-      $('#form_filtros').submit();
+    //  $('#form_filtros').submit();
     
     ajaxUpdateTimeout = setTimeout(
             function() {

@@ -14,7 +14,7 @@ function changeFilter(e){
     
    }else if(column.val() === 'status' || column.val() === 'tipoUsuario'
              || column.val() === 'fuenteR'  || column.val() === 'looks_marca'
-            || column.val() === 'looks_ps') //Estado del usuario, tipo usuario, fuenteRegistro
+            || column.val() === 'looks_ps' || column.val() === 'prods_marca') //Estado del usuario, tipo usuario, fuenteRegistro
    {       
        
        listFilter(column, column.val());

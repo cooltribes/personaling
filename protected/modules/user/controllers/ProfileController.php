@@ -194,7 +194,7 @@ class ProfileController extends Controller
 					$id = $model->id;
 					//echo $model->username;
 				} else {
-					echo "no existe el usuario";
+					echo "(site) Error: no existe el usuario ".$_GET['alias'];
 					Yii::app()->end();
 				}
 			}

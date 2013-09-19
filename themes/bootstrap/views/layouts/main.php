@@ -127,7 +127,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
   
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 
-                array('label'=>'Top', 'url'=>array('/site/top'),'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
@@ -148,7 +148,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
                     '---',
-                    array('label'=>'Salir', 'url'=>array('/site/logout')),
+                    array('label'=>'Salir', 'url'=>array('//site/logout')),
                 ),
                 'visible'=>!Yii::app()->user->isGuest,
 				),

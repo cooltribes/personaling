@@ -104,6 +104,15 @@ class User extends CActiveRecord {
         $relations['ordenCount'] = array(self::STAT, 'Orden', 'user_id',
             'select' => 'COUNT(*)',
         );
+        
+        $relations['ordenes'] = array(self::HAS_MANY, 'Orden', 'user_id',
+//            // we don't want to select posts
+//                        'select'=>false,
+//                        // but want to get only users with published posts
+//                        'joinType'=>'INNER JOIN',
+//                        'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',
+            );
+        
         return $relations;
     }
 
@@ -308,9 +317,9 @@ class User extends CActiveRecord {
      * Buscar por todos los filtros dados en el array $filters
      */
     public function buscarPorFiltros($filters) {
-        echo "<pre>";
-        print_r($filters);
-        echo "</pre>";
+//        echo "<pre>";
+//        print_r($filters);
+//        echo "</pre>";
 //            Yii::app()->end();
 
         $criteria = new CDbCriteria;
@@ -396,7 +405,8 @@ class User extends CActiveRecord {
                 
             }
 
-            if($column == 'monto') { 
+            if($column == 'monto')
+            { 
 
                  $criteria->addCondition('(IFNULL((select SUM(orden.total) 
 		from tbl_orden orden 
@@ -408,86 +418,115 @@ class User extends CActiveRecord {
                 continue;
             }
 
-            if ($column == 'sku') {
+            if($column == 'looks')
+            { 
+                
+                $criteria->with['ordenes'] = array(
+                    'select'=> false,
+                    'joinType'=>'INNER JOIN',
+                    'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',                        
 
-                $value = ($comparator == '=') ? "=" . $value . "" : $value;
+                );
 
-                $criteria->compare('preciotallacolor.sku', $value, true, $logicOp);
+                $criteria->with['ordenes.productos'] = array(
+                'select' => false,
+                'joinType' => 'INNER JOIN',
+//                   'condition' => '(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',
+                  'group' => 'user.id'  
+                );                   
 
-                if (!in_array('preciotallacolor', $criteria->with)) {
-                    $criteria->with[] = 'preciotallacolor';
+                $criteria->with['ordenes.productos']['group'] = 'user.id';
+                                
+                
+                if(!strpos($criteria->condition, 'productos_productos.look_id > 0')){
+                   $criteria->addCondition('productos_productos.look_id > 0'); 
                 }
-
-
-                continue;
-            }
-
-            if ($column == 'precioVenta' || $column == 'precioDescuento') {
-
-                $criteria->compare('precios.' . $column, $comparator . " " . $value, false, $logicOp);
-
-                if (!in_array('precios', $criteria->with)) {
-                    $criteria->with[] = 'precios';
+                
+                if(!strlen($criteria->having)){
+                    $logicOp = '';
                 }
-
+                $criteria->having .= $logicOp.' SUM(productos_productos.cantidad) '. $comparator . ' ' . $value.' ';
+                        
                 continue;
             }
+            
+            if($column == 'looks_ps')
+            {    
+                
+                $criteria->with['ordenes'] = array(
+                    'select'=> false,
+                    'joinType'=>'INNER JOIN',
+                    'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',                        
 
-            if ($column == 'total') {
+                );
 
-                $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
-                        . $comparator . ' ' . $value . '');
-
-
+                $criteria->with['ordenes.looks'] = array(
+                    'select'=> false,
+                    'joinType'=>'INNER JOIN',
+                );
+                 
+                
+                $criteria->addCondition('looks.user_id  '
+                                        . $comparator . ' ' . $value . '', $logicOp);
+               
                 continue;
             }
+              
+            if($column == 'prods_marca')
+            {    
+                
+                $criteria->with['ordenes'] = array(
+                    'select'=> false,
+                    'joinType'=>'INNER JOIN',
+                    'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',                        
 
-            if ($column == 'disponible') {
+                );
 
-                $criteria->addCondition('
-                        IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
-                          - 
-                          IFNULL(
-                         (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                          where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                          orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                         0) '
-                        . $comparator . ' ' . $value . '');
-
-
+                $criteria->with['ordenes.productos'] = array(
+                    'select'=> false,
+                    'joinType'=>'INNER JOIN',
+                );
+                
+                $criteria->with['ordenes.productos.producto'] = array(
+                    'select'=> false,
+                    'joinType'=>'INNER JOIN',
+                );
+                 
+                
+                $criteria->addCondition('producto.marca_id  '
+                                        . $comparator . ' ' . $value . '', $logicOp);
+               
                 continue;
             }
+            
+            
+            if ($column == 'lastorder_at')
+            {
+                $value = strtotime($value);
+                $value = date('Y-m-d H:i:s', $value);                
+                
+                //$criteria->compare('ordenes.' . $column, $comparator . " " . $value, false, $logicOp);
 
-            if ($column == 'vendida') {
-
-                $criteria->addCondition('(IFNULL(
-                        (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                        0)) '
-                        . $comparator . ' ' . $value . '');
-
-
+                if (!in_array('ordenes', $criteria->with)) {
+                    $criteria->with['ordenes'] = array(
+                        'select'=> false,
+                        'joinType'=>'INNER JOIN',
+                        'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',                        
+                    );
+                }
+                               
+                 $criteria->addCondition('(SELECT IFNULL(max(ordenes.fecha), 0) from tbl_orden ordenes
+                                        WHERE ((ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8) AND (ordenes.user_id=user.id))) '
+                                        .$comparator.' \''.$value.'\'');                 
+                
                 continue;
-            }
-
-            if ($column == 'ventas') {
-                $criteria->addCondition('IFNULL(
-                        (select sum(o_ptc.precio * o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                        0)'
-                        . $comparator . ' ' . $value . '', $logicOp);
-
-
-                continue;
-            }
+            }                       
 
             if ($column == 'lastvisit_at') {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);
             }
-
+            
             $criteria->compare($column, $comparator . " " . $value, false, $logicOp);
         }
 
@@ -496,11 +535,11 @@ class User extends CActiveRecord {
         $criteria->together = true;
         //$criteria->compare('t.status', '1'); //siempre los no eliminados
 
-        echo "Criteria:";
-
-        echo "<pre>";
-        print_r($criteria->toArray());
-        echo "</pre>";
+//        echo "Criteria:";
+//
+//        echo "<pre>";
+//        print_r($criteria->toArray());
+//        echo "</pre>";
 //            exit();
 
 

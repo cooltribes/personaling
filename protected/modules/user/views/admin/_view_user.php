@@ -126,7 +126,7 @@ function saldo(id){
         var pattern = /^\d+(?:\,\d{0,2})$/ ;
         if (pattern.test(cant)) { 
           cant=cant.replace(',','.');
-          alert(cant);
+           
            $.ajax({
 			type: "post",
 			'url' :'/site/user/admin/saldo',

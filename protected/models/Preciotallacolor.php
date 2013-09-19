@@ -61,6 +61,7 @@ class PrecioTallaColor extends CActiveRecord
 		return array(
 			'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
 			'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
+                        'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
 		);
 	}
  

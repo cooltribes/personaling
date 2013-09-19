@@ -87,6 +87,8 @@ class Orden extends CActiveRecord
 			'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
+			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
+                        
 		);
 	}
 
@@ -236,8 +238,6 @@ class Orden extends CActiveRecord
             $criteria = new CDbCriteria;
             $joinPagos = '';
             $joinUsers = '';
-            $joinLooks = '';
-            $havingLooks = '';
             $joinLooks = '';
             $havingLooks = '';
 

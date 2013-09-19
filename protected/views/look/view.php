@@ -52,20 +52,7 @@
           </div>
           <div class="row-fluid">
 
-            <div class="span2">
-               <div class=" marcas_relacionadas">
-                  <h4>Componen <br/>este look</h4>
-                    <ul>
-                       <li><img src="http://placehold.it/170x50"/></li> 
-                       <li><img src="http://placehold.it/170x50"/></li> 
-                       <li><img src="http://placehold.it/170x50"/></li> 
-
-
-                    </ul>
-
-               </div>
-            </div>
-            <div class="span10"><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
+            <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
 
           </div>
           <div class="hidden-phone row-fluid vcard">

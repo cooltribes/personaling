@@ -45,11 +45,6 @@ class LoginController extends Controller
 				
 				if($model->validate()) {
                                     
-                                    echo Yii::app()->user->id;        
-                                    echo "<pre>";
-                                            print_r(Yii::app()->user);
-                                            echo "</pre>";
-                                            Yii::app()->end();
 					$this->lastViset();
 					$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
 					if (UserModule::isAdmin()){

@@ -21,6 +21,7 @@
  * @property integer $destacado
  * @property integer $marca_id
  * @property integer $view_counter 
+ * @property string $almacen
  */
 class Producto extends CActiveRecord
 {
@@ -84,7 +85,7 @@ class Producto extends CActiveRecord
 			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -131,6 +132,7 @@ class Producto extends CActiveRecord
 			'marca_id' => 'Marca',
 			'view_counter' => 'Contador',
 			'peso' => 'Peso',
+			'almacen' => 'Almacen',
 		);
 	}
 
@@ -157,7 +159,8 @@ class Producto extends CActiveRecord
 		$criteria->compare('destacado',$this->destacado,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('peso',$this->peso,true);
-
+		$criteria->compare('almacen',$this->almacen,true);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

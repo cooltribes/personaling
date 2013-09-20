@@ -53,7 +53,7 @@ echo Producto::model()->countByAttributes(array('estado'=>1,'status'=>1));
       <td><p class="T_xlarge margin_top_xsmall">
       	
 <?php
-$sql = "select sum(cantidad) from tbl_orden_has_productotallacolor a, tbl_orden b where a.tbl_orden_id = b.id and b.estado = 4"; // estado 4 es enviado
+$sql = "select count(cantidad) from tbl_orden_has_productotallacolor a, tbl_orden b where a.tbl_orden_id = b.id and b.estado = 4"; // estado 4 es enviado
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
 echo $num;
 ?>     	

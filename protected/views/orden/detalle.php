@@ -162,17 +162,24 @@ $usuario = User::model()->findByPk($orden->user_id);
 	// agregar demas estados
      
         ?></td>
-      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a>
+      <td>
+
+      	<div class="row margin_top_small">
       		<?php
       		
       		$url = Yii::app()->baseUrl."/orden/devoluciones/".$orden->id;
       		
       		$this->widget('bootstrap.widgets.TbButton', array(
-			    'label'=>'Hacer devolución.',
+			    'label'=>'Hacer devolución',
 			    'buttonType'=>'link',
 			    'url'=>$url,
-			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			    'htmlOptions'=>array('class'=>'span2 pull-right margin_bottom_xsmall')
 			)); ?>
+		</div>
+		<div  class="row">
+      		<a onclick="window.print();" class="btn span2  pull-right"><i class="icon-print"></i> Imprimir pedido</a>
+      	</div>		
       </td>
     </tr>
   </table>

@@ -557,8 +557,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 
 		
 		return new CActiveDataProvider($this, array(
-       'pagination'=>array('pageSize'=>12,),
        'criteria'=>$criteria,
+       'pagination'=>array('pageSize'=>12,)
 	));
 		
 	}

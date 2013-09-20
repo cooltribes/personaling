@@ -73,6 +73,21 @@
           	<a href="#" onclick="js:show_shopper();" >Personal Shoppers </a>
           	
           </li>
+          
+            <!-- ******   Filtrar por perfil  *****    -->
+          <li>
+                   <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll(array('type = 0', 'user_id' => Yii::app()->user->id)),
+                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters',
+                    'style' => 'margin-bottom: 0;margin-top: 5px;')) ?>          	
+          </li>
+          
+          <li>
+              <div class="span2"><a href="#modalFiltroPerfil" class="btn crear-filtro" data-toggle="modal"><i class="icon-plus"></i>&nbsp;Crear filtro</a></div>
+          	
+          </li>
+          
+          
+          
           <!--
           <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <b class="caret"></b></a>
             <ul class="dropdown-menu ">
@@ -161,8 +176,175 @@ $this->renderPartial('_look',array(
 </div>
   
 <!-- /container -->
+<style>
+    #modalFiltroPerfil{
+        width: 880px;
+        left: 40%;
+    }    
+    #modalFiltroPerfil.in{
+        top: 38%;
+    }
+    #modalFiltroPerfil.in > .modal-body{
+        max-height: 580px;
+    }
+</style>
 
+<?php
+function replace_accents($string) 
+{ 
+  return str_replace( array(' ','à','á','â','ã','ä', 'ç', 'è','é','ê','ë', 'ì','í','î','ï', 'ñ', 'ò','ó','ô','õ','ö', 'ù','ú','û','ü', 'ý','ÿ', 'À','Á','Â','Ã','Ä', 'Ç', 'È','É','Ê','Ë', 'Ì','Í','Î','Ï', 'Ñ', 'Ò','Ó','Ô','Õ','Ö', 'Ù','Ú','Û','Ü', 'Ý'), array('','a','a','a','a','a', 'c', 'e','e','e','e', 'i','i','i','i', 'n', 'o','o','o','o','o', 'u','u','u','u', 'y','y', 'A','A','A','A','A', 'C', 'E','E','E','E', 'I','I','I','I', 'N', 'O','O','O','O','O', 'U','U','U','U', 'Y'), $string); 
+} 
+
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersLooks.js");
+
+$this->beginWidget('bootstrap.widgets.TbModal', array(
+                                'id' => 'modalFiltroPerfil',
+                            ),
+                            array(
+                                'class' => 'modal hide fade in',
+                                'tabindex' => "-1",
+                                'role' => "dialog",
+                                'aria-labelledby' => "myModalLabel",
+                                'aria-hidden' => "true",
+                                'style' => "display: none;",
+                            
+                            ))?>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Perfil Corporal</h3>
+    </div>
+    <div class="modal-body">
+        
+      <?php 
+      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+          'id' => 'newFilter-form',
+          //'htmlOptions' => array('enctype' => 'multipart/form-data'),
+          'type' => 'horizontal',
+          'htmlOptions'=>array('class'=>'personaling_form'),    
+          'type'=>'inline',
+          //'enableClientValidation' => true,
+          'enableAjaxValidation' => true,
+          'clientOptions' => array(
+              'validateOnSubmit' => true,
+          ),
+      ));
+      ?>
+      <?php // echo $form->errorSummary(array($modelUser,$profile)); ?>
+      <fieldset> 
+        
+       <div class="control-group" >
+              <div class="controls row-fluid" id="caracteristicas">
+                <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
+                <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
+  				  	echo $form->dropDownListRow($profile, $field->varname,Profile::range($field->range), array('class'=>$clase2));                                       
+                                        
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+                <div class="<?php echo $clase; ?>">
+                  <?php 
+                    	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+                    ?>
+                </div>
+              </div>
+          </div>
+        
+          <div class="control-group">
+              <div class="controls row-fluid">
+                  <?php
+                  $field = ProfileField::model()->findByAttributes(array('varname' => 'tipo_cuerpo'));
+                  echo $form->hiddenField($profile, $field->varname);
+                  $nombre_tmp = $field->varname;
+                  if (isset($profile->$nombre_tmp))
+                      $valor_tmp = $profile->$nombre_tmp;
+                  else
+                      $valor_tmp = 0;
+                  ?>
+                  <ul class="thumbnails" id="tipo_cuerpo">
+                    <?php foreach (Profile::range($field->range) as $key => $tipo) { ?>
+                          
+                          <li class="span3 <?php if ($valor_tmp == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>">
+                             <a href="#" title="Elegir este tipo de cuerpo">
+                                  <div class="thumbnail" style="height:450px"> 
+                                      <?php echo CHtml::image(Yii::app()->baseUrl . '/images/' . replace_accents($tipo) . '.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
+                                      <div class="caption text_align_center CAPS">
+                                          <p ><?php echo $tipo; ?></p>
+                                      </div>
+                                      <caption>
+                                          <p class="  color6 text_align_center ">                  
+                                              <?php
+                                              if ($key == 1)
+                                                  echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
+                                              if ($key == 2)
+                                                  echo "Tu cuerpo es reloj de arena o curvilíneo porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida";
+                                              if ($key == 4)
+                                                  echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
+                                              if ($key == 8)
+                                                  echo "Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas";
+                                              ?>
+                                          </p>
+                                      </caption>                    
+                                  </div>
+                              </a>    
+
+                          </li>
+                    <?php } ?>
+                  </ul>
+              </div>
+          </div>   
+                      
+      </fieldset>
+    
+    <?php $this->endWidget(); ?>
+        
+  <div class="modal-footer">
+      <div class="control-group">
+          <?php echo CHtml::label("Indica un nombre para el filtro:", "profile-name", array('class' => 'control-label')); ?>
+        <?php echo CHtml::textField('profile-name'); ?>
+      </div>
+      
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>    
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'buttonType' => 'button',
+        'label' => 'Guardar y Buscar',
+        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+        //'size' => 'large', // null, 'large', 'small' or 'mini'
+        //'block' => 'true',
+        'htmlOptions' => array('id' => 'save-search'),//'onclick' => 'js:$("#newFilter-form").submit();')
+    ));
+    ?>
+  </div>                    
+
+<?php $this->endWidget()?>
+                
 <script type="text/javascript">
+    
+
+ var actionGuardarFiltro = '<?php echo $this->createUrl('guardarFiltro'); ?>';
+    
 function show_shopper(){
 	$('#div_ocasiones').hide();
 	$('#div_shopper').show();

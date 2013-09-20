@@ -2,7 +2,56 @@
 
 if ((!Yii::app()->user->isGuest)&&isset(Yii::app()->session['usercompra'])) { // que este logueado como admin
 
-?>
+
+                      	$ptcs = explode(',',Yii::app()->session['ptcs']);
+						$vals= explode(',',Yii::app()->session['vals']);
+						$totalPr=0;
+						$i=0;
+                      	foreach ($ptcs as $ptc) {
+							$obj=Preciotallacolor::model()->findByPk($ptc);
+							$totalPr+=(Precio::model()->getPrecioDescuento($obj->producto_id)*$vals[$i]);
+							$i++;
+								//echo $totalPr;
+						 }
+						
+                      	
+                      	$totalDe=0;
+                      	$envio = 0;
+						$i=0;
+						
+						if (empty($precios)) // si no esta vacio
+						{}
+						else{
+							
+							foreach($precios as $x){
+	                      		$totalPr = $totalPr + ($x * $cantidades[$i]);
+								$i++;
+	                      	}
+						}
+					/*	foreach($descuentos as $y)
+                      	{
+                      		$totalDe = $totalDe + $y;
+                      	}*/
+						
+						$iva = (($totalPr - $totalDe)*0.12); 
+						
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
+						
+						$seguro = $t*0.013;
+						
+						//$t += $seguro;
+			 			
+						// variables de sesion
+						Yii::app()->getSession()->add('subtotal',$totalPr);
+						Yii::app()->getSession()->add('descuento',$totalDe);
+						Yii::app()->getSession()->add('envio',$envio);
+						Yii::app()->getSession()->add('iva',$iva);
+						Yii::app()->getSession()->add('total',$t);
+						Yii::app()->getSession()->add('seguro',$seguro);  
+						
+						//echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
+                      	?>
+
 
 <div class="container margin_top">
     <div class="progreso_compra">
@@ -283,7 +332,8 @@ else
 	function editar(id)
 	{	
 		var idDireccion = id;
-		window.location="editardireccion/"+id+"";
+	
+		window.location="editardireccion/id/"+id;
 	}
 	
 	$('#Direccion_provincia_id').change(function(){

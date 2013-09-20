@@ -12,7 +12,7 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal','doble'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal','doble', 'crearFiltro'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -685,9 +685,17 @@ public function actionCategorias2(){
 			$pages->pageSize = 9;
 			$pages->applyLimit($criteria);
 			$looks = Look::model()->findAll($criteria);
+                        
+                        /***    Filtros por Perfil ***/
+                        
+                        $profile = new Profile;
+                        
 			$this->render('look', array(
 				'looks' => $looks,
 				'pages' => $pages,
+                                'profile' => $profile,
+                                'editar'=>true,
+                            
 			));		
 		}	
 			
@@ -1049,4 +1057,82 @@ public function actionCategorias2(){
 		);
 	}
 	*/
+        
+        
+       public function actionGuardarFiltro() {
+            
+           //si es nuevo
+        if (isset($_POST['name'])) {
+
+            $filter = Filter::model()->findByAttributes(
+                    array('name' => $_POST['name'], 'type' => '0', 'user_id' => Yii::app()->user->id) //Filtros para ventas
+            );
+            if (!$filter) {
+                $filter = new Filter;
+                $filter->name = $_POST['name'];
+                $filter->type = 0;
+                $filter->user_id = Yii::app()->user->id;
+
+                if ($filter->save()) {
+                    
+//                    for ($i = 0; $i < count($filters['fields']); $i++) {
+//
+//                        $filterDetails[] = new FilterDetail();
+//                        $filterDetails[$i]->id_filter = $filter->id_filter;
+//                        $filterDetails[$i]->column = $filters['fields'][$i];
+//                        $filterDetails[$i]->operator = $filters['ops'][$i];
+//                        $filterDetails[$i]->value = $filters['vals'][$i];
+//                        $filterDetails[$i]->relation = $filters['rels'][$i];
+//                        $filterDetails[$i]->save();
+//                    }
+
+                    $response['status'] = 'success';
+                    $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
+                    $response['idFilter'] = $filter->id_filter;
+                }
+
+                //si ya existe
+            } else {
+                $response['status'] = 'error';
+                $response['message'] = 'No se pudo guardar el filtro, el nombre <b>"' .
+                        $filter->name . '"</b> ya existe';
+            }
+
+            /* si esta guardando uno existente */
+        } else if (isset($_POST['id'])) {
+
+            $filter = Filter::model()->findByPk($_POST['id']);
+
+            if ($filter) {
+
+                //borrar los existentes
+                foreach ($filter->filterDetails as $detail) {
+                    $detail->delete();
+                }
+
+                for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                    $filterDetails[] = new FilterDetail();
+                    $filterDetails[$i]->id_filter = $filter->id_filter;
+                    $filterDetails[$i]->column = $filters['fields'][$i];
+                    $filterDetails[$i]->operator = $filters['ops'][$i];
+                    $filterDetails[$i]->value = $filters['vals'][$i];
+                    $filterDetails[$i]->relation = $filters['rels'][$i];
+                    $filterDetails[$i]->save();
+                }
+
+                $response['status'] = 'success';
+                $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
+                //si NO existe el ID
+            } else {
+                $response['status'] = 'error';
+                $response['message'] = 'El filtro no existe';
+            }
+        }
+
+        echo CJSON::encode($response);
+        
+           
+       }
+        
 }

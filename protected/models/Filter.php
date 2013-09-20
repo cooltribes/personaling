@@ -7,17 +7,21 @@
  * @property integer $id_filter
  * @property string $name
  * @property integer $type
+ * @property integer $user_id
  *
  * The followings are the available model relations:
+ * @property Users $user
  * @property FilterDetail[] $filterDetails
  */
 
 /*
  * Valores para el campo type:
- * 1 - Filtros para Ventas
- * 2 - Filtros para Productos
- * 
+ * 1 - Filtro para Ventas
+ * 2 - Filtro para Productos
+ * 3 - Filtro para Admin de Usuarios
+ * 0 - Filtro por perfil, perteneciente a un usuario
  */
+
 
 class Filter extends CActiveRecord
 {
@@ -47,12 +51,12 @@ class Filter extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, type', 'required'),
-            array('type', 'numerical', 'integerOnly'=>true),
+            array('name', 'required'),
+            array('type, user_id', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>64),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id_filter, name, type', 'safe', 'on'=>'search'),
+            array('id_filter, name, type, user_id', 'safe', 'on'=>'search'),
         );
     }
 
@@ -64,6 +68,7 @@ class Filter extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
             'filterDetails' => array(self::HAS_MANY, 'FilterDetail', 'id_filter'),
         );
     }
@@ -77,6 +82,7 @@ class Filter extends CActiveRecord
             'id_filter' => 'Id Filter',
             'name' => 'Name',
             'type' => 'Type',
+            'user_id' => 'User',
         );
     }
 
@@ -94,6 +100,7 @@ class Filter extends CActiveRecord
         $criteria->compare('id_filter',$this->id_filter);
         $criteria->compare('name',$this->name,true);
         $criteria->compare('type',$this->type);
+        $criteria->compare('user_id',$this->user_id);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

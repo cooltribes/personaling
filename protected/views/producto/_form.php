@@ -42,6 +42,10 @@
                     <div class="control-group"> <?php echo $form->labelEx($model,'peso', array('class' => 'control-label')); ?>
                         <div class="controls"> <?php echo $form->textField($model,'peso',array('class'=>'span5','maxlength'=>10, 'placeholder' => 'Ej.: 1.5')); ?> <?php echo $form->error($model,'peso'); ?> </div>
                     </div>
+                    <div class="control-group"> <?php echo $form->labelEx($model,'almacen', array('class' => 'control-label')); ?>
+                        <div class="controls"> <?php echo $form->textField($model,'almacen',array('class'=>'span5','maxlength'=>10, 'placeholder' => 'Ej.: A4')); ?>
+                        <?php echo $form->error($model,'almacen'); ?> </div>
+                    </div>
                     <div class="control-group"> <?php echo $form->html5EditorRow($model, 'descripcion', array('class'=>'span5', 'rows'=>6, 'height'=>'200', 'options'=>array('color'=>true))); ?> <?php //echo $form->error($model,'descripcion'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'estado', array(0 => 'Activo', 1 => 'Inactivo',)); ?> <?php echo $form->error($model,'estado'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'destacado', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'destacado'); ?> </div>

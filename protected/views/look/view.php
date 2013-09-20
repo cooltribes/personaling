@@ -134,9 +134,9 @@
                                            }
 
                                    });
-                                   if ($('#btn-comprar').attr('disabled'))
+                                   if ($('#buttonGuardar').attr('disabled')==true)
                                    		return false;
-                                   $('#btn-comprar').attr('disabled', true);
+                                   $('#buttonGuardar').attr('disabled', true);
                                   // return false;
 
                                  }",

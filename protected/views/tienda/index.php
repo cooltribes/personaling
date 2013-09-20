@@ -26,6 +26,7 @@
 			</select>
 	      
 	 </div>
+	
 <!-- FILTROS MOBILE OFF -->
 
 <!-- PRODUCTOS ON -->
@@ -39,7 +40,7 @@
       {pager}
     </div>
     ';
-	
+
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,

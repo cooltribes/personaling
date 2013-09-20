@@ -65,6 +65,12 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 8)
 		echo "Orden Entregada";
 	
+	if($orden->estado == 9)
+		echo "Devuelto";
+		
+	if($orden->estado == 10)
+		echo "Devolución Parcial";
+	
 	// agregar demas estados
 ?>
 	</p>
@@ -156,17 +162,24 @@ $usuario = User::model()->findByPk($orden->user_id);
 	// agregar demas estados
      
         ?></td>
-      <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a>
+      <td>
+
+      	<div class="row margin_top_small">
       		<?php
       		
       		$url = Yii::app()->baseUrl."/orden/devoluciones/".$orden->id;
       		
       		$this->widget('bootstrap.widgets.TbButton', array(
-			    'label'=>'Hacer devolución.',
+			    'label'=>'Hacer devolución',
 			    'buttonType'=>'link',
 			    'url'=>$url,
-			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			    'htmlOptions'=>array('class'=>'span2 pull-right margin_bottom_xsmall')
 			)); ?>
+		</div>
+		<div  class="row">
+      		<a onclick="window.print();" class="btn span2  pull-right"><i class="icon-print"></i> Imprimir pedido</a>
+      	</div>		
       </td>
     </tr>
   </table>
@@ -444,6 +457,12 @@ $usuario = User::model()->findByPk($orden->user_id);
 				if($est->estado == 8)
 					echo "<td>Orden Entregada</td>";
 				
+				if($est->estado == 9)
+					echo "<td>Devuelto</td>";
+		
+				if($est->estado == 10)
+					echo "<td>Parcialmente Devuelto</td>";
+				
 				
 				$usu = User::model()->findByPk($est->user_id);
 				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
@@ -531,8 +550,9 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Talla</th>
           <th scope="col">Cant. en Existencia</th>
           <th scope="col">Cant. en Pedido</th>
+          <th scope="col">Ubic. Almacen</th>
           <th scope="col">Precio</th>
-          <th scope="col">Accion</th>
+          <th scope="col">Acción</th>
         </tr>
         <?php
         	$row=0;
@@ -544,7 +564,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$precio = $lookpedido->getPrecio(false);
 				echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
 							// echo("<td></td>");
-				echo("<td colspan='7'><strong>".$lookpedido->title."</strong></td>");// Referencia
+				echo("<td colspan='8'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
 				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
 				echo("
@@ -576,6 +596,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 								echo("<td>".$talla->valor."</td>");
 								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
 								echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+								echo("<td>".$prdlk->almacen."</td>"); 
 								echo("<td></td>"); 
 								//echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
 								echo("<td></td></tr>");
@@ -585,7 +606,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 			//INDIVIDUALES
 			
 			
-			echo("<tr class='bg_color5'><td colspan='9'>Prendas Individuales</td></tr>");
+			echo("<tr class='bg_color5'><td colspan='10'>Prendas Individuales</td></tr>");
 			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
 			foreach($separados as $prod){
 				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
@@ -594,6 +615,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$marca=Marca::model()->findByPk($indiv->marca_id);
 				$talla=Talla::model()->findByPk($ptc->talla_id);
 				$color=Color::model()->findByPk($ptc->color_id);
+				
 				echo("<tr>");
 				echo("<td>".$indiv->codigo."</td>");// Referencia
 				echo("<td>".$indiv->nombre."</td>"); // nombre
@@ -602,6 +624,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				echo("<td>".$talla->valor."</td>");					
 				echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 				echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
+				echo("<td>".$indiv->almacen."</td>"); 
 				echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
 				echo("
 							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
@@ -636,34 +659,34 @@ $usuario = User::model()->findByPk($orden->user_id);
         
         
         <tr>
-          <th colspan="9" ><div class="text_align_right"><strong>Resumen</strong></div></th>
+          <th colspan="10" ><div class="text_align_right"><strong>Resumen</strong></div></th>
         </tr>         
         <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
+          <td colspan="9" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
           <td ><?php echo($looks); ?></td> 
         </tr>  
         <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>No. de Prendas Individuales</strong></div></td>
+          <td colspan="9" ><div class="text_align_right"><strong>No. de Prendas Individuales</strong></div></td>
           <td ><?php echo ($individuales); ?></td>
         </tr>
         <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
+          <td colspan="9" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
           <td >Bs. <?php echo number_format($orden->subtotal, 2, ',', '.'); ?></td>
         </tr>  
         <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
+          <td colspan="9" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
           <td >Bs. <?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?></td>
         </tr>    
         <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Descuento</strong></div></td>
+          <td colspan="9" ><div class="text_align_right"><strong>Descuento</strong></div></td>
           <td >Bs. <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>
         </tr>  
         <tr>
-          <td colspan="8" ><div class="text_align_right"><strong>Impuesto</strong></div></td>
+          <td colspan="9" ><div class="text_align_right"><strong>Impuesto</strong></div></td>
           <td >Bs. <?php echo number_format($orden->iva, 2, ',', '.'); ?></td>
         </tr>   
         <tr>
-          <th colspan="8" ><div class="text_align_right"><strong>Total</strong></div></th>
+          <th colspan="9" ><div class="text_align_right"><strong>Total</strong></div></th>
           <th >Bs. <?php echo number_format($orden->total, 2, ',', '.'); ?></th>
         </tr>          
       </table>
@@ -710,12 +733,7 @@ $usuario = User::model()->findByPk($orden->user_id);
   </div>
   <!-- INFORMACION DEL PEDIDO OFF -->
   <hr/>
-  
-  <?php
-  
-  $devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
 
-  ?>
   <!-- Productos devueltos ON -->
    <div class="well well-small margin_top well_personaling_small">
      <h3 class="braker_bottom margin_top">Productos devueltos</h3>
@@ -732,11 +750,15 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
 	<?php
 	
-	if(isset($devuelto))
+	$devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario->id));
+	$totaldevuelto = 0;
+	
+	if(count($devuelto)>0)
 	{
+		
 		foreach($devuelto as $each)
 		{
-			
+			$totaldevuelto = $each->montodevuelto;
 			$ptc = Preciotallacolor::model()->findByPk($each->preciotallacolor_id);
 			$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
 			$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
@@ -754,24 +776,32 @@ $usuario = User::model()->findByPk($orden->user_id);
         	<td><?php echo $each->motivo; ?></td>
         	<td><?php echo $precio->precioDescuento; ?></td>
         </tr>
-    <?php
+     <?php
 		}
 	}
-	?>    
+	else
+	{
+	?>
+		<tr>
+			<td>No se ha devuelto ningún producto de esta orden.</td>	
+		</tr>
+	<?php
+	}
+	?>   
         <tr>
         	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
         </tr>        
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $each->montodevuelto; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $each->montoenvio; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo "0.00"; //$each->montoenvio; ?> Bs</td>
         </tr>
         <tr>
         	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-        	<th  class="text_align_right"><?php echo ($each->montodevuelto + $each->montoenvio); ?> Bs</th>
+        	<th  class="text_align_right"><?php echo ($totaldevuelto + 0); ?> Bs</th>
         </tr>        
     	</table>
 	</div>

@@ -344,12 +344,14 @@
           		if(isset($like)) // le ha dado like 
 				{
           	?>
-            <div class="span4"><a class="btn-mini btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+            <div class="span4"><a class="btn-mini btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta</a> &nbsp;
             	<?php
 				}
 				else {
 				?>
-			 <div class="span4"><a class="btn-mini" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&#9825;</span> Me encanta</a> &nbsp;
+			 <div class="span4"><a class="btn-mini" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
+      
+      &nbsp; </span> Me encanta</a> &nbsp;
 				<?php
 				}
 				?>

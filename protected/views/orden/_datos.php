@@ -54,8 +54,14 @@ echo"<tr>";
 	if($data->estado == 7)
 		echo "<td>Pago Insuficiente</td>";
         
-        if($data->estado == 8)
+    if($data->estado == 8)
 		echo "<td>Entregado</td>";
+	
+	if($data->estado == 9)
+		echo "<td>Devuelto</td>";
+		
+	if($data->estado == 10)
+		echo "<td>Parcialmente Devuelto</td>";
 	
 	// agregar demas estados
 	

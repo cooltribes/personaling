@@ -124,26 +124,43 @@ $this->breadcrumbs=array(
 						$talla=Talla::model()->findByPk($ptc->talla_id);
 						$color=Color::model()->findByPk($ptc->color_id);
 						
-						echo("<tr>");
-						echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioDescuento."' />");
-						echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
-						echo("<td>".$ptc->sku."</td>");// Referencia
-						echo("<td>".$indiv->nombre."</td>"); // nombre
-						echo("<td>".$color->valor."</td>");
-						echo("<td>".$talla->valor."</td>");					
-						echo('
-								<td class="span3">
-									<select class="input-medium">
-									  <option>-- Seleccione --</option>
-									  <option>Cambio de talla</option>
-									  <option>Cambio por otro articulo</option>
-									  <option>Devolución por prenda dañada</option>
-									  <option>Devolución por insatisfacción</option>
-									  <option>Devolución por pedido equivocado</option>
-									</select>        		
-					        	</td>
-							');
-						echo("</tr>");				
+						$op = OrdenHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptc->id));
+						
+						if($op->devolucion_id != 0)	
+						{
+							echo("<tr class='error>'");
+							echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+							echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
+							echo("<td>".$ptc->sku."</td>"); // nombre
+							echo("<td>".$indiv->nombre."</td>"); // nombre
+							echo("<td>".$color->valor."</td>");
+							echo("<td>".$talla->valor."</td>");
+							echo('<td>Ya se devolvió</td>');
+							echo("</tr>");
+						}
+						else
+						{
+							echo("<tr>");
+							echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+							echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
+							echo("<td>".$ptc->sku."</td>");// Referencia
+							echo("<td>".$indiv->nombre."</td>"); // nombre
+							echo("<td>".$color->valor."</td>");
+							echo("<td>".$talla->valor."</td>");					
+							echo('
+									<td class="span3">
+										<select id="motivo-'.$ptc->sku.'" class="input-medium">
+										  <option>-- Seleccione --</option>
+										  <option>Cambio de talla</option>
+										  <option>Cambio por otro articulo</option>
+										  <option>Devolución por prenda dañada</option>
+										  <option>Devolución por insatisfacción</option>
+										  <option>Devolución por pedido equivocado</option>
+										</select>        		
+						        	</td>
+								');
+							echo("</tr>");
+						}		
 					}				
 				
 			}
@@ -195,13 +212,13 @@ $this->breadcrumbs=array(
 	});
 	
 
-	function devolver() 
+	function devolver()
 	{
 		var motivos = new Array();
 		
 		var checkValues = $(':checkbox:checked').map(function() {
 			motivos.push ( $('#motivo-'+this.id).attr('value') );
-				
+
 			return this.id;
 		}).get().join();
 		
@@ -209,7 +226,7 @@ $this->breadcrumbs=array(
 			alert("Prenda no seleccionada o Motivo de devolución no seleccionado para la prenda.");			
 		else
 		{
-			//alert('check='+checkValues+" ,"+motivos[0]);
+			
 			
 			var id = $('#orden_id').attr('value');
 			var monto = $('#monto').attr('value');
@@ -217,7 +234,7 @@ $this->breadcrumbs=array(
 			$.ajax({
 		        type: "post", 
 		        url: "orden/devoluciones", // action 
-		        data: { 'orden':id, 'check':checkValues, 'motivos':motivos, 'monto':monto}, 
+		        data: { 'orden':id, 'check':checkValues, 'monto':monto, 'motivos':motivos}, 
 		        success: function (data) {
 					
 					if(data=="ok")

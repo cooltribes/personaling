@@ -13,7 +13,8 @@ $prePub="";
 	
 	   	if($data->precios){
 	   	foreach ($data->precios as $precio) {
-	   		$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioDescuento);
+	   		//$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 			}
 		}
 		
@@ -36,7 +37,7 @@ $prePub="";
 						echo("<td><article class='span3'><div class='producto'> 
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='../producto/detalle/".$data->id."'>
 						".$a.$b." 
-						
+						 
 						".CHtml::link("Vista Rápida",
 						    $this->createUrl('modal',array('id'=>$data->id)),
 						    array(// for htmlOptions
@@ -52,7 +53,7 @@ $prePub="";
 						</a>
 						<header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='../producto/detalle/".$data->id."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
-						<span class='precio'>Bs. ".Yii::app()->numberFormatter->format("#,##0.00",$prePub)."</span>
+						<span class='precio'>Bs. ".$prePub."</span>
 						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
 						
 						$con=$id;
@@ -85,7 +86,7 @@ $prePub="";
 					</a>
 					<header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 					<a href='../producto/detalle/".$data->id."' class='ver_detalle  icon_lupa' title='Ver detalle'></a></header>
-					<span class='precio'>Bs. ".Yii::app()->numberFormatter->format("#,##0.00",$prePub)."</span>
+					<span class='precio'>Bs. ".$prePub."</span>
 					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
 					
 					$con=$id;

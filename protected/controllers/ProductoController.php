@@ -122,7 +122,8 @@ class ProductoController extends Controller
 				 	'fInicio'=>$_POST['Producto']['fInicio'],
 					'fFin'=>$_POST['Producto']['fFin'],
 					'destacado' => $_POST['Producto']['destacado'],
-					'peso' => $_POST['Producto']['peso']
+					'peso' => $_POST['Producto']['peso'],
+					'almacen' => $_POST['Producto']['almacen']
 					));
 					
 					Yii::app()->user->updateSession();
@@ -145,6 +146,7 @@ class ProductoController extends Controller
 				$model->peso = $_POST['Producto']['peso'];
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
+				$model->almacen = $_POST['Producto']['almacen'];
 				if($model->save())
 				{
 					Yii::app()->user->updateSession();
@@ -746,6 +748,8 @@ class ProductoController extends Controller
                     }
             }// isset */
 
+            
+            
             $producto = new Producto; 
 
             if (isset($_POST['query']))
@@ -758,15 +762,23 @@ class ProductoController extends Controller
 
             $dataProvider = $producto->search();
 
+            /**********************   Para Filtros   *************************/
+            
              //Filtros personalizados
             $filters = array();
             
             //Para guardar el filtro
             $filter = new Filter;
             
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter'])){
+              $_POST = $_SESSION['todoPost'];
+            }
             
-            if(isset($_POST['dropdown_filter'])){           
+            
+            if(isset($_POST['dropdown_filter'])){   
                 
+                
+                $_SESSION['todoPost'] = $_POST;
                 //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){
                     if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
@@ -1517,6 +1529,7 @@ class ProductoController extends Controller
 									' Sku: '.$row['N'].
 									' M Desc: '.$row['O'].
 									' M Tag: '.$row['P'].
+					 				' Almacen: '.$row['Q'],
 									'<br/>';
 					*/				
 					$anterior = $row;
@@ -1535,6 +1548,7 @@ class ProductoController extends Controller
 						 	'marca_id'=>$marca->id,
 						 	'descripcion'=>$row['B'],
 							'peso' => $row['E'],
+							'almacen' => $row['Q'],
 							'status' => 1
 						));
 						
@@ -1640,8 +1654,7 @@ class ProductoController extends Controller
 		$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
 						
 						}
-						
-													
+												
 					}
 					else // no existe la referencia, es producto nuevo
 					{
@@ -1653,6 +1666,7 @@ class ProductoController extends Controller
 						$prod->descripcion = $row['B'];
 						$prod->fecha = date('Y-m-d H:i:s', strtotime('now'));
 						$prod->peso = $row['E'];
+						$prod->almacen = $row['Q'];
 						$prod->status = 1; // no está eliminado
 						
 						$marca = Marca::model()->findByAttributes(array('nombre'=>$row['D']));

@@ -9,11 +9,11 @@ $prePub="";
 	
 	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));
 	
-	// limitando a que se muestren los status 1 y estado 0
+	// limitando a que se muestren los status 1 y estado 0 
 	
-	   	if($data->precios){
+	   	if($data->precios){ 
 	   	foreach ($data->precios as $precio) {
-	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioDescuento);
+	   		$prePub = Yii::app()->numberFormatter->format("##,##0.00",$precio->precioDescuento);
 			}
 		}
 		

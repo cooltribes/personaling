@@ -179,7 +179,7 @@ $this->breadcrumbs=array(
         	<td  class="text_align_right">000,00 Bs</td>
         </tr>
     	</table>
-    	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning">Hacer devolucion</a>
+    	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning btn-large">Hacer devolucion</a>
     	</div>
 	</div>
 

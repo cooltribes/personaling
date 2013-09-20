@@ -238,13 +238,14 @@ else
  		$.ajax({
 	        type: "post",
 	        dataType: 'json',
-	        url: "comprar", // action 
+	        url: "comprafin", // action 
 	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance, 'seguro':seguro, 'tipo_guia':tipo_guia}, 
 	        success: function (data) {
 				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
 				if(data.status=="ok")
 				{
-					window.location="pedido/"+data.orden+"";
+					
+					window.location="<?php $this->createUrl('orden/detalles') ?>/"+data.orden+"";
 				}else if(data.status=='error'){
 					//console.log(data.error);
 				}

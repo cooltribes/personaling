@@ -85,7 +85,7 @@ function showAlert(type, message){
    //$("html, body").animate({ scrollTop: 0 }, "slow");
 }
 
-/*Obtiene los campos pertenecientes a un filtro ID y realiza la búsqueda*/
+/*Obtiene los campos pertenecientes a un filtro ID, los carga y luego realiza la búsqueda*/
 function getFilter(URL, ID, URL2){
 
     clearFilters();

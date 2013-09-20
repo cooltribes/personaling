@@ -4,7 +4,7 @@
 <?php
 
 if (!Yii::app()->user->isGuest) { // que este logueado
-
+$idDireccion=Yii::app()->session['idDireccion'];
 ?>
 
 <div class="container margin_top">
@@ -24,14 +24,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span7">
       <!-- Forma de pago ON -->
       <div class="box_1 padding_small margin_bottom">
-        <h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago <?php echo Yii::app()->session['ptcs']." ".Yii::app()->session['vals']; ?></h4>
-        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
-        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPago"> MercadoPago </button>
-        <div class="padding_left margin_bottom_medium collapse" id="mercadoPago">
-          <div class="well well-small" >
-            Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
-          </div>
-        </div>
+        <h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
+        
         <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito" checked>
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
@@ -257,10 +251,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //     echo CHtml::hiddenField('idDireccion',$idDireccion);
 // echo CHtml::hiddenField('tipoPago','1');
 ?>
-    <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
+ 
     <?php //Yii::app()->getSession()->add('tipoPago',1); ?>
     <div class="span5 margin_bottom padding_top_xsmall">
-    	<form action="confirmar" method="POST">
+    	<form action="compraconfirm" method="POST">
       <div class="margin_left">
         <div id="resumen" class="well well_personaling_big ">
           <h4>Resumen de la compra</h4>

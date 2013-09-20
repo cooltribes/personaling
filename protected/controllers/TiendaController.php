@@ -369,7 +369,8 @@ class TiendaController extends Controller
 		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
 		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-		
+		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;		
 		
 				
 	  if ($categorias){

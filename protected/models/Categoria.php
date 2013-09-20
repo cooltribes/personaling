@@ -173,6 +173,10 @@ class Categoria extends CActiveRecord
 		}
 		return $array;
 	}
+	public function hasLooks()
+	{
+		return (null!==CategoriaHasLook::model()->findByAttributes(array('categoria_id'=>$this->id)));
+	}
 
 	
 	

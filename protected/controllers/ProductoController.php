@@ -746,6 +746,8 @@ class ProductoController extends Controller
                     }
             }// isset */
 
+            
+            
             $producto = new Producto; 
 
             if (isset($_POST['query']))
@@ -758,15 +760,23 @@ class ProductoController extends Controller
 
             $dataProvider = $producto->search();
 
+            /**********************   Para Filtros   *************************/
+            
              //Filtros personalizados
             $filters = array();
             
             //Para guardar el filtro
             $filter = new Filter;
             
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter'])){
+              $_POST = $_SESSION['todoPost'];
+            }
             
-            if(isset($_POST['dropdown_filter'])){           
+            
+            if(isset($_POST['dropdown_filter'])){   
                 
+                
+                $_SESSION['todoPost'] = $_POST;
                 //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){
                     if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]

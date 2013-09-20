@@ -81,12 +81,6 @@ class OrdenController extends Controller
 	public function actionAdmin()
 	{
             
-//            echo "<pre>";print_r($_POST);echo "</pre>";            
-//            echo count($_POST['textfield_value']);exit();   
-//            $_SESSION['filters'] = '';
-//            if(isset($filters['fields'])){
-//              $_SESSION['filters'] = $filters;  
-//            }
             $orden = new Orden;
             $dataProvider = $orden->search();
             
@@ -103,7 +97,13 @@ class OrdenController extends Controller
             $filter = new Filter;
             
             
-            if(isset($_POST['dropdown_filter'])){           
+           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter'])){
+              $_POST = $_SESSION['todoPost'];
+            }            
+            
+            if(isset($_POST['dropdown_filter'])){  
+                                
+                $_SESSION['todoPost'] = $_POST;          
                 
                 //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){

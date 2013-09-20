@@ -157,7 +157,13 @@ class AdminController extends Controller
             //Para guardar el filtro
             $filter = new Filter;            
             
-            if(isset($_POST['dropdown_filter'])){           
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter'])){
+              $_POST = $_SESSION['todoPost'];
+            }            
+            
+            if(isset($_POST['dropdown_filter'])){  
+                                
+                $_SESSION['todoPost'] = $_POST;           
                 
                 //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){

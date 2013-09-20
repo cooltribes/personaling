@@ -159,7 +159,7 @@
 				}
 				
 				
-			$valores = Array();
+			$valores2 = Array();
 				$canttallas= Array();
               	$cont2 = 0;
               	
@@ -243,22 +243,20 @@
               <h5>Tallas</h5>
               <div id="vTa" class="clearfix tallas">
               	<?php
-
               	
-
-				if( $cont2 == 1) // Si solo hay un color seleccionelo
+				if( $cont2 == 1) // Si solo hay una talla seleccionela
 				{
 					$talla = Talla::model()->findByPk($canttallas[0]);
 					echo "<div value='solo' id=".$talla->id." style='cursor: pointer' class='tallass active' title='talla'>".$talla->valor."</div>"; 
 				}
 				else{            	
-					foreach ($producto->preciotallacolor as $talCol) {
-	              	
+					foreach ($producto->preciotallacolor as $talCol) { 
+	              	 	
 						if($talCol->cantidad > 0) // que haya disp
 						{
 							$talla = Talla::model()->findByPk($talCol->talla_id);
-		
-							if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
+							
+							if(in_array($talla->id, $valores2)){	// no hace nada para que no se repita el valor			
 							}
 							else{
 								echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 

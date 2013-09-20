@@ -29,7 +29,8 @@ class AdminController extends Controller
 				'actions'=>array('admin','delete','create','update',
                                     'view','corporal','estilos','pedidos','carrito',
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo','compra','compradir','comprapago'),
+                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
+                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion','eliminardireccion'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -753,11 +754,11 @@ if(isset($_POST['Profile']))
 				$balance->tipo=3;
 				if($balance->save()){
 					
-					//Yii::app()->user->setFlash('success', UserModule::t("Carga realizada exitosamente"));				
+					Yii::app()->user->setFlash('success', UserModule::t("Carga realizada exitosamente"));				
 				}
 				else{
-					echo $balance->id."TOT".$balance->total."ORD".$balance->orden_id."US".$balance->user_id."TIP".$balance->tipo;
-					//Yii::app()->user->setFlash('error', UserModule::t("No se pudo realizar carga"));
+					
+					Yii::app()->user->setFlash('error', UserModule::t("No se pudo realizar carga"));
 				}
 							
 		}
@@ -842,9 +843,10 @@ if(isset($_POST['Profile']))
 			if(isset($_POST['tipo']) && $_POST['tipo']=='direccionVieja')
 			{
 				//echo "Id:".$_POST['Direccion']['id'];
-				$dirEnvio = $_POST['Direccion']['id'];
 				
-				$this->render('comprapago',array('idDireccion'=>$dirEnvio));
+				Yii::app()->session['idDireccion']=$_POST['Direccion']['id'];
+				
+				$this->redirect(array('admin/comprapago'));
 			}
 			else
 			if(isset($_POST['Direccion'])) // nuevo registro
@@ -887,23 +889,398 @@ if(isset($_POST['Profile']))
 
 	public function actionComprapago()
 		{
-			
+	
 			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
 			{ 
 				$idDireccion = $_POST['idDireccion'];
 				$tipoPago = $_POST['tipoPago'];
 				echo "if";
-				$this->render('confirmar',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
+				$this->render('compraconfirm',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
 				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
 				// se le pasan los datos al action confirmar	
-			}else if(isset($_GET['id'])){ // de direcciones
-			echo "else";
-				$this->render('pago',array('id_direccion'=>$_GET['id']));
-			}
+			}  // de direcciones
+		
+				$this->render('comprapago');
+			
 			
 		
-		} 
+		}  
+	public function actionCompraconfirm()
+		{
+			
+			// viene de pagos
+			//var_dump($_POST);
+			if(isset($_POST['tipo_pago'])){
+				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+					Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
+				}else{
+					Yii::app()->getSession()->add('usarBalance','0');
+				}
+				//echo '<br/>'.$_POST['tipo_pago'];
+				
+			}
+			
+			$this->render('compraconfirm');
+		}
+	public function actionModal()
+	{
+		$tarjeta = new TarjetaCredito;
+		
+		$datos="";
+		
+		$datos=$datos."<div class='modal-header'>";
+		$datos=$datos."Agregar datos de tarjeta de crédito";
+    	$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='modal-body'>";
+		
+		$datos=$datos.'<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">';
+  		$datos=$datos.'<tr>';			
+		$datos=$datos.'<th scope="col" colspan="3">&nbsp;</th>';
+		$datos=$datos.'<th scope="col">Número</th>';		
+		$datos=$datos.'<th scope="col">Nombre en la Tarjeta</th>';
+		$datos=$datos.'<th scope="col">Fecha de Vencimiento</th>';
+		$datos=$datos.'</tr>';	
+		
+		$tarjetas = TarjetaCredito::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id));
+		
+		if(isset($tarjetas))
+		{
+			foreach($tarjetas as $cada){
+				
+				$datos=$datos.'<tr>';
+				$datos=$datos.'<td><input class="radioss" type="radio" name="optionsRadios" id="tarjeta" value="'.$cada->id.'" ></td>';
+				$datos=$datos.'<td><i class="icon-picture"></i></td>';
+				$datos=$datos.'<td>Mastercard</td>';
+				
+				$rest = substr($cada->numero, -4);
+				
+				$datos=$datos.'<td>XXXX XXXX XXXX '.$rest.'</td>';
+				$datos=$datos.'<td>'.$cada->nombre.'</td>';
+				$datos=$datos.'<td>'.$cada->vencimiento.'</td>';
+				$datos=$datos.'</tr>';
+			}	
+			$datos=$datos.'</table>';
+		}
+		else
+			{
+				$datos=$datos.'<tr>';
+				$datos=$datos.'<td>No tienes tarjetas de credito asociadas.</td>';
+				$datos=$datos.'</tr>';
+				$datos=$datos.'</table>';
+			}	
+			
+		
+		$datos=$datos.'<button type="button" id="nueva" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>';
+    	
+		$datos=$datos.'<div class="collapse" id="collapseOne">';
+		$datos=$datos.'<form class="">';
+        $datos=$datos.'<h5 class="braker_bottom">Nueva tarjeta de crédito</h5>';
+		
+		$datos=$datos.'<div class="control-group">';
+        $datos=$datos.'<div class="controls">';     
+		$datos=$datos. CHtml::activeTextField($tarjeta,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+    	
+  		$datos=$datos.'<div class="control-group">';
+        $datos=$datos.'<div class="controls">';     
+		$datos=$datos. CHtml::activeTextField($tarjeta,'numero',array('id'=>'numero','class'=>'span5','placeholder'=>'Número de la tarjeta'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+  
+  		$datos=$datos.'<div class="control-group">';
+        $datos=$datos.'<div class="controls">';     
+		$datos=$datos. CHtml::activeTextField($tarjeta,'codigo',array('id'=>'codigo','class'=>'span2','placeholder'=>'Código de seguridad'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+  
+  		$datos=$datos.'<div class="control-group">';
+		$datos=$datos.'<label class="control-label required">Fecha de Vencimiento</label>';
+        $datos=$datos.'<div class="controls">';     
+	  	$datos=$datos. CHtml::dropDownList('mes','',array('Mes'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes'));
+        $datos=$datos. CHtml::dropDownList('ano','',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año'));
+        $datos=$datos.'<div style="display:none" class="help-inline"></div>';  
+		$datos=$datos.'</div></div>';
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'direccion',array('id'=>'direccion','class'=>'span5','placeholder'=>'Dirección')) ;
+		$datos=$datos."<div style='display:none' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'ciudad',array('id'=>'ciudad','class'=>'span5','placeholder'=>'Ciudad'));
+        $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'estado',array('id'=>'estado','class'=>'span5','placeholder'=>'Estado'));
+        $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<div class='controls'>";
+		$datos=$datos. CHtml::activeTextField($tarjeta,'zip',array('id'=>'zip','class'=>'span2','placeholder'=>'Código Postal'));
+        $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
+		$datos=$datos."</div>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."</div>"; // modal body
+		
+		$datos=$datos."<div class='modal-footer'>";
+		
+		$datos=$datos."<div class=''><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-danger'> Pagar </a></div>";
+    	$datos=$datos."</form>";
+		$datos=$datos."</div>";
+		
+		$datos=$datos."<input type='hidden' id='idTarjeta' value='0' />"; // despues aqui se mandaria el id si la persona escoge una tarjeta que ya utilizó
+		
+		$datos=$datos."</div>"; // footer
+		
+		$datos=$datos."<script>";
+		$datos=$datos."$(document).ready(function() {";
+		
+			$datos=$datos.'$("#nueva").click(function() { ';
+				$datos=$datos."$('.table').find('input:radio:checked').prop('checked',false);";
+				$datos=$datos.'$("#tarjeta").prop("checked", false);';
+				$datos=$datos.'$("#idTarjeta").val(0);'; // lo regreso a 0 para que sea tarjeta nueva
+			$datos=$datos.'});';
+		
+			$datos=$datos.'$(".radioss").click(function() { ';
+				$datos=$datos."var numero = $(this).attr('value');";
+				//$datos=$datos." alert(numero); ";
+        		$datos=$datos.'$("#idTarjeta").val(numero);';
+        	$datos=$datos."});";
+		
+		$datos=$datos."});"; 
+		$datos=$datos."</script>"; 
+		
+		
+		echo $datos;
+		
+		
+	}
+
+	
+	
+	public function actionCredito(){
+		
+			if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
+						
+					if($_POST['idCard'] == 0) // creo una tarjeta nueva
+					{
+						$usuario = Yii::app()->user->id; 
+							
+						$exp = $_POST['mes']."/".$_POST['ano'];
+							
+							$data_array = array(
+								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
+								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
+								"CardHolder"=>$_POST['nom'], // NOMBRE EN TARJETA
+								"CardNumber"=>$_POST['num'], // NUMERO DE TARJETA
+								"CVC"=>$_POST['cod'], //CODIGO DE SEGURIDAD
+								"ExpirationDate"=>$exp, // FECHA DE VENCIMIENTO
+								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+								"Address"=>$_POST['dir'], // DIRECCION
+								"City"=>$_POST['ciud'], // CIUDAD
+								"ZipCode"=>$_POST['zip'], // CODIGO POSTAL
+								"State"=>$_POST['est'], //ESTADO
+							);
+							
+						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
+							
+							if($output->code == 201){ // PAGO AUTORIZADO
+							
+								$detalle = new Detalle;
+							
+								$detalle->nTarjeta = $_POST['num'];
+								$detalle->nTransferencia = $output->id;
+								$detalle->nombre = $_POST['nom'];
+								$detalle->codigo = $_POST['cod'];
+								$detalle->vencimiento = $exp;
+								$detalle->monto = $_POST['total'];
+								$detalle->fecha = date("Y-m-d H:i:s");
+								$detalle->banco = 'TDC';
+								$detalle->estado = 1; // aceptado
+								
+								if($detalle->save()){
+												
+									$tarjeta = new TarjetaCredito;
+								
+									$tarjeta->nombre = $_POST['nom'];
+									$tarjeta->numero = $detalle->nTarjeta;
+									$tarjeta->codigo = $detalle->codigo;
+									$tarjeta->vencimiento = $exp;
+									$tarjeta->direccion = $_POST['dir'];
+									$tarjeta->ciudad = $_POST['ciud'];
+									$tarjeta->zip = $_POST['zip'];
+									$tarjeta->estado = $_POST['est'];
+									$tarjeta->user_id = $usuario;		
+										
+									$tarjeta->save();
+									
+									
+									// cuando finalice entonces envia id de la orden para redireccionar
+									echo CJSON::encode(array(
+										'status'=> $output->code, // paso o no
+										'mensaje' => $output->message,
+										'idDetalle' => $detalle->id
+										
+									));
+									
+								}//detalle
+								
+							}// 201
+							else
+							{	
+								// cuando finalice entonces envia id de la orden para redireccionar
+								echo CJSON::encode(array(
+									'status'=> $output->code, // paso o no
+									'mensaje' => $output->message									
+								));
+									
+							}
+							
+							//$respCard = $respCard."Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
+						//	$respCard = $respCard."Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
+						//	$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
+						//	$respCard = $respCard."Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO
+
+						}
+						else // escogio una tarjeta
+						{
+							
+							$card = TarjetaCredito::model()->findByPk($_POST['idCard']);
+							$usuario = Yii::app()->user->id; 
+							
+							$data_array = array(
+								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
+								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
+								"CardHolder"=>$card->nombre, // NOMBRE EN TARJETA
+								"CardNumber"=>$card->numero, // NUMERO DE TARJETA
+								"CVC"=>$card->codigo, //CODIGO DE SEGURIDAD
+								"ExpirationDate"=>$card->vencimiento, // FECHA DE VENCIMIENTO
+								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+								"Address"=>$card->direccion, // DIRECCION
+								"City"=>$card->ciudad, // CIUDAD
+								"ZipCode"=>$card->zip, // CODIGO POSTAL
+								"State"=>$card->estado, //ESTADO
+							);
+							
+						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
+						echo"<div style='width 500px; height:500px; font-size:25px' >";print_r($output);echo "</div>";
+						
+					/*	if($output->code == 201){ // PAGO AUTORIZADO
+							
+								$detalle = new Detalle;
+							
+								$detalle->nTarjeta = $card->numero;
+								$detalle->nTransferencia = $output->id;
+								$detalle->nombre = $card->nombre;
+								$detalle->codigo = $card->codigo;
+								$detalle->vencimiento = $card->vencimiento;
+								$detalle->monto = $_POST['total'];
+								$detalle->fecha = date("Y-m-d H:i:s");
+								$detalle->banco = 'TDC';
+								$detalle->estado = 1; // aceptado
+								
+								if($detalle->save()){
+									// cuando finalice entonces envia id de la orden para redireccionar
+									echo CJSON::encode(array(
+										'status'=> $output->code, // paso o no
+										'mensaje' => $output->message,
+										'idDetalle' => $detalle->id										
+									));
+								}
+					
+							}*/
+						}
 
 
+					}
+
+
+	
+
+	
+	}
+	
+		public function actionEliminardireccion()
+		{
+			// if(isset($_POST['idDir']))
+			// {
+			// 	$direccion = Direccion::model()->findByPk($_POST['idDir']);
+			// 	$direccion->delete();
+				
+			// 	echo "ok";
+			// }
+			$id = $_POST['idDir'];
+			$direccion = Direccion::model()->findByPk( $id  );
+			$user = User::model()->findByPk( Yii::app()->user->id );
+			if($user){
+				$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
+				$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
+				
+				if($facturas1 == 0 && $facturas2 == 0){
+					if($direccion->delete()){
+						echo "ok";
+					}else{
+						echo "wrong";
+					}
+				}else{
+					echo "bad";
+				}
+			}
+		}
+		
+			/**
+		 * editar una direccion.
+		 */
+		public function actionEditardireccion()
+		{
+			if(isset($_POST['idDireccion'])){
+				$dirEdit = Direccion::model()->findByPk($_POST['idDireccion']);
+				
+				$dirEdit->nombre = $_POST['Direccion']['nombre'];
+				$dirEdit->apellido = $_POST['Direccion']['apellido'];
+				$dirEdit->cedula = $_POST['Direccion']['cedula'];
+				$dirEdit->dirUno = $_POST['Direccion']['dirUno'];
+				$dirEdit->dirDos = $_POST['Direccion']['dirDos'];
+				$dirEdit->telefono = $_POST['Direccion']['telefono'];
+				$dirEdit->ciudad_id = $_POST['Direccion']['ciudad_id'];
+				$dirEdit->provincia_id = $_POST['Direccion']['provincia_id'];
+				
+				if($_POST['Direccion']['pais']==1)
+					$dirEdit->pais = "Venezuela";
+				
+				if($_POST['Direccion']['pais']==2)
+					$dirEdit->pais = "Colombia";
+				
+				if($_POST['Direccion']['pais']==3)
+					$dirEdit->pais = "Estados Unidos";
+				
+				if($dirEdit->save()){
+					$dir = new Direccion;
+					$this->redirect(array('bolsa/direcciones')); // redir to action
+					//$this->render('direcciones',array('dir'=>$dir));
+					}
+				
+			}
+			else if($_GET['id']){ // piden editarlo
+				$direccion = Direccion::model()->findByAttributes(array('id'=>$_GET['id'],'user_id'=>Yii::app()->user->id));
+				$this->render('editarDir',array('dir'=>$direccion));
+			}
+			
+			
+		}
+	
+	
 	
 }

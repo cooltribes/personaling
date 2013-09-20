@@ -498,7 +498,7 @@ class OrdenController extends Controller
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno));
 				$ptc = OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$_POST['orden'],'preciotallacolor_id'=>$ptcolor->id)); // para asignarle el id
 				
-				$devuelto = new Devolucion;
+				$devuelto = new Devolucion; 
 				
 				$devuelto->user_id = $orden->user_id;
 				$devuelto->orden_id = $orden->id;
@@ -521,6 +521,17 @@ class OrdenController extends Controller
 				$cont++;
 			}
 			
+			// devolviendo el saldo
+			
+			$balance = new Balance;
+			$balance->total = $_POST['monto'];
+			$balance->orden_id = $_POST['orden'];
+			$balance->user_id = $orden->user_id;
+			$balance->tipo = 4;
+			
+			$balance->save();
+			
+			// revisando si es una devolucion completa o parcial
 			$devueltos = count($_POST['motivos']);
 			$total = OrdenHasProductotallacolor::model()->countByAttributes(array('tbl_orden_id'=>$_POST['orden']));
 			

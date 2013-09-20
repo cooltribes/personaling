@@ -56,14 +56,14 @@ class Curl extends CComponent {
 		
 		
 		//$f_response = fopen(Yii::app()->baseUrl.'/images/request.txt', 'w');
-		$f_response = fopen('/home/personaling/public_html/site/images/request.txt', 'w');
+		$f_response = fopen('/var/www/html/site/images/request.txt', 'w');
 		
 		    
 		    $this->setOption(CURLOPT_RETURNTRANSFER , 1);
 		    $this->setOption(CURLOPT_FOLLOWLOCATION , 1);
 		    $this->setOption(CURLOPT_VERBOSE        , 1);
-		    $this->setOption(CURLOPT_STDERR         , $f_response);
-		
+		   // $this->setOption(CURLOPT_STDERR         , $f_response);
+		//$this->setOption(CURLOPT_FILE         , $f_response);
 		fclose($f_response);	
 		//$url = $this->buildUrl($url, $params);	
         return $this->_exec($url);
@@ -71,7 +71,7 @@ class Curl extends CComponent {
 	public function putPago($data) {
 			
 
-		$url = "https://api.instapago.com/api/payment";
+		$url = "https://api.instapago.com/api/payment/";
 			
 		$data_keys = array(
 		"KeyId"=> "069C794A-6917-4283-B26F-2AFC7F685A96",
@@ -80,7 +80,7 @@ class Curl extends CComponent {
 		$data = array_merge($data_keys, $data);
 		$data_string = http_build_query($data);
 		//echo $data_string;
-		$f_response = fopen('/home/personaling/public_html/site/images/request.txt', 'w');
+		$f_response = fopen('/var/www/html/site/images/request.txt', 'w');
 		$this->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
 		$this->setOption(CURLOPT_SSL_VERIFYHOST, 0);
 		$this->setOption(CURLOPT_SSL_VERIFYPEER, 0);
@@ -93,11 +93,12 @@ class Curl extends CComponent {
 		    
 		    $this->setOption(CURLOPT_FOLLOWLOCATION , 1);
 		    $this->setOption(CURLOPT_VERBOSE        , 1);
-		    $this->setOption(CURLOPT_STDERR         , $f_response);
+		 //   $this->setOption(CURLOPT_STDERR         , $f_response);
+		// $this->setOption(CURLOPT_FILE         , $f_response);
 		
 		fclose($f_response);	
 		//$url = $this->buildUrl($url, $params);
-		
+		echo $this->_exec($url);
         return json_decode($this->_exec($url));
     }
 	 

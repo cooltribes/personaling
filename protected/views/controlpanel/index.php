@@ -90,12 +90,12 @@ else
 	);
 
 	$output = Yii::app()->curl->putPago($data_array);
-
-	echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
-	echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
-	echo "Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
-	echo "Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO	
-	*/
+*/
+	//echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
+	//echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
+	//echo "Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
+	//echo "Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO	
+	
   	?>
   	
   

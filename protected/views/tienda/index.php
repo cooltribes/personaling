@@ -108,8 +108,18 @@
 	?>
         <form id="formu" class="no_margin_bottom form-search form-horizontal">
 
-          
-          <select id="cate1" class="span3" name="cate1">
+          <!-- Rango de precio ON -->
+
+          <select id="" class="span3 " name="">
+            <option value="0">Buscar por precio</option>
+            <option value="1">500,00 - 1000,00</option>
+            <option value="2">1000,00 - 1500,00</option>
+            <option value="3">1500,00 - 2000,00</option>
+
+          </select>
+          <!-- Rango de precio OFF -->
+
+          <select id="cate1" class="span3 margin_top_small" name="cate1">
             <option value="0">Buscar por prenda</option>
             <?php 
 

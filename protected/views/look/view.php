@@ -75,20 +75,20 @@
             <div class="span5 marcas">
               
               <ul class="unstyled">
-                <li class="span4">  
-                  <img src="http://placehold.it/130x30">
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
                 </li> 
-                <li class="span4">  
-                  <img src="http://placehold.it/130x30">
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
                 </li>
-                <li class="span4">  
-                  <img src="http://placehold.it/130x30">
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
                 </li>      
-                <li class="span4">  
-                  <img src="http://placehold.it/130x30">
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
                 </li>  
-                <li class="span4">  
-                  <img src="http://placehold.it/130x30">
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
                 </li>                                                      
               </ul>
             </div>

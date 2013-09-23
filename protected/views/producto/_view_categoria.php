@@ -72,7 +72,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 			function nodos($items){
 				echo "<ul class='no_bullets'>";
 				foreach ($items as $item){
-						echo "<li><label><input id='".$item->id."' type='checkbox' value='' /> ".$item->nombre."</label></li>";
+						echo "<li><label><input id='cat-".$item->id."' type='checkbox' value='' /> ".$item->nombre."</label></li>";
 						
 						if ($item->hasChildren()){
 							nodos($item->getChildren());
@@ -139,7 +139,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 			    $('#accion').attr('value', 'normal');
 			    var accion = $('#accion').attr('value');
 			    
-			    //alert(checkValues);
+			    alert(checkValues);
 				var producto = $('#producto').attr('value');
 			
 			this.data += '&idProd='+producto+'&check='+checkValues+'&accion='+accion;
@@ -176,7 +176,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 				
 				//alert(checkValues);
 				var producto = $('#producto').attr('value');
-			
+				
 			this.data += '&idProd='+producto+'&check='+checkValues+'&accion='+accion;
 			}",
 			
@@ -214,7 +214,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 	jQuery.each($('.idsCategorias'), function() {
 
 		var id = $(this).attr('value');
-    	$('#'+id).attr('checked',true);
+    	$('#cat-'+id).attr('checked',true);
    	});		
 		
 	               

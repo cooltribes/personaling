@@ -108,16 +108,6 @@
 	?>
         <form id="formu" class="no_margin_bottom form-search form-horizontal">
 
-          <!-- Rango de precio ON -->
-
-          <select id="" class="span3 " name="">
-            <option value="0">Buscar por precio</option>
-            <option value="1">500,00 - 1000,00</option>
-            <option value="2">1000,00 - 1500,00</option>
-            <option value="3">1500,00 - 2000,00</option>
-
-          </select>
-          <!-- Rango de precio OFF -->
 
           <select id="cate1" class="span3 margin_top_small" name="cate1">
             <option value="0">Buscar por prenda</option>
@@ -265,6 +255,23 @@
 			 <?php $this->renderPartial('_view_colores2',array('categorias'=>$categorias)) ?>
         </div>
         <hr/>
+
+        <!-- Rango de precio ON -->
+
+          <div >
+          	<strong>Buscar por precios:</strong>
+          	<ul class="unstyled">
+	            <li class="  "><a class="btn btn-link">Bs. 500 a 1000</a></li>
+	            <li class="  "><a class="btn btn-link">Bs. 1000 a 1500</a></li>
+	            <li class="  "><a class="btn btn-link">Bs. 1500 a 2000</a></li>
+            </ul>
+
+          </div>
+
+        <hr>
+        <!-- Rango de precio OFF -->
+
+
         <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
        		<div id="looks" class="clearfix hidden-phone">
        		</div>

@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar'),
+				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -505,7 +505,7 @@ class OrdenController extends Controller
 				$devuelto->preciotallacolor_id = $ptcolor->id;
 				$devuelto->motivo = $_POST['motivos'][$cont];
 				$devuelto->montodevuelto = $_POST['monto'];
-				$devuelto->montoenvio = 0;
+				$devuelto->montoenvio = $_POST['envio'];
 				
 				$devuelto->save();
 				
@@ -1167,6 +1167,69 @@ class OrdenController extends Controller
 			array_push($productos,$pr->id);			
 		}
 		print_r($productos);				
+	}
+
+
+    public function actionCalcularenvio(){
+    	
+		if(isset($_POST['orden']) && isset($_POST['check']))
+		{
+			$orden = Orden::model()->findByPk($_POST['orden']);
+			
+			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
+			$cont = 0; 
+			
+			$totalenvio = 0;
+			
+			foreach($checks as $uno)
+			{
+				$orden = Orden::model()->findByPk($_POST['orden']);
+				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno)); 
+				
+				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
+				{
+					// calculo envio
+					
+					$producto = Producto::model()->findByPk($ptcolor->producto_id);
+					$peso_total = $producto->peso; 
+					
+					if($peso_total <= 0.5){
+						$envio = 80.08;
+					}else if($peso_total < 5){
+						$peso_adicional = ceil($peso_total-0.5);
+						$direccion = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+						$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+						$envio = 80.08 + ($peso_adicional*$ciudad_destino->ruta->precio);
+										
+							if($envio > 163.52){
+								$envio = 163.52;
+							}
+							
+						$tipo_guia = 1;
+					}else{
+							$peso_adicional = ceil($peso_total-5);
+							$direccion = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+							$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
+							
+						if($envio > 327.04){
+							$envio = 327.04;
+						}
+							
+						$tipo_guia = 2;
+					}
+					
+					$totalenvio += $envio;
+					
+				} // if motivos
+
+				$cont++;
+			} // foreach
+			
+		echo $totalenvio;						
+
+		}	
+
 	}
 
 	// Uncomment the following methods and override them if needed

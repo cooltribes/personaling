@@ -592,17 +592,24 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('t.nombre',$this->nombre,true);
 		$criteria->compare('t.estado',$this->estado,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
+		
+		
 		$criteria->compare('marca_id',$this->marca_id,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
+		
 		$criteria->compare('fecha',$this->fecha,true);
+		
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('destacado',$this->destacado,true);
+
 		$criteria->compare('peso',$this->peso,true);
+		
 		$criteria->with = array('categorias');
 		$criteria->with = array('precios');
 		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
@@ -620,15 +627,17 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}else if($todos=="a")
 		{
 				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+				
 		}
 
 		$criteria->addCondition('precioDescuento != ""');
 		$criteria->addCondition('orden = 1');
+		
 		$criteria->addCondition('cantidad > 0');
 		
 		// $criteria->order = "t.id ASC";
 		$criteria->order = "fecha DESC";
-		
+		$criteria->group = "t.id";
 		$criteria->together = true;
 		
 		return new CActiveDataProvider($this, array(

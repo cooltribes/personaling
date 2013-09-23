@@ -4,6 +4,8 @@
 
 <ul class="thumbnails">
               <?php foreach($categorias as $categoria){ ?>
+              
+              	<?php //if ($categoria->hasLook()){ ?>
               <li class="span1" > 
               		<?php
               		
@@ -76,5 +78,6 @@
 
               </li>
               <?php } ?>
+              <?php //} ?>
 </ul>     
                 

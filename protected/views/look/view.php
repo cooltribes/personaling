@@ -61,10 +61,38 @@
             <?php echo CHtml::image($model->user->getAvatar(),'Avatar',array("width"=>"84", "class"=>"pull-left photo  img-circle")); //,"height"=>"270" ?>
             </a>
             </div>
-            <div class="span10"> <span class="muted">Look creado por: </span>
+            <div class="span5 braker_right row-fluid">
+            <div class="span9">
+            <span class="muted">Look creado por: </span>
               <h5><a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$model->user->id; ?>" title="perfil" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
               <p  class="note"><strong>Bio</strong>: <?php echo $model->user->profile->bio; ?> </p>
             </div>
+            <div class="span3">
+              <span class="muted" >En este Look</span>
+            </div>
+            </div>
+            <!-- Marcas en el look ON -->
+            <div class="span5 marcas">
+              
+              <ul class="unstyled">
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
+                </li> 
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
+                </li>
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
+                </li>      
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
+                </li>  
+                <li class="span3">  
+                  <img src="http://placehold.it/50x50">
+                </li>                                                      
+              </ul>
+            </div>
+            <!-- Marcas en el look OFF -->            
           </div>
           <hr/>
           <h3>Descripcion del look</h3>
@@ -134,9 +162,9 @@
                                            }
 
                                    });
-                                   if ($('#btn-comprar').attr('disabled'))
+                                   if ($('#buttonGuardar').attr('disabled')==true)
                                    		return false;
-                                   $('#btn-comprar').attr('disabled', true);
+                                   $('#buttonGuardar').attr('disabled', true);
                                   // return false;
 
                                  }",

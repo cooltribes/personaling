@@ -62,7 +62,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 			foreach($categorias as $indiv)
 			{
 				if(isset($indiv->tbl_categoria_id))	
-					echo("<input class='idsCategorias' type='hidden' value='".$indiv->tbl_categoria_id."' />");
+					{echo("<input class='idsCategorias' type='hidden' value='".$indiv->tbl_categoria_id."' />");
+					}
 			}		
 		}
 
@@ -211,7 +212,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 	$(document).ready(function(){
 		
 	jQuery.each($('.idsCategorias'), function() {
-		
+
 		var id = $(this).attr('value');
     	$('#'+id).attr('checked',true);
    	});		

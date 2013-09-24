@@ -155,6 +155,7 @@ return array(
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 				'<alias:[a-zA-Z0-9_-]+>'=>'user/profile/perfil',
+				'producto/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle'
 			),
 		),
 		

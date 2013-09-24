@@ -1105,22 +1105,25 @@ class ProductoController extends Controller
 /**
  * Manejador de la vista general para el producto
  */
-	public function actionDetalle($id)
+	public function actionDetalle()
 	{
-		$producto = Producto::model()->findByPk($id);
-		
+		if(isset($_GET['alias']))
+		{
+			$seo = Seo::model()->findByAttributes(array('urlAmigable'=>$_GET['alias']));
+			$producto = Producto::model()->findByPk($seo->tbl_producto_id);
+		}
+		else
+		{
+			$producto = Producto::model()->findByPk($_GET['id']);
+			$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+		}				
+			
 		$contador = $producto->view_counter + 1;
 
-		Producto::model()->updateByPk($id, array(
+		Producto::model()->updateByPk($producto->id, array(
 					'view_counter' => $contador
 					));
-		/*
-		if($producto->save())
-			error_log("entro o guardo");
-		else
-			print_r($producto->getErrors()); */
-			
-		$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$id));
+
 		if($seo){
 			$this->pageDesc = $seo->mDescripcion;
 			$this->pageTitle = 'Personaling - '.$seo->mTitulo;
@@ -1132,12 +1135,13 @@ class ProductoController extends Controller
 		
 		$this->display_seo();
 		$view = new ProductoView;
-		$view->producto_id = $id;
+		$view->producto_id = $producto->id;
 		$view->user_id = Yii::app()->user->id;
+		
 		if (!$view->save())
 			Yii::trace('ProductoController.php:946, Error:'.print_r($view->getErrors(), true), 'registro');
+		
 		$this->render('_view_detalle',array('producto'=>$producto));
-
 	}
 	
 	/**
@@ -1220,7 +1224,7 @@ class ProductoController extends Controller
 		));
 		exit;
 
-	}
+	} 
 	
 	/*
 	 * Relacionando el producto a una o varias categorias
@@ -1302,7 +1306,7 @@ class ProductoController extends Controller
 					if(!$prodCat = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$separa[1]))) // reviso si ya esta en la BD esa asignacion
 					{
 						$prodCat = new CategoriaHasProducto;
-						$prodCat->tbl_categoria_id = $idCateg; //id Categoria cambia en el foreach
+						$prodCat->tbl_categoria_id = $separa[1]; //id Categoria cambia en el foreach
 						$prodCat->tbl_producto_id = $idProducto; // producto igual para todos
 										
 						$prodCat->save();

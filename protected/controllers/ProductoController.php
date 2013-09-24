@@ -27,7 +27,7 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','tallaspreview','colorespreview','colores','imagenColor','updateCantidad','encantar','prueba'),
+				'actions'=>array('index','view','detalle','tallas','tallaspreview','colorespreview','colores','imagenColor','updateCantidad','encantar'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1268,7 +1268,10 @@ class ProductoController extends Controller
 					array_push($BD,$uno->tbl_categoria_id);
 					
 					foreach($checks as $vienen){
-						if($vienen == $uno->tbl_categoria_id){
+						
+						$separa = (explode("-",$vienen));
+						
+						if($separa[1] == $uno->tbl_categoria_id){
 							$contador++;
 							array_push($todos,$uno->tbl_categoria_id);
 						}
@@ -1294,9 +1297,10 @@ class ProductoController extends Controller
 				
 				foreach($checks as $idCateg){
 						
-					if(!$prodCat = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$idCateg))) // reviso si ya esta en la BD esa asignacion
-					{
+					$separa = (explode("-",$idCateg));	
 						
+					if(!$prodCat = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$separa[1]))) // reviso si ya esta en la BD esa asignacion
+					{
 						$prodCat = new CategoriaHasProducto;
 						$prodCat->tbl_categoria_id = $idCateg; //id Categoria cambia en el foreach
 						$prodCat->tbl_producto_id = $idProducto; // producto igual para todos
@@ -1819,19 +1823,7 @@ class ProductoController extends Controller
 		));
 
 	}
-	
-	public function actionPrueba()
-	{
-		$producto = Producto::model()->findByPk($_GET['id']);
-		
-		$chp = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
-	
-		
-		$this->render('prueba',array(
-			'producto'=>$producto,
-			'categorias'=>$chp,
-		));
-	}
+
 	
 	
 	/**

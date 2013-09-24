@@ -113,6 +113,21 @@ class Marca extends CActiveRecord
 		));  
 	 }
 	  
+	 public function getImageUrl($thumb=false){
+	 	if ($thumb){
+	 		if ($this->urlImagen!='')	
+	 			//$url = Yii::app()->baseUrl .'/images/marca/' . str_replace('.','_thumb.',$this->urlImagen);
+	 			$url = Yii::app()->baseUrl .'/images/marca/' . $this->id . '_thumb.jpg';
+			else
+			 	$url = "http://placehold.it/50";
+		} else {
+			if ($this->urlImagen!='')	
+				$url = Yii::app()->baseUrl . '/images/marca/' . $this->urlImagen; 
+			else
+				$$url = "http://placehold.it/100"; 
+		}
+		return $url;
+	 }
 	 
 	 public function getMarca($id)
 	 {

@@ -175,8 +175,8 @@ $this->breadcrumbs=array(
         	<td class="text_align_right"><input type="text" readonly="readonly" id="monto" value="000.00" /> </td>
         </tr>
         <tr>
-        	<td colspan="5"><div class="text_align_right"><strong>Monto por envio a devolver:</strong></div></td>
-        	<td  class="text_align_right">000,00 Bs</td>
+        	<td colspan="5"><div class="text_align_right"><strong>Monto por envio a devolver Bs.:</strong></div></td>
+        	<td  class="text_align_right"><input type="text" readonly="readonly" id="montoenvio" value="000.00" /> </td>
         </tr>
     	</table>
     	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning btn-large">Hacer devolucion</a>
@@ -199,6 +199,7 @@ $this->breadcrumbs=array(
 			monto = parseInt(monto) + parseInt($('#precio-'+id).attr('value'));
 			
 			$('#monto').val(monto);
+				
 		}
 		else
 		{// restar
@@ -206,11 +207,41 @@ $this->breadcrumbs=array(
 			var id = $(this).attr('id');
 			monto = parseInt(monto) - parseInt($('#precio-'+id).attr('value'));
 
-			$('#monto').val(monto);
-			
+			$('#monto').val(monto);		
+			$(".input-medium").prop('selectedIndex',0);		
 		}
+		
 	});
 	
+	$(".input-medium").change(function() {
+		var motivos = new Array();
+				
+			var checkValues = $(':checkbox:checked').map(function() {
+				motivos.push ( $('#motivo-'+this.id).attr('value') );
+	 
+				return this.id;
+			}).get().join();
+		
+			if( motivos.indexOf("Devolución por prenda dañada") != -1 || motivos.indexOf("Devolución por pedido equivocado") != -1 )
+			{
+				
+				var id = $('#orden_id').attr('value');
+				var monto = $('#monto').attr('value');
+					
+					$.ajax({
+				        type: "post", 
+				        url: "<?php echo Yii::app()->baseUrl; ?>/orden/calcularenvio", // action 
+				        data: { 'orden':id, 'check':checkValues, 'motivos':motivos}, 
+				        success: function (data) {
+							
+							$('#montoenvio').val(data);
+							//alert(data);
+									
+				       	}//success
+					})	
+				
+			}
+	});
 
 	function devolver()
 	{
@@ -230,11 +261,12 @@ $this->breadcrumbs=array(
 			
 			var id = $('#orden_id').attr('value');
 			var monto = $('#monto').attr('value');
+			var envio = $('#montoenvio').attr('value');
 			
 			$.ajax({
 		        type: "post", 
 		        url: "orden/devoluciones", // action 
-		        data: { 'orden':id, 'check':checkValues, 'monto':monto, 'motivos':motivos}, 
+		        data: { 'orden':id, 'check':checkValues, 'monto':monto, 'motivos':motivos, 'envio':envio}, 
 		        success: function (data) {
 					
 					if(data=="ok")

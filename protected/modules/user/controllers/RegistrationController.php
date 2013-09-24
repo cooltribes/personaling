@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 // Lib para conectar con el API de MailChimp
 include("MailChimp.php");
@@ -142,7 +142,7 @@ class RegistrationController extends Controller
                                 //API key provisional para lista de prueba										
                                 $MailChimp = new MailChimp('78347e50bf7c6299b77dd84fbc24e5be-us7');
                                 $result = $MailChimp->call('lists/subscribe', array(
-                                    'id' => 'be789a5ad1',
+                                    'id' => '11801985e7',
                                     'email' => array('email' => $_POST['RegistrationForm']['email']),
                                     'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name']),
                                     'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],

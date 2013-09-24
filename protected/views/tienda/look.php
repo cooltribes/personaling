@@ -340,9 +340,10 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
           <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
           <?php echo CHtml::textField('profile-name'); ?>
           <?php //echo CHtml::error($model, $attribute)?>
-      </div>     
+      </div>         
     
-    <button id="save" class="btn btn-danger pull-left hide">Guardar</button>
+    <button id="save" class="btn btn-danger pull-left hide">Guardar Perfil</button>
+    <button id="remove" class="btn pull-left hide">Borrar Perfil</button>
     <?php
     $this->widget('bootstrap.widgets.TbButton', array(
         'buttonType' => 'button',

@@ -651,7 +651,9 @@ public function actionCategorias2(){
                 echo "</pre>";
                 
                 $userTmp = User::model()->findByPk(Yii::app()->user->id);
-                $userTmp->profile->attributes = $_POST['Profile'];
+                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+                $looks = new Look();
+                $looks->match($userTmp);
                 
                 echo "<pre>";
                 print_r($userTmp->profile->attributes);
@@ -1096,13 +1098,26 @@ public function actionCategorias2(){
         
         
        public function actionGuardarFiltro() {
-            
-           //si es nuevo
+           
+//           echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                
+//              $filterProfile = new FilterProfile;
+//                    $filterProfile->attributes = $_POST['Profile'];
+//                    
+//                echo "<pre>";
+//                print_r( $filterProfile->attributes);
+//                echo "</pre>";     
+//                
+//                exit();
+        //si es nuevo
         if (isset($_POST['name'])) {
 
             $filter = Filter::model()->findByAttributes(
-                    array('name' => $_POST['name'], 'type' => '0', 'user_id' => Yii::app()->user->id) //Filtros para ventas
+                    array('name' => $_POST['name'], 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
             );
+
             if (!$filter) {
                 $filter = new Filter;
                 $filter->name = $_POST['name'];
@@ -1110,21 +1125,20 @@ public function actionCategorias2(){
                 $filter->user_id = Yii::app()->user->id;
 
                 if ($filter->save()) {
+                    $filterProfile = new FilterProfile;
+                    $filterProfile->attributes = $_POST['Profile'];
+                    $filterProfile->id_filter = $filter->id_filter;
                     
-//                    for ($i = 0; $i < count($filters['fields']); $i++) {
-//
-//                        $filterDetails[] = new FilterDetail();
-//                        $filterDetails[$i]->id_filter = $filter->id_filter;
-//                        $filterDetails[$i]->column = $filters['fields'][$i];
-//                        $filterDetails[$i]->operator = $filters['ops'][$i];
-//                        $filterDetails[$i]->value = $filters['vals'][$i];
-//                        $filterDetails[$i]->relation = $filters['rels'][$i];
-//                        $filterDetails[$i]->save();
-//                    }
+                    if($filterProfile->validate()){
+                        $filterProfile->save();
+                        $response['status'] = 'success';
+                        $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
+                        $response['idFilter'] = $filter->id_filter;
+                        
+                    }
+                    
 
-                    $response['status'] = 'success';
-                    $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
-                    $response['idFilter'] = $filter->id_filter;
+                   
                 }
 
                 //si ya existe
@@ -1167,17 +1181,14 @@ public function actionCategorias2(){
         }
 
         echo CJSON::encode($response);
-        
-           
-       }
+    }
        
        public function actionGetFilter() {
            $response = array();
             if(isset($_POST['id'])){
                 $filter = Filter::model()->findByPk($_POST['id']);                
                 
-                if($filter){                
-                   
+                if($filter){     
                    //$response['filter']  = $filter->filterDetails;
                    $response['status'] = 'success';
                    $response['message'] = 'Filtro encontrado yeah';

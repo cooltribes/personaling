@@ -13,20 +13,45 @@
 
 //Cargar Filtro existente
 
+//Variables locales para el perfil actual
 
+
+/*Guarda los campos actuales del modal en variables locales*/
+function guardarLocal(){
+    
+}
+
+function activarModalNuevo(nuevo){
+  
+    if(nuevo)
+    {
+        //ocultar el boton guardar y borrar
+        $('#save').hide(); 
+        $('#remove').hide(); 
+        //limpiar campo para nombre de filtro
+        $("#profile-name").val("");          
+        //mostrar el campo de nombre y el boton guardar y buscar
+        $('#campo-nombre').show();
+        $('#save-search').show();
+    }
+    else
+    {
+        //ocultar el campo del nombre
+        $('#campo-nombre').hide();
+        $('#save-search').hide();
+        
+        //Mostrar el boton guardar y borrar dentro del modal
+        $('#save').show();
+        $('#remove').show();
+    }
+}
 
 /*Resetear los dropdown, los tipos de cuerpo, el nombre del filtro*/
 function clearFields(){
      
     //Resetear los dropdown y el tipo de cuerpo
      $("#modalFiltroPerfil #newFilter-form").find('input, select').val('');  
-    //limpiar campo para nombre de filtro
-     $("#profile-name").val("");     
-     //mostrar el campo de nombre y el boton guardar y buscar
-     $('#campo-nombre').show();
-     $('#save-search').show();
-      //ocultar el boton guardar
-     $('#save').hide();
+    
      //quitar active de los tipos de cuerpo
      $('#tipo_cuerpo li').removeClass('active');
      
@@ -67,14 +92,12 @@ function getFilter(){
                             
                             //Cargar los valores dentro del modal
                             
-                            //Mostrar el boton guardar dentro del modal
-                            $('#save').show();
-                            //ocultar el campo del nombre
-                            $('#campo-nombre').hide();
-                            $('#save-search').hide();
-                            
+                            //guardarlos en variables locales
+                            guardarLocal();
+                            //activar para perfil cargado
+                            activarModalNuevo(false);
                             //Mostrar el boton de editar
-                            $('a.editar-filtro').parent('div').show();                              
+                            $('a.editar-filtro').parent('div').show(); 
                             
                             //Buscar
                             //refresh();           
@@ -91,15 +114,70 @@ function getFilter(){
                 }
         );
     }else
-    {  //Cuando es val = '' 
+    {  //Cuando el nombre es val = '' 
       
+      //Ocultar el boton editar
        $('a.editar-filtro').parent('div').hide();
-       //Ocultar el boton guardar dentro del modal
-       clearFields();        
+       
+       clearFields();       
+       
+       activarModalNuevo(true);
+       
        //Buscar para actualizar sin los filtros de perfiles
        refresh();
     }   
     
+}
+
+function saveFilter() {
+    
+    var nombre = $("#profile-name").val().trim();
+
+    if (nombre !== '') {
+        
+        var perfil = $("#modalFiltroPerfil #newFilter-form").find('input, select').serialize();
+        perfil += '&name=' + nombre;
+        $.ajax(
+                actionGuardarFiltro,
+                {
+                    type: 'POST',
+                    dataType: 'json',
+                    data: perfil,
+                    success: function(data) {
+
+                        if (data.status === 'success') {
+                            //Agregarlo a la lista de filtros
+                            $('#all_filters').append($("<option />").val(data.idFilter).text(nombre));
+                            $('#all_filters').val(data.idFilter);
+                            //cerrar modal;
+                            $("#modalFiltroPerfil").modal('hide');
+
+                            //refresh();
+                            //
+                            //Guardar en local
+                            guardarLocal();
+
+                            activarModalNuevo(false);
+                            
+                            //Mostrar el boton de editar
+                            $('a.editar-filtro').parent('div').show();
+                        }
+                        console.log(data.status);
+                        console.log(data.message);
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log("error");
+                        console.log(jqXHR);
+                    }
+                }
+        );
+
+
+    } else {
+        console.log("error, campo nombre vacío.");
+    }
+
 }
 
 $(function() {
@@ -119,47 +197,8 @@ $(function() {
     });
 
     $('#save-search').click(function(e) {
-        var nombre = $("#profile-name").val().trim();
-
-        if (nombre !== '') {
-            console.log(actionGuardarFiltro);
-            
-            $.ajax(
-                actionGuardarFiltro,
-                {
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {name : nombre},
-                    success: function(data) {
-
-                        if (data.status === 'success') {                            
-                            //Agregarlo a la lista de filtros
-                            $('#all_filters').append($("<option />").val(data.idFilter).text(nombre));
-                            $('#all_filters').val(data.idFilter);                            
-                            //cerrar modal;
-                            $("#modalFiltroPerfil").modal('hide');                            
-                            //refresh();
-                            //Mostrar el boton guardar dentro del modal
-                            $('#save').show();                            
-                            //Mostrar el boton de editar
-                            $('a.editar-filtro').parent('div').show();  
-                        }
-                        console.log(data.status);console.log(data.message);
-
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log("error");
-                        console.log(jqXHR);
-                    }
-                }
-            );
-            
-            
-        } else { 
-            
-           console.log("error, campo nombre vacío.");
-
-        }
+        
+        saveFilter();
 
     });
     

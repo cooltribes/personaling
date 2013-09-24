@@ -210,8 +210,9 @@ $template = '{summary}
         <option>Borrar usuarios</option>
       </select>
     </div>
-    <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
-    <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
+    <div class="span1"><a href="#" title="Procesar" class="btn btn-danger">Procesar</a></div>
+    <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-block btn-info">Exportar a excel</a></div>
+    <div class="span3"><a href="#" title="Generar Guías Masivas para Zoom" class="btn btn-info">Generar Guías Masivas para Zoom</a></div>
   </div>
 </div>
 <!-- /container --> 

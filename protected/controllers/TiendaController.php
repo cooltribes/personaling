@@ -12,7 +12,9 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal','doble', 'crearFiltro'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks',
+                                    'segunda','look','ocasiones','modal','doble', 'crearFiltro',
+                                    'getFilter'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -640,9 +642,40 @@ public function actionCategorias2(){
 	}
 
 	public function actionLook(){
-			
+		
+            $filtroPerfil = false;
+            
+            if(isset($_POST['Profile'])){
+                
+                foreach ($_POST['Profile'] as $campo){
+                    
+                    if(!empty($campo)){
+                       $filtroPerfil = true;
+                       break;
+                   } 
+                }        
+            }
+            
+            if($filtroPerfil){
+                echo "<pre>";
+                print_r($_POST);
+                echo "</pre>";
+                
+                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+                $looks = new Look();
+                $looks->match($userTmp);
+                
+                echo "<pre>";
+                print_r($userTmp->profile->attributes);
+                echo "</pre>";
+                
+                exit();
+            }
+            
 
-		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])){
+		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])
+                        || $filtroPerfil){
 					
 			$criteria = new CDbCriteria;
 			
@@ -663,6 +696,9 @@ public function actionCategorias2(){
 			$condicion = substr($condicion, 0, -3);
 			$criteria->addCondition($condicion);				
 			}
+                        
+                        
+                        
 			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
 			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
 			$total = Look::model()->count($criteria);
@@ -1073,13 +1109,26 @@ public function actionCategorias2(){
         
         
        public function actionGuardarFiltro() {
-            
-           //si es nuevo
+           
+//           echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                
+//              $filterProfile = new FilterProfile;
+//                    $filterProfile->attributes = $_POST['Profile'];
+//                    
+//                echo "<pre>";
+//                print_r( $filterProfile->attributes);
+//                echo "</pre>";     
+//                
+//                exit();
+        //si es nuevo
         if (isset($_POST['name'])) {
 
             $filter = Filter::model()->findByAttributes(
-                    array('name' => $_POST['name'], 'type' => '0', 'user_id' => Yii::app()->user->id) //Filtros para ventas
+                    array('name' => $_POST['name'], 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
             );
+
             if (!$filter) {
                 $filter = new Filter;
                 $filter->name = $_POST['name'];
@@ -1087,21 +1136,20 @@ public function actionCategorias2(){
                 $filter->user_id = Yii::app()->user->id;
 
                 if ($filter->save()) {
+                    $filterProfile = new FilterProfile;
+                    $filterProfile->attributes = $_POST['Profile'];
+                    $filterProfile->id_filter = $filter->id_filter;
                     
-//                    for ($i = 0; $i < count($filters['fields']); $i++) {
-//
-//                        $filterDetails[] = new FilterDetail();
-//                        $filterDetails[$i]->id_filter = $filter->id_filter;
-//                        $filterDetails[$i]->column = $filters['fields'][$i];
-//                        $filterDetails[$i]->operator = $filters['ops'][$i];
-//                        $filterDetails[$i]->value = $filters['vals'][$i];
-//                        $filterDetails[$i]->relation = $filters['rels'][$i];
-//                        $filterDetails[$i]->save();
-//                    }
+                    if($filterProfile->validate()){
+                        $filterProfile->save();
+                        $response['status'] = 'success';
+                        $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
+                        $response['idFilter'] = $filter->id_filter;
+                        
+                    }
+                    
 
-                    $response['status'] = 'success';
-                    $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
-                    $response['idFilter'] = $filter->id_filter;
+                   
                 }
 
                 //si ya existe
@@ -1144,8 +1192,29 @@ public function actionCategorias2(){
         }
 
         echo CJSON::encode($response);
-        
-           
+    }
+       
+       public function actionGetFilter() {
+           $response = array();
+            if(isset($_POST['id'])){
+                $filter = Filter::model()->findByPk($_POST['id']);                
+                
+                if($filter){     
+                   //$response['filter']  = $filter->filterDetails;
+                   $response['status'] = 'success';
+                   $response['message'] = 'Filtro encontrado yeah';
+                    
+                }else{
+                  $response['status'] = 'error';
+                  $response['message'] = 'Filtro no encontrado';
+                }               
+                
+                
+            }
+            
+            echo CJSON::encode($response);
        }
+       
+       
         
 }

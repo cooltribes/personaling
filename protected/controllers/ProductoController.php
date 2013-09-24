@@ -770,7 +770,7 @@ class ProductoController extends Controller
             //Para guardar el filtro
             $filter = new Filter;
             
-            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter'])){
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
               $_POST = $_SESSION['todoPost'];
             }
             

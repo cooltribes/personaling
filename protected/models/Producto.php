@@ -859,7 +859,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 
        public function getDevueltos()
 	{
-		$sql = "select count(*) from tbl_precioTallaColor where id IN(select preciotallacolor_id from tbl_orden_has_productotallacolor WHERE tbl_orden_id IN(select id from tbl_orden where estado= 9))";
+		$sql = "select count(*) from tbl_precioTallaColor where id IN(select preciotallacolor_id from tbl_orden_has_productotallacolor WHERE tbl_orden_id IN(select id from tbl_orden where estado= 9 or estado = 10))";
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}  

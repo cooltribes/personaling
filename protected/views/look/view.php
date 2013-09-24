@@ -74,23 +74,19 @@
             <!-- Marcas en el look ON -->
             <div class="span5 marcas">
               
+              
               <ul class="unstyled">
-                <li class="span3">  
-                  <img src="http://placehold.it/50x50">
-                </li> 
-                <li class="span3">  
-                  <img src="http://placehold.it/50x50">
-                </li>
-                <li class="span3">  
-                  <img src="http://placehold.it/50x50">
-                </li>      
-                <li class="span3">  
-                  <img src="http://placehold.it/50x50">
-                </li>  
-                <li class="span3">  
-                  <img src="http://placehold.it/50x50">
-                </li>                                                      
+                <?php foreach ($model->getMarcas() as $marca){ ?>
+	                 <li class="span3">  
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre); ?>
+	                </li>                	
+                <?php } ?>
+
+                
+                                                      
               </ul>
+              
+              
             </div>
             <!-- Marcas en el look OFF -->            
           </div>

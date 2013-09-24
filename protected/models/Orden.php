@@ -338,4 +338,11 @@ class Orden extends CActiveRecord
             ));
        }
 	
+	       public function getDevueltas()
+	{
+		$sql = "select count(id) from tbl_orden where estado = 9 or estado = 10";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}  
+	
 }

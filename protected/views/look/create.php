@@ -303,6 +303,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         -->
         <hr/>
+
         <!-- CANVAS ON -->
         <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px" id="div_canvas">
           <?php 
@@ -456,6 +457,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
         </div>
         
+        <div class="margin_bottom_small">
+	        <a class="btn" href="#">Enviar Atrás</a>
+	        <a class="btn" href="#">Enviar Adelante</a>
+        </div>
         <!-- CANVAS OFF --> 
       </div>
       <!--

@@ -414,6 +414,13 @@ class Look extends CActiveRecord
 		else
 			return $this->_precio;
 	}
+	public function getMarcas(){
+		$marcas = array();
+		foreach ($this->productos_todos as $producto){
+			$marcas[] = Marca::model()->findByPk($producto->marca_id);
+		}
+		return $marcas;
+	}
 	public function countItems()
 	{
 		if (isset($this->_items)){

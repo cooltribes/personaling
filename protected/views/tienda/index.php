@@ -302,11 +302,12 @@ foreach($a as $prd){
         <!-- Rango de precio ON -->
 
           <div >
-          	<strong>Buscar por precios:</strong>
+          	<strong>Filtrar por precios:</strong>
           	<ul class="unstyled">
-	            <li class="  "><a class="btn btn-link">Bs. 500 a 1000</a></li>
-	            <li class="  "><a class="btn btn-link">Bs. 1000 a 1500</a></li>
-	            <li class="  "><a class="btn btn-link">Bs. 1500 a 2000</a></li>
+	            <li class="  "><a class="btn btn-link">Hasta Bs 1.000 <span class="color12">(12)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Bs 1.001 a Bs 2.500  <span class="color12">(18)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Bs 2.501  a Bs 3.500  <span class="color12">(18)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Más de Bs 3.501  <span class="color12">(6)</span></a></li>
             </ul>
 
           </div>

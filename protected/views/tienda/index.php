@@ -7,6 +7,49 @@
 ?>
 <div class="page-header">
 <h1>Tienda</h1>
+<?php 
+$dp=$dataProvider;
+
+$dp->setPagination(false);
+$dp->disableBehaviors();
+$a=array();
+foreach($dp->getData() as $record) {
+
+
+	array_push($a,$record->getPrecio(false));
+	
+ } 
+
+
+$max=max($a);
+$min=min($a);
+$dif=$max-$min;
+$l1=($dif*.25)+$min;
+$l1=round($l1/100, 0)*100;
+$l2=($dif*.5)+$min;
+$l2=round($l2/100, 0)*100;
+$l3=($dif*.75)+$min;
+$l3=round($l3/100, 0)*100;
+$c1=$c2=$c3=$c4=0;
+echo $min." ".$l1." ".$l2." ".$l3." ".$max; 
+foreach($a as $prd){
+	echo '<br/>'.$prd;	
+	if($prd<$l1)
+		$c1++;
+	if($l1<$prd&&$prd<$l2)
+		$c2++;
+	if($l2<$prd&&$prd<$l3)
+		$c3++;
+	if($l3<$prd)
+		$c4++;
+}
+
+?>
+
+
+
+
+
 </div>
 <div class="margin_top" id="tienda">
   <div class="row">

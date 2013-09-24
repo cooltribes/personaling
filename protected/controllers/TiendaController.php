@@ -70,11 +70,22 @@ class TiendaController extends Controller
 		}
 		$a ="a"; 
 		
+		
+		$dp=$producto->nueva($a);
+
+		$dp->setPagination(false);
+		$dp->disableBehaviors();
+		$arr=array();
+		foreach($dp->getData() as $record) {
+			array_push($arr,$record->getPrecio(false));	
+		 } 
+		
 		$dataProvider = $producto->nueva($a);
 		
+		 
 		$this->render('index',
 		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,'arr'=>$arr
 		));	
 			
 	}

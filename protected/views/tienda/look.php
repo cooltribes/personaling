@@ -75,17 +75,23 @@
           </li>
           
             <!-- ******   Filtrar por perfil  *****    -->
+          
+          <?php if(Yii::app()->user->id){ ?>  
           <li>
-                   <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll(array('type = 0', 'user_id' => Yii::app()->user->id)),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters',
+                   <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)),
+                "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters',
                     'style' => 'margin-bottom: 0;margin-top: 5px;')) ?>          	
           </li>
           
           <li>
-              <div class="span2"><a href="#modalFiltroPerfil" class="btn crear-filtro" data-toggle="modal"><i class="icon-plus"></i>&nbsp;Crear filtro</a></div>
-          	
+             <div class="span1 hide"><a href="#" class="btn btn-danger editar-filtro"><i class="icon-white icon-edit"></i></a></div>          	
           </li>
           
+          <li>
+              <div class="span1"><a href="#modalFiltroPerfil" class="btn crear-filtro" data-toggle="modal"><i class="icon-plus"></i></a></div>
+          	
+          </li>
+          <?php } ?>
           
           
           <!--
@@ -180,6 +186,7 @@ $this->renderPartial('_look',array(
     #modalFiltroPerfil{
         width: 880px;
         left: 40%;
+        top: -100%;
     }    
     #modalFiltroPerfil.in{
         top: 38%;
@@ -201,7 +208,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                                 'id' => 'modalFiltroPerfil',
                             ),
                             array(
-                                'class' => 'modal hide fade in',
+                                'class' => 'modal hide fade',
                                 'tabindex' => "-1",
                                 'role' => "dialog",
                                 'aria-labelledby' => "myModalLabel",
@@ -223,7 +230,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
           'type' => 'horizontal',
           'htmlOptions'=>array('class'=>'personaling_form'),    
           'type'=>'inline',
-          //'enableClientValidation' => true,
+          'enableClientValidation' => true,
           'enableAjaxValidation' => true,
           'clientOptions' => array(
               'validateOnSubmit' => true,
@@ -235,37 +242,47 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         
        <div class="control-group" >
               <div class="controls row-fluid" id="caracteristicas">
-                <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
+                <?php $clase = (isset($editar) && $editar)?'control-group span2':'span2'; ?>
                 <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
                 <div class="<?php echo $clase; ?>">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
-  				  	echo $form->dropDownListRow($profile, $field->varname,Profile::range($field->range), array('class'=>$clase2));                                       
+  				  	echo $form->dropDownListRow($profile,
+                                        $field->varname,Profile::range($field->range), 
+                                        array('class'=>$clase2, 'prompt' => 'Seleccione'));
                                         
                     ?>
                 </div>
                 <div class="<?php echo $clase; ?>">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,
+                                        Profile::range($field->range),
+                                        array('class'=>$clase2, 'prompt' => 'Seleccione'));
                     ?>
                 </div>
                 <div class="<?php echo $clase; ?>">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,
+                                        Profile::range($field->range),
+                                        array('class'=>$clase2, 'prompt' => 'Seleccione'));
                     ?>
                 </div>
                 <div class="<?php echo $clase; ?>">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,
+                                        Profile::range($field->range),
+                                        array('class'=>$clase2, 'prompt' => 'Seleccione'));
                     ?>
                 </div>
                 <div class="<?php echo $clase; ?>">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,
+                                        Profile::range($field->range),
+                                        array('class'=>$clase2, 'prompt' => 'Seleccione'));
                     ?>
                 </div>
               </div>
@@ -277,15 +294,14 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                   $field = ProfileField::model()->findByAttributes(array('varname' => 'tipo_cuerpo'));
                   echo $form->hiddenField($profile, $field->varname);
                   $nombre_tmp = $field->varname;
-                  if (isset($profile->$nombre_tmp))
-                      $valor_tmp = $profile->$nombre_tmp;
-                  else
-                      $valor_tmp = 0;
+                  
+                  $tipoActivo = isset($profile->$nombre_tmp)? $profile->$nombre_tmp:'';
+                  
                   ?>
                   <ul class="thumbnails" id="tipo_cuerpo">
                     <?php foreach (Profile::range($field->range) as $key => $tipo) { ?>
                           
-                          <li class="span3 <?php if ($valor_tmp == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>">
+                          <li class="span3 <?php if ($tipoActivo == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>">
                              <a href="#" title="Elegir este tipo de cuerpo">
                                   <div class="thumbnail" style="height:450px"> 
                                       <?php echo CHtml::image(Yii::app()->baseUrl . '/images/' . replace_accents($tipo) . '.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
@@ -320,12 +336,13 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <?php $this->endWidget(); ?>
         
   <div class="modal-footer">
-      <div class="control-group">
-          <?php echo CHtml::label("Indica un nombre para el filtro:", "profile-name", array('class' => 'control-label')); ?>
-        <?php echo CHtml::textField('profile-name'); ?>
-      </div>
-      
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>    
+      <div class="control-group pull-left" id="campo-nombre">
+          <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
+          <?php echo CHtml::textField('profile-name'); ?>
+          <?php //echo CHtml::error($model, $attribute)?>
+      </div>     
+    
+    <button id="save" class="btn btn-danger pull-left hide">Guardar</button>
     <?php
     $this->widget('bootstrap.widgets.TbButton', array(
         'buttonType' => 'button',
@@ -333,9 +350,11 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
         //'size' => 'large', // null, 'large', 'small' or 'mini'
         //'block' => 'true',
-        'htmlOptions' => array('id' => 'save-search'),//'onclick' => 'js:$("#newFilter-form").submit();')
+        'htmlOptions' => array('id' => 'save-search', 'class' => 'pull-left span2'),//'onclick' => 'js:$("#newFilter-form").submit();')
     ));
-    ?>
+    ?>    
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    
   </div>                    
 
 <?php $this->endWidget()?>
@@ -354,9 +373,12 @@ function refresh()
 {
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
+       
+       
+        
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
-            'data'=> "js:$('.check_ocasiones, .check_shopper').serialize()",
+            'data'=> "js:$('.check_ocasiones, .check_shopper, #newFilter-form').serialize()",
             //'data' => array( 'ocasiones' => 55 ),
             'type'=>'post',
             'dataType'=>'json',

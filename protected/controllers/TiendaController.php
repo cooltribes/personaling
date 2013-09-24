@@ -12,7 +12,9 @@ class TiendaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','filtrar','categorias','imageneslooks','segunda','look','ocasiones','modal','doble', 'crearFiltro'),
+				'actions'=>array('index','filtrar','categorias','imageneslooks',
+                                    'segunda','look','ocasiones','modal','doble', 'crearFiltro',
+                                    'getFilter'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -629,9 +631,38 @@ public function actionCategorias2(){
 	}
 
 	public function actionLook(){
-			
+		
+            $filtroPerfil = false;
+            
+            if(isset($_POST['Profile'])){
+                
+                foreach ($_POST['Profile'] as $campo){
+                    
+                    if(!empty($campo)){
+                       $filtroPerfil = true;
+                       break;
+                   } 
+                }        
+            }
+            
+            if($filtroPerfil){
+                echo "<pre>";
+                print_r($_POST);
+                echo "</pre>";
+                
+                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                $userTmp->profile->attributes = $_POST['Profile'];
+                
+                echo "<pre>";
+                print_r($userTmp->profile->attributes);
+                echo "</pre>";
+                
+                exit();
+            }
+            
 
-		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])){
+		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])
+                        || $filtroPerfil){
 					
 			$criteria = new CDbCriteria;
 			
@@ -652,6 +683,9 @@ public function actionCategorias2(){
 			$condicion = substr($condicion, 0, -3);
 			$criteria->addCondition($condicion);				
 			}
+                        
+                        
+                        
 			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
 			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
 			$total = Look::model()->count($criteria);
@@ -1136,5 +1170,29 @@ public function actionCategorias2(){
         
            
        }
+       
+       public function actionGetFilter() {
+           $response = array();
+            if(isset($_POST['id'])){
+                $filter = Filter::model()->findByPk($_POST['id']);                
+                
+                if($filter){                
+                   
+                   //$response['filter']  = $filter->filterDetails;
+                   $response['status'] = 'success';
+                   $response['message'] = 'Filtro encontrado yeah';
+                    
+                }else{
+                  $response['status'] = 'error';
+                  $response['message'] = 'Filtro no encontrado';
+                }               
+                
+                
+            }
+            
+            echo CJSON::encode($response);
+       }
+       
+       
         
 }

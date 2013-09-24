@@ -179,7 +179,7 @@ $template = '{summary}
                                 'id' => 'modalNuevoUsuario',
                             ),
                             array(
-                                'class' => 'modal hide fade',
+                                'class' => 'modal fade hide',
                                 'tabindex' => "-1",
                                 'role' => "dialog",
                                 'aria-labelledby' => "myModalLabel",

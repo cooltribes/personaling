@@ -7,6 +7,37 @@
 ?>
 <div class="page-header">
 <h1>Tienda</h1>
+<?php 
+
+$max=max($arr);
+$min=min($arr);
+$dif=$max-$min;
+$l1=($dif*.25)+$min;
+$l1=round($l1/100, 0)*100;
+$l2=($dif*.5)+$min;
+$l2=round($l2/100, 0)*100;
+$l3=($dif*.75)+$min;
+$l3=round($l3/100, 0)*100;
+$c1=$c2=$c3=$c4=0;
+foreach($arr as $prd){
+		
+	if($prd<$l1)
+		$c1++;
+	if($l1<$prd&&$prd<$l2)
+		$c2++;
+	if($l2<$prd&&$prd<$l3)
+		$c3++;
+	if($l3<$prd)
+		$c4++;
+}
+
+
+?>
+
+
+ 
+
+
 </div>
 <div class="margin_top" id="tienda">
   <div class="row">
@@ -147,7 +178,7 @@
        
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
-        </form>
+       </form> 
         <hr/>
         
         <!-- para filtrar por campo de texto -->
@@ -261,10 +292,10 @@
           <div >
           	<strong>Filtrar por precios:</strong>
           	<ul class="unstyled">
-	            <li class="  "><a class="btn btn-link">Hasta Bs 1.000 <span class="color12">(12)</span></a></li>
-	            <li class="  "><a class="btn btn-link">Bs 1.001 a Bs 2.500  <span class="color12">(18)</span></a></li>
-	            <li class="  "><a class="btn btn-link">Bs 2.501  a Bs 3.500  <span class="color12">(18)</span></a></li>
-	            <li class="  "><a class="btn btn-link">Más de Bs 3.501  <span class="color12">(6)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Hasta Bs <?php echo $l1?> <span class="color12">(<?php echo $c1?>)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Bs <?php echo $l1?> a Bs <?php echo $l2?>  <span class="color12">(<?php echo $c2?>)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Bs <?php echo $l2?>  a Bs <?php echo $l3?>  <span class="color12">(<?php echo $c3?>)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Más de Bs <?php echo $l3?>  <span class="color12">(<?php echo $c4?>)</span></a></li>
             </ul>
 
           </div>

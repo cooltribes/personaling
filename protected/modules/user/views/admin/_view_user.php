@@ -73,7 +73,7 @@ function modal(id){
 
 	$.ajax({
 		type: "post",
-		'url' :'/site/user/admin/contrasena',
+		'url' :'<?php echo  CController::createUrl('admin/contrasena');?>',
 		data: { 'id':id}, 
 		'success': function(data){
 			$('#myModal').html(data);
@@ -89,7 +89,7 @@ function cambio(id){
 		var psw=$("#psw2").val();
 		$.ajax({
 			type: "post",
-			'url' :'/site/user/admin/contrasena',
+			'url' :'<?php echo  CController::createUrl('admin/contrasena');?>',
 			data: { 'psw':psw,
 			'id':id}, 
 			'success': function(data){
@@ -107,7 +107,7 @@ function carga(id){
 
 	$.ajax({
 		type: "post",
-		'url' :'/site/user/admin/saldo',
+		'url' :'<?php echo  CController::createUrl('admin/saldo');?>',
 		data: { 'id':id}, 
 		'success': function(data){
 			$('#saldoCarga').html(data);
@@ -129,7 +129,7 @@ function saldo(id){
            
            $.ajax({
 			type: "post",
-			'url' :'/site/user/admin/saldo',
+			'url' :'<?php echo  CController::createUrl('admin/saldo');?>',
 			data: { 'cant':cant,
 			'id':id}, 
 			'success': function(data){

@@ -60,7 +60,7 @@ echo $num;
         ?>
       <td><p class="T_xlarge margin_top_xsmall"> <?php echo $recibidos; ?>  </p>
         Recibidos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 182 </p>
+      <td><p class="T_xlarge margin_top_xsmall">  <?php echo Orden::model()->getDevueltas(); ?>  </p>
         Devuelto</td>
     </tr>
   </table>

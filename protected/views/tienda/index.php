@@ -7,6 +7,49 @@
 ?>
 <div class="page-header">
 <h1>Tienda</h1>
+<?php 
+$dp=$dataProvider;
+
+$dp->setPagination(false);
+$dp->disableBehaviors();
+$a=array();
+foreach($dp->getData() as $record) {
+
+
+	array_push($a,$record->getPrecio(false));
+	
+ } 
+
+
+$max=max($a);
+$min=min($a);
+$dif=$max-$min;
+$l1=($dif*.25)+$min;
+$l1=round($l1/100, 0)*100;
+$l2=($dif*.5)+$min;
+$l2=round($l2/100, 0)*100;
+$l3=($dif*.75)+$min;
+$l3=round($l3/100, 0)*100;
+$c1=$c2=$c3=$c4=0;
+echo $min." ".$l1." ".$l2." ".$l3." ".$max; 
+foreach($a as $prd){
+	echo '<br/>'.$prd;	
+	if($prd<$l1)
+		$c1++;
+	if($l1<$prd&&$prd<$l2)
+		$c2++;
+	if($l2<$prd&&$prd<$l3)
+		$c3++;
+	if($l3<$prd)
+		$c4++;
+}
+
+?>
+
+
+
+
+
 </div>
 <div class="margin_top" id="tienda">
   <div class="row">
@@ -259,11 +302,12 @@
         <!-- Rango de precio ON -->
 
           <div >
-          	<strong>Buscar por precios:</strong>
+          	<strong>Filtrar por precios:</strong>
           	<ul class="unstyled">
-	            <li class="  "><a class="btn btn-link">Bs. 500 a 1000</a></li>
-	            <li class="  "><a class="btn btn-link">Bs. 1000 a 1500</a></li>
-	            <li class="  "><a class="btn btn-link">Bs. 1500 a 2000</a></li>
+	            <li class="  "><a class="btn btn-link">Hasta Bs 1.000 <span class="color12">(12)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Bs 1.001 a Bs 2.500  <span class="color12">(18)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Bs 2.501  a Bs 3.500  <span class="color12">(18)</span></a></li>
+	            <li class="  "><a class="btn btn-link">Más de Bs 3.501  <span class="color12">(6)</span></a></li>
             </ul>
 
           </div>

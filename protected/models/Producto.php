@@ -43,7 +43,6 @@ class Producto extends CActiveRecord
 	public $dos="";
 	public $categoria_id="";
 	public $_precio = null;
-	
         
 	/**
 	 * Returns the static model of the specified AR class.
@@ -109,7 +108,7 @@ class Producto extends CActiveRecord
                 'select'=> 'SUM(cantidad)',
                 ),
             'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),                    
-            
+            'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
 		);
 	}
  
@@ -871,6 +870,19 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}  
+	
+	public function getUrl()
+	{
+		if(isset($this->seo->urlAmigable))
+		{
+			
+		}
+		else
+		{
+			
+		}	
+		
+	}
 			 
 		 
 }

@@ -139,8 +139,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 			    $('#accion').attr('value', 'normal');
 			    var accion = $('#accion').attr('value');
 			    
-			    alert(checkValues);
-				var producto = $('#producto').attr('value');
+			   // alert(checkValues); 
+				var producto = $('#producto').attr('value'); 
 			
 			this.data += '&idProd='+producto+'&check='+checkValues+'&accion='+accion;
 			}",

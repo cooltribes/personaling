@@ -3,6 +3,11 @@
   <div class="page-header">
     <h1>Todos los looks</h1>
   </div>
+  <div class="alert in" id="alert-msg" style="display: none">
+    <button type="button" class="close" >&times;</button> 
+    <!--data-dismiss="alert"-->
+    <div class="msg"></div>
+  </div>
 </div>
 
 <!-- SUBMENU ON -->
@@ -182,6 +187,30 @@ $this->renderPartial('_look',array(
 </div>
   
 <!-- /container -->
+<<<<<<< HEAD
+=======
+<style>
+    #modalFiltroPerfil{
+        width: 880px;
+        left: 40%;
+        top: -100%;
+    }    
+    #modalFiltroPerfil.in{
+        top: 38%;
+    }
+    #modalFiltroPerfil.in > .modal-body{
+        max-height: 580px;
+    }
+    
+    img.loadingImg{
+        margin: 0;
+        padding: 0;
+    }
+    
+</style>
+>>>>>>> 717dd5a88176a1adee44dd6e8181a67af8237d93
+
+
 
 <?php
 function replace_accents($string) 
@@ -350,8 +379,28 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
           ?>    
       </div>         
     
+<<<<<<< HEAD
     </div>
     <div class="span2">
+=======
+    <button id="save" class="btn btn-danger pull-left hide">Guardar Perfil</button>
+    <button id="remove" class="btn pull-left hide">Borrar Perfil</button>
+    
+    
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'buttonType' => 'button',
+        'label' => 'Guardar y Buscar',
+        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+        //'size' => 'large', // null, 'large', 'small' or 'mini'
+        //'block' => 'true',
+        'htmlOptions' => array('id' => 'save-search', 'class' => 'pull-left span2'),//'onclick' => 'js:$("#newFilter-form").submit();')
+    ));
+    ?>    
+    
+    <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
+    
+>>>>>>> 717dd5a88176a1adee44dd6e8181a67af8237d93
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
   </div>                    
@@ -361,7 +410,12 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 <script type="text/javascript">
     
 
- var actionGuardarFiltro = '<?php echo $this->createUrl('guardarFiltro'); ?>';
+    var actionGuardarFiltro = '<?php echo $this->createUrl('guardarFiltro'); ?>';
+ 
+    $('#remove').click(function(e) {        
+        removeFilter('<?php echo $this->createUrl('/orden/removeFilter'); ?>');
+    });  
+    
     
 function show_shopper(){
 	$('#div_ocasiones').hide();
@@ -374,7 +428,7 @@ function refresh()
 	//alert($('.check_ocasiones').length) 
        
        
-        
+    cargarLocal();
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
             'data'=> "js:$('.check_ocasiones, .check_shopper, #newFilter-form').serialize()",

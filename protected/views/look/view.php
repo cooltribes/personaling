@@ -229,8 +229,12 @@
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto">
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />
                       -->
+                <?php      
+                 $prod = Producto::model()->findByPk($lookhasproducto->producto_id);
+                ?>
+                 
                 <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
-                <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$lookhasproducto->producto_id)); ?>
+                <?php echo CHtml::link($image, $prod->getUrl() ); ?>
                 <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
                 <?php $color_id = $lookhasproducto->color_id; ?>
                 </a>
@@ -416,7 +420,7 @@ $cont=0;
                          ?>
               <div class="span2">
                   <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "170", "height" => "170"));    ?>
-                            <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
+                            <?php echo CHtml::link($image, $producto->getUrl()); ?>
 
               </div>
                           <?php

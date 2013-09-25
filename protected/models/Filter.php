@@ -12,6 +12,7 @@
  * The followings are the available model relations:
  * @property Users $user
  * @property FilterDetail[] $filterDetails
+ * @property FilterProfile[] $filterProfiles
  */
 
 /*
@@ -70,6 +71,7 @@ class Filter extends CActiveRecord
         return array(
             'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
             'filterDetails' => array(self::HAS_MANY, 'FilterDetail', 'id_filter'),
+            'filterProfiles' => array(self::HAS_MANY, 'FilterProfile', 'id_filter'),
         );
     }
 

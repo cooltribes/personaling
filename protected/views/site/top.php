@@ -199,7 +199,7 @@ foreach( $dataProvider_productos->getData() as $record ){
 ?>
                     <li class="span2"> 
                         <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
-                        <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>  
+                        <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
                     </li>
 <?php 
 	}  

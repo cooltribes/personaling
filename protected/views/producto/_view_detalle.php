@@ -27,7 +27,7 @@
           <div class="row">
             <div class="span6">
             	<input id="producto" type="hidden" value="<?php echo $producto->id ?>" />
-              <h1> <?php echo $producto->nombre; ?> <!-- <span class="label label-important"> ON SALE</span> --></h1>
+              <h1> <?php echo $producto->nombre; ?> <!-- <span class="label label-important"> ON SALE</span> --> <?php //echo $producto->getUrl(); ?> </h1>
             </div>
             <div class="span2 share_like hidden-phone">
             	

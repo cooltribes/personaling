@@ -871,15 +871,15 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		return $num;
 	}  
 	
-	public function getUrl()
+	public function getUrl() 
 	{
 		if(isset($this->seo->urlAmigable))
 		{
-			
+			return Yii::app()->baseUrl."/producto/".$this->seo->urlAmigable;
 		}
 		else
 		{
-			
+			return Yii::app()->baseUrl."/producto/".$this->id;
 		}	
 		
 	}

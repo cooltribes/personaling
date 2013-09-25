@@ -71,7 +71,7 @@ if ((!Yii::app()->user->isGuest)&&isset(Yii::app()->session['usercompra'])) { //
       <p>Elige una dirección para el envio de la compra desde la libreta de direcciones o ingresa una nueva en la seccion inferior:</p>
       <?php 
       $dir= new Direccion;
-      	echo Yii::app()->session['ptcs']." ".Yii::app()->session['vals'];
+      
      	$usuario = Yii::app()->session['usercompra']; 
       
 	  	$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));

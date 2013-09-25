@@ -61,7 +61,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         if(isset($tipoPago)){
         	//echo 'Tipo pago: '.$tipoPago;
 		}
+       
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
+		
 		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
@@ -243,12 +245,10 @@ else
 	        success: function (data) {
 				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
 				if(data.status=="ok")
-				{
-					
-					window.location="<?php $this->createUrl('orden/detalles') ?>/"+data.orden+"";
+				{	window.location="<?php echo $this->createUrl('../orden/detalles') ?>/"+data.orden+"";
 				}else if(data.status=='error'){
 					//console.log(data.error);
-				}
+				}else{}
 	       	}//success
 	       })
  			
@@ -387,6 +387,7 @@ else
 								if(data.status=="ok")
 								{
 									window.location="pedido/"+data.orden+"";
+								
 								}
 					       	}//success
 					      })

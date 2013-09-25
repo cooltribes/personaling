@@ -879,10 +879,11 @@ if(isset($_POST['Profile']))
 				if($dir->pais=="3")
 					$dir->pais = "Estados Unidos"; 
 				
-				$dir->user_id = Yii::app()->user->id;
+				$dir->user_id = Yii::app()->session['usercompra'];
 				
 					if($dir->save())
 					{
+						Yii::app()->session['idDireccion']=$dir->id;
 						$this->render('comprapago',array('idDireccion'=>$dir->id));
 						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
 					}
@@ -1322,7 +1323,10 @@ if(isset($_POST['Profile']))
 					if($pago->save()){
 					
 					// clonando la direccion
-					$dir1 = Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario));
+					
+					$dir1 = Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>Yii::app()->getSession()->get('usercompra')));
+					
+					
 					$dirEnvio = new DireccionEnvio;
 					
 					$dirEnvio->nombre = $dir1->nombre;

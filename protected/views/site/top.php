@@ -63,7 +63,7 @@ function str_lreplace($search, $replace, $subject)
 									 ";									 
               						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
               					?>   
-                                <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
+                                <?php echo CHtml::link($image,$look->getUrl()); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
                                     <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
                                     <div class="span5"> <span class="muted">Look creado por: </span>
@@ -126,7 +126,7 @@ function str_lreplace($search, $replace, $subject)
 									});"; 
               						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
               					?>   
-                                <?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
+                                <?php echo CHtml::link($image,$look->getUrl()); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
                                     <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
                                     <div class="span5"> <span class="muted">Look creado por: </span>
@@ -199,7 +199,7 @@ foreach( $dataProvider_productos->getData() as $record ){
 ?>
                     <li class="span2"> 
                         <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
-                        <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>  
+                        <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
                     </li>
 <?php 
 	}  

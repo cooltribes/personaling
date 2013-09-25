@@ -47,7 +47,7 @@
               <div class="span4">
                 <article class="item" >
                   <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
-                  <?php echo CHtml::link($image,array('../look/view', 'id'=>$look->id)); ?>
+                  <?php echo CHtml::link($image,$look->getUrl()); ?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
                     <div class="span2 avatar "><img src="../../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
                     <div class="span5"> <span class="muted">Look creado por: </span>
@@ -164,7 +164,7 @@
               	<div class="span4">
                 <article class="item" >
 		            <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
-		          	<?php echo CHtml::link($image,array('../look/view', 'id'=>$look->id)); ?>
+		          	<?php echo CHtml::link($image,$look->getUrl())); ?>
 		                <div class="hidden-phone margin_top_small vcard row-fluid">
 		                  	<div class="span2 avatar "><img src="../../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
 		                    <div class="span5"> <span class="muted">Look creado por: </span>
@@ -247,7 +247,7 @@
    		
    		$.ajax({
 	        type: "post",
-	        url: "../../look/encantar", // action encantar de looks 
+	        url: "<?php echo Yii::app()->baseUrl;?>/look/encantar", // action encantar de looks 
 	        data: { 'idLook':idLook}, 
 	        success: function (data) {
 				

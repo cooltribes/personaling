@@ -587,20 +587,20 @@ public function actionCategorias2(){
 		$base = Yii::app()->baseUrl;
 
 		if($l1 != ""){
-			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l1->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
+			array_push($ret,'<a href="'.$l1->getUrl().'"><img width="400" height="400" class="img-polaroid" id="'.$l1->id.'" src="'.$base.'/look/getImage/'.$l1->id.'" alt="Look"></a>');
 			array_push($ret,"<br><br>");
 			$contador++;
 		}
 		
 		if($l3 != ""){
-			array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l3->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l3->id.'" src="'.$base.'/look/getImage/'.$l3->id.'" alt="Look"></a>');
+			array_push($ret,'<a href="'.$l3->getUrl().'"><img width="400" height="400" class="img-polaroid" id="'.$l3->id.'" src="'.$base.'/look/getImage/'.$l3->id.'" alt="Look"></a>');
 			array_push($ret,"<br><br>");
 			$contador++;
 		}
 		
 		if($l2 != ""){
 			if($contador < 2){
-				array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l2->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
+				array_push($ret,'<a href="'.$l2->getUrl().'"><img width="400" height="400" class="img-polaroid" id="'.$l2->id.'" src="'.$base.'/look/getImage/'.$l2->id.'" alt="Look"></a>');
 				array_push($ret,"<br><br>");
 				$contador++;
 			}	
@@ -608,7 +608,7 @@ public function actionCategorias2(){
 		
 		if($l4 != ""){
 			if($contador < 2){
-				array_push($ret,'<a href="'.Yii::app()->baseUrl.'/look/view/'.$l4->id.'"><img width="400" height="400" class="img-polaroid" id="'.$l4->id.'" src="'.$base.'/look/getImage/'.$l4->id.'" alt="Look"></a>');
+				array_push($ret,'<a href="'.$l4->getUrl().'"><img width="400" height="400" class="img-polaroid" id="'.$l4->id.'" src="'.$base.'/look/getImage/'.$l4->id.'" alt="Look"></a>');
 				array_push($ret,"<br><br>");
 				$contador++;
 			}
@@ -1122,74 +1122,98 @@ public function actionCategorias2(){
 //                echo "</pre>";     
 //                
 //                exit();
-        //si es nuevo
-        if (isset($_POST['name'])) {
+        
 
-            $filter = Filter::model()->findByAttributes(
-                    array('name' => $_POST['name'], 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
-            );
-
-            if (!$filter) {
-                $filter = new Filter;
-                $filter->name = $_POST['name'];
-                $filter->type = 0;
-                $filter->user_id = Yii::app()->user->id;
-
-                if ($filter->save()) {
-                    $filterProfile = new FilterProfile;
-                    $filterProfile->attributes = $_POST['Profile'];
-                    $filterProfile->id_filter = $filter->id_filter;
+           $filtroPerfil = true;
+            
+            if(isset($_POST['Profile'])){
+                
+                foreach ($_POST['Profile'] as $campo){
                     
-                    if($filterProfile->validate()){
-                        $filterProfile->save();
-                        $response['status'] = 'success';
-                        $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
-                        $response['idFilter'] = $filter->id_filter;
-                        
+                    if(empty($campo)){
+                       $filtroPerfil = false;
+                       break;
+                   } 
+                }        
+            }
+            
+//            echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                echo "filtroperfil: ".$filtroPerfil;
+//                
+//                exit();
+            
+            if(!$filtroPerfil)
+            {
+                $response['status'] = 'error';
+                $response['message'] = 'No se pudo guardar el filtro, faltan campos para el perfil';
+            }
+            else                
+            {
+                //si es nuevo
+                if (isset($_POST['name'])) {
+
+                    $filter = Filter::model()->findByAttributes(
+                            array('name' => $_POST['name'], 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                    );
+
+                    if (!$filter) {
+                        $filter = new Filter;
+                        $filter->name = $_POST['name'];
+                        $filter->type = 0;
+                        $filter->user_id = Yii::app()->user->id;
+
+                        if ($filter->save()) {
+                            $filterProfile = new FilterProfile;
+                            $filterProfile->attributes = $_POST['Profile'];
+                            $filterProfile->id_filter = $filter->id_filter;
+
+                            if($filterProfile->validate()){
+                                $filterProfile->save();
+                                $response['status'] = 'success';
+                                $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
+                                $response['idFilter'] = $filter->id_filter;                        
+                            }
+                        }
+
                     }
-                    
+                    else //si ya existe
+                    {
+                        $response['status'] = 'error';
+                        $response['message'] = 'No se pudo guardar el filtro, el nombre <b>"' .
+                                               $filter->name . '"</b> ya existe';
+                    }
 
-                   
+                    /* si esta guardando uno existente */
+                } else if (isset($_POST['id'])) {
+
+                    $filter = Filter::model()->findByPk($_POST['id']);
+
+                    if ($filter) {
+
+                        $filterProfile = $filter->filterProfiles[0];
+                        $filterProfile->attributes = $_POST['Profile'];
+
+                        if($filterProfile->validate()){
+
+                            $filterProfile->save();
+                            $response['status'] = 'success';
+                            $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';                        
+                        }
+
+                        //si NO existe el ID
+                    } else {
+                        $response['status'] = 'error';
+                        $response['message'] = 'El filtro no existe';
+                    }
                 }
-
-                //si ya existe
-            } else {
-                $response['status'] = 'error';
-                $response['message'] = 'No se pudo guardar el filtro, el nombre <b>"' .
-                        $filter->name . '"</b> ya existe';
+                
             }
 
-            /* si esta guardando uno existente */
-        } else if (isset($_POST['id'])) {
 
-            $filter = Filter::model()->findByPk($_POST['id']);
 
-            if ($filter) {
-
-                //borrar los existentes
-                foreach ($filter->filterDetails as $detail) {
-                    $detail->delete();
-                }
-
-                for ($i = 0; $i < count($filters['fields']); $i++) {
-
-                    $filterDetails[] = new FilterDetail();
-                    $filterDetails[$i]->id_filter = $filter->id_filter;
-                    $filterDetails[$i]->column = $filters['fields'][$i];
-                    $filterDetails[$i]->operator = $filters['ops'][$i];
-                    $filterDetails[$i]->value = $filters['vals'][$i];
-                    $filterDetails[$i]->relation = $filters['rels'][$i];
-                    $filterDetails[$i]->save();
-                }
-
-                $response['status'] = 'success';
-                $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
-                //si NO existe el ID
-            } else {
-                $response['status'] = 'error';
-                $response['message'] = 'El filtro no existe';
-            }
-        }
+        
 
         echo CJSON::encode($response);
     }
@@ -1200,7 +1224,7 @@ public function actionCategorias2(){
                 $filter = Filter::model()->findByPk($_POST['id']);                
                 
                 if($filter){     
-                   //$response['filter']  = $filter->filterDetails;
+                   $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
                    $response['message'] = 'Filtro encontrado yeah';
                     

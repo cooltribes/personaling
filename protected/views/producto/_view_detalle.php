@@ -27,7 +27,7 @@
           <div class="row">
             <div class="span6">
             	<input id="producto" type="hidden" value="<?php echo $producto->id ?>" />
-              <h1> <?php echo $producto->nombre; ?> <!-- <span class="label label-important"> ON SALE</span> --></h1>
+              <h1> <?php echo $producto->nombre; ?> <!-- <span class="label label-important"> ON SALE</span> --> <?php //echo $producto->getUrl(); ?> </h1>
             </div>
             <div class="span2 share_like hidden-phone">
             	
@@ -407,7 +407,7 @@ $cont=0;
 					
 						if(isset($lk)){
 							echo('<div class="span4">'); 
-							echo("<a href='".CController::createUrl('look/view',array('id'=>$cadauno->look_id))."' title='".$lk->title."'>");
+							echo("<a href='".$lk->getUrl()."' title='".$lk->title."'>");
 							echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>'img_1'));
 							echo("</a></div>");
 							$cont++; // solo 3 veces

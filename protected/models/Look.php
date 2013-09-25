@@ -18,6 +18,7 @@
  * @property integer $user_id
  * @property integer $status
  * @property integer $view_counter 
+ * @property integer $url_amigable
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -90,9 +91,10 @@ class Look extends CActiveRecord
 			array('title', 'length', 'max'=>45),
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
 			array('description, created_on', 'safe'),
+			array('url_amigable', 'unique', 'message'=>'Url Amigable ya registrada para otro look.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter, url_amigable', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -141,6 +143,7 @@ class Look extends CActiveRecord
 			'campana_id' => 'Campaña',
 			'has_ocasiones' => 'Ocasiones',
 			'user_id'=>'Usuario',
+			'url_amigable' => 'Url Amigable',
 		);
 	}
 	public function matchOcaciones($user) 
@@ -269,6 +272,7 @@ class Look extends CActiveRecord
 		$criteria->compare('tipo',$this->tipo);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('campana_id',$this->campana_id,true);
+		$criteria->compare('url_amigable',$this->url_amigable,true);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -625,4 +629,15 @@ class Look extends CActiveRecord
 		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png', 'registro');
 		imagedestroy($canvas);		
 	}
+
+	public function getUrl() 
+	{
+		if(isset($this->url_amigable))
+			return Yii::app()->baseUrl."/look/".$this->url_amigable;
+		else
+			return Yii::app()->baseUrl."/look/".$this->id;
+		
+	}
+
+
 }

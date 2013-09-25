@@ -231,8 +231,12 @@
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto">
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />
                       -->
+                <?php      
+                 $prod = Producto::model()->findByPk($lookhasproducto->producto_id);
+                ?>
+                 
                 <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
-                <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$lookhasproducto->producto_id)); ?>
+                <?php echo CHtml::link($image, $prod->getUrl() ); ?>
                 <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
                 <?php $color_id = $lookhasproducto->color_id; ?>
                 </a>
@@ -344,7 +348,7 @@ $cont=0;
                     <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
                       <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
 
-                      <?php echo CHtml::link($image,array('look/view', 'id'=>$lookre->id)); ?>
+                      <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
                       <?php
                     //"style"=>"display: none",
                         $script = "$('#"."imglook".$lookre->id."').load(function(){
@@ -418,7 +422,7 @@ $cont=0;
                          ?>
               <div class="span2">
                   <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "170", "height" => "170"));    ?>
-                            <?php echo CHtml::link($image, array('producto/detalle', 'id'=>$producto->id)); ?>
+                            <?php echo CHtml::link($image, $producto->getUrl()); ?>
 
               </div>
                           <?php

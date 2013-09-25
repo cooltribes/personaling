@@ -18,7 +18,7 @@
             
 <?php
             	echo CHtml::link("<i class='icon-eye-open'></i>",
-    $this->createUrl('producto/detalles',array('id'=>$data->id)),
+    $this->createUrl('look/detalle',array('id'=>$data->id)),
     array(// for htmlOptions
       'onclick'=>' {'.CHtml::ajax( array(
       'url'=>CController::createUrl('look/detalle',array('id'=>$data->id)),

@@ -182,19 +182,6 @@ $this->renderPartial('_look',array(
 </div>
   
 <!-- /container -->
-<style>
-    #modalFiltroPerfil{
-        width: 880px;
-        left: 40%;
-        top: -100%;
-    }    
-    #modalFiltroPerfil.in{
-        top: 38%;
-    }
-    #modalFiltroPerfil.in > .modal-body{
-        max-height: 580px;
-    }
-</style>
 
 <?php
 function replace_accents($string) 
@@ -208,7 +195,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                                 'id' => 'modalFiltroPerfil',
                             ),
                             array(
-                                'class' => 'modal hide fade',
+                                'class' => 'modal span9 hide fade',
                                 'tabindex' => "-1",
                                 'role' => "dialog",
                                 'aria-labelledby' => "myModalLabel",
@@ -221,7 +208,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Perfil Corporal</h3>
     </div>
-    <div class="modal-body">
+    <div class="modal-body margin_top_medium">
         
       <?php 
       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -311,14 +298,20 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                                       <caption>
                                           <p class="  color6 text_align_center ">                  
                                               <?php
-                                              if ($key == 1)
+                                              switch ($key){
+                                              case 1:
                                                   echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
-                                              if ($key == 2)
+                                                  break;
+                                              case 2:
                                                   echo "Tu cuerpo es reloj de arena o curvilíneo porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida";
-                                              if ($key == 4)
+                                                  break;
+                                              case 4:
                                                   echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
-                                              if ($key == 8)
+                                                  break;
+                                              case 8:
                                                   echo "Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas";
+                                                  break;
+                                              }
                                               ?>
                                           </p>
                                       </caption>                    
@@ -336,26 +329,31 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <?php $this->endWidget(); ?>
         
   <div class="modal-footer">
-      <div class="control-group pull-left" id="campo-nombre">
-          <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
-          <?php echo CHtml::textField('profile-name'); ?>
+    <div class="span6">
+      <div class="control-group form-inline  pull-left" id="campo-nombre">
+          <!--[if IE]>
+            <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
+          <![endif]-->
+          <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Nombre del look')); ?>
           <?php //echo CHtml::error($model, $attribute)?>
+          <button id="save" class="btn btn-danger controls hide">Guardar Perfil</button>
+          <button id="remove" class="btn controls hide">Borrar Perfil</button>
+          <?php
+          $this->widget('bootstrap.widgets.TbButton', array(
+              'buttonType' => 'button',
+              'label' => 'Guardar',
+              'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+              //'size' => 'large', // null, 'large', 'small' or 'mini'
+              //'block' => 'true',
+              'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')
+          ));
+          ?>    
       </div>         
     
-    <button id="save" class="btn btn-danger pull-left hide">Guardar Perfil</button>
-    <button id="remove" class="btn pull-left hide">Borrar Perfil</button>
-    <?php
-    $this->widget('bootstrap.widgets.TbButton', array(
-        'buttonType' => 'button',
-        'label' => 'Guardar y Buscar',
-        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-        //'size' => 'large', // null, 'large', 'small' or 'mini'
-        //'block' => 'true',
-        'htmlOptions' => array('id' => 'save-search', 'class' => 'pull-left span2'),//'onclick' => 'js:$("#newFilter-form").submit();')
-    ));
-    ?>    
+    </div>
+    <div class="span2">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-    
+    </div>
   </div>                    
 
 <?php $this->endWidget()?>

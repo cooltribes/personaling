@@ -105,9 +105,15 @@ class LookController extends Controller
 					),true
 				);		
 	}
-	public function actionView($id)
+	public function actionView()
 	{
-		$model = Look::model()->findByPk($id);
+		if(isset($_GET['alias'])){
+			$model = Look::model()->findByAttributes(array('url_amigable'=>$_GET['alias']));
+		}
+		else{
+			$model = Look::model()->findByPk($_GET['id']);
+		}		
+
 		$model->view_counter++;
 		$model->save();
 		$productoView = new ProductoView;

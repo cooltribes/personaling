@@ -23,7 +23,7 @@ else
 	$b='';
 					
 			echo("<td><article class='span3'><div class='producto'> 
-				<input id='idprod' value='".$producto->id."' type='hidden' ><a href='../../producto/detalle/".$producto->id."'>
+				<input id='idprod' value='".$producto->id."' type='hidden' ><a href='".$producto->getUrl()."'>
 				".$a.$b." 
 						
 				".CHtml::link("Vista Rápida",
@@ -39,8 +39,8 @@ else
 				)."		
 												
 			</a>
-			<header><h3><a href='../../producto/detalle/".$producto->id."' title='".$producto->nombre."'>".$producto->nombre."</a></h3>
-			<a href='../../producto/detalle/".$producto->id."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
+			<header><h3><a href='".$producto->getUrl()."' title='".$producto->nombre."'>".$producto->nombre."</a></h3>
+			<a href='".$producto->getUrl()."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
 			<span class='precio'>Bs. ".$prePub."</span>
 			<a id='like".$producto->id."' onclick='encantar(".$producto->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
 

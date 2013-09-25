@@ -344,9 +344,9 @@ if(!Yii::app()->user->isGuest){
                 $color = Color::model()->findByPk($todo->color_id);                  
                 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
                 echo "<li>";
-                echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/producto/detalle/'.$todo->producto_id.'" >'.$producto->nombre.'</a>';
+                echo '<a class="btn-link" href="'.$producto->getUrl().'" >'.$producto->nombre.'</a>';
                 echo '<div class="row-fluid">';
-                
+                 
                 if($imagen){
                     $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                     echo '<div class="span2">'.$htmlimage.'</div>';

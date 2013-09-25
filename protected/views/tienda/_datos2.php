@@ -35,7 +35,7 @@ $prePub="";
 						//$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 						$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 						echo("<td><article class='span3'><div class='producto'> 
-						<input id='idprod' value='".$data->id."' type='hidden' ><a href='../producto/detalle/".$data->id."'>
+						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 						".$a.$b." 
 						 
 						".CHtml::link("Vista Rápida",
@@ -51,8 +51,8 @@ $prePub="";
 						)."		
 												
 						</a>
-						<header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
-						<a href='../producto/detalle/".$data->id."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
+						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
 						<span class='precio'>Bs. ".$prePub."</span>
 						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
 						
@@ -68,7 +68,7 @@ $prePub="";
 					//	$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 					$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 					echo("<article class='span3'><div class='producto' >
-					<input id='idprod' value='".$data->id."' type='hidden' ><a href='../producto/detalle/".$data->id."'>
+					<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 					".$a.$b." 
 						
 					".CHtml::link("Vista Rápida",
@@ -84,8 +84,8 @@ $prePub="";
 					)."		
 						 
 					</a>
-					<header><h3><a href='../producto/detalle/".$data->id."' title='".$data->nombre."'>".$data->nombre."</a></h3>
-					<a href='../producto/detalle/".$data->id."' class='ver_detalle  icon_lupa' title='Ver detalle'></a></header>
+					<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+					<a href='".$data->getUrl()."' class='ver_detalle  icon_lupa' title='Ver detalle'></a></header>
 					<span class='precio'>Bs. ".$prePub."</span>
 					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
 					

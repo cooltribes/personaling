@@ -19,13 +19,15 @@ $prod = Producto::model()->findByPk($data['id']);
 			$a = CHtml::image($ima->getUrl(), "Imagen ", array("class"=>"img_hover","width" => "270", "height" => "270",'id'=>'img-'.$data['id']));
 			$b = '';
 			
+			$producto = Producto::model()->findByPk($data['id']);
+			
 		if(isset($segunda))
 			$b = CHtml::image($segunda->getUrl(), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 			
 			echo("<td>
 			<article class='span4 item_producto'>
 			<div class='producto'> 
-				<input id='idprod' value='".$data['id']."' type='hidden' ><a href='".Yii::app()->baseUrl."/producto/detalle/".$data['id']."'>
+				<input id='idprod' value='".$data['id']."' type='hidden' ><a href='".$producto->getUrl()."'>
 				".$a.$b." 
 						
 				".CHtml::link("Vista Rápida",
@@ -41,8 +43,8 @@ $prod = Producto::model()->findByPk($data['id']);
 						)."		
 												
 				</a>
-				<header><h3><a href='".Yii::app()->baseUrl."/producto/detalle/".$data['id']."' title='".$data['nombre']."'>".$data['nombre']."</a></h3>
-				<a href='".Yii::app()->baseUrl."/producto/detalle/".$data['id']."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
+				<header><h3><a href='".$producto->getUrl()."' title='".$data['nombre']."'>".$data['nombre']."</a></h3>
+				<a href='".$producto->getUrl()."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
 				<span class='precio'>Bs. ".$prePub."</span>");
 				
 			if(isset($like)) // le ha dado like	

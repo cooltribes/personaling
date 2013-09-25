@@ -115,7 +115,16 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
              <?php echo $form->checkBoxRow($model, 'destacado'); ?>
              <?php echo $form->error($model,'destacado'); ?>
           </div>
-        </div>        
+        </div>
+        
+         <div class="control-group ">
+         	Escribe una url amigable para este look. 
+          <div class="controls">
+             <?php echo $form->textFieldRow($model, 'url_amigable'); ?>
+             <?php echo $form->error($model, 'url_amigable'); ?>
+          </div>
+        </div>  
+                
         <!-- Para el admin ON 
         
 

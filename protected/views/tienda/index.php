@@ -491,3 +491,53 @@ $(document).ready(function() {
 });
 	
 </script>
+<script>
+
+
+function encantar(id)
+   	{
+            
+   		var idProd = id;
+   		//alert("id:"+idProd);		
+   		
+   		$.ajax({
+	        type: "post",
+                dataType: "json",
+	        url: "../producto/encantar", // action Tallas de Producto
+	        data: { 'idProd':idProd}, 
+	        success: function (data) {
+				if(data.mensaje === "ok")
+				{					
+					var a = "♥";					
+					//$("#meEncanta").removeClass("btn-link");
+					$("a#like"+id).addClass("like-active");
+					$("a#like"+id).text(a);
+					
+				}
+				
+				if(data === "no")
+				{
+					alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar Me Encanta a un producto");
+					//window.location="../../user/login";
+				}
+				
+				if(data.mensaje === "borrado")
+				{
+					var a = "♡";
+					
+					//alert("borrando");
+					
+					$("a#like"+id).removeClass("like-active");
+					//$("#meEncanta").addClass("btn-link-active");
+					$("a#like"+id).text(a);
+
+				}
+					
+	       	}//success
+	       })
+   		
+   		
+   	}  
+   	
+   	
+</script>

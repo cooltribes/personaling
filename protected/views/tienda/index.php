@@ -6,7 +6,7 @@
 
 ?>
 <div class="page-header">
-<h1>Tienda</h1>
+<h1>Tienda </h1>
 <?php 
 
 $max=max($arr);

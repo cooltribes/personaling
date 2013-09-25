@@ -44,7 +44,7 @@ class Seo extends CActiveRecord
 			array('mTitulo', 'length', 'max'=>80),
 			array('pClave', 'length', 'max'=>140),
 			array('urlAmigable', 'length', 'max'=>180),
-			array('urlAmigable', 'unique', 'message'=>'Url amigagle ya registrada para otro producto.'),
+			array('urlAmigable', 'unique', 'message'=>'Url amigable ya registrada para otro producto.'),
 			array('mDescripcion', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

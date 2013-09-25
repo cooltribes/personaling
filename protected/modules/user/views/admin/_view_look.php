@@ -14,7 +14,7 @@ $look = Look::model()->findByPk($data->look_id);
 		<?php 
 		//echo CHtml::link('<i class="icon-eye-open"></i>', CController::createUrl('/look/detalles',array('id'=>$look->id)), array('title'=>'Ver', 'class'=>'btn', 'target'=>'_blank'));
 		echo CHtml::link("<i class='icon-eye-open'></i>",
-		    $this->createUrl('producto/detalles',array('id'=>$look->id)),
+		    $this->createUrl('/look/detalle',array('id'=>$look->id)),
 		    array(// for htmlOptions
 		      'onclick'=>' {'.CHtml::ajax( array(
 		      'url'=>CController::createUrl('/look/detalle',array('id'=>$look->id)),

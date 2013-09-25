@@ -1,10 +1,10 @@
-<?php
+ <?php
 	/* @var $this TiendaController */
 	//$this->breadcrumbs=array(
 	//'Tienda',
 	//);
 
-?>
+?> 
 <div class="page-header">
 <h1>Tienda </h1>
 <?php 

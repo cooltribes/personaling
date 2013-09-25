@@ -629,4 +629,15 @@ class Look extends CActiveRecord
 		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png', 'registro');
 		imagedestroy($canvas);		
 	}
+
+	public function getUrl() 
+	{
+		if(isset($this->url_amigable))
+			return Yii::app()->baseUrl."/look/".$this->url_amigable;
+		else
+			return Yii::app()->baseUrl."/look/".$this->id;
+		
+	}
+
+
 }

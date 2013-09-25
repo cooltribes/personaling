@@ -6,7 +6,7 @@
             <div class="row"> 
               <article class="span4"> 
               	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'img_1')); ?>
-              	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
+              	<?php echo CHtml::link($image, $look->getUrl()); ?>
               	<!--
               	<a href="Look_seleccionado.php" title="look"> 
               	<img src="http://placehold.it/370x400"/>

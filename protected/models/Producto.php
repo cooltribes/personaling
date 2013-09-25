@@ -879,7 +879,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}
 		else
 		{
-			return Yii::app()->baseUrl."/producto/".$this->id;
+			return Yii::app()->baseUrl."/producto/detalle/".$this->id;
 		}	
 		
 	}

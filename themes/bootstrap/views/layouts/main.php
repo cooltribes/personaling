@@ -297,7 +297,7 @@ if(!Yii::app()->user->isGuest){
               $look = Look::model()->findByPk($look_id);
 			  if (isset($look)){
 	              echo '<li>';
-	              echo '<a class="btn-link" href="'.Yii::app()->baseUrl .'/look/'.$look_id.'" >'.$look->title.'</a>';
+	              echo '<a class="btn-link" href="'.$look_getUrl().'" >'.$look->title.'</a>';
 	              echo '<div class="row-fluid">';
 	
 	              //invertir array para mostrar en orden cronológico de compras

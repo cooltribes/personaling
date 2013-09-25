@@ -174,7 +174,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 		
       	?>
         	<tr>
-              <td><a href="<?php echo Yii::app()->baseUrl."/look/".$lk->id; ?>" title="Ver Look"><?php echo $lk->title; ?></a></td>
+              <td><a href="<?php echo $lk->getUrl(); ?>" title="Ver Look"><?php echo $lk->title; ?></a></td>
               <td>Bs. <?php echo $lk->getPrecio(); ?></td>
               <td><?php echo $record['looks']; ?></td>
               <td>Bs. <?php echo $ppp; ?></td>

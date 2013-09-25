@@ -4,7 +4,7 @@
   <div class="alert in" id="alert-msg" style="display: none">
     <button type="button" class="close" >&times;</button> 
     <!--data-dismiss="alert"-->
-    <div class="msg">loren ipsum</div>
+    <div class="msg"></div>
   </div>
 </div>          
     
@@ -165,7 +165,7 @@
     $("#filter-remove").click(function(e){
 
              e.preventDefault();
-             removeFilter('<?php echo $this->createUrl('/orden/getFilter');//CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
+             removeFilter('<?php echo $this->createUrl('/orden/removeFilter');//CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
 
     });    
     

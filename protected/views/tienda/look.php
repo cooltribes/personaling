@@ -3,6 +3,11 @@
   <div class="page-header">
     <h1>Todos los looks</h1>
   </div>
+  <div class="alert in" id="alert-msg" style="display: none">
+    <button type="button" class="close" >&times;</button> 
+    <!--data-dismiss="alert"-->
+    <div class="msg"></div>
+  </div>
 </div>
 
 <!-- SUBMENU ON -->
@@ -194,7 +199,15 @@ $this->renderPartial('_look',array(
     #modalFiltroPerfil.in > .modal-body{
         max-height: 580px;
     }
+    
+    img.loadingImg{
+        margin: 0;
+        padding: 0;
+    }
+    
 </style>
+
+
 
 <?php
 function replace_accents($string) 
@@ -344,6 +357,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     
     <button id="save" class="btn btn-danger pull-left hide">Guardar Perfil</button>
     <button id="remove" class="btn pull-left hide">Borrar Perfil</button>
+    
+    
     <?php
     $this->widget('bootstrap.widgets.TbButton', array(
         'buttonType' => 'button',
@@ -354,6 +369,9 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         'htmlOptions' => array('id' => 'save-search', 'class' => 'pull-left span2'),//'onclick' => 'js:$("#newFilter-form").submit();')
     ));
     ?>    
+    
+    <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
+    
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     
   </div>                    
@@ -363,7 +381,12 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 <script type="text/javascript">
     
 
- var actionGuardarFiltro = '<?php echo $this->createUrl('guardarFiltro'); ?>';
+    var actionGuardarFiltro = '<?php echo $this->createUrl('guardarFiltro'); ?>';
+ 
+    $('#remove').click(function(e) {        
+        removeFilter('<?php echo $this->createUrl('/orden/removeFilter'); ?>');
+    });  
+    
     
 function show_shopper(){
 	$('#div_ocasiones').hide();
@@ -376,7 +399,7 @@ function refresh()
 	//alert($('.check_ocasiones').length) 
        
        
-        
+    cargarLocal();
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
             'data'=> "js:$('.check_ocasiones, .check_shopper, #newFilter-form').serialize()",

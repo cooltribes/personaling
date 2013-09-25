@@ -3,6 +3,15 @@
  * and open the template in the editor.
  */
 
+/*
+ * 
+ * poner icono de loading, bloquear boton - mientras se guarda un filtro, y mientras se borra.
+ * al cerrar modal con campos seteados, se busca o no?
+ * Poner titulo en modal
+ * 
+ */
+
+
 
 //Guardar filto existente
 //Guardar filtro Nuevo
@@ -14,10 +23,37 @@
 //Cargar Filtro existente
 
 //Variables locales para el perfil actual
+ var valores = Array();
 
-
+/*Poner en cero los valores*/
+function limpiarLocal(){
+    $.each(valores, function(i, elem){
+       elem = 0;
+    });
+}
 /*Guarda los campos actuales del modal en variables locales*/
 function guardarLocal(){
+    console.log("Guardando");
+    $("#modalFiltroPerfil #newFilter-form").find('input, select').each(function(i, elem){
+      valores[i] = $(elem).val();
+    });
+    
+    //console.log(valores);
+}
+
+function cargarLocal(){
+    console.log("Cargando");
+    
+    $("#modalFiltroPerfil #newFilter-form").find('input, select').each(function(i, elem){
+        $(elem).val(valores[i]);
+        //console.log($(elem));
+    });
+    
+    //class activo al tipo de cuerpo    
+    var activo = $('#tipo_cuerpo').find('li#tipo_'+valores[5]);
+    activo.siblings().removeClass('active');
+    activo.addClass("active");
+    
     
 }
 
@@ -61,8 +97,7 @@ function clearFields(){
 function getFilter(){
 
     URL = 'getFilter';
-    ID = $("#all_filters").val();    
-    
+    ID = $("#all_filters").val();  
       
     if(ID && ID.trim() !== ''){  
     
@@ -73,27 +108,21 @@ function getFilter(){
                     dataType: 'json',
                     data: { 'id':ID },
                     success: function(data){
-                        if(data.status === 'success'){                            
-//                            var total = data.filter.length;
-//                            for (var it = 1; it < total; it++) {
-//                                addRow();
-//                            };
-//                            $.each(data.filter, function(i, item) {
-//                                
-//                                $('.dropdown_filter').eq(i).val(item.column);
-//                                $('.dropdown_filter').eq(i).change();
-//                                $('.dropdown_operator').eq(i).val(item.operator);
-//                                $('.textfield_value').eq(i).val(item.value);
-//                                $('.dropdown_relation').eq(i).val(item.relation); 
-//                            });                              
+                        if(data.status === 'success'){                           
 //                            //Poner titulo
 //                            $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
+                                                       
+                            //Cargar los valores en las variables locales
+                            //console.log(data.filter);                            
+                            valores[0] = data.filter.altura;
+                            valores[1] = data.filter.contextura;
+                            valores[2] = data.filter.pelo;
+                            valores[3] = data.filter.ojos;
+                            valores[4] = data.filter.piel;
+                            valores[5] = data.filter.tipo_cuerpo;                                                    
                             
-                            
-                            //Cargar los valores dentro del modal
-                            
-                            //guardarlos en variables locales
-                            guardarLocal();
+                            //mostrarlos en los campos del modal
+                            cargarLocal();
                             //activar para perfil cargado
                             activarModalNuevo(false);
                             //Mostrar el boton de editar
@@ -101,11 +130,7 @@ function getFilter(){
                             
                             //Buscar
                             //refresh();           
-
                         }
-                        
-                         
-                        
                         console.log(data.message);
                     },
                     error: function( jqXHR, textStatus, errorThrown){
@@ -129,41 +154,69 @@ function getFilter(){
     
 }
 
-function saveFilter() {
+function saveFilter(nuevo) {
     
-    var nombre = $("#profile-name").val().trim();
-
+    var action, nombre, boton;
+    
+    if(nuevo)
+    {
+        action = '&name=';
+        nombre = $("#profile-name").val().trim(); 
+        boton = $('#save-search');
+    }
+    else
+    {
+        action = '&id=';
+        nombre = $('#all_filters').val();
+        boton = $('#save');
+    }   
+    
     if (nombre !== '') {
         
         var perfil = $("#modalFiltroPerfil #newFilter-form").find('input, select').serialize();
-        perfil += '&name=' + nombre;
+        
+        perfil += action + nombre;
+        
         $.ajax(
                 actionGuardarFiltro,
                 {
                     type: 'POST',
                     dataType: 'json',
                     data: perfil,
+                    beforeSend: function(){
+                        boton.prop('disabled', true);
+                    },
+                    complete: function(){
+                        boton.prop('disabled', false);
+                    },
                     success: function(data) {
-
+                                                
                         if (data.status === 'success') {
-                            //Agregarlo a la lista de filtros
-                            $('#all_filters').append($("<option />").val(data.idFilter).text(nombre));
-                            $('#all_filters').val(data.idFilter);
+                            
+                            //si es nuevo
+                            if(data.idFilter){
+                                //Agregarlo a la lista de filtros
+                                $('#all_filters').append($("<option />").val(data.idFilter).text(nombre));
+                                $('#all_filters').val(data.idFilter); 
+                                
+                                activarModalNuevo(false);
+                                
+                                 //Mostrar el boton de editar
+                                $('a.editar-filtro').parent('div').show();
+                            }
+                            
+                            refresh();
+                            
+                            //Guardar en local
+                            guardarLocal();                            
+                           
+                        }
+//                        console.log(data.status);
+//                        console.log(data.message);
                             //cerrar modal;
                             $("#modalFiltroPerfil").modal('hide');
+                            showAlert(data.status, data.message);                    
 
-                            //refresh();
-                            //
-                            //Guardar en local
-                            guardarLocal();
-
-                            activarModalNuevo(false);
-                            
-                            //Mostrar el boton de editar
-                            $('a.editar-filtro').parent('div').show();
-                        }
-                        console.log(data.status);
-                        console.log(data.message);
 
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -173,11 +226,67 @@ function saveFilter() {
                 }
         );
 
-
     } else {
         console.log("error, campo nombre vacío.");
     }
 
+}
+
+/*Eliminia un filtro dado por ID*/
+function removeFilter(URL){     
+    
+    
+    ID = $("#all_filters").val();    
+    var boton = $("#remove");
+    $.ajax(
+            URL,
+            {
+                type: 'POST',
+                dataType: 'json',
+                data: { 'id':ID },
+                beforeSend: function(){
+                    if(ID === null || ID.trim() === ''){
+                        return false;
+                    }
+                    boton.prop('disabled', true);
+                },
+                complete: function(){
+                    boton.prop('disabled', false);
+                },
+                success: function(data){
+                    
+                    if(data.status === 'success'){                       
+                        
+                        $('#all_filters').find("[value='"+ID+"']").remove();
+                        //clearFilters();   
+                        clearFields();
+                        activarModalNuevo(true); 
+                        //Ocultar el boton editar
+                        $('a.editar-filtro').parent('div').hide();
+                        
+                        $("#modalFiltroPerfil").modal('hide');
+                        
+                    }
+                    console.log(data.status);
+                    console.log(data.message);
+                   showAlert(data.status, data.message);                    
+                    
+                },
+                error: function( jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR);
+                }
+            }
+        );
+        
+    
+}
+//Mostrar alert
+function showAlert(type, message){
+   $('#alert-msg').removeClass('alert-success alert-error') ;
+   $('#alert-msg').addClass("alert-"+type);
+   $('#alert-msg').children(".msg").html(message);
+   $('#alert-msg').show();
+   $("html, body").animate({ scrollTop: 0 }, "slow");
 }
 
 $(function() {
@@ -196,26 +305,48 @@ $(function() {
 
     });
 
-    $('#save-search').click(function(e) {
+    //Boton guardar y buscar - FIltro nuevo
+    $('#save-search').click(function(e) { 
         
-        saveFilter();
-
+        saveFilter(true);
+        
     });
     
+    $('#save').click(function(e) {        
+        saveFilter(false);
+    }); 
+    
+    
+    
     $('#all_filters').change(function(e){
-        
-        //getfilter
-        getFilter();
-        
+        getFilter();  
+        $(".alert").fadeOut('slow');
     });
     
     //para editar el filtro seleccionado
     $('.editar-filtro').click(function(e){
+        e.preventDefault();
+        //si esta en blanco, cargar las locales y cambiar a fitro existente
+        cargarLocal();
+        activarModalNuevo(false);
+        
         $('#modalFiltroPerfil').modal('show');
+        
+        $(".alert").fadeOut('slow');
     });
     
     $('.crear-filtro').click(function(e){
         clearFields();
+        activarModalNuevo(true);
+        
+        $(".alert").fadeOut('slow');
+        
+    });
+    
+    
+    $(".alert").alert();
+    $(".alert .close").click(function(){
+        $(".alert").fadeOut('slow');
     });
 
 });

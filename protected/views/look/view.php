@@ -72,17 +72,15 @@
             </div>
             </div>
             <!-- Marcas en el look ON -->
-            <div class="span5 marcas">
+            <div class="span5 margin_top_small">
               
               
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
 	                 <li class="span3">  
-	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre); ?>
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60)); ?>
 	                </li>                	
-                <?php } ?>
-
-                
+                <?php } ?>              
                                                       
               </ul>
               
@@ -91,7 +89,7 @@
             <!-- Marcas en el look OFF -->            
           </div>
           <hr/>
-          <h3>Descripcion del look</h3>
+          <h3>Descripción del look</h3>
           <p><?php echo $model->description; ?> </p>
         </article>
         <!-- Columna Principal OFF -->

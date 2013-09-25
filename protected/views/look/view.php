@@ -346,7 +346,7 @@ $cont=0;
                     <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
                       <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
 
-                      <?php echo CHtml::link($image,array('look/view', 'id'=>$lookre->id)); ?>
+                      <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
                       <?php
                     //"style"=>"display: none",
                         $script = "$('#"."imglook".$lookre->id."').load(function(){

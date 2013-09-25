@@ -11,7 +11,7 @@
         <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
         <?php } ?>
         	         
-                  	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
+                  	<?php echo CHtml::link($image,$look->getUrl()); ?>
                   	
                   	<?php
                     /*

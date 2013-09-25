@@ -100,6 +100,7 @@ function handleDrop(e) {
 		nuevo_objeto.css('position','absolute');
 		nuevo_objeto.css('top',y);
 		nuevo_objeto.css('left',x);
+		nuevo_objeto.css('z-index',0);
 		//nuevo_objeto.find('img').unwrap();
 		nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
 		nuevo_objeto.append('<span class="eliminar"><i class=" icon-remove"></i></span>');
@@ -173,9 +174,14 @@ function handleDrop(e) {
 		  	
 		  	$("img",contenedor).last().resizable({
 		    	aspectRatio: width/height
-		  	}).parent('.ui-wrapper').css('margin','0px');
+		  	}).parent('.ui-wrapper').css('margin','0px').click(function(){
+		  		$('.seleccionado').removeClass('seleccionado');
+		  		$(this).addClass('seleccionado');
+		  		
+		  	});
 		  	
 		  	$('.canvas').css('background',"white");
+		  	$('.canvas').css('z-index',"0");
 	 });
 	    
 });
@@ -228,6 +234,48 @@ while (i <  canvas.length) {
  
   i++;
 }
+$('#btn_frente').click(function(){
+	var mayor = 0;
+	$('.seleccionado').parent().siblings().each(function(index){
+		
+		if (isNaN($(this).css('z-index')))
+			compara = 0;
+		else
+			compara = $(this).css('z-index');
+			
+		if (parseInt(compara) > parseInt(mayor))
+			mayor = compara;
+		
+	});
+	
+	//ui.helper.css('z-index',parseInt(mayor)+1);
+	
+	mayor++;
+	 
+	$('.seleccionado').parent().css('z-index',mayor);
+});
+$('#btn_atras').click(function(){
+	var menor = 9999;
+	$('.seleccionado').parent().siblings().each(function(index){
+		
+		if (isNaN($(this).css('z-index')))
+			compara = 9999;
+		else
+			compara = $(this).css('z-index');
+			
+		if (parseInt(compara) <= parseInt(menor))
+			menor = compara;
+		
+	});
+	//alert(mayor);
+	//ui.helper.css('z-index',parseInt(mayor)+1); 
+	if (menor == 9999)
+		menor = 0;
+	else
+		menor--;
+	
+	$('.seleccionado').parent().css('z-index',menor);
+});
 
 });
 /*
@@ -299,13 +347,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
           <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
         </h4>
+        <a href="#" title="Traer al frente" class="btn" id="btn_frente"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn" id="btn_atras"> Llevar atrás</a>
         <!--
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
+        
         -->
         <hr/>
 
         <!-- CANVAS ON -->
-        <div class="well well-large canvas" style="overflow:hidden;position: relative;width: 670px;height: 670px" id="div_canvas">
+        <div class="well well-large canvas" style="z-index=0;overflow:hidden;position: relative;width: 670px;height: 670px" id="div_canvas">
           <?php 
         
         if (count($model->lookhasproducto)){

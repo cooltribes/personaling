@@ -2,7 +2,7 @@
 /* @var $this CampanaController */
 
 $this->breadcrumbs=array(
-	'Campañas'=>array('/campana'),
+	'Campañas'=>array('/campana/index'),
 	'Editar',
 );
 ?>

@@ -1,7 +1,7 @@
 <td>
 		<div class="span6">
        		<article class="item">
-       			<a href="<?php echo Yii::app()->baseUrl."/look/".$data->id; ?>">
+       			<a href="<?php echo $data->getUrl(); ?>">
        				<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$data->id)), "Look", array("width" => "3770", "height" => "400")); ?>
            			<!-- <img width="370" height="400" alt="Look" src="http://www.personaling.com/site/look/getImage/3" class="" id="imglook3" style=""> -->
            		</a>

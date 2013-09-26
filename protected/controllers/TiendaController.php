@@ -70,6 +70,18 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['idact']);
 			
 		}
+		if(isset(Yii::app()->session['bsf'])){
+			unset(Yii::app()->session['bsf']);
+			
+		}
+		if(isset(Yii::app()->session['minpr'])){
+			unset(Yii::app()->session['minpr']);
+			
+		}
+		if(isset(Yii::app()->session['maxpr'])){
+			unset(Yii::app()->session['maxpr']);
+			
+		}
 		$a ="a"; 
 		
 		
@@ -80,14 +92,15 @@ class TiendaController extends Controller
 		$arr=array();
 		foreach($dp->getData() as $record) {
 			array_push($arr,$record->getPrecio(false));	
-		 } 
-		
+		 }
+		 
+		Yii::app()->session['bsf']=$arr;
 		$dataProvider = $producto->nueva($a);
 		
 		 
 		$this->render('index',
 		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,'arr'=>$arr
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias
 		));	
 			
 	}
@@ -295,11 +308,17 @@ class TiendaController extends Controller
 		{
 			Yii::app()->session['idColor']=$_POST['idColor'];	
 		}		
-			
+		
+		if(isset($_POST['rango'])) // llega como parametro el id del color presionado
+		{
+			$minmax = explode('A',$_POST['rango']);
+			Yii::app()->session['minpr']=$minmax[0];	
+			Yii::app()->session['maxpr']=$minmax[1];	
+		}
+					
 		if(isset(Yii::app()->session['idact'])) // llega como parametro el id del color presionado
 		{
-			
-			
+					
 			$categoria=Yii::app()->session['idact'];
 		}
 			
@@ -316,7 +335,7 @@ class TiendaController extends Controller
 		
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		
-		if(count($color)==0&&(!isset(Yii::app()->session['idact']))){
+		if(count($color)==0&&(!isset(Yii::app()->session['idact']))&&(!isset(Yii::app()->session['minpr']))&&(!isset(Yii::app()->session['maxpr']))){
 			$a="a";	
 			$dataProvider = $producto->nueva($a);
 			
@@ -657,20 +676,20 @@ public function actionCategorias2(){
             }
             
             if($filtroPerfil){
-                echo "<pre>";
-                print_r($_POST);
-                echo "</pre>";
-                
-                $userTmp = User::model()->findByPk(Yii::app()->user->id);
-                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
-                $looks = new Look();
-                $looks->match($userTmp);
-                
-                echo "<pre>";
-                print_r($userTmp->profile->attributes);
-                echo "</pre>";
-                
-                exit();
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                
+//                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+//                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+//                $looks = new Look();
+//                $looks->match($userTmp);
+//                
+//                echo "<pre>";
+//                print_r($userTmp->profile->attributes);
+//                echo "</pre>";
+//                
+//                exit();
             }
             
 
@@ -681,21 +700,44 @@ public function actionCategorias2(){
 			
 			
 			if (isset($_POST['check_ocasiones'])){
-			$condicion = "";	
-			$criteria->with = array('categorias');	
-			$criteria->together = true;
-			foreach ($_POST['check_ocasiones'] as $categoria_id)
-				$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
-			$condicion = substr($condicion, 0, -3);
-			$criteria->addCondition($condicion);
+				$condicion = "";	
+				$criteria->with = array('categorias');	
+				$criteria->together = true;
+				foreach ($_POST['check_ocasiones'] as $categoria_id)
+					$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
+				$condicion = substr($condicion, 0, -3);
+				$criteria->addCondition($condicion);
 			}
 			if (isset($_POST['check_shopper'])){
-			$condicion = "";		
-			foreach ($_POST['check_shopper'] as $user_id)
-				$condicion .= "user_id = ".$user_id." OR ";
-			$condicion = substr($condicion, 0, -3);
-			$criteria->addCondition($condicion);				
+				$condicion = "";		
+				foreach ($_POST['check_shopper'] as $user_id)
+					$condicion .= "user_id = ".$user_id." OR ";
+				$condicion = substr($condicion, 0, -3);
+				$criteria->addCondition($condicion);				
 			}
+                        
+                        if($filtroPerfil){
+                            $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                            $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+                            $looks = new Look();
+                            $ids = $looks->match($userTmp); 
+                            $ids = $ids->getData();
+                            echo "ids: <br>";
+                            echo "<pre>";
+                            print_r($ids);
+                            echo "</pre>";
+                            
+                            $criteria->addInCondition('t.id', $ids);
+                            
+                            echo "Criteria:";
+
+                            echo "<pre>";
+                            print_r($criteria->toArray());
+                            echo "</pre>";
+                                exit();
+                            
+                        }
+                        
                         
                         
                         
@@ -1226,7 +1268,7 @@ public function actionCategorias2(){
                 if($filter){     
                    $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
-                   $response['message'] = 'Filtro encontrado yeah';
+                   $response['message'] = 'Filtro encontrado';
                     
                 }else{
                   $response['status'] = 'error';

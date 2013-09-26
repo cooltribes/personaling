@@ -347,7 +347,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
           <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
         </h4>
-        <a href="#" title="Traer al frente" class="btn" id="btn_frente"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn" id="btn_atras"> Llevar atrás</a>
+        <a  title="Traer al frente" class="btn" id="btn_frente"> Traer al frente</a> <a  title="Llevar atrás" class="btn" id="btn_atras"> Llevar atrás</a>
         <!--
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         
@@ -386,7 +386,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<div class="rotar"> <i class=" icon-repeat"></i></div>
 			 </div> 
           <?php 
-              	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
+              	$script = "$('.canvas').css('z-index',0);	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
     start: function( event, ui ) { 
@@ -435,7 +435,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		var width = $(this).attr('width');
 		 $(this).resizable({
       		aspectRatio: width/height
-    	}).parent('.ui-wrapper').css('margin','0px');	
+    	}).parent('.ui-wrapper').css('margin','0px').click(function(){
+		  		$('.seleccionado').removeClass('seleccionado');
+		  		$(this).addClass('seleccionado');
+		  		
+		  	});	
     });	
    
     
@@ -489,7 +493,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			$('#adorno".$adorno->id." > img').on('load', function () {
 				$(this).resizable({
 					aspectRatio: 1
-				}).parent('.ui-wrapper').css('margin','0px');	
+				}).parent('.ui-wrapper').css('margin','0px').click(function(){
+		  		$('.seleccionado').removeClass('seleccionado');
+		  		$(this).addClass('seleccionado');
+		  		
+		  	});	
 		    });	
 		    
 		 	";

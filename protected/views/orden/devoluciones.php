@@ -24,12 +24,13 @@ $this->breadcrumbs=array(
 	<h1> Devoluciones </h1>  
 	<input type="hidden" id="orden_id" value="<?php echo $orden->id; ?>" />
 	<hr/>
-	<h2>3312,00</h2>
-	<span>Precio del pepido</span>
-
+	<div class="margin_left_small margin_top">
+		<p class="T_xlarge">3312,00</p>
+		<span>Precio total del pepido</span>
+	</div>
 
    <div> 
-     <h3 class="braker_bottom margin_top">Productos</h3>
+     <h3 class="braker_bottom">Productos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
         	<th scope="col"></th>

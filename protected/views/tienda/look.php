@@ -187,31 +187,6 @@ $this->renderPartial('_look',array(
 </div>
   
 <!-- /container -->
-<<<<<<< HEAD
-=======
-<style>
-    #modalFiltroPerfil{
-        width: 880px;
-        left: 40%;
-        top: -100%;
-    }    
-    #modalFiltroPerfil.in{
-        top: 38%;
-    }
-    #modalFiltroPerfil.in > .modal-body{
-        max-height: 580px;
-    }
-    
-    img.loadingImg{
-        margin: 0;
-        padding: 0;
-    }
-    
-</style>
->>>>>>> 717dd5a88176a1adee44dd6e8181a67af8237d93
-
-
-
 <?php
 function replace_accents($string) 
 { 
@@ -237,7 +212,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Perfil Corporal</h3>
     </div>
-    <div class="modal-body margin_top_medium">
+    <div class="modal-body ">
         
       <?php 
       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -319,26 +294,26 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                           
                           <li class="span3 <?php if ($tipoActivo == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>">
                              <a href="#" title="Elegir este tipo de cuerpo">
-                                  <div class="thumbnail" style="height:450px"> 
+                                  <div class="thumbnail" style="height:380px"> 
                                       <?php echo CHtml::image(Yii::app()->baseUrl . '/images/' . replace_accents($tipo) . '.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
                                       <div class="caption text_align_center CAPS">
                                           <p ><?php echo $tipo; ?></p>
                                       </div>
                                       <caption>
-                                          <p class="  color6 text_align_center ">                  
+                                          <p class="  color6 text_align_center margin_top_small_minus  ">                  
                                               <?php
                                               switch ($key){
                                               case 1:
-                                                  echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
+                                                  echo "Los hombros y caderas están casi alineados y la cintura no es tan definida";
                                                   break;
                                               case 2:
-                                                  echo "Tu cuerpo es reloj de arena o curvilíneo porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida";
+                                                  echo "Los hombros y caderas están alineados y la cintura es muy definida";
                                                   break;
                                               case 4:
-                                                  echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
+                                                  echo "Los hombros y la cintura es pequeñita con unas caderas pronunciadas";
                                                   break;
                                               case 8:
-                                                  echo "Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas";
+                                                  echo "Los hombros proporcionalmente anchos y caderas pequeñitas";
                                                   break;
                                               }
                                               ?>
@@ -357,50 +332,34 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     
     <?php $this->endWidget(); ?>
         
-  <div class="modal-footer">
+  <div class="modal-footer margin_top_medium_minus">
     <div class="span6">
-      <div class="control-group form-inline  pull-left" id="campo-nombre">
-          <!--[if IE]>
-            <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
-          <![endif]-->
-          <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Nombre del look')); ?>
-          <?php //echo CHtml::error($model, $attribute)?>
-          <button id="save" class="btn btn-danger controls hide">Guardar Perfil</button>
-          <button id="remove" class="btn controls hide">Borrar Perfil</button>
-          <?php
-          $this->widget('bootstrap.widgets.TbButton', array(
-              'buttonType' => 'button',
-              'label' => 'Guardar',
-              'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-              //'size' => 'large', // null, 'large', 'small' or 'mini'
-              //'block' => 'true',
-              'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')
-          ));
-          ?>    
+      <div class="control-group form-inline  pull-left" >
+          <div id="campo-nombre">
+            <!--[if IE]>
+              <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
+            <![endif]-->
+            <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Nombre del perfil')); ?>
+            <?php //echo CHtml::error($model, $attribute)?>
+
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'button',
+                'label' => 'Guardar y Buscar',
+                'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size' => 'large', // null, 'large', 'small' or 'mini'
+                //'block' => 'true',
+                'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')
+            ));          
+            ?> 
+        </div>
+        <button id="save" class="btn btn-danger controls hide">Guardar Perfil</button>          
+        <button id="remove" class="btn controls hide">Borrar Perfil</button>
+        <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
       </div>         
     
-<<<<<<< HEAD
     </div>
     <div class="span2">
-=======
-    <button id="save" class="btn btn-danger pull-left hide">Guardar Perfil</button>
-    <button id="remove" class="btn pull-left hide">Borrar Perfil</button>
-    
-    
-    <?php
-    $this->widget('bootstrap.widgets.TbButton', array(
-        'buttonType' => 'button',
-        'label' => 'Guardar y Buscar',
-        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-        //'size' => 'large', // null, 'large', 'small' or 'mini'
-        //'block' => 'true',
-        'htmlOptions' => array('id' => 'save-search', 'class' => 'pull-left span2'),//'onclick' => 'js:$("#newFilter-form").submit();')
-    ));
-    ?>    
-    
-    <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
-    
->>>>>>> 717dd5a88176a1adee44dd6e8181a67af8237d93
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
   </div>                    
@@ -449,6 +408,8 @@ function refresh()
                    $('#tienda_looks').html(data.div);
                    // setTimeout(\"$('#dialogColor').modal('hide') \",3000);
                 }
+                
+                
  
             } ",
             ))?>;

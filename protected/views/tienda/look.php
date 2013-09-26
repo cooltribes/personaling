@@ -187,8 +187,7 @@ $this->renderPartial('_look',array(
 </div>
   
 <!-- /container -->
-<<<<<<< HEAD
-=======
+
 <style>
     #modalFiltroPerfil{
         width: 880px;
@@ -208,7 +207,7 @@ $this->renderPartial('_look',array(
     }
     
 </style>
->>>>>>> 717dd5a88176a1adee44dd6e8181a67af8237d93
+
 
 
 

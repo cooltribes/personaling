@@ -347,7 +347,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
           <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
         </h4>
-        <a href="#" title="Traer al frente" class="btn" id="btn_frente"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn" id="btn_atras"> Llevar atrás</a>
+        <a  title="Traer al frente" class="btn" id="btn_frente"> Traer al frente</a> <a  title="Llevar atrás" class="btn" id="btn_atras"> Llevar atrás</a>
         <!--
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         

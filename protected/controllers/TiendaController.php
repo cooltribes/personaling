@@ -700,20 +700,20 @@ public function actionCategorias2(){
 			
 			
 			if (isset($_POST['check_ocasiones'])){
-			$condicion = "";	
-			$criteria->with = array('categorias');	
-			$criteria->together = true;
-			foreach ($_POST['check_ocasiones'] as $categoria_id)
-				$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
-			$condicion = substr($condicion, 0, -3);
-			$criteria->addCondition($condicion);
+				$condicion = "";	
+				$criteria->with = array('categorias');	
+				$criteria->together = true;
+				foreach ($_POST['check_ocasiones'] as $categoria_id)
+					$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
+				$condicion = substr($condicion, 0, -3);
+				$criteria->addCondition($condicion);
 			}
 			if (isset($_POST['check_shopper'])){
-			$condicion = "";		
-			foreach ($_POST['check_shopper'] as $user_id)
-				$condicion .= "user_id = ".$user_id." OR ";
-			$condicion = substr($condicion, 0, -3);
-			$criteria->addCondition($condicion);				
+				$condicion = "";		
+				foreach ($_POST['check_shopper'] as $user_id)
+					$condicion .= "user_id = ".$user_id." OR ";
+				$condicion = substr($condicion, 0, -3);
+				$criteria->addCondition($condicion);				
 			}
                         
                         

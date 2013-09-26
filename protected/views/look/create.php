@@ -386,7 +386,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<div class="rotar"> <i class=" icon-repeat"></i></div>
 			 </div> 
           <?php 
-              	$script = "	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
+              	$script = "$('.canvas').css('z-index',0);	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
     containment: 'document',
     start: function( event, ui ) { 
@@ -435,7 +435,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		var width = $(this).attr('width');
 		 $(this).resizable({
       		aspectRatio: width/height
-    	}).parent('.ui-wrapper').css('margin','0px');	
+    	}).parent('.ui-wrapper').css('margin','0px').click(function(){
+		  		$('.seleccionado').removeClass('seleccionado');
+		  		$(this).addClass('seleccionado');
+		  		
+		  	});	
     });	
    
     
@@ -489,7 +493,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			$('#adorno".$adorno->id." > img').on('load', function () {
 				$(this).resizable({
 					aspectRatio: 1
-				}).parent('.ui-wrapper').css('margin','0px');	
+				}).parent('.ui-wrapper').css('margin','0px').click(function(){
+		  		$('.seleccionado').removeClass('seleccionado');
+		  		$(this).addClass('seleccionado');
+		  		
+		  	});	
 		    });	
 		    
 		 	";

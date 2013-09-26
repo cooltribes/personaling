@@ -319,7 +319,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                           
                           <li class="span3 <?php if ($tipoActivo == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>">
                              <a href="#" title="Elegir este tipo de cuerpo">
-                                  <div class="thumbnail" style="height:450px"> 
+                                  <div class="thumbnail" style="height:410px"> 
                                       <?php echo CHtml::image(Yii::app()->baseUrl . '/images/' . replace_accents($tipo) . '.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
                                       <div class="caption text_align_center CAPS">
                                           <p ><?php echo $tipo; ?></p>
@@ -329,16 +329,16 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                                               <?php
                                               switch ($key){
                                               case 1:
-                                                  echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
+                                                  echo "Tus hombros y caderas están casi alineados y tu cintura no es tan definida";
                                                   break;
                                               case 2:
-                                                  echo "Tu cuerpo es reloj de arena o curvilíneo porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida";
+                                                  echo "Tus hombros y caderas están alineados y tu cintura es muy definida";
                                                   break;
                                               case 4:
                                                   echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
                                                   break;
                                               case 8:
-                                                  echo "Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas";
+                                                  echo "Tu eres proporcionalmente de hombros anchos y caderas pequeñitas";
                                                   break;
                                               }
                                               ?>

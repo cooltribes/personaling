@@ -70,6 +70,18 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['idact']);
 			
 		}
+		if(isset(Yii::app()->session['bsf'])){
+			unset(Yii::app()->session['bsf']);
+			
+		}
+		if(isset(Yii::app()->session['minpr'])){
+			unset(Yii::app()->session['minpr']);
+			
+		}
+		if(isset(Yii::app()->session['maxpr'])){
+			unset(Yii::app()->session['maxpr']);
+			
+		}
 		$a ="a"; 
 		
 		
@@ -80,14 +92,15 @@ class TiendaController extends Controller
 		$arr=array();
 		foreach($dp->getData() as $record) {
 			array_push($arr,$record->getPrecio(false));	
-		 } 
-		
+		 }
+		 
+		Yii::app()->session['bsf']=$arr;
 		$dataProvider = $producto->nueva($a);
 		
 		 
 		$this->render('index',
 		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,'arr'=>$arr
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias
 		));	
 			
 	}
@@ -295,11 +308,17 @@ class TiendaController extends Controller
 		{
 			Yii::app()->session['idColor']=$_POST['idColor'];	
 		}		
-			
+		
+		if(isset($_POST['rango'])) // llega como parametro el id del color presionado
+		{
+			$minmax = explode('A',$_POST['rango']);
+			Yii::app()->session['minpr']=$minmax[0];	
+			Yii::app()->session['maxpr']=$minmax[1];	
+		}
+					
 		if(isset(Yii::app()->session['idact'])) // llega como parametro el id del color presionado
 		{
-			
-			
+					
 			$categoria=Yii::app()->session['idact'];
 		}
 			
@@ -316,7 +335,7 @@ class TiendaController extends Controller
 		
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		
-		if(count($color)==0&&(!isset(Yii::app()->session['idact']))){
+		if(count($color)==0&&(!isset(Yii::app()->session['idact']))&&(!isset(Yii::app()->session['minpr']))&&(!isset(Yii::app()->session['maxpr']))){
 			$a="a";	
 			$dataProvider = $producto->nueva($a);
 			

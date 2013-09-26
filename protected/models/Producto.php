@@ -499,31 +499,32 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria=new CDbCriteria;
 
         $criteria->select = 't.*';
-        $criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
+		$criteria->with = array('precios','preciotallacolor','categorias');
+        //$criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
         $criteria->addCondition('t.estado = 0');
 		$criteria->addCondition('t.status = 1');
      //   $criteria->condition = 't.estado = :uno';
 	//	$criteria->condition = 't.status = :dos';
 	
-
+	$criteria->together = true;
 	
 	if(is_array($idColor)){
 		if(count($idColor)>0){	
 			
 			foreach($idColor as $col){
 				if(count($idColor)==1){
-					$colores='tbl_precioTallaColor.color_id = '.$col;	
+					$colores='color_id = '.$col;	
 					break;			
 				}	
 				
 				if($i==0)
-					$colores.='(tbl_precioTallaColor.color_id = '.$col.' ';
+					$colores.='(color_id = '.$col.' ';
 				
 				if($i>0 && $i<count($idColor)-1)
-					$colores.='OR tbl_precioTallaColor.color_id = '.$col.' ';
+					$colores.='OR color_id = '.$col.' ';
 				
 				if($i==count($idColor)-1)
-					$colores.='OR tbl_precioTallaColor.color_id = '.$col.' )';
+					$colores.='OR color_id = '.$col.' )';
 				
 				$i++;
 						
@@ -535,12 +536,15 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 	
 	if(isset(Yii::app()->session['idact'])){
 		
-		$categoria= 'tbl_categoria_has_tbl_producto.tbl_categoria_id ='.$idact;
+		$categoria= 'tbl_categoria_id ='.$idact;
 		$criteria->addCondition($categoria);
 		
 		
 	}
-	
+	if(isset(Yii::app()->session['minpr'])&&isset(Yii::app()->session['maxpr'])){
+		$rangopr= 'precioDescuento BETWEEN '.Yii::app()->session['minpr'].' AND '.Yii::app()->session['maxpr'];
+		$criteria->addCondition($rangopr);
+	}
 	
 
 		
@@ -548,7 +552,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 			
 	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
-		$criteria->addCondition('tbl_precioTallaColor.cantidad > 0'); // que haya algo en inventario		
+		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
     //    $criteria->params = array(":uno" => "2"); // estado
 	//	$criteria->params = array(":dos" => "1"); // status
 		

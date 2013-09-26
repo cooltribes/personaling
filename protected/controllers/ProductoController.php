@@ -1463,6 +1463,8 @@ class ProductoController extends Controller
 	// importar desde excel
 	public function actionImportar()
 	{
+		$total_prod = 0;
+		$actualizar = 0;
 		$tabla = "";		
 		
 		if( isset($_POST['valido']) ){ // enviaron un archivo
@@ -1547,6 +1549,7 @@ class ProductoController extends Controller
 					
 					if(isset($producto)) // la referencia existe, hay que actualizar los campos
 					{
+						$actualizar++; // suma un producto actualizado
 						$pr_id = $producto->id;	
 							
 						$marca = Marca::model()->findByAttributes(array('nombre'=>$row['D']));
@@ -1656,16 +1659,18 @@ class ProductoController extends Controller
 								
 								$seo->save();
 								
-		$tabla = $tabla.'se agregó el producto con id '.$producto->id;
-		$tabla = $tabla.', de nombre: '.$producto->nombre;
-		$tabla = $tabla.', precio_id: '.$precio->id;
-		$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
-						
+			$tabla = $tabla.'se agregó el producto con id '.$producto->id;
+			$tabla = $tabla.', de nombre: '.$producto->nombre;
+			$tabla = $tabla.', precio_id: '.$precio->id;
+			$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
+							
 						}
 												
 					}
 					else // no existe la referencia, es producto nuevo
 					{
+						$total_prod++; // un producto nuevo
+						
 						$prod = new Producto;
 						
 						$prod->nombre = $row['A'];
@@ -1765,10 +1770,8 @@ class ProductoController extends Controller
 		$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
 						
 							}
-							
 						}
-						
-						
+
 					}
 					
 				}
@@ -1816,19 +1819,19 @@ class ProductoController extends Controller
 					}
 				}
 				
-				
-			}
+			}// foreach
+		
 
-
-		}
+		}// isset
 
 		$this->render('importar_productos',array(
 			'tabla'=>$tabla,
+			'total'=>$total_prod,
+			'actualizar'=>$actualizar,
 		));
 
 	}
 
-	
 	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

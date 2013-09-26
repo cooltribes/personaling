@@ -567,14 +567,21 @@ class OrdenController extends Controller
 		$this->render('recibo', array('factura'=>$factura));
 	}
 	
-	public function actionImprimir($id)
-	{
-		$factura = Factura::model()->findByPk($id);
-		$mPDF1 = Yii::app()->ePdf->mpdf('', 'Letter-L', 0,'',15,15,16,16,9,9,'L');
-		$mPDF1->WriteHTML($this->renderPartial('recibo', array('factura'=>$factura), true));
-		$mPDF1->Output();	
-		
-		//$this->render('recibo', array('factura'=>$factura));
+	public function actionImprimir($id, $documento) {
+
+            if (isset($documento)) {
+                $factura = Factura::model()->findByPk($id);
+                $mPDF1 = Yii::app()->ePdf->mpdf('', 'Letter-L', 0, '', 15, 15, 16, 16, 9, 9, 'L');
+
+                if ($_GET['documento'] == "factura") {
+                    $mPDF1->WriteHTML($this->renderPartial('factura', array('factura' => $factura), true));
+                } else if ($documento == "recibo") {
+                    $mPDF1->WriteHTML($this->renderPartial('recibo', array('factura' => $factura), true));
+                }
+
+                $mPDF1->Output();
+            }
+        //$this->render('recibo', array('factura'=>$factura));
 	}
 	
 	public function actionValidar()

@@ -110,6 +110,12 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
         </table>
         <hr/>
       </section>
+        <?php
+        if(Yii::app()->controller->action->id == 'factura'){
+                    echo CHtml::link('<i class="icon-print"></i> Imprimir', $this->createUrl('imprimir', array('id'=>$factura->id, 'documento' => 'factura')), array('class'=>'btn margin_top pull-right', 'target'=>'_blank'));		 
+        }
+       	 
+       	?>
     </div>
   </div>
 </div>

@@ -72,17 +72,15 @@
             </div>
             </div>
             <!-- Marcas en el look ON -->
-            <div class="span5 marcas">
+            <div class="span5 margin_top_small">
               
               
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
 	                 <li class="span3">  
-	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre); ?>
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60)); ?>
 	                </li>                	
-                <?php } ?>
-
-                
+                <?php } ?>              
                                                       
               </ul>
               
@@ -91,7 +89,7 @@
             <!-- Marcas en el look OFF -->            
           </div>
           <hr/>
-          <h3>Descripcion del look</h3>
+          <h3>Descripción del look</h3>
           <p><?php echo $model->description; ?> </p>
         </article>
         <!-- Columna Principal OFF -->
@@ -348,7 +346,7 @@ $cont=0;
                     <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
                       <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
 
-                      <?php echo CHtml::link($image,array('look/view', 'id'=>$lookre->id)); ?>
+                      <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
                       <?php
                     //"style"=>"display: none",
                         $script = "$('#"."imglook".$lookre->id."').load(function(){

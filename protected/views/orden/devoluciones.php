@@ -24,8 +24,13 @@ $this->breadcrumbs=array(
 	<h1> Devoluciones </h1>  
 	<input type="hidden" id="orden_id" value="<?php echo $orden->id; ?>" />
 	<hr/>
+	<div class="margin_left_small margin_top">
+		<p class="T_xlarge">3312,00</p>
+		<span>Precio total del pepido</span>
+	</div>
+
    <div> 
-     <h3 class="braker_bottom margin_top">Productos</h3>
+     <h3 class="braker_bottom">Productos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
         	<th scope="col"></th>
@@ -178,6 +183,10 @@ $this->breadcrumbs=array(
         	<td colspan="5"><div class="text_align_right"><strong>Monto por envio a devolver Bs.:</strong></div></td>
         	<td  class="text_align_right"><input type="text" readonly="readonly" id="montoenvio" value="000.00" /> </td>
         </tr>
+        <tr>
+        	<td colspan="5"><div class="text_align_right"><strong>Total Bs.:</strong></div></td>
+        	<td  class="text_align_right"> 000,00 </td>
+        </tr>        
     	</table>
     	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning btn-large">Hacer devolucion</a>
     	</div>

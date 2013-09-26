@@ -8,7 +8,7 @@
 <div class="page-header">
 <h1>Tienda </h1>
 <?php 
-
+$arr=Yii::app()->session['bsf'];
 $max=max($arr);
 $min=min($arr);
 $dif=$max-$min;
@@ -30,7 +30,7 @@ foreach($arr as $prd){
 	if($l3<$prd)
 		$c4++;
 }
-
+$max=round($max/100, 0)*100;
 
 ?>
 
@@ -71,6 +71,54 @@ foreach($arr as $prd){
       {pager}
     </div>
     ';
+
+/*
+	$this->widget('zii.widgets.CListView', array(
+    'id'=>'list-auth-items',
+    'dataProvider'=>$dataProvider,      
+    'template'=>$template,
+    'itemView'=>'_datos2',
+     'afterAjaxUpdate'=>" function(id, data) {
+	    							
+						$(document).ready(function() {
+						  // Handler for .ready() called.
+							  
+							var imag;
+							var original;
+							var segunda;
+							
+							$('.producto').hover(function(){
+								if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).hide();
+								
+								$(this).find('img').eq(0).next().show();
+								}
+							},function(){
+								if ($(this).find('img').length > 1){
+								$(this).find('img').eq(0).show();
+								
+								$(this).find('img').eq(0).next().hide();
+								}
+							}); 						
+							
+						});
+	    				
+						} ",
+    'pager'=>array(
+        'class'=>'ext.infiniteScroll.IasPager', 
+        'rowSelector'=>'.producto', 
+        'listViewId'=>'list-auth-items', 
+        'header'=>'',
+        'loaderText'=>'Loading...',
+        
+        'options'=>array(
+            'history'=>false, 
+            'triggerPageTreshold'=>2, 
+            'trigger'=>'Load more'
+        ),
+    )
+));
+*/
 
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
@@ -276,6 +324,73 @@ foreach($arr as $prd){
 		",CClientScript::POS_READY
 	);
 	
+	
+	Yii::app()->clientScript->registerScript('precio',
+		"var ajaxUpdateTimeout;
+		var rango;
+		
+			$( '.filtro-pr' ).click(function() {
+		 		$( '.filtro-pr').hide();
+		 		$(this).show();		
+		 		$('.all-pr').show(); 
+				rango=$(this).attr('id');		 
+				
+				clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('tienda/colores2') . "',
+				data: {
+						'rango':rango}
+				}
+				
+				)
+				},
+		
+		300);
+		return false;
+				
+				
+				
+				
+			});
+			
+			$( '.all-pr' ).click(function() {
+		 		$( '.filtro-pr').show();
+		 		$( '.filtro-pr' ).attr('disabled','false');
+		 		$(this).hide();
+		 		rango=$(this).attr('id'); 	
+				
+				clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('tienda/colores2') . "',
+				data: {
+						'rango':rango}
+				}
+				
+				)
+				},
+		
+		300);
+		return false;
+				
+					 
+			});
+		
+		
+		",CClientScript::POS_READY
+	);
+	
+	
+	
 	?>
         <div class="tienda_iconos" id="uno">
           <?php $this->renderPartial('_view_categorias2',array('categorias'=>$categorias)) ?>
@@ -292,10 +407,11 @@ foreach($arr as $prd){
           <div >
           	<strong>Filtrar por precios:</strong>
           	<ul class="unstyled">
-	            <li class="  "><a class="btn btn-link">Hasta Bs <?php echo $l1?> <span class="color12">(<?php echo $c1?>)</span></a></li>
-	            <li class="  "><a class="btn btn-link">Bs <?php echo $l1?> a Bs <?php echo $l2?>  <span class="color12">(<?php echo $c2?>)</span></a></li>
-	            <li class="  "><a class="btn btn-link">Bs <?php echo $l2?>  a Bs <?php echo $l3?>  <span class="color12">(<?php echo $c3?>)</span></a></li>
-	            <li class="  "><a class="btn btn-link">Más de Bs <?php echo $l3?>  <span class="color12">(<?php echo $c4?>)</span></a></li>
+	            <li class="filtro-pr" id="<?php echo "0A".$l1; ?>"><a class="btn btn-link">Hasta Bs <?php echo $l1?> <span class="color12">(<?php echo $c1?>)</span></a></li>
+	            <li class="filtro-pr" id="<?php echo $l1."A".$l2; ?>"><a class="btn btn-link">Bs <?php echo $l1?> a Bs <?php echo $l2?>  <span class="color12">(<?php echo $c2?>)</span></a></li>
+	            <li class="filtro-pr" id="<?php echo $l2."A".$l3; ?>"><a class="btn btn-link">Bs <?php echo $l2?>  a Bs <?php echo $l3?>  <span class="color12">(<?php echo $c3?>)</span></a></li>
+	            <li class="filtro-pr" id="<?php echo $l3."A".$max; ?>"><a class="btn btn-link">Más de Bs <?php echo $l3?>  <span class="color12">(<?php echo $c4?>)</span></a></li>
+	            <li class="all-pr" id="<?php echo "0A".$max; ?>"><a class="btn btn-link">Todos los rangos</a></li>
             </ul>
 
           </div>
@@ -449,9 +565,14 @@ function randomFrom(arr){
 <script>
 var idColor="";
 var idCategoria="";
+$( ".all-pr" ).hide();
 $(document).ready(function() {
   // Handler for .ready() called.
+ 
   
+	
+	
+	
 	var imag;
 	var original;
 	var segunda;

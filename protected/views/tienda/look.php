@@ -212,7 +212,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Perfil Corporal</h3>
     </div>
-    <div class="modal-body margin_top_medium">
+    <div class="modal-body ">
         
       <?php 
       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -294,26 +294,26 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                           
                           <li class="span3 <?php if ($tipoActivo == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>">
                              <a href="#" title="Elegir este tipo de cuerpo">
-                                  <div class="thumbnail" style="height:450px"> 
+                                  <div class="thumbnail" style="height:380px"> 
                                       <?php echo CHtml::image(Yii::app()->baseUrl . '/images/' . replace_accents($tipo) . '.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
                                       <div class="caption text_align_center CAPS">
                                           <p ><?php echo $tipo; ?></p>
                                       </div>
                                       <caption>
-                                          <p class="  color6 text_align_center ">                  
+                                          <p class="  color6 text_align_center margin_top_small_minus  ">                  
                                               <?php
                                               switch ($key){
                                               case 1:
-                                                  echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
+                                                  echo "Los hombros y caderas están casi alineados y la cintura no es tan definida";
                                                   break;
                                               case 2:
-                                                  echo "Tu cuerpo es reloj de arena o curvilíneo porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida";
+                                                  echo "Los hombros y caderas están alineados y la cintura es muy definida";
                                                   break;
                                               case 4:
-                                                  echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
+                                                  echo "Los hombros y la cintura es pequeñita con unas caderas pronunciadas";
                                                   break;
                                               case 8:
-                                                  echo "Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas";
+                                                  echo "Los hombros proporcionalmente anchos y caderas pequeñitas";
                                                   break;
                                               }
                                               ?>
@@ -332,7 +332,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     
     <?php $this->endWidget(); ?>
         
-  <div class="modal-footer">
+  <div class="modal-footer margin_top_medium_minus">
     <div class="span6">
       <div class="control-group form-inline  pull-left" >
           <div id="campo-nombre">

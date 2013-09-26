@@ -657,20 +657,20 @@ public function actionCategorias2(){
             }
             
             if($filtroPerfil){
-                echo "<pre>";
-                print_r($_POST);
-                echo "</pre>";
-                
-                $userTmp = User::model()->findByPk(Yii::app()->user->id);
-                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
-                $looks = new Look();
-                $looks->match($userTmp);
-                
-                echo "<pre>";
-                print_r($userTmp->profile->attributes);
-                echo "</pre>";
-                
-                exit();
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                
+//                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+//                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+//                $looks = new Look();
+//                $looks->match($userTmp);
+//                
+//                echo "<pre>";
+//                print_r($userTmp->profile->attributes);
+//                echo "</pre>";
+//                
+//                exit();
             }
             
 
@@ -1226,7 +1226,7 @@ public function actionCategorias2(){
                 if($filter){     
                    $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
-                   $response['message'] = 'Filtro encontrado yeah';
+                   $response['message'] = 'Filtro encontrado';
                     
                 }else{
                   $response['status'] = 'error';

@@ -85,6 +85,8 @@ $max=round($max/100, 0)*100;
 							  
 							var imag;
 							var original;
+				
+				
 							var segunda;
 							
 							$('.producto').hover(function(){
@@ -118,8 +120,8 @@ $max=round($max/100, 0)*100;
         ),
     )
 ));
-*/
 
+*/
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
@@ -152,6 +154,7 @@ $max=round($max/100, 0)*100;
 						} ",
 	    'template'=>$template,
 	));    
+	
 	?>
 	<!-- PRODUCTOS OFF -->
 	

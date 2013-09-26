@@ -359,48 +359,32 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         
   <div class="modal-footer">
     <div class="span6">
-      <div class="control-group form-inline  pull-left" id="campo-nombre">
-          <!--[if IE]>
-            <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
-          <![endif]-->
-          <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Nombre del look')); ?>
-          <?php //echo CHtml::error($model, $attribute)?>
-          <button id="save" class="btn btn-danger controls hide">Guardar Perfil</button>
-          <button id="remove" class="btn controls hide">Borrar Perfil</button>
-          <?php
-          $this->widget('bootstrap.widgets.TbButton', array(
-              'buttonType' => 'button',
-              'label' => 'Guardar',
-              'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-              //'size' => 'large', // null, 'large', 'small' or 'mini'
-              //'block' => 'true',
-              'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')
-          ));
-          ?>    
+      <div class="control-group form-inline  pull-left" >
+          <div id="campo-nombre">
+            <!--[if IE]>
+              <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
+            <![endif]-->
+            <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Nombre del perfil')); ?>
+            <?php //echo CHtml::error($model, $attribute)?>
+
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'button',
+                'label' => 'Guardar y Buscar',
+                'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size' => 'large', // null, 'large', 'small' or 'mini'
+                //'block' => 'true',
+                'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')
+            ));          
+            ?> 
+        </div>
+        <button id="save" class="btn btn-danger controls hide">Guardar Perfil</button>          
+        <button id="remove" class="btn controls hide">Borrar Perfil</button>
+        <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
       </div>         
     
-<<<<<<< HEAD
     </div>
     <div class="span2">
-=======
-    <button id="save" class="btn btn-danger pull-left hide">Guardar Perfil</button>
-    <button id="remove" class="btn pull-left hide">Borrar Perfil</button>
-    
-    
-    <?php
-    $this->widget('bootstrap.widgets.TbButton', array(
-        'buttonType' => 'button',
-        'label' => 'Guardar y Buscar',
-        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-        //'size' => 'large', // null, 'large', 'small' or 'mini'
-        //'block' => 'true',
-        'htmlOptions' => array('id' => 'save-search', 'class' => 'pull-left span2'),//'onclick' => 'js:$("#newFilter-form").submit();')
-    ));
-    ?>    
-    
-    <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
-    
->>>>>>> 717dd5a88176a1adee44dd6e8181a67af8237d93
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
   </div>                    

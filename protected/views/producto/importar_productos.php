@@ -52,7 +52,7 @@ $this->breadcrumbs=array(
 					?>
 	              	
 	              	<div class="margin_top_small">
-			            
+	              		    
 			            <?php $this->widget('bootstrap.widgets.TbButton', array(
 							'buttonType'=>'submit',
 							'type'=>'danger',
@@ -69,10 +69,12 @@ $this->breadcrumbs=array(
 
 <hr/>
 
-
 <?php
 
- echo $tabla;	
-
-
+if($total>0 || $actualizar>0){
+	echo "<h3> Se importaron ".$total." productos. </h3>";
+	echo "</br>";
+	echo "<h3> Se actualizaron ".$actualizar." productos. </h3>";
+	echo "</br></br>".$tabla;
+}
 ?>

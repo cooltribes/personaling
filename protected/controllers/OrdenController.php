@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio'),
+				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio','createexcel'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -1238,6 +1238,127 @@ class OrdenController extends Controller
 		}	
 
 	}
+
+	public function actionCreateExcel(){
+		
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("plantilla-masiva-prepagada")
+		                         ->setSubject("Plantilla masiva prepagada")
+		                         ->setDescription("Plantilla masiva prepagada creada a través de la aplicación.")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+/*
+			// Add some data
+			$objPHPExcel->setActiveSheetIndex(0)
+			            ->setCellValue('A1', 'Hello')
+			            ->setCellValue('B2', 'world!')
+			            ->setCellValue('C1', 'Hello')
+			            ->setCellValue('D2', 'world!');
+*/
+			// creando el encabezado
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'REMITENTE')
+						->setCellValue('A2', 'Persona Contacto')
+						->setCellValue('B2', 'Teléfono')
+						->setCellValue('C2', 'Dirección')
+						->setCellValue('D1', 'DESTINATARIO')
+						->setCellValue('D2', 'Ciudad Destino')
+						->setCellValue('E2', 'Destinatarios')
+						->setCellValue('F2', 'Persona Contacto')
+						->setCellValue('G2', 'R.I.F/C.I')
+						->setCellValue('H2', 'Teléfono')
+						->setCellValue('I2', 'Dirección')
+						->setCellValue('J1', 'DATOS DEL ENVIO')
+						->setCellValue('J2', 'Referencia')
+						->setCellValue('K2', 'Pzas')
+						->setCellValue('L2', 'Peso Ref (Kg) ')
+						->setCellValue('M2', 'Tipo de Envio')
+						->setCellValue('N2', 'Descripción de Contenido')
+						->setCellValue('O2', 'Valor Declarado (Bs)')
+						->setCellValue('Q1', 'Nota:')
+						->setCellValue('Q2', 'En Tipo de Envio solo debe escribir D ó M')
+						->setCellValue('S1', 'D = Documento')
+						->setCellValue('S2', 'M = Mercancia');	
+			// encabezado end			
+		 
+		 	$ordenes = Orden::model()->findAllByAttributes(array('estado'=>3)); // pago confirmado
+		 	$fila = 3;
+			
+		 	// el remitente siempre será el mismo por tanto		 	
+		 	foreach($ordenes as $orden)
+			{
+				if($orden->peso < 5){
+					$dir = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+					$prov = Provincia::model()->findByPk($dir->provincia_id);
+					$usuario = User::model()->findByPk($orden->user_id);
+					/*
+					$peso = 0;
+					$orden_ptc = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+					
+					foreach($orden_ptc as $uno)
+					{
+						if($uno->look_id != 0){ // eslook
+									
+						}
+						else{
+							$ptaco = Preciotallacolor::model()->findByPk($uno->preciotallacolor_id);
+							$producto = Producto::model()->findByPk($ptaco->producto_id);
+						
+							$peso += $producto->peso;
+						}
+					}*/
+				
+					$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , 'PERSONALING, C.A.') // Persona Contacto
+							->setCellValue('B'.$fila , '04144239902') // Teléfono
+							->setCellValue('C'.$fila , 'AV BOLIVAR C.C. CM, PISO 2 OFICINA 210. MUNICIPIO MARIÑO, PORLAMAR, NUEVA ESPARTA. 6301') // Direccion
+							->setCellValue('D'.$fila , $prov->nombre) // ciudad destino
+							->setCellValue('E'.$fila , $usuario->profile->first_name." ".$usuario->profile->first_name) // destinatario
+							->setCellValue('F'.$fila , $usuario->profile->first_name." ".$usuario->profile->first_name) // persona contacto
+							->setCellValue('G'.$fila , $usuario->profile->cedula) // cedula
+							->setCellValue('H'.$fila , $usuario->profile->tlf_celular) // telefono
+							->setCellValue('I'.$fila , $dir->dirUno.", ".$dir->dirDos) // Direccion
+							->setCellValue('J'.$fila , $orden->id) // referencia
+							->setCellValue('K'.$fila , '1') // Piezas
+							->setCellValue('L'.$fila , $orden->peso) // Peso ref
+							->setCellValue('M'.$fila , 'M') // tipo de envio
+							->setCellValue('N'.$fila , 'Ropa') // Descripcion
+							->setCellValue('O'.$fila , ($orden->total - $orden->envio)); // valor declarado
+					$fila++;
+						
+				}// orden
+			} // foreach
+		 
+			// Rename worksheet
+		//	$objPHPExcel->getActiveSheet()->setTitle('plantillamasivaprepagada');
+			 
+			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+			$objPHPExcel->setActiveSheetIndex(0);
+
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="plantillamasivaprepagada.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			      Yii::app()->end();
+				  
+	}
+
 
 	// Uncomment the following methods and override them if needed
 	/*

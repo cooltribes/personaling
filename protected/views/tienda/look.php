@@ -187,30 +187,6 @@ $this->renderPartial('_look',array(
 </div>
   
 <!-- /container -->
-
-<style>
-    #modalFiltroPerfil{
-        width: 880px;
-        left: 40%;
-        top: -100%;
-    }    
-    #modalFiltroPerfil.in{
-        top: 38%;
-    }
-    #modalFiltroPerfil.in > .modal-body{
-        max-height: 580px;
-    }
-    
-    img.loadingImg{
-        margin: 0;
-        padding: 0;
-    }
-    
-</style>
-
-
-
-
 <?php
 function replace_accents($string) 
 { 
@@ -432,6 +408,8 @@ function refresh()
                    $('#tienda_looks').html(data.div);
                    // setTimeout(\"$('#dialogColor').modal('hide') \",3000);
                 }
+                
+                
  
             } ",
             ))?>;

@@ -836,6 +836,7 @@ class BolsaController extends Controller
 							$orden->detalle_id = $detalle->id;
 							$orden->direccionEnvio_id = $dirEnvio->id;
 							$orden->tipo_guia = $_POST['tipo_guia'];
+							$orden->peso = $_POST['peso'];
 							
 							if($detalle->nTarjeta!="") // Pagó con TDC
 							{

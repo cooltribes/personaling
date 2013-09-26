@@ -790,22 +790,147 @@ public function actionCategorias(){
 		}
 	}
 	public function actionAdmin()
-	{
+        {
+              
+            
+            $model = new Look;
+            if (isset($_POST['buscar_look'])) {
+                $model->title = $_POST['buscar_look'];
+            }
+            $dataProvider = $model->lookAdminAprobar();
+            
+            
+            
+            /**********************   Para Filtros   *************************/
+            //Filtros personalizados
+            $filters = array();
+            
+            //Para guardar el filtro
+            $filter = new Filter;
+            
+            
+           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+              $_POST = $_SESSION['todoPost'];
+           }            
+            
+            if(isset($_POST['dropdown_filter'])){  
+                                
+                $_SESSION['todoPost'] = $_POST;          
+                
+                //Validar y tomar sólo los filtros válidos
+                for($i=0; $i < count($_POST['dropdown_filter']); $i++){
+                    if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
+                            && trim($_POST['textfield_value'][$i]) != '' && $_POST['dropdown_relation'][$i]){
 
-		
-		$model = new Look; 
-if(isset($_POST['buscar_look']))
-		{
-			$model->title = $_POST['buscar_look'];
-		}		
-		$dataProvider = $model->lookAdminAprobar();
-		$this->render('admin',
-		array('model'=>$model,
-			'dataProvider'=>$dataProvider,
-			'look'=>$model,
-		));	
+                        $filters['fields'][] = $_POST['dropdown_filter'][$i];
+                        $filters['ops'][] = $_POST['dropdown_operator'][$i];
+                        $filters['vals'][] = $_POST['textfield_value'][$i];
+                        $filters['rels'][] = $_POST['dropdown_relation'][$i];                    
 
-	}// fin	
+                    }
+                }     
+                //Respuesta ajax
+                $response = array();
+                
+                if (isset($filters['fields'])) {                    
+                
+                    $dataProvider = $model->buscarPorFiltros($filters);                    
+                     
+                     //si va a guardar
+                     if (isset($_POST['save'])){                        
+                         
+                         //si es nuevo
+                         if (isset($_POST['name'])){
+                            
+                            $filter = Filter::model()->findByAttributes(
+                                    array('name' => $_POST['name'], 'type' => '4') //Filtros para ventas
+                                    ); 
+                            
+                            if (!$filter) {
+                                $filter = new Filter;
+                                $filter->name = $_POST['name'];
+                                $filter->type = 4;
+                                if ($filter->save()) {
+                                    for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                        $filterDetails[] = new FilterDetail();
+                                        $filterDetails[$i]->id_filter = $filter->id_filter;
+                                        $filterDetails[$i]->column = $filters['fields'][$i];
+                                        $filterDetails[$i]->operator = $filters['ops'][$i];
+                                        $filterDetails[$i]->value = $filters['vals'][$i];
+                                        $filterDetails[$i]->relation = $filters['rels'][$i];
+                                        $filterDetails[$i]->save();
+                                    }
+                                    
+                                    $response['status'] = 'success';
+                                    $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';
+                                    $response['idFilter'] = $filter->id_filter;                                    
+                                    
+                                }
+                                
+                            //si ya existe
+                            } else {
+                                $response['status'] = 'error';
+                                $response['message'] = 'No se pudo guardar el filtro, el nombre <b>"'.
+                                        $filter->name.'"</b> ya existe'; 
+                            }
+
+                          /* si esta guardadndo uno existente */
+                         }else if(isset($_POST['id'])){
+                            
+                            $filter = Filter::model()->findByPk($_POST['id']); 
+
+                            if ($filter) {
+                                
+                                //borrar los existentes
+                                foreach ($filter->filterDetails as $detail){
+                                    $detail->delete();
+                                }
+                                
+                                //Crear los nuevos
+                                for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                    $filterDetails[] = new FilterDetail();
+                                    $filterDetails[$i]->id_filter = $filter->id_filter;
+                                    $filterDetails[$i]->column = $filters['fields'][$i];
+                                    $filterDetails[$i]->operator = $filters['ops'][$i];
+                                    $filterDetails[$i]->value = $filters['vals'][$i];
+                                    $filterDetails[$i]->relation = $filters['rels'][$i];
+                                    $filterDetails[$i]->save();
+                                }
+
+                                $response['status'] = 'success';
+                                $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';                                
+                            //si NO existe el ID
+                            } else {
+                                $response['status'] = 'error';
+                                $response['message'] = 'El filtro no existe'; 
+                            }
+                             
+                         }
+                        
+                         echo CJSON::encode($response); 
+                         Yii::app()->end();
+                         
+                     }//fin si esta guardando
+
+                //si no hay filtros válidos    
+                }else if (isset($_POST['save'])){
+                    $response['status'] = 'error';
+                    $response['message'] = 'No has seleccionado ningún criterio para filtrar'; 
+                    echo CJSON::encode($response); 
+                    Yii::app()->end();
+                }
+            }
+            
+            
+            
+            $this->render('admin', array('model' => $model,
+                'dataProvider' => $dataProvider,
+                'look' => $model,
+            ));
+               
+         }// fin	
 	public function actionCreate3()
 	{
 		$model=new Look;

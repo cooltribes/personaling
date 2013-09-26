@@ -16,6 +16,7 @@
  * @property string $created_on
  * @property integer $tipo
  * @property integer $user_id
+ * @property integer $campana_id
  * @property integer $status
  * @property integer $view_counter 
  * @property integer $url_amigable
@@ -23,6 +24,7 @@
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
  * @property Producto[] $tblProductos
+ * @property Campana $campana
  */
 class Look extends CActiveRecord
 {
@@ -638,6 +640,213 @@ class Look extends CActiveRecord
 			return Yii::app()->baseUrl."/look/".$this->id;
 		
 	}
+        
+         /**
+         * Buscar por todos los filtros dados en el array $filters
+         */
+        public function buscarPorFiltros($filters) {
+//            echo "<pre>";
+//            print_r($filters);
+//            echo "</pre>";
+//            Yii::app()->end();
+
+            $criteria = new CDbCriteria;
+            
+            $criteria->with = array();
+            $criteria->select = array();
+            //$criteria->select[] = "t.*";
+            
+            for ($i = 0; $i < count($filters['fields']); $i++) {
+                
+                $column = $filters['fields'][$i];
+                $value = $filters['vals'][$i];
+                $comparator = $filters['ops'][$i];
+                
+                if($i == 0){
+                   $logicOp = 'AND'; 
+                }else{                
+                    $logicOp = $filters['rels'][$i-1];                
+                }                  
+                
+                
+                if($column == 'campana')
+                {
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('campana.nombre', $value,
+                        true, $logicOp);
+                    
+                    
+                    $criteria->with[] = 'campana';
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'precio')
+                {
+                    $criteria->with['productos'] = array(
+                        'select'=> false,
+                        'joinType'=>'INNER JOIN',
+                        'condition'=>'productos.nombres',                        
+                    );
+                    
+                    $criteria->with['productos.precios'] = array(
+                        'select'=> false,
+                        'joinType'=>'INNER JOIN',
+                        //'condition'=>'productos.nombres',                        
+                    );
+                    
+                    $criteria->addCondition('(SELECT IFNULL(SUM(precios.precioDescuento), 0)) '
+                                        .$comparator.' '.$value.'');
+                    
+                    $criteria->group .= 't.id';
+                    
+                    continue;
+                }
+                
+                if($column == 'codigo')
+                {
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare($column, $value,
+                        true, $logicOp);
+                    
+                    continue;
+                }
+                
+                if($column == 'categoria')
+                {
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('categorias.nombre', $value,
+                        true, $logicOp);
+                    
+                    if(!in_array('categorias', $criteria->with))
+                    {
+                        $criteria->with[] = 'categorias';
+                    }
+                    
+                    continue;
+                }
+                
+                if($column == 'sku')
+                {
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('preciotallacolor.sku', $value,
+                        true, $logicOp);
+                    
+                    if(!in_array('preciotallacolor', $criteria->with))
+                    {
+                        $criteria->with[] = 'preciotallacolor';
+                    }
+                   
+                    
+                    continue;
+                }
+                
+                if($column == 'precioVenta' || $column == 'precioDescuento')
+                {
+                    
+                    $criteria->compare('precios.'.$column, $comparator." ".$value,
+                        false, $logicOp);
+                    
+                    if(!in_array('precios', $criteria->with))
+                    {
+                        $criteria->with[] = 'precios';
+                    }
+                    
+                    continue;
+                }
+                
+                
+                if($column == 'total')
+                {
+                                       
+                    $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
+                            .$comparator.' '.$value.'');
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'disponible')
+                {
+                    
+                    $criteria->addCondition('
+                        IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
+                          - 
+                          IFNULL(
+                         (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                          where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                          orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
+                         0) '
+                            .$comparator.' '.$value.'', $logicOp);
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'vendida')
+                {
+                   
+                    $criteria->addCondition('(IFNULL(
+                        (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
+                        0)) '
+                    .$comparator.' '.$value.'', $logicOp);
+                    
+                    
+                    continue;
+                    
+                }                
+                
+                if($column == 'ventas')
+                {
+                    $criteria->addCondition('IFNULL(
+                        (select sum(o_ptc.precio * o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
+                        0)'
+                    .$comparator.' '.$value.'', $logicOp);                   
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'created_on')
+                {
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
+                
+                $criteria->compare("t.".$column, $comparator." ".$value,
+                        false, $logicOp);
+                
+            }
+                                   
+             
+            //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
+            $criteria->together = true;
+            //$criteria->compare('t.status', '1'); //siempre los no eliminados
+            
+//            echo "Criteria:";
+//            
+//            echo "<pre>";
+//            print_r($criteria->toArray());
+//            echo "</pre>"; 
+//            exit();
+
+
+            return new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+            ));
+       }
 
 
 }

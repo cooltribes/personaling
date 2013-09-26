@@ -116,9 +116,9 @@ class AdminController extends Controller
                         $subject = 'Registro Personaling';
                         $body = '<h2>Te damos la bienvenida a Personaling.</h2>' . 
                                 '<br/>Tu contraseña provisional es: <strong>'.$originalPass.'</strong><br/>' .
-                                'Puedes cambiarla accediento a tu cuenta y luego haciendo click '. 
-                                'en la opción Cambiar Contraseña.<br/><br/>Recibes este correo porque se'.
-                                'ha registrado tu dirección en Personaling.'. 
+                                'Puedes cambiarla accediendo a tu cuenta y luego haciendo click '. 
+                                'en la opción Cambiar Contraseña.<br/><br/>Recibes este correo porque se '.
+                                'ha registrado tu dirección en Personaling. '. 
                                 'Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/>  <a href="'.$activation_url.'">Haz click aquí</a>';
                         $params = array('subject' => $subject, 'body' => $body);
                         $message->subject = $subject;

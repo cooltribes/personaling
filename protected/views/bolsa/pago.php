@@ -376,7 +376,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         Yii::app()->getSession()->add('total',$t);
 						Yii::app()->getSession()->add('seguro',$seguro);
 						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
-
+						Yii::app()->getSession()->add('peso',$peso_total);
+						
                         echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   </td>

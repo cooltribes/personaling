@@ -20,6 +20,7 @@
  * 1 - Filtro para Ventas
  * 2 - Filtro para Productos
  * 3 - Filtro para Admin de Usuarios
+ * 4 - Filtro para Admin de looks
  * 0 - Filtro por perfil, perteneciente a un usuario
  */
 

@@ -676,20 +676,20 @@ public function actionCategorias2(){
             }
             
             if($filtroPerfil){
-                echo "<pre>";
-                print_r($_POST);
-                echo "</pre>";
-                
-                $userTmp = User::model()->findByPk(Yii::app()->user->id);
-                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
-                $looks = new Look();
-                $looks->match($userTmp);
-                
-                echo "<pre>";
-                print_r($userTmp->profile->attributes);
-                echo "</pre>";
-                
-                exit();
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                
+//                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+//                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+//                $looks = new Look();
+//                $looks->match($userTmp);
+//                
+//                echo "<pre>";
+//                print_r($userTmp->profile->attributes);
+//                echo "</pre>";
+//                
+//                exit();
             }
             
 
@@ -700,21 +700,44 @@ public function actionCategorias2(){
 			
 			
 			if (isset($_POST['check_ocasiones'])){
-			$condicion = "";	
-			$criteria->with = array('categorias');	
-			$criteria->together = true;
-			foreach ($_POST['check_ocasiones'] as $categoria_id)
-				$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
-			$condicion = substr($condicion, 0, -3);
-			$criteria->addCondition($condicion);
+				$condicion = "";	
+				$criteria->with = array('categorias');	
+				$criteria->together = true;
+				foreach ($_POST['check_ocasiones'] as $categoria_id)
+					$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
+				$condicion = substr($condicion, 0, -3);
+				$criteria->addCondition($condicion);
 			}
 			if (isset($_POST['check_shopper'])){
-			$condicion = "";		
-			foreach ($_POST['check_shopper'] as $user_id)
-				$condicion .= "user_id = ".$user_id." OR ";
-			$condicion = substr($condicion, 0, -3);
-			$criteria->addCondition($condicion);				
+				$condicion = "";		
+				foreach ($_POST['check_shopper'] as $user_id)
+					$condicion .= "user_id = ".$user_id." OR ";
+				$condicion = substr($condicion, 0, -3);
+				$criteria->addCondition($condicion);				
 			}
+                        
+                        if($filtroPerfil){
+                            $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                            $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+                            $looks = new Look();
+                            $ids = $looks->match($userTmp); 
+                            $ids = $ids->getData();
+                            echo "ids: <br>";
+                            echo "<pre>";
+                            print_r($ids);
+                            echo "</pre>";
+                            
+                            $criteria->addInCondition('t.id', $ids);
+                            
+                            echo "Criteria:";
+
+                            echo "<pre>";
+                            print_r($criteria->toArray());
+                            echo "</pre>";
+                                exit();
+                            
+                        }
+                        
                         
                         
                         
@@ -1245,7 +1268,7 @@ public function actionCategorias2(){
                 if($filter){     
                    $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
-                   $response['message'] = 'Filtro encontrado yeah';
+                   $response['message'] = 'Filtro encontrado';
                     
                 }else{
                   $response['status'] = 'error';

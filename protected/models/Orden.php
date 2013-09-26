@@ -11,8 +11,14 @@
  * 8 - Entregado
  * 9 - Devuelto
  * 10 - Parcialmente devuelto
+ * 
+ * --------------
+ * Tipo de Guia
+ * --------------
+ * 0 - Envio Estandar
+ * 1 - Entre 0.5 kg y 5 kg
+ * 2 - Mayor a 5 kg
  * */
-
 
 /**
  * This is the model class for table "{{orden}}".
@@ -66,12 +72,12 @@ class Orden extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia', 'required'),
+			array('bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia, peso', 'required'),
 			array('estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia', 'numerical', 'integerOnly'=>true),
 			array('subtotal, descuento, envio, iva, descuentoRegalo, total, seguro', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tracking, seguro, tipo_guia', 'safe', 'on'=>'search'),
+			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tracking, seguro, tipo_guia, peso', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -114,7 +120,8 @@ class Orden extends CActiveRecord
 			'direccionEnvio_id' => 'Direccion Envio',
 			'tracking' => 'Número de guía',
 			'seguro' => 'Seguro',
-			'tipo_guia' => 'Tipo de guía'
+			'tipo_guia' => 'Tipo de guía',
+			'peso' => 'Peso'
 		);
 	}
 
@@ -145,6 +152,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
+		$criteria->compare('peso',$this->peso);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

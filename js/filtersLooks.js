@@ -5,9 +5,9 @@
 
 /*
  * 
- * poner icono de loading, bloquear boton - mientras se guarda un filtro, y mientras se borra.
- * al cerrar modal con campos seteados, se busca o no?
+ * poner icono de loading 
  * Poner titulo en modal
+ * campos en class error cuando intente guardar con campos en blanco.
  * 
  */
 
@@ -27,9 +27,16 @@
 
 /*Poner en cero los valores*/
 function limpiarLocal(){
+    console.log("Limpiando");
+    console.log(valores);
+    
     $.each(valores, function(i, elem){
-       elem = 0;
+        //console.log("Primero" + elem);
+        valores[i] = 0;
+        //console.log("Despues" + elem);
     });
+    console.log(valores);
+    
 }
 /*Guarda los campos actuales del modal en variables locales*/
 function guardarLocal(){
@@ -122,16 +129,16 @@ function getFilter(){
                             valores[5] = data.filter.tipo_cuerpo;                                                    
                             
                             //mostrarlos en los campos del modal
-                            cargarLocal();
+                            //cargarLocal();
                             //activar para perfil cargado
                             activarModalNuevo(false);
                             //Mostrar el boton de editar
                             $('a.editar-filtro').parent('div').show(); 
                             
                             //Buscar
-                            //refresh();           
+                            refresh();           
                         }
-                        console.log(data.message);
+                        //console.log(data.message);
                     },
                     error: function( jqXHR, textStatus, errorThrown){
                         console.log(jqXHR);
@@ -148,6 +155,7 @@ function getFilter(){
        
        activarModalNuevo(true);
        
+       limpiarLocal();       
        //Buscar para actualizar sin los filtros de perfiles
        refresh();
     }   
@@ -204,11 +212,12 @@ function saveFilter(nuevo) {
                                  //Mostrar el boton de editar
                                 $('a.editar-filtro').parent('div').show();
                             }
+                            //Guardar en local
+                            guardarLocal(); 
                             
                             refresh();
                             
-                            //Guardar en local
-                            guardarLocal();                            
+                                                       
                            
                         }
 //                        console.log(data.status);
@@ -257,19 +266,21 @@ function removeFilter(URL){
                     
                     if(data.status === 'success'){                       
                         
-                        $('#all_filters').find("[value='"+ID+"']").remove();
-                        //clearFilters();   
+                        $('#all_filters').find("[value='"+ID+"']").remove();  
                         clearFields();
+                        limpiarLocal();
                         activarModalNuevo(true); 
                         //Ocultar el boton editar
                         $('a.editar-filtro').parent('div').hide();
                         
                         $("#modalFiltroPerfil").modal('hide');
                         
+                        refresh();
+                        
                     }
                     console.log(data.status);
                     console.log(data.message);
-                   showAlert(data.status, data.message);                    
+                    showAlert(data.status, data.message);                    
                     
                 },
                 error: function( jqXHR, textStatus, errorThrown){

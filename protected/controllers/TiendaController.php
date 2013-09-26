@@ -697,6 +697,29 @@ public function actionCategorias2(){
 			$criteria->addCondition($condicion);				
 			}
                         
+                        if($filtroPerfil){
+                            $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                            $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+                            $looks = new Look();
+                            $ids = $looks->match($userTmp); 
+                            $ids = $ids->getData();
+                            echo "ids: <br>";
+                            echo "<pre>";
+                            print_r($ids);
+                            echo "</pre>";
+                            
+                            $criteria->addInCondition('t.id', $ids);
+                            
+                            echo "Criteria:";
+
+                            echo "<pre>";
+                            print_r($criteria->toArray());
+                            echo "</pre>";
+                                exit();
+                            
+                        }
+                        
+                        
                         
                         
 			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');

@@ -37,29 +37,33 @@
           <fieldset>
             <legend >Información de tu Cuenta </legend>
             <p>Los siguientes campos marcados están públicamente abiertos:</p>
-            <?php $select = array(
-            User::PRIVACIDAD_DATOS_BASICOS=>(User::PRIVACIDAD_DATOS_BASICOS&$model->privacy),
-            User::PRIVACIDAD_AVATAR=>(User::PRIVACIDAD_AVATAR & $model->privacy),
-            User::PRIVACIDAD_LOOKS=>(User::PRIVACIDAD_LOOKS & $model->privacy),
-            User::PRIVACIDAD_SHOPPERS=>(User::PRIVACIDAD_SHOPPERS & $model->privacy),
-			); 
-			//print_r($model);
-			//print_r($select); ?>
-            <?php echo CHtml::checkBoxList('privacidad',$select,array(
-	            User::PRIVACIDAD_DATOS_BASICOS=>'Nombre y Apellidos',
-	            User::PRIVACIDAD_AVATAR=>'Imagen de tu Perfil',
-	            User::PRIVACIDAD_LOOKS=>'Looks que te encantan',
-	            User::PRIVACIDAD_SHOPPERS=>'Personal Shopper que sigues',
-				)
-			); ?>
-           
-            
-            <div class="form-actions"> <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'label'=> 'Guardar',
-    		'buttonType' => 'submit',
-    		'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-    		'size'=>'large', // null, 'large', 'small' or 'mini'
-)); ?> </div>
+            <div class="margin_left_medium">
+              <?php $select = array(
+              User::PRIVACIDAD_DATOS_BASICOS=>(User::PRIVACIDAD_DATOS_BASICOS&$model->privacy),
+              User::PRIVACIDAD_AVATAR=>(User::PRIVACIDAD_AVATAR & $model->privacy),
+              User::PRIVACIDAD_LOOKS=>(User::PRIVACIDAD_LOOKS & $model->privacy),
+              User::PRIVACIDAD_SHOPPERS=>(User::PRIVACIDAD_SHOPPERS & $model->privacy),
+  			       ); 
+  			//print_r($model);
+  			//print_r($select); ?>
+              <?php echo CHtml::checkBoxList('privacidad',$select,array(
+  	            User::PRIVACIDAD_DATOS_BASICOS=>'Nombre y Apellidos',
+  	            User::PRIVACIDAD_AVATAR=>'Imagen de tu Perfil',
+  	            User::PRIVACIDAD_LOOKS=>'Looks que te encantan',
+  	            User::PRIVACIDAD_SHOPPERS=>'Personal Shopper que sigues',
+  				)
+  			); ?>
+             
+              
+            </div>
+            <div class="form-actions">
+                   <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=> 'Guardar',
+                'buttonType' => 'submit',
+                'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                'size'=>'large', // null, 'large', 'small' or 'mini'
+                )); ?>
+          </div>
           </fieldset>
           
           

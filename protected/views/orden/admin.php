@@ -206,13 +206,24 @@ $template = '{summary}
       <select class="span3">
         <option>Acciones en lote</option>
         <option>Activar</option>
-        <option>Inactivar</option>
+        <option>Inactivar</option> 
         <option>Borrar usuarios</option>
-      </select>
-    </div>
+      </select> 
+    </div> 
     <div class="span1"><a href="#" title="Procesar" class="btn btn-danger">Procesar</a></div>
     <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-block btn-info">Exportar a excel</a></div>
-    <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-block btn-info">Importar envíos masivos</a></div>
+    
+    <div class="span2"> 
+	<?php $this->widget('bootstrap.widgets.TbButton', array( 
+	    'buttonType' => 'link',
+	    'label'=>'Importar envíos masivos', 
+	    'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+	    'size'=>'normal', // null, 'large', 'small' or 'mini'
+	    'block'=>'true',
+	    'url' => 'importarmasivo',
+	)); ?>    	
+    </div>
+    
     <div class="span3"><a href="<?php echo Yii::app()->baseUrl."/orden/createexcel" ?>" title="Generar Guías Masivas para Zoom" class="btn btn-info">Generar Guías Masivas para Zoom</a></div>
   </div>
 </div>

@@ -336,8 +336,9 @@ $max=round($max/100, 0)*100;
 		 		$( '.filtro-pr').hide();
 		 		$(this).show();		
 		 		$('.all-pr').show(); 
-				rango=$(this).attr('id');		 
-				
+				rango=$(this).attr('id');	
+				$('#title_filtrar_precio').text('Viendo:');
+				console.log('hola');
 				clearTimeout(ajaxUpdateTimeout);
 			
 			ajaxUpdateTimeout = setTimeout(function () {
@@ -366,6 +367,7 @@ $max=round($max/100, 0)*100;
 		 		$( '.filtro-pr' ).attr('disabled','false');
 		 		$(this).hide();
 		 		rango=$(this).attr('id'); 	
+		 		$('#title_filtrar_precio').text('Filtrar por precios:');
 				
 				clearTimeout(ajaxUpdateTimeout);
 			
@@ -408,14 +410,14 @@ $max=round($max/100, 0)*100;
         <!-- Rango de precio ON -->
 
           <div >
-          	<strong>Filtrar por precios:</strong>
+          	<strong id="title_filtrar_precio">Filtrar por precios:</strong>
           	<ul class="unstyled">
 	            <li class="filtro-pr" id="<?php echo "0A".$l1; ?>"><a class="btn btn-link">Hasta Bs <?php echo $l1?> <span class="color12">(<?php echo $c1?>)</span></a></li>
 	            <li class="filtro-pr" id="<?php echo $l1."A".$l2; ?>"><a class="btn btn-link">Bs <?php echo $l1?> a Bs <?php echo $l2?>  <span class="color12">(<?php echo $c2?>)</span></a></li>
 	            <li class="filtro-pr" id="<?php echo $l2."A".$l3; ?>"><a class="btn btn-link">Bs <?php echo $l2?>  a Bs <?php echo $l3?>  <span class="color12">(<?php echo $c3?>)</span></a></li>
 	            <li class="filtro-pr" id="<?php echo $l3."A".$max; ?>"><a class="btn btn-link">Más de Bs <?php echo $l3?>  <span class="color12">(<?php echo $c4?>)</span></a></li>
-	            <li class="all-pr" id="<?php echo "0A".$max; ?>"><a class="btn btn-link">Todos los rangos</a></li>
             </ul>
+	        <div class="all-pr" id="<?php echo "0A".$max; ?>"><a class="btn btn-link"><i class="icon-chevron-left"></i>Ver cualquiera</a></div>
 
           </div>
 

@@ -722,23 +722,28 @@ public function actionCategorias2(){
                             $looks = new Look();
                             $ids = $looks->match($userTmp); 
                             $ids = $ids->getData();
-                            echo "ids: <br>";
-                            echo "<pre>";
-                            print_r($ids);
-                            echo "</pre>";
+//                            echo "Vector de Ids: <br>";
+//                            echo "<pre>";
+//                            print_r($ids);
+//                            echo "</pre>";
+                            $inValues = array();
                             
-                            $criteria->addInCondition('t.id', $ids);
+                            foreach ($ids as $row){
+                                $inValues[] = $row["id"];
+                            }
+                                
                             
-                            echo "Criteria:";
-
-                            echo "<pre>";
-                            print_r($criteria->toArray());
-                            echo "</pre>";
-                                exit();
                             
-                        }
-                        
-                        
+                            $criteria->addInCondition('t.id', $inValues);
+                            
+//                            echo "Criteria:";
+//
+//                            echo "<pre>";
+//                            print_r($criteria->toArray());
+//                            echo "</pre>";
+                                //exit();
+                            
+                        }       
                         
                         
 			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');

@@ -8,7 +8,8 @@
  * poner icono de loading 
  * Poner titulo en modal
  * campos en class error cuando intente guardar con campos en blanco.
- * 
+ * bloquear tambien el campo al guardar nuevo
+ * reiniciar busqueda al cambiar a -- Tus Perfiles --
  */
 
 
@@ -48,6 +49,7 @@ function guardarLocal(){
     //console.log(valores);
 }
 
+/*Cargar los valores del vector local dentro de los campos del modal*/
 function cargarLocal(){
     console.log("Cargando");
     
@@ -135,6 +137,7 @@ function getFilter(){
                             //Mostrar el boton de editar
                             $('a.editar-filtro').parent('div').show(); 
                             
+                            
                             //Buscar
                             refresh();           
                         }
@@ -155,7 +158,8 @@ function getFilter(){
        
        activarModalNuevo(true);
        
-       limpiarLocal();       
+       limpiarLocal();      
+       window.console.info("Buscando");
        //Buscar para actualizar sin los filtros de perfiles
        refresh();
     }   

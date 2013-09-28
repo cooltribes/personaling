@@ -921,9 +921,39 @@ src: url('../fonts/entypo.woff'),
 /*------------- Home ON -------------*/
 
 .wrapper_home{
-    .padding_top_large;
+    .box_20130928{
+      background: rgba(255, 255, 255, 0.98);
+      @box_shadow:2px 2px 1px rgba(0,0,0,.3);
+      box-shadow: @box_shadow;
+      -moz-box-shadow: @box_shadow;
+      -webkit-box-shadow: @box_shadow;
+      padding: 4em 2em;
+      h1{
+        font-size: 18px;
+        line-height: 1.5em;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 1em;
+        margin-bottom: 1em;
+        span{
+          font-size: 24px;
+          .CAPS;
+          display: block;
+          font-weight: bold;
+          font-family: Tahoma, Geneva, sans-serif;
+        }
+      }
+      p {
+        line-height: 2em;
+          span{
+          font-size: 24px;
+          padding-left: 1em;
+        }
+      }
+
+    }
+    padding-top: 40px;
     min-height:600px;
-    background: url(../images/bg_home_personaling_chica_1.jpg) no-repeat center  ;
+    background: url(../images/bg_personal_shoppers_home.jpg) no-repeat center  ;
     .container{ position:relative;}
     .box_home{
         background:rgba(148,227,104,.3);
@@ -1004,6 +1034,19 @@ src: url('../fonts/entypo.woff'),
 
 
 }
+.menciones{
+      border-top: 1px solid #ddd;
+      padding-top: 3.5em;
+      padding-bottom: .5em;
+      text-align: center;
+      blockquote {
+        border-left: medium none;
+        margin: 20px 0 10px;
+        padding: 0;
+        text-align: center;
+      }
+
+}
   .carousel-indicators {
   position: absolute;
   top: 15px;
@@ -1011,6 +1054,7 @@ src: url('../fonts/entypo.woff'),
   z-index: 5;
   margin: 0;
   list-style: none;
+
 }
 
 .carousel-indicators li {

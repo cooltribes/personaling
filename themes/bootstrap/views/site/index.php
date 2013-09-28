@@ -18,20 +18,45 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
 <div class="wrapper_home">
   <div class="container">
     <div class="row">
-      <div class="span11 text_align_center margin_top">
-        <div class="box_home  margin_bottom_small">
-          <h1>¡Bienvenid@s!</h1>
-          <p>Recomendaciones personalizadas adaptadas a ti. Una nueva manera de renovar tu clóset. </p>
-          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">¡Regístrate YA!</a> </div>
-        <div class="box_home_2 hidden-phone"> ¡Tu <span>Personal <br/>
-          Shopper</span> Digital! </div>
-        <div class="box_home_3 hidden-phone"> Registro <br/>
-          <span>¡Gratis!</span></div>
-        <div class="box_home_4 hidden-phone"> <a  href="#myModal" role="button" data-toggle="modal">Mira <strong>cómo funciona</strong> aqui</a></div>
+      <div class="span7 offset2 text_align_center margin_top">
+        <div class="box_20130928 margin_bottom_small">
+          <h1>Obten recomendaciones <span>personalizadas adaptadas a ti</span></h1>
+          <p>
+            <span>1.</span> Ingresa tu email
+            <span>2.</span> Indica la forma de tu cuerpo y medidas
+            <span>3.</span> Elige tu estilo
+            <br><span>4.</span> Compra Looks de las mejores marcas recomendados a tu medida
+          </p>
+          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aqui</a> </div>
+
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <div class="container menciones ">
+    <div class="row"><div class="span3">
+<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_onda.png" alt="Onda estación">
+     <blockquote>"Diseño, tecnología, web y moda" </blockquote>                     
+
+   </div>
+   <div class="span3">
+    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_ojo.png" alt="Revista Ojo">
+
+     <blockquote>"Asesoría de moda en la web venezolana"   </blockquote>                   
+
+   </div>
+   <div class="span3">
+    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_globovision.png" alt="Globovision">
+
+<blockquote>"Wayra acelerará este 2013 tres nuevos proyectos emprendedores" </blockquote></div>
+   <div class="span3">
+<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_universal.png" alt="El Universal">
+
+    <blockquote>"Proyectos emprendedores de Wayra"</blockquote></div></div>
+
+
+ </div>
 <?php /*?><div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
 
 <!-- Modal -->

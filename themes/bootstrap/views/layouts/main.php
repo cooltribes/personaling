@@ -24,6 +24,7 @@
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">
+  <div class="barra-carga"></div>
   <div id="navegacion_principal">
 <?php  
 

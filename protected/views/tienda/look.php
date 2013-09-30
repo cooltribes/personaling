@@ -88,13 +88,13 @@
                     'style' => 'margin-bottom: 0;margin-top: 5px;')) ?>          	
           </li>
           
-          <li>
-             <div class="span1 hide"><a href="#" class="btn btn-danger editar-filtro"><i class="icon-white icon-edit"></i></a></div>          	
-          </li>
           
           <li>
-              <div class="span1"><a href="#modalFiltroPerfil" class="btn crear-filtro" data-toggle="modal"><i class="icon-plus"></i></a></div>
-          	
+              <div class="margin_left_small"><a href="#modalFiltroPerfil" class="btn btn-danger crear-filtro" data-toggle="modal"><i class="icon-plus icon-white"></i>Nuevo perfil</a></div>
+            
+          </li>
+          <li>
+             <div class="margin_left_small hide"><a href="#" class="btn  editar-filtro"><i class="icon-edit"></i>Editar Perfil</a></div>          	
           </li>
           <?php } ?>
           

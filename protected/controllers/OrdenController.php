@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio','createexcel'),
+				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio','createexcel','importarmasivo'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -1358,6 +1358,113 @@ class OrdenController extends Controller
 			      Yii::app()->end();
 				  
 	}
+
+	// importar desde excel
+	public function actionImportarMasivo()
+	{
+
+		$tabla = "";		
+		
+		if( isset($_POST['valido']) ){ // enviaron un archivo
+			
+		$archivo = CUploadedFile::getInstancesByName('url');
+			
+			if(isset($archivo) && count($archivo) > 0){
+
+				foreach ($archivo as $arc => $xls) {
+					
+	            	$nombre = Yii::getPathOfAlias('webroot').'/docs/xlsImported/'. date('d-m-Y-H:i:s', strtotime('now')) ;
+	            	$extension = '.'.$xls->extensionName;
+				//	$model->banner_url = '/images/banner/'. $id .'/'. $image .$extension;
+				 
+			//	 if (!$model->save())	
+			//			Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
+					
+		            if($xls->saveAs($nombre . $extension)){
+			                Yii::app()->user->updateSession();
+							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado y procesado exitosamente."));			            										            	
+	            	}
+					else{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("Error al cargar el archivo."));	
+					}	            	
+				}
+
+			}
+			
+			// ==============================================================================
+			
+			$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
+ 
+			$tabla = $tabla . "<table class='table table-bordered table-hover table-striped'>";
+			 
+			foreach( $sheet_array as $row ) {
+			    $tabla = $tabla . "<tr>";
+			    
+			    foreach( $row as $column )
+			        $tabla = $tabla . "<td>$column</td>"; 
+				
+			    $tabla = $tabla . "</tr>";
+			} 
+			 
+			$tabla = $tabla . "</table>"; 
+			$tabla = $tabla ."<br/>";
+		 	
+			
+			foreach( $sheet_array as $row ) {
+				
+				if($row['A']=="VENTA DE ENVIOS DE TAQUILLA" || $row['A']=="Fecha"){
+					// do nothing
+				}else
+				{
+					$tabla = $tabla.'fecha: '.$row['A'].
+									' servicio: '.$row['B'].
+									' guia: '.$row['C'].
+									' referencia: '.$row['D'].
+									' remitente: '.$row['E'].
+									' destinatario: '.$row['F'].
+									' destino: '.$row['G'].
+									' peso: '.$row['H'].
+									' Estatus: '.$row['I'].
+									' Flete origen: '.$row['J'].
+									' flete destino: '.$row['K'].
+									' proteccion mercancia: '.$row['L'].
+									' iva: '.$row['M'].
+									' frac: '.$row['N'].
+									' valor mercancia: '.$row['O'].
+									' total a pagar: '.$row['P'].
+					 				' usuario: '.$row['Q'].
+									'<br/>';
+									
+					$status = strtolower($row['I']);
+					
+					if($status == "guia recibida por zoom") // se debe cambiar el estado de la orden
+					{
+						$orden = Orden::model()->findByPk($row['D']);
+						
+						if($orden->estado == 3) // pago confirmado
+						{
+							$orden->estado = 4;
+							$orden->save();
+						}
+						
+					}				
+					
+				}		
+					
+			}
+			
+			
+			
+			
+			
+		}// isset 
+		
+		$this->render('importar_masivo',array(
+			'tabla'=>$tabla,
+		));
+		
+	} // action
 
 
 	// Uncomment the following methods and override them if needed

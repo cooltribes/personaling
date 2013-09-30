@@ -656,15 +656,18 @@ src: url('../fonts/entypo.woff'),
          }
          ul{ margin-left: 0;}
          li{
-             list-style: none;
              border-bottom: 1px solid lighten(@lila,10%);
-             padding: .8em 0;
-             a{
+             color:#999;
+             font-size: .8em;
+             list-style: none;
+             padding: .6em .8em;
+              a{
                  text-decoration: none;
-                 color:#999;
-                 font-size: .8em;
+              }
              &:last-child{ border-bottom: 0;}
-             }
+         }
+         .popover-content{
+            padding: 0; 
          }
 
      }
@@ -918,9 +921,39 @@ src: url('../fonts/entypo.woff'),
 /*------------- Home ON -------------*/
 
 .wrapper_home{
-    .padding_top_large;
+    .box_20130928{
+      background: rgba(255, 255, 255, 0.98);
+      @box_shadow:2px 2px 1px rgba(0,0,0,.3);
+      box-shadow: @box_shadow;
+      -moz-box-shadow: @box_shadow;
+      -webkit-box-shadow: @box_shadow;
+      padding: 4em 2em;
+      h1{
+        font-size: 18px;
+        line-height: 1.5em;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 1em;
+        margin-bottom: 1em;
+        span{
+          font-size: 24px;
+          .CAPS;
+          display: block;
+          font-weight: bold;
+          font-family: Tahoma, Geneva, sans-serif;
+        }
+      }
+      p {
+        line-height: 2em;
+          span{
+          font-size: 24px;
+          padding-left: 1em;
+        }
+      }
+
+    }
+    padding-top: 40px;
     min-height:600px;
-    background: url(../images/bg_home_personaling_chica_1.jpg) no-repeat center  ;
+    background: url(../images/bg_personal_shoppers_home.jpg) no-repeat center  ;
     .container{ position:relative;}
     .box_home{
         background:rgba(148,227,104,.3);
@@ -1001,6 +1034,19 @@ src: url('../fonts/entypo.woff'),
 
 
 }
+.menciones{
+      border-top: 1px solid #ddd;
+      padding-top: 3.5em;
+      padding-bottom: .5em;
+      text-align: center;
+      blockquote {
+        border-left: medium none;
+        margin: 20px 0 10px;
+        padding: 0;
+        text-align: center;
+      }
+
+}
   .carousel-indicators {
   position: absolute;
   top: 15px;
@@ -1008,6 +1054,7 @@ src: url('../fonts/entypo.woff'),
   z-index: 5;
   margin: 0;
   list-style: none;
+
 }
 
 .carousel-indicators li {
@@ -2876,7 +2923,243 @@ img[alt="Loading"]{
 
 /*------------- Escoge tu estilo registro OFF -------------*/
 
+/*----------------  Como funciona ON ---------------- */
+.como_funciona{
+ .seccion2, .seccion3, .seccion5, .seccion4{
+    p{
+      color: #666;
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 1.5em;
+    }
 
+  } 
+  .seccion1, .seccion2, .seccion3, .seccion5{
+    padding: 5em 0;
+  } 
+  .seccion1{
+    background-color: @color1;
+    color: @color3;
+    margin-top:0;
+    h1{
+      font-weight: 300;
+      font-size: 25px;
+      .CAPS;
+    }
+    .lead{
+      font-weight: 300;
+      font-size: 16px;
+    }
+  }
+  .seccion2{
+    background-color: #f6f2f5;
+    img{
+      padding: 1em 0;
+    }
+  }
+  .seccion3{
+    padding-bottom: 530px;
+    background: url("../images/como_ps.jpg") bottom repeat-x;
+    p{
+      color: #666;
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 1.5em;
+    }
+  }
+  .seccion5{
+    img{
+      margin-bottom: 1em;
+      display: block;
+    }
+
+  }
+  .seccion4{
+    background: url("../images/como_rosa.jpg") bottom left  no-repeat #fff5f6;
+    padding: 12em 0;
+    .como_safari{
+      background: url("../images/como_safari.png") no-repeat center;
+      background-size: cover;
+      padding: 31em 0 7em;
+
+    }
+  }
+
+}
+
+/*----------------  Loading bar ON ---------------- */
+.aplicacion-cargando .barra-carga
+{
+    display: block;
+    -webkit-animation: shift-rightwards 4s ease-in-out infinite;
+    -moz-animation: shift-rightwards 4s ease-in-out infinite;
+    -ms-animation: shift-rightwards 4s ease-in-out infinite;
+    -o-animation: shift-rightwards 4s ease-in-out infinite;
+    animation: shift-rightwards 4s ease-in-out infinite;
+    -webkit-animation-delay: .4s;
+    -moz-animation-delay: .4s;
+    -o-animation-delay: .4s;
+    animation-delay: .4s;
+}
+.barra-carga
+{
+    position: fixed;
+    display: none;
+    top: 60px;
+    left: 0;
+    right: 0;
+    height: 2.4px;
+    z-index: 800;
+    background: @color6;
+    box-shadow: 0px 0px 7px  rgba(173,54,130,0.6);
+    -moz-box-shadow: 0px 0px 7px  rgba(173,54,130,0.6);
+    -webkit-box-shadow: 0px 0px 7px rgba(173,54,130,0.6);    
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -o-transform: translateX(100%);
+    transform: translateX(100%);
+}
+
+@-webkit-keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+
+}
+@-moz-keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+
+}
+@-o-keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+
+}
+@keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+}
+/*----------------  Loading bar OFF ---------------- */
 
 
 /*---------------- BANNERS y BOTONES ON ------------*/
@@ -2909,6 +3192,13 @@ img[alt="Loading"]{
 }
 
 /*--------------- HACKS OFF --------------------*/
+
+
+
+
+
+
+
 
 
 /*---------------------- Responsive Design --------------------*/
@@ -3013,3 +3303,5 @@ img[alt="Loading"]{
   .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
 
  }
+
+

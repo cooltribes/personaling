@@ -113,26 +113,28 @@ function str_lreplace($search, $replace, $subject)
 ?>
                         <div class="span4">
                             <article class="item" >
-                            	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
+                            	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"d_imgloading".$look->id)); ?>
                             	
-                                <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "370", "height" => "400", 'class'=>'')); ?>
+                                <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("style"=>"display: none","id" => "d_imglook".$look->id,"width" => "370", "height" => "400", 'class'=>'')); ?>
                                 <?php
                                 //"style"=>"display: none",              	
-                                    $script = "$('#"."imglook".$look->id."').load(function(){
-  												//alert('cargo'); 
-  												$('#imgloading".$look->id."').hide();
-  												$(this).show();
-  												//$('#loader_img').hide();
-									});"; 
-              						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
+
+									 $script = "
+										var load_handler = function() {
+										    $('#d_imgloading".$look->id."').hide();
+										    $(this).show();
+										}
+										$('#"."d_imglook".$look->id."').filter(function() {
+										    return this.complete;
+										}).each(load_handler).end().load(load_handler);						 
+									 ";									
+              						Yii::app()->clientScript->registerScript('d_img_script'.$look->id,$script);
               					?>   
                                 <?php echo CHtml::link($image,$look->getUrl()); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
                                     <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
                                     <div class="span5"> <span class="muted">Look creado por: </span>
-                                        <h5><a class="url" title="profile" href="#"><span class="fn">
-                                            <?php //echo $look->title; ?>
-                                            <?php echo $look->user->profile->first_name; ?> </span></a></h5>
+                                        <h5><?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?></h5>
                                     </div>
                                     <div class="span5"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
@@ -192,19 +194,32 @@ function str_lreplace($search, $replace, $subject)
                 <div class="span12">
                     <h3 class="margin_bottom_small">Prendas más vendidas</h3>
                     <div class="thumbnails">
-<?php
-foreach( $dataProvider_productos->getData() as $record ){
+
+<?php   
+$pagination = $dataProvider_productos->pagination->pageSize;
+$iterator = new CDataProviderIterator($dataProvider_productos);
+$count = 0;
+foreach($iterator as $record) {
 	$producto = Producto::model()->findByPk($record['producto_id']);
 	if (isset($producto)){
+		if($producto->getCantidad() > 0){
+			$count++;
 ?>
                     <li class="span2"> 
                         <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
                         <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
                     </li>
-<?php 
-	}  
- } 
-?>
+<?php 			
+			
+			if ($count >= $pagination)
+				break;	
+		}
+	}	
+   
+}
+	
+     ?>
+
                     </div>
                 </div>
             </div>

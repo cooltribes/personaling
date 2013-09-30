@@ -295,6 +295,7 @@ $max=round($max/100, 0)*100;
 		"var ajaxUpdateTimeout;
 		var axe;
 		$('.color').click(function(){
+			$('body').addClass('aplicacion-cargando');
 			window.idColor.trim();
 			if(window.idColor.indexOf('#'+$(this).attr('id'))==-1){
 					window.idColor = window.idColor+'#'+$(this).attr('id');				
@@ -311,6 +312,7 @@ $max=round($max/100, 0)*100;
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('tienda/colores2') . "',
+				complete: function(){ $('body').removeClass('aplicacion-cargando'); },
 				data: {'idColor':window.idColor,
 						'idCategoria':window.idCategoria}
 				}

@@ -1362,6 +1362,17 @@ if(isset($_POST['Profile']))
 							$orden->detalle_id = $detalle->id;
 							$orden->direccionEnvio_id = $dirEnvio->id;
 							$orden->tipo_guia = $_POST['tipo_guia'];
+							$orden->admin_id=Yii::app()->user->id;
+							$ptcs = explode(',',Yii::app()->session['ptcs']);
+							$vals = explode(',',Yii::app()->session['vals']);
+							$acpeso=0;
+								// añadiendo a orden producto
+								foreach($ptcs as $ptc)
+								{	$inst=Preciotallacolor::model()->findByPk($ptc);
+									$prinst=Producto::model()->findByPk($inst->producto_id);
+									$acpeso+=$prinst->peso;
+								}
+							$orden->peso=$acpeso;
 							
 							if($detalle->nTarjeta!="") // Pagó con TDC
 							{
@@ -1393,8 +1404,7 @@ if(isset($_POST['Profile']))
 									}
 								}
 								
-								$ptcs = explode(',',Yii::app()->session['ptcs']);
-								$vals = explode(',',Yii::app()->session['vals']);
+								
 								$i=0;
 								// añadiendo a orden producto
 								foreach($ptcs as $ptc)

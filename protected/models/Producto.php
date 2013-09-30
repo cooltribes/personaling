@@ -527,6 +527,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 					$colores.='OR color_id = '.$col.' )';
 				
 				$i++;
+				
+				Yii::app()->session['color']=1;
 						
 			}
 			$criteria->addCondition($colores);
@@ -593,7 +595,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 	{
 
 		$criteria=new CDbCriteria;
-
+		unset(Yii::app()->session['color']);
 		$criteria->compare('id',$this->id);
 		
 		$criteria->compare('codigo',$this->codigo,true);
@@ -886,6 +888,24 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			return Yii::app()->baseUrl."/producto/detalle/".$this->id;
 		}	
 		
+	}
+	public function getImgColor($id){
+		$img=0;	
+		if(isset(Yii::app()->session['idColor'])) // llega como parametro el id del color presionado
+		{
+			$colores = explode('#',Yii::app()->session['idColor']);
+			
+			unset($colores[0]);	
+		
+			
+			foreach($colores as $color){
+				$sql = "select id from tbl_imagen where tbl_producto_id =".$id." AND color_id = ".$color;
+				$img = Yii::app()->db->createCommand($sql)->queryScalar();
+				if(!is_null($img))
+					break;
+			}
+		}
+		return $img;
 	}
 			 
 		 

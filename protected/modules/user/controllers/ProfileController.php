@@ -592,6 +592,34 @@ class ProfileController extends Controller
 				if ($profile->save())
 				{
 					$model->status_register = User::STATUS_REGISTER_TIPO;
+                                        
+                                        /*Crear el filtro de perfil propio*/
+                                        
+                                        $filter = Filter::model()->findByAttributes(
+                                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                                        );
+
+                                        //si existe ya un filtro, borrarlo.
+                                        if ($filter) {                                            
+                                           $filter->delete(); 
+                                        }
+                                        
+                                        $filter = new Filter;
+                                        $filter->name = "Mi Perfil";
+                                        $filter->type = 0;
+                                        $filter->user_id = Yii::app()->user->id;
+
+                                        if ($filter->save()) {
+                                            $filterProfile = new FilterProfile;
+                                            $filterProfile->attributes = $_POST['Profile'];
+                                            $filterProfile->id_filter = $filter->id_filter;
+
+                                            if($filterProfile->validate()){
+                                                $filterProfile->save();                                                                  
+                                            }
+                                        }
+                                        
+                                        
 					if ($model->save())	
 						$this->redirect(array('/user/profile/tuestilo'));
 					else 
@@ -627,6 +655,43 @@ class ProfileController extends Controller
 			{
 				if ($profile->save())
 				{
+                                    
+                                    /*Crear el filtro de perfil propio*/
+                                        
+                                        $filter = Filter::model()->findByAttributes(
+                                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                                        );
+
+                                        //si NO existe, crear uno nuevo.
+                                        if (!$filter) {                                            
+                                            $filter = new Filter;
+                                            $filter->name = "Mi Perfil";
+                                            $filter->type = 0;
+                                            $filter->user_id = Yii::app()->user->id;
+                                            
+                                            if ($filter->save()) {
+                                                $filterProfile = new FilterProfile;
+                                                $filterProfile->attributes = $_POST['Profile'];
+                                                $filterProfile->id_filter = $filter->id_filter;
+
+                                                if($filterProfile->validate()){
+                                                    $filterProfile->save();                                                                  
+                                                }
+                                            }
+                                            
+                                        }else{
+                                            
+                                            $filterProfile = $filter->filterProfiles[0];
+                                            $filterProfile->attributes = $_POST['Profile'];
+
+                                            if($filterProfile->validate()){
+
+                                                $filterProfile->save();
+                                                
+                                            }
+                                            
+                                        }            
+                                    
 					//$model->status_register = User::STATUS_REGISTER_TIPO;
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();

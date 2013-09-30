@@ -381,21 +381,35 @@ function show_shopper(){
 	$('#div_shopper').show();
 }
 // here is the magic
-function refresh()
+function refresh(reset)
 {
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
-       
-       
     cargarLocal();
+    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form').serialize();
+                  
+    if(reset){
+        datosRefresh += '&reset=true';
+    }
+    
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
-            'data'=> "js:$('.check_ocasiones, .check_shopper, #newFilter-form').serialize()",
+            'data'=> "js:datosRefresh",
             //'data' => array( 'ocasiones' => 55 ),
             'type'=>'post',
             'dataType'=>'json',
+            'global' => 'false',
+            'beforeSend' => 'function(){
+                        $("body").addClass("aplicacion-cargando");
+
+            }',
+            'complete' => 'function(){
+                        $("body").removeClass("aplicacion-cargando");
+                        
+                    }',
             'success'=>"function(data)
             {
+                           
                 if (data.status == 'failure')
                 {
                     $('#dialogColor div.divForForm').html(data.div);

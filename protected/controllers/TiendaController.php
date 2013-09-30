@@ -405,7 +405,7 @@ class TiendaController extends Controller
 		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;		
 		
-				
+	 //el de bodas - tuki elminarlo			
 	  if ($categorias){
 		 echo CJSON::encode(array(
 			'id'=> $_POST['padreId'],

@@ -9,13 +9,14 @@
 						    'beforeSend' => "function( request )
 						                     {
 						                       // Set up any pre-sending stuff like initializing progress indicators
-						                       
+						                        $('body').addClass('aplicacion-cargando');
 						                     }",
 						    'success' => "function( data )
 						                  {
 						                    // handle return data
 						                    //alert( data );
 						                    $('#div_categorias').html(data);
+						                    $('body').removeClass('aplicacion-cargando');
 						                  }",
 						    'data' => array( 'padreId' => $categoria_padre, 'val2' => '2' )
 						  ),
@@ -54,6 +55,7 @@
 						                     {
 						                       // Set up any pre-sending stuff like initializing progress indicators
 						                       $('#div_categorias').css('background','white url(".$gif_url.") center center no-repeat');
+						                       $('body').addClass('aplicacion-cargando');
 						                       //alert('white url(".$gif_url.") center center no-repeat');
 						                     }",
 						    'success' => "function( data )
@@ -63,6 +65,7 @@
 						                    $('#div_categorias').html(data);
 						                    setTimeout(function() {
 											    $('#div_categorias').css('background','white');
+												$('body').removeClass('aplicacion-cargando');
 											}, 100);
 						                     
 						                  }",

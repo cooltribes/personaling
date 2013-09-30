@@ -238,7 +238,7 @@ class Look extends CActiveRecord
 	 */
 	 public function masvendidos($limit = 3)
 	 {		
-		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor a, tbl_look b where a.look_id != 0 and b.deleted = 0 and b.id = a.look_id group by a.look_id order by count(distinct tbl_orden_id) DESC";
+		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor a, tbl_look b where b.status = 2 and a.look_id != 0 and b.deleted = 0 and b.id = a.look_id group by a.look_id order by count(distinct tbl_orden_id) DESC";
 
 		$count = 10; 	
 		return new CSqlDataProvider($sql, array(
@@ -375,6 +375,7 @@ class Look extends CActiveRecord
 		
 		
 		$criteria->compare('destacado',1);
+		$criteria->compare('status',2);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

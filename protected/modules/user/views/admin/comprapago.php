@@ -396,7 +396,7 @@ $idDireccion=Yii::app()->session['idDireccion'];
             </table>
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
             <?php
-            $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+            $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->session['usercompra']." GROUP BY user_id ")->queryScalar();
 			if($balance > 0){
 	            ?>
 	            <div>

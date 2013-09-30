@@ -45,7 +45,7 @@
 						 ";					 
   					?>
         <div class="hidden-phone margin_top_small vcard row-fluid">
-          <div class="span2  ">
+          <div class="span2">
             <div class="avatar">
             <a href="<?php echo $look->user->profile->getUrl(); ?>">
             	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
@@ -56,7 +56,7 @@
 			<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
 			</h5>
           </div>
-          <div class="span4"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
+          <div class="span5"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
         </div>
         <div class="share_like">
          

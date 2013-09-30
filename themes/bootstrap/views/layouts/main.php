@@ -330,8 +330,8 @@ if(!Yii::app()->user->isGuest){
       },
       function(){
         $('.active_two').hover(function(){},function(){
-          $('#btn-shoppingcart').popover('hide');
-          $('#btn-shoppingcart').removeClass('bg_color10');
+          $('#btn-notifications').popover('hide');
+          $('#btn-notifications').removeClass('bg_color10');
         });   
 
       });
@@ -454,7 +454,7 @@ if(!Yii::app()->user->isGuest){
         textShoppingCart = listaCarrito + textShoppingCart;
     }  
     if(<?php echo $cont_productos ?> == 0){
-      textShoppingCart = '<p><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
+      textShoppingCart = '<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
     }
  
     //Boton Shopping Cart

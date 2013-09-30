@@ -159,6 +159,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 7)
 		echo "Bs. que faltan.";
 	
+	
+	
 	// agregar demas estados
      
         ?></td>
@@ -476,7 +478,13 @@ $usuario = User::model()->findByPk($orden->user_id);
           ?>
           <tr>
             <td>Nuevo Pedido</td>
-            <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
+            <td><?php 
+            		if(!is_null($orden->admin_id)){
+						$comprador=User::model()->findByPk($orden->admin_id);
+						echo $comprador->username;
+					}else{
+						echo $usuario->profile->first_name." ".$usuario->profile->last_name; 	
+					} ?></td>
             <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
             <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
           </tr>

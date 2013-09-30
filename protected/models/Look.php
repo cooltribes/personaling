@@ -580,7 +580,7 @@ class Look extends CActiveRecord
 		  $imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
 					$imagenes[$i]->top = 0;
-					$imagenes[$i]->left = 630;
+					$imagenes[$i]->left = 5;
 					$imagenes[$i]->width = 70;
 					$imagenes[$i]->height = 70;
 					$imagenes[$i]->angle = 0;

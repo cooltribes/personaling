@@ -160,7 +160,7 @@
                                    		return false;
                                    $('#buttonGuardar').attr('disabled', true);
                                   // return false;
-
+                                   $('body').addClass('aplicacion-cargando');
                                  }",
 
 

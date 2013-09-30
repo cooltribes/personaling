@@ -135,6 +135,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
+                array('label'=>'Cómo funciona?', 'url'=>array('/site/comofunciona')),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
 				        array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),

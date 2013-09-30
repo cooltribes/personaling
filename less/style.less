@@ -2923,147 +2923,71 @@ img[alt="Loading"]{
 
 /*------------- Escoge tu estilo registro OFF -------------*/
 
-
-
-
-/*---------------- BANNERS y BOTONES ON ------------*/
-
-.banner_1{
-    .bg_color10;
-    padding:0.6em;
-    color:@color11;
-    text-align: center;
-    a, .entypo{color:@color11}
+/*----------------  Como funciona ON ---------------- */
+.como_funciona{
+ .seccion2, .seccion3, .seccion5, .seccion4{
+    p{
+      color: #666;
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 1.5em;
     }
 
-/*---------------- BANNERS y BOTONES OFF ------------*/
-
-
-.bolsa-compra, .bolsa-direcciones{
-
-    #navegacion_principal  .nav, #wrapper_footer{ display: none;}
-}
-
-
-/*--------------- HACKS ON --------------------*/
-#profile-form{
-    select#Profile_pais, select#Profile_day, #Profile_sex_0{
-        margin-left:1em;
-        }
-    #Profile_month{
-        margin:0 1em;
-        }
-}
-
-/*--------------- HACKS OFF --------------------*/
-
-
-/*---------------------- Responsive Design --------------------*/
-
-
-/* Large desktop */
-@media (min-width: 1680px)  {
-    .wrapper_home{
-
+  } 
+  .seccion1, .seccion2, .seccion3, .seccion5{
+    padding: 5em 0;
+  } 
+  .seccion1{
+    background-color: @color1;
+    color: @color3;
+    margin-top:0;
+    h1{
+      font-weight: 300;
+      font-size: 25px;
+      .CAPS;
     }
-      #scroller-anchor #scroller{
-         width:1170px;
-     }
- }
-
-/* Large desktop */
-@media (min-width: 1200px)  and (max-width: 1679px) {
-.wrapper_home{
-
- }
-      #scroller-anchor #scroller{
-         width:1170px;
-     }
-
-
- }
-
-/* Mid desktop */
-@media (min-width: 980px) and (max-width: 1199px) {
-.wrapper_home{
-
- }
-      #scroller-anchor #scroller{
-         width:940px;
-     }
-    #boton_facebook a,#boton_twitter a{
-        font-size: 11px;
-        line-height: 14px;
+    .lead{
+      font-weight: 300;
+      font-size: 16px;
     }
-
-}
-
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) {
-.wrapper_home{
-
- }
-      #scroller-anchor #scroller{
-         width:724px;
-     }
-    #boton_facebook a,#boton_twitter a{
-        font-size: 12px;
-        line-height: 14px;
-    }
-
-}
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) {
-    .wrapper_home{
-    }
-    #myLogo a, #site-title a , .brand{
-        position: relative;
-      width: 37px;
-
-     }
-          .navbar .brand{ padding:8px 0 12px}
-
-      #scroller-anchor #scroller{
-         width:auto;
-     }
-     #wrapper_footer{
-         .padding_left;
-        .padding_right;
-        background: #fff;
-        border-top: 0;
-    }
-    #page{ padding-top: 0;}
-    body{ background: none;}
-     .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}
-     .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
-
-}
-/* Landscape phones and down */
-@media (max-width: 480px) {
-    #myLogo a, #site-title a , .brand{
-        position: relative;
-      width: 37px;
   }
-  #wrapper_footer{
-    .padding_left;
-    .padding_right;
-    background: #fff;
-    border-top: 0;
+  .seccion2{
+    background-color: #f6f2f5;
+    img{
+      padding: 1em 0;
+    }
   }
-  .navbar .brand{ padding:8px 0 12px}
-   #scroller-anchor #scroller{
-     width:auto;
+  .seccion3{
+    padding-bottom: 530px;
+    background: url("../images/como_ps.jpg") bottom repeat-x;
+    p{
+      color: #666;
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 1.5em;
+    }
   }
-  #page{ padding-top: 0;}
-  body{ background: none;}
-  .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}
-  .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
+  .seccion5{
+    img{
+      margin-bottom: 1em;
+      display: block;
+    }
 
- }
+  }
+  .seccion4{
+    background: url("../images/como_rosa.jpg") bottom left  no-repeat #fff5f6;
+    padding: 12em 0;
+    .como_safari{
+      background: url("../images/como_safari.png") no-repeat center;
+      background-size: cover;
+      padding: 31em 0 7em;
 
+    }
+  }
 
+}
 
-// Loading bar ON
+/*----------------  Loading bar ON ---------------- */
 .aplicacion-cargando .barra-carga
 {
     display: block;
@@ -3235,4 +3159,149 @@ img[alt="Loading"]{
         transform:translateX(100%);
     }
 }
- // Loading bar OFF
+/*----------------  Loading bar OFF ---------------- */
+
+
+/*---------------- BANNERS y BOTONES ON ------------*/
+
+.banner_1{
+    .bg_color10;
+    padding:0.6em;
+    color:@color11;
+    text-align: center;
+    a, .entypo{color:@color11}
+    }
+
+/*---------------- BANNERS y BOTONES OFF ------------*/
+
+
+.bolsa-compra, .bolsa-direcciones{
+
+    #navegacion_principal  .nav, #wrapper_footer{ display: none;}
+}
+
+
+/*--------------- HACKS ON --------------------*/
+#profile-form{
+    select#Profile_pais, select#Profile_day, #Profile_sex_0{
+        margin-left:1em;
+        }
+    #Profile_month{
+        margin:0 1em;
+        }
+}
+
+/*--------------- HACKS OFF --------------------*/
+
+
+
+
+
+
+
+
+
+/*---------------------- Responsive Design --------------------*/
+
+
+/* Large desktop */
+@media (min-width: 1680px)  {
+    .wrapper_home{
+
+    }
+      #scroller-anchor #scroller{
+         width:1170px;
+     }
+ }
+
+/* Large desktop */
+@media (min-width: 1200px)  and (max-width: 1679px) {
+.wrapper_home{
+
+ }
+      #scroller-anchor #scroller{
+         width:1170px;
+     }
+
+
+ }
+
+/* Mid desktop */
+@media (min-width: 980px) and (max-width: 1199px) {
+.wrapper_home{
+
+ }
+      #scroller-anchor #scroller{
+         width:940px;
+     }
+    #boton_facebook a,#boton_twitter a{
+        font-size: 11px;
+        line-height: 14px;
+    }
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+.wrapper_home{
+
+ }
+      #scroller-anchor #scroller{
+         width:724px;
+     }
+    #boton_facebook a,#boton_twitter a{
+        font-size: 12px;
+        line-height: 14px;
+    }
+
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    .wrapper_home{
+    }
+    #myLogo a, #site-title a , .brand{
+        position: relative;
+      width: 37px;
+
+     }
+          .navbar .brand{ padding:8px 0 12px}
+
+      #scroller-anchor #scroller{
+         width:auto;
+     }
+     #wrapper_footer{
+         .padding_left;
+        .padding_right;
+        background: #fff;
+        border-top: 0;
+    }
+    #page{ padding-top: 0;}
+    body{ background: none;}
+     .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}
+     .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
+
+}
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    #myLogo a, #site-title a , .brand{
+        position: relative;
+      width: 37px;
+  }
+  #wrapper_footer{
+    .padding_left;
+    .padding_right;
+    background: #fff;
+    border-top: 0;
+  }
+  .navbar .brand{ padding:8px 0 12px}
+   #scroller-anchor #scroller{
+     width:auto;
+  }
+  #page{ padding-top: 0;}
+  body{ background: none;}
+  .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}
+  .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
+
+ }
+
+

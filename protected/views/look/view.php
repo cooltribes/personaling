@@ -272,7 +272,7 @@
 <hr/>
           <div class="braker_horz_top_1">            
            
-            <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
+            <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y", strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix row-fluid">  
           <?php

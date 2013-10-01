@@ -88,6 +88,19 @@
             
             </ul>
           </li>
+          <!-- Filtro por Precios ON -->
+          <li class="dropdown">
+
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a class="btn btn-link">Hasta Bs 1000 <span class="color12">(4)</span></a></li>
+                <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
+                <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
+                <li><a class="btn btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                
+            </ul> 
+
+          </li>
+          <!-- Filtro por Precios OFF -->
           <li>
           	<a href="#" onclick="js:show_shopper();" >Personal Shoppers </a>
           	
@@ -98,7 +111,7 @@
           <?php if(Yii::app()->user->id){ ?>  
           <li>
                    <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)),
-                "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters',
+                "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters', 'class'=>'input-medium',
                     'style' => 'margin-bottom: 0;margin-top: 5px;')) ?>          	
           </li>
           

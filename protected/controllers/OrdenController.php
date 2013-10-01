@@ -21,12 +21,12 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir'),
+				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter',),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','admin','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio','createexcel','importarmasivo'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -535,10 +535,30 @@ class OrdenController extends Controller
 			$devueltos = count($_POST['motivos']);
 			$total = OrdenHasProductotallacolor::model()->countByAttributes(array('tbl_orden_id'=>$_POST['orden']));
 			
-			if($devueltos == $total)
-				$orden->estado = 9; // devuelto					
-			else if($devueltos < $total)
+			if($devueltos == $total){
+				$orden->estado = 9; // devuelto
+				
+				$estado = new Estado;
+				
+				$estado->estado = 9;
+				$estado->user_id = $orden->user_id;
+				$estado->fecha = date("Y-m-d");
+				$estado->orden_id = $orden->id;
+				
+				$estado->save();
+			}					
+			else if($devueltos < $total){
 				$orden->estado = 10; // parcialmente devuelto
+				
+				$estado = new Estado;
+				
+				$estado->estado = 10;
+				$estado->user_id = $orden->user_id;
+				$estado->fecha = date("Y-m-d");
+				$estado->orden_id = $orden->id;
+				
+				$estado->save();
+			}
 			
 			$orden->save();
 			
@@ -1395,7 +1415,7 @@ class OrdenController extends Controller
 			// ==============================================================================
 			
 			$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
- 
+ /*
 			$tabla = $tabla . "<table class='table table-bordered table-hover table-striped'>";
 			 
 			foreach( $sheet_array as $row ) {
@@ -1407,7 +1427,7 @@ class OrdenController extends Controller
 			    $tabla = $tabla . "</tr>";
 			} 
 			 
-			$tabla = $tabla . "</table>"; 
+			$tabla = $tabla . "</table>"; */
 			$tabla = $tabla ."<br/>";
 		 	
 			
@@ -1416,7 +1436,7 @@ class OrdenController extends Controller
 				if($row['A']=="VENTA DE ENVIOS DE TAQUILLA" || $row['A']=="Fecha"){
 					// do nothing
 				}else
-				{
+				{/*
 					$tabla = $tabla.'fecha: '.$row['A'].
 									' servicio: '.$row['B'].
 									' guia: '.$row['C'].
@@ -1434,7 +1454,7 @@ class OrdenController extends Controller
 									' valor mercancia: '.$row['O'].
 									' total a pagar: '.$row['P'].
 					 				' usuario: '.$row['Q'].
-									'<br/>';
+									'<br/>';*/
 									
 					$status = strtolower($row['I']);
 					
@@ -1444,8 +1464,11 @@ class OrdenController extends Controller
 						
 						if($orden->estado == 3) // pago confirmado
 						{
-							$orden->estado = 4;
+							$orden->estado = 4; // enviado
+							$orden->tracking = $row['C']; // guia
 							$orden->save();
+						
+							$tabla .= "La orden #".$row['D']." cambió a estado Enviado. Numero de Guia: ".$row['C']." </br>"; 
 						}
 						
 					}				
@@ -1453,9 +1476,7 @@ class OrdenController extends Controller
 				}		
 					
 			}
-			
-			
-			
+
 			
 			
 		}// isset 

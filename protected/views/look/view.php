@@ -57,14 +57,14 @@
           </div>
           <div class="hidden-phone row-fluid vcard">
             <div class="span2 avatar ">
-            <a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$model->user->id; ?>" title="perfil" class="url">
+            <a href="<?php $perfil = $model->user->profile; echo $perfil->getUrl(); ?>" title="perfil" class="url">
             <?php echo CHtml::image($model->user->getAvatar(),'Avatar',array("width"=>"84", "class"=>"pull-left photo  img-circle")); //,"height"=>"270" ?>
             </a>
             </div>
             <div class="span5 braker_right row-fluid">
             <div class="span9">
             <span class="muted">Look creado por: </span>
-              <h5><a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$model->user->id; ?>" title="perfil" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
+              <h5><a href="<?php echo $perfil->getUrl(); ?>" title="perfil" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
               <p  class="note"><strong>Bio</strong>: <?php echo $model->user->profile->bio; ?> </p>
             </div>
             <div class="span3">
@@ -272,7 +272,7 @@
 <hr/>
           <div class="braker_horz_top_1">            
            
-            <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
+            <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y", strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix row-fluid">  
           <?php

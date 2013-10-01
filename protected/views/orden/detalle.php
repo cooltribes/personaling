@@ -165,7 +165,12 @@ $usuario = User::model()->findByPk($orden->user_id);
      
         ?></td>
       <td>
-
+	<?php
+	
+	if($orden->estado == 8) // recibido
+	{
+		
+	?>	
       	<div class="row margin_top_small">
       		<?php
       		
@@ -179,6 +184,13 @@ $usuario = User::model()->findByPk($orden->user_id);
 			    'htmlOptions'=>array('class'=>'span2 pull-right margin_bottom_xsmall')
 			)); ?>
 		</div>
+	<?php
+	}else
+		{
+			echo '<div class="row margin_top_small"></div>';
+		}
+	?>	
+			
 		<div  class="row">
       		<a onclick="window.print();" class="btn span2  pull-right"><i class="icon-print"></i> Imprimir pedido</a>
       	</div>		
@@ -760,6 +772,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	$devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario->id));
 	$totaldevuelto = 0;
+	$totalenvio = 0;
 	
 	if(count($devuelto)>0)
 	{
@@ -767,6 +780,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		foreach($devuelto as $each)
 		{
 			$totaldevuelto = $each->montodevuelto;
+			$totalenvio = $each->montoenvio;
 			$ptc = Preciotallacolor::model()->findByPk($each->preciotallacolor_id);
 			$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
 			$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
@@ -805,11 +819,11 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo "0.00"; //$each->montoenvio; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
         </tr>
         <tr>
         	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-        	<th  class="text_align_right"><?php echo ($totaldevuelto + 0); ?> Bs</th>
+        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
         </tr>        
     	</table>
 	</div>

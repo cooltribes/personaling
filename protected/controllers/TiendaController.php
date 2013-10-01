@@ -111,7 +111,7 @@ class TiendaController extends Controller
 		
 		$producto = new Producto;
 		$producto->status = 1; // que no haya sido borrado logicamente
-		$producto->estado = 0; // que no esté inactivo
+		$producto->estado = 0; // que no estÃ© inactivo
 
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
@@ -184,7 +184,7 @@ class TiendaController extends Controller
 		
 		$producto = new Producto;
 		$producto->status = 1; // que no haya sido borrado logicamente
-		$producto->estado = 0; // que no esté inactivo
+		$producto->estado = 0; // que no estÃ© inactivo
 
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
 		
@@ -274,7 +274,7 @@ class TiendaController extends Controller
 		
 		$producto = new Producto;
 		$producto->status = 1; // que no haya sido borrado logicamente
-		$producto->estado = 0; // que no esté inactivo
+		$producto->estado = 0; // que no estÃ© inactivo
 	
 		$color="";
 	
@@ -299,7 +299,7 @@ class TiendaController extends Controller
 		
 		$producto = new Producto;
 		$producto->status = 1; // que no haya sido borrado logicamente
-		$producto->estado = 0; // que no esté inactivo
+		$producto->estado = 0; // que no estÃ© inactivo
 	
 		$color="";
 		$categoria="";
@@ -405,7 +405,7 @@ class TiendaController extends Controller
 		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;		
 		
-				
+	 //el de bodas - tuki elminarlo			
 	  if ($categorias){
 		 echo CJSON::encode(array(
 			'id'=> $_POST['padreId'],
@@ -434,7 +434,7 @@ class TiendaController extends Controller
 		
 		
 		
-		// para que también filtre del lado del list view
+		// para que tambiÃ©n filtre del lado del list view
 		/*
 		$producto = new Producto;
 		$producto->status = 1;
@@ -469,7 +469,7 @@ public function actionCategorias2(){
 		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
-		// para que también filtre del lado del list view
+		// para que tambiÃ©n filtre del lado del list view
 		/*
 		$producto = new Producto;
 		$producto->status = 1;
@@ -694,7 +694,7 @@ public function actionCategorias2(){
             
 
 		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])
-                        || $filtroPerfil){
+                        || $filtroPerfil || isset($_POST['reset'])){
 					
 			$criteria = new CDbCriteria;
 			
@@ -722,27 +722,30 @@ public function actionCategorias2(){
                             $looks = new Look();
                             $ids = $looks->match($userTmp); 
                             $ids = $ids->getData();
-                            echo "ids: <br>";
-                            echo "<pre>";
-                            print_r($ids);
-                            echo "</pre>";
+//                            echo "Vector de Ids: <br>";
+//                            echo "<pre>";
+//                            print_r($ids);
+//                            echo "</pre>";
+                            $inValues = array();
                             
-                            $criteria->addInCondition('t.id', $ids);
+                            foreach ($ids as $row){
+                                $inValues[] = $row["id"];
+                            }
                             
-                            echo "Criteria:";
-
-                            echo "<pre>";
-                            print_r($criteria->toArray());
-                            echo "</pre>";
-                                exit();
+                            $criteria->addInCondition('t.id', $inValues);                            
+//                            echo "Criteria:";
+//
+//                            echo "<pre>";
+//                            print_r($criteria->toArray());
+//                            echo "</pre>";
+                                //exit();
                             
-                        }
-                        
-                        
+                        }       
                         
                         
 			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
 			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
+			$criteria->compare('status',2);
 			$total = Look::model()->count($criteria);
 			$pages = new CPagination($total);
 			$pages->pageSize = 9;
@@ -769,7 +772,7 @@ public function actionCategorias2(){
 			$criteria = new CDbCriteria;
 			$criteria->compare('title',$search,true,'OR');
 			$criteria->compare('description',$search,true,'OR');
-			
+			$criteria->compare('status',2);
 			$total = Look::model()->count();
 			 
 			$pages = new CPagination($total);
@@ -803,7 +806,7 @@ public function actionCategorias2(){
 		
 		//$datos=$datos."<div id='myModal' class='modal hide tienda_modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
     	$datos=$datos."<div class='modal-header'>";
-		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>";
+		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>Ã—</button>";
 		$datos=$datos."<h3 id='myModalLabel'>".$producto->nombre."</h3></div>";
 		$datos=$datos."<div class='modal-body'>";
    
@@ -841,8 +844,8 @@ public function actionCategorias2(){
 		}
 		
         $datos=$datos.'</div>';
-        $datos=$datos.'<a data-slide="prev" href="#myCarousel" class="left carousel-control">‹</a>';
-        $datos=$datos.'<a data-slide="next" href="#myCarousel" class="right carousel-control">›</a>';
+        $datos=$datos.'<a data-slide="prev" href="#myCarousel" class="left carousel-control">â€¹</a>';
+        $datos=$datos.'<a data-slide="next" href="#myCarousel" class="right carousel-control">â€º</a>';
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<div class="span5">';
@@ -972,7 +975,7 @@ public function actionCategorias2(){
 				
 				$datos=$datos.' var prueba = $("#vTa div.tallass.active").attr("value");';
 			$datos=$datos."if(prueba == 'solo'){";
-   				$datos=$datos."$(this).addClass('coloress active');"; // añado la clase active al seleccionado
+   				$datos=$datos."$(this).addClass('coloress active');"; // aÃ±ado la clase active al seleccionado
    				$datos=$datos."$('#vTa div.tallass.active').attr('value','0');";
 			$datos=$datos.'}';
    			$datos=$datos.'else{';
@@ -980,7 +983,7 @@ public function actionCategorias2(){
    				$datos=$datos.'var dataString = $(this).attr("id");';
      			$datos=$datos.'var prod = $("#producto").attr("value");';
      			$datos=$datos."$(this).removeClass('coloress');";
-  				$datos=$datos."$(this).addClass('coloress active');"; // añado la clase active al seleccionado
+  				$datos=$datos."$(this).addClass('coloress active');"; // aÃ±ado la clase active al seleccionado
 				
   				$datos=$datos. CHtml::ajax(array(
             		'url'=>array('producto/tallaspreview'),
@@ -1023,7 +1026,7 @@ public function actionCategorias2(){
 			$datos=$datos.'var prueba = $("#vCo div.coloress.active").attr("value");';
 
    			$datos=$datos."if(prueba == 'solo'){";
-   				$datos=$datos."$(this).addClass('tallass active');"; // añado la clase active al seleccionado
+   				$datos=$datos."$(this).addClass('tallass active');"; // aÃ±ado la clase active al seleccionado
    				$datos=$datos.'$("#vCo div.coloress.active").attr("value","0");';
    			$datos=$datos."}";
    			$datos=$datos."else{";
@@ -1032,7 +1035,7 @@ public function actionCategorias2(){
      			$datos=$datos.'var prod = $("#producto").attr("value");';
      
      			$datos=$datos."$(this).removeClass('tallass');";
-  				$datos=$datos."$(this).addClass('tallass active');"; // añado la clase active al seleccionado
+  				$datos=$datos."$(this).addClass('tallass active');"; // aÃ±ado la clase active al seleccionado
      
      			$datos=$datos. CHtml::ajax(array(
             		'url'=>array('producto/colorespreview'),
@@ -1072,7 +1075,7 @@ public function actionCategorias2(){
 			$datos=$datos.'$("#vCo").find("div#"+id).addClass("coloress active");';		
    		$datos=$datos."}";
 		
-		$datos=$datos."function c(){"; // comprobar quienes están seleccionados
+		$datos=$datos."function c(){"; // comprobar quienes estÃ¡n seleccionados
    		
    			$datos=$datos.'var talla = $("#vTa").find(".tallass.active").attr("id");';
    			$datos=$datos.'var color = $("#vCo").find(".coloress.active").attr("id");';
@@ -1081,15 +1084,15 @@ public function actionCategorias2(){
    			// llamada ajax para el controlador de bolsa
  		  
  			$datos=$datos."if(talla==undefined && color==undefined){"; // ninguno
- 				$datos=$datos.'alert("Seleccione talla y color para poder añadir.");';
+ 				$datos=$datos.'alert("Seleccione talla y color para poder aÃ±adir.");';
  			$datos=$datos."}";
  		
  			$datos=$datos."if(talla==undefined && color!=undefined){"; // falta talla 
- 				$datos=$datos.'alert("Seleccione la talla para poder añadir a la bolsa.");';
+ 				$datos=$datos.'alert("Seleccione la talla para poder aÃ±adir a la bolsa.");';
  			$datos=$datos.'}';
  		
  			$datos=$datos.'if(talla!=undefined && color==undefined){'; // falta color
- 				$datos=$datos.'alert("Seleccione el color para poder añadir a la bolsa.");';
+ 				$datos=$datos.'alert("Seleccione el color para poder aÃ±adir a la bolsa.");';
  			$datos=$datos.'}';
 			
 			$datos=$datos.'if(talla!=undefined && color!=undefined){';
@@ -1102,7 +1105,7 @@ public function actionCategorias2(){
 			        'success'=>"function(data)
 			        {
 						if(data=='ok'){
-							//alert('redireccionar mañana');
+							//alert('redireccionar maÃ±ana');
 							window.location='../bolsa/index';
 						}
 						
@@ -1214,7 +1217,7 @@ public function actionCategorias2(){
                             if($filterProfile->validate()){
                                 $filterProfile->save();
                                 $response['status'] = 'success';
-                                $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con éxito';
+                                $response['message'] = 'Filtro <b>' . $filter->name . '</b> guardado con Éxito';
                                 $response['idFilter'] = $filter->id_filter;                        
                             }
                         }

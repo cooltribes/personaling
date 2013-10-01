@@ -81,21 +81,43 @@ $usuario = User::model()->findByPk($orden->user_id);
         Mensajes<br/></td>
         
         <?php
-      $ind_tot = 0;
-	  $look_tot = 0;
-      $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+    $ind_tot = 0;
+	$look_tot = 0;
+    $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
 	
+	$looks_en_orden = Array();
+		
 		foreach ($compra as $tot) {
 			
 			if($tot->look_id == 0)
 			{
-				$ind_tot++;
+				$ind_tot++; 
 			}else{
 				
-				$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
-				foreach($lhp as $cada){
-					$look_tot++;	
+				// si es look se debe revisar cuantos productos tiene el look.
+				
+				if(!in_array($tot->look_id,$looks_en_orden)){	// no hace nada para que no se repita el valor			
+					
+					array_push($looks_en_orden,$tot->look_id); 
+					$revisando = $tot->look_id;
+					
+					foreach($compra as $cadauno)
+					{
+						if($cadauno->look_id == $revisando)
+							$look_tot++;
+						
+					}
+					
+					/*$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
+					
+					foreach($lhp as $cada){
+						$look_tot++;
+					}					
+					
+					*/
 				}
+				
+				
 			}
 			
 		}
@@ -147,7 +169,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 2)
 		echo "Bs. Pendientes por confirmar";
 	
-	if($orden->estado == 3)
+	if($orden->estado == 3 || $orden->estado == 8)
 		echo "Bs. ya pagados";
 
 	if($orden->estado == 4)
@@ -159,8 +181,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 7)
 		echo "Bs. que faltan.";
 	
-	
-	
+		
 	// agregar demas estados
      
         ?></td>
@@ -212,7 +233,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>eMail</strong>: <?php echo $usuario->email; ?></li>
+                <li><strong>eMail</strong>: <?php echo $usuario->email; ?></li> 
                 <li><strong>Telefono</strong>:<?php echo $usuario->profile->tlf_celular; ?> </li>
                 <li><strong>Ciudad</strong>:<?php echo $usuario->profile->ciudad; ?> </li>
               </ul>
@@ -220,7 +241,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="span3">
               <ul class="no_bullets no_margin_left">
                 <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
-                <li><strong>Pedidos validos realizados</strong>: 0</li>
+                <li><strong>Pedidos validos realizados</strong>: <?php echo Orden::model()->countByAttributes(array('user_id'=>$orden->user_id,'estado'=>8)); ?></li>
                 <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." Bs."; ?> </li>
               </ul>
             </div>

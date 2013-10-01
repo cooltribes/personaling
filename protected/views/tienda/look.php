@@ -24,8 +24,21 @@
         <?php 
         
         if(count($categorias))
-            foreach($categorias as $categoria){					
+            foreach($categorias as $categoria){            
 	?>              
+              
+            <?php $children = $categoria->getChildren();
+                  $show = false;
+                 foreach($children as $child){
+                     if ($child->hasLooks()){
+                         $show = true;
+                         break;
+                     }
+                 }                 
+
+                 if($show){
+            ?>    
+                 
               <li> 
         <?php echo CHtml::ajaxLink($categoria->nombre,
              Yii::app()->createUrl( 'tienda/ocasiones'),
@@ -68,7 +81,9 @@
         ?>  	
               	 
               </li>
-<?php } ?>              
+<?php 
+            } //endif show
+                     } ?>              
 
             
             </ul>

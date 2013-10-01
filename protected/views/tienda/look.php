@@ -24,49 +24,48 @@
         <?php 
         
         if(count($categorias))
-				foreach($categorias as $categoria){
-					
-		?>              
+            foreach($categorias as $categoria){					
+	?>              
               <li> 
         <?php echo CHtml::ajaxLink($categoria->nombre,
-							 Yii::app()->createUrl( 'tienda/ocasiones'),
-							 array( // ajaxOptions
-						    'type' => 'POST',
-						    'dataType'=>'json',
-						    'beforeSend' => "function( request, opts )
-						                     {
-						                       // Set up any pre-sending stuff like initializing progress indicators
-						                       if ($('#ocasion_actual').val() == '".$categoria->id."'){
-						                       	 	$('.dropdown').removeClass('open');
-						                       		$('#div_ocasiones').show();
-						                    		$('#div_shopper').hide();
-						                       	 request.abort();
-						                       } 
-						                       		
-						                       
-						                     }",
-						    'success' => "function( data )
-						                  {
-						                    // handle return data
-						                    //alert( data );
-						                   // alert(data.accion);
-						                   $('#ocasion_actual').val('".$categoria->id."');
-						                   $('.dropdown').removeClass('open');
-						                    $('#div_ocasiones').html(data.div);
-						                    $('#div_ocasiones').show();
-						                    $('#div_shopper').hide();
-						                  }",
-						    'data' => array( 'padreId' => $categoria->id )
-						  ),
-						  array( //htmlOptions
-						   // 'href' => Yii::app()->createUrl( 'tienda/ocasiones' ),
-						   'href'=>'#',
-						    //'class' => 'thumbnail',
-						    'id' => 'categoria'.$categoria->id,
-						    'draggable'=>"false",
-						  )
-						  );    
-		?>  	
+             Yii::app()->createUrl( 'tienda/ocasiones'),
+             array( // ajaxOptions
+                'type' => 'POST',
+                'dataType'=>'json',
+                'beforeSend' => "function( request, opts )
+                                 {
+                                   // Set up any pre-sending stuff like initializing progress indicators
+                                   if ($('#ocasion_actual').val() == '".$categoria->id."'){
+                                            $('.dropdown').removeClass('open');
+                                            $('#div_ocasiones').show();
+                                            $('#div_shopper').hide();
+                                     request.abort();
+                                   } 
+
+
+                                 }",
+                'success' => "function( data )
+                              {
+                                // handle return data
+                                //alert( data );
+                               // alert(data.accion);
+                               $('#ocasion_actual').val('".$categoria->id."');
+                               $('.dropdown').removeClass('open');
+                                $('#div_ocasiones').html(data.div);
+                                $('#div_ocasiones').show();
+                                $('#div_shopper').hide();
+                              }",
+                'data' => array( 'padreId' => $categoria->id )
+              ),
+              array( //htmlOptions
+               // 'href' => Yii::app()->createUrl( 'tienda/ocasiones' ),
+               'href'=>'#',
+                //'class' => 'thumbnail',
+                'id' => 'categoria'.$categoria->id,
+                'draggable'=>"false",
+              )
+              );    
+        ?>  	
               	 
               </li>
 <?php } ?>              
@@ -381,21 +380,35 @@ function show_shopper(){
 	$('#div_shopper').show();
 }
 // here is the magic
-function refresh()
+function refresh(reset)
 {
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
-       
-       
     cargarLocal();
+    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form').serialize();
+                  
+    if(reset){
+        datosRefresh += '&reset=true';
+    }
+    
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
-            'data'=> "js:$('.check_ocasiones, .check_shopper, #newFilter-form').serialize()",
+            'data'=> "js:datosRefresh",
             //'data' => array( 'ocasiones' => 55 ),
             'type'=>'post',
             'dataType'=>'json',
+            'global' => 'false',
+            'beforeSend' => 'function(){
+                        $("body").addClass("aplicacion-cargando");
+
+            }',
+            'complete' => 'function(){
+                        $("body").removeClass("aplicacion-cargando");
+                        
+                    }',
             'success'=>"function(data)
             {
+                           
                 if (data.status == 'failure')
                 {
                     $('#dialogColor div.divForForm').html(data.div);

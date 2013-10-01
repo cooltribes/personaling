@@ -27,15 +27,13 @@
 
 /*Poner en cero los valores*/
 function limpiarLocal(){
-    console.log("Limpiando");
-    console.log(valores);
+    console.log("Limpiando");   
     
     $.each(valores, function(i, elem){
         //console.log("Primero" + elem);
         valores[i] = 0;
         //console.log("Despues" + elem);
     });
-    console.log(valores);
     
 }
 /*Guarda los campos actuales del modal en variables locales*/
@@ -76,6 +74,9 @@ function activarModalNuevo(nuevo){
         //mostrar el campo de nombre y el boton guardar y buscar
         $('#campo-nombre').show();
         $('#save-search').show();
+        
+        //Poner titulo al modal
+        $('#modalFiltroPerfil .modal-header h3').html("Perfil Corporal");
     }
     else
     {
@@ -86,6 +87,9 @@ function activarModalNuevo(nuevo){
         //Mostrar el boton guardar y borrar dentro del modal
         $('#save').show();
         $('#remove').show();
+        
+        //Poner titulo al modal
+        $('#modalFiltroPerfil .modal-header h3').html("Perfil Corporal - <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
     }
 }
 
@@ -105,7 +109,7 @@ function getFilter(){
 
     URL = 'getFilter';
     ID = $("#all_filters").val();  
-      
+    $("body").addClass("aplicacion-cargando");  
     if(ID && ID.trim() !== ''){  
     
         $.ajax(
@@ -114,6 +118,13 @@ function getFilter(){
                     type: 'POST',
                     dataType: 'json',
                     data: { 'id':ID },
+                    beforeSend: function(){
+                        $("body").addClass("aplicacion-cargando");                       
+                        
+                    },
+                    complete: function(){
+                        //$("body").removeClass("aplicacion-cargando");
+                    },
                     success: function(data){
                         if(data.status === 'success'){                           
 //                            //Poner titulo
@@ -157,7 +168,7 @@ function getFilter(){
        
        limpiarLocal();       
        //Buscar para actualizar sin los filtros de perfiles
-       refresh();
+       refresh(true);
     }   
     
 }
@@ -193,9 +204,13 @@ function saveFilter(nuevo) {
                     data: perfil,
                     beforeSend: function(){
                         boton.prop('disabled', true);
+                        $("#profile-name").prop('disabled', true);
+                        $("body").addClass("aplicacion-cargando");
                     },
                     complete: function(){
                         boton.prop('disabled', false);
+                        $("#profile-name").prop('disabled', false);
+                        $("body").removeClass("aplicacion-cargando");
                     },
                     success: function(data) {
                                                 
@@ -213,16 +228,11 @@ function saveFilter(nuevo) {
                                 $('a.editar-filtro').parent('div').show();
                             }
                             //Guardar en local
-                            guardarLocal(); 
-                            
-                            refresh();
-                            
-                                                       
+                            guardarLocal();                            
+                            refresh();                          
                            
                         }
-//                        console.log(data.status);
-//                        console.log(data.message);
-                            //cerrar modal;
+                         
                             $("#modalFiltroPerfil").modal('hide');
                             showAlert(data.status, data.message);                    
 
@@ -278,8 +288,6 @@ function removeFilter(URL){
                         refresh();
                         
                     }
-                    console.log(data.status);
-                    console.log(data.message);
                     showAlert(data.status, data.message);                    
                     
                 },
@@ -359,6 +367,13 @@ $(function() {
     $(".alert .close").click(function(){
         $(".alert").fadeOut('slow');
     });
+    
+    
+//    $(document).bind("ajaxSend", function(){
+//        $("body").addClass("aplicacion-cargando");  
+//    }).bind("ajaxComplete", function(){
+//        $("body").removeClass("aplicacion-cargando");  
+//    });
 
 });
 

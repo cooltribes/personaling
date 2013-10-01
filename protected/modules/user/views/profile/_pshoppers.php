@@ -69,10 +69,11 @@
 	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#pshoppers',
 	    'itemSelector' => 'div.pshopper',
-	    'loadingText' => 'Loading...',
-	    'donetext' => 'This is the end... my only friend, the end',
+	    'loadingText' => 'Ubicando Personal Shoppers',
+	    'donetext' => 'Somos '.User::model()->totalPS.' Personal Shoppers comprometidas con tu look.',
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
-	)); ?> 
+	)); ?>
+
 	</div>
   

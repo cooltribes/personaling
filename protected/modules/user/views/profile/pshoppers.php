@@ -1,4 +1,8 @@
-
+<style>
+	.infinite_navigation{
+		display:none;
+	}
+</style>
 <div class="container">
   <div class="page-header">
     <h1>Nuestros Personal Shoppers</h1>  
@@ -41,7 +45,7 @@ function replace_accents($string)
 <script type="text/javascript">
     
 
-   
+ 
     
 
 // here is the magic

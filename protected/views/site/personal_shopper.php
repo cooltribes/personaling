@@ -82,8 +82,9 @@
   					?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
                     <div class="span2 avatar ">
-                    	
+                    	<a href="<?php echo $look->user->profile->getUrl(); ?>">
                     	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                    	</a>
                     </div>
                     <div class="span5"> <span class="muted">Look creado por: </span>
                       <h5>

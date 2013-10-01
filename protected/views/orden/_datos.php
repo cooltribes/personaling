@@ -58,7 +58,7 @@ echo"<tr>";
 		echo "<td>Entregado</td>";
 	
 	if($data->estado == 9)
-		echo "<td>Devuelto</td>";
+		echo "<td>Orden Devuelta</td>";
 		
 	if($data->estado == 10)
 		echo "<td>Parcialmente Devuelto</td>";

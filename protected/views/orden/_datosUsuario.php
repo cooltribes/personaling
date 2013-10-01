@@ -25,18 +25,21 @@
 		if($data->estado == 5)
 			echo "<td>Orden Cancelada</td>";
 		
-		if($data->estado == 6)
-			echo "<td>Pago Rechazado</td>";
+	if($data->estado == 6)
+		echo "<td>Pago Rechazado</td>";
 		
-		if($data->estado == 7)
-			echo "<td>Pago Insuficiente</td>";
+	if($data->estado == 7)
+		echo "<td>Pago Insuficiente</td>";
 		
-		if($data->estado == 8)
-			echo "<td>Orden Entregada</td>";
+	if($data->estado == 8)
+		echo "<td>Orden Entregada</td>";
 		
-		if($data->estado == 9)
-			echo "<td>Orden Devuelta</td>";
+	if($data->estado == 9)
+		echo "<td>Orden Devuelta</td>";
 		
+	if($data->estado == 10)
+		echo "<td>Parcialmente Devuelto</td>";
+			
 		// agregar demas estados
 		
 		echo "<td>

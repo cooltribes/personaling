@@ -745,6 +745,7 @@ public function actionCategorias2(){
                         
 			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
 			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
+			$criteria->compare('status',2);
 			$total = Look::model()->count($criteria);
 			$pages = new CPagination($total);
 			$pages->pageSize = 9;
@@ -771,7 +772,7 @@ public function actionCategorias2(){
 			$criteria = new CDbCriteria;
 			$criteria->compare('title',$search,true,'OR');
 			$criteria->compare('description',$search,true,'OR');
-			
+			$criteria->compare('status',2);
 			$total = Look::model()->count();
 			 
 			$pages = new CPagination($total);

@@ -59,6 +59,12 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 7)
 		echo "Pago Insuficiente";
 	
+	if($orden->estado == 9)
+		echo "Devuelto";
+		
+	if($orden->estado == 10)
+		echo "Devolución Parcial";
+	
 	// agregar demas estados
 ?>
       	</p>
@@ -327,6 +333,12 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				if($est->estado == 7)
 					echo "<td>Pago Insuficiente</td>";
+				
+				if($est->estado == 9)
+					echo "<td>Devuelto</td>";
+		
+				if($est->estado == 10)
+					echo "<td>Parcialmente Devuelto</td>";		
 				
 				$usu = User::model()->findByPk($est->user_id);
 				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");

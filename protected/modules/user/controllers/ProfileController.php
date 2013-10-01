@@ -882,8 +882,8 @@ class ProfileController extends Controller
 		$prodEncantan->user_id = Yii::app()->user->id;
 		
 		$dataProvider = $prodEncantan->search();
-		
-		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider));
+		$numeroItems = $dataProvider->getTotalItemCount();
+		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider,'numeroItems' =>$numeroItems ));
 		
 	}
 	

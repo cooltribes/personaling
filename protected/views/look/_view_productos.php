@@ -103,7 +103,10 @@
               	$script = "element = document.querySelector('#div_producto".$producto->id."_".$tallacolor->color_id."');
               	  element.addEventListener('dragstart', handleDragStart, false);
   					element.addEventListener('dragover', handleDragOver, false);
-				  element.addEventListener('dragend', handleDragEnd, false); ";
+  					
+	
+				  element.addEventListener('dragend', handleDragEnd, false);
+				   ";
               	Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$tallacolor->color_id,$script);
               	?>              	
               </li>

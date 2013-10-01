@@ -5,20 +5,25 @@
 <div class="row">
 <div class="span12 tienda_productos">
   <div class="row">
-    <?php
-	$template = '
-			{items}
-   		</div>
-      		{pager}
-	    </div>
-    ';
-	$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos',
-	    'template'=>$template,
-	));    
-	?>
+    <?php echo $numeroItems; ?>
+  <?php if ( $numeroItems != 0 ){ // Si  tiene productos que le gusten 
+          
+  	$template = '
+  			{items}
+     		</div>
+        		{pager}
+  	    </div>
+      ';
+  	$this->widget('zii.widgets.CListView', array(
+  	    'id'=>'list-auth-items',
+  	    'dataProvider'=>$dataProvider,
+  	    'itemView'=>'_datos',
+  	    'template'=>$template,
+  	));    
+	
+  }else{ ?>
+      <p> Puedes seleeccionar un producto como favorito haciendo clic en el icono (Mostrar icono) que lo acompaña, y en cualquier momento puedes verlos , ingresanado a Tu cuenta, en la sección Tus Encantos/ Favoritos  </p>
+  <?php } ?>
   </div>
 </div>
 

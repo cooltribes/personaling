@@ -78,10 +78,10 @@
 
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a class="btn btn-link">Hasta Bs 1000 <span class="color12">(4)</span></a></li>
-                <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
-                <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
-                <li><a class="btn btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                
+                <li><a class="btn-link">Hasta Bs 1000 <span class="color12">(4)</span></a></li>
+                <li><a class="btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
+                <li><a class="btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
+                <li><a class="btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                
             </ul> 
 
           </li>

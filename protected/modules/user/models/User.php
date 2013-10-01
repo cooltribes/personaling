@@ -548,4 +548,10 @@ class User extends CActiveRecord {
         ));
     }
 
+		public function getTotalPS()
+	{
+		$sql = "select count(*) from tbl_users where personal_shopper = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
 }

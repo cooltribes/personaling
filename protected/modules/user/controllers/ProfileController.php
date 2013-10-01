@@ -22,7 +22,7 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('modal','modalshopper'),
+				'actions'=>array('modal','modalshopper','pshoppers'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1440,9 +1440,8 @@ class ProfileController extends Controller
 			$datos=$datos."});"; // tallas click
 			
 		$datos=$datos."});"; // ready
-		
 		// fuera del ready
-		
+		  
 		$datos=$datos."function a(id){";// seleccion de talla
 			$datos=$datos.'$("#vTa").find("div").siblings().removeClass("active");';
 			$datos=$datos.'$("#vTa").find("div#"+id+".tallass").removeClass("tallass");';
@@ -1503,4 +1502,31 @@ class ProfileController extends Controller
 		
 	echo $datos;
 	}
+
+
+	public function actionPshoppers(){
+		
+            $criteria = new CDbCriteria;
+			$criteria->with=array('user');
+			$criteria->addCondition('personal_shopper = 1 ');
+		
+			
+			
+			$total=User::model()->totalPS;
+			$pages = new CPagination($total);
+			$pages->pageSize = 8;
+			//$pages->applyLimit($criteria);
+			$profiles = Profile::model()->findAll($criteria);
+                        
+                        /***    Filtros por Perfil ***/
+                        
+                      
+			$this->render('pshoppers', array(
+				'profs' => $profiles,
+				'pages' => $pages
+			));		
+		}	
+			
+		
+	
 }

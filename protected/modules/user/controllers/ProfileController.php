@@ -22,7 +22,11 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('modal','modalshopper'),
+<<<<<<< HEAD
+				'actions'=>array('modal','modalshopper','pshoppers'),
+=======
+				'actions'=>array('modal','modalshopper','listado'),
+>>>>>>> 70393a76d845be03fc1eafb699c501c36a45b9a5
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -169,6 +173,11 @@ class ProfileController extends Controller
 	    ));
 	}
 	
+	public function actionListado()
+	{
+		$this->render('listado_ps');   
+	}
+	
 	
 	/*
 	 * 
@@ -194,8 +203,8 @@ class ProfileController extends Controller
 					$id = $model->id;
 					//echo $model->username;
 				} else {
-					echo "(site) Error: no existe el usuario ".$_GET['alias'];
-					Yii::app()->end();
+					// echo "(site) Error: no existe el usuario ".$_GET['alias'];
+					$this->redirect(array('listado'));   
 				}
 			}
         // Yii::app()->end();       
@@ -592,6 +601,34 @@ class ProfileController extends Controller
 				if ($profile->save())
 				{
 					$model->status_register = User::STATUS_REGISTER_TIPO;
+                                        
+                                        /*Crear el filtro de perfil propio*/
+                                        
+                                        $filter = Filter::model()->findByAttributes(
+                                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                                        );
+
+                                        //si existe ya un filtro, borrarlo.
+                                        if ($filter) {                                            
+                                           $filter->delete(); 
+                                        }
+                                        
+                                        $filter = new Filter;
+                                        $filter->name = "Mi Perfil";
+                                        $filter->type = 0;
+                                        $filter->user_id = Yii::app()->user->id;
+
+                                        if ($filter->save()) {
+                                            $filterProfile = new FilterProfile;
+                                            $filterProfile->attributes = $_POST['Profile'];
+                                            $filterProfile->id_filter = $filter->id_filter;
+
+                                            if($filterProfile->validate()){
+                                                $filterProfile->save();                                                                  
+                                            }
+                                        }
+                                        
+                                        
 					if ($model->save())	
 						$this->redirect(array('/user/profile/tuestilo'));
 					else 
@@ -627,6 +664,43 @@ class ProfileController extends Controller
 			{
 				if ($profile->save())
 				{
+                                    
+                                    /*Crear el filtro de perfil propio*/
+                                        
+                                        $filter = Filter::model()->findByAttributes(
+                                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                                        );
+
+                                        //si NO existe, crear uno nuevo.
+                                        if (!$filter) {                                            
+                                            $filter = new Filter;
+                                            $filter->name = "Mi Perfil";
+                                            $filter->type = 0;
+                                            $filter->user_id = Yii::app()->user->id;
+                                            
+                                            if ($filter->save()) {
+                                                $filterProfile = new FilterProfile;
+                                                $filterProfile->attributes = $_POST['Profile'];
+                                                $filterProfile->id_filter = $filter->id_filter;
+
+                                                if($filterProfile->validate()){
+                                                    $filterProfile->save();                                                                  
+                                                }
+                                            }
+                                            
+                                        }else{
+                                            
+                                            $filterProfile = $filter->filterProfiles[0];
+                                            $filterProfile->attributes = $_POST['Profile'];
+
+                                            if($filterProfile->validate()){
+
+                                                $filterProfile->save();
+                                                
+                                            }
+                                            
+                                        }            
+                                    
 					//$model->status_register = User::STATUS_REGISTER_TIPO;
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();
@@ -817,8 +891,8 @@ class ProfileController extends Controller
 		$prodEncantan->user_id = Yii::app()->user->id;
 		
 		$dataProvider = $prodEncantan->search();
-		
-		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider));
+		$numeroItems = $dataProvider->getTotalItemCount();
+		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider,'numeroItems' =>$numeroItems ));
 		
 	}
 	
@@ -1440,9 +1514,8 @@ class ProfileController extends Controller
 			$datos=$datos."});"; // tallas click
 			
 		$datos=$datos."});"; // ready
-		
 		// fuera del ready
-		
+		  
 		$datos=$datos."function a(id){";// seleccion de talla
 			$datos=$datos.'$("#vTa").find("div").siblings().removeClass("active");';
 			$datos=$datos.'$("#vTa").find("div#"+id+".tallass").removeClass("tallass");';
@@ -1503,4 +1576,31 @@ class ProfileController extends Controller
 		
 	echo $datos;
 	}
+
+
+	public function actionPshoppers(){
+		
+            $criteria = new CDbCriteria;
+			$criteria->with=array('user');
+			$criteria->addCondition('personal_shopper = 1 ');
+		
+			
+			
+			$total=User::model()->totalPS;
+			$pages = new CPagination($total);
+			$pages->pageSize = 8;
+			//$pages->applyLimit($criteria);
+			$profiles = Profile::model()->findAll($criteria);
+                        
+                        /***    Filtros por Perfil ***/
+                        
+                      
+			$this->render('pshoppers', array(
+				'profs' => $profiles,
+				'pages' => $pages
+			));		
+		}	
+			
+		
+	
 }

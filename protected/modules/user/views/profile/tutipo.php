@@ -10,7 +10,8 @@ $this->breadcrumbs=array(
     <script>
       $(window).load(function() {
         $('#joyRideTipContent').joyride({
-          autoStart : true,
+      
+          autoStart : <?php echo !((isset($editar) && $editar)) ? 'true' : 'false' ?>,
           modal: true,
           expose: true
         });

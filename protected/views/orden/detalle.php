@@ -165,7 +165,12 @@ $usuario = User::model()->findByPk($orden->user_id);
      
         ?></td>
       <td>
-
+	<?php
+	
+	if($orden->estado == 8) // recibido
+	{
+		
+	?>	
       	<div class="row margin_top_small">
       		<?php
       		
@@ -179,6 +184,13 @@ $usuario = User::model()->findByPk($orden->user_id);
 			    'htmlOptions'=>array('class'=>'span2 pull-right margin_bottom_xsmall')
 			)); ?>
 		</div>
+	<?php
+	}else
+		{
+			echo '<div class="row margin_top_small"></div>';
+		}
+	?>	
+			
 		<div  class="row">
       		<a onclick="window.print();" class="btn span2  pull-right"><i class="icon-print"></i> Imprimir pedido</a>
       	</div>		

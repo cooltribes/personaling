@@ -511,22 +511,87 @@ $usuario = User::model()->findByPk($orden->user_id);
               
       </table>
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
-      
     
   </div>
   <!-- INFORMACION DEL PEDIDO OFF -->
   <hr/>
+  
+  <!-- Productos devueltos ON -->
+   <div class="well well-small margin_top well_personaling_small">
+     <h3 class="braker_bottom margin_top">Productos devueltos</h3>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+        <tr>
+
+        	<th scope="col">Referencia</th>
+			<th scope="col">Nombre</th>
+			<th scope="col">Marca</th>
+			<th scope="col">Color</th>
+			<th scope="col">Talla</th>
+			<th scope="col">Motivo</th>  
+			<th scope="col">Precio</th>        
+        </tr>
+	<?php
+	
+	$devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario->id));
+	$totaldevuelto = 0;
+	$totalenvio = 0;
+	
+	if(count($devuelto)>0)
+	{
+		
+		foreach($devuelto as $each)
+		{
+			$totaldevuelto = $each->montodevuelto;
+			$totalenvio = $each->montoenvio;
+			$ptc = Preciotallacolor::model()->findByPk($each->preciotallacolor_id);
+			$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+			$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
+						
+			$marca=Marca::model()->findByPk($indiv->marca_id);
+			$talla=Talla::model()->findByPk($ptc->talla_id);
+			$color=Color::model()->findByPk($ptc->color_id);
+	?>
+        <tr>
+        	<td><?php echo $ptc->sku; ?></td>
+        	<td><?php echo $indiv->nombre; ?></td>
+        	<td><?php echo $marca->nombre; ?></td>
+        	<td><?php echo $color->valor ?></td>
+        	<td><?php echo $talla->valor ?></td>
+        	<td><?php echo $each->motivo; ?></td>
+        	<td><?php echo $precio->precioDescuento; ?></td>
+        </tr>
+     <?php
+		}
+	}
+	else
+	{
+	?>
+		<tr>
+			<td>No se ha devuelto ningún producto de esta orden.</td>	
+		</tr>
+	<?php
+	}
+	?>   
+        <tr>
+        	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
+        </tr>        
+        <tr>
+        	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
+        	<td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
+        </tr>
+        <tr>
+        	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
+        	<td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
+        </tr>
+        <tr>
+        	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
+        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
+        </tr>        
+    	</table>
+	</div>
+
+
+  <!-- Productos devueltos ON -->
   
   
   </div>
@@ -599,37 +664,84 @@ Para una futura iteración
  * 
  * */
  ?>
-  <div class="span5">
-      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
-      
-  <?php
-      
-      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
-      	
-		if(count($mensajes) > 0)
-		{
-			?>	
-			<ul class="media-list">
-			<?php
-				foreach($mensajes as $msj)
-				{
-					echo '<li class="media braker_bottom">
-          					<div class="media-body">';
-					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
-					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-					echo '<p>'.$msj->cuerpo.'</p>';					
-				}
-			?>
-			</ul>
-			<?php
-		}
-		else {
-			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
-		}
-      
-      ?>
- 
- 	</div>
+</div>
+ <!-- Tabla Productos Devueltos ON -->
+ <hr/>
+	 <div class="row">
+	   <div class="span12 well well-small margin_top well_personaling_small">
+	     <h3 class="braker_bottom margin_top">Productos devueltos</h3>
+	      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+	        <tr>
+
+	        	<th scope="col">Referencia</th>
+				<th scope="col">Nombre</th>
+				<th scope="col">Marca</th>
+				<th scope="col">Color</th>
+				<th scope="col">Talla</th>
+				<th scope="col">Motivo</th>  
+				<th scope="col">Precio</th>        
+	        </tr> 
+	        <tr>
+	        	<td >231</td>
+				<td >Blusa</td>
+				<td >Buhonero</td>
+				<td >Rojo</td>
+				<td >XL</td>
+				<td >Dañada</td>  
+				<td >100,00</td>        
+	        </tr>  	         
+	        <tr>
+	        	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
+	        </tr>        
+	        <tr>
+	        	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
+	        	<td  class="text_align_right">000,00 Bs</td>
+	        </tr>
+	        <tr>
+	        	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
+	        	<td  class="text_align_right">000,00 Bs</td>
+	        </tr>
+	        <tr>
+	        	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
+	        	<th  class="text_align_right">000,00 Bs</th>
+	        </tr>        
+	    	</table>
+		</div>
+	</div>
+ <!-- Tabla Productos Devueltos OFF -->
+	<div class="row">
+	  <div class="span5">
+	      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
+	      
+	  <?php
+	      
+	      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+	      	
+			if(count($mensajes) > 0)
+			{
+				?>	
+				<ul class="media-list">
+				<?php
+					foreach($mensajes as $msj)
+					{
+						echo '<li class="media braker_bottom">
+	          					<div class="media-body">';
+						echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+						echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
+						echo '<p>'.$msj->cuerpo.'</p>';					
+					}
+				?>
+				</ul>
+				<?php
+			}
+			else {
+				echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+			}
+	      
+	      ?>
+	 
+	 	</div>
+	 </div>
   <!--
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
@@ -659,12 +771,12 @@ Para una futura iteración
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
             <!-- Nested media object --> 
             
-          </div>
+<!--           </div>
           
           
           
         </li>
-      </ul>
+      </ul> -->
       
       
       
@@ -673,7 +785,7 @@ Para una futura iteración
  <!-- </div> 
  <!-- MENSAJES OFF --> 
 
-</div>
+
 <!-- /container --> 
 
 <!------------------- MODAL WINDOW ON -----------------> 

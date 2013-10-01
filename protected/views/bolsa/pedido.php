@@ -35,7 +35,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
             <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
           </ul>
         </li>
-        <li class="margin_bottom_medium"><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
+        <li class="margin_bottom_medium"><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
         <li class="margin_bottom_medium"><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
         <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
       </ol>

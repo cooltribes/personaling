@@ -22,7 +22,7 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('modal','modalshopper'),
+				'actions'=>array('modal','modalshopper','listado'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -169,6 +169,11 @@ class ProfileController extends Controller
 	    ));
 	}
 	
+	public function actionListado()
+	{
+		$this->render('listado_ps');   
+	}
+	
 	
 	/*
 	 * 
@@ -194,8 +199,8 @@ class ProfileController extends Controller
 					$id = $model->id;
 					//echo $model->username;
 				} else {
-					echo "(site) Error: no existe el usuario ".$_GET['alias'];
-					Yii::app()->end();
+					// echo "(site) Error: no existe el usuario ".$_GET['alias'];
+					$this->redirect(array('listado'));   
 				}
 			}
         // Yii::app()->end();       

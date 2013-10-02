@@ -173,7 +173,25 @@ class ProfileController extends Controller
 	
 	public function actionListado()
 	{
-		$this->render('listado_ps');   
+		$criteria = new CDbCriteria;
+			$criteria->with=array('user');
+			$criteria->addCondition('personal_shopper = 1 ');
+		
+			
+			
+			$total=User::model()->totalPS;
+			$pages = new CPagination($total);
+			$pages->pageSize = 8;
+			//$pages->applyLimit($criteria);
+			$profiles = Profile::model()->findAll($criteria);
+                        
+                        /***    Filtros por Perfil ***/
+                        
+                      
+			$this->render('pshoppers', array(
+				'profs' => $profiles,
+				'pages' => $pages
+			));		
 	}
 	
 	
@@ -1576,28 +1594,7 @@ class ProfileController extends Controller
 	}
 
 
-	public function actionPshoppers(){
 		
-            $criteria = new CDbCriteria;
-			$criteria->with=array('user');
-			$criteria->addCondition('personal_shopper = 1 ');
-		
-			
-			
-			$total=User::model()->totalPS;
-			$pages = new CPagination($total);
-			$pages->pageSize = 8;
-			//$pages->applyLimit($criteria);
-			$profiles = Profile::model()->findAll($criteria);
-                        
-                        /***    Filtros por Perfil ***/
-                        
-                      
-			$this->render('pshoppers', array(
-				'profs' => $profiles,
-				'pages' => $pages
-			));		
-		}	
 			
 		
 	

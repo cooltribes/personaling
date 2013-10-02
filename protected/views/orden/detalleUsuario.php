@@ -480,7 +480,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$color=Color::model()->findByPk($ptc->color_id);
 				
 				echo("<tr>");
-				echo("<td>".$indiv->codigo."</td>");// Referencia
+			
 				echo("<td>".$indiv->nombre."</td>"); // nombre
 				echo("<td>".$marca->nombre."</td>");
 				echo("<td>".$color->valor."</td>");

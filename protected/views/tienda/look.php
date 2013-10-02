@@ -24,8 +24,20 @@
         <?php 
         
         if(count($categorias))
-            foreach($categorias as $categoria){					
+            foreach($categorias as $categoria){            
 	?>              
+              
+            <?php $children = $categoria->getChildren();
+                  $show = false;
+                 foreach($children as $child){
+                     if ($child->hasLooks()){
+                         $show = true;
+                         break;
+                     }
+                 }                 
+                 if($show){
+            ?>    
+                 
               <li> 
         <?php echo CHtml::ajaxLink($categoria->nombre,
              Yii::app()->createUrl( 'tienda/ocasiones'),
@@ -68,20 +80,47 @@
         ?>  	
               	 
               </li>
-<?php } ?>              
+<?php 
+            } //endif show
+                     } ?>              
 
             
             </ul>
           </li>
           <!-- Filtro por Precios ON -->
+          <style>
+              li.active-range a{
+                color: #ffffff;
+                background: #6d2d56;
+              }
+          </style>
           <li class="dropdown">
 
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a class="btn-link">Hasta Bs 1000 <span class="color12">(4)</span></a></li>
-                <li><a class="btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
-                <li><a class="btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
-                <li><a class="btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                
+              <ul class="dropdown-menu" id="price-ranges" role="menu" aria-labelledby="dLabel">
+                  <?php foreach ($rangos as $key => $rango){ ?>
+                  <li><a class="btn btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
+                            <?php
+                            if(!$key){
+                                echo "Hasta Bs. {$rango['end']} "; 
+                            }else{
+                                if($key < 3){
+                                    echo "De Bs. {$rango['start']} a Bs. {$rango['end']} "; 
+                                }else{
+                                    echo "Más de Bs. {$rango['start']} ";
+                                }
+                            }
+                             ?>
+                            <span class="color12">
+                                <?php echo "({$rango['count']})" ?>
+                            </span>
+                        </a></li>
+                  <?php } ?>
+                    <li><a class="btn btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
+           <!-- 
+                <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
+                <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
+                <li><a class="btn btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                -->
             </ul> 
 
           </li>
@@ -165,7 +204,11 @@
       </nav>
       <!--/.nav-collapse --> 
     </div>
-    <input type="hidden" value="" id="ocasion_actual" /> 
+    <input type="hidden" value="" id="ocasion_actual" />
+    
+    <input id="rango_actual" type="hidden" value="" />     
+    
+    
     <div class="navbar-inner sub_menu">
     	<div id="div_ocasiones"></div>
 		<div id="div_shopper" style="display: none">
@@ -398,8 +441,10 @@ function refresh(reset)
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
     cargarLocal();
-    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form').serialize();
-                  
+    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual').serialize();
+    datosRefresh += '&precios=' + $('#rango_actual').val();
+    
+    console.log(datosRefresh);
     if(reset){
         datosRefresh += '&reset=true';
     }

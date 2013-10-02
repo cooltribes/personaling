@@ -24,8 +24,20 @@
         <?php 
         
         if(count($categorias))
-            foreach($categorias as $categoria){					
+            foreach($categorias as $categoria){            
 	?>              
+              
+            <?php $children = $categoria->getChildren();
+                  $show = false;
+                 foreach($children as $child){
+                     if ($child->hasLooks()){
+                         $show = true;
+                         break;
+                     }
+                 }                 
+                 if($show){
+            ?>    
+                 
               <li> 
         <?php echo CHtml::ajaxLink($categoria->nombre,
              Yii::app()->createUrl( 'tienda/ocasiones'),
@@ -68,7 +80,9 @@
         ?>  	
               	 
               </li>
-<?php } ?>              
+<?php 
+            } //endif show
+                     } ?>              
 
             
             </ul>
@@ -78,10 +92,28 @@
 
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a class="btn-link">Hasta Bs 1000 <span class="color12">(4)</span></a></li>
-                <li><a class="btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
-                <li><a class="btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
-                <li><a class="btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                
+                  <?php foreach ($rangos as $key => $rango){ ?>
+                    <li><a class="btn btn-link">
+                            <?php
+                            if(!$key){
+                                echo "Hasta Bs. {$rango['end']} "; 
+                            }else{
+                                if($key < 3){
+                                    echo "De Bs. {$rango['start']} a Bs. {$rango['end']} "; 
+                                }else{
+                                    echo "Más de Bs. {$rango['start']} ";
+                                }
+                            }
+                             ?>
+                            <span class="color12">
+                                <?php echo "({$rango['count']})" ?>
+                            </span>
+                        </a></li>
+                  <?php } ?>
+<!--                <li><a class="btn btn-link">Hasta Bs 1000 <span class="color12">(4)</span></a></li>
+                <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
+                <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
+                <li><a class="btn btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                -->
             </ul> 
 
           </li>

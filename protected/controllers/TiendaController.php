@@ -675,23 +675,6 @@ public function actionCategorias2(){
                 }        
             }
             
-            if($filtroPerfil){
-//                echo "<pre>";
-//                print_r($_POST);
-//                echo "</pre>";
-//                
-//                $userTmp = User::model()->findByPk(Yii::app()->user->id);
-//                $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
-//                $looks = new Look();
-//                $looks->match($userTmp);
-//                
-//                echo "<pre>";
-//                print_r($userTmp->profile->attributes);
-//                echo "</pre>";
-//                
-//                exit();
-            }
-            
 
 		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])
                         || $filtroPerfil || isset($_POST['reset'])){
@@ -722,10 +705,7 @@ public function actionCategorias2(){
                             $looks = new Look();
                             $ids = $looks->match($userTmp); 
                             $ids = $ids->getData();
-//                            echo "Vector de Ids: <br>";
-//                            echo "<pre>";
-//                            print_r($ids);
-//                            echo "</pre>";
+
                             $inValues = array();
                             
                             foreach ($ids as $row){
@@ -738,13 +718,9 @@ public function actionCategorias2(){
 //                            echo "<pre>";
 //                            print_r($criteria->toArray());
 //                            echo "</pre>";
-                                //exit();
-                            
+                                //exit();                            
                         }       
                         
-                        
-			//	$criteria->compare('categorias_categorias.categoria_id',$categoria_id,true,'OR');
-			//$criteria->compare('categorias_categorias.categoria_id',$_POST['check_ocasiones']);
 			$criteria->compare('status',2);
 			$total = Look::model()->count($criteria);
 			$pages = new CPagination($total);
@@ -782,13 +758,58 @@ public function actionCategorias2(){
                         
                         /***    Filtros por Perfil ***/
                         
-                        $profile = new Profile;
+                        $profile = new Profile;                        
                         
+                        /*      Rangos de precios       */
+                        $allLooks = Look::model()->findAll("status = 2");
+                        $count = 0;
+                        foreach ($allLooks as $look){
+                            $allPrices[] = $look->getPrecio(false);                            
+                        }
+                        
+                        $rangos = 4;                            
+                        $mayorP = max($allPrices);
+                        $menorP = min($allPrices);
+                        $len = ($mayorP - $menorP) / $rangos;
+                        
+                        foreach ($allPrices as $price){
+                           
+                            $count += $price >= $menorP + 2*$len && $price <= $menorP + 3*$len ? 1 : 1;
+                            
+                        }
+                        
+                        for($i=0; $i<$rangos ;$i++){                                
+                            $mayorP = $menorP + $len;
+                            
+                            $cant = count(array_filter($allPrices, function($price){                                
+                                    global $menorP, $mayorP;
+                                    return $price >= $menorP && $price <= $mayorP;                                
+                            }));
+                            
+                            echo "MEnor {$menorP} Mayor {$mayorP}<br>";
+                            echo "<pre>";
+                            print_r(array_filter($allPrices, function($price){                                
+                                    global $menorP, $mayorP;
+                                    return $price >= $menorP && $price <= $mayorP;                                
+                            }));
+                            echo "</pre>";  
+                            
+                            $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant); 
+                            $menorP += $len;
+                        }
+                            
+                            echo $len;
+                            echo "<br>Vector de rangos: <br>".$count;
+                            echo "<pre>";
+                            print_r($rangosArray);
+                            echo "</pre>";                           
+                            
 			$this->render('look', array(
 				'looks' => $looks,
 				'pages' => $pages,
                                 'profile' => $profile,
                                 'editar'=>true,
+                                'rangos' => $rangosArray
                             
 			));		
 		}	

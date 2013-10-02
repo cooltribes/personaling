@@ -134,7 +134,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 2)
 		echo "Bs. Pendientes por confirmar";
 	
-	if($orden->estado == 3)
+	if($orden->estado == 3 || $orden->estado == 8)
 		echo "Bs. ya pagados";
 
 	if($orden->estado == 4)
@@ -142,7 +142,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";
-	
+	 
 	if($orden->estado == 7)
 		echo "Bs. que faltan.";
 	

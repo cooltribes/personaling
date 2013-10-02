@@ -519,11 +519,12 @@ function moveScroller() {
 
            $.ajax({
             type: "post",
+            dataType: 'json',
             url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
             data: { 'idLook':idLook},
             success: function (data) {
 
-                if(data=="ok")
+                if(data.mensaje=="ok")
                 {
                     var a = "♥";
 
@@ -533,13 +534,13 @@ function moveScroller() {
 
                 }
 
-                if(data=="no")
+                if(data.mensaje=="no")
                 {
                     alert("Debe primero ingresar como usuario");
                     //window.location="../../user/login";
                 }
 
-                if(data=="borrado")
+                if(data.mensaje=="borrado")
                 {
                     var a = "♡";
 

@@ -206,14 +206,18 @@ class BolsaController extends Controller
 			}// mayor que 0
 		}
 		if (isset($_POST['cant'])){
+                    
+                    $res = "ok";
+                    
 			foreach($_POST['cant'] as $preciotallacolor_id => $cant){
 				foreach($cant as $look_id => $cantidad){
-					echo "bolsa_id: ".$_POST['bolsa_id']." preciotallacolor_id: ".$preciotallacolor_id." look_id: ".$look_id;	
+					//echo "bolsa_id: ".$_POST['bolsa_id']." preciotallacolor_id: ".$preciotallacolor_id." look_id: ".$look_id;	
 					$bolsa = BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$_POST['bolsa_id'],'preciotallacolor_id'=>$preciotallacolor_id,'look_id'=>$look_id));
 					$pr = Preciotallacolor::model()->findByPk($preciotallacolor_id);
 					$mientras = $pr->cantidad;
 					if(($mientras - $cantidad) < 0){
-						echo "NO";
+						//echo "NO";
+                                                $res = "NO";
 					}
 					else
 					{
@@ -221,11 +225,12 @@ class BolsaController extends Controller
 						
 						if($bolsa->save())
 						{
-							echo "ok";
+							//echo "ok";
 						}
 					}
 				}
 			}
+                        echo $res;
 				
 		}
 	} // actualizar

@@ -756,108 +756,64 @@ public function actionCategorias2(){
             }
             
 
-		if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper'])
-                        || $filtroPerfil || isset($_POST['reset'])){
-					
-			$criteria = new CDbCriteria;
-			
-			
-			if (isset($_POST['check_ocasiones'])){
-				$condicion = "";	
-				$criteria->with = array('categorias');	
-				$criteria->together = true;
-				foreach ($_POST['check_ocasiones'] as $categoria_id)
-					$condicion .= "categorias_categorias.categoria_id = ".$categoria_id." OR ";
-				$condicion = substr($condicion, 0, -3);
-				$criteria->addCondition($condicion);
-			}
-			if (isset($_POST['check_shopper'])){
-				$condicion = "";		
-				foreach ($_POST['check_shopper'] as $user_id)
-					$condicion .= "user_id = ".$user_id." OR ";
-				$condicion = substr($condicion, 0, -3);
-				$criteria->addCondition($condicion);				
-			}
-                        
-                        if($filtroPerfil){
-                            $userTmp = User::model()->findByPk(Yii::app()->user->id);
-                            $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
-                            $looks = new Look();
-                            $ids = $looks->match($userTmp); 
-                            $ids = $ids->getData();
+            if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
+                    || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])) 
+            {
 
-                            $inValues = array();
-                            
-                            foreach ($ids as $row){
-                                $inValues[] = $row["id"];
-                            }
-                            
-                            $criteria->addInCondition('t.id', $inValues);                            
-//                            echo "Criteria:";
-//
-//                            echo "<pre>";
-//                            print_r($criteria->toArray());
-//                            echo "</pre>";
-                                //exit();                            
-                        }       
+                $criteria = new CDbCriteria;
+
+
+                if (isset($_POST['check_ocasiones'])) {
+                    $condicion = "";
+                    $criteria->with = array('categorias');
+                    $criteria->together = true;
+                    foreach ($_POST['check_ocasiones'] as $categoria_id)
+                        $condicion .= "categorias_categorias.categoria_id = " . $categoria_id . " OR ";
+                    $condicion = substr($condicion, 0, -3);
+                    $criteria->addCondition($condicion);
+                }
+                if (isset($_POST['check_shopper'])) {
+                    $condicion = "";
+                    foreach ($_POST['check_shopper'] as $user_id)
+                        $condicion .= "user_id = " . $user_id . " OR ";
+                    $condicion = substr($condicion, 0, -3);
+                    $criteria->addCondition($condicion);
+                }
+
+                if ($filtroPerfil) {
+                    $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
+                    $looks = new Look();
+                    $ids = $looks->match($userTmp);
+                    $ids = $ids->getData();
+
+                    $inValues = array();
+
+                    foreach ($ids as $row) {
+                        $inValues[] = $row["id"];
+                    }
+
+                    $criteria->addInCondition('t.id', $inValues);
+    //                            echo "Criteria:";
+    //
+    //                            echo "<pre>";
+    //                            print_r($criteria->toArray());
+    //                            echo "</pre>";
+                    //exit();                            
+                }
+
+                if (isset($_POST['precios'])) {
+                    $limits = explode("-", $_POST['precios']);
+                    
+                    $looks = Look::model()->findAll("status = 2");
+                    
+                    $inValues = array();
+                    
+
+                    foreach ($looks as $look) {
+                        $price = $look->getPrecio(false);
                         
-			$criteria->compare('status',2);
-			$total = Look::model()->count($criteria);
-			$pages = new CPagination($total);
-			$pages->pageSize = 9;
-			$pages->applyLimit($criteria);
-			$looks = Look::model()->findAll($criteria);
-			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
-			Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-			Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
-			Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;			
-			echo CJSON::encode(array(
-	                'status'=>'success', 
-	                'condicion'=>$total,
-	                'div'=>$this->renderPartial('_look', array('looks' => $looks,
-				'pages' => $pages,), true,true)));
-		} else  {
-			$search = "";	
-			if(isset($_GET['search']))
-				$search =  	$_GET['search'];
-			
-			$criteria = new CDbCriteria;
-			$criteria->compare('title',$search,true,'OR');
-			$criteria->compare('description',$search,true,'OR');
-			$criteria->compare('status',2);
-			$total = Look::model()->count();
-			 
-			$pages = new CPagination($total);
-			$pages->pageSize = 9;
-			$pages->applyLimit($criteria);
-			$looks = Look::model()->findAll($criteria);
-                        
-                        /***    Filtros por Perfil ***/
-                        
-                        $profile = new Profile;                        
-                        
-                        /*      Rangos de precios       */
-                        $allLooks = Look::model()->findAll("status = 2");
-                        $count = 0;
-                        foreach ($allLooks as $look){
-                            $allPrices[] = $look->getPrecio(false);                            
-                        }
-                        
-                        $rangos = 4;                            
-                        $mayorP = max($allPrices);
-                        $menorP = min($allPrices);
-                        $len = ($mayorP - $menorP) / $rangos;
-                        
-                        foreach ($allPrices as $price){
-                           
-                            $count += $price >= $menorP + 2*$len && $price <= $menorP + 3*$len ? 1 : 1;
-                            
-                        }
-                        
+<<<<<<< HEAD
                         for($i=0; $i<$rangos ;$i++){                                
                             $mayorP = $menorP + $len;
                             
@@ -893,6 +849,110 @@ public function actionCategorias2(){
                             
 			));		
 		}	
+=======
+                        if($price >= $limits[0] && $price <= $limits[1])
+                        {
+                            $inValues[] = $look->id;
+                        }
+                    }
+                    
+                    $criteria->addInCondition('t.id', $inValues);
+                }
+                
+
+                $criteria->compare('status', 2);
+                $total = Look::model()->count($criteria);
+                $pages = new CPagination($total);
+                $pages->pageSize = 9;
+                $pages->applyLimit($criteria);
+                $looks = Look::model()->findAll($criteria);
+                Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+                Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+                Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+                
+                echo CJSON::encode(array(
+                    'status' => 'success',
+                    'condicion' => $total,
+                    'div' => $this->renderPartial('_look', array('looks' => $looks,
+                        'pages' => $pages,), true, true)));
+           } 
+           else
+           {
+                $search = "";
+                if (isset($_GET['search']))
+                    $search = $_GET['search'];
+
+                $criteria = new CDbCriteria;
+                $criteria->compare('title', $search, true, 'OR');
+                $criteria->compare('description', $search, true, 'OR');
+                $criteria->compare('status', 2);
+                $total = Look::model()->count();
+
+                $pages = new CPagination($total);
+                $pages->pageSize = 9;
+                $pages->applyLimit($criteria);
+                $looks = Look::model()->findAll($criteria);
+
+                /*             * *    Filtros por Perfil ** */
+
+                $profile = new Profile;
+
+                /*      Rangos de precios       */
+                $allLooks = Look::model()->findAll("status = 2");
+                $count = 0;
+                foreach ($allLooks as $look) {
+                    $allPrices[] = $look->getPrecio(false);
+                }
+
+                $rangos = 4;
+                $mayorP = max($allPrices);
+                $menorP = min($allPrices);
+                $len = ($mayorP - $menorP) / $rangos;
+
+                foreach ($allPrices as $price) {
+                    $count += $price >= $menorP + 2 * $len && $price <= $menorP + 3 * $len ? 1 : 1;
+                }
+
+                for ($i = 0; $i < $rangos; $i++) {
+                    $mayorP = $menorP + $len;
+
+                    $cant = count(array_filter($allPrices, function($price) {
+                                        global $menorP, $mayorP;
+                                        return $price >= $menorP && $price <= $mayorP;
+                                    }));
+
+    //                            echo "MEnor {$menorP} Mayor {$mayorP}<br>";
+    //                            echo "<pre>";
+    //                            print_r(array_filter($allPrices, function($price){                                
+    //                                    global $menorP, $mayorP;
+    //                                    return $price >= $menorP && $price <= $mayorP;                                
+    //                            }));
+    //                            echo "</pre>";  
+
+                    $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant);
+                    $menorP += $len;
+                }
+
+    //                            echo $len;
+    //                            echo "<br>Vector de rangos: <br>".$count;
+    //                            echo "<pre>";
+    //                            print_r($rangosArray);
+    //                            echo "</pre>";                           
+
+                $this->render('look', array(
+                    'looks' => $looks,
+                    'pages' => $pages,
+                    'profile' => $profile,
+                    'editar' => true,
+                    'rangos' => $rangosArray
+                ));
+        }	
+>>>>>>> f53c87883ff21f35de9895fb8c316efa549d388b
 			
 		
 	}

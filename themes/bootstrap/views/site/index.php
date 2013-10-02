@@ -20,7 +20,7 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
     <div class="row">
       <div class="span7 offset2 text_align_center margin_top">
         <div class="box_20130928 margin_bottom_small">
-          <h1>Obten recomendaciones <span>personalizadas adaptadas a ti</span></h1>
+          <h1>Obtén recomendaciones <span>personalizadas adaptadas a ti</span></h1>
           <p>
             <span>1.</span> Ingresa tu email
             <span>2.</span> Indica la forma de tu cuerpo y medidas

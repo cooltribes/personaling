@@ -369,11 +369,29 @@ $(function() {
     });
     
     
-//    $(document).bind("ajaxSend", function(){
-//        $("body").addClass("aplicacion-cargando");  
-//    }).bind("ajaxComplete", function(){
-//        $("body").removeClass("aplicacion-cargando");  
-//    });
+    $("#price-ranges a.price-filter").click(function(e){
 
+        
+        
+        var id = $(this).attr("id");
+        //console.log(id);
+
+        if($("#rango_actual").val() !== id){
+            
+            $(this).parent().siblings().removeClass("active-range");
+            $(this).parent().addClass("active-range");
+            $("#rango_actual").val(id); 
+            
+            //console.log($("#rango_actual .rango_actual").val());
+            
+            refresh();
+        }
+
+
+        
+    });
+    
+    
+    
 });
 

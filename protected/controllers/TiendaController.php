@@ -762,9 +762,9 @@ public function actionCategorias2(){
                         
                         /*      Rangos de precios       */
                         $allLooks = Look::model()->findAll("status = 2");
-                        
+                        $count = 0;
                         foreach ($allLooks as $look){
-                            $allPrices[] = $look->getPrecio(false);
+                            $allPrices[] = $look->getPrecio(false);                            
                         }
                         
                         $rangos = 4;                            
@@ -772,26 +772,37 @@ public function actionCategorias2(){
                         $menorP = min($allPrices);
                         $len = ($mayorP - $menorP) / $rangos;
                         
-                        function inRange($price){
-                                
-                            global $menorP, $mayorP;
+                        foreach ($allPrices as $price){
+                           
+                            $count += $price >= $menorP + 2*$len && $price <= $menorP + 3*$len ? 1 : 1;
                             
-                            return $price >= $menorP && $price <= $mayorP;
-                                
                         }
-                        
                         
                         for($i=0; $i<$rangos ;$i++){                                
                             $mayorP = $menorP + $len;
-                            $cant = count(array_filter($allPrices, 'inRange'));
-                            $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant);                                
+                            
+                            $cant = count(array_filter($allPrices, function($price){                                
+                                    global $menorP, $mayorP;
+                                    return $price >= $menorP && $price <= $mayorP;                                
+                            }));
+                            
+                            echo "MEnor {$menorP} Mayor {$mayorP}<br>";
+                            echo "<pre>";
+                            print_r(array_filter($allPrices, function($price){                                
+                                    global $menorP, $mayorP;
+                                    return $price >= $menorP && $price <= $mayorP;                                
+                            }));
+                            echo "</pre>";  
+                            
+                            $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant); 
+                            $menorP += $len;
                         }
                             
-//                            echo $len;
-//                            echo "Vector de rangos: <br>";
-//                            echo "<pre>";
-//                            print_r($rangosArray);
-//                            echo "</pre>";                           
+                            echo $len;
+                            echo "<br>Vector de rangos: <br>".$count;
+                            echo "<pre>";
+                            print_r($rangosArray);
+                            echo "</pre>";                           
                             
 			$this->render('look', array(
 				'looks' => $looks,

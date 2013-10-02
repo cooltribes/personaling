@@ -94,7 +94,7 @@
               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                   <?php foreach ($rangos as $key => $rango){ ?>
                     <li><a class="btn btn-link">
-                            <?php 
+                            <?php
                             if(!$key){
                                 echo "Hasta Bs. {$rango['end']} "; 
                             }else{

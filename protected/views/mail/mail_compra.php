@@ -123,7 +123,7 @@
                                                                                 </li>
                                                                             </ul>
                                                                         </li>
-                                                                        <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
+                                                                        <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
                                                                         <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
                                                                         <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
                                                                     </ol>

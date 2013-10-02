@@ -19,6 +19,7 @@
 <script language="JavaScript">
 var dragSrcEl = '';
 function handleDragStart(e) {
+	
 $('.canvas').css('background',"white url('<?php echo Yii::app()->baseUrl.'/images/loading.gif'; ?>') center center no-repeat");
   this.style.opacity = '0.4';  // this / e.target is the source node.
    dragSrcEl = this;
@@ -39,6 +40,7 @@ $('.canvas').css('background',"white url('<?php echo Yii::app()->baseUrl.'/image
   
 }
 function handleDragOver(e) {
+	
   if (e.preventDefault) {
     e.preventDefault(); // Necessary. Allows us to drop.
   }
@@ -49,35 +51,51 @@ function handleDragOver(e) {
 }
 
 function handleDragEnter(e) {
+	
   // this / e.target is the current hover target.
+    if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
   this.classList.add('over');
+  return false;
 }
 
 function handleDragLeave(e) {
+	
+   if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
   this.classList.remove('over');  // this / e.target is previous target element.
+  return false;
 }
 function handleDrop(e) {
-
-	//Calcular la posicion del scroll
 	
+  if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
+	//Calcular la posicion del scroll
+
 	if ($('#tab1').hasClass('active')){
 		scrollTop = $('#div_categorias').scrollTop();
 	} else {
 		scrollTop = $('#div_prendas').scrollTop();	
 	}
-	
+
 	var mouse_position_x = e.dataTransfer.getData("mouse_position_x");
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
     y = e.clientY - e.currentTarget.offsetTop - scrollTop - mouse_position_y;
 	//alert('scroll: '+$('#div_categorias').scrollTop()+' clientY: '+e.clientY+' OffsetTop: '+e.currentTarget.offsetTop+' mouse: '+mouse_position_y);
 	//alert(y);
+
   if (e.stopPropagation) {
     e.stopPropagation(); // Stops some browsers from redirecting.
   }
- 
+
   // Don't do anything if dropping the same column we're dragging.
+ 
   if (dragSrcEl != this) {
+  	console.log('handleDrop='+dragSrcEl);
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML; 
     var contenedor = this;
@@ -196,12 +214,16 @@ function handleDrop(e) {
 }
 
 function handleDragEnd(e) {
+	
   // this/e.target is the source node.
+//if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {handleDrop(e);}
+  
 var cols = document.querySelectorAll('.column');
   [].forEach.call(cols, function (col) {
     col.classList.remove('over');
     col.style.opacity = '1';
   });
+  
 }
 $(document).ready(function() {
 
@@ -355,7 +377,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <hr/>
 
         <!-- CANVAS ON -->
-        <div class="well well-large canvas" style="z-index=0;overflow:hidden;position: relative;width: 670px;height: 670px" id="div_canvas">
+        <div class="well well-large canvas" style="z-index=0;overflow:hidden;position: relative;width: 670px;height: 670px;-webkit-user-drop: element;" id="div_canvas" dropzone="move s:text/plain">
           <?php 
         
         if (count($model->lookhasproducto)){

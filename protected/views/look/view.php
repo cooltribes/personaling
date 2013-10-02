@@ -1,8 +1,9 @@
 <?php
-// $this->breadcrumbs=array(
-    //'Look',
-// );
+$this->pageTitle=Yii::app()->name . " - " . $model->title;;
+
 ?>
+
+
 
 <div class="container margin_top_small" id="carrito_compras">
   <div class="row">

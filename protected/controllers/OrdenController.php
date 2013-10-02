@@ -1433,7 +1433,7 @@ class OrdenController extends Controller
 			
 			foreach( $sheet_array as $row ) {
 				
-				if($row['A']=="VENTA DE ENVIOS DE TAQUILLA" || $row['A']=="Fecha"){
+				if($row['A']=="VENTA DE ENVIOS DE TAQUILLA" || $row['A']=="Fecha" || $row['A']==""){
 					// do nothing
 				}else
 				{/*

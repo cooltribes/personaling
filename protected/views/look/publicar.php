@@ -207,7 +207,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <?php
 				}
         ?>
-        <?php echo CHtml::hiddenField('categorias'); ?>
+        <?php echo CHtml::hiddenField('categorias',$model->has_ocasiones); ?>
         </div>
         <hr/>
         <h4> ¿Que estilo se adapta a este look?</h4>

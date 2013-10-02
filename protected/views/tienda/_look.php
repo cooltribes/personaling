@@ -1,4 +1,8 @@
-
+<style>
+    div.infinite_navigation{
+        display:none;
+    }
+</style>
   <div class="row" id="looks">
 	<?php foreach($looks as $look): ?>
 		<?php //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
@@ -79,7 +83,7 @@
 	<?php endforeach; ?>
 	<script>
 	$('.imglook').on("load",function(){
-		console.log('clicking');
+		//console.log('clicking');
 		$(this).parent().prev("img").hide();
 		$(this).show();
 	});
@@ -91,8 +95,8 @@
 	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#looks',
 	    'itemSelector' => 'div.look',
-	    'loadingText' => 'Loading...',
-	    'donetext' => 'This is the end... my only friend, the end',
+	    'loadingText' => 'Cargando Looks...',
+	    'donetext' => ' ',
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); ?> 

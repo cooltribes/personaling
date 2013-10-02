@@ -490,84 +490,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 	}
 	
-		public function multipleColor($idColor, $idact)
-	{
-		// llega un array de ID de color
-		 
-		$colores="";
-		$i=0;
-		$criteria=new CDbCriteria;
-
-        $criteria->select = 't.*';
-		$criteria->with = array('precios','preciotallacolor','categorias');
-        //$criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
-        $criteria->addCondition('t.estado = 0');
-		$criteria->addCondition('t.status = 1');
-     //   $criteria->condition = 't.estado = :uno';
-	//	$criteria->condition = 't.status = :dos';
-	
-	$criteria->together = true;
-	
-	if(is_array($idColor)){
-		if(count($idColor)>0){	
 			
-			foreach($idColor as $col){
-				if(count($idColor)==1){
-					$colores='color_id = '.$col;	
-					break;			
-				}	
-				
-				if($i==0)
-					$colores.='(color_id = '.$col.' ';
-				
-				if($i>0 && $i<count($idColor)-1)
-					$colores.='OR color_id = '.$col.' ';
-				
-				if($i==count($idColor)-1)
-					$colores.='OR color_id = '.$col.' )';
-				
-				$i++;
-				
-				Yii::app()->session['color']=1;
-						
-			}
-			$criteria->addCondition($colores);
-			
-		}
-	}
-	
-	if(isset(Yii::app()->session['idact'])){
-		
-		$categoria= 'tbl_categoria_id ='.$idact;
-		$criteria->addCondition($categoria);
-		
-		
-	}
-	if(isset(Yii::app()->session['minpr'])&&isset(Yii::app()->session['maxpr'])){
-		$rangopr= 'precioDescuento BETWEEN '.Yii::app()->session['minpr'].' AND '.Yii::app()->session['maxpr'];
-		$criteria->addCondition($rangopr);
-	}
-	
-
-		
-	
-		
-			
-	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
-		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
-    //    $criteria->params = array(":uno" => "2"); // estado
-	//	$criteria->params = array(":dos" => "1"); // status
-		
-		$criteria->group = 't.id';
-
-		
-		return new CActiveDataProvider($this, array(
-       'criteria'=>$criteria,
-       'pagination'=>array('pageSize'=>12,)
-	));
-		
-	}
-	
 	
 	
 	
@@ -651,6 +574,219 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 	));
 		
 	}
+	
+	
+	public function multipleColor($idColor, $idact)
+	{
+		// llega un array de ID de color
+		 
+		$colores="";
+		$i=0;
+		$criteria=new CDbCriteria;
+
+        $criteria->select = 't.*';
+		$criteria->with = array('precios','preciotallacolor','categorias');
+        //$criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
+        $criteria->addCondition('t.estado = 0');
+		$criteria->addCondition('t.status = 1');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+	
+	$criteria->together = true;
+	
+	if(is_array($idColor)){
+		if(count($idColor)>0){	
+			
+			foreach($idColor as $col){
+				if(count($idColor)==1){
+					$colores='color_id = '.$col;	
+					break;			
+				}	
+				
+				if($i==0)
+					$colores.='(color_id = '.$col.' ';
+				
+				if($i>0 && $i<count($idColor)-1)
+					$colores.='OR color_id = '.$col.' ';
+				
+				if($i==count($idColor)-1)
+					$colores.='OR color_id = '.$col.' )';
+				
+				$i++;
+				
+				Yii::app()->session['color']=1;
+						
+			}
+			$criteria->addCondition($colores);
+			
+		}
+	}
+	
+	if(isset(Yii::app()->session['idact'])){
+		
+		$categoria= 'tbl_categoria_id ='.$idact;
+		$criteria->addCondition($categoria);
+		
+		
+	}
+	if(isset(Yii::app()->session['minpr'])&&isset(Yii::app()->session['maxpr'])){
+		$rangopr= 'precioDescuento BETWEEN '.Yii::app()->session['minpr'].' AND '.Yii::app()->session['maxpr'];
+		$criteria->addCondition($rangopr);
+	}
+	
+	
+			
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
+		
+		$criteria->group = 't.id';
+
+		
+		return new CActiveDataProvider($this, array(
+       'criteria'=>$criteria,
+       'pagination'=>array('pageSize'=>12,)
+	));
+		
+	}
+	
+
+	public function nueva2($todos)
+	{
+
+		$criteria=new CDbCriteria;
+		unset(Yii::app()->session['color']);
+		$criteria->compare('id',$this->id);
+		
+		$criteria->compare('codigo',$this->codigo,true);
+		$criteria->compare('t.nombre',$this->nombre,true);
+		$criteria->compare('t.estado',$this->estado,true);
+		$criteria->compare('descripcion',$this->descripcion,true);
+		
+		
+		$criteria->compare('marca_id',$this->marca_id,true);
+		$criteria->compare('fInicio',$this->fInicio,true);
+		$criteria->compare('fFin',$this->fFin,true);
+		
+		$criteria->compare('fecha',$this->fecha,true);
+		
+		$criteria->compare('status',$this->status,true);
+		$criteria->compare('destacado',$this->destacado,true);
+
+		$criteria->compare('peso',$this->peso,true);
+		
+		
+		$criteria->with = array('preciotallacolor','precios','categorias');
+		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
+		
+		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
+		{
+			if(empty($todos)) // si no tiene hijos devuelve un array vacio por lo que debe buscar por el id de la categoria
+			{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+			}
+			else // si tienes hijos
+				{
+					$criteria->addInCondition("tbl_categoria_id",$todos);
+				}		
+		}else if($todos=="a")
+		{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+				
+		}
+
+		$criteria->addCondition('precioDescuento != ""');
+		$criteria->addCondition('orden = 1');
+		
+		$criteria->addCondition('cantidad > 0');
+		
+		// $criteria->order = "t.id ASC";
+		$criteria->order = "fecha DESC";
+		$criteria->group = "t.id";
+		$criteria->together = true;
+		
+		return Producto::model()->findAll($criteria);
+		
+	}
+
+public function multipleColor2($idColor, $idact)
+	{
+		// llega un array de ID de color
+		 
+		$colores="";
+		$i=0;
+		$criteria=new CDbCriteria;
+
+        $criteria->select = 't.*';
+		$criteria->with = array('precios','preciotallacolor','categorias');
+        //$criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
+        $criteria->addCondition('t.estado = 0');
+		$criteria->addCondition('t.status = 1');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+	
+	$criteria->together = true;
+	
+	if(is_array($idColor)){
+		if(count($idColor)>0){	
+			
+			foreach($idColor as $col){
+				if(count($idColor)==1){
+					$colores='color_id = '.$col;	
+					break;			
+				}	
+				
+				if($i==0)
+					$colores.='(color_id = '.$col.' ';
+				
+				if($i>0 && $i<count($idColor)-1)
+					$colores.='OR color_id = '.$col.' ';
+				
+				if($i==count($idColor)-1)
+					$colores.='OR color_id = '.$col.' )';
+				
+				$i++;
+				
+				Yii::app()->session['color']=1;
+						
+			}
+			$criteria->addCondition($colores);
+			
+		}
+	}
+	
+	if(isset(Yii::app()->session['idact'])){
+		
+		$categoria= 'tbl_categoria_id ='.$idact;
+		$criteria->addCondition($categoria);
+		
+		
+	}
+	if(isset(Yii::app()->session['minpr'])&&isset(Yii::app()->session['maxpr'])){
+		$rangopr= 'precioDescuento BETWEEN '.Yii::app()->session['minpr'].' AND '.Yii::app()->session['maxpr'];
+		$criteria->addCondition($rangopr);
+	}
+	
+	
+			
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
+		
+		$criteria->group = 't.id';
+
+		
+		return Producto::model()->findAll($criteria);
+		
+	}
+
+
+
+
+
+
 	/**
 	 * Mas vendidos
 	 */
@@ -907,6 +1043,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}
 		return $img;
 	}
-			 
+
+ 
 		 
 }

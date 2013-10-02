@@ -34,7 +34,7 @@ class TiendaController extends Controller
 	
 	public function actionDoble()
 	{
-		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		/*$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
@@ -52,6 +52,52 @@ class TiendaController extends Controller
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	*/
+			
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		$producto = new Producto;		
+		$producto->status = 1; // no borrados
+		$producto->estado = 0; // solo productos activos
+		if(isset(Yii::app()->session['idColor'])){
+			unset(Yii::app()->session['idColor']);
+			
+		}
+		if(isset(Yii::app()->session['idact'])){
+			unset(Yii::app()->session['idact']);
+			
+		}
+		if(isset(Yii::app()->session['bsf'])){
+			unset(Yii::app()->session['bsf']);
+			
+		}
+		if(isset(Yii::app()->session['minpr'])){
+			unset(Yii::app()->session['minpr']);
+			
+		}
+		if(isset(Yii::app()->session['maxpr'])){
+			unset(Yii::app()->session['maxpr']);
+			
+		}
+		$a ="a"; 
+		
+		
+		$dp=$producto->nueva($a);
+
+		
+		$arr=array();
+		foreach($dp->getData() as $record) {
+			array_push($arr,$record->getPrecio(false));	
+		 }
+		 
+		Yii::app()->session['bsf']=$arr;
+		$dataProvider = $producto->nueva2($a);
+		$total=count($dataProvider);
+			$pages = new CPagination($total);
+			$pages->pageSize = 12;
+	
+		$this->render('doble',
+		array('doble'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,'pages'=>$pages
 		));	
 			
 	}
@@ -177,7 +223,7 @@ class TiendaController extends Controller
 			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 			));	
 			}
-
+ 
 
 	public function actionFiltrar2()
 	{
@@ -277,20 +323,54 @@ class TiendaController extends Controller
 		$producto->estado = 0; // que no estÃ© inactivo
 	
 		$color="";
-	
+		$categoria="";
+		
 		if(isset($_POST['idColor'])) // llega como parametro el id del color presionado
-		{	
-			$color = $_POST['idColor'];
+		{
+			Yii::app()->session['idColor']=$_POST['idColor'];	
+		}		
+		
+		if(isset($_POST['rango'])) // llega como parametro el id del color presionado
+		{
+			$minmax = explode('A',$_POST['rango']);
+			Yii::app()->session['minpr']=$minmax[0];	
+			Yii::app()->session['maxpr']=$minmax[1];	
 		}
+					
+		if(isset(Yii::app()->session['idact'])) // llega como parametro el id del color presionado
+		{
+					
+			$categoria=Yii::app()->session['idact'];
+		}
+			
+		
+			
+		if(isset(Yii::app()->session['idColor'])) // llega como parametro el id del color presionado
+		{
+			$color = explode('#',Yii::app()->session['idColor']);
+			
+			unset($color[0]);	
+		}	
 
-		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
-
-		$dataProvider = $producto->busColor($color);
-		$this->render('index',
+			
+		
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		
+		if(count($color)==0&&(!isset(Yii::app()->session['idact']))&&(!isset(Yii::app()->session['minpr']))&&(!isset(Yii::app()->session['maxpr']))){
+			$a="a";	
+			$dataProvider = $producto->nueva($a);
+			
+		}else{
+			
+				
+			$dataProvider = $producto->multipleColor2($color,$categoria);
+		}
+		$this->render('doble',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
-			
+		
+		
 	}
 	
 	
@@ -786,23 +866,23 @@ public function actionCategorias2(){
                                     return $price >= $menorP && $price <= $mayorP;                                
                             }));
                             
-                            echo "MEnor {$menorP} Mayor {$mayorP}<br>";
+                            /*echo "MEnor {$menorP} Mayor {$mayorP}<br>";
                             echo "<pre>";
                             print_r(array_filter($allPrices, function($price){                                
                                     global $menorP, $mayorP;
                                     return $price >= $menorP && $price <= $mayorP;                                
                             }));
-                            echo "</pre>";  
+                            echo "</pre>";  */
                             
                             $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant); 
                             $menorP += $len;
                         }
                             
-                            echo $len;
+                            /*echo $len;
                             echo "<br>Vector de rangos: <br>".$count;
                             echo "<pre>";
                             print_r($rangosArray);
-                            echo "</pre>";                           
+                            echo "</pre>";     */                      
                             
 			$this->render('look', array(
 				'looks' => $looks,

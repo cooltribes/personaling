@@ -407,15 +407,19 @@ public function actionCategorias(){
 	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	  }else {
 	  	$with = array();
-	  	if ($_POST['padreId']!=0)
-			$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
-		if ($_POST['colores']!=''){
-			$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
-		}	
-	  	if ($_POST['marcas']!='Todas las Marca')	
-	  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
-		else	
-	  		$productos = Producto::model()->with($with)->findAll();
+	  	if(isset($_POST['padreId']))
+		  	if ($_POST['padreId']!=0)
+				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
+		if(isset($_POST['colores']))
+			if ($_POST['colores']!='')
+				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
+			
+	  	if(isset($_POST['marcas'])){
+		  	if ($_POST['marcas']!='Todas las Marca')	
+		  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
+			else	
+		  		$productos = Producto::model()->with($with)->findAll();
+		}
 	  	if (isset($categoria_padre))
 	  		echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
 		else

@@ -121,7 +121,9 @@ $prePub="";
 
 endforeach;
 
-
+$total=count($prods);
+			$pages = new CPagination($total);
+			$pages->pageSize = 12;
  $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#catalogo',
 	    'itemSelector' => 'div.articulo',

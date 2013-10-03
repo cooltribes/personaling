@@ -210,6 +210,7 @@ class Producto extends CActiveRecord
 		$criteria->addCondition('orden = 1');
 		
 		$criteria->order = "t.id ASC";
+		$criteria->group="t.id";
 		
 		$criteria->together = true;
 		

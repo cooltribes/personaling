@@ -91,13 +91,11 @@ class TiendaController extends Controller
 		 
 		Yii::app()->session['bsf']=$arr;
 		$dataProvider = $producto->nueva2($a);
-		$total=count($dataProvider);
-			$pages = new CPagination($total);
-			$pages->pageSize = 12;
+		
 	
 		$this->render('doble',
 		array('doble'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,'pages'=>$pages
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias
 		));	
 			
 	}
@@ -240,12 +238,12 @@ class TiendaController extends Controller
 				Yii::app()->getSession()->add('categoria', $_POST['cate1']);
 				Yii::app()->getSession()->add('valor',1);
 			}
-			
+			/*
 			if (isset($_POST['idact'])){ // actualizacion desde los ajaxlink
 				 $producto->categoria_id = $_POST['idact'];		
 				 Yii::app()->getSession()->add('categoria', $_POST['idact']);
 				 Yii::app()->getSession()->add('valor',1);
-			}		
+			}	*/	
 		
 			if (isset($_POST['busqueda'])){ // desde el input
 				$producto->nombre = $_POST['busqueda'];
@@ -300,6 +298,7 @@ class TiendaController extends Controller
 		
 			}
 			*/
+else{
 			$todos = array();
 			$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
 	
@@ -309,6 +308,7 @@ class TiendaController extends Controller
 			array('index'=>$producto,
 			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 			));	
+}
 			}
 
 
@@ -396,7 +396,7 @@ class TiendaController extends Controller
 			Yii::app()->session['maxpr']=$minmax[1];	
 		}
 					
-		if(isset(Yii::app()->session['idact'])) // llega como parametro el id del color presionado
+		if(isset(Yii::app()->session['idact'])) // llega como parametro el id de la categoria presionada
 		{
 					
 			$categoria=Yii::app()->session['idact'];

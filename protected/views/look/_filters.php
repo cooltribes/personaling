@@ -23,7 +23,7 @@
         '5' => 'Cancelado', '6' => 'Pago rechazado', '7' => 'Pago insuficiente',
         '8' => 'Entregado', '9' => 'Devuelto'), array('style' => 'display:none'));
     
-    echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+    echo CHtml::dropDownList('marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
     
     echo CHtml::dropDownList('user_id', '', CHtml::listData(User::model()->with(array(
@@ -57,13 +57,13 @@
                                 'view_counter' => 'Visitas',
                                 'user_id' => 'Personal Shopper',
                                 'status' => 'Estado',
-                                'total' => 'Marcas que contiene',
+                                'marca' => 'Marcas que contiene',
                                 'pago_id' => 'Monto de Ventas',
                                 'cantidad' => 'Cantidad Vendida',
                                 'created_on' => 'Fecha de Creación',
                                 'campana' => 'Campaña',
                                 'precio' => 'Precio',
-                                'dfgh' => 'Cantidad de Prendas',
+                                'prendas' => 'Cantidad de Prendas',
                                 
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

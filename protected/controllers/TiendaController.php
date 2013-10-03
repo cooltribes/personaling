@@ -802,7 +802,9 @@ public function actionCategorias2(){
                     //exit();                            
                 }
 
-                if (isset($_POST['precios'])) {
+                if (isset($_POST['precios']) && $_POST['precios'] != "") {
+                    echo "SI";
+                    exit();
                     $limits = explode("-", $_POST['precios']);
                     
                     $looks = Look::model()->findAll("status = 2");

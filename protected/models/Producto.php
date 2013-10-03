@@ -706,7 +706,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->group = "t.id";
 		$criteria->together = true;
 		
-		return Producto::model()->findAll($criteria);
+		return $criteria;
 		
 	}
 

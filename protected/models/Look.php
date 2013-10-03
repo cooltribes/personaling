@@ -423,7 +423,7 @@ class Look extends CActiveRecord
 	}
 	public function getMarcas(){
 		$marcas = array();
-		foreach ($this->productos_todos as $producto){
+		foreach ($this->productos_todos(array('group'=>'marca_id')) as $producto){
 			$marcas[] = Marca::model()->findByPk($producto->marca_id);
 		}
 		return $marcas;

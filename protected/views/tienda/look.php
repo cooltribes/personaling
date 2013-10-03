@@ -234,6 +234,7 @@
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
 <?php 
+
 $this->renderPartial('_look',array(
 	'looks'=>$looks,
 	'pages'=>$pages,

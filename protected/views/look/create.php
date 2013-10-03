@@ -637,12 +637,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				'beforeSend' => "function( request )
 				{
 					// Set up any pre-sending stuff like initializing progress indicators
+					$('body').addClass('aplicacion-cargando');
 				}",
 				'success' => "function( data )
 				{
 				// handle return data
 				//alert( data );
 					$('#div_categorias').html(data);
+					$('body').removeClass('aplicacion-cargando');
 				}",
 					'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 				),
@@ -670,6 +672,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						    'type' => 'POST',
 						    'beforeSend' => "function( request )
 						                     {
+						                       	$('body').addClass('aplicacion-cargando');
 						                       // Set up any pre-sending stuff like initializing progress indicators
 						                     }",
 						    'success' => "function( data )
@@ -677,6 +680,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						                    // handle return data
 						                    //alert( data );
 						                    $('#div_categorias').html(data);
+						                    $('body').removeClass('aplicacion-cargando');
 						                  }",
 						    'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 						  ),
@@ -694,9 +698,46 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	?>
                 <div class="span6">
                 	
-                  <div class="dropdown"> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
+                  <div class="dropdown" id="crear_look_colores"> <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="crear_look_colores">
+                    
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" >
+  	<?php
+  	echo '<li>';
+  	
+	echo CHtml::ajaxLink(
+						  "Todos",
+						  Yii::app()->createUrl( 'look/categorias'),
+						  array( // ajaxOptions
+						    'type' => 'POST',
+						    'beforeSend' => "function( request,settings )
+						                     {
+						                       	$('body').addClass('aplicacion-cargando');
+						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       $('#colores').val('');
+						                       
+						                     }",
+						    'success' => "function( data )
+						                  {
+						                    // handle return data
+						                    //alert( data );
+						                    $('#a_colores').html('Todos <span class=\"caret\"></span>');
+						                    $('#a_colores').dropdown('toggle');
+						                    $('#div_categorias').html(data);
+											$('body').removeClass('aplicacion-cargando');
+						                  }",
+						     'data' => "js:$('#formu').serialize()+'&colores='",
+						  ),
+						  array( //htmlOptions
+						    'href' => Yii::app()->createUrl( 'look/categorias' ),
+						   // 'class' => 'thumbnail',
+						    'id' => 'colores0',
+						    'draggable'=>"false",
+						    'tabindex'=>'-1',
+						  )
+						);
+	echo '</li>';   
+	?>                 	
                       <?php 
   $colores = Color::model()->findAll();
   foreach($colores as $color){
@@ -711,6 +752,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						    'type' => 'POST',
 						    'beforeSend' => "function( request,settings )
 						                     {
+						                       	$('body').addClass('aplicacion-cargando');
 						                       // Set up any pre-sending stuff like initializing progress indicators
 						                       $('#colores').val('".$color->id."');
 						                       
@@ -719,7 +761,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						                  {
 						                    // handle return data
 						                    //alert( data );
+						                    $('#a_colores').html('".$imagen.'  '.$color->valor." <span class=\"caret\"></span>');
+						                    $('#a_colores').dropdown('toggle');
 						                    $('#div_categorias').html(data);
+											$('body').removeClass('aplicacion-cargando');
 						                  }",
 						     'data' => "js:$('#formu').serialize()+'&colores=".$color->id."'",
 						  ),

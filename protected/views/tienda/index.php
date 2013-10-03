@@ -229,7 +229,10 @@ $max=round($max/100, 0)*100;
        
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
-       </form> 
+       </form>
+         <hr/>
+        <button class="btn" onclick="javascript:location.reload()" type="button">Eliminar Filtros</button>
+        
         <hr/>
         
         <!-- para filtrar por campo de texto -->

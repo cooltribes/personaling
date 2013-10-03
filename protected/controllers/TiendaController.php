@@ -813,7 +813,6 @@ public function actionCategorias2(){
                     foreach ($looks as $look) {
                         $price = $look->getPrecio(false);
                         
-<<<<<<< HEAD
                         for($i=0; $i<$rangos ;$i++){                                
                             $mayorP = $menorP + $len;
                             
@@ -848,8 +847,8 @@ public function actionCategorias2(){
                                 'rangos' => $rangosArray
                             
 			));		
-		}	
-=======
+			
+
                         if($price >= $limits[0] && $price <= $limits[1])
                         {
                             $inValues[] = $look->id;
@@ -952,7 +951,6 @@ public function actionCategorias2(){
                     'rangos' => $rangosArray
                 ));
         }	
->>>>>>> f53c87883ff21f35de9895fb8c316efa549d388b
 			
 		
 	}

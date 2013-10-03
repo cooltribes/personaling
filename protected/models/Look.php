@@ -423,7 +423,7 @@ class Look extends CActiveRecord
 	}
 	public function getMarcas(){
 		$marcas = array();
-		foreach ($this->productos_todos as $producto){
+		foreach ($this->productos_todos(array('group'=>'marca_id')) as $producto){
 			$marcas[] = Marca::model()->findByPk($producto->marca_id);
 		}
 		return $marcas;
@@ -654,8 +654,10 @@ class Look extends CActiveRecord
             $criteria = new CDbCriteria;
             
             $criteria->with = array();
-//            $criteria->select = array();
+            //$criteria->select = array();
             //$criteria->select[] = "t.*";
+            
+            $havingPrecio = '';
             
             for ($i = 0; $i < count($filters['fields']); $i++) {
                 
@@ -687,138 +689,68 @@ class Look extends CActiveRecord
                 
                 if($column == 'precio')
                 {
+                    $criteria->addCondition('(select sum(precios.precioDescuento) from `tbl_look_has_producto` `productos_productos`, `tbl_producto` `productos`, `tbl_precio` `precios` 
+                          where `t`.`id`=`productos_productos`.`look_id` and `productos`.`id`=`productos_productos`.`producto_id` and 
+                          `precios`.`tbl_producto_id`=`productos`.`id`) '
+                    .$comparator.' '.$value.'', $logicOp);                    
+                    
+//                    $criteria->with['productos'] = array(
+//                        'select'=> false,
+//                        //'joinType'=>'INNER JOIN',
+//                        //'condition'=>'productos.nombres = 8',
+//                    );
+//                    
+//                    $criteria->with['productos.precios'] = array(
+//                        'select'=> false,
+//                        //'joinType'=>'INNER JOIN',
+//                        //'condition'=>'productos.nombres',                        
+//                    );                    
+//                    
+//                    //having
+//                    if(!strpos($criteria->group, "t.id")){
+//                        $criteria->group = 't.id';
+//                    }
+//                    
+//                    if (!strlen($havingPrecio)) {
+//                       $havingPrecio .= '(select SUM(precios.precioDescuento)) '.$comparator.' '.$value.'';
+//                   }else{
+//                      $havingPrecio .= ' '.$logicOp.' SUM(precios.precioDescuento) '.$comparator.' '.$value.'';
+//                   }
+                    
+                   continue;
+                }   
+                
+                if($column == 'marca')
+                {
+                                     
+                    
                     $criteria->with['productos'] = array(
                         'select'=> false,
-                        'joinType'=>'INNER JOIN',
-                        'condition'=>'productos.nombres',                        
-                    );
-                    
-                    $criteria->with['productos.precios'] = array(
-                        'select'=> false,
-                        'joinType'=>'INNER JOIN',
-                        //'condition'=>'productos.nombres',                        
-                    );
-                    
-                    $criteria->addCondition('(SELECT IFNULL(SUM(precios.precioDescuento), 0)) '
-                                        .$comparator.' '.$value.'');
-                    
-                    $criteria->group .= 't.id';
-                    
-                    continue;
-                }
-                
-                if($column == 'codigo')
-                {
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare($column, $value,
-                        true, $logicOp);
-                    
-                    continue;
-                }
-                
-                if($column == 'categoria')
-                {
-                    
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare('categorias.nombre', $value,
-                        true, $logicOp);
-                    
-                    if(!in_array('categorias', $criteria->with))
-                    {
-                        $criteria->with[] = 'categorias';
-                    }
-                    
-                    continue;
-                }
-                
-                if($column == 'sku')
-                {
-                    
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare('preciotallacolor.sku', $value,
-                        true, $logicOp);
-                    
-                    if(!in_array('preciotallacolor', $criteria->with))
-                    {
-                        $criteria->with[] = 'preciotallacolor';
-                    }
-                   
-                    
-                    continue;
-                }
-                
-                if($column == 'precioVenta' || $column == 'precioDescuento')
-                {
-                    
-                    $criteria->compare('precios.'.$column, $comparator." ".$value,
-                        false, $logicOp);
-                    
-                    if(!in_array('precios', $criteria->with))
-                    {
-                        $criteria->with[] = 'precios';
-                    }
-                    
-                    continue;
-                }
-                
-                
-                if($column == 'total')
-                {
+                        //'joinType'=>'INNER JOIN',
+                        //'condition'=>'productos.nombres = 8',
+                    );                    
                                        
-                    $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
-                            .$comparator.' '.$value.'');
                     
+                    //having
+                    if(!strpos($criteria->group, "t.id")){
+                        $criteria->group = 't.id';
+                    }
                     
-                    continue;
-                }
+                    //agregar condicion marca_id
+                    
+                   continue;
+                } 
                 
-                if($column == 'disponible')
+                if($column == 'prendas')
                 {
-                    
-                    $criteria->addCondition('
-                        IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
-                          - 
-                          IFNULL(
-                         (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                          where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                          orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                         0) '
-                            .$comparator.' '.$value.'', $logicOp);
-                    
-                    
-                    continue;
-                }
-                
-                if($column == 'vendida')
-                {
-                   
-                    $criteria->addCondition('(IFNULL(
-                        (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                        0)) '
+                  $criteria->addCondition('(select count(look_id) 
+                    from `tbl_look_has_producto` `productos_productos`
+                    where `t`.`id`=`productos_productos`.`look_id`)'
                     .$comparator.' '.$value.'', $logicOp);
-                    
-                    
-                    continue;
-                    
-                }                
-                
-                if($column == 'ventas')
-                {
-                    $criteria->addCondition('IFNULL(
-                        (select sum(o_ptc.precio * o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                        0)'
-                    .$comparator.' '.$value.'', $logicOp);                   
-                    
-                    
-                    continue;
-                }
+                   
+                   continue;
+                   
+                }    
                 
                 if($column == 'created_on')
                 {
@@ -831,17 +763,18 @@ class Look extends CActiveRecord
                 
             }
                                    
-             
+//            $criteria->select = 't.*';
+            $criteria->having .= $havingPrecio;
             //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
             $criteria->together = true;
             //$criteria->compare('t.status', '1'); //siempre los no eliminados
             
-//            echo "Criteria:";
-//            
-//            echo "<pre>";
-//            print_r($criteria->toArray());
-//            echo "</pre>"; 
-//            exit();
+            echo "Criteria:";
+            
+            echo "<pre>";
+            print_r($criteria->toArray());
+            echo "</pre>"; 
+            //exit();
 
 
             return new CActiveDataProvider($this, array(

@@ -148,6 +148,7 @@ $max=round($max/100, 0)*100;
 	    'template'=>$template,
 	)); */
 	
+	
 	$this->renderPartial('_datos',array(
 	'prods'=>$dataProvider,
 	'pages'=>$pages,

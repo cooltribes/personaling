@@ -127,6 +127,17 @@ $this->breadcrumbs=array(
                 'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
                 'duplicate' => 'El archivo está duplicado.', // useful, i think
                 'denied' => 'Tipo de archivo invalido.', // useful, i think
+                'htmlOptions' => array('multiple' => 'multiple'),
+                'options'=>array(
+                    'onFileSelect'=>'function(e, v, m){ console.log("onFileSelect - "+v+"\nm: "+m+"\ne: "+e); 
+                       console.log(m); }',
+                    'afterFileSelect'=>'function(e, v, m){ console.log("afterFileSelect - "+v) 
+                        console.log(m);}',
+                    'onFileAppend'=>'function(e, v, m){ console.log("onFileAppend - "+v); console.log(m); }',
+                    'afterFileAppend'=>'function(e, v, m){ console.log("afterFileAppend - "+v); console.log(m);}',
+                    'onFileRemove'=>'function(e, v, m){ console.log("onFileRemove - "+v) }',
+                    'afterFileRemove'=>'function(e, v, m){ console.log("afterFileRemove - "+v) }',
+                 )
             ));
 			
 			?>

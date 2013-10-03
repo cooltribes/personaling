@@ -90,14 +90,20 @@ class TiendaController extends Controller
 		 }
 		 
 		Yii::app()->session['bsf']=$arr;
-		$dataProvider = $producto->nueva2($a);
-		$total=count($dataProvider);
-			$pages = new CPagination($total);
-			$pages->pageSize = 12;
-	
+		$criteria = $producto->nueva2($a);
+		$total=Producto::model()->count($criteria);
+		$pages = new CPagination($total);
+		
+		$pages->pageSize = 12;
+		$pages->applyLimit($criteria);
+        $dataProvider = Producto::model()->findAll($criteria);
+		//echo $pages->pageSize;
 		$this->render('doble',
-		array('doble'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,'pages'=>$pages
+			array('doble'=>$producto,
+				'pages'=>$pages,
+				'dataProvider'=>$dataProvider,
+				'categorias'=>$categorias,
+				
 		));	
 			
 	}
@@ -802,7 +808,9 @@ public function actionCategorias2(){
                     //exit();                            
                 }
 
-                if (isset($_POST['precios'])) {
+                if (isset($_POST['precios']) && $_POST['precios'] != "") {
+                    echo "SI";
+                    exit();
                     $limits = explode("-", $_POST['precios']);
                     
                     $looks = Look::model()->findAll("status = 2");
@@ -813,7 +821,6 @@ public function actionCategorias2(){
                     foreach ($looks as $look) {
                         $price = $look->getPrecio(false);
                         
-<<<<<<< HEAD
                         for($i=0; $i<$rangos ;$i++){                                
                             $mayorP = $menorP + $len;
                             
@@ -848,8 +855,8 @@ public function actionCategorias2(){
                                 'rangos' => $rangosArray
                             
 			));		
-		}	
-=======
+			
+
                         if($price >= $limits[0] && $price <= $limits[1])
                         {
                             $inValues[] = $look->id;
@@ -891,12 +898,13 @@ public function actionCategorias2(){
                 $criteria->compare('title', $search, true, 'OR');
                 $criteria->compare('description', $search, true, 'OR');
                 $criteria->compare('status', 2);
-                $total = Look::model()->count();
+                $total = Look::model()->count($criteria);
 
                 $pages = new CPagination($total);
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
+				
 
                 /*             * *    Filtros por Perfil ** */
 
@@ -952,7 +960,6 @@ public function actionCategorias2(){
                     'rangos' => $rangosArray
                 ));
         }	
->>>>>>> f53c87883ff21f35de9895fb8c316efa549d388b
 			
 		
 	}

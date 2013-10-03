@@ -618,7 +618,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   <!-- marcas -->
                   <div class="margin_top_small margin_bottom_small">
                     <select id="marcas" class="span12" name="marcas">
-                      <option selected>Buscar por Marca</option>
+                      <option selected>Todas las Marca</option>
                       <?php
         			foreach($marcas as $uno){
         				echo "<option value='".$uno->id."'> ".$uno->nombre." </option>";
@@ -632,7 +632,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		$('#marcas').change(function(){". CHtml::ajax(
 						 
 			array( // ajaxOptions
-				'url'=>Yii::app()->createUrl( 'look/marcas'),
+				'url'=>Yii::app()->createUrl( 'look/categorias'),
 				'type' => 'POST',
 				'beforeSend' => "function( request )
 				{
@@ -644,10 +644,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				//alert( data );
 					$('#div_categorias').html(data);
 				}",
-					'data' => "js:$('#marcas').serialize()",
+					'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 				),
 				array( //htmlOptions
-					'href' => Yii::app()->createUrl( 'look/marcas' ),
+					'href' => Yii::app()->createUrl( 'look/categorias' ),
 					'class' => 'thumbnail',
 					
 					'draggable'=>"false",
@@ -678,7 +678,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						                    //alert( data );
 						                    $('#div_categorias').html(data);
 						                  }",
-						    'data' => "js:$('#formu').serialize()",
+						    'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
@@ -693,6 +693,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	?>
                 <div class="span6">
+                	
                   <div class="dropdown"> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="crear_look_colores">
@@ -705,12 +706,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   	
 	echo CHtml::ajaxLink(
 						  $imagen.'  '.$color->valor,
-						  Yii::app()->createUrl( 'look/colores'),
+						  Yii::app()->createUrl( 'look/categorias'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
-						    'beforeSend' => "function( request )
+						    'beforeSend' => "function( request,settings )
 						                     {
 						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       $('#colores').val('".$color->id."');
+						                       
 						                     }",
 						    'success' => "function( data )
 						                  {
@@ -718,7 +721,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						                    //alert( data );
 						                    $('#div_categorias').html(data);
 						                  }",
-						    'data' => array( 'color_id' => $color->id, 'val2' => '2' )
+						     'data' => "js:$('#formu').serialize()+'&colores=".$color->id."'",
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
@@ -737,6 +740,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 
                 <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
+              <?php echo CHtml::hiddenField('colores'); ?>
             </div>
             <hr/>
             <div id="div_categorias">

@@ -8,7 +8,7 @@
 		<div class="navbar-inner">
     		<ul class="nav">
   				<li><a href="#" class="nav-header">Estadisticas:</a></li>
-      			<li><a title="Transacciones" href="<?php echo Yii::app()->baseUrl."/controlpanel/ventas"; ?>">Transacciones</a></li>
+      			<li><a title="Transacciones" href="<?php echo Yii::app()->baseUrl."/controlpanel/ventas"; ?>">Ventas</a></li>
       			<li class="active" ><a title="Pedidos" href="">Pedidos</a></li>
     		</ul>
   		</div>
@@ -176,7 +176,7 @@
 						$this->Widget('ext.highcharts.HighchartsWidget', array(
 							'options'=>array(
 								'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
-								'title' => array('text' => 'Ventas por semanas'),
+								'title' => array('text' => 'Ventas diarias del mes.'),
 								'xAxis' => array(
 									'categories' => array($uno,$tres,$fecha[0],$fecha[1],$fecha[2],$fecha[3],$fecha[4],$fecha[5],$fecha[6],$fecha[7],$fecha[8],$fecha[9],$fecha[10],
 															$fecha[11],$fecha[12],$fecha[13],$fecha[14],$fecha[15],$fecha[16],$fecha[17],$fecha[18],$fecha[19],$fecha[20],

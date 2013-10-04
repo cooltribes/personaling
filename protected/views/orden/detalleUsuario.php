@@ -1,239 +1,239 @@
 <?php
 
 $this->breadcrumbs=array(
-	'Pedidos'=>array('listado'),
-	'Detalle del pedido',
+    'Pedidos'=>array('listado'),
+    'Detalle del pedido',
 );
 
-$usuario = User::model()->findByPk($orden->user_id); 
+$usuario = User::model()->findByPk($orden->user_id);
 
 ?>
-	<?php if(Yii::app()->user->hasFlash('success')){?>
-	    <div class="alert in alert-block fade alert-success text_align_center">
-	        <?php echo Yii::app()->user->getFlash('success'); ?>
-	    </div>
-	<?php } ?>
-	<?php if(Yii::app()->user->hasFlash('error')){?>
-	    <div class="alert in alert-block fade alert-error text_align_center">
-	        <?php echo Yii::app()->user->getFlash('error'); ?>
-	    </div>
-	<?php } ?>
+    <?php if(Yii::app()->user->hasFlash('success')){?>
+        <div class="alert in alert-block fade alert-success text_align_center">
+            <?php echo Yii::app()->user->getFlash('success'); ?>
+        </div>
+    <?php } ?>
+    <?php if(Yii::app()->user->hasFlash('error')){?>
+        <div class="alert in alert-block fade alert-error text_align_center">
+            <?php echo Yii::app()->user->getFlash('error'); ?>
+        </div>
+    <?php } ?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1>
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
-      <th scope="col" colspan="4">Fecha del Pedido: 
-      	<?php
-      	
-      	if($orden->fecha!="")
-   			echo date("d/m/Y - h:i a",strtotime($orden->fecha)).".";
-      	
-      	?>
-      	</th>
+      <th scope="col" colspan="4">Fecha del Pedido:
+          <?php
+
+          if($orden->fecha!="")
+               echo date("d/m/Y - h:i a",strtotime($orden->fecha)).".";
+
+          ?>
+          </th>
       <th scope="col" colspan="2"></th>
     </tr>
     <tr>
       <td><p class="T_xlarge margin_top_xsmall color1">
 <?php
 //----------------------Estado
-	if($orden->estado == 1)
-		echo "En espera de pago"; 
-	
-	if($orden->estado == 2)
-		echo "Espera confirmación";
-	
-	if($orden->estado == 3)
-		echo "Pago Confirmado";
-	
-	if($orden->estado == 4)
-		echo "Pedido Enviado";	
-			
-	if($orden->estado == 5)
-		echo "Orden Cancelada";
-	
-	if($orden->estado == 6)
-		echo "Pago Rechazado";	
-		
-	if($orden->estado == 7)
-		echo "Pago Insuficiente";
-	
-	if($orden->estado == 9)
-		echo "Devuelto";
-		
-	if($orden->estado == 10)
-		echo "Devolución Parcial";
-	
-	// agregar demas estados
+    if($orden->estado == 1)
+        echo "En espera de pago";
+
+    if($orden->estado == 2)
+        echo "Espera confirmación";
+
+    if($orden->estado == 3)
+        echo "Pago Confirmado";
+
+    if($orden->estado == 4)
+        echo "Pedido Enviado";
+
+    if($orden->estado == 5)
+        echo "Orden Cancelada";
+
+    if($orden->estado == 6)
+        echo "Pago Rechazado";
+
+    if($orden->estado == 7)
+        echo "Pago Insuficiente";
+
+    if($orden->estado == 9)
+        echo "Devuelto";
+
+    if($orden->estado == 10)
+        echo "Devolución Parcial";
+
+    // agregar demas estados
 ?>
-      	</p>
+          </p>
         Estado actual</td>
       <td><p class="T_xlarge margin_top_xsmall"> 4 </p>
         Documentos</td>
-        
+
      <?php
       $ind_tot = 0;
-	  $look_tot = 0;
+      $look_tot = 0;
       $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
-	
-		foreach ($compra as $tot) {
-			
-			if($tot->look_id == 0)
-			{
-				$ind_tot++;
-			}else{
-				
-				$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
-				foreach($lhp as $cada){
-					$look_tot++;	
-				}
-			}
-			
-		}
-      
+
+        foreach ($compra as $tot) {
+
+            if($tot->look_id == 0)
+            {
+                $ind_tot++;
+            }else{
+
+                $lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
+                foreach($lhp as $cada){
+                    $look_tot++;
+                }
+            }
+
+        }
+
       ?>
-        
-        
+
+
       <td><p class="T_xlarge margin_top_xsmall"><?php echo ($ind_tot + $look_tot); ?></p>
         Prendas<br/></td>
-      <td><p class="T_xlarge margin_top_xsmall"><?php 
-      
-	if($orden->estado == 7)
-	{
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id));
-		$a = $balance->total * -1;
-		echo Yii::app()->numberFormatter->formatDecimal($a); 
-	}
-	else
-	{
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
-		
-		if(isset($balance))
-		{
-			if($balance->total < 0){
-				$a = $balance->total * -1;
-				echo Yii::app()->numberFormatter->formatDecimal($a);
-			}
-			else {
-				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
-			}
-		}
-		else {
-				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
-			}
-		
-	}	
+      <td><p class="T_xlarge margin_top_xsmall"><?php
+
+    if($orden->estado == 7)
+    {
+        $balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id));
+        $a = $balance->total * -1;
+        echo Yii::app()->numberFormatter->formatDecimal($a);
+    }
+    else
+    {
+        $balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
+
+        if(isset($balance))
+        {
+            if($balance->total < 0){
+                $a = $balance->total * -1;
+                echo Yii::app()->numberFormatter->formatDecimal($a);
+            }
+            else {
+                echo Yii::app()->numberFormatter->formatDecimal($orden->total);
+            }
+        }
+        else {
+                echo Yii::app()->numberFormatter->formatDecimal($orden->total);
+            }
+
+    }
        ?></p>
-        
+
         <?php
 //----------------------Estado
-	if($orden->estado == 1)
-		echo "Bs. Pendientes por pagar"; 
-	
-	if($orden->estado == 2)
-		echo "Bs. Pendientes por confirmar";
-	
-	if($orden->estado == 3 || $orden->estado == 8)
-		echo "Bs. ya pagados";
+    if($orden->estado == 1)
+        echo "Bs. Pendientes por pagar";
 
-	if($orden->estado == 4)
-		echo "Bs. ya pagados";				
-	
-	if($orden->estado == 5)
-		echo "Orden Cancelada";
-	 
-	if($orden->estado == 7)
-		echo "Bs. que faltan.";
-	
-	// agregar demas estados
+    if($orden->estado == 2)
+        echo "Bs. Pendientes por confirmar";
+
+    if($orden->estado == 3 || $orden->estado == 8)
+        echo "Bs. ya pagados";
+
+    if($orden->estado == 4)
+        echo "Bs. ya pagados";
+
+    if($orden->estado == 5)
+        echo "Orden Cancelada";
+
+    if($orden->estado == 7)
+        echo "Bs. que faltan.";
+
+    // agregar demas estados
 ?>
        </td>
- 		<td><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white"></i> Reportar Pago </td>
-      	<td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
+         <td><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white"></i> Reportar Pago </td>
+          <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
   </table>
   <hr/>
   <div class="row">
     <div class="span7">
 
-      	<?php
-      	
-			$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-          	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
-			
-			if($orden->estado != 1 && $orden->estado != 5){
-			
-			echo("
-	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
-	          	<h3 class='braker_bottom '> Método de Pago</h3>
-	        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
-	          		<tr>
-	            		<th scope='col'>Fecha</th>
-	            		<th scope='col'>Método de pago</th>
-	            		<th scope='col'>ID de Transaccion</th>
-	            		<th scope='col'>Monto</th>
-	          		</tr>
-	          	");	
-			
-			foreach($detalles as $detalle){
-					
-				echo("<tr>");
-						
-					if($detalle->estado == 0  && $detalle->nTransferencia!="") // stand by
-					{
-					
-						echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
-						
-						if($pago->tipo == 1)
-							echo("<td>Deposito en espera de confirmacion</td>");
-							//hacer los demas tipos
-							
-						echo("<td>".$detalle->nTransferencia."</td>");	
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
-					}
-					else			
-						if($detalle->estado == 1) // si fue aceptado
-						{
-			          	
-							echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
-							
-							if($pago->tipo == 1)
-								echo("<td>Deposito o Transferencia</td>");
-							if($pago->tipo == 2)
-								echo("<td>Tarjeta de credito</td>");
-								//hacer los demas tipos
-									
-							echo("<td>".$detalle->nTransferencia."</td>");	
-							echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+          <?php
 
-						}
-					else if($detalle->estado == 2) // rechazado
-						{
-							
-						echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
-						
-						if($pago->tipo == 1)
-							echo("<td>Deposito o Transferencia</td>");
-							//hacer los demas tipos
-								
-						echo("<td> PAGO RECHAZADO </td>");	
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
-							
-						}
-					
-				echo("</tr>");
-				}//foreach
-				
-				echo("</table></div>");
-				}
-		  	?>    
-      
+            $detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+              $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+
+            if($orden->estado != 1 && $orden->estado != 5){
+
+            echo("
+                  <div id='pago' class='well well-small margin_top well_personaling_small'>
+                  <h3 class='braker_bottom '> Método de Pago</h3>
+                    <table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
+                      <tr>
+                        <th scope='col'>Fecha</th>
+                        <th scope='col'>Método de pago</th>
+                        <th scope='col'>ID de Transaccion</th>
+                        <th scope='col'>Monto</th>
+                      </tr>
+                  ");
+
+            foreach($detalles as $detalle){
+
+                echo("<tr>");
+
+                    if($detalle->estado == 0  && $detalle->nTransferencia!="") // stand by
+                    {
+
+                        echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+
+                        if($pago->tipo == 1)
+                            echo("<td>Deposito en espera de confirmacion</td>");
+                            //hacer los demas tipos
+
+                        echo("<td>".$detalle->nTransferencia."</td>");
+                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+                    }
+                    else
+                        if($detalle->estado == 1) // si fue aceptado
+                        {
+
+                            echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+
+                            if($pago->tipo == 1)
+                                echo("<td>Deposito o Transferencia</td>");
+                            if($pago->tipo == 2)
+                                echo("<td>Tarjeta de credito</td>");
+                                //hacer los demas tipos
+
+                            echo("<td>".$detalle->nTransferencia."</td>");
+                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+
+                        }
+                    else if($detalle->estado == 2) // rechazado
+                        {
+
+                        echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+
+                        if($pago->tipo == 1)
+                            echo("<td>Deposito o Transferencia</td>");
+                            //hacer los demas tipos
+
+                        echo("<td> PAGO RECHAZADO </td>");
+                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+
+                        }
+
+                echo("</tr>");
+                }//foreach
+
+                echo("</table></div>");
+                }
+              ?>
+
      <?php
-     	if($orden->estado == 4) // enviado
-     	{
-     ?>      
-      	
+         if($orden->estado == 4) // enviado
+         {
+     ?>
+
       <div class="well well-small margin_top well_personaling_small">
         <h3 class="braker_bottom "> Envio </h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -256,20 +256,20 @@ $usuario = User::model()->findByPk($orden->user_id);
         </table>
       </div>
       <?php
-      
-		}
+
+        }
       ?>
-      
+
       <div class="row-fluid">
-      	<div class="span12">
+          <div class="span12">
           <h3 class="braker_bottom margin_top">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
-            	<?php
-            	$direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
-            	$ciudad = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
-				$provincia = Provincia::model()->findByPk($direccionEnvio->provincia_id);
-            	?>
+                <?php
+                $direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+                $ciudad = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+                $provincia = Provincia::model()->findByPk($direccionEnvio->provincia_id);
+                ?>
               <div class="street-address"><i class="icon-map-marker"></i><?php echo " ".$direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
               <span class="locality"><?php echo $ciudad->nombre ?>, <?php echo $provincia->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
@@ -277,8 +277,8 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
             <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div></div>
-		
-		<!--
+
+        <!--
         <div class="span6">
           <h3 class="braker_bottom margin_top">Dirección de Facturación</h3>
           <div class="vcard">
@@ -290,10 +290,10 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
             <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
             <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
-    	</div>
+        </div>
         </div>
        -->
-       
+
       </div>
     </div>
     <div class="span5">
@@ -306,48 +306,48 @@ $usuario = User::model()->findByPk($orden->user_id);
             <th scope="col">Fecha</th>
           </tr>
           <?php
-          
+
           $estados = Estado::model()->findAllByAttributes(array('orden_id'=>$orden->id),array('order'=>'id DESC'));
-          
-		  	foreach ($estados as $est)
-		  	{
-		  		echo("<tr>");
-				
-				if($est->estado==1)
-					echo("<td>Pendiente de Pago</td>");
-				
-				if($est->estado==2)
-					echo("<td>Pendiente por confirmar</td>");
-				
-				if($est->estado==3)
-					echo("<td>Pago Confirmado</td>");
-				
-				if($est->estado == 4)
-					echo("<td>Pedido Enviado</td>");
-				
-				if($est->estado==5)
-					echo("<td>Orden Cancelada</td>");
-				
-				if($est->estado==6)
-					echo("<td>Pago Rechazado</td>");
-				
-				if($est->estado == 7)
-					echo "<td>Pago Insuficiente</td>";
-				
-				if($est->estado == 9)
-					echo "<td>Devuelto</td>";
-		
-				if($est->estado == 10)
-					echo "<td>Parcialmente Devuelto</td>";		
-				
-				$usu = User::model()->findByPk($est->user_id);
-				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
-				
-				$fecha = date("d/m/Y",strtotime($est->fecha));
-				echo("<td>".$fecha." </td>");
-            	echo("</tr>");
-		  	}
-		  
+
+              foreach ($estados as $est)
+              {
+                  echo("<tr>");
+
+                if($est->estado==1)
+                    echo("<td>Pendiente de Pago</td>");
+
+                if($est->estado==2)
+                    echo("<td>Pendiente por confirmar</td>");
+
+                if($est->estado==3)
+                    echo("<td>Pago Confirmado</td>");
+
+                if($est->estado == 4)
+                    echo("<td>Pedido Enviado</td>");
+
+                if($est->estado==5)
+                    echo("<td>Orden Cancelada</td>");
+
+                if($est->estado==6)
+                    echo("<td>Pago Rechazado</td>");
+
+                if($est->estado == 7)
+                    echo "<td>Pago Insuficiente</td>";
+
+                if($est->estado == 9)
+                    echo "<td>Devuelto</td>";
+
+                if($est->estado == 10)
+                    echo "<td>Parcialmente Devuelto</td>";
+
+                $usu = User::model()->findByPk($est->user_id);
+                echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
+
+                $fecha = date("d/m/Y",strtotime($est->fecha));
+                echo("<td>".$fecha." </td>");
+                echo("</tr>");
+              }
+
           ?>
           <tr>
             <td>Nuevo Pedido</td>
@@ -356,7 +356,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           </tr>
         </table>
       </div>
-      
+
   <div class="well well-small margin_top well_personaling_small">  <h3 class="braker_bottom margin_top"> Documentos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
@@ -366,42 +366,42 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <?php
         $factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
-		if($factura){
-	        ?>
-	        <tr>
-	          <td>
-	          	<?php
-	          	echo date('d/m/Y', strtotime($factura->fecha));
-	          	?>
-	          </td>
-	          <td>
-	          	Factura
-	          </td>
-	          <td>
-	          	<?php
-	          	echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
-	          	?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td>
-	          	<?php
-	          	echo date('d/m/Y', strtotime($factura->fecha));
-	          	?>
-	          </td>
-	          <td>
-	          	<?php
-	          	echo CHtml::link('Recibo de Pago', $this->createUrl('recibo', array('id'=>$factura->id)), array('target'=>'_blank'));
-	          	?>
-	          </td>
-	          <td>
-	          	<?php
-	          	echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
-	          	?>
-	          </td>
-	        </tr>
-	        <?php
-		}
+        if($factura){
+            ?>
+            <tr>
+              <td>
+                  <?php
+                  echo date('d/m/Y', strtotime($factura->fecha));
+                  ?>
+              </td>
+              <td>
+                  Factura
+              </td>
+              <td>
+                  <?php
+                  echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
+                  ?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                  <?php
+                  echo date('d/m/Y', strtotime($factura->fecha));
+                  ?>
+              </td>
+              <td>
+                  <?php
+                  echo CHtml::link('Recibo de Pago', $this->createUrl('recibo', array('id'=>$factura->id)), array('target'=>'_blank'));
+                  ?>
+              </td>
+              <td>
+                  <?php
+                  echo str_pad($factura->id, 4, '0', STR_PAD_LEFT);
+                  ?>
+              </td>
+            </tr>
+            <?php
+        }
         ?>
 
       </table></div>
@@ -409,7 +409,7 @@ $usuario = User::model()->findByPk($orden->user_id);
   </div>
   <hr/>
   <!-- INFORMACION DEL PEDIDO ON -->
- 
+
  <div class="row">
     <div class="span7">
    <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
@@ -427,173 +427,97 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <?php
          $individuales=OrdenHasProductotallacolor::model()->countIndividuales($orden->id);
-	  	$looks=OrdenHasProductotallacolor::model()->countLooks($orden->id);
-      	$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
-        	$row=0;
-        	$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id)); // productos de la orden
-        	$lkids=OrdenHasProductotallacolor::model()->getLooks($orden->id);
-			foreach ($lkids as  $lkid){
-				
-				$lookpedido = Look::model()->findByPk($lkid['look_id']);
-				$precio = $lookpedido->getPrecio(false);
-				echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
-							// echo("<td></td>");
-				echo("<td colspan='5'><strong>".$lookpedido->title."</strong></td>");// Referencia
-							
-				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
-			
-				$prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
-				foreach($prodslook as $prodlook){
-					$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
-								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
-								$marca=Marca::model()->findByPk($prdlk->marca_id);
-								$talla=Talla::model()->findByPk($ptclk->talla_id);
-								$color=Color::model()->findByPk($ptclk->color_id);
-								
-								
-								echo("<tr>");
-								 // nombre
-								echo("<td>".$prdlk->nombre."</td>"); // nombre
-								echo("<td>".$marca->nombre."</td>");
-								echo("<td>".$color->valor."</td>");
-								echo("<td>".$talla->valor."</td>");
-								// cantidad en existencia
-								echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
-								
-							
-								//echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
-								echo("<td></td></tr>");
-				}				
-				
-			}
-			//INDIVIDUALES
-			
-			if($individuales>0)
-			echo("<tr class='bg_color5'><td colspan='6'>Prendas Individuales</td></tr>");
-			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
-			foreach($separados as $prod){
-				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
-				$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
-				$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
-				$marca=Marca::model()->findByPk($indiv->marca_id);
-				$talla=Talla::model()->findByPk($ptc->talla_id);
-				$color=Color::model()->findByPk($ptc->color_id);
-				
-				echo("<tr>");
-			
-				echo("<td>".$indiv->nombre."</td>"); // nombre
-				echo("<td>".$marca->nombre."</td>");
-				echo("<td>".$color->valor."</td>");
-				echo("<td>".$talla->valor."</td>");					
-			
-				echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
-				
-				echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
-				
-						
-						echo("</tr>");
-			}
-			
-		
-		
-			
+          $looks=OrdenHasProductotallacolor::model()->countLooks($orden->id);
+          $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+            $row=0;
+            $productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id)); // productos de la orden
+            $lkids=OrdenHasProductotallacolor::model()->getLooks($orden->id);
+            foreach ($lkids as  $lkid){
 
-     
-	   
+                $lookpedido = Look::model()->findByPk($lkid['look_id']);
+                $precio = $lookpedido->getPrecio(false);
+                echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
+                            // echo("<td></td>");
+                echo("<td colspan='5'><strong>".$lookpedido->title."</strong></td>");// Referencia
+
+                echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio
+
+                $prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
+                foreach($prodslook as $prodlook){
+                    $ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
+                                $prdlk = Producto::model()->findByPk($ptclk->producto_id);
+                                $marca=Marca::model()->findByPk($prdlk->marca_id);
+                                $talla=Talla::model()->findByPk($ptclk->talla_id);
+                                $color=Color::model()->findByPk($ptclk->color_id);
+
+
+                                echo("<tr>");
+                                 // nombre
+                                echo("<td>".$prdlk->nombre."</td>"); // nombre
+                                echo("<td>".$marca->nombre."</td>");
+                                echo("<td>".$color->valor."</td>");
+                                echo("<td>".$talla->valor."</td>");
+                                // cantidad en existencia
+                                echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+
+
+                                //echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio
+                                echo("<td></td></tr>");
+                }
+
+            }
+            //INDIVIDUALES
+
+            if($individuales>0)
+            echo("<tr class='bg_color5'><td colspan='6'>Prendas Individuales</td></tr>");
+            $separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);
+            foreach($separados as $prod){
+                $ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
+                $indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
+                $marca=Marca::model()->findByPk($indiv->marca_id);
+                $talla=Talla::model()->findByPk($ptc->talla_id);
+                $color=Color::model()->findByPk($ptc->color_id);
+
+                echo("<tr>");
+
+                echo("<td>".$indiv->nombre."</td>"); // nombre
+                echo("<td>".$marca->nombre."</td>");
+                echo("<td>".$color->valor."</td>");
+                echo("<td>".$talla->valor."</td>");
+
+                echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
+
+                echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
+
+
+                        echo("</tr>");
+            }
+
+
+
+
+
+
+
       ?>
-        
+
 
         <!-- Comienzo del resumen del pedido -->
-        
 
-        
-        
-              
+
+
+
+
       </table>
- 
-    
+
+
   </div>
   <!-- INFORMACION DEL PEDIDO OFF -->
-  <hr/>
-  
-  <!-- Productos devueltos ON -->
-   <div class="well well-small margin_top well_personaling_small">
-     <h3 class="braker_bottom margin_top">Productos devueltos</h3>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-        <tr>
-
-        	<th scope="col">Referencia</th>
-			<th scope="col">Nombre</th>
-			<th scope="col">Marca</th>
-			<th scope="col">Color</th>
-			<th scope="col">Talla</th>
-			<th scope="col">Motivo</th>  
-			<th scope="col">Precio</th>        
-        </tr>
-	<?php
-	
-	$devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario->id));
-	$totaldevuelto = 0;
-	$totalenvio = 0;
-	
-	if(count($devuelto)>0)
-	{
-		
-		foreach($devuelto as $each)
-		{
-			$totaldevuelto = $each->montodevuelto;
-			$totalenvio = $each->montoenvio;
-			$ptc = Preciotallacolor::model()->findByPk($each->preciotallacolor_id);
-			$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
-			$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
-						
-			$marca=Marca::model()->findByPk($indiv->marca_id);
-			$talla=Talla::model()->findByPk($ptc->talla_id);
-			$color=Color::model()->findByPk($ptc->color_id);
-	?>
-        <tr>
-        	<td><?php echo $ptc->sku; ?></td>
-        	<td><?php echo $indiv->nombre; ?></td>
-        	<td><?php echo $marca->nombre; ?></td>
-        	<td><?php echo $color->valor ?></td>
-        	<td><?php echo $talla->valor ?></td>
-        	<td><?php echo $each->motivo; ?></td>
-        	<td><?php echo $precio->precioDescuento; ?></td>
-        </tr>
-     <?php
-		}
-	}
-	else
-	{
-	?>
-		<tr>
-			<td>No se ha devuelto ningún producto de esta orden.</td>	
-		</tr>
-	<?php
-	}
-	?>   
-        <tr>
-        	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
-        </tr>        
-        <tr>
-        	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
-        </tr>
-        <tr>
-        	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
-        </tr>
-        <tr>
-        	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
-        </tr>        
-    	</table>
-	</div>
 
 
-  <!-- Productos devueltos ON -->
-  
-  
+
+
   </div>
     <div class="span5">
       <div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>
@@ -628,13 +552,13 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
       </table></div>
     </div>
-  
-  
-  
-<?php /*?> 
+
+
+
+<?php /*?>
 Para una futura iteración
 <!-- MENSAJES ON -->
-   	<div class="row">
+       <div class="row">
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
@@ -661,87 +585,121 @@ Para una futura iteración
         <div class="form-actions"><a href="#" title="Enviar" class="btn btn-inverse">Enviar comentario</a> </div>
       </form>
     </div>
- * 
+ *
  * */
  ?>
 </div>
  <!-- Tabla Productos Devueltos ON -->
  <hr/>
-	 <div class="row">
-	   <div class="span12 well well-small margin_top well_personaling_small">
-	     <h3 class="braker_bottom margin_top">Productos devueltos</h3>
-	      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-	        <tr>
+     <div class="row">
+		   <div class="span12 well well-small margin_top well_personaling_small">
+		     <h3 class="braker_bottom margin_top">Productos devueltos</h3>
+		      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+		        <tr>
 
-	        	<th scope="col">Referencia</th>
-				<th scope="col">Nombre</th>
-				<th scope="col">Marca</th>
-				<th scope="col">Color</th>
-				<th scope="col">Talla</th>
-				<th scope="col">Motivo</th>  
-				<th scope="col">Precio</th>        
-	        </tr> 
-	        <tr>
-	        	<td >231</td>
-				<td >Blusa</td>
-				<td >Buhonero</td>
-				<td >Rojo</td>
-				<td >XL</td>
-				<td >Dañada</td>  
-				<td >100,00</td>        
-	        </tr>  	         
-	        <tr>
-	        	<th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
-	        </tr>        
-	        <tr>
-	        	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-	        	<td  class="text_align_right">000,00 Bs</td>
-	        </tr>
-	        <tr>
-	        	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-	        	<td  class="text_align_right">000,00 Bs</td>
-	        </tr>
-	        <tr>
-	        	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-	        	<th  class="text_align_right">000,00 Bs</th>
-	        </tr>        
-	    	</table>
-		</div>
-	</div>
+		            <th scope="col">Referencia</th>
+		            <th scope="col">Nombre</th>
+		            <th scope="col">Marca</th>
+		            <th scope="col">Color</th>
+		            <th scope="col">Talla</th>
+		            <th scope="col">Motivo</th>
+		            <th scope="col">Precio</th>
+		        </tr>
+		    <?php
+
+		    $devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario->id));
+		    $totaldevuelto = 0;
+		    $totalenvio = 0;
+
+		    if(count($devuelto)>0)
+		    {
+
+		        foreach($devuelto as $each)
+		        {
+		            $totaldevuelto = $each->montodevuelto;
+		            $totalenvio = $each->montoenvio;
+		            $ptc = Preciotallacolor::model()->findByPk($each->preciotallacolor_id);
+		            $indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+		            $precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
+
+		            $marca=Marca::model()->findByPk($indiv->marca_id);
+		            $talla=Talla::model()->findByPk($ptc->talla_id);
+		            $color=Color::model()->findByPk($ptc->color_id);
+		    ?>
+		        <tr>
+		            <td><?php echo $ptc->sku; ?></td>
+		            <td><?php echo $indiv->nombre; ?></td>
+		            <td><?php echo $marca->nombre; ?></td>
+		            <td><?php echo $color->valor ?></td>
+		            <td><?php echo $talla->valor ?></td>
+		            <td><?php echo $each->motivo; ?></td>
+		            <td><?php echo $precio->precioDescuento; ?></td>
+		        </tr>
+		     <?php
+		        }
+		    }
+		    else
+		    {
+		    ?>
+		        <tr>
+		            <td>No se ha devuelto ningún producto de esta orden.</td>
+		        </tr>
+		    <?php
+		    }
+		    ?>
+		        <tr>
+		            <th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
+		        </tr>
+		        <tr>
+		            <td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
+		            <td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
+		        </tr>
+		        <tr>
+		            <td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
+		            <td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
+		        </tr>
+		        <tr>
+		            <th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
+		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
+		        </tr>
+		        </table>
+		    </div>
+        </div>
+    </div>
  <!-- Tabla Productos Devueltos OFF -->
-	<div class="row">
-	  <div class="span5">
-	      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
-	      
-	  <?php
-	      
-	      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
-	      	
-			if(count($mensajes) > 0)
-			{
-				?>	
-				<ul class="media-list">
-				<?php
-					foreach($mensajes as $msj)
-					{
-						echo '<li class="media braker_bottom">
-	          					<div class="media-body">';
-						echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
-						echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-						echo '<p>'.$msj->cuerpo.'</p>';					
-					}
-				?>
-				</ul>
-				<?php
-			}
-			else {
-				echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
-			}
-	      
-	      ?>
-	 
-	 	</div>
-	 </div>
+    <div class="row">
+      <div class="span5">
+          <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
+
+      <?php
+
+              $mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+
+            if(count($mensajes) > 0)
+            {
+                ?>
+                <ul class="media-list">
+                <?php
+                    foreach($mensajes as $msj)
+                    {
+                        echo '<li class="media braker_bottom">
+                                  <div class="media-body">';
+                        echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';
+                        echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
+                        echo '<p>'.$msj->cuerpo.'</p>';
+                    }
+                ?>
+                </ul>
+                <?php
+            }
+            else {
+                echo '<h4 class="color4">No se han enviado mensajes.</h4>';
+            }
+
+          ?>
+
+         </div>
+     </div>
   <!--
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
@@ -751,8 +709,8 @@ Para una futura iteración
             <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
             <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-    <!--         
+            <!-- Nested media object -->
+    <!--
           </div>
         </li>
         <li class="media braker_bottom">
@@ -760,8 +718,8 @@ Para una futura iteración
             <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
             <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-    <!--         
+            <!-- Nested media object -->
+    <!--
           </div>
         </li>
         <li class="media braker_bottom">
@@ -769,26 +727,26 @@ Para una futura iteración
             <h4 class="color4"><i class=" icon-comment"></i> Asunto: XXX YYY ZZZ</h4>
             <p class="muted"> <strong>23/03/2013</strong> 12:35 PM <strong>| Recibido | Cliente: <strong>Notificado</strong> </strong></p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate </p>
-            <!-- Nested media object --> 
-            
+            <!-- Nested media object -->
+
 <!--           </div>
-          
-          
-          
+
+
+
         </li>
       </ul> -->
-      
-      
-      
-    
-    
- <!-- </div> 
- <!-- MENSAJES OFF --> 
 
 
-<!-- /container --> 
 
-<!------------------- MODAL WINDOW ON -----------------> 
+
+
+ <!-- </div>
+ <!-- MENSAJES OFF -->
+
+
+<!-- /container -->
+
+<!------------------- MODAL WINDOW ON ----------------->
 
 <!-- Modal 1 -->
 <div id="myModal-prueba" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -809,21 +767,21 @@ Para una futura iteración
 <!------------------- MODAL WINDOW OFF ----------------->
 
 <!-- Modal Window -->
-<?php 
+<?php
 
 if($orden->estado == 7){
-	$detPago = new Detalle;
-	?>
-	<input type="hidden" id="idDetalle" value="0" />
-	<input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
-	<?php
+    $detPago = new Detalle;
+    ?>
+    <input type="hidden" id="idDetalle" value="0" />
+    <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
+    <?php
 }
 else{
-	$detPago = Detalle::model()->findByPk($orden->detalle_id);
-	?>
-	<input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
-	<input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
-	<?php
+    $detPago = Detalle::model()->findByPk($orden->detalle_id);
+    ?>
+    <input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+    <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
+    <?php
 }
 ?>
 <div class="modal hide fade" id="myModal">
@@ -833,7 +791,7 @@ else{
   </div>
   <div class="modal-body">
     <form class="">
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
@@ -842,26 +800,26 @@ else{
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-        	<?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
+            <?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
-		<div class="control-group"> 
+        <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-        	<?php echo CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); ?>
-          	<?php //echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
+            <?php echo CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); ?>
+              <?php //echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
@@ -870,7 +828,7 @@ else{
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
@@ -879,7 +837,7 @@ else{
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
-      <div class="controls controls-row"> 
+      <div class="controls controls-row">
         <!--[if lte IE 7]>
             <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
 <![endif]-->
@@ -887,12 +845,12 @@ else{
 <?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
 <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
       </div>
-      <div class="control-group"> 
+      <div class="control-group">
         <!--[if lte IE 7]>
             <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-        	<?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
+            <?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
@@ -907,51 +865,51 @@ else{
 <!-- // Modal Window -->
 
 <script>
-	
-	function enviar()
-	{	
-		var idDetalle = $("#idDetalle").attr("value");
-		var nombre= $("#nombre").attr("value");
-		var numeroTrans = $("#numeroTrans").attr("value");
-		var dia = $("#dia").attr("value");
-		var mes = $("#mes").attr("value");
-		var ano = $("#ano").attr("value");
-		var comentario = $("#comentario").attr("value");
-		var banco = $("#banco").attr("value");
-		var cedula = $("#cedula").attr("value");
-		var monto = $("#monto").attr("value");
-		var idOrden = $("#idOrden").attr("value");
 
-		if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
-		{
-			alert("Por favor complete los datos.");
-		}
-		else
-		{
+    function enviar()
+    {
+        var idDetalle = $("#idDetalle").attr("value");
+        var nombre= $("#nombre").attr("value");
+        var numeroTrans = $("#numeroTrans").attr("value");
+        var dia = $("#dia").attr("value");
+        var mes = $("#mes").attr("value");
+        var ano = $("#ano").attr("value");
+        var comentario = $("#comentario").attr("value");
+        var banco = $("#banco").attr("value");
+        var cedula = $("#cedula").attr("value");
+        var monto = $("#monto").attr("value");
+        var idOrden = $("#idOrden").attr("value");
 
- 		$.ajax({
-	        type: "post", 
-	        url: "../../bolsa/cpago", // action de controlador de bolsa cpago
-	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
-	        success: function (data) {
-				
-				if(data=="ok")
-				{
-					window.location.reload();
-					//alert("guardado"); 
-					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
-				}
-				else
-				if(data=="no")
-				{
-					alert("Datos invalidos.");
-				}
-				
-	       	}//success
-	       })
- 		}	
-		
-		
-	}
-	
+        if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
+        {
+            alert("Por favor complete los datos.");
+        }
+        else
+        {
+
+         $.ajax({
+            type: "post",
+            url: "../../bolsa/cpago", // action de controlador de bolsa cpago
+            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto},
+            success: function (data) {
+
+                if(data=="ok")
+                {
+                    window.location.reload();
+                    //alert("guardado");
+                    // redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden
+                }
+                else
+                if(data=="no")
+                {
+                    alert("Datos invalidos.");
+                }
+
+               }//success
+           })
+         }
+
+
+    }
+
 </script>

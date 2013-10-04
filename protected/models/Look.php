@@ -721,8 +721,7 @@ class Look extends CActiveRecord
                 }   
                 
                 if($column == 'marca')
-                {
-                                     
+                {                                    
                     
                     $criteria->with['productos'] = array(
                         'select'=> false,
@@ -737,6 +736,8 @@ class Look extends CActiveRecord
                     }
                     
                     //agregar condicion marca_id
+                    $criteria->addCondition('productos.marca_id'
+                    .$comparator.' '.$value.'', $logicOp);                    
                     
                    continue;
                 } 
@@ -748,8 +749,7 @@ class Look extends CActiveRecord
                     where `t`.`id`=`productos_productos`.`look_id`)'
                     .$comparator.' '.$value.'', $logicOp);
                    
-                   continue;
-                   
+                   continue;                   
                 }    
                 
                 if($column == 'created_on')

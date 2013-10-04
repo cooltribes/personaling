@@ -935,7 +935,7 @@ public function actionCategorias(){
                 if (isset($filters['fields'])) {                    
                 
                     $dataProvider = $model->buscarPorFiltros($filters);                    
-                     
+                    //echo "Total: " . $dataProvider->getItemCount();
                      //si va a guardar
                      if (isset($_POST['save'])){                        
                          

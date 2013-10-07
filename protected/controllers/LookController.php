@@ -909,7 +909,8 @@ public function actionCategorias(){
             $filter = new Filter;
             
             
-           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['buscar_look'])){
               $_POST = $_SESSION['todoPost'];
            }            
             
@@ -1023,7 +1024,10 @@ public function actionCategorias(){
                 }
             }
             
-            
+            if (isset($_POST['buscar_look'])) {
+                $model->title = $_POST['buscar_look'];
+                $dataProvider = $model->lookAdminAprobar();
+            }
             
             $this->render('admin', array('model' => $model,
                 'dataProvider' => $dataProvider,

@@ -84,11 +84,7 @@ class OrdenController extends Controller
             $orden = new Orden;
             $dataProvider = $orden->search();
             
-            if (isset($_POST['query'])){
-                
-                $dataProvider = $orden->filtrado($_POST['query']); 
-                
-            }   
+               
             
             //Filtros personalizados
             $filters = array();
@@ -97,7 +93,8 @@ class OrdenController extends Controller
             $filter = new Filter;
             
             
-           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['query'])){
               $_POST = $_SESSION['todoPost'];
             }            
             
@@ -210,6 +207,11 @@ class OrdenController extends Controller
                 }
             }
 
+            if (isset($_POST['query'])){
+                
+                $dataProvider = $orden->filtrado($_POST['query']); 
+                
+            }
             
             //Ordenar por fecha descendiente
             $criteria = $dataProvider->getCriteria();

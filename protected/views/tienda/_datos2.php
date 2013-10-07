@@ -7,18 +7,20 @@ $prePub="";
 	
 	
 	$im=Producto::model()->getImgColor($data->id);
+
 	
-	
-	if($im==0){
+	if(!isset(Yii::app()->session['idColor'])){
 		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'1'));
 	}
 	else{
-		$ima=Imagen::model()->findByPk($im);
+		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'color_id'=>$im));
 	}
-	$ord= $ima->orden;
-	$ord++;
-	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>$ord));
-	if(is_null($segunda))
+	if(!is_null($ima)){
+		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+		$ord= $ima->orden;
+		$ord++;
+	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>$ord));}
+	else
 		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));
 	
 	

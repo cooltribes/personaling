@@ -131,7 +131,9 @@ $template = '{summary}
 	    $('#textbox_buscar').keyup(function(e){
 	    	
 			
-			if(e.which != 13) {
+			if(e.which == 13) {
+                        
+                        $('.crear-filtro').click();
 				
 				ajaxRequest = $(this).serialize();
 	        clearTimeout(ajaxUpdateTimeout);

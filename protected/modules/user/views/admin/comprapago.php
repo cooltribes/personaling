@@ -531,6 +531,7 @@ else
         });
 
     $("#completar-compra").click(function(ev){
+    
            ev.preventDefault();
            alert("pasar al sig");
 
@@ -556,7 +557,7 @@ else
     });
 
 	function calcular_total(total, balance){
-		alert('TOTAL'+total+'BALANCE'+balance);
+		
 		if(balance > 0){
 			//console.log('Total: '+total+' - Balance: '+balance);
 			if($('#usar_balance').is(':checked')){

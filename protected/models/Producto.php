@@ -707,7 +707,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->group = "t.id";
 		$criteria->together = true;
 		
-		return Producto::model()->findAll($criteria);
+		return $criteria;
 		
 	}
 
@@ -769,7 +769,7 @@ public function multipleColor2($idColor, $idact)
 		$criteria->addCondition($rangopr);
 	}
 	
-	
+	 
 			
 	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
 		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
@@ -779,7 +779,7 @@ public function multipleColor2($idColor, $idact)
 		$criteria->group = 't.id';
 
 		
-		return Producto::model()->findAll($criteria);
+		return $criteria;
 		
 	}
 

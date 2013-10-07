@@ -12,7 +12,8 @@ function changeFilter(e){
    {
        dateFilter(column);
     
-   }else if(column.val() === 'status' || column.val() === 'user_id') 
+   }else if(column.val() === 'status' || column.val() === 'user_id'
+   || column.val() === 'marca') 
    {       
        listFilter(column, column.val());
 

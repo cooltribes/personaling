@@ -1,11 +1,15 @@
 
  <div class="span9 tienda_productos">
       <div class="row" id="catalogo">
+      	
 <?php
 
 
 
-foreach($prods as $data):
+foreach($prods as $data): ?>
+	<div class="div_productos">
+	<?php
+	
 $id=0;
 $entro=0;
 $con=0;
@@ -118,15 +122,19 @@ $prePub="";
 		
 		}
 
+?>
+</div>
+<?php
 
 endforeach;
 
-$total=count($prods);
-			$pages = new CPagination($total);
-			$pages->pageSize = 12;
+
+
+   
+
  $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#catalogo',
-	    'itemSelector' => 'div.articulo',
+	    'itemSelector' => 'div.div_productos',
 	    'loadingText' => 'Consultando Productos',
 	    'donetext' => 'No more',
 	  //  'afterAjaxUpdate' => 'alert("hola");',

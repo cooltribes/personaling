@@ -68,8 +68,9 @@ $max=round($max/100, 0)*100;
 	 <div class="span9 tienda_productos">
       <div class="row" id="catalogo"><?php
 	
+	
 	$this->renderPartial('_datos',array(
-	'prods'=>$dataProvider
+	'prods'=>$dataProvider,'pages'=>$pages
 	
 	
 ));   
@@ -232,7 +233,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores') . "',
+				url: '" . CController::createUrl('tienda/colores2') . "',
 				complete: function(){ $('body').removeClass('aplicacion-cargando'); },
 				data: {'idColor':window.idColor,
 						'idCategoria':window.idCategoria}
@@ -269,7 +270,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores') . "',
+				url: '" . CController::createUrl('tienda/colores2') . "',
 				data: {
 						'rango':rango}
 				}
@@ -299,7 +300,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores') . "',
+				url: '" . CController::createUrl('tienda/colores2') . "',
 				data: {
 						'rango':rango}
 				}

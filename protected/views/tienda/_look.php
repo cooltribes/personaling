@@ -1,11 +1,13 @@
+
 <style>
     div.infinite_navigation{
         display:none;
     }
 </style>
   <div class="row" id="looks">
+  	
 	<?php foreach($looks as $look): ?>
-		<?php //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
+		<?php  //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span4 look">
       <article > 
       	<?php if ($pages->currentPage > 0){ ?>
@@ -92,6 +94,7 @@
    // FB.Canvas.scrollTo(0,0);        
 	});
 </script>
+
 	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#looks',
 	    'itemSelector' => 'div.look',

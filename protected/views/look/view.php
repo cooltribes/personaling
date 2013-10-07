@@ -1,5 +1,15 @@
 <?php
+$this->breadcrumbs=array(
+  'Todos los looks'=>array('tienda/look'),
+  'Look'
+);
+?>
+<?php
 $this->pageTitle=Yii::app()->name . " - " . $model->title;;
+  Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title, null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+  Yii::app()->clientScript->registerMetaTag($model->description.' Creado por: '.$model->user->profile->first_name.' '.$model->user->profile->last_name, null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
 
 ?>
 
@@ -52,7 +62,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
           </div>
           <div class="row-fluid">
-
+            <?php Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook ?>
             <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
 
           </div>
@@ -79,7 +89,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
 	                 <li class="span3">  
-	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60)); ?>
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60));
+                      ?>
 	                </li>                	
                 <?php } ?>              
                                                       
@@ -226,6 +237,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                           foreach ($model->lookhasproducto as $lookhasproducto){
                               // $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
                               $image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('type'=>'thumb'));
+                            Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$image_url, null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook                              
             ?>
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto">
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />

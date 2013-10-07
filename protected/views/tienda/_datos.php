@@ -128,7 +128,10 @@ $prePub="";
 
 endforeach;
 
+
+
    
+
  $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#catalogo',
 	    'itemSelector' => 'div.div_productos',

@@ -1,12 +1,12 @@
  <?php
 	/* @var $this TiendaController */
-	//$this->breadcrumbs=array(
-	//'Tienda',
-	//);
+	$this->breadcrumbs=array(
+	'Tienda',
+	);
 
 ?> 
 <div class="page-header">
-<h1>Tienda </h1>
+<h1>Tienda</h1>
 <?php 
 $arr=Yii::app()->session['bsf'];
 $max=max($arr);
@@ -72,56 +72,6 @@ $max=round($max/100, 0)*100;
     </div>
     ';
 
-/*
-	$this->widget('zii.widgets.CListView', array(
-    'id'=>'list-auth-items',
-    'dataProvider'=>$dataProvider,      
-    'template'=>$template,
-    'itemView'=>'_datos2',
-     'afterAjaxUpdate'=>" function(id, data) {
-	    							
-						$(document).ready(function() {
-						  // Handler for .ready() called.
-							  
-							var imag;
-							var original;
-				
-				
-							var segunda;
-							
-							$('.producto').hover(function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).hide();
-								
-								$(this).find('img').eq(0).next().show();
-								}
-							},function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).show();
-								
-								$(this).find('img').eq(0).next().hide();
-								}
-							}); 						
-							
-						});
-	    				
-						} ",
-    'pager'=>array(
-        'class'=>'ext.infiniteScroll.IasPager', 
-        'rowSelector'=>'.producto', 
-        'listViewId'=>'list-auth-items', 
-        'header'=>'',
-        'loaderText'=>'Loading...',
-        
-        'options'=>array(
-            'history'=>false, 
-            'triggerPageTreshold'=>2, 
-            'trigger'=>'Load more'
-        ),
-    )
-));
-
-*/
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,

@@ -406,8 +406,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 					echo("
 					
 					</ul>
-	          		<p> <a onclick='aceptar(".$detalle->id.")' class='btn' title='Aceptar pago'>
-	          		<i class='icon-check'></i> Aceptar</a>
+	          		<p> <a onclick='aceptar(".$detalle->id.")' class='btn btn-info' title='Aceptar pago'>
+	          		<i class='icon-check icon-white'></i> Aceptar</a>
 	          		<a onclick='rechazar(".$detalle->id.")' class='btn' title='Rechazar pago'>Rechazar</a> </p>
 	        		</div>
 	        		
@@ -449,7 +449,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         ?>
          <?php 
          if($orden->estado == 4)
-         	echo"<div><a onclick='entregado(".$orden->id.")' class='btn margin_top margin_bottom pull-left'>Registrar Entrega</a></div>"; ?>
+         	echo"<div><a onclick='entregado(".$orden->id.")' class='btn btn-info margin_top margin_bottom pull-left'>Registrar Entrega</a></div>"; ?>
         
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>

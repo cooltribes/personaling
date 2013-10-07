@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Productos'=>array('admin'),
+	'Pedidos'=>array('admin'),
 	'Importar envíos masivos',
 );
 ?>

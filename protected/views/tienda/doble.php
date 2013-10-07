@@ -63,102 +63,21 @@ $max=round($max/100, 0)*100;
 <!-- PRODUCTOS ON -->
 
     <?php
-	
 
-/*
-	$this->widget('zii.widgets.CListView', array(
-    'id'=>'list-auth-items',
-    'dataProvider'=>$dataProvider,      
-    'template'=>$template,
-    'itemView'=>'_datos',
-     'afterAjaxUpdate'=>" function(id, data) {
-	    							
-						$(document).ready(function() {
-						  // Handler for .ready() called.
-							  
-							var imag;
-							var original;
-				
-				
-							var segunda;
-							
-							$('.producto').hover(function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).hide();
-								
-								$(this).find('img').eq(0).next().show();
-								}
-							},function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).show();
-								
-								$(this).find('img').eq(0).next().hide();
-								}
-							}); 						
-							
-						});
-	    				
-						} ",
-    'pager'=>array(
-        'class'=>'ext.infiniteScroll.IasPager', 
-        'rowSelector'=>'.producto', 
-        'listViewId'=>'list-auth-items', 
-        'header'=>'',
-        'loaderText'=>'Loading...',
-        
-        'options'=>array(
-            'history'=>false, 
-            'triggerPageTreshold'=>2, 
-            'trigger'=>'Load more'
-        ),
-    )
-));
-
-*/
-	/*$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos',
-	    'afterAjaxUpdate'=>" function(id, data) {
-	    							
-						$(document).ready(function() {
-						  // Handler for .ready() called.
-							  
-							var imag;
-							var original;
-							var segunda;
-							
-							$('.producto').hover(function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).hide();
-								
-								$(this).find('img').eq(0).next().show();
-								}
-							},function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).show();
-								
-								$(this).find('img').eq(0).next().hide();
-								}
-							}); 						
-							
-						});
-	    				
-						} ",
-	    'template'=>$template,
-	)); */
+?>
+	 <div class="span9 tienda_productos">
+      <div class="row" id="catalogo"><?php
 	
 	
 	$this->renderPartial('_datos',array(
-	'prods'=>$dataProvider,
-	'pages'=>$pages,
+	'prods'=>$dataProvider,'pages'=>$pages
+	
 	
 ));   
-	
-	
 
 	
 	?>
+	</div></div>
 	<!-- PRODUCTOS OFF -->
 	
 	<!-- FILTROS DESKTOP ON -->
@@ -314,7 +233,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores') . "',
+				url: '" . CController::createUrl('tienda/colores2') . "',
 				complete: function(){ $('body').removeClass('aplicacion-cargando'); },
 				data: {'idColor':window.idColor,
 						'idCategoria':window.idCategoria}
@@ -351,7 +270,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores') . "',
+				url: '" . CController::createUrl('tienda/colores2') . "',
 				data: {
 						'rango':rango}
 				}
@@ -381,7 +300,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores') . "',
+				url: '" . CController::createUrl('tienda/colores2') . "',
 				data: {
 						'rango':rango}
 				}

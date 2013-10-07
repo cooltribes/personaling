@@ -1,5 +1,8 @@
 
 <?php  
+	$this->breadcrumbs=array(
+		'Tus looks',
+	);
   $baseUrl = Yii::app()->baseUrl; 
   $cs = Yii::app()->getClientScript();
   $cs->registerScriptFile($baseUrl.'/js/slider.js');

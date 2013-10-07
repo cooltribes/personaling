@@ -1,5 +1,8 @@
 <?php
-
+/* @var $this BolsaController */
+$this->breadcrumbs=array(
+	'Bolsa',
+);
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 $usuario = Yii::app()->user->id;

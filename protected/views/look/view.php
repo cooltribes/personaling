@@ -3,8 +3,6 @@ $this->breadcrumbs=array(
   'Todos los looks'=>array('tienda/look'),
   'Look'
 );
-?>
-<?php
 $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title, null, null, array('property' => 'og:title'), null); // registro del meta para facebook
   Yii::app()->clientScript->registerMetaTag($model->description.' Creado por: '.$model->user->profile->first_name.' '.$model->user->profile->last_name, null, null, array('property' => 'og:description'), null);

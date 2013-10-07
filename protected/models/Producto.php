@@ -1018,7 +1018,7 @@ public function multipleColor2($idColor, $idact)
 	{
 		if(isset($this->seo->urlAmigable))
 		{
-			return Yii::app()->baseUrl."/producto/".$this->seo->urlAmigable;
+			return Yii::app()->baseUrl."/productos/".$this->seo->urlAmigable;
 		}
 		else
 		{

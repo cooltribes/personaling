@@ -68,6 +68,21 @@ class Curl extends CComponent {
 		//$url = $this->buildUrl($url, $params);	
         return $this->_exec($url);
     }
+	/*
+	public function putPago($data) {
+		$url = "https://api.instapago.com/api/payment/";
+		$data_keys = array(
+		"KeyId"=> "069C794A-6917-4283-B26F-2AFC7F685A96",
+		"PublicKeyId"=>"5274e829763cd383270512b87a6c947e",
+		);
+		$data = array_merge($data_keys, $data);
+		$data_string = http_build_query($data);
+        $this->setOption(CURLOPT_POST, true);
+        $this->setOption(CURLOPT_POSTFIELDS, $data_string);
+        return $this->_exec($url);		
+	}
+	 * */
+	
 	public function putPago($data) {
 			
 
@@ -80,8 +95,8 @@ class Curl extends CComponent {
 		$data = array_merge($data_keys, $data);
 		$data_string = http_build_query($data);
 		//echo $data_string;
-		$f_response = fopen('/var/www/html/site/images/request.txt', 'w');
-		$this->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
+		//$f_response = fopen('/var/www/html/site/images/request.txt', 'w');
+		//$this->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
 		$this->setOption(CURLOPT_SSL_VERIFYHOST, 0);
 		$this->setOption(CURLOPT_SSL_VERIFYPEER, 0);
 		$this->setOption(CURLOPT_USERPWD,"069C794A-6917-4283-B26F-2AFC7F685A96");
@@ -93,15 +108,15 @@ class Curl extends CComponent {
 		    
 		    $this->setOption(CURLOPT_FOLLOWLOCATION , 1);
 		    $this->setOption(CURLOPT_VERBOSE        , 1);
-		 //   $this->setOption(CURLOPT_STDERR         , $f_response);
-		// $this->setOption(CURLOPT_FILE         , $f_response);
+		//$this->setOption(CURLOPT_STDERR         , $f_response);
+		//$this->setOption(CURLOPT_FILE         , $f_response);
 		
-		fclose($f_response);	
+		//fclose($f_response);	
 		//$url = $this->buildUrl($url, $params);
-		echo $this->_exec($url);
+		//echo $this->_exec($url);
         return json_decode($this->_exec($url));
     }
-	 
+	
 	public function getstatus(){
 		
 		return curl_getinfo($this->_ch, CURLINFO_HTTP_CODE);

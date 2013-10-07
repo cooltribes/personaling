@@ -1,4 +1,8 @@
-
+<?php
+$this->breadcrumbs=array(
+  'Todos los looks',
+);
+?>
 <div class="container">
   <div class="page-header">
     <h1>Todos los looks</h1>

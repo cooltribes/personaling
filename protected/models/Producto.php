@@ -210,6 +210,7 @@ class Producto extends CActiveRecord
 		$criteria->addCondition('orden = 1');
 		
 		$criteria->order = "t.id ASC";
+		$criteria->group="t.id";
 		
 		$criteria->together = true;
 		
@@ -768,7 +769,7 @@ public function multipleColor2($idColor, $idact)
 		$criteria->addCondition($rangopr);
 	}
 	
-	
+	 
 			
 	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
 		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
@@ -778,7 +779,7 @@ public function multipleColor2($idColor, $idact)
 		$criteria->group = 't.id';
 
 		
-		return Producto::model()->findAll($criteria);
+		return $criteria;
 		
 	}
 
@@ -1017,7 +1018,7 @@ public function multipleColor2($idColor, $idact)
 	{
 		if(isset($this->seo->urlAmigable))
 		{
-			return Yii::app()->baseUrl."/producto/".$this->seo->urlAmigable;
+			return Yii::app()->baseUrl."/productos/".$this->seo->urlAmigable;
 		}
 		else
 		{

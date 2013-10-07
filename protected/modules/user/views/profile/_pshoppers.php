@@ -6,12 +6,11 @@
 <div class="span3 pshopper" align="center">
       <article > 
       	<?php if ($pages->currentPage > 0){ 
-      		
-      		echo $thuser->getAvatar(); ?>
+      		 ?>
       	<?php $image = CHtml::image($thuser->getAvatar(), "PS", array("id" => "imglook".$prof->user_id,"width" => "250", "height" => "250", 'class'=>'ps_avatar img-circle', 'alt'=>$prof->first_name)); ?>
       	<?php }else{ ?>
       	<?php echo CHtml::image('../../images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$prof->user_id)); ?>                            	
-        <?php $image = CHtml::image($thuser->getAvatar(), "Look", array("style"=>"display: none","id" => "imglook".$prof->user_id,"width" => "250", "height" => "250", 'class'=>'ps_avatar img-circle')); ?>
+        <?php $image = CHtml::image($thuser->getAvatar(), "PS", array("style"=>"display: none","id" => "imglook".$prof->user_id,"width" => "250", "height" => "250", 'class'=>'ps_avatar img-circle')); ?>
         <?php } ?>
         	         
                   	<?php echo CHtml::link($image,$prof->getUrl(),array('title'=>$prof->first_name)); ?>

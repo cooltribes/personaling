@@ -1,8 +1,8 @@
  <?php
 	/* @var $this TiendaController */
-	//$this->breadcrumbs=array(
-	//'Tienda',
-	//);
+	$this->breadcrumbs=array(
+	'Tienda',
+	);
 
 ?> 
 <div class="page-header">

@@ -151,12 +151,12 @@ return array(
      			//'caseSensitive'=>false, 
      			'baseUrl'=>'/site',  
 			'rules'=>array(
+				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
+				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-				'<alias:[a-zA-Z0-9_-]+>'=>'user/profile/perfil',
-				'producto/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
-				'look/<alias:[a-zA-Z0-9_-]+>'=>'look/view'
+				'<alias:[a-zA-Z0-9_-]+>'=>'user/profile/perfil'
 			),
 		),
 		

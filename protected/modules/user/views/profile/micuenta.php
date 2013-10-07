@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-//$this->breadcrumbs=array(
-	//UserModule::t("Profile")=>array('profile'),
-	//UserModule::t("Mi cuenta"),
-//);
+$this->breadcrumbs=array(
+	UserModule::t("Profile")=>array('profile'),
+	UserModule::t("Mi cuenta"),
+);
 $look = new Look;
 $looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
 $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));

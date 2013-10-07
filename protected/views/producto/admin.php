@@ -81,7 +81,7 @@ echo $num;
 		"var ajaxUpdateTimeout;
 		var ajaxRequest;
 		$('#btn_search_event').click(function(){
-			
+			$('.crear-filtro').click();
 			ajaxRequest = $('#query').serialize();
 			clearTimeout(ajaxUpdateTimeout);
 			
@@ -109,6 +109,7 @@ echo $num;
 		
 		$(document).keypress(function(e) {
 		    if(e.which == 13) {
+                    $('.crear-filtro').click();
 		        ajaxRequest = $('#query').serialize();
 				clearTimeout(ajaxUpdateTimeout);
 				

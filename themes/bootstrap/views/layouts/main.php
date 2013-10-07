@@ -248,7 +248,7 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
-          <li><a href="#" title="El Equipo Personaling">Aplicar para Personal Shopper</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPs" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
           
         </ul>
       </div>

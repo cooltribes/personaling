@@ -52,18 +52,12 @@ class AdminController extends Controller
 
             $criteria = new CDbCriteria;
 
-            if (isset($_GET['nombre'])) {
-                //$model->nom=$_POST['nombre'];
-                $criteria->alias = 'User';
-                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
-            }
-
             $dataProvider = new CActiveDataProvider('User', array(
-                'criteria' => $criteria,
-                'pagination' => array(
-                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                ),
-            ));
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
 
             //Modelos para el formulario de crear Usuario
             $modelUser = new User;
@@ -158,7 +152,8 @@ class AdminController extends Controller
             //Para guardar el filtro
             $filter = new Filter;            
             
-            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['nombre'])){
               $_POST = $_SESSION['todoPost'];
             }            
             
@@ -270,6 +265,20 @@ class AdminController extends Controller
                     Yii::app()->end();
                 }
             }
+            
+            if (isset($_GET['nombre'])) {
+                //$model->nom=$_POST['nombre'];
+                $criteria->alias = 'User';
+                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+                
+                $dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
+            }
+
             
             
             

@@ -99,7 +99,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					// de dos meses a un mes como primer punto de ventas	      	
 					$sql = "select sum(total) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
-					$monthago = (double) Yii::app()->db->createCommand($sql)->queryScalar();
+					$monthago = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					//$monthago = Yii::app()->numberFormatter->formatDecimal($monthago);
 					
@@ -110,7 +110,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					// de un mes hasta hoy		
 					$sql = "select sum(total) from tbl_orden where fecha between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
-					$ahora = (double) Yii::app()->db->createCommand($sql)->queryScalar();
+					$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					//$ahora = Yii::app()->numberFormatter->formatDecimal($ahora);
 					

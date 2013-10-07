@@ -698,10 +698,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	?>
                 <div class="span6">
                 	
-                  <div class="dropdown" id="crear_look_colores"> <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
+                  <div class="dropdown" > <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
                     
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" >
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="crear_look_colores">
   	<?php
   	echo '<li>';
   	
@@ -741,7 +741,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                       <?php 
   $colores = Color::model()->findAll();
   foreach($colores as $color){
-  	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20'));
+  	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20','class'=>'img_crear_look_colores'));
 	  
   	echo '<li>';
   	

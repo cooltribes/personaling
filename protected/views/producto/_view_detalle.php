@@ -1,4 +1,5 @@
- 	<!-- FLASH ON --> 
+ 
+ <!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
         'fade'=>true, // use transitions?
@@ -14,6 +15,10 @@
  $baseUrl = Yii::app()->baseUrl;
  $cs = Yii::app()->getClientScript();
  $cs->registerScriptFile($baseUrl.'/js/jquery.zoom.js');
+  Yii::app()->clientScript->registerMetaTag($producto->nombre, null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+  Yii::app()->clientScript->registerMetaTag($producto->descripcion, null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
 
 ?>
 <!-- FLASH OFF -->
@@ -82,12 +87,13 @@
             	$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
 	
 			foreach ($ima as $img){
-					
-				if($img->orden==1)
+
+				Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$img->getUrl(array('ext'=>'jpg')), null, null, array('property' => 'og:image'), null);	// Registro de <meta> para compartir en Facebook
+        if($img->orden==1)
 				{ 
 					$colorPredet = $img->color_id;
 					
-					echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "producto", array('id'=>'principal'));
+					echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "producto", array('id'=>'principal','rel'=>'image_src'));
 					echo "<!-- FOTO principal OFF -->";
 	          		echo "</div>";	
 	          		echo "</div>";	
@@ -372,7 +378,13 @@
             <div class="span2">
             <a class="addthis_button_pinterest_pinit "></a>       
             </div>     
-            <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+            <script type="text/javascript">
+            var addthis_config = {"data_track_addressbar":false};
+            var addthis_share =
+            {
+               description: hola
+            }
+            </script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
           </div>
           <hr />

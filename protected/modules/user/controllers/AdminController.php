@@ -1348,7 +1348,7 @@ if(isset($_POST['Profile']))
 							$orden = new Orden;
 							
 							$orden->subtotal = $_POST['subtotal'];
-							$orden->descuento = $_POST['descuento'];
+							
 							$orden->envio = $_POST['envio'];
 							$orden->iva = $_POST['iva'];
 							$orden->descuentoRegalo = 0;
@@ -1381,17 +1381,19 @@ if(isset($_POST['Profile']))
 							
 							if($orden->save()){
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+									$balance_usuario = Profile::model()->getSaldo(Yii::app()->session['usercompra']);
+									
 									if($balance_usuario > 0){
+										
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
 											$orden->descuento = $_POST['total'];
-											$orden->total = 0;
+											
 											$orden->estado = 2; // en espera de confirmación
 											$balance->total = $_POST['total']*(-1);
 										}else{
 											$orden->descuento = $balance_usuario;
-											$orden->total = $_POST['total'] - $balance_usuario;
+											
 											$balance->total = $balance_usuario*(-1);
 										}
 										$orden->save();
@@ -1402,6 +1404,8 @@ if(isset($_POST['Profile']))
 										$balance->tipo = 1;
 										$balance->save();
 									}
+								}else{
+									$orden->descuento = $_POST['descuento'];	
 								}
 								
 								

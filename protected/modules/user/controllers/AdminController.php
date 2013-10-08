@@ -52,18 +52,12 @@ class AdminController extends Controller
 
             $criteria = new CDbCriteria;
 
-            if (isset($_GET['nombre'])) {
-                //$model->nom=$_POST['nombre'];
-                $criteria->alias = 'User';
-                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
-            }
-
             $dataProvider = new CActiveDataProvider('User', array(
-                'criteria' => $criteria,
-                'pagination' => array(
-                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                ),
-            ));
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
 
             //Modelos para el formulario de crear Usuario
             $modelUser = new User;
@@ -158,7 +152,8 @@ class AdminController extends Controller
             //Para guardar el filtro
             $filter = new Filter;            
             
-            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['nombre'])){
               $_POST = $_SESSION['todoPost'];
             }            
             
@@ -270,6 +265,20 @@ class AdminController extends Controller
                     Yii::app()->end();
                 }
             }
+            
+            if (isset($_GET['nombre'])) {
+                //$model->nom=$_POST['nombre'];
+                $criteria->alias = 'User';
+                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+                
+                $dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
+            }
+
             
             
             
@@ -1348,7 +1357,7 @@ if(isset($_POST['Profile']))
 							$orden = new Orden;
 							
 							$orden->subtotal = $_POST['subtotal'];
-							$orden->descuento = $_POST['descuento'];
+							
 							$orden->envio = $_POST['envio'];
 							$orden->iva = $_POST['iva'];
 							$orden->descuentoRegalo = 0;
@@ -1381,17 +1390,19 @@ if(isset($_POST['Profile']))
 							
 							if($orden->save()){
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+									$balance_usuario = Profile::model()->getSaldo(Yii::app()->session['usercompra']);
+									
 									if($balance_usuario > 0){
+										
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
 											$orden->descuento = $_POST['total'];
-											$orden->total = 0;
+											
 											$orden->estado = 2; // en espera de confirmación
 											$balance->total = $_POST['total']*(-1);
 										}else{
 											$orden->descuento = $balance_usuario;
-											$orden->total = $_POST['total'] - $balance_usuario;
+											
 											$balance->total = $balance_usuario*(-1);
 										}
 										$orden->save();
@@ -1402,6 +1413,8 @@ if(isset($_POST['Profile']))
 										$balance->tipo = 1;
 										$balance->save();
 									}
+								}else{
+									$orden->descuento = $_POST['descuento'];	
 								}
 								
 								

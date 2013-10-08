@@ -1,8 +1,8 @@
  <?php
 	/* @var $this TiendaController */
-	//$this->breadcrumbs=array(
-	//'Tienda',
-	//);
+	$this->breadcrumbs=array(
+	'Tienda',
+	);
 
 ?> 
 <div class="page-header">
@@ -264,7 +264,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores2') . "',
+				url: '" . CController::createUrl('tienda/colores') . "',
 				complete: function(){ $('body').removeClass('aplicacion-cargando'); },
 				data: {'idColor':window.idColor,
 						'idCategoria':window.idCategoria}
@@ -301,7 +301,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores2') . "',
+				url: '" . CController::createUrl('tienda/colores') . "',
 				data: {
 						'rango':rango}
 				}
@@ -331,7 +331,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores2') . "',
+				url: '" . CController::createUrl('tienda/colores') . "',
 				data: {
 						'rango':rango}
 				}

@@ -645,7 +645,7 @@ class Look extends CActiveRecord
 	public function getUrl() 
 	{
 		if(isset($this->url_amigable))
-			return Yii::app()->baseUrl."/look/".$this->url_amigable;
+			return Yii::app()->baseUrl."/looks/".$this->url_amigable;
 		else
 			return Yii::app()->baseUrl."/look/".$this->id;
 		
@@ -678,8 +678,7 @@ class Look extends CActiveRecord
                    $logicOp = 'AND'; 
                 }else{                
                     $logicOp = $filters['rels'][$i-1];                
-                }                  
-                
+                }    
                 
                 if($column == 'campana')
                 {
@@ -730,8 +729,7 @@ class Look extends CActiveRecord
                 }   
                 
                 if($column == 'marca')
-                {
-                                     
+                {                                    
                     
                     $criteria->with['productos'] = array(
                         'select'=> false,
@@ -746,6 +744,8 @@ class Look extends CActiveRecord
                     }
                     
                     //agregar condicion marca_id
+                    $criteria->addCondition('productos.marca_id'
+                    .$comparator.' '.$value.'', $logicOp);                    
                     
                    continue;
                 } 
@@ -757,9 +757,55 @@ class Look extends CActiveRecord
                     where `t`.`id`=`productos_productos`.`look_id`)'
                     .$comparator.' '.$value.'', $logicOp);
                    
-                   continue;
+                   continue;                   
+                }  
+                
+                if($column == 'cantidad')
+                {
+                    /*
+                     * Por cada orden se esta contando el look como vendido una 
+                     * sola vez asi aparezca dos veces en la misma orden
+                     * 
+                     * Luego se debe corregir para que cuente correctamente si 
+                     * el look ha sido pedido mas de una vez en una orden
+                     */
+                    
+                  $criteria->addCondition('
+                    (select count(distinct(orden.id)) from tbl_orden_has_productotallacolor o_ptc, tbl_orden orden
+                    where o_ptc.tbl_orden_id = orden.id
+                    and
+                    o_ptc.look_id > 0
+                    and
+                    o_ptc.look_id = t.id
+                    and
+                    orden.estado IN (3, 4, 8))'
+                    .$comparator.' '.$value.'', $logicOp);
                    
-                }    
+                   continue;                   
+                }  
+                
+                if($column == 'monto')
+                {
+                    
+                    
+                  $criteria->addCondition('
+                    (select count(distinct(orden.id)) from tbl_orden_has_productotallacolor o_ptc, tbl_orden orden
+                    where o_ptc.tbl_orden_id = orden.id
+                    and
+                    o_ptc.look_id > 0
+                    and
+                    o_ptc.look_id = t.id
+                    and
+                    orden.estado IN (3, 4, 8))                    
+                    *
+                    (select sum(precios.precioDescuento) from `tbl_look_has_producto` `productos_productos`, `tbl_producto` `productos`, `tbl_precio` `precios` 
+                    where `t`.`id`=`productos_productos`.`look_id` and `productos`.`id`=`productos_productos`.`producto_id` and 
+                    `precios`.`tbl_producto_id`=`productos`.`id`)
+                    '
+                    .$comparator.' '.$value.'', $logicOp);
+                   
+                   continue;                   
+                }  
                 
                 if($column == 'created_on')
                 {

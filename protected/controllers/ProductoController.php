@@ -750,13 +750,7 @@ class ProductoController extends Controller
 
             
             
-            $producto = new Producto; 
-
-            if (isset($_POST['query']))
-            {
-                    //echo($_POST['query']);	
-                    $producto->nombre = $_POST['query'];
-            }	
+            $producto = new Producto;
 
             $producto->status = 1;
 
@@ -770,7 +764,8 @@ class ProductoController extends Controller
             //Para guardar el filtro
             $filter = new Filter;
             
-            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['query'])){
               $_POST = $_SESSION['todoPost'];
             }
             
@@ -885,6 +880,12 @@ class ProductoController extends Controller
             }
 
 
+            if (isset($_POST['query']))
+            {
+                    echo($_POST['query']);	
+                    $producto->nombre = $_POST['query'];
+                    $dataProvider = $producto->search();
+            }	
 
             $this->render('admin',
             array('model'=>$producto,

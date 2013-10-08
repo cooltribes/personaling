@@ -114,7 +114,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                       <?php if($key == 1) 
                           echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
                         if($key == 2) 
-                          echo "Tu cuerpo es reloj de arena o curvilíneo porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida"; 
+                          echo "Tu cuerpo es reloj de arena porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida"; 
                         if($key == 4)         
                           echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
                         if($key == 8)         

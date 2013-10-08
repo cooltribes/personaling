@@ -641,7 +641,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
     //    $criteria->params = array(":uno" => "2"); // estado
 	//	$criteria->params = array(":dos" => "1"); // status
-		
+		$criteria->order = "fecha DESC";
 		$criteria->group = 't.id';
 
 		
@@ -1018,7 +1018,7 @@ public function multipleColor2($idColor, $idact)
 	{
 		if(isset($this->seo->urlAmigable))
 		{
-			return Yii::app()->baseUrl."/producto/".$this->seo->urlAmigable;
+			return Yii::app()->baseUrl."/productos/".$this->seo->urlAmigable;
 		}
 		else
 		{

@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -58,7 +58,7 @@
                                 'user_id' => 'Personal Shopper',
                                 'status' => 'Estado',
                                 'marca' => 'Marcas que contiene',
-                                'pago_id' => 'Monto de Ventas',
+                                'monto' => 'Monto de Ventas',
                                 'cantidad' => 'Cantidad Vendida',
                                 'created_on' => 'Fecha de Creación',
                                 'campana' => 'Campaña',

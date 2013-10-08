@@ -1,10 +1,11 @@
+
 <?php
 		$this->pageTitle=Yii::app()->name . ' - Tu Personal Shopper';
 		/* @var $this TiendaController */
 		//
-		//$this->breadcrumbs=array(
-		//	'Tu Personal Shopper',
-		//);
+		$this->breadcrumbs=array(
+			'Tu Personal Shopper',
+		);
 ?>
 <?php  
   $baseUrl = Yii::app()->baseUrl;

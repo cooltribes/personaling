@@ -376,6 +376,12 @@ class User extends CActiveRecord {
                 {
                     $criteria->compare("personal_shopper", $comparator.'1', false, $logicOp);
 
+                    
+                }else if($value === 'aplica')
+                {
+                    $criteria->compare("personal_shopper", $comparator.'2', false, $logicOp);
+
+                    
                 }else if($value === 'user')
                 {              
                     $comparator = ($comparator == '=') ? '' : 'NOT ';

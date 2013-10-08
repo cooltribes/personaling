@@ -882,7 +882,8 @@ class ProductoController extends Controller
 
             if (isset($_POST['query']))
             {
-                    echo($_POST['query']);	
+                    //echo($_POST['query']);	
+                    unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
                     $dataProvider = $producto->search();
             }	

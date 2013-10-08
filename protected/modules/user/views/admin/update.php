@@ -89,7 +89,7 @@ function getMonthsArray()
             </div>
           </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
-          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
+          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si', 2 => "Aplicante"),array('class'=>'span2')); ?> </div>
           <div class="control-group">
             <label for="" class="control-label ">Estado: </label>  
             <div class="controls">  
@@ -225,9 +225,16 @@ function getMonthsArray()
               </li>
               <li>
               	<?php
-              	 
+                    
+                    if($model->personal_shopper == 1){
+                        $titulo = 'Quitar Personal Shopper';
+                    }else if($model->personal_shopper == 2){
+                        $titulo = 'Aprobar como Personal Shopper';
+                    }else{
+                        $titulo = 'Hacer Personal Shopper';
+                    }
 				echo CHtml::ajaxLink(
-					  "<i class='icon-user'></i> Hacer Personal Shopper",
+					  "<i class='icon-user'></i> {$titulo}",
 					  Yii::app()->createUrl( 'user/admin/toggle_ps' ,array('id'=>$model->id)),
 					  array( // ajaxOptions
 					    'type' => 'POST',

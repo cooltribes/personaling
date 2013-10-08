@@ -375,6 +375,7 @@ else{
 				
 			$dataProvider = $producto->multipleColor($color,$categoria);
 		}
+		
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
@@ -404,7 +405,6 @@ else{
 			$minmax = explode('A',$_POST['rango']);
 			Yii::app()->session['minpr']=$minmax[0];	
 			Yii::app()->session['maxpr']=$minmax[1];	
-			echo Yii::app()->session['minpr']." ".Yii::app()->session['maxpr'];
 		}
 					
 		if(isset(Yii::app()->session['idact'])) // llega como parametro el id de la categoria presionada
@@ -428,7 +428,7 @@ else{
 		
 		if(count($color)==0&&(!isset(Yii::app()->session['idact']))&&(!isset(Yii::app()->session['minpr']))&&(!isset(Yii::app()->session['maxpr']))){
 			$a="a";	
-			$criteria = $producto->nueva($a);
+			$criteria = $producto->nueva2($a);
 			
 		}else{
 			

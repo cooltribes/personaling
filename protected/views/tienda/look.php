@@ -1,4 +1,9 @@
-
+<?php
+$this->breadcrumbs=array(
+  'Tu Personal Shopper' =>array('site/personal'),
+  'Todos los looks',
+);
+?>
 <div class="container">
   <div class="page-header">
     <h1>Todos los looks</h1>
@@ -234,6 +239,7 @@
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
 <?php 
+
 $this->renderPartial('_look',array(
 	'looks'=>$looks,
 	'pages'=>$pages,
@@ -519,11 +525,12 @@ function moveScroller() {
 
            $.ajax({
             type: "post",
+            dataType: 'json',
             url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
             data: { 'idLook':idLook},
             success: function (data) {
 
-                if(data=="ok")
+                if(data.mensaje=="ok")
                 {
                     var a = "♥";
 
@@ -533,13 +540,13 @@ function moveScroller() {
 
                 }
 
-                if(data=="no")
+                if(data.mensaje=="no")
                 {
                     alert("Debe primero ingresar como usuario");
                     //window.location="../../user/login";
                 }
 
-                if(data=="borrado")
+                if(data.mensaje=="borrado")
                 {
                     var a = "♡";
 

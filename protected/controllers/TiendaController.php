@@ -34,7 +34,7 @@ class TiendaController extends Controller
 	
 	public function actionDoble()
 	{
-		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		/*$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
@@ -52,6 +52,60 @@ class TiendaController extends Controller
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	*/
+			
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		$producto = new Producto;		
+		$producto->status = 1; // no borrados
+		$producto->estado = 0; // solo productos activos
+		if(isset(Yii::app()->session['idColor'])){
+			unset(Yii::app()->session['idColor']);
+			
+		}
+		if(isset(Yii::app()->session['idact'])){
+			unset(Yii::app()->session['idact']);
+			
+		}
+		if(isset(Yii::app()->session['bsf'])){
+			unset(Yii::app()->session['bsf']);
+			
+		}
+		if(isset(Yii::app()->session['minpr'])){
+			unset(Yii::app()->session['minpr']);
+			
+		}
+		if(isset(Yii::app()->session['maxpr'])){
+			unset(Yii::app()->session['maxpr']);
+			
+		}
+		$a ="a"; 
+		
+		
+		$dp=$producto->nueva($a);
+
+		
+		$arr=array();
+		foreach($dp->getData() as $record) {
+			array_push($arr,$record->getPrecio(false));	
+		 }
+		 
+		Yii::app()->session['bsf']=$arr;
+
+		$criteria = $producto->nueva2($a);
+		$total=Producto::model()->count($criteria);
+		$pages = new CPagination($total);
+		
+		$pages->pageSize = 12;
+		$pages->applyLimit($criteria);
+        $dataProvider = Producto::model()->findAll($criteria);
+		//echo $pages->pageSize;
+		$this->render('doble',
+			array('doble'=>$producto,
+				'pages'=>$pages,
+				'dataProvider'=>$dataProvider,
+				'categorias'=>$categorias,
+				
+
 		));	
 			
 	}
@@ -177,7 +231,7 @@ class TiendaController extends Controller
 			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 			));	
 			}
-
+ 
 
 	public function actionFiltrar2()
 	{
@@ -194,12 +248,12 @@ class TiendaController extends Controller
 				Yii::app()->getSession()->add('categoria', $_POST['cate1']);
 				Yii::app()->getSession()->add('valor',1);
 			}
-			
+			/*
 			if (isset($_POST['idact'])){ // actualizacion desde los ajaxlink
 				 $producto->categoria_id = $_POST['idact'];		
 				 Yii::app()->getSession()->add('categoria', $_POST['idact']);
 				 Yii::app()->getSession()->add('valor',1);
-			}		
+			}	*/	
 		
 			if (isset($_POST['busqueda'])){ // desde el input
 				$producto->nombre = $_POST['busqueda'];
@@ -254,6 +308,7 @@ class TiendaController extends Controller
 		
 			}
 			*/
+else{
 			$todos = array();
 			$todos = $this->getAllChildren(Categoria::model()->findAllByAttributes(array("padreId"=>$producto->categoria_id)));
 	
@@ -263,6 +318,7 @@ class TiendaController extends Controller
 			array('index'=>$producto,
 			'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 			));	
+}
 			}
 
 
@@ -270,31 +326,6 @@ class TiendaController extends Controller
 	
 	
 	public function actionColores()
-	{
-		
-		$producto = new Producto;
-		$producto->status = 1; // que no haya sido borrado logicamente
-		$producto->estado = 0; // que no estÃ© inactivo
-	
-		$color="";
-	
-		if(isset($_POST['idColor'])) // llega como parametro el id del color presionado
-		{	
-			$color = $_POST['idColor'];
-		}
-
-		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));
-
-		$dataProvider = $producto->busColor($color);
-		$this->render('index',
-		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
-		));	
-			
-	}
-	
-	
-	public function actionColores2()
 	{
 		
 		$producto = new Producto;
@@ -344,6 +375,75 @@ class TiendaController extends Controller
 				
 			$dataProvider = $producto->multipleColor($color,$categoria);
 		}
+		$this->render('index',
+		array('index'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
+		));	
+		
+		
+	}
+	
+	
+	public function actionColores2()
+	{
+		
+		$producto = new Producto;
+		$producto->status = 1; // que no haya sido borrado logicamente
+		$producto->estado = 0; // que no estÃ© inactivo
+	
+		$color="";
+		$categoria="";
+		
+		if(isset($_POST['idColor'])) // llega como parametro el id del color presionado
+		{
+			Yii::app()->session['idColor']=$_POST['idColor'];	
+		}		
+		
+		if(isset($_POST['rango'])) // llega como parametro el id del color presionado
+		{
+			$minmax = explode('A',$_POST['rango']);
+			Yii::app()->session['minpr']=$minmax[0];	
+			Yii::app()->session['maxpr']=$minmax[1];	
+			echo Yii::app()->session['minpr']." ".Yii::app()->session['maxpr'];
+		}
+					
+		if(isset(Yii::app()->session['idact'])) // llega como parametro el id de la categoria presionada
+		{
+					
+			$categoria=Yii::app()->session['idact'];
+		}
+			
+		
+			
+		if(isset(Yii::app()->session['idColor'])) // llega como parametro el id del color presionado
+		{
+			$color = explode('#',Yii::app()->session['idColor']);
+			
+			unset($color[0]);	
+		}	
+
+			
+		
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+		
+		if(count($color)==0&&(!isset(Yii::app()->session['idact']))&&(!isset(Yii::app()->session['minpr']))&&(!isset(Yii::app()->session['maxpr']))){
+			$a="a";	
+			$criteria = $producto->nueva($a);
+			
+		}else{
+			
+				
+			$criteria = $producto->multipleColor2($color,$categoria);
+		}
+		 
+		$total=Producto::model()->count($criteria);
+		$pages = new CPagination($total);
+		
+		$pages->pageSize = 12;
+		$pages->applyLimit($criteria);
+        $dataProvider = Producto::model()->findAll($criteria);
+		
+		
 		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
@@ -713,36 +813,32 @@ public function actionCategorias2(){
                         $inValues[] = $row["id"];
                     }
 
-                    $criteria->addInCondition('t.id', $inValues);
-    //                            echo "Criteria:";
-    //
-    //                            echo "<pre>";
-    //                            print_r($criteria->toArray());
-    //                            echo "</pre>";
-                    //exit();                            
+                    $criteria->addInCondition('t.id', $inValues);                         
                 }
 
-                if (isset($_POST['precios'])) {
+                if (isset($_POST['precios']) && $_POST['precios'] != "") {
+                    
                     $limits = explode("-", $_POST['precios']);
                     
                     $looks = Look::model()->findAll("status = 2");
                     
-                    $inValues = array();
-                    
+                    $inValues = array();                    
 
                     foreach ($looks as $look) {
+                        
                         $price = $look->getPrecio(false);
                         
                         if($price >= $limits[0] && $price <= $limits[1])
                         {
                             $inValues[] = $look->id;
                         }
-                    }
-                    
-                    $criteria->addInCondition('t.id', $inValues);
-                }
-                
+                        
+                    }                    
 
+                    $criteria->addInCondition('t.id', $inValues);
+               }
+                   
+               
                 $criteria->compare('status', 2);
                 $total = Look::model()->count($criteria);
                 $pages = new CPagination($total);
@@ -774,20 +870,22 @@ public function actionCategorias2(){
                 $criteria->compare('title', $search, true, 'OR');
                 $criteria->compare('description', $search, true, 'OR');
                 $criteria->compare('status', 2);
-                $total = Look::model()->count();
+                $total = Look::model()->count($criteria);
 
                 $pages = new CPagination($total);
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
+				
 
-                /*             * *    Filtros por Perfil ** */
+                /**    Filtros por Perfil **/
 
                 $profile = new Profile;
 
                 /*      Rangos de precios       */
                 $allLooks = Look::model()->findAll("status = 2");
-                $count = 0;
+                $count = array(0, 0, 0, 0); 
+                
                 foreach ($allLooks as $look) {
                     $allPrices[] = $look->getPrecio(false);
                 }
@@ -798,35 +896,17 @@ public function actionCategorias2(){
                 $len = ($mayorP - $menorP) / $rangos;
 
                 foreach ($allPrices as $price) {
-                    $count += $price >= $menorP + 2 * $len && $price <= $menorP + 3 * $len ? 1 : 1;
-                }
-
+                    for($i = 0; $i < $rangos; $i++)
+                        $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
+                }                
+                
                 for ($i = 0; $i < $rangos; $i++) {
                     $mayorP = $menorP + $len;
-
-                    $cant = count(array_filter($allPrices, function($price) {
-                                        global $menorP, $mayorP;
-                                        return $price >= $menorP && $price <= $mayorP;
-                                    }));
-
-    //                            echo "MEnor {$menorP} Mayor {$mayorP}<br>";
-    //                            echo "<pre>";
-    //                            print_r(array_filter($allPrices, function($price){                                
-    //                                    global $menorP, $mayorP;
-    //                                    return $price >= $menorP && $price <= $mayorP;                                
-    //                            }));
-    //                            echo "</pre>";  
-
-                    $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant);
+                    $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
                     $menorP += $len;
-                }
-
-    //                            echo $len;
-    //                            echo "<br>Vector de rangos: <br>".$count;
-    //                            echo "<pre>";
-    //                            print_r($rangosArray);
-    //                            echo "</pre>";                           
-
+                }                                
+//                echo "<pre>"; print_r($count);echo "</pre>";               
+                        
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,
@@ -849,7 +929,7 @@ public function actionCategorias2(){
 		
 		//$datos=$datos."<div id='myModal' class='modal hide tienda_modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
     	$datos=$datos."<div class='modal-header'>";
-		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>Ã—</button>";
+		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
 		$datos=$datos."<h3 id='myModalLabel'>".$producto->nombre."</h3></div>";
 		$datos=$datos."<div class='modal-body'>";
    
@@ -887,8 +967,8 @@ public function actionCategorias2(){
 		}
 		
         $datos=$datos.'</div>';
-        $datos=$datos.'<a data-slide="prev" href="#myCarousel" class="left carousel-control">â€¹</a>';
-        $datos=$datos.'<a data-slide="next" href="#myCarousel" class="right carousel-control">â€º</a>';
+        $datos=$datos.'<a data-slide="prev" href="#myCarousel" class="left carousel-control">&lsaquo;</a>';
+        $datos=$datos.'<a data-slide="next" href="#myCarousel" class="right carousel-control">&rsaquo;</a>';
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<div class="span5">';
@@ -1197,20 +1277,6 @@ public function actionCategorias2(){
         
         
        public function actionGuardarFiltro() {
-           
-//           echo "<pre>";
-//                print_r($_POST);
-//                echo "</pre>";
-//                
-//              $filterProfile = new FilterProfile;
-//                    $filterProfile->attributes = $_POST['Profile'];
-//                    
-//                echo "<pre>";
-//                print_r( $filterProfile->attributes);
-//                echo "</pre>";     
-//                
-//                exit();
-        
 
            $filtroPerfil = true;
             

@@ -750,13 +750,7 @@ class ProductoController extends Controller
 
             
             
-            $producto = new Producto; 
-
-            if (isset($_POST['query']))
-            {
-                    //echo($_POST['query']);	
-                    $producto->nombre = $_POST['query'];
-            }	
+            $producto = new Producto;
 
             $producto->status = 1;
 
@@ -770,7 +764,8 @@ class ProductoController extends Controller
             //Para guardar el filtro
             $filter = new Filter;
             
-            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['query'])){
               $_POST = $_SESSION['todoPost'];
             }
             
@@ -885,6 +880,12 @@ class ProductoController extends Controller
             }
 
 
+            if (isset($_POST['query']))
+            {
+                    echo($_POST['query']);	
+                    $producto->nombre = $_POST['query'];
+                    $dataProvider = $producto->search();
+            }	
 
             $this->render('admin',
             array('model'=>$producto,
@@ -1497,7 +1498,8 @@ class ProductoController extends Controller
 			// ==============================================================================
 			
 			$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
- 
+ 			
+ 			$tabla = $tabla . "<div class='well well-small margin_top well_personaling_small'>";
 			$tabla = $tabla . "<table class='table table-bordered table-hover table-striped'>";
 			 
 			foreach( $sheet_array as $row ) {
@@ -1510,6 +1512,7 @@ class ProductoController extends Controller
 			}
 			 
 			$tabla = $tabla . "</table>";
+			$tabla = $tabla . "</div>";
 			$tabla = $tabla ."<br/>";
 			
 			$anterior;
@@ -1659,7 +1662,7 @@ class ProductoController extends Controller
 								
 								$seo->save();
 								
-			$tabla = $tabla.'se agregó el producto con id '.$producto->id;
+			$tabla = $tabla.'Se agregó el producto con id '.$producto->id;
 			$tabla = $tabla.', de nombre: '.$producto->nombre;
 			$tabla = $tabla.', precio_id: '.$precio->id;
 			$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
@@ -1764,7 +1767,7 @@ class ProductoController extends Controller
 								
 								$seo->save();
 								
-		$tabla = $tabla.'se agregó el producto con id '.$prod->id; 
+		$tabla = $tabla.'Se agregó el producto con id '.$prod->id; 
 		$tabla = $tabla.', de nombre: '.$prod->nombre;
 		$tabla = $tabla.', precio_id: '.$precio->id;
 		$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';

@@ -1107,6 +1107,7 @@ src: url('../fonts/entypo.woff'),
     background-color: #3B5998;
     background-image: url(../images/icon_facebook_registrator.png);
     background-repeat: no-repeat;
+    background-position-y: -2px; 
 }
 
 #boton_twitter a{
@@ -1186,14 +1187,14 @@ src: url('../fonts/entypo.woff'),
                       background-color: #E3DEDE;
                       background-image: url('../images/icon_corazon_vacio.png');
                       background-repeat: no-repeat;
-                      background-position-x: 5px;
+                      background-position-x: 4px;
                       background-position-y: 4px;                      
                     }   
                     .btn-danger_modificado{
                       background: @color1 !important;
                       background-image: url('../images/icon_corazon_lleno.png') !important;
                       background-repeat: no-repeat !important;
-                      background-position-x: 5px !important;
+                      background-position-x: 4px !important;
                       background-position-y: 4px !important;  
                       color: #FFF !important;
                     }      
@@ -1469,6 +1470,7 @@ src: url('../fonts/entypo.woff'),
           }
         }
 
+
         .imagen_principal{
             position:relative;
             .margin_bottom_medium;
@@ -1486,10 +1488,12 @@ src: url('../fonts/entypo.woff'),
 
                     }
             }
-
         .marcas{
           ul li{
-            margin: 0 0 5px 0;
+            display: inline;
+            margin-right: 5px;
+            margin-top: 4px;
+            line-height: 65px;            
           }
         }
 
@@ -1511,7 +1515,7 @@ src: url('../fonts/entypo.woff'),
               background-color: #E3DEDE;
               background-image: url('../images/icon_corazon_vacio.png');
               background-repeat: no-repeat;
-              background-position-x: 5px;
+              background-position-x: 4px;
               background-position-y: 4px;   
               
             }   
@@ -1519,7 +1523,7 @@ src: url('../fonts/entypo.woff'),
               background: @color1 !important;
               background-image: url('../images/icon_corazon_lleno.png') !important;
               background-repeat: no-repeat !important;
-              background-position-x: 5px !important;
+              background-position-x: 4px !important;
               background-position-y: 4px !important;  
               color: #FFF !important;
             }      
@@ -2713,7 +2717,13 @@ img[alt="Loading"]{
             a{padding:.3em;}
             }
     }
-
+  .img_crear_look_colores{
+    
+        width:20px;
+        margin-left: 0;
+        margin-right: 5px;        
+    
+  }
 .well_personaling_big{
     border-top:3px solid @color1;
 }

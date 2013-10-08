@@ -507,7 +507,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		    	ui.helper.css('z-index',parseInt(mayor)+1); 
 		    }
 	  			} ); 
-	 
+	 $('#adorno".$adorno->id." > .rotar').draggable({
+			    handle: '.rotar',
+			    opacity: 0.01, 
+			    helper: 'clone',
+			    drag: function(event, ui){
+			        var grados = ui.position.left*-1;
+			        if (grados > 360)
+			        	grados = grados - 360;
+			        var rotateCSS = 'rotate(' + grados + 'deg)';
+			
+			        $(this).parent().css({
+			            '-moz-transform': rotateCSS,
+			            '-webkit-transform': rotateCSS
+			        });
+			    } 
+			});
 	 		$('#adorno".$adorno->id." > span').last().click(function(){
 	 			$(this).parent().remove();
 	  		});
@@ -537,10 +552,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
         </div>
         
-        <div class="margin_bottom_small">
-	        <a class="btn" href="#">Enviar Atrás</a>
-	        <a class="btn" href="#">Enviar Adelante</a>
-        </div>
+
         <!-- CANVAS OFF --> 
       </div>
       <!--
@@ -618,7 +630,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   <!-- marcas -->
                   <div class="margin_top_small margin_bottom_small">
                     <select id="marcas" class="span12" name="marcas">
-                      <option selected>Buscar por Marca</option>
+                      <option selected>Todas las Marca</option>
                       <?php
         			foreach($marcas as $uno){
         				echo "<option value='".$uno->id."'> ".$uno->nombre." </option>";
@@ -632,22 +644,24 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		$('#marcas').change(function(){". CHtml::ajax(
 						 
 			array( // ajaxOptions
-				'url'=>Yii::app()->createUrl( 'look/marcas'),
+				'url'=>Yii::app()->createUrl( 'look/categorias'),
 				'type' => 'POST',
 				'beforeSend' => "function( request )
 				{
 					// Set up any pre-sending stuff like initializing progress indicators
+					$('body').addClass('aplicacion-cargando');
 				}",
 				'success' => "function( data )
 				{
 				// handle return data
 				//alert( data );
 					$('#div_categorias').html(data);
+					$('body').removeClass('aplicacion-cargando');
 				}",
-					'data' => "js:$('#marcas').serialize()",
+					'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 				),
 				array( //htmlOptions
-					'href' => Yii::app()->createUrl( 'look/marcas' ),
+					'href' => Yii::app()->createUrl( 'look/categorias' ),
 					'class' => 'thumbnail',
 					
 					'draggable'=>"false",
@@ -670,6 +684,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						    'type' => 'POST',
 						    'beforeSend' => "function( request )
 						                     {
+						                       	$('body').addClass('aplicacion-cargando');
 						                       // Set up any pre-sending stuff like initializing progress indicators
 						                     }",
 						    'success' => "function( data )
@@ -677,8 +692,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						                    // handle return data
 						                    //alert( data );
 						                    $('#div_categorias').html(data);
+						                    $('body').removeClass('aplicacion-cargando');
 						                  }",
-						    'data' => "js:$('#formu').serialize()",
+						    'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
@@ -693,32 +709,76 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	?>
                 <div class="span6">
-                  <div class="dropdown"> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
+                	
+                  <div class="dropdown" > <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
+                    
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="crear_look_colores">
-                      <?php 
-  $colores = Color::model()->findAll();
-  foreach($colores as $color){
-  	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20'));
-	  
+  	<?php
   	echo '<li>';
   	
 	echo CHtml::ajaxLink(
-						  $imagen.'  '.$color->valor,
-						  Yii::app()->createUrl( 'look/colores'),
+						  "Todos",
+						  Yii::app()->createUrl( 'look/categorias'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
-						    'beforeSend' => "function( request )
+						    'beforeSend' => "function( request,settings )
 						                     {
+						                       	$('body').addClass('aplicacion-cargando');
 						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       $('#colores').val('');
+						                       
 						                     }",
 						    'success' => "function( data )
 						                  {
 						                    // handle return data
 						                    //alert( data );
+						                    $('#a_colores').html('Todos <span class=\"caret\"></span>');
+						                    $('#a_colores').dropdown('toggle');
 						                    $('#div_categorias').html(data);
+											$('body').removeClass('aplicacion-cargando');
 						                  }",
-						    'data' => array( 'color_id' => $color->id, 'val2' => '2' )
+						     'data' => "js:$('#formu').serialize()+'&colores='",
+						  ),
+						  array( //htmlOptions
+						    'href' => Yii::app()->createUrl( 'look/categorias' ),
+						   // 'class' => 'thumbnail',
+						    'id' => 'colores0',
+						    'draggable'=>"false",
+						    'tabindex'=>'-1',
+						  )
+						);
+	echo '</li>';   
+	?>                 	
+                      <?php 
+  $colores = Color::model()->findAll();
+  foreach($colores as $color){
+  	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20','class'=>'img_crear_look_colores'));
+	  
+  	echo '<li>';
+  	
+	echo CHtml::ajaxLink(
+						  $imagen.'  '.$color->valor,
+						  Yii::app()->createUrl( 'look/categorias'),
+						  array( // ajaxOptions
+						    'type' => 'POST',
+						    'beforeSend' => "function( request,settings )
+						                     {
+						                       	$('body').addClass('aplicacion-cargando');
+						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       $('#colores').val('".$color->id."');
+						                       
+						                     }",
+						    'success' => "function( data )
+						                  {
+						                    // handle return data
+						                    //alert( data );
+						                    $('#a_colores').html('".$imagen.'  '.$color->valor." <span class=\"caret\"></span>');
+						                    $('#a_colores').dropdown('toggle');
+						                    $('#div_categorias').html(data);
+											$('body').removeClass('aplicacion-cargando');
+						                  }",
+						     'data' => "js:$('#formu').serialize()+'&colores=".$color->id."'",
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
@@ -737,6 +797,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 
                 <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
+              <?php echo CHtml::hiddenField('colores'); ?>
             </div>
             <hr/>
             <div id="div_categorias">
@@ -900,7 +961,7 @@ function addPublicar(tipo)
 		//count = 6;
 		//alert(productos_id);
 		//count = count + count_a;
-		if (count >= 3){
+		if (count >= 6){
 			$("#form_productos").submit();
 		} else {
 			bootbox.alert("Debes tener al menos seis productos");

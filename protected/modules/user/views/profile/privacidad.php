@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Edita tu Privacidad");
-//$this->breadcrumbs=array(
-//	UserModule::t("Tu Cuenta")=>array('micuenta'),
-//	UserModule::t("Privacidad"),
-//);
+$this->breadcrumbs=array(
+	UserModule::t("Tu Cuenta")=>array('micuenta'),
+	UserModule::t("Privacidad"),
+);
 ?>
 <div class="container margin_top tu_perfil">
 	<!-- FLASH ON --> 

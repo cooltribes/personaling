@@ -1,8 +1,7 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-//$this->breadcrumbs=array(
-	//UserModule::t("Profile")=>array('profile'),
-	//UserModule::t("Mi cuenta"),
-//);
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta"),
+);
 $look = new Look;
 $looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
 $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));
@@ -54,7 +53,7 @@ $looks_recomendados = $look->match($model);
       <hr/>
       <h5>Tus Compras</h5>
       <ul class="nav nav-stacked text_align_center" >
-      	
+      	 
       	<?php
       	
       	$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
@@ -81,7 +80,14 @@ $looks_recomendados = $look->match($model);
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
       	?>
       	<li><?php echo $total; ?> Pedidos Activos</li>
-        <li>XX Devoluciones Pendientes</li>
+         <?php
+        
+        $total;
+	
+		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and (estado = 10 OR estado = 9)";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+      	?>
+        <li><?php echo $total; ?> Devoluciones</li>
       </ul>
       <hr/>
       <h5>Invita a tus amig@s</h5>

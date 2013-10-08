@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-//$this->breadcrumbs=array(
-    //UserModule::t("Mi cuenta")=>array('micuenta'),
-    //UserModule::t("Tu estilo"),
-//);
+$this->breadcrumbs=array(
+    UserModule::t("Mi cuenta")=>array('micuenta'),
+    UserModule::t("Tu estilo"),
+);
     function getTabs($field,$profile){
                             $nombre_tmp = $field->varname;
                    if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;

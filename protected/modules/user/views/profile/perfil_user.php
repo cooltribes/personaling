@@ -1,3 +1,9 @@
+<?php 
+$this->breadcrumbs=array(
+	"Tu Cuenta"=>array('micuenta'),
+	UserModule::t("Profile"),
+);
+?>
 <div class="container margin_top tu_perfil">
   <div class="page-header">
     <h1><?php echo $model->profile->first_name.' '.$model->profile->last_name; ?></h1>

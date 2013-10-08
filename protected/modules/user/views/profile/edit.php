@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-//$this->breadcrumbs=array(
-//	UserModule::t("Profile")=>array('micuenta'),
-//	UserModule::t("Edit"),
-//);     
+$this->breadcrumbs=array(
+	"Tu Cuenta"=>array('micuenta'),
+	UserModule::t("Tus datos personales"),
+);     
 function getMonthsArray()
     {
         

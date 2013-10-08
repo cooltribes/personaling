@@ -1,5 +1,13 @@
 <?php
+$this->breadcrumbs=array(
+  'Todos los looks'=>array('tienda/look'),
+  'Look'
+);
 $this->pageTitle=Yii::app()->name . " - " . $model->title;;
+  Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title, null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+  Yii::app()->clientScript->registerMetaTag($model->description.' Creado por: '.$model->user->profile->first_name.' '.$model->user->profile->last_name, null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
 
 ?>
 
@@ -52,7 +60,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
           </div>
           <div class="row-fluid">
-
+            <?php Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook ?>
             <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
 
           </div>
@@ -73,13 +81,14 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
             </div>
             <!-- Marcas en el look ON -->
-            <div class="span5 margin_top_small">
+            <div class="span5 marcas">
               
               
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
-	                 <li class="span3">  
-	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60)); ?>
+	                 <li >  
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60));
+                      ?>
 	                </li>                	
                 <?php } ?>              
                                                       
@@ -226,6 +235,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                           foreach ($model->lookhasproducto as $lookhasproducto){
                               // $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
                               $image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('type'=>'thumb'));
+                            Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$image_url, null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook                              
             ?>
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto">
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />
@@ -319,84 +329,86 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
         </div>
         <!-- Columna secundaria OFF -->
       </div>
-      <div class="braker_horz_top_1" id="tienda_looks">
-        <h3>Otros Looks que te pueden gustar</h3>
-            <div class="row">
-<?php
 
-$cont=0;
+      <?php if($dataProvider->getItemCount() > 0){ //si hay looks que te puedan gustar para mostrar  ?>
 
-    foreach($dataProvider->getData() as $record)
-    {
-        $lookre = Look::model()->findByPk($record['id']);
+        <div class="braker_horz_top_1" id="tienda_looks">
+          <h3>Otros Looks que te pueden gustar</h3>
+              <div class="row">
+        <?php        
+        $cont=0;
+        foreach($dataProvider->getData() as $record)
+        {
+          $lookre = Look::model()->findByPk($record['id']);
 
-        if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id))){
-            if($cont<3){
+          if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id))){
+              if($cont<3){
 
-            //<div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; /images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
+              //<div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; /images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
 
-                   $like = LookEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'look_id'=>$lookre->id));
+                     $like = LookEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'look_id'=>$lookre->id));
 
-                   if(!isset($like)) // no le ha dado like al look
-                {
-                    $cont++;
-?>
+                     if(!isset($like)) // no le ha dado like al look
+                  {
+                      $cont++;
+        ?>
 
-            <div class="span4 look">
-                <article class="item" >
-                    <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
-                      <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
+              <div class="span4 look">
+                  <article class="item" >
+                      <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
+                        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
 
-                      <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
-                      <?php
-                    //"style"=>"display: none",
-                        $script = "$('#"."imglook".$lookre->id."').load(function(){
-                                    //alert('cargo');
-                                    $('#imgloading".$lookre->id."').hide();
-                                    $(this).show();
-                                    //$('#loader_img').hide();
-                        });";
-                          Yii::app()->clientScript->registerScript('img_ps_script'.$lookre->id,$script);
-                      ?>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar ">
+                        <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
+                        <?php
+                      //"style"=>"display: none",
+                          $script = "$('#"."imglook".$lookre->id."').load(function(){
+                                      //alert('cargo');
+                                      $('#imgloading".$lookre->id."').hide();
+                                      $(this).show();
+                                      //$('#loader_img').hide();
+                          });";
+                            Yii::app()->clientScript->registerScript('img_ps_script'.$lookre->id,$script);
+                        ?>
+                    <div class="hidden-phone margin_top_small vcard row-fluid">
+                      <div class="span2 avatar ">
 
-                        <?php echo CHtml::image($lookre->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                          <?php echo CHtml::image($lookre->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                      </div>
+                      <div class="span5"> <span class="muted">Look creado por: </span>
+                        <h5><a class="url" title="profile" href="#"><span class="fn">
+                          <?php //echo $look->title; ?>
+                          <?php echo $lookre->user->profile->first_name; ?> </span></a></h5>
+                      </div>
+                      <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
                     </div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn">
-                        <?php //echo $look->title; ?>
-                        <?php echo $lookre->user->profile->first_name; ?> </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
+                    <div class="share_like">
+                      <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                      <div class="btn-group">
+                        <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                        <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                          <!-- AddThis Button BEGIN -->
 
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
-                      <!-- AddThis Button END -->
+                          <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                          <li><a class="addthis_button_tweet"></a></li>
+                          <li><a class="addthis_button_pinterest_pinit"></a></li>
+                        </ul>
+                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
+                        <!-- AddThis Button END -->
 
+                      </div>
                     </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
-<?php
-                } // like
-            } // contador
-        } // match
-    } // foreach
-?>
-              </div>
-      </div>
+                    <span class="label label-important">Promoción</span> </article>
+                </div>
+      <?php
+                  } // like
+              } // contador
+          } // match
+      } // foreach
+      ?>
+                </div>
+        </div>
+      <?php } //  off si hay looks que te puedan gustar para mostrar ?>
 
       <div class="braker_horz_top_1">
         <div class="row">

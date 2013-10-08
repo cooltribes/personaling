@@ -1,5 +1,8 @@
 
 <?php  
+	$this->breadcrumbs=array(
+		'Tus looks',
+	);
   $baseUrl = Yii::app()->baseUrl; 
   $cs = Yii::app()->getClientScript();
   $cs->registerScriptFile($baseUrl.'/js/slider.js');
@@ -135,6 +138,7 @@
 	} // si tiene mas de 3 haga el carrusel
 	else
 	{
+		if($cantidad != 0){ // Si hay looks para mostrar
 	?>
 	
 	<div class=" margin_top">
@@ -231,8 +235,19 @@
 		</div>
 	</div>			
 	<?php	
+		}
+		else{ // Si no hay looks para mostrar ?> 
+			<div class=" margin_top">
+		  		<div class="row margin_bottom_large">
+		    		<div class="span12">
+		      			<h1>Looks que te encantan</h1>	
+		      			<hr>	
+		          		<p class="lead margin_bottom_large margin_top_medium padding_top_medium padding_bottom_large  padding_left_medium padding_right_small " > Puedes seleeccionar un look como <strong>favorito</strong> haciendo clic en el icono <strong> <span class="entypo icon_personaling_medium" style="line-height: 1.1;" >&#9825;</span></strong> que lo acompaña, y en cualquier momento puedes verlos haciendo click en Tus Looks. </p>
+			      	</div>
+			  	</div>
+			</div>
+		<?php } 
 	}
-
 ?>
 </div>
 <hr/>

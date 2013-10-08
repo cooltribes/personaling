@@ -1,12 +1,43 @@
-<?php
+ <?php
 	/* @var $this TiendaController */
 	//$this->breadcrumbs=array(
 	//'Tienda',
 	//);
 
-?>
+?> 
 <div class="page-header">
-<h1>Tienda</h1>
+<h1>Tienda </h1>
+<?php 
+$arr=Yii::app()->session['bsf'];
+$max=max($arr);
+$min=min($arr);
+$dif=$max-$min;
+$l1=($dif*.25)+$min;
+$l1=round($l1/100, 0)*100;
+$l2=($dif*.5)+$min;
+$l2=round($l2/100, 0)*100;
+$l3=($dif*.75)+$min;
+$l3=round($l3/100, 0)*100;
+$c1=$c2=$c3=$c4=0;
+foreach($arr as $prd){
+		
+	if($prd<$l1)
+		$c1++;
+	if($l1<$prd&&$prd<$l2)
+		$c2++;
+	if($l2<$prd&&$prd<$l3)
+		$c3++;
+	if($l3<$prd)
+		$c4++;
+}
+$max=round($max/100, 0)*100;
+
+?>
+
+
+ 
+
+
 </div>
 <div class="margin_top" id="tienda">
   <div class="row">
@@ -26,53 +57,27 @@
 			</select>
 	      
 	 </div>
+	
 <!-- FILTROS MOBILE OFF -->
 
 <!-- PRODUCTOS ON -->
 
     <?php
-	$template = '
-    <div class="span9 tienda_productos">
-      <div class="row">
-		{items}
-      </div>
-      {pager}
-    </div>
-    ';
+
+?>
+	 <div class="span9 tienda_productos">
+      <div class="row" id="catalogo"><?php
 	
-	$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos2',
-	    'afterAjaxUpdate'=>" function(id, data) {
-	    							
-						$(document).ready(function() {
-						  // Handler for .ready() called.
-							  
-							var imag;
-							var original;
-							var segunda;
-							
-							$('.producto').hover(function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).hide();
-								
-								$(this).find('img').eq(0).next().show();
-								}
-							},function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).show();
-								
-								$(this).find('img').eq(0).next().hide();
-								}
-							}); 						
-							
-						});
-	    				
-						} ",
-	    'template'=>$template,
-	));    
+	
+	$this->renderPartial('_datos',array(
+	'prods'=>$dataProvider,'pages'=>$pages
+	
+	
+));   
+
+	
 	?>
+	</div></div>
 	<!-- PRODUCTOS OFF -->
 	
 	<!-- FILTROS DESKTOP ON -->
@@ -107,8 +112,8 @@
 	?>
         <form id="formu" class="no_margin_bottom form-search form-horizontal">
 
-          
-          <select id="cate1" class="span3" name="cate1">
+
+          <select id="cate1" class="span3 margin_top_small" name="cate1">
             <option value="0">Buscar por prenda</option>
             <?php 
 
@@ -142,9 +147,11 @@
           <p></p>
           <div class="input-append">
             <input id="busqueda" name="busqueda" type="text" placeholder="Buscar por palabras clave" width=223px>
+             <input id="usid" name="usid" value="<?php echo Yii::app()->user->id; ?>" style="display:none"/>
+       
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
-        </form>
+       </form> 
         <hr/>
         
         <!-- para filtrar por campo de texto -->
@@ -162,7 +169,7 @@
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('tienda/filtrar2') . "',
-				data: ajaxRequest}
+							data: ajaxRequest}
 				
 				)
 				},
@@ -210,6 +217,7 @@
 		"var ajaxUpdateTimeout;
 		var axe;
 		$('.color').click(function(){
+			$('body').addClass('aplicacion-cargando');
 			window.idColor.trim();
 			if(window.idColor.indexOf('#'+$(this).attr('id'))==-1){
 					window.idColor = window.idColor+'#'+$(this).attr('id');				
@@ -226,6 +234,7 @@
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('tienda/colores2') . "',
+				complete: function(){ $('body').removeClass('aplicacion-cargando'); },
 				data: {'idColor':window.idColor,
 						'idCategoria':window.idCategoria}
 				}
@@ -242,6 +251,75 @@
 		",CClientScript::POS_READY
 	);
 	
+	
+	Yii::app()->clientScript->registerScript('precio',
+		"var ajaxUpdateTimeout;
+		var rango;
+		
+			$( '.filtro-pr' ).click(function() {
+		 		$( '.filtro-pr').hide();
+		 		$(this).show();		
+		 		$('.all-pr').show(); 
+				rango=$(this).attr('id');	
+				$('#title_filtrar_precio').text('Viendo:');
+				console.log('hola');
+				clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('tienda/colores2') . "',
+				data: {
+						'rango':rango}
+				}
+				
+				)
+				},
+		
+		300);
+		return false;
+				
+				
+				
+				
+			});
+			
+			$( '.all-pr' ).click(function() {
+		 		$( '.filtro-pr').show();
+		 		$( '.filtro-pr' ).attr('disabled','false');
+		 		$(this).hide();
+		 		rango=$(this).attr('id'); 	
+		 		$('#title_filtrar_precio').text('Filtrar por precios:');
+				
+				clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('tienda/colores2') . "',
+				data: {
+						'rango':rango}
+				}
+				
+				)
+				},
+		
+		300);
+		return false;
+				
+					 
+			});
+		
+		
+		",CClientScript::POS_READY
+	);
+	
+	
+	
 	?>
         <div class="tienda_iconos" id="uno">
           <?php $this->renderPartial('_view_categorias2',array('categorias'=>$categorias)) ?>
@@ -251,7 +329,26 @@
         <div class="clearfix tienda_colores">
 			 <?php $this->renderPartial('_view_colores2',array('categorias'=>$categorias)) ?>
         </div>
-        <hr/>
+        <hr/> 
+
+        <!-- Rango de precio ON -->
+
+          <div >
+          	<strong id="title_filtrar_precio">Filtrar por precios:</strong>
+          	<ul class="unstyled">
+	            <li class="filtro-pr" id="<?php echo "0A".$l1; ?>"><a class="btn btn-link">Hasta Bs <?php echo $l1?> <span class="color12">(<?php echo $c1?>)</span></a></li>
+	            <li class="filtro-pr" id="<?php echo $l1."A".$l2; ?>"><a class="btn btn-link">Bs <?php echo $l1?> a Bs <?php echo $l2?>  <span class="color12">(<?php echo $c2?>)</span></a></li>
+	            <li class="filtro-pr" id="<?php echo $l2."A".$l3; ?>"><a class="btn btn-link">Bs <?php echo $l2?>  a Bs <?php echo $l3?>  <span class="color12">(<?php echo $c3?>)</span></a></li>
+	            <li class="filtro-pr" id="<?php echo $l3."A".$max; ?>"><a class="btn btn-link">Más de Bs <?php echo $l3?>  <span class="color12">(<?php echo $c4?>)</span></a></li>
+            </ul>
+	        <div class="all-pr" id="<?php echo "0A".$max; ?>"><a class="btn btn-link"><i class="icon-chevron-left"></i>Ver cualquiera</a></div>
+
+          </div>
+
+        <hr>
+        <!-- Rango de precio OFF -->
+
+
         <h5 class="hidden-phone">Looks con estas prendas:</h5><br/>
        		<div id="looks" class="clearfix hidden-phone">
        		</div>
@@ -397,9 +494,14 @@ function randomFrom(arr){
 <script>
 var idColor="";
 var idCategoria="";
+$( ".all-pr" ).hide();
 $(document).ready(function() {
   // Handler for .ready() called.
+ 
   
+	
+	
+	
 	var imag;
 	var original;
 	var segunda;
@@ -438,4 +540,54 @@ $(document).ready(function() {
 
 });
 	
+</script>
+<script>
+
+
+function encantar(id)
+   	{
+            
+   		var idProd = id;
+   		//alert("id:"+idProd);		
+   		
+   		$.ajax({
+	        type: "post",
+                dataType: "json",
+	        url: "../producto/encantar", // action Tallas de Producto
+	        data: { 'idProd':idProd}, 
+	        success: function (data) {
+				if(data.mensaje === "ok")
+				{					
+					var a = "♥";					
+					//$("#meEncanta").removeClass("btn-link");
+					$("a#like"+id).addClass("like-active");
+					$("a#like"+id).text(a);
+					
+				}
+				
+				if(data === "no")
+				{
+					alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar Me Encanta a un producto");
+					//window.location="../../user/login";
+				}
+				
+				if(data.mensaje === "borrado")
+				{
+					var a = "♡";
+					
+					//alert("borrando");
+					
+					$("a#like"+id).removeClass("like-active");
+					//$("#meEncanta").addClass("btn-link-active");
+					$("a#like"+id).text(a);
+
+				}
+					
+	       	}//success
+	       })
+   		
+   		
+   	}  
+   	
+   	
 </script>

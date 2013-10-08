@@ -217,6 +217,9 @@ class Profile extends UActiveRecord
 			
 			if (!$this->_model)
 				switch ($this->profile_type){
+					case 0:
+						$this->_model=ProfileField::model()->findAll(); //
+						break;						
 					case 1:
 						$this->_model=ProfileField::model()->forPersonal()->forOwner()->findAll(); //
 						break;
@@ -252,7 +255,7 @@ class Profile extends UActiveRecord
 	}
 	
 	public function getSaldo($id){
-			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id." GROUP BY user_id ")->queryScalar();
+			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id)->queryScalar();
 			$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;
 	}

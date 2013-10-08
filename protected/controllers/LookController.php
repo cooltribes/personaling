@@ -21,6 +21,84 @@ class LookController extends Controller
 	public function accessRules()
 	{
 		return array(
+		
+			array('allow', 
+			'actions'=>array('view'),
+			
+			'expression' => 'preg_match( "/^facebookexternalhit/", $_SERVER["HTTP_USER_AGENT"] )',
+			
+			),
+			array('allow',  // allow all ips from facebook
+				'actions'=>array('index','view'),
+				'ips'=>array(
+				'201.210.221.244',
+				'204.15.20.0/22'
+							,'69.63.176.0/20'
+							,'66.220.144.0/20'
+							,'66.220.144.0/21'
+							,'69.63.184.0/21'
+							,'69.63.176.0/21'
+							,'74.119.76.0/22'
+							,'69.171.255.0/24'
+							,'173.252.64.0/18'
+							,'69.171.224.0/19'
+							,'69.171.224.0/20'
+							,'103.4.96.0/22'
+							,'69.63.176.0/24'
+							,'173.252.64.0/19'
+							,'173.252.70.0/24'
+							,'31.13.64.0/18'
+							,'31.13.24.0/21'
+							,'66.220.152.0/21'
+							,'66.220.159.0/24'
+							,'69.171.239.0/24'
+							,'69.171.240.0/20'
+							,'31.13.64.0/19'
+							,'31.13.64.0/24'
+							,'31.13.65.0/24'
+							,'31.13.67.0/24'
+							,'31.13.68.0/24'
+							,'31.13.69.0/24'
+							,'31.13.70.0/24'
+							,'31.13.71.0/24'
+							,'31.13.72.0/24'
+							,'31.13.73.0/24'
+							,'31.13.74.0/24'
+							,'31.13.75.0/24'
+							,'31.13.76.0/24'
+							,'31.13.77.0/24'
+							,'31.13.96.0/19'
+							,'31.13.66.0/24'
+							,'173.252.96.0/19'
+							,'69.63.178.0/24'
+							,'31.13.78.0/24'
+							,'31.13.79.0/24'
+							,'31.13.80.0/24'
+							,'31.13.82.0/24'
+							,'31.13.83.0/24'
+							,'31.13.84.0/24'
+							,'31.13.85.0/24'
+							,'31.13.86.0/24'
+							,'31.13.87.0/24'
+							,'31.13.88.0/24'
+							,'31.13.89.0/24'
+							,'31.13.90.0/24'
+							,'31.13.91.0/24'
+							,'31.13.92.0/24'
+							,'31.13.93.0/24'
+							,'31.13.94.0/24'
+							,'31.13.95.0/24'
+							,'31.13.97.0/24'
+							,'69.171.253.0/24'
+							,'69.63.186.0/24'
+							,'31.13.81.0/24'
+							,'204.15.20.0/22'
+							,'69.63.176.0/20'
+							,'69.63.176.0/21'
+							,'69.63.184.0/21'
+							,'66.220.144.0/20'
+							,'69.63.176.0/20'),
+			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','getimage','updateprice','encantar'),
 				'users'=>array('*'),
@@ -382,14 +460,13 @@ public function actionColores(){
 	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	
-	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['color_id'])))->findAll();
+	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['colores'])))->findAll();
 	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);	
 	
 }
 public function actionCategorias(){
-	
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
-	  $categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
+	  	$categorias = false;
+		$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
 	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
@@ -399,11 +476,32 @@ public function actionCategorias(){
 		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+	if ($_POST['padreId']!=0){ 
+	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  
+
+	}
 	  if ($categorias){
 	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	  }else {
-	  	$productos = Producto::model()->with(array('categorias'=>array('condition'=>'tbl_categoria_id='.$_POST['padreId'])))->findAll();
-	  	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
+	  	$with = array();
+	  	if(isset($_POST['padreId']))
+		  	if ($_POST['padreId']!=0)
+				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
+		if(isset($_POST['colores']))
+			if ($_POST['colores']!='')
+				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
+			
+	  	if(isset($_POST['marcas'])){
+		  	if ($_POST['marcas']!='Todas las Marca')	
+		  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
+			else	
+		  		$productos = Producto::model()->with($with)->findAll();
+		}
+	  	if (isset($categoria_padre))
+	  		echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
+		else
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null),true,true);
 	  	// echo 'rafa';
 	  }
 }
@@ -443,6 +541,7 @@ public function actionCategorias(){
 	public function actionPublicar($id)
 	{
 		$model = Look::model()->findByPk($id);
+		
 		$temporal = '';
 		foreach($model->categoriahaslook as $categoriahaslook){
 			$temporal .= $categoriahaslook->categoria_id.'#';
@@ -450,6 +549,7 @@ public function actionCategorias(){
 		if ($temporal!='')
 			$model->has_ocasiones = substr($temporal, 0, -1);
 		//echo $model->has_ocasiones;
+		
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
 
@@ -809,7 +909,8 @@ public function actionCategorias(){
             $filter = new Filter;
             
             
-           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['buscar_look'])){
               $_POST = $_SESSION['todoPost'];
            }            
             
@@ -835,7 +936,7 @@ public function actionCategorias(){
                 if (isset($filters['fields'])) {                    
                 
                     $dataProvider = $model->buscarPorFiltros($filters);                    
-                     
+                    //echo "Total: " . $dataProvider->getItemCount();
                      //si va a guardar
                      if (isset($_POST['save'])){                        
                          
@@ -923,7 +1024,10 @@ public function actionCategorias(){
                 }
             }
             
-            
+            if (isset($_POST['buscar_look'])) {
+                $model->title = $_POST['buscar_look'];
+                $dataProvider = $model->lookAdminAprobar();
+            }
             
             $this->render('admin', array('model' => $model,
                 'dataProvider' => $dataProvider,

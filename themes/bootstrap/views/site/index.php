@@ -27,7 +27,7 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
             <span>3.</span> Elige tu estilo
             <br><span>4.</span> Compra Looks de las mejores marcas recomendados a tu medida
           </p>
-          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aqui</a> </div>
+          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aquí</a> </div>
 
         </div>
       </div>

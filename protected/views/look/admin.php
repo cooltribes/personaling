@@ -52,6 +52,7 @@
 		
 		$(document).keypress(function(e) {
 		    if(e.which == 13) {
+                    $('.crear-filtro').click();
 		        ajaxRequest = $('#buscar_look').val();
 				clearTimeout(ajaxUpdateTimeout);
 				

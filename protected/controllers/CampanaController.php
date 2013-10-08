@@ -89,6 +89,20 @@ class CampanaController extends Controller
 	{
 		$campana = Campana::model()->findByPk($id);
 		
+		if(isset($_GET['User_page']) || isset($_GET['ajax']))
+		{
+			Yii::app()->session['campana_id'] = $campana->id;
+				
+			$dataProvider=new CActiveDataProvider('User', array(
+				'criteria'=>array(
+				'condition'=>'personal_shopper=1', 
+			),
+			));
+					
+			$this->render('select_ps', array('campana'=>$campana, 'dataProvider'=>$dataProvider));
+			Yii::app()->end();
+		}
+		
 		if(isset($_POST['Campana'])){
 			$campana->attributes = $_POST['Campana'];
 			//$campana->fecha_creacion = date('Y-m-d H:i:s');

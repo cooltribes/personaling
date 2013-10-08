@@ -58,7 +58,7 @@ $prePub="";
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 						//$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-						echo("<td><article ><div class='span3 articulo'> 
+						echo("<td><article class='span3'><div class='articulo producto'> 
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 						".$a.$b." 
 						 
@@ -91,7 +91,7 @@ $prePub="";
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 					//	$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 					$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-					echo("<article><div class='span3 articulo'>
+					echo("<article class='span3'><div class=' articulo producto'>
 					<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 					".$a.$b." 
 						

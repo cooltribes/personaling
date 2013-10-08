@@ -23,8 +23,20 @@ $this->breadcrumbs=array(
   </div>
   <div class="row">
     <section class="span6">
-    	 
-    	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "450", "height" => "226", 'class'=>'img_1')); ?>
+    <?php echo CHtml::image(Yii::app()->baseUrl .'/images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$model->id)); ?>	 
+    <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("style"=>"display: none","id" => "imglook".$model->id,"width" => "450", "height" => "226", 'class'=>'img_1')); ?>
+  <?php
+  $script = "
+							var load_handler = function() {
+							    $('#imgloading".$model->id."').hide();
+							    $(this).show();
+							}
+							$('#"."imglook".$model->id."').filter(function() {
+							    return this.complete;
+							}).each(load_handler).end().load(load_handler);						 
+						 ";		
+						 	Yii::app()->clientScript->registerScript('img_ps_script'.$model->id,$script);   
+?>  
       <?php if (Yii::app()->user->isAdmin()){ ?>
       <!-- Tabla  para el admin ON -->
       <hr/>
@@ -44,6 +56,7 @@ $this->breadcrumbs=array(
 			?>   	
           <tr>
             <td>
+            	 
             	<?php
 					/*
 					if ($producto->mainimage)

@@ -27,36 +27,36 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
             <span>3.</span> Elige tu estilo
             <br><span>4.</span> Compra Looks de las mejores marcas recomendados a tu medida
           </p>
-          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aqui</a> </div>
+          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aquí</a> </div>
 
         </div>
       </div>
     </div>
   </div>
 
-  <div class="container menciones ">
+<!--   <div class="container menciones ">
     <div class="row"><div class="span3">
-<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_onda.png" alt="Onda estación">
-     <blockquote>"Diseño, tecnología, web y moda" </blockquote>                     
+      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_onda.png" alt="Onda estación">
+      <blockquote>"Diseño, tecnología, web y moda" </blockquote>                     
 
-   </div>
-   <div class="span3">
-    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_ojo.png" alt="Revista Ojo">
+    </div>
+    <div class="span3">
+      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_ojo.png" alt="Revista Ojo">
 
-     <blockquote>"Asesoría de moda en la web venezolana"   </blockquote>                   
+      <blockquote>"Asesoría de moda en la web venezolana"   </blockquote>                   
 
-   </div>
-   <div class="span3">
-    <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_globovision.png" alt="Globovision">
+    </div>
+    <div class="span3">
+      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_globovision.png" alt="Globovision">
 
-<blockquote>"Wayra acelerará este 2013 tres nuevos proyectos emprendedores" </blockquote></div>
-   <div class="span3">
-<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_universal.png" alt="El Universal">
+      <blockquote>"Wayra acelerará este 2013 tres nuevos proyectos emprendedores" </blockquote></div>
+      <div class="span3">
+        <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_universal.png" alt="El Universal">
 
-    <blockquote>"Proyectos emprendedores de Wayra"</blockquote></div></div>
+        <blockquote>"Proyectos emprendedores de Wayra"</blockquote></div></div>
 
 
- </div>
+      </div> -->
 <?php /*?><div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
 
 <!-- Modal -->

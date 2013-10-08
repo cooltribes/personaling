@@ -1,3 +1,8 @@
+<?php
+$this->breadcrumbs=array(
+  'Tus Pedidos',
+);
+?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Tus Pedidos</h1>

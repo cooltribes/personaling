@@ -63,7 +63,7 @@
 													'list-auth-items',
 													{
 													type: 'POST',	
-													url: '" . CController::createUrl('tienda/colores2') . "',
+													url: '" . CController::createUrl('tienda/colores') . "',
 													data: {'idact':ajaxRequest}
 													}													
 												)	                   	
@@ -78,7 +78,7 @@
 													'list-auth-items',
 													{
 													type: 'POST',	
-													url: '" . CController::createUrl('tienda/colores2') . "',
+													url: '" . CController::createUrl('tienda/colores') . "',
 													data: {'idact':ajaxRequest}
 													}													
 												)	                   	

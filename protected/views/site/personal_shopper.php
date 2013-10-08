@@ -54,7 +54,7 @@
 ?>
               <div class="span4">
                 <article class="item" >
-					<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>                            	
+					<?php echo CHtml::image(Yii::app()->baseUrl .'/images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>                            	
                   	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
                   
                   	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>

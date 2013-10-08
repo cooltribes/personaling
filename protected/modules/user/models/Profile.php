@@ -146,7 +146,7 @@ class Profile extends UActiveRecord
 		
 		foreach ($model as $field)
 			$labels[$field->varname] = ((Yii::app()->getModule('user')->fieldsMessage)?UserModule::t($field->title,array(),Yii::app()->getModule('user')->fieldsMessage):UserModule::t($field->title));
-			
+		print_r($labels);	
 		return $labels;
 	}
 	

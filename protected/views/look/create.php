@@ -17,6 +17,8 @@
 }
 </style>
 <script language="JavaScript">
+
+
 var dragSrcEl = '';
 function handleDragStart(e) {
 	
@@ -225,7 +227,11 @@ var cols = document.querySelectorAll('.column');
   });
   
 }
+$(window).load(function(){
+	$('#btn_siguiente').removeAttr('disabled');
+});
 $(document).ready(function() {
+
 
 /*
 var cols = document.querySelectorAll('.column');
@@ -320,7 +326,9 @@ $('#btn_atras').click(function(){
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				'class'=>'pull-right margin_left_small', 
-		        'onclick'=>"{addPublicar(1);}"
+		        'onclick'=>"{addPublicar(1);}",
+		        'disabled'=>'disabled',
+		        'id'=>'btn_siguiente',
 		       ),	    
 	)); ?>
     <?php $this->widget('bootstrap.widgets.TbButton', array(

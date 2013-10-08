@@ -75,7 +75,7 @@ $max=round($max/100, 0)*100;
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos2',
+	    'itemView'=>'_datos3',
 	    'afterAjaxUpdate'=>" function(id, data) {
 	    							
 						$(document).ready(function() {

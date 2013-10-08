@@ -1,3 +1,9 @@
+<?php 
+$this->breadcrumbs=array(
+  "Tu Cuenta"=>array('micuenta'),
+  UserModule::t("Productos que te encantan"),
+);
+?>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Productos que te encantan</h1>

@@ -1,6 +1,5 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 $this->breadcrumbs=array(
-	UserModule::t("Profile")=>array('profile'),
 	UserModule::t("Mi cuenta"),
 );
 $look = new Look;

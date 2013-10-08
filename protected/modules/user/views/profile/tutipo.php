@@ -1,10 +1,12 @@
-<?php /*?><?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
-	UserModule::t("Mi cuenta")=>array('micuenta'),
-	UserModule::t("Tu perfil corporal"),
-);
+<?php ?><?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+if((isset($editar) && $editar)){
+  $this->breadcrumbs=array(
+  	UserModule::t("Mi cuenta")=>array('micuenta'),
+  	UserModule::t("Tu perfil corporal"),
+  );
+}
 ?>
-<?php */?>
+<?php ?>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/joyride-2.1.css">
 <script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>
     <script>

@@ -217,6 +217,9 @@ class Profile extends UActiveRecord
 			
 			if (!$this->_model)
 				switch ($this->profile_type){
+					case 0:
+						$this->_model=ProfileField::model()->findAll(); //
+						break;						
 					case 1:
 						$this->_model=ProfileField::model()->forPersonal()->forOwner()->findAll(); //
 						break;

@@ -644,8 +644,8 @@ class Look extends CActiveRecord
 
 	public function getUrl() 
 	{
-		if(isset($this->url_amigable))
-			return Yii::app()->baseUrl."/looks/".$this->url_amigable;
+		if(isset($this->url_amigable) && $this->url_amigable != "")
+				return Yii::app()->baseUrl."/looks/".$this->url_amigable;
 		else
 			return Yii::app()->baseUrl."/look/".$this->id;
 		

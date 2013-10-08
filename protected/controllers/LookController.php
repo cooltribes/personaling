@@ -1025,6 +1025,7 @@ public function actionCategorias(){
             }
             
             if (isset($_POST['buscar_look'])) {
+                unset($_SESSION["todoPost"]);
                 $model->title = $_POST['buscar_look'];
                 $dataProvider = $model->lookAdminAprobar();
             }

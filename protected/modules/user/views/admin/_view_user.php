@@ -13,9 +13,18 @@
       	
       	
       </td>
-      <td><h5 class="no_margin_bottom"> <?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></h5>
+      <td>
+        <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></h5>
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
-        <?php echo $data->personal_shopper?'Personal Shopper':''; ?> </small></td>
+        <?php if($data->personal_shopper == 1){
+                  echo 'Personal Shopper';
+              }else if($data->personal_shopper == 2){
+                  echo 'Aplicante Personal Shopper';
+              }else{
+                  echo '';
+              }
+             ?> </small>
+      </td>
       <td><small><?php echo $data->email; ?><br/>
         <strong>Telf.</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
         <strong>Ciudad</strong>: <?php echo $data->profile->ciudad; ?> <br/>

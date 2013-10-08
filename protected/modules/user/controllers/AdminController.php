@@ -322,7 +322,29 @@ class AdminController extends Controller
 	
 	public function actionToggle_ps($id){
 		$model = User::model()->findByPk($id);
-		$model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle
+                
+                if($model->personal_shopper == 2){ //si esta aplicando
+                    $model->personal_shopper = 0;
+                    
+                    //enviar el correo de aprobacion
+                    $message            = new YiiMailMessage;
+                    $message->view = "mail_apply";
+                    $subject = 'Activa tu cuenta en Personaling';
+
+                    $body = '<h2>¡Tu aplicación ha sido enviada con éxito!</h2><br/><br/>
+                        Recibes este correo porque se ha registrado tu dirección en Personaling.<br/> 
+                        Personaling Team<br/> <br/>';			
+                    $params              = array('subject'=>$subject, 'body'=>$body);
+                    $message->subject    = $subject;
+                    $message->setBody($params, 'text/html');                
+                    $message->addTo($model->email);
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    //Yii::app()->mail->send($message);
+                    
+                }else{
+                    $model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle  
+                }
+		
 		if ($model->save()){
 		echo CJSON::encode(array(
 	            'status'=>'success',

@@ -1,5 +1,6 @@
 <?php
 $this->breadcrumbs=array(
+  'Tu Personal Shopper' =>array('site/personal'),
   'Todos los looks',
 );
 ?>

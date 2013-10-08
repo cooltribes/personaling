@@ -1,5 +1,8 @@
 <?php
-
+$this->breadcrumbs=array(
+  UserModule::t("Mi cuenta") => array('micuenta'),
+  UserModule::t("Nuevo dirección"),
+);
 $look = new Look;
 $looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$usuario->id));
 $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$usuario->id));

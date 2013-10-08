@@ -1410,37 +1410,43 @@ if(isset($_POST['Profile']))
 								$orden->estado = 3; // Estado: Pago Confirmado
 							}
 							
-							if($orden->save()){
+							
+								
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario = Profile::model()->getSaldo(Yii::app()->session['usercompra']);
 									
+									$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->session['usercompra']));
+									
+								
 									if($balance_usuario > 0){
 										
+								
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
 											$orden->descuento = $_POST['total'];
 											
 											$orden->estado = 2; // en espera de confirmación
-											$balance->total = $_POST['total']*(-1);
+											$balance->total = (double) $_POST['total']*(-1);
 										}else{
-											$orden->descuento = $balance_usuario;
+											$orden->descuento = (double) $balance_usuario;
 											
-											$balance->total = $balance_usuario*(-1);
+											$balance->total = (double) $balance_usuario*(-1);
 										}
-										$orden->save();
+										
 										
 										//$balance->total = $orden->descuento*(-1);
-										$balance->orden_id = $orden->id;
-										$balance->user_id = $usuario;
-										$balance->tipo = 1;
-										$balance->save();
+										
+										
 									}
 								}else{
 									$orden->descuento = $_POST['descuento'];	
 								}
 								
-								
+								if($orden->save()){
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $usuario;
+								$balance->tipo = 1;	
 								$i=0;
+								$balance->save();
 								// añadiendo a orden producto
 								foreach($ptcs as $ptc)
 								{
@@ -1555,6 +1561,8 @@ if(isset($_POST['Profile']))
 							
 							
 							}else{ //orden
+								echo $orden->descuento;
+								echo $orden->total;
 								echo CJSON::encode(array(
 								'status'=> 'error',
 								'error'=> $orden->getErrors(),

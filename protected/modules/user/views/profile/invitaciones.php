@@ -1,5 +1,8 @@
 <?php
-
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta") => array('micuenta'),
+	UserModule::t("Invitaciones"),
+);
 /** @var $form bootstrap.widgets.TbActiveForm */
 
 $create_time = strtotime($model->create_at);

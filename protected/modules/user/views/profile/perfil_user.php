@@ -1,5 +1,6 @@
 <?php 
 $this->breadcrumbs=array(
+	"Tu Cuenta"=>array('micuenta'),
 	UserModule::t("Profile"),
 );
 ?>

@@ -1044,6 +1044,26 @@ public function multipleColor2($idColor, $idact)
 		}
 		return $img;
 	}
+	
+	public function Next($id_actual)
+	{
+	    $records=NULL;
+	    
+	    $order="id ASC";
+	
+	    $records = Producto::model()->findAll(
+	    	array('select'=>'id', 'order'=>$order)
+	    );
+	
+	    foreach($records as $i=>$r)
+	       if($r->id == $id_actual)
+	          if(isset($records[$i+1]->id))
+			  	return $records[$i+1]->id;
+			  else
+			  	return NULL;
+	
+	    return NULL;
+	}	
 
  
 		 

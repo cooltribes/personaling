@@ -338,5 +338,15 @@ class RegistrationController extends Controller
         return $result;
     } 
 
+        public function actionAplicarPs() {
+            $model = new RegistrationForm;
+            $profile = new Profile;
+            $profile->regMode = true;
+            
+            
+            $this->render('/user/registration_ps', array('model' => $model, 'profile' => $profile));
+
+        }
+    
 	
 }

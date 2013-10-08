@@ -373,9 +373,9 @@ else{
 		}else{
 			
 				
-			$dataProvider = $producto->multipleColor2($color,$categoria);
+			$dataProvider = $producto->multipleColor($color,$categoria);
 		}
-		$this->render('doble',
+		$this->render('index',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias,
 		));	
@@ -404,6 +404,7 @@ else{
 			$minmax = explode('A',$_POST['rango']);
 			Yii::app()->session['minpr']=$minmax[0];	
 			Yii::app()->session['maxpr']=$minmax[1];	
+			echo Yii::app()->session['minpr']." ".Yii::app()->session['maxpr'];
 		}
 					
 		if(isset(Yii::app()->session['idact'])) // llega como parametro el id de la categoria presionada
@@ -427,7 +428,7 @@ else{
 		
 		if(count($color)==0&&(!isset(Yii::app()->session['idact']))&&(!isset(Yii::app()->session['minpr']))&&(!isset(Yii::app()->session['maxpr']))){
 			$a="a";	
-			$criteria = $producto->nueva2($a);
+			$criteria = $producto->nueva($a);
 			
 		}else{
 			
@@ -812,74 +813,32 @@ public function actionCategorias2(){
                         $inValues[] = $row["id"];
                     }
 
-                    $criteria->addInCondition('t.id', $inValues);
-    //                            echo "Criteria:";
-    //
-    //                            echo "<pre>";
-    //                            print_r($criteria->toArray());
-    //                            echo "</pre>";
-                    //exit();                            
+                    $criteria->addInCondition('t.id', $inValues);                         
                 }
 
                 if (isset($_POST['precios']) && $_POST['precios'] != "") {
-                    echo "SI";
-                    exit();
+                    
                     $limits = explode("-", $_POST['precios']);
                     
                     $looks = Look::model()->findAll("status = 2");
                     
-                    $inValues = array();
-                    
+                    $inValues = array();                    
 
                     foreach ($looks as $look) {
+                        
                         $price = $look->getPrecio(false);
                         
-                        for($i=0; $i<$rangos ;$i++){                                
-                            $mayorP = $menorP + $len;
-                            
-                            $cant = count(array_filter($allPrices, function($price){                                
-                                    global $menorP, $mayorP;
-                                    return $price >= $menorP && $price <= $mayorP;                                
-                            }));
-                            
-                            /*echo "MEnor {$menorP} Mayor {$mayorP}<br>";
-                            echo "<pre>";
-                            print_r(array_filter($allPrices, function($price){                                
-                                    global $menorP, $mayorP;
-                                    return $price >= $menorP && $price <= $mayorP;                                
-                            }));
-                            echo "</pre>";  */
-                            
-                            $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant); 
-                            $menorP += $len;
-                        }
-                            
-                            /*echo $len;
-                            echo "<br>Vector de rangos: <br>".$count;
-                            echo "<pre>";
-                            print_r($rangosArray);
-                            echo "</pre>";     */                      
-                            
-			$this->render('look', array(
-				'looks' => $looks,
-				'pages' => $pages,
-                                'profile' => $profile,
-                                'editar'=>true,
-                                'rangos' => $rangosArray
-                            
-			));		
-			
-
                         if($price >= $limits[0] && $price <= $limits[1])
                         {
                             $inValues[] = $look->id;
                         }
-                    }
-                    
-                    $criteria->addInCondition('t.id', $inValues);
-                }
-                
+                        
+                    }                    
 
+                    $criteria->addInCondition('t.id', $inValues);
+               }
+                   
+               
                 $criteria->compare('status', 2);
                 $total = Look::model()->count($criteria);
                 $pages = new CPagination($total);
@@ -919,13 +878,14 @@ public function actionCategorias2(){
                 $looks = Look::model()->findAll($criteria);
 				
 
-                /*             * *    Filtros por Perfil ** */
+                /**    Filtros por Perfil **/
 
                 $profile = new Profile;
 
                 /*      Rangos de precios       */
                 $allLooks = Look::model()->findAll("status = 2");
-                $count = 0;
+                $count = array(0, 0, 0, 0); 
+                
                 foreach ($allLooks as $look) {
                     $allPrices[] = $look->getPrecio(false);
                 }
@@ -936,35 +896,17 @@ public function actionCategorias2(){
                 $len = ($mayorP - $menorP) / $rangos;
 
                 foreach ($allPrices as $price) {
-                    $count += $price >= $menorP + 2 * $len && $price <= $menorP + 3 * $len ? 1 : 1;
-                }
-
+                    for($i = 0; $i < $rangos; $i++)
+                        $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
+                }                
+                
                 for ($i = 0; $i < $rangos; $i++) {
                     $mayorP = $menorP + $len;
-
-                    $cant = count(array_filter($allPrices, function($price) {
-                                        global $menorP, $mayorP;
-                                        return $price >= $menorP && $price <= $mayorP;
-                                    }));
-
-    //                            echo "MEnor {$menorP} Mayor {$mayorP}<br>";
-    //                            echo "<pre>";
-    //                            print_r(array_filter($allPrices, function($price){                                
-    //                                    global $menorP, $mayorP;
-    //                                    return $price >= $menorP && $price <= $mayorP;                                
-    //                            }));
-    //                            echo "</pre>";  
-
-                    $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $cant);
+                    $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
                     $menorP += $len;
-                }
-
-    //                            echo $len;
-    //                            echo "<br>Vector de rangos: <br>".$count;
-    //                            echo "<pre>";
-    //                            print_r($rangosArray);
-    //                            echo "</pre>";                           
-
+                }                                
+//                echo "<pre>"; print_r($count);echo "</pre>";               
+                        
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,
@@ -1335,20 +1277,6 @@ public function actionCategorias2(){
         
         
        public function actionGuardarFiltro() {
-           
-//           echo "<pre>";
-//                print_r($_POST);
-//                echo "</pre>";
-//                
-//              $filterProfile = new FilterProfile;
-//                    $filterProfile->attributes = $_POST['Profile'];
-//                    
-//                echo "<pre>";
-//                print_r( $filterProfile->attributes);
-//                echo "</pre>";     
-//                
-//                exit();
-        
 
            $filtroPerfil = true;
             

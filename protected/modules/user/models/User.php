@@ -138,6 +138,7 @@ class User extends CActiveRecord {
             'facebook_id' => UserModule::t("Facebook ID"),
             'avatar_url' => UserModule::t("Avatar"),
             'banner_url' => "Banner",
+            'url' => "Alias",
         );
     }
 

@@ -81,12 +81,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
             </div>
             <!-- Marcas en el look ON -->
-            <div class="span5 margin_top_small">
+            <div class="span5 marcas">
               
               
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
-	                 <li class="span3">  
+	                 <li >  
 	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60));
                       ?>
 	                </li>                	

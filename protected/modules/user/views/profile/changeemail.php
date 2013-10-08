@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Cambia tu correo electrónico");
-//$this->breadcrumbs=array(
-//	UserModule::t("Mi cuenta") => array('micuenta'),
-//	UserModule::t("Cambiar Correo"),
-//);
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta") => array('micuenta'),
+	UserModule::t("Cambiar Correo"),
+);
 
 ?>
 <div class="container margin_top tu_perfil"> 

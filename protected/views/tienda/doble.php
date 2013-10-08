@@ -65,7 +65,7 @@ $max=round($max/100, 0)*100;
     <?php
 
 ?>
-	 <div class="span9 tienda_productos">
+	 <div class="span12 tienda_productos">
       <div class="row" id="catalogo"><?php
 	
 	

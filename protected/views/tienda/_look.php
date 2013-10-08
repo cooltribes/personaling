@@ -13,7 +13,7 @@
       	<?php if ($pages->currentPage > 0){ ?>
       	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
       	<?php }else{ ?>
-      	<?php echo CHtml::image('../images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
+      	<?php echo CHtml::image(Yii::app()->baseUrl .'/images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
         <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
         <?php } ?>
         	         
@@ -48,7 +48,8 @@
 							$('#"."imglook".$look->id."').filter(function() {
 							    return this.complete;
 							}).each(load_handler).end().load(load_handler);						 
-						 ";					 
+						 ";		
+						 	Yii::app()->clientScript->registerScript('img_ps_script'.$look->id,$script);			 
   					?>
         <div class="hidden-phone margin_top_small vcard row-fluid">
           <div class="span2">

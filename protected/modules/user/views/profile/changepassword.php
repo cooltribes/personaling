@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Cambiar Contraseña");
-//$this->breadcrumbs=array(
-//	UserModule::t("Mi cuenta") => array('micuenta'),
-//	UserModule::t("Change Password"),
-//);
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta") => array('micuenta'),
+	UserModule::t("Cambiar Contraseña"),
+);
 
 ?>
 <div class="container margin_top tu_perfil"> 

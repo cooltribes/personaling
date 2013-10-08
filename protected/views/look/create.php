@@ -17,6 +17,8 @@
 }
 </style>
 <script language="JavaScript">
+
+
 var dragSrcEl = '';
 function handleDragStart(e) {
 	
@@ -225,7 +227,11 @@ var cols = document.querySelectorAll('.column');
   });
   
 }
+$(window).load(function(){
+	$('#btn_siguiente').removeAttr('disabled');
+});
 $(document).ready(function() {
+
 
 /*
 var cols = document.querySelectorAll('.column');
@@ -320,7 +326,9 @@ $('#btn_atras').click(function(){
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				'class'=>'pull-right margin_left_small', 
-		        'onclick'=>"{addPublicar(1);}"
+		        'onclick'=>"{addPublicar(1);}",
+		        'disabled'=>'disabled',
+		        'id'=>'btn_siguiente',
 		       ),	    
 	)); ?>
     <?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -507,7 +515,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		    	ui.helper.css('z-index',parseInt(mayor)+1); 
 		    }
 	  			} ); 
-	 
+	 $('#adorno".$adorno->id." > .rotar').draggable({
+			    handle: '.rotar',
+			    opacity: 0.01, 
+			    helper: 'clone',
+			    drag: function(event, ui){
+			        var grados = ui.position.left*-1;
+			        if (grados > 360)
+			        	grados = grados - 360;
+			        var rotateCSS = 'rotate(' + grados + 'deg)';
+			
+			        $(this).parent().css({
+			            '-moz-transform': rotateCSS,
+			            '-webkit-transform': rotateCSS
+			        });
+			    } 
+			});
 	 		$('#adorno".$adorno->id." > span').last().click(function(){
 	 			$(this).parent().remove();
 	  		});
@@ -537,10 +560,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
         </div>
         
-        <div class="margin_bottom_small">
-	        <a class="btn" href="#">Enviar Atrás</a>
-	        <a class="btn" href="#">Enviar Adelante</a>
-        </div>
+
         <!-- CANVAS OFF --> 
       </div>
       <!--
@@ -949,7 +969,7 @@ function addPublicar(tipo)
 		//count = 6;
 		//alert(productos_id);
 		//count = count + count_a;
-		if (count >= 3){
+		if (count >= 6){
 			$("#form_productos").submit();
 		} else {
 			bootbox.alert("Debes tener al menos seis productos");

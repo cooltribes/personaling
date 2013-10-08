@@ -17,7 +17,7 @@ $this->breadcrumbs=array(
     <div class="span6 offset3">
       <h1>Inicia sesión</h1>
       <div  class="row-fluid  margin_top">
-              <div id="boton_facebook" class="span5 margin_bottom "><a title="Inicia sesión con facebook" class="transition_all" onclick="check_fb()" href="#">Inicia sesión con Facebook</a></div>
+              <div id="boton_facebook" class="span6 offset3 margin_bottom "><a title="Inicia sesión con Facebook" class="transition_all" onclick="check_fb()" href="#">Inicia sesión con Facebook</a></div>
 
               <!-- <div id="boton_twitter" class="span5 offset2 margin_bottom "><a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Inicia sesión con Twitter</a>  -->
               <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 

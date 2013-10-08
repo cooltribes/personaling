@@ -1,3 +1,9 @@
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+$this->breadcrumbs=array(
+  "Tu Cuenta"=>array('micuenta'),
+  UserModule::t("Avatar"),
+);  
+?>
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">
 <?php echo Yii::app()->user->getFlash('profileMessage'); ?>

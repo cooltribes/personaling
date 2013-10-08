@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Eliminar tu cuenta");
-//$this->breadcrumbs=array(
-//	UserModule::t("Mi cuenta")=>array('micuenta'),
-//	UserModule::t("Eliminar"),
-//);
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta")=>array('micuenta'),
+	UserModule::t("Eliminar"),
+);
 ?>
 <div class="container margin_top tu_perfil"> 
  

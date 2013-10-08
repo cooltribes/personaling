@@ -929,7 +929,7 @@ public function actionCategorias2(){
 		
 		//$datos=$datos."<div id='myModal' class='modal hide tienda_modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
     	$datos=$datos."<div class='modal-header'>";
-		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>Ã—</button>";
+		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
 		$datos=$datos."<h3 id='myModalLabel'>".$producto->nombre."</h3></div>";
 		$datos=$datos."<div class='modal-body'>";
    
@@ -967,8 +967,8 @@ public function actionCategorias2(){
 		}
 		
         $datos=$datos.'</div>';
-        $datos=$datos.'<a data-slide="prev" href="#myCarousel" class="left carousel-control">â€¹</a>';
-        $datos=$datos.'<a data-slide="next" href="#myCarousel" class="right carousel-control">â€º</a>';
+        $datos=$datos.'<a data-slide="prev" href="#myCarousel" class="left carousel-control">&lsaquo;</a>';
+        $datos=$datos.'<a data-slide="next" href="#myCarousel" class="right carousel-control">&rsaquo;</a>';
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<div class="span5">';

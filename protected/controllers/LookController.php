@@ -191,9 +191,9 @@ class LookController extends Controller
 		else{
 			$model = Look::model()->findByPk($_GET['id']);
 		}		
-
-		$model->view_counter++;
-		$model->save();
+		
+		$model->increaseView();
+	
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
 		
@@ -497,6 +497,8 @@ public function actionCategorias(){
 		  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
 			else	
 		  		$productos = Producto::model()->with($with)->findAll();
+		} else {
+			$productos = Producto::model()->with($with)->findAll();
 		}
 	  	if (isset($categoria_padre))
 	  		echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);

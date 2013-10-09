@@ -2,7 +2,7 @@
 <?php if($data->status == 0){ ?>
     <tr class="warning">
 <?php } else{ ?>
-    <tr>
+    <tr class="<?php echo $data->personal_shopper?'Personal Shopper':''; ?>">
 <?php } ?>
       <td><input name="Check" type="checkbox" value="Check"></td>
       <td>

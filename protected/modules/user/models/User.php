@@ -565,4 +565,20 @@ class User extends CActiveRecord {
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	} 
+	protected function beforeSave()
+	{
+	   	
+	   if($this->personal_shopper>0)
+	   		$this->banner_url='/images/banner/default.jpg';
+	   //echo $this->birthday;
+	   return parent::beforeSave();
+	}
+	
+	public function getAplicantes()
+	{
+		$sql = "select count(*) from tbl_users where personal_shopper = 2";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+
 }

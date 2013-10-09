@@ -265,7 +265,8 @@ else
 				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
 				if(data.status=="ok")
 				{
-					window.location="pedido/"+data.orden+"";
+					
+					window.location=data.url;
 				}else if(data.status=='error'){
 					//console.log(data.error);
 				}

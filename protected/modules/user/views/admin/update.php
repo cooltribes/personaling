@@ -250,12 +250,19 @@ function getMonthsArray()
 					                   // alert(data.personal_shopper);
 					                    if (data.status == 'success')
 					                    	$('#User_personal_shopper').val(data.personal_shopper);
+                                                                
+                                                                bootbox.alert(\"¡Se ha aprobado la solicitud para Personal Shopper!\");
+                                                                var text = data.personal_shopper == 1? 'Quitar Personal Shopper':'Hacer Personal Shopper';
+                                                                
+                                                                var child = $('#ps_link').children(); 
+                                                                $('#ps_link').html(child).append(' '+text);
+
 					                  }",
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),
 					  array( //htmlOptions
 					    'href' => Yii::app()->createUrl( 'user/admin/toggle_ps' ),
-					    //'class' => $class
+					    'id' => "ps_link",
 					  )
 					);
 ?>

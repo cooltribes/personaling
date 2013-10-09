@@ -331,8 +331,8 @@ else
               <td>35</td>
             </tr>
             <tr>
-              <td><strong>Mensajes por leer</strong>:</td>
-              <td>8</td>
+              <td><strong>Personal Shoppers por aprobar</strong>:</td>
+              <td><?php echo User::model()->aplicantes; ?></td>
             </tr>
           </table>
 </div>        </div>

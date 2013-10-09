@@ -2,6 +2,9 @@
 	.infinite_navigation{
 		display:none;
 	}
+	.pshopper{
+		height:400px;
+	}
 </style>
 <div class="container">
   <div class="page-header">

@@ -182,7 +182,7 @@ class ProfileController extends Controller
 			$total=User::model()->totalPS;
 			$pages = new CPagination($total);
 			$pages->pageSize = 8;
-			//$pages->applyLimit($criteria);
+			$pages->applyLimit($criteria);
 			$profiles = Profile::model()->findAll($criteria);
                         
                         /***    Filtros por Perfil ***/

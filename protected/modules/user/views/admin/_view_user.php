@@ -2,7 +2,7 @@
 <?php if($data->status == 0){ ?>
     <tr class="warning">
 <?php } else{ ?>
-    <tr>
+    <tr class="<?php echo $data->personal_shopper?'Personal Shopper':''; ?>">
 <?php } ?>
       <td><input name="Check" type="checkbox" value="Check"></td>
       <td>
@@ -13,7 +13,7 @@
       	
       	
       </td>
-      <td><h5 class="no_margin_bottom"> <?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></h5>
+      <td><h5 class="no_margin_bottom "> <?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></h5>
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
         <?php echo $data->personal_shopper?'Personal Shopper':''; ?> </small></td>
       <td><small><?php echo $data->email; ?><br/>

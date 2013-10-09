@@ -22,6 +22,7 @@ class User extends CActiveRecord {
     
     //Tipo de Usuario
     const TYPE_PSAPPLY = 2;
+    
 
     //Vector de estados para dropdown
     public static $statuses = array(self::STATUS_ACTIVE => 'Activo', self::STATUS_NOACTIVE => 'Inactivo', 

@@ -191,9 +191,9 @@ class LookController extends Controller
 		else{
 			$model = Look::model()->findByPk($_GET['id']);
 		}		
-
-		$model->view_counter++;
-		$model->save();
+		
+		$model->increaseView();
+	
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
 		

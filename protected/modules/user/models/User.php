@@ -19,6 +19,9 @@ class User extends CActiveRecord {
     const PRIVACIDAD_AVATAR = 2;
     const PRIVACIDAD_LOOKS = 4;
     const PRIVACIDAD_SHOPPERS = 8;
+    
+    //Tipo de Usuario
+    const TYPE_PSAPPLY = 2;
 
     //Vector de estados para dropdown
     public static $statuses = array(self::STATUS_ACTIVE => 'Activo', self::STATUS_NOACTIVE => 'Inactivo', 
@@ -376,6 +379,12 @@ class User extends CActiveRecord {
                 {
                     $criteria->compare("personal_shopper", $comparator.'1', false, $logicOp);
 
+                    
+                }else if($value === 'aplica')
+                {
+                    $criteria->compare("personal_shopper", $comparator.'2', false, $logicOp);
+
+                    
                 }else if($value === 'user')
                 {              
                     $comparator = ($comparator == '=') ? '' : 'NOT ';

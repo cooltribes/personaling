@@ -90,6 +90,8 @@ class Look extends CActiveRecord
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter,deleted', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('has_ocasiones','required','on'=>'update'),
+			array('view_counter','numerical', 'integerOnly'=>true,'on'=>'increaseview'),
+			array('view_counter','required','on'=>'increaseview'),
 			array('title', 'length', 'max'=>45),
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
 			array('description, created_on', 'safe'),
@@ -532,6 +534,18 @@ class Look extends CActiveRecord
                 return false;
 
         }
+	public function increaseView(){
+		
+				$this->view_counter=$this->view_counter+1;
+				$this->scenario = 'increaseview';
+                if ($this->save())
+					return true;
+				return false;
+				
+
+        
+	}
+	
 	public function createImage(){
 
 		 $look = $this;
@@ -644,8 +658,8 @@ class Look extends CActiveRecord
 
 	public function getUrl() 
 	{
-		if(isset($this->url_amigable))
-			return Yii::app()->baseUrl."/looks/".$this->url_amigable;
+		if(isset($this->url_amigable) && $this->url_amigable != "")
+				return Yii::app()->baseUrl."/looks/".$this->url_amigable;
 		else
 			return Yii::app()->baseUrl."/look/".$this->id;
 		

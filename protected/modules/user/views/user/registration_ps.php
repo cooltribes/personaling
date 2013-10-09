@@ -147,6 +147,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                         if ($profileFields) {
                             foreach ($profileFields as $field) {
                                 //echo $field->varname;
+                                
                                 ?>
                                 <div class="control-group">
                                     <div class="controls row-fluid">

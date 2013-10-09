@@ -224,7 +224,8 @@ else
 <script>
 	
 	function enviar()
-	{
+	{	
+	
 		$('#boton_completar').attr("disabled", true);
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");

@@ -38,7 +38,11 @@
 		)); ?>  
     <fieldset>
                   <h1>Tu Banner</h1>
-<p>Puedes editar o cambiar tu banner usando las opciones a continuación:</p>
+<?php echo "<p>Puedes editar o cambiar tu banner usando las opciones a continuación";
+ if(is_null($user->banner_url)||$user->banner_url=="/images/banner/default.jpg")
+		echo  ", siguiendo el siguiente patrón:</p>".CHtml::image('http://placehold.it/870x90','Avatar',array("width"=>"870", "height"=>"90", "id"=>"example")); //imagen 
+		else
+			 echo":</p>";?>
     	<div id="container" class="text_align_center margin_bottom margin_top" >
     		<?php if( $user->banner_url != null ){ ?>
         <img src="<?php echo Yii::app()->baseUrl.$user->banner_url; ?>">
@@ -51,6 +55,7 @@
             	
 
     	 <div class="braker_horz_top_1 ">
+    	 	
       <label for="fileToUpload">Elige la imagen que deseas subir</label><br />
            <!--
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
@@ -485,6 +490,7 @@ $(document).ready(function() {
 	var ext=false;
 	$('#extension').hide();
 	$('#dimension').hide();
+
 	$( "#yw1" ).click(function(e) {
 		e.preventDefault();
 
@@ -494,8 +500,10 @@ $(document).ready(function() {
 		if(!(E!="JPG"&&E!="PNG"&&E!="GIF"&&E!="jpg"&&E!="png"&&E!="gif")){
 			ext=true;	
 		}
-		if(dim && ext)			
+		if(dim && ext){	
 			$("#avatar-form").submit();
+			$("#example").hide();
+		}
 		else{
 				if(!dim){
 					if(ext){$('#dimension').css('margin-top','20px');}
@@ -505,6 +513,7 @@ $(document).ready(function() {
 					$('#extension').show();
 					}	
 		}
+		
   
 
 });

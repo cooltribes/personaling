@@ -1,15 +1,5 @@
-
- <div class="span9 tienda_productos">
-      <div class="row" id="catalogo">
-      	
 <?php
 
-
-
-foreach($prods as $data): ?>
-	<div class="div_productos">
-	<?php
-	
 $id=0;
 $entro=0;
 $con=0;
@@ -17,22 +7,24 @@ $prePub="";
 	
 	
 	$im=Producto::model()->getImgColor($data->id);
+
 	
-	
-	if($im==0){
+	//if(!isset(Yii::app()->session['idColor'])){
 		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'1'));
-	}
+	/*}
 	else{
-		$ima=Imagen::model()->findByPk($im);
+		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'color_id'=>$im));
 	}
-	$ord= $ima->orden;
-	$ord++;
-	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>$ord));
-	if(is_null($segunda))
+	if(!is_null($ima)){
+		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+		$ord= $ima->orden;
+		$ord++;
+	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>$ord));}
+	else*/
 		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));
 	
 	
-	
+	 
 	// limitando a que se muestren los status 1 y estado 0
 	
 	   	if($data->precios){
@@ -58,7 +50,7 @@ $prePub="";
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 						//$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-						echo("<td><article class='span3'><div class='articulo producto'> 
+						echo("<td><article class='span3'><div class='producto'> 
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 						".$a.$b." 
 						 
@@ -91,7 +83,7 @@ $prePub="";
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 					//	$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 					$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-					echo("<article class='span3'><div class=' articulo producto'>
+					echo("<article class='span3'><div class='producto' >
 					<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 					".$a.$b." 
 						
@@ -122,24 +114,7 @@ $prePub="";
 		
 		}
 
+
+
+
 ?>
-</div>
-<?php
-
-endforeach;
-
-
-
-   
-
- $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
-	    'contentSelector' => '#catalogo',
-	    'itemSelector' => 'div.div_productos',
-	    'loadingText' => 'Consultando Productos',
-	    'donetext' => 'No more',
-	  //  'afterAjaxUpdate' => 'alert("hola");',
-	    'pages' => $pages,
-	)); 
-
-
-?></div></div>

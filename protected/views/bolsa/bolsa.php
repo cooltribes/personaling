@@ -373,7 +373,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				    'label'=>'Completar compra',
 				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				    'size'=>'normal', // null, 'large', 'small' or 'mini'
-				    'url'=>'compra', // action ir 
+				    'url'=> $this->createAbsoluteUrl('bolsa/compra',array(),'https'), // action ir 
 				    'icon'=>'lock white',
 				)); 
 				 

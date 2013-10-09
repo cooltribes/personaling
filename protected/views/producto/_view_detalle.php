@@ -273,7 +273,7 @@
 							}
 							else{
 								echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
-								array_push($valores, $talla->id);
+								array_push($valores2, $talla->id);
 							}
 						}
 	   				}

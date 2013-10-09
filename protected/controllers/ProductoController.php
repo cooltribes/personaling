@@ -212,6 +212,10 @@ class ProductoController extends Controller
 					
 					if($_POST['accion'] == "nuevo") // guardar y nuevo
 						$this->redirect(array('create'));
+					
+					if($_POST['accion'] == "siguiente") // guardar y siguiente
+						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					
 				}
 				//	$this->redirect(array('view','id'=>$model->id));
 			}

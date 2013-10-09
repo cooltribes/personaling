@@ -19,7 +19,7 @@ class ControlpanelController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','delete','ventas','pedidos'),
+				'actions'=>array('index','delete','ventas','pedidos','usuarios'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -51,6 +51,11 @@ class ControlpanelController extends Controller
 	public function actionPedidos()
 	{
 		$this->render('pedidos');
+	}
+
+	public function actionUsuarios()
+	{
+		$this->render('usuarios');
 	}
 
 	// Uncomment the following methods and override them if needed

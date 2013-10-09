@@ -8,15 +8,19 @@ class BolsaController extends Controller
 	public function filters()
 	{
 		return array(
+			
 			'accessControl', // perform access control for CRUD operations
+			'https +compra', // Force https, but only on login page
 		);
 	}
+
 
 		/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */ 
+	 
 	public function accessRules()
 	{
 		return array(
@@ -409,8 +413,10 @@ class BolsaController extends Controller
 						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
-							$this->redirect(array('bolsa/pedido/'.$orden->id));
 							
+							//$this->redirect(array('bolsa/pedido/'.$orden->id));
+							//echo $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http');
+							$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));
 							
 							
 							}//orden
@@ -993,7 +999,8 @@ class BolsaController extends Controller
 								'orden'=> $orden->id,
 								'total'=> $orden->total,
 								'respCard' => $respCard,
-								'descuento'=>$orden->descuento
+								'descuento'=>$orden->descuento,
+								'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
 							));
 							
 							

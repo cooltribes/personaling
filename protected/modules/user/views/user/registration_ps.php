@@ -1,4 +1,7 @@
 <?php
+
+/* @var $perfil Profile*/
+
 $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Personal Shopper");
 
 ?>
@@ -85,50 +88,72 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                             </div>
                         </div>-->
 
-                        <?php
-                        $profileFields = $profile->getFields();
-                        if ($profileFields) {
-                            foreach ($profileFields as $field) {
-                                        if ($widgetEdit = $field->widgetEdit($profile)) {
-                                            echo $widgetEdit;
-                                        } elseif ($field->range) {
-                                            
-                                        }elseif ($field->field_type == "DATE") {
-                                            
-                                        }else {
-                                        ?>
-                                        <div class="control-group">
-                                            <div class="controls row-fluid">
-                                        <?php
-                                            //------------- condicion para mostar label en IE9 ON ----------------//
-                                            if ($field->varname == 'first_name') {
-                                                ?>
-                                                <!--[if IE 9]> 
-                                                        <label>Nombre:</label>
-                                                <![endif]--> 
-                                                <?php
-                                            } elseif ($field->varname == 'last_name') {
-                                                ?>
-                                                <!--[if IE 9]> 
-                                                        <label>Apellido:</label>
-                                                <![endif]--> 
-                                                <?php
-                                            }
-                                            //------------- condicion para mostar label en IE9 OFF ----------------//
+    <?php 
+    $profileFields = $profile->getFields();
+    if ($profileFields) {
+        foreach ($profileFields as $field) {
+            //echo $field->varname;
+            ?>
+            <div class="control-group">
+                <div class="controls row-fluid">
+                    <?php
+                    if ($widgetEdit = $field->widgetEdit($profile)) {
+                        echo $widgetEdit;
+                    } elseif ($field->range) {
+                        if ($field->varname == 'sex')
+                            echo $form->radioButtonListInlineRow($profile, $field->varname, Profile::range($field->range));
+                        else
+                            echo $form->dropDownListRow($profile, $field->varname, Profile::range($field->range));
+                        //echo $form->error($profile,$field->varname);
+                    } elseif ($field->field_type == "TEXT") {
 
-                                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-                                                echo $form->error($profile, $field->varname);
-                                                
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <?php
-                                        }
-                                        
-                                    }
-                          }
+                        echo$form->textArea($profile, $field->varname, array('rows' => 6, 'cols' => 50));
+                        echo $form->error($profile, $field->varname);
+                    } elseif ($field->field_type == "DATE") {
+                        echo $form->labelEx($profile, $field->varname, array('class' => 'span3'));
+                        echo ' ';
+                        echo $form->DropDownList($profile, 'day', User::getDaysArray(), array('class' => 'span3'));
+                        echo ' ';
+                        echo $form->DropDownList($profile, 'month', User::getMonthsArray(), array('class' => 'span3'));
+                        echo ' ';
+                        echo $form->DropDownList($profile, 'year', User::getYearsArray(), array('class' => 'span3'));
+
+                        echo $form->hiddenField($profile, $field->varname);
+                        echo CHtml::hiddenField('facebook_id', '', array('id' => 'facebook_id', 'name' => 'facebook_id'));
+                        //echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+                        echo $form->error($profile, $field->varname);
+                    } else {
+
+                        //------------- condicion para mostar label en IE9 ON ----------------//
+                        if ($field->varname == 'first_name') {
+                            ?>
+                            <!--[if IE 9]> 
+                                    <label>Nombre:</label>
+                            <![endif]--> 
+                        <?php
+                        } elseif ($field->varname == 'last_name') {
                         ?>
+                            <!--[if IE 9]> 
+                                    <label>Apellido:</label>
+                            <![endif]--> 
+                        <?php
+                        }
+                        //------------- condicion para mostar label en IE9 OFF ----------------//
+
+                        echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
+                        echo $form->error($profile, $field->varname);
+                    }
+                    ?>
+                </div>
+            </div>
+                    <?php
+                }
+            }
+            ?>
                         
+                        
+                            <?php  /*?>
+                             <hr/>
                         <div class="control-group row-fluid">
                             <div class="controls">	
                                 <!--[if IE 9]> 
@@ -142,45 +167,6 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                                 ?>
                             </div>
                         </div>
-                        <?php
-                        $profileFields = $profile->getFields();
-                        if ($profileFields) {
-                            foreach ($profileFields as $field) {
-                                //echo $field->varname;
-                                ?>
-                                <div class="control-group">
-                                    <div class="controls row-fluid">
-                                        <?php
-                                        if ($widgetEdit = $field->widgetEdit($profile)) {
-                                            echo $widgetEdit;
-                                        } elseif ($field->range) {
-                                            if ($field->varname == 'sex')
-                                                echo $form->radioButtonListInlineRow($profile, $field->varname, Profile::range($field->range));
-                                            else
-                                                echo $form->dropDownListRow($profile, $field->varname, Profile::range($field->range));
-                                            //echo $form->error($profile,$field->varname);
-                                        }elseif ($field->field_type == "DATE") {
-                                            echo $form->labelEx($profile, $field->varname, array('class' => 'span3'));
-                                            echo ' ';
-                                            echo $form->DropDownList($profile, 'day', User::getDaysArray(), array('class' => 'span3'));
-                                            echo ' ';
-                                            echo $form->DropDownList($profile, 'month', User::getMonthsArray(), array('class' => 'span3'));
-                                            echo ' ';
-                                            echo $form->DropDownList($profile, 'year', User::getYearsArray(), array('class' => 'span3'));
-
-                                            echo $form->hiddenField($profile, $field->varname);
-                                            echo CHtml::hiddenField('facebook_id', '', array('id' => 'facebook_id', 'name' => 'facebook_id'));
-                                            //echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
-                                            echo $form->error($profile, $field->varname);
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                        <?php
-                                    }
-                          }
-                        ?>
-                        
                         
                         <div class="control-group row-fluid">
                             <div class="controls">	
@@ -251,6 +237,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                                 ?>
                             </div>
                         </div>
+                           
+                        <?php */ ?>   
                         <div id="container" class="text_align_center margin_bottom margin_top">
                             <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"135", "height"=>"135","class"=>"img_1")); ?>
                         </div>

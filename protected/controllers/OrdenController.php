@@ -208,7 +208,7 @@ class OrdenController extends Controller
             }
 
             if (isset($_POST['query'])){
-                
+                unset($_SESSION["todoPost"]);
                 $dataProvider = $orden->filtrado($_POST['query']); 
                 
             }

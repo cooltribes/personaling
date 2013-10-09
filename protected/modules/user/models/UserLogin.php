@@ -71,6 +71,9 @@ class UserLogin extends CFormModel
 				case UserIdentity::ERROR_STATUS_BAN:                                        
 					$this->addError("status",UserModule::t("Your account is blocked."));
 					break;
+                                case UserIdentity::ERROR_STATUS_APPLY:
+					$this->addError("status",UserModule::t("No puedes iniciar sesión, tu solicitud aún no ha sido aprobada."));
+					break;
 				case UserIdentity::ERROR_PASSWORD_INVALID:
 					$this->addError("password",UserModule::t("Password is incorrect."));
 					break;

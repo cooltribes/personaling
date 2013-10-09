@@ -9,9 +9,9 @@ $prePub="";
 	$im=Producto::model()->getImgColor($data->id);
 
 	
-	if(!isset(Yii::app()->session['idColor'])){
+	//if(!isset(Yii::app()->session['idColor'])){
 		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'1'));
-	}
+	/*}
 	else{
 		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'color_id'=>$im));
 	}
@@ -20,11 +20,11 @@ $prePub="";
 		$ord= $ima->orden;
 		$ord++;
 	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>$ord));}
-	else
+	else*/
 		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));
 	
 	
-	
+	 
 	// limitando a que se muestren los status 1 y estado 0
 	
 	   	if($data->precios){

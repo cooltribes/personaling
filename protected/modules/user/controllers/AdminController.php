@@ -267,7 +267,8 @@ class AdminController extends Controller
             }
             
             if (isset($_GET['nombre'])) {
-                //$model->nom=$_POST['nombre'];
+                
+                unset($_SESSION["todoPost"]);
                 $criteria->alias = 'User';
                 $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
                 
@@ -322,7 +323,38 @@ class AdminController extends Controller
 	
 	public function actionToggle_ps($id){
 		$model = User::model()->findByPk($id);
-		$model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle
+                
+                if($model->personal_shopper == 2){ //si es aplicante
+                    
+                    $model->personal_shopper = 1;
+                    
+                    //Enviar mail
+                    $model->activkey = UserModule::encrypting(microtime() . $model->password);
+                    $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
+                    
+                    $message = new YiiMailMessage;
+                    $message->view = "mail_template";
+                    $subject = 'Registro Personaling';
+                    $body = '<h2>¡Felicitaciones! Tu aplicación ha sido aceptada.</h2><br/><br/>
+                        Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.com
+                        <br/><br/>
+                        ¿Nervios? No por favor, sabemos que tienes madera para esto.<br/>
+                        Gracias por querer ser parte de nuestro equipo.<br/><br>
+                        Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
+                        <a href="' . $activation_url.'"> Haz click aquí </a>';
+                    $params = array('subject' => $subject, 'body' => $body);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+                    $message->addTo($model->email);
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    Yii::app()->mail->send($message);
+                    
+                }else{
+                    
+                   $model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle 
+                   
+                }
+		
 		if ($model->save()){
 		echo CJSON::encode(array(
 	            'status'=>'success',

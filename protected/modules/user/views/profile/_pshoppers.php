@@ -4,7 +4,7 @@
 		$thuser=User::model()->findByPk($prof->user_id);?>
 		<?php //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span3 pshopper" align="center">
-      <article > 
+      <article> 
       	<?php if ($pages->currentPage > 0){ 
       		 ?>
       	<?php $image = CHtml::image($thuser->getAvatar(), "PS", array("id" => "imglook".$prof->user_id,"width" => "250", "height" => "250", 'class'=>'ps_avatar img-circle', 'alt'=>$prof->first_name)); ?>

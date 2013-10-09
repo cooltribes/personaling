@@ -146,7 +146,7 @@ class Profile extends UActiveRecord
 		
 		foreach ($model as $field)
 			$labels[$field->varname] = ((Yii::app()->getModule('user')->fieldsMessage)?UserModule::t($field->title,array(),Yii::app()->getModule('user')->fieldsMessage):UserModule::t($field->title));
-		print_r($labels);	
+		//print_r($labels);	
 		return $labels;
 	}
 	
@@ -210,8 +210,15 @@ class Profile extends UActiveRecord
 	
 	public function getFields() {
 		if ($this->regMode) {
-			if (!$this->_modelReg)
-				$this->_modelReg=ProfileField::model()->forRegistration()->findAll();
+			if (!$this->_modelReg){
+                            $this->_modelReg=ProfileField::model()->forRegistration()->findAll();
+                            
+                            if($this->profile_type == 4){ //Personal Shopper
+                                
+                                $this->_modelReg = array_merge($this->_modelReg, ProfileField::model()->forPersonalShopperReg()->forOwner()->findAll());
+                            }
+                        }
+				
 			return $this->_modelReg;
 		} else {
 			

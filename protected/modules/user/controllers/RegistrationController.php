@@ -213,6 +213,7 @@ class RegistrationController extends Controller
             $model = new RegistrationForm;
             $profile = new Profile;
             $profile->regMode = true;
+            $profile->profile_type = 4;
             
             // ajax validator
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'registration-form') {
@@ -278,6 +279,7 @@ class RegistrationController extends Controller
                             Yii::app()->mail->send($message);
                             
                             //Enviar email al admin para informar de una usuaria que aplico
+                            // (CAMBIAR DESTINATARIO)
                             $message = new YiiMailMessage;
                             $message->view = "mail_apply";
                             $subject = 'Aplicación de un Personal Shopper';
@@ -291,7 +293,7 @@ class RegistrationController extends Controller
                             $params = array('subject'=>$subject, 'body'=>$body, 'footer' => $footer);
                             $message->subject    = $subject;
                             $message->setBody($params, 'text/html');                
-                            $message->addTo($model->email);
+                            $message->addTo("info@personaling.com");
                             $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                             Yii::app()->mail->send($message);
                             
@@ -335,24 +337,6 @@ class RegistrationController extends Controller
                                 //UserModule::sendRegistrationMail($model->id, $activation_url);
                                 //UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
                             }
-
-
-                            // Para registrar en la lista de correo
-                            if (isset($_POST['Profile']['suscribir'])) {
-                                //API key provisional para lista de prueba										
-                                $MailChimp = new MailChimp('78347e50bf7c6299b77dd84fbc24e5be-us7');
-                                $result = $MailChimp->call('lists/subscribe', array(
-                                    'id' => '11801985e7',
-                                    'email' => array('email' => $_POST['RegistrationForm']['email']),
-                                    'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name']),
-                                    'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],
-                                    'mc_language' => 'es',
-                                    'update_existing' => true,
-                                    'replace_interests' => false,
-                                ));
-                            }
-
-
                             //Si se registra por invitación
                             if (isset($_GET['requestId']) && isset($_GET['email'])) { 
                                 

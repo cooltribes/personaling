@@ -326,10 +326,10 @@ else
               <td><strong>Looks por aprobar</strong>:</td>
               <td><?php echo $looks_aprobar; ?></td>
             </tr>
-            <tr>
+<!--             <tr>
               <td><strong> Looks por publicar</strong>:</td>
               <td>35</td>
-            </tr>
+            </tr> -->
             <tr>
               <td><strong>Personal Shoppers por aprobar</strong>:</td>
               <td><?php echo User::model()->aplicantes; ?></td>

@@ -139,15 +139,14 @@ class TiendaController extends Controller
 		$a ="a"; 
 		
 		
-		$dp=$producto->nueva($a);
+		$dp=Producto::model()->findAll($producto->nueva2($a));
 
-		$dp->setPagination(false);
-		$dp->disableBehaviors();
+		
 		$arr=array();
-		foreach($dp->getData() as $record) {
+		foreach($dp as $record) {
 			array_push($arr,$record->getPrecio(false));	
 		 }
-		 
+		
 		Yii::app()->session['bsf']=$arr;
 		$dataProvider = $producto->nueva($a);
 		
@@ -976,7 +975,7 @@ public function actionCategorias2(){
        	$datos=$datos.'<div class="span7">';
 		
 		foreach ($producto->precios as $precio) {
-   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span> Bs. '.Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento).'</h4>';
+   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span> Bs. '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
    		}
 
         $datos=$datos.'</div>';

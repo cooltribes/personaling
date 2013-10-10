@@ -279,7 +279,6 @@ class RegistrationController extends Controller
                             Yii::app()->mail->send($message);
                             
                             //Enviar email al admin para informar de una usuaria que aplico
-                            // (CAMBIAR DESTINATARIO)
                             $message = new YiiMailMessage;
                             $message->view = "mail_apply";
                             $subject = 'Aplicación de un Personal Shopper';
@@ -317,26 +316,8 @@ class RegistrationController extends Controller
                                 $message->addTo($model->email);
                                 $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                                 Yii::app()->mail->send($message);
-                            } 
-                            else {
-//                                $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
-//
-//                                $message = new YiiMailMessage;
-//                                $message->view = "mail_template";
-//                                $subject = 'Registro Personaling';
-//                                $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling.
-//                                			Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
-//                                			<a href="' . $activation_url.'"> Haz click aquí </a>';
-//                                $params = array('subject' => $subject, 'body' => $body);
-//                                $message->subject = $subject;
-//                                $message->setBody($params, 'text/html');
-//                                $message->addTo($model->email);
-//                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-//                                Yii::app()->mail->send($message);
-
-                                //UserModule::sendRegistrationMail($model->id, $activation_url);
-                                //UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
                             }
+                            
                             //Si se registra por invitación
                             if (isset($_GET['requestId']) && isset($_GET['email'])) { 
                                 

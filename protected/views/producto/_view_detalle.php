@@ -145,7 +145,7 @@
             <div class="span2">
               <h4 class="precio" ><span>Subtotal</span> Bs. 
               	<?php foreach ($producto->precios as $precio) {
-   					echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
+   					echo Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto); // precio con IVA
    					}
 	
 			?></h4>
@@ -273,7 +273,7 @@
 							}
 							else{
 								echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
-								array_push($valores, $talla->id);
+								array_push($valores2, $talla->id);
 							}
 						}
 	   				}
@@ -1082,7 +1082,7 @@ $('.imagen_principal').zoom({url: imgZ});
 	 		comprando = false;
 	 		$.ajax({
 		        type: "post",
-		        url: "../../bolsa/agregar", // action Tallas de Producto
+		        url: "<?php echo Yii::app()->baseUrl; ?>/bolsa/agregar", // action Tallas de Producto
 		        data: { 'producto':producto, 'talla':talla, 'color':color}, 
 		        success: function (data) {
 		        	comprando = true;

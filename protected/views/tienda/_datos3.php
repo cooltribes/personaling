@@ -29,7 +29,7 @@ $prePub="";
 	
 	   	if($data->precios){
 	   	foreach ($data->precios as $precio) {
-	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioDescuento);
+	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto); // precio con IVA
 	   		//$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 			}
 		}

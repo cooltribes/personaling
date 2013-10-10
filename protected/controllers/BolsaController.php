@@ -266,7 +266,34 @@ class BolsaController extends Controller
 		{
 			
 			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
-			{ 
+			{
+				if(isset($_POST['nombre']) || isset($_POST['numero']) ){ // pago de tarjeta de credito
+					
+					$usuario = Yii::app()->user->id; 
+					
+					$tarjeta = new TarjetaCredito;
+								
+					$tarjeta->nombre = $_POST['nombre'];
+					$tarjeta->numero = $_POST['numero'];
+					$tarjeta->codigo = $_POST['codigo'];
+					$tarjeta->vencimiento = $_POST['mes']."/".$_POST['ano'];
+					$tarjeta->direccion = $_POST['direccion'];
+					$tarjeta->ciudad = $_POST['ciudad'];
+					$tarjeta->zip = $_POST['zip'];
+					$tarjeta->estado = $_POST['estado'];
+					$tarjeta->user_id = $usuario;		
+										
+					if($tarjeta->save())
+					{
+						$idDireccion = $_POST['idDireccion'];
+						$tipoPago = $_POST['tipoPago'];
+						
+						$this->redirect($this->createAbsoluteUrl('bolsa/confirmar',array('tipo_pago'=>$tipoPago,'idDireccion'=>$idDireccion,'idTarjeta'=>$tarjeta->id)));
+					}
+				}
+				
+				
+				 
 				$idDireccion = $_POST['idDireccion'];
 				$tipoPago = $_POST['tipoPago'];
 				echo "if";
@@ -275,7 +302,8 @@ class BolsaController extends Controller
 				// se le pasan los datos al action confirmar	
 			}else if(isset($_GET['id'])){ // de direcciones
 			echo "else";
-				$this->render('pago',array('id_direccion'=>$_GET['id']));
+				$tarjeta = new TarjetaCredito;
+				$this->render('pago',array('id_direccion'=>$_GET['id'],'tarjeta'=>$tarjeta));
 			}
 			
 		
@@ -448,13 +476,15 @@ class BolsaController extends Controller
 			//var_dump($_POST);
 			if(isset($_POST['tipo_pago'])){
 				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+				Yii::app()->getSession()->add('idTarjeta',$_POST['idTarjeta']);
+				
 				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
 					Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
 				}else{
 					Yii::app()->getSession()->add('usarBalance','0');
 				}
 				//echo '<br/>'.$_POST['tipo_pago'];
-				$this->render('confirmar');
+				$this->render('confirmar',array('idTarjeta'=>$_POST['idTarjeta']));
 			}
 		}
 		
@@ -536,7 +566,8 @@ class BolsaController extends Controller
 				//echo "Id:".$_POST['Direccion']['id'];
 				$dirEnvio = $_POST['Direccion']['id'];
 				
-				$this->render('pago',array('idDireccion'=>$dirEnvio));
+				$tarjeta = new TarjetaCredito;
+				$this->render('pago',array('idDireccion'=>$dirEnvio,'tarjeta'=>$tarjeta));
 			}
 			else
 			if(isset($_POST['Direccion'])) // nuevo registro

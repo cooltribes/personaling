@@ -53,6 +53,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
   <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
   <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
+  <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">

@@ -52,78 +52,56 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         	 <div class="well well-small" >
             <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
             <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
-            <form>
+            <form id="tarjeta-credito" class="">
               <div class="control-group">
                 <div class="controls">
-                  <input id="nombre" class="span5" placeholder="Nombre impreso en la tarjeta" type="text" maxlength="80">
+                  <?php echo CHtml::activeTextField($tarjeta,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); ?>
                 </div>
               </div>
               <div class="control-group">
                 <div class="controls">
-                  <input id="numero" class="span5" placeholder="Número de la tarjeta"  type="text" maxlength="25">
+                	<?php echo CHtml::activeTextField($tarjeta,'numero',array('id'=>'numero','class'=>'span5','placeholder'=>'Número de la tarjeta')); ?>
                 </div>
               </div>      
 
               <div class="control-group">
                 <div class="controls">
-                  <input id="codigo" class="span2" placeholder="Código de seguridad"  type="text" maxlength="10">
+                	<?php echo CHtml::activeTextField($tarjeta,'codigo',array('id'=>'codigo','class'=>'span2','placeholder'=>'Código de seguridad')); ?>
                 </div>
               </div>             
               <div class="control-group">
                 <label class="control-label required">Fecha de Vencimiento</label>
                 <div class="controls">
-                  <select id="mes" class="span1" placeholder="Mes" name="mes">
-                    <option value="Mes">Mes</option>
-                    <option value="01">01</option>
-                    <option value="02">02</option>
-                    <option value="03">03</option>
-                    <option value="04">04</option>
-                    <option value="05">05</option>
-                    <option value="06">06</option>
-                    <option value="07">07</option>
-                    <option value="08">08</option>
-                    <option value="09">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                </select>
-                <select id="ano" class="span1" placeholder="Año" name="ano">
-                  <option value="Ano">Año</option>
-                  <option value="2013">2013</option>
-                  <option value="2014">2014</option>
-                  <option value="2015">2015</option>
-                  <option value="2016">2016</option>
-                  <option value="2017">2017</option>
-                  <option value="2018">2018</option>
-                  <option value="2019">2019</option>
-                </select>
+                	<?php echo CHtml::dropDownList('mes','',array('Mes'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
+                <?php echo CHtml::dropDownList('ano','',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año')); ?>
               </div>
             </div>
 
             <div class="control-group">
               <div class="controls">
-                <input id="direccion" class="span5" placeholder="Dirección" type="text" maxlength="150"> 
+              	<?php echo CHtml::activeTextField($tarjeta,'direccion',array('id'=>'direccion','class'=>'span5','placeholder'=>'Dirección')) ; ?>
               </div>
             </div>
 
             <div class="control-group">
               <div class="controls">
-                <input id="ciudad" class="span5" placeholder="Ciudad"  type="text" maxlength="50">
+              	<?php echo CHtml::activeTextField($tarjeta,'ciudad',array('id'=>'ciudad','class'=>'span5','placeholder'=>'Ciudad')); ?>
               </div>
             </div>
 
             <div class="control-group">
               <div class="controls">
-                <input id="estado" class="span5" placeholder="Estado" name="TarjetaCredito[estado]" type="text" maxlength="45">
+              	<?php echo CHtml::activeTextField($tarjeta,'estado',array('id'=>'estado','class'=>'span5','placeholder'=>'Estado')); ?>
               </div>
             </div>
             <div class="control-group">
               <div class="controls">
-                <input id="zip" class="span2" placeholder="Código Postal" type="text" maxlength="10">
+              	<?php echo CHtml::activeTextField($tarjeta,'zip',array('id'=>'zip','class'=>'span2','placeholder'=>'Código Postal')); ?>
               </div>
             </div>
             <hr>
-            <a id="boton_pago_tarjeta "  class=" btn-large btn btn-danger"> Aceptar </a>            
+          	<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
+            <button type="submit" id="boton_pago_tarjeta" class=" btn-large btn btn-warning"> Siguiente </button>            
           </form>
 
           </div>
@@ -510,7 +488,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <?php $this->widget('bootstrap.widgets.TbButton', array(
 	            'type'=>'warning',
 	            'size'=>'large',
-	            'label'=>'Completar compra',
+	            'label'=>'Siguiente',
 	            //'url'=>'confirmar', // action
 	            'icon'=>'lock white',
 	            'buttonType'=>'submit',
@@ -660,4 +638,50 @@ else
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
+	
+	function enviarTarjeta()
+	{
+		/* lo de la tarjeta */
+		
+		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
+		var nom = $("#nombre").attr("value");
+		var num = $("#numero").attr("value");
+		var cod = $("#codigo").attr("value");
+		var mes = $("#mes").attr("value");
+		var ano = $("#ano").attr("value");
+		var dir = $("#direccion").attr("value");
+		var ciud = $("#ciudad").attr("value");
+		var est = $("#estado").attr("value");
+		var zip = $("#zip").attr("value");
+		
+		if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
+			{
+				alert("Por favor complete los datos de la tarjeta.");
+			}
+			else
+			{
+			
+			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
+			
+				$.ajax({
+		        type: "post",
+		        dataType: 'json',
+		        url: "tarjeta", // action 
+		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
+		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
+		        		}, 
+		        success: function (data) {
+					
+					if(data.status==201) // pago aprobado
+					{
+						
+					}
+					
+		       	}//success
+		       })
+			
+			}
+	}
+
+	
 </script>

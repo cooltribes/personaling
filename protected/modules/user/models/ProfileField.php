@@ -14,6 +14,7 @@ class ProfileField extends CActiveRecord
 	const REQUIRED_YES_ESTILO = 4;
 	const REQUIRED_YES_TIPO = 5;
 	const REQUIRED_YES_PERSONAL = 6;
+        const REQUIRED_YES_PERSONAL_REG = 7;
 	
 	
 	/**
@@ -136,7 +137,12 @@ class ProfileField extends CActiveRecord
             ),
             'forPersonalShopper'=>array(
                 //'condition'=>'required!='.self::REQUIRED_YES_ESTILO.' AND required!='.self::REQUIRED_YES_TIPO,
-                'condition'=>'required='.self::REQUIRED_YES_PERSONAL,
+                'condition'=>'required='.self::REQUIRED_YES_PERSONAL.' OR required = '.self::REQUIRED_YES_PERSONAL_REG,
+                'order'=>'position',
+            ),
+            'forPersonalShopperReg'=>array(                
+                'condition'=>'required='.self::REQUIRED_YES_PERSONAL .' OR required = '.self::REQUIRED_YES_PERSONAL_REG.
+                ' OR id in (25, 26)',
                 'order'=>'position',
             ),
             'forEstilo'=>array(

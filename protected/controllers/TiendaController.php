@@ -975,7 +975,7 @@ public function actionCategorias2(){
        	$datos=$datos.'<div class="span7">';
 		
 		foreach ($producto->precios as $precio) {
-   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span> Bs. '.Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento).'</h4>';
+   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span> Bs. '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
    		}
 
         $datos=$datos.'</div>';

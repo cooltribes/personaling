@@ -508,6 +508,7 @@ class ProfileController extends Controller
 					}
 				 }  	
 		} 
+                
 		 $this->render('avatar',array(
 	    	'model'=>$model,
 			//'profile'=>$model->profile,

@@ -251,7 +251,6 @@ class RegistrationController extends Controller
                             $model->password = UserModule::encrypting($model->password);
                         }
 
-
                         if ($model->save()) {
                             if (isset($_POST['facebook_request'])) {
                                 $invite = FacebookInvite::model()->findByAttributes(array('request_id' => $_POST['facebook_request']));
@@ -262,6 +261,56 @@ class RegistrationController extends Controller
                             }
                             $profile->user_id = $model->id;
                             $profile->save();
+                            
+                            /*Avatar*/
+                            if (isset($_POST['valido'])){
+                                
+				$id = $model->id;
+                                // make the directory to store the pic:
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id))
+				{
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id,0777,true);
+	 			}	 
+				$images = CUploadedFile::getInstancesByName('filesToUpload');
+
+                                if (isset($images) && count($images) > 0) {
+                                    
+                                    foreach ($images as $image => $pic) {
+                                        $nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'. $id .'/'. $image;
+                                        $extension = '.'.$pic->extensionName;
+                                        $model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
+                                        
+                                        echo "<br/>guarda imagen";
+                                        if (!$model->save()){	
+                                            Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');
+                                        }
+                                        if ($pic->saveAs($nombre ."_orig". $extension)) {
+                                            $image = Yii::app()->image->load($nombre ."_orig". $extension);
+                                            $avatar_x = isset($_POST['avatar_x'])?$_POST['avatar_x']:0;
+                                            $avatar_x = $avatar_x*(-1);
+                                            $avatar_y = isset($_POST['avatar_y'])?$_POST['avatar_y']:0;
+                                            $avatar_y = $avatar_y*(-1);
+
+                                            $proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+                                            $image->resize(270,270,$proporcion)->crop(270, 270,$avatar_y,$avatar_x);
+                                            $image->save($nombre . $extension);
+
+                                            $proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+                                            $image->resize(30,30,$proporcion)->crop(30, 30,$avatar_y,$avatar_x);
+                                            $image->save($nombre . "_x30". $extension);
+
+                                            $proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+                                            $image->resize(60,60,$proporcion)->crop(60, 60,$avatar_y,$avatar_x);
+                                            $image->save($nombre . "_x60". $extension);
+
+//                                            Yii::app()->user->updateSession();
+//                                            Yii::app()->user->setFlash('success',UserModule::t("La imágen ha sido cargada exitosamente."));	
+                                         }
+                                      }
+                                   }  	
+                               } 
+                            
+                            
                             
                             //Enviar email de aplicacion a la usuaria
                             $message = new YiiMailMessage;
@@ -342,7 +391,7 @@ class RegistrationController extends Controller
 //                                    $this->redirect(array('/tienda/look'));
                                 
                                 /** Redireccionar a la p{agina de información **/
-                                      $this->redirect(Yii::app()->baseUrl);
+                                     $this->redirect(array('/site/afterApply'));
                                 
                             } else {
                                 if (!Yii::app()->controller->module->activeAfterRegister && !Yii::app()->controller->module->sendActivationMail) {

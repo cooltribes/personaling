@@ -51,7 +51,13 @@ class Profile extends UActiveRecord
 			foreach ($model as $field) {
 				$field_rule = array();
 				
-				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_ESTILO||$field->required==ProfileField::REQUIRED_YES_TIPO)
+				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||
+                                        $field->required==ProfileField::REQUIRED_YES_SHOW_REG||
+                                        $field->required==ProfileField::REQUIRED_YES_ESTILO||
+                                        $field->required==ProfileField::REQUIRED_YES_TIPO ||
+                                        $field->required==ProfileField::REQUIRED_YES_PERSONAL_REG ||
+                                        $field->id == 26 ||
+                                        $field->id == 25)
 					 {
                                        if ($field->varname=="first_name")
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Cómo te llamas? '));
@@ -59,6 +65,10 @@ class Profile extends UActiveRecord
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Cuál es tu apellido? '));
 									   else if ($field->varname=="sex")
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Eres mujer/hombre? '));
+                                               
+                                                                           else if ($field->varname=="url" || $field->varname=="bio"
+                                                                                   || $field->varname=="facebook" || $field->varname=="twitter")
+                                               array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} "));
 									   else									   
                                        		array_push($required,$field->varname);
                      }

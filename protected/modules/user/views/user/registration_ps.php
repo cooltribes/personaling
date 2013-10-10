@@ -29,8 +29,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         'id' => 'registration-form',
-        'htmlOptions' => array('class' => 'personaling_form'),
-        //'type'=>'stacked',
+        'htmlOptions' => array('class' => 'personaling_form', 'enctype'=>'multipart/form-data',),
+        //'type'=>'stacked',        
         'type' => 'inline',
         'enableAjaxValidation' => true,
         'clientOptions' => array(
@@ -74,19 +74,6 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                             </div>
                         </div>
                         
-<!--                        <div class="control-group row-fluid">
-                            <div class="controls">	
-                                [if IE 9]> 
-                                        <label>Contraseña:</label>
-                                <![endif] 
-                                <?php
-//                                $field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
-//  				echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
-//                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-//                                echo $form->error($profile, $field->varname);
-                                ?>
-                            </div>
-                        </div>-->
 
     <?php 
     $profileFields = $profile->getFields();
@@ -105,9 +92,10 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                         else
                             echo $form->dropDownListRow($profile, $field->varname, Profile::range($field->range));
                         //echo $form->error($profile,$field->varname);
-                    } elseif ($field->field_type == "TEXT") {
+                    } elseif ($field->field_type == "TEXT" || $field->varname == "bio") {
 
-                        echo$form->textArea($profile, $field->varname, array('rows' => 6, 'cols' => 50));
+                        echo$form->textArea($profile, $field->varname, array('rows' => 4,
+                            'class' => "span12", "placeholder" => "Cuéntanos un poco sobre tí..."));
                         echo $form->error($profile, $field->varname);
                     } elseif ($field->field_type == "DATE") {
                         echo $form->labelEx($profile, $field->varname, array('class' => 'span3'));
@@ -138,6 +126,13 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                             <![endif]--> 
                         <?php
                         }
+                        elseif ($field->varname == 'blog') {
+                            $face = $field;
+                            continue;
+                        }elseif ($field->varname == 'web') {
+                            $twi = $field;
+                            continue;
+                        }
                         //------------- condicion para mostar label en IE9 OFF ----------------//
 
                         echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
@@ -148,132 +143,57 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
             </div>
                     <?php
                 }
+                
+                ?>
+                  <div class="control-group">
+                    <div class="controls row-fluid">
+                        <?php  
+                        echo $form->textFieldRow($profile, $face->varname, array('class' => 'span12 ', 'maxlength' => (($face->field_size) ? $face->field_size : 255)));
+                        echo $form->error($profile, $face->varname); 
+                        ?>
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <div class="controls row-fluid">
+                        <?php  
+                        echo $form->textFieldRow($profile, $twi->varname, array('class' => 'span12 ', 'maxlength' => (($twi->field_size) ? $twi->field_size : 255)));
+                        echo $form->error($profile, $twi->varname); 
+                        ?>
+                    </div>
+                </div>         
+                        
+                        
+                <?php
             }
             ?>
-                        
-                        
-                            <?php  /*?>
-                             <hr/>
-                        <div class="control-group row-fluid">
-                            <div class="controls">	
-                                <!--[if IE 9]> 
-                                        <label>Alias:</label>
-                                <![endif]--> 
-                                <?php
-                                $field = ProfileField::model()->findByAttributes(array('varname'=>'url'));
-                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ',
-                                        'placeholder' => 'Alias', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-                                echo $form->error($profile, $field->varname);
-                                ?>
-                            </div>
-                        </div>
-                        
-                        <div class="control-group row-fluid">
-                            <div class="controls">	
-                                <!--[if IE 9]> 
-                                        <label>Alias:</label>
-                                <![endif]--> 
-                                <?php
-                                $field = ProfileField::model()->findByAttributes(array('varname'=>'bio'));
-                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ',
-                                        'placeholder' => '', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-                                echo $form->error($profile, $field->varname);
-                                ?>
-                            </div>
-                        </div>
 
-                        <div class="control-group row-fluid">
-                            <div class="controls">	
-                                <!--[if IE 9]> 
-                                        <label>Alias:</label>
-                                <![endif]--> 
-                                <?php
-                                $field = ProfileField::model()->findByAttributes(array('varname'=>'facebook'));
-                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ',
-                                        'placeholder' => '', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-                                echo $form->error($profile, $field->varname);
-                                ?>
-                            </div>
-                        </div>
+            <div id="container" class="text_align_center margin_bottom margin_top">
+                <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"135", "height"=>"135","class"=>"img_1")); ?>
+            </div>
+            <label for="fileToUpload">Elige una imagen para tu avatar</label><br/>                                   
+                  <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small"/>
+                  <?php echo CHtml::hiddenField('valido','1'); ?>
+                  <?php echo CHtml::hiddenField('avatar_x','0'); ?>
+                  <?php echo CHtml::hiddenField('avatar_y','0'); ?>
+            <?php /*?>      <div id="dropTarget">O arrasta la imagen hasta aqui</div><?php */?>
+                  <output id="filesInfo"></output>
 
-                        <div class="control-group row-fluid">
-                            <div class="controls">	
-                                <!--[if IE 9]> 
-                                        <label>Alias:</label>
-                                <![endif]--> 
-                                <?php
-                                $field = ProfileField::model()->findByAttributes(array('varname'=>'twitter'));
-                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ',
-                                        'placeholder' => '', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-                                echo $form->error($profile, $field->varname);
-                                ?>
-                            </div>
-                        </div>
-
-                        <div class="control-group row-fluid">
-                            <div class="controls">	
-                                <!--[if IE 9]> 
-                                        <label>Alias:</label>
-                                <![endif]--> 
-                                <?php
-                                $field = ProfileField::model()->findByAttributes(array('varname'=>'blog'));
-                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ',
-                                        'placeholder' => '', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-                                echo $form->error($profile, $field->varname);
-                                ?>
-                            </div>
-                        </div>
-
-                        <div class="control-group row-fluid">
-                            <div class="controls">	
-                                <!--[if IE 9]> 
-                                        <label>Alias:</label>
-                                <![endif]--> 
-                                <?php
-                                $field = ProfileField::model()->findByAttributes(array('varname'=>'web'));
-                                echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ',
-                                        'placeholder' => '', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
-                                echo $form->error($profile, $field->varname);
-                                ?>
-                            </div>
-                        </div>
-                           
-                        <?php */ ?>   
-                        <div id="container" class="text_align_center margin_bottom margin_top">
-                            <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"135", "height"=>"135","class"=>"img_1")); ?>
-                        </div>
-                        <label for="fileToUpload">Elige una imagen para tu avatar</label><br/>                                   
-                              <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small"/>
-                              <?php echo CHtml::hiddenField('valido','1'); ?>
-                              <?php echo CHtml::hiddenField('avatar_x','0'); ?>
-                              <?php echo CHtml::hiddenField('avatar_y','0'); ?>
-                        <?php /*?>      <div id="dropTarget">O arrasta la imagen hasta aqui</div><?php */?>
-                              <output id="filesInfo"></output>
-
-                                 <?php $this->widget('bootstrap.widgets.TbButton', array(
-                                                'buttonType'=>'submit',
-                                                'type'=>'danger',
-                                                'label'=>'Subir imagen',
-                                 )); ?>
-                             
+                <hr/>
+                Al hacer clic en "Enviar Solicitud" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
+                <div class="form-actions"> 
 
 
-                        <hr/>
-                        Al hacer clic en "Enviar Solicitud" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
-                        <div class="form-actions"> 
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'buttonType' => 'submit',
+                    'label' => 'Enviar Solicitud',
+                    'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                    'size' => 'large', // null, 'large', 'small' or 'mini'
+                ));
+                ?>
+                </div>
 
-
-                        <?php
-                        $this->widget('bootstrap.widgets.TbButton', array(
-                            'buttonType' => 'submit',
-                            'label' => 'Enviar Solicitud',
-                            'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                            'size' => 'large', // null, 'large', 'small' or 'mini'
-                        ));
-                        ?>
-                        </div>
-
-                    </fieldset>
+            </fieldset>
     <?php $this->endWidget(); ?>
                 </section>
             </div>

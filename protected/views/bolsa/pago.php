@@ -50,7 +50,82 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
         <div class="collapse" id="pagoTarjeta">
         	 <div class="well well-small" >
-            Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
+            <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
+            <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
+            <form>
+              <div class="control-group">
+                <div class="controls">
+                  <input id="nombre" class="span5" placeholder="Nombre impreso en la tarjeta" type="text" maxlength="80">
+                </div>
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <input id="numero" class="span5" placeholder="Número de la tarjeta"  type="text" maxlength="25">
+                </div>
+              </div>      
+
+              <div class="control-group">
+                <div class="controls">
+                  <input id="codigo" class="span2" placeholder="Código de seguridad"  type="text" maxlength="10">
+                </div>
+              </div>             
+              <div class="control-group">
+                <label class="control-label required">Fecha de Vencimiento</label>
+                <div class="controls">
+                  <select id="mes" class="span1" placeholder="Mes" name="mes">
+                    <option value="Mes">Mes</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+                <select id="ano" class="span1" placeholder="Año" name="ano">
+                  <option value="Ano">Año</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="controls">
+                <input id="direccion" class="span5" placeholder="Dirección" type="text" maxlength="150"> 
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="controls">
+                <input id="ciudad" class="span5" placeholder="Ciudad"  type="text" maxlength="50">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="controls">
+                <input id="estado" class="span5" placeholder="Estado" name="TarjetaCredito[estado]" type="text" maxlength="45">
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <input id="zip" class="span2" placeholder="Código Postal" type="text" maxlength="10">
+              </div>
+            </div>
+            <hr>
+            <a id="boton_pago_tarjeta "  class=" btn-large btn btn-danger"> Aceptar </a>            
+          </form>
+
           </div>
         </div>
          <!-- <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">

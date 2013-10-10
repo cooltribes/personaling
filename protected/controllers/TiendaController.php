@@ -139,15 +139,14 @@ class TiendaController extends Controller
 		$a ="a"; 
 		
 		
-		$dp=$producto->nueva($a);
+		$dp=Producto::model()->findAll($producto->nueva2($a));
 
-		$dp->setPagination(false);
-		$dp->disableBehaviors();
+		
 		$arr=array();
-		foreach($dp->getData() as $record) {
+		foreach($dp as $record) {
 			array_push($arr,$record->getPrecio(false));	
 		 }
-		 
+		
 		Yii::app()->session['bsf']=$arr;
 		$dataProvider = $producto->nueva($a);
 		

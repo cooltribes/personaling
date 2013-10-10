@@ -2,7 +2,7 @@
 <?php if($data->status == 0){ ?>
     <tr class="warning">
 <?php } else{ ?>
-    <tr class="<?php echo $data->personal_shopper?'Personal Shopper':''; ?>">
+    <tr class=" <?php echo ($data->personal_shopper == 2)?'info':''; ?> ">
 <?php } ?>
       <td><input name="Check" type="checkbox" value="Check"></td>
       <td>
@@ -19,7 +19,7 @@
         <?php if($data->personal_shopper == 1){
                   echo 'Personal Shopper';
               }else if($data->personal_shopper == 2){
-                  echo 'Aplicante Personal Shopper';
+                  echo '<span class="label label-info"> Aplicante Personal Shopper</span>';
               }else{
                   echo '';
               }

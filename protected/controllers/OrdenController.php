@@ -809,7 +809,7 @@ class OrdenController extends Controller
 						$balance->total = $falta;
 						
 						$subject = 'Pago insuficiente';
-						$body = 'El pago que realizaste no cubre el monto del pedido, faltan '.($falta*-1).' Bs para pagar toda la orden.<br/><br/> ';
+						$body = '¡Upsss! El pago que realizaste no cubre el monto de tu pedido, faltan '.($falta*-1).' Bs para pagar toda la orden y comenzar el procesar el envío de tu compra. <br/><br/> ';
 								
 						if($balance->save())
 						{

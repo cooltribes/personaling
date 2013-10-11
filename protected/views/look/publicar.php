@@ -3,7 +3,7 @@ $this->breadcrumbs=array(
 	'Looks'=>array('admin'),
 	'Publicar',
 );
-
+$disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::STATUS_APROBADO) && !Yii::app()->user->isAdmin())
 ?>
 <div class="container margin_top" id="crear_look">
   <div class="page-header">
@@ -108,7 +108,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <![endif]-->
 		¿Qué nombre le pondrías a este look? 
           <div class="controls">
-             <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45)); ?>
+             <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45,'disabled'=>$disabled)); ?>
              <?php echo $form->error($model,'title'); ?>
           </div>
         </div>
@@ -118,7 +118,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <![endif]-->
          Escribe una descripción para este look
           <div class="controls">
-			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50,'class'=>'span5')); ?>
+			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50,'class'=>'span5','disabled'=>$disabled)); ?>
 			<?php echo $form->error($model,'description'); ?>
           </div>
         </div>
@@ -205,14 +205,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					
 		?>
         <div class="control-group">
-        	<input type="checkbox" class="select_todos_ocasiones" >
+        	
+        	<?php echo CHtml::checkBox($categoria->nombre,false,array('class'=>'select_todos_ocasiones', 'disabled'=>$disabled));  ?>
           <label class="control-label required"><?php echo $categoria->nombre; ?>:</label>
           <div class="controls">
             <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'size' => 'small',
-            'type' => 'primary',
+            		'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-				    'buttons' => $categoria->childrenButtons($model->getCategorias()),
+				    'buttons' => $categoria->childrenButtons($model->getCategorias(),$disabled),
 				)); ?>
 				
           </div>
@@ -239,14 +240,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
              <?php echo $form->radioButtonListInlineRow($model, 'tipo', array(
 			        1=>'Atrevida',
 			        2=>'Conservador',
-			    )); ?> 
+			    ),array('disabled'=>$disabled)); ?> 
           </div>
         </div>
         <hr/>
         <div id="div_tipo">
         <h4>Escoge al tipo de usuaria que favorece</h4>
         <div class="control-group">
-        	<input type="checkbox" class="select_todos" >
+        	
+        	<?php echo CHtml::checkBox('contextura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
           <label class="control-label required">¿A qué tipo de cuerpo le favorece más?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
@@ -254,14 +256,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				    'size' => 'small',
             'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-				    'buttons' => Profile::rangeButtons($field->range,$model->contextura),
+				    'buttons' => Profile::rangeButtons($field->range,$model->contextura,$disabled),
 				)); ?>
 				<?php echo $form->hiddenField($model,'contextura'); ?>
 				<?php echo $form->error($model,'contextura'); ?>
           </div>
         </div>
         <div class="control-group">
-        	<input type="checkbox" class="select_todos" >
+        	<?php echo CHtml::checkBox('pelo',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
           <label class="control-label required">¿Con qué color de cabello quedaría mejor?</label>
           <div class="controls">
           		
@@ -270,7 +272,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				    'size' => 'small',
             'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-				    'buttons' => Profile::rangeButtons($field->range,$model->pelo),
+				    'buttons' => Profile::rangeButtons($field->range,$model->pelo,$disabled),
 				)); ?>
 				<?php echo $form->hiddenField($model,'pelo'); ?>
 				<?php echo $form->error($model,'pelo'); ?>
@@ -278,7 +280,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         </div>
         <div class="control-group">
-        	<input type="checkbox" class="select_todos" >
+        	<?php echo CHtml::checkBox('altura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
           <label class="control-label required">¿Cuánto debe medir la mujer que use este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
@@ -286,14 +288,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				    'size' => 'small',
             'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-				    'buttons' => Profile::rangeButtons($field->range,$model->altura),
+				    'buttons' => Profile::rangeButtons($field->range,$model->altura,$disabled),
 				)); ?>
 				<?php echo $form->hiddenField($model,'altura'); ?>
 				<?php echo $form->error($model,'altura'); ?>
           </div>
         </div>
         <div class="control-group">
-        	<input type="checkbox" class="select_todos" >
+        	<?php echo CHtml::checkBox('ojos',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
           <label class="control-label required">¿Con qué color de ojos queda mejor?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
@@ -301,14 +303,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				    'size' => 'small',
             'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-				    'buttons' => Profile::rangeButtons($field->range,$model->ojos),
+				    'buttons' => Profile::rangeButtons($field->range,$model->ojos,$disabled),
 				)); ?>
 				<?php echo $form->hiddenField($model,'ojos'); ?>
 				<?php echo $form->error($model,'ojos'); ?>
           </div>
         </div>
         <div class="control-group">
-        	<input type="checkbox" class="select_todos" >
+        	<?php echo CHtml::checkBox('tipo_cuerpo',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
           <label class="control-label required">¿Qué tipo de cuerpo debería usarlo?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
@@ -316,14 +318,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				    'size' => 'small',
             'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-				    'buttons' => Profile::rangeButtons($field->range,$model->tipo_cuerpo),
+				    'buttons' => Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled),
 				)); ?>
 				<?php echo $form->hiddenField($model,'tipo_cuerpo'); ?>
 				<?php echo $form->error($model,'tipo_cuerpo'); ?>
           </div>
         </div>
         <div class="control-group">
-        	<input type="checkbox" class="select_todos" >
+        	<?php echo CHtml::checkBox('piel',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
           <label class="control-label required">¿Qué color de piel se adapta mejor a este look?</label>
           <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
@@ -331,7 +333,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				    'size' => 'small',
             'type' => 'primary',
 				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-				    'buttons' => Profile::rangeButtons($field->range,$model->piel),
+				    'buttons' => Profile::rangeButtons($field->range,$model->piel,$disabled),
 				)); ?>
 				<?php echo $form->hiddenField($model,'piel'); ?>
 				<?php echo $form->error($model,'piel'); ?>

@@ -94,7 +94,9 @@ class Orden extends CActiveRecord
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
-                        
+			'estados' => array(self::HAS_MANY, 'Estado', 'orden_id', 'index'=>'id'),
+			
+                       
 		);
 	}
 
@@ -190,6 +192,42 @@ class Orden extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function activas()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+		$criteria->select='t.*';
+		$criteria->with=array('estados');
+		$criteria->compare('t.user_id',$this->user_id);
+		$criteria->addCondition("t.estado < 5 OR t.estado =7 OR (t.estado = 8 AND estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."' )");
+		//$criteria->addCondition("estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."'");
+		$criteria->together = true;
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	
+	public function historial()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+		$criteria->select='t.*';
+		$criteria->with=array('estados');
+		$criteria->compare('t.user_id',$this->user_id);
+		$criteria->addCondition("(t.estado = 8 AND estados.fecha <'".date('Y-m-d', strtotime('-1 month')).") OR t.estado = 5 '");
+		$criteria->together = true;
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	
+	
+	
 	public function getTotalByUser($id){
 		
 		$sql = "select sum(total) from tbl_orden where user_id = ".$id;

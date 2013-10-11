@@ -21,7 +21,7 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter',),
+				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
@@ -45,7 +45,7 @@ class OrdenController extends Controller
 		$orden = new Orden;
 		
 		$orden->user_id = Yii::app()->user->id;
-		$dataProvider = $orden->busqueda();
+		$dataProvider = $orden->activas();
 		
 		$this->render('adminUsuario',
 		array('orden'=>$orden,
@@ -53,7 +53,19 @@ class OrdenController extends Controller
 		));
 
 	}
+	public function actionHistorial()
+	{
+		$orden = new Orden;
+		
+		$orden->user_id = Yii::app()->user->id;
+		$dataProvider = $orden->historial();
+		
+		$this->render('adminUsuario',
+		array('orden'=>$orden,
+		'dataProvider'=>$dataProvider,
+		));
 
+	}
 	
 	/*
 	 * action de detalle desde usuario 

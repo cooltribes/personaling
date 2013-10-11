@@ -278,9 +278,8 @@ class RegistrationController extends Controller
                                     foreach ($images as $image => $pic) {
                                         $nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'. $id .'/'. $image;
                                         $extension = '.'.$pic->extensionName;
-                                        $model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
-                                        
-                                        echo "<br/>guarda imagen";
+                                        $model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;                                        
+                                       
                                         if (!$model->save()){	
                                             Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');
                                         }

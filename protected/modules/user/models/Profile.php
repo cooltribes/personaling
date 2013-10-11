@@ -224,7 +224,6 @@ class Profile extends UActiveRecord
                             $this->_modelReg=ProfileField::model()->forRegistration()->findAll();
                             
                             if($this->profile_type == 4){ //Personal Shopper
-                                
                                 $this->_modelReg = array_merge($this->_modelReg, ProfileField::model()->forPersonalShopperReg()->forOwner()->findAll());
                             }
                         }

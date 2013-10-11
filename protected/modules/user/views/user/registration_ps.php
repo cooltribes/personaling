@@ -77,9 +77,10 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
 
     <?php 
     $profileFields = $profile->getFields();
+    $face = $twi = null;
     if ($profileFields) {
         foreach ($profileFields as $field) {
-            //echo $field->varname;
+           // echo $field->varname;
             ?>
             <div class="control-group">
                 <div class="controls row-fluid">
@@ -127,11 +128,11 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                         <?php
                         }
                         elseif ($field->varname == 'blog') {
-                            $face = $field;
-                            continue;
+//                            $face = $field;
+//                            continue;
                         }elseif ($field->varname == 'web') {
-                            $twi = $field;
-                            continue;
+//                            $twi = $field;
+//                            continue;
                         }
                         //------------- condicion para mostar label en IE9 OFF ----------------//
 
@@ -148,16 +149,16 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                   <div class="control-group">
                     <div class="controls row-fluid">
                         <?php  
-                        echo $form->textFieldRow($profile, $face->varname, array('class' => 'span12 ', 'maxlength' => (($face->field_size) ? $face->field_size : 255)));
-                        echo $form->error($profile, $face->varname); 
+//                        echo $form->textFieldRow($profile, $face->varname, array('class' => 'span12 ', 'maxlength' => (($face->field_size) ? $face->field_size : 255)));
+//                        echo $form->error($profile, $face->varname); 
                         ?>
                     </div>
                 </div> 
                 <div class="control-group">
                     <div class="controls row-fluid">
                         <?php  
-                        echo $form->textFieldRow($profile, $twi->varname, array('class' => 'span12 ', 'maxlength' => (($twi->field_size) ? $twi->field_size : 255)));
-                        echo $form->error($profile, $twi->varname); 
+//                        echo $form->textFieldRow($profile, $twi->varname, array('class' => 'span12 ', 'maxlength' => (($twi->field_size) ? $twi->field_size : 255)));
+//                        echo $form->error($profile, $twi->varname); 
                         ?>
                     </div>
                 </div>         

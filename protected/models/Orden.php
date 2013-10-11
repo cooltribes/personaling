@@ -219,7 +219,7 @@ class Orden extends CActiveRecord
 		$criteria->select='t.*';
 		$criteria->with=array('estados');
 		$criteria->compare('t.user_id',$this->user_id);
-		$criteria->addCondition("t.estado = 8 AND estados.fecha <'".date('Y-m-d', strtotime('-1 month'))."'");
+		$criteria->addCondition("(t.estado = 8 AND estados.fecha <'".date('Y-m-d', strtotime('-1 month')).") OR t.estado = 5 '");
 		$criteria->together = true;
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

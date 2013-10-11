@@ -528,8 +528,11 @@ else{
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;		
 		
 		
 		
@@ -565,9 +568,12 @@ public function actionCategorias2(){
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 		// para que tambiÃ©n filtre del lado del list view
 		/*
 		$producto = new Producto;
@@ -844,14 +850,16 @@ public function actionCategorias2(){
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
-                Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-                Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
-                Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+			  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
                 
                 echo CJSON::encode(array(
                     'status' => 'success',

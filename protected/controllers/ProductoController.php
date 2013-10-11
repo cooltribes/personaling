@@ -1579,7 +1579,7 @@ class ProductoController extends Controller
 							$precio->precioVenta = $row['G'];
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = $row['G'] * 1.12;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 						}
 						else {
 							$precio = new Precio;
@@ -1588,7 +1588,7 @@ class ProductoController extends Controller
 							$precio->tbl_producto_id = $producto->id;
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = $row['G'] * 1.12;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 						}
 						
 						if($precio->save())
@@ -1710,7 +1710,7 @@ class ProductoController extends Controller
 							$precio->tbl_producto_id = $prod->id;
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = $row['G'] * 1.12;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 							
 							if($precio->save())
 							{

@@ -52,7 +52,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         	 <div class="well well-small" >
             <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
             <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
-            <form id="tarjeta-credito" class="">
+            <form action="confirmar" method="POST">
               <div class="control-group">
                 <div class="controls">
                   <?php echo CHtml::activeTextField($tarjeta,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); ?>
@@ -102,7 +102,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <hr>
           	<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
             <button type="submit" id="boton_pago_tarjeta" class=" btn-large btn btn-warning"> Siguiente </button>            
-          </form>
+
 
           </div>
         </div>
@@ -314,7 +314,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
     <?php //Yii::app()->getSession()->add('tipoPago',1); ?>
     <div class="span5 margin_bottom padding_top_xsmall">
-    	<form action="confirmar" method="POST">
+    	
       <div class="margin_left">
         <div id="resumen" class="well well_personaling_big ">
           <h4>Resumen de la compra</h4>

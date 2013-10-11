@@ -267,32 +267,6 @@ class BolsaController extends Controller
 			
 			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
 			{
-				if(isset($_POST['nombre']) || isset($_POST['numero']) ){ // pago de tarjeta de credito
-					
-					$usuario = Yii::app()->user->id; 
-					
-					$tarjeta = new TarjetaCredito;
-								
-					$tarjeta->nombre = $_POST['nombre'];
-					$tarjeta->numero = $_POST['numero'];
-					$tarjeta->codigo = $_POST['codigo'];
-					$tarjeta->vencimiento = $_POST['mes']."/".$_POST['ano'];
-					$tarjeta->direccion = $_POST['direccion'];
-					$tarjeta->ciudad = $_POST['ciudad'];
-					$tarjeta->zip = $_POST['zip'];
-					$tarjeta->estado = $_POST['estado'];
-					$tarjeta->user_id = $usuario;		
-										
-					if($tarjeta->save())
-					{
-						$idDireccion = $_POST['idDireccion'];
-						$tipoPago = $_POST['tipoPago'];
-						
-						$this->redirect($this->createAbsoluteUrl('bolsa/confirmar',array('tipo_pago'=>$tipoPago,'idDireccion'=>$idDireccion,'idTarjeta'=>$tarjeta->id)));
-					}
-				}
-				
-				
 				 
 				$idDireccion = $_POST['idDireccion'];
 				$tipoPago = $_POST['tipoPago'];
@@ -476,15 +450,42 @@ class BolsaController extends Controller
 			//var_dump($_POST);
 			if(isset($_POST['tipo_pago'])){
 				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
-				Yii::app()->getSession()->add('idTarjeta',$_POST['idTarjeta']);
 				
 				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
 					Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
 				}else{
 					Yii::app()->getSession()->add('usarBalance','0');
 				}
+				
+				if(isset($_POST['mes']) || isset($_POST['ano'])){ // pago de tarjeta de credito
+					
+					$usuario = Yii::app()->user->id; 
+					
+					$tarjeta = new TarjetaCredito;
+								
+					$tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
+					$tarjeta->numero = $_POST['TarjetaCredito']['numero'];
+					$tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
+					$tarjeta->vencimiento = $_POST['mes']."/".$_POST['ano'];
+					$tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
+					$tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
+					$tarjeta->zip = $_POST['TarjetaCredito']['zip'];
+					$tarjeta->estado = $_POST['TarjetaCredito']['estado'];
+					$tarjeta->user_id = $usuario;		
+										
+					if($tarjeta->save())
+					{
+						$idDireccion = $_POST['idDireccion'];
+						$tipoPago = $_POST['tipo_pago'];
+						
+					//	$this->redirect($this->createAbsoluteUrl('bolsa/confirmar',array('tipo_pago'=>$tipoPago,'idDireccion'=>$idDireccion,'idTarjeta'=>$tarjeta->id)));
+					}
+				}
+				
+				Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
+				
 				//echo '<br/>'.$_POST['tipo_pago'];
-				$this->render('confirmar',array('idTarjeta'=>$_POST['idTarjeta']));
+				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
 			}
 		}
 		
@@ -665,12 +666,14 @@ class BolsaController extends Controller
 		
 			if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
 						
-					if($_POST['idCard'] == 0) // creo una tarjeta nueva
+					if($_POST['tarjeta'] != 0) // grabo temporal la tarjeta
 					{
 						$usuario = Yii::app()->user->id; 
+						
+						$tarjeta = TarjetaCredito::model()->findByPk($_POST['tarjeta']);
 							
-						$exp = $_POST['mes']."/".$_POST['ano'];
-							
+						//$exp = $_POST['mes']."/".$_POST['ano'];
+							/*
 							$data_array = array(
 								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
 								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
@@ -684,6 +687,21 @@ class BolsaController extends Controller
 								"ZipCode"=>$_POST['zip'], // CODIGO POSTAL
 								"State"=>$_POST['est'], //ESTADO
 							);
+							*/
+							
+							$data_array = array(
+								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
+								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
+								"CardHolder"=>$tarjeta->nombre, // NOMBRE EN TARJETA
+								"CardNumber"=>$tarjeta->numero, // NUMERO DE TARJETA
+								"CVC"=>$tarjeta->codigo, //CODIGO DE SEGURIDAD
+								"ExpirationDate"=>$tarjeta->vencimiento, // FECHA DE VENCIMIENTO
+								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+								"Address"=>$tarjeta->direccion, // DIRECCION
+								"City"=>$tarjeta->ciudad, // CIUDAD
+								"ZipCode"=>$tarjeta->zip, // CODIGO POSTAL
+								"State"=>$tarjeta->estado, //ESTADO
+							);
 							
 						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
 							
@@ -691,18 +709,19 @@ class BolsaController extends Controller
 							
 								$detalle = new Detalle;
 							
-								$detalle->nTarjeta = $_POST['num'];
+								$detalle->nTarjeta = $tarjeta->numero;
 								$detalle->nTransferencia = $output->id;
-								$detalle->nombre = $_POST['nom'];
-								$detalle->codigo = $_POST['cod'];
-								$detalle->vencimiento = $exp;
+								$detalle->nombre = $tarjeta->nombre;
+								$detalle->codigo = $tarjeta->codigo;
+								$detalle->vencimiento = $tarjeta->vencimiento;
 								$detalle->monto = $_POST['total'];
 								$detalle->fecha = date("Y-m-d H:i:s");
 								$detalle->banco = 'TDC';
 								$detalle->estado = 1; // aceptado
 								
 								if($detalle->save()){
-												
+									
+									/*			
 									$tarjeta = new TarjetaCredito;
 								
 									$tarjeta->nombre = $_POST['nom'];
@@ -717,6 +736,8 @@ class BolsaController extends Controller
 										
 									$tarjeta->save();
 									
+									*/
+									$tarjeta->delete();
 									
 									// cuando finalice entonces envia id de la orden para redireccionar
 									echo CJSON::encode(array(
@@ -730,7 +751,9 @@ class BolsaController extends Controller
 								
 							}// 201
 							else
-							{	
+							{
+								$tarjeta->delete();
+									
 								// cuando finalice entonces envia id de la orden para redireccionar
 								echo CJSON::encode(array(
 									'status'=> $output->code, // paso o no
@@ -744,7 +767,7 @@ class BolsaController extends Controller
 						//	$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
 						//	$respCard = $respCard."Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO
 
-						}
+						}/*
 						else // escogio una tarjeta
 						{
 							
@@ -791,7 +814,7 @@ class BolsaController extends Controller
 								}
 					
 							}
-						}
+						}*/
 
 
 					}

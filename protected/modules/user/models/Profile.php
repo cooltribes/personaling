@@ -146,7 +146,7 @@ class Profile extends UActiveRecord
 		
 		foreach ($model as $field)
 			$labels[$field->varname] = ((Yii::app()->getModule('user')->fieldsMessage)?UserModule::t($field->title,array(),Yii::app()->getModule('user')->fieldsMessage):UserModule::t($field->title));
-		print_r($labels);	
+		//print_r($labels);	
 		return $labels;
 	}
 	
@@ -169,7 +169,7 @@ class Profile extends UActiveRecord
 		else
 			return $array;
 	}
-	static public function rangeButtons($str,$fieldValue=NULL) {
+	static public function rangeButtons($str,$fieldValue=NULL,$disabled=false) {
 		$rules = explode(';',$str);
 		$array = array();
 		for ($i=0;$i<count($rules);$i++) {
@@ -177,7 +177,7 @@ class Profile extends UActiveRecord
 			if (isset($item[0])){
 				$array[$i]['label'] = ((isset($item[1]))?$item[1]:$item[0]);
 				$array[$i]['url'] = '#'.$item[0];
-				
+				$array[$i]['htmlOptions'] = array('disabled'=>$disabled);
 				if ((int)$item[0]&(int)$fieldValue){
 					
 					//echo 'item'.$item[0].'value'.$fieldValue;
@@ -210,8 +210,15 @@ class Profile extends UActiveRecord
 	
 	public function getFields() {
 		if ($this->regMode) {
-			if (!$this->_modelReg)
-				$this->_modelReg=ProfileField::model()->forRegistration()->findAll();
+			if (!$this->_modelReg){
+                            $this->_modelReg=ProfileField::model()->forRegistration()->findAll();
+                            
+                            if($this->profile_type == 4){ //Personal Shopper
+                                
+                                $this->_modelReg = array_merge($this->_modelReg, ProfileField::model()->forPersonalShopperReg()->forOwner()->findAll());
+                            }
+                        }
+				
 			return $this->_modelReg;
 		} else {
 			
@@ -254,7 +261,7 @@ class Profile extends UActiveRecord
 		return parent::afterFind();
 	}
 	
-	public function getSaldo($id){
+	public function getSaldo($id , $format=true){
 			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id)->queryScalar();
 			$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;

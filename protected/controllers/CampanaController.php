@@ -89,7 +89,7 @@ class CampanaController extends Controller
 	{
 		$campana = Campana::model()->findByPk($id);
 		
-		if(isset($_GET['User_page']) || isset($_GET['ajax']))
+		if(isset($_GET['User_page']) || isset($_GET['ajax'])) 
 		{
 			Yii::app()->session['campana_id'] = $campana->id;
 				

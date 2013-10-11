@@ -212,6 +212,10 @@ class ProductoController extends Controller
 					
 					if($_POST['accion'] == "nuevo") // guardar y nuevo
 						$this->redirect(array('create'));
+					
+					if($_POST['accion'] == "siguiente") // guardar y siguiente
+						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					
 				}
 				//	$this->redirect(array('view','id'=>$model->id));
 			}
@@ -882,7 +886,8 @@ class ProductoController extends Controller
 
             if (isset($_POST['query']))
             {
-                    echo($_POST['query']);	
+                    //echo($_POST['query']);	
+                    unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
                     $dataProvider = $producto->search();
             }	
@@ -1573,6 +1578,8 @@ class ProductoController extends Controller
 							$precio->costo = $row['F'];
 							$precio->precioVenta = $row['G'];
 							$precio->precioDescuento = $row['G'];
+							$precio->impuesto = 1;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 						}
 						else {
 							$precio = new Precio;
@@ -1580,6 +1587,8 @@ class ProductoController extends Controller
 							$precio->precioVenta = $row['G'];
 							$precio->tbl_producto_id = $producto->id;
 							$precio->precioDescuento = $row['G'];
+							$precio->impuesto = 1;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 						}
 						
 						if($precio->save())
@@ -1700,6 +1709,8 @@ class ProductoController extends Controller
 							$precio->precioVenta = $row['G'];
 							$precio->tbl_producto_id = $prod->id;
 							$precio->precioDescuento = $row['G'];
+							$precio->impuesto = 1;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 							
 							if($precio->save())
 							{

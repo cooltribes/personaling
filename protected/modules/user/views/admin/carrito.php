@@ -116,7 +116,7 @@ if($bolsa){
             <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
           </div>
           <!-- Look OFF --> 
-          <?	 
+          <?php	 
 			}
 		  }
 
@@ -140,9 +140,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               </thead>
               <tbody>
                 <?php
-                  
 
-                  
 				  if(isset($bptcolor)) // si hay productos en la bolsa del usuario
 				  {
 				  
@@ -188,9 +186,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 	                	</tr>";
 				  	}// foreach
 				}//if isset    
-				else {
-							
-				}
+
 				  
                   ?>
               </tbody>
@@ -198,6 +194,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
           </div>
           <!-- Look OFF -->
           <?php
+          
 			}// if de productos individuales
 			else
 			{ 

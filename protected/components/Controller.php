@@ -48,4 +48,10 @@ class Controller extends CController
 	              ),
 		);
 	}	
+/* Filtros para controlar http y https */
+
+	public function filterHttps( $filterChain ) {
+	        $filter = new HttpFilter;
+	        $filter->filter( $filterChain );
+	    }
 }

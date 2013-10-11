@@ -21,12 +21,14 @@ $this->breadcrumbs=array(
 )); ?>
 
 	<?php echo $form->errorSummary($model); ?>
-  
-  <?php
+<?php
 	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
-	//<input id="accion" type="hidden" value="" />	
+	echo CHtml::hiddenField('id_sig',$model->next($model->id), array('id' => 'id_sig'));
+	
+	//  <input id="id_sig" type="hidden" value="<?php echo $model->next($model->id);" />	
+	
 ?>
-  
+ 
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
@@ -102,6 +104,14 @@ $this->breadcrumbs=array(
 			'htmlOptions' => array('id'=>'normal'),
 		)); ?>
        	<ul class="nav nav-stacked nav-tabs margin_top">
+       		<?php
+       		if($model->next($model->id) != NULL)
+			{
+       		?>
+       		<li><a id="siguiente" style="cursor: pointer" title="Guardar y Siguiente">Guardar y siguiente producto</a></li>
+       		<?php
+			}
+       		?>
          	<li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
 			<li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
         </ul>
@@ -157,6 +167,23 @@ $this->breadcrumbs=array(
 		$('#producto-form').submit();
 	
 	}	
+	);
+	
+	$('a#siguiente').on('click', function(event) {
+		
+		event.preventDefault();
+		
+		$("#accion").attr("value", "siguiente");
+		var uno = $("#id_sig").attr("value");
+		
+		if(uno != ""){
+			//alert(uno);
+
+			// submit del form
+			$('#producto-form').submit();
+		}
+	}	
 	);	
+		
 		
 </script>

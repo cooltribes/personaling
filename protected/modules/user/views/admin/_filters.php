@@ -17,6 +17,7 @@
                                     'style' => 'display:none'));
     echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
                                                        'ps' => 'Personal Shopper',
+                                                       'aplica' => 'Aplicante Personal Shopper',
                                                        'user' => 'Usuario',),
                             array('style' => 'display:none'));    
     

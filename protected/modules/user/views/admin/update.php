@@ -89,7 +89,7 @@ function getMonthsArray()
             </div>
           </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
-          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
+          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si', 2 => "Aplicante"),array('class'=>'span2')); ?> </div>
           <div class="control-group">
             <label for="" class="control-label ">Estado: </label>  
             <div class="controls">  
@@ -225,9 +225,16 @@ function getMonthsArray()
               </li>
               <li>
               	<?php
-              	 
+                    
+                    if($model->personal_shopper == 1){
+                        $titulo = 'Quitar Personal Shopper';
+                    }else if($model->personal_shopper == 2){
+                        $titulo = 'Aprobar como Personal Shopper';
+                    }else{
+                        $titulo = 'Hacer Personal Shopper';
+                    }
 				echo CHtml::ajaxLink(
-					  "<i class='icon-user'></i> Hacer Personal Shopper",
+					  "<i class='icon-user'></i> {$titulo}",
 					  Yii::app()->createUrl( 'user/admin/toggle_ps' ,array('id'=>$model->id)),
 					  array( // ajaxOptions
 					    'type' => 'POST',
@@ -243,12 +250,19 @@ function getMonthsArray()
 					                   // alert(data.personal_shopper);
 					                    if (data.status == 'success')
 					                    	$('#User_personal_shopper').val(data.personal_shopper);
+                                                                
+                                                                bootbox.alert(\"¡Se ha aprobado la solicitud para Personal Shopper!\");
+                                                                var text = data.personal_shopper == 1? 'Quitar Personal Shopper':'Hacer Personal Shopper';
+                                                                
+                                                                var child = $('#ps_link').children(); 
+                                                                $('#ps_link').html(child).append(' '+text);
+
 					                  }",
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),
 					  array( //htmlOptions
 					    'href' => Yii::app()->createUrl( 'user/admin/toggle_ps' ),
-					    //'class' => $class
+					    'id' => "ps_link",
 					  )
 					);
 ?>

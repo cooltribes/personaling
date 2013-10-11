@@ -131,9 +131,9 @@
                       <td class="w580" width="360" valign="top">
                        <span class="hide">
                                                 <p id="permission-reminder" align="left" class="footer-content-left" style="color:#FFFFFF">
-                                                    <span>Recibes este correo porque tienes una invitación para unirte a <a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a> </span>
+                                                    <?php echo $footer; ?>
                                                 </p>
-                                                </span>
+                        </span>
                        </td>
                       <td class="hide w0" width="60"></td>
                       <td class="hide w0" width="160" valign="top">

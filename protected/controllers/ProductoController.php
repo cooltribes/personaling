@@ -138,6 +138,9 @@ class ProductoController extends Controller
 					if($_POST['accion'] == "nuevo") // guardar y nuevo
 						$this->redirect(array('create'));
 					
+					if($_POST['accion'] == "siguiente") // guardar y siguiente
+						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					
 			}
 			else // nuevo
 			{
@@ -315,6 +318,9 @@ class ProductoController extends Controller
 					if($_POST['accion'] == "avanzar") // guardar y avanzar
 						$this->redirect(array('seo','id'=>$model->id));
 					
+					if($_POST['accion'] == "siguiente") // guardar y siguiente
+						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					
 			}
 
 
@@ -328,6 +334,9 @@ class ProductoController extends Controller
 	
 	// carga de imagenes
 	public function actionMulti() {
+		
+		if($_POST['accion'] == "siguiente") // guardar y siguiente
+			$this->redirect(array('create','id'=>$_POST['id_sig']));
 				
 		if(!isset($_GET['id'])){
 			$this->redirect(array('producto/imagenes'));
@@ -1662,14 +1671,26 @@ class ProductoController extends Controller
 								}
 							
 							// seo
-														
-								$seo = new Seo;
-								$seo->mTitulo = $producto->nombre;
-								$seo->mDescripcion = $row['O'];
-								$seo->pClave = $row['P'];
-								$seo->tbl_producto_id = $producto->id;
+									
+								$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));	
 								
-								$seo->save();
+								if(isset($seo)){
+									$seo->mTitulo = $producto->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									
+									$seo->save();
+								}
+								else {
+									$seo = new Seo;
+									$seo->mTitulo = $producto->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									$seo->tbl_producto_id = $producto->id;
+									
+									$seo->save();
+								}
+					
 								
 			$tabla = $tabla.'Se agregó el producto con id '.$producto->id;
 			$tabla = $tabla.', de nombre: '.$producto->nombre;
@@ -1769,14 +1790,27 @@ class ProductoController extends Controller
 								}
 								
 								// seo
-														
-								$seo = new Seo;
-								$seo->mTitulo = $prod->nombre;
-								$seo->mDescripcion = $row['O'];
-								$seo->pClave = $row['P'];
-								$seo->tbl_producto_id = $prod->id;
+
+								$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));	
 								
-								$seo->save();
+								if(isset($seo)){
+									$seo->mTitulo = $producto->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									
+									$seo->save();
+								}
+								else {
+									$seo = new Seo;
+									$seo->mTitulo = $producto->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									$seo->tbl_producto_id = $producto->id;
+									
+									$seo->save();
+								}
+								
+								
 								
 		$tabla = $tabla.'Se agregó el producto con id '.$prod->id; 
 		$tabla = $tabla.', de nombre: '.$prod->nombre;

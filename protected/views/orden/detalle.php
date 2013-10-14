@@ -431,13 +431,13 @@ $usuario = User::model()->findByPk($orden->user_id);
             <?php
             switch ($orden->tipo_guia) {
                 case 0:
-                    echo '0,5 Kg.';
+                    echo 'Zoom hasta 0,5 Kg.';
                     break;
                 case 1:
-                    echo '5 Kg.';
+                    echo 'Zoom entre 0,5 y 5 Kg.';
                     break;
 				case 2:
-                    echo '10 Kg.';
+                    echo 'DHL mayor a 5 Kg.';
                     break;
                 default:
                     break;

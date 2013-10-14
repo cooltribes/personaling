@@ -664,6 +664,8 @@ class Look extends CActiveRecord
 			return Yii::app()->baseUrl."/look/".$this->id;
 		
 	}
+
+
         
          /**
          * Buscar por todos los filtros dados en el array $filters
@@ -850,6 +852,6 @@ class Look extends CActiveRecord
                 'criteria' => $criteria,
             ));
        }
-
-
+	
+	
 }

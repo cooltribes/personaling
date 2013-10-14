@@ -659,7 +659,7 @@ class OrdenController extends Controller
 						}
 						// Subject y body para el correo
 						$subject = 'Pago aceptado';
-						$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
+						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
 						
 						$usuario = Yii::app()->user->id;
 						
@@ -681,7 +681,7 @@ class OrdenController extends Controller
 								$desc->total = $excede;							
 								$desc->save();
 								// Cambio el body del correo para agregar el saldo que sobra
-								$body .= 'Tienes disponible un saldo a favor de '.$excede.' Bs.';
+								$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.$excede.' Bs.';
 							}
 						}
 						else					
@@ -695,7 +695,7 @@ class OrdenController extends Controller
 							$balance->total = $excede;
 							
 							$balance->save();
-							$body .= 'Tienes disponible un saldo a favor de '.$excede.' Bs.';
+							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.$excede.' Bs.';
 						} // si es mayor hace el balance
 						
 													
@@ -1115,10 +1115,10 @@ class OrdenController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
-						$body = "Nos complace informar que tu pedido #".$orden->id." ha sido enviado <br/>
+						$body = "Nos complace informarte que tu pedido #".$orden->id." esta en camino y pronto podrás disfrutar de tu compra
 								<br/>
-								Empresa: Zoom <br/>
-								Número de seguimiento: ".$orden->tracking." <br/> 
+								<br/>
+								Puedes hacer seguimiento a tu pedido a través de la página de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: ".$orden->tracking." <br/> 
 								";
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;

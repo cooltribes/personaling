@@ -381,9 +381,7 @@ class Look extends CActiveRecord
 	public function lookDestacados($limit = 6) 
 	{
 		
-		$criteria=new CDbCriteria;  
-
-		
+		$criteria=new CDbCriteria;  		
 		
 		$criteria->compare('destacado',1);
 		$criteria->compare('status',2);

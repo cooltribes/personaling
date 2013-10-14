@@ -65,7 +65,8 @@ class ControlpanelController extends Controller
         
         public function actionProductos()
 	{
-		$this->render('productos');
+            
+            $this->render('productos');
 	}
 
 	// Uncomment the following methods and override them if needed

@@ -324,19 +324,19 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
       
       <h2 class="braker_bottom margin_bottom_small">Looks</h2>
       <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#tab1">Looks más vendidos</a></li>
-        <li><a data-toggle="tab" href="#tab2">Productos mas vendidos</a></li>
-        <li><a data-toggle="tab" href="#tab3">Marcas mas vendidas</a></li>
+        <li><a data-toggle="tab" href="#tab1">Número de visitas</a></li>
+        <li class="active"><a data-toggle="tab" href="#tab2">Status</a></li>
+        
       </ul>
       <div class="tab-content">
       
-        <div class="tab-pane active" id="tab1" >
+        <div class="tab-pane" id="tab1" >
             <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
               <tr>
                 <th scope="col">Nombre del Look</th>
-                <th scope="col">Precio (Bs.)</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Total Vendidos (Bs.)</th>
+                <th scope="col">Número de pedidos</th>
+                <th scope="col">Promedio de pedidos</th>
+                <th scope="col">Total de pedidos</th>
               </tr>
 
           <?php
@@ -369,42 +369,45 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 
           </table>
         </div>
-
-        <div class="tab-pane" id="tab2">
+              
+        <div class="tab-pane active" id="tab2">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
               <tr>
-                <th scope="col">Nombre del Producto</th>
-                <th scope="col">Precio (Bs.)</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Total Vendidos (Bs.)</th>
+                <th scope="col">Status</th>
+                <th scope="col">Cantidad de looks</th>
+                <th scope="col">% de Looks</th>
               </tr>	
-          <?php
-                  $x = new Producto;
-                          $prodmas = $x->masvendidos(5);
+            <?php
+                    $x = new Producto;
+                            $prodmas = $x->masvendidos(5);
 
 
-                  foreach($prodmas->getData() as $record) {
+                    foreach($prodmas->getData() as $record) {
 
-                          $pro = Producto::model()->findByPk($record['producto_id']);
+                            $pro = Producto::model()->findByPk($record['producto_id']);
 
-                          $pre = Precio::model()->findByAttributes(array('tbl_producto_id'=>$pro->id));
-                          $tt = (int) $record['productos'];
+                            $pre = Precio::model()->findByAttributes(array('tbl_producto_id'=>$pro->id));
+                            $tt = (int) $record['productos'];
 
-                          $ppp = $pre->precioDescuento * $tt;
+                            $ppp = $pre->precioDescuento * $tt;
 
-                          if (isset($pro)){
-          ?>      
+                            if (isset($pro)){
+            ?>      
 
-              <tr>
-                <td><a href="<?php echo $pro->getUrl(); ?>" title="Ver producto"><?php echo $pro->nombre; ?></a></td>
-                <td>Bs. <?php echo $pre->precioDescuento; ?></td>
-                <td><?php echo $record['productos']; ?></td>
-                <td>Bs. <?php echo $ppp; ?></td>
-              </tr>
-         <?php      
-                          }
-                  }
-         ?>     
+                <tr>
+                  <td><a href="<?php echo $pro->getUrl(); ?>" title="Ver producto"><?php echo $pro->nombre; ?></a></td>
+                  <td>Bs. <?php echo $pre->precioDescuento; ?></td>
+                  <td><div class="pull-right margin_left_small"><?php echo $record['productos']; ?> % 
+                    </div><div class="progress progress-danger">
+                      <div class="bar" style="width: 70%;"></div>
+                    </div>
+                  </td>
+                  
+                </tr>
+           <?php      
+                            }
+                    }
+           ?>     
             </table>
         </div>
 

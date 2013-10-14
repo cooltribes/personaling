@@ -796,10 +796,11 @@ public function multipleColor2($idColor, $idact)
 			
 		//$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
 		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id left join tbl_producto on tbl_producto.id = tbl_precioTallaColor.producto_id where tbl_imagen.orden = 1 and tbl_producto.status = 1 and tbl_producto.estado = 0 GROUP BY producto_id ORDER by productos DESC";
+                $count = Yii::app()->db->createCommand($sql)->queryScalar();
 		//if (isset($limit))
 		//	$sql.=" LIMIT 0,$limit";
 		//$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";
-		$count = 10; 	
+		//$count = 10; 	
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
 			 'pagination'=>array(

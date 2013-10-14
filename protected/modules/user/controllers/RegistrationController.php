@@ -122,9 +122,8 @@ class RegistrationController extends Controller
                                 $message = new YiiMailMessage;
                                 $message->view = "mail_template";
                                 $subject = 'Registro Personaling';
-                                $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>Recibes este correo porque se ha registrado tu dirección en Personaling.
-                                			Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
-                                			<a href="' . $activation_url.'"> Haz click aquí </a>';
+                                $body = '<h2>¡Bienvenido a Personaling.com!</h2><br/>Tu dirección se ha registrado en Personaling.com, solo estas a un paso de comenzar a disfrutar de nuestra plataforma, valida tu cuenta haciendo click en este enlace. <br/><br/>
+                                			<a href="' . $activation_url.'">Click aquí</a>';
                                 $params = array('subject' => $subject, 'body' => $body);
                                 $message->subject = $subject;
                                 $message->setBody($params, 'text/html');
@@ -386,7 +385,7 @@ class RegistrationController extends Controller
             $message            = new YiiMailMessage;
             $message->view = "mail_template";
             $subject = 'Activa tu cuenta en Personaling';
-            $body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/><br/>  <a href="'.$activation_url.'">Haz click aquí</a>';
+            $body = 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com <br/><br/>Valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>  <a href="'.$activation_url.'">Click aquí</a>';
             $params              = array('subject'=>$subject, 'body'=>$body);
             $message->subject    = $subject;
             $message->setBody($params, 'text/html');                

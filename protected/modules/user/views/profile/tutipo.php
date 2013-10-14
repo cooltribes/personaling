@@ -57,7 +57,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 )); ?>
         <fieldset>
           <div id="numero1">
+            <?php if( !(isset($editar) && $editar) ){ ?>
             <legend>Características básicas: </legend>
+            <?php } ?>
             <div class="control-group" >
               <div class="controls row-fluid" id="caracteristicas">
                 <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
@@ -95,7 +97,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               </div>
           </div>
           </div>
+          <?php if( !(isset($editar) && $editar) ){ ?>
           <legend class="margin_top">Forma de tu cuerpo</legend>
+          <?php } ?>
           <div class="control-group" id="numero2">
             <div class="controls row-fluid">
               <?php 

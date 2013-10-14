@@ -108,12 +108,10 @@ class AdminController extends Controller
                         $message = new YiiMailMessage;
                         $message->view = "mail_template";
                         $subject = 'Registro Personaling';
-                        $body = '<h2>Te damos la bienvenida a Personaling.</h2>' . 
-                                '<br/>Tu contraseña provisional es: <strong>'.$originalPass.'</strong><br/>' .
-                                'Puedes cambiarla accediendo a tu cuenta y luego haciendo click '. 
-                                'en la opción Cambiar Contraseña.<br/><br/>Recibes este correo porque se '.
-                                'ha registrado tu dirección en Personaling. '. 
-                                'Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/>  <a href="'.$activation_url.'">Haz click aquí</a>';
+                        $body = '<h2>¡Bienvenido a Personaling.com!</h2><br/>' . 
+                                'Tu registro se ha validado con éxito. <br/><br/>'.
+                                'Tu contraseña provisional es: <strong>'.$originalPass.'</strong><br/><br/>' .
+                                'Esta contraseña puedes cambiarla accediendo a tu cuenta y haciendo click en “cambiar contraseña”. El siguiente paso que debes hacer es validar tu cuenta haciendo click en este enlace: <br/> <br/>  <a href="'.$activation_url.'">Click aquí</a>';
                         $params = array('subject' => $subject, 'body' => $body);
                         $message->subject = $subject;
                         $message->setBody($params, 'text/html');

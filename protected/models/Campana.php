@@ -115,4 +115,15 @@ class Campana extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	/*public function getProgress(){
+		$d1=floor((now()-$this->recepcion_inicio)/(60*60*24));	
+		$d2=floor($this->ventas_fin-(now())/(60*60*24));
+		if($d2<0)
+			$d2=0;
+		$dur=abs($d1)+abs($d2);	
+		return (int)(d1*100/$dur);
+			
+	}*/
+
 }

@@ -239,17 +239,8 @@ class RegistrationController extends Controller
 
                         if (isset($_POST['twitter_id'])) {
                             $model->twitter_id = $_POST['twitter_id'];
-                        }
+                        }                       
                         
-                        if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) {
-                            $model->facebook_id = $_POST['facebook_id'];
-
-                            $model->password = $this->passGenerator();
-                            $soucePassword = $model->password;
-                            $clave = $model->password;
-                            $model->activkey = UserModule::encrypting(microtime() . $model->password);
-                            $model->password = UserModule::encrypting($model->password);
-                        }
 
                         if ($model->save()) {
                             if (isset($_POST['facebook_request'])) {
@@ -327,57 +318,27 @@ class RegistrationController extends Controller
                             Yii::app()->mail->send($message);
                             
                             //Enviar email al admin para informar de una usuaria que aplico
+                            $url = $this->createAbsoluteUrl('/user/admin/update', array("id" => $model->id));
                             $message = new YiiMailMessage;
                             $message->view = "mail_apply";
                             $subject = 'Aplicación de un Personal Shopper';
                             $body = '<h2>¡Hola Admin!</h2>
                                 <br/>Vamos creciendo como la espuma 
-                                ¡Otro Personal Shopper esta en el horno! 
+                                ¡Otro Personal Shopper esta en el horno! <br/>
                                 ¿Quieres revisar su aplicación y dar un veredicto? 
                                 Capaz estás impulsando la carrera del próximo Marc Jacobs o Carolina Herrera.
-                                <br/><br/>';
+                                <br/><br/>'.                                
+                                CHtml::link('Mira su perfil', $url , array('class' => 'btn btn-danger'))
+                                .'<br/><br/>';
                             $footer = '<span>Recibes este correo porque un nuevo Personal Shopper desea unirse a <a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a> </span>';
                             $params = array('subject'=>$subject, 'body'=>$body, 'footer' => $footer);
                             $message->subject    = $subject;
                             $message->setBody($params, 'text/html');                
-                            $message->addTo("info@personaling.com");
+                            $message->addTo($model->email);
                             $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                             Yii::app()->mail->send($message);
                             
-                            //if (Yii::app()->controller->module->sendActivationMail) {
-
-                            if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // de facebook hay que enviar la clave
-                                $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
-
-                                $message = new YiiMailMessage;
-                                $message->view = "mail_template";
-                                $subject = 'Registro Personaling';
-                                $body = '<h2>Te damos la bienvenida a Personaling.</h2>
-                                        <br/>Tu contraseña provisional es: <strong>' . $clave . '</strong><br/>' .
-                                        'Puedes cambiarla accediendo a tu cuenta y luego haciendo click ' .
-                                        'en la opción Cambiar Contraseña.<br/>
-                                        Recibes este correo porque se ha registrado tu dirección en Personaling.
-                                        Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $activation_url.'"> Haz click aquí </a>';
-                                $params = array('subject' => $subject, 'body' => $body);
-                                $message->subject = $subject;
-                                $message->setBody($params, 'text/html');
-                                $message->addTo($model->email);
-                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                                Yii::app()->mail->send($message);
-                            }
                             
-                            //Si se registra por invitación
-                            if (isset($_GET['requestId']) && isset($_GET['email'])) { 
-                                
-                                $invitation = EmailInvite::model()->findByAttributes(array('request_id' => $_GET['requestId']));
-                                if($invitation && $invitation->email_invitado == $model->email){
-                                    $invitation->estado = 1;
-                                    $invitation->save();
-                                }
-                            }
-
-
-
                             if ((Yii::app()->controller->module->loginNotActiv || (Yii::app()->controller->module->activeAfterRegister && Yii::app()->controller->module->sendActivationMail == false)) && Yii::app()->controller->module->autoLogin) {
 //                                $identity = new UserIdentity($model->username, $soucePassword);
 //                                $identity->authenticate();

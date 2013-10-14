@@ -48,7 +48,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'General', 'url'=>array('/controlpanel/index')),
 					array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
 					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
-					array('label'=>'Catálogos', 'url'=>array('/adorno/index')),
+					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
 					)),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),

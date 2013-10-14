@@ -40,7 +40,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
     ?>
                     <fieldset>
                         <legend>O aplica llenando este formulario: </legend>
-                        <?php echo $form->errorSummary(array($model, $profile)); ?>
+                        <?php                         
+                        echo $form->errorSummary(array($model, $profile), 'Faltan algunos campos por completar:'); ?>
                         <?php
                         if (isset($_GET['request_ids'])) {
                             //echo $_GET['request_ids'];
@@ -182,7 +183,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                 <hr/>
                 Al hacer clic en "Enviar Solicitud" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
                 <div class="form-actions"> 
-
+                        
 
                 <?php
                 $this->widget('bootstrap.widgets.TbButton', array(
@@ -242,12 +243,12 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                                 FB.api('/me', function(response) {
                                     console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
                                     console.log(response.birthday);
-
+                                    console.log(response);
 
                                     //	$("#registration-form").fadeOut(100,function(){
 
                                     $('#facebook_id').val(response.id);
-                                    $('#RegistrationForm_password').val('1234');
+                                    $('#RegistrationForm_password').val('');
                                     $('#RegistrationForm_email').val(response.email);
                                     $('#Profile_first_name').val(response.first_name);
                                     $('#Profile_last_name').val(response.last_name);
@@ -269,6 +270,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                                         $('#Profile_sex_0').attr('checked', true);
                                     }
 
+                                     $('#Profile_facebook').val(response.username);
+                                     $('#Profile_url').val(response.username);
                                     $('#registration-form').submit();
 
                                     //	});
@@ -324,6 +327,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                                                 $('#Profile_sex_0').attr('checked', true);
                                             }
 
+                                           
+                                            
                                             $('#registration-form').submit();
 
                                             //	});

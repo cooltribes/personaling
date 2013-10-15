@@ -159,12 +159,13 @@ class Categoria extends CActiveRecord
 	public function getChildren(){
 		return Categoria::model()->findAllByAttributes(array('padreId'=>$this->id),array('order'=>'nombre ASC'));
 	}
-	public function childrenButtons($categorias=NULL){
+	public function childrenButtons($categorias=NULL,$disabled=false){
 		$array = array();
 		$i = 0;
 		foreach (Categoria::model()->findAllByAttributes(array('padreId'=>$this->id)) as $hijo){
 			$array[$i]['label']=$hijo->nombre;
 			$array[$i]['url'] = '#'.$hijo->id;
+			$array[$i]['htmlOptions'] = array('disabled'=>$disabled);
 			if ($categorias)
 				if (in_array($hijo->id, $categorias)) 
 					$array[$i]['active'] = true;

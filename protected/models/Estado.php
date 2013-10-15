@@ -86,7 +86,6 @@ class Estado extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('id',$this->id);
 		$criteria->compare('estado',$this->estado);
 		$criteria->compare('user_id',$this->user_id);

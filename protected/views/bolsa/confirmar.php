@@ -53,6 +53,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
   <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
   <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
+  <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">
@@ -93,6 +94,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
 				}else if(Yii::app()->getSession()->get('tipoPago')==2){
 					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
+					
+					$tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
+					
+					$rest = substr($tarjeta->numero, -4);
+					
+					echo "</br>Nombre: ".$tarjeta->nombre."
+					</br>Numero: XXXX XXXX XXXX ".$rest."
+					</br>Vencimiento: ".$tarjeta->vencimiento;
+
+					
 				}
               ?>
           </table>
@@ -172,7 +183,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php
               }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
-              			
+              		/*	
 					 echo CHtml::link("<i class='icon-locked icon-white'></i> Pagar con tarjeta de crédito",
 					    $this->createUrl('modal',array('id'=>'pago')),
 					    array(// for htmlOptions
@@ -183,7 +194,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 					         'return false;}',
 					    'class'=>'btn btn-warning',
 					    'id'=>'pago')
-					);	
+					);	*/
+					
+					echo "<div class='form-actions'><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-warning'> <i class='icon-locked icon-white'></i>Pagar con tarjeta de crédito </a></div>";
 
 				}
 				else {
@@ -290,9 +303,10 @@ else
 		var usar_balance = $("#usar_balance").attr("value");
 		var tipo_guia = $("#tipo_guia").attr("value");
 		var peso = $("#peso").attr("value");
+		var tarjeta = $("#tarjeta").attr("value");
 		
 		/* lo de la tarjeta */
-		
+		/*
 		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
 		var nom = $("#nombre").attr("value");
 		var num = $("#numero").attr("value");
@@ -303,15 +317,15 @@ else
 		var ciud = $("#ciudad").attr("value");
 		var est = $("#estado").attr("value");
 		var zip = $("#zip").attr("value");
-		
-		if(idCard=="0") // si no se eligió tarjeta sino que escribio los datos de una nueva tarjeta
+		*/
+		if(tarjeta!="0") // el id de la tarjeta de credito que esta temporal en la pagina anterior
 		{
-			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
+			/*if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
 			{
 				alert("Por favor complete los datos.");
 			}
 			else
-			{
+			{*/
 			
 			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
 			
@@ -319,9 +333,11 @@ else
 		        type: "post",
 		        dataType: 'json',
 		        url: "credito", // action 
-		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
+		       /* data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
 		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
-		        		}, 
+		        		}, */
+		        data: { 'tipoPago':tipoPago, 'total':total, 'tarjeta':tarjeta
+		        		}, 		
 		        success: function (data) {
 					
 					if(data.status==201) // pago aprobado
@@ -382,7 +398,7 @@ else
 		       	}//success
 		       })
 			
-			}
+			//}
 		}
 		else
 		{

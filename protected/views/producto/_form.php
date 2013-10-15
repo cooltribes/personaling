@@ -12,6 +12,7 @@
 <?php
 	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
 	//<input id="accion" type="hidden" value="" />	
+	echo CHtml::hiddenField('id_sig',$model->next($model->id), array('id' => 'id_sig'));
 ?>
 
 
@@ -173,7 +174,15 @@
 			'label'=>$model->isNewRecord ? 'Crear producto' : 'Guardar cambios',
 		)); ?>
                 <ul class="nav nav-stacked nav-tabs margin_top">
-                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y Siguiente">Guardar y avanzar</a></li>
+                    <li><a id="avanzar" style="cursor: pointer" title="Guardar y avanzar">Guardar y avanzar</a></li>
+                    <?php
+		       		if($model->next($model->id) != NULL)
+					{
+		       		?>
+		       		<li><a id="siguiente" style="cursor: pointer" title="Guardar y Siguiente">Guardar y siguiente producto</a></li>
+		       		<?php
+					}
+		       		?>
                    <!-- <li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li> -->
                     <li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
                     <!-- <li><a href="#" title="Duplicar">Duplicar Producto</a></li> -->
@@ -258,6 +267,23 @@
 		//$('#producto-form').submit();
 		}
 	);
+	
+	$('a#siguiente').on('click', function(event) {
+		
+		event.preventDefault();
+		
+		$("#accion").attr("value", "siguiente");
+		var uno = $("#id_sig").attr("value");
+		
+		if(uno != ""){
+			//alert(uno);
+
+			// submit del form
+			$('#producto-form').submit();
+		}
+	}	
+	);	
+		
 	
 	/*
 	$('a#nuevo').on('click', function(event) {

@@ -15,23 +15,36 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
 }
 </style>
 
-<div class="wrapper_home">
-  <div class="container">
-    <div class="row">
-      <div class="span7 offset2 text_align_center margin_top">
-        <div class="box_20130928 margin_bottom_small">
-          <h1>Obtén recomendaciones <span>personalizadas adaptadas a ti</span></h1>
-          <p>
-            <span>1.</span> Ingresa tu email
-            <span>2.</span> Indica la forma de tu cuerpo y medidas
-            <span>3.</span> Elige tu estilo
-            <br><span>4.</span> Compra Looks de las mejores marcas recomendados a tu medida
-          </p>
-          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aquí</a> </div>
 
-        </div>
+
+<div class="wrapper_home">
+
+
+  <div id="myCarousel" class="carousel slide">
+
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+      <div class="active item">  <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_2.jpg">
       </div>
+      <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_3.jpg"></div>
+      <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg"></div>
     </div>
+
+
+
+
+  </div>
+
+    <div class="box_20130928 margin_bottom_small">
+        <h1>Obtén recomendaciones <span>personalizadas adaptadas a ti</span></h1>
+        <p>
+          <span>1.</span> Ingresa tu email
+          <span>2.</span> Indica la forma de tu cuerpo y medidas
+          <span>3.</span> Elige tu estilo
+          <br><span>4.</span> Compra Looks de las mejores marcas recomendados a tu medida
+        </p>
+        <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aquí</a> </div>
+
   </div>
 
 <!--   <div class="container menciones ">
@@ -166,3 +179,9 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
   </div>
 </div>
 <!-- Modal OFF --> 
+
+<script type="text/javascript">
+$('.carousel').carousel({
+  interval: 5000
+})
+</script>

@@ -70,7 +70,7 @@ $looks_recomendados = $look->match($model);
       	<?php
       	}
       	?>
-        <li>XX Puntos Ganados</li>
+        
         
         <?php
         

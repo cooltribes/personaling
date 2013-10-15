@@ -90,7 +90,7 @@ $this->breadcrumbs=array(
 				        array('label'=>'40','url'=>'#5'),
 				        array('label'=>'42','url'=>'#6'),
 				        array('label'=>'44','url'=>'#7'),
-				        array('label'=>'46','url'=>'#26'),
+				        array('label'=>'46','url'=>'#51'),
 				    ),
 				)); ?>
               </div>
@@ -133,6 +133,40 @@ $this->breadcrumbs=array(
               </div>
             </div>
             <div class="control-group">
+              <label class="control-label required">Brasssier:</label>
+              <div class="controls">
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'type' => 'primary',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				   
+				    'buttons' => array(
+				        array('label'=>'30A','url'=>'#31', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'30B','url'=>'#32', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'30C','url'=>'#33', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'30D','url'=>'#34', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'32A','url'=>'#35', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'32B','url'=>'#36', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'32C','url'=>'#37', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'32D','url'=>'#38', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'34A','url'=>'#39', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'34B','url'=>'#40', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'34C','url'=>'#41', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'34D','url'=>'#42', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'36A','url'=>'#43', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'36B','url'=>'#44', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'36C','url'=>'#45', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'36D','url'=>'#46', 'htmlOptions'=>array('class'=>'btn-small'),),	
+				        array('label'=>'38A','url'=>'#47', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'38B','url'=>'#48', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'38C','url'=>'#49', 'htmlOptions'=>array('class'=>'btn-small'),),
+				        array('label'=>'38D','url'=>'#50', 'htmlOptions'=>array('class'=>'btn-small'),),
+				    ),
+				)); ?>
+               
+              </div>
+            </div>
+            
+            <div class="control-group">
               <label class="control-label required">Zapatos:</label>
               <div class="controls">
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -152,6 +186,25 @@ $this->breadcrumbs=array(
                
               </div>
             </div>
+            
+            <div class="control-group">
+              <label class="control-label required">Trajes de Baño:</label>
+              <div class="controls">
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'type' => 'primary',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => array(
+				        array('label'=>'8','url'=>'#23'),
+				        array('label'=>'10','url'=>'#24'),
+				        array('label'=>'12','url'=>'#25'),
+				        array('label'=>'14','url'=>'#26'),
+				        array('label'=>'16','url'=>'#27'),
+				       
+				    ),
+				)); ?>
+               
+              </div>
+            </div>            
             </div>
           </fieldset>
           <fieldset class="margin_top">

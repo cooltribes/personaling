@@ -179,7 +179,7 @@ class Profile extends UActiveRecord
 		else
 			return $array;
 	}
-	static public function rangeButtons($str,$fieldValue=NULL) {
+	static public function rangeButtons($str,$fieldValue=NULL,$disabled=false) {
 		$rules = explode(';',$str);
 		$array = array();
 		for ($i=0;$i<count($rules);$i++) {
@@ -187,7 +187,7 @@ class Profile extends UActiveRecord
 			if (isset($item[0])){
 				$array[$i]['label'] = ((isset($item[1]))?$item[1]:$item[0]);
 				$array[$i]['url'] = '#'.$item[0];
-				
+				$array[$i]['htmlOptions'] = array('disabled'=>$disabled);
 				if ((int)$item[0]&(int)$fieldValue){
 					
 					//echo 'item'.$item[0].'value'.$fieldValue;

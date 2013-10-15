@@ -83,11 +83,10 @@ class ProfileController extends Controller
                     $message = new YiiMailMessage;
                     $message->view = "mail_invite";
                     $subject = 'Invitación a Personaling';
-                    $body = '<h2>¡Hola! Has sido invitad@ a Personaling.</h2>' .
-                            '<br/>Tienes una invitacion por parte de <strong>' . $model->profile->first_name . '</strong> ' .
-                            'para unirte a Personaling:<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
-                            'Puedes registrarte haciendo click en el ' .
-                            'enlace que aparece a continuación:<br/> ' . $registration_url;
+                    $body = '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>' . $model->profile->first_name . '</strong>.' .
+                            '<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
+                            'Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas.<br/><br/>' .
+                            'Puedes registrarte haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $registration_url.'">Click aquí</a>';
                     $params = array('subject' => $subject, 'body' => $body);
                     $message->subject = $subject;
                     $message->setBody($params, 'text/html');

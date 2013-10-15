@@ -1016,12 +1016,12 @@ public function multipleColor2($idColor, $idact)
 	
 	public function getUrl() 
 	{
-		if(isset($this->seo->urlAmigable))
-		{
+		//	if(isset($this->url_amigable) && $this->url_amigable != "")	
+		
+		if(isset($this->seo->urlAmigable) && $this->seo->urlAmigable != ""){
 			return Yii::app()->baseUrl."/productos/".$this->seo->urlAmigable;
 		}
-		else
-		{
+		else{
 			return Yii::app()->baseUrl."/producto/detalle/".$this->id;
 		}	
 		

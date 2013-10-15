@@ -276,8 +276,8 @@ class BolsaController extends Controller
 				// se le pasan los datos al action confirmar	
 			}else if(isset($_GET['id'])){ // de direcciones
 			echo "else";
-				$tarjeta = new TarjetaCredito;
-				$this->render('pago',array('id_direccion'=>$_GET['id'],'tarjeta'=>$tarjeta));
+				//$tarjeta = new TarjetaCredito;
+				$this->render('pago',array('id_direccion'=>$_GET['id']));
 			}
 			
 		
@@ -592,7 +592,8 @@ class BolsaController extends Controller
 				
 					if($dir->save())
 					{
-						$this->render('pago',array('idDireccion'=>$dir->id));
+						$tarjeta = new TarjetaCredito;		
+						$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
 						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
 					}
 					

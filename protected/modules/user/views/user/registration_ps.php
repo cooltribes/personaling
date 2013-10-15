@@ -16,9 +16,9 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
     <div class="container margin_top">
         <div class="row">
             <div class="span6 offset3">               
-                <div class="page-header"><h1>Forma parte de los Personal Shoppers en Personaling</h1></div>
+                <div class="page-header"><h1 class="text_align_center">Forma parte de los Personal Shoppers en Personaling</h1></div>
                 <div class="row margin_bottom_medium margin_top_medium">
-                    <div id="boton_facebook" class="span3 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
+                    <div id="boton_facebook" class="span3 text_align_center margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
                 </div>
                   <!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
                   <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
@@ -39,7 +39,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
     ));
     ?>
                     <fieldset>
-                        <legend>O aplica llenando este formulario: </legend>
+                        <legend class="text_align_center">O aplica llenando este formulario: </legend>
                         <?php echo $form->errorSummary(array($model, $profile)); ?>
                         <?php
                         if (isset($_GET['request_ids'])) {

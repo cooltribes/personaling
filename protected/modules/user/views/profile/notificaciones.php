@@ -25,7 +25,7 @@ $this->breadcrumbs=array(
               Recibir boletines de noticias de Personaling </label>
             <label class="checkbox">
               <input type="checkbox" value="">
-              Participar en promociones de Personlaing </label>
+              Participar en promociones de Personaling </label>
             <label class="checkbox">
               <input type="checkbox" value="">
               Personaling puede usar mi imagen en campañas de redes sociales y testimonios del sitio. </label>

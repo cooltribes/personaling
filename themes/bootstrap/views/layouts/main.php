@@ -255,12 +255,12 @@ if(!Yii::app()->user->isGuest){
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
         <p class="lead">Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.</p>
-        <img class="margin_top_medium_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
-        <hr/><script type="text/JavaScript">
-//<![CDATA[
-var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
-//]]>
-</script>
+        <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
+                        </div><div class="span4"><script type="text/JavaScript">
+                                //<![CDATA[
+                                var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
+                                //]]>
+                                </script></div></div>
       </div>
       <div class="span3 offset1 ">
         <h3>¡Síguenos! </h3>

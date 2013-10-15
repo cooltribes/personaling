@@ -853,5 +853,5 @@ class Look extends CActiveRecord
             ));
        }
 	
-
+	
 }

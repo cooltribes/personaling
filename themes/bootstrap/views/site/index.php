@@ -24,10 +24,9 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
 
     <!-- Carousel items -->
     <div class="carousel-inner">
-      <div class="active item">  <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_2.jpg">
+      <div class="active item">  <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_4.jpg">
       </div>
-      <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_3.jpg"></div>
-      <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg"></div>
+            <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg"></div>
     </div>
 
 

@@ -126,9 +126,9 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom">  Conecta tus Redes Sociales </h2>
            <ul class="nav nav-stacked nav-tabs">
-               <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
+<!--                <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
               <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
-              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li>
+              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li> -->
             </ul>
         
         </div>

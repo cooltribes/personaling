@@ -15,9 +15,9 @@ $this->breadcrumbs=array(
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1>Inicia sesión</h1>
+      <h1 class="text_align_center">Inicia sesión</h1>
       <div  class="row-fluid  margin_top">
-              <div id="boton_facebook" class="span6 offset3 margin_bottom "><a title="Inicia sesión con Facebook" class="transition_all" onclick="check_fb()" href="#">Inicia sesión con Facebook</a></div>
+              <div id="boton_facebook" class="span6  text_align_center offset3 margin_bottom "><a title="Inicia sesión con Facebook" class="transition_all" onclick="check_fb()" href="#">Inicia sesión con Facebook</a></div>
 
               <!-- <div id="boton_twitter" class="span5 offset2 margin_bottom "><a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Inicia sesión con Twitter</a>  -->
               <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
@@ -35,7 +35,7 @@ $this->breadcrumbs=array(
 			),
 		)); ?>
           <fieldset>
-            <legend >O usa tus credenciales de personaling: </legend>
+            <legend  class="text_align_center">O usa tus credenciales de personaling: </legend>
             
             <div class="control-group row-fluid">
             	 <div class="controls"> 

@@ -706,7 +706,7 @@ class OrdenController extends Controller
 							$estado = new Estado;
 													
 							$estado->estado = 3; // pago recibido
-							$estado->user_id = $orden->user_id;
+							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
 									
@@ -748,7 +748,7 @@ class OrdenController extends Controller
 								$estado = new Estado;
 														
 								$estado->estado = 3; // pago recibido
-								$estado->user_id = $orden->user_id;
+								$estado->user_id = Yii::app()->user->id;
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
@@ -775,7 +775,7 @@ class OrdenController extends Controller
 								$estado = new Estado;
 														
 								$estado->estado = 3; // pago recibido
-								$estado->user_id = $orden->user_id;
+								$estado->user_id = Yii::app()->user->id;
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
@@ -869,7 +869,7 @@ class OrdenController extends Controller
 						$estado = new Estado;
 											
 						$estado->estado = 6; // pago rechazado
-						$estado->user_id = $usuario;
+						$estado->user_id = Yii::app()->user->id;
 						$estado->fecha = date("Y-m-d");
 						$estado->orden_id = $orden->id;
 							

@@ -220,7 +220,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
               </div>
             </div>
           </div>
-          <p class="muted t_small CAPS braker_bottom">Selecciona las tallas </p>
+          <p class="muted t_small CAPS braker_bottom">Selecciona las tallas </p> 
+          <p class="muted t_small ">Puedes comprar por separado las prendas que te gustan</p>
 
           <!-- Productos del look ON -->
           <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(

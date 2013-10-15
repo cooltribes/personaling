@@ -1499,7 +1499,7 @@ class ProductoController extends Controller
 					
 		            if($xls->saveAs($nombre . $extension)){
 			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado y procesado exitosamente."));			            										            	
+							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado exitosamente."));			            										            	
 	            	}
 					else{
 						Yii::app()->user->updateSession();
@@ -1532,9 +1532,65 @@ class ProductoController extends Controller
 			$anterior;
 			$pr_id;
 			
+			$contador = 1;
+			$falla = "";
 			
-			foreach( $sheet_array as $row ) {
-			    
+			foreach( $sheet_array as $row ) {	
+				
+				if($contador == 1) // revisar las columnas
+				{
+					if($row['A']!="Nombre")
+						$falla = "Nombre";
+					else if($row['B']!="Descripcion ")
+						$falla = "Descripcion";
+					else if($row['C']!="Referencia")
+						$falla = "Referencia";
+					else if($row['D']!="Marca")
+						$falla = "Marca";
+					else if($row['E']!="Peso")
+						$falla = "Peso";
+					else if($row['F']!="Costo")
+						$falla = "Costo";
+					else if($row['G']!="Precio Venta")
+						$falla = "Precio Venta";
+					else if($row['H']!="Categorias")
+						$falla = "Categorias";	
+					else if($row['I']!="Categorias")
+						$falla = "Categorias";
+					else if($row['J']!="Categorias")
+						$falla = "Categorias";
+					else if($row['K']!="Talla")
+						$falla = "Talla";			
+					else if($row['L']!="Color")
+						$falla = "Color";		
+					else if($row['M']!="Cantidad")
+						$falla = "Cantidad";
+					else if($row['N']!="SKU")
+						$falla = "SKU";
+					else if($row['O']!="MetaDescripción")
+						$falla = "MetaDescripción";
+					else if($row['P']!="Meta tags")
+						$falla = "Meta tags";
+					else if($row['Q']!="Almacén")
+						$falla = "Almacén";		
+					
+					
+					if($falla != "") // algo falló
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("La columna ".$falla." no se encuentra en la columna que debe ir."));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+					
+					$contador++;
+				}
+				
+				
 				$tabla = $tabla.'<br/><br/>';
 				
 				if($row['A']!="" && $row['A']!="Nombre") // para que no tome la primera ni vacios

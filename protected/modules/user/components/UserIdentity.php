@@ -66,6 +66,11 @@ class UserIdentity extends CUserIdentity
 		
 		if ( $user === null ) 
 			$this->errorCode = self::ERROR_USERNAME_INVALID;
+                else if($user->status== User::STATUS_BANNED)
+			$this->errorCode=self::ERROR_STATUS_BAN;
+                
+                else if($user->personal_shopper == User::TYPE_PSAPPLY)
+			$this->errorCode=self::ERROR_STATUS_APPLY;
 		else
 		{
 			$this->_id = $user->id;

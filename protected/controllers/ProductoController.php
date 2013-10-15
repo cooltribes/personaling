@@ -770,7 +770,10 @@ class ProductoController extends Controller
             $dataProvider = $producto->search();
 
             /**********************   Para Filtros   *************************/
-            
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
              //Filtros personalizados
             $filters = array();
             

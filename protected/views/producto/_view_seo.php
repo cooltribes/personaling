@@ -184,6 +184,10 @@ $this->breadcrumbs=array(
 		}
 	}	
 	);	
-		
+	$('#Seo_urlAmigable').on('input', function() { 
+     // get the current value of the input field.
+     	
+	  //alert($('#Seo_urlAmigable').val());
+ });	
 		
 </script>

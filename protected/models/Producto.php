@@ -293,7 +293,6 @@ class Producto extends CActiveRecord
 	}
 	public function getPrecio($format=true)
 	{
-
     if (is_null($this->_precio)) {
       $c = new CDbCriteria();
       $c->order = '`id` desc';
@@ -307,11 +306,9 @@ class Producto extends CActiveRecord
 			return $this->_precio->precioImpuesto;
 		}
 	else 
-		return 0;
-	
-    
-  		
+		return 0;	
 	}
+	
 	public function getCantidad($talla=null,$color=null)
 	{
 	if (is_null($talla) and is_null($color))
@@ -796,10 +793,11 @@ public function multipleColor2($idColor, $idact)
 			
 		//$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
 		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id left join tbl_producto on tbl_producto.id = tbl_precioTallaColor.producto_id where tbl_imagen.orden = 1 and tbl_producto.status = 1 and tbl_producto.estado = 0 GROUP BY producto_id ORDER by productos DESC";
+                $count = Yii::app()->db->createCommand($sql)->queryScalar();
 		//if (isset($limit))
 		//	$sql.=" LIMIT 0,$limit";
 		//$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";
-		$count = 10; 	
+		//$count = 10; 	
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
 			 'pagination'=>array(
@@ -1063,7 +1061,34 @@ public function multipleColor2($idColor, $idact)
 			  	return NULL;
 	
 	    return NULL;
-	}	
+	}
+        
+        public static function masVistos($limit = 5){
+            $criteria=new CDbCriteria;  		
+		
+            //$criteria-> compare('destacado',1);
+            //$criteria->addInCondition('status', array(2, 1));
+            $criteria->order = "view_counter DESC";
+            return new CActiveDataProvider(__CLASS__, array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                            'pageSize'=>$limit,
+                    ),	
+            ));
+            
+            
+        }
+        
+        public function getCantVendidos()
+	{
+	
+            return Yii::app()->getDb()->createCommand("select IFNULL(sum(o_ptc.cantidad), 0) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                        orden.estado IN (3, 4, 8) and ".$this->id." = ptc.producto_id")->queryScalar();
+		
+	}
+        
+        
 
  
 		 

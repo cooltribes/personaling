@@ -23,8 +23,11 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','top','error','contacto','login','logout','acerca_de','activos_graficos','publicaciones_de_prensa','condiciones_de_envios_y_encomiendas',
-				'formas_de_pago','politicas_y_privacidad','terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes','equipo_personaling','captcha','comofunciona'), 
+				'actions'=>array('index','top','error','contacto','login','logout',
+                                    'acerca_de','activos_graficos','publicaciones_de_prensa',
+                                    'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
+                                    'terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes',
+                                    'equipo_personaling','captcha','comofunciona', 'afterApply'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -114,7 +117,12 @@ class SiteController extends Controller
 	public function actionComofunciona()
 	{
 		$this->render('comofunciona');
-	}	
+	}
+        
+        public function actionAfterApply()
+	{
+		$this->render('after_apply');
+	}
 
 	/**
 	 * This is the default 'index' action that is invoked

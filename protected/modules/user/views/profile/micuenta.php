@@ -134,9 +134,9 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom"> Conecta tus Redes Sociales </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
+<!--               <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
               <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
-              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li>
+              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li> -->
            	  <li><?php echo CHtml::link('Invita a tus amig@s',array('invitaciones'),array("title"=>"Invita a tus amig@s")); ?></li>
             </ul>
           </div>
@@ -207,7 +207,7 @@ $looks_recomendados = $look->match($model);
             <h2 class="braker_bottom"> Notificaciones </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>
-              <li><a href="#" title="Desuscribirse de la lista de correos">Darte de baja de la lista correos (LINK MUERTO)</a></li>
+              <!-- <li><a href="#" title="Desuscribirse de la lista de correos">Darte de baja de la lista correos (LINK MUERTO)</a></li> -->
             </ul>
             <h2 class="braker_bottom"> Privacidad </h2>
             <ul class="nav nav-stacked nav-tabs">

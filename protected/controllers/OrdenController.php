@@ -94,9 +94,12 @@ class OrdenController extends Controller
 	{
             
             $orden = new Orden;
-            $dataProvider = $orden->search();
+            $dataProvider = $orden->search();               
             
-               
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
             
             //Filtros personalizados
             $filters = array();
@@ -228,7 +231,7 @@ class OrdenController extends Controller
             //Ordenar por fecha descendiente
             $criteria = $dataProvider->getCriteria();
             $criteria->order = 'fecha DESC';
-            $dataProvider->setCriteria($criteria);            
+            $dataProvider->setCriteria($criteria);       
 
             $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,
@@ -703,7 +706,7 @@ class OrdenController extends Controller
 							$estado = new Estado;
 													
 							$estado->estado = 3; // pago recibido
-							$estado->user_id = $orden->user_id;
+							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
 									
@@ -745,7 +748,7 @@ class OrdenController extends Controller
 								$estado = new Estado;
 														
 								$estado->estado = 3; // pago recibido
-								$estado->user_id = $orden->user_id;
+								$estado->user_id = Yii::app()->user->id;
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
@@ -772,7 +775,7 @@ class OrdenController extends Controller
 								$estado = new Estado;
 														
 								$estado->estado = 3; // pago recibido
-								$estado->user_id = $orden->user_id;
+								$estado->user_id = Yii::app()->user->id;
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
 								
@@ -866,7 +869,7 @@ class OrdenController extends Controller
 						$estado = new Estado;
 											
 						$estado->estado = 6; // pago rechazado
-						$estado->user_id = $usuario;
+						$estado->user_id = Yii::app()->user->id;
 						$estado->fecha = date("Y-m-d");
 						$estado->orden_id = $orden->id;
 							

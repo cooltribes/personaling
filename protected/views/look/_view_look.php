@@ -5,12 +5,10 @@
                 <strong>Nro. Items</strong>: <?php echo $data->countItems(); ?></td>
             <td><strong>P.S.</strong>: <?php echo $data->user->profile->first_name; ?><br/>
                 <strong>Marcas</strong>: <?php
-          		
-					$ids=Yii::app()->db->createCommand('select distinct(marca_id) from tbl_producto where id IN (select producto_id from tbl_look_has_producto where look_id ='.$data->id.' )')->queryColumn();
+          			$ids=$data->getMarcas();
 					$c=0;
 					foreach($ids as $id){
-						echo " ".Marca::model()->getMarca($id);
-						
+						echo " ".$id->nombre;						
 						if($c<count($ids)-1)
 							echo ", ";
 						else echo ".";$c++;
@@ -22,9 +20,9 @@
             <td><?php echo $data->getMontoVentas(); ?></td>
             <td><?php echo $data->getStatus(); ?></td>
             <td><?php echo $data->created_on; ?></td>
-            <td> Finaliza en: 
+            <td> <?php $camp=Campana::model()->findByPk($data->campana_id); echo $camp->daysLeft();?>
                 <div class="progress margin_top_small  progress-danger">
-                    <div class="bar" style="width: 78%"></div>
+                    <div class="bar" style="width: <?php echo $camp->getProgress(); ?>%"></div>
                 </div></td>
             <td>
             

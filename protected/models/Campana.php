@@ -116,14 +116,35 @@ class Campana extends CActiveRecord
 		));
 	}
 
-	/*public function getProgress(){
-		$d1=floor((now()-$this->recepcion_inicio)/(60*60*24));	
-		$d2=floor($this->ventas_fin-(now())/(60*60*24));
-		if($d2<0)
-			$d2=0;
-		$dur=abs($d1)+abs($d2);	
-		return (int)(d1*100/$dur);
+	public function getProgress(){
+			$f0 = strtotime($this->recepcion_inicio);
+		   $f1 = strtotime($this->ventas_fin);
+		   $now=strtotime(date("Y-m-d H:i:s"));
+		   if($now<=$f0)
+				return 0;
+		   if($now>=$f1)
+				return 100;
+		   if ($f0 < $f1) { $tmp = $f1; $f1 = $f0; $f0 = $tmp; }
+		   $total = ($f0 - $f1)/ 60 / 60 / 24;
+		   $prog=($now-$f1)/ 60 / 60 / 24;
+		   $prog=$prog*100/$total; 
+		 
+		   return round($prog);
 			
-	}*/
+	}
+	public function daysLeft(){
+			$f0 = strtotime($this->recepcion_inicio);
+		   $f1 = strtotime($this->ventas_fin);
+		   $now=strtotime(date("Y-m-d H:i:s"));
+		   if($now<=$f0)
+				return "Inicia en ".date_format(date_create($this->recepcion_inicio),"d/m/Y");
+		   if($now>=$f1)
+				return "Finalizó en ".date_format(date_create($this->ventas_fin),"d/m/Y");
+		   if ($f0 < $f1) { $tmp = $f1; $f1 = $f0; $f0 = $tmp; }
+		   $total = ($f0 - $f1)/ 60 / 60 / 24;
+		   $prog=($now - $f1)/ 60 / 60 / 24;
+		   return "Finaliza en ".round($total-$prog)." Días (".date_format(date_create($this->ventas_fin),"d/m/Y").")";
+			
+	}
 
 }

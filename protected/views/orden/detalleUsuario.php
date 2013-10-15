@@ -1,4 +1,4 @@
-<?php
+,<?php
 
 $this->breadcrumbs=array(
     'Pedidos'=>array('listado'),
@@ -393,6 +393,10 @@ $usuario = User::model()->findByPk($orden->user_id);
                   <?php
                   echo CHtml::link('Recibo de Pago', $this->createUrl('recibo', array('id'=>$factura->id)), array('target'=>'_blank'));
                   ?>
+               
+               
+                  
+                  
               </td>
               <td>
                   <?php

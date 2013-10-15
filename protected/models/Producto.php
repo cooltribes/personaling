@@ -294,20 +294,21 @@ class Producto extends CActiveRecord
 	public function getPrecio($format=true)
 	{
 
-    if (is_null($this->_precio)) {
-      $c = new CDbCriteria();
-      $c->order = '`id` desc';
-      $c->compare('tbl_producto_id', $this->id);
-      $this->_precio = Precio::model()->find($c);
-    }
-	if (isset($this->_precio->precioDescuento))
-		if ($format){
-	 		return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioDescuento);
-		} else {
-			return $this->_precio->precioDescuento;
-		}
-	else 
-		return 0;
+            if (is_null($this->_precio)) {
+              $c = new CDbCriteria();
+              $c->order = '`id` desc';
+              $c->compare('tbl_producto_id', $this->id);
+              $this->_precio = Precio::model()->find($c);
+            }
+                if (isset($this->_precio->precioDescuento))
+                        if ($format){
+                                return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioDescuento);
+                        } else {
+                                return $this->_precio->precioDescuento;
+                        }
+                else 
+            
+            return 0;
 	
     
   		
@@ -1064,7 +1065,34 @@ public function multipleColor2($idColor, $idact)
 			  	return NULL;
 	
 	    return NULL;
-	}	
+	}
+        
+        public static function masVistos($limit = 5){
+            $criteria=new CDbCriteria;  		
+		
+            //$criteria-> compare('destacado',1);
+            //$criteria->addInCondition('status', array(2, 1));
+            $criteria->order = "view_counter DESC";
+            return new CActiveDataProvider(__CLASS__, array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                            'pageSize'=>$limit,
+                    ),	
+            ));
+            
+            
+        }
+        
+        public function getCantVendidos()
+	{
+	
+            return Yii::app()->getDb()->createCommand("select IFNULL(sum(o_ptc.cantidad), 0) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                        orden.estado IN (3, 4, 8) and ".$this->id." = ptc.producto_id")->queryScalar();
+		
+	}
+        
+        
 
  
 		 

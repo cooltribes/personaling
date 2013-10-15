@@ -96,6 +96,11 @@ class OrdenController extends Controller
             $orden = new Orden;
             $dataProvider = $orden->search();               
             
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
+            
             //Filtros personalizados
             $filters = array();
             

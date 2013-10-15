@@ -324,44 +324,32 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
       
       <h2 class="braker_bottom margin_bottom_small">Looks</h2>
       <ul class="nav nav-tabs">
-        <li><a data-toggle="tab" href="#tab1">Número de visitas</a></li>
-        <li class="active"><a data-toggle="tab" href="#tab2">Status</a></li>
+        <li class="active"><a data-toggle="tab" href="#tab1">Número de visitas</a></li>
+        <li><a data-toggle="tab" href="#tab2">Status</a></li>
         
       </ul>
       <div class="tab-content">
       
-        <div class="tab-pane" id="tab1" >
+        <div class="tab-pane active" id="tab1" >
             <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
               <tr>
                 <th scope="col">Nombre del Look</th>
-                <th scope="col">Número de pedidos</th>
-                <th scope="col">Promedio de pedidos</th>
-                <th scope="col">Total de pedidos</th>
+                <th scope="col">Número de visitas</th>
+                <th scope="col">Cantidad vendida</th>
+                <th scope="col">Total de ventas</th>
               </tr>
 
           <?php
-                  $x = new Look;
-                          $looksmas = $x->masvendidos(5);
-
-
-          foreach($looksmas->getData() as $record) {
-
-                  $lk = Look::model()->findByPk($record['look_id']);
-
-                  $pre = (float) $lk->getPrecio(false); 
-                  $tt = (int) $record['looks'];
-
-                  $ppp = $pre * $tt;
-
-                  if (isset($lk)){
-
+                 
+          foreach($views->getData() as $record) {
+                  if (isset($record)){
           ?>
-                  <tr>
-                <td><a href="<?php echo $lk->getUrl(); ?>" title="Ver Look"><?php echo $lk->title; ?></a></td>
-                <td>Bs. <?php echo $lk->getPrecio(); ?></td>
-                <td><?php echo $record['looks']; ?></td>
-                <td>Bs. <?php echo $ppp; ?></td>
-                  </tr>
+                    <tr>
+                        <td><a href="<?php echo $record->getUrl(); ?>" title="Ver Look"><?php echo $record->title; ?></a></td>
+                        <td><?php echo $record->view_counter; ?></td>
+                        <td><?php echo $record->getCantVendidos(); ?></td>
+                        <td>Bs. <?php echo ""; ?></td>
+                    </tr>
           <?php
                   }
           }
@@ -370,7 +358,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
           </table>
         </div>
               
-        <div class="tab-pane active" id="tab2">
+        <div class="tab-pane" id="tab2">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
               <tr>
                 <th scope="col">Status</th>
@@ -378,97 +366,27 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
                 <th scope="col">% de Looks</th>
               </tr>	
             <?php
-                    $x = new Producto;
-                            $prodmas = $x->masvendidos(5);
-
-
-                    foreach($prodmas->getData() as $record) {
-
-                            $pro = Producto::model()->findByPk($record['producto_id']);
-
-                            $pre = Precio::model()->findByAttributes(array('tbl_producto_id'=>$pro->id));
-                            $tt = (int) $record['productos'];
-
-                            $ppp = $pre->precioDescuento * $tt;
-
-                            if (isset($pro)){
+                foreach($status as $record) {
+                    if (isset($record)){
             ?>      
-
                 <tr>
-                  <td><a href="<?php echo $pro->getUrl(); ?>" title="Ver producto"><?php echo $pro->nombre; ?></a></td>
-                  <td>Bs. <?php echo $pre->precioDescuento; ?></td>
-                  <td><div class="pull-right margin_left_small"><?php echo $record['productos']; ?> % 
-                    </div><div class="progress progress-danger">
-                      <div class="bar" style="width: 70%;"></div>
+                  <td><?php echo $record['nombre']; ?></td>
+                  <td><?php echo $record['total']; ?></td>
+                  <td><div class="pull-right margin_left_small"><?php echo round($record['porcentaje'], 2); ?> % 
+                    </div><div class="progress progress-danger margin_bottom_xsmall">
+                      <div class="bar" style="width: <?php echo (int)$record['porcentaje']; ?>%;"></div>
                     </div>
                   </td>
                   
                 </tr>
            <?php      
-                            }
-                    }
+                     }
+                 }
            ?>     
             </table>
         </div>
 
-        <div class="tab-pane" id="tab3">
-          <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
-              <tr>
-                <th scope="col">Nombre de la marca</th>
-                <th scope="col">Items vendidos</th>
-                <th scope="col">Total Vendidos (Bs.)</th>
-              </tr>
-        <?php
-                  $x = new Marca;
-                          $marcasmas = $x->masvendidos(5);
-
-                  foreach($marcasmas->getData() as $record) {
-
-                          $indiv = Marca::model()->findByPk($record['marca']);
-
-
-
-  $sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id, tbl_precio.precioDescuento FROM tbl_orden_has_productotallacolor
-                  left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id
-                  left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id
-                  left join tbl_producto on tbl_producto.id = tbl_precioTallaColor.producto_id
-                  left join tbl_marca on tbl_marca.id = tbl_producto.marca_id
-                  left join tbl_precio on tbl_precio.tbl_producto_id = tbl_producto.id
-                  where tbl_imagen.orden = 1 and tbl_producto.status = 1 and tbl_producto.estado = 0 and marca_id =".$indiv->id." GROUP BY producto_id ORDER by productos DESC";
-
-                  $count = 50; 	
-
-                  $data = new CSqlDataProvider($sql, array(
-                      'totalItemCount'=>$count,		    
-
-                  ));  	
-
-                  $totalp = 0;
-
-                  foreach($data->getData() as $cadauno)
-                  {
-                          $precio = $cadauno['precioDescuento'];
-                          $cantidad = $cadauno['productos'];
-
-                          $totalp = $totalp + ($precio * $cantidad);
-                  }	
-
-                          if (isset($marcasmas)){
-          ?>        
-              <tr>
-                <td><?php echo $indiv->nombre; ?></td>
-                <td><?php echo $record['uno']; ?></td>
-                <td>Bs. <?php echo Yii::app()->numberFormatter->format("#,##0.00",$totalp); ?></td>
-              </tr>
-
-         <?php
-                          }
-                  }
-         ?>
-
-            </table>
-        </div>
-          
+       
       </div>
     </div>
   </div>

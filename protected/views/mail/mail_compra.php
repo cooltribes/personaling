@@ -110,7 +110,7 @@
                                                                     <p><strong>Para completar tu comprar debes:</strong></p>
                                                                     <ol>
                                                                         <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?>
-                                                                        			via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?>
+                                                                        			via transferencia electrónica o depósito bancario antes del <?php  echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days')); ?>
                                                                         			en la siguientes cuenta bancaria: <br>
                                                                             <br/>
                                                                             <ul>
@@ -123,7 +123,7 @@
                                                                                 </li>
                                                                             </ul>
                                                                         </li>
-                                                                        <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
+                                                                        <li><strong>Registra tu pago</strong>: <?php echo CHtml::link('Aquí', $this->createAbsoluteUrl('orden/detallepedido',array('id'=>$orden->id))); ?> ó ingresa a Tu Cuenta - > Tus Pedidos,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
                                                                         <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
                                                                         <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
                                                                     </ol>

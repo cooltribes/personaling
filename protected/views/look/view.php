@@ -362,12 +362,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                           <?php echo CHtml::image($lookre->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
                       </div>
-                      <div class="span5"> <span class="muted">Look creado por: </span>
+                      <div class="span4"> <span class="muted">Look creado por: </span>
                         <h5><a class="url" title="profile" href="#"><span class="fn">
                           <?php //echo $look->title; ?>
                           <?php echo $lookre->user->profile->first_name; ?> </span></a></h5>
                       </div>
-                      <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
+                      <div class="span6"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
                     </div>
                     <div class="share_like">
                       <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>

@@ -228,6 +228,7 @@ class ProfileController extends Controller
 			//$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
 			$looks = new Look;
 			$looks->user_id = $id;
+			$looks->status = Look::STATUS_APROBADO; // looks aprobados 
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
@@ -507,6 +508,7 @@ class ProfileController extends Controller
 					}
 				 }  	
 		} 
+                
 		 $this->render('avatar',array(
 	    	'model'=>$model,
 			//'profile'=>$model->profile,

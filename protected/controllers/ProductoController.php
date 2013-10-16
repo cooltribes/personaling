@@ -770,7 +770,10 @@ class ProductoController extends Controller
             $dataProvider = $producto->search();
 
             /**********************   Para Filtros   *************************/
-            
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
              //Filtros personalizados
             $filters = array();
             
@@ -1499,7 +1502,7 @@ class ProductoController extends Controller
 					
 		            if($xls->saveAs($nombre . $extension)){
 			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado y procesado exitosamente."));			            										            	
+							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado exitosamente."));			            										            	
 	            	}
 					else{
 						Yii::app()->user->updateSession();
@@ -1532,9 +1535,115 @@ class ProductoController extends Controller
 			$anterior;
 			$pr_id;
 			
+			$contador = 1;
+			$falla = "";
 			
-			foreach( $sheet_array as $row ) {
-			    
+			$linea = 0;
+			
+			foreach( $sheet_array as $row ) {	
+				
+				$linea++; // saber cual numero de linea es
+				
+				if($contador == 1) // revisar las columnas
+				{
+					if($row['A']!="Nombre")
+						$falla = "Nombre";
+					else if($row['B']!="Descripción")
+						$falla = "Descripción";
+					else if($row['C']!="Referencia")
+						$falla = "Referencia";
+					else if($row['D']!="Marca")
+						$falla = "Marca";
+					else if($row['E']!="Peso")
+						$falla = "Peso";
+					else if($row['F']!="Costo")
+						$falla = "Costo";
+					else if($row['G']!="Precio Venta")
+						$falla = "Precio Venta";
+					else if($row['H']!="Categorías")
+						$falla = "Categorías";	
+					else if($row['I']!="Categorías")
+						$falla = "Categorías";
+					else if($row['J']!="Categorías")
+						$falla = "Categorías";
+					else if($row['K']!="Talla")
+						$falla = "Talla";			
+					else if($row['L']!="Color")
+						$falla = "Color";		
+					else if($row['M']!="Cantidad")
+						$falla = "Cantidad";
+					else if($row['N']!="SKU")
+						$falla = "SKU";
+					else if($row['O']!="MetaDescripción")
+						$falla = "MetaDescripción";
+					else if($row['P']!="Meta tags")
+						$falla = "Meta tags";
+					else if($row['Q']!="Almacén")
+						$falla = "Almacén";		
+					
+					
+					if($falla != "") // algo falló
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("La columna ".$falla." no se encuentra en la columna que debe ir o está mal escrita"));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+					
+					$contador++;
+				}
+				
+				//si pasa las columnas entonces que revise las tallas y coloes
+				
+				//tallas
+				if(isset($row['K']) && $linea > 1)
+				{
+					$talla = Talla::model()->findByAttributes(array('valor'=>$row['K']));
+					
+					if(!isset($talla))
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("La Talla ".$row['K']." no existe en la aplicación. Error en linea: ".$linea));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+				}
+				
+				//colores
+				if(isset($row['L']) && $linea > 1)
+				{
+					$color = Color::model()->findByAttributes(array('valor'=>$row['L']));
+					
+					if(!isset($color)) 
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("El Color ".$row['L']." no existe en la aplicación. Error en linea: ".$linea));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+				
+					
+					// 	
+				}
+		
+		} // cierra primer foreach para comprobar
+		
+		
+		// segundo foreach, si llega aqui es para insertar y todo es valido
+		foreach( $sheet_array as $row ) {
+						
 				$tabla = $tabla.'<br/><br/>';
 				
 				if($row['A']!="" && $row['A']!="Nombre") // para que no tome la primera ni vacios

@@ -48,7 +48,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'General', 'url'=>array('/controlpanel/index')),
 					array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
 					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
-					array('label'=>'Catálogos', 'url'=>array('/adorno/index')),
+					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
 					)),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
@@ -105,7 +105,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
       $file = explode('.',$user->getAvatar());
       $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
     }
-    $nombre = $profile->first_name.' '.$profile->last_name;
+    $nombre = $profile->first_name;
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 
 		if(isset($bolsa))

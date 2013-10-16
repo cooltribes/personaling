@@ -94,9 +94,12 @@ class OrdenController extends Controller
 	{
             
             $orden = new Orden;
-            $dataProvider = $orden->search();
+            $dataProvider = $orden->search();               
             
-               
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
             
             //Filtros personalizados
             $filters = array();
@@ -228,7 +231,7 @@ class OrdenController extends Controller
             //Ordenar por fecha descendiente
             $criteria = $dataProvider->getCriteria();
             $criteria->order = 'fecha DESC';
-            $dataProvider->setCriteria($criteria);            
+            $dataProvider->setCriteria($criteria);       
 
             $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,

@@ -304,6 +304,7 @@ class Look extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('status',$this->status,true);
 		
 		$criteria->order = "created_on DESC";
 		

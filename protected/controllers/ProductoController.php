@@ -1615,8 +1615,27 @@ class ProductoController extends Controller
 						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
 						Yii::app()->end();
 					}
+				}
+				
+				//colores
+				if(isset($row['L']) && $linea > 1)
+				{
+					$color = Color::model()->findByAttributes(array('valor'=>$row['L']));
 					
-					// $color = Color::model()->findByAttributes(array('valor'=>$row['L']));	
+					if(!isset($color)) 
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("El Color ".$row['L']." no existe en la aplicación. Error en linea: ".$linea));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+				
+					
+					// 	
 				}
 		
 		} // cierra primer foreach para comprobar

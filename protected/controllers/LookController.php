@@ -554,7 +554,10 @@ public function actionCategorias(){
 		
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
-
+			
+			if($model->url_amigable == "")
+				$model->url_amigable = NULL; 
+			
 			if (Yii::app()->user->isAdmin())
 				$model->status = Look::STATUS_APROBADO;
 			else

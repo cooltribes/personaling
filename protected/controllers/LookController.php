@@ -554,7 +554,10 @@ public function actionCategorias(){
 		
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
-
+			
+			if($model->url_amigable == "")
+				$model->url_amigable = NULL; 
+			
 			if (Yii::app()->user->isAdmin())
 				$model->status = Look::STATUS_APROBADO;
 			else
@@ -904,6 +907,10 @@ public function actionCategorias(){
             
             
             /**********************   Para Filtros   *************************/
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
             //Filtros personalizados
             $filters = array();
             

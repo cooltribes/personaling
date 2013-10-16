@@ -108,7 +108,7 @@ class ProfileField extends CActiveRecord
 		);
 	}
 	
-	public function scopes()
+    public function scopes()
     {
         return array(
             'forAll'=>array(

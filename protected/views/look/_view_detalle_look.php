@@ -91,7 +91,7 @@
  <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'label'=>'Ver',
 			'icon'=>'eye-open',
-			'url' => CController::createUrl($model->getUrl()), // 'look/view',array('id'=>$model->id
+			'url' => $model->getUrl(), // 'look/view',array('id'=>$model->id
 			'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
 		));

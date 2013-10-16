@@ -67,8 +67,8 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1>Regístrate</h1>
-      <div class="row-fluid margin_bottom margin_top">
+      <h1 class="text_align_center">Regístrate</h1>
+      <div class="row-fluid margin_bottom margin_top text_align_center">
             <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
 
         	<!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
@@ -88,7 +88,7 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
 	),
 )); ?>
           <fieldset>
-            <legend >O llena los campos a continuación: </legend>
+            <legend class="text_align_center" >O llena los campos a continuación: </legend>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	<?php
 	if(isset($_GET['request_ids'])){

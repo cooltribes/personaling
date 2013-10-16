@@ -460,7 +460,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   	$(this).parent().remove();
   });   
 	
-	$('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function () {
+	var load_handler = function() {
 		var height = $(this).attr('height');
 		var width = $(this).attr('width');
 		 $(this).resizable({
@@ -469,8 +469,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		  		$('.seleccionado').removeClass('seleccionado');
 		  		$(this).addClass('seleccionado');
 		  		
-		  	});	
-    });	
+		 	});	
+	}
+	$('#div".$producto->id."_".$hasproducto->color_id." > img').filter(function() {
+	    return this.complete;
+	}).each(load_handler).end().load(load_handler);		
+	
+	
+	
    
     
  ";
@@ -535,16 +541,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	 			$(this).parent().remove();
 	  		});
 			   
-			$('#adorno".$adorno->id." > img').on('load', function () {
-				$(this).resizable({
-					aspectRatio: 1
-				}).parent('.ui-wrapper').css('margin','0px').click(function(){
-		  		$('.seleccionado').removeClass('seleccionado');
-		  		$(this).addClass('seleccionado');
-		  		
-		  	});	
-		    });	
-		    
+			
+
+		var load_handler = function() {
+			var height = $(this).attr('height');
+			var width = $(this).attr('width');
+			 $(this).resizable({
+	      		aspectRatio: width/height
+	    	}).parent('.ui-wrapper').css('margin','0px').click(function(){
+			  		$('.seleccionado').removeClass('seleccionado');
+			  		$(this).addClass('seleccionado');
+			  		
+			 	});	
+		}
+		$('#adorno".$adorno->id." > img').filter(function() {
+		    return this.complete;
+		}).each(load_handler).end().load(load_handler);			    
 		 	";
 	        
 	        Yii::app()->clientScript->registerScript('drag'.$adorno->id,$script);

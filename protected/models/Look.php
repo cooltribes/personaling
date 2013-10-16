@@ -304,6 +304,7 @@ class Look extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('status',$this->status,true);
 		
 		$criteria->order = "created_on DESC";
 		
@@ -381,9 +382,7 @@ class Look extends CActiveRecord
 	public function lookDestacados($limit = 6) 
 	{
 		
-		$criteria=new CDbCriteria;  
-
-		
+		$criteria=new CDbCriteria;  		
 		
 		$criteria->compare('destacado',1);
 		$criteria->compare('status',2);
@@ -840,11 +839,11 @@ class Look extends CActiveRecord
             $criteria->together = true;
             //$criteria->compare('t.status', '1'); //siempre los no eliminados
             
-            echo "Criteria:";
-            
-            echo "<pre>";
-            print_r($criteria->toArray());
-            echo "</pre>"; 
+//            echo "Criteria:";
+//            
+//            echo "<pre>";
+//            print_r($criteria->toArray());
+//            echo "</pre>"; 
             //exit();
 
 
@@ -852,6 +851,31 @@ class Look extends CActiveRecord
                 'criteria' => $criteria,
             ));
        }
-	
+       
+       public function getCantVendidos()
+	{
+		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden 
+                    left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id 
+                    where  estado IN (3, 4, 8) AND look_id = :look_id group by tbl_orden_id, look_id;',
+			array(':look_id'=>$this->id)));
+		
+		
+	}
+        
+	public static function masVistos($limit = 5){
+            $criteria=new CDbCriteria;  		
+		
+            //$criteria-> compare('destacado',1);
+            //$criteria->addInCondition('status', array(2, 1));
+            $criteria->order = "view_counter DESC";
+            return new CActiveDataProvider(__CLASS__, array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                            'pageSize'=>$limit,
+                    ),	
+            ));
+            
+            
+        }
 	
 }

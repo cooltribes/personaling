@@ -19,7 +19,7 @@ class ControlpanelController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','delete','ventas','pedidos','usuarios'),
+				'actions'=>array('index','delete','ventas','pedidos','usuarios', 'looks', 'productos'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -56,6 +56,37 @@ class ControlpanelController extends Controller
 	public function actionUsuarios()
 	{
 		$this->render('usuarios');
+	}
+        
+        public function actionLooks()
+	{
+            //Para obtener por estados
+            $total = 0;
+            $total += $looks[]["total"] = Look::model()->countByAttributes(array("status" => Look::STATUS_CREADO));
+            $total += $looks[]["total"] = Look::model()->countByAttributes(array("status" => Look::STATUS_ENVIADO));
+            $total += $looks[]["total"] = Look::model()->countByAttributes(array("status" => Look::STATUS_APROBADO));
+
+            for ($i=0; $i<3;$i++) {
+                $looks[$i]["porcentaje"] = ($looks[$i]["total"] / $total) * 100;
+            }
+            $looks[0]["nombre"] = "Borrador";
+            $looks[1]["nombre"] = "Enviados";
+            $looks[2]["nombre"] = "Aprobados";
+            
+            //Por visitas
+            $views = Look::masVistos();
+            
+            $this->render('looks', array('status' => $looks, 'views' => $views));
+            
+            
+	}
+        
+        public function actionProductos()
+	{           
+            
+            //Por visitas
+            $views = Producto::masVistos();
+            $this->render('productos', array('views' => $views));
 	}
 
 	// Uncomment the following methods and override them if needed

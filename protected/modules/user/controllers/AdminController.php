@@ -143,7 +143,10 @@ class AdminController extends Controller
             
             
              /*********************** Para los filtros *********************/
-             
+             if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
             //Filtros personalizados
             $filters = array();
             

@@ -55,7 +55,7 @@ $this->breadcrumbs=array(
                 </div>
             </div>
             <div class="control-group">
-                 	<?php echo $form->textFieldRow($seo, 'urlAmigable', array('class'=>'span5')); ?>
+                 	<?php echo $form->textFieldRow($seo, 'urlAmigable', array('class'=>'span5', 'placeholder'=>'Ejemplo: prenda-color-marca')); ?>
                  <div class="controls">
                 <div class=" muted">Dirección URL del producto</div>
                 </div>
@@ -146,12 +146,17 @@ $this->breadcrumbs=array(
 	
 	$('#normal').on('click', function(event) {
 		event.preventDefault();
-		
+		if(valSeo()){
 		// cambio el valor
 		$("#accion").attr("value", "normal");
 
 		// submit del form
 		$('#producto-form').submit();
+		}
+		else
+		{
+			alert("El campo de Url contiene caracteres no válidos")
+		}
 
 	});
 	
@@ -159,20 +164,24 @@ $this->breadcrumbs=array(
 	$('a#nuevo').on('click', function(event) {
 		
 		event.preventDefault();
-		
+		if(valSeo()){
 		$("#accion").attr("value", "nuevo");
 		//alert( $("#accion").attr("value") );
 
 		// submit del form
 		$('#producto-form').submit();
-	
+		}
+		else
+		{
+			alert("El campo de Url contiene caracteres no válidos")
+		}
 	}	
 	);
 	
 	$('a#siguiente').on('click', function(event) {
 		
 		event.preventDefault();
-		
+		if(valSeo()){
 		$("#accion").attr("value", "siguiente");
 		var uno = $("#id_sig").attr("value");
 		
@@ -182,12 +191,27 @@ $this->breadcrumbs=array(
 			// submit del form
 			$('#producto-form').submit();
 		}
+		}
+		else
+		{
+			alert("El campo de Url contiene caracteres no válidos")
+		}
 	}	
+	
 	);	
-	$('#Seo_urlAmigable').on('input', function() { 
+	/*$('#Seo_urlAmigable').on('input', function() { 
      // get the current value of the input field.
      	
 	  //alert($('#Seo_urlAmigable').val());
- });	
+ });*/
+ 
+ function valSeo(){
+	 var exp= /^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/;
+	 var val=$('#Seo_urlAmigable').val();
+	 if(val.match(exp))
+	 	return true;
+	else
+		return false;	
+	}		
 		
 </script>

@@ -2,7 +2,7 @@
      tipopago 2: Tarjeta credito
      tipopago 3: puntos o tarjeta de regalo -->
 <?php
-
+Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 ?>

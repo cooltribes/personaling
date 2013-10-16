@@ -1,4 +1,5 @@
-
+<?php Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
+ ?>
 <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
 <div class="success">

@@ -251,14 +251,17 @@
 									
 							$pre="";
 						 	foreach ($producto->precios as $precio) {
-					   			$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+								//$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto);
+								$pre = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
 							}
 							
 							echo('<tr>');
 							
 							if($imagen){					  	
-								$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-								echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
+							$aaa = CHtml::image('personaling.com/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							if($producto->getImageUrl($color->id)=='http://placehold.it/180')
+								$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
 							}else{
 								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 							}
@@ -267,7 +270,7 @@
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'<br/>
 		                  		</td>
-		                <td style="border-bottom:1px solid #dddddd;">Bs. '.Yii::app()->numberFormatter->formatCurrency($pre, '').'</td>
+		                <td style="border-bottom:1px solid #dddddd;">Bs. '.$pre.'</td>
 		                <td style="border-bottom:1px solid #dddddd;">'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
@@ -322,7 +325,9 @@
 				echo "<tr>";		
 							
 				if($imagen){					  	
-					$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+					$aaa = CHtml::image('personaling.com/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+					if($producto->getImageUrl($color->id)=='http://placehold.it/180')
+						$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
 					echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
 				}else
 					echo"<td style='border-bottom:1px solid #dddddd;'><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
@@ -337,10 +342,11 @@
 				
 				// precio
 				foreach ($producto->precios as $precio) {
-					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+					//$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto);
+					$pre = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
 				}
 						
-				echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre, '')."</td>";
+				echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".$pre."</td>";
 				echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>";
 				echo "</tr>";
 

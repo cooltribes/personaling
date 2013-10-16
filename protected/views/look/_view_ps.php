@@ -7,12 +7,12 @@
                 <strong>Marcas</strong>: Mango, Suite Blanco, Aldo, Accessorize y Desigual </td>
             <td><?php echo $data->getPrecio(); ?></td>
             <td><?php echo $data->getLookxStatus(3); ?></td>
-            <td>6500,00</td>
+            <td><?php echo $data->getMontoVentas(); ?></td>
             <td><?php echo $data->getStatus(); ?></td>
             <td><?php echo $data->created_on; ?></td>
-            <td> Finaliza en: 17 Mayo 2013
+           <td> <?php $camp=Campana::model()->findByPk($data->campana_id); echo $camp->daysLeft();?>
                 <div class="progress margin_top_small  progress-danger">
-                    <div class="bar" style="width: 70%;"></div>
+                    <div class="bar" style="width: <?php echo $camp->getProgress(); ?>%"></div>
                 </div></td>
             <td>
             

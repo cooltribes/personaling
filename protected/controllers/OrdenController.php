@@ -981,26 +981,40 @@ class OrdenController extends Controller
 		
 		if($orden->estado==1)
 		{
-			$orden->estado = 5;	// se canceló la orden
-					
-			if($orden->save())
-			{
-				// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-				$estado = new Estado;
-										
-				$estado->estado = 5;
-				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
-				$estado->fecha = date("Y-m-d H:i:s");
-				$estado->orden_id = $orden->id;
-						
-				if($estado->save())
-				{
-					Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
-					
-					$this->redirect(array('listado'));
-					
+				$ban=true;
+				$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+				foreach($ohptcs as $ohptc){
+					$ptc=Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
+					$ptc->cantidad=$ptc->cantidad+$ohptc->cantidad;
+						if(!$ptc->save())
+							$ban=false;
 				}
-			}	
+							
+						
+					
+				$orden->estado = 5;	// se canceló la orden
+					
+					if($orden->save()&&$ban)
+					{
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+						
+						
+						
+						$estado = new Estado;
+												
+						$estado->estado = 5;
+						$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+						$estado->fecha = date("Y-m-d H:i:s");
+						$estado->orden_id = $orden->id;
+								
+						if($estado->save())
+						{
+							Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
+							
+							$this->redirect(array('listado'));
+							
+						}
+					}	
 		}
 		else
 		{

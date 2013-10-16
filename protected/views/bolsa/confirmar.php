@@ -1,4 +1,5 @@
 <?php
+Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 Yii::import('application.components.*');
 require_once "mercadopago-sdk/lib/mercadopago.php";
 $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");

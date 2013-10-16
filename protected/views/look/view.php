@@ -132,26 +132,11 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                             'beforeSend' => "function( request )
                                  {
-                                   /*
-                                   $('#btn-comprar').attr('disabled', true);
-                                   var color_id = '';
-                                   $('.colores').each(function(index){
-                                           color_id += $(this).val()+',';
-                                   });
-                                   color_id = color_id.substring(0, color_id.length-1);
-                                   var talla_id = '';
-                                   $('.tallas').each(function(index){
-                                           talla_id +=$(this).val()+ ',';
-                                   });
-                                   talla_id = talla_id.substring(0, talla_id.length-1);
-                                   */
-                                   //alert(talla_id);
-                                   //this.data += '&talla_id='+talla_id+'color_id='+color_id;
-
-
-                                   //return false;
                                    
+                                   
+                                                                      var entro = true;	
                                    if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
+                                   		entro = false;
                                         alert('debe seleccionar por lo menos una prenda');
                                         return false;
                                    }
@@ -160,16 +145,18 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                                            if ($(this).val()==''){
 
                                                if ($(this).parent().prev('input').prop('checked')){
-                                                   alert('debe seleccionar todas las tallas');
+                                               		entro = false;
+                                                   bootbox.alert('debe seleccionar todas las tallas');
                                                    return false;
                                                }
                                            }
 
                                    });
-                                   if ($('#buttonGuardar').attr('disabled')==true)
-                                   		return false;
-                                   $('#buttonGuardar').attr('disabled', true);
-                                  // return false;
+                                   if (entro){
+                                   		if ($('#buttonGuardar').attr('disabled')==true)
+                                   			return false;
+                                   		$('#buttonGuardar').attr('disabled', true);
+								   }
                                    
                                  }",
 

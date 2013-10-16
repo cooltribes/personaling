@@ -1538,14 +1538,18 @@ class ProductoController extends Controller
 			$contador = 1;
 			$falla = "";
 			
+			$linea = 0;
+			
 			foreach( $sheet_array as $row ) {	
+				
+				$linea++; // saber cual numero de linea es
 				
 				if($contador == 1) // revisar las columnas
 				{
 					if($row['A']!="Nombre")
 						$falla = "Nombre";
-					else if($row['B']!="Descripcion ")
-						$falla = "Descripcion";
+					else if($row['B']!="Descripción")
+						$falla = "Descripción";
 					else if($row['C']!="Referencia")
 						$falla = "Referencia";
 					else if($row['D']!="Marca")
@@ -1556,12 +1560,12 @@ class ProductoController extends Controller
 						$falla = "Costo";
 					else if($row['G']!="Precio Venta")
 						$falla = "Precio Venta";
-					else if($row['H']!="Categorias")
-						$falla = "Categorias";	
-					else if($row['I']!="Categorias")
-						$falla = "Categorias";
-					else if($row['J']!="Categorias")
-						$falla = "Categorias";
+					else if($row['H']!="Categorías")
+						$falla = "Categorías";	
+					else if($row['I']!="Categorías")
+						$falla = "Categorías";
+					else if($row['J']!="Categorías")
+						$falla = "Categorías";
 					else if($row['K']!="Talla")
 						$falla = "Talla";			
 					else if($row['L']!="Color")
@@ -1581,7 +1585,7 @@ class ProductoController extends Controller
 					if($falla != "") // algo falló
 					{
 						Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('error',UserModule::t("La columna ".$falla." no se encuentra en la columna que debe ir."));
+						Yii::app()->user->setFlash('error',UserModule::t("La columna ".$falla." no se encuentra en la columna que debe ir o está mal escrita"));
 						
 						$total = 0;
 						$actualizar = 0;
@@ -1593,7 +1597,34 @@ class ProductoController extends Controller
 					$contador++;
 				}
 				
+				//si pasa las columnas entonces que revise las tallas y coloes
 				
+				//tallas
+				if(isset($row['K']) && $linea > 1)
+				{
+					$talla = Talla::model()->findByAttributes(array('valor'=>$row['K']));
+					
+					if(!isset($talla))
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("La Talla ".$row['K']." no existe en la aplicación. Error en linea: ".$linea));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+					
+					// $color = Color::model()->findByAttributes(array('valor'=>$row['L']));	
+				}
+		
+		} // cierra primer foreach para comprobar
+		
+		
+		// segundo foreach, si llega aqui es para insertar y todo es valido
+		foreach( $sheet_array as $row ) {
+						
 				$tabla = $tabla.'<br/><br/>';
 				
 				if($row['A']!="" && $row['A']!="Nombre") // para que no tome la primera ni vacios

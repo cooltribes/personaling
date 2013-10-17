@@ -6,7 +6,8 @@
 		<div class="container"><div class="row-fluid">
 			<div class="span6 "><div class="padding_large"><h1>Una nueva manera de<br/> hacer shopping</h1>
 				<p class="lead">
-					Recomendaciones personalizadas adaptadas a tu cuerpo, tus gustos y por supuesto a las tendencias. </p>
+					Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.
+				</p>
 				</div>
 			</div>
 
@@ -21,30 +22,33 @@
 	<section class="seccion2">
 		<div class="container"><h1>MARCAS RECONOCIDAS</h1>
 			<p>¡Tus marcas preferidas en un solo lugar! ¡Con tan solo un click en tu casa u oficina!</p>
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/como_brands.png" alt="Bimba y lola, Mango, Accesorize ">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/como_brands2.png" alt="Bimba y lola, Mango, Accesorize ">
 
 		</div>
 	</section>
 	<section class="seccion3">
 		<div class="container"><div class="row-fluid">
 			<div class="span5"><h1 id="personal-shoppers">PERSONAL SHOPPERS</h1>
-				<p>Tus Fashion Bloggers, Actrices, Animadoras, Web Influencers preferidos, que con su estilo propio y definido; compartirán a sus networks o comunidades looks nacidos de su inspiración.</p></div>
+				<p>Serás asesorado por actrices, animadoras, celebridades y fashion bloggers. Todos ellos crearán looks adaptados a tus condiciones físicas y gustos para que siempre vayas vestida a la última moda.</p></div>
 			</div></div>
 		</section>
 		<section class="seccion4">
 			<div class="container"><div class="row-fluid">
 				<div class="span5 offset6 margin_bottom padding_bottom"><h1 id="personalig-pto">PERSONALING es el punto de encuentro</h1>
-					<p>Donde los looks ideados por los Personal Shoppers y los perfiles creados por todas las usuarias se unen creando una recomendación personalizada para que con tan solo un click y directo a tu casa u oficina luzcas estupenda de acuerdo a cada ocasión.  </p></div>
+					<p>Hemos logrado que la tecnología nos permita democratizar y masificar el servicio de Personal Shopper que hasta ahora solo había estado al alcance de celebrities y personas de alto standing. Aquí se unen estilistas, celebridades y bloggers para trabajar en función del estilo de la mujer venezolana. </p></div>
 					<div class="span10 offset1 como_safari">
 						<div class="row"> <div class="span7 offset4">
-							<div class="bg_color3 padding_medium border_1"><h2>COMIENZA LA CAMPAÑA</h2>
-								<p>Los looks recomendados de los expertos Personal Shoppers de acuerdo a tu perfil,  están listos para que puedas comprarlos. ¡Personaling te hace sentir Estupenda!</p></div></div></div>
+							<div class="bg_color3 padding_medium border_1"><h2>¡Comienza ya!</h2>
+								<p>Regístrate, disfruta de la experiencia Personaling y siéntete siempre estupenda.</p>
+							</div>
+						</div>
+					</div>
 
 
 							</div>
 						</div></div>
 					</section>
-					<section class="seccion5">
+<!-- 					<section class="seccion5">
 						<div class="container">
 							<h1 id="resultado">Resultado</h1>
 							<div class="row-fluid margin_top padding_top CAPS text_align_center">
@@ -70,7 +74,7 @@
 							</div>
 						</div>
 
-					</section>
+					</section> -->
 				</article>
 <script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.superscrollorama.js"></script>
 <script src="<?php echo Yii::app()->baseUrl; ?>/js/TweenMax.min.js"></script>
@@ -93,16 +97,17 @@
 		  	(new TimelineLite())
 		    .append([
 		      	TweenMax.fromTo($('.seccion4'), 1, 
-		        {css:{'margin-left':'-200px'}, immediateRender:true}, 
+		        {css:{'margin-left':'-300px'}, immediateRender:true}, 
 		        {css:{'margin-left':'0px'}}),
 		    ]),
-			900// pixeles de comienzo
+			700// pixeles de comienzo
 		); 
 
-		controller.addTween('#resultado', TweenMax.fromTo( $('#resultado'), 0.7, {css:{'margin-left':'-300px'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'margin-left':'0px'}, ease:Quad.easeInOut}), 0, 20);												
-		controller.addTween('.seccion5', TweenMax.fromTo( $('.image1'), 1, {css:{'opacity':'0'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'opacity':'1'}, ease:Quad.easeInOut}), 0, 100);	
-		controller.addTween('.seccion5', TweenMax.fromTo( $('.image2'), 1, {css:{'opacity':'0'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'opacity':'1'}, ease:Quad.easeInOut}), 0, 120);	
-		controller.addTween('.seccion5', TweenMax.fromTo( $('.image3'), 1, {css:{'opacity':'0'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'opacity':'1'}, ease:Quad.easeInOut}), 0, 140);
+		controller.addTween('.seccion4', TweenMax.fromTo( $('.como_safari'), .4, {css:{'opacity':'0'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'opacity':'1'}, ease:Quad.easeInOut}), 0, 300);
+		// controller.addTween('#resultado', TweenMax.fromTo( $('#resultado'), 0.7, {css:{'margin-left':'-300px'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'margin-left':'0px'}, ease:Quad.easeInOut}), 0, 20);												
+		// controller.addTween('.seccion5', TweenMax.fromTo( $('.image1'), 1, {css:{'opacity':'0'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'opacity':'1'}, ease:Quad.easeInOut}), 0, 100);	
+		// controller.addTween('.seccion5', TweenMax.fromTo( $('.image2'), 1, {css:{'opacity':'0'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'opacity':'1'}, ease:Quad.easeInOut}), 0, 120);	
+		// controller.addTween('.seccion5', TweenMax.fromTo( $('.image3'), 1, {css:{'opacity':'0'}, immediateRender:true, ease:Quad.easeInOut}, {css:{'opacity':'1'}, ease:Quad.easeInOut}), 0, 140);
 	}
 </script>
 

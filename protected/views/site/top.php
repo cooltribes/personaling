@@ -140,10 +140,10 @@ function str_lreplace($search, $replace, $subject)
                                 <?php echo CHtml::link($image,$look->getUrl()); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
                                     <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
-                                    <div class="span5"> <span class="muted">Look creado por: </span>
+                                    <div class="span4"> <span class="muted">Look creado por: </span>
                                         <h5><?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?></h5>
                                     </div>
-                                    <div class="span5"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                                    <div class="span6"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>

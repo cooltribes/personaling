@@ -580,9 +580,16 @@ if(isset($_POST['Profile']))
 	public function actionCarrito($id)
 	{
 		$model = $this->loadModel();
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$id));
+		$bolsa = new Bolsa;
 		if(isset($bolsa))
 		{
+			$this->render('carrito',array(
+				'model'=>$model,
+				'bolsa'=>$bolsa,
+				'usuario'=>$id,
+			));
+		}
+		else {
 			$this->render('carrito',array(
 				'model'=>$model,
 				'bolsa'=>$bolsa,

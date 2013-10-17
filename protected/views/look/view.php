@@ -132,26 +132,11 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                             'beforeSend' => "function( request )
                                  {
-                                   /*
-                                   $('#btn-comprar').attr('disabled', true);
-                                   var color_id = '';
-                                   $('.colores').each(function(index){
-                                           color_id += $(this).val()+',';
-                                   });
-                                   color_id = color_id.substring(0, color_id.length-1);
-                                   var talla_id = '';
-                                   $('.tallas').each(function(index){
-                                           talla_id +=$(this).val()+ ',';
-                                   });
-                                   talla_id = talla_id.substring(0, talla_id.length-1);
-                                   */
-                                   //alert(talla_id);
-                                   //this.data += '&talla_id='+talla_id+'color_id='+color_id;
-
-
-                                   //return false;
                                    
+                                   
+                                                                      var entro = true;	
                                    if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
+                                   		entro = false;
                                         alert('debe seleccionar por lo menos una prenda');
                                         return false;
                                    }
@@ -160,16 +145,18 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                                            if ($(this).val()==''){
 
                                                if ($(this).parent().prev('input').prop('checked')){
-                                                   alert('debe seleccionar todas las tallas');
+                                               		entro = false;
+                                                   bootbox.alert('debe seleccionar todas las tallas');
                                                    return false;
                                                }
                                            }
 
                                    });
-                                   if ($('#buttonGuardar').attr('disabled')==true)
-                                   		return false;
-                                   $('#buttonGuardar').attr('disabled', true);
-                                  // return false;
+                                   if (entro){
+                                   		if ($('#buttonGuardar').attr('disabled')==true)
+                                   			return false;
+                                   		$('#buttonGuardar').attr('disabled', true);
+								   }
                                    
                                  }",
 
@@ -260,7 +247,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                 <div class="metadata_top">
                   <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); ?> </div>
+                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); ?> </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
@@ -375,12 +362,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                           <?php echo CHtml::image($lookre->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
                       </div>
-                      <div class="span5"> <span class="muted">Look creado por: </span>
+                      <div class="span4"> <span class="muted">Look creado por: </span>
                         <h5><a class="url" title="profile" href="#"><span class="fn">
                           <?php //echo $look->title; ?>
                           <?php echo $lookre->user->profile->first_name; ?> </span></a></h5>
                       </div>
-                      <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
+                      <div class="span6"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
                     </div>
                     <div class="share_like">
                       <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>

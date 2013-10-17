@@ -221,13 +221,18 @@ $this->breadcrumbs=array(
 					 <nav class="  ">
 					        <ul class="nav">
 					        	<?php $personal_shopper = User::model()->findAll(array('condition'=>'personal_shopper=1'));	?>
-								<?php foreach($personal_shopper as $shopper){?>
-					          <li>
-					            <label>
-					              <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
-					            </label>
-					          </li>	
-								<?php } ?>
+							<?php foreach($personal_shopper as $shopper){
+                                                                if(count($shopper->looks)){
+                                                            ?>
+                                                    
+                                                            <li>
+                                                              <label>
+                                                                <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
+                                                              </label>
+                                                            </li>	
+							<?php 
+                                                                }
+                                                            } ?>
 					        </ul>
 					 </nav>
 				 </form> 

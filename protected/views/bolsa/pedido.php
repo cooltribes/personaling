@@ -42,7 +42,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       <hr/>
       <div class="clearfix">
         <div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div>
-        <!-- <div class="pull-right"> Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div> -->
+    <div class="pull-right"> Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div> 
       </div>
     </section>
     <?php
@@ -429,7 +429,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
           <div style="display:none" class="help-inline"></div>
         </div>
       </div>
-      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
+      <div class="form-actions"> <a onclick="enviar(<?php echo $orden->id ?>)" class="btn btn-danger">Confirmar Deposito</a> </div>
       <p class="well well-small"> <strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>
     </form>
@@ -441,7 +441,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 
 <script>
 	
-	function enviar()
+	function enviar(id)
 	{	
 		var idDetalle = $("#idDetalle").attr("value");
 		var nombre= $("#nombre").attr("value");
@@ -464,7 +464,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
  		$.ajax({
 	        type: "post", 
 	        url: "../cpago", // action 
-	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
+	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto, 'idOrden':id}, 
 	        success: function (data) {
 				
 				if(data=="ok")

@@ -8,17 +8,6 @@ if((isset($editar) && $editar)){
 ?>
 <?php ?>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/joyride-2.1.css">
-<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>
-    <script>
-      $(window).load(function() {
-        $('#joyRideTipContent').joyride({
-      
-          autoStart : <?php echo !((isset($editar) && $editar)) ? 'true' : 'false' ?>,
-          modal: true,
-          expose: true
-        });
-      });
-</script>
 <div class="container margin_top tu_perfil">
   <div class="row">
     <?php if (isset($editar) && $editar){ ?>
@@ -57,9 +46,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 )); ?>
         <fieldset>
           <div id="numero1">
-            <?php if( !(isset($editar) && $editar) ){ ?>
-            <legend>Características básicas: </legend>
-            <?php } ?>
+
             <div class="control-group" >
               <div class="controls row-fluid" id="caracteristicas">
                 <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
@@ -97,9 +84,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               </div>
           </div>
           </div>
-          <?php if( !(isset($editar) && $editar) ){ ?>
-          <legend class="margin_top">Forma de tu cuerpo</legend>
-          <?php } ?>
+
           <div class="control-group" id="numero2">
             <div class="controls row-fluid">
               <?php 
@@ -137,15 +122,19 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               </ul>
             </div>
           </div>
-          <div class="form-actions" >
-            <?php $this->widget('bootstrap.widgets.TbButton', array(
-            				'buttonType' => 'submit',
-						    'label'=>isset($editar)?'Guardar':'Siguiente',
-						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-						    'size'=>'large', // null, 'large', 'small' or 'mini'
-							'htmlOptions' => array('class'=>'pull-right'), 
-							
-						)); ?>
+
+
+          <div  class="form-actions row" >
+            <div id="numero3" class="span3 offset9 ">
+              <?php $this->widget('bootstrap.widgets.TbButton', array(
+              				'buttonType' => 'submit',
+  						    'label'=>isset($editar)?'Guardar':'Siguiente',
+  						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+  						    'size'=>'large', // null, 'large', 'small' or 'mini'
+  							'htmlOptions' => array('class'=>'margin_left_large'), 
+  							
+  						)); ?>
+            </div>
           </div>
         </fieldset>
         <?php $this->endWidget(); ?>
@@ -184,20 +173,43 @@ $script = "
 <?php Yii::app()->clientScript->registerScript('botones',$script); ?>
 
 <!-- contenido -->
-<ol id="joyRideTipContent">
+<ol id="joyRideTipContent" data-joyride>
   <li data-id="numero1" data-button="Siguiente" data-options="tipAnimation:fade" >
-  <h3><strong>Escoge las caracteristicas</strong></h3>
-    <p>Escoge tus caracteristicas de cuerpo</p>  
+  <p class="lead"><strong>Escoge las características de tu cuerpo</strong></p>
+    <p class="muted">Estas ayudarán a nuestros Personal Shoppers a hacer mejor su trabajo</p>  
   </li>
-  <li data-id="numero2" data-options="tipLocation:left;tipAnimation:fade"  data-button="Siguiente">
-    <h3>Escoge la forma</h3>
-    <p>Selecciona tu forma de cuerpo  </p>
+  <li data-id="numero2" data-button="Siguiente" data-options="tipLocation:left;tipAnimation:fade" >
+    <p class="lead"><strong>Escoge la forma de tu cuerpo</strong></p>
+    <p class="muted" >¡Queremos recomendarte ropa que te favorezca y haga ver espectacular! </p>
   </li>
   
-  <li data-id="yw1" data-options="tipLocation:top;tipAnimation:fade" data-button="Siguiente">
-    <h3>Presiona</h3>
-    <p>Ahora vamos a escoger tu estilo  </p>
+  <li id="numero3" data-id="yw1" data-button="Siguiente" data-options="tipLocation:top;tipAnimation:fade">
+    <p class="lead"><strong>Escoge tu estilo</strong></p>
+    <p class="muted">Haz click en siguiente y elige entre las imágenes tu estilo </p>
   </li>
 </ol>
+<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>
+    <script>
+      $(window).load(function() {
+        $('#joyRideTipContent').joyride({      
+          autoStart : <?php echo !((isset($editar) && $editar)) ? 'true' : 'false' ?>,
+          modal: true,
+          expose: true,
+          scroll: false,
+        // 'tipLocation': 'bottom',         // 'top' or 'bottom' in relation to parent
+        // 'nubPosition': 'auto',           // override on a per tooltip bases
+        // 'scrollSpeed': false,              // Page scrolling speed in ms
+        // 'timer': 0,                   // 0 = off, all other numbers = time(ms) 
+        // 'startTimerOnClick': false,       // true/false to start timer on first click
+        // 'nextButton': true,              // true/false for next button visibility
+        // 'tipAnimation': 'fade',           // 'pop' or 'fade' in each tip
+        // 'pauseAfter': [],                // array of indexes where to pause the tour after
+        // 'tipAnimationFadeSpeed': 300,    // if 'fade'- speed in ms of transition
+        // 'cookieMonster': true,           // true/false for whether cookies are used
+        // 'cookieName': 'JoyRide',         // choose your own cookie name
+        // 'cookieDomain': false,           // set to false or yoursite.com
 
+      });
+  });
+</script>
 

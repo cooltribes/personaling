@@ -112,9 +112,14 @@ class User extends CActiveRecord {
         $relations['ordenes'] = array(self::HAS_MANY, 'Orden', 'user_id',
 //            // we don't want to select posts
 //                        'select'=>false,
-//                        // but want to get only users with published posts
 //                        'joinType'=>'INNER JOIN',
 //                        'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',
+            );
+        $relations['looks'] = array(self::HAS_MANY, 'Look', 'user_id',
+//            // we don't want to select posts
+//                        'select'=>false,
+//                        'joinType'=>'INNER JOIN',
+                        'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
             );
         
         return $relations;
@@ -565,6 +570,57 @@ class User extends CActiveRecord {
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	} 
+	
+	public function getTotalAdmin()
+	{
+		$sql = "select count(*) from tbl_users where superuser = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	public function getTotalClients()
+	{
+		$sql = "select count(*) from tbl_users where superuser = 0 AND personal_shopper = 0";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	
+	public function getTotal()
+	{
+		$sql = "select count(*) from tbl_users where (superuser = 0 AND personal_shopper = 0) OR superuser = 1 OR personal_shopper = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}
+	
+	public function getAplicantes()
+	{
+		$sql = "select count(*) from tbl_users where personal_shopper = 2";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	
+	public function getPercent($rol){
+		switch ($rol) {
+		    case 'Admin':
+		        $perc=round($this->getTotalAdmin()*100/$this->getTotal(),2);
+		        break;
+		    case 'PS':
+		        $perc=round($this->getTotalPS()*100/$this->getTotal(),2);
+		        break;
+		    case 'Client':
+		        $perc=round($this->getTotalClients()*100/$this->getTotal(),2);
+		        break;
+			case 'App':
+		        $perc=round($this->getAplicantes()*100/$this->getTotal(),2);
+		        break;
+		    default:
+		       $perc=0;
+				break;
+		}
+		return $perc;
+	}
+	
+	
+	
 	protected function beforeSave()
 	{
 	   	
@@ -574,11 +630,46 @@ class User extends CActiveRecord {
 	   return parent::beforeSave();
 	}
 	
-	public function getAplicantes()
-	{
-		$sql = "select count(*) from tbl_users where personal_shopper = 2";
-		$num = Yii::app()->db->createCommand($sql)->queryScalar();
-		return $num;
-	} 
+	public function getLast3($rol){
+		
+
+		
+		switch ($rol) {
+		    case 'Admin':
+		        $sql = "select id from tbl_users where superuser = 1 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+		    case 'PS':
+		        $sql = "select id from tbl_users where personal_shopper = 1 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+		    case 'Client':
+		        $sql = "select id from tbl_users where superuser = 0 AND personal_shopper = 0 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+			case 'App':
+		        $sql = "select id from tbl_users where personal_shopper = 2 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+		    default:
+		       $sql = "select id from tbl_users order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+				break;
+		}
+	
+		return $total;
+		
+		
+	}
+	
+	public function getCreate_at($id = null){
+		if(!is_null($id))
+		{
+			$null=$this->findByPk($id);	
+			return $null->create_at; 		
+		}
+		return $this->create_at; 
+	}
+	
 
 }

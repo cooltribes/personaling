@@ -20,6 +20,8 @@
  * @property integer $status
  * @property integer $view_counter 
  * @property integer $url_amigable
+ * @property string $sent_on
+ * @property string $approved_on
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -45,6 +47,8 @@ class Look extends CActiveRecord
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	 public $has_ocasiones;
+         private $_totalVentas = null;
+         
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -94,12 +98,14 @@ class Look extends CActiveRecord
 			array('view_counter','required','on'=>'increaseview'),
 			array('title', 'length', 'max'=>45),
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
-			array('description, created_on', 'safe'),
+			array('description, created_on, sent_on, approved_on', 'safe'),
 			array('url_amigable', 'unique', 'message'=>'Url Amigable ya registrada para otro look.'),
-			//array('url_amigable', 'match', 'pattern'=>'/^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/'),
+			//array('url_amigable', 'match', 'pattern'=>'/^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/', 'message'=>'Url Amigable presenta caracteres no válidos'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter, url_amigable', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, 
+                            tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, 
+                            campana_id, view_counter, url_amigable, sent_on, approved_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -149,6 +155,8 @@ class Look extends CActiveRecord
 			'has_ocasiones' => 'Ocasiones',
 			'user_id'=>'Usuario',
 			'url_amigable' => 'Url Amigable',
+                        'sent_on' => 'Fecha de envío',
+                        'approved_on' => 'Fecha de aprobación',
 		);
 	}
 	public function matchOcaciones($user) 
@@ -251,8 +259,11 @@ class Look extends CActiveRecord
 	 public function masvendidos($limit = 3)
 	 {		
 		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor a, tbl_look b where b.status = 2 and a.look_id != 0 and b.deleted = 0 and b.id = a.look_id group by a.look_id order by count(distinct tbl_orden_id) DESC";
-
-		$count = 10; 	
+                $count = count(Yii::app()->db->createCommand($sql)->query());
+                
+                $limit = $count && $count > $limit?$limit:$count;  
+                
+                //$count = 0;
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
 		   	'pagination'=>array(
@@ -287,6 +298,8 @@ class Look extends CActiveRecord
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('campana_id',$this->campana_id,true);
 		$criteria->compare('url_amigable',$this->url_amigable,true);
+                $criteria->compare('sent_on',$this->sent_on);
+                $criteria->compare('approved_on',$this->approved_on);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -878,5 +891,44 @@ class Look extends CActiveRecord
             
             
         }
+        
+        public function getTotalVentas($format = true){
+            /*El precio en la tabla tbl_orden_has_productotallacolor esta con IVA ? */
+            
+            if (is_null($this->_totalVentas)){
+                $sql ="SELECT SUM(op.precio) FROM tbl_orden_has_productotallacolor op, tbl_orden o
+                    where o.estado IN (3, 4, 8)
+                    AND
+                    o.id = op.tbl_orden_id
+                    AND
+                    op.look_id = :id";
+                $this->_totalVentas = Yii::app()->db->createCommand($sql)->queryScalar(array("id" => $this->id));
+            }
+            
+		
+            
+            if ($format)
+			return Yii::app()->numberFormatter->formatDecimal($this->_totalVentas);
+		else
+			return $this->_totalVentas;
+            
+            
+        }
+	
+	protected function beforeSave()
+	{
+	   	
+	   if(($this->url_amigable!='')||(!is_null($this->url_amigable))){
+	   	$matches = null;
+			if(!preg_match('/^\\w{1}([a-zA-Z_|\\-]*[a-zA-Z]+[a-zA-Z_|\\-]*)$/', $this->url_amigable, $matches)){
+				$this->url_amigable=NULL;	
+				Yii::app()->user->setFlash('error', 'Url no guardada por presentar caracteres inválidos.');
+				
+			}
+			
+	   }
+	   //echo $this->birthday;
+	   return parent::beforeSave();
+	}
 	
 }

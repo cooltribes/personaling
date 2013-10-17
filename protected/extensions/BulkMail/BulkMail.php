@@ -89,6 +89,13 @@
 					}
 					return null;
 				}
+                                        
+                                BulkMail.eventO = function(e) {
+					if (e.which == 32 || e.which == 13 ||
+                                            (e.which == 9 && $("#{$this->inputFieldNew}").val() != "")) {
+                                                BulkMail.processBulkEmails($("#{$this->inputFieldNew}").val());
+                                        }
+				}
 				$(document).ready(function() {
 					$("#{$this->inputFieldNew}").bind('paste', function(e) {
 						var element = $(this);
@@ -97,13 +104,15 @@
 							BulkMail.processBulkEmails(text);
 						}, 100);
 					});
-					$("#{$this->inputFieldNew}").keyup(function(e) {
-						if (e.which == 32 || e.which == 13) {
-							BulkMail.processBulkEmails($("#{$this->inputFieldNew}").val());
-						}
-					});
+                                        
+					$("#{$this->inputFieldNew}").keyup(BulkMail.eventO);
+                                        $("#{$this->inputFieldNew}").focusout(function(e){
+                                            BulkMail.processBulkEmails($("#{$this->inputFieldNew}").val());
+                                        });
+                                        
 					$(window).keydown(function(event){
-						if(event.keyCode == 13) {
+						if(event.keyCode == 13 || 
+                                                    (event.keyCode == 9 && $("#{$this->inputFieldNew}").val() != "")) {
 							event.preventDefault();
 							return false;
 						}
@@ -136,7 +145,7 @@ CSS;
 			$htmlCode = <<<HTML
 				<div id="{$this->container}">
 					<div id="{$this->container}Content"></div>
-					<input type="text" placeholder="correoelectronico@cuenta.com" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
+					<input type="text" class="span5" placeholder="correoelectronico@cuenta.com" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
 				</div>
 HTML;
 			echo $htmlCode;

@@ -207,8 +207,8 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
              <h2 class="braker_bottom">Correo electrónico y contraseña </h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li><a href="cambiar_Correo_electronico.php" title="cambiar corre electronico">Cambiar correo electrónico</a></li>
-              <li> <a href="cambiar_Contrasena.php" title="cambiar contrasena">Cambiar contraseña</a></li>
+              <li><?php echo CHtml::link('Cambiar correo electrónico',array('changeemail'),array("title"=>"Cambia tu correo electrónico")); ?></li>
+              <li><?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
             </ul>
              <h2 class="braker_bottom">Libreta de Direcciones </h2>
            <ul class="nav nav-stacked nav-tabs"> 

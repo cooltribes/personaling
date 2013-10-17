@@ -27,6 +27,7 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
       <div class="active item">  <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_4.jpg">
       </div>
             <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg"></div>
+            <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_5.jpg"></div>
     </div>
 
 

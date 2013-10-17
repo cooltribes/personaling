@@ -43,6 +43,7 @@ class Producto extends CActiveRecord
 	public $dos="";
 	public $categoria_id="";
 	public $_precio = null;
+        private $_totalVentas = null;
         
 	/**
 	 * Returns the static model of the specified AR class.
@@ -793,11 +794,11 @@ public function multipleColor2($idColor, $idact)
 			
 		//$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
 		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id left join tbl_producto on tbl_producto.id = tbl_precioTallaColor.producto_id where tbl_imagen.orden = 1 and tbl_producto.status = 1 and tbl_producto.estado = 0 GROUP BY producto_id ORDER by productos DESC";
-                $count = Yii::app()->db->createCommand($sql)->queryScalar();
-		//if (isset($limit))
-		//	$sql.=" LIMIT 0,$limit";
-		//$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";
-		//$count = 10; 	
+                 $count = count(Yii::app()->db->createCommand($sql)->query());
+                
+                $limit = $count && $count > $limit?$limit:$count;  
+                        
+                //$count = 0;		
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
 			 'pagination'=>array(
@@ -1088,6 +1089,30 @@ public function multipleColor2($idColor, $idact)
 		
 	}
         
+        public function getTotalVentas($format = true){
+            /*El precio en la tabla tbl_orden_has_productotallacolor esta con IVA ? */
+            
+            if (is_null($this->_totalVentas)){
+                $sql ="SELECT SUM(op.precio * op.cantidad) FROM tbl_orden_has_productotallacolor op, tbl_orden o, tbl_precioTallaColor pt
+                    where o.estado IN (3, 4, 8)
+                    AND
+                    o.id = op.tbl_orden_id
+                    AND
+                    op.preciotallacolor_id = pt.id
+                    AND
+                    pt.producto_id = :id";
+                $this->_totalVentas = Yii::app()->db->createCommand($sql)->queryScalar(array("id" => $this->id));
+            }
+            
+		
+            
+            if ($format)
+			return Yii::app()->numberFormatter->formatDecimal($this->_totalVentas);
+		else
+			return $this->_totalVentas;
+            
+            
+        }
         
 
  

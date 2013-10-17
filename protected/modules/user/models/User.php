@@ -570,6 +570,47 @@ class User extends CActiveRecord {
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	} 
+	
+	public function getTotalAdmin()
+	{
+		$sql = "select count(*) from tbl_users where superuser = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	public function getTotalClients()
+	{
+		$sql = "select count(*) from tbl_users where superuser = 0 AND personal_shopper = 0";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	
+	public function getTotal()
+	{
+		$sql = "select count(*) from tbl_users where (superuser = 0 AND personal_shopper = 0) OR superuser = 1 OR personal_shopper = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}
+	
+	public function getPercent($rol){
+		switch ($rol) {
+		    case 'Admin':
+		        $perc=round($this->getTotalAdmin()*100/$this->getTotal(),2);
+		        break;
+		    case 'PS':
+		        $perc=round($this->getTotalPS()*100/$this->getTotal(),2);
+		        break;
+		    case 'Client':
+		        $perc=round($this->getTotalClients()*100/$this->getTotal(),2);
+		        break;
+		    default:
+		       $perc="Rol no definido";
+				break;
+		}
+		return $perc;
+	}
+	
+	
+	
 	protected function beforeSave()
 	{
 	   	

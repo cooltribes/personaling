@@ -151,10 +151,10 @@ function str_lreplace($search, $replace, $subject)
                                 <?php echo CHtml::link($image,$look->getUrl()); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
                                     <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
-                                    <div class="span5"> <span class="muted">Look creado por: </span>
+                                    <div class="span4"> <span class="muted">Look creado por: </span>
                                         <h5><?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?></h5>
                                     </div>
-                                    <div class="span5"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                                    <div class="span6"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -192,19 +192,19 @@ function str_lreplace($search, $replace, $subject)
     <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
         <h2 class="margin_bottom">Personal shoppers destacados</h2>
         <ul class="thumbnails ">
-            <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/heidi.jpg" width="250"> </a>
+            <li class="span3 personal_shoppers_li"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/heidi.jpg" width="250"> </a>
                 <h3><a href="#" title="Nombre del Personal Shopper">Heidi García</a></h3>
                 <p>Emprendedora de nacimiento,  CEO y Fundadora de Personaling.com. Amante del buen gusto y la moda. Siempre he pensado que tu mejor look es una buena actitud. </p>
             </li>
-            <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/rosa.jpg" width="250"> </a>
+            <li class="span3 personal_shoppers_li"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/rosa.jpg" width="250"> </a>
                 <h3><a href="#" title="Nombre del Personal Shopper">Rosa Virginia</a></h3>
                 <p>Modelo, Abogada, amante de la moda y adicta al shopping. Se lo que te favorece, porque se de moda real. RRPP de Personaling.com</p>
             </li>
-            <li class="span3"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/elise.jpg" width="250"> </a>
+            <li class="span3 personal_shoppers_li"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/elise.jpg" width="250"> </a>
                 <h3><a href="#" title="Nombre del Personal Shopper">Elise Vigouroux</a></h3>
                 <p>Una gran parte de mi vida me la paso escribiendo, otra parte leyendo, la otra trabajando para la moda y la que queda paseando a mi pug. Directora de Contenido de Personaling.com </p>
             </li>
-            <li class="span3"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/Ariana.jpg" width="250"> </a>
+            <li class="span3 personal_shoppers_li"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/Ariana.jpg" width="250"> </a>
                 <h3><a href="#" title="Nombre del Personal Shopper">Ariana Basciani</a></h3>
                 <p>Soy parte del equipo de contenido de Personaling.com. Amante de la literatura. Voy cazando tendencias cada día. Mi trabajo es hacer del mundo un lugar con gente mejor vestida. </p>
             </li>
@@ -216,7 +216,7 @@ function str_lreplace($search, $replace, $subject)
             //echo "count: ".$iterator->getTotalItemCount();
             if($iterator->getTotalItemCount()){
         ?>
-        <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
+        <div class=" margin_bottom_large braker_horz_top_1">
             <div class="row">
                 <div class="span12">
                     <h3 class="margin_bottom_small">Prendas más vendidas</h3>

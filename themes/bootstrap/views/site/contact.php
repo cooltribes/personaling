@@ -20,8 +20,8 @@ $this->breadcrumbs=array(
 		        <?php echo Yii::app()->user->getFlash('contact'); ?>
 		    </div>
 		<?php } ?>
-
-        <p class="margin_top_medium">Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>.  Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. <strong>¡Gracias!</strong></p>
+ 
+        <p class="margin_top_medium">Es posible que lo que quieras preguntar esté en nuestro apartado de<a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O LLama al  (212) 7202089. <strong>¡Gracias!</strong></p>
         <div class="form">
            
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(

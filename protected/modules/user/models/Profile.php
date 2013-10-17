@@ -283,7 +283,12 @@ class Profile extends UActiveRecord
 		return Yii::app()->createUrl('user/profile/perfil',array('id'=>$this->user_id));		
 	}
 	/* Obtener el nombre del ususario */
-	public function getNombre(){
+	public function getNombre($id = null){
+		if(!is_null($id))
+		{
+			$null=$this->findByPk($id);	
+			return $null->first_name.' '.$null->last_name; 		
+		}
 		return $this->first_name.' '.$this->last_name; 
 	}
 	  

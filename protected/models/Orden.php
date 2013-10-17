@@ -390,5 +390,10 @@ class Orden extends CActiveRecord
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}  
-	
+	public function getXConfirmar()
+	{
+		$sql = "select count(id) from tbl_orden where estado = 2";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}  
 }

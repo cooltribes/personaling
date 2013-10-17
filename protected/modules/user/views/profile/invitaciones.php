@@ -129,7 +129,7 @@ $create_date = date('j M Y', $create_time);
                                 <div class="controls">
                                     <?php 
                                    echo CHtml::textArea('invite-message',
-                                   'Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.',
+                                   'Mira looks creados por las mejores Personal Shopper de Venezuela.',
                                    array('class' => 'span5', 'rows' => '4'));
                                    ?>
                                    <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
@@ -341,11 +341,16 @@ $create_date = date('j M Y', $create_time);
                 var emails = $('input[type=hidden]').filter('[name*="emailList"]');                
                 //si no hay emails
                 if(!emails.size()){
-                 $('#emailInvite-form_bulkEmailList').parent().parent().addClass('error');
-                 $('#User_emails_em_').show();               
+                    $('#emailInvite-form_bulkEmailList').parent().parent().addClass('error');
+                    $('#User_emails_em_').show();               
                     
                  result = false;   
+                }else{
+                   $('#emailInvite-form_bulkEmailList').parent().parent().removeClass('error');
+                   $('#User_emails_em_').hide();  
+                    
                 }
+                    
                 
                 //Si no hay mensaje
 //                var message = $('#invite-message');

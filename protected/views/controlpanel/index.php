@@ -312,8 +312,8 @@ else
               <td><?php echo $looks_totales; ?></td>
             </tr>
             <tr>
-              <td><strong>Numero de Looks Activos</strong>:</td>
-              <td>24</td>
+              <td><strong>Numero de Looks Aprobados</strong>:</td>
+              <td><?php echo Look::model()->getAprovados(); ?> </td>
             </tr>
             <tr>
               <td><strong> Numero de Productos Activos</strong>:</td>
@@ -326,10 +326,10 @@ else
               <td><strong>Looks por aprobar</strong>:</td>
               <td><?php echo $looks_aprobar; ?></td>
             </tr>
-<!--             <tr>
-              <td><strong> Looks por publicar</strong>:</td>
-              <td>35</td>
-            </tr> -->
+          <tr>
+              <td><strong>Pagos por confirmar</strong>:</td>
+              <td><?php echo Orden::model()->getXConfirmar(); ?></td>
+            </tr> 
             <tr>
               <td><strong>Personal Shoppers por aprobar</strong>:</td>
               <td><?php echo User::model()->aplicantes; ?></td>

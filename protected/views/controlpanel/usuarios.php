@@ -27,6 +27,7 @@
       <div class="row margin_top">
         <div class="span12">
           <h4 class="CAPS braker_bottom margin_bottom_small">REGISTROS</h4>
+          <?php $us= new User;?>
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Tipos</th>
@@ -35,18 +36,18 @@
             </tr>
             <tr>
               <td>Clientes</td>
-              <td>380</td>
-              <td>94%</td>
+              <td><?php echo $us->getTotalClients(); ?></td>
+              <td><?php echo $us->getPercent('Client')." %"; ?></td>
             </tr>
             <tr>
               <td>Personal Shoppers</td>
-              <td>26</td>
-              <td>5%</td>
+              <td><?php echo $us->getTotalPS(); ?></td>
+              <td><?php echo $us->getPercent('PS')." %"; ?></td>
             </tr>
             <tr>
               <td>Administradores</td>
-              <td>4</td>
-              <td>1%</td>
+              <td><?php echo $us->getTotalAdmin(); ?></td>
+              <td><?php echo $us->getPercent('Admin')." %"; ?></td>
             </tr>
           </table>
         </div>

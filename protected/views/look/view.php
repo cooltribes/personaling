@@ -349,13 +349,16 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                         <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
                         <?php
                       //"style"=>"display: none",
-                          $script = "$('#"."imglook".$lookre->id."').load(function(){
-                                      //alert('cargo');
-                                      $('#imgloading".$lookre->id."').hide();
-                                      $(this).show();
-                                      //$('#loader_img').hide();
-                          });";
-                            Yii::app()->clientScript->registerScript('img_ps_script'.$lookre->id,$script);
+                          $script = "
+										var load_handler = function() {
+										    $('#imgloading".$lookre->id."').hide();
+										    $(this).show();
+										}
+										$('#"."imglook".$lookre->id."').filter(function() {
+										    return this.complete;
+										}).each(load_handler).end().load(load_handler);						 
+									 ";									 
+              						Yii::app()->clientScript->registerScript('img_script'.$lookre->id,$script);
                         ?>
                     <div class="hidden-phone margin_top_small vcard row-fluid">
                       <div class="span2 avatar ">

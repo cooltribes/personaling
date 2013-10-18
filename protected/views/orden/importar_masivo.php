@@ -34,7 +34,7 @@ $this->breadcrumbs=array(
 	<div class="row margin_top">
     	<div class="span12">
     		<div class="page-header">
-    			<h1>Importar Productos</h1>
+    			<h1>Importar Envios</h1>
   			</div>
       		<div class="bg_color3   margin_bottom_small padding_small box_1">
         		<fieldset>

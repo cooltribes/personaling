@@ -146,7 +146,7 @@ CSS;
 				<div id="{$this->container}">
 					<div id="{$this->container}Content"></div>
 
-					<input type="text" class="span5" placeholder="correoelectronico@cuenta.com" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
+					<input type="text" class="span5 input_invitar" placeholder="correoelectronico@cuenta.com" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
 
 				</div>
 HTML;

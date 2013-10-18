@@ -235,6 +235,25 @@ class Orden extends CActiveRecord
 		return $total;
 		
 	}
+	
+		public function getPurchasedByUser($id){
+		
+		$sql = "select sum(total) from tbl_orden where user_id = ".$id." and (estado = 3 OR estado = 4 OR estado = 8)";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		if(is_null($total))
+			return 0;
+		return $total;
+		
+	}
+	
+		 
+	public function countOrdersByUser($id){
+		
+		$sql = "select count(id) from tbl_orden where user_id = ".$id." and (estado = 3 OR estado = 4 OR estado = 8)";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $total;
+		
+	}
 
 	public function filtrado($query)
 	{

@@ -27,18 +27,24 @@ function str_lreplace($search, $replace, $subject)
         <div class="span12" id="lo_mas_top">
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
+                    <?php if($dataProvider->getTotalItemCount()){ ?>
                     <li class="active"><a href="#tab1" data-toggle="tab">Looks más vendidos</a></li>
+                    <?php } ?>
 <!--                     <li><a href="#tab2" data-toggle="tab">Próxima Campaña</a></li>
- -->                    <li><a href="#tab3" data-toggle="tab">Looks en promoción</a></li>
+
+ -->                <li<?php echo !($dataProvider->getTotalItemCount())? " class=\"active\" ":""; ?>>
+                        <a href="#tab3" data-toggle="tab">Looks en promoción</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
+                    <?php if($dataProvider->getTotalItemCount()){ ?>
                     <div class="tab-pane active" id="tab1" >
                         <div class="items row ">
-<?php
- foreach($dataProvider->getData() as $record) {
- 	$look = Look::model()->findByPk($record['look_id']);
-	if (isset($look)){
- ?>
+                    <?php
+                     foreach($dataProvider->getData() as $record) {
+                            $look = Look::model()->findByPk($record['look_id']);
+                            if (isset($look)){
+                     ?>
                         <div class="span4">
                             <article class="item" >
                             	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
@@ -106,17 +112,22 @@ function str_lreplace($search, $replace, $subject)
 ?>
                     </div>
                     </div>
+                    <?php } ?>
 <!--                     <div class="tab-pane" id="tab2">
                         <p>Howdy, I'm in Section 2.</p>
                     </div> -->
-                     <div class="tab-pane" id="tab3">
+                     <div class="tab-pane <?php echo !($dataProvider->getTotalItemCount())? "active":""; ?>" id="tab3">
                         <div class="items row ">
 <?php
 	//foreach($dataProvider_destacados->getData() as $record) {
 	//$look = Look::model()->findByPk($record['look_id']);
+        $pagination = $dataProvider_destacados->pagination->pageSize;
+        //
 	$iterator = new CDataProviderIterator($dataProvider_destacados);
+        $count = 0;
 	foreach($iterator as $look) {
 		if (isset($look)){
+                    $count++;
 ?>
                         <div class="span4">
                             <article class="item" >
@@ -126,16 +137,16 @@ function str_lreplace($search, $replace, $subject)
                                 <?php
                                 //"style"=>"display: none",              	
 
-									 $script = "
-										var load_handler = function() {
-										    $('#d_imgloading".$look->id."').hide();
-										    $(this).show();
-										}
-										$('#"."d_imglook".$look->id."').filter(function() {
-										    return this.complete;
-										}).each(load_handler).end().load(load_handler);						 
-									 ";									
-              						Yii::app()->clientScript->registerScript('d_img_script'.$look->id,$script);
+                                        $script = "
+                                               var load_handler = function() {
+                                                   $('#d_imgloading".$look->id."').hide();
+                                                   $(this).show();
+                                               }
+                                               $('#"."d_imglook".$look->id."').filter(function() {
+                                                   return this.complete;
+                                               }).each(load_handler).end().load(load_handler);						 
+                                        ";									
+                                        Yii::app()->clientScript->registerScript('d_img_script'.$look->id,$script);
               					?>   
                                 <?php echo CHtml::link($image,$look->getUrl()); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
@@ -166,6 +177,8 @@ function str_lreplace($search, $replace, $subject)
                                 <span class="label label-important">Promoción</span> </article>
                         </div>
 <?php 
+                        if ($count >= $pagination)
+                             break;
 	}
 } ?>
                     </div>
@@ -196,41 +209,45 @@ function str_lreplace($search, $replace, $subject)
                 <p>Soy parte del equipo de contenido de Personaling.com. Amante de la literatura. Voy cazando tendencias cada día. Mi trabajo es hacer del mundo un lugar con gente mejor vestida. </p>
             </li>
         </ul>
-        <div class=" margin_bottom_large braker_horz_top_1 ">
+        <?php   
+            $pagination = $dataProvider_productos->pagination->pageSize;
+            $iterator = new CDataProviderIterator($dataProvider_productos);
+            $count = 0;
+            //echo "count: ".$iterator->getTotalItemCount();
+            if($iterator->getTotalItemCount()){
+        ?>
+        <div class=" margin_bottom_large braker_horz_top_1">
             <div class="row">
                 <div class="span12">
                     <h3 class="margin_bottom_small">Prendas más vendidas</h3>
                     <div class="thumbnails">
+                            <?php
+                            foreach($iterator as $record) {
+                                    $producto = Producto::model()->findByPk($record['producto_id']);
+                                    if (isset($producto)){
+                                            if($producto->getCantidad() > 0){
+                                                    $count++;
+                            ?>
+                                <li class="span2"> 
+                                    <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
+                                    <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
+                                </li>
+                            <?php 			
 
-<?php   
-$pagination = $dataProvider_productos->pagination->pageSize;
-$iterator = new CDataProviderIterator($dataProvider_productos);
-$count = 0;
-foreach($iterator as $record) {
-	$producto = Producto::model()->findByPk($record['producto_id']);
-	if (isset($producto)){
-		if($producto->getCantidad() > 0){
-			$count++;
-?>
-                    <li class="span2"> 
-                        <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
-                        <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
-                    </li>
-<?php 			
-			
-			if ($count >= $pagination)
-				break;	
-		}
-	}	
-   
-}
-	
-     ?>
+                                                    if ($count >= $pagination)
+                                                            break;	
+                                            }
+                                    }	
+
+                            }
+
+                                 ?>
 
                     </div>
                 </div>
             </div>
         </div>
+            <?php } ?>
     </div>
     <div class=" margin_bottom_large braker_horz_top_1 ">
         <h3 class="margin_bottom_small">Desde Nuestra Magazine</h3>

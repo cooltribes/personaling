@@ -7,74 +7,13 @@
   <div class="navbar margin_top">
   <div class="navbar-inner">
     <ul class="nav">
-  	<li><a href="#" class="nav-header">CATALOGOS POR:</a></li>
+  	<li><a href="#" class="nav-header">CATALOGO DE:</a></li>
       	<li class="active" ><a title="Looks" href="">Looks</a></li>
       	<li><a title="Productos" href="<?php echo Yii::app()->baseUrl."/controlpanel/productos"; ?>">Productos</a></li>
     </ul>
   </div>
 </div>
  
-<?php
-
-$ventas = Orden::model()->count();
-$enviados = Orden::model()->countByAttributes(array('estado'=>4)); // enviados
-
-$sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado = 4 and a.id = b.tbl_orden_id ";
-$productos_enviados = Yii::app()->db->createCommand($sql)->queryScalar();
-
-	// el total de ordenes pagas o enviadas
-	$totalpromedio = Orden::model()->countByAttributes(array(), 'estado = :valor1 or estado = :valor2 or estado = :valor3', array(':valor1'=>3,':valor2'=>4,':valor3'=>8));
-	// cada una de esas ordenes
-	$ordenes = Orden::model()->findAllByAttributes(array(), 'estado = :valor1 or estado = :valor2 or estado = :valor3', array(':valor1'=>3,':valor2'=>4,':valor3'=>8));
-	$sumatoria = 0;
-	$impuestos = 0;
-	
-	foreach($ordenes as $uno)
-	{
-		$sumatoria = $sumatoria + $uno->total;	
-		$impuestos = $impuestos + $uno->iva;
-	}
-
-$a = substr($sumatoria,0,-1);
-$b = substr($impuestos,0,-1);
-
-/* forma anterior */	
-$sql = "SELECT sum(total) as total FROM tbl_orden";
-$dinero_ventas = Yii::app()->db->createCommand($sql)->queryScalar();
-
-if($totalpromedio != 0)
-	$promedio = $sumatoria / $totalpromedio;
-else
-	$promedio = 0;
-
-$c = substr($promedio,0,-1);
-
-	$pago_pendientes = 0;
-	$pend = Orden::model()->findAllByAttributes(array('estado'=>1));
-	$envios = 0;
-	
-	foreach($pend as $cada){
-		$pago_pendientes = $pago_pendientes + $cada->total;
-		$envios = $envios + $cada->envio + $cada->seguro;
-	}
-
-$d = substr($pago_pendientes,0,-1);
-
-$pendiente = Orden::model()->countByAttributes(array('estado'=>1));
-
-if($pendiente != 0)
-	$e = $pago_pendientes / $pendiente;
-else 
-	$e = 0;
-
-$f = substr($e,0,-1);
-$g = substr($envios,0,-1);
-
-$sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado = 1 and a.id = b.tbl_orden_id";
-$productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
-
-?>  
-  
   <!-- SUBMENU OFF -->
   <div class="row">
     <div class="span12">
@@ -120,7 +59,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 					      	$this->Widget('ext.highcharts.HighchartsWidget', array(
 							   'options'=>array(
 							   	  'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
-							      'title' => array('text' => 'Ventas en el último mes.'),
+							      'title' => array('text' => 'Estados de Looks en el último mes.'),
 							      'xAxis' => array(
 							         'categories' => array($uno, $dos)
 							      ),
@@ -265,62 +204,6 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 	          
             </div>
       </div>
-
-<!--      <div class="row margin_top">
-        <div class="span6 ">
-          <h4 class="CAPS braker_bottom margin_bottom_small">Estadisticas</h4>
-          <table width="100%" border="0" class="table table-bordered  table-striped table-condensed"  cellspacing="0" cellpadding="0">
-            <tr>
-              <td><strong>Ventas Totales</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$a); ?> Bs.</td>
-            </tr>
-            <tr>
-              <td><strong>Promedio de Ventas</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$c); ?> Bs.</td>
-            </tr>
-            <tr>
-              <td><strong>Impuestos</strong>:</td>
-              <td><?php echo $b; ?> Bs.</td>
-            </tr>
-            <tr>
-              <td><strong>Envíos</strong>:</td>
-              <td><?php echo $enviados; ?></td>
-            </tr>
-            <tr>
-              <td><strong>Numero de Productos envíos</strong>:</td>
-              <td><?php echo $productos_enviados; ?></td>
-            </tr>
-          </table>
-        </div>
-        <div class="span6">
-          <h4 class="CAPS braker_bottom margin_bottom_small">VENTAS PENDIENTES</h4>
-          <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
-            <tr>
-              <td><strong>Total Pagos Pendientes:</strong></td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$d); ?> Bs.</td>
-            </tr>
-            <tr>
-              <td><strong>Promedio en Pagos Pendientes:</strong></td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($f); ?> Bs.</td>
-            </tr>
-            <tr>
-              <td><strong>Impuestos:</strong></td>
-              <td>870 Bs.</td>
-            </tr>
-            <tr>
-              <td><strong>Envios:</strong></td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$g); ?> Bs.</td>
-            </tr>
-            <tr>
-              <td><strong>Numero de Productos Pendientes:</strong></td>
-              <td><?php echo $productos_pendientes; ?></td>
-            </tr>
-          </table>
-        </div>
-      </div>-->
-      
-      
-      
       
       <h2 class="braker_bottom margin_bottom_small">Looks</h2>
       <ul class="nav nav-tabs">
@@ -348,7 +231,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
                         <td><a href="<?php echo $record->getUrl(); ?>" title="Ver Look"><?php echo $record->title; ?></a></td>
                         <td><?php echo $record->view_counter; ?></td>
                         <td><?php echo $record->getCantVendidos(); ?></td>
-                        <td>Bs. <?php echo ""; ?></td>
+                        <td>Bs. <?php echo $record->getTotalVentas(); ?></td>
                     </tr>
           <?php
                   }

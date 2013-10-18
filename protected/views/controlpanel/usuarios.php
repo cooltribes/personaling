@@ -49,6 +49,11 @@
               <td><?php echo $us->getTotalAdmin(); ?></td>
               <td><?php echo $us->getPercent('Admin')." %"; ?></td>
             </tr>
+            <tr> 
+              <td>Aplicantes</td>
+              <td><?php echo $us->getAplicantes(); ?></td>
+              <td><?php echo $us->getPercent('App')." %"; ?></td>
+            </tr>
           </table>
         </div>
       </div>
@@ -56,6 +61,8 @@
       <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#tab1">Clientes</a></li>
         <li><a data-toggle="tab" href="#tab2">Personal Shoppers</a></li>
+        <li><a data-toggle="tab" href="#tab3">Administradores</a></li>
+        <li><a data-toggle="tab" href="#tab4">Aplicantes a PS</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
@@ -66,24 +73,21 @@
               <th scope="col">Promedio de Pedidos</th>
               <th scope="col">Total de Pedidos</th>
             </tr>
-            <tr>
-              <td><a href="#" title="Ver perfil">John Doe</a></td>
-              <td>1</td>
-              <td>6</td>
-              <td>184,00</td>
-            </tr>
-            <tr>
-              <td><a href="#" title="Ver perfil">John Doe</a></td>
-              <td>1</td>
-              <td>6</td>
-              <td>184,00</td>
-            </tr>
-            <tr>
-              <td><a href="#" title="Ver perfil">John Doe</a></td>
-              <td>1</td>
-              <td>6</td>
-              <td>184,00</td>
-            </tr>
+            <?php
+            $last3=User::model()->getLast3("Client");
+            foreach($last3 as $last){
+            	echo " <tr><td><a href='#' title='Ver perfil'>".Profile::model()->getNombre($last)."</a></td>";
+            	$T=Orden::model()->countOrdersByUser($last); 
+            	echo "<td>".$T." Bs.</td>";
+				if($T>0)
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2))." Bs</td>";
+				else
+					echo "<td>0</td>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last))." Bs.</td></tr>";
+            	
+            }
+            ?>
+            
           </table>
         </div>
         <div class="tab-pane" id="tab2">
@@ -94,24 +98,61 @@
               <th scope="col">Promedio de Pedidos</th>
               <th scope="col">Total de Pedidos</th>
             </tr>
+            <?php
+            $last3=User::model()->getLast3("PS");
+            foreach($last3 as $last){
+            	echo " <tr><td><a href='#' title='Ver perfil'>".Profile::model()->getNombre($last)."</a></td>";
+            	$T=Orden::model()->countOrdersByUser($last); 
+            	echo "<td>".$T." Bs.</td>";
+				if($T>0)
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2))." Bs</td>";
+				else
+					echo "<td>0</td>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last))." Bs.</td></tr>";
+            	
+            }
+            ?>
+          </table>
+        </div>
+        <div class="tab-pane" id="tab3">
+          <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
-              <td><a href="#" title="Ver perfil">John Doe</a></td>
-              <td>1</td>
-              <td>6</td>
-              <td>184,00</td>
+              <th scope="col">Administrador</th>
+              <th scope="col">Numero de Pedidos</th>
+              <th scope="col">Promedio de Pedidos</th>
+              <th scope="col">Total de Pedidos</th>
             </tr>
+            <?php
+            $last3=User::model()->getLast3("Admin");
+            foreach($last3 as $last){
+            	echo " <tr><td><a href='#' title='Ver perfil'>".Profile::model()->getNombre($last)."</a></td>";
+            	$T=Orden::model()->countOrdersByUser($last); 
+            	echo "<td>".$T." Bs.</td>";
+				if($T>0)
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2))." Bs</td>";
+				else
+					echo "<td>0</td>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last))." Bs.</td></tr>";
+            	
+            }
+            ?>
+          </table>
+        </div>
+        <div class="tab-pane" id="tab4">
+          <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
-              <td><a href="#" title="Ver perfil">John Doe</a></td>
-              <td>1</td>
-              <td>6</td>
-              <td>184,00</td>
+              <th scope="col">Aplicante</th>
+              <th scope="col">Fecha de Registro</th>
+              
             </tr>
-            <tr>
-              <td><a href="#" title="Ver perfil">John Doe</a></td>
-              <td>1</td>
-              <td>6</td>
-              <td>184,00</td>
-            </tr>
+            <?php
+            $last3=User::model()->getLast3("App");
+            foreach($last3 as $last){
+            	echo " <tr><td><a href='#' title='Ver perfil'>".Profile::model()->getNombre($last)."</a></td>";
+				echo " <td>".User::model()->getCreate_at($last)."</td>";           	
+            	
+            }
+            ?>
           </table>
         </div>
       </div>

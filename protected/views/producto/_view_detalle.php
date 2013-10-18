@@ -815,8 +815,11 @@ $('.imagen_principal').zoom({url: imgZ});
    		ev.preventDefault();
    		//alert($(this).attr("id"));
    		
-   		var prueba = $("#vTa div.tallass.active").attr('value');
+   		var prueba = $("#vCo div.tallass.active").attr('value');
 
+		/* 
+		 * Si hay una sola talla dira solo, pero no haria mas nada 
+		 */
 		if(prueba == 'solo')
    		{
    			$(this).addClass('coloress active'); // añado la clase active al seleccionado
@@ -935,7 +938,7 @@ $('.imagen_principal').zoom({url: imgZ});
    		ev.preventDefault();
 
    		
-   		var prueba = $("#vCo div.coloress.active").attr('value');
+   		var prueba = $("#vTa div.coloress.active").attr('value');
    		
    		if(prueba == 'solo')
    		{

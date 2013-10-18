@@ -323,7 +323,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
             <th scope="col">Fecha</th>
-            <th scope="col">Tipo</th>
+           <!--  <th scope="col">Tipo</th>-->
             <th scope="col">Transportista</th>
             <th scope="col">Peso</th>
             <th scope="col">Costo de envio</th>
@@ -331,10 +331,28 @@ $usuario = User::model()->findByPk($orden->user_id);
             <th scope="col"></th>
           </tr>
           <tr>
-            <td>21/12/2012 - 12:21 PM</td>
-            <td>Delivery</td>
-            <td>Zoom</td>
-            <td>0,00 Kg.</td>
+            <td><?php 
+            echo date("d/m/Y",strtotime(Estado::model()->getDate($orden->id, $orden->estado)));?>
+            </td>
+           <!-- <td>Delivery</td>-->
+            <td> 
+            <?php
+            
+            switch ($orden->tipo_guia) {
+                case 0:
+                    echo 'Zoom';
+                    break;
+                case 1:
+                    echo 'Zoom';
+                    break;
+				case 2:
+                    echo 'DHL';
+                    break;
+                default:
+                    break;
+            }
+            ?></td>
+            <td><?php echo $orden->peso ?> Kg.</td>
             <td><?php echo $orden->envio; ?> Bs.</td>
             <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
@@ -357,11 +375,14 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$ciudad_envio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
 				$provincia_envio = Provincia::model()->findByPk($direccionEnvio->provincia_id);
             	?>
-              <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
+              <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". ";  ?></div>
+              
+              <span class="locality"><?php echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos; ?>.</span>
               <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
+            <div class="tel margin_top_small"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <div><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
             <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           <!-- <a href="#" class="btn"><i class="icon-edit"></i></a> --> </div>
@@ -429,6 +450,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
             Tipo de guía: 
             <?php
+            
             switch ($orden->tipo_guia) {
                 case 0:
                     echo 'Zoom hasta 0,5 Kg.';
@@ -589,11 +611,13 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Marca</th>
           <th scope="col">Color</th>
           <th scope="col">Talla</th>
+          <th scope="col">Peso</th>
           <th scope="col">Cant. en Existencia</th>
           <th scope="col">Cant. en Pedido</th>
+          
           <th scope="col">Ubic. Almacen</th>
           <th scope="col">Precio</th>
-          <th scope="col">Acción</th>
+        <!--  <th scope="col">Acción</th>-->
         </tr>
         <?php
         	$row=0;
@@ -608,7 +632,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				echo("<td colspan='8'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
 				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
-				echo("
+				/*echo("
 							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
 			              	<!-- Link or button to toggle dropdown -->
 			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
@@ -617,7 +641,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
 			              	</ul>
 			            	</div></td>
-							");
+							");*/
 							
 							echo("</tr>");
 				$prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
@@ -631,14 +655,15 @@ $usuario = User::model()->findByPk($orden->user_id);
 								
 								echo("<tr>");
 								echo("<td>".$prdlk->codigo."</td>"); // nombre
-								echo("<td>".$prdlk->nombre."</td>"); // nombre
+								echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
 								echo("<td>".$marca->nombre."</td>");
 								echo("<td>".$color->valor."</td>");
 								echo("<td>".$talla->valor."</td>");
+								echo("<td>".$prdlk->peso." Kg.</td>");	
 								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
 								echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
 								echo("<td>".$prdlk->almacen."</td>"); 
-								echo("<td></td>"); 
+							
 								//echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
 								echo("<td></td></tr>");
 				}				
@@ -659,15 +684,16 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				echo("<tr>");
 				echo("<td>".$indiv->codigo."</td>");// Referencia
-				echo("<td>".$indiv->nombre."</td>"); // nombre
+				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
 				echo("<td>".$marca->nombre."</td>");
 				echo("<td>".$color->valor."</td>");
-				echo("<td>".$talla->valor."</td>");					
+				echo("<td>".$talla->valor."</td>");	
+				echo("<td>".$indiv->peso." Kg.</td>");					
 				echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 				echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
 				echo("<td>".$indiv->almacen."</td>"); 
 				echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
-				echo("
+				/*echo("
 							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
 			              	<!-- Link or button to toggle dropdown -->
 			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
@@ -677,7 +703,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 			              	</ul>
 			            	</div></td>
 						");
-						
+						*/
 						echo("</tr>");
 			}
 			
@@ -729,7 +755,11 @@ $usuario = User::model()->findByPk($orden->user_id);
         <tr>
           <th colspan="9" ><div class="text_align_right"><strong>Total</strong></div></th>
           <th >Bs. <?php echo number_format($orden->total, 2, ',', '.'); ?></th>
-        </tr>          
+        </tr>
+        <tr>
+          <td colspan="9" ><div class="text_align_right"><strong>Peso total del pedido</strong></div></td>
+          <td ><?php echo $orden->peso." Kg."; ?></td>
+        </tr>           
       </table>
   
       

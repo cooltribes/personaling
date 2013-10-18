@@ -110,13 +110,13 @@ class User extends CActiveRecord {
         );
         
         $relations['ordenes'] = array(self::HAS_MANY, 'Orden', 'user_id',
-//            // we don't want to select posts
+
 //                        'select'=>false,
 //                        'joinType'=>'INNER JOIN',
 //                        'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',
             );
         $relations['looks'] = array(self::HAS_MANY, 'Look', 'user_id',
-//            // we don't want to select posts
+
 //                        'select'=>false,
 //                        'joinType'=>'INNER JOIN',
                         'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',

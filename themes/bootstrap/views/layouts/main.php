@@ -106,10 +106,11 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
       $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
     }
     
-    $Arraynombre = explode($profile->first_name," ");
-    if(strlen($Arraynombre[0]) > 1)
+    $Arraynombre = explode(" ",$profile->first_name);
+    if(strlen($Arraynombre[0]) > 0)
       $nombre = $Arraynombre[0];
-    $nombre = $profile->first_name;
+    else
+     $nombre = $profile->first_name;
 
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 

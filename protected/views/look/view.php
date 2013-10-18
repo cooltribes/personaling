@@ -312,7 +312,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           </div>
           <hr/>
           <div>
-            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_accesorize.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
+            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
           </div>
         </div>
         <!-- Columna secundaria OFF -->

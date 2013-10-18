@@ -585,7 +585,8 @@ class Look extends CActiveRecord
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	if (isset($image_url)){
 		 			$imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
+				 	//$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/..'.$image_url;
+					$imagenes[$i]->path = $_SERVER['DOCUMENT_ROOT'].$image_url;
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;

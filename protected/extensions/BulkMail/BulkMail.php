@@ -15,7 +15,7 @@
 		public $cssEntry = "background-color: #AD3682; border: 1px solid #EEEEEE; color:white; display: inline-block; padding: 2px; margin: 2px;";
 		public $cssInputNew = "border: 0px solid; width: 98%; padding: 2px; font-size: 16px;";
 		public $cssContainer = "border: 1px solid #9b9b9b;";
-		public $cssEditInputField = "background-color: white; border:0; outline:0;";
+		public $cssEditInputField = "background-color: white; border:0; outline:0;margin-bottom: 0; ";
 
 		// mandatory fields
 		public $field = NULL;
@@ -47,7 +47,7 @@
 				BulkMail.saveEditEmailForm = function(divIndex) {
 					var email = $("#{$this->inputFieldEdit}_" + divIndex).val();
 					$("#{$this->entryNameContainer}_" + divIndex).html(
-						email + "  <a href='javascript:BulkMail.removeMailEntry(" + divIndex + ")'>&times;</a> " + 
+						email + "  <a class='margin_left_xsmall margin_right_xsmall color3 ' href='javascript:BulkMail.removeMailEntry(" + divIndex + ")'>&times;</a> " + 
 						"<input type='hidden' value='" + email + "' name='{$this->formName}[{$this->field}][]'>"
 					);
 					window.setTimeout(function() {
@@ -73,7 +73,7 @@
 							this.emailsCount++;
 							$("#{$this->container}Content").append(
 								"<div id='{$this->entryNameContainer}_" + this.emailsCount + "' class='{$this->entryNameContainer}' onClick='BulkMail.showEditEmailForm(" + this.emailsCount + ", \"" + emails[emailIndex] + "\")'>" +    
-									emails[emailIndex] + "  <a href='javascript:BulkMail.removeMailEntry(" + this.emailsCount + ")'>&times;</a> " + 
+									emails[emailIndex] + "  <a class='margin_left_xsmall margin_right_xsmall color3 ' href='javascript:BulkMail.removeMailEntry(" + this.emailsCount + ")'>&times;</a> " + 
 									"<input type='hidden' value='" + emails[emailIndex] + "' name='{$this->formName}[{$this->field}][]'>" +
 								"</div>");
 						}
@@ -103,7 +103,8 @@
 							var text = $(element).val();
 							BulkMail.processBulkEmails(text);
 						}, 100);
-					});
+					});    
+                                            
                                         
 					$("#{$this->inputFieldNew}").keyup(BulkMail.eventO);
                                         $("#{$this->inputFieldNew}").focusout(function(e){
@@ -145,7 +146,9 @@ CSS;
 			$htmlCode = <<<HTML
 				<div id="{$this->container}">
 					<div id="{$this->container}Content"></div>
-					<input type="text" class="span5" placeholder="correoelectronico@cuenta.com" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
+
+					<input type="text" class="span5 input_invitar" placeholder="correoelectronico@cuenta.com" name="{$this->inputFieldNew}" id="{$this->inputFieldNew}"/>
+
 				</div>
 HTML;
 			echo $htmlCode;

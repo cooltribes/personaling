@@ -558,10 +558,20 @@ public function actionCategorias(){
 			if($model->url_amigable == "")
 				$model->url_amigable = NULL; 
 			
-			if (Yii::app()->user->isAdmin())
-				$model->status = Look::STATUS_APROBADO;
-			else
-				$model->status = Look::STATUS_ENVIADO;
+			if (Yii::app()->user->isAdmin()){
+                            $model->status = Look::STATUS_APROBADO;
+                            $model->approved_on = date("Y-m-d H:i:s");
+                            
+                            if(!$model->sent_on){
+                                $model->sent_on = date("Y-m-d H:i:s");
+                            }
+                            
+                        }else{
+                            $model->status = Look::STATUS_ENVIADO;
+                            $model->sent_on = date("Y-m-d H:i:s");
+                        }	
+			
+				
 
 			 
 			

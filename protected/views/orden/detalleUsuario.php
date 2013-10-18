@@ -837,7 +837,7 @@ else{
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto')); ?>
+          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -890,28 +890,42 @@ else{
         }
         else
         {
+        	if(monto.indexOf(',')==(monto.length-2))
+	        	monto+='0';
+			if(monto.indexOf(',')==-1)
+				monto+=',00';
+				
+	        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+	        
+	        if (pattern.test(monto)) { 
+	        	monto = monto.replace(',','.'); 
 
-         $.ajax({
-            type: "post",
-            url: "../../bolsa/cpago", // action de controlador de bolsa cpago
-            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto},
-            success: function (data) {
-
-                if(data=="ok")
-                {
-                    window.location.reload();
-                    //alert("guardado");
-                    // redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden
-                }
-                else
-                if(data=="no")
-                {
-                    alert("Datos invalidos.");
-                }
-
-               }//success
-           })
-         }
+	         $.ajax({
+	            type: "post",
+	            url: "../../bolsa/cpago", // action de controlador de bolsa cpago
+	            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto},
+	            success: function (data) {
+	
+	                if(data=="ok")
+	                {
+	                    window.location.reload();
+	                    //alert("guardado");
+	                    // redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden
+	                }
+	                else
+	                if(data=="no")
+	                {
+	                    alert("Datos invalidos.");
+	                }
+	
+	               }//success
+	           })
+           
+           }else{
+	        	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
+	       }
+           
+        }// else grande
 
 
     }

@@ -103,7 +103,7 @@
 							var text = $(element).val();
 							BulkMail.processBulkEmails(text);
 						}, 100);
-					});
+					});                                        
                                         
 					$("#{$this->inputFieldNew}").keyup(BulkMail.eventO);
                                         $("#{$this->inputFieldNew}").focusout(function(e){

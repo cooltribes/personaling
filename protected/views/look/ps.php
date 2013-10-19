@@ -8,7 +8,7 @@
     <div class="page-header">
         <h1>Administrar Mis Looks</small></h1>
     </div>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="table ">
         <tr>
             <th scope="col" colspan="6"> Totales </th>
         </tr> 
@@ -21,10 +21,10 @@
                 Por Aprobar</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(0); ?></p>
                 Por Enviar</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
+            <!--<td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
                 Cancelados </td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?> </p>
-                Devueltos</td>
+                Devueltos</td>-->
         </tr>
     </table>
     <hr/>

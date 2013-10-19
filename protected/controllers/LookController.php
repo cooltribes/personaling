@@ -284,7 +284,7 @@ header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GM
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	if (isset($image_url)){
 		 			$imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
+				 	$imagenes[$i]->path = $_SERVER['DOCUMENT_ROOT'].$image_url;
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;
@@ -558,10 +558,20 @@ public function actionCategorias(){
 			if($model->url_amigable == "")
 				$model->url_amigable = NULL; 
 			
-			if (Yii::app()->user->isAdmin())
-				$model->status = Look::STATUS_APROBADO;
-			else
-				$model->status = Look::STATUS_ENVIADO;
+			if (Yii::app()->user->isAdmin()){
+                            $model->status = Look::STATUS_APROBADO;
+                            $model->approved_on = date("Y-m-d H:i:s");
+                            
+                            if(!$model->sent_on){
+                                $model->sent_on = date("Y-m-d H:i:s");
+                            }
+                            
+                        }else{
+                            $model->status = Look::STATUS_ENVIADO;
+                            $model->sent_on = date("Y-m-d H:i:s");
+                        }	
+			
+				
 
 			 
 			

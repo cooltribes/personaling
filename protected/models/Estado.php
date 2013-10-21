@@ -96,4 +96,12 @@ class Estado extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getDate($orden,$estado){
+		$here=$this->findByAttributes(array('estado'=>$estado,'orden_id'=>$orden));
+		if(!is_null($here))
+			return $here->fecha;
+		else 
+			return 0;
+	}
 }

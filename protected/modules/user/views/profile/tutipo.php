@@ -1,4 +1,6 @@
-<?php ?><?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+<?php
+Yii::app()->clientScript->registerCssFile('/css/joyride-2.1.css',null);
+$this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 if((isset($editar) && $editar)){
   $this->breadcrumbs=array(
   	UserModule::t("Mi cuenta")=>array('micuenta'),
@@ -6,8 +8,6 @@ if((isset($editar) && $editar)){
   );
 }
 ?>
-<?php ?>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/joyride-2.1.css">
 <div class="container margin_top tu_perfil">
   <div class="row">
     <?php if (isset($editar) && $editar){ ?>

@@ -76,7 +76,45 @@ class ControlpanelController extends Controller
             //Por visitas
             $views = Look::masVistos();
             
-            $this->render('looks', array('status' => $looks, 'views' => $views));
+            /***Grafico MES***/
+            $ya = date('Y-m-d', strtotime('now'));                            	
+
+            $valores = array();
+
+            /*CREADOS*/
+            $sql = "select count(*) from tbl_look where created_on between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            $sql = "select count(*) from tbl_look where created_on between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            $mes[] = $valores;
+
+            /*ENVIADOS*/
+            $valores = array();
+            $sql = "select count(*) from tbl_look where sent_on between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            $sql = "select count(*) from tbl_look where sent_on between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            $mes[] = $valores;
+
+            /*APROBADOS*/
+            $valores = array();
+            $sql = "select count(*) from tbl_look where approved_on between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            $sql = "select count(*) from tbl_look where approved_on between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            $mes[] = $valores;
+
+           // de dos meses a un mes como primer punto del grafico
+            $datesM[] = date('d-m-Y', strtotime($ya. ' -1 month'));
+            $datesM[] = date('d-m-Y', strtotime('now'));
+            
+            $this->render('looks', array(
+                        'status' => $looks,
+                        'views' => $views,
+                        'mes' => $mes,
+                        'datesM' => $datesM,
+                        
+                        ));
             
             
 	}

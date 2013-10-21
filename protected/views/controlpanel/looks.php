@@ -30,38 +30,12 @@
               <div class="tab-pane active" id="mes" >
                 <div class="clearfix" style="width: 100%;height: 100%;">   
                  	<?php
- 
-                            $ya = date('Y-m-d', strtotime('now'));
-                            	
-
-                            $valores = array();
-                            
-                            /*CREADOS*/
-                            $sql = "select count(*) from tbl_look where created_on between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
-                            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
-                            $sql = "select count(*) from tbl_look where created_on between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
-                            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
-                            $mes[] = $valores;
-                            
-                            /*ENVIADOS*/
-                            $valores = array();
-                            $sql = "select count(*) from tbl_look where sent_on between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
-                            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
-                            $sql = "select count(*) from tbl_look where sent_on between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
-                            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
-                            $mes[] = $valores;
-                            
-                           // de dos meses a un mes como primer punto del grafico
-                            $dates[] = date('d-m-Y', strtotime($ya. ' -1 month'));
-                            $dates[] = date('d-m-Y', strtotime('now'));
-                            
-
                             $this->Widget('ext.highcharts.HighchartsWidget', array(
                                        'options'=>array(
                                           'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
                                           'title' => array('text' => 'Estados de Looks en el último mes.'),
                                           'xAxis' => array(
-                                             'categories' => $dates,
+                                             'categories' => $datesM,
                                           ),
                                           'yAxis' => array(
                                              'title' => array('text' => 'Looks')
@@ -69,7 +43,8 @@
                                           'series' => array(                                                    
                                             // array('name' => 'Creados', 'data' => array($monthago,$ahora)),
                                              array('name' => 'Creados', 'data' => $mes[0]),
-                                             array('name' => 'Enviados', 'data' => $mes[1])
+                                             array('name' => 'Enviados', 'data' => $mes[1]),
+                                             array('name' => 'Enviados', 'data' => $mes[2])
                                           ),
                                           'credits' => array('enabled' => false),
                                        ),

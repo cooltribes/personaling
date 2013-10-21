@@ -60,7 +60,10 @@
     )
 ); ?>	
 <!-- FLASH OFF --> 
-    <div class="page-header">  <h1>Elige tu Estilo</h1></div>
+    <div class="page-header">
+    <h3 class=""> Debes completar tu test de estilos para poder continuar </h3>
+      <h1>Elige tu Estilo</h1>
+  </div>
       
       
       

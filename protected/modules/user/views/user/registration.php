@@ -88,6 +88,7 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
 	),
 )); ?>
           <fieldset>
+            <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login">Si ya estas registrado haz click aquí</a></p>
             <legend class="text_align_center" >O llena los campos a continuación: </legend>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	<?php

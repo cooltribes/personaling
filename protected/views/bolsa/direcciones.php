@@ -289,7 +289,7 @@ else
 		if($(this).val() != ''){
 			var path = location.pathname.split('/');
 			$.ajax({
-			      url: "/"+path[1]+"/direccion/cargarCiudades",
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarCiudades'); ?>",
 			      type: "post",
 			      data: { provincia_id : $(this).val() },
 			      success: function(data){

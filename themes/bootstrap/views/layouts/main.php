@@ -6,16 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en" />
 <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-<link rel="shortcut icon" type="image/x-icon" href="<?php echo Yii::app()->getBaseUrl(); ?>/favicon.ico">
+<?php 
 
-<?php //Yii::app()->bootstrap->register(); ?>
-<!-- Le STYLES -->
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" />
-
-
-<?php //Yii::app()->less->register(); ?>
-<?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
-<!-- Le FONTS -->
+Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css',null);
+// Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
+Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico',null,null);  
+Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
+?>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
 

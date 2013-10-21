@@ -1,4 +1,6 @@
-<?php ?><?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+<?php
+Yii::app()->clientScript->registerCssFile('/css/joyride-2.1.css',null);
+$this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 if((isset($editar) && $editar)){
   $this->breadcrumbs=array(
   	UserModule::t("Mi cuenta")=>array('micuenta'),
@@ -6,8 +8,6 @@ if((isset($editar) && $editar)){
   );
 }
 ?>
-<?php ?>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/joyride-2.1.css">
 <div class="container margin_top tu_perfil">
   <div class="row">
     <?php if (isset($editar) && $editar){ ?>
@@ -32,6 +32,12 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 ); 
 
 ?>
+    <?php if ( !(isset($editar) && $editar) ){ ?>
+          
+          <h2 class=""> Debes completar tu test de estilos para poder continuar </h2>
+
+    <?php } ?>      
+
       <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
       <article class="margin_top  margin_bottom_small ">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -183,12 +189,13 @@ $script = "
     <p class="muted" >¡Queremos recomendarte ropa que te favorezca y haga ver espectacular! </p>
   </li>
   
-  <li id="numero3" data-id="yw1" data-button="Siguiente" data-options="tipLocation:top;tipAnimation:fade">
+  <li id="numero3" data-id="yw1" data-button="Terminar" data-options="tipLocation:top;tipAnimation:fade">
     <p class="lead"><strong>Escoge tu estilo</strong></p>
     <p class="muted">Haz click en siguiente y elige entre las imágenes tu estilo </p>
   </li>
 </ol>
-<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>
+<?php Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,null); ?>
+<!--<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>-->
     <script>
       $(window).load(function() {
         $('#joyRideTipContent').joyride({      

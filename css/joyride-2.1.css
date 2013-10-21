@@ -1,3 +1,5 @@
+
+
 /* Artfully masterminded by ZURB */
 body {
   position: relative;
@@ -7,7 +9,7 @@ body {
 
 .joyRideTipContent { display: none; }
 .joyride-close-tip { display: none; }
-#notificacion_validar{ display: none; }
+
 
 /* Default styles for the container */
 .joyride-tip-guide {

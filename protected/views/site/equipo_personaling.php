@@ -31,7 +31,7 @@ $this->breadcrumbs=array(
             <p>Una gran parte de mi vida me la paso escribiendo, otra parte leyendo, la otra trabajando para la moda y la que queda paseando a mi pug. Directora de Contenido de Personaling.com</p>
         </li>
         <li class="span3"> <img alt="Ariana" class="img-circle" src="../images/Ariana.jpg" width="250"> <h3><a href="https://twitter.com/masaria"target="_blank"  title="Ariana">Ariana Basciani</a></h3>
-            <p>Soy parte del equipo de contenido de Personaling.com. Amante de la literatura. Voy cazando tendencias cada día. Mi trabajo es hacer del mundo un lugar con gente mejor vestida. </p>
+            <p>Creo que el buen gusto está íntimamente relacionado con el sentido común y el estado de ánimo. Soy parte del equipo de contenidos y marketing on line de Personaling.com y, mientras no estoy trabajando, me encanta leer libros para cosechar el intelecto. </p>
         </li>
         <li class="span3"> <img alt="Johann" class="img-circle" src="../images/johann.jpg" width="250"> <h3><a href="https://twitter.com/johannmgz"target="_blank"  title="Johann">Johann Marquez</a></h3>
             <p>Soy un apasionado de los negocios, me convierto en un volcán de ideas cuando me vuelco en un proyecto. Donde la gente ve retos yo definitivamente veo oportunidades. Me encanta el proceso creativo que conlleva el materializar una idea.  </p>

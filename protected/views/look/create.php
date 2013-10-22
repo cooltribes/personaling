@@ -851,8 +851,70 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <div class="divForForm"></div>
 <?php $this->endWidget(); ?>
 
+<!------------------- DETECT BROWSER -----------------> 
+<style>
+    body .buorg{
+        position: absolute;
+        z-index: 111111;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        border-bottom: 1px solid #A29330;
+        background: #FDF2AB;
+        text-align: left;
+        cursor: pointer;
+        font-family: Arial,Helvetica,sans-serif;
+        color: #000;
+        font-size: 12px;
+    }
+    body .buorg div {
+        padding: 15px 36px 15px 10px;
+    }
+    body .buorg div i{
+       margin: 0px 20px;
+    }
+    
+    body #buorgclose {
+        position: absolute;
+        right: 1.5em;
+        top: 1em;
+        height: 20px;
+        width: 19px;
+        padding-left: 12px;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 0;
+    }
+    
+</style>
+<script type="text/javascript"> 
+    var $buoop = {
+        test: true,
+        reminder: 24,                   
+        text: "Tu navegador (%s) está <b>desactualizado</b>. \n\
+            Es posible que algunas características para crear un look <b>no funcionen correctamente</b>. Puedes\n\
+            <b>continuar bajo tu riesgo</b> o <a %s >Actualizar tu navegador</a>",                       
+        newwindow: true,
+        //url: "youtube",
+    };
+    
+    $buoop.ol = window.onload; 
+    
+    window.onload=function(){ 
+     try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+     var e = document.createElement("script"); 
+     e.setAttribute("type", "text/javascript"); 
+     e.setAttribute("src", "<?php echo Yii::app()->baseUrl . "/js/update.js"; ?>"); 
+     document.body.appendChild(e); 
+    } 
+    
+</script>
 <!------------------- MODAL WINDOW OFF -----------------> 
 <script type="text/javascript">
+    
+
+
+    
 
 	function actualizar()
 	{

@@ -773,7 +773,26 @@ public function actionCategorias(){
 	}
 	public function actionCreate()
 	{
-		if (isset($_GET['id']))
+	
+//            if(!isset(Yii::app()->session["acceptBrowser"])){
+//                
+//                $browser = get_browser();
+//            
+//                echo "<pre>";
+//                print_r($browser);
+//                echo "</pre>";
+//                
+//                if($browser->)
+//            }
+            //Yii::app()->end();
+            
+
+            
+
+            
+            
+            
+            if (isset($_GET['id']))
 		$model= Look::model()->findByPk($_GET['id']);	
 		else
 		$model=new Look;

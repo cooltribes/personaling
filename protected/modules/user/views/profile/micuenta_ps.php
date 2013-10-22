@@ -142,10 +142,11 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
              <h2 class="braker_bottom">Tus Looks</h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li><a href="#" title="Tus Looks Publicados">Tus Looks Publicados</a></li>
-              <li><a href="#" title="Tus Looks Pendientes por aprobació">Tus Looks Pendientes por aprobación</a></li>
+              <!-- <li><a href="#" title="Tus Looks Publicados">Tus Looks Publicados</a></li> -->
+              <!-- <li><a href="#" title="Tus Looks Pendientes por aprobació">Tus Looks Pendientes por aprobación</a></li> -->
+              <li><a href="#" title="Tus Looks Pendientes por aprobació">Mis looks</a></li>
               
-              <li><a href="#" title="Crear look">Manual para crear un Look</a></li>
+              <li><a href="<?php echo Yii::app()->request->baseUrl ?>/docs/manual_CreaciondeLooks.pdf" title="Crear look">Manual para crear un Look</a></li>
             </ul>
           
           </div>

@@ -32,7 +32,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       	<?php
       	
       	if($orden->fecha!="")
-   			echo date("d-m-Y H:i:s",strtotime($orden->fecha));
+   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
       	
       	?>
       </div></th>

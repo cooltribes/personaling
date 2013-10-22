@@ -147,13 +147,13 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$a = $balance->total * -1;
 				echo Yii::app()->numberFormatter->formatDecimal($a);
 			}else {
-				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
+				echo Yii::app()->numberFormatter->formatDecimal($orden->total-$orden->descuento);
 			}
 			
 		}
 		else
 		{
-			echo Yii::app()->numberFormatter->formatDecimal($orden->total);
+			echo Yii::app()->numberFormatter->formatDecimal($orden->total-$orden->descuento);
 		}
 					
 		

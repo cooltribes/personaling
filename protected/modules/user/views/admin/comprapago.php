@@ -292,30 +292,7 @@ $idDireccion=Yii::app()->session['idDireccion'];
                           $envio = 0;
 						  $peso_total = 0;
 						  $tipo_guia = 0;
-						  $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 						  
-						  //busco productos individuales en la bolsa
-						  $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
-						  foreach($bptcolor as $productotallacolor){
-								$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-								$peso_total += ($producto->peso*$productotallacolor->cantidad); 
-						  }
-						  
-						  // busco looks en la bolsa
-						  $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
-						  $num = Yii::app()->db->createCommand($sql)->queryScalar();
-						  
-						  if($num!=0){
-						  	foreach ($bolsa->looks() as $look_id){
-						  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
-								$look = Look::model()->findByPk($look_id);
-								foreach($bolsahasproductotallacolor as $productotallacolor){
-									$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-									$peso_total += ($producto->peso*$productotallacolor->cantidad); 
-								}
-							}
-						  }
-						
 						if($peso_total <= 0.5){
 							$envio = 80.08;
 						}else if($peso_total < 5){

@@ -206,7 +206,7 @@ function str_lreplace($search, $replace, $subject)
             </li>
             <li class="span3 personal_shoppers_li"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/Ariana.jpg" width="250"> </a>
                 <h3><a href="#" title="Nombre del Personal Shopper">Ariana Basciani</a></h3>
-                <p>Soy parte del equipo de contenido de Personaling.com. Amante de la literatura. Voy cazando tendencias cada día. Mi trabajo es hacer del mundo un lugar con gente mejor vestida. </p>
+                <p>Creo que el buen gusto está íntimamente relacionado con el sentido común y el estado de ánimo. Soy parte del equipo de contenidos y marketing on line de Personaling.com y, mientras no estoy trabajando, me encanta leer libros para cosechar el intelecto. </p>
             </li>
         </ul>
         <?php   

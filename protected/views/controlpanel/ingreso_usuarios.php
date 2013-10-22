@@ -17,8 +17,8 @@
   		<div class="navbar-inner">
     		<ul class="nav">
   				<li><a href="" class="nav-header">Estadisticas:</a></li>
-		      	<li><a title="Por Registro" href="">Registro de Usuarios</a></li>
-		      	<li><a title="Por Ingreso" href="<?php echo  Yii::app()->baseUrl; ?>/controlpanel/ingresos">Ingreso de Usuarios</a></li>
+		      	<li><a title="Por Registro" href="<?php echo Yii::app()->baseUrl; ?>/controlpanel/usuarios">Registro de Usuarios</a></li>
+		      	<li><a title="Por Ingreso" href="">Ingreso de Usuarios</a></li>
       		</ul>
      		<ul class="nav pull-right">
 				<li><a href="<?php echo Yii::app()->baseUrl."/user/admin" ?>" title="Administrar Usuarios">Admininstrar usuarios</a></li> 
@@ -50,17 +50,23 @@
 					$primera = Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					// de dos meses a un mes como primer punto de ventas	      	
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL  and create_at between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
 					$monthago = (int) Yii::app()->db->createCommand($sql)->queryScalar();
-					
-					/*
-					$sql = "select count(*) from tbl_orden where fecha between '".$primera."' and '".date('Y-m-d H:i:s', strtotime($ya. ' -1 month'))."' ";
-					$monthago = (int) Yii::app()->db->createCommand($sql)->queryScalar();
-					*/
 					
 					// de un mes hasta hoy		
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL  and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
 					$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					
+					//==================== Registro normal
+					
+					// de dos meses a un mes como primer punto de ventas	      	
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL  and create_at between '".date('Y-m-d', strtotime($ya. ' -2 month'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+					$monthago1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// de un mes hasta hoy		
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL  and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".$ya."' ";
+					$ahora1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					$uno = date('d-m-Y', strtotime($ya. ' -1 month'));
 					$dos = date('d-m-Y', strtotime('now'));
@@ -68,20 +74,20 @@
 					      	$this->Widget('ext.highcharts.HighchartsWidget', array(
 							   'options'=>array(
 							   	  'chart' => array('type' =>'areaspline','width'=>1100), // column, area, line, spline, areaspline, bar, pie, scatter
-							      'title' => array('text' => 'Registros en el último mes.'),
+							      'title' => array('text' => 'Ingresos en el último mes.'),
 							      'xAxis' => array(
 							         'categories' => array($uno, $dos)
 							      ),
 							      'yAxis' => array(
-							         'title' => array('text' => 'Ventas')
+							         'title' => array('text' => 'Registros')
 							      ),
 							      'series' => array(
 							        // array('name' => 'Jane', 'data' => array(1, 0, 4)),
-							         array('name' => 'Nuevos usuarios', 'data' => array($monthago,$ahora))
+							         array('name' => 'Registro normal', 'data' => array($monthago1,$ahora1)),
+							         array('name' => 'Registro con Facebook', 'data' => array($monthago,$ahora))							         
 							      )
 							   )
 							));
-					
 					
 					?>
         		</div>

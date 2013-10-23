@@ -10,7 +10,7 @@ class BolsaController extends Controller
 		return array(
 			
 			'accessControl', // perform access control for CRUD operations
-			'https +compra', // Force https, but only on login page
+			'https +compra, direcciones, confirmar', // Force https, but only on login page
 		);
 	}
 

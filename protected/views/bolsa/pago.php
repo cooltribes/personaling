@@ -382,16 +382,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							}
 						  }
 						
-						if($peso_total <= 0.5){
-							$envio = 80.08;
-						}else if($peso_total < 5){
-							$peso_adicional = ceil($peso_total-0.5);
+						 if($peso_total < 5){
+							
 							$direccion = Direccion::model()->findByPk($idDireccion);
 							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-							$envio = 80.08 + ($peso_adicional*$ciudad_destino->ruta->precio);
-							if($envio > 163.52){
-								$envio = 163.52;
-							}
+							$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+						
 							$tipo_guia = 1;
 						}else{
 							$peso_adicional = ceil($peso_total-5);

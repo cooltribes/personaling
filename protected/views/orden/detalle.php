@@ -32,7 +32,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       	<?php
       	
       	if($orden->fecha!="")
-   			echo date("d-m-Y H:i:s",strtotime($orden->fecha));
+   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
       	
       	?>
       </div></th>
@@ -922,13 +922,24 @@ $usuario = User::model()->findByPk($orden->user_id);
 			?>	
 			<ul class="media-list">
 			<?php
+				$class=$status="";
 				foreach($mensajes as $msj)
 				{
+					if(!is_null($msj->admin))
+						{	$class='style="background-color:#F5F5F5"';
+							$status='<strong>| Enviado</strong>';
+						}
+					else {
+						$status='<strong>| Recibido | Cliente: Notificado</strong>';
+					}
+	
+						
 					echo '<li class="media braker_bottom">
-          					<div class="media-body">';
+          					<div class="media-body" '.$class.'>';
 					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
-					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-					echo '<p>'.$msj->cuerpo.'</p>';					
+					echo '<p>'.$msj->cuerpo.'</p>';
+					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).$status.'</p>';				
+					$class="";
 				}
 			?>
 			</ul>

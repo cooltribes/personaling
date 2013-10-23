@@ -671,39 +671,77 @@ Para una futura iteración
         </div>
     </div>
  <!-- Tabla Productos Devueltos OFF -->
-    <div class="row">
-      <div class="span5">
-          <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
-
+  
+     
+     <!-- MENSAJES ON -->
+  
+  <div class="row">
+    <div class="span7">
+      <h3 class="braker_bottom margin_top">MENSAJES</h3>
+      <form>
+        <!--<div class="control-group">
+          <select>
+            <option>Elija un mensaje estandar</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>-->
+        <div class="control-group">
+        	<input type="text" id="asunto" placeholder="Asunto Del Mensaje" />
+          	<textarea id="cuerpo" name="cuerpo" cols="" class="span7" rows="4" placeholder="Mensaje"></textarea>
+        </div>
+       <!-- <div class="control-group">
+          <label class="checkbox">
+          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por eMail </label>
+            <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
+        </div>-->
+          <label class="checkbox">
+        <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id.",".$orden->id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  Enviar comentario</a> </div>
+      </form>
+    </div>
+    <div class="span5">
+      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
       <?php
-
-              $mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
-
-            if(count($mensajes) > 0)
-            {
-                ?>
-                <ul class="media-list">
-                <?php
-                    foreach($mensajes as $msj)
-                    {
-                        echo '<li class="media braker_bottom">
-                                  <div class="media-body">';
-                        echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';
-                        echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-                        echo '<p>'.$msj->cuerpo.'</p>';
-                    }
-                ?>
-                </ul>
-                <?php
-            }
-            else {
-                echo '<h4 class="color4">No se han enviado mensajes.</h4>';
-            }
-
-          ?>
-
-         </div>
-     </div>
+      
+      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+      	
+		if(count($mensajes) > 0)
+		{
+			?>	
+			<ul class="media-list">
+			<?php
+				$from=$class="";
+				foreach($mensajes as $msj)
+				{
+					if(is_null($msj->admin))
+						{	$class='style="background-color:#F5F5F5"';
+							$from='De: <strong>Admin | </strong> ';
+						}
+					else
+						$from='Status: <strong>Enviado | </strong> ';
+					echo '<li class="media braker_bottom">
+          					<div class="media-body" '.$class.'>';
+					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+					echo '<p>'.$msj->cuerpo.'</p>';	
+					echo '<p class="muted">'.$from.'<strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
+					$class="";				
+				}
+			?>
+			</ul>
+			<?php
+		}
+		else {
+			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+		}
+      
+      ?>
+      
+    </div>
+    
+    <!-- MENSAJES OFF -->
+     
   <!--
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
@@ -859,7 +897,7 @@ else{
         </div>
       </div>
       <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
-      <p class='text_align_center'><a title='Formas de Pago' href='".Yii::app()->baseUrl."/site/formas_de_pago'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
+      <p class='text_align_center'><a title='Formas de Pago' href='<?php echo Yii::app()->baseUrl."/site/formas_de_pago";?>'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
     </form>
   </div>
 </div>
@@ -929,5 +967,40 @@ else{
 
 
     }
+
+function mensaje(user_id,orden_id){
+		
+		var asunto = $('#asunto').attr('value');
+		var cuerpo = $('#cuerpo').attr('value');
+		
+		//var orden_id = $('#orden_id').attr('value');
+		
+		if($('#notificar').attr('checked') == "checked")
+			var notificar = 1; // $('#notificar').attr('checked');
+		else
+			var notificar = 0;
+		
+		if($('#visible').attr('checked') == "checked")	
+			var visible = 1; // $('#visible').attr('checked');
+		else
+			var visible = 0;
+		
+		// alert("a: "+asunto+" , c:"+cuerpo+" , n:"+notificar+" ,v:"+visible+ " ,id:"+user_id);
+		
+		$.ajax({
+	        type: "post", 
+	        url: "<?php echo Yii::app()->baseUrl; ?>/orden/mensajes", // action 
+	        data: { 'asunto':asunto, 'cuerpo':cuerpo,'user_id':user_id, 'orden_id':orden_id, 'admin':1}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();	
+				}
+	       	}//success
+	       }) 
+				
+	}
+
+
 
 </script>

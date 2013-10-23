@@ -65,7 +65,7 @@ $totventas = Yii::app()->db->createCommand($sql)->queryScalar();
 
 
 
-$total = $num - $vend;
+$total = $num + $vend;
 	
 		echo "<td>".$total."</td>"; // total
 		echo "<td>".$num."</td>"; // disponible

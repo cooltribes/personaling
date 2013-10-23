@@ -21,12 +21,12 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial'),
+				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial','mensajes'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -1175,15 +1175,26 @@ class OrdenController extends Controller
 
 	public function actionMensajes()
 	{
-		$notificar = $_POST['notificar'];
+		if(isset($_POST['notificar']))
+			$notificar = $_POST['notificar'];
+		else 
+			$notificar=0;
+		if(isset($_POST['visible']))
+			$visible = $_POST['visible'];
+		else 
+			$visible=1;
 			
 		$mensaje = new Mensaje;
 		
 		$mensaje->asunto = $_POST['asunto'];
 		$mensaje->cuerpo = $_POST['cuerpo'];
-		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 1 visible, 0 no
+		$mensaje->visible = $visible; // llega 0 o 1, 1 visible, 0 no
 		$mensaje->user_id = $_POST['user_id'];
 		$mensaje->orden_id = $_POST['orden_id']; 
+		if(isset($_POST['admin'])){
+			$mensaje->admin=1;
+			
+		}
 		$mensaje->fecha =  date('Y-m-d H:i:s', strtotime('now'));
 		$mensaje->estado = 0; // sin leer
 		
@@ -1203,7 +1214,8 @@ class OrdenController extends Controller
 				$params = array('subject' => $subject, 'body' => $body);
                 $message->subject = $subject;
                 $message->setBody($params, 'text/html');
-                $message->addTo($usuario->email);
+                if(isnull($mensaje->admin))
+                	$message->addTo($usuario->email);
                 $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                 Yii::app()->mail->send($message);	
 			}		

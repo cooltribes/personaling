@@ -78,7 +78,7 @@ class User extends CActiveRecord {
                     array('superuser', 'in', 'range' => array(0, 1)),
                     array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
                     array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
-                    array('username, email, superuser, status', 'required'),
+                   array('username, email, superuser, status', 'required'),
                     array('superuser, status,status_register,privacy, twitter_id, facebook_id', 'numerical', 'integerOnly' => true),
                     array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url', 'safe', 'on' => 'search'),
                         ) : ((Yii::app()->user->id == $this->id) ? array(
@@ -671,5 +671,14 @@ class User extends CActiveRecord {
 		return $this->create_at; 
 	}
 	
+	public function getUsername($id = null){
+		if(!is_null($id))
+		{
+			$null=$this->findByPk($id);	
+			return $null->username; 		
+		}
+		return $this->username; 
+	} 
+	 
 
 }

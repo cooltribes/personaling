@@ -467,6 +467,7 @@ class BolsaController extends Controller
 					$tarjeta->numero = $_POST['TarjetaCredito']['numero'];
 					$tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
 					$tarjeta->vencimiento = $_POST['mes']."/".$_POST['ano'];
+					$tarjeta->ci = $_POST['TarjetaCredito']['ci'];
 					$tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
 					$tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
 					$tarjeta->zip = $_POST['TarjetaCredito']['zip'];
@@ -708,27 +709,23 @@ class BolsaController extends Controller
 							
 							if($output->code == 201){ // PAGO AUTORIZADO
 							
+								$rest = substr($tarjeta->numero, -4);
+								
 								$detalle = new Detalle;
-							
-								$detalle->nTarjeta = $tarjeta->numero;
+								
+								$detalle->nTarjeta = $rest;
 								$detalle->nTransferencia = $output->id;
 								$detalle->nombre = $tarjeta->nombre;
-								$detalle->codigo = $tarjeta->codigo;
-								$detalle->vencimiento = $tarjeta->vencimiento;
 								$detalle->monto = $_POST['total'];
 								$detalle->fecha = date("Y-m-d H:i:s");
 								$detalle->banco = 'TDC';
 								$detalle->estado = 1; // aceptado
 								
 								if($detalle->save()){
-									
-									/*			
-									$tarjeta = new TarjetaCredito;
 								
+									// se guardan solo los ultimos 4 numeros
 									$tarjeta->nombre = $_POST['nom'];
-									$tarjeta->numero = $detalle->nTarjeta;
-									$tarjeta->codigo = $detalle->codigo;
-									$tarjeta->vencimiento = $exp;
+									$tarjeta->numero = $rest;
 									$tarjeta->direccion = $_POST['dir'];
 									$tarjeta->ciudad = $_POST['ciud'];
 									$tarjeta->zip = $_POST['zip'];
@@ -736,9 +733,6 @@ class BolsaController extends Controller
 									$tarjeta->user_id = $usuario;		
 										
 									$tarjeta->save();
-									
-									*/
-									$tarjeta->delete();
 									
 									// cuando finalice entonces envia id de la orden para redireccionar
 									echo CJSON::encode(array(

@@ -52,7 +52,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         	 <div class="well well-small" >
             <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
             <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
-            <form action="confirmar" method="POST">
+            <form id="datos_tarjeta" action="confirmar" method="POST">
               <div class="control-group">
                 <div class="controls">
                   <?php echo CHtml::activeTextField($tarjeta,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); ?>
@@ -76,7 +76,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <?php echo CHtml::dropDownList('ano','',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año')); ?>
               </div>
             </div>
-
+		
+			 <div class="control-group">
+                <div class="controls">
+                	<?php echo CHtml::activeTextField($tarjeta,'ci',array('id'=>'ci','class'=>'span5','placeholder'=>'Cedula de Identidad')); ?>
+                </div>
+              </div>   
+		
             <div class="control-group">
               <div class="controls">
               	<?php echo CHtml::activeTextField($tarjeta,'direccion',array('id'=>'direccion','class'=>'span5','placeholder'=>'Dirección')) ; ?>
@@ -101,7 +107,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </div>
             <hr>
           	<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
-            <button type="submit" id="boton_pago_tarjeta" class=" btn-large btn btn-warning"> Siguiente </button>            
+            <button type="button" onclick="tarjetas()" id="boton_pago_tarjeta" class=" btn-large btn btn-warning"> Siguiente </button>        
 
 
           </div>
@@ -491,7 +497,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            'label'=>'Siguiente',
 	            //'url'=>'confirmar', // action
 	            'icon'=>'lock white',
-	            'buttonType'=>'submit',
+	            'buttonType'=>'button',
+	            'htmlOptions'=>array('onclick'=>'tarjetas()',),
 	        ));
         // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
         ?>
@@ -639,49 +646,39 @@ else
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
 	
-	function enviarTarjeta()
+	function tarjetas()
 	{
+		//alert("Entró");
 		/* lo de la tarjeta */
+		//alert($("#tipo_pago").attr("value"));
 		
-		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
-		var nom = $("#nombre").attr("value");
-		var num = $("#numero").attr("value");
-		var cod = $("#codigo").attr("value");
-		var mes = $("#mes").attr("value");
-		var ano = $("#ano").attr("value");
-		var dir = $("#direccion").attr("value");
-		var ciud = $("#ciudad").attr("value");
-		var est = $("#estado").attr("value");
-		var zip = $("#zip").attr("value");
-		
-		if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
-			{
+		if($("#tipo_pago").attr("value") == 2){ // tarjeta
+			
+			var nom = $("#nombre").attr("value");
+			var num = $("#numero").attr("value");
+			var cod = $("#codigo").attr("value");
+			var ci = $("#ci").attr("value");
+			var mes = $("#mes").attr("value");
+			var ano = $("#ano").attr("value");
+			var dir = $("#direccion").attr("value");
+			var ciud = $("#ciudad").attr("value");
+			var est = $("#estado").attr("value");
+			var zip = $("#zip").attr("value");
+			
+			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano" || ci="" || dir=="" || ciud=="" || est=="" || zip==""){
 				alert("Por favor complete los datos de la tarjeta.");
 			}
-			else
-			{
-			
-			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
-			
-				$.ajax({
-		        type: "post",
-		        dataType: 'json',
-		        url: "tarjeta", // action 
-		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
-		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
-		        		}, 
-		        success: function (data) {
-					
-					if(data.status==201) // pago aprobado
-					{
-						
-					}
-					
-		       	}//success
-		       })
-			
+			else{
+				// alert(" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
+				$("#boton_pago_tarjeta").submit();
 			}
+	
+		}
+		else
+		{
+			$("#datos_tarjeta").submit();
+		}
+		
 	}
-
 	
 </script>

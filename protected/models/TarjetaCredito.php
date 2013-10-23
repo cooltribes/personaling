@@ -46,7 +46,7 @@ class TarjetaCredito extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, numero, codigo, vencimiento, direccion, ciudad, zip, estado, user_id', 'required'),
+			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, zip, estado, user_id', 'required'),
 			array('user_id', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>80),
 			array('numero', 'length', 'max'=>25),
@@ -56,7 +56,7 @@ class TarjetaCredito extends CActiveRecord
 			array('estado', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, numero, codigo, vencimiento, direccion, ciudad, zip, estado, user_id', 'safe', 'on'=>'search'),
+			array('id, nombre, numero, codigo, vencimiento, ci, direccion, ciudad, zip, estado, user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,6 +83,7 @@ class TarjetaCredito extends CActiveRecord
 			'numero' => 'Numero',
 			'codigo' => 'Codigo',
 			'vencimiento' => 'Vencimiento',
+			'ci' => 'Cedula',
 			'direccion' => 'Direccion',
 			'ciudad' => 'Ciudad',
 			'zip' => 'Zip',
@@ -107,6 +108,7 @@ class TarjetaCredito extends CActiveRecord
 		$criteria->compare('numero',$this->numero,true);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('vencimiento',$this->vencimiento,true);
+		$criteria->compare('ci',$this->ci,true);
 		$criteria->compare('direccion',$this->direccion,true);
 		$criteria->compare('ciudad',$this->ciudad,true);
 		$criteria->compare('zip',$this->zip,true);

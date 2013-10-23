@@ -742,7 +742,7 @@ class OrdenController extends Controller
 									$factura->save();
 								}
 								$subject = 'Pago aceptado';
-								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
+								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 								$estado = new Estado;
@@ -769,7 +769,7 @@ class OrdenController extends Controller
 									$factura->save();
 								}
 								$subject = 'Pago aceptado';
-								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
+								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 								$estado = new Estado;
@@ -789,7 +789,7 @@ class OrdenController extends Controller
 								$orden->estado = 7;// aun le faltó
 								$orden->save();
 								$subject = 'Pago insuficiente';
-								$body = 'El pago que realizaste no cubre el monto del pedido, faltan '.$valor.' Bs para pagar toda la orden.<br/><br/> ';
+								$body = '¡Upsss! El pago que realizaste no cubre el monto de tu pedido, faltan '.$valor.' Bs para pagar toda la orden y comenzar el procesar el envío de tu compra. <br/><br/> ';
 								
 								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 								$estado = new Estado;

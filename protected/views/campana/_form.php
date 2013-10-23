@@ -310,7 +310,7 @@
              
             <div class="control-group">
               <label for="" class="control-label required"> </label>
-              <div class=""controls controls-row"">
+              <div class="controls controls-row">
                 <label class="checkbox inline">
                   <input type="radio" id="ps_todos" name="personal_shopper" value="todos" checked>
                   Invitar a todos los Personal Shoppers </label>

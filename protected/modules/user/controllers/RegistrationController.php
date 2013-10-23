@@ -333,7 +333,7 @@ class RegistrationController extends Controller
                             $params = array('subject'=>$subject, 'body'=>$body, 'footer' => $footer);
                             $message->subject    = $subject;
                             $message->setBody($params, 'text/html');                
-                            $message->addTo($model->email);
+                            $message->addTo('info@personaling.com');
                             $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                             Yii::app()->mail->send($message);
                             

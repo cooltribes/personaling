@@ -68,6 +68,7 @@
                                 'fuenteR' => 'Fuente de registro',
                                 'visit' => 'Número de visitas',
                                 'lastvisit_at' => 'Fecha de última visita',
+                                'create_at' => 'Fecha de registro',
                                 'monto' => 'Monto comprado',
                                 'lastorder_at' => 'Fecha de última compra',                                
                                 'looks' => 'Cantidad de looks comprados',                                

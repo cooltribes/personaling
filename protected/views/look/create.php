@@ -385,7 +385,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <hr/>
 
         <!-- CANVAS ON -->
-        <div class="well well-large canvas" style="z-index=0;overflow:hidden;position: relative;width: 670px;height: 670px;-webkit-user-drop: element;" id="div_canvas" dropzone="move s:text/plain">
+        <div class="well well-large canvas" style="z-index:0;overflow:hidden;position: relative;width: 670px;height: 670px;-webkit-user-drop: element;" id="div_canvas" dropzone="move s:text/plain">
           <?php 
         
         if (count($model->lookhasproducto)){
@@ -889,13 +889,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </style>
 <script type="text/javascript"> 
     var $buoop = {
-        test: true,
-        reminder: 24,                   
-        text: "Tu navegador (%s) está <b>desactualizado</b>. \n\
+        vs: {i:10,f:21,o:10,s:7,n:19},
+        test: false,
+        reminder: 0.1,  //horas para recordatorio                 
+        text: "Tu navegador (%s) <b>no soporta</b> las funcionalidades de ésta página. \n\
             Es posible que algunas características para crear un look <b>no funcionen correctamente</b>. Puedes\n\
             <b>continuar bajo tu riesgo</b> o <a %s >Actualizar tu navegador</a>",                       
         newwindow: true,
         //url: "youtube",
+       
     };
     
     $buoop.ol = window.onload; 
@@ -904,7 +906,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
      try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
      var e = document.createElement("script"); 
      e.setAttribute("type", "text/javascript"); 
-     e.setAttribute("src", "<?php echo Yii::app()->baseUrl . "/js/update.js"; ?>"); 
+     e.setAttribute("src", "<?php echo Yii::app()->baseUrl . "/js/updateBrowser.js"; ?>"); 
      document.body.appendChild(e); 
     } 
     

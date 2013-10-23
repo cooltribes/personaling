@@ -76,7 +76,9 @@ class ControlpanelController extends Controller
             //Por visitas
             $views = Look::masVistos();
             
-            /***Grafico MES***/
+            
+            /*************      Grafico MES       ****************/
+            
             $ya = date('Y-m-d', strtotime('now'));                            	
 
             $valores = array();
@@ -105,15 +107,138 @@ class ControlpanelController extends Controller
             $mes[] = $valores;
 
            // de dos meses a un mes como primer punto del grafico
-            $datesM[] = date('d-m-Y', strtotime($ya. ' -1 month'));
+            $datesM[] = date('d-m-Y', strtotime($ya. ' -1 month'));            
+            //hoy como segundo punto
             $datesM[] = date('d-m-Y', strtotime('now'));
+            
+            
+            
+            /*************      Grafico SEMANA       ****************/
+            
+            /*CREADOS*/
+            $valores = array();
+            
+            for($i = -4; $i < 0; $i++){
+                $sql = "select count(*) from tbl_look where created_on between '".
+                        date('Y-m-d', strtotime($ya. " ". ($i - 1) . " week"))."' and '".date('Y-m-d', strtotime($ya. " {$i} week"))."' "; 
+                        
+                        $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+                        
+                        $datesW[] = date('d-m-Y', strtotime(" {$i} week"));
+            }            
+            
+            $sql = "select count(*) from tbl_look where created_on between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' "; 
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            
+            $semana[] = $valores;
+            
+            $datesW[] = date('d-m-Y', strtotime('now'));
+            
+            
+            /*ENVIADOS*/
+            $valores = array();
+            
+            for($i = -4; $i < 0; $i++){
+                $sql = "select count(*) from tbl_look where sent_on between '".
+                        date('Y-m-d', strtotime($ya. " ". ($i - 1) . " week"))."' and '".date('Y-m-d', strtotime($ya. " {$i} week"))."' "; 
+                        
+                        $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            }            
+            
+            $sql = "select count(*) from tbl_look where sent_on between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' "; 
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            
+            $semana[] = $valores;
+            
+            
+            /*APROBADOS*/
+            $valores = array();
+            
+            for($i = -4; $i < 0; $i++){
+                $sql = "select count(*) from tbl_look where approved_on between '".
+                        date('Y-m-d', strtotime($ya. " ". ($i - 1) . " week"))."' and '".date('Y-m-d', strtotime($ya. " {$i} week"))."' "; 
+                        
+                        $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            }            
+            
+            $sql = "select count(*) from tbl_look where approved_on between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' "; 
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            
+            $semana[] = $valores;
+            
+           
+            /*************      Grafico DIAS       ****************/
+            /*CREADOS*/
+            $valores = array();
+            
+            for($i = -30; $i < 0; $i++){
+                $sql = "select count(*) from tbl_look where created_on between '".
+                        date('Y-m-d', strtotime($ya. " ". ($i - 1) . " day"))."' and '".date('Y-m-d', strtotime($ya. " {$i} day"))."' "; 
+                        
+                        $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+                        
+                        $datesD[] = date('d-m', strtotime(" {$i} day"));
+            }            
+            
+            $sql = "select count(*) from tbl_look where created_on between '".date('Y-m-d', strtotime($ya. ' -1 day'))."' and '".$ya."' "; 
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            
+            $dia[] = $valores;
+            
+            $datesD[] = date('d-m', strtotime('now'));
+            
+            
+            /*ENVIADOS*/
+            
+            $valores = array();
+            
+            for($i = -30; $i < 0; $i++){
+                $sql = "select count(*) from tbl_look where sent_on between '".
+                        date('Y-m-d', strtotime($ya. " ". ($i - 1) . " day"))."' and '".date('Y-m-d', strtotime($ya. " {$i} day"))."' "; 
+                        
+                        $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+                        
+                     
+            }            
+            
+            $sql = "select count(*) from tbl_look where sent_on between '".date('Y-m-d', strtotime($ya. ' -1 day'))."' and '".$ya."' "; 
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            
+            $dia[] = $valores;
+            
+            /*APROBADOS*/
+            
+            $valores = array();
+            
+            for($i = -30; $i < 0; $i++){
+                $sql = "select count(*) from tbl_look where approved_on between '".
+                        date('Y-m-d', strtotime($ya. " ". ($i - 1) . " day"))."' and '".date('Y-m-d', strtotime($ya. " {$i} day"))."' "; 
+                        
+                        $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+                        
+                     
+            }            
+            
+            $sql = "select count(*) from tbl_look where approved_on between '".date('Y-m-d', strtotime($ya. ' -1 day'))."' and '".$ya."' "; 
+            $valores[] = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+            
+            $dia[] = $valores;
+                
+//            $i = 0;
+//            echo "HOy: " . $ya. " ". ($i - 1 ). " week";
+//            echo "Fecha: " . date('Y-m-d', strtotime($ya. " ". ($i - 1) . " week")); 
+//            Yii::app()->end();
+            
             
             $this->render('looks', array(
                         'status' => $looks,
                         'views' => $views,
                         'mes' => $mes,
                         'datesM' => $datesM,
-                        
+                        'semana' => $semana,
+                        'datesW' => $datesW,
+                        'dia' => $dia,
+                        'datesD' => $datesD,                        
                         ));
             
             

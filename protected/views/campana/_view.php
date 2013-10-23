@@ -106,7 +106,7 @@
 		$.ajax({
 	        type: "post",
 	        dataType: 'html',
-	        url: "campana/getPS", // action 
+	        url: "getPS", // action 
 	        data: { 'campana_id':campana_id }, 
 	        success: function (data) {
 				$('#ps_modal_body').html(data);
@@ -119,7 +119,7 @@
 		$.ajax({
 	        type: "post",
 	        dataType: 'html',
-	        url: "campana/getMarca", // action 
+	        url: "getMarca", // action 
 	        data: { 'campana_id':campana_id }, 
 	        success: function (data) {
 				$('#marca_modal_body').html(data);

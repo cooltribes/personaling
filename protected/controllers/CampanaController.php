@@ -58,6 +58,24 @@ class CampanaController extends Controller
 				Yii::app()->user->setFlash('error','No se pudo guardar la campaña');
 			}
 		}else{
+                    
+                    if(isset($_POST['buscarNombre'])){
+                        $criteria = new CDbCriteria();
+                        $criteria->alias = 'User';
+                        $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' .
+                                $_POST['buscarNombre'] . '%" OR p.last_name LIKE "%' . $_POST['buscarNombre'] .
+                                '%" OR User.email LIKE "%' . $_POST['buscarNombre'] . '%" 
+                                OR User.username LIKE "%' . $_POST['buscarNombre'] . '%")';
+                        
+                        $criteria->addCondition('personal_shopper=1');
+                
+                        $dataProvider=new CActiveDataProvider('User', array(
+                            'criteria'=>$criteria,
+                        ));
+                        $this->render('select_ps', array('campana'=>$campana, 'dataProvider'=>$dataProvider));
+                        Yii::app()->end();
+                     
+                     }
 		
 			if(isset($_POST['personal_shopper'])){
 				if($_POST['personal_shopper'] == 'todos'){
@@ -160,7 +178,19 @@ class CampanaController extends Controller
 				Yii::app()->user->setFlash('error','No se pudo guardar la campaña');
 			}
 		}else{
+                    
+                    echo "<pre>";
+                    print_r($_POST);
+                    echo "</pre>";
 
+
+
+                    if(isset($_POST['buscarNombre'])){
+                     echo "busca";
+                     Yii::app()->end();
+                     
+                    }
+                    
 			if(isset($_POST['personal_shopper'])){
 				if($_POST['personal_shopper'] == 'todos'){
 						$list_ps = User::model()->findAllByAttributes(array('personal_shopper'=>1));

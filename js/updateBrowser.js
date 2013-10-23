@@ -6,7 +6,8 @@ var n = window.navigator,b;
 this.op=op||{};
 //options
 this.op.l = op.l||n["language"]||n["userLanguage"]||document.documentElement.getAttribute("lang")||"en";
-this.op.vsakt = {i:10,f:21,o:12,s:6,n:20};
+//this.op.vsakt = {i:10,f:21,o:12,s:6,n:20};
+this.op.vsakt = {i:20,f:30,o:12,s:15,n:20};
 this.op.vsdefault = {i:7,f:4,o:11,s:4,n:10};
 this.op.vs =op.vs||this.op.vsdefault;
 for (b in this.op.vsakt)

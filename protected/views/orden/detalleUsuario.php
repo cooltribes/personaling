@@ -671,39 +671,69 @@ Para una futura iteración
         </div>
     </div>
  <!-- Tabla Productos Devueltos OFF -->
-    <div class="row">
-      <div class="span5">
-          <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
-
+  
+     
+     <!-- MENSAJES ON -->
+  
+  <div class="row">
+    <div class="span7">
+      <h3 class="braker_bottom margin_top">MENSAJES</h3>
+      <form>
+        <div class="control-group">
+          <select>
+            <option>Elija un mensaje estandar</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+        <div class="control-group">
+        	<input type="text" id="asunto" placeholder="Asunto Del Mensaje" />
+          	<textarea id="cuerpo" name="cuerpo" cols="" class="span7" rows="4" placeholder="Mensaje"></textarea>
+        </div>
+        <div class="control-group">
+          <label class="checkbox">
+          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por eMail </label>
+          <label class="checkbox">
+            <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
+        </div>
+        <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  Enviar comentario</a> </div>
+      </form>
+    </div>
+    <div class="span5">
+      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
       <?php
-
-              $mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
-
-            if(count($mensajes) > 0)
-            {
-                ?>
-                <ul class="media-list">
-                <?php
-                    foreach($mensajes as $msj)
-                    {
-                        echo '<li class="media braker_bottom">
-                                  <div class="media-body">';
-                        echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';
-                        echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-                        echo '<p>'.$msj->cuerpo.'</p>';
-                    }
-                ?>
-                </ul>
-                <?php
-            }
-            else {
-                echo '<h4 class="color4">No se han enviado mensajes.</h4>';
-            }
-
-          ?>
-
-         </div>
-     </div>
+      
+      	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
+      	
+		if(count($mensajes) > 0)
+		{
+			?>	
+			<ul class="media-list">
+			<?php
+				foreach($mensajes as $msj)
+				{
+					echo '<li class="media braker_bottom">
+          					<div class="media-body">';
+					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
+					echo '<p>'.$msj->cuerpo.'</p>';					
+				}
+			?>
+			</ul>
+			<?php
+		}
+		else {
+			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+		}
+      
+      ?>
+      
+    </div>
+    
+    <!-- MENSAJES OFF -->
+     
   <!--
     <div class="span5">
       <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
@@ -929,5 +959,40 @@ else{
 
 
     }
+
+function mensaje(user_id){
+		
+		var asunto = $('#asunto').attr('value');
+		var cuerpo = $('#cuerpo').attr('value');
+		
+		var orden_id = $('#orden_id').attr('value');
+		
+		if($('#notificar').attr('checked') == "checked")
+			var notificar = 1; // $('#notificar').attr('checked');
+		else
+			var notificar = 0;
+		
+		if($('#visible').attr('checked') == "checked")	
+			var visible = 1; // $('#visible').attr('checked');
+		else
+			var visible = 0;
+		
+		// alert("a: "+asunto+" , c:"+cuerpo+" , n:"+notificar+" ,v:"+visible+ " ,id:"+user_id);
+		
+		$.ajax({
+	        type: "post", 
+	        url: "<?php echo Yii::app()->baseUrl; ?>/orden/mensajes", // action 
+	        data: { 'asunto':asunto, 'cuerpo':cuerpo, 'notificar':notificar, 'visible':visible, 'user_id':user_id, 'orden_id':orden_id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();	
+				}
+	       	}//success
+	       }) 
+				
+	}
+
+
 
 </script>

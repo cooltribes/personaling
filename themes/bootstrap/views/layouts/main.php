@@ -84,7 +84,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 
     //Consulta de mensajes
-    $mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1));
+    $mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1,'admin'=>NULL));
     if(count($mensajes) > 0){
       foreach($mensajes as $msj)
       {

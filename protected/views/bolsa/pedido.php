@@ -396,7 +396,8 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
+    <div class="controls">   <!--  <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>-->
+       	 <?php echo CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -430,8 +431,8 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         </div>
       </div>
       <div class="form-actions"> <a onclick="enviar(<?php echo $orden->id ?>)" class="btn btn-danger">Confirmar Deposito</a> </div>
-      <p class="well well-small"> <strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>
+      <p class="well well-small"> <p class='text_align_center'><a title='Formas de Pago' href='<?php echo Yii::app()->baseUrl."/site/formas_de_pago";?>'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
+      </p>
     </form>
   </div>
 </div>

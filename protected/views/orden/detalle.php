@@ -927,10 +927,12 @@ $usuario = User::model()->findByPk($orden->user_id);
 				{
 					if(!is_null($msj->admin))
 						{	$class='style="background-color:#F5F5F5"';
-							$status='<strong>| Enviado</strong>';
+							$status='<p class="muted"><i class="icon-circle-arrow-right"></i> De: <strong> Cliente | </strong><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).$status.'</p>';
+							$icon='';
 						}
 					else {
-						$status='<strong>| Recibido | Cliente: Notificado</strong>';
+							$status='<p class="muted"><i class="icon-circle-arrow-left"></i> Cliente Notificado <strong>| '.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
+							$icon='';
 					}
 	
 						
@@ -938,8 +940,8 @@ $usuario = User::model()->findByPk($orden->user_id);
           					<div class="media-body" '.$class.'>';
 					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
 					echo '<p>'.$msj->cuerpo.'</p>';
-					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).$status.'</p>';				
-					$class="";
+					echo $status;				
+					$class=$status="";
 				}
 			?>
 			</ul>

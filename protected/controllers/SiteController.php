@@ -283,15 +283,17 @@ class SiteController extends Controller
 		$div = "";
 		
 		$div = $div.'<div class="padding_medium bg_color3 ">';
-		$div = $div."<p><strong>De:</strong> Admin</p>";
+		$div = $div."<p><strong>De:</strong> Admin <span class='pull-right'><strong> ".date('d/m/Y', strtotime($mensaje->fecha))."</strong> ".date('h:i A', strtotime($mensaje->fecha))."</span></p>";
 		$div = $div."<p> <strong>Asunto:</strong> ".$mensaje->asunto."</p>";
-		$div = $div."<p> <strong>Fecha:</strong> ".date('d/m/Y', strtotime($mensaje->fecha))." </p>";
 		$div = $div."<p> ".$mensaje->cuerpo." </p>";
 	/*	$div = $div.'<form class=" margin_top_medium ">
 				  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
 				  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
 			  		</form>'; */
-		$div = $div."</div>";
+		$div = $div.'<p><a class="btn btn-danger pull-right" href="'.Yii::app()->getBaseUrl().'/orden/detallepedido/'.$mensaje->orden_id.'#mensajes" target="_blank"> Responder </a></p>
+			  		';	  		
+		
+		$div = $div."<br/></div>";
 		
 		echo $div;
 		

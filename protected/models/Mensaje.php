@@ -3,7 +3,7 @@
 /*
  * Estado: 0=Sin Leer / 1=Leido
  * Visible: 1=visible / 0=No
- * 
+ * Admin: 1=Enviado para Admin / NULL=Enviado desde admin
  */
 
 

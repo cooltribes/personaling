@@ -675,7 +675,7 @@ Para una futura iteración
      
      <!-- MENSAJES ON -->
   
-  <div class="row">
+  <div class="row" id="mensajes">
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
@@ -717,10 +717,10 @@ Para una futura iteración
 				{
 					if(is_null($msj->admin))
 						{	$class='style="background-color:#F5F5F5"';
-							$from='<i class="icon-circle-arrow-right"></i> De: <strong>Admin | </strong> ';
+							$from='<i class="icon-circle-arrow-right"></i> <strong>Entrada | </strong> De: <strong>Admin | </strong> ';
 						}
 					else
-						$from='<i class="icon-circle-arrow-left"></i> Status: <strong>Enviado | </strong> ';
+						$from='<i class="icon-circle-arrow-left"></i> <strong>Salida | </strong> Status: <strong>Enviado | </strong> ';
 					echo '<li class="media braker_bottom">
           					<div class="media-body" '.$class.'>';
 					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	

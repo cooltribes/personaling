@@ -240,7 +240,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             </div>
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
+                <li><strong>Cuenta registrada</strong>:<?php echo date('d/m/Y h:i A', strtotime($usuario->create_at)); ?></li>
                 <li><strong>Pedidos validos realizados</strong>: <?php echo Orden::model()->countByAttributes(array('user_id'=>$orden->user_id,'estado'=>8)); ?></li>
                 <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." Bs."; ?> </li>
               </ul>
@@ -927,11 +927,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 				{
 					if(!is_null($msj->admin))
 						{	$class='style="background-color:#F5F5F5"';
-							$status='<p class="muted"><i class="icon-circle-arrow-right"></i> De: <strong> Cliente | </strong><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).$status.'</p>';
+							$status='<p class="muted"><i class="icon-circle-arrow-right"></i> <strong>Entrada | </strong> De: <strong> Cliente | </strong><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).$status.'</p>';
 							$icon='';
 						}
 					else {
-							$status='<p class="muted"><i class="icon-circle-arrow-left"></i> Cliente Notificado <strong>| '.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
+							$status='<p class="muted"><i class="icon-circle-arrow-left"></i> <strong>Salida| </strong>Cliente Notificado <strong>| '.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
 							$icon='';
 					}
 	

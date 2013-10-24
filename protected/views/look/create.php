@@ -889,7 +889,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </style>
 <script type="text/javascript"> 
     var $buoop = {
-        vs: {i:10,f:21,o:10,s:7,n:19},
+        vs: {i:10,f:21,o:10,s:6,n:19},
         test: false,
         reminder: 0.1,  //horas para recordatorio                 
         text: "Tu navegador (%s) <b>no soporta</b> las funcionalidades de ésta página. \n\

@@ -123,4 +123,17 @@ class Detalle extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	public function getSumxOrden($id=null){
+			
+		if(is_null($id))
+			$sql = "select sum(monto) from tbl_detalle where orden_id=".$this->orden_id;
+		else
+			$sql = "select sum(monto) from tbl_detalle where orden_id=".$id;
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		if(is_null($total))
+			$total=0;
+		return $total;
+		
+	}
+	
 }

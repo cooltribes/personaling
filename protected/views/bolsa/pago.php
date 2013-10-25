@@ -34,7 +34,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         </div>
         -->
         <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito" checked>
-        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
+        <button type="button" id="btn_deposito" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
             <h4>Banco Banesco</h4>
@@ -47,7 +47,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           </div>
         </div>
         <input type="radio" name="optionsRadios" id="tarjeta" value="option2" data-toggle="collapse" data-target="#pagoTarjeta">
-        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
+        <button type="button" id="btn_tarjeta" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
         <div class="collapse" id="pagoTarjeta">
         	 <div class="well well-small" >
             <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
@@ -593,6 +593,16 @@ else
             $("#adentro").html(añadir);
             $("#tipo_pago").val('2');
         });
+        
+        $("#btn_deposito").click(function() {
+        	$("#deposito").attr('checked', 'checked');
+        	 $("#tipo_pago").val('1');
+        });
+        
+        $("#btn_tarjeta").click(function() {
+        	$("#tarjeta").attr('checked', 'checked');
+        	$("#tipo_pago").val('2');
+        });
 
     $("#completar-compra").click(function(ev){
            ev.preventDefault();
@@ -661,12 +671,12 @@ else
 			var est = $("#estado").attr("value");
 			var zip = $("#zip").attr("value");
 			
-			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano" || ci="" || dir=="" || ciud=="" || est=="" || zip==""){
+			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano" || ci=="" || dir=="" || ciud=="" || est=="" || zip==""){
 				alert("Por favor complete los datos de la tarjeta.");
 			}
 			else{
 				// alert(" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
-				$("#boton_pago_tarjeta").submit();
+				$("#datos_tarjeta").submit();
 			}
 	
 		}

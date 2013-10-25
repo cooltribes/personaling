@@ -10,7 +10,7 @@ class BolsaController extends Controller
 		return array(
 			
 			'accessControl', // perform access control for CRUD operations
-			'https +compra', // Force https, but only on login page
+			'https +compra, direcciones, confirmar', // Force https, but only on login page
 		);
 	}
 
@@ -716,6 +716,7 @@ class BolsaController extends Controller
 								$detalle->nTarjeta = $rest;
 								$detalle->nTransferencia = $output->id;
 								$detalle->nombre = $tarjeta->nombre;
+								$detalle->cedula = $tarjeta->ci;
 								$detalle->monto = $_POST['total'];
 								$detalle->fecha = date("Y-m-d H:i:s");
 								$detalle->banco = 'TDC';
@@ -723,13 +724,10 @@ class BolsaController extends Controller
 								
 								if($detalle->save()){
 								
-									// se guardan solo los ultimos 4 numeros
-									$tarjeta->nombre = $_POST['nom'];
+									// se guardan solo los ultimos 4 numeros y se limpian los datos
 									$tarjeta->numero = $rest;
-									$tarjeta->direccion = $_POST['dir'];
-									$tarjeta->ciudad = $_POST['ciud'];
-									$tarjeta->zip = $_POST['zip'];
-									$tarjeta->estado = $_POST['est'];
+									$tarjeta->codigo = " ";
+									$tarjeta->vencimiento = " ";
 									$tarjeta->user_id = $usuario;		
 										
 									$tarjeta->save();

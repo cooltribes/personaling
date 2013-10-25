@@ -27,6 +27,17 @@
   Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
   Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
 
+  //Metas de Twitter CARD ON
+
+  Yii::app()->clientScript->registerMetaTag('product', 'twitter:card', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($producto->nombre, 'twitter:title', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($producto->descripcion, 'twitter:description', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('Marca', 'twitter:label2', null, null, null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url, 'twitter:domain', null, null, null);
+
+  //Metas de Twitter CARD OFF
+
 ?>
 <!-- FLASH OFF -->
 
@@ -96,6 +107,7 @@
 			foreach ($ima as $img){
 
 				Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$img->getUrl(array('ext'=>'jpg')), null, null, array('property' => 'og:image'), null);	// Registro de <meta> para compartir en Facebook
+        Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$img->getUrl(array('ext'=>'jpg')), 'twitter:image:src', null, null, null);  // Registro de <meta> para compartir en Twitter        
         if($img->orden==1)
 				{ 
 					$colorPredet = $img->color_id;
@@ -146,6 +158,8 @@
               <h4 class="precio" ><span>Subtotal</span> Bs. 
               	<?php foreach ($producto->precios as $precio) {
    					echo Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto); // precio con IVA
+              Yii::app()->clientScript->registerMetaTag(Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto). ' Bs.', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
+              Yii::app()->clientScript->registerMetaTag('Precio', 'twitter:label1', null, null, null); // registrar tag de precio de Twitter
    					}
 	
 			?></h4>
@@ -295,7 +309,10 @@
               	<a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
             </div>
          
-						<?php  $marca = Marca::model()->findByPk($producto->marca_id); ?>
+						<?php  $marca = Marca::model()->findByPk($producto->marca_id);
+                Yii::app()->clientScript->registerMetaTag($marca->nombre, 'twitter:data2', null, null, null);
+
+             ?>
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
               <li class="active"><a href="#descripcion" data-toggle="tab">Descripción</a></li>
@@ -351,18 +368,18 @@
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
               Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
           </div>
-          <div class="braker_horz_top_1 addthis row-fluid"> 
+          <div class="braker_horz_top_1 addthis row-fluid padding_bottom_medium"> 
           	
           	<?php
           		if(isset($like)) // le ha dado like 
 				{
           	?>
-            <div class="span4"><a class="btn-mini btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta</a> &nbsp;
+            <div class="span6"><a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta</a> &nbsp;
             	<?php
 				}
 				else {
 				?>
-			 <div class="span4"><a class="btn-mini" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
+			 <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
       
       &nbsp; </span> Me encanta</a> &nbsp;
 				<?php
@@ -376,21 +393,20 @@
             	?>
         </small>
             </div>
-            <div class="span3">
-            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> 
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <a class="addthis_button_facebook"></a>
+            <a class="addthis_button_twitter" tw:via="personaling"></a>
+            <a class="addthis_button_pinterest_share"></a>
             </div>
-            <div class="span3">
-            <a class="addthis_button_tweet"></a>
-            </div>
-            <div class="span2">
-            <a class="addthis_button_pinterest_pinit "></a>       
-            </div>     
-            <script type="text/javascript">
-            var addthis_config = {"data_track_addressbar":false};
-            var addthis_share =
-            {
-               description: hola
-            }
+            <!-- AddThis Button END -->           
+            <script type="text/javascript">       
+              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
+              var addthis_share = {
+                  templates : {
+                      twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
+                  }
+              }
             </script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
           </div>

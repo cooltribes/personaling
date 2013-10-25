@@ -670,7 +670,7 @@ class OrdenController extends Controller
 							
 						if(isset($desc))
 						{
-							if($desc < 0)
+							if($desc->total < 0)
 							{
 								$a = $desc->total + $detalle->monto; // si es menor le sumo lo que depositaron
 								$desc->total = $a;

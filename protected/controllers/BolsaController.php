@@ -264,23 +264,57 @@ class BolsaController extends Controller
 	
 		public function actionPagos()
 		{
+			$tarjeta = new TarjetaCredito;
 			
-			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
-			{
-				 
-				$idDireccion = $_POST['idDireccion'];
-				$tipoPago = $_POST['tipoPago'];
-				echo "if";
-				$this->render('confirmar',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
-				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
-				// se le pasan los datos al action confirmar	
-			}else if(isset($_GET['id'])){ // de direcciones
-			echo "else";
-				//$tarjeta = new TarjetaCredito;
-				$this->render('pago',array('id_direccion'=>$_GET['id']));
+			if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
+				if(isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
+				{
+					echo CActiveForm::validate($_POST['TarjetaCredito']);
+					Yii::app()->end();
+				}
 			}
-			
-		
+				
+			if(isset($_POST['tipo_pago'])){
+				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+				
+				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+					Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
+				}else{
+					Yii::app()->getSession()->add('usarBalance','0');
+				}
+				
+				if(isset($_POST['mes']) || $_POST['mes']!="Mes" ){ // pago de tarjeta de credito
+					
+					$usuario = Yii::app()->user->id; 
+					
+					$tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
+					$tarjeta->numero = $_POST['TarjetaCredito']['numero'];
+					$tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
+					$tarjeta->vencimiento = $_POST['mes']."/".$_POST['ano'];
+					$tarjeta->ci = $_POST['TarjetaCredito']['ci'];
+					$tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
+					$tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
+					$tarjeta->zip = $_POST['TarjetaCredito']['zip'];
+					$tarjeta->estado = $_POST['TarjetaCredito']['estado'];
+					$tarjeta->user_id = $usuario;		
+										
+					if($tarjeta->save())
+					{
+						$tipoPago = $_POST['tipo_pago'];
+					//	$this->redirect($this->createAbsoluteUrl('bolsa/confirmar',array('tipo_pago'=>$tipoPago,'idDireccion'=>$idDireccion,'idTarjeta'=>$tarjeta->id)));
+					}
+				}
+				
+				Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
+				
+				//echo '<br/>'.$_POST['tipo_pago'];
+				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
+			}
+			else {
+				//$tarjeta = new TarjetaCredito;
+				$this->render('pago',array('tarjeta'=>$tarjeta));		
+			}
+
 		}
 		
 		public function actionSuccessMP(){
@@ -568,8 +602,9 @@ class BolsaController extends Controller
 				//echo "Id:".$_POST['Direccion']['id'];
 				$dirEnvio = $_POST['Direccion']['id'];
 				
-				$tarjeta = new TarjetaCredito;
-				$this->render('pago',array('idDireccion'=>$dirEnvio,'tarjeta'=>$tarjeta));
+				Yii::app()->getSession()->add('idDireccion',$dirEnvio);
+				
+				$this->redirect(array('bolsa/pagos'));
 			}
 			else
 			if(isset($_POST['Direccion'])) // nuevo registro

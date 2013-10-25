@@ -20,6 +20,9 @@
  */
 class TarjetaCredito extends CActiveRecord
 {
+	public $month;
+	public $year;
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -49,8 +52,9 @@ class TarjetaCredito extends CActiveRecord
 			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, zip, estado, user_id', 'required'),
 			array('user_id', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>80),
-			array('numero', 'length', 'max'=>25),
-			array('codigo, zip', 'length', 'max'=>10),
+			array('numero', 'length', 'min'=>14, 'max'=>16),
+			array('codigo', 'length', 'min'=>3, 'max'=>4),
+			array('zip', 'length', 'max'=>5),
 			array('direccion', 'length', 'max'=>150),
 			array('ciudad', 'length', 'max'=>50),
 			array('estado', 'length', 'max'=>45),
@@ -119,4 +123,13 @@ class TarjetaCredito extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	protected function beforeValidate()
+	{
+	   $this->vencimiento = $this->month .'/'. $this->year;
+	   //echo $this->birthday;
+	   return parent::beforeValidate();
+	}
+	
+	
 }

@@ -9,6 +9,21 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
   Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
 
+  //Metas de Twitter CARD ON
+
+  Yii::app()->clientScript->registerMetaTag('product', 'twitter:card', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->title, 'twitter:title', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->description, 'twitter:description', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->getPrecio().' Bs.', 'twitter:data1', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('Subtotal', 'twitter:label1', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->user->profile->first_name.' '.$model->user->profile->last_name, 'twitter:data2', null, null, null);  
+  Yii::app()->clientScript->registerMetaTag('Creado por', 'twitter:label2', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('personaling.com', 'twitter:domain', null, null, null);
+
+  //Metas de Twitter CARD OFF
+
+
 ?>
 
 
@@ -60,7 +75,10 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
           </div>
           <div class="row-fluid">
-            <?php Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook ?>
+            <?php Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook
+                  //Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), 'twitter:image:src', null, null, null); //Registro de meta para Card de Twitter
+
+            ?>
             <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
 
           </div>
@@ -281,12 +299,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             if(isset($like)) // le ha dado like 
 				    { ?>
           
-          		<div class="span4"><a class="btn-mini  btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a>
+          		<div class="span6"><a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a>
             <?php
 				    }
 			      else {?>
 			       
-			       <div class=" span4"><a class="btn-mini" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a> 
+			       <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a> 
       			<?php
       				}
       			?>	
@@ -295,20 +313,23 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           
           	
           </div>            
-          <!-- <div class=""> -->
-          <div class="span3" id="btn-facebook" >
-            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+          <!-- AddThis Button BEGIN -->
+          <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+          <a class="addthis_button_facebook" ></a>
+          <a class="addthis_button_twitter" tw:via="personaling"></a>
+          <a class="addthis_button_pinterest_share" ></a>
           </div>
-          <div  class="span3">
-          <a class="addthis_button_tweet"></a>
-          </div>
-          <div class="span2">
-          <a class="addthis_button_pinterest_pinit"></a>
-          </div>
-          <!-- </div> -->
+          <!-- AddThis Button END --> 
             
-            <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>            
+            <script type="text/javascript">       
+              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
+              var addthis_share = {
+                  templates : {
+                      twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
+                  }
+              }
+            </script> 
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>           
           </div>
           <hr/>
           <div>
@@ -379,7 +400,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                         <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
                           <!-- AddThis Button BEGIN -->
 
-                          <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
+                          <li><a class="addthis_button_facebook_like" fb:like:layout="box_count"></a> </li>
                           <li><a class="addthis_button_tweet"></a></li>
                           <li><a class="addthis_button_pinterest_pinit"></a></li>
                         </ul>

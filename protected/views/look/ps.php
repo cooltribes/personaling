@@ -62,7 +62,7 @@
 	);
 	
 ?>           
-        <div class="span3">
+<!--         <div class="span3">
             <select class="span3">
                 <option>Filtros prestablecidos</option>
                 <option>Filtro 1</option>
@@ -71,7 +71,7 @@
             </select>
         </div>
         <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
-        <div class="span2">
+ -->        <div class="offset6 span2">
         
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType' => 'link',

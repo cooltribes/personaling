@@ -34,7 +34,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           </div>
         </div>
         -->
-        <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito" checked>
+        <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
         <button type="button" id="btn_deposito" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
@@ -341,18 +341,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
         ?>
             </div>
-            
-            <div class="form-actions">
-            <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'buttonType'=>'submit',
-            'type'=>'warning',
-            'size'=>'large',
-            'label'=>'Siguiente',
-        )); 
-        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
-        ?>
-            </div>
-            
+
           </div>
         </div>
       </div>
@@ -398,10 +387,21 @@ else
         });
         
         $("#btn_deposito").click(function() {
-        	 var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
+        	var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
         	$("#deposito").attr('checked', 'checked');
-        	 $("#tipo_pago").val('1');
+        	$("#tipo_pago").val('1');
+        	 
+        	// haciendo que no valide
+	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ci');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'direccion');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ciudad');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'estado');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
+        	 
         });
         
         $("#btn_tarjeta").click(function() {
@@ -409,6 +409,16 @@ else
             $("#adentro").html(añadir);
         	$("#tarjeta").attr('checked', 'checked');
         	$("#tipo_pago").val('2');
+        	
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ci');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'direccion');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ciudad');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'estado');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
+        	
         });
 
     $("#completar-compra").click(function(ev){
@@ -493,5 +503,74 @@ else
 		}
 		
 	}
+	
+	$('#YourCheckbox').click(function() {
+	
+	    if ($(this).is(':checked'))
+	    {
+	        enableFieldsValidation($('#my-form'), 'YourModel', 'FirstName');
+	        //enableFieldsValidation($('#my-form'), 'YourModel', 'LastName');
+	    }
+	    else
+	    {
+	        disableFieldsValidation($('#my-form'), 'YourModel', 'FirstName');
+	        //disableFieldsValidation($('#my-form'), 'YourModel', 'LastName');
+	    }
+	});
+	
+	function enableFieldsValidation(form, model, fieldName) {
+
+	    // Restore validation for model attributes
+	    $.each(form.data('settings').attributes, function (i, attribute) {
+	
+	        if (attribute.model == model && attribute.id == (model + '_' + fieldName))
+	        {
+	            if (attribute.hasOwnProperty('disabledClientValidation')) {
+	
+	                // Restore validation function
+	                attribute.clientValidation = attribute.disabledClientValidation;
+	                delete attribute.disabledClientValidation;
+	
+	                // Restore sucess css class
+	                attribute.successCssClass = attribute.disabledSuccessCssClass;
+	                delete attribute.disabledSuccessCssClass;
+	            }
+	        }
+	    });
+	}
+	
+	function disableFieldsValidation(form, model, fieldName) {
+	
+	    $.each(form.data('settings').attributes, function (i, attribute) {
+	
+	        if (attribute.model == model && attribute.id == (model + '_' + fieldName))
+	        {
+	            if (!attribute.hasOwnProperty('disabledClientValidation')) {
+	
+	                // Remove validation function
+	                attribute.disabledClientValidation = attribute.clientValidation;
+	                delete attribute.clientValidation;
+	
+	                // Reset style of elements
+	                $.fn.yiiactiveform.getInputContainer(attribute, form).removeClass(
+	                    attribute.validatingCssClass + ' ' +
+	                    attribute.errorCssClass + ' ' +
+	                    attribute.successCssClass
+	                );
+	
+	                // Reset validation status
+	                attribute.status = 2;
+	
+	                // Hide error messages
+	                form.find('#' + attribute.errorID).toggle(false);
+	
+	                // Dont make it 'green' when validation is called
+	                attribute.disabledSuccessCssClass = attribute.successCssClass;
+	                attribute.successCssClass = '';
+	            }
+	        }
+	    });
+	}
+	
 	
 </script>

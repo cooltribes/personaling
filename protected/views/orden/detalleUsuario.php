@@ -675,11 +675,11 @@ Para una futura iteración
      
      <!-- MENSAJES ON -->
   
-  <div class="row">
+  <div class="row" id="mensajes">
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
-        <div class="control-group">
+        <!--<div class="control-group">
           <select>
             <option>Elija un mensaje estandar</option>
             <option>1</option>
@@ -687,18 +687,18 @@ Para una futura iteración
             <option>3</option>
             <option>4</option>
           </select>
-        </div>
+        </div>-->
         <div class="control-group">
         	<input type="text" id="asunto" placeholder="Asunto Del Mensaje" />
           	<textarea id="cuerpo" name="cuerpo" cols="" class="span7" rows="4" placeholder="Mensaje"></textarea>
         </div>
-        <div class="control-group">
+       <!-- <div class="control-group">
           <label class="checkbox">
           	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por eMail </label>
-          <label class="checkbox">
             <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
-        </div>
-        <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  Enviar comentario</a> </div>
+        </div>-->
+          <label class="checkbox">
+        <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id.",".$orden->id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  Enviar comentario</a> </div>
       </form>
     </div>
     <div class="span5">
@@ -712,13 +712,21 @@ Para una futura iteración
 			?>	
 			<ul class="media-list">
 			<?php
+				$from=$class="";
 				foreach($mensajes as $msj)
 				{
+					if(is_null($msj->admin))
+						{	$class='style="background-color:#F5F5F5"';
+							$from='<i class="icon-circle-arrow-right"></i> <strong>Entrada | </strong> De: <strong>Admin | </strong> ';
+						}
+					else
+						$from='<i class="icon-circle-arrow-left"></i> <strong>Salida | </strong> Status: <strong>Enviado | </strong> ';
 					echo '<li class="media braker_bottom">
-          					<div class="media-body">';
+          					<div class="media-body" '.$class.'>';
 					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
-					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-					echo '<p>'.$msj->cuerpo.'</p>';					
+					echo '<p>'.$msj->cuerpo.'</p>';	
+					echo '<p class="muted">'.$from.'<strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
+					$class="";				
 				}
 			?>
 			</ul>
@@ -889,7 +897,7 @@ else{
         </div>
       </div>
       <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
-      <p class='text_align_center'><a title='Formas de Pago' href='".Yii::app()->baseUrl."/site/formas_de_pago'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
+      <p class='text_align_center'><a title='Formas de Pago' href='<?php echo Yii::app()->baseUrl."/site/formas_de_pago";?>'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
     </form>
   </div>
 </div>
@@ -960,12 +968,12 @@ else{
 
     }
 
-function mensaje(user_id){
+function mensaje(user_id,orden_id){
 		
 		var asunto = $('#asunto').attr('value');
 		var cuerpo = $('#cuerpo').attr('value');
 		
-		var orden_id = $('#orden_id').attr('value');
+		//var orden_id = $('#orden_id').attr('value');
 		
 		if($('#notificar').attr('checked') == "checked")
 			var notificar = 1; // $('#notificar').attr('checked');
@@ -982,7 +990,7 @@ function mensaje(user_id){
 		$.ajax({
 	        type: "post", 
 	        url: "<?php echo Yii::app()->baseUrl; ?>/orden/mensajes", // action 
-	        data: { 'asunto':asunto, 'cuerpo':cuerpo, 'notificar':notificar, 'visible':visible, 'user_id':user_id, 'orden_id':orden_id}, 
+	        data: { 'asunto':asunto, 'cuerpo':cuerpo,'user_id':user_id, 'orden_id':orden_id, 'admin':1}, 
 	        success: function (data) {
 				if(data=="ok")
 				{

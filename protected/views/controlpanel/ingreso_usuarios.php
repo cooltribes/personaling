@@ -101,31 +101,51 @@
 					      	
 					$sql = "select fecha from tbl_orden limit 1";
 					$primera = Yii::app()->db->createCommand($sql)->queryScalar();
-					      	
-					// un mes y una semana a un mes
-					      	
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -1 month -1 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+					 
+					//normal
+					
+					 // un mes y una semana a un mes
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month -1 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
 					$cuatrosem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
-					//  a 3 semanas
-					      	
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. ' -3 week'))."' ";
+					//  a 3 semanas   	
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. ' -3 week'))."' ";
 					$tressem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
-					// a 2 semanas
-					      	
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -3 week'))."' and '".date('Y-m-d', strtotime($ya. ' -2 week'))."' ";
+					// a 2 semanas  	
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -3 week'))."' and '".date('Y-m-d', strtotime($ya. ' -2 week'))."' ";
 					$dossem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
-					// a una semana
-					      	
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -2 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 week'))."' ";
+					// a una semana	
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -2 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 week'))."' ";
 					$unosem = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					// de la primera venta hasta hoy
-					
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' ";
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' ";
 					$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
+					 
+					 
+					// facebook 
+					      	
+					// un mes y una semana a un mes
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month -1 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+					$cuatrosem1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					//  a 3 semanas   	
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. ' -3 week'))."' ";
+					$tressem1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// a 2 semanas  	
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -3 week'))."' and '".date('Y-m-d', strtotime($ya. ' -2 week'))."' ";
+					$dossem1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// a una semana	
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -2 week'))."' and '".date('Y-m-d', strtotime($ya. ' -1 week'))."' ";
+					$unosem1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// de la primera venta hasta hoy
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 week'))."' and '".$ya."' ";
+					$ahora1 = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
 					
 					
 					$uno = date('d-m-Y', strtotime($ya. ' -1 month'));
@@ -143,10 +163,11 @@
 									'categories' => array($uno, $tres, $cuatro, $cinco, $dos)
 									),
 								'yAxis' => array(
-										'title' => array('text' => 'Ventas')
+										'title' => array('text' => 'Usuarios')
 									),
 								'series' => array(
-										array('name' => 'Nuevos usuarios', 'data' => array($cuatrosem, $tressem, $dossem, $unosem, $ahora))
+										array('name' => 'Registro Normal', 'data' => array($cuatrosem, $tressem, $dossem, $unosem, $ahora)),
+										array('name' => 'Registro con Facebook', 'data' => array($cuatrosem1, $tressem1, $dossem1, $unosem1, $ahora1))
 									)
 							)
 						));
@@ -166,11 +187,11 @@
 					$primera = Yii::app()->db->createCommand($sql)->queryScalar();
 					       	
 					// un mes y un dia	
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -1 month -1 day'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month -1 day'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
 					$treintaun = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					// de aqui en adelante diario
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. '-1 month +1 day'))."' ";
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. '-1 month +1 day'))."' ";
 					$treinta = (int) Yii::app()->db->createCommand($sql)->queryScalar();
 					
 					$todos = Array();
@@ -178,7 +199,7 @@
 					
 					for($i=30 ; $i>0 ; $i--)
 					{		
-						$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. '-'.$i.' day'))."' and '".date('Y-m-d', strtotime($ya. '-'.($i-1).' day'))."' ";
+						$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. '-'.$i.' day'))."' and '".date('Y-m-d', strtotime($ya. '-'.($i-1).' day'))."' ";
 						array_push($todos, (int) Yii::app()->db->createCommand($sql)->queryScalar());
 						
 						//echo $sql."<br>";
@@ -186,11 +207,46 @@
 						array_push($fecha,date('d-m', strtotime($ya. '-'.($i-1).' day')));
 					}				
 					
-					$sql = "select count(*) from tbl_users where create_at between '".date('Y-m-d', strtotime($ya. ' -1 day'))."' and '".$ya."' ";
+					$sql = "select count(*) from tbl_users where facebook_id IS NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 day'))."' and '".$ya."' ";
 					$ahora = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
 					
 					$uno = date('d-m', strtotime($ya. ' -1 month'));
 					$tres = date('d-m', strtotime('-1 month +1 day'));
+					
+					
+					// facebook
+					
+					$ya = date('Y-m-d', strtotime('now'));
+					      	
+					$sql = "select fecha from tbl_orden limit 1";
+					$primera1 = Yii::app()->db->createCommand($sql)->queryScalar();
+					       	
+					// un mes y un dia	
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month -1 day'))."' and '".date('Y-m-d', strtotime($ya. ' -1 month'))."' ";
+					$treintaun1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					// de aqui en adelante diario
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 month'))."' and '".date('Y-m-d', strtotime($ya. '-1 month +1 day'))."' ";
+					$treinta1 = (int) Yii::app()->db->createCommand($sql)->queryScalar();
+					
+					$todos1 = Array();
+					$fecha1 = Array();
+					
+					for($i=30 ; $i>0 ; $i--)
+					{		
+						$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. '-'.$i.' day'))."' and '".date('Y-m-d', strtotime($ya. '-'.($i-1).' day'))."' ";
+						array_push($todos1, (int) Yii::app()->db->createCommand($sql)->queryScalar());
+						
+						//echo $sql."<br>";
+						
+						array_push($fecha1,date('d-m', strtotime($ya. '-'.($i-1).' day')));
+					}				
+					
+					$sql = "select count(*) from tbl_users where facebook_id IS NOT NULL and create_at between '".date('Y-m-d', strtotime($ya. ' -1 day'))."' and '".$ya."' ";
+					$ahora1 = (int) Yii::app()->db->createCommand($sql)->queryScalar(); 	
+					
+					$uno1 = date('d-m', strtotime($ya. ' -1 month'));
+					$tres1 = date('d-m', strtotime('-1 month +1 day'));
 
 						$this->Widget('ext.highcharts.HighchartsWidget', array(
 							'options'=>array(
@@ -202,12 +258,15 @@
 															$fecha[21],$fecha[22],$fecha[23],$fecha[24],$fecha[25],$fecha[26],$fecha[27],$fecha[28],$fecha[29])
 									),
 								'yAxis' => array(
-										'title' => array('text' => 'Ventas')
+										'title' => array('text' => 'Usuarios')
 									),
 								'series' => array(
-									array('name' => 'Usuarios', 'data' => array($treintaun, $treinta,$todos[0],$todos[1],$todos[2],$todos[3],$todos[4],$todos[5],$todos[6],$todos[7],$todos[8],$todos[9],$todos[10]
+									array('name' => 'Registro Normal', 'data' => array($treintaun, $treinta,$todos[0],$todos[1],$todos[2],$todos[3],$todos[4],$todos[5],$todos[6],$todos[7],$todos[8],$todos[9],$todos[10]
 																			,$todos[11],$todos[12],$todos[13],$todos[14],$todos[15],$todos[16],$todos[17],$todos[18],$todos[19],$todos[20]
-																			,$todos[21],$todos[22],$todos[23],$todos[24],$todos[25],$todos[26],$todos[27],$todos[28],$todos[29]))
+																			,$todos[21],$todos[22],$todos[23],$todos[24],$todos[25],$todos[26],$todos[27],$todos[28],$todos[29])),
+									array('name' => 'Registro con Facebook', 'data' => array($treintaun1, $treinta1,$todos1[0],$todos1[1],$todos1[2],$todos1[3],$todos1[4],$todos1[5],$todos1[6],$todos1[7],$todos1[8],$todos1[9],$todos1[10]
+																			,$todos1[11],$todos1[12],$todos1[13],$todos1[14],$todos1[15],$todos1[16],$todos1[17],$todos1[18],$todos1[19],$todos1[20]
+																			,$todos1[21],$todos1[22],$todos1[23],$todos1[24],$todos1[25],$todos1[26],$todos1[27],$todos1[28],$todos1[29]))											
 								)
 							)
 						));

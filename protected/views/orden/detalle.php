@@ -240,7 +240,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             </div>
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
+                <li><strong>Cuenta registrada</strong>:<?php echo date('d/m/Y h:i A', strtotime($usuario->create_at)); ?></li>
                 <li><strong>Pedidos validos realizados</strong>: <?php echo Orden::model()->countByAttributes(array('user_id'=>$orden->user_id,'estado'=>8)); ?></li>
                 <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." Bs."; ?> </li>
               </ul>
@@ -763,7 +763,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       </table>
   
       
-     <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div>
+     <!-- <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div> -->
 <!--     <div class="span5">
    <div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -922,13 +922,26 @@ $usuario = User::model()->findByPk($orden->user_id);
 			?>	
 			<ul class="media-list">
 			<?php
+				$class=$status="";
 				foreach($mensajes as $msj)
 				{
+					if(!is_null($msj->admin))
+						{	$class='style="background-color:#F5F5F5"';
+							$status='<p class="muted"><i class="icon-circle-arrow-right"></i> <strong>Entrada | </strong> De: <strong> Cliente | </strong><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).$status.'</p>';
+							$icon='';
+						}
+					else {
+							$status='<p class="muted"><i class="icon-circle-arrow-left"></i> <strong>Salida| </strong>Cliente Notificado <strong>| '.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
+							$icon='';
+					}
+	
+						
 					echo '<li class="media braker_bottom">
-          					<div class="media-body">';
+          					<div class="media-body" '.$class.'>';
 					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
-					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-					echo '<p>'.$msj->cuerpo.'</p>';					
+					echo '<p>'.$msj->cuerpo.'</p>';
+					echo $status;				
+					$class=$status="";
 				}
 			?>
 			</ul>

@@ -6,6 +6,7 @@ Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 ?>
+<?php $idDireccion = Yii::app()->getSession()->get('idDireccion'); ?>
 
 <div class="container margin_top">
   <div class="progreso_compra">
@@ -34,7 +35,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         </div>
         -->
         <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito" checked>
-        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
+        <button type="button" id="btn_deposito" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
           <div class="well well-small" >
             <h4>Banco Banesco</h4>
@@ -47,271 +48,118 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           </div>
         </div>
         <input type="radio" name="optionsRadios" id="tarjeta" value="option2" data-toggle="collapse" data-target="#pagoTarjeta">
-        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
+        <button type="button" id="btn_tarjeta" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
         <div class="collapse" id="pagoTarjeta">
         	 <div class="well well-small" >
             <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
             <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
-            <form action="confirmar" method="POST">
-              <div class="control-group">
-                <div class="controls">
-                  <?php echo CHtml::activeTextField($tarjeta,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); ?>
-                </div>
-              </div>
-              <div class="control-group">
-                <div class="controls">
-                	<?php echo CHtml::activeTextField($tarjeta,'numero',array('id'=>'numero','class'=>'span5','placeholder'=>'Número de la tarjeta')); ?>
-                </div>
-              </div>      
+      		
+      	
+			
+			<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'id'=>'tarjeta-form',
+	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true, 
+	),
+	'htmlOptions'=>array('class'=>''),
+)); 
 
-              <div class="control-group">
-                <div class="controls">
-                	<?php echo CHtml::activeTextField($tarjeta,'codigo',array('id'=>'codigo','class'=>'span2','placeholder'=>'Código de seguridad')); ?>
-                </div>
-              </div>             
-              <div class="control-group">
-                <label class="control-label required">Fecha de Vencimiento</label>
-                <div class="controls">
-                	<?php echo CHtml::dropDownList('mes','',array('Mes'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
-                <?php echo CHtml::dropDownList('ano','',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año')); ?>
-              </div>
+?>
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'nombre',array('class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>
+			
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'numero',array('class'=>'span5','placeholder'=>'Número de la tarjeta')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>
+
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'codigo',array('class'=>'span2','placeholder'=>'Código de seguridad')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>
+            				
+				<div class="control-group">
+					Vencimiento *
+             		<div class="controls">
+             	<?php echo CHtml::dropDownList('mes','',array('Mes'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
+                <?php echo CHtml::dropDownList('ano','',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año')); ?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>
+
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cedula de Identidad')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>
+
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'direccion',array('class'=>'span5','placeholder'=>'Dirección')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>            	
+
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'ciudad',array('class'=>'span5','placeholder'=>'Ciudad')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>			
+
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'estado',array('class'=>'span5','placeholder'=>'Estado')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>	
+  
+				<div class="control-group"> 
+             		<div class="controls">
+             			<?php echo $form->textFieldRow($tarjeta,'zip',array('class'=>'span2','placeholder'=>'Código Postal')); 
+              			?>
+                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              		</div>
+            	</div>		          					
+				
+				<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
+				
+		<div class="form-actions">
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'buttonType'=>'submit',
+            'type'=>'warning',
+            'size'=>'large',
+            'label'=>'Siguiente',
+        )); 
+        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
+        ?>
             </div>
 
-            <div class="control-group">
-              <div class="controls">
-              	<?php echo CHtml::activeTextField($tarjeta,'direccion',array('id'=>'direccion','class'=>'span5','placeholder'=>'Dirección')) ; ?>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <div class="controls">
-              	<?php echo CHtml::activeTextField($tarjeta,'ciudad',array('id'=>'ciudad','class'=>'span5','placeholder'=>'Ciudad')); ?>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <div class="controls">
-              	<?php echo CHtml::activeTextField($tarjeta,'estado',array('id'=>'estado','class'=>'span5','placeholder'=>'Estado')); ?>
-              </div>
-            </div>
-            <div class="control-group">
-              <div class="controls">
-              	<?php echo CHtml::activeTextField($tarjeta,'zip',array('id'=>'zip','class'=>'span2','placeholder'=>'Código Postal')); ?>
-              </div>
-            </div>
-            <hr>
-          	<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
-            <button type="submit" id="boton_pago_tarjeta" class=" btn-large btn btn-warning"> Siguiente </button>            
-
-
-          </div>
-        </div>
-         <!-- <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed">
-            <tr>
-              <th scope="col" colspan="4">&nbsp;</th>
-              <th scope="col">Nombre en la Tarjeta</th>
-              <th scope="col">Fecha de Vencimiento</th>
-            </tr>
-            <tr>
-              <td><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" ></td>
-              <td><i class="icon-picture"></i></td>
-              <td>Mastercard</td>
-              <td>XXXX XXXX XXXX 6589</td>
-              <td>JOHANN MARQUEZ</td>
-              <td>12/2018</td>
-            </tr>
-            <tr>
-              <td><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" ></td>
-              <td><i class="icon-picture"></i></td>
-              <td>Visa</td>
-              <td>XXXX XXXX XXXX 6589</td>
-              <td>JOHANN MARQUEZ</td>
-              <td>12/2018</td>
-            </tr>
-          </table>
-          <button type="button" class="btn btn-info btn-small" data-toggle="collapse" data-target="#collapseOne"> Agregar una nueva tarjeta </button>
-
-          <!-- Forma de pago ON -->
-
-          <!-- <div class="collapse" id="collapseOne">
-            <form class="personaling_form well well-small margin_top_medium">
-              <h5 class="braker_bottom">Nueva tarjeta de crédito</h5>
-              <div class="control-group">
-                <!--[if lte IE 7]>
-            <label class="control-label required">Nombre en la tarjeta <span class="required">*</span></label>
-<![endif]-->
-              <!--   <div class="controls">
-                  <input type="text" maxlength="128"  placeholder="Nombre en la tarjeta"  class="span5">
-                  <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                </div>
-              </div>
-              <div class="control-group">
-                <!--[if lte IE 7]>
-            <label class="control-label required">Nombre impreso en la tarjeta <span class="required">*</span></label>
-<![endif]-->
-
-             <!--    <div class="controls">
-                  <input type="text" maxlength="128"  placeholder="Nombre impreso en la tarjeta"  class="span5">
-                  <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                </div>
-              </div>
-              <div class="control-group">
-                <!--[if lte IE 7]>
-            <label class="control-label required">Fecha de Vencimiento <span class="required">*</span></label>
-<![endif]-->
-            <!--     <div class="controls">
-                  <select>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
-                  <select>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
-                  <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                </div>
-              </div>
-              <div class="control-group">
-                <!--[if lte IE 7]>
-            <label class="control-label required">Codigo de Seguridad <span class="required">*</span></label>
-<![endif]-->
-         <!--        <div class="controls">
-                  <input type="text" maxlength="128"  placeholder="Codigo de Seguridad"  class="span5">
-                  <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                </div>
-              </div>
-              <div class="control-group">
-                <!--[if lte IE 7]>
-            <label class="control-label required">Cedula de Identidad <span class="required">*</span></label>
-<![endif]-->
-          <!--       <div class="controls">
-                  <input type="text" maxlength="128"  placeholder="Cedula de Identidad"  class="span5">
-                  <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                </div>
-              </div>
-              <div class="control-group">
-                <!--[if lte IE 7]>
-            <label class="control-label required">Numero de Telefono <span class="required">*</span></label>
-<![endif]-->
-       <!--          <div class="controls">
-                  <input type="text" maxlength="128"  placeholder="Numero de Telefono"  class="span5">
-                  <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                </div>
-              </div>
-              <div class="form-actions"> <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Anadir Tarjeta de Crédito</a> </div>
-            </form>
-          </div>
-          <!-- Forma de pago OFF -->
-<!-- 
-        </div>
-      </div> -->
-      <?php /*?><div class="box_1 padding_small">
-        <h3>Incluir nuevas opciones de pago</h3>
-        <!-- Forma de pago ON -->
-        <h4 class="braker_bottom">Tarjetas de crédito</h4>
-        <div class="margin_bottom_large">
-          <form class="personaling_form">
-            <div class="control-group">
-              <!--[if lte IE 7]>
-            <label class="control-label required">Nombre en la tarjeta <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" maxlength="128"  placeholder="Nombre en la tarjeta"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group">
-              <!--[if lte IE 7]>
-            <label class="control-label required">Nombre impreso en la tarjeta <span class="required">*</span></label>
-<![endif]-->
-
-              <div class="controls">
-                <input type="text" maxlength="128"  placeholder="Nombre impreso en la tarjeta"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group">
-              <!--[if lte IE 7]>
-            <label class="control-label required">Fecha de Vencimiento <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <select>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
-                <select>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group">
-              <!--[if lte IE 7]>
-            <label class="control-label required">Codigo de Seguridad <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" maxlength="128"  placeholder="Codigo de Seguridad"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group">
-              <!--[if lte IE 7]>
-            <label class="control-label required">Cedula de Identidad <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" maxlength="128"  placeholder="Cedula de Identidad"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group">
-              <!--[if lte IE 7]>
-            <label class="control-label required">Numero de Telefono <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" maxlength="128"  placeholder="Numero de Telefono"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="form-actions"> <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn-large btn btn-danger">Anadir Tarjeta de Crédito</a> </div>
-          </form>
-        </div>
-        <!-- Forma de pago OFF -->
-        <!-- Forma de pago ON -->
-        <h4 class="braker_bottom  padding_bottom_xsmall"> Anadir Tarjeta de Regalo a tu Balance</h4>
-        <div class="margin_bottom_large">
-          <form class="personaling_form">
-            <div class="control-group">
-              <!--[if lte IE 7]>
-            <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" maxlength="128"  placeholder="Numero de la tarjeta de Regalo"  class="span5">
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-          </form>
-          <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-large">Anadir Tarjeta de Crédito</a> </div>
-      </div><?php */?>
     </section>
     <?php
 
 //     echo CHtml::hiddenField('idDireccion',$idDireccion);
 // echo CHtml::hiddenField('tipoPago','1');
 ?>
-    <?php  Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
+    <?php // Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
     <?php //Yii::app()->getSession()->add('tipoPago',1); ?>
     <div class="span5 margin_bottom padding_top_xsmall">
     	
@@ -488,14 +336,29 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            //'url'=>'confirmar', // action
 	            'icon'=>'lock white',
 	            'buttonType'=>'submit',
+	           // 'htmlOptions'=>array('onclick'=>'tarjetas()',),
 	        ));
         // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
         ?>
             </div>
+            
+            <div class="form-actions">
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'buttonType'=>'submit',
+            'type'=>'warning',
+            'size'=>'large',
+            'label'=>'Siguiente',
+        )); 
+        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
+        ?>
+            </div>
+            
           </div>
         </div>
       </div>
-      </form>
+      		      
+      <?php $this->endWidget(); // formulario ?> 
+      
     </div>
   </div>
 </div>
@@ -512,59 +375,6 @@ else
 
 
 ?>
-
-<!-- Modal Window -->
-
-<div class="modal hide fade" id="myModal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4>Agregar Depósito o Transferencia bancaria ya realizada</h4>
-  </div>
-  <div class="modal-body">
-    <form class="">
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <input type="text" maxlength="128"  placeholder="Nombre del Depositante"  class="span5">
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <input type="text" maxlength="128"  placeholder="Número o Código del Depósito"  class="span5">
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="controls controls-row">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
-<![endif]-->
-        <input class="span1" type="text" placeholder="Día">
-        <input class="span1" type="text" placeholder="Mes">
-        <input class="span2" type="text" placeholder="Año">
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <textarea class="span5" rows="6" placeholder="Comentarios (Opcional)"></textarea>
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="form-actions"> <a href="#" class="btn btn-danger">Añadir al Look</a> </div>
-      <p class="well well-small"> <strong>Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</strong><br/>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul </p>
-    </form>
-  </div>
-</div>
-
-<!-- // Modal Window -->
 
 <script>
 
@@ -585,6 +395,20 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('2');
+        });
+        
+        $("#btn_deposito").click(function() {
+        	 var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
+            $("#adentro").html(añadir);
+        	$("#deposito").attr('checked', 'checked');
+        	 $("#tipo_pago").val('1');
+        });
+        
+        $("#btn_tarjeta").click(function() {
+        	 var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
+            $("#adentro").html(añadir);
+        	$("#tarjeta").attr('checked', 'checked');
+        	$("#tipo_pago").val('2');
         });
 
     $("#completar-compra").click(function(ev){
@@ -635,49 +459,39 @@ else
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
 	
-	function enviarTarjeta()
+	function tarjetas()
 	{
+		//alert("Entró");
 		/* lo de la tarjeta */
+		//alert($("#tipo_pago").attr("value"));
 		
-		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
-		var nom = $("#nombre").attr("value");
-		var num = $("#numero").attr("value");
-		var cod = $("#codigo").attr("value");
-		var mes = $("#mes").attr("value");
-		var ano = $("#ano").attr("value");
-		var dir = $("#direccion").attr("value");
-		var ciud = $("#ciudad").attr("value");
-		var est = $("#estado").attr("value");
-		var zip = $("#zip").attr("value");
-		
-		if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
-			{
+		if($("#tipo_pago").attr("value") == 2){ // tarjeta
+			
+			var nom = $("#nombre").attr("value");
+			var num = $("#numero").attr("value");
+			var cod = $("#codigo").attr("value");
+			var ci = $("#ci").attr("value");
+			var mes = $("#mes").attr("value");
+			var ano = $("#ano").attr("value");
+			var dir = $("#direccion").attr("value");
+			var ciud = $("#ciudad").attr("value");
+			var est = $("#estado").attr("value");
+			var zip = $("#zip").attr("value");
+			
+			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano" || ci=="" || dir=="" || ciud=="" || est=="" || zip==""){
 				alert("Por favor complete los datos de la tarjeta.");
 			}
-			else
-			{
-			
-			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
-			
-				$.ajax({
-		        type: "post",
-		        dataType: 'json',
-		        url: "tarjeta", // action 
-		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
-		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
-		        		}, 
-		        success: function (data) {
-					
-					if(data.status==201) // pago aprobado
-					{
-						
-					}
-					
-		       	}//success
-		       })
-			
+			else{
+				// alert(" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
+				$("#datos_tarjeta").submit();
 			}
+	
+		}
+		else
+		{
+			$("#datos_tarjeta").submit();
+		}
+		
 	}
-
 	
 </script>

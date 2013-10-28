@@ -37,6 +37,7 @@
   				$mensajes_Reverse = array_reverse($mensajes);
 				foreach( $mensajes_Reverse as $msj)
 				{
+					if(is_null($msj->admin)){
 
   		?>
 			<a onclick="buscarmensaje(<?php echo $msj->id; ?>)" style="cursor: pointer;">	
@@ -45,7 +46,7 @@
 				<?php } else{ ?>
 					<article class="mensaje<?php echo $msj->id; ?>  row-fluid padding_xsmall">
 						<?php } ?>
-					<img src=" http://placehold.it/90x90" alt="" class="img-circle span2" />
+					
 		  		 	<div class="span8">
 				  		<span> <strong>De:</strong> Admin</span>
 			  		  	<p> <strong>Asunto: </strong> <?php echo $msj->asunto; ?></p>
@@ -55,6 +56,7 @@
 	 		</a>
 	 		<hr/>
 	 		<?php
+				}
 				}
 			}
 	 		?>	  		

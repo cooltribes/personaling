@@ -7,8 +7,6 @@
  * @property integer $id
  * @property string $nTransferencia
  * @property string $nTarjeta
- * @property string $codigo
- * @property string $vencimiento
  * @property string $nombre
  * @property string $cedula
  * @property double $banco
@@ -50,15 +48,14 @@ class Detalle extends CActiveRecord
 		return array(
 			array('monto', 'numerical'),
 			array('nTransferencia, banco', 'length', 'max'=>45),
-			array('nTarjeta', 'length', 'max'=>25),
-			array('codigo', 'length', 'max'=>10),
+			array('nTarjeta', 'length', 'max'=>18),
 			array('nombre', 'length', 'max'=>80),
 			array('cedula', 'length', 'max'=>15),
 			array('comentario', 'length', 'max'=>150),
 			array('vencimiento, fecha', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nTransferencia, banco, nTarjeta, codigo, vencimiento, nombre, cedula, monto, fecha, comentario', 'safe', 'on'=>'search'),
+			array('id, nTransferencia, banco, nTarjeta, nombre, cedula, monto, fecha, comentario', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,8 +80,6 @@ class Detalle extends CActiveRecord
 			'id' => 'ID',
 			'nTransferencia' => 'N Transferencia',
 			'nTarjeta' => 'N Tarjeta',
-			'codigo' => 'Codigo',
-			'vencimiento' => 'Vencimiento',
 			'nombre' => 'Nombre',
 			'cedula' => 'Cedula',
 			'banco' => 'Banco',
@@ -109,8 +104,6 @@ class Detalle extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nTransferencia',$this->nTransferencia,true);
 		$criteria->compare('nTarjeta',$this->nTarjeta,true);
-		$criteria->compare('codigo',$this->codigo,true);
-		$criteria->compare('vencimiento',$this->vencimiento,true);
 		$criteria->compare('nombre',$this->nombre,true);
 		$criteria->compare('cedula',$this->cedula,true);
 		$criteria->compare('banco',$this->banco,true);		
@@ -123,4 +116,17 @@ class Detalle extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	public function getSumxOrden($id=null){
+			
+		if(is_null($id))
+			$sql = "select sum(monto) from tbl_detalle where orden_id=".$this->orden_id;
+		else
+			$sql = "select sum(monto) from tbl_detalle where orden_id=".$id;
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		if(is_null($total))
+			$total=0;
+		return $total;
+		
+	}
+	
 }

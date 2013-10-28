@@ -197,14 +197,16 @@ class Orden extends CActiveRecord
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-
+ 
 		$criteria=new CDbCriteria;
 		$criteria->select='t.*';
 		$criteria->with=array('estados');
 		$criteria->compare('t.user_id',$this->user_id);
-		$criteria->addCondition("t.estado < 5 OR t.estado =7 OR (t.estado = 8 AND estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."' )");
+		$criteria->addCondition("t.estado <5 OR t.estado =7  OR (estados.estado = 8 AND estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."' )");
 		//$criteria->addCondition("estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."'");
 		$criteria->together = true;
+		$criteria->group = 't.id';
+		$criteria->order = 't.fecha DESC';
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -221,6 +223,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('t.user_id',$this->user_id);
 		$criteria->addCondition("(t.estado = 8 AND estados.fecha < '".date('Y-m-d', strtotime('-1 month'))."') OR t.estado = 5 ");
 		$criteria->together = true;
+		$criteria->group = 't.id';
+		$criteria->order = 't.fecha DESC';
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

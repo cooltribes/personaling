@@ -22,7 +22,6 @@
  $baseUrl = Yii::app()->baseUrl;
  $cs = Yii::app()->getClientScript();
  $cs->registerScriptFile($baseUrl.'/js/jquery.zoom.js');
-  Yii::app()->clientScript->registerMetaTag($producto->nombre, null, null, array('property' => 'og:title'), null); // registro del meta para facebook
   Yii::app()->clientScript->registerMetaTag($producto->descripcion, null, null, array('property' => 'og:description'), null);
   Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
   Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
@@ -160,6 +159,8 @@
    					echo Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto); // precio con IVA
               Yii::app()->clientScript->registerMetaTag(Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto). ' Bs.', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
               Yii::app()->clientScript->registerMetaTag('Precio', 'twitter:label1', null, null, null); // registrar tag de precio de Twitter
+                Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto). ' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+
    					}
 	
 			?></h4>

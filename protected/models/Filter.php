@@ -22,6 +22,7 @@
  * 3 - Filtro para Admin de Usuarios
  * 4 - Filtro para Admin de looks
  * 5 - Filtro para Campanas
+ * 6 - Filtro para los personal shopper en Mis Looks
  * 0 - Filtro por perfil, perteneciente a un usuario
  */
 

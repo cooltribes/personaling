@@ -192,8 +192,7 @@ class Campana extends CActiveRecord
                         'select'=> false,
                         //'joinType'=>'INNER JOIN',
                        // 'condition'=> '',
-                    );                    
-                                       
+                    );                
                     
                     $criteria->addCondition('personalshoppers.campana_id '.$comparator.' IN(
                             SELECT DISTINCT(campana_id)
@@ -267,22 +266,24 @@ class Campana extends CActiveRecord
                 }
                 
                 if($column == 'marca')
-                {                                    
+                {      
                     
-                    $criteria->with['productos'] = array(
-                        'select'=> false,
-                        //'joinType'=>'INNER JOIN',
-                        //'condition'=>'productos.nombres = 8',
-                    );                 
+                    $comparator = ($comparator == '=') ? "": " NOT";
+                                  
                     
-                    //having
+                    $criteria->addCondition('t.id '.$comparator.' IN (
+                            SELECT distinct(l.campana_id)
+                            FROM tbl_look l, tbl_look_has_producto lp, tbl_producto p, tbl_marca m
+                            WHERE l.id=lp.look_id 
+                            AND lp.producto_id=p.id 
+                            AND p.marca_id=m.id
+                            AND m.id = '.$value.')', $logicOp);    
+                    
                     if(!strpos($criteria->group, "t.id")){
                         $criteria->group = 't.id';
                     }
                     
-                    //agregar condicion marca_id
-                    $criteria->addCondition('productos.marca_id'
-                    .$comparator.' '.$value.'', $logicOp);                    
+                                     
                     
                    continue;
                 }

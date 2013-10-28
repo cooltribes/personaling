@@ -89,7 +89,12 @@ function getMonthsArray()
             </div>
           </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
-          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No',1=>'Si', 2 => "Aplicante"),array('class'=>'span2')); ?> </div>
+          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No', 1=>'Si', 2 => "Aplicante"),array('class'=>'span2')); ?> 
+              <?php if($model->personal_shopper == 1 && $model->ps_destacado){ ?>
+              <span class="label label-warning" 
+                    style="margin-left: 180px;padding: 4px 10px;font-size: 12px;">Personal Shopper Destacado</span>
+              <?php } ?>
+          </div>
           <div class="control-group">
             <label for="" class="control-label ">Estado: </label>  
             <div class="controls">  
@@ -216,7 +221,7 @@ function getMonthsArray()
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),
 					  array( //htmlOptions
-					    'href' => Yii::app()->createUrl( 'user/admin/toggle_ps' ),
+					    'href' => Yii::app()->createUrl( 'user/admin/toggle_admin' ),
 					    //'class' => $class
 					  )
 					);
@@ -248,15 +253,17 @@ function getMonthsArray()
 					                    // handle return data
 					                   // alert( data.status );
 					                   // alert(data.personal_shopper);
-					                    if (data.status == 'success')
+					                    if (data.status == 'success'){
 					                    	$('#User_personal_shopper').val(data.personal_shopper);
-                                                                
-                                                                bootbox.alert(\"¡Se ha aprobado la solicitud para Personal Shopper!\");
+                                                                if(data.apply){
+                                                                    bootbox.alert(\"¡Se ha aprobado la solicitud para Personal Shopper!\");
+                                                                }
+                                                                       
                                                                 var text = data.personal_shopper == 1? 'Quitar Personal Shopper':'Hacer Personal Shopper';
                                                                 
                                                                 var child = $('#ps_link').children(); 
                                                                 $('#ps_link').html(child).append(' '+text);
-
+                                                                }
 					                  }",
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),
@@ -268,7 +275,51 @@ function getMonthsArray()
 ?>
               	              	
               </li>
-              <li><a href="#" title="Guardar"><i class="icon-bell"></i> Crear / Enviar Intivacion</a></li>
+              <?php if($model->personal_shopper == 1){ ?>
+              <li>
+              <?php 
+                    if($model->ps_destacado){
+                        $titulo = 'Quitar PS destacado';
+                        $icon = 'down';
+                    }else{
+                        $titulo = 'Destacar Personal Shopper';
+                        $icon = 'up';
+                    }
+                    echo CHtml::ajaxLink(
+                              "<i class='icon-thumbs-{$icon}'></i> {$titulo}",
+                              Yii::app()->createUrl( 'user/admin/toggleDestacado' ,array('id'=>$model->id)),
+                              array( // ajaxOptions
+                                'type' => 'POST',
+                                'dataType'=>'json',
+                                'success' => "function( data )
+                                              {
+                                                // handle return data
+                                               // alert( data.status );
+                                               // alert(data.personal_shopper);
+                                                if (data.status == 'success'){
+                                                    //$('#User_personal_shopper').val(data.personal_shopper);
+
+                                                    //bootbox.alert(\"¡Se ha aprobado la solicitud para Personal Shopper!\");
+                                                    var text = data.personal_shopper == 1? 'Quitar PS destacado':'Destacar Personal Shopper';
+                                                    console.log(data);
+                                                    var child = $('#psDestacado_link').children(); 
+                                                    $('#psDestacado_link').html(child).append(' '+text);
+                                                    $('#psDestacado_link').children('i').toggleClass('icon-thumbs-down');
+                                                    $('#psDestacado_link').children('i').toggleClass('icon-thumbs-up');
+                                                    $('span.label-warning').toggle();                                                   
+
+                                                 }
+                                              }",
+                              //  'data' => array( 'val1' => '1', 'val2' => '2' )
+                              ),
+                              array( //htmlOptions
+                                'href' => Yii::app()->createUrl( 'user/admin/toggleDestacado' ),
+                                'id' => "psDestacado_link",
+                              )
+                            );
+                ?> 
+                  </li>
+              <?php }//Fin si es personalshopper ?>
               <li><a href="#" title="Guardar"><i class="icon-bell"></i> Reenviar Invitación</a></li>
               
               <li>
@@ -342,7 +393,11 @@ function getMonthsArray()
             }
         });
 
-       });			
+       });	
+       
+       
+       
+       
 		</script> 
         <!-- SIDEBAR OFF --> 
         

@@ -15,7 +15,8 @@ function changeFilter(e){
         dateFilter(column);
     
     
-   }else if(column.val() === 'estado' || column.val() === 'personalS') //si es listado - dropdown
+   }else if(column.val() === 'estado' || column.val() === 'personalS'
+        || column.val() === 'marca') //si es listado - dropdown
    {       
        
        listFilter(column, column.val());

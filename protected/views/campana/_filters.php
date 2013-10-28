@@ -62,7 +62,7 @@
                                 'cantPS' => 'Cantidad de Personal Shoppers',
                                 'looks_creados' => 'Looks creados',
                                 'looks_aprobados' => 'Looks aprobados',                                
-                                'prendas' => 'Marca participante',
+                                'marca' => 'Marca participante',
                                 'cantMarcas' => 'Cantidad de marcas'
                                 
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 

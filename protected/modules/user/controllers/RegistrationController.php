@@ -209,7 +209,8 @@ class RegistrationController extends Controller
 // registration
         
     public function actionAplicarPS() {
-            $model = new RegistrationForm;
+            //$model = new RegistrationForm;
+            $model = new ApplyPsForm;
             $profile = new Profile;
             $profile->regMode = true;
             $profile->profile_type = 4;
@@ -217,17 +218,31 @@ class RegistrationController extends Controller
             // ajax validator
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'registration-form') {
                
-                echo UActiveForm::validate(array($model, $profile));
+               // echo UActiveForm::validate(array($model, $profile));
+                //echo preg_replace('/,"ApplyPsForm_avatarPs":\[".*?"\]/' , '' , UActiveForm::validate(array($model, $profile)));
+               //unset($model->attributes['avatarPs']);
+//               echo  "<pre>";
+//               print_r(array_keys($model->attributes));               
+//               echo "</pre>";
+               
+                
+            //echo UActiveForm::validate(array($model, $profile), array_merge($model->attributes, $profile->attributes));
+                echo UActiveForm::validate(array($model, $profile), array_keys(array_merge($model->attributes, $profile->attributes)));
+                //echo UActiveForm::validate(array($model, $profile), array('email'));
                 Yii::app()->end();
             }
+         
             
-            if (isset($_POST['RegistrationForm'])) {
+            if (isset($_POST['ApplyPsForm'])) {
                     	
-                    $model->attributes = $_POST['RegistrationForm'];
+                    $model->attributes = $_POST['ApplyPsForm'];
                     $profile->attributes = ((isset($_POST['Profile']) ? $_POST['Profile'] : array()));   
+                    
+                    
 
 
                     if ($model->validate() && $profile->validate()) {
+                        
                         $soucePassword = $model->password;
                         $model->activkey = UserModule::encrypting(microtime() . $model->password);
                         $model->password = UserModule::encrypting($model->password);
@@ -261,8 +276,8 @@ class RegistrationController extends Controller
 				{
 	   				mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id,0777,true);
 	 			}	 
-				$images = CUploadedFile::getInstancesByName('filesToUpload');
-
+				$images = CUploadedFile::getInstancesByName('ApplyPsForm[avatarPs]');
+                                
                                 if (isset($images) && count($images) > 0) {
                                     
                                     foreach ($images as $image => $pic) {

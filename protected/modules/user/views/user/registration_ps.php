@@ -147,38 +147,30 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                 }
                 
                 ?>
-                  <div class="control-group">
-                    <div class="controls row-fluid">
-                        <?php  
-//                        echo $form->textFieldRow($profile, $face->varname, array('class' => 'span12 ', 'maxlength' => (($face->field_size) ? $face->field_size : 255)));
-//                        echo $form->error($profile, $face->varname); 
-                        ?>
-                    </div>
-                </div> 
                 <div class="control-group">
                     <div class="controls row-fluid">
-                        <?php  
-//                        echo $form->textFieldRow($profile, $twi->varname, array('class' => 'span12 ', 'maxlength' => (($twi->field_size) ? $twi->field_size : 255)));
-//                        echo $form->error($profile, $twi->varname); 
-                        ?>
+                        
+                        <div id="container" class="text_align_center margin_bottom margin_top">
+                            <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"135", "height"=>"135","class"=>"img_1")); ?>
+                        </div>
+                        
+                         
+                        
+                        
+                        
                     </div>
-                </div>         
-                        
-                        
+                </div>           
+                        <?php 
+                            echo $form->fileFieldRow($model, 'avatarPs', array('class' => 'well well-small span5'));
+                        ?>
+                        <?php echo CHtml::hiddenField('valido','1'); ?>
+                              <?php echo CHtml::hiddenField('avatar_x','0'); ?>
+                              <?php echo CHtml::hiddenField('avatar_y','0'); ?>
+                        <output id="filesInfo"></output>     
                 <?php
             }
             ?>
-
-            <div id="container" class="text_align_center margin_bottom margin_top">
-                <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"135", "height"=>"135","class"=>"img_1")); ?>
-            </div>
-            <label for="fileToUpload">Elige una imagen para tu avatar</label><br/>                                   
-                  <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small"/>
-                  <?php echo CHtml::hiddenField('valido','1'); ?>
-                  <?php echo CHtml::hiddenField('avatar_x','0'); ?>
-                  <?php echo CHtml::hiddenField('avatar_y','0'); ?>
-            <?php /*?>      <div id="dropTarget">O arrasta la imagen hasta aqui</div><?php */?>
-                  <output id="filesInfo"></output>
+                        
 
                 <hr/>
                 Al hacer clic en "Enviar Solicitud" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 

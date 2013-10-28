@@ -17,7 +17,15 @@
         <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name.' '.$data->profile->last_name; ?></h5>
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
         <?php if($data->personal_shopper == 1){
-                  echo 'Personal Shopper';
+                if($data->ps_destacado == 1){
+                   ?>
+                    <span class="label label-warning">Personal Shopper Destacado</span>
+                    <?php
+                }else{
+                    echo 'Personal Shopper';
+                }
+            
+            
               }else if($data->personal_shopper == 2){
                   echo '<span class="label label-info"> Aplicante Personal Shopper</span>';
               }else{

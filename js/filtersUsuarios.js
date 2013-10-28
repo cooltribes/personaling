@@ -8,7 +8,8 @@ function changeFilter(e){
    var column = $(this);
    
    //si es fecha
-   if(column.val() === 'lastvisit_at' || column.val() === 'lastorder_at') //Fechas
+   if(column.val() === 'lastvisit_at' || column.val() === 'lastorder_at' 
+        || column.val() === 'create_at') //Fechas
    {
        dateFilter(column);
     

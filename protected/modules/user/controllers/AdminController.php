@@ -29,8 +29,9 @@ class AdminController extends Controller
 				'actions'=>array('admin','delete','create','update',
                                     'view','corporal','estilos','pedidos','carrito',
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
-                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion','eliminardireccion','comprafin'),
+                                    'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
+                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
+                                    'eliminardireccion','comprafin'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -188,7 +189,7 @@ class AdminController extends Controller
                          if (isset($_POST['name'])){
                             
                             $filter = Filter::model()->findByAttributes(
-                                    array('name' => $_POST['name'], 'type' => '3') //Filtros para ventas
+                                    array('name' => $_POST['name'], 'type' => '3') 
                                     ); 
                             if (!$filter) {
                                 $filter = new Filter;
@@ -322,10 +323,40 @@ class AdminController extends Controller
 	     }
 	}
 	
-	public function actionToggle_ps($id){
+        /**
+         * Poner o quitar a un PS en destacado (campo "ps_destacado")
+         * @param type $id id del usuario que es PS
+         */
+	public function actionToggleDestacado($id){
+            $model = User::model()->findByPk($id);
+                                
+            if($model->personal_shopper == 1){ //si es PS                
+
+               $model->ps_destacado = 1 - $model->ps_destacado; // hacer el toggle               
+
+                if ($model->save()){
+                    echo CJSON::encode(array(
+                        'status'=>'success',
+                        'personal_shopper'=>$model->ps_destacado,
+                    ));	
+                }else{
+                   Yii::trace('AdminController:117 Error toggleDestacado:'.print_r($model->getErrors(),true), 'registro');
+                           echo CJSON::encode(array(
+                       'status'=>'error',
+                       'personal_shopper'=>$model->ps_destacado,
+                    ));
+                }
+            
+            }
+	}
+        
+        
+        public function actionToggle_ps($id){
 		$model = User::model()->findByPk($id);
+                $apply = true;
                 
                 if($model->personal_shopper == 2){ //si es aplicante
+                    $apply = true;
                     
                     $model->personal_shopper = 1;
                     
@@ -360,6 +391,7 @@ class AdminController extends Controller
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'personal_shopper'=>$model->personal_shopper,
+                    'apply' => $apply,
 	     ));	
 	     }else{
 	     	Yii::trace('AdminController:117 Error toggle:'.print_r($model->getErrors(),true), 'registro');
@@ -369,6 +401,7 @@ class AdminController extends Controller
 	     ));
 	     }
 	}
+        
        /**
         * Bloquear al usuario, queda en estado STATUS_BANNED
         * @param int $id id del usuario
@@ -664,7 +697,8 @@ if(isset($_POST['Profile']))
 				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 			} else $profile->validate();
 		}
-
+                
+                
 		$this->render('update',array(
 			'model'=>$model,
 			'profile'=>$profile,
@@ -740,7 +774,8 @@ if(isset($_POST['Profile']))
 				$this->_model=User::model()->notsafe()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
-		}
+		}                
+                
 		return $this->_model;
 	}
         

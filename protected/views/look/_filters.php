@@ -31,6 +31,9 @@
                             ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
                             array('style' => 'display:none'));
     
+    echo CHtml::dropDownList('destacado', '', array('1' => 'Sí',
+    '0' => 'No',), array('style' => 'display:none'));
+    
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/looksFilters.js");
@@ -64,6 +67,7 @@
                                 'campana' => 'Campaña',
                                 'precio' => 'Precio',
                                 'prendas' => 'Cantidad de Prendas',
+                                'destacado' => 'Destacado'
                                 
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

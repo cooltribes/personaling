@@ -34,7 +34,7 @@
   Yii::app()->clientScript->registerMetaTag($producto->nombre, 'twitter:title', null, null, null);
   Yii::app()->clientScript->registerMetaTag($producto->descripcion, 'twitter:description', null, null, null);
   Yii::app()->clientScript->registerMetaTag('Marca', 'twitter:label2', null, null, null);
-  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url, 'twitter:domain', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('personaling.com', 'twitter:domain', null, null, null);
 
   //Metas de Twitter CARD OFF
 

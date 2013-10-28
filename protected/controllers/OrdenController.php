@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -622,8 +622,7 @@ class OrdenController extends Controller
 	}
 	
 	public function actionValidar()
-	{
-		// Elementos para enviar el correo, depende del estado en que quede la orden
+	{	// Elementos para enviar el correo, depende del estado en que quede la orden
 		$message            = new YiiMailMessage;
 		$message->view = "mail_template";
 		 
@@ -636,7 +635,9 @@ class OrdenController extends Controller
 		$user = User::model()->findByPk($orden->user_id);
 		//$subject = 'Recupera tu contraseña de Personaling';
 		//$body = '<h2>Has solicitado cambiar tu contraseña de Personaling.</h2> Para recibir una nueva contraseña haz clic en el seiguiente link:<br/><br/> '.$activation_url;
-		$porpagar=$orden->total - $orden->descuento - $acumulado;
+		$porpagar=$orden->total - $acumulado;
+		$saldo = Profile::model()->getSaldo($orden->user_id);
+		
 		
 		if($_POST['accion']=="aceptar")
 		{
@@ -647,7 +648,7 @@ class OrdenController extends Controller
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
-				if($detalle->monto >= $porpagar){
+				if($porpagar<=0){
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
 					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
@@ -666,17 +667,17 @@ class OrdenController extends Controller
 						
 						$usuario = Yii::app()->user->id;
 							
-						if($detalle->monto > $porpagar)
+						if($porpagar<0)
 						{
-							$excede = $detalle->monto - $porpagar;
 							
+
 							$balance = new Balance;
 							$balance->orden_id = $orden->id;
 							$balance->user_id = $orden->user_id;
-							$balance->total = $excede;
+							$balance->total = $porpagar*(-1);
 							
 							$balance->save();
-							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.$excede.' Bs.';
+							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Profile::model()->getSaldo($orden->user_id).' Bs.';
 						} // si es mayor hace el balance
 						
 													
@@ -701,7 +702,7 @@ class OrdenController extends Controller
 				else{
 					
 					
-					$saldo = Profile::model()->getSaldo($orden->user_id);
+					
 					if($saldo>0){
 						$desc=$saldo-$porpagar;
 						if($desc>=0){
@@ -762,7 +763,7 @@ class OrdenController extends Controller
 					else{
 						
 							$subject = 'Pago insuficiente';
-							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->total.' Bs para pagar toda la orden.<br/><br/> ';
+							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->monto.' Bs para pagar toda la orden.<br/><br/> ';
 							$estado = new Estado;
 																	
 							$estado->estado = 7; // pago insuficiente
@@ -815,6 +816,7 @@ class OrdenController extends Controller
 		$message->addTo($user->email);
 		$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 		Yii::app()->mail->send($message);
+		
 	}
 
 	/*
@@ -910,7 +912,7 @@ class OrdenController extends Controller
 	{
 			
 		$orden = Orden::model()->findByPK($id);
-		
+		$end="";
 		if($orden->estado==1)
 		{
 				$ban=true;
@@ -942,8 +944,8 @@ class OrdenController extends Controller
 						if($estado->save())
 						{
 							Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
+							$end='ok';
 							
-							$this->redirect(array('listado'));
 							
 						}
 					}	
@@ -951,11 +953,16 @@ class OrdenController extends Controller
 		else
 		{
 			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
-			$this->redirect(array('listado'));
+			$end='no';
 		}
-		
+		if(isset($_POST['admin'])){
+			echo $end;
+			return 0;
+		}else
+			$this->redirect(array('listado'));
 	}
 
+	
 	/*
 	 *  Action para añadir el tracking y cambiar el estado a enviado
 	 * */

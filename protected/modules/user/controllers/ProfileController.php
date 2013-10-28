@@ -482,7 +482,8 @@ class ProfileController extends Controller
 		            	$model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
 		            	if (!$model->save())	
 							Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');
-						if ($pic->saveAs($nombre ."_orig". $extension)) {
+				
+                                if ($pic->saveAs($nombre ."_orig". $extension)) {
 		                	//echo $nombre;
 		                	$image = Yii::app()->image->load($nombre ."_orig". $extension);
 							$avatar_x = isset($_POST['avatar_x'])?$_POST['avatar_x']:0;

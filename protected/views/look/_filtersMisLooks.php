@@ -10,7 +10,7 @@
     
 <?php
     
-    echo CHtml::dropDownList('status', '', array('1' => 'Enviado',
+    echo CHtml::dropDownList('status', '', array('0' => 'Creado', '1' => 'Enviado',
     '2' => 'Aprobado'), array('style' => 'display:none'));
     
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',

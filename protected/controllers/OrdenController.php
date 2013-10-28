@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -622,18 +622,21 @@ class OrdenController extends Controller
 	}
 	
 	public function actionValidar()
-	{
-		// Elementos para enviar el correo, depende del estado en que quede la orden
+	{	// Elementos para enviar el correo, depende del estado en que quede la orden
 		$message            = new YiiMailMessage;
 		$message->view = "mail_template";
-		
+		 
 		$detalle = Detalle::model()->findByPk($_POST['id']);
 		$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
+		$acumulado=$detalle->getSumxOrden();
+		
 		$factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
 		
 		$user = User::model()->findByPk($orden->user_id);
 		//$subject = 'Recupera tu contraseña de Personaling';
 		//$body = '<h2>Has solicitado cambiar tu contraseña de Personaling.</h2> Para recibir una nueva contraseña haz clic en el seiguiente link:<br/><br/> '.$activation_url;
+		$porpagar=$orden->total - $acumulado;
+		$saldo = Profile::model()->getSaldo($orden->user_id);
 		
 		
 		if($_POST['accion']=="aceptar")
@@ -644,7 +647,10 @@ class OrdenController extends Controller
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
-				if($detalle->monto >= $orden->total || (($detalle->monto - $orden->total) < 0.1) ){
+				 
+			//	if($detalle->monto >= $orden->total || (($detalle->monto - $orden->total) < 0.1) ){
+				if($porpagar<=0){
+
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
 					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
@@ -662,44 +668,22 @@ class OrdenController extends Controller
 						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
 						
 						$usuario = Yii::app()->user->id;
-						
-						$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
 							
-						if(isset($desc))
+						if($porpagar<0)
 						{
-							if($desc->total < 0)
-							{
-								$a = $desc->total + $detalle->monto; // si es menor le sumo lo que depositaron
-								$desc->total = $a;
-								$desc->save();
-							}
-							
-							//si deposito de mas
-							if($detalle->monto > $orden->total)
-							{	
-								$excede = $detalle->monto - $orden->total;
-								$desc->total = $excede;							
-								$desc->save();
-								// Cambio el body del correo para agregar el saldo que sobra
-								$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.$excede.' Bs.';
-							}
-						}
-						else					
-						if($detalle->monto > $orden->total)
-						{
-							$excede = $detalle->monto - $orden->total;
-							
 							$balance = new Balance;
 							$balance->orden_id = $orden->id;
 							$balance->user_id = $orden->user_id;
-							$balance->total = $excede;
+							$balance->total = $porpagar*(-1);
 							
 							$balance->save();
-							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.$excede.' Bs.';
+							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Profile::model()->getSaldo($orden->user_id).' Bs.';
 						} // si es mayor hace el balance
 						
 													
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+						if($detalle->monto >= $porpagar)
+						{
 							$estado = new Estado;
 													
 							$estado->estado = 3; // pago recibido
@@ -710,139 +694,88 @@ class OrdenController extends Controller
 							if($estado->save())
 							{
 								echo "ok";	
-							}					
+							}	
+						}				
 
 					}//orden save
-				}// si es mayor
+				}// si el pago realizado es mayor o igual
 				else{
 					
-					$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
 					
-					if(isset($desc)) // balance existe 
-					{
-						if($desc->total < 0) // debe
-						{
-							$debe = Yii::app()->numberFormatter->formatDecimal($desc->total); 
-							$paga = Yii::app()->numberFormatter->formatDecimal($detalle->monto); 
-							
-							if(($debe * -1) == $paga) // paga exacta la deuda
-							{
-								$detalle->comentario = "deberia aqui";
-								$detalle->save();
+					
+					if($saldo>0){
+						$desc=$saldo-$porpagar;
+						if($desc>=0){
+							$orden->descuento=$orden->total;
+							$orden->estado = 3;
+							if($orden->save()){
 								
-								$desc->delete(); // son identicos, no habria saldo a favor ni en contra por lo tanto se borra el balance
+								$subject = 'Pago aceptado';
+								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
 								
-								$orden->estado = 3; // aprobado el pago
-								$orden->save();
+								$usuario = Yii::app()->user->id;
+								
 								if($factura){
 									$factura->estado = 2;
 									$factura->save();
 								}
-								$subject = 'Pago aceptado';
-								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+								$balance = new Balance;
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $orden->user_id;
+								$balance->total = $porpagar*(-1);
+								$balance->tipo=1;
 								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								$estado = new Estado;
-														
-								$estado->estado = 3; // pago recibido
-								$estado->user_id = Yii::app()->user->id;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
-								
-							}else 
-							if(($debe * -1) < $paga)
-							{
-								$detalle->comentario = "aqui no";
-								$detalle->save();
-								
-								$valor = $desc->total + $detalle->monto; // lo que debia +lo que pague (como es negativo lo sumo para que subsane la deuda)
-								$desc->total = $valor;
-								$desc->save();
-								
-								$orden->estado = 3;
-								$orden->save();
-								if($factura){
-									$factura->estado = 2;
-									$factura->save();
-								}
-								$subject = 'Pago aceptado';
-								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								$estado = new Estado;
-														
-								$estado->estado = 3; // pago recibido
-								$estado->user_id = Yii::app()->user->id;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
-								
-							}else 							
-							if(($debe * -1) > $paga) 
-							{
-								$valor = $desc->total + $detalle->monto; // lo que debia + lo que pague (como es negativo lo sumo para que subsane la deuda)
-								$desc->total = $valor;
-								$desc->save();
-								
-								$orden->estado = 7;// aun le faltó
-								$orden->save();
-								$subject = 'Pago insuficiente';
-								$body = '¡Upsss! El pago que realizaste no cubre el monto de tu pedido, faltan '.$valor.' Bs para pagar toda la orden y comenzar el procesar el envío de tu compra. <br/><br/> ';
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								$estado = new Estado;
-															
-								$estado->estado = 7; // pago insuficiente
-								$estado->user_id = Yii::app()->user->id;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
+								$balance->save();
+									
 								
 							}
-							
-						if($estado->save())
-							{
-								echo "ok";	
-							}	
-							
-						}
-						
-					}
-					else { // no hay balance, solo pago menos
-					
-					$detalle->comentario = "aqui jamas";
-					$detalle->save();
-					
-					$orden->estado = 7;
-					if($orden->save()){
-						$falta = $detalle->monto - $orden->total;
-							
-						$balance = new Balance;
-						$balance->orden_id = $orden->id;
-						$balance->user_id = $orden->user_id;
-						$balance->total = $falta;
-						
-						$subject = 'Pago insuficiente';
-						$body = '¡Upsss! El pago que realizaste no cubre el monto de tu pedido, faltan '.($falta*-1).' Bs para pagar toda la orden y comenzar el procesar el envío de tu compra. <br/><br/> ';
 								
-						if($balance->save())
-						{
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+						}//Saldo cubre la deuda
+						else{
+							$orden->descuento=$orden->descuento+$saldo;
+							$orden->estado = 1;
+							if($orden->save()){
+								$balance = new Balance;
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $orden->user_id;
+								$balance->total = $saldo*(-1);
+								$balance->tipo=1;								
+								if($balance->save()){
+									$subject = 'Pago insuficiente';
+									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$orden->descuento.' Bs para pagar toda la orden.<br/><br/> ';
+									$estado = new Estado;
+																
+									$estado->estado = 7; // pago insuficiente
+									$estado->user_id = Yii::app()->user->id;
+									$estado->fecha = date("Y-m-d");
+									$estado->orden_id = $orden->id;
+									if($estado->save())
+									{
+										echo "ok";	
+									}	
+								}
+								
+							}
+						}//Saldo no cubrio la deuda
+						
+						
+					}//Saldo positivo
+					else{
+						
+							$subject = 'Pago insuficiente';
+							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->monto.' Bs para pagar toda la orden.<br/><br/> ';
 							$estado = new Estado;
-														
+																	
 							$estado->estado = 7; // pago insuficiente
 							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
-										
 							if($estado->save())
 							{
 								echo "ok";	
-							}	
-						}	
+							}
 						
-					}
-				
-					}
-					
+					}	
 				}	
 							
 			}// detalle
@@ -883,6 +816,7 @@ class OrdenController extends Controller
 		$message->addTo($user->email);
 		$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 		Yii::app()->mail->send($message);
+		
 	}
 
 	/*
@@ -978,7 +912,7 @@ class OrdenController extends Controller
 	{
 			
 		$orden = Orden::model()->findByPK($id);
-		
+		$end="";
 		if($orden->estado==1)
 		{
 				$ban=true;
@@ -1010,8 +944,8 @@ class OrdenController extends Controller
 						if($estado->save())
 						{
 							Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
+							$end='ok';
 							
-							$this->redirect(array('listado'));
 							
 						}
 					}	
@@ -1019,11 +953,16 @@ class OrdenController extends Controller
 		else
 		{
 			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
-			$this->redirect(array('listado'));
+			$end='no';
 		}
-		
+		if(isset($_POST['admin'])){
+			echo $end;
+			return 0;
+		}else
+			$this->redirect(array('listado'));
 	}
 
+	
 	/*
 	 *  Action para añadir el tracking y cambiar el estado a enviado
 	 * */

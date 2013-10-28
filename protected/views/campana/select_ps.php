@@ -51,10 +51,40 @@ $this->breadcrumbs=array(
             <div class="clearfix margin_top margin_bottom ">
               <div class="pull-right">
                 <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
-                  <input class="span3" id="prependedInput" type="text" placeholder="Buscar">
+                  <input class="span3" id="buscarNombre" type="text" placeholder="Buscar">
                 </div>
               </div>
-                          </div>
+            </div>
+            
+            <?php
+                    Yii::app()->clientScript->registerScript('query',
+                            "var ajaxUpdateTimeout;
+                            var ajaxRequest; 
+
+                            $('#buscarNombre').keypress(function(e) {
+                                if(e.which == 13) {
+                                // $('.crear-filtro').click();
+                                    ajaxRequest = $('#buscarNombre').val();
+                                            clearTimeout(ajaxUpdateTimeout);
+
+                                            ajaxUpdateTimeout = setTimeout(function () {
+                                                    $.fn.yiiListView.update(
+                                                        'list-ps',
+                                                        {
+                                                            type: 'POST',	
+                                                            url: '" . CController::createUrl('') . "',
+                                                            data: {buscarNombre : ajaxRequest}
+                                                        }
+                                                    )
+                                            },
+
+                                    300);
+                                    return false;
+                                }
+                            });",CClientScript::POS_READY
+                    );
+
+                ?> 
             
             <?php
 			$template = '{summary}

@@ -43,6 +43,7 @@ class User extends CActiveRecord {
      * @var timestamp $lastvisit_at
      * @var timestamp $avatar_url
      * @var timestamp $banner_url
+     * @var int $ps_destacado
      * */
 
     /**
@@ -80,7 +81,7 @@ class User extends CActiveRecord {
                     array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
                    array('username, email, superuser, status', 'required'),
                     array('superuser, status,status_register,privacy, twitter_id, facebook_id', 'numerical', 'integerOnly' => true),
-                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url', 'safe', 'on' => 'search'),
+                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url, ps_destacado', 'safe', 'on' => 'search'),
                         ) : ((Yii::app()->user->id == $this->id) ? array(
                             array('username, email', 'required'),
                             array('password', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
@@ -147,6 +148,7 @@ class User extends CActiveRecord {
             'facebook_id' => UserModule::t("Facebook ID"),
             'avatar_url' => UserModule::t("Avatar"),
             'banner_url' => "Banner",
+            'ps_destacado' => "Destacado",
             'url' => "Alias",
         );
     }
@@ -166,7 +168,7 @@ class User extends CActiveRecord {
                 'condition' => 'superuser=1',
             ),
             'notsafe' => array(
-                'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id, facebook_id,avatar_url, banner_url',
+                'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id, facebook_id,avatar_url, banner_url, ps_destacado',
             ),
         );
     }
@@ -174,7 +176,7 @@ class User extends CActiveRecord {
     public function defaultScope() {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
                     'alias' => 'user',
-                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url',
+                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado',
         ));
     }
 
@@ -219,6 +221,7 @@ class User extends CActiveRecord {
         $criteria->compare('facebook_id', $this->facebook_id);
         $criteria->compare('avatar_url', $this->avatar_url);
         $criteria->compare('banner_url', $this->banner_url);
+        $criteria->compare('ps_destacado', $this->ps_destacado);
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,
@@ -391,6 +394,11 @@ class User extends CActiveRecord {
                     $criteria->compare("personal_shopper", $comparator.'2', false, $logicOp);
 
                     
+                }else if($value === 'psDes')
+                {
+                    $criteria->compare("ps_destacado", $comparator.'1', false, $logicOp);
+
+                    
                 }else if($value === 'user')
                 {              
                     $comparator = ($comparator == '=') ? '' : 'NOT ';
@@ -538,7 +546,7 @@ class User extends CActiveRecord {
                 continue;
             }                       
 
-            if ($column == 'lastvisit_at') {
+            if ($column == 'lastvisit_at' || $column == 'create_at') {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);
             }

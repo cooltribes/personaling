@@ -66,6 +66,9 @@ echo"<tr>";
 	// agregar demas estados
 	
 	//------------------ acciones
+	$canc="";
+	if($data->estado==1)
+		$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href='#'><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
 	
 	echo "
 	<td>
@@ -77,7 +80,8 @@ echo"<tr>";
           <ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
             <li><a tabindex='-1' href='detalles/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
             <li><a onclick='modal(".$data->id.")' tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
-            <li><a tabindex='-1' href='#'><i class='icon-edit'></i> Cambiar estado</a></li>
+            ".$canc."
+            
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>
             <li class='divider'></li>
             <li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
@@ -100,10 +104,37 @@ function modal(id){
 			$('#myModal').html(data);
 			$('#myModal').modal(); 
 		},
-		'cache' :false});
+		'cache' :false});	    
+		
+		
+}
 
-
-	    
+function cancelar(id){
+	
+	$.ajax({
+		type: "post",
+		//'url' :'/site/orden/modalventas/'+id,
+		'url' : '<?php echo $this->createUrl('orden/cancelar'); ?>/'+id,
+		data: { 'admin':id}, 
+		'success': function(data){
+			if(data=='ok'){
+			 ajaxUpdateTimeout = setTimeout(function () {
+                        $.fn.yiiListView.update(
+                        'list-auth-items',
+                        {
+                        type: 'POST',	
+                        url: '<?php echo CController::createUrl('orden/admin')?>',
+                        data: ajaxRequest}
+                        
+                        )
+                        },
+                
+                300);
+             } if(data=='no')
+             	alert("No se pudo cancelar la orden");
+			
+		},
+		'cache' :false});	    
 		
 		
 }

@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -9,35 +9,30 @@
 </div>          
     
 <?php
-    echo CHtml::dropDownList('status', '', User::getStatus(), array('style' => 'display:none'));
+    
+    echo CHtml::dropDownList('estado', '', array('1' => 'Programada',
+    '2' => 'Recepción', '3' => 'Revisión', '4' => 'Ventas', '5' => 'Finalizada'), array('style' => 'display:none'));
     
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
                                     'style' => 'display:none'));
-    echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
-                                                       'ps' => 'Personal Shopper',
-                                                       'psDes' => 'Personal Shopper Destacado',
-                                                       'aplica' => 'Aplicante Personal Shopper',
-                                                       'user' => 'Usuario',),
-                            array('style' => 'display:none'));    
     
-    echo CHtml::dropDownList('fuenteR', '', array('face' => 'Facebook',                                                       
-                                                  'user' => 'Registro Normal',
-                                                   ),
-                            array('style' => 'display:none'));    
     
-    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+    echo CHtml::dropDownList('marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
     
-    echo CHtml::dropDownList('looks_ps', '', CHtml::listData(User::model()->with(array(
+    echo CHtml::dropDownList('personalS', '', CHtml::listData(User::model()->with(array(
                                'profile'=>array(),
                             ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
                             array('style' => 'display:none'));
     
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUsuarios.js");
+    echo CHtml::dropDownList('destacado', '', array('1' => 'Sí',
+    '0' => 'No',), array('style' => 'display:none'));
     
+    
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersCampanas.js");
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     //'action' => Yii::app()->createUrl($this->route),
@@ -58,26 +53,19 @@
                     <div class="controls" >
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
-                                'id' => 'ID',
-                                'first_name' => 'Nombre',
-                                'last_name' => 'Apellido',
-                                'email' => 'Correo',
-                                'telefono' => 'Teléfono',
-                                'status' => 'Estado',
-                                'tipoUsuario' => 'Tipo de usuario',
-                                'ciudad' => 'Ciudad',
-                                'fuenteR' => 'Fuente de registro',
-                                'visit' => 'Número de visitas',
-                                'lastvisit_at' => 'Fecha de última visita',
-                                'create_at' => 'Fecha de registro',
-                                'monto' => 'Monto comprado',
-                                'lastorder_at' => 'Fecha de última compra',                                
-                                'looks' => 'Cantidad de looks comprados',                                
-                                'looks_ps' => 'Looks comprados por Personal Shopper',
-                                'prods_marca' => 'Looks comprados por Marca',
+                                'estado' => 'Estado',
+                                'recepcion_inicio' => 'Fecha de inicio de Recepción',
+                                'recepcion_fin' => 'Fecha de fin de Recepción',
+                                'ventas_inicio' => 'Fecha de inicio de Ventas',
+                                'ventas_fin' => 'Fecha de fin de Ventas',
+                                'personalS' => 'Personal Shopper participante',
+                                'cantPS' => 'Cantidad de Personal Shoppers',
+                                'looks_creados' => 'Looks creados',
+                                'looks_aprobados' => 'Looks aprobados',                                
+                                'marca' => 'Marca participante',
+                                'cantMarcas' => 'Cantidad de marcas'
                                 
-                                 ),
-                            array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
+                                ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
                         <div class="span2" >
                             <?php echo Chtml::dropDownList('dropdown_operator[]', '', array('>' => '>', '>=' => '>=',
@@ -161,14 +149,14 @@
     //Seleccionar un filtro preestablecido
     $("#all_filters").change(function(){
 	
-        getFilter('<?php echo $this->createUrl('/orden/getFilter');//CController::createUrl('/orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('') ?>');        	
+        getFilter('<?php echo CController::createUrl('orden/getFilter') ?>', $(this).val(), '<?php echo CController::createUrl('') ?>');        	
 	
     });
     
     $("#filter-remove").click(function(e){
 
              e.preventDefault();
-             removeFilter('<?php echo $this->createUrl('/orden/removeFilter');//CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
+             removeFilter('<?php echo CController::createUrl('orden/removeFilter') ?>',$("#all_filters").val());        	
 
     });    
     

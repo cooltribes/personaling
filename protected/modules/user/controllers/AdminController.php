@@ -333,7 +333,8 @@ class AdminController extends Controller
             if($model->personal_shopper == 1){ //si es PS                
 
                $model->ps_destacado = 1 - $model->ps_destacado; // hacer el toggle               
-
+               $model->fecha_destacado = date("Y-m-d H:i:s");
+               
                 if ($model->save()){
                     echo CJSON::encode(array(
                         'status'=>'success',

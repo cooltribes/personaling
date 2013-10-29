@@ -175,6 +175,7 @@ class SiteController extends Controller
                 
                 $psDestacados = User::model()->findAllByAttributes(array('ps_destacado' => '1'), new CDbCriteria(array(
                     'limit' => 4,
+                    'order' => 'fecha_destacado DESC'
                 )));
                 
 		$this->render('top',array(

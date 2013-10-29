@@ -993,7 +993,7 @@ public function actionCategorias2(){
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';
-        $datos=$datos.'<div class="row-fluid">';
+        $datos=$datos.'<div class="row-fluid"><div class="row-fluid">';
         $datos=$datos.'<div class="span6">';
         $datos=$datos.'<h5>Colores</h5>';
         $datos=$datos.'<div class="clearfix colores" id="vCo">';
@@ -1085,9 +1085,13 @@ public function actionCategorias2(){
 	   	}// else
 		
        // $datos=$datos.'<div title="talla" class="tallass" style="cursor: pointer" id="10">S</div>';         	     	
-        $datos=$datos.'</div></div></div>';
-          
+        $datos=$datos.'</div></div></div> <div class="row-fluid"> <hr/> ';
+		$marca = Marca::model()->findByPk($producto->marca_id);
+        $datos=$datos.'<h5>Marca</h5>';
+        $datos=$datos.'<div class="thumbnails">';
+        $datos=$datos.'<img width="66px" height="66px" src="'.Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen).'"/>';
         $datos=$datos.'</div>';
+        $datos=$datos.'</div></div></div>';
         $datos=$datos.'</div>';
    
    		$datos=$datos.'</div>';
@@ -1098,7 +1102,7 @@ public function actionCategorias2(){
     //	$datos=$datos.'</div>';
     
     	$datos=$datos."<script>";
-		$datos.='var bandera=false;';
+		$datos.='$("body").removeClass("aplicacion-cargando");var bandera=false;';
 		$datos=$datos."$(document).ready(function() {";
 			$datos=$datos."$('.coloress').click(function(ev){"; // Click en alguno de los colores -> cambia las tallas disponibles para el color
 				$datos=$datos."ev.preventDefault();";

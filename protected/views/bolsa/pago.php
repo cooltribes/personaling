@@ -94,8 +94,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				<div class="control-group">
 					Vencimiento *
              		<div class="controls">
-             	<?php echo CHtml::dropDownList('mes','',array('Mes'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
-                <?php echo CHtml::dropDownList('ano','',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año')); ?>
+             	<?php echo $form->dropDownList($tarjeta,'month',array('Mes'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
+                <?php echo $form->dropDownList($tarjeta,'year',array('Ano'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('id'=>'ano','class'=>'span1','placeholder'=>'Año')); ?>
                 	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               		</div>
             	</div>

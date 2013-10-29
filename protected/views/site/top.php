@@ -192,11 +192,25 @@ function str_lreplace($search, $replace, $subject)
     <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
         <h2 class="margin_bottom">Personal shoppers destacados</h2>
         <ul class="thumbnails ">
-            <li class="span3 personal_shoppers_li"> <a  href="#"> <img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/heidi.jpg" width="250"> </a>
-                <h3><a href="#" title="Nombre del Personal Shopper">Heidi García</a></h3>
-                <p>Emprendedora de nacimiento,  CEO y Fundadora de Personaling.com. Amante del buen gusto y la moda. Siempre he pensado que tu mejor look es una buena actitud. </p>
-            </li>
-            <li class="span3 personal_shoppers_li"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/rosa.jpg" width="250"> </a>
+            <?php if(count($psDestacados)){ ?>
+                <?php foreach($psDestacados as $ps){ ?>
+                    <li class="span3 personal_shoppers_li">
+                        <a  href="<?php echo $ps->profile->getUrl(); ?>"> 
+                            <img alt="<?php echo $ps->profile->first_name . " " . $ps->profile->last_name; ?>" class="img-circle"   src="<?php echo $ps->getAvatar(); ?>" width="250"> 
+                        </a>
+                        <h3>
+                            <a href="<?php echo $ps->profile->getUrl(); ?>" title="<?php echo $ps->profile->first_name . " " . $ps->profile->last_name; ?>">
+                                <?php echo $ps->profile->first_name . " " . $ps->profile->last_name; ?>
+                            </a>
+                        </h3>
+                        <p><?php echo $ps->profile->bio; ?></p>
+                    </li>            
+                <?php } ?>                        
+            <?php } ?>
+            
+            
+<!--            Elise:Emprendedora de nacimiento,  CEO y Fundadora de Personaling.com. Amante del buen gusto y la moda. Siempre he pensado que tu mejor look es una buena actitud.
+<li class="span3 personal_shoppers_li"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/rosa.jpg" width="250"> </a>
                 <h3><a href="#" title="Nombre del Personal Shopper">Rosa Virginia</a></h3>
                 <p>Modelo, Abogada, amante de la moda y adicta al shopping. Se lo que te favorece, porque se de moda real. RRPP de Personaling.com</p>
             </li>
@@ -207,7 +221,7 @@ function str_lreplace($search, $replace, $subject)
             <li class="span3 personal_shoppers_li"> <a  href="#"><img alt="Nombre del personal shopper foto" class="img-circle"   src="../images/Ariana.jpg" width="250"> </a>
                 <h3><a href="#" title="Nombre del Personal Shopper">Ariana Basciani</a></h3>
                 <p>Creo que el buen gusto está íntimamente relacionado con el sentido común y el estado de ánimo. Soy parte del equipo de contenidos y marketing on line de Personaling.com y, mientras no estoy trabajando, me encanta leer libros para cosechar el intelecto. </p>
-            </li>
+            </li>-->
         </ul>
         <?php   
             $pagination = $dataProvider_productos->pagination->pageSize;

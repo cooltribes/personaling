@@ -57,10 +57,10 @@ $prePub="";
 						".CHtml::link("Vista Rápida",
 						    $this->createUrl('modal',array('id'=>$data->id)),
 						    array(// for htmlOptions
-						      'onclick'=>' {'.CHtml::ajax( array(
+						      'onclick'=>'{$("body").addClass("aplicacion-cargando");'.CHtml::ajax( array(
 						      'url'=>CController::createUrl('modal',array('id'=>$data->id)),
 						           'success'=>"js:function(data){ $('#myModal').html(data);
-											$('#myModal').modal(); }")).
+											$('#myModal').modal();  }")).
 						         'return false;}',
 						    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
 						    'id'=>'prodencanta')
@@ -90,7 +90,7 @@ $prePub="";
 					".CHtml::link("Vista Rápida",
 					    $this->createUrl('modal',array('id'=>$data->id)),
 					    array(// for htmlOptions
-					      'onclick'=>' {'.CHtml::ajax( array(
+					      'onclick'=>' {$("body").addClass("aplicacion-cargando");'.CHtml::ajax( array(
 					      'url'=>CController::createUrl('modal',array('id'=>$data->id)),
 					           'success'=>"js:function(data){ $('#myModal').html(data);
 										$('#myModal').modal(); }")).

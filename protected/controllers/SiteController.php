@@ -170,12 +170,20 @@ class SiteController extends Controller
 		$user = User::model()->findByPk(Yii::app()->user->id);
 		$looks = new Look;
 		$productos = new Producto;
-		
+		$psDestacados = new User;
+                
+                
+                $psDestacados = User::model()->findAllByAttributes(array('ps_destacado' => '1'), new CDbCriteria(array(
+                    'limit' => 4,
+                    'order' => 'fecha_destacado DESC'
+                )));
+                
 		$this->render('top',array(
 					'dataProvider' => $looks->masvendidos(3),
 					'dataProvider_productos' => $productos->masvendidos(6),
 					'dataProvider_destacados' => $looks->lookDestacados(3),
-					'user'=>$user,	
+					'user'=>$user,
+                                        'psDestacados' => $psDestacados,//->getPsDestacados(4),
 				));
 	}	
 

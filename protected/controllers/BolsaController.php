@@ -491,7 +491,7 @@ class BolsaController extends Controller
 		{
 			// viene de pagos
 			//var_dump($_POST);
-			if(isset($_POST['tipo_pago'])){
+		/*	if(isset($_POST['tipo_pago'])){
 				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
 				
 				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
@@ -530,7 +530,8 @@ class BolsaController extends Controller
 				
 				//echo '<br/>'.$_POST['tipo_pago'];
 				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
-			}
+			}*/
+			$this->render('confirmar',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
 		}
 		
 		public function actionEliminardireccion()

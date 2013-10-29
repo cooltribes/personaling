@@ -642,15 +642,17 @@ class OrdenController extends Controller
 		
 		
 		if($_POST['accion']=="aceptar")
-		{
-			
+		{	
 			$detalle->estado = 1; // aceptado
 			
 			if($detalle->save()){
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
+				 
+			//	if($detalle->monto >= $orden->total || (($detalle->monto - $orden->total) < 0.1) ){
 				if($porpagar<=0){
+
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
 					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
@@ -671,8 +673,6 @@ class OrdenController extends Controller
 							
 						if($porpagar<0)
 						{
-							
-
 							$balance = new Balance;
 							$balance->orden_id = $orden->id;
 							$balance->user_id = $orden->user_id;

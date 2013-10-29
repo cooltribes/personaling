@@ -49,8 +49,8 @@ class TarjetaCredito extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, zip, estado, user_id', 'required'),
-			array('user_id', 'numerical', 'integerOnly'=>true),
+			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required'),
+			array('user_id, ci', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>80),
 			array('numero', 'length', 'min'=>14, 'max'=>16),
 			array('codigo', 'length', 'min'=>3, 'max'=>4),
@@ -90,7 +90,7 @@ class TarjetaCredito extends CActiveRecord
 			'ci' => 'Cedula',
 			'direccion' => 'Direccion',
 			'ciudad' => 'Ciudad',
-			'zip' => 'Zip',
+			'zip' => 'Código Postal',
 			'estado' => 'Estado',
 			'user_id' => 'User',
 		);

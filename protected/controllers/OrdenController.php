@@ -628,7 +628,7 @@ class OrdenController extends Controller
 		 
 		$detalle = Detalle::model()->findByPk($_POST['id']);
 		$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
-		$acumulado=$detalle->getSumxOrden();
+		$acumulado=$detalle->getSumxOrden()-$detalle->monto;
 		
 		$factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
 		
@@ -637,6 +637,8 @@ class OrdenController extends Controller
 		//$body = '<h2>Has solicitado cambiar tu contraseña de Personaling.</h2> Para recibir una nueva contraseña haz clic en el seiguiente link:<br/><br/> '.$activation_url;
 		$porpagar=$orden->total - $acumulado;
 		$saldo = Profile::model()->getSaldo($orden->user_id);
+		echo "S ".$saldo."; TOT ".$orden->total." $ACUM ".$acumulado." = PP".$porpagar;
+		break;
 		
 		
 		if($_POST['accion']=="aceptar")

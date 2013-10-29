@@ -31,7 +31,7 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin'),
+                                    'eliminardireccion','comprafin','mensajes'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -1640,5 +1640,9 @@ if(isset($_POST['Profile']))
 		 }
 		
 	}
+
+    public function actionMensajes(){
+        $this->render('mensajes');
+    }
 	
 }

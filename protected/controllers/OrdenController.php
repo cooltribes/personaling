@@ -877,7 +877,7 @@ class OrdenController extends Controller
 		
 		$datos=$datos."<div class='control-group'>";
 		$datos=$datos."<div class='controls'>";
-		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)')); 
+		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$orden->total)); 
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";

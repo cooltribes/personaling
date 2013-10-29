@@ -47,7 +47,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   <a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imágenes</a></td>-->
                 <td>
                 	<a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> 
-                	<a href="#"></a> <a href="#" class="pull-right"><i class="icon-trash"></i></a>
+                	<a href="#"></a> <a href="#" onclick="suprimir(<?php echo $item->id ?>)" class="pull-right"><i class="icon-trash"></i></a>
                 	<?php echo $form->hiddenField($item,"[$i]id"); ?>
                 </td>
               </tr>
@@ -56,3 +56,24 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
  </table>
  
 <?php $this->endWidget(); ?>
+
+<script>
+	
+	function suprimir(id){
+		$.ajax({
+	        type: "post", 
+	        url: "../suprimir", // action 
+	        data: { 'id':id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					alert(id);
+				}
+	       	}//success
+	       })	
+	      
+	   //  alert(guia);	
+		
+	}
+	
+</script>

@@ -9,7 +9,6 @@ class ProductoController extends Controller
 	public $layout='//layouts/column2';
 
 	/**
-	 * @return array action filters
 	 */
 	public function filters()
 	{
@@ -35,7 +34,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'),
+				'actions'=>array('create','update','suprimir','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -735,7 +734,13 @@ class ProductoController extends Controller
 	//		'dataProvider'=>$dataProvider,
 	//	));
 	}
-
+	
+	public function actionSuprimir()
+	{
+		echo "ok";
+	}
+	
+	
 
 	public function actionAdmin()
 	{

@@ -31,7 +31,7 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin'),
+                                    'eliminardireccion','comprafin','mensajes'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -333,7 +333,8 @@ class AdminController extends Controller
             if($model->personal_shopper == 1){ //si es PS                
 
                $model->ps_destacado = 1 - $model->ps_destacado; // hacer el toggle               
-
+               $model->fecha_destacado = date("Y-m-d H:i:s");
+               
                 if ($model->save()){
                     echo CJSON::encode(array(
                         'status'=>'success',
@@ -1640,5 +1641,9 @@ if(isset($_POST['Profile']))
 		 }
 		
 	}
+
+    public function actionMensajes(){
+        $this->render('mensajes');
+    }
 	
 }

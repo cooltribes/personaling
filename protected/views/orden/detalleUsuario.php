@@ -69,7 +69,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 ?>
           </p>
         Estado actual</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 4 </p>
+      <td><p class="T_xlarge margin_top_xsmall"> 2 </p>
         Documentos</td>
 
      <?php

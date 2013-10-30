@@ -294,21 +294,21 @@ class Producto extends CActiveRecord
 	}
 	public function getPrecio($format=true)
 	{
-    if (is_null($this->_precio)) {
-      $c = new CDbCriteria();
-      $c->order = '`id` desc';
-      $c->compare('tbl_producto_id', $this->id);
-      $this->_precio = Precio::model()->find($c);
-    }
-	if (isset($this->_precio->precioImpuesto))
-		if ($format){
-	 		return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioImpuesto);
-		} else {
-			return $this->_precio->precioImpuesto;
-		}
-	else 
-		return 0;	
-	}
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->precioImpuesto))
+                if ($format) {
+                    return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioImpuesto);
+                } else {
+                    return $this->_precio->precioImpuesto;
+                }
+            else
+                return 0;
+        }
 	
 	public function getCantidad($talla=null,$color=null)
 	{

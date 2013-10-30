@@ -230,7 +230,7 @@
 </style>
 <script type="text/javascript"> 
     var $buoop = {
-        vs: {i:9,f:21,o:15,s:3,n:19},
+        vs: {i:8,f:22,o:15,s:5,n:19},
         test: false,
         reminder: 0.1,  //horas para recordatorio                 
         text: "Tu navegador (%s) <b>no soporta</b> las funcionalidades de ésta página. \n\

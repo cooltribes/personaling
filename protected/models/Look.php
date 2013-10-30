@@ -445,6 +445,20 @@ class Look extends CActiveRecord
 		else
 			return $this->_precio;
 	}
+        public function getPrecioTotal($format=true)
+	{
+		if (is_null($this->_precio)) {
+				$this->_precio = 0;
+		foreach($this->lookhasproducto as $lookhasproducto){
+			//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+			$this->_precio += $lookhasproducto->producto->getPrecio(false);
+		}
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio);
+		else
+			return $this->_precio;
+	}
 	public function getMarcas(){
 		$marcas = array();
 		foreach ($this->productos_todos(array('group'=>'marca_id')) as $producto){

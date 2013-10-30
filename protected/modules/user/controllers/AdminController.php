@@ -31,7 +31,7 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin','mensajes'),
+                                    'eliminardireccion','comprafin','mensajes','displaymsj'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -1643,7 +1643,44 @@ if(isset($_POST['Profile']))
 	}
 
     public function actionMensajes(){
-        $this->render('mensajes');
+        
+		$this->render('mensajes');
+		
+		
     }
 	
+	public function actionDisplaymsj(){
+		if(isset($_POST['msj_id'])){
+			$mensaje = Mensaje::model()->findByPk($_POST['msj_id']);
+			
+			if($mensaje->estado == 0) // no se ha leido
+			{
+				$mensaje->estado = 1;
+				$mensaje->save(); 
+			}
+			
+			$div = "";
+			
+			$div = $div.'<div class="padding_medium bg_color3 ">';
+			$div = $div."<p><strong>De:</strong> Admin <span class='pull-right'><strong> ".date('d/m/Y', strtotime($mensaje->fecha))."</strong> ".date('h:i A', strtotime($mensaje->fecha))."</span></p>";
+			$div = $div."<p> <strong>Asunto:</strong> ".$mensaje->asunto."</p>";
+			$div = $div."<p> ".$mensaje->cuerpo." </p>";
+		/*	$div = $div.'<form class=" margin_top_medium ">
+					  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
+					  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
+				  		</form>'; */
+			$div = $div.'<p><a class="btn btn-danger pull-right" href="'.Yii::app()->getBaseUrl().'/orden/detalles/'.$mensaje->orden_id.'#mensajes" target="_blank"> Responder </a></p>
+				  		';	  		
+			
+			$div = $div."<br/></div>";
+			
+			echo $div;
+		
+
+		
+		}
+		
+		
+		
+	}
 }

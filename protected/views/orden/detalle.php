@@ -891,7 +891,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
   <!-- MENSAJES ON -->
   
-  <div class="row">
+  <div class="row" id="mensajes">
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>

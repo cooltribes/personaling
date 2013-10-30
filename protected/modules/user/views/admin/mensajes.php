@@ -28,13 +28,14 @@
   	<div class="span4 sidebar_list_mensajes bg_color3">
   		
   		<?php
-  			
-  			$mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1)); // buscaria todos los mensajes que estén como visibles del usuario para listarlos
+  			$criteria = new CDbCriteria;
+  			$criteria->addCondition('admin IS NULL');
+  			$mensajes = Mensaje::model()->findAllByAttributes(array(),$criteria); // buscaria todos los mensajes que estén como visibles del usuario para listarlos
   			if(count($mensajes) > 0){
   				$mensajes_Reverse = array_reverse($mensajes);
 				foreach( $mensajes_Reverse as $msj)
 				{
-					if(is_null($msj->admin)){
+					
 
   		?>
 			<a onclick="buscarmensaje(<?php echo $msj->id; ?>)" style="cursor: pointer;">	
@@ -53,7 +54,7 @@
 	 		</a>
 	 		<hr/>
 	 		<?php
-				}
+				
 				}
 			}
 	 		?>	  		
@@ -88,7 +89,7 @@
 
  		$.ajax({
 	        type: "post", 
-	        url: "mensaje", // action 
+	        url: "displaymsj", // action 
 	        data: { 'msj_id':id}, 
 	        success: function (data) {
 				

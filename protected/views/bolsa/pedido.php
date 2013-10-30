@@ -360,7 +360,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 else
 {
 	// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
+	header('Location: /user/login');	
 }
 
 ?>
@@ -413,7 +413,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto')); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto','value'=>$orden->total)); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>

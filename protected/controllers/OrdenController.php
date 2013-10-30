@@ -641,14 +641,19 @@ public function actionValidar()
 		if($_POST['accion']=="aceptar")
 		{
 			
-			$detalle->estado = 1; // aceptado
-			
-			
+			$detalle->estado = 1; // aceptado	
 	
 			if($detalle->save()){
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
+				 
+				 $okk = round($orden->total, 2);
+				 
+				 $orden->total = $okk;
+				 $orden->save();
+				 
+				 
 				if($detalle->monto >= $orden->total){
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo

@@ -946,6 +946,9 @@ class BolsaController extends Controller
 								$orden->estado = 3; // Estado: Pago Confirmado
 							}
 							
+							$okk = round($_POST['total'], 2);
+							$orden->total = $okk;
+							
 							if($orden->save()){
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
 									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();

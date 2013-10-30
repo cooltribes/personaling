@@ -57,7 +57,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
  
 <?php $this->endWidget(); ?>
 
-<script>
+<script> 
 	
 	function suprimir(id){
 		$.ajax({
@@ -69,6 +69,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				{
 					alert(id);
 				}
+				location.reload();
 	       	}//success
 	       })	
 	      

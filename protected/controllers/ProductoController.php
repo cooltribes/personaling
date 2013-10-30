@@ -737,7 +737,23 @@ class ProductoController extends Controller
 	
 	public function actionSuprimir()
 	{
-		echo "ok";
+		if(isset($_POST['id']))
+		{
+			$ptc=Preciotallacolor::model()->findByPk($_POST['id']);
+			$lk=$ptc->enLooks();
+			$ord=$ptc->enOrdenes();
+			
+				if(($lk+$ord)>0)
+				{
+						Yii::app()->user->setFlash('error',UserModule::t("Combinación no puede ser eliminada ya que se encuentra en ".$ord." Ordenes y ".$lk." Looks."));				
+				}
+				else{
+					if($ptc->delete())
+						Yii::app()->user->setFlash('success',UserModule::t("Combinación de Talla y Color Eliminada"));
+				}
+		}else{
+			Yii::app()->user->setFlash('error',UserModule::t("Combinación no pudo ser eliminada."));
+		}
 	}
 	
 	

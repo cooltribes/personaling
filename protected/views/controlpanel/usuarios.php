@@ -265,22 +265,22 @@
 						</tr>
 						<tr>
 						  <td>1.55-1.65</td>
-						  <td>0</td>
+						  <td><?php $alts=Profile::model()->getXestatura(); echo $alts[1];?></td>
 						  <td>0%</td>
 						</tr>
 						<tr>
 						  <td>1.66-1.75</td>
-						  <td>0</td>
+						  <td><?php echo $alts[2];?></td>
 						  <td>0%</td>
 						</tr>
 						<tr>
 						  <td>1.76 -1.85</td>
-						  <td>0</td>
+						  <td><?php  echo $alts[4];?></td>
 						  <td>0%</td>
 						</tr>
 						<tr> 
 						  <td>1.86-1.95</td>
-						  <td>0</td>
+						  <td><?php echo $alts[8];?></td>
 						  <td>0%</td>
 						</tr>
 					</table>
@@ -294,22 +294,22 @@
 						</tr>
 						<tr>
 						  <td>Delgada</td>
-						  <td>0</td>
+						  <td><?php $conts=Profile::model()->getXcontextura(); echo $conts[1];?></td>
 						  <td>0%</td>
 						</tr>
 						<tr>
 						  <td>Media</td>
-						  <td>0</td>
+						  <td><?php echo $conts[2];?></td>
 						  <td>0%</td>
 						</tr>
 						<tr>
 						  <td>Gruesa</td>
-						  <td>0</td>
+						  <td><?php echo $alts[4];?></td>
 						  <td>0%</td>
 						</tr>
 						<tr> 
 						  <td>Muy Gruesa</td>
-						  <td>0</td>
+						  <td><?php echo $alts[8];?></td>
 						  <td>0%</td>
 						</tr>
 					</table>
@@ -317,7 +317,7 @@
 		        <div class="tab-pane" id="tab4">
 					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
 						<tr>
-						  <th scope="col">Color</th>
+						  <th scope="col">Cabello</th>
 						  <th scope="col">Cantidad de Usuarios</th>
 						  <th scope="col">% Usuarios</th>
 						</tr>

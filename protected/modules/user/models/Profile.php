@@ -292,5 +292,37 @@ class Profile extends UActiveRecord
 		return $this->first_name.' '.$this->last_name; 
 	}
 	  
+	 public function getXestatura(){
+	 		$estatura=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(altura) FROM tbl_profiles WHERE altura<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE altura =".$alt)->queryScalar();
+				$estatura[$alt]=$sum;
+			}			
+			return $estatura;
+		
+	 }
+	 
+	 public function getXcontextura(){
+	 		$cont=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(contextura) FROM tbl_profiles WHERE contextura<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE contextura =".$alt)->queryScalar();
+				$cont[$alt]=$sum;
+			}			
+			return $cont;
+		
+	 }
+	 
+	 public function getXpelo(){
+	 		$pelo=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(contextura) FROM tbl_profiles WHERE contextura<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE contextura =".$alt)->queryScalar();
+				$pelo[$alt]=$sum;
+			}			
+			return $pelo;
+		
+	 }
 	 
 }

@@ -79,6 +79,26 @@ class PrecioTallaColor extends CActiveRecord
 			'sku'=>'Codigo/Sku',
 		);
 	}
+	
+	public function enOrdenes($id = null){
+		if(is_null($id))
+			$sql = "select count(*) from tbl_orden_has_productotallacolor o  where o.preciotallacolor_id =".$this->id;
+		else
+			$sql = "select count(*) from tbl_orden_has_productotallacolor o  where o.preciotallacolor_id =".$id;
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		
+		return $total;
+	}
+	
+	public function enLooks($producto= null, $color = null){
+		if(is_null($id))
+			$sql = "select count(*) from tbl_look_has_producto l where l.producto_id = ".$this->producto_id." AND l.color_id = ".$this->color_id;
+		else
+			$sql =  "select count(*) from tbl_look_has_producto l where l.producto_id = ".$producto." AND l.color_id = ".$color;
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		
+		return $total;
+	}
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

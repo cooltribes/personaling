@@ -737,7 +737,15 @@ class ProductoController extends Controller
 	
 	public function actionSuprimir()
 	{
-		echo "ok";
+		$ptc=Preciotallcolor::model()->findByPk($_POST['id']);
+		$apariciones=$ptc->enLooks() + $ptc->enOrdenes();
+			if($apariciones==0)
+			{
+				Yii::app()->user->setFlash('error',UserModule::t("Combinación no puede ser eliminada ya que se encuentra en uso por Ordenes y/o Looks."));
+			}
+			{
+				Yii::app()->user->setFlash('success',UserModule::t("Combinación debió ser Eliminada"));
+			}
 	}
 	
 	

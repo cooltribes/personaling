@@ -638,8 +638,12 @@ class BolsaController extends Controller
 				
 					if($dir->save())
 					{
-						$tarjeta = new TarjetaCredito;		
-						$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
+						//$tarjeta = new TarjetaCredito;
+						
+						Yii::app()->getSession()->add('idDireccion',$dir->id);
+						$this->redirect(array('bolsa/pagos'));		
+						
+						//$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
 						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
 					}
 					

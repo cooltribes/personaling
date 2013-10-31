@@ -83,7 +83,7 @@ class ProductoController extends Controller
 		/*echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
 		echo("<br>".Yii::app()->basePath);*/
 		
-		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').'/../'.$image_url);		
+		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').$image_url);		
 		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
 		echo '<img '.$attr.' src="'.$image_url.'" alt>';
 		echo '<input type="hidden" name="producto_id" value="'.$id.'">';

@@ -122,7 +122,8 @@ class CampanaController extends Controller
 		}
 		
 		if(isset($_POST['Campana'])){
-			$campana->attributes = $_POST['Campana'];
+
+                    $campana->attributes = $_POST['Campana'];
 			//$campana->fecha_creacion = date('Y-m-d H:i:s');
 			
 			if(date("Y-m-d H:i:s")<$campana->recepcion_inicio)
@@ -175,22 +176,29 @@ class CampanaController extends Controller
 					$this->redirect(array('index'));
 				}
 			}else{
+                          
+                            
 				Yii::app()->user->setFlash('error','No se pudo guardar la campaña');
 			}
 		}else{
-                    
-                    echo "<pre>";
-                    print_r($_POST);
-                    echo "</pre>";
-
-
-
+                                   
                     if(isset($_POST['buscarNombre'])){
-                     echo "busca";
-                     Yii::app()->end();
+                        $criteria = new CDbCriteria();
+                        $criteria->alias = 'User';
+                        $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' .
+                                $_POST['buscarNombre'] . '%" OR p.last_name LIKE "%' . $_POST['buscarNombre'] .
+                                '%" OR User.email LIKE "%' . $_POST['buscarNombre'] . '%" 
+                                OR User.username LIKE "%' . $_POST['buscarNombre'] . '%")';
+                        
+                        $criteria->addCondition('personal_shopper=1');
+                
+                        $dataProvider=new CActiveDataProvider('User', array(
+                            'criteria'=>$criteria,
+                        ));
+                        $this->render('select_ps', array('campana'=>$campana, 'dataProvider'=>$dataProvider));
+                        Yii::app()->end();
                      
-                    }
-                    
+                     }
 			if(isset($_POST['personal_shopper'])){
 				if($_POST['personal_shopper'] == 'todos'){
 						$list_ps = User::model()->findAllByAttributes(array('personal_shopper'=>1));

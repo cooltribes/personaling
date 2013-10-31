@@ -26,13 +26,26 @@ echo $num;
 ?>
       </p>
         Totales</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 
-      	<?php
-$sql = "SELECT count( * ) as total FROM tbl_orden where estado=1";
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
-?>    	 </p>
-        En espera de pago</td>
+      <td>
+        <p class="T_xlarge margin_top_xsmall"> 
+            <?php
+            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=1";
+            $num = Yii::app()->db->createCommand($sql)->queryScalar();
+            echo $num;
+            ?>    	 
+        </p>
+        En espera de pago
+      </td>
+      <td>
+        <p class="T_xlarge margin_top_xsmall"> 
+            <?php
+            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=5";
+            $num = Yii::app()->db->createCommand($sql)->queryScalar();
+            echo $num;
+            ?>    	 
+        </p>
+        Cancelados
+      </td>
       <td><p class="T_xlarge margin_top_xsmall">
       	      	<?php
 $sql = "SELECT count( * ) as total FROM tbl_orden where estado=2";
@@ -50,6 +63,11 @@ echo $num;
 	?>
 	</p>
         Pago Confirmado</td>
+      <?php
+        $cant = Orden::model()->countByAttributes(array('estado'=>7));
+        ?>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $cant; ?> </p>
+        Pago Insuficiente </td>
         <?php
         $to = Orden::model()->countByAttributes(array('estado'=>4));
         ?>

@@ -4,7 +4,16 @@
                 <strong>ID</strong>: <?php echo $data->id; ?><br/>
                 <strong>Nro. Items</strong>: <?php echo $data->countItems(); ?></td>
             <td><strong>P.S.</strong>: <?php echo $data->user->profile->first_name; ?><br/>
-                <strong>Marcas</strong>: Mango, Suite Blanco, Aldo, Accessorize y Desigual </td>
+                <strong>Marcas</strong>:  <?php
+          			$ids=$data->getMarcas();
+					$c=0;
+					foreach($ids as $id){
+						echo " ".$id->nombre;						
+						if($c<count($ids)-1)
+							echo ", ";
+						else echo ".";$c++;
+					}
+		         ?> </td>
             <td><?php echo $data->getPrecio(); ?></td>
             <td><?php echo $data->getLookxStatus(3); ?></td>
             <td><?php echo $data->getMontoVentas(); ?></td>

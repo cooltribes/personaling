@@ -72,7 +72,7 @@ $this->breadcrumbs=array(
                                                         'list-ps',
                                                         {
                                                             type: 'POST',	
-                                                            url: '" . CController::createUrl('') . "',
+                                                            url: '" . CController::createUrl('create') . "',
                                                             data: {buscarNombre : ajaxRequest}
                                                         }
                                                     )

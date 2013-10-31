@@ -466,7 +466,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 
                                 //echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio
-                                echo("<td></td></tr>");
+                                echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");
                 }
 
             }

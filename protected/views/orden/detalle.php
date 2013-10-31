@@ -635,7 +635,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$precio = $lookpedido->getPrecio(false);
 				echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
 							// echo("<td></td>");
-				echo("<td colspan='8'><strong>".$lookpedido->title."</strong></td>");// Referencia
+				echo("<td colspan='9'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
 				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
 				/*echo("
@@ -653,25 +653,25 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
 				foreach($prodslook as $prodlook){
 					$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
-								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
-								$marca=Marca::model()->findByPk($prdlk->marca_id);
-								$talla=Talla::model()->findByPk($ptclk->talla_id);
-								$color=Color::model()->findByPk($ptclk->color_id);
-								
-								
-								echo("<tr>");
-								echo("<td>".$prdlk->codigo."</td>"); // nombre
-								echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
-								echo("<td>".$marca->nombre."</td>");
-								echo("<td>".$color->valor."</td>");
-								echo("<td>".$talla->valor."</td>");
-								echo("<td>".$prdlk->peso." Kg.</td>");	
-								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
-								echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
-								echo("<td>".$prdlk->almacen."</td>"); 
-							
-								//echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
-								echo("<td></td></tr>");
+                                        $prdlk = Producto::model()->findByPk($ptclk->producto_id);
+                                        $marca=Marca::model()->findByPk($prdlk->marca_id);
+                                        $talla=Talla::model()->findByPk($ptclk->talla_id);
+                                        $color=Color::model()->findByPk($ptclk->color_id);
+
+
+                                        echo("<tr>");
+                                        echo("<td>".$prdlk->codigo."</td>"); // nombre
+                                        echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
+                                        echo("<td>".$marca->nombre."</td>");
+                                        echo("<td>".$color->valor."</td>");
+                                        echo("<td>".$talla->valor."</td>");
+                                        echo("<td>".$prdlk->peso." Kg.</td>");	
+                                        echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
+                                        echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+                                        echo("<td>".$prdlk->almacen."</td>"); 
+
+                                        //echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
+                                        echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");
 				}				
 				
 			}

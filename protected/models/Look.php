@@ -445,6 +445,20 @@ class Look extends CActiveRecord
 		else
 			return $this->_precio;
 	}
+        public function getPrecioTotal($format=true)
+	{
+		if (is_null($this->_precio)) {
+				$this->_precio = 0;
+		foreach($this->lookhasproducto as $lookhasproducto){
+			//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+			$this->_precio += $lookhasproducto->producto->getPrecio(false);
+		}
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio);
+		else
+			return $this->_precio;
+	}
 	public function getMarcas(){
 		$marcas = array();
 		foreach ($this->productos_todos(array('group'=>'marca_id')) as $producto){
@@ -684,7 +698,7 @@ class Look extends CActiveRecord
          /**
          * Buscar por todos los filtros dados en el array $filters
          */
-        public function buscarPorFiltros($filters) {
+        public function buscarPorFiltros($filters, $personalShopper = 0) {
 //            echo "<pre>";
 //            print_r($filters);
 //            echo "</pre>";
@@ -732,28 +746,6 @@ class Look extends CActiveRecord
                           `precios`.`tbl_producto_id`=`productos`.`id`) '
                     .$comparator.' '.$value.'', $logicOp);                    
                     
-//                    $criteria->with['productos'] = array(
-//                        'select'=> false,
-//                        //'joinType'=>'INNER JOIN',
-//                        //'condition'=>'productos.nombres = 8',
-//                    );
-//                    
-//                    $criteria->with['productos.precios'] = array(
-//                        'select'=> false,
-//                        //'joinType'=>'INNER JOIN',
-//                        //'condition'=>'productos.nombres',                        
-//                    );                    
-//                    
-//                    //having
-//                    if(!strpos($criteria->group, "t.id")){
-//                        $criteria->group = 't.id';
-//                    }
-//                    
-//                    if (!strlen($havingPrecio)) {
-//                       $havingPrecio .= '(select SUM(precios.precioDescuento)) '.$comparator.' '.$value.'';
-//                   }else{
-//                      $havingPrecio .= ' '.$logicOp.' SUM(precios.precioDescuento) '.$comparator.' '.$value.'';
-//                   }
                     
                    continue;
                 }   
@@ -765,8 +757,7 @@ class Look extends CActiveRecord
                         'select'=> false,
                         //'joinType'=>'INNER JOIN',
                         //'condition'=>'productos.nombres = 8',
-                    );                    
-                                       
+                    );    
                     
                     //having
                     if(!strpos($criteria->group, "t.id")){
@@ -817,7 +808,6 @@ class Look extends CActiveRecord
                 if($column == 'monto')
                 {
                     
-                    
                   $criteria->addCondition('
                     (select count(distinct(orden.id)) from tbl_orden_has_productotallacolor o_ptc, tbl_orden orden
                     where o_ptc.tbl_orden_id = orden.id
@@ -852,7 +842,12 @@ class Look extends CActiveRecord
             $criteria->having .= $havingPrecio;
             //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
             $criteria->together = true;
-            //$criteria->compare('t.status', '1'); //siempre los no eliminados
+            
+            //si se estan usando los filtros en Mis Looks
+            if($personalShopper){
+                $criteria->compare('t.user_id', $personalShopper); //siempre los no eliminados
+            }
+            
             
 //            echo "Criteria:";
 //            

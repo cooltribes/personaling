@@ -63,14 +63,11 @@
 	
 ?>           
         <div class="span3">
-            <select class="span3">
-                <option>Filtros prestablecidos</option>
-                <option>Filtro 1</option>
-                <option>Filtro 2</option>
-                <option>Filtro 3</option>
-            </select>
+            <?php echo CHtml::dropDownList("Filtros", "", 
+                    Chtml::listData(Filter::model()->findAllByAttributes(array('type' => '5', 'user_id' => Yii::app()->user->id)),
+                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
         </div>
-        <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
+        <div class="span3"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
         <div class="span2">
         
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -82,6 +79,8 @@
 		)); ?>        	
         </div>
     </div>
+    <hr/>
+        <?php $this->renderPartial('_filtersMisLooks'); ?>
     <hr/>
 <?php
 $template = '{summary}

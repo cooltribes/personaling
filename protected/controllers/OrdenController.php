@@ -11,7 +11,7 @@ class OrdenController extends Controller
 			'accessControl', // perform access control for CRUD operations
 		);
 	}
-	
+	 
 		/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter. 
@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -621,7 +621,9 @@ class OrdenController extends Controller
         //$this->render('recibo', array('factura'=>$factura));
 	}
 	
-	public function actionValidar()
+	                                                                    
+                                             
+public function actionValidar()
 	{
 		// Elementos para enviar el correo, depende del estado en que quede la orden
 		$message            = new YiiMailMessage;
@@ -639,14 +641,19 @@ class OrdenController extends Controller
 		if($_POST['accion']=="aceptar")
 		{
 			
-			$detalle->estado = 1; // aceptado
-			
-			
+			$detalle->estado = 1; // aceptado	
 	
 			if($detalle->save()){
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
+				 
+				 $okk = round($orden->total, 2);
+				 
+				 $orden->total = $okk;
+				 $orden->save();
+				 
+				 
 				if($detalle->monto >= $orden->total){
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
@@ -670,7 +677,7 @@ class OrdenController extends Controller
 							
 						if(isset($desc))
 						{
-							if($desc < 0)
+							if($desc->total < 0)
 							{
 								$a = $desc->total + $detalle->monto; // si es menor le sumo lo que depositaron
 								$desc->total = $a;
@@ -944,7 +951,7 @@ class OrdenController extends Controller
 		
 		$datos=$datos."<div class='control-group'>";
 		$datos=$datos."<div class='controls'>";
-		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)')); 
+		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$orden->total)); 
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
@@ -981,7 +988,7 @@ class OrdenController extends Controller
 	{
 			
 		$orden = Orden::model()->findByPK($id);
-		
+		$end="";
 		if($orden->estado==1)
 		{
 				$ban=true;
@@ -1013,8 +1020,8 @@ class OrdenController extends Controller
 						if($estado->save())
 						{
 							Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
+							$end='ok';
 							
-							$this->redirect(array('listado'));
 							
 						}
 					}	
@@ -1022,11 +1029,16 @@ class OrdenController extends Controller
 		else
 		{
 			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
-			$this->redirect(array('listado'));
+			$end='no';
 		}
-		
+		if(isset($_POST['admin'])){
+			echo $end;
+			return 0;
+		}else
+			$this->redirect(array('listado'));
 	}
 
+	
 	/*
 	 *  Action para añadir el tracking y cambiar el estado a enviado
 	 * */

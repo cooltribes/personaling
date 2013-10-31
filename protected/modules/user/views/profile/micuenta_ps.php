@@ -74,8 +74,37 @@ $looks_recomendados = $look->match($model);
         <hr/>
         <h5>Invita a tus amig@s</h5>
         <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style addthis_32x32_style text_align_center"> <a class="addthis_button_preferred_1"></a> <a class="addthis_button_preferred_2"></a> <a class="addthis_button_preferred_3"></a> <a class="addthis_button_preferred_4"></a> <a class="addthis_button_compact"></a> <a class="addthis_counter addthis_bubble_style"></a> </div>
-        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+        <div class="addthis_toolbox addthis_default_style addthis_32x32_style text_align_center">
+          <a class="addthis_button_preferred_1"></a>
+          <a class="addthis_button_preferred_2"></a>
+          <a class="addthis_button_preferred_3"></a>
+          <a class="addthis_counter addthis_bubble_style"></a>
+        </div>
+        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};
+              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
+              var addthis_share = {
+
+                  url: '<?php echo Yii::app()->request->hostInfo.Yii::app()->request->baseUrl."/".$profile->url; ?>',
+                  title: '<?php echo $profile->first_name." ".$profile->last_name; ?> mi perfil en Personaling.com ?>',
+                  description: '<?php echo $profile->bio; ?>',
+                  templates : {
+                      twitter : "<?php echo $profile->first_name." ".$profile->last_name; ?> mi perfil en Personaling.com <?php echo Yii::app()->request->hostInfo.Yii::app()->request->baseUrl.'/'.$profile->url; ?>  via @personaling "
+                  }
+
+              }   
+              console.log('<?php echo Yii::app()->request->hostInfo.Yii::app()->request->baseUrl."/".$profile->url; ?>');      
+        </script>
+        <?php 
+           //Metas de Facebook CARD ON
+          Yii::app()->clientScript->registerMetaTag($profile->first_name." ".$profile->last_name." - Perfil", null, null, array('property' => 'og:title'), null);
+          Yii::app()->clientScript->registerMetaTag($profile->bio, null, null, array('property' => 'og:description'), null);
+          Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+          Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+          Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$model->getAvatar(), 'og:image', null, null, null);
+
+          //Metas de Facebook CARD OFF
+
+        ?>        
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
         <!-- AddThis Button END --> 
     </aside>

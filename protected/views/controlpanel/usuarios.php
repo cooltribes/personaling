@@ -216,34 +216,236 @@
       <div class="row margin_top">
         <div class="span12">
           <h4 class="CAPS braker_bottom margin_bottom_small">REGISTROS</h4>
-          <?php $us= new User;?>
-          <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
-            <tr>
-              <th scope="col">Tipos</th>
-              <th scope="col">Registros</th>
-              <th scope="col">% Registros</th>
-            </tr>
-            <tr>
-              <td>Clientes</td>
-              <td><?php echo $us->getTotalClients(); ?></td>
-              <td><?php echo $us->getPercent('Client')." %"; ?></td>
-            </tr>
-            <tr>
-              <td>Personal Shoppers</td>
-              <td><?php echo $us->getTotalPS(); ?></td>
-              <td><?php echo $us->getPercent('PS')." %"; ?></td>
-            </tr>
-            <tr>
-              <td>Administradores</td>
-              <td><?php echo $us->getTotalAdmin(); ?></td>
-              <td><?php echo $us->getPercent('Admin')." %"; ?></td>
-            </tr>
-            <tr> 
-              <td>Aplicantes</td>
-              <td><?php echo $us->getAplicantes(); ?></td>
-              <td><?php echo $us->getPercent('App')." %"; ?></td>
-            </tr>
-          </table>
+	      <ul class="nav nav-tabs">
+	        <li class="active"><a data-toggle="tab" href="#tab1">Tipos</a></li>
+	        <li><a data-toggle="tab" href="#tab2">Estatura</a></li>
+	        <li><a data-toggle="tab" href="#tab3">Contextura</a></li>
+	        <li><a data-toggle="tab" href="#tab4">Color de cabello</a></li>
+	        <li><a data-toggle="tab" href="#tab5">Color de Ojos</a></li>
+	        <li><a data-toggle="tab" href="#tab6">Color de Piel</a></li>
+	        <li><a data-toggle="tab" href="#tab7">Tipo de Cuerpo</a></li>
+	      </ul>    
+		    <div class="tab-content">
+		        <div class="tab-pane active" id="tab1">	            
+		          <?php $us= new User;?>
+		          <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+		            <tr>
+		              <th scope="col">Tipos</th>
+		              <th scope="col">Registros</th>
+		              <th scope="col">% Registros</th>
+		            </tr>
+		            <tr>
+		              <td>Clientes</td>
+		              <td><?php echo $us->getTotalClients(); ?></td>
+		              <td><?php echo $us->getPercent('Client')." %"; ?></td>
+		            </tr>
+		            <tr>
+		              <td>Personal Shoppers</td>
+		              <td><?php echo $us->getTotalPS(); ?></td>
+		              <td><?php echo $us->getPercent('PS')." %"; ?></td>
+		            </tr>
+		            <tr>
+		              <td>Administradores</td>
+		              <td><?php echo $us->getTotalAdmin(); ?></td>
+		              <td><?php echo $us->getPercent('Admin')." %"; ?></td>
+		            </tr>
+		            <tr> 
+		              <td>Aplicantes</td>
+		              <td><?php echo $us->getAplicantes(); ?></td>
+		              <td><?php echo $us->getPercent('App')." %"; ?></td>
+		            </tr>
+		          </table>
+		        </div>
+		        <div class="tab-pane" id="tab2">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Estatura</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+						  <td>1.55-1.65</td>
+						  <td><?php $alts=Profile::model()->getXestatura(); echo $alts[1];?></td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>1.66-1.75</td>
+						  <td><?php echo $alts[2];?></td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>1.76 -1.85</td>
+						  <td><?php  echo $alts[4];?></td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>1.86-1.95</td>
+						  <td><?php echo $alts[8];?></td>
+						  <td>0%</td>
+						</tr>
+					</table>
+		        </div>
+		        <div class="tab-pane" id="tab3">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Contextura</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+						  <td>Delgada</td>
+						  <td><?php $conts=Profile::model()->getXcontextura(); echo $conts[1];?></td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Media</td>
+						  <td><?php echo $conts[2];?></td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Gruesa</td>
+						  <td><?php echo $alts[4];?></td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>Muy Gruesa</td>
+						  <td><?php echo $alts[8];?></td>
+						  <td>0%</td>
+						</tr>
+					</table>
+		        </div>
+		        <div class="tab-pane" id="tab4">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Cabello</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+						  <td>Rubio</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Castaño Claro</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Castaño Oscuro</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>Negro</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>Rojo</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>Blanco</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>												
+					</table>
+		        </div>
+		        <div class="tab-pane" id="tab5">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Color</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+						  <td>Verde</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Azul</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Ambar</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>Marrón</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>Gris</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr> 
+						  <td>Negro</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>												
+					</table>		        	
+		        </div>
+		        <div class="tab-pane" id="tab6">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Color</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+						  <td>Blanca</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Morena</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Mulata</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>												
+					</table>
+		        </div>	
+		        <div class="tab-pane" id="tab6">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Tipo</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+						  <td>Rectangular</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Reloj Arena</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Triángulo</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>
+						<tr>
+						  <td>Triángulo Invertido</td>
+						  <td>0</td>
+						  <td>0%</td>
+						</tr>																			
+					</table>
+		        </div>			                		        
+		    </div>
         </div>
       </div>
       <h2 class="braker_bottom margin_bottom_small margin_top">Últimos usuarios registrados</h2>

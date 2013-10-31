@@ -29,8 +29,9 @@ class AdminController extends Controller
 				'actions'=>array('admin','delete','create','update',
                                     'view','corporal','estilos','pedidos','carrito',
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
-                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion','eliminardireccion','comprafin'),
+                                    'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
+                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
+                                    'eliminardireccion','comprafin','mensajes','displaymsj'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -188,7 +189,7 @@ class AdminController extends Controller
                          if (isset($_POST['name'])){
                             
                             $filter = Filter::model()->findByAttributes(
-                                    array('name' => $_POST['name'], 'type' => '3') //Filtros para ventas
+                                    array('name' => $_POST['name'], 'type' => '3') 
                                     ); 
                             if (!$filter) {
                                 $filter = new Filter;
@@ -322,10 +323,41 @@ class AdminController extends Controller
 	     }
 	}
 	
-	public function actionToggle_ps($id){
+        /**
+         * Poner o quitar a un PS en destacado (campo "ps_destacado")
+         * @param type $id id del usuario que es PS
+         */
+	public function actionToggleDestacado($id){
+            $model = User::model()->findByPk($id);
+                                
+            if($model->personal_shopper == 1){ //si es PS                
+
+               $model->ps_destacado = 1 - $model->ps_destacado; // hacer el toggle               
+               $model->fecha_destacado = date("Y-m-d H:i:s");
+               
+                if ($model->save()){
+                    echo CJSON::encode(array(
+                        'status'=>'success',
+                        'personal_shopper'=>$model->ps_destacado,
+                    ));	
+                }else{
+                   Yii::trace('AdminController:117 Error toggleDestacado:'.print_r($model->getErrors(),true), 'registro');
+                           echo CJSON::encode(array(
+                       'status'=>'error',
+                       'personal_shopper'=>$model->ps_destacado,
+                    ));
+                }
+            
+            }
+	}
+        
+        
+        public function actionToggle_ps($id){
 		$model = User::model()->findByPk($id);
+                $apply = true;
                 
                 if($model->personal_shopper == 2){ //si es aplicante
+                    $apply = true;
                     
                     $model->personal_shopper = 1;
                     
@@ -360,6 +392,7 @@ class AdminController extends Controller
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'personal_shopper'=>$model->personal_shopper,
+                    'apply' => $apply,
 	     ));	
 	     }else{
 	     	Yii::trace('AdminController:117 Error toggle:'.print_r($model->getErrors(),true), 'registro');
@@ -369,6 +402,7 @@ class AdminController extends Controller
 	     ));
 	     }
 	}
+        
        /**
         * Bloquear al usuario, queda en estado STATUS_BANNED
         * @param int $id id del usuario
@@ -664,7 +698,8 @@ if(isset($_POST['Profile']))
 				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 			} else $profile->validate();
 		}
-
+                
+                
 		$this->render('update',array(
 			'model'=>$model,
 			'profile'=>$profile,
@@ -740,7 +775,8 @@ if(isset($_POST['Profile']))
 				$this->_model=User::model()->notsafe()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
-		}
+		}                
+                
 		return $this->_model;
 	}
         
@@ -1605,5 +1641,46 @@ if(isset($_POST['Profile']))
 		 }
 		
 	}
+
+    public function actionMensajes(){
+        
+		$this->render('mensajes');
+		
+		
+    }
 	
+	public function actionDisplaymsj(){
+		if(isset($_POST['msj_id'])){
+			$mensaje = Mensaje::model()->findByPk($_POST['msj_id']);
+			
+			if($mensaje->estado == 0) // no se ha leido
+			{
+				$mensaje->estado = 1;
+				$mensaje->save(); 
+			}
+			
+			$div = "";
+			
+			$div = $div.'<div class="padding_medium bg_color3 ">';
+			$div = $div."<p><strong>De:</strong> Admin <span class='pull-right'><strong> ".date('d/m/Y', strtotime($mensaje->fecha))."</strong> ".date('h:i A', strtotime($mensaje->fecha))."</span></p>";
+			$div = $div."<p> <strong>Asunto:</strong> ".$mensaje->asunto."</p>";
+			$div = $div."<p> ".$mensaje->cuerpo." </p>";
+		/*	$div = $div.'<form class=" margin_top_medium ">
+					  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
+					  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
+				  		</form>'; */
+			$div = $div.'<p><a class="btn btn-danger pull-right" href="'.Yii::app()->getBaseUrl().'/orden/detalles/'.$mensaje->orden_id.'#mensajes" target="_blank"> Responder </a></p>
+				  		';	  		
+			
+			$div = $div."<br/></div>";
+			
+			echo $div;
+		
+
+		
+		}
+		
+		
+		
+	}
 }

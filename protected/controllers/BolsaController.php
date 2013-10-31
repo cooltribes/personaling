@@ -264,23 +264,66 @@ class BolsaController extends Controller
 	
 		public function actionPagos()
 		{
+			$tarjeta = new TarjetaCredito;
 			
-			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
-			{
-				 
-				$idDireccion = $_POST['idDireccion'];
-				$tipoPago = $_POST['tipoPago'];
-				echo "if";
-				$this->render('confirmar',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
-				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
-				// se le pasan los datos al action confirmar	
-			}else if(isset($_GET['id'])){ // de direcciones
-			echo "else";
-				//$tarjeta = new TarjetaCredito;
-				$this->render('pago',array('id_direccion'=>$_GET['id']));
+			if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
+				if(isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
+				{
+					echo CActiveForm::validate($_POST['TarjetaCredito']);
+					Yii::app()->end();
+				}
 			}
-			
-		
+				
+			if(isset($_POST['tipo_pago'])){
+				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+				
+				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+					Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
+				}else{
+					Yii::app()->getSession()->add('usarBalance','0');
+				}
+				
+				if($_POST['tipo_pago']==2){ // pago de tarjeta de credito
+					
+					$usuario = Yii::app()->user->id; 
+					
+					$tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
+					$tarjeta->numero = $_POST['TarjetaCredito']['numero'];
+					$tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
+					
+					$tarjeta->month = $_POST['mes'];
+					$tarjeta->year = $_POST['ano'];
+					
+					$tarjeta->ci = $_POST['TarjetaCredito']['ci'];
+					$tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
+					$tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
+					$tarjeta->zip = $_POST['TarjetaCredito']['zip'];
+					$tarjeta->estado = $_POST['TarjetaCredito']['estado'];
+					$tarjeta->user_id = $usuario;		
+										
+					if($tarjeta->save())
+					{
+						$tipoPago = $_POST['tipo_pago'];
+					
+						Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
+						//$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
+						$this->redirect(array('bolsa/confirmar'));
+					}
+					else
+						var_dump($tarjeta->getErrors());
+					
+				}
+				else {
+					//$this->render('confirmar');
+					$this->redirect(array('bolsa/confirmar'));
+				}
+				
+			}
+			else {
+				//$tarjeta = new TarjetaCredito;
+				$this->render('pago',array('tarjeta'=>$tarjeta));		
+			}
+
 		}
 		
 		public function actionSuccessMP(){
@@ -448,7 +491,7 @@ class BolsaController extends Controller
 		{
 			// viene de pagos
 			//var_dump($_POST);
-			if(isset($_POST['tipo_pago'])){
+		/*	if(isset($_POST['tipo_pago'])){
 				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
 				
 				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
@@ -487,7 +530,8 @@ class BolsaController extends Controller
 				
 				//echo '<br/>'.$_POST['tipo_pago'];
 				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
-			}
+			}*/
+			$this->render('confirmar',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
 		}
 		
 		public function actionEliminardireccion()
@@ -568,8 +612,9 @@ class BolsaController extends Controller
 				//echo "Id:".$_POST['Direccion']['id'];
 				$dirEnvio = $_POST['Direccion']['id'];
 				
-				$tarjeta = new TarjetaCredito;
-				$this->render('pago',array('idDireccion'=>$dirEnvio,'tarjeta'=>$tarjeta));
+				Yii::app()->getSession()->add('idDireccion',$dirEnvio);
+				
+				$this->redirect(array('bolsa/pagos'));
 			}
 			else
 			if(isset($_POST['Direccion'])) // nuevo registro
@@ -716,6 +761,7 @@ class BolsaController extends Controller
 								$detalle->nTarjeta = $rest;
 								$detalle->nTransferencia = $output->id;
 								$detalle->nombre = $tarjeta->nombre;
+								$detalle->cedula = $tarjeta->ci;
 								$detalle->monto = $_POST['total'];
 								$detalle->fecha = date("Y-m-d H:i:s");
 								$detalle->banco = 'TDC';
@@ -723,13 +769,10 @@ class BolsaController extends Controller
 								
 								if($detalle->save()){
 								
-									// se guardan solo los ultimos 4 numeros
-									$tarjeta->nombre = $_POST['nom'];
+									// se guardan solo los ultimos 4 numeros y se limpian los datos
 									$tarjeta->numero = $rest;
-									$tarjeta->direccion = $_POST['dir'];
-									$tarjeta->ciudad = $_POST['ciud'];
-									$tarjeta->zip = $_POST['zip'];
-									$tarjeta->estado = $_POST['est'];
+									$tarjeta->codigo = " ";
+									$tarjeta->vencimiento = " ";
 									$tarjeta->user_id = $usuario;		
 										
 									$tarjeta->save();
@@ -902,6 +945,9 @@ class BolsaController extends Controller
 							{
 								$orden->estado = 3; // Estado: Pago Confirmado
 							}
+							
+							$okk = round($_POST['total'], 2);
+							$orden->total = $okk;
 							
 							if($orden->save()){
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){

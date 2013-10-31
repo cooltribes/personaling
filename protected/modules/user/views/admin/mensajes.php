@@ -1,14 +1,11 @@
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Tus Notificaciones</h1>
-    
-    <div class="">
-  <div class=" margin_bottom margin_top_medium">
-    <ul class="nav  nav-tabs">
-      <li class="active"><a href="#" title="Tus pedidos activos">Mensajes</a></li>
-      <li><a href="#" title="tu avatar">Historial de pedidos</a></li>
-    </ul>
-  </div>
+  	<hgroup>		
+    	<h1>Mensajes</h1>
+    	<h4>Mensajes no leidos</h4>
+    </hgroup>
+<div class="">
+
   <?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
 	        <?php echo Yii::app()->user->getFlash('success'); ?>
@@ -31,13 +28,14 @@
   	<div class="span4 sidebar_list_mensajes bg_color3">
   		
   		<?php
-  			
-  			$mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1)); // buscaria todos los mensajes que estén como visibles del usuario para listarlos
+  			$criteria = new CDbCriteria;
+  			$criteria->addCondition('admin IS NULL');
+  			$mensajes = Mensaje::model()->findAllByAttributes(array(),$criteria); // buscaria todos los mensajes que estén como visibles del usuario para listarlos
   			if(count($mensajes) > 0){
   				$mensajes_Reverse = array_reverse($mensajes);
 				foreach( $mensajes_Reverse as $msj)
 				{
-					if(is_null($msj->admin)){
+					
 
   		?>
 			<a onclick="buscarmensaje(<?php echo $msj->id; ?>)" style="cursor: pointer;">	
@@ -56,7 +54,7 @@
 	 		</a>
 	 		<hr/>
 	 		<?php
-				}
+				
 				}
 			}
 	 		?>	  		
@@ -91,7 +89,7 @@
 
  		$.ajax({
 	        type: "post", 
-	        url: "mensaje", // action 
+	        url: "displaymsj", // action 
 	        data: { 'msj_id':id}, 
 	        success: function (data) {
 				

@@ -69,7 +69,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 ?>
           </p>
         Estado actual</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 4 </p>
+      <td><p class="T_xlarge margin_top_xsmall"> 2 </p>
         Documentos</td>
 
      <?php
@@ -466,7 +466,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 
                                 //echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio
-                                echo("<td></td></tr>");
+                                echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");
                 }
 
             }
@@ -675,7 +675,7 @@ Para una futura iteración
      
      <!-- MENSAJES ON -->
   
-  <div class="row">
+  <div class="row" id="mensajes">
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
@@ -717,10 +717,10 @@ Para una futura iteración
 				{
 					if(is_null($msj->admin))
 						{	$class='style="background-color:#F5F5F5"';
-							$from='De: <strong>Admin | </strong> ';
+							$from='<i class="icon-circle-arrow-right"></i> <strong>Entrada | </strong> De: <strong>Admin | </strong> ';
 						}
 					else
-						$from='Status: <strong>Enviado | </strong> ';
+						$from='<i class="icon-circle-arrow-left"></i> <strong>Salida | </strong> Status: <strong>Enviado | </strong> ';
 					echo '<li class="media braker_bottom">
           					<div class="media-body" '.$class.'>';
 					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
@@ -875,7 +875,7 @@ else{
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)')); ?>
+          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$orden->total)); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>

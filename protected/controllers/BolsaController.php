@@ -45,7 +45,10 @@ class BolsaController extends Controller
 	public function actionIndex()
 	{
 		$usuario = Yii::app()->user->id;
-		
+		$metric = new ShoppingMetric();
+		$metric->user_id = $usuario;
+		$metric->step = ShoppingMetric::STEP_BOLSA;
+		$metric->save();
 		if(!Yii::app()->user->isGuest){
 					
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
@@ -638,7 +641,8 @@ class BolsaController extends Controller
 				
 					if($dir->save())
 					{
-						$tarjeta = new TarjetaCredito;		
+						$tarjeta = new TarjetaCredito;
+						Yii::app()->getSession()->add('idDireccion',$dir->id);		
 						$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
 						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
 					}
@@ -696,6 +700,10 @@ class BolsaController extends Controller
 					Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta.")); 
 				}	
 			}else{
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_LOGIN;
+				$metric->save();
 				// si no viene del formulario. O bien viene de la pagina anterior
 				$this->render('login',array('model'=>$model));
 			}

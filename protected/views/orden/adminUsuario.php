@@ -42,6 +42,7 @@ $template = '{summary}
       <th scope="col">Número de Orden</th>
       <th scope="col">Fecha</th>
       <th scope="col">Monto (En Bs.)</th>
+      <th scope="col">Por Pagar (En Bs.)</th>
       <th scope="col">Estado</th>
       <th scope="col">Acciones</th>
     </tr>

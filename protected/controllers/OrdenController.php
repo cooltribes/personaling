@@ -951,7 +951,10 @@ public function actionValidar()
 		
 		$datos=$datos."<div class='control-group'>";
 		$datos=$datos."<div class='controls'>";
-		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$orden->total)); 
+		$porpagar=Yii::app()->numberFormatter->formatDecimal($data->total-Detalle::model()->getSumxOrden($data->id));
+		if($porpagar<0)
+			$porpagar=0;
+		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$porpagar)); 
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";

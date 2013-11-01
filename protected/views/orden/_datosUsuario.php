@@ -6,11 +6,9 @@
 	   		echo "<td>".date("d/m/Y",strtotime($data->fecha))."</td>";
 		else
 			echo "<td></td>";
-		$porpagar=Yii::app()->numberFormatter->formatDecimal($data->total-Detalle::model()->getSumxOrden($orden->id));
-		if($porpagar<0)
-			$porpagar=0;
+		
 		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->total)."</td>"; // precio
-		echo "<td>".$porpagar."</td>"; // precio
+		echo "<td>".$data->getxPagar()."</td>"; // precio
 		//----------------------Estado
 		if($data->estado == 1)
 			echo "<td>En espera de pago</td>"; 

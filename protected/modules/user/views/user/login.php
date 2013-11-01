@@ -3,7 +3,10 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 $this->breadcrumbs=array(
 	UserModule::t("Login"),
 );
-?><?php */?>
+?><?php */
+Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características.', 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
+?>
 
 <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 

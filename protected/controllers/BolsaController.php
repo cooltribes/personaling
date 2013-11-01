@@ -324,6 +324,10 @@ class BolsaController extends Controller
 			}
 			else {
 				//$tarjeta = new TarjetaCredito;
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_PAGO;
+				$metric->save();
 				$this->render('pago',array('tarjeta'=>$tarjeta));		
 			}
 
@@ -534,6 +538,10 @@ class BolsaController extends Controller
 				//echo '<br/>'.$_POST['tipo_pago'];
 				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
 			}*/
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_CONFIRMAR;
+				$metric->save();
 			$this->render('confirmar',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
 		}
 		
@@ -659,6 +667,10 @@ class BolsaController extends Controller
 				
 			}else // si está viniendo de la pagina anterior que muestre todo 
 			{
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_DIRECCIONES;
+				$metric->save();	
 				$this->render('direcciones',array('dir'=>$dir));
 			}
 			
@@ -896,8 +908,8 @@ class BolsaController extends Controller
 					$detalle = new Detalle;
 				}
 			
-				if($detalle->save())
-				{
+				if($detalle->save()){
+					
 					$pago = new Pago;
 					$pago->tipo = $_POST['tipoPago']; // trans
 					$pago->tbl_detalle_id = $detalle->id;
@@ -964,6 +976,8 @@ class BolsaController extends Controller
 							$orden->total = $okk;
 							
 							if($orden->save()){
+								$detalle->orden_id=$orden->id;
+								$detalle->save();
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
 									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
 									if($balance_usuario > 0){
@@ -1161,6 +1175,10 @@ class BolsaController extends Controller
 	{
 		$orden = Orden::model()->findByPk($id);
 		//$pago = Pago::model()->findByPk($orden->pago_id);
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_PEDIDO;
+				$metric->save();		
 		$this->render('pedido',array('orden'=>$orden));
 	}
 

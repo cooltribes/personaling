@@ -908,8 +908,8 @@ class BolsaController extends Controller
 					$detalle = new Detalle;
 				}
 			
-				if($detalle->save())
-				{
+				if($detalle->save()){
+					
 					$pago = new Pago;
 					$pago->tipo = $_POST['tipoPago']; // trans
 					$pago->tbl_detalle_id = $detalle->id;
@@ -976,6 +976,8 @@ class BolsaController extends Controller
 							$orden->total = $okk;
 							
 							if($orden->save()){
+								$detalle->orden_id=$orden->id;
+								$detalle->save();
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
 									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
 									if($balance_usuario > 0){

@@ -20,7 +20,7 @@ $this->breadcrumbs=array(
     
   </div>
 </div>
-<!-- /container -->.
+<!-- /container -->
 
 <script>
 	$('#recepcion_inicio_day').on('change', validar_recepcion_inicio);

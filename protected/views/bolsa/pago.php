@@ -372,18 +372,56 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('1');
+            
+            // haciendo que no valide
+	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ci');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'direccion');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ciudad');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'estado');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            
         });
         
         $("#mercadopago").click(function() {
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('4');
+            
+            // haciendo que no valide
+	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ci');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'direccion');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ciudad');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'estado');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            
         });
         
         $("#tarjeta").click(function() {
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('2');
+            
+            enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ci');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'direccion');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ciudad');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'estado');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            
         });
         
         $("#btn_deposito").click(function() {

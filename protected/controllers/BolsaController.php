@@ -641,9 +641,14 @@ class BolsaController extends Controller
 				
 					if($dir->save())
 					{
-						$tarjeta = new TarjetaCredito;
-						Yii::app()->getSession()->add('idDireccion',$dir->id);		
-						$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
+
+						//$tarjeta = new TarjetaCredito;
+						
+						Yii::app()->getSession()->add('idDireccion',$dir->id);
+						$this->redirect(array('bolsa/pagos'));		
+						
+						//$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
+
 						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
 					}
 					
@@ -933,7 +938,8 @@ class BolsaController extends Controller
 							$orden = new Orden;
 							
 							$orden->subtotal = $_POST['subtotal'];
-							$orden->descuento = $_POST['descuento'];
+							//$orden->descuento = $_POST['descuento'];
+							$orden->descuento = 0;
 							$orden->envio = $_POST['envio'];
 							$orden->iva = $_POST['iva'];
 							$orden->descuentoRegalo = 0;
@@ -963,22 +969,42 @@ class BolsaController extends Controller
 									if($balance_usuario > 0){
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
-											$orden->descuento = $_POST['total'];
+											/*$orden->descuento = $_POST['total'];
 											$orden->total = 0;
-											$orden->estado = 2; // en espera de confirmación
+											$orden->estado = 2; // en espera de confirmación*/
+											$orden->estado = 3; 
 											$balance->total = $_POST['total']*(-1);
+											$detalle->monto=$_POST['total'];
 										}else{
-											$orden->descuento = $balance_usuario;
-											$orden->total = $_POST['total'] - $balance_usuario;
+											//$orden->descuento = $balance_usuario;
+											//$orden->total = $_POST['total'] - $balance_usuario;
+											$orden->estado = 7; 
 											$balance->total = $balance_usuario*(-1);
+											$detalle->monto=$balance_usuario;
 										}
-										$orden->save();
+										
+										if($orden->save()){
+											
+											$detalle->comentario="Prueba de Saldo";
+											$detalle->estado=1;
+											$detalle->orden_id=$orden->id;
+											if($detalle->save()){
+												$balance->orden_id = $orden->id;
+												$balance->user_id = $usuario;
+												$balance->tipo = 1;
+												$balance->save();
+												
+												$pago->tipo = 3; // trans
+												
+												$pago->save();
+												
+												
+											}
+										}
 										
 										//$balance->total = $orden->descuento*(-1);
-										$balance->orden_id = $orden->id;
-										$balance->user_id = $usuario;
-										$balance->tipo = 1;
-										$balance->save();
+										
+											
 									}
 								}
 								

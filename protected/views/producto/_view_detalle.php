@@ -1102,7 +1102,7 @@ $('.imagen_principal').zoom({url: imgZ});
 	 		comprando = false;
 	 		$.ajax({
 		        type: "post",
-		        url: "<?php echo Yii::app()->baseUrl; ?>/bolsa/agregar", // action Tallas de Producto
+		        url: "<?php echo Yii::app()->createUrl('bolsa/agregar'); ?>", // action Tallas de Producto
 		        data: { 'producto':producto, 'talla':talla, 'color':color}, 
 		        success: function (data) {
 		        	comprando = true;
@@ -1110,7 +1110,7 @@ $('.imagen_principal').zoom({url: imgZ});
 					if(data=="ok")
 					{
 						//alert("redireccionar mañana");
-						window.location="../../bolsa/index";
+						window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
 					}
 					
 					if(data=="no es usuario")

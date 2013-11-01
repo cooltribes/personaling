@@ -324,6 +324,10 @@ class BolsaController extends Controller
 			}
 			else {
 				//$tarjeta = new TarjetaCredito;
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_PAGO;
+				$metric->save();
 				$this->render('pago',array('tarjeta'=>$tarjeta));		
 			}
 
@@ -534,6 +538,10 @@ class BolsaController extends Controller
 				//echo '<br/>'.$_POST['tipo_pago'];
 				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
 			}*/
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_CONFIRMAR;
+				$metric->save();
 			$this->render('confirmar',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
 		}
 		
@@ -659,6 +667,10 @@ class BolsaController extends Controller
 				
 			}else // si está viniendo de la pagina anterior que muestre todo 
 			{
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_DIRECCIONES;
+				$metric->save();	
 				$this->render('direcciones',array('dir'=>$dir));
 			}
 			
@@ -1161,6 +1173,10 @@ class BolsaController extends Controller
 	{
 		$orden = Orden::model()->findByPk($id);
 		//$pago = Pago::model()->findByPk($orden->pago_id);
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_PEDIDO;
+				$metric->save();		
 		$this->render('pedido',array('orden'=>$orden));
 	}
 

@@ -1211,8 +1211,12 @@ public function actionValidar()
 		
 		$datos=$datos."<div class='control-group'>";
 		$datos=$datos."<div class='controls'>";
+		//$porpagar=Yii::app()->numberFormatter->formatDecimal($data->total-Detalle::model()->getSumxOrden($data->id));	
+		$porpagar = $orden->total - Detalle::model()->getSumxOrden($orden->id);
+		if($porpagar<0)
+			$porpagar=0;
 		
-		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$orden->getxPagar())); 
+		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$porpagar)); 
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
@@ -1267,9 +1271,7 @@ public function actionValidar()
 					
 					if($orden->save()&&$ban)
 					{
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-						
-						
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
 						
 						$estado = new Estado;
 												

@@ -66,15 +66,23 @@
 			echo "</li>";
 			            
             echo "<li><a tabindex='-1' href='detallepedido/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
-            	<li class='divider'></li>
-            	<li>
-            	";
             	
-			echo CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
-			    $this->createUrl('orden/cancelar',array('id'=>$data->id)),
-			    array(
-			    'id'=>'link'.$data->id)
-			);		
+            	";
+            
+            if($data->estado==1){
+                echo "<li class='divider'></li>
+                    <li>".
+                        CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
+                                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
+                                        array(
+                                        'id'=>'link'.$data->id)
+                                    )            
+                     ."</li>";
+            }
+		
+			
+            
+            
 
             //echo "</li><li><a tabindex='-1' href='#'><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
           	echo "</ul>

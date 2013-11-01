@@ -994,7 +994,7 @@ function mensaje(user_id,orden_id){
 	        success: function (data) {
 				if(data=="ok")
 				{
-					window.location.reload();	
+					window.location.reload(true);	
 				}
 	       	}//success
 	       }) 

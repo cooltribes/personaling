@@ -10,16 +10,6 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 ?>
 
-	<?php if(Yii::app()->user->hasFlash('success')){?>
-	    <div class="alert in alert-block fade alert-success text_align_center">
-	        <?php echo Yii::app()->user->getFlash('success'); ?>
-	    </div>
-	<?php } ?>
-	<?php if(Yii::app()->user->hasFlash('error')){?>
-	    <div class="alert in alert-block fade alert-error text_align_center">
-	        <?php echo Yii::app()->user->getFlash('error'); ?>
-	    </div>
-	<?php } ?>
 
 <div class="container margin_top">
   <div class="page-header">
@@ -892,6 +882,18 @@ $usuario = User::model()->findByPk($orden->user_id);
   <!-- MENSAJES ON -->
   
   <div class="row" id="mensajes">
+  	
+  		<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
+  	
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
@@ -1169,7 +1171,7 @@ else{
 	        success: function (data) {
 				if(data=="ok")
 				{
-					window.location.reload();	
+					window.location.reload(true);	
 				}
 	       	}//success
 	       }) 

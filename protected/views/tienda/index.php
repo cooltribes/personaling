@@ -3,7 +3,7 @@
 	$this->breadcrumbs=array(
 	'Tienda',
 	);
-
+	Yii::app()->clientScript->registerMetaTag("Compra tus marcas preferidas en un solo lugar con tan solo un click en tu casa u oficina: Helly Hansen, women'secret, Mango, Cortefiel, Timberland, Suiteblanco, Accessorize", 'description', null, null, null);
 ?> 
 <div class="page-header">
 <h1>Tienda</h1>

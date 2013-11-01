@@ -22,6 +22,9 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_BOLSA = 0;
 	const STEP_LOGIN = 1; 
 	const STEP_DIRECCIONES = 2; 
+	const STEP_PAGO = 3;
+	const STEP_CONFIRMAR = 4; 
+	const STEP_PEDIDO = 5; 
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);

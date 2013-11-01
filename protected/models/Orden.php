@@ -95,6 +95,7 @@ class Orden extends CActiveRecord
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
 			'estados' => array(self::HAS_MANY, 'Estado', 'orden_id', 'index'=>'id'),
+			'detalles' => array(self::HAS_MANY, 'Detalle','orden_id'),
 			
                        
 		);
@@ -419,4 +420,22 @@ class Orden extends CActiveRecord
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}  
+	
+	public function getxPagar($id=null){
+			
+		if(is_null($id))
+				$porpagar=Yii::app()->numberFormatter->formatDecimal($this->total-Detalle::model()->getSumxOrden($this->id));
+		else
+			{
+				$orden=$this->findByPk($id);
+				$porpagar=Yii::app()->numberFormatter->formatDecimal($this->total-Detalle::model()->getSumxOrden($orden->id));
+			}
+		if($porpagar<0)
+			$porpagar=0;
+		return $porpagar;
+		
+	}
+	
+	
+	
 }

@@ -137,6 +137,7 @@ $template = '{summary}
 
 <script>
 	
+        
 	function enviar()
 	{	
 		var idDetalle = $("#idDetalle").attr("value");

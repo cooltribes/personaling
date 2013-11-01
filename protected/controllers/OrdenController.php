@@ -951,8 +951,7 @@ public function actionValidar()
 		
 		$datos=$datos."<div class='control-group'>";
 		$datos=$datos."<div class='controls'>";
-		//$porpagar=Yii::app()->numberFormatter->formatDecimal($data->total-Detalle::model()->getSumxOrden($data->id));
-		
+		//$porpagar=Yii::app()->numberFormatter->formatDecimal($data->total-Detalle::model()->getSumxOrden($data->id));	
 		$porpagar = $orden->total - Detalle::model()->getSumxOrden($orden->id);
 		if($porpagar<0)
 			$porpagar=0;
@@ -1012,9 +1011,7 @@ public function actionValidar()
 					
 					if($orden->save()&&$ban)
 					{
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-						
-						
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
 						
 						$estado = new Estado;
 												

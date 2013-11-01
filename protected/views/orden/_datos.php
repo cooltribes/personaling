@@ -68,7 +68,7 @@ echo"<tr>";
 	//------------------ acciones
 	$canc="";
 	if($data->estado==1)
-		$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href='#'><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
+		$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href=''><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
 	
 	echo "
 	<td>

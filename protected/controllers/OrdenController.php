@@ -1006,9 +1006,7 @@ public function actionValidar()
 					
 					if($orden->save()&&$ban)
 					{
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-						
-						
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
 						
 						$estado = new Estado;
 												

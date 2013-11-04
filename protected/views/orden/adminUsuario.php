@@ -128,7 +128,7 @@ $template = '{summary}
 	
 ?>
   <hr/>
-</div>
+  <input id="hiddenMensaje" type="hidden">
 <!-- /container -->
 
 <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
@@ -199,25 +199,53 @@ $template = '{summary}
 		
 	} // enviar
         
+        
+        
+        
         $("[id^='linkCancelar']").click(function (e){
             e.preventDefault();
-            console.log("click");
-            var elem = $(this).attr('href');
-            console.log(elem);
+            //console.log("click");
+            var urlCancel = $(this).attr('href');
+            //console.log(urlCancel);
+            
+            $("#mensajeCancel").focus();
             
             bootbox.dialog("Cuéntanos por qué deseas cancelar este pedido...  \n\
-                <br><br><textarea id='mensajeCancel'  maxlength='255' style='resize:none; width: 500px;' rows='4' cols='400'> ",
+                <br><br><textarea id='mensajeCancel'  maxlength='255' style='resize:none; width: 520px;' rows='4' cols='400'> ",
+//                [{
+//                    "label" : "Cancelar",
+//                    "class" : "btn-danger",
+//                    "icon"  : "icon-trash",
+//                    "callback": function() {
+//
+//                    }
+//                }, 
                 [{
-                    "label" : "Cancelar",
+                    "label" : "Continuar",
                     "class" : "btn-danger",
-                    "icon"  : "icon-trash",
                     "callback": function() {
-
+                       // console.log($("#mensajeCancel").val());
+                        $("#hiddenMensaje").val($("#mensajeCancel").val().trim());
+                        //window.location = urlCancel;
+                        var vect = urlCancel.split("cancelar/");
+                        //console.log(vect);
+                        $.ajax({
+                            type: 'GET',
+                            url: 'cancelar',
+                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val()},
+                            success: function(data){
+                                
+                               //window.location = "<?php echo CController::createUrl('orden/listado'); ?>"; 
+                                console.log(data);
+                            }
+                        });
+                        
                     }
-                }, {
-                    "label" : "No",
-                    "class" : "btn",
                 }]);
+                
+//                bootbox.setDefaults({
+//                    closeButton:true,
+//                });
             
         });
 	

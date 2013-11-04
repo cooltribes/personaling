@@ -93,29 +93,32 @@ class Imagen extends CActiveRecord
 	public function getUrl($opciones=array())
 	{
 		
-		$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto
-		$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto
+		$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto jpg
+		$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto .
+		$opciones['baseUrl'] = isset($opciones['baseUrl'])?$opciones['baseUrl']:true; // valor por defecto true
 		
-		
+		$baseUrl = '';
+		if ($opciones['baseUrl'])
+			$baseUrl = Yii::app()->baseUrl;
 		$ext = pathinfo($this->url, PATHINFO_EXTENSION);
 		//echo $ext; 
 		if ($ext == $opciones['ext'] )
-			return Yii::app()->baseUrl.str_replace(".",$opciones['type'],$this->url);
+			return $baseUrl.str_replace(".",$opciones['type'],$this->url);
 		
 		//$info = pathinfo($this->url);
 		//$new_file = $info['filename'] . '.' . $type;
 		$new_file = preg_replace('/\..+$/', '.' . $opciones['ext'] , $this->url);
-		$new_file_path = Yii::app()->basePath.'/..'.$new_file;
+		$new_file_path = $baseUrl.'/..'.$new_file;
 		//$new_file_path = $_SERVER['DOCUMENT_ROOT'].$new_file;
 		
 		//echo $new_file_path;
 		//clearstatcache();
 		if (file_exists ($new_file_path)){
 			//echo 'sip';  
-			return Yii::app()->baseUrl.str_replace(".",$opciones['type'],$new_file);
+			return $baseUrl.str_replace(".",$opciones['type'],$new_file);
 		}
 		//echo 'nop';
-		return Yii::app()->baseUrl.str_replace(".",$opciones['type'],$this->url);	
+		return $baseUrl.str_replace(".",$opciones['type'],$this->url);	
 		
 		
 	}

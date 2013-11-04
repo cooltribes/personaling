@@ -78,7 +78,7 @@ class ProductoController extends Controller
 	public function actionGetImage($id)
 	{
 		$model = $this->loadModel($id);
-		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png'));
+		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> false ));
 		/*echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
 		echo("<br>".Yii::app()->basePath);*/
 		

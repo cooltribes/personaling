@@ -7,15 +7,15 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 //echo $orden->pago_id;
 
 ?>
-
+<?php echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);?>
 <div class="container margin_top">
 <div class="row">
   <div class="span8 offset2">
     <?php
       
-      if($orden->estado==1) // pendiente de pago
+      if($orden->estado==1||$orden->estado==7) // pendiente de pago o pago insuficiente
 	  {
-	  	if($pago->tipo == 1){
+	  	if($pago->tipo == 1 || $pago->tipo == 3){
 	      ?>
     <div class="alert alert-success margin_top_medium margin_bottom">
       <h1>Tu Pedido ha sido recibido con éxito.</h1>

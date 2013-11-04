@@ -12,7 +12,7 @@
  * 9 - Devuelto
  * 10 - Parcialmente devuelto
  * 
- * --------------
+ * -------------- 
  * Tipo de Guia
  * --------------
  * 0 - Envio Estandar
@@ -428,13 +428,13 @@ class Orden extends CActiveRecord
 		else
 			{
 				$orden=$this->findByPk($id);
-				$porpagar=Yii::app()->numberFormatter->formatDecimal($this->total-Detalle::model()->getSumxOrden($orden->id));
+				$porpagar=Yii::app()->numberFormatter->formatDecimal($orden->total-Detalle::model()->getSumxOrden($orden->id));
 			}
 		if($porpagar<0)
 			$porpagar=0;
 		return $porpagar;
 		
-	}
+	} 
 	
 	
 	

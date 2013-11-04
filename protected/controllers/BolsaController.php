@@ -1236,7 +1236,7 @@ class BolsaController extends Controller
 			$detPago->nTransferencia = $_POST['numeroTrans'];
 			$detPago->comentario = $_POST['comentario'];
 			$detPago->banco = $_POST['banco'];
-			$detPago->monto = $_POST['monto'];
+			$detPago->monto = $detPago->monto + $_POST['monto'];
 			$detPago->cedula = $_POST['cedula'];
 			$detPago->estado = 0; // defecto
 			$detPago->orden_id = $_POST['idOrden'];

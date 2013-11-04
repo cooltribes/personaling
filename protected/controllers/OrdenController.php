@@ -1250,9 +1250,9 @@ public function actionValidar()
 	}
 
 	public function actionCancelar($id)
-	{
-			
-		$orden = Orden::model()->findByPK($id);
+	{   
+            
+            $orden = Orden::model()->findByPK($id);
 		$end="";
 		if($orden->estado==1)
 		{
@@ -1279,6 +1279,12 @@ public function actionValidar()
 						$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
 						$estado->fecha = date("Y-m-d H:i:s");
 						$estado->orden_id = $orden->id;
+                                                
+                                                //Si hay un motivo de cancelacion
+                                                if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
+                                                    $estado->observacion = $_GET['mensaje'];
+                                                }
+                                                
 								
 						if($estado->save())
 						{
@@ -1294,7 +1300,7 @@ public function actionValidar()
 			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
 			$end='no';
 		}
-		if(isset($_POST['admin'])){
+		if(isset($_POST['admin']) || isset($_GET['admin'])){
 			echo $end;
 			return 0;
 		}else

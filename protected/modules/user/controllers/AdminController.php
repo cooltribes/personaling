@@ -1481,7 +1481,7 @@ if(isset($_POST['Profile']))
 								
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
-											$orden->descuento = $_POST['total'];
+											
 											
 											$orden->estado = 2; // en espera de confirmación
 											$balance->total = (double) $_POST['total']*(-1);

@@ -280,7 +280,7 @@ if(!Yii::app()->user->isGuest){
     </div>
     <hr/>
     <div class="row">
-      <div class="span12 text_align_center creditos">Personaling &reg; <?php echo date("Y"); ?> | Todos los derechos reservados<br/>
+      <div class="span12 text_align_center creditos">Personaling C.A &reg; <?php echo date("Y"); ?> RIF: J-40236088-6 | Todos los derechos reservados<br/>
        Programado en Venezuela por <a href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> </div>
     </div>
   </footer>

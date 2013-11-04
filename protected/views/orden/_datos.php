@@ -24,16 +24,27 @@ echo"<tr>";
 	echo "<td>".Yii::app()->numberFormatter->format("#,##0.00",$data->total)."</td>"; // precio
 	//echo "<td>".$data->total."</td>"; // monto total
 	//--------------------
-	$tipoPago = Pago::model()->findByAttributes(array('id'=>$data->pago_id));
-	
-	if($tipoPago->tipo==1)
-		echo "<td>Dep. o Transfer</td>"; // metodo de pago
-	if($tipoPago->tipo==2)
-		echo "<td>Tarjeta de Credito</td>"; 
-	if($tipoPago->tipo==4)
-		echo "<td>MercadoPago</td>"; 
-	// incluir demas tipos luego
-	
+	echo "<td>";
+        
+        if(count($data->detalles)){
+            foreach ($data->detalles as $detallePago){
+            
+            if($detallePago->pagos[0]->tipo==1)
+		echo "Dep. o Transfer"; // metodo de pago
+            if($detallePago->pagos[0]->tipo==2)
+                    echo "Tarjeta de Crédito"; 
+            if($detallePago->pagos[0]->tipo==3)
+                    echo "Uso de Balance"; 
+            if($detallePago->pagos[0]->tipo==4)
+                    echo "MercadoPago"; 
+            
+            echo "</br>";
+            
+        }
+        }else{
+            echo "Dep. o Transfer"; 
+        }
+	echo "</td>";
 	
 	//----------------------Estado
 	if($data->estado == 1)

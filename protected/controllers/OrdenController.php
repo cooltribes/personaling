@@ -1300,7 +1300,7 @@ public function actionValidar()
 			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
 			$end='no';
 		}
-		if(isset($_POST['admin'])){
+		if(isset($_POST['admin']) || isset($_GET['admin'])){
 			echo $end;
 			return 0;
 		}else

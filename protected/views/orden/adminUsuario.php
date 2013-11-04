@@ -232,11 +232,11 @@ $template = '{summary}
                         $.ajax({
                             type: 'GET',
                             url: 'cancelar',
-                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val()},
+                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val(), admin: 1},
                             success: function(data){
                                 
-                               //window.location = "<?php echo CController::createUrl('orden/listado'); ?>"; 
-                                console.log(data);
+                               window.location = "<?php echo CController::createUrl('orden/listado'); ?>"; 
+                               // console.log(data);
                             }
                         });
                         

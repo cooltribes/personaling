@@ -198,6 +198,29 @@ $template = '{summary}
 		
 		
 	} // enviar
+        
+        $("[id^='linkCancelar']").click(function (e){
+            e.preventDefault();
+            console.log("click");
+            var elem = $(this).attr('href');
+            console.log(elem);
+            
+            bootbox.dialog("Cuéntanos por qué deseas cancelar este pedido...  \n\
+                <br><br><textarea id='mensajeCancel'  maxlength='255' style='resize:none; width: 500px;' rows='4' cols='400'> ",
+                [{
+                    "label" : "Cancelar",
+                    "class" : "btn-danger",
+                    "icon"  : "icon-trash",
+                    "callback": function() {
+
+                    }
+                }, {
+                    "label" : "No",
+                    "class" : "btn",
+                }]);
+            
+        });
 	
+        
 	
 </script>

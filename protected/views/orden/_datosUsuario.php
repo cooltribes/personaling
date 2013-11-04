@@ -69,13 +69,13 @@
             	
             	";
             
-            if($data->estado==1){
+            if($data->estado==1 || true){
                 echo "<li class='divider'></li>
                     <li>".
                         CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
                                         $this->createUrl('orden/cancelar',array('id'=>$data->id)),
                                         array(
-                                        'id'=>'link'.$data->id)
+                                        'id'=>'linkCancelar'.$data->id)
                                     )            
                      ."</li>";
             }

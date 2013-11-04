@@ -1227,31 +1227,29 @@ class BolsaController extends Controller
 		{
 			$usuario = Yii::app()->user->id; 
 			
-			if($_POST['idDetalle'] != 0)
-				$detPago = Detalle::model()->findByPk($_POST['idDetalle']);
-			else
-				$detPago = new Detalle;
-				
+			
+			$detPago = new Detalle;
+			$pago=new Pago;	
 			$detPago->nombre = $_POST['nombre'];
 			$detPago->nTransferencia = $_POST['numeroTrans'];
 			$detPago->comentario = $_POST['comentario'];
 			$detPago->banco = $_POST['banco'];
-			$detPago->monto = $detPago->monto + $_POST['monto'];
+			$detPago->monto = str_replace(',','.',$_POST['monto']);
 			$detPago->cedula = $_POST['cedula'];
 			$detPago->estado = 0; // defecto
 			$detPago->orden_id = $_POST['idOrden'];
 							
-			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia']." ".date("H:i:s");
+			$detPago->fecha = $_POST['ano']."-".$_POST['mes']."-".$_POST['dia']." ".date("H:i:s");
 			
 			if($detPago->save())
 			{
 				
-				if($_POST['idDetalle'] != 0)
-					$orden = Orden::model()->findByAttributes(array('detalle_id'=>$_POST['idDetalle']));
-				else
-				{
+					$pago->tipo = 1; // trans
+					$pago->tbl_detalle_id = $detPago->id;
+					$pago->save();
+				
 					$orden = Orden::model()->findByAttributes(array('id'=>$_POST['idOrden']));
-				}
+			
 					
 				$orden->estado = 2;	// se recibió los datos de pago por transferencia
 				
@@ -1274,7 +1272,7 @@ class BolsaController extends Controller
 				}				
 			}
 			else {
-				echo "no";
+				print_r($detPago->getErrors());
 			}
 			
 		}

@@ -140,7 +140,7 @@ $template = '{summary}
         
 	function enviar()
 	{	
-		var idDetalle = $("#idDetalle").attr("value");
+		
 		var nombre= $("#nombre").attr("value");
 		var numeroTrans = $("#numeroTrans").attr("value");
 		var dia = $("#dia").attr("value");
@@ -172,7 +172,7 @@ $template = '{summary}
 	           	$.ajax({
 			        type: "post", 
 			        url: "../bolsa/cpago", // action de controlador de bolsa cpago
-			        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto}, 
+			        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden,'banco':banco, 'cedula':cedula, 'monto':monto}, 
 			        success: function (data) {
 						
 						if(data=="ok")

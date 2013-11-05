@@ -979,7 +979,8 @@ class BolsaController extends Controller
 								$detalle->orden_id=$orden->id;
 								$detalle->save();
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+									$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+									//$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
 									if($balance_usuario > 0){
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
@@ -1006,6 +1007,7 @@ class BolsaController extends Controller
 												$balance->orden_id = $orden->id;
 												$balance->user_id = $usuario;
 												$balance->tipo = 1;
+												$balance->total=round($balance->total,2);
 												$balance->save();
 												
 												$pago->tipo = 3; // trans

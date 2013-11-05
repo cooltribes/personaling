@@ -8,10 +8,26 @@ $this->breadcrumbs=array(
 
 $usuario = User::model()->findByPk($orden->user_id); 
 
+
+
+
 ?>
 
 
+
+
+
 <div class="container margin_top">
+			<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
@@ -883,16 +899,7 @@ $usuario = User::model()->findByPk($orden->user_id);
   
   <div class="row" id="mensajes">
   	
-  		<?php if(Yii::app()->user->hasFlash('success')){?>
-	    <div class="alert in alert-block fade alert-success text_align_center">
-	        <?php echo Yii::app()->user->getFlash('success'); ?>
-	    </div>
-	<?php } ?>
-	<?php if(Yii::app()->user->hasFlash('error')){?>
-	    <div class="alert in alert-block fade alert-error text_align_center">
-	        <?php echo Yii::app()->user->getFlash('error'); ?>
-	    </div>
-	<?php } ?>
+  
   	
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>

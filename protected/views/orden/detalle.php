@@ -563,7 +563,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	          </td>
 	          <td>
 	          	<?php
-	          	echo CHtml::link('Factura', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	echo CHtml::link('Factura Electrónica', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
 	          	?>
 	          </td>
 	          <td>

@@ -32,7 +32,7 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','enviar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -79,6 +79,10 @@ class GiftcardController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 		));
+	}
+
+	public function actionEnviar(){
+		$this->render('enviargiftcard');
 	}
 
 	/**

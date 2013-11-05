@@ -32,7 +32,7 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','enviar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,21 +62,27 @@ class GiftcardController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Giftcard;
+		$model = new Giftcard;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Giftcard']))
 		{
-			$model->attributes=$_POST['Giftcard'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $_POST['Giftcard'];
+			if($model->save()){
+                            	$this->redirect(array('view','id'=>$model->id));
+                        }
+			
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
 		));
+	}
+
+	public function actionEnviar(){
+		$this->render('enviargiftcard');
 	}
 
 	/**

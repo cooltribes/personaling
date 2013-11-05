@@ -5,7 +5,7 @@
         <h1>Panel de Control de Usuarios</h1>
       </div>
       <div class="span2">
-        <div class="bg_color10 padding_small color1 text_align_center"><span class="T_large">1844</span><br/>
+          <div class="bg_color10 padding_small color1 text_align_center"><span class="T_large"><?php echo User::model()->count(); ?></span><br/>
           usuarios registrados</div>
       </div>
     </div>

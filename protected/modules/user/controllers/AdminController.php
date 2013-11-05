@@ -1386,23 +1386,18 @@ if(isset($_POST['Profile']))
 		}
 	
 	public function actionComprafin()
-	{
+	{	$ord=false;
 		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
 		 {
 		 	$respCard = "";
 		 	$usuario = Yii::app()->session['usercompra']; 
 		
 			
-			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4 || $_POST['tipoPago']==2){ // transferencia o MP
+			if($_POST['tipoPago']==1 || $_POST['tipoPago']==3 ){ // transferencia o Balance
+							
 				
-				if($_POST['tipoPago']==2)
-				{
-					$detalle = Detalle::model()->findByPk($_POST['idDetalle']); // si viene de tarjeta de credito trae ya el detalle listo
-				}
-				else
-				{
-					$detalle = new Detalle;
-				}
+				$detalle = new Detalle;
+				
 			
 				if($detalle->save())
 				{
@@ -1442,6 +1437,7 @@ if(isset($_POST['Profile']))
 							$orden->envio = $_POST['envio'];
 							$orden->iva = $_POST['iva'];
 							$orden->descuentoRegalo = 0;
+							$orden->descuento = 0;
 							$orden->total = $_POST['total'];
 							$orden->seguro = $_POST['seguro'];
 							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
@@ -1477,35 +1473,52 @@ if(isset($_POST['Profile']))
 									
 								
 									if($balance_usuario > 0){
-										
-								
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
-											
-											
-											$orden->estado = 2; // en espera de confirmación
-											$balance->total = (double) $_POST['total']*(-1);
+											/*$orden->descuento = $_POST['total'];
+											$orden->total = 0;
+											$orden->estado = 2; // en espera de confirmación*/
+											$orden->estado = 3; 
+											$balance->total = $_POST['total']*(-1);
+											$detalle->monto=$_POST['total'];
 										}else{
-											$orden->descuento = (double) $balance_usuario;
-											
-											$balance->total = (double) $balance_usuario*(-1);
+											//$orden->descuento = $balance_usuario;
+											//$orden->total = $_POST['total'] - $balance_usuario;
+											$orden->estado = 7; 
+											$balance->total = $balance_usuario*(-1);
+											$detalle->monto=$balance_usuario;
 										}
 										
+										if($orden->save()){
+											
+											$detalle->comentario="Prueba de Saldo";
+											$detalle->estado=1;
+											$detalle->orden_id=$orden->id;
+											if($detalle->save()){
+												$balance->orden_id = $orden->id;
+												$balance->user_id = $usuario;
+												$balance->tipo = 1;
+												$balance->total=round($balance->total,2);
+												$balance->save();
+												
+												$pago->tipo = 3; // trans
+												
+												$pago->save();
+												
+												
+											}
+											$ord=true;
+										}
 										
 										//$balance->total = $orden->descuento*(-1);
 										
-										
+											
 									}
-								}else{
-									$orden->descuento = $_POST['descuento'];	
 								}
-								
-								if($orden->save()){
-								$balance->orden_id = $orden->id;
-								$balance->user_id = $usuario;
-								$balance->tipo = 1;	
+								if($ord){
+							
 								$i=0;
-								$balance->save();
+							
 								// añadiendo a orden producto
 								foreach($ptcs as $ptc)
 								{

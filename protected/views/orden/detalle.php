@@ -1002,7 +1002,7 @@ else{
   <div class="modal-body">
     <form class="">
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1011,7 +1011,7 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1020,7 +1020,7 @@ else{
         </div>
       </div>
         <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1030,7 +1030,7 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1039,16 +1039,17 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)')); ?>
+          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)',
+		  'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar()))); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
       <div class="controls controls-row">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
 <![endif]-->
 <?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?>
@@ -1056,7 +1057,7 @@ else{
 <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">

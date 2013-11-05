@@ -16,7 +16,7 @@ $this->breadcrumbs=array(
 			<legend>Generar Gift Card</legend>
 			<div class="control-group">
 			<label class="control-label" for="inputMonto">Monto</label>
-			<div class="controls row-fluid">
+			<div class="controls">
 				<select class="span3">
 				  <option>300,00</option>
 				  <option>400,00</option>

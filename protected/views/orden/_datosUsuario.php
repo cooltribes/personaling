@@ -69,7 +69,7 @@
             	
             	";
             
-            if($data->estado==1 || true){
+            if($data->estado==1){
                 echo "<li class='divider'></li>
                     <li>".
                         CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",

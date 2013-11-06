@@ -54,7 +54,14 @@ class Giftcard extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('codigo, monto, estado, inicio_vigencia, fin_vigencia, comprador', 'required'),
+			array('codigo, monto, estado, comprador', 'required'),
+                        array('inicio_vigencia', 'required', 'message' => '¿Desde cuándo es válida la giftcard?'),
+                        array('fin_vigencia', 'required', 'message' => '¿Hasta cuándo es válida la giftcard?'),
+                        
+                        array( 'inicio_vigencia','compare','compareValue' => date("Y-m-d"),'operator'=>'>=', 'allowEmpty'=>'false', 'message' => 'La fecha de inicio de vigencia debe ser mayor o igual a la fecha de hoy.'),
+			array( 'fin_vigencia','compare','compareAttribute' => 'inicio_vigencia', 'operator'=>'>=', 'allowEmpty'=>'false', 'message' => 'La fecha de fin de vigencia debe ser mayor o igual a la fecha de inicio.'),
+                    
+                    
 			array('estado, comprador, beneficiario', 'numerical', 'integerOnly'=>true),
 			array('monto', 'numerical'),
 			array('codigo', 'length', 'max'=>25),
@@ -88,8 +95,8 @@ class Giftcard extends CActiveRecord
 			'codigo' => 'Codigo',
 			'monto' => 'Monto',
 			'estado' => 'Estado',
-			'inicio_vigencia' => 'Inicio Vigencia',
-			'fin_vigencia' => 'Fin Vigencia',
+			'inicio_vigencia' => 'Válida desde',
+			'fin_vigencia' => 'Válida hasta',
 			'fecha_uso' => 'Fecha Uso',
 			'comprador' => 'Comprador',
 			'beneficiario' => 'Beneficiario',
@@ -121,4 +128,25 @@ class Giftcard extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+         /**
+         * This method is invoked before validation starts.
+         * @return boolean whether validation should be executed. Defaults to true.
+         */
+        protected function beforeValidate() {
+
+            if($this->inicio_vigencia){
+                $this->inicio_vigencia = strtotime($this->inicio_vigencia);
+                $this->inicio_vigencia = date('Y-m-d', $this->inicio_vigencia); 
+            }
+            
+            
+            if($this->fin_vigencia){
+                $this->fin_vigencia = strtotime($this->fin_vigencia);
+                $this->fin_vigencia = date('Y-m-d', $this->fin_vigencia); 
+            }
+            
+            return parent::beforeValidate();
+            
+        }
 }

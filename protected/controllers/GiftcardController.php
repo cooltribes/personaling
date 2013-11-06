@@ -7,7 +7,7 @@ class GiftcardController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
+        const DIGITOS_CODIGO = 15;
 	/**
 	 * @return array action filters
 	 */
@@ -28,16 +28,17 @@ class GiftcardController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviar'),
+				'actions'=>array('create','enviar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'actions'=>array('index','admin','delete','update'),
+				//'users'=>array('admin'),
+                                'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -65,14 +66,36 @@ class GiftcardController extends Controller
 		$model = new Giftcard;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		//$this->performAjaxValidation($model);
 
 		if(isset($_POST['Giftcard']))
 		{
-			$model->attributes = $_POST['Giftcard'];
-			if($model->save()){
-                            	$this->redirect(array('view','id'=>$model->id));
+                    
+                    $model->attributes = $_POST['Giftcard'];
+                    $model->estado = 1;
+                    $model->comprador = Yii::app()->user->id;
+                    $model->codigo = "x";
+                    
+//                    echo "DAtos";
+//                    echo "<pre>";
+//                    print_r($model->attributes);
+//                    echo "</pre>";
+//
+//                    Yii::app()->end();                    
+
+                    if($model->validate()){
+                        
+                        do{  
+                            $model->codigo = $this->generarCodigo();
+                            $existe = Giftcard::model()->countByAttributes(array('codigo' => $model->codigo));                        
+                            
+                        }while($existe);
+                        
+                        if($model->save()){
+                            $this->redirect(array('enviar','id'=>$model->id));
                         }
+                        
+                    }
 			
 		}
 
@@ -81,8 +104,9 @@ class GiftcardController extends Controller
 		));
 	}
 
-	public function actionEnviar(){
-		$this->render('enviargiftcard');
+	public function actionEnviar($id){
+            $model = $this->loadModel($id);
+		$this->render('enviargiftcard', array('model' => $model));
 	}
 
 	/**
@@ -176,4 +200,68 @@ class GiftcardController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        private function generarCodigo(){
+            $cantNum = 7;
+            $cantLet = 8;
+            
+            $l = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            //$n = '0123456789';
+            
+            $LETRAS = str_split($l);
+            $NUMEROS = range(0, 9);
+            
+            //aleatorizar numeros
+//            shuffle($NUMEROS);            
+//            //aleatorizar Letras
+//            shuffle($LETRAS);
+//            //            for ($i = 0, $result = ''; $i < $cantLet; $i++) {
+////                $indice = rand(0, $letrasTotal - 1);
+////                $result .= substr($chars, $indice, 1);
+////            }
+//            
+//            
+//            array_r
+//            
+//            $letrasTotal = strlen($LETRAS);
+//            $numerosTotal = strlen($NUMEROS);
+
+            $codigo = array();
+            //Seleccionar cantLet letras
+            for ($i = 0; $i < $cantLet; $i++) {
+                $codigo[] = $LETRAS[array_rand($LETRAS)];
+            }
+            for ($i = 0; $i < $cantNum; $i++) {
+                $codigo[] = array_rand($NUMEROS);
+            }
+            
+            shuffle($codigo);
+            
+//            echo "LeTRAS";
+//            echo "<pre>";
+//            print_r($LETRAS);
+//            echo "</pre>";
+//            
+//            echo "NUMEROS";
+//            echo "<pre>";
+//            print_r($NUMEROS);
+//            echo "</pre>";
+
+//            echo "alearorio<br>";
+//            echo array_rand($LETRAS);
+
+
+//            echo "<pre>";
+//            print_r($codigo);
+//            echo "</pre>";
+
+
+
+            $codigo = implode("", $codigo);
+            
+//            echo $codigo;
+//            Yii::app()->end();
+            
+            return $codigo;
+        }
 }

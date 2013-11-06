@@ -8,9 +8,16 @@ $this->breadcrumbs=array(
 
 ?>
 
-<div class="container margin_top">
-<h1>Administrar Gift cards</h1>
-
+<div class="container">
+<div class="page-header">
+  <h1>Administrar Gift cards</h1>
+</div>
+<div class="row">
+  <div class="span3">
+      <a href="create" class="btn btn-success">Crear Gift Card</a>
+  </div>
+</div>
+<hr/>
 <table class="table table-bordered table-hover table-striped">
   <tr>
   	<th>Id</th>
@@ -18,47 +25,68 @@ $this->breadcrumbs=array(
   	<th>Monto</th>
   	<th>Estado</th>
   	<th>Fecha Desde</th>
-  	<th>Fecha Hasta</th>  	  	
-  	<th>Acciones</th>
+  	<th>Fecha Hasta</th> 
+    <th>Envio</th> 	  	
+  	<th class="span1">Acciones</th>
   </tr>	
   <tr>
   	<td>1</td>
-  	<td class="text_center_align"> <img src="http://placehold.it/60x30"> </td>  	
+  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>  	
   	<td>400,00</td>
   	<td>Aplicada</td>
   	<td>15/11/2013</td>
   	<td>15/11/2014</td>
-  	<td>i</td>
+    <td>Email</td>
+  	<td>
+      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
+        <i class="icon-cog"></i> <b class="caret"></b>
+      </a>
+    </td>
   </tr>
 
   <tr>
   	<td>2</td>
-  	<td class="text_center_align"> <img src="http://placehold.it/60x30"> </td>
+  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>
   	<td>400,00</td>
   	<td>Vencida</td>
   	<td>1/12/2013</td>
-  	<td>1/12/2014</td>  	
-  	<td>i</td>
+  	<td>1/12/2014</td> 
+    <td>Impresa</td>     	
+    <td>
+      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
+        <i class="icon-cog"></i> <b class="caret"></b>
+      </a>
+    </td>
   </tr>
 
   <tr>
   	<td>3</td>
-  	<td class="text_center_align"> <img src="http://placehold.it/60x30"> </td>
+  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>
   	<td>1000,00</td>
   	<td>Aplicada</td>
   	<td>9/11/2013</td>
-  	<td>9/11/2014</td>  	
-  	<td>i</td>
+  	<td>9/11/2014</td>  
+    <td>Email</td>
+    <td>
+      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
+        <i class="icon-cog"></i> <b class="caret"></b>
+      </a>
+    </td>
   </tr>
 
   <tr>
   	<td>4</td>
-  	<td class="text_center_align"> <img src="http://placehold.it/60x30"> </td>  	
+  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>  	
   	<td>500,00</td>
   	<td>Inactiva</td>
   	<td>01/12/2013</td>
-  	<td>01/12/2014</td>  	
-  	<td>i</td>
+  	<td>01/12/2014</td> 
+    <td>Impresa</td> 	
+    <td>
+      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
+        <i class="icon-cog"></i> <b class="caret"></b>
+      </a>
+    </td>
   </tr>      
 </table>
 

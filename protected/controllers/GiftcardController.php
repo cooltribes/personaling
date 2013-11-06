@@ -62,16 +62,18 @@ class GiftcardController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Giftcard;
+		$model = new Giftcard;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Giftcard']))
 		{
-			$model->attributes=$_POST['Giftcard'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $_POST['Giftcard'];
+			if($model->save()){
+                            	$this->redirect(array('view','id'=>$model->id));
+                        }
+			
 		}
 
 		$this->render('create',array(

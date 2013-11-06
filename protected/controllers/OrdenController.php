@@ -887,6 +887,7 @@ public function actionValidar()
 		$datos=$datos."<input type='hidden'id='idOrden' value='".$orden->id."' />";
 		
   		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Nombre del Depositante <span class='required'>*</span></label><![endif]-->";
     	$datos=$datos."<div class='controls'>";
       	$datos=$datos. CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')) ;
 		$datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
@@ -894,6 +895,7 @@ public function actionValidar()
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Número o Código del Depósito <span class='required'>*</span></label><![endif]-->";
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')) ;
 		$datos=$datos."<div style='display:none' class='help-inline'></div>";
@@ -901,6 +903,7 @@ public function actionValidar()
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Banco<span class='required'>*</span></label><![endif]-->";
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); 
 		//$datos=$datos. CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito'));
@@ -909,6 +912,7 @@ public function actionValidar()
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Cedula<span class='required'>*</span></label><![endif]-->";
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante'));
         $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
@@ -916,27 +920,30 @@ public function actionValidar()
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Monto (separar decimales con coma ',')<span class='required'>*</span></label><![endif]-->";
+		
 		$datos=$datos."<div class='controls'>";
 		//$porpagar=Yii::app()->numberFormatter->formatDecimal($data->total-Detalle::model()->getSumxOrden($data->id));	
-		$porpagar = $orden->total - Detalle::model()->getSumxOrden($orden->id);
-		if($porpagar<0)
-			$porpagar=0;
+		
 		
 		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5',
                     'placeholder'=>'Monto. Separe los decimales con una coma (,)',
-                    'value'=>Yii::app()->numberFormatter->formatDecimal($porpagar))); 
+                    'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar()))); 
                 
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='controls controls-row'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Fecha del depósito DD/MM/YYYY <span class='required'>*</span></label><![endif]-->";
 		$datos=$datos. CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día'));
 		$datos=$datos. CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); 
 		$datos=$datos. CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); 
       	$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Comentario <span class='required'>*</span></label><![endif]-->";
+		
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); 
         $datos=$datos."<div style='display:none' class='help-inline'></div>";

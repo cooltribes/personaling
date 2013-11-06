@@ -32,7 +32,7 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviar'),
+				'actions'=>array('create','update','enviar','enviarGiftCard'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -84,7 +84,9 @@ class GiftcardController extends Controller
 	public function actionEnviar(){
 		$this->render('enviargiftcard');
 	}
-
+	public function actionEnviarGiftCard(){
+		$this->render('enviargiftcard_usuario');
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

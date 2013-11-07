@@ -69,22 +69,22 @@ class GiftcardController extends Controller
 		//$this->performAjaxValidation($model);
 
 		if(isset($_POST['Giftcard']))
-		{
+		{                                        
+//                    echo "DAtos";
+//                    echo "<pre>";
+//                    print_r($_POST);
+//                    echo "</pre>";
+//
+//                    Yii::app()->end();  
                     
                     $model->attributes = $_POST['Giftcard'];
                     $model->estado = 1;
                     $model->comprador = Yii::app()->user->id;
-                    $model->codigo = "x";
-                    
-//                    echo "DAtos";
-//                    echo "<pre>";
-//                    print_r($model->attributes);
-//                    echo "</pre>";
-//
-//                    Yii::app()->end();                    
+                    $model->codigo = "x"; // para validar los otros campos                                      
 
                     if($model->validate()){
                         
+                        //Generar un codigo que no exista.
                         do{  
                             $model->codigo = $this->generarCodigo();
                             $existe = Giftcard::model()->countByAttributes(array('codigo' => $model->codigo));                        
@@ -92,22 +92,45 @@ class GiftcardController extends Controller
                         }while($existe);
                         
                         if($model->save()){
-                            $this->redirect(array('enviar','id'=>$model->id));
-                        }
-                        
-                    }
-			
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('success',UserModule::t("Se ha guardado la Gift Card."));
+                                
+                            if(isset($_POST["Guardar"])){
+                                $this->redirect(array('index'));
+                            }else if(isset($_POST["Enviar"])){
+                                $this->redirect(array('enviar','id'=>$model->id));
+                            }
+                            
+                        }                        
+                    }			
 		}
-
+                
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
 
-	public function actionEnviar($id){
+	/*Action para enviar la Giftcard*/
+        public function actionEnviar($id){
             $model = $this->loadModel($id);
-		$this->render('enviargiftcard', array('model' => $model));
+            
+            $envio = new EnvioGiftcard;
+            
+            if(isset($_POST["EnvioGiftcard"])){
+               
+                $envio->attributes = $_POST["EnvioGiftcard"];
+                
+                $envio->validate();
+                
+            }
+            
+            
+            $this->render('enviargiftcard', array('model' => $model, 'envio' => $envio));
+                
 	}
+        
+        
+        
 	public function actionEnviarGiftCard(){
 		$this->render('enviargiftcard_usuario');
 	}
@@ -157,7 +180,8 @@ class GiftcardController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Giftcard');
+		$dataProvider = new CActiveDataProvider('Giftcard');
+                
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

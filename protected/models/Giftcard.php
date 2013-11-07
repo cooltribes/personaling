@@ -23,8 +23,8 @@
  * @property integer $beneficiario
  *
  * The followings are the available model relations:
- * @property Users $comprador
- * @property Users $beneficiario
+ * @property User $comprador
+ * @property User $beneficiario
  */
 class Giftcard extends CActiveRecord
 {
@@ -61,7 +61,7 @@ class Giftcard extends CActiveRecord
                         array( 'inicio_vigencia','compare','compareValue' => date("Y-m-d"),'operator'=>'>=', 'allowEmpty'=>'false', 'message' => 'La fecha de inicio de vigencia debe ser mayor o igual a la fecha de hoy.'),
 			array( 'fin_vigencia','compare','compareAttribute' => 'inicio_vigencia', 'operator'=>'>=', 'allowEmpty'=>'false', 'message' => 'La fecha de fin de vigencia debe ser mayor o igual a la fecha de inicio.'),
                     
-                    
+                        array('codigo', 'unique', 'message'=>'Código de gift card ya registrado.'),
 			array('estado, comprador, beneficiario', 'numerical', 'integerOnly'=>true),
 			array('monto', 'numerical'),
 			array('codigo', 'length', 'max'=>25),
@@ -80,8 +80,8 @@ class Giftcard extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'comprador' => array(self::BELONGS_TO, 'Users', 'comprador'),
-			'beneficiario' => array(self::BELONGS_TO, 'Users', 'beneficiario'),
+			'UserComprador' => array(self::BELONGS_TO, 'User', 'comprador'),
+			'UserBeneficiario' => array(self::BELONGS_TO, 'User', 'beneficiario'),
 		);
 	}
 
@@ -148,5 +148,18 @@ class Giftcard extends CActiveRecord
             
             return parent::beforeValidate();
             
+        }
+        
+        /*Retorna la fecha de inicio de vigencia como un timestamp*/
+        public function getInicioVigencia() {
+            return strtotime($this->inicio_vigencia);
+        }
+        /*Retorna la fecha de inicio de vigencia como un timestamp*/
+        public function getFinVigencia() {
+            return strtotime($this->fin_vigencia);
+        }
+        /*Retorna la fecha de inicio de vigencia como un timestamp*/
+        public function getFechaUso() {
+            return strtotime($this->fecha_uso);
         }
 }

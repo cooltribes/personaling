@@ -53,8 +53,12 @@ $this->breadcrumbs=array(
                         )); ?>	
 
 			<div class="control-group row">
-				<div class="controls pull-right">                                  
-				  <button type="submit" class="btn btn-danger">Continuar</button>
+				<div class="controls pull-right">  
+                                    
+                                    <button type="submit" name="Guardar" class="btn margin_right_medium">Guardar Gift Card</button>
+                                  <button type="submit" name="Enviar" class="btn btn-danger">
+                                      <i class="icon-gift icon-white"></i> Enviar Gift Card
+                                  </button>
 				</div>
 			</div>
 		</fieldset>

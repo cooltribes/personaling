@@ -2,92 +2,99 @@
 /* @var $this GiftcardController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->breadcrumbs=array(
-	'Giftcards',
+$this->breadcrumbs = array(
+    'Giftcards',
 );
-
 ?>
 
 <div class="container">
-<div class="page-header">
-  <h1>Administrar Gift cards</h1>
-</div>
-<div class="row">
-  <div class="span3">
-      <a href="create" class="btn btn-success">Crear Gift Card</a>
-  </div>
-</div>
-<hr/>
-<table class="table table-bordered table-hover table-striped">
-  <tr>
-  	<th>Id</th>
-  	<th>Vista Rápida</th>
-  	<th>Monto</th>
-  	<th>Estado</th>
-  	<th>Fecha Desde</th>
-  	<th>Fecha Hasta</th> 
-    <th>Envio</th> 	  	
-  	<th class="span1">Acciones</th>
-  </tr>	
-  <tr>
-  	<td>1</td>
-  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>  	
-  	<td>400,00</td>
-  	<td>Aplicada</td>
-  	<td>15/11/2013</td>
-  	<td>15/11/2014</td>
-    <td>Email</td>
-  	<td>
-      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
-        <i class="icon-cog"></i> <b class="caret"></b>
-      </a>
-    </td>
-  </tr>
+    <div class="page-header">
+    <!-- FLASH ON --> 
+    <?php $this->widget('bootstrap.widgets.TbAlert', array(
+            'block'=>true, // display a larger alert block?
+            'fade'=>true, // use transitions?
+            'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+            'alerts'=>array( // configurations per alert type
+                'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            ),
+        )
+    ); ?>	
+    <!-- FLASH OFF --> 
+        <h1>Administrar Gift cards</h1>
+    </div>
+    <div class="row">
+        <div class="span3">
+            <a href="create" class="btn btn-success">Crear Gift Card</a>
+        </div>
+    </div>
+    <hr/>
+    <style>
+        .table th{
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+    
+    <?php
+    $template = '{summary}
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+        <tr>
+            <th rowspan="2" scope="col"></th>
+            <th rowspan="2" scope="col">Id</th>
+            <th rowspan="2" scope="col">Comprador</th>
+            <th rowspan="2" scope="col">Estado</th>
+            <th rowspan="2" scope="col">Monto Bs.</th>
+            <th colspan="2" scope="col">Vigencia</th>
+            <th rowspan="2" scope="col">Fecha de Aplicacion</th>
+            <th rowspan="2" scope="col">Acciones</th>
+        </tr>
+        <tr>
+            <th scope="col">Desde</th>
+            <th scope="col">Hasta</th>
+        </tr>
+    {items}
+    </table>
+    {pager}
+	';
 
-  <tr>
-  	<td>2</td>
-  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>
-  	<td>400,00</td>
-  	<td>Vencida</td>
-  	<td>1/12/2013</td>
-  	<td>1/12/2014</td> 
-    <td>Impresa</td>     	
-    <td>
-      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
-        <i class="icon-cog"></i> <b class="caret"></b>
-      </a>
-    </td>
-  </tr>
+    $this->widget('zii.widgets.CListView', array(
+        'id' => 'list-auth-items',
+        'dataProvider' => $dataProvider,
+        'itemView' => '_view',
+        'template' => $template,
+        'afterAjaxUpdate' => " function(id, data) {						    	
+                        $('#todos').click(function() { 
+                inputs = $('table').find('input').filter('[type=checkbox]');
 
-  <tr>
-  	<td>3</td>
-  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>
-  	<td>1000,00</td>
-  	<td>Aplicada</td>
-  	<td>9/11/2013</td>
-  	<td>9/11/2014</td>  
-    <td>Email</td>
-    <td>
-      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
-        <i class="icon-cog"></i> <b class="caret"></b>
-      </a>
-    </td>
-  </tr>
+                                if($(this).attr('checked')){
+                     inputs.attr('checked', true);
+                }else {
+                     inputs.attr('checked', false);
+                } 	
+                        });
 
-  <tr>
-  	<td>4</td>
-  	<td class="span1"> <img src="http://placehold.it/60x30"> </td>  	
-  	<td>500,00</td>
-  	<td>Inactiva</td>
-  	<td>01/12/2013</td>
-  	<td>01/12/2014</td> 
-    <td>Impresa</td> 	
-    <td>
-      <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
-        <i class="icon-cog"></i> <b class="caret"></b>
-      </a>
-    </td>
-  </tr>      
-</table>
+                    } ",
+        'pager' => array(
+            'header' => '',
+            'htmlOptions' => array(
+                'class' => 'pagination pagination-right',
+            )
+        ),
+    ));
+    ?>
+  
+    <hr/>
+    <div class="row">
+      <div class="span3">
+        <select class="span3">
+          <option>Acciones en lote </option>
+          <option>Borrar</option>
+          <option>Pausar</option>
+        </select>
+      </div>
+      <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
+      <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
+    </div>
 
 </div>

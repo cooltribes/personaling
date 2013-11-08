@@ -102,8 +102,10 @@ $usuario = User::model()->findByPk($orden->user_id);
     if($orden->estado == 7)
     {
         $balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id));
+        if(isset($balance))
+        {
         $a = $balance->total * -1;
-        echo Yii::app()->numberFormatter->formatDecimal($a);
+        echo Yii::app()->numberFormatter->formatDecimal($a);}
     }
     else
     {
@@ -143,7 +145,7 @@ $usuario = User::model()->findByPk($orden->user_id);
     if($orden->estado == 5)
         echo "Orden Cancelada";
 
-    if($orden->estado == 7)
+    if($orden->estado == 7 && isset($balance))
         echo "Bs. que faltan.";
 
     // agregar demas estados

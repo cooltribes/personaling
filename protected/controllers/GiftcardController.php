@@ -7,7 +7,7 @@ class GiftcardController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-        const DIGITOS_CODIGO = 15;
+        const DIGITOS_CODIGO = 16;
 	/**
 	 * @return array action filters
 	 */
@@ -118,9 +118,63 @@ class GiftcardController extends Controller
             
             if(isset($_POST["EnvioGiftcard"])){
                
-                $envio->attributes = $_POST["EnvioGiftcard"];
-                
-                $envio->validate();
+                $envio->attributes = $_POST["EnvioGiftcard"];                
+               
+                    
+                //Si es un email valido, enviar giftcard
+                if($envio->validate()){      
+                    
+                    //Activar la giftcard solo si ya no ha sido aplicada
+                    if($model->estado != 3)
+                        $model->estado = 2;
+                    
+                    //De donde proviene la GC
+                    if($model->comesFromAdmin()){
+                        $saludo = "Personaling tiene una Gift Card como obsequio para tí.";
+                    }else{                        
+                        $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";
+                    }
+                    
+                    $datosTarjeta = "<h3>Datos de la Gift Card:</h3>
+                                      <strong>Monto: </strong>{$model->monto} Bs.<br>
+                                      <strong>Codigo: </strong>{$model->getCodigo()}<br>
+                                      <strong>Válida desde: </strong>".date("d-m-Y", $model->getInicioVigencia())."<br>
+                                      <strong>Válida hasta: </strong>".date("d-m-Y", $model->getFinVigencia())."<br>";
+                    
+                    $personalMes = "";                  
+                    if($envio->mensaje != ""){
+                        $personalMes = "<br/><br/><i>" . $envio->mensaje . "</i><br/>";
+                    }
+                                      
+                    $message = new YiiMailMessage;
+                    $message->view = "mail_invite";
+                    $subject = 'Gift Card de Personaling';
+                    $body = "¡Hola <strong>{$envio->nombre}</strong> !<br><br> {$saludo} 
+                            {$personalMes}
+                            <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com.<br/><br/>"
+                            .$datosTarjeta;
+                            
+//                    echo "Despues<pre>";
+//                    print_r($envio->attributes);
+//                    echo "</pre>";
+//
+//                    Yii::app()->end();
+                    
+                    $params = array('subject' => $subject, 'body' => $body);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+
+                    $message->addTo($envio->email);
+
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    Yii::app()->mail->send($message); 
+                    
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('success',UserModule::t("La Gift Card se ha enviado con éxito a <b>{$envio->email}.</b>"));
+                    
+                    $this->redirect(array("index"));
+                    
+                }
                 
             }
             
@@ -129,13 +183,24 @@ class GiftcardController extends Controller
                 
 	}
         
-        
-        
 	public function actionEnviarGiftCard(){
 		$this->render('enviargiftcard_usuario');
 	}
-	public function actionAplicar(){
-		$this->render('aplicar');
+
+        
+        public function actionAplicar(){
+            $aplicar = new AplicarGC;
+            
+            if(isset($_POST["AplicarGC"])){
+               $aplicar->attributes = $_POST["AplicarGC"];
+               
+               if($aplicar->validate()){
+                   
+               }
+               
+            }
+            
+		$this->render('aplicar', array('model' => $aplicar));
 	}
 	/**
 	 * Updates a particular model.
@@ -231,29 +296,13 @@ class GiftcardController extends Controller
 	}
         
         private function generarCodigo(){
-            $cantNum = 7;
+            $cantNum = 8;
             $cantLet = 8;
             
             $l = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            //$n = '0123456789';
             
             $LETRAS = str_split($l);
             $NUMEROS = range(0, 9);
-            
-            //aleatorizar numeros
-//            shuffle($NUMEROS);            
-//            //aleatorizar Letras
-//            shuffle($LETRAS);
-//            //            for ($i = 0, $result = ''; $i < $cantLet; $i++) {
-////                $indice = rand(0, $letrasTotal - 1);
-////                $result .= substr($chars, $indice, 1);
-////            }
-//            
-//            
-//            array_r
-//            
-//            $letrasTotal = strlen($LETRAS);
-//            $numerosTotal = strlen($NUMEROS);
 
             $codigo = array();
             //Seleccionar cantLet letras
@@ -265,26 +314,6 @@ class GiftcardController extends Controller
             }
             
             shuffle($codigo);
-            
-//            echo "LeTRAS";
-//            echo "<pre>";
-//            print_r($LETRAS);
-//            echo "</pre>";
-//            
-//            echo "NUMEROS";
-//            echo "<pre>";
-//            print_r($NUMEROS);
-//            echo "</pre>";
-
-//            echo "alearorio<br>";
-//            echo array_rand($LETRAS);
-
-
-//            echo "<pre>";
-//            print_r($codigo);
-//            echo "</pre>";
-
-
 
             $codigo = implode("", $codigo);
             

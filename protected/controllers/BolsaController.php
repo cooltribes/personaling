@@ -993,7 +993,7 @@ class BolsaController extends Controller
 	 * */
 	public function actionComprar()
 	{
-		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
+			if (Yii::app()->request->isPostRequest) // asegurar que viene en post
 		 {
 		 	$respCard = "";
 		 	$usuario = Yii::app()->user->id; 
@@ -1004,6 +1004,7 @@ class BolsaController extends Controller
 				if($_POST['tipoPago']==2)
 				{
 					$detalle = Detalle::model()->findByPk($_POST['idDetalle']); // si viene de tarjeta de credito trae ya el detalle listo
+					
 				}
 				else
 				{
@@ -1081,7 +1082,7 @@ class BolsaController extends Controller
 								$detalle->orden_id=$orden->id;
 								$detalle->save();
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+								$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
 									//$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
 									if($balance_usuario > 0){
 										$balance = new Balance;
@@ -1095,9 +1096,11 @@ class BolsaController extends Controller
 										}else{
 											//$orden->descuento = $balance_usuario;
 											//$orden->total = $_POST['total'] - $balance_usuario;
+											
 											$orden->estado = 7; 
 											$balance->total = $balance_usuario*(-1);
 											$detalle->monto=$balance_usuario;
+											
 										}
 										
 										if($orden->save()){
@@ -1110,6 +1113,7 @@ class BolsaController extends Controller
 												$balance->user_id = $usuario;
 												$balance->tipo = 1;
 												$balance->total=round($balance->total,2);
+												
 												$balance->save();
 												
 												$pago->tipo = 3; // trans
@@ -1269,7 +1273,8 @@ class BolsaController extends Controller
 			// quitarlos de bolsa tiene producto
 			
 		 }
-		
+
+		 
 	}
 
 	/*

@@ -76,7 +76,8 @@ class OrdenController extends Controller
 		$orden = Orden::model()->findByAttributes(array('id'=>$_GET['id'],'user_id'=>Yii::app()->user->id));
 		
 		if(isset($orden))
-			$this->render('detalleUsuario', array('orden'=>$orden,));
+			$this->render('detalleUsuario', array('orden'=>$orden));
+		
 		else
 			echo "error";
 	}
@@ -662,17 +663,28 @@ public function actionValidar()
 						if($factura){
 							$factura->estado = 2;
 							$factura->save();
+							$estado = new Estado;
+													
+							$estado->estado = 3; // pago recibido
+							$estado->user_id = Yii::app()->user->id;
+							$estado->fecha = date("Y-m-d");
+							$estado->orden_id = $orden->id;
+									
+							if($estado->save())
+							{
+								echo "ok";
+							}
 						}
 						// Subject y body para el correo
 						$subject = 'Pago aceptado';
 						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
 						
 						$usuario = Yii::app()->user->id;
-							
-						if($detalle->monto > $porpagar && ($detalle->monto - $porpagar) > 0.5)
+						$excede = ($detalle->monto-$porpagar);	
+						if(($excede) > 0.5)
 						{
-							$excede = $detalle->monto - $porpagar;
 							
+						
 							$balance = new Balance;
 							$balance->orden_id = $orden->id;
 							$balance->user_id = $orden->user_id;
@@ -684,21 +696,7 @@ public function actionValidar()
 						
 													
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-						if($detalle->monto >= $porpagar)
-						{
-							$estado = new Estado;
-													
-							$estado->estado = 3; // pago recibido
-							$estado->user_id = Yii::app()->user->id;
-							$estado->fecha = date("Y-m-d");
-							$estado->orden_id = $orden->id;
-									
-							if($estado->save())
-							{
-								echo "ok";
-							}	
-						}				
-
+					
 					}//orden save
 				}// si el pago realizado es mayor o igual
 				else{
@@ -706,17 +704,17 @@ public function actionValidar()
 					
 					$saldo = Profile::model()->getSaldo($orden->user_id);
 					if($saldo>0){
-						$desc=round($saldo-$porpagar,2);
+
 						$det_bal=new Detalle;
 						$pag_bal=new Pago;
-						if($desc>=0){
+						if($saldo>($porpagar-$detalle->monto)){
 							
-							$det_bal->monto=$porpagar;
+							$det_bal->monto=($porpagar-$detalle->monto);
 							$det_bal->fecha=date("Y-m-d H:m:s");
 							$det_bal->comentario="Prueba saldo";
 							$det_bal->estado=1;
 							$det_bal->orden_id=$orden->id;
-							if($det_bal->save){
+							if($det_bal->save()){
 								$pag_bal->tbl_detalle_id=$det_bal->id;
 								$pag_bal->tipo=3;
 								$estado = new Estado;
@@ -728,6 +726,7 @@ public function actionValidar()
 										
 								if($estado->save())
 								{
+									$pag_det->save();
 									echo "ok";	
 								}	
 							}
@@ -748,7 +747,7 @@ public function actionValidar()
 								$balance = new Balance;
 								$balance->orden_id = $orden->id;
 								$balance->user_id = $orden->user_id;
-								$balance->total = round($porpagar*(-1),2);
+								$balance->total = round(($porpagar-$detalle->monto)*(-1),2);
 								$balance->tipo=1;
 								
 								$balance->save();
@@ -761,10 +760,6 @@ public function actionValidar()
 								
 							$orden->estado = 7;
 							
-							
-							
-							
-							
 							if($orden->save()){
 								$balance = new Balance;
 								$balance->orden_id = $orden->id;
@@ -773,7 +768,7 @@ public function actionValidar()
 								$balance->tipo=1;								
 								if($balance->save()){
 									$subject = 'Pago insuficiente';
-									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$orden->descuento.' Bs para pagar toda la orden.<br/><br/> ';
+									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->getxPagar().' Bs para pagar toda la orden.<br/><br/> ';
 									$estado = new Estado;
 																
 									
@@ -812,7 +807,9 @@ public function actionValidar()
 							$estado->orden_id = $orden->id;
 							if($estado->save())
 							{
-								
+								$pag_bal->tbl_detalle_id=$det_bal->id;
+								$pag_bal->tipo=3;
+								$pag_det->save();
 							}
 						
 					}	
@@ -928,7 +925,7 @@ public function actionValidar()
 		
 		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5',
                     'placeholder'=>'Monto. Separe los decimales con una coma (,)',
-                    'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar()))); 
+                    'value'=>str_replace('.',',',$orden->getxPagar()))); 
                 
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";

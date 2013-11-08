@@ -425,14 +425,16 @@ class Orden extends CActiveRecord
 	public function getxPagar($id=null){
 			
 		if(is_null($id))
-				$porpagar=Yii::app()->numberFormatter->formatDecimal($this->total-Detalle::model()->getSumxOrden($this->id));
+				$porpagar=$this->total-Detalle::model()->getSumxOrden($this->id);
 		else
 			{
 				$orden=$this->findByPk($id);
-				$porpagar=Yii::app()->numberFormatter->formatDecimal($orden->total-Detalle::model()->getSumxOrden($orden->id));
+				$porpagar=$orden->total-Detalle::model()->getSumxOrden($orden->id);
 			}
 		if($porpagar<0)
 			$porpagar=0;
+		
+		
 		return $porpagar;
 		
 	} 

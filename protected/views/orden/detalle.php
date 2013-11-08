@@ -1044,7 +1044,7 @@ else{
 <![endif]-->
         <div class="controls">
           <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)',
-		  'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar()))); ?>
+		  'value'=>str_replace('.',',',$orden->getxPagar()))); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>

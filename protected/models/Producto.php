@@ -43,8 +43,19 @@ class Producto extends CActiveRecord
 	public $dos="";
 	public $categoria_id="";
 	public $_precio = null;
-        private $_totalVentas = null;
-        
+    private $_totalVentas = null;
+    
+    public function scopes()
+    {
+        return array(
+            'noeliminados'=>array(
+                'condition'=>'status=1',
+            ),
+            'activos'=>array(
+                'condition'=>'estado=0',
+            ),
+        );
+    }
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.

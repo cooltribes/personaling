@@ -7,15 +7,15 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 //echo $orden->pago_id;
 
 ?>
-
+<?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);?>
 <div class="container margin_top">
 <div class="row">
   <div class="span8 offset2">
     <?php
       
-      if($orden->estado==1) // pendiente de pago
+      if($orden->estado==1||$orden->estado==7) // pendiente de pago o pago insuficiente
 	  {
-	  	if($pago->tipo == 1){
+	  	if($pago->tipo == 1 || $pago->tipo == 3){
 	      ?>
     <div class="alert alert-success margin_top_medium margin_bottom">
       <h1>Tu Pedido ha sido recibido con éxito.</h1>
@@ -367,7 +367,8 @@ else
 
 <!-- Modal Window -->
 <?php 
-$detPago = Detalle::model()->findByPk($orden->detalle_id);
+$detPago = new Detalle;
+$detPago->monto=0;
 ?>
 <div class="modal hide fade" id="myModal">
   <div class="modal-header">
@@ -413,7 +414,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto','value'=>$orden->total)); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto','value'=>str_replace('.',',',$orden->getxPagar()))); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -436,7 +437,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
     </form>
   </div>
 </div>
-<input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+<!-- <input type="hidden" id="idDetalle" value="<?php //echo($orden->detalle_id); ?>" /> -->
 
 <!-- // Modal Window --> 
 
@@ -444,7 +445,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 	
 	function enviar(id)
 	{	
-		var idDetalle = $("#idDetalle").attr("value");
+		//var idDetalle = $("#idDetalle").attr("value");
 		var nombre= $("#nombre").attr("value");
 		var numeroTrans = $("#numeroTrans").attr("value");
 		var dia = $("#dia").attr("value");
@@ -465,7 +466,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
  		$.ajax({
 	        type: "post", 
 	        url: "../cpago", // action 
-	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto, 'idOrden':id}, 
+	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'banco':banco, 'cedula':cedula, 'monto':monto, 'idOrden':id}, 
 	        success: function (data) {
 				
 				if(data=="ok")

@@ -27,7 +27,7 @@ class SiteController extends Controller
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes',
-                                    'equipo_personaling','captcha','comofunciona', 'afterApply'), 
+                                    'equipo_personaling','captcha','comofunciona', 'afterApply','sitemap'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -119,11 +119,14 @@ class SiteController extends Controller
 		$this->render('comofunciona');
 	}
         
-        public function actionAfterApply()
+    public function actionAfterApply()
 	{
 		$this->render('after_apply');
 	}
-
+    public function actionSitemap()
+	{
+		$this->render('sitemap');
+	}
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.

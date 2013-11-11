@@ -107,7 +107,7 @@ class Tarifa extends CActiveRecord
 	}
 
 	public function calcularEnvio($peso, $ruta){
-		$sql="SELECT total from tbl_tarifa WHERE ".$peso.">minimo AND ".$peso."<maximo AND ruta_id = ".$ruta;	
+		$sql="SELECT total from tbl_tarifa WHERE ".$peso."> minimo AND ".$peso."<= maximo AND ruta_id = ".$ruta;	
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}

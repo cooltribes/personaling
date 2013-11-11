@@ -38,7 +38,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             <div class="span6">
                 <input id="idLook" type="hidden" value="<?php echo $model->id ?>" />
               <h1><?php echo $model->title; ?></h1>
-              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> | 100% Disponible</small></p>
+              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> <!-- | 100% Disponible --></small></p>
             </div>
             <div class="span2 share_like">
               <div class="pull-right">

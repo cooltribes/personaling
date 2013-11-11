@@ -8,10 +8,26 @@ $this->breadcrumbs=array(
 
 $usuario = User::model()->findByPk($orden->user_id); 
 
+
+
+
 ?>
 
 
+
+
+
 <div class="container margin_top">
+			<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
@@ -242,7 +258,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           	<?php
           	
           	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-          	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+          //	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						
 			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
 			
@@ -268,9 +284,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 						echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
-						if($pago->tipo == 2)
+						if($detalle->tipo_pago == 2)
 							echo("<td>Tarjeta de credito</td>");
 							//hacer los demas tipos
 								
@@ -286,7 +302,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		          	
 		          		echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
 							//hacer los demas tipos
 								
@@ -563,7 +579,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	          </td>
 	          <td>
 	          	<?php
-	          	echo CHtml::link('Factura', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	echo CHtml::link('Factura Electrónica', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
 	          	?>
 	          </td>
 	          <td>
@@ -883,16 +899,7 @@ $usuario = User::model()->findByPk($orden->user_id);
   
   <div class="row" id="mensajes">
   	
-  		<?php if(Yii::app()->user->hasFlash('success')){?>
-	    <div class="alert in alert-block fade alert-success text_align_center">
-	        <?php echo Yii::app()->user->getFlash('success'); ?>
-	    </div>
-	<?php } ?>
-	<?php if(Yii::app()->user->hasFlash('error')){?>
-	    <div class="alert in alert-block fade alert-error text_align_center">
-	        <?php echo Yii::app()->user->getFlash('error'); ?>
-	    </div>
-	<?php } ?>
+  
   	
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
@@ -980,9 +987,10 @@ if($orden->estado == 7){
     <?php
 }
 else{
-    $detPago = Detalle::model()->findByPk($orden->detalle_id);
+   // $detPago = Detalle::model()->findByPk($orden->detalle_id);
+   $detPago = new Detalle; // OJO RAFA ARREGLAR ESTO
     ?>
-    <input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+    <input type="hidden" id="idDetalle" value="<?php echo($detPago->id); ?>" />
     <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
     <?php
 }
@@ -995,7 +1003,7 @@ else{
   <div class="modal-body">
     <form class="">
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1004,7 +1012,7 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1013,7 +1021,7 @@ else{
         </div>
       </div>
         <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1023,7 +1031,7 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -1032,16 +1040,17 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)')); ?>
+          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)',
+		  'value'=>str_replace('.',',',$orden->getxPagar()))); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
       <div class="controls controls-row">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
 <![endif]-->
 <?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?>
@@ -1049,7 +1058,7 @@ else{
 <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">

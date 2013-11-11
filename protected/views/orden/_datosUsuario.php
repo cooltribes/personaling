@@ -75,7 +75,7 @@
                         CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
                                         $this->createUrl('orden/cancelar',array('id'=>$data->id)),
                                         array(
-                                        'id'=>'link'.$data->id)
+                                        'id'=>'linkCancelar'.$data->id)
                                     )            
                      ."</li>";
             }

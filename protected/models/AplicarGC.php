@@ -17,9 +17,12 @@ class AplicarGC extends CFormModel
 	{
 		return array(
 			
-			array('campo1, campo2, campo3, campo4', 'required', 'message'=>''),
-                        //array('campo1, campo2, campo3, campo4', 'required', 'message'=>''),
-                        //array('campo4', 'required', 'message'=>''),
+			//array('campo1, campo2, campo3, campo4', 'required', 'message'=>'Debes escribir el código de tu Gift Card completo'),			
+			array('campo1, campo2, campo3, campo4', 'required', 'message'=>'req'),			
+                        //array('campo1, campo2, campo3, campo4', 'required', 'message'=>''),                        
+                        
+                        array('campo1, campo2, campo3, campo4', 'length', 'is'=> 4, 'message' => 'len'),
+                        //array('campo1, campo2, campo3, campo4', 'length', 'is'=> 4, 'message' => 'Los campos deben ser de 4 caracteres cada uno.'),
 		);
 	}
 
@@ -32,6 +35,11 @@ class AplicarGC extends CFormModel
 //			'rememberMe'=>UserModule::t("Remember me next time"),
 //			'username'=>UserModule::t("username or email"),
 //			'password'=>UserModule::t("password"),
+                    'campo1' => 'Ingresa el código de tu Gift Card',
+                    
+                    'campo2' => '',
+                    'campo3' => '',
+                    'campo4' => '',
 		);
 	}
 }

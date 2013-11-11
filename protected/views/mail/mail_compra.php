@@ -401,6 +401,15 @@
                                         </tr>
                                         <tr>
                                             <td class="w30" width="30"></td>
+                                            <td class="w580" width="360" valign="top">
+                                            <span class="hide">
+                                                <p id="permission-reminder" align="left" class="footer-content-left" style="color:#FFFFFF"><span>Personaling C.A RIF: J-40236088-6</span></p>
+                                                </span>
+                                                </td>
+                                            <td class="hide w0" width="60"></td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td class="w30" width="30"></td>
                                             <td class="w580 h0" width="360" height="15"></td>
                                             <td class="w0" width="60"></td>
                                             <td class="w0" width="160"></td>

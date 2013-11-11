@@ -5,7 +5,7 @@
         <h1>Panel de Control de Usuarios</h1>
       </div>
       <div class="span2">
-        <div class="bg_color10 padding_small color1 text_align_center"><span class="T_large">1844</span><br/>
+          <div class="bg_color10 padding_small color1 text_align_center"><span class="T_large"><?php echo User::model()->count(); ?></span><br/>
           usuarios registrados</div>
       </div>
     </div>
@@ -498,13 +498,13 @@
       </div>
       <h2 class="braker_bottom margin_bottom_small margin_top">Últimos usuarios registrados</h2>
       <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#tab1">Clientes</a></li>
-        <li><a data-toggle="tab" href="#tab2">Personal Shoppers</a></li>
-        <li><a data-toggle="tab" href="#tab3">Administradores</a></li>
-        <li><a data-toggle="tab" href="#tab4">Aplicantes a PS</a></li>
+        <li class="active"><a data-toggle="tab" href="#tab10">Clientes</a></li>
+        <li><a data-toggle="tab" href="#tab11">Personal Shoppers</a></li>
+        <li><a data-toggle="tab" href="#tab12">Administradores</a></li>
+        <li><a data-toggle="tab" href="#tab13">Aplicantes a PS</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
+        <div class="tab-pane active" id="tab10">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Nombre</th>
@@ -529,7 +529,7 @@
             
           </table>
         </div>
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="tab11">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Nombre del PS</th>
@@ -553,7 +553,7 @@
             ?>
           </table>
         </div>
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="tab12">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Administrador</th>
@@ -577,7 +577,7 @@
             ?>
           </table>
         </div>
-        <div class="tab-pane" id="tab4">
+        <div class="tab-pane" id="tab13">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Aplicante</th>

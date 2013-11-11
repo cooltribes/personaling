@@ -61,7 +61,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Ventas', 'url'=>array('/orden/admin')),
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-					array('label'=>'Campañas', 'url'=>array('/campana/index')),
+
+					         array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                  array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+
 					),
 				),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
@@ -251,7 +254,7 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
+          <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li> -->
           
         </ul>
       </div>

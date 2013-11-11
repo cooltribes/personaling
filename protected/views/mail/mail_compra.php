@@ -172,16 +172,13 @@
                                                                     <?php } ?>
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Envío:</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio+$orden->seguro, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="text-align:left"><b>I.V.A. (12%):</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:left"><b>Seguro:</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->seguro, ''); ?></td>
-                                                                    </tr>
+
                                                                     <tr>
                                                                         <td style="text-align:left"><h4 class="color1">TOTAL:</h4></th>
                                                                         <td><h4 class="color1"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>

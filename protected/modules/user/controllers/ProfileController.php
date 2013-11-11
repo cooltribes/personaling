@@ -1426,17 +1426,20 @@ class ProfileController extends Controller
 	   		}	
 	   	}// else
 		
-       // $datos=$datos.'<div title="talla" class="tallass" style="cursor: pointer" id="10">S</div>';         	     	
-        $datos=$datos.'</div></div></div>';
-          
+        $datos=$datos.'</div></div></div> <div class="row-fluid"> <hr/> ';
+		$marca = Marca::model()->findByPk($producto->marca_id);
+        $datos=$datos.'<h5>Marca</h5>';
+        $datos=$datos.'<div class="thumbnails">';
+        $datos=$datos.'<img width="66px" height="66px" src="'.Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen).'"/>';
         $datos=$datos.'</div>';
+        $datos=$datos.'</div></div></div>';
         $datos=$datos.'</div>';
    
    		$datos=$datos.'</div>';
     	$datos=$datos.'<div class="modal-footer">';
+		$datos=$datos.'<a href="'.$producto->getUrl().'" class="btn btn-info pull-left"> Ver el producto </a>';
     	$datos=$datos.'<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>';
     	$datos=$datos.'</div>';
-    //	$datos=$datos.'</div>';
     
     	$datos=$datos."<script>";
 		

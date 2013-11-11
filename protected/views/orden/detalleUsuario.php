@@ -102,8 +102,10 @@ $usuario = User::model()->findByPk($orden->user_id);
     if($orden->estado == 7)
     {
         $balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id));
+        if(isset($balance))
+        {
         $a = $balance->total * -1;
-        echo Yii::app()->numberFormatter->formatDecimal($a);
+        echo Yii::app()->numberFormatter->formatDecimal($a);}
     }
     else
     {
@@ -143,7 +145,7 @@ $usuario = User::model()->findByPk($orden->user_id);
     if($orden->estado == 5)
         echo "Orden Cancelada";
 
-    if($orden->estado == 7)
+    if($orden->estado == 7 && isset($balance))
         echo "Bs. que faltan.";
 
     // agregar demas estados
@@ -834,7 +836,7 @@ else{
   <div class="modal-body">
     <form class="">
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -843,7 +845,7 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -852,7 +854,7 @@ else{
         </div>
       </div>
         <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
@@ -862,8 +864,8 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
+        <!--[if lte IE 9]>
+            <label class="control-label required">Cedula<span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
           <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
@@ -871,24 +873,26 @@ else{
         </div>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
+        <!--[if lte IE 9]>
+            <label class="control-label required">Monto<span class="required">*</span></label>
 <![endif]-->
         <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>$orden->total)); ?>
+          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5',
+              'placeholder'=>'Monto. Separe los decimales con una coma (,)',
+              'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar()))); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
-      <div class="controls controls-row">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
+      <div class="controls controls-row"> 
+        <!--[if lte IE 9]>
+            <label class="control-label required">Fecha del depósito DD/MM/YYYY<span class="required">*</span></label>
 <![endif]-->
 <?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?>
 <?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
 <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
       </div>
       <div class="control-group">
-        <!--[if lte IE 7]>
+        <!--[if lte IE 9]>
             <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
 <![endif]-->
         <div class="controls">

@@ -885,13 +885,115 @@ class BolsaController extends Controller
 	
 	}
 	
-	
+	public function actionComprar2()
+	{
+		if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
+		 	$respCard = "";
+		 	$usuario = Yii::app()->user->id; 
+			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));		
+			switch ($_POST['tipoPago']) {
+			    case 1: // TRANSFERENCIA
+			       	$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario)));
+					$orden = new Orden;
+					$orden->subtotal = $_POST['subtotal'];
+					//$orden->descuento = $_POST['descuento'];
+					$orden->descuento = 0;
+					$orden->envio = $_POST['envio'];
+					$orden->iva = $_POST['iva'];
+					$orden->descuentoRegalo = 0;
+					$orden->total = $_POST['total'];
+					$orden->seguro = $_POST['seguro'];
+					$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+					$orden->estado = 1; // en espera de pago
+					$orden->bolsa_id = $bolsa->id; 
+					$orden->user_id = $usuario;
+					//$orden->pago_id = $pago->id;
+					//$orden->detalle_id = $detalle->id;
+					$orden->direccionEnvio_id = $dirEnvio->id;
+					$orden->tipo_guia = $_POST['tipo_guia'];
+					$orden->peso = $_POST['peso'];
+					
+					//if($detalle->nTarjeta!="") // Pagó con TDC
+					//{
+					//	$orden->estado = 3; // Estado: Pago Confirmado
+					//}
+					
+					$okk = round($_POST['total'], 2);
+					$orden->total = $okk;
+							
+					$orden->save();	
+									
+					if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+						$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+						if($balance_usuario > 0){
+							$balance = new Balance;
+							if($balance_usuario >= $_POST['total']){
+								$orden_estado = 3; 
+								$balance->total = $_POST['total']*(-1);
+								$detalle->monto=$_POST['total'];
+							}else{
+								$orden_estado = 7; 
+								$balance->total = $balance_usuario*(-1);
+								$detalle->monto=$balance_usuario;
+							}
+							
+							//if($orden->save()){
+								
+								$detalle->comentario="Prueba de Saldo";
+								$detalle->estado=1;
+								$detalle->orden_id=$orden->id;
+								if($detalle->save()){
+									$balance->orden_id = $orden->id;
+									$balance->user_id = $usuario;
+									$balance->tipo = 1;
+									$balance->total=round($balance->total,2);
+									$balance->save();
+									
+									$pago->tipo = 3; // trans
+									
+									$pago->save();
+									
+									
+								}
+							//}
+							
+							//$balance->total = $orden->descuento*(-1);
+							
+								
+						}
+					}
+			        break;
+			    case 2: // TARJETA DE CREDITO
+			        echo "i equals 1";
+			        break;
+			    case 3:
+			        echo "i equals 2";
+			        break;
+			}			
+		}
+		 
+	}
+	public function clonarDireccion($direccion){
+		$dirEnvio = new DireccionEnvio;
+					
+		$dirEnvio->nombre = $direccion->nombre;
+		$dirEnvio->apellido = $direccion->apellido;
+		$dirEnvio->cedula = $direccion->cedula;
+		$dirEnvio->dirUno = $direccion->dirUno;
+		$dirEnvio->dirDos = $direccion->dirDos;
+		$dirEnvio->telefono = $direccion->telefono;
+		$dirEnvio->ciudad_id = $direccion->ciudad_id;
+		$dirEnvio->provincia_id = $direccion->provincia_id;
+		$dirEnvio->pais = $direccion->pais;	
+		$dirEnvio->save();
+		return $dirEnvio;
+	}
 	/*
 	 * 
 	 * */
 	public function actionComprar()
 	{
-		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
+			if (Yii::app()->request->isPostRequest) // asegurar que viene en post
 		 {
 		 	$respCard = "";
 		 	$usuario = Yii::app()->user->id; 
@@ -902,6 +1004,7 @@ class BolsaController extends Controller
 				if($_POST['tipoPago']==2)
 				{
 					$detalle = Detalle::model()->findByPk($_POST['idDetalle']); // si viene de tarjeta de credito trae ya el detalle listo
+					
 				}
 				else
 				{
@@ -979,7 +1082,8 @@ class BolsaController extends Controller
 								$detalle->orden_id=$orden->id;
 								$detalle->save();
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+								$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+									//$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
 									if($balance_usuario > 0){
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
@@ -992,9 +1096,11 @@ class BolsaController extends Controller
 										}else{
 											//$orden->descuento = $balance_usuario;
 											//$orden->total = $_POST['total'] - $balance_usuario;
+											
 											$orden->estado = 7; 
 											$balance->total = $balance_usuario*(-1);
 											$detalle->monto=$balance_usuario;
+											
 										}
 										
 										if($orden->save()){
@@ -1006,6 +1112,8 @@ class BolsaController extends Controller
 												$balance->orden_id = $orden->id;
 												$balance->user_id = $usuario;
 												$balance->tipo = 1;
+												$balance->total=round($balance->total,2);
+												
 												$balance->save();
 												
 												$pago->tipo = 3; // trans
@@ -1165,7 +1273,8 @@ class BolsaController extends Controller
 			// quitarlos de bolsa tiene producto
 			
 		 }
-		
+
+		 
 	}
 
 	/*
@@ -1227,31 +1336,29 @@ class BolsaController extends Controller
 		{
 			$usuario = Yii::app()->user->id; 
 			
-			if($_POST['idDetalle'] != 0)
-				$detPago = Detalle::model()->findByPk($_POST['idDetalle']);
-			else
-				$detPago = new Detalle;
-				
+			
+			$detPago = new Detalle;
+			$pago=new Pago;	
 			$detPago->nombre = $_POST['nombre'];
 			$detPago->nTransferencia = $_POST['numeroTrans'];
 			$detPago->comentario = $_POST['comentario'];
 			$detPago->banco = $_POST['banco'];
-			$detPago->monto = $detPago->monto + $_POST['monto'];
+			$detPago->monto = str_replace(',','.',$_POST['monto']);
 			$detPago->cedula = $_POST['cedula'];
 			$detPago->estado = 0; // defecto
 			$detPago->orden_id = $_POST['idOrden'];
 							
-			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia']." ".date("H:i:s");
+			$detPago->fecha = $_POST['ano']."-".$_POST['mes']."-".$_POST['dia']." ".date("H:i:s");
 			
 			if($detPago->save())
 			{
 				
-				if($_POST['idDetalle'] != 0)
-					$orden = Orden::model()->findByAttributes(array('detalle_id'=>$_POST['idDetalle']));
-				else
-				{
+					$pago->tipo = 1; // trans
+					$pago->tbl_detalle_id = $detPago->id;
+					$pago->save();
+				
 					$orden = Orden::model()->findByAttributes(array('id'=>$_POST['idOrden']));
-				}
+			
 					
 				$orden->estado = 2;	// se recibió los datos de pago por transferencia
 				
@@ -1274,7 +1381,7 @@ class BolsaController extends Controller
 				}				
 			}
 			else {
-				echo "no";
+				print_r($detPago->getErrors());
 			}
 			
 		}

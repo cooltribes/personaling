@@ -72,12 +72,12 @@ class Orden extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia, peso', 'required'),
-			array('estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia', 'numerical', 'integerOnly'=>true),
+			array('bolsa_id, user_id, direccionEnvio_id, tipo_guia, peso', 'required'),
+			array('estado, bolsa_id, user_id,   direccionEnvio_id, tipo_guia', 'numerical', 'integerOnly'=>true),
 			array('subtotal, descuento, envio, iva, descuentoRegalo, total, seguro', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tracking, seguro, tipo_guia, peso', 'safe', 'on'=>'search'),
+			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id,   direccionEnvio_id, tracking, seguro, tipo_guia, peso', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -90,7 +90,7 @@ class Orden extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'direccionEnvio' => array(self::BELONGS_TO, 'DireccionEnvio', 'direccionEnvio_id'),
-			'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
+			//'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
@@ -118,8 +118,8 @@ class Orden extends CActiveRecord
 			'fecha' => 'Fecha',
 			'bolsa_id' => 'Bolsa',
 			'user_id' => 'User',
-			'pago_id' => 'Pago',
-			'detalle_id' => 'Detalle',
+			//'pago_id' => 'Pago',
+			//'detalle_id' => 'Detalle',
 			'direccionEnvio_id' => 'Direccion Envio',
 			'tracking' => 'Número de guía',
 			'seguro' => 'Seguro',
@@ -150,8 +150,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha);
 		$criteria->compare('bolsa_id',$this->bolsa_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('pago_id',$this->pago_id);
-		$criteria->compare('detalle_id',$this->detalle_id);
+		//$criteria->compare('pago_id',$this->pago_id);
+		//$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
@@ -180,8 +180,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha);
 		$criteria->compare('bolsa_id',$this->bolsa_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('pago_id',$this->pago_id);
-		$criteria->compare('detalle_id',$this->detalle_id);
+		//$criteria->compare('pago_id',$this->pago_id);
+		//$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
@@ -276,8 +276,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha);
 		$criteria->compare('bolsa_id',$this->bolsa_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('pago_id',$this->pago_id);
-		$criteria->compare('detalle_id',$this->detalle_id);
+		//$criteria->compare('pago_id',$this->pago_id);
+		//$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);	
 		$criteria->compare('seguro',$this->seguro);
@@ -353,7 +353,8 @@ class Orden extends CActiveRecord
                    
                     continue;
                 }
-                
+                // ARREGLAR PAGO_ID NELSON
+                //en vez de tbl_pago.tipo es tbl_detalle.tipo_pago  
                 if($column == 'pago_id'){                
                    
                     if (!strpos($joinPagos, 'tbl_pago')) {

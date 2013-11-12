@@ -32,7 +32,7 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviar','enviarGiftCard','aplicar','createMasivo'),
+				'actions'=>array('create','update','enviar','enviarGiftCard','aplicar','createMasivo','seleccionarusuarios'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -111,6 +111,9 @@ class GiftcardController extends Controller
 	}
 	public function actionCreateMasivo(){
 		$this->render('createMasivo');
+	}
+	public function actionSeleccionarusuarios(){
+		$this->render('seleccionarusuarios');
 	}
 
 	/*Action para enviar la Giftcard*/

@@ -58,8 +58,10 @@ class Giftcard extends CActiveRecord
                         array('inicio_vigencia', 'required', 'message' => '¿Desde cuándo es válida la giftcard?'),
                         array('fin_vigencia', 'required', 'message' => '¿Hasta cuándo es válida la giftcard?'),
                         
-                        array( 'inicio_vigencia','compare','compareValue' => date("Y-m-d"),'operator'=>'>=', 'allowEmpty'=>'false', 'message' => 'La fecha de inicio de vigencia debe ser mayor o igual a la fecha de hoy.'),
-			array( 'fin_vigencia','compare','compareAttribute' => 'inicio_vigencia', 'operator'=>'>=', 'allowEmpty'=>'false', 'message' => 'La fecha de fin de vigencia debe ser mayor o igual a la fecha de inicio.'),
+                        array( 'inicio_vigencia','compare','compareValue' => date("Y-m-d"),'operator'=>'>=', 'allowEmpty'=>'false', 
+                            'message' => 'La fecha de inicio de vigencia debe ser mayor o igual a la fecha de hoy.', 'on' => 'insert'),
+			array( 'fin_vigencia','compare','compareAttribute' => 'inicio_vigencia', 'operator'=>'>=', 'allowEmpty'=>'false', 
+                            'message' => 'La fecha de fin de vigencia debe ser mayor o igual a la fecha de inicio.', 'on' => 'insert'),
                     
                         array('codigo', 'unique', 'message'=>'Código de gift card ya registrado.'),
 			array('estado, comprador, beneficiario', 'numerical', 'integerOnly'=>true),

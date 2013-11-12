@@ -32,11 +32,11 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviar','enviarGiftCard','aplicar','createMasivo','seleccionarusuarios'),
+				'actions'=>array('create','update','enviarGiftCard','aplicar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','delete','update'),
+				'actions'=>array('index','admin','delete','update', 'enviar', 'createMasivo', 'desactivar','seleccionarusuarios'),
 				//'users'=>array('admin'),
                                 'expression' => 'UserModule::isAdmin()',
 			),
@@ -398,9 +398,41 @@ class GiftcardController extends Controller
 
             $codigo = implode("", $codigo);
             
-//            echo $codigo;
-//            Yii::app()->end();
-            
             return $codigo;
+        }
+        
+        public function actionDesactivar(){
+            
+            $result = array();
+            
+            if(isset($_POST["id"])){
+                
+                $giftcard = Giftcard::model()->findByPk($_POST["id"]);
+                
+                if($giftcard){
+                    if($giftcard->estado != 3){
+                        
+                        $giftcard->estado = 1;
+                        $giftcard->save();
+                        
+                        $result["status"] = "success"; 
+                        //$result["mensaje"] = $giftcard->getErrors(); 
+                        
+                        
+                    }else{
+                        $result["status"] = "error"; 
+                    }                    
+                    
+                }else{
+                   $result["status"] = "error"; 
+                }
+                
+            }else{
+                $result["status"] = "error";
+                
+            }
+            
+            echo CJSON::encode($result);
+            
         }
 }

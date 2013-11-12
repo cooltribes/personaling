@@ -101,3 +101,47 @@ $this->breadcrumbs = array(
     </div>-->
 
 </div>
+<script type="text/javascript">
+    
+    
+        $("[id^='linkDesactivar']").click(function (e){
+            e.preventDefault();
+            //console.log("click");
+            var idString = $(this).attr('id');    
+            var vect = idString.split("-");
+            var ajaxRequest;
+            $.ajax({
+                type: 'POST',
+                url: 'desactivar',
+                dataType: 'JSON',
+                data: {id: vect[1]},
+                success: function(data){
+                
+                    if(data.status == 'success'){
+                        
+                       bootbox.alert("¡La Gift Card se ha desactivado éxito!");
+                       
+                       ajaxUpdateTimeout = setTimeout(function () {
+                       $.fn.yiiListView.update(
+                            'list-auth-items',
+                            {
+                                type: 'POST',	
+                                url: '<?php echo CController::createUrl('index')?>',
+                                data: ajaxRequest
+                            }
+
+                       )
+                       },
+                       300);
+
+                       
+                       
+                    }else if(data == 'error'){
+                       bootbox.alert("Error desactivando la Gift Card");
+                    }
+                }
+            });
+            
+        });
+
+</script>

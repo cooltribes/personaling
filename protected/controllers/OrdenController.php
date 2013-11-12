@@ -691,7 +691,7 @@ public function actionValidar()
 							$balance->total = round($excede,2);
 							
 							$balance->save();
-							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.$excede.' Bs.';
+							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
 						} // si es mayor hace el balance
 						
 													
@@ -768,7 +768,7 @@ public function actionValidar()
 								$balance->tipo=1;								
 								if($balance->save()){
 									$subject = 'Pago insuficiente';
-									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->getxPagar().' Bs para pagar toda la orden.<br/><br/> ';
+									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), '').' Bs para pagar toda la orden.<br/><br/> ';
 									$estado = new Estado;
 																
 									
@@ -986,8 +986,13 @@ public function actionValidar()
 				foreach($ohptcs as $ohptc){
 					$ptc=Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
 					$ptc->cantidad=$ptc->cantidad+$ohptc->cantidad;
-						if(!$ptc->save())
-							$ban=false;
+						if($ptc->save())
+							$ban=true;
+						else{
+							echo $ptc->id." ".$ohptc->id;
+							break;
+						}
+						
 				}
 							
 						

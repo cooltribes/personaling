@@ -24,9 +24,12 @@ $this->breadcrumbs = array(
         <h1>Administrar Gift cards</h1>
     </div>
     <div class="row">
-        <div class="span3">
+        <div class="span2">
             <a href="create" class="btn btn-success">Crear Gift Card</a>
         </div>
+        <div class="span3">
+            <a href="createMasivo" class="btn btn-success">Crear Gift Card Masivo</a>
+        </div>        
     </div>
     <hr/>
     <style>
@@ -98,3 +101,47 @@ $this->breadcrumbs = array(
     </div>-->
 
 </div>
+<script type="text/javascript">
+    
+    
+        $("[id^='linkDesactivar']").click(function (e){
+            e.preventDefault();
+            //console.log("click");
+            var idString = $(this).attr('id');    
+            var vect = idString.split("-");
+            var ajaxRequest;
+            $.ajax({
+                type: 'POST',
+                url: 'desactivar',
+                dataType: 'JSON',
+                data: {id: vect[1]},
+                success: function(data){
+                
+                    if(data.status == 'success'){
+                        
+                       bootbox.alert("¡La Gift Card se ha desactivado éxito!");
+                       
+                       ajaxUpdateTimeout = setTimeout(function () {
+                       $.fn.yiiListView.update(
+                            'list-auth-items',
+                            {
+                                type: 'POST',	
+                                url: '<?php echo CController::createUrl('index')?>',
+                                data: ajaxRequest
+                            }
+
+                       )
+                       },
+                       300);
+
+                       
+                       
+                    }else if(data == 'error'){
+                       bootbox.alert("Error desactivando la Gift Card");
+                    }
+                }
+            });
+            
+        });
+
+</script>

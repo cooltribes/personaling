@@ -9,7 +9,7 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
 <div class="row">
     <div class="span12">
         <div class="page-header"><h1>Activos Gráficos:</h1></div>
-        <p>Desde aqui podrás descargar los logos y demás elementos gráficos de nuestro branding:</p>
+        <p>Desde aquí podrás descargar los logos y demás elementos gráficos de nuestro branding:</p>
 
         <div class="clearfix">
 <h2>Elementos del Branding:</h2>

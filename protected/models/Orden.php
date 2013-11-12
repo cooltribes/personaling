@@ -46,7 +46,15 @@
  */
 class Orden extends CActiveRecord
 {
-	/**
+	const ESTADO_ESPERA = 1;
+	const ESTADO_ESPERA_CONF = 2;
+	const ESTADO_CONFIRMADO = 3;
+	const ESTADO_ENVIADO = 4;
+	const ESTADO_CANCELADO = 5;
+	const ESTADO_RECHAZADO = 6;
+	const ESTADO_INSUFICIENTE = 7;
+	
+	 /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Orden the static model class
@@ -421,7 +429,18 @@ class Orden extends CActiveRecord
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}  
-	
+	public function getTipoPago(){
+		if (isset($this->detalles))
+		foreach ($this->detalles as $detalle){
+			return $detalle->tipo_pago;
+		}
+		return 1;
+		
+	}
+	public function cambiarEstado($estado){
+		$this->estado = $estado;
+		$this->save();
+	}
 	public function getxPagar($id=null){
 			
 		if(is_null($id))

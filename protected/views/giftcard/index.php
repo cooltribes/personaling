@@ -88,7 +88,7 @@ $this->breadcrumbs = array(
     ?>
   
     <hr/>
-    <div class="row">
+<!--    <div class="row">
       <div class="span3">
         <select class="span3">
           <option>Acciones en lote </option>
@@ -98,6 +98,6 @@ $this->breadcrumbs = array(
       </div>
       <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
       <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
-    </div>
+    </div>-->
 
 </div>

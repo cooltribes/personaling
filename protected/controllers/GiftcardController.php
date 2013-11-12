@@ -7,7 +7,7 @@ class GiftcardController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-        const DIGITOS_CODIGO = 15;
+        const DIGITOS_CODIGO = 16;
 	/**
 	 * @return array action filters
 	 */
@@ -121,9 +121,71 @@ class GiftcardController extends Controller
             
             if(isset($_POST["EnvioGiftcard"])){
                
-                $envio->attributes = $_POST["EnvioGiftcard"];
-                
-                $envio->validate();
+                $envio->attributes = $_POST["EnvioGiftcard"];                
+               
+                    
+                //Si es un email valido, enviar giftcard
+                if($envio->validate()){      
+                    
+//                    echo "<pre>";
+//                    print_r($model->attributes);
+//                    echo "</pre>";
+//                    Yii::app()->end();
+                    
+
+                    //Activar la giftcard solo si ya no ha sido aplicada
+                    if($model->estado != 3){
+                        $model->estado = 2;
+                        $model->save();
+                    }
+                    //De donde proviene la GC
+                    if($model->comesFromAdmin()){
+                        $saludo = "Personaling tiene una Gift Card como obsequio para tí.";
+                    }else{                        
+                        $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";
+                    }
+                    
+                    $datosTarjeta = "<h3>Datos de la Gift Card:</h3>
+                                      <strong>Monto: </strong>{$model->monto} Bs.<br>
+                                      <strong>Codigo: </strong>{$model->getCodigo()}<br>
+                                      <strong>Válida desde: </strong>".date("d-m-Y", $model->getInicioVigencia())."<br>
+                                      <strong>Válida hasta: </strong>".date("d-m-Y", $model->getFinVigencia())."<br>";
+                    
+                    $personalMes = "";                  
+                    if($envio->mensaje != ""){
+                        $personalMes = "<br/><br/><i>" . $envio->mensaje . "</i><br/>";
+                    }
+                                      
+                    $message = new YiiMailMessage;
+                    $message->view = "mail_invite";
+                    $subject = 'Gift Card de Personaling';
+                    $body = "¡Hola <strong>{$envio->nombre}</strong> !<br><br> {$saludo} 
+                            {$personalMes}
+                            <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com.<br/><br/>"
+                            .$datosTarjeta;
+                            
+//                    echo "Despues<pre>";
+//                    print_r($envio->attributes);
+//                    echo "</pre>";
+//
+//                    Yii::app()->end();
+                    
+                    $params = array('subject' => $subject, 'body' => $body);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+
+                    $message->addTo($envio->email);
+
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    Yii::app()->mail->send($message); 
+                    
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('success',
+                            UserModule::t("La Gift Card se ha enviado con éxito a <b>{$envio->email}.</b>"));
+                    
+                    $this->redirect(array("index"));
+                    
+                }
                 
             }
             
@@ -132,13 +194,91 @@ class GiftcardController extends Controller
                 
 	}
         
-        
-        
 	public function actionEnviarGiftCard(){
 		$this->render('enviargiftcard_usuario');
 	}
-	public function actionAplicar(){
-		$this->render('aplicar');
+
+        
+        public function actionAplicar(){
+            $aplicar = new AplicarGC;
+            
+            if(isset($_POST["AplicarGC"])){
+               $aplicar->attributes = $_POST["AplicarGC"];
+               
+               if($aplicar->validate()){
+                   $codigo = implode("", $aplicar->attributes);
+                   
+                   $giftcard = Giftcard::model()->findByAttributes(array('codigo' => $codigo));
+                   
+                   //si la Giftcard existe y esta activa
+                   if($giftcard){
+                       
+                       if($giftcard->estado == 2){ //Si esta activa
+                           
+                           if($giftcard->inicio_vigencia <= date("Y-m-d")){
+                               
+                               if($giftcard->fin_vigencia >= date("Y-m-d") ){
+                               
+                                    /*Cambiar la giftcard a APLICADA*/
+                                    $giftcard->estado = 3;
+                                    /*Quien la uso*/
+                                    $giftcard->beneficiario = Yii::app()->user->id;
+                                    /*Cuando se usa*/
+                                    $giftcard->fecha_uso = date("Y-m-d");
+                                    $giftcard->save();
+
+
+                                     //Sumar saldo
+                                    $balance = new Balance();
+                                    $balance->total = $giftcard->monto;
+                                    $balance->user_id = Yii::app()->user->id;
+                                    $balance->orden_id = 0;
+                                    $balance->tipo = 2; //tipo GiftCard
+                                    $balance->save();
+                                    
+                                    
+//                                    echo "<pre>";
+//                                    print_r($balance->getErrors());
+//                                    echo "</pre>";
+//                                    Yii::app()->end();
+
+
+                                    Yii::app()->user->updateSession();
+                                    Yii::app()->user->setFlash('success',UserModule::t("Se ha aplicado tu Gift Card con éxito, ahora puedes usar tu saldo para comprar en Personaling."));                              
+                                    $this->redirect(array('user/profile/micuenta'));
+
+                                }else{ //Vencida
+                                   Yii::app()->user->updateSession();
+                                   Yii::app()->user->setFlash('error',UserModule::t("Esta Gift Card ha expirado, ya no está disponible."));                              
+
+                                }
+                               
+                               
+                           }else{ //no ha entrado en vigencia
+                              Yii::app()->user->updateSession();
+                              Yii::app()->user->setFlash('warning', UserModule::t("¡ No puedes usar esta Gift Card porque aún no está disponible !"));    
+                           }
+                                   
+                       }else if($giftcard->estado == 1){ //Invalida
+                           Yii::app()->user->updateSession();
+                           Yii::app()->user->setFlash('error',UserModule::t("¡ Gift Card inválida !"));
+                       
+                       }else if($giftcard->estado == 3){ //Aplicada
+                           Yii::app()->user->updateSession();
+                           Yii::app()->user->setFlash('error',UserModule::t("¡ Esta Gift Card ya ha sido usada !"));
+                       }
+                   
+                       
+                   }else{ // Si no existe
+                       Yii::app()->user->updateSession();
+                       Yii::app()->user->setFlash('error',UserModule::t("¡ Gift Card inválida !"));
+                   }
+                   
+               }
+               
+            }
+            
+		$this->render('aplicar', array('model' => $aplicar));
 	}
 	/**
 	 * Updates a particular model.
@@ -234,29 +374,13 @@ class GiftcardController extends Controller
 	}
         
         private function generarCodigo(){
-            $cantNum = 7;
+            $cantNum = 8;
             $cantLet = 8;
             
             $l = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            //$n = '0123456789';
             
             $LETRAS = str_split($l);
             $NUMEROS = range(0, 9);
-            
-            //aleatorizar numeros
-//            shuffle($NUMEROS);            
-//            //aleatorizar Letras
-//            shuffle($LETRAS);
-//            //            for ($i = 0, $result = ''; $i < $cantLet; $i++) {
-////                $indice = rand(0, $letrasTotal - 1);
-////                $result .= substr($chars, $indice, 1);
-////            }
-//            
-//            
-//            array_r
-//            
-//            $letrasTotal = strlen($LETRAS);
-//            $numerosTotal = strlen($NUMEROS);
 
             $codigo = array();
             //Seleccionar cantLet letras
@@ -268,26 +392,6 @@ class GiftcardController extends Controller
             }
             
             shuffle($codigo);
-            
-//            echo "LeTRAS";
-//            echo "<pre>";
-//            print_r($LETRAS);
-//            echo "</pre>";
-//            
-//            echo "NUMEROS";
-//            echo "<pre>";
-//            print_r($NUMEROS);
-//            echo "</pre>";
-
-//            echo "alearorio<br>";
-//            echo array_rand($LETRAS);
-
-
-//            echo "<pre>";
-//            print_r($codigo);
-//            echo "</pre>";
-
-
 
             $codigo = implode("", $codigo);
             

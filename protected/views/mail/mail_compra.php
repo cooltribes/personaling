@@ -94,14 +94,15 @@
                                                                 
                                                                 <?php
                                                                     $user = User::model()->findByPk(Yii::app()->user->id);
-                                                                    $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+																	$tipo_pago = $orden->getTipoPago();
+                                                                   // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     //echo $orden->pago_id;
                                                                 ?>
                                                                 <?php
       
                                                                 if($orden->estado==1) // pendiente de pago
                                                         	    {
-                                                        	  	  if($pago->tipo == 1){
+                                                        	  	  if($tipo_pago == 1){
                                                         	   ?>
                                                                 <div class="alert alert-success margin_top_medium margin_bottom">
                                                                         <h1 class="h1">Tu Pedido ha sido recibido con éxito.</h1>
@@ -131,7 +132,7 @@
                                                                     <hr/>
                                                                 </div>
                                                                 <?php
-      	}else if($pago->tipo == 4){
+      	}else if($tipo_pago == 4){
       		?>
                                                                 <div class="alert alert-success margin_top_medium margin_bottom">
                                                                     <h1>Tu Pedido ha sido recibido con éxito.</h1>

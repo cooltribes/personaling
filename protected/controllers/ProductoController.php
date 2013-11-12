@@ -1148,8 +1148,8 @@ class ProductoController extends Controller
 	{
 		if(isset($_GET['alias']))
 		{
-			$seo = Seo::model()->activos()->noeliminados()->findByAttributes(array('urlAmigable'=>$_GET['alias']));
-			$producto = Producto::model()->findByPk($seo->tbl_producto_id);
+			$seo = Seo::model()->findByAttributes(array('urlAmigable'=>$_GET['alias']));
+			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
 		}
 		else
 		{

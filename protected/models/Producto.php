@@ -545,8 +545,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		$criteria->compare('fecha',$this->fecha,true);
 		
-		//$criteria->compare('status',$this->status,true);
-		$criteria->compare('status',0,true);
+		$criteria->compare('status',$this->status,true);
+		//$criteria->compare('status',0,true);
 		$criteria->compare('destacado',$this->destacado,true);
 
 		$criteria->compare('peso',$this->peso,true);
@@ -679,12 +679,13 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 		$criteria->compare('marca_id',$this->marca_id,true);
+		//$criteria->compare('t.estado',0,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		
 		$criteria->compare('fecha',$this->fecha,true);
 		
-		$criteria->compare('status',0,true);
+		$criteria->compare('status',$this->status,true);
 		$criteria->compare('destacado',$this->destacado,true);
 
 		$criteria->compare('peso',$this->peso,true);

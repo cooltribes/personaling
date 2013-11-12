@@ -64,33 +64,17 @@ $this->breadcrumbs=array(
                                         
                                         <?php echo $form->errorSummary($envio); ?>
                                        
-                                        <?php echo $form->textFieldRow($envio, 'nombre'); ?>
+                                        <?php echo $form->textFieldRow($envio, 'nombre', array(
+                                            'placeholder' => 'Nombre del destinatario'
+                                        )); ?>
                                         
-                                        <?php echo $form->textFieldRow($envio, 'email'); ?>
+                                        <?php echo $form->textFieldRow($envio, 'email', array(
+                                            'placeholder' => 'Email del destinatario')); ?>
                                         
-                                        <?php echo $form->textAreaRow($envio, 'mensaje'); ?>
-                                        
-                                        
-					<div class="control-group">
-						<label class="control-label" for="inputMonto">Para</label>
-						<div class="controls row-fluid ">
-				      			<input class="input-xlarge" type="text" id="inputPara" 
-                                                               placeholder="Nombre del destinatario">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputMonto">Email</label>
-						<div class="controls row-fluid">
-				      			<input class="input-xlarge" type="text" id="inputEmail" 
-                                                               placeholder="Email del destinatario">
-						</div>
-					</div>			
-			  		<div class="control-group">
-					    <label class="control-label" for="inputPassword">Mensaje</label>
-					    <div class="controls">
-							<textarea class="input-xlarge" rows="3" placeholder="Escribe un mensaje..."></textarea>			
-					    </div>
-				    </div>   
+                                        <?php echo $form->textAreaRow($envio, 'mensaje', array(
+                                            'placeholder' => 'Escribe un mensaje')); ?>
+                                                                                
+					   
 				</div>	
 				<div class="span5">
 					<img src="http://placehold.it/450x250">

@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -50,6 +50,16 @@ class OrdenController extends Controller
 		$this->render('adminUsuario',
 		array('orden'=>$orden,
 		'dataProvider'=>$dataProvider,
+		));
+
+	}
+
+public function actionReporte()
+	{
+		
+		
+		$this->render('reporte',
+		array(
 		));
 
 	}
@@ -982,7 +992,7 @@ public function actionValidar()
 						if($ptc->save())
 							$ban=true;
 						else{
-							echo $ptc->id." ".$ohptc->id;
+							print_r($ptc->getErrors());
 							break;
 						}
 						

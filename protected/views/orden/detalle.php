@@ -1071,8 +1071,7 @@ else{
   </div>
 </div>
 
-<!------------------- MODAL WINDOW ON -----------------> 
-
+<!------------------- MODAL WINDOW O 
 <!-- Modal 1 -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">

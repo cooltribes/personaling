@@ -46,7 +46,7 @@ function str_lreplace($search, $replace, $subject)
                             if (isset($look)){
                      ?>
                         <div class="span4">
-                            <article class="item" >
+                            <article class="item span4" >
                             	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
                             	
                                 <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "370", "height" => "400", 'class'=>'')); ?>

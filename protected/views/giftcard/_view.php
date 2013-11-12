@@ -42,7 +42,10 @@
         <?php echo $data->fecha_uso ? date("d/m/Y", $data->getFechaUso()) : "No Aplicada"; ?>
     </td>    
     <td>
-        <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_pedidos_detalles.php" title="acciones"> <i class="icon-cog"></i></a> 
+        <div class="dropdown"> 
+            <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_pedidos_detalles.php" title="acciones">
+                <i class="icon-cog"></i> <b class='caret'></b>
+            </a> 
             <!-- Link or button to toggle dropdown -->
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
                 <li>
@@ -55,17 +58,16 @@
                         </li>
                     <?php }else if ($data->estado == 2) { ?>
                         <li>
-                        <?php echo CHtml::link('<i class="icon-ban-circle">  </i>  Desactivar', array("enviar", "id" => $data->id)); ?>
+                        <?php echo  CHtml::link("<i class='icon-ban-circle'></i> Desactivar",
+                                        $this->createUrl('index',array('id'=>$data->id)),
+                                        array(
+                                        'id'=>'linkDesactivar-'.$data->id)
+                                    ); ?>
                         </li>
                     <?php } ?>
                 
                 <li>
-                    <?php echo  CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
-                                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
-                                        array(
-                                        'id'=>'linkCancelar'.$data->id)
-                                    ); ?>
-                    <a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
+                    
             </ul>
         </div>
     </td>

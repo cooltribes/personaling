@@ -6,26 +6,27 @@
         <?php echo $data->id; ?>
     </td>
     <td>
-       <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->UserComprador->profile->first_name.
-                ' '.$data->UserComprador->profile->last_name; ?></h5>
+        <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->UserComprador->profile->first_name .
+        ' ' . $data->UserComprador->profile->last_name;
+        ?></h5>
         <small>
-            <?php if($data->UserComprador->superuser){
+            <?php
+            if ($data->UserComprador->superuser) {
                 echo "Administrador";
-            } ?>
+            }
+            ?>
         </small>
-       
+
     </td>
     <td>
-        <?php  
-            if($data->estado == 1){
-                echo "Inactiva"; 
-            }else if($data->estado == 1){
-                echo "Activa"; 
-            }else if($data->estado == 1){
-                echo "Aplicada"; 
-            }
-            
-            
+        <?php
+        if ($data->estado == 1) {
+            echo "Inactiva";
+        } else if ($data->estado == 2) {
+            echo "Activa";
+        } else if ($data->estado == 3) {
+            echo "Aplicada";
+        }
         ?> 
     </td>
     <td>
@@ -41,23 +42,31 @@
         <?php echo $data->fecha_uso ? date("d/m/Y", $data->getFechaUso()) : "No Aplicada"; ?>
     </td>    
     <td>
-
-        <i class = "icon-eye-open"></i>
-        <?php
-        
-//        echo CHtml::link("<i class='icon-eye-open'></i>", $this->createUrl('#', array('id' => $data->id)), array(// for htmlOptions
-//            'onclick' => ' {' . CHtml::ajax(array(
-//                'url' => CController::createUrl('look/detalle', array('id' => $data->id)),
-//                // 'beforeSend'=>'js:function(){if(confirm("Are you sure you want to delete?"))return true;else return false;}',
-//                'success' => "js:function(data){
-//           		
-//           	 $('#myModal').html(data);
-//					$('#myModal').modal(); }")) .
-//            'return false;}', // returning false prevents the default navigation to another url on a new page 
-//            // 'class'=>'delete-icon',
-//            'id' => 'link' . $data->id
-//            )
-//        );
-//        ?>
+        <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_pedidos_detalles.php" title="acciones"> <i class="icon-cog"></i></a> 
+            <!-- Link or button to toggle dropdown -->
+            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
+                <li>
+                    <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver', array("profile/perfil", "id" => $data->id)); ?>            
+                </li>
+                
+                    <?php if ($data->estado == 1) { ?>
+                        <li>
+                        <?php echo CHtml::link('<i class="icon-envelope">  </i>  Enviar', array("enviar", "id" => $data->id)); ?>
+                        </li>
+                    <?php }else if ($data->estado == 2) { ?>
+                        <li>
+                        <?php echo CHtml::link('<i class="icon-ban-circle">  </i>  Desactivar', array("enviar", "id" => $data->id)); ?>
+                        </li>
+                    <?php } ?>
+                
+                <li>
+                    <?php echo  CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
+                                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
+                                        array(
+                                        'id'=>'linkCancelar'.$data->id)
+                                    ); ?>
+                    <a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
+            </ul>
+        </div>
     </td>
 </tr> 

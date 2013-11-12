@@ -259,14 +259,6 @@ $template = '{summary}
             
             bootbox.dialog("Cuéntanos por qué deseas cancelar este pedido...  \n\
                 <br><br><textarea id='mensajeCancel'  maxlength='255' style='resize:none; width: 520px;' rows='4' cols='400'> ",
-//                [{
-//                    "label" : "Cancelar",
-//                    "class" : "btn-danger",
-//                    "icon"  : "icon-trash",
-//                    "callback": function() {
-//
-//                    }
-//                }, 
                 [{
                     "label" : "Continuar",
                     "class" : "btn-danger",

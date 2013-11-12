@@ -29,15 +29,16 @@ echo"<tr>";
         if(count($data->detalles)){
             foreach ($data->detalles as $detallePago){
             
-            if($detallePago->pagos[0]->tipo==1)
+            if($detallePago->tipo_pago==1)
 		echo "Dep. o Transfer"; // metodo de pago
-            if($detallePago->pagos[0]->tipo==2)
+            else if($detallePago->tipo_pago==2)
                     echo "Tarjeta de Crédito"; 
-            if($detallePago->pagos[0]->tipo==3)
+            else if($detallePago->tipo_pago==3)
                     echo "Uso de Balance"; 
-            if($detallePago->pagos[0]->tipo==4)
+            else if($detallePago->tipo_pago==4)
                     echo "MercadoPago"; 
-            
+            else
+                    echo "-ERROR EN EL PAGO-";
             echo "</br>";
             
         }

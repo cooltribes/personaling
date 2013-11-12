@@ -102,7 +102,9 @@ class User extends CActiveRecord {
         if (!isset($relations['profile']))
             $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
         $relations['direccion'] = array(self::HAS_MANY, 'Direccion', 'user_id');
-
+        $relations['saldo'] = array(self::STAT, 'Balance', 'user_id',
+            'select' => 'SUM(total)',
+        );
         $relations['direccionCount'] = array(self::STAT, 'Direccion', 'user_id',
             'select' => 'COUNT(*)',
         );

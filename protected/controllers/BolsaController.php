@@ -909,15 +909,8 @@ class BolsaController extends Controller
 					$orden->direccionEnvio_id = $dirEnvio->id;
 					$orden->tipo_guia = $_POST['tipo_guia'];
 					$orden->peso = $_POST['peso'];
-					
-					//if($detalle->nTarjeta!="") // Pagó con TDC
-					//{
-					//	$orden->estado = 3; // Estado: Pago Confirmado
-					//}
-					
 					$okk = round($_POST['total'], 2);
 					$orden->total = $okk;
-							
 					if (!($orden->save())){
 						echo CJSON::encode(array(
 								'status'=> 'error',

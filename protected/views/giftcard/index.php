@@ -24,9 +24,12 @@ $this->breadcrumbs = array(
         <h1>Administrar Gift cards</h1>
     </div>
     <div class="row">
-        <div class="span3">
+        <div class="span2">
             <a href="create" class="btn btn-success">Crear Gift Card</a>
         </div>
+        <div class="span3">
+            <a href="createMasivo" class="btn btn-success">Crear Gift Card Masivo</a>
+        </div>        
     </div>
     <hr/>
     <style>

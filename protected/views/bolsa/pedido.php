@@ -3,7 +3,8 @@
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 $user = User::model()->findByPk(Yii::app()->user->id);
-$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+//$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+$tipo_pago = $orden->getTipoPago();
 //echo $orden->pago_id;
 
 ?>
@@ -15,7 +16,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       
       if($orden->estado==1||$orden->estado==7) // pendiente de pago o pago insuficiente
 	  {
-	  	if($pago->tipo == 1 || $pago->tipo == 3){
+	  	if($tipo_pago == 1 || $tipo_pago == 3){
 	      ?>
     <div class="alert alert-success margin_top_medium margin_bottom">
       <h1>Tu Pedido ha sido recibido con éxito.</h1>
@@ -46,7 +47,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       </div>
     </section>
     <?php
-      	}else if($pago->tipo == 4){
+      	}else if($tipo_pago == 4){
       		?>
     <div class="alert alert-success margin_top_medium margin_bottom">
       <h1>Tu Pedido ha sido recibido con éxito.</h1>

@@ -23,8 +23,8 @@
  * @property integer $beneficiario
  *
  * The followings are the available model relations:
- * @property User $comprador
- * @property User $beneficiario
+ * @property User $UserComprador
+ * @property User $UserBeneficiario
  */
 class Giftcard extends CActiveRecord
 {
@@ -161,5 +161,16 @@ class Giftcard extends CActiveRecord
         /*Retorna la fecha de inicio de vigencia como un timestamp*/
         public function getFechaUso() {
             return strtotime($this->fecha_uso);
+        }
+        
+        /*Si la GC fue creada por un admin*/
+        public function comesFromAdmin() {
+            return $this->UserComprador->superuser;
+        }
+        
+        /*Retorna el codigo con formato*/
+        public function getCodigo() {
+            
+            return implode("-", str_split($this->codigo, 4));
         }
 }

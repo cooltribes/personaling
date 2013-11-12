@@ -865,14 +865,16 @@ public function actionValidar()
 	public function actionModals($id)
 	{
 		$orden = Orden::model()->findByPk($id);
-		
+		/*
 		if($orden->estado == 7){
 			$detPago = new Detalle;
 		}
 		else {
 			$detPago = Detalle::model()->findByPk($orden->detalle_id);
 		}
-		
+		*/
+		$detPago = new Detalle;
+
 		$datos="";
   		$datos=$datos."<div class='modal-header'>";
 		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
@@ -953,12 +955,15 @@ public function actionValidar()
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
 		
+		/*
 		if($orden->estado == 7){
 			$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
 		}
 		else {
 			$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
 		}
+		*/
+		$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
 		echo $datos;
 	}
 

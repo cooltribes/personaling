@@ -43,8 +43,19 @@ class Producto extends CActiveRecord
 	public $dos="";
 	public $categoria_id="";
 	public $_precio = null;
-        private $_totalVentas = null;
-        
+    private $_totalVentas = null;
+    
+    public function scopes()
+    {
+        return array(
+            'noeliminados'=>array(
+                'condition'=>'status=1',
+            ),
+            'activos'=>array(
+                'condition'=>'estado=0',
+            ),
+        );
+    }
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -171,6 +182,8 @@ class Producto extends CActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->compare('t.nombre',$this->nombre,true);
 		$criteria->compare('categorias.nombre',$this->nombre,true,'OR');
+		$criteria->compare('t.estado',$this->estado,true);
+		$criteria->compare('status',$this->status,true);
 		/*
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
@@ -533,6 +546,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('fecha',$this->fecha,true);
 		
 		$criteria->compare('status',$this->status,true);
+		//$criteria->compare('status',0,true);
 		$criteria->compare('destacado',$this->destacado,true);
 
 		$criteria->compare('peso',$this->peso,true);
@@ -665,6 +679,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 		$criteria->compare('marca_id',$this->marca_id,true);
+		//$criteria->compare('t.estado',0,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		

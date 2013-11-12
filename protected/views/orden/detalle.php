@@ -258,7 +258,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           	<?php
           	
           	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-          	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+          //	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						
 			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
 			
@@ -284,9 +284,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 						echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
-						if($pago->tipo == 2)
+						if($detalle->tipo_pago == 2)
 							echo("<td>Tarjeta de credito</td>");
 							//hacer los demas tipos
 								
@@ -302,7 +302,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		          	
 		          		echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
 							//hacer los demas tipos
 								
@@ -987,9 +987,10 @@ if($orden->estado == 7){
     <?php
 }
 else{
-    $detPago = Detalle::model()->findByPk($orden->detalle_id);
+   // $detPago = Detalle::model()->findByPk($orden->detalle_id);
+   $detPago = new Detalle; // OJO RAFA ARREGLAR ESTO
     ?>
-    <input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+    <input type="hidden" id="idDetalle" value="<?php echo($detPago->id); ?>" />
     <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
     <?php
 }

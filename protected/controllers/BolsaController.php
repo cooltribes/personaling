@@ -267,8 +267,11 @@ class BolsaController extends Controller
 	
 		public function actionPagos()
 		{
-			$tarjeta = new TarjetaCredito;
-			
+                    
+                    
+                    
+			$tarjeta = new TarjetaCredito;                        
+                        
 			if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
 				if(isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
 				{
@@ -328,7 +331,13 @@ class BolsaController extends Controller
 				$metric->user_id = Yii::app()->user->id;
 				$metric->step = ShoppingMetric::STEP_PAGO;
 				$metric->save();
-				$this->render('pago',array('tarjeta'=>$tarjeta));		
+                                
+                                $aplicar = new AplicarGC;
+                                
+				$this->render('pago',array(
+                                    'tarjeta'=>$tarjeta,
+                                    'model'=>$aplicar,
+                                        ));		
 			}
 
 		}

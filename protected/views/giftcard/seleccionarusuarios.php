@@ -78,7 +78,12 @@ $template = '{summary}
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_user',
-	    'template'=>$template,
+	    'template'=>$template,                    
+	    'beforeAjaxUpdate'=>" function(id, data) {
+                
+                    
+
+             } ",
 	    'afterAjaxUpdate'=>" function(id, data) {
 
                     $('#check-todos').click(function() { 

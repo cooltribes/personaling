@@ -390,7 +390,17 @@ class GiftcardController extends Controller
 	}
 
         
-        public function actionAplicar(){
+        public function actionAplicar(){                           
+           
+            $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;           
+            
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                Yii::app()->end();                 
+            
+            
+            
             $aplicar = new AplicarGC;
             
             if(isset($_POST["AplicarGC"])){
@@ -417,8 +427,7 @@ class GiftcardController extends Controller
                                     /*Cuando se usa*/
                                     $giftcard->fecha_uso = date("Y-m-d");
                                     $giftcard->save();
-
-
+                                    
                                      //Sumar saldo
                                     $balance = new Balance();
                                     $balance->total = $giftcard->monto;
@@ -426,17 +435,15 @@ class GiftcardController extends Controller
                                     $balance->orden_id = 0;
                                     $balance->tipo = 2; //tipo GiftCard
                                     $balance->save();
-                                    
-                                    
-//                                    echo "<pre>";
-//                                    print_r($balance->getErrors());
-//                                    echo "</pre>";
-//                                    Yii::app()->end();
 
 
                                     Yii::app()->user->updateSession();
                                     Yii::app()->user->setFlash('success',UserModule::t("Se ha aplicado tu Gift Card con éxito, ahora puedes usar tu saldo para comprar en Personaling."));                              
-                                    $this->redirect(array('user/profile/micuenta'));
+                                    
+                                    if(!$ajax){
+                                        $this->redirect(array('user/profile/micuenta'));                                        
+                                    }
+                                    
 
                                 }else{ //Vencida
                                    Yii::app()->user->updateSession();
@@ -465,11 +472,18 @@ class GiftcardController extends Controller
                        Yii::app()->user->setFlash('error',UserModule::t("¡ Gift Card inválida !"));
                    }
                    
-               }
-               
+               }else{ //Invalido
+                  if($ajax){                      
+                      Yii::app()->user->setFlash('error',UserModule::t("¡ Errores en el modelo !"));
+                  }
+               }               
             }
             
-		$this->render('aplicar', array('model' => $aplicar));
+                if(!$ajax){                    
+                    $this->render('aplicar', array('model' => $aplicar));
+                }else{
+                    echo CJSON::encode(Yii::app()->user->getFlashes());
+                }
 	}
 	/**
 	 * Updates a particular model.
@@ -632,8 +646,12 @@ class GiftcardController extends Controller
             }
             
             $model = new EnvioGiftcard();
+            $aplicar = new AplicarGC();
+            
+            
             $this->render("envioMasivo", array(
                 'envio' => $model,
+                'aplica' => $aplicar,
             ));
             
         }

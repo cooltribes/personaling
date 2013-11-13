@@ -26,13 +26,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <!-- Forma de pago ON -->
       <div class="box_1 padding_small margin_bottom">
         <h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
-       <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
+<!--       <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
         <div class="padding_left margin_bottom_medium collapse" id="mercadoPagoCol">
           <div class="well well-small" >
-            Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
+            Haz click en "Siguiente" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
           </div>
-        </div>
+        </div>-->
         <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
         <button type="button" id="btn_deposito" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
         <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
@@ -311,16 +311,90 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            <?php
 			}
             ?>
-            <!-- <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse2"> Agregar Tarjeta de regalo </button> -->
+             <button type="button" class="btn btn-success margin_top_medium" data-toggle="collapse" data-target="#collapse2"><i class = "icon-gift icon-white"></i> Agregar Gift Card</button> 
+           
             <!-- Forma de pago ON -->
-            <div class="padding_left_small collapse" id="collapse2">
+            <div class="padding_left_small collapse row-fluid" id="collapse2">
               
                 <!--[if lte IE 7]>
-            <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
-<![endif]-->
+                    <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
+                <![endif]-->
+                <div class="span12">
+                    <?php $this->widget('bootstrap.widgets.TbAlert', array(
+                                'block'=>true, // display a larger alert block?
+                                'fade'=>true, // use transitions?
+                                'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+                                'alerts'=>array( // configurations per alert type
+                                    'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                                    'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                                    'warning'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                                ),
+                            )
+                        ); ?>
+                </div>
+                <?php /* $form2 = $this->beginWidget("bootstrap.widgets.TbActiveForm", array(
+                    'id' => 'form-enviarGift',
+                    'type' => 'inline',
+                    'clientOptions' => array(
+                        'validateOnSubmit' => true,
+                    ),
+                
+                    'enableAjaxValidation' => true,
+                    'enableClientValidation' => true,
+                    'htmlOptions' => array('class' => 'personaling_form')
+                )); */ ?>
+                
+                <?php 
+                    $classError = "";
+                    if($model->hasErrors()){
+                        $classError = "error";
+                        $cReq = 0;
+                        $cLen = 0;
+                        foreach($model->errors as $att => $error){
+                            $cReq += in_array("req", $error) ? 1:0;
+                            $cLen += in_array("len", $error) ? 1:0;
+                        }
+                        $model->clearErrors();
 
+                        if($cReq){
+                           $model->addError("campo1", "Debes escribir el código de tu Gift Card completo"); 
+                        }
+                        if($cLen){
+                           $model->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
+                        }
+                    }
+                ?>
+               <div id="giftCard">
+               <div class="control-group <?php echo $classError; ?>">						
+                    <div class="controls">
+                        <?php echo CHtml::activeLabel($model, "campo1"); ?>
+
+                        <?php echo CHtml::activeTextField($model, "campo1", array('class' => 'input-mini margin_left_small',
+                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                        <?php echo CHtml::activeTextField($model, "campo2", array('class' => 'input-mini',
+                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                        <?php echo CHtml::activeTextField($model, "campo3", array('class' => 'input-mini',
+                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                        <?php echo CHtml::activeTextField($model, "campo4", array('class' => 'input-mini',
+                            'maxlength'=>'4')); ?>
+
+                    </div>						
+               </div>
+                <?php echo CHtml::errorSummary($model, "Corrije los siguientes errores:"); ?>
+               <input type="hidden" id="aplicarAjax" name="aplicarAjax" /> 
+<!--               <input type="submit" name="aplicarGC" class="btn btn-mini">Aplicar Gift Card</input>-->
+               <button id="aplicarGC" class="btn btn-mini btn-danger">Aplicar Gift Card</button>
+               <?php // $this->endWidget(); // formulario ?>      
+               </div>     
+<!--                <div class="span12">
+                    
+                </div>
+                <div class="span12">
+
+                </div>
                 <input type="text" maxlength="128"  placeholder="Numero de la tarjeta de Regalo"  class="span3">
-                <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-mini">Agregar Tarjeta de Regalo</a>
+                <a href="Crear_Perfil_Usuaria_Mi_Tipo.php" class="btn btn-mini">Aplicar</a>-->
+                
                 <input type="hidden" id="tipo_pago" name="tipo_pago" value="1" />
                 <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
               
@@ -365,6 +439,34 @@ else
 ?>
 
 <script>
+
+    $("#aplicarGC").click(function(e){
+            $("#aplicarAjax").val("1");
+                        
+            var datos = $("#giftCard").find("input").serialize();
+            
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo CController::createUrl("/giftcard/aplicar"); ?>',
+                dataType: 'JSON',
+                data: datos,
+                success: function(data){
+                    console.log(data);
+                    return;
+                    if(data.status == 'success'){
+
+
+
+                    }else if(data == 'error'){
+
+                    }
+                }
+            });    
+            
+            
+            
+        });
+
 
     $(document).ready(function() {
         $("#deposito").click(function() {
@@ -617,6 +719,5 @@ else
 	        }
 	    });
 	}
-	
-	
+
 </script>

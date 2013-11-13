@@ -314,35 +314,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
              <button type="button" class="btn btn-success margin_top_medium" data-toggle="collapse" data-target="#collapse2"><i class = "icon-gift icon-white"></i> Agregar Gift Card</button> 
            
             <!-- Forma de pago ON -->
-            <div class="padding_left_small collapse row-fluid" id="collapse2">
+            <div class="padding_left_small margin_top_medium collapse row-fluid" id="collapse2">
               
                 <!--[if lte IE 7]>
                     <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
                 <![endif]-->
-                <div class="span12">
-                    <?php $this->widget('bootstrap.widgets.TbAlert', array(
-                                'block'=>true, // display a larger alert block?
-                                'fade'=>true, // use transitions?
-                                'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
-                                'alerts'=>array( // configurations per alert type
-                                    'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-                                    'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-                                    'warning'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
-                                ),
-                            )
-                        ); ?>
-                </div>
-                <?php /* $form2 = $this->beginWidget("bootstrap.widgets.TbActiveForm", array(
-                    'id' => 'form-enviarGift',
-                    'type' => 'inline',
-                    'clientOptions' => array(
-                        'validateOnSubmit' => true,
-                    ),
                 
-                    'enableAjaxValidation' => true,
-                    'enableClientValidation' => true,
-                    'htmlOptions' => array('class' => 'personaling_form')
-                )); */ ?>
                 
                 <?php 
                     $classError = "";
@@ -365,7 +342,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     }
                 ?>
                <div id="giftCard">
-               <div class="control-group <?php echo $classError; ?>">						
+               <div class="control-group" id="camposGC">						
                     <div class="controls">
                         <?php echo CHtml::activeLabel($model, "campo1"); ?>
 
@@ -380,7 +357,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                     </div>						
                </div>
-                <?php echo CHtml::errorSummary($model, "Corrije los siguientes errores:"); ?>
+                
+                    <div class="span11 alert fade in" id="alert-msg" style="display: none">
+                      <button type="button" class="close" >&times;</button> 
+                      <!--data-dismiss="alert"-->
+                      <div class="msg"></div>
+                    </div>
+                
                <input type="hidden" id="aplicarAjax" name="aplicarAjax" /> 
 <!--               <input type="submit" name="aplicarGC" class="btn btn-mini">Aplicar Gift Card</input>-->
                <button id="aplicarGC" class="btn btn-mini btn-danger">Aplicar Gift Card</button>
@@ -434,8 +417,6 @@ else
     // redirecciona al login porque se murió la sesión
     header('Location: /user/login');
 }
-
-
 ?>
 
 <script>
@@ -452,7 +433,9 @@ else
                 data: datos,
                 success: function(data){
                     console.log(data);
+                    showAlert("success", "FFFF");
                     return;
+                    
                     if(data.status == 'success'){
 
 
@@ -467,7 +450,21 @@ else
             
         });
 
+        //Mostrar alert
+        function showAlert(type, message){
+           $('#alert-msg').removeClass('alert-success alert-error') ;
+           $('#alert-msg').addClass("alert-"+type);
+           $('#alert-msg').children(".msg").html(message);
+           $('#alert-msg').show();
+           //$("html, body").animate({ scrollTop: 0 }, "slow");
+        }
 
+        $(".alert").alert();
+        $(".alert .close").click(function(){
+            $(".alert").fadeOut('slow');
+        });
+        
+        
     $(document).ready(function() {
         $("#deposito").click(function() {
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";

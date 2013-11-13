@@ -393,13 +393,7 @@ class GiftcardController extends Controller
         public function actionAplicar(){                           
            
             $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;           
-            
-//                echo "<pre>";
-//                print_r($_POST);
-//                echo "</pre>";
-//                Yii::app()->end();                 
-            
-            
+           
             
             $aplicar = new AplicarGC;
             
@@ -473,9 +467,27 @@ class GiftcardController extends Controller
                    }
                    
                }else{ //Invalido
-                  if($ajax){                      
-                      Yii::app()->user->setFlash('error',UserModule::t("¡ Errores en el modelo !"));
-                  }
+                    
+                    $cReq = 0;
+                    $cLen = 0;
+                    foreach($model->errors as $att => $error){
+                        $cReq += in_array("req", $error) ? 1:0;
+                        $cLen += in_array("len", $error) ? 1:0;
+                    }
+                    $model->clearErrors();
+
+                    if($cReq){
+                       $model->addError("campo1", "Debes escribir el código de tu Gift Card completo"); 
+                    }
+                    if($cLen){
+                       $model->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
+                    } 
+                    
+                    
+                    if($ajax){     
+                        //$giftcard->getErrors()
+                        Yii::app()->user->setFlash('error',UserModule::t("¡ Errores en el modelo !"));
+                    }
                }               
             }
             
@@ -483,6 +495,7 @@ class GiftcardController extends Controller
                     $this->render('aplicar', array('model' => $aplicar));
                 }else{
                     echo CJSON::encode(Yii::app()->user->getFlashes());
+                    Yii::app()->end();
                 }
 	}
 	/**

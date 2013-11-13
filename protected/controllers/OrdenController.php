@@ -57,10 +57,9 @@ class OrdenController extends Controller
 public function actionReporte()
 	{
 		
-		
-		$this->render('reporte',
-		array(
-		));
+		$orden = new Orden;
+        $dataProvider = $orden->search();    
+		$this->render('reporte');
 
 	}
 	public function actionHistorial()

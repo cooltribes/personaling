@@ -104,11 +104,16 @@ class Orden extends CActiveRecord
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
 			'estados' => array(self::HAS_MANY, 'Estado', 'orden_id', 'index'=>'id'),
 			'detalles' => array(self::HAS_MANY, 'Detalle','orden_id'),
+			'ohptc' => array(self::HAS_MANY, 'OrdenHasProductotallacolor','tbl_orden_id'),
 			'totalpagado' => array(self::STAT, 'Detalle', 'orden_id',
             		'select' => 'SUM(monto)',
             		'condition' => 'estado = 1'
         		),
-                       
+        	'nproductos' => array(self::STAT, 'OrdenHasProductotallacolor', 'tbl_orden_id',
+            		'select' => 'COUNT(preciotallacolor_id)',
+            		'condition' => 'cantidad > 0'
+        		), 
+     
 		);
 	}
 
@@ -221,6 +226,33 @@ class Orden extends CActiveRecord
 		$criteria->order = 't.fecha DESC';
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+		));
+	}
+	
+	public function vendidas()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+ 
+		$criteria=new CDbCriteria;
+		$criteria->select='t.*';
+		//$criteria->with=array('ohptc');
+		///$criteria->together = true;
+		//$criteria->compare('t.user_id',$this->user_id);
+		$criteria->addCondition("t.estado = 3"); 
+		$criteria->addCondition("t.estado = 4",'OR'); 
+		$criteria->addCondition("t.estado = 8",'OR'); 
+		$criteria->addCondition("t.estado = 10",'OR'); 
+		//$criteria->addCondition("ohptc.cantidad > 0"); 
+		//$criteria->addCondition("estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."'");
+		 
+		//$criteria->group = 't.id';
+		//$criteria->order = 't.fecha DESC';
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination' => array(
+                'pageSize' => 100,
+            ),
 		));
 	}
 	

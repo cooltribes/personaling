@@ -26,7 +26,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     	
     	
       <!-- Forma de pago ON -->
-<<<<<<< HEAD
+
       		<div class="box_1 padding_small margin_bottom">
         		<h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
        <!--
@@ -36,13 +36,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
          		<div class="accordion" id="accordion2">	
          			<div class="accordion-group">
          				<div class="accordion-heading">
-	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="btn_mercadopago">
 	       						<label class="radio">
 	      							<input type="radio" name="optionsRadios" id="mercadopago" value="option4"> MercadoPago
 								</label>
 							</a>
 						</div>
-        				<div class="padding_left margin_bottom_medium collapse in" id="collapseOne">
+        				<div class="padding_left margin_bottom_medium collapse" id="collapseOne">
           					<div class="well well-small" >
             					Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
           					</div>
@@ -52,13 +52,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         			
          			<div class="accordion-group">
          				<div class="accordion-heading">
-	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
 	       						<label class="radio">
 	      							<input type="radio" name="optionsRadios" id="deposito" value="option1"> Depósito o Transferencia
 	    						</label>
 				     		</a>
 				     	</div>
-				        <div class="padding_left margin_bottom_medium collapse in" id="collapseTwo">
+				        <div class="padding_left margin_bottom_medium collapse" id="collapseTwo">
           					<div class="well well-small" >
             					<h4>Banco Banesco</h4>
             					<ul>
@@ -73,7 +73,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 					
  					<div class="accordion-group">
  						<div class="accordion-heading">
-	                		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree">
+	                		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree" id="btn_tarjeta">
 							    <label class="radio">
 	      							<input type="radio" name="optionsRadios" id="tarjeta" value="option2"> Tarjeta de Crédito
 	    						</label>
@@ -502,7 +502,9 @@ else
         
         
     $(document).ready(function() {
+
         $("#deposito").click(function() {
+        	
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('1');
@@ -562,7 +564,7 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('4');
-            $("#mercadopago").attr('checked', 'checked');
+            $("#mercadopago").prop("checked", true);
         });
         $("#btn_deposito").click(function() {
         	var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
@@ -587,7 +589,7 @@ else
         $("#btn_tarjeta").click(function() {
         	 var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
             $("#adentro").html(añadir);
-        	$("#tarjeta").attr('checked', 'checked');
+        	$("#tarjeta").prop("checked", true);
         	$("#tipo_pago").val('2');
         	
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');

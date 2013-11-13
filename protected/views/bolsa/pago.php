@@ -24,7 +24,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <div class="row">
     <section class="span7">
     	
-    	<div class="accordion" id="accordion2">
+    	
       <!-- Forma de pago ON -->
       		<div class="box_1 padding_small margin_bottom">
         		<h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
@@ -32,6 +32,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
        -->
+         		<div class="accordion" id="accordion2">	
          			<div class="accordion-group">
          				<div class="accordion-heading">
 	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
@@ -47,6 +48,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         				
         				</div>
         			</div>
+        			
          			<div class="accordion-group">
          				<div class="accordion-heading">
 	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
@@ -67,119 +69,123 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           					</div>
         				</div>
 					</div>
- <div class="accordion-group">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree">
-       
-       <label class="radio">
-      <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> Tarjeta de Crédito
-    </label>
-     
-      </a>
-        <div class="collapse" id="collapseTree">
-        	 <div class="well well-small" >
-            <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
-            <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
-      		
-      	
-			
-			<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'tarjeta-form',
-	'enableAjaxValidation'=>false,
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true, 
-	),
-	'htmlOptions'=>array('class'=>''),
-)); 
-
-?>
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'nombre',array('class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>
-			
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'numero',array('class'=>'span5','placeholder'=>'Número de la tarjeta')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>
-
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'codigo',array('class'=>'span2','placeholder'=>'Código de seguridad')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>
-            				
-				<div class="control-group">
-					Vencimiento *
-             		<div class="controls">
-             	<?php echo $form->dropDownList($tarjeta,'month',array('0'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('class'=>'span1','placeholder'=>'Mes')); ?>
-                <?php echo $form->dropDownList($tarjeta,'year',array('0'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('class'=>'span1','placeholder'=>'Año')); ?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>
-
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cedula de Identidad')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>
-
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'direccion',array('class'=>'span5','placeholder'=>'Dirección')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>            	
-
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'ciudad',array('class'=>'span5','placeholder'=>'Ciudad')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>			
-
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'estado',array('class'=>'span5','placeholder'=>'Estado')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>	
-  
-				<div class="control-group"> 
-             		<div class="controls">
-             			<?php echo $form->textFieldRow($tarjeta,'zip',array('class'=>'span2','placeholder'=>'Código Postal')); 
-              			?>
-                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              		</div>
-            	</div>		          					
-				
-				<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
-		
-		<div class="form-actions">
-            <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'buttonType'=>'submit',
-            'type'=>'warning',
-            'size'=>'large',
-            'label'=>'Siguiente',
-        )); 
-        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
-        ?>
-            </div>
-</div>	
-</div>
+					
+ 					<div class="accordion-group">
+ 						<div class="accordion-heading">
+	                		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree">
+							    <label class="radio">
+	      							<input type="radio" name="optionsRadios" id="tarjeta" value="option2"> Tarjeta de Crédito
+	    						</label>
+	     					</a>
+     					</div>
+        				<div class="collapse" id="collapseTree">
+				        	 <div class="well well-small" >
+					            <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
+						            <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
+						      		
+						      	
+									
+												<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+										'id'=>'tarjeta-form',
+										'enableAjaxValidation'=>false,
+										'enableClientValidation'=>true,
+										'clientOptions'=>array(
+											'validateOnSubmit'=>true, 
+										),
+										'htmlOptions'=>array('class'=>''),
+									)); 
+									
+									?>
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'nombre',array('class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>
+									
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'numero',array('class'=>'span5','placeholder'=>'Número de la tarjeta')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>
+						
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'codigo',array('class'=>'span2','placeholder'=>'Código de seguridad')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>
+						            				
+										<div class="control-group">
+											Vencimiento *
+						             		<div class="controls">
+						             	<?php echo $form->dropDownList($tarjeta,'month',array('0'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('class'=>'span1','placeholder'=>'Mes')); ?>
+						                <?php echo $form->dropDownList($tarjeta,'year',array('0'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('class'=>'span1','placeholder'=>'Año')); ?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>
+						
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cedula de Identidad')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>
+						
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'direccion',array('class'=>'span5','placeholder'=>'Dirección')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>            	
+						
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'ciudad',array('class'=>'span5','placeholder'=>'Ciudad')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>			
+						
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'estado',array('class'=>'span5','placeholder'=>'Estado')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>	
+						  
+										<div class="control-group"> 
+						             		<div class="controls">
+						             			<?php echo $form->textFieldRow($tarjeta,'zip',array('class'=>'span2','placeholder'=>'Código Postal')); 
+						              			?>
+						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						              		</div>
+						            	</div>		          					
+										
+										<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
+								
+								<div class="form-actions">
+						            <?php $this->widget('bootstrap.widgets.TbButton', array(
+						            'buttonType'=>'submit',
+						            'type'=>'warning',
+						            'size'=>'large',
+						            'label'=>'Siguiente',
+						        )); 
+						        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
+						        ?>
+						        </div>
+							</div>	
+						</div>
+					</div>
+				</div>
+			</div>
     </section>
     <?php
 

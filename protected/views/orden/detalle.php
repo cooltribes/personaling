@@ -135,31 +135,38 @@ $usuario = User::model()->findByPk($orden->user_id);
         Prendas</td>
       <td><p class="T_xlarge margin_top_xsmall"><?php
       
+	if($orden->estado == 3 || $orden->estado == 8){
+		echo Yii::app()->numberFormatter->formatDecimal($orden->total);
+		
+	}
 	if($orden->estado == 7)
 	{
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$orden->user_id,'orden_id'=>$orden->id));
+		/*$balance = Balance::model()->findByAttributes(array('user_id'=>$orden->user_id,'orden_id'=>$orden->id));
 		if(isset($balance)){
 			$a = $balance->total * -1;
 			echo Yii::app()->numberFormatter->formatDecimal($a); 
-		}
+		}*/
+		//echo 'px'.$orden->getxPagar();
+		//echo 'orden'.$orden->totalpagado; 
+				echo Yii::app()->numberFormatter->formatDecimal($orden->getxPagar());
 	}
-	else{
+	if($orden->estado == 1 || $orden->estado == 2 || $orden->estado == 4 || $orden->estado == 5 || $orden->estado == 6){
 				
 		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
-		
+
 		if(isset($balance))
 		{
 			if($balance->total < 0){
 				$a = $balance->total * -1;
 				echo Yii::app()->numberFormatter->formatDecimal($a);
 			}else {
-				echo Yii::app()->numberFormatter->formatDecimal($orden->total-$orden->descuento);
+				echo Yii::app()->numberFormatter->formatDecimal($orden->getxPagar());
 			}
 			
 		}
 		else
 		{
-			echo Yii::app()->numberFormatter->formatDecimal($orden->total-$orden->descuento);
+			echo Yii::app()->numberFormatter->formatDecimal($orden->getxPagar());
 		}
 					
 		
@@ -288,7 +295,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 							echo("<td>Deposito o Transferencia</td>");
 						if($detalle->tipo_pago == 2)
 							echo("<td>Tarjeta de credito</td>");
-							//hacer los demas tipos
+						if($detalle->tipo_pago == 3)
+							echo("<td>Saldo</td>");						
+						if($detalle->tipo_pago == 4)
+							echo("<td>Mercado Pago</td>");	
+														//hacer los demas tipos
 								
 						echo("<td>".$detalle->nTransferencia."</td>");	
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
@@ -359,7 +370,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             }
             ?></td>
             <td><?php echo $orden->peso ?> Kg.</td>
-            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
             <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
@@ -553,7 +564,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 						echo $usuario->profile->first_name." ".$usuario->profile->last_name; 	
 					} ?></td>
             <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
-            <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
+            <!-- <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td> -->
           </tr>
         </table>
         
@@ -1045,7 +1056,7 @@ else{
 <![endif]-->
         <div class="controls">
           <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)',
-		  'value'=>str_replace('.',',',$orden->getxPagar()))); ?>
+		  'value'=> Yii::app()->numberFormatter->formatDecimal( $orden->getxPagar() ) ) ) ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>
@@ -1193,7 +1204,7 @@ else{
 		
  		$.ajax({
 	        type: "post", 
-	        url: "../validar", // action 
+	        url: "<?php echo CController::createUrl('orden/validar'); ?>",
 	        data: { 'accion':uno, 'id':id}, 
 	        success: function (data) {
 				if(data=="ok")

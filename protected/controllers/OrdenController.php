@@ -697,7 +697,7 @@ public function actionValidar()
 							$balance = new Balance;
 							$balance->orden_id = $orden->id;
 							$balance->user_id = $orden->user_id;
-							$balance->total = round($excede,2);
+							$balance->total = $excede;
 							
 							$balance->save();
 							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
@@ -715,7 +715,7 @@ public function actionValidar()
 					if($saldo>0){
 
 						$det_bal=new Detalle;
-						$pag_bal=new Pago;
+						//$pag_bal=new Pago;
 						if($saldo>($porpagar-$detalle->monto)){
 							
 							$det_bal->monto=($porpagar-$detalle->monto);
@@ -723,9 +723,10 @@ public function actionValidar()
 							$det_bal->comentario="Prueba saldo";
 							$det_bal->estado=1;
 							$det_bal->orden_id=$orden->id;
+							$det_bal->tipo_pago = 3;
 							if($det_bal->save()){
-								$pag_bal->tbl_detalle_id=$det_bal->id;
-								$pag_bal->tipo=3;
+								//$pag_bal->tbl_detalle_id=$det_bal->id;
+								//$pag_bal->tipo=3;
 								$estado = new Estado;
 													
 								$estado->estado = 3; // pago recibido
@@ -735,7 +736,7 @@ public function actionValidar()
 										
 								if($estado->save())
 								{
-									$pag_det->save();
+									//$pag_det->save();
 									echo "ok";	
 								}	
 							}
@@ -756,7 +757,7 @@ public function actionValidar()
 								$balance = new Balance;
 								$balance->orden_id = $orden->id;
 								$balance->user_id = $orden->user_id;
-								$balance->total = round(($porpagar-$detalle->monto)*(-1),2);
+								$balance->total = ($porpagar-$detalle->monto)*-1;
 								$balance->tipo=1;
 								
 								$balance->save();
@@ -773,7 +774,7 @@ public function actionValidar()
 								$balance = new Balance;
 								$balance->orden_id = $orden->id;
 								$balance->user_id = $orden->user_id;
-								$balance->total = round($saldo*(-1),2);
+								$balance->total = $saldo*(-1);
 								$balance->tipo=1;								
 								if($balance->save()){
 									$subject = 'Pago insuficiente';
@@ -807,19 +808,20 @@ public function actionValidar()
 					else{
 						
 							$subject = 'Pago insuficiente';
-							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->total.' Bs para pagar toda la orden.<br/><br/> ';
+							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->monto.' Bs para pagar toda la orden.<br/><br/> ';
 							$estado = new Estado;
 																	
 							$estado->estado = 7; // pago insuficiente
 							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
-							if($estado->save())
-							{
-								$pag_bal->tbl_detalle_id=$det_bal->id;
-								$pag_bal->tipo=3;
-								$pag_det->save();
-							}
+							$estado->save();
+							//if($estado->save())
+							//{
+								//$pag_bal->tbl_detalle_id=$det_bal->id;
+								//$pag_bal->tipo=3;
+								//$pag_det->save();
+							//}
 						
 					}	
 				}	

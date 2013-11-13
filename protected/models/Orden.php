@@ -104,7 +104,10 @@ class Orden extends CActiveRecord
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
 			'estados' => array(self::HAS_MANY, 'Estado', 'orden_id', 'index'=>'id'),
 			'detalles' => array(self::HAS_MANY, 'Detalle','orden_id'),
-			
+			'totalpagado' => array(self::STAT, 'Detalle', 'orden_id',
+            		'select' => 'SUM(monto)',
+            		'condition' => 'estado = 1'
+        		),
                        
 		);
 	}
@@ -444,11 +447,11 @@ class Orden extends CActiveRecord
 	public function getxPagar($id=null){
 			
 		if(is_null($id))
-				$porpagar=$this->total-Detalle::model()->getSumxOrden($this->id);
+				$porpagar=$this->total-$this->totalpagado;
 		else
 			{
 				$orden=$this->findByPk($id);
-				$porpagar=$orden->total-Detalle::model()->getSumxOrden($orden->id);
+				$porpagar=$orden->total-$orden->totalpagado;
 			}
 		if($porpagar<0)
 			$porpagar=0;

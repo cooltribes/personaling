@@ -48,11 +48,7 @@ $this->breadcrumbs=array(
 			<div>
 				<p class="lead">1. Selecciona una Gift Card</p>
 				<ul class="thumbnails">
-					<li> <img src="http://placehold.it/200x100"> </li>
-					<li> <img src="http://placehold.it/200x100"> </li>
-					<li> <img src="http://placehold.it/200x100"> </li>
-					<li> <img src="http://placehold.it/200x100"> </li>												
-					<li> <img src="http://placehold.it/200x100"> </li>			
+					<li> <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x200.png"> </li>	
 				</ul>
 
 
@@ -64,20 +60,28 @@ $this->breadcrumbs=array(
                                         
                                         <?php echo $form->errorSummary($envio); ?>
                                        
-                                        <?php echo $form->textFieldRow($envio, 'nombre', array(
-                                            'placeholder' => 'Nombre del destinatario'
-                                        )); ?>
-                                        
                                         <?php echo $form->textFieldRow($envio, 'email', array(
                                             'placeholder' => 'Email del destinatario')); ?>
+
+                                        <?php echo $form->textFieldRow($envio, 'nombre', array(
+                                            'placeholder' => 'Nombre del destinatario'
+                                        )); ?>                                        
                                         
                                         <?php echo $form->textAreaRow($envio, 'mensaje', array(
-                                            'placeholder' => 'Escribe un mensaje')); ?>
+                                            'placeholder' => 'Escribe un mensaje','maxlength'=>'100')); ?>
                                                                                 
 					   
 				</div>	
-				<div class="span5">
-					<img src="http://placehold.it/450x250">
+				<div class="span5 bg_color5 box_shadow_personaling padding_medium">
+                    <div class="contenedorPreviewGift" >
+                        <span class="lead T_xlarge" id="monto">Bs. <?php echo $model->monto; ?> </span>
+                        <strong class="lead" id="forpara">Para:</strong><p class="lead" id="para"></p>                        
+                        <strong class="lead"  id="formensaje">Mensaje:</strong><p class="lead" id="mensaje"></p>
+                        <strong class="lead T_large" id="codigo"> <?php echo $model->getMascaraCodigo(); ?> </strong>
+                        <span class="lead t_small" id="fecha">Valida desde <?php echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el <?php echo date("d/m/Y", $model->getFinVigencia()); ?> </span>
+                        <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
+
+                    </div>
 				</div>
 			</div>
 			<div class="control-group row margin_top">
@@ -91,3 +95,14 @@ $this->breadcrumbs=array(
 
 	</section>
 </div>
+<script>
+
+$('#EnvioGiftcard_nombre').keypress(function(){
+    $('#para').text( $('#EnvioGiftcard_nombre').val() );
+}); 
+
+$('#EnvioGiftcard_mensaje').keypress(function(){
+    $('#mensaje').text( $('#EnvioGiftcard_mensaje').val() );
+});
+    
+</script>

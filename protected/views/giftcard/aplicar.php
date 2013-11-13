@@ -17,6 +17,9 @@
                     'clientOptions' => array(
                         'validateOnSubmit' => true,
                     ),
+                
+                    'enableAjaxValidation' => true,
+                    'enableClientValidation' => true,
                     'htmlOptions' => array('class' => 'personaling_form')
                 )); ?>
 		

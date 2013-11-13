@@ -334,7 +334,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             }
             ?></td>
             <td><?php echo $orden->peso ?> Kg.</td>
-            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
             <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>

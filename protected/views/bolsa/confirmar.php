@@ -4,7 +4,7 @@ Yii::import('application.components.*');
 require_once "mercadopago-sdk/lib/mercadopago.php";
 $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
-$accessToken = $mp->get_access_token();
+//$accessToken = $mp->get_access_token();
 //var_dump($accessToken);
 
 if (!Yii::app()->user->isGuest) { // que este logueado

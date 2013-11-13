@@ -1,1 +1,1 @@
-<?php echo "REPORTE"; ?> 
+<?php echo "REPORTE"; ?>  

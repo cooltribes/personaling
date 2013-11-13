@@ -175,4 +175,11 @@ class Giftcard extends CActiveRecord
             
             return implode("-", str_split($this->codigo, 4));
         }
+        
+        /*Retorna los ultimos 4 digitos del codigo con formato*/
+        public function getMascaraCodigo() {
+            
+            return 'XXXX-XXXX-XXXX-'.substr($this->codigo, 12,14);
+        }
+
 }

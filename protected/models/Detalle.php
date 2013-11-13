@@ -125,7 +125,7 @@ class Detalle extends CActiveRecord
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 		if(is_null($total))
 			$total=0;
-		return round($total,2);
+		return $total;
 		
 	}
 	

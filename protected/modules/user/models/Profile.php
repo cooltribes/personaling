@@ -272,7 +272,7 @@ class Profile extends UActiveRecord
 	
 	public function getSaldo($id , $format=true){
 			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id)->queryScalar();
-			$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
+			//$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;
 	}
 	/* Obtener el url del perfil publico del usuario */

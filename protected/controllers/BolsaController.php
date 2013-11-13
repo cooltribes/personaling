@@ -890,6 +890,7 @@ class BolsaController extends Controller
 		if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
 		 	$respCard = "";
 		 	$usuario = Yii::app()->user->id; 
+			$user = User::model()->findByPk($usuario);
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));		
 			switch ($_POST['tipoPago']) {
 			    case 1: // TRANSFERENCIA
@@ -903,7 +904,7 @@ class BolsaController extends Controller
 					$orden->total = $_POST['total'];
 					$orden->seguro = $_POST['seguro'];
 					$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
-					$orden->estado = 1; // en espera de pago
+					$orden->estado = Orden::ESTADO_ESPERA; // en espera de pago
 					$orden->bolsa_id = $bolsa->id; 
 					$orden->user_id = $usuario;
 					$orden->direccionEnvio_id = $dirEnvio->id;
@@ -922,7 +923,8 @@ class BolsaController extends Controller
 					}	
 									
 					if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-						$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+						//$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+						$balance_usuario = $user->saldo;
 						if($balance_usuario > 0){
 							$balance = new Balance;
 							$detalle_balance = new Detalle;
@@ -933,7 +935,7 @@ class BolsaController extends Controller
 								$detalle_balance->monto=$_POST['total'];
 							}else{
 								 
-								$oden->cambiarEstado(Orden::ESTADO_INSUFICIENTE);
+								$orden->cambiarEstado(Orden::ESTADO_INSUFICIENTE);
 								$balance->total = $balance_usuario*(-1);
 								$detalle_balance->monto=$balance_usuario;
 							}
@@ -946,7 +948,7 @@ class BolsaController extends Controller
 								$balance->orden_id = $orden->id;
 								$balance->user_id = $usuario;
 								$balance->tipo = 1;
-								$balance->total=round($balance->total,2);
+								//$balance->total=round($balance->total,2);
 								$balance->save();
 							}
 						}
@@ -1411,7 +1413,6 @@ class BolsaController extends Controller
 			$detPago->comentario = $_POST['comentario'];
 			$detPago->banco = $_POST['banco'];
 			$nf = new NumberFormatter("es_VE", NumberFormatter::DECIMAL);
-			
 			$detPago->monto = $nf->parse($_POST['monto']);
 			$detPago->cedula = $_POST['cedula'];
 			$detPago->estado = 0; // defecto

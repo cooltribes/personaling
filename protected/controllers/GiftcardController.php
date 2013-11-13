@@ -337,30 +337,30 @@ class GiftcardController extends Controller
                     }
                     
                     $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
-									<table class="w470" width="470" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
+									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
 										<tbody>
 										<tr>
-											<td>
-	                                      		{$model->monto} Bs.<br>
+											<td style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
+	                                      		{$model->monto} Bs.
                                       		</td>
                                       	</tr>
                                       	<tr>
-                                      		<td>
-                                      		Para: {$envio->nombre}
+                                      		<td style='color: #555;  position: relative; top: 18px; left: 10px; '>
+                                      		    Para: {$envio->nombre}
                                       		</td>
                                       	</tr>
                                       	<tr>
-                                      		<td>
-                                      			Mensaje: 
+                                      		<td style='color: #555; position: relative; top: -10px; left: 10px; '>
+                                      			Mensaje: {$envio->mensaje}
                                       		</td>
                                       	</tr>
                                       	<tr>
-                                      		<td>
+                                      		<td style='color: #555; font-size: 28px; text-align: center;'>
                                       			{$model->getCodigo()}
                                       		</td>
                                       	</tr>   
                                       	<tr>
-                                      		<td>
+                                      		<td style='font-size: 11px; color: #333; position: relative;left: 10px;'>
                                       			Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
                                       		</td>                                      		
                                       	</tr>                                         	                                   	                                      	                                      	

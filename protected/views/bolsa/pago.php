@@ -23,32 +23,59 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   </div>
   <div class="row">
     <section class="span7">
+    	
+    	<div class="accordion" id="accordion2">
       <!-- Forma de pago ON -->
-      <div class="box_1 padding_small margin_bottom">
-        <h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
+      		<div class="box_1 padding_small margin_bottom">
+        		<h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
+       <!--
        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
-        <div class="padding_left margin_bottom_medium collapse" id="mercadoPagoCol">
-          <div class="well well-small" >
-            Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
-          </div>
-        </div>
-        <input type="radio" name="optionsRadios" id="deposito" value="option1" data-toggle="collapse" data-target="#pagoDeposito">
-        <button type="button" id="btn_deposito" class="btn btn-link" data-toggle="collapse" data-target="#pagoDeposito"> Depósito o Transferencia </button>
-        <div class="padding_left margin_bottom_medium collapse" id="pagoDeposito">
-          <div class="well well-small" >
-            <h4>Banco Banesco</h4>
-            <ul>
-              <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
-              <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
-              <li><strong>RIF:</strong> Nº J-40236088-6</li>
-              <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
-            </ul>
-          </div>
-        </div>
-        <input type="radio" name="optionsRadios" id="tarjeta" value="option2" data-toggle="collapse" data-target="#pagoTarjeta">
-        <button type="button" id="btn_tarjeta" class="btn btn-link" data-toggle="collapse" data-target="#pagoTarjeta"> Tarjeta de Crédito </button>
-        <div class="collapse" id="pagoTarjeta">
+       -->
+         			<div class="accordion-group">
+         				<div class="accordion-heading">
+	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+	       						<label class="radio">
+	      							<input type="radio" name="optionsRadios" id="mercadopago" value="option4"> MercadoPago
+								</label>
+							</a>
+						</div>
+        				<div class="padding_left margin_bottom_medium collapse in" id="collapseOne">
+          					<div class="well well-small" >
+            					Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?>
+          					</div>
+        				
+        				</div>
+        			</div>
+         			<div class="accordion-group">
+         				<div class="accordion-heading">
+	        				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+	       						<label class="radio">
+	      							<input type="radio" name="optionsRadios" id="deposito" value="option1"> Depósito o Transferencia
+	    						</label>
+				     		</a>
+				     	</div>
+				        <div class="padding_left margin_bottom_medium collapse in" id="collapseTwo">
+          					<div class="well well-small" >
+            					<h4>Banco Banesco</h4>
+            					<ul>
+              						<li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
+              						<li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
+              						<li><strong>RIF:</strong> Nº J-40236088-6</li>
+              						<li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
+            					</ul>
+          					</div>
+        				</div>
+					</div>
+ <div class="accordion-group">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree">
+       
+       <label class="radio">
+      <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> Tarjeta de Crédito
+    </label>
+     
+      </a>
+        <div class="collapse" id="collapseTree">
         	 <div class="well well-small" >
             <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
             <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
@@ -140,7 +167,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             	</div>		          					
 				
 				<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
-				
+		
 		<div class="form-actions">
             <?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
@@ -151,7 +178,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
         ?>
             </div>
-
+</div>	
+</div>
     </section>
     <?php
 
@@ -432,7 +460,8 @@ else
         $("#btn_deposito").click(function() {
         	var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
-        	$("#deposito").attr('checked', 'checked');
+        	//$("#deposito").attr('checked', 'checked');
+        	$("#deposito").prop("checked", true);
         	$("#tipo_pago").val('1');
         	 
         	// haciendo que no valide

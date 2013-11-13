@@ -444,6 +444,45 @@ class Orden extends CActiveRecord
 		$this->estado = $estado;
 		$this->save();
 	}
+	public function getMontoActivo(){
+			if($this->estado == 3 || $this->estado == 8){
+		echo Yii::app()->numberFormatter->formatDecimal($this->total);
+		
+	}
+	if($this->estado == 7)
+	{
+		/*$balance = Balance::model()->findByAttributes(array('user_id'=>$orden->user_id,'orden_id'=>$orden->id));
+		if(isset($balance)){
+			$a = $balance->total * -1;
+			echo Yii::app()->numberFormatter->formatDecimal($a); 
+		}*/
+		//echo 'px'.$orden->getxPagar();
+		//echo 'orden'.$orden->totalpagado; 
+				return $this->getxPagar();
+	}
+	if($this->estado == 1 || $this->estado == 2 || $this->estado == 4 || $this->estado == 5 || $this->estado == 6){
+				
+		$balance = Balance::model()->findByAttributes(array('user_id'=>$this->user_id,'orden_id'=>$this->id, 'tipo'=>0));
+
+		if(isset($balance))
+		{
+			if($balance->total < 0){
+				$a = $balance->total * -1;
+				return $a;
+			}else {
+				return $this->getxPagar();
+			}
+			
+		}
+		else
+		{
+			return $this->getxPagar();
+		}
+					
+		
+				
+	}	
+	}
 	public function getxPagar($id=null){
 			
 		if(is_null($id))

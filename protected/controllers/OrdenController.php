@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -50,6 +50,16 @@ class OrdenController extends Controller
 		$this->render('adminUsuario',
 		array('orden'=>$orden,
 		'dataProvider'=>$dataProvider,
+		));
+
+	}
+
+public function actionReporte()
+	{
+		
+		
+		$this->render('reporte',
+		array(
 		));
 
 	}
@@ -874,7 +884,12 @@ public function actionValidar()
 		}
 		*/
 		$detPago = new Detalle;
-
+		//echo $orden->getxPagar();
+		//$nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
+		//echo $nf->formatCurrency($orden->getxPagar(),'Bs.');
+		//echo Yii::app()->format->unformatNumber('123,55');
+		//echo Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(),'Bs.');
+		
 		$datos="";
   		$datos=$datos."<div class='modal-header'>";
 		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
@@ -926,8 +941,10 @@ public function actionValidar()
 		
 		
 		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5',
-                    'placeholder'=>'Monto. Separe los decimales con una coma (,)',
-                    'value'=>str_replace('.',',',$orden->getxPagar()))); 
+                    	'placeholder'=>'Monto. Separe los decimales con una coma (,)',
+                    	'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar())
+						)
+					); 
                 
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
@@ -982,7 +999,7 @@ public function actionValidar()
 						if($ptc->save())
 							$ban=true;
 						else{
-							echo $ptc->id." ".$ohptc->id;
+							print_r($ptc->getErrors());
 							break;
 						}
 						

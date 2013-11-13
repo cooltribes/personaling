@@ -1,5 +1,5 @@
 <?php
-
+$nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 $user = User::model()->findByPk(Yii::app()->user->id);
@@ -27,7 +27,7 @@ $tipo_pago = $orden->getTipoPago();
       <hr/>
       <p><strong>Para completar tu comprar debes:</strong></p>
       <ol>
-        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?> en la siguiente cuenta bancaria: <br>
+        <li> <strong>Realizar el pago</strong>: de <?php echo Yii::app()->numberFormatter->formatCurrency( $orden->getxPagar(), 'Bs.'); ?> via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?> en la siguiente cuenta bancaria: <br>
           <br>
           <ul class="margin_bottom_medium">
             <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
@@ -58,7 +58,7 @@ $tipo_pago = $orden->getTipoPago();
     <hr/>
     <p><strong>Para completar tu comprar debes:</strong></p>
     <ol>
-      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via MercadoPago. <br>
+      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''); ?> via MercadoPago. <br>
       </li>
       <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
       <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>

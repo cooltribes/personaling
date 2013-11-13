@@ -159,6 +159,7 @@ $template = '{summary}
         }
         else
         {
+           /**
             if(monto.indexOf(',')==(monto.length-2))
                 monto+='0';
             if(monto.indexOf(',')==-1)
@@ -168,7 +169,7 @@ $template = '{summary}
 
             if (pattern.test(monto)) {
                 monto = monto.replace(',','.');
-
+*/
                    $.ajax({
                     type: "post",
                     url: "../bolsa/cpago", // action de controlador de bolsa cpago
@@ -189,10 +190,10 @@ $template = '{summary}
 
                        }//success
                   })
-
+/*
             }else{
                 alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
-            }
+            }*/
 
          }
 

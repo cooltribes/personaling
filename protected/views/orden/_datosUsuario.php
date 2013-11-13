@@ -8,7 +8,7 @@
 			echo "<td></td>";
 		
 		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->total)."</td>"; // precio
-		echo "<td>".$data->getxPagar()."</td>"; // precio
+		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->getxPagar())."</td>"; // precio
 		//----------------------Estado
 		if($data->estado == 1)
 			echo "<td>En espera de pago</td>"; 

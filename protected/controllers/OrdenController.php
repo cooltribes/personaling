@@ -57,10 +57,16 @@ class OrdenController extends Controller
 public function actionReporte()
 	{
 		
-
+ 
+		
+		$orden = new Orden;
+		
+		//$orden->user_id = Yii::app()->user->id;
+		$dataProvider = $orden->vendidas();
 		
 		$this->render('reporte',
 		array(
+		'dataProvider'=>$dataProvider,
 		));
 
 

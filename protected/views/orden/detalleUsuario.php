@@ -162,7 +162,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <?php
 
             $detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-              $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+            // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 
             if($orden->estado != 1 && $orden->estado != 5){
 
@@ -187,7 +187,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
                         echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 
-                        if($pago->tipo == 1)
+                        if($detalle->tipo_pago == 1)
                             echo("<td>Deposito en espera de confirmacion</td>");
                             //hacer los demas tipos
 
@@ -200,11 +200,14 @@ $usuario = User::model()->findByPk($orden->user_id);
 
                             echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 
-                            if($pago->tipo == 1)
+                            if($detalle->tipo_pago == 1)
                                 echo("<td>Deposito o Transferencia</td>");
-                            if($pago->tipo == 2)
+                            if($detalle->tipo_pago == 2)
                                 echo("<td>Tarjeta de credito</td>");
-                                //hacer los demas tipos
+ 						if($detalle->tipo_pago == 3)
+							echo("<td>Saldo</td>");						
+						if($detalle->tipo_pago == 4)
+							echo("<td>Mercado Pago</td>");	                               //hacer los demas tipos
 
                             echo("<td>".$detalle->nTransferencia."</td>");
                             echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
@@ -215,7 +218,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
                         echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 
-                        if($pago->tipo == 1)
+                        if($detalle->tipo_pago == 1)
                             echo("<td>Deposito o Transferencia</td>");
                             //hacer los demas tipos
 
@@ -821,9 +824,10 @@ if($orden->estado == 7){
     <?php
 }
 else{
-    $detPago = Detalle::model()->findByPk($orden->detalle_id);
+   // $detPago = Detalle::model()->findByPk($orden->detalle_id);
+   $detPago = new Detalle;
     ?>
-    <input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+    <input type="hidden" id="idDetalle" value="" />
     <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
     <?php
 }

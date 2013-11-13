@@ -105,7 +105,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
 	                 <li >  
-	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60));
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60, 'height'=>60));
                       ?>
 	                </li>                	
                 <?php } ?>              

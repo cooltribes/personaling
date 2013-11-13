@@ -68,6 +68,7 @@ class Detalle extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'pagos' => array(self::HAS_MANY, 'Pago', 'tbl_detalle_id'),
+
 		);
 	}
 

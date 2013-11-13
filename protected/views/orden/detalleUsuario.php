@@ -99,33 +99,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         Prendas<br/></td>
       <td><p class="T_xlarge margin_top_xsmall"><?php
 
-    if($orden->estado == 7)
-    {
-        $balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id));
-        if(isset($balance))
-        {
-        $a = $balance->total * -1;
-        echo Yii::app()->numberFormatter->formatDecimal($a);}
-    }
-    else
-    {
-        $balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
-
-        if(isset($balance))
-        {
-            if($balance->total < 0){
-                $a = $balance->total * -1;
-                echo Yii::app()->numberFormatter->formatDecimal($a);
-            }
-            else {
-                echo Yii::app()->numberFormatter->formatDecimal($orden->total);
-            }
-        }
-        else {
-                echo Yii::app()->numberFormatter->formatDecimal($orden->total);
-            }
-
-    }
+   echo Yii::app()->numberFormatter->formatDecimal($orden->getMontoActivo());
        ?></p>
 
         <?php

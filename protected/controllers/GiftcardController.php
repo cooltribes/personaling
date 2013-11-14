@@ -336,11 +336,36 @@ class GiftcardController extends Controller
                         $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";
                     }
                     
-                    $datosTarjeta = "<h3>Datos de la Gift Card:</h3>
-                                      <strong>Monto: </strong>{$model->monto} Bs.<br>
-                                      <strong>Codigo: </strong>{$model->getCodigo()}<br>
-                                      <strong>Válida desde: </strong>".date("d-m-Y", $model->getInicioVigencia())."<br>
-                                      <strong>Válida hasta: </strong>".date("d-m-Y", $model->getFinVigencia())."<br>";
+                    $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
+									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
+										<tbody>
+										<tr>
+											<td style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
+	                                      		{$model->monto} Bs.
+                                      		</td>
+                                      	</tr>
+                                      	<tr>
+                                      		<td style='color: #555;  position: relative; top: 18px; left: 10px; '>
+                                      		    Para: {$envio->nombre}
+                                      		</td>
+                                      	</tr>
+                                      	<tr>
+                                      		<td style='color: #555; position: relative; top: -10px; left: 10px; '>
+                                      			Mensaje: {$envio->mensaje}
+                                      		</td>
+                                      	</tr>
+                                      	<tr>
+                                      		<td style='color: #555; font-size: 28px; text-align: center;'>
+                                      			{$model->getCodigo()}
+                                      		</td>
+                                      	</tr>   
+                                      	<tr>
+                                      		<td style='font-size: 11px; color: #333; position: relative;left: 10px;'>
+                                      			Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
+                                      		</td>                                      		
+                                      	</tr>                                         	                                   	                                      	                                      	
+                                     	</tbody>
+                                    </table> ";
                     
                     $personalMes = "";                  
                     if($envio->mensaje != ""){
@@ -348,12 +373,10 @@ class GiftcardController extends Controller
                     }
                                       
                     $message = new YiiMailMessage;
-                    $message->view = "mail_invite";
+                    $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
                     $body = "¡Hola <strong>{$envio->nombre}</strong> !<br><br> {$saludo} 
-                            {$personalMes}
-                            <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com.<br/><br/>"
-                            .$datosTarjeta;
+                            <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com.<br/><br/>".$datosTarjeta;
                             
 //                    echo "Despues<pre>";
 //                    print_r($envio->attributes);

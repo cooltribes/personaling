@@ -74,11 +74,11 @@ $this->breadcrumbs=array(
 				</div>	
 				<div class="span5 bg_color5 box_shadow_personaling padding_medium">
                     <div class="contenedorPreviewGift" >
-                        <span class="lead T_xlarge" id="monto">Bs. <?php echo $model->monto; ?> </span>
-                        <strong class="lead" id="forpara">Para:</strong><p class="lead" id="para"></p>                        
-                        <strong class="lead"  id="formensaje">Mensaje:</strong><p class="lead" id="mensaje"></p>
-                        <strong class="lead T_large" id="codigo"> <?php echo $model->getMascaraCodigo(); ?> </strong>
-                        <span class="lead t_small" id="fecha">Valida desde <?php echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el <?php echo date("d/m/Y", $model->getFinVigencia()); ?> </span>
+                        <span class=" T_xlarge" id="monto">Bs. <?php echo $model->monto; ?> </span>
+                        <span class="" id="forpara">Para:</span><p class="" id="para"></p>                        
+                        <span class=""  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
+                        <span class=" T_large" id="codigo"> <?php echo $model->getMascaraCodigo(); ?> </span>
+                        <span class=" t_small" id="fecha">Válida desde <?php echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el <?php echo date("d/m/Y", $model->getFinVigencia()); ?> </span>
                         <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
 
                     </div>
@@ -101,8 +101,15 @@ $('#EnvioGiftcard_nombre').keypress(function(){
     $('#para').text( $('#EnvioGiftcard_nombre').val() );
 }); 
 
+$('#EnvioGiftcard_nombre').focusout(function(){
+    $('#para').text( $('#EnvioGiftcard_nombre').val() );
+}); 
+
 $('#EnvioGiftcard_mensaje').keypress(function(){
     $('#mensaje').text( $('#EnvioGiftcard_mensaje').val() );
 });
-    
+
+$('#EnvioGiftcard_mensaje').focusout(function(){
+    $('#mensaje').text( $('#EnvioGiftcard_mensaje').val() );
+});    
 </script>

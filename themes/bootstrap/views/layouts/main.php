@@ -528,7 +528,7 @@ if(!Yii::app()->user->isGuest){
 
 
 
-</script>-->
+</script>
 
 <!-- Popovers OFF -->
 

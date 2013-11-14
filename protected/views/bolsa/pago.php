@@ -366,13 +366,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         <?php echo CHtml::activeLabel($model, "campo1"); ?>
 
                         <?php echo CHtml::activeTextField($model, "campo1", array('class' => 'input-mini margin_left_small',
-                            'maxlength'=>'4', 'value' => '0pi8')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo2", array('class' => 'input-mini',
-                            'maxlength'=>'4', 'value' => 'vo7U')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo3", array('class' => 'input-mini',
-                            'maxlength'=>'4', 'value' => '37nT')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo4", array('class' => 'input-mini',
-                            'maxlength'=>'4', 'value' => 'h311')); ?>
+                            'maxlength'=>'4')); ?>
 
                     </div>						
                </div>

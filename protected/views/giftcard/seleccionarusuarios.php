@@ -86,14 +86,7 @@ $template = '{summary}
              } ",
 	    'afterAjaxUpdate'=>" function(id, data) {
 
-                    $('#check-todos').click(function() { 
-                        inputs = $('table').find('input').filter('[type=checkbox]');
-                        if($(this).attr('checked')){
-                             inputs.attr('checked', true);
-                        }else {
-                             inputs.attr('checked', false);
-                        } 	
-                    });
+                   Codigo();
 
                     } ",
             'pager'=>array(
@@ -155,7 +148,9 @@ $template = '{summary}
 <!-- /container -->    
 </div>
 <script type="text/javascript">
-    $('#check-todos').click(function() { 
+    
+function Codigo(){
+   $('#check-todos').click(function() { 
         inputs = $('table').find('input').filter('[type=checkbox]');
         if($(this).attr('checked')){
              inputs.attr('checked', true);
@@ -163,4 +158,16 @@ $template = '{summary}
              inputs.attr('checked', false);
         } 	
     });
+    
+    var todos;
+    $("input:checkbox").click(function(e){
+        todos = $("input:checkbox:checked");
+        
+        console.log(todos.size());
+    }); 
+}    
+    
+    Codigo();
+    
+    
 </script>

@@ -229,21 +229,21 @@ class Orden extends CActiveRecord
 		));
 	}
 	
-	public function vendidas()
+	public function vendidas($marca = NULL)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
  
 		$criteria=new CDbCriteria;
 		$criteria->select='t.*';
-		//$criteria->with=array('ohptc');
-		///$criteria->together = true;
+		$criteria->with=array('ohptc');
+		$criteria->together = true;
 		//$criteria->compare('t.user_id',$this->user_id);
 		$criteria->addCondition("t.estado = 3"); 
 		$criteria->addCondition("t.estado = 4",'OR'); 
 		$criteria->addCondition("t.estado = 8",'OR'); 
 		$criteria->addCondition("t.estado = 10",'OR'); 
-		//$criteria->addCondition("ohptc.cantidad > 0"); 
+		$criteria->addCondition("ohptc.cantidad > 0"); 
 		//$criteria->addCondition("estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."'");
 		 
 		//$criteria->group = 't.id';
@@ -251,9 +251,9 @@ class Orden extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'pagination' => array(
-                'pageSize' => 100,
+                'pageSize' => 30,
             ),
-		));
+          ));
 	}
 	
 	public function historial()

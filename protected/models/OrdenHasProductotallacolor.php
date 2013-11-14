@@ -49,7 +49,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 			array('tbl_orden_id, preciotallacolor_id, cantidad, look_id, precio, devolucion_id', 'safe', 'on'=>'search'),
 		);
 	}
-
+ 
 	/**
 	 * @return array relational rules.
 	 */

@@ -55,9 +55,9 @@ class OrdenController extends Controller
 	}
 
 public function actionReporte()
-	{
+	{ 
 		
- 
+  
 		
 		$orden = new Orden;
 		
@@ -884,15 +884,18 @@ public function actionValidar()
 	 * */
 	public function actionModals($id)
 	{
+		/*	
+		$id = $_GET['id'];	
+		
 		$orden = Orden::model()->findByPk($id);
-		/*
-		if($orden->estado == 7){
-			$detPago = new Detalle;
-		}
-		else {
-			$detPago = Detalle::model()->findByPk($orden->detalle_id);
-		}
-		*/
+		
+		//if($orden->estado == 7){
+		//	$detPago = new Detalle;
+		//}
+		//else {
+		//	$detPago = Detalle::model()->findByPk($orden->detalle_id);
+		//}
+		
 		$detPago = new Detalle;
 		//echo $orden->getxPagar();
 		//$nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
@@ -982,16 +985,19 @@ public function actionValidar()
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
 		
-		/*
-		if($orden->estado == 7){
-			$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
-		}
-		else {
-			$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
-		}
-		*/
+		
+		//if($orden->estado == 7){
+		//	$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
+		//}
+		//else {
+		//	$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
+		//}
+		
 		$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
 		echo $datos;
+		 * */
+		echo $this->renderPartial('_modal_pago',array('orden_id'=>$id),true,false); 
+		
 	}
 
 	public function actionCancelar($id)

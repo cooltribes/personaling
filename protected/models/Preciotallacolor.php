@@ -50,7 +50,7 @@ class PrecioTallaColor extends CActiveRecord
 			array('id, cantidad, producto_id, talla_id, color_id,sku', 'safe', 'on'=>'search'),
 		);
 	}
-
+ 
 	/**
 	 * @return array relational rules.
 	 */
@@ -61,7 +61,7 @@ class PrecioTallaColor extends CActiveRecord
 		return array(
 			'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
 			'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
-                        'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
+            'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
 		);
 	}
  

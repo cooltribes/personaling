@@ -336,18 +336,21 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </table>
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
             <?php
-            $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
-			if($balance > 0){
-	            ?>
-	            <div>
-	              <label class="checkbox">
-	                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-	                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
-                      </label>
-	            </div>
-	            <?php
-			}
-            ?>
+                $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+
+                $class = "";		
+
+                if($balance <= 0){
+                    $class = " hidden";
+                }
+	    ?>
+            <div>
+                <label class="checkbox<?php echo $class; ?>">
+                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
+                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+              </label>
+            </div>
+	            
              <button type="button" class="btn btn-success margin_top_medium" data-toggle="collapse" data-target="#collapse2"><i class = "icon-gift icon-white"></i> Agregar Gift Card</button> 
            
             <!-- Forma de pago ON -->
@@ -449,6 +452,10 @@ else
                 data: datos,
                 success: function(data){
                     
+                    //Cambiar el estilo de los inputs
+                    
+                    
+                    
                     //si son dos errores agregar ul
                     if(data.length > 1){
                         
@@ -464,29 +471,32 @@ else
                         
                     }else{
                         
-                        showAlert(data[0].type, data[0].message);
-                        
-                        if(data[0].type == 'warning'){ //si fue success la aplicacion de GC
+                        if(data[0].type == 'success'){ //si fue success la aplicacion de GC
                             
                             var check = $("#usar_balance");
                             
-                            if(check.size()){ //Si hay balance positivo
-//                               var texto = $("#usar_balance").next().text();
-//                               var vector = texto.split(" ");
-//                               
-//                               //cambiar comas y puntos
-//                               texto = vector[1].replace(',',' ').replace(' ','')
-//                               texto = 
-//                               texto = texto[1].split(",");
-//                               texto = parseInt(texto[0].replace(".", ""));
-//                               
-//                               texto += data[0].amount;
+                         
+                                var element = $("#usar_balance").next();
                                 
-                               
-                            }else{
+                                element.parent().removeClass("hidden");
+                                element.animate({                                  
+                                  opacity: 0,
+                                }, {
+                                    duration: 1000,
+                                    complete: function(){
+                                      element.text("Bs. " + data[0].amount);
+                                      showAlert(data[0].type, data[0].message);
+                                    }
+                                } );
                                 
-                            }
+                                
+                                element.animate({                                  
+                                  opacity: 1,
+                                  //color : "#468847",
+                                }, 1000 );
 
+                        }else{
+                            showAlert(data[0].type, data[0].message);  
                         }
                         
                     }
@@ -500,11 +510,14 @@ else
 
         //Mostrar alert
         function showAlert(type, message){
-           $('#alert-msg').removeClass('alert-success alert-error') ;
+           $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
            $('#alert-msg').addClass("alert-"+type);
            $('#alert-msg').children(".msg").html(message);
            $('#alert-msg').show();
-           //$("html, body").animate({ scrollTop: 0 }, "slow");
+           
+           $("#camposGC").removeClass('success error warning');
+           $('#camposGC').addClass(type);
+           
         }
 
         $(".alert").alert();

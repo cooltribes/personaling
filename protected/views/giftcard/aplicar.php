@@ -25,6 +25,7 @@
 		
 		<fieldset>
 			<legend>Aplicar Gift Card</legend>
+            <p class="lead">Busca el código en tu Gift Card</p>
                         <!-- FLASH ON --> 
                         <?php $this->widget('bootstrap.widgets.TbAlert', array(
                                 'block'=>true, // display a larger alert block?
@@ -39,10 +40,12 @@
                         ); ?>	
                         <!-- FLASH OFF --> 
 			<div class="margin_bottom text_align_center">
-				<img src="http://placehold.it/450x250">
+                <div class="contenedorgiftcard bg_color5 padding_small box_shadow">
+				    <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
+                </div>
 			</div>				
 			<div class="row margin_top text_align_center">
-				<div class="span7">
+				<div class="span4 offset4">
                                     <?php /* ?>
                                      * 
                                      * <?php echo $form->textFieldRow($model, "campo1"); ?> <span>-</span>
@@ -61,15 +64,15 @@
                                     
                                    <div class="control-group <?php echo $classError; ?>">						
                                         <div class="controls">
-                                            <?php echo CHtml::activeLabel($model, "campo1"); ?>
+                                            <?php echo CHtml::activeLabel($model, "campo1"); ?> <br>
                                             
-                                            <?php echo CHtml::activeTextField($model, "campo1", array('class' => 'input-mini margin_left_small',
+                                            <?php echo CHtml::activeTextField($model, "campo1", array('class' => 'inputGiftcard',
                                                 'maxlength'=>'4')); ?> <span>-</span>                                                        
-                                            <?php echo CHtml::activeTextField($model, "campo2", array('class' => 'input-mini',
+                                            <?php echo CHtml::activeTextField($model, "campo2", array('class' => 'inputGiftcard',
                                                 'maxlength'=>'4')); ?> <span>-</span>                                                        
-                                            <?php echo CHtml::activeTextField($model, "campo3", array('class' => 'input-mini',
+                                            <?php echo CHtml::activeTextField($model, "campo3", array('class' => 'inputGiftcard',
                                                 'maxlength'=>'4')); ?> <span>-</span>                                                        
-                                            <?php echo CHtml::activeTextField($model, "campo4", array('class' => 'input-mini',
+                                            <?php echo CHtml::activeTextField($model, "campo4", array('class' => 'inputGiftcard',
                                                 'maxlength'=>'4')); ?>
 
                                         </div>						
@@ -89,7 +92,7 @@
                         <?php echo $form->errorSummary($model, "Corrije los siguientes errores:"); ?>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">
-				  <button type="submit" class="btn btn-medium btn-warning">Aplicar Gift Card</button>
+				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i>Aplicar Gift Card</button>
 				</div>
 			</div>			
 		</fieldset>
@@ -99,3 +102,31 @@
 
 	</section>
 </div>
+<script>
+    $('#AplicarGC_campo1').keypress(function(){
+         if($('#AplicarGC_campo1').val().length > 2 ){
+            $('#AplicarGC_campo2').focus();
+         }
+    });
+    $('#AplicarGC_campo2').keypress(function(){
+         if($('#AplicarGC_campo2').val().length > 2 ){
+            $('#AplicarGC_campo3').focus();
+         }
+    });  
+    $('#AplicarGC_campo3').keypress(function(){
+         if($('#AplicarGC_campo3').val().length > 2 ){
+            $('#AplicarGC_campo4').focus();
+         }
+    });       
+</script>
+<style>
+    
+    .inputGiftcard{
+        width: 45px;
+    }
+    .contenedorgiftcard{
+        width: 470px;
+        margin: auto;
+    }
+
+</style>

@@ -74,9 +74,9 @@ $this->breadcrumbs=array(
 				</div>	
 				<div class="span5 bg_color5 box_shadow_personaling padding_medium">
                     <div class="contenedorPreviewGift" >
-                        <span class=" T_xlarge" id="monto">Bs. <?php echo $model->monto; ?> </span>
-                        <span class="" id="forpara">Para:</span><p class="" id="para"></p>                        
-                        <span class=""  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
+                        <span class=" T_xlarge" id="monto"><?php echo $model->monto; ?>Bs. </span>
+                        <span  id="forpara">Para:</span><p id="para"></p>                        
+                        <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
                         <span class=" T_large" id="codigo"> <?php echo $model->getMascaraCodigo(); ?> </span>
                         <span class=" t_small" id="fecha">Válida desde <?php echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el <?php echo date("d/m/Y", $model->getFinVigencia()); ?> </span>
                         <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">

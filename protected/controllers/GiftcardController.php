@@ -339,18 +339,28 @@ class GiftcardController extends Controller
                     $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
 									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
 										<tbody>
+                                        <tr>
+                                            <td height='30'>
+                                            </td>
+                                        </tr>                                         
 										<tr>
-											<td style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
+											<td  class='w460' width='460' style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
 	                                      		{$model->monto} Bs.
                                       		</td>
                                       	</tr>
+                                        <tr>
+                                            <td height='10'>
+                                            </td>
+                                        </tr>                                        
                                       	<tr>
-                                      		<td style='color: #555;  position: relative; top: 18px; left: 10px; '>
+                                            <td class='w5' width='5'> </td>
+                                      		<td class='w465' width='465' style='position: relative; top: 18px; left: 10px;'>
                                       		    Para: {$envio->nombre}
                                       		</td>
                                       	</tr>
                                       	<tr>
-                                      		<td style='color: #555; position: relative; top: -10px; left: 10px; '>
+                                            <td class='w5' width='5'>  </td>
+                                      		<td class='w465' width='465' style='position: relative; top: -10px; left: 10px;'>
                                       			Mensaje: {$envio->mensaje}
                                       		</td>
                                       	</tr>
@@ -363,7 +373,9 @@ class GiftcardController extends Controller
                                       		<td style='font-size: 11px; color: #333; position: relative;left: 10px;'>
                                       			Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
                                       		</td>                                      		
-                                      	</tr>                                         	                                   	                                      	                                      	
+                                      	</tr>
+                                        <tr>
+                                        </tr>                                  	
                                      	</tbody>
                                     </table> ";
                     
@@ -416,8 +428,10 @@ class GiftcardController extends Controller
         public function actionAplicar(){                           
            
             $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;           
+
            
             $response = array();
+
             
             $aplicar = new AplicarGC;
             
@@ -489,6 +503,7 @@ class GiftcardController extends Controller
                    }
                    
                }else{ //Invalido
+
                     
                     $cReq = 0;
                     $cLen = 0;
@@ -530,6 +545,7 @@ class GiftcardController extends Controller
                         
                         $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]]);                        
                     }
+
                 }
 
                 echo CJSON::encode($response);

@@ -53,15 +53,24 @@ $this->breadcrumbs=array(
 
 
 			</div>	
-			<div class="row margin_top">
-				<div class="span6">	
-					<p class="lead">2. Personalízala</p>                                       
+
+            <div class="row margin_top">
+                <div class="span6"> 
+                    <p class="lead">2. ¿A quién se la envias?</p>                                       
                                         
                                         
                                         <?php echo $form->errorSummary($envio); ?>
                                        
                                         <?php echo $form->textFieldRow($envio, 'email', array(
                                             'placeholder' => 'Email del destinatario')); ?>
+                                                                            
+                </div>  
+            </div>
+
+			<div class="row margin_top">
+				<div class="span6">	
+					<p class="lead">3. Personalízala</p>                                       
+                                                                                                                    
 
                                         <?php echo $form->textFieldRow($envio, 'nombre', array(
                                             'placeholder' => 'Nombre del destinatario'
@@ -74,10 +83,10 @@ $this->breadcrumbs=array(
 				</div>	
 				<div class="span5 bg_color5 box_shadow_personaling padding_medium">
                     <div class="contenedorPreviewGift" >
-                        <span class=" T_xlarge" id="monto"><?php echo $model->monto; ?>Bs. </span>
+                        <span class=" T_xlarge" id="monto"><?php echo $model->monto; ?> Bs. </span>
                         <span  id="forpara">Para:</span><p id="para"></p>                        
                         <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
-                        <span class=" T_large" id="codigo"> <?php echo $model->getMascaraCodigo(); ?> </span>
+                        <span class=" T_large color4" id="codigo"> <?php echo $model->getMascaraCodigo(); ?> </span>
                         <span class=" t_small" id="fecha">Válida desde <?php echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el <?php echo date("d/m/Y", $model->getFinVigencia()); ?> </span>
                         <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
 
@@ -113,3 +122,9 @@ $('#EnvioGiftcard_mensaje').focusout(function(){
     $('#mensaje').text( $('#EnvioGiftcard_mensaje').val() );
 });    
 </script>
+<style>
+    .contenedorPreviewGift{
+
+        font-family: arial,sans-serif;
+    }
+</style>

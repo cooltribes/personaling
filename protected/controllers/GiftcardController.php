@@ -340,33 +340,29 @@ class GiftcardController extends Controller
 									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
 										<tbody>       
                                         <tr>
-                                            <td height='10'>
+                                            <td height='30'>
                                             </td>                                      
                                         </tr>                                                                          
 										<tr>
-											<td style='text-align:right; font-size:42px; color: #333333; '>
+											<td style='text-align:right; font-size:42px; color: #333; '>
 	                                      		{$model->monto} Bs.&nbsp;
                                       		</td>  
                                                                                 
                                       	</tr>                                     
                                       	<tr>
-                                      		<td style='position: relative; top: 18px; left: 10px;'>
-                                      		    Para: {$envio->nombre}
+                                      		<td style='font-size: 15px; color: #333; line-height: 20px;'>
+                                      		    &nbsp; &nbsp; Para:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$envio->nombre}
+                                                <br>
+                                                &nbsp; &nbsp; Mensaje: {$envio->mensaje}
                                       		</td>
-                                      	</tr>
                                       	<tr>
-                                      		<td style='position: relative; top: -10px; left: 10px;'>
-                                      			Mensaje: {$envio->mensaje}
-                                      		</td>
-                                      	</tr>
-                                      	<tr>
-                                      		<td style='color: #555; font-size: 28px; text-align: center;'>
+                                      		<td style=' font-size: 28px; text-align: center;'>
                                       			{$model->getCodigo()}
                                       		</td>
                                       	</tr>   
                                       	<tr>
-                                      		<td style='font-size: 11px; color: #333; position: relative;left: 10px;'>
-                                      			Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
+                                      		<td style='font-size: 11px; color: #333;  line-height: 20px;'>
+                                      			&nbsp; Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
                                       		</td>                                      		
                                       	</tr>                              	
                                      	</tbody>
@@ -531,9 +527,11 @@ class GiftcardController extends Controller
 
                 if(count($flashes)){
                     $keys = array_keys($flashes);
-                    if($keys[0] == "warning"){
+                    if($keys[0] == "success"){
                         
-                        $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]], "amount" => $giftcard->monto);
+                        $balance = User::model()->findByPk(Yii::app()->user->id)->profile->getSaldo(Yii::app()->user->id);
+                        $balance = Yii::app()->numberFormatter->formatCurrency($balance, "");                                               
+                        $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]], "amount" => $balance);
                         
                     }else{
                         

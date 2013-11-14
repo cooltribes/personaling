@@ -339,18 +339,28 @@ class GiftcardController extends Controller
                     $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
 									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
 										<tbody>
+                                        <tr>
+                                            <td height='30'>
+                                            </td>
+                                        </tr>                                         
 										<tr>
-											<td style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
+											<td  class='w460' width='460' style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
 	                                      		{$model->monto} Bs.
                                       		</td>
                                       	</tr>
+                                        <tr>
+                                            <td height='10'>
+                                            </td>
+                                        </tr>                                        
                                       	<tr>
-                                      		<td style='color: #555;  position: relative; top: 18px; left: 10px; '>
+                                            <td class='w5' width='5'> </td>
+                                      		<td class='w465' width='465' style='position: relative; top: 18px; left: 10px;'>
                                       		    Para: {$envio->nombre}
                                       		</td>
                                       	</tr>
                                       	<tr>
-                                      		<td style='color: #555; position: relative; top: -10px; left: 10px; '>
+                                            <td class='w5' width='5'>  </td>
+                                      		<td class='w465' width='465' style='position: relative; top: -10px; left: 10px;'>
                                       			Mensaje: {$envio->mensaje}
                                       		</td>
                                       	</tr>
@@ -363,7 +373,9 @@ class GiftcardController extends Controller
                                       		<td style='font-size: 11px; color: #333; position: relative;left: 10px;'>
                                       			Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
                                       		</td>                                      		
-                                      	</tr>                                         	                                   	                                      	                                      	
+                                      	</tr>
+                                        <tr>
+                                        </tr>                                  	
                                      	</tbody>
                                     </table> ";
                     
@@ -416,7 +428,13 @@ class GiftcardController extends Controller
         public function actionAplicar(){                           
            
             $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;           
-           
+            
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                Yii::app()->end();                 
+            
+            
             
             $aplicar = new AplicarGC;
             
@@ -490,27 +508,9 @@ class GiftcardController extends Controller
                    }
                    
                }else{ //Invalido
-                    
-                    $cReq = 0;
-                    $cLen = 0;
-                    foreach($model->errors as $att => $error){
-                        $cReq += in_array("req", $error) ? 1:0;
-                        $cLen += in_array("len", $error) ? 1:0;
-                    }
-                    $model->clearErrors();
-
-                    if($cReq){
-                       $model->addError("campo1", "Debes escribir el código de tu Gift Card completo"); 
-                    }
-                    if($cLen){
-                       $model->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
-                    } 
-                    
-                    
-                    if($ajax){     
-                        //$giftcard->getErrors()
-                        Yii::app()->user->setFlash('error',UserModule::t("¡ Errores en el modelo !"));
-                    }
+                  if($ajax){                      
+                      Yii::app()->user->setFlash('error',UserModule::t("¡ Errores en el modelo !"));
+                  }
                }               
             }
             
@@ -518,7 +518,6 @@ class GiftcardController extends Controller
                     $this->render('aplicar', array('model' => $aplicar));
                 }else{
                     echo CJSON::encode(Yii::app()->user->getFlashes());
-                    Yii::app()->end();
                 }
 	}
 	/**

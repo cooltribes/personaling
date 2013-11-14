@@ -1,7 +1,7 @@
 <?php 
 foreach($data->ohptc as $reg){
-	if($reg->cantidad>0){
-	echo"<tr> 
+
+		echo"<tr> 
 
 			      <td>".$reg->preciotallacolor->producto->mymarca->nombre."</th>
                     <td>".$reg->preciotallacolor->producto->nombre."</td>
@@ -15,7 +15,8 @@ foreach($data->ohptc as $reg){
 				   else
                			echo "<td>".$reg->preciotallacolor->producto->precios[0]->precioVenta."</td><td>".$reg->preciotallacolor->producto->precios[0]->precioImpuesto."</td></tr>";
 			
-	} }
+		
+}
 
 
 

@@ -1,9 +1,8 @@
 <?php 
 
-	foreach($marcas as $marca){
-		echo $marca->nombre."<br/>";
-	}
 
+	$list= CHtml::listData(Marca::model()->findAll(), 'id', 'nombre');
+	echo CHtml::dropDownList('marcas', '', $list, array('empty' => 'Filtrar por Marca'));
 	$template = '<br/><br/>
 				<div style="width:100%">
 					<div  style="width:auto; float:left;"> 
@@ -43,9 +42,7 @@
 			function porMarca()
 			{
 				
-				for(var i=0; i<arr.length;i++){
-					$('#'+arr[i]).val(arr2[i]);
-				}
+				alert(marcaId);
 			}
 			");
 
@@ -64,7 +61,28 @@
 	 					
 	));
 
-
+	Yii::app()->clientScript->registerScript('marca1',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		$('#marcas').change(function(){
+			marcaId = $('#marcas').val();
+			clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('orden/reporte') . "',
+				data: marcaId}
+				
+				)
+				},
+		
+		300);
+		return false;
+		});",CClientScript::POS_READY
+	);
 
 
 

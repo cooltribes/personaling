@@ -664,12 +664,12 @@ public function actionValidar()
 		{
 			
 			$detalle->estado = 1; // aceptado
-			
+			$difencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
 			if($detalle->save()){
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
-				if($detalle->monto >= $porpagar){
+				if( $diferencia_pago >= 0){
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
 					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
@@ -729,7 +729,7 @@ public function actionValidar()
 							
 							$det_bal->monto=($porpagar-$detalle->monto);
 							$det_bal->fecha=date("Y-m-d H:m:s");
-							$det_bal->comentario="Prueba saldo";
+							$det_bal->comentario="Saldo para completar";
 							$det_bal->estado=1;
 							$det_bal->orden_id=$orden->id;
 							$det_bal->tipo_pago = 3;
@@ -793,7 +793,7 @@ public function actionValidar()
 									
 									$det_bal->monto=$saldo;
 									$det_bal->fecha=date("Y-m-d H:m:s");
-									$det_bal->comentario="Prueba saldo";
+									$det_bal->comentario="Uso Saldo Falta Pago ";
 									$det_bal->estado=1;
 									$det_bal->orden_id=$orden->id;
 									if($det_bal->save()){

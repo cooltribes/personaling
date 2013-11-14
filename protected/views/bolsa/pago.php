@@ -342,7 +342,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            <div>
 	              <label class="checkbox">
 	                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-	                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong> </label>
+	                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                      </label>
 	            </div>
 	            <?php
 			}
@@ -356,45 +357,24 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
                 <![endif]-->
                 
-                
-                <?php 
-                    $classError = "";
-                    if($model->hasErrors()){
-                        $classError = "error";
-                        $cReq = 0;
-                        $cLen = 0;
-                        foreach($model->errors as $att => $error){
-                            $cReq += in_array("req", $error) ? 1:0;
-                            $cLen += in_array("len", $error) ? 1:0;
-                        }
-                        $model->clearErrors();
-
-                        if($cReq){
-                           $model->addError("campo1", "Debes escribir el código de tu Gift Card completo"); 
-                        }
-                        if($cLen){
-                           $model->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
-                        }
-                    }
-                ?>
                <div id="giftCard">
                <div class="control-group" id="camposGC">						
                     <div class="controls">
                         <?php echo CHtml::activeLabel($model, "campo1"); ?>
 
                         <?php echo CHtml::activeTextField($model, "campo1", array('class' => 'input-mini margin_left_small',
-                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4', 'value' => '0pi8')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo2", array('class' => 'input-mini',
-                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4', 'value' => 'vo7U')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo3", array('class' => 'input-mini',
-                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4', 'value' => '37nT')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo4", array('class' => 'input-mini',
-                            'maxlength'=>'4')); ?>
+                            'maxlength'=>'4', 'value' => 'h311')); ?>
 
                     </div>						
                </div>
                 
-                    <div class="span11 alert fade in" id="alert-msg" style="display: none">
+                    <div class="span11 alert in" id="alert-msg" style="display: none">
                       <button type="button" class="close" >&times;</button> 
                       <!--data-dismiss="alert"-->
                       <div class="msg"></div>
@@ -468,17 +448,49 @@ else
                 dataType: 'JSON',
                 data: datos,
                 success: function(data){
-                    console.log(data);
-                    showAlert("success", "FFFF");
-                    return;
                     
-                    if(data.status == 'success'){
+                    //si son dos errores agregar ul
+                    if(data.length > 1){
+                        
+                        var contenido = "<ul>";
+                        
+                        $.each(data, function(i, dato){
+                            contenido += "<li>" + (dato.message) + "</li>";
+                         });
+                         
+                        contenido += "</ul>";
+                         
+                        showAlert("error", contenido);
+                        
+                    }else{
+                        
+                        showAlert(data[0].type, data[0].message);
+                        
+                        if(data[0].type == 'warning'){ //si fue success la aplicacion de GC
+                            
+                            var check = $("#usar_balance");
+                            
+                            if(check.size()){ //Si hay balance positivo
+//                               var texto = $("#usar_balance").next().text();
+//                               var vector = texto.split(" ");
+//                               
+//                               //cambiar comas y puntos
+//                               texto = vector[1].replace(',',' ').replace(' ','')
+//                               texto = 
+//                               texto = texto[1].split(",");
+//                               texto = parseInt(texto[0].replace(".", ""));
+//                               
+//                               texto += data[0].amount;
+                                
+                               
+                            }else{
+                                
+                            }
 
-
-
-                    }else if(data == 'error'){
-
+                        }
+                        
                     }
+                    
                 }
             });    
             

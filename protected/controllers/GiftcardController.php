@@ -422,13 +422,10 @@ class GiftcardController extends Controller
         public function actionAplicar(){                           
            
             $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;           
-            
-//                echo "<pre>";
-//                print_r($_POST);
-//                echo "</pre>";
-//                Yii::app()->end();                 
-            
-            
+
+           
+            $response = array();
+
             
             $aplicar = new AplicarGC;
             
@@ -467,52 +464,88 @@ class GiftcardController extends Controller
 
 
                                     Yii::app()->user->updateSession();
-                                    Yii::app()->user->setFlash('success',UserModule::t("Se ha aplicado tu Gift Card con éxito, ahora puedes usar tu saldo para comprar en Personaling."));                              
+                                    Yii::app()->user->setFlash('success',
+                                            UserModule::t("¡Se ha aplicado tu Gift Card con éxito, ahora puedes usar tu saldo para comprar en Personaling!"));                              
                                     
                                     if(!$ajax){
                                         $this->redirect(array('user/profile/micuenta'));                                        
-                                    }
-                                    
+                                    }                                    
 
                                 }else{ //Vencida
                                    Yii::app()->user->updateSession();
-                                   Yii::app()->user->setFlash('error',UserModule::t("Esta Gift Card ha expirado, ya no está disponible."));                              
-
-                                }
-                               
+                                   Yii::app()->user->setFlash('error',UserModule::t("¡Esta Gift Card ha expirado, ya no está disponible!"));                              
+                                }                               
                                
                            }else{ //no ha entrado en vigencia
                               Yii::app()->user->updateSession();
-                              Yii::app()->user->setFlash('warning', UserModule::t("¡ No puedes usar esta Gift Card porque aún no está disponible !"));    
+                              Yii::app()->user->setFlash('warning', UserModule::t("¡No puedes usar esta Gift Card porque aún no está disponible!"));    
                            }
                                    
                        }else if($giftcard->estado == 1){ //Invalida
                            Yii::app()->user->updateSession();
-                           Yii::app()->user->setFlash('error',UserModule::t("¡ Gift Card inválida !"));
+                           Yii::app()->user->setFlash('error',UserModule::t("¡Gift Card inválida!"));
                        
                        }else if($giftcard->estado == 3){ //Aplicada
                            Yii::app()->user->updateSession();
-                           Yii::app()->user->setFlash('error',UserModule::t("¡ Esta Gift Card ya ha sido usada !"));
+                           Yii::app()->user->setFlash('error',UserModule::t("¡Esta Gift Card ya ha sido usada!"));
                        }
                    
                        
                    }else{ // Si no existe
                        Yii::app()->user->updateSession();
-                       Yii::app()->user->setFlash('error',UserModule::t("¡ Gift Card inválida !"));
+                       Yii::app()->user->setFlash('error',UserModule::t("¡Gift Card inválida!"));
                    }
                    
                }else{ //Invalido
-                  if($ajax){                      
-                      Yii::app()->user->setFlash('error',UserModule::t("¡ Errores en el modelo !"));
-                  }
+
+                    
+                    $cReq = 0;
+                    $cLen = 0;
+                    foreach($aplicar->errors as $att => $error){
+                        $cReq += in_array("req", $error) ? 1:0;
+                        $cLen += in_array("len", $error) ? 1:0;
+                    }
+                    $aplicar->clearErrors();
+
+                    if($cReq){
+                       $aplicar->addError("campo1", "Debes escribir el código de tu Gift Card completo."); 
+                    }
+                    if($cLen){
+                       $aplicar->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
+                    } 
+                    
+                    if($ajax){
+                        foreach($aplicar->getErrors("campo1") as $mensajeError){
+                            $response[] = array("type" => "error", "message" => $mensajeError);
+                        }
+                        
+                    }
                }               
             }
             
-                if(!$ajax){                    
-                    $this->render('aplicar', array('model' => $aplicar));
-                }else{
-                    echo CJSON::encode(Yii::app()->user->getFlashes());
+            if(!$ajax){                    
+                $this->render('aplicar', array('model' => $aplicar));
+            }else{
+
+                $flashes = Yii::app()->user->getFlashes();
+
+                if(count($flashes)){
+                    $keys = array_keys($flashes);
+                    if($keys[0] == "warning"){
+                        
+                        $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]], "amount" => $giftcard->monto);
+                        
+                    }else{
+                        
+                        $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]]);                        
+                    }
+
                 }
+
+                echo CJSON::encode($response);
+
+                Yii::app()->end();
+            }
 	}
 	/**
 	 * Updates a particular model.

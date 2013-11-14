@@ -58,32 +58,7 @@
                                     <?php 
                                         $classError = "";
                                         if($model->hasErrors()){
-                                            $classError = "error";
-//                                            echo "<pre>";
-//                                            print_r($model->getErrors());
-//                                            echo "</pre>";
-                                            
-                                            $cReq = 0;
-                                            $cLen = 0;
-                                            foreach($model->errors as $att => $error){
-                                                $cReq += in_array("req", $error) ? 1:0;
-                                                $cLen += in_array("len", $error) ? 1:0;
-                                            }
-                                            $model->clearErrors();
-//                                            echo "clear";
-//                                            echo "<pre>";
-//                                            print_r($model->getErrors());
-//                                            echo "</pre>";
-                                            
-                                            if($cReq){
-                                               $model->addError("campo1", "Debes escribir el código de tu Gift Card completo"); 
-                                            }
-                                            if($cLen){
-                                               $model->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
-                                            }
-                                            
-//                                            echo "req {$cReq} len {$cLen}";
-                                            
+                                            $classError = "error";                                            
                                         }
                                     ?>
                                     

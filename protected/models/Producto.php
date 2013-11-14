@@ -99,7 +99,7 @@ class Producto extends CActiveRecord
 			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen', 'safe', 'on'=>'search'),
 		);
 	}
-
+ 
 	/**
 	 * @return array relational rules.
 	 */
@@ -119,7 +119,8 @@ class Producto extends CActiveRecord
 			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
                 'select'=> 'SUM(cantidad)',
                 ),
-            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),                    
+            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+             'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),                    
             'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
 		);
 	}

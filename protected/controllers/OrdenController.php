@@ -55,9 +55,9 @@ class OrdenController extends Controller
 	}
 
 public function actionReporte()
-	{
+	{ 
 		
- 
+  
 		
 		$orden = new Orden;
 		

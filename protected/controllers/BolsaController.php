@@ -949,7 +949,7 @@ class BolsaController extends Controller
 								$detalle_balance->monto=$balance_usuario;
 							}
 
-							$detalle_balance->comentario="Prueba de Saldo";
+							$detalle_balance->comentario="Uso de Saldo";
 							$detalle_balance->estado=1;
 							$detalle_balance->orden_id=$orden->id;
 							$detalle_balance->tipo_pago = 3;

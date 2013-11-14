@@ -63,10 +63,10 @@ public function actionReporte()
 		
 		//$orden->user_id = Yii::app()->user->id;
 		$dataProvider = $orden->vendidas();
-		
+		$marcas=Marca::model()->getAll();
 		$this->render('reporte',
 		array(
-		'dataProvider'=>$dataProvider,
+		'dataProvider'=>$dataProvider,'marcas'=>$marcas
 		));
 
 

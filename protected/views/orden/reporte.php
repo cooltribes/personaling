@@ -1,16 +1,8 @@
 <?php 
-echo "REPORTE";
-$n=0;
-foreach($dataProvider->getData() as $data){
-	$n++;	
-	foreach($data->ohptc as $ptc){
-		echo $n." ".$ptc->preciotallacolor_id." ".$ptc->cantidad."<br/>";
+
+	foreach($marcas as $marca){
+		echo $marca->nombre."<br/>";
 	}
-} 
-
-
-
-
 
 	$template = '<br/><br/>
 				<div style="width:100%">
@@ -48,7 +40,7 @@ foreach($dataProvider->getData() as $data){
 				
 		
 	Yii::app()->clientScript->registerScript('handle_ajax_function', "
-			function setValues()
+			function porMarca()
 			{
 				
 				for(var i=0; i<arr.length;i++){
@@ -65,7 +57,7 @@ foreach($dataProvider->getData() as $data){
 	    'itemView'=>'_authitem',
 	    'template'=>$template,
 	    //'enableSorting'=>true,
-	   // 'afterAjaxUpdate'=>'setValues',
+	    'afterAjaxUpdate'=>'porMarca',
 	    
 	    
 	   

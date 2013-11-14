@@ -137,6 +137,12 @@ class Marca extends CActiveRecord
 		
 	}
 	 
+	public function getAll(){
+		$todas=Marca::model()->findAll();
+		return $todas;
+		
+	}
+	 
 	 
 	
 	

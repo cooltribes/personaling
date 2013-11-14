@@ -251,8 +251,12 @@ class Orden extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'pagination' => array(
-                'pageSize' => 100,
+                'pageSize' => 30,
             ),
+            'sort'=>array(
+				        'attributes'=>array(
+				             'Marca', 'Talla', 'Color'
+				        )),
 		));
 	}
 	

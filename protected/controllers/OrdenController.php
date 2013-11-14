@@ -669,7 +669,7 @@ public function actionValidar()
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
-				$difencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
+				$diferencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
 				if( $diferencia_pago >= 0){
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo

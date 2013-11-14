@@ -336,17 +336,21 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </table>
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
             <?php
-            $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
-			if($balance > 0){
-	            ?>
-	            <div>
-	              <label class="checkbox">
-	                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-	                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong> </label>
-	            </div>
-	            <?php
-			}
-            ?>
+                $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+
+                $class = "";		
+
+                if($balance <= 0){
+                    $class = " hidden";
+                }
+	    ?>
+            <div>
+                <label class="checkbox<?php echo $class; ?>">
+                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
+                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+              </label>
+            </div>
+	            
              <button type="button" class="btn btn-success margin_top_medium" data-toggle="collapse" data-target="#collapse2"><i class = "icon-gift icon-white"></i> Agregar Gift Card</button> 
            
             <!-- Forma de pago ON -->
@@ -356,45 +360,24 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     <label class="control-label required">Numero de la tarjeta de Regalo <span class="required">*</span></label>
                 <![endif]-->
                 
-                
-                <?php 
-                    $classError = "";
-                    if($model->hasErrors()){
-                        $classError = "error";
-                        $cReq = 0;
-                        $cLen = 0;
-                        foreach($model->errors as $att => $error){
-                            $cReq += in_array("req", $error) ? 1:0;
-                            $cLen += in_array("len", $error) ? 1:0;
-                        }
-                        $model->clearErrors();
-
-                        if($cReq){
-                           $model->addError("campo1", "Debes escribir el código de tu Gift Card completo"); 
-                        }
-                        if($cLen){
-                           $model->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
-                        }
-                    }
-                ?>
                <div id="giftCard">
                <div class="control-group" id="camposGC">						
                     <div class="controls">
                         <?php echo CHtml::activeLabel($model, "campo1"); ?>
 
                         <?php echo CHtml::activeTextField($model, "campo1", array('class' => 'input-mini margin_left_small',
-                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4', 'value' => '0pi8')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo2", array('class' => 'input-mini',
-                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4', 'value' => 'vo7U')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo3", array('class' => 'input-mini',
-                            'maxlength'=>'4')); ?> <span>-</span>                                                        
+                            'maxlength'=>'4', 'value' => '37nT')); ?> <span>-</span>                                                        
                         <?php echo CHtml::activeTextField($model, "campo4", array('class' => 'input-mini',
-                            'maxlength'=>'4')); ?>
+                            'maxlength'=>'4', 'value' => 'h311')); ?>
 
                     </div>						
                </div>
                 
-                    <div class="span11 alert fade in" id="alert-msg" style="display: none">
+                    <div class="span11 alert in" id="alert-msg" style="display: none">
                       <button type="button" class="close" >&times;</button> 
                       <!--data-dismiss="alert"-->
                       <div class="msg"></div>
@@ -468,17 +451,56 @@ else
                 dataType: 'JSON',
                 data: datos,
                 success: function(data){
-                    console.log(data);
-                    showAlert("success", "FFFF");
-                    return;
                     
-                    if(data.status == 'success'){
+                    //Cambiar el estilo de los inputs
+                    
+                    
+                    
+                    //si son dos errores agregar ul
+                    if(data.length > 1){
+                        
+                        var contenido = "<ul>";
+                        
+                        $.each(data, function(i, dato){
+                            contenido += "<li>" + (dato.message) + "</li>";
+                         });
+                         
+                        contenido += "</ul>";
+                         
+                        showAlert("error", contenido);
+                        
+                    }else{
+                        
+                        if(data[0].type == 'success'){ //si fue success la aplicacion de GC
+                            
+                            var check = $("#usar_balance");
+                            
+                         
+                                var element = $("#usar_balance").next();
+                                
+                                element.parent().removeClass("hidden");
+                                element.animate({                                  
+                                  opacity: 0,
+                                }, {
+                                    duration: 1000,
+                                    complete: function(){
+                                      element.text("Bs. " + data[0].amount);
+                                      showAlert(data[0].type, data[0].message);
+                                    }
+                                } );
+                                
+                                
+                                element.animate({                                  
+                                  opacity: 1,
+                                  //color : "#468847",
+                                }, 1000 );
 
-
-
-                    }else if(data == 'error'){
-
+                        }else{
+                            showAlert(data[0].type, data[0].message);  
+                        }
+                        
                     }
+                    
                 }
             });    
             
@@ -488,11 +510,14 @@ else
 
         //Mostrar alert
         function showAlert(type, message){
-           $('#alert-msg').removeClass('alert-success alert-error') ;
+           $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
            $('#alert-msg').addClass("alert-"+type);
            $('#alert-msg').children(".msg").html(message);
            $('#alert-msg').show();
-           //$("html, body").animate({ scrollTop: 0 }, "slow");
+           
+           $("#camposGC").removeClass('success error warning');
+           $('#camposGC').addClass(type);
+           
         }
 
         $(".alert").alert();

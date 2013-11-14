@@ -339,18 +339,28 @@ class GiftcardController extends Controller
                     $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
 									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
 										<tbody>
+                                        <tr>
+                                            <td height='30'>
+                                            </td>
+                                        </tr>                                         
 										<tr>
-											<td style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
+											<td  class='w460' width='460' style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
 	                                      		{$model->monto} Bs.
                                       		</td>
                                       	</tr>
+                                        <tr>
+                                            <td height='10'>
+                                            </td>
+                                        </tr>                                        
                                       	<tr>
-                                      		<td style='color: #555;  position: relative; top: 18px; left: 10px; '>
+                                            <td class='w5' width='5'> </td>
+                                      		<td class='w465' width='465' style='position: relative; top: 18px; left: 10px;'>
                                       		    Para: {$envio->nombre}
                                       		</td>
                                       	</tr>
                                       	<tr>
-                                      		<td style='color: #555; position: relative; top: -10px; left: 10px; '>
+                                            <td class='w5' width='5'>  </td>
+                                      		<td class='w465' width='465' style='position: relative; top: -10px; left: 10px;'>
                                       			Mensaje: {$envio->mensaje}
                                       		</td>
                                       	</tr>
@@ -363,7 +373,9 @@ class GiftcardController extends Controller
                                       		<td style='font-size: 11px; color: #333; position: relative;left: 10px;'>
                                       			Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
                                       		</td>                                      		
-                                      	</tr>                                         	                                   	                                      	                                      	
+                                      	</tr>
+                                        <tr>
+                                        </tr>                                  	
                                      	</tbody>
                                     </table> ";
                     
@@ -416,7 +428,10 @@ class GiftcardController extends Controller
         public function actionAplicar(){                           
            
             $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;           
+
            
+            $response = array();
+
             
             $aplicar = new AplicarGC;
             
@@ -455,71 +470,97 @@ class GiftcardController extends Controller
 
 
                                     Yii::app()->user->updateSession();
-                                    Yii::app()->user->setFlash('success',UserModule::t("Se ha aplicado tu Gift Card con éxito, ahora puedes usar tu saldo para comprar en Personaling."));                              
+                                    Yii::app()->user->setFlash('success',
+                                            UserModule::t("¡Se ha aplicado tu Gift Card de <b>Bs. {$giftcard->monto}</b>, ahora puedes usar tu saldo para comprar en Personaling!"));                              
                                     
                                     if(!$ajax){
                                         $this->redirect(array('user/profile/micuenta'));                                        
-                                    }
-                                    
+                                    }                                    
 
                                 }else{ //Vencida
                                    Yii::app()->user->updateSession();
-                                   Yii::app()->user->setFlash('error',UserModule::t("Esta Gift Card ha expirado, ya no está disponible."));                              
-
-                                }
-                               
+                                   Yii::app()->user->setFlash('error',UserModule::t("¡Esta Gift Card ha expirado, ya no está disponible!"));                              
+                                }                               
                                
                            }else{ //no ha entrado en vigencia
                               Yii::app()->user->updateSession();
-                              Yii::app()->user->setFlash('warning', UserModule::t("¡ No puedes usar esta Gift Card porque aún no está disponible !"));    
+                              Yii::app()->user->setFlash('warning', UserModule::t("¡No puedes usar esta Gift Card porque aún no está disponible!"));    
                            }
                                    
                        }else if($giftcard->estado == 1){ //Invalida
                            Yii::app()->user->updateSession();
-                           Yii::app()->user->setFlash('error',UserModule::t("¡ Gift Card inválida !"));
+                           Yii::app()->user->setFlash('error',UserModule::t("¡Gift Card inválida!"));
                        
                        }else if($giftcard->estado == 3){ //Aplicada
                            Yii::app()->user->updateSession();
-                           Yii::app()->user->setFlash('error',UserModule::t("¡ Esta Gift Card ya ha sido usada !"));
+                           Yii::app()->user->setFlash('error',UserModule::t("¡Esta Gift Card ya ha sido usada!"));
                        }
                    
                        
                    }else{ // Si no existe
                        Yii::app()->user->updateSession();
-                       Yii::app()->user->setFlash('error',UserModule::t("¡ Gift Card inválida !"));
+                       Yii::app()->user->setFlash('error',UserModule::t("¡Gift Card inválida!"));
                    }
                    
                }else{ //Invalido
+
                     
                     $cReq = 0;
                     $cLen = 0;
-                    foreach($model->errors as $att => $error){
+                    foreach($aplicar->errors as $att => $error){
                         $cReq += in_array("req", $error) ? 1:0;
                         $cLen += in_array("len", $error) ? 1:0;
                     }
-                    $model->clearErrors();
+                    $aplicar->clearErrors();
 
                     if($cReq){
-                       $model->addError("campo1", "Debes escribir el código de tu Gift Card completo"); 
+                       $aplicar->addError("campo1", "Debes escribir el código de tu Gift Card completo."); 
                     }
                     if($cLen){
-                       $model->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
+                       $aplicar->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
                     } 
                     
-                    
-                    if($ajax){     
-                        //$giftcard->getErrors()
-                        Yii::app()->user->setFlash('error',UserModule::t("¡ Errores en el modelo !"));
+                    if($ajax){
+                        foreach($aplicar->getErrors("campo1") as $mensajeError){
+                            $response[] = array("type" => "error", "message" => $mensajeError);
+                        }
+                        
                     }
                }               
             }
             
-                if(!$ajax){                    
-                    $this->render('aplicar', array('model' => $aplicar));
-                }else{
-                    echo CJSON::encode(Yii::app()->user->getFlashes());
-                    Yii::app()->end();
+            if(!$ajax){                    
+                $this->render('aplicar', array('model' => $aplicar));
+            }else{
+
+                $flashes = Yii::app()->user->getFlashes();
+
+                if(count($flashes)){
+                    $keys = array_keys($flashes);
+                    if($keys[0] == "success"){
+                        
+                        $balance = User::model()->findByPk(Yii::app()->user->id)->profile->getSaldo(Yii::app()->user->id);
+                        $balance = Yii::app()->numberFormatter->formatCurrency($balance, "");                        
+                        
+                        $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]], "amount" => $balance);
+                        
+//                        echo "<pre>";
+//                        print_r($response);
+//                        echo "</pre>";
+//
+//                        Yii::app()->end();
+                        
+                    }else{
+                        
+                        $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]]);                        
+                    }
+
                 }
+
+                echo CJSON::encode($response);
+
+                Yii::app()->end();
+            }
 	}
 	/**
 	 * Updates a particular model.

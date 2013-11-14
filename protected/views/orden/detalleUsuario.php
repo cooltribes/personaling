@@ -788,111 +788,18 @@ Para una futura iteración
 <!------------------- MODAL WINDOW OFF ----------------->
 
 <!-- Modal Window -->
-<?php
-
-if($orden->estado == 7){
-    $detPago = new Detalle;
-    ?>
-    <input type="hidden" id="idDetalle" value="0" />
-    <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
-    <?php
-}
-else{
-   // $detPago = Detalle::model()->findByPk($orden->detalle_id);
-   $detPago = new Detalle;
-    ?>
-    <input type="hidden" id="idDetalle" value="" />
-    <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
-    <?php
-}
-?>
 <div class="modal hide fade" id="myModal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4>Agregar Depósito o Transferencia bancaria ya realizada</h4>
-  </div>
-  <div class="modal-body">
-    <form class="">
-      <div class="control-group">
-        <!--[if lte IE 9]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 9]>
-            <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-            <?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-        <div class="control-group">
-        <!--[if lte IE 9]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-            <?php echo CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); ?>
-              <?php //echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 9]>
-            <label class="control-label required">Cedula<span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 9]>
-            <label class="control-label required">Monto<span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5',
-              'placeholder'=>'Monto. Separe los decimales con una coma (,)',
-              'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar()))); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="controls controls-row"> 
-        <!--[if lte IE 9]>
-            <label class="control-label required">Fecha del depósito DD/MM/YYYY<span class="required">*</span></label>
-<![endif]-->
-<?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?>
-<?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
-<?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 9]>
-            <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-            <?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
-      <p class='text_align_center'><a title='Formas de Pago' href='<?php echo Yii::app()->baseUrl."/site/formas_de_pago";?>'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
-    </form>
-  </div>
+ <?php $this->renderPartial('//orden/_modal_pago',array('orden_id'=>$orden->id)); ?>
 </div>
-
 
 
 <!-- // Modal Window -->
 
 <script>
 
-    function enviar()
+    function enviar(id)
     {
-        var idDetalle = $("#idDetalle").attr("value");
+        //var idDetalle = $("#idDetalle").attr("value");
         var nombre= $("#nombre").attr("value");
         var numeroTrans = $("#numeroTrans").attr("value");
         var dia = $("#dia").attr("value");
@@ -902,7 +809,7 @@ else{
         var banco = $("#banco").attr("value");
         var cedula = $("#cedula").attr("value");
         var monto = $("#monto").attr("value");
-        var idOrden = $("#idOrden").attr("value");
+        var idOrden = id;
 
         if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
         {
@@ -922,8 +829,8 @@ else{
 
 	         $.ajax({
 	            type: "post",
-	            url: "../../bolsa/cpago", // action de controlador de bolsa cpago
-	            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto},
+	            url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>", // action de controlador de bolsa cpago
+	            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'banco':banco, 'cedula':cedula, 'monto':monto},
 	            success: function (data) {
 	
 	                if(data=="ok")

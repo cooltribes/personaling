@@ -817,15 +817,16 @@ Para una futura iteración
         }
         else
         {
-        	if(monto.indexOf(',')==(monto.length-2))
-	        	monto+='0';
-			if(monto.indexOf(',')==-1)
-				monto+=',00';
+        	
+        	//if(monto.indexOf(',')==(monto.length-2))
+	       // 	monto+='0';
+			//if(monto.indexOf(',')==-1)
+			//	monto+=',00';
 				
-	        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+	      //  var pattern = /^\d+(?:\,\d{0,2})$/ ;
 	        
-	        if (pattern.test(monto)) { 
-	        	monto = monto.replace(',','.'); 
+	      //  if (pattern.test(monto)) { 
+	      //  	monto = monto.replace(',','.'); 
 
 	         $.ajax({
 	            type: "post",
@@ -848,9 +849,9 @@ Para una futura iteración
 	               }//success
 	           })
            
-           }else{
-	        	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
-	       }
+          // }else{
+	      //  	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
+	      // }
            
         }// else grande
 

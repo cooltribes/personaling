@@ -477,8 +477,8 @@ class Orden extends CActiveRecord
 		$this->save();
 	}
 	public function getMontoActivo(){
-			if($this->estado == 3 || $this->estado == 8){
-		echo Yii::app()->numberFormatter->formatDecimal($this->total);
+	if($this->estado == 3 || $this->estado == 8){
+		return $this->total;
 		
 	}
 	if($this->estado == 7)

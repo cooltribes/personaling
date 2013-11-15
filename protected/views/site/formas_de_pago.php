@@ -7,6 +7,14 @@ $this->pageTitle=Yii::app()->name . ' - Formas de Pago';
 $this->breadcrumbs=array(
 	'Formas de pago',
 );
+
+// Open Graph
+  Yii::app()->clientScript->registerMetaTag('Formas de Pago: Personaling', null, null, array('property' => 'og:title'), null); 
+  Yii::app()->clientScript->registerMetaTag('Para facilitar tu compra ponemos a disposición tres (3) formas de pago: tarjeta de crédito, transferencia bancaria y depósito bancario. A continuación te indicamos cómo proceder según el medio que utilices.', null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->baseUrl .'/images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
+
 ?>
 
 <div class="row">

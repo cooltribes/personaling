@@ -338,44 +338,33 @@ class GiftcardController extends Controller
                     
                     $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
 									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
-										<tbody>
+										<tbody>       
                                         <tr>
                                             <td height='30'>
-                                            </td>
-                                        </tr>                                         
+                                            </td>                                      
+                                        </tr>                                                                          
 										<tr>
-											<td  class='w460' width='460' style='text-align:right; font-size:42px; position: relative;top: 30px; color: #333333; '>
-	                                      		{$model->monto} Bs.
-                                      		</td>
-                                      	</tr>
-                                        <tr>
-                                            <td height='10'>
-                                            </td>
-                                        </tr>                                        
+											<td style='text-align:right; font-size:42px; color: #333; '>
+	                                      		{$model->monto} Bs.&nbsp;
+                                      		</td>  
+                                                                                
+                                      	</tr>                                     
                                       	<tr>
-                                            <td class='w5' width='5'> </td>
-                                      		<td class='w465' width='465' style='position: relative; top: 18px; left: 10px;'>
-                                      		    Para: {$envio->nombre}
+                                      		<td style='font-size: 15px; color: #333; line-height: 20px;'>
+                                      		    &nbsp; &nbsp; Para:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$envio->nombre}
+                                                <br>
+                                                &nbsp; &nbsp; Mensaje: {$envio->mensaje}
                                       		</td>
-                                      	</tr>
                                       	<tr>
-                                            <td class='w5' width='5'>  </td>
-                                      		<td class='w465' width='465' style='position: relative; top: -10px; left: 10px;'>
-                                      			Mensaje: {$envio->mensaje}
-                                      		</td>
-                                      	</tr>
-                                      	<tr>
-                                      		<td style='color: #555; font-size: 28px; text-align: center;'>
+                                      		<td style=' font-size: 28px; text-align: center;'>
                                       			{$model->getCodigo()}
                                       		</td>
                                       	</tr>   
                                       	<tr>
-                                      		<td style='font-size: 11px; color: #333; position: relative;left: 10px;'>
-                                      			Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
+                                      		<td style='font-size: 11px; color: #333;  line-height: 20px;'>
+                                      			&nbsp; Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
                                       		</td>                                      		
-                                      	</tr>
-                                        <tr>
-                                        </tr>                                  	
+                                      	</tr>                              	
                                      	</tbody>
                                     </table> ";
                     
@@ -387,8 +376,9 @@ class GiftcardController extends Controller
                     $message = new YiiMailMessage;
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
-                    $body = "¡Hola <strong>{$envio->nombre}</strong> !<br><br> {$saludo} 
-                            <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com.<br/><br/>".$datosTarjeta;
+                    $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
+                            <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com<br/
+                            Para ver la Gift Card permite mostrar las imagenes de este correo <br/><br/>".$datosTarjeta;
                             
 //                    echo "Despues<pre>";
 //                    print_r($envio->attributes);
@@ -540,15 +530,11 @@ class GiftcardController extends Controller
                     if($keys[0] == "success"){
                         
                         $balance = User::model()->findByPk(Yii::app()->user->id)->profile->getSaldo(Yii::app()->user->id);
-                        $balance = Yii::app()->numberFormatter->formatCurrency($balance, "");                        
-                        
+
+                        $balance = Yii::app()->numberFormatter->formatCurrency($balance, "");                                               
                         $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]], "amount" => $balance);
-                        
-//                        echo "<pre>";
-//                        print_r($response);
-//                        echo "</pre>";
-//
-//                        Yii::app()->end();
+
+                       
                         
                     }else{
                         

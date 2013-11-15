@@ -952,7 +952,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 <!-- /container --> 
 
 <!------------------- MODAL REGISTRAR DEPOSITO -----------------> 
-<div class="modal hide fade" id="myModal">
+<div class="modal hide fade" id="modalDeposito">
  <?php $this->renderPartial('//orden/_modal_pago',array('orden_id'=>$orden->id)); ?>
 </div>
 
@@ -997,15 +997,15 @@ $usuario = User::model()->findByPk($orden->user_id);
         }
         else
         {
-        	if(monto.indexOf(',')==(monto.length-2))
-	        	monto+='0';
-			if(monto.indexOf(',')==-1)
-				monto+=',00';
+        	//if(monto.indexOf(',')==(monto.length-2))
+	      //  	monto+='0';
+			//if(monto.indexOf(',')==-1)
+			//	monto+=',00';
 				
-	        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+	      //  var pattern = /^\d+(?:\,\d{0,2})$/ ;
 	        
-	        if (pattern.test(monto)) { 
-	        	monto = monto.replace(',','.'); 
+	      //  if (pattern.test(monto)) { 
+	      //  	monto = monto.replace(',','.'); 
 
 	         $.ajax({
 	            type: "post",
@@ -1028,9 +1028,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	               }//success
 	           })
            
-           }else{
-	        	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
-	       }
+         //  }else{
+	     //   	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
+	     //  }
            
         }// else grande
 

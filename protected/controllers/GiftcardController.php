@@ -461,7 +461,7 @@ class GiftcardController extends Controller
 
                                     Yii::app()->user->updateSession();
                                     Yii::app()->user->setFlash('success',
-                                            UserModule::t("¡Se ha aplicado tu Gift Card con éxito, ahora puedes usar tu saldo para comprar en Personaling!"));                              
+                                            UserModule::t("¡Se ha aplicado tu Gift Card de <b>Bs. {$giftcard->monto}</b>, ahora puedes usar tu saldo para comprar en Personaling!"));                              
                                     
                                     if(!$ajax){
                                         $this->redirect(array('user/profile/micuenta'));                                        
@@ -530,8 +530,11 @@ class GiftcardController extends Controller
                     if($keys[0] == "success"){
                         
                         $balance = User::model()->findByPk(Yii::app()->user->id)->profile->getSaldo(Yii::app()->user->id);
+
                         $balance = Yii::app()->numberFormatter->formatCurrency($balance, "");                                               
                         $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]], "amount" => $balance);
+
+                       
                         
                     }else{
                         

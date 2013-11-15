@@ -56,17 +56,22 @@ class OrdenController extends Controller
 
 public function actionReporte()
 	{ 
+   $orden = new Orden;
 		
-  
-		
-		$orden = new Orden;
+		if(isset($_POST['idMarca'])){
+			Yii::app()->session['idMarca']=$_POST['idMarca'];
+			$dataProvider = $orden->vendidas($_POST['idMarca']);
+		}
+		else{
+			$dataProvider = $orden->vendidas();
+		}
 		
 		//$orden->user_id = Yii::app()->user->id;
-		$dataProvider = $orden->vendidas();
 		
+		$marcas=Marca::model()->getAll();
 		$this->render('reporte',
 		array(
-		'dataProvider'=>$dataProvider,
+		'dataProvider'=>$dataProvider,'marcas'=>$marcas
 		));
 
 
@@ -669,7 +674,7 @@ public function actionValidar()
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
-				$difencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
+				$diferencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
 				if( $diferencia_pago >= 0){
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
@@ -699,15 +704,15 @@ public function actionValidar()
 						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
 						
 						$usuario = Yii::app()->user->id;
-						$excede = ($detalle->monto-$porpagar);	
-						if(($excede) > 0.5)
+						//$excede = ($detalle->monto-$porpagar);	
+						if(($diferencia_pago) > 0.5)
 						{
 							
 						
 							$balance = new Balance;
 							$balance->orden_id = $orden->id;
 							$balance->user_id = $orden->user_id;
-							$balance->total = $excede;
+							$balance->total = $diferencia_pago;
 							
 							$balance->save();
 							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
@@ -720,15 +725,15 @@ public function actionValidar()
 				}// si el pago realizado es mayor o igual
 				else{
 					
-					
+					$diferencia_pago = 0-$diferencia_pago;
 					$saldo = Profile::model()->getSaldo($orden->user_id);
 					if($saldo>0){
 
 						$det_bal=new Detalle;
 						//$pag_bal=new Pago;
-						if($saldo>($porpagar-$detalle->monto)){
+						if($saldo>$diferencia_pago){
 							
-							$det_bal->monto=($porpagar-$detalle->monto);
+							$det_bal->monto=$diferencia_pago;
 							$det_bal->fecha=date("Y-m-d H:m:s");
 							$det_bal->comentario="Saldo para completar";
 							$det_bal->estado=1;
@@ -767,7 +772,7 @@ public function actionValidar()
 								$balance = new Balance;
 								$balance->orden_id = $orden->id;
 								$balance->user_id = $orden->user_id;
-								$balance->total = ($porpagar-$detalle->monto)*-1;
+								$balance->total = 0-$diferencia_pago;
 								$balance->tipo=1;
 								
 								$balance->save();
@@ -775,8 +780,7 @@ public function actionValidar()
 								
 							}
 								
-						}//Saldo cubre la deuda
-						else{
+						}else{//Saldo no cubre la deuda
 								
 							$orden->estado = 7;
 							
@@ -784,7 +788,7 @@ public function actionValidar()
 								$balance = new Balance;
 								$balance->orden_id = $orden->id;
 								$balance->user_id = $orden->user_id;
-								$balance->total = $saldo*(-1);
+								$balance->total = 0-$saldo;
 								$balance->tipo=1;								
 								if($balance->save()){
 									$subject = 'Pago insuficiente';

@@ -229,31 +229,59 @@ class Orden extends CActiveRecord
 		));
 	}
 	
-	public function vendidas($marca = NULL)
+	public function vendidas($pages = NULL)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
  
-		$criteria=new CDbCriteria;
-		$criteria->select='t.*';
-		$criteria->with=array('ohptc');
-		$criteria->together = true;
-		//$criteria->compare('t.user_id',$this->user_id);
-		$criteria->addCondition("t.estado = 3"); 
-		$criteria->addCondition("t.estado = 4",'OR'); 
-		$criteria->addCondition("t.estado = 8",'OR'); 
-		$criteria->addCondition("t.estado = 10",'OR'); 
-		$criteria->addCondition("ohptc.cantidad > 0"); 
-		//$criteria->addCondition("estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."'");
-		 
-		//$criteria->group = 't.id';
-		//$criteria->order = 't.fecha DESC';
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-			'pagination' => array(
-                'pageSize' => 30,
-            ),
-          ));
+ 	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
+		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color
+		from tbl_orden_has_productotallacolor o  
+		JOIN tbl_precioTallaColor p ON p.id = o.preciotallacolor_id 
+		JOIN tbl_producto pr ON pr.id = p.producto_id 
+		JOIN tbl_precio pre ON pre.tbl_producto_id = p.producto_id 
+		JOIN tbl_marca m ON m.id=pr.marca_id 
+		JOIN tbl_talla t ON t.id=p.talla_id 
+		JOIN tbl_color c ON c.id=p.color_id where o.tbl_orden_id IN(
+		select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 ) AND o.cantidad > 0 ";
+		
+		if(isset(Yii::app()->session['idMarca'])){
+			if(Yii::app()->session['idMarca']!=0)
+				$sql=$sql." AND m.id=".Yii::app()->session['idMarca'];
+
+		}
+		
+		
+		$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+		
+		if(!is_null($pages)){
+				
+			if(!$pages){
+				$sql="select count(o.preciotallacolor_id) from tbl_orden_has_productotallacolor o WHERE o.tbl_orden_id IN(select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 ) AND o.cantidad > 0";
+				$pages=Yii::app()->db->createCommand($sql)->queryScalar();
+			}
+			else
+				$pages=30;
+		}
+
+				
+				// or using: $rawData=User::model()->findAll(); <--this better represents your question
+	
+				return new CArrayDataProvider($rawData, array(
+				    'id'=>'data',
+				    'pagination'=>array(
+				        'pageSize'=>$pages,
+				    ),
+					 
+				    'sort'=>array(
+				        'attributes'=>array(
+				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo'
+				        ),
+	    ),
+				));
+		
+		
+
 	}
 	
 	public function historial()

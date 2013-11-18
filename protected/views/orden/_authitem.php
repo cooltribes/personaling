@@ -1,25 +1,17 @@
 <?php 
-foreach($data->ohptc as $reg){
 
 		echo"<tr> 
 
-			      <td>".$reg->preciotallacolor->producto->mymarca->nombre."</th>
-                    <td>".$reg->preciotallacolor->producto->nombre."</td>
-                    <td>".$reg->preciotallacolor->sku."</td>
-                    <td>".$reg->preciotallacolor->mycolor->valor."</td>
-                    <td>".$reg->preciotallacolor->mytalla->valor."</td>
-                    <td>".$reg->cantidad."</td>
-                    <td>".$reg->preciotallacolor->producto->precios[0]->costo."</td>";
-                   if($reg->look_id == 0)
-                    	echo "<td>".($reg->precio/1.12)."</td><td>".$reg->precio."</td></tr>";
+			      <td>".$data['Marca']."</td>
+                    <td>".$data['Nombre']."</td>
+                    <td>".$data['SKU']."</td>
+                    <td>".$data['Color']."</td>
+                    <td>".$data['Talla']."</td>
+                    <td>".$data['Cantidad']."</td>
+                    <td>".Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')."</td>";
+                   if($data['look'] == 0)
+                    	echo "<td>".Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), '')."</td><td>".Yii::app()->numberFormatter->formatCurrency($data['Precio'], '')."</td></tr>";
 				   else
-               			echo "<td>".$reg->preciotallacolor->producto->precios[0]->precioVenta."</td><td>".$reg->preciotallacolor->producto->precios[0]->precioImpuesto."</td></tr>";
-			
-		
-}
+               			echo "<td>".Yii::app()->numberFormatter->formatCurrency($data['pVenta'], '')."</td><td>".Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '')."</td></tr>";
 
-
-
-
-
-	?>
+?>

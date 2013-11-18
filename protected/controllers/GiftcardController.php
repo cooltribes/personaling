@@ -116,32 +116,11 @@ class GiftcardController extends Controller
 	}
         
 	public function actionSeleccionarusuarios(){
+                                        
             
-            if(isset(Yii::app()->session['selected']) && !isset($_GET['ajax'])){
-                Yii::app()->session['selected'] = array();
-            }
-            
-            if(isset($_GET['ajax'])){
-                
-                //array_merge(Yii::app()->session['selected'], )
-                echo "Session";
-                echo "<pre>";
-                //print_r(Yii::app()->session['selected']);
-                
-                if(isset($_POST)){
-                    print_r($_POST);
-                }else{
-                    echo "NADA";
-                }
-                echo "</pre>";
-                
-            }
-            
-            if(isset($_POST["siguiente"]) && isset($_POST["seleccionados"])){
-//                echo "<pre>";
-//                print_r($_POST["seleccionados"]);
-//                echo "</pre>";
-            //array_merge(Yii::app()->session['selected'], $_)
+            if(isset($_POST["siguiente"]) && isset($_POST["seleccionadosH"])){
+                Yii::app()->session["users"] = $_POST["seleccionadosH"];
+                $this->redirect(array("envioMasivo"));
 
             }
             
@@ -312,17 +291,10 @@ class GiftcardController extends Controller
             
             if(isset($_POST["EnvioGiftcard"])){
                
-                $envio->attributes = $_POST["EnvioGiftcard"];                
-               
+                $envio->attributes = $_POST["EnvioGiftcard"];    
                     
                 //Si es un email valido, enviar giftcard
-                if($envio->validate()){      
-                    
-//                    echo "<pre>";
-//                    print_r($model->attributes);
-//                    echo "</pre>";
-//                    Yii::app()->end();
-                    
+                if($envio->validate()){                         
 
                     //Activar la giftcard solo si ya no ha sido aplicada
                     if($model->estado != 3){
@@ -380,11 +352,6 @@ class GiftcardController extends Controller
                             <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com<br/
                             Para ver la Gift Card permite mostrar las imagenes de este correo <br/><br/>".$datosTarjeta;
                             
-//                    echo "Despues<pre>";
-//                    print_r($envio->attributes);
-//                    echo "</pre>";
-//
-//                    Yii::app()->end();
                     
                     $params = array('subject' => $subject, 'body' => $body);
                     $message->subject = $subject;
@@ -704,18 +671,157 @@ class GiftcardController extends Controller
         /*Para seleccionar los datos de las tarjetas que se enviaran*/
         public function actionEnvioMasivo(){
             
-            if(isset($_POST["Enviar"])){
-                echo "ENVIAR";
+            //Si estan seleccionados los usuarios
+            if(!isset(Yii::app()->session["users"])){
+               $this->redirect("createMasivo");
             }
             
-            $model = new EnvioGiftcard();
-            $aplicar = new AplicarGC();
             
+            $giftcard = new Giftcard;
+            $envio = new EnvioGiftcard("masivo");
+
+            
+            if(isset($_POST["Enviar"]) && isset($_POST['Giftcard'])){
+                $envio->attributes = $_POST["EnvioGiftcard"];   
+                
+                $giftcard->attributes = $_POST['Giftcard'];
+                $giftcard->estado = 1;
+                $giftcard->comprador = Yii::app()->user->id;
+                $giftcard->codigo = "x"; // para validar los otros campos 
+               
+                //valida mensaje
+                if($giftcard->validate()){
+                    $cantidad = count(Yii::app()->session["users"]);
+//                    echo "<pre>";
+//                    print_r(Yii::app()->session["users"]);
+//                    echo "</pre>";
+
+                    $errors = $this->generarMasivo($cantidad, $giftcard, $envio);
+                    if(isset(Yii::app()->session["users"])){
+                        unset(Yii::app()->session["users"]);
+                    }
+                    //echo "Errores: ". $errors;
+
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('success',
+                    UserModule::t("Se han enviado <b>{$cantidad}.</b> Gift Cards con éxito"));
+                    
+                    $this->redirect(array("index"));
+                }else{
+                    
+
+                }
+                
+            }
+                        
             
             $this->render("envioMasivo", array(
-                'envio' => $model,
-                'aplica' => $aplicar,
+                'envio' => $envio,
+                'giftcard' => $giftcard,
+                
             ));
+            
+        }
+        
+        /**
+         * 
+         * @param int $cant Cantidad de Giftcards a generar
+         * @param GiftCard $modelo Giftcard modelo para usar en montos, fechas y comprador
+         * @param EnvioGiftcard $envio datos del envio
+         * @return int errores
+         */
+        private function generarMasivo($cant = 1, $modelo, $envio){
+            
+            $errores = 0;
+            $usuarios = User::model()->findAllByAttributes(array("id" => Yii::app()->session["users"]));
+            
+//            echo "<pre>";
+//            echo count($usuarios);//print_r($usuarios);
+//            echo "</pre>";
+//            Yii::app()->end();
+            //Saludo del correo
+            $saludo = "Personaling tiene una Gift Card como obsequio para tí.";
+            //Mensaje que va en la tarjeta
+            $personalMes = "";                  
+            if($envio->mensaje != ""){
+                $personalMes = "<br/><br/><i>" . $envio->mensaje . "</i><br/>";
+            }
+            
+            for($i=0; $i< $cant; $i++){
+               $model = new Giftcard;
+               $model->attributes = $modelo->attributes;
+                       
+                do{  
+
+                    $model->codigo = $this->generarCodigo();
+                    $existe = Giftcard::model()->countByAttributes(array('codigo' => $model->codigo));                        
+
+                }while($existe);
+
+                //Enviarla
+                $model->estado = 2;
+                //Direccion y nombre
+                //Yii::app()->session["users"];
+                //usuario $i
+                $envio->nombre = $usuarios[$i]->profile->first_name;
+                $envio->email = $usuarios[$i]->username;
+                
+                $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
+                <table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
+                    <tbody>       
+                        <tr>
+                            <td height='30'>
+                            </td>                                      
+                        </tr>                                                                          
+                        <tr>
+                                <td style='text-align:right; font-size:42px; color: #333; '>
+                                        {$model->monto} Bs.&nbsp;
+                                </td>  
+
+                        </tr>                                     
+                        <tr>
+                                <td style='font-size: 15px; color: #333; line-height: 20px;'>
+                                    &nbsp; &nbsp; Para:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$envio->nombre}
+                                <br>
+                                &nbsp; &nbsp; Mensaje: {$envio->mensaje}
+                                </td>
+                        <tr>
+                                <td style=' font-size: 28px; text-align: center;'>
+                                        {$model->getCodigo()}
+                                </td>
+                        </tr>   
+                        <tr>
+                                <td style='font-size: 11px; color: #333;  line-height: 20px;'>
+                                        &nbsp; Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
+                                </td>                                      		
+                        </tr>                              	
+                    </tbody>
+                </table> ";                        
+                
+
+                $message = new YiiMailMessage;
+                $message->view = "mail_giftcard";
+                $subject = 'Gift Card de Personaling';
+                $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
+                        <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com<br/
+                        Para ver la Gift Card permite mostrar las imagenes de este correo <br/><br/>".$datosTarjeta;
+
+
+                $params = array('subject' => $subject, 'body' => $body);
+                $message->subject = $subject;
+                $message->setBody($params, 'text/html');
+
+                $message->addTo($envio->email);
+
+                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                Yii::app()->mail->send($message); 
+                                                        
+                if(!$model->save()){
+                    $errores++;
+                } 
+            }
+            
+            return $errores;
             
         }
 }

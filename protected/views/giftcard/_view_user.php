@@ -4,7 +4,7 @@
 <?php } else{ ?>
     <tr class=" <?php echo ($data->personal_shopper == 2)?'info':''; ?> ">
 <?php } ?>
-      <td><input name="seleccionados['<?php echo $data->id; ?>']" type="checkbox" value="Check"></td>
+      <td><input id="<?php echo $data->id; ?>" name="seleccionados" type="checkbox" value="Check"></td>
       <td>
       	<?php
       	 	// <img src="images/kitten.png" width="70" height="70" alt="avatar">

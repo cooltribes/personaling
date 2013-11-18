@@ -1,8 +1,13 @@
+<div class="container margin_top">
+  <div class="page-header">
+    <h1>Reporte de Productos Vendidos</small></h1>
+  </div>
+<div class="span11">
 <?php 
-
-
 	$list= CHtml::listData(Marca::model()->findAll(), 'id', 'nombre');
-	echo CHtml::dropDownList('marcas', '', $list, array('empty' => 'Filtrar por Marca'));
+	$list[0]="Todas";
+
+	echo CHtml::dropDownList('marcas', 'Todas', $list, array('empty' => 'Filtrar por marca', 'class'=>'pull-right'));
 	$template = '<br/><br/>
 				<div style="width:100%">
 					<div  style="width:auto; float:left;"> 
@@ -34,6 +39,7 @@
 			    </table>
 			   
 			    {pager}
+				</div>
 				';
 				
 				
@@ -42,7 +48,7 @@
 			function porMarca()
 			{
 				
-				alert(marcaId);
+				
 			}
 			");
 
@@ -55,16 +61,20 @@
 	    'template'=>$template,
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
+	      'sortableAttributes'=>array(
+                'Nombre', 'Marca', 'Talla', 'Color', 'Costo'
+   	),
 	    
 	    
 	   
 	 					
 	));
 
-	Yii::app()->clientScript->registerScript('marca1',
+	Yii::app()->clientScript->registerScript('marca',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest; 
 		$('#marcas').change(function(){
+			ajaxRequest = $('#marcas').serialize();
 			marcaId = $('#marcas').val();
 			clearTimeout(ajaxUpdateTimeout);
 			
@@ -74,7 +84,7 @@
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('orden/reporte') . "',
-				data: marcaId}
+				data: ajaxRequest}
 				
 				)
 				},
@@ -83,20 +93,9 @@
 		return false;
 		});",CClientScript::POS_READY
 	);
+	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>  
+?>
+<div class="span3"><a href="#<?php //echo Yii::app()->baseUrl."/orden/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
+</div>
+</div>

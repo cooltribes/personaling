@@ -84,22 +84,22 @@ public function actionReporte()
 
 public function actionReportexls(){
 	
-	/*	$title = array(
+		$title = array(
     'font' => array(
-        'name' => 'Arial',
+     
         'size' => 14,
         'bold' => true,
         'color' => array(
-            'rgb' => 'FFFFFF'
+            'rgb' => '000000'
         ),
     ),
-   'fill' => array(
+   /*'fill' => array(
         'type' => PHPExcel_Style_Fill::FILL_SOLID,
         'startcolor' => array(
             'rgb' => '6D2D56',
         ),
-    ),
-);*/
+    ),*/
+);
 
 		Yii::import('ext.phpexcel.XPHPExcel');    
 	
@@ -121,9 +121,9 @@ public function actionReportexls(){
 						->setCellValue('D1', 'Color')
 						->setCellValue('E1', 'Talla')
 						->setCellValue('F1', 'Cantidad')
-						->setCellValue('G1', 'Costo')
-						->setCellValue('H1', 'Precio de Venta sin IVA')
-						->setCellValue('I1', 'Precio de Venta con IVA');
+						->setCellValue('G1', 'Costo (Bs)')
+						->setCellValue('H1', 'Precio de Venta sin IVA (Bs)')
+						->setCellValue('I1', 'Precio de Venta con IVA (Bs)');
 			// encabezado end			
 		 	
 			foreach(range('A','I') as $columnID) {
@@ -131,8 +131,18 @@ public function actionReportexls(){
         ->setAutoSize(true);
 }  
 			 
-			/*
-		 	$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);*/
+			
+		 	$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+		 	
+		 	
 		 	//Eliminar filtrado por marca antes de consultar
 		 	$fake=false;
 		 	if(isset(Yii::app()->session['idMarca'])){
@@ -156,9 +166,11 @@ public function actionReportexls(){
 			{
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
                    if($data['look'] == 0)
-                    	{$H=($data['Precio']/1.12); $I=$data['Precio'];}
+                    	{$H=Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), ''); 
+                    	$I=Yii::app()->numberFormatter->formatCurrency($data['Precio'], '');}
 				   else
-               			{$H=$data['pVenta']; $I=$data['pIVA'];}
+               			{$H=Yii::app()->numberFormatter->formatCurrency($data['pVenta'], ''); 
+               			$I=Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '');}
 
 			
 					$objPHPExcel->setActiveSheetIndex(0)
@@ -168,7 +180,7 @@ public function actionReportexls(){
 							->setCellValue('D'.$fila , $data['Color'])
 							->setCellValue('E'.$fila , $data['Talla']) 
 							->setCellValue('F'.$fila , $data['Cantidad']) 
-							->setCellValue('G'.$fila , $data['Costo']) 
+							->setCellValue('G'.$fila , Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')) 
 							->setCellValue('H'.$fila , $H)							
 							->setCellValue('I'.$fila , $I);
 					$fila++;

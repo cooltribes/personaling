@@ -28,9 +28,9 @@
                     <th>Color</th>
                     <th>Talla</th>
                     <th>Cantidad</th>
-                    <th>Costo</th>
-                    <th>Precio sin IVA</th>
-                    <th>Precio con IVA</th>
+                    <th>Costo (Bs)</th>
+                    <th>Precio sin IVA (Bs)</th>
+                    <th>Precio con IVA (Bs)</th>
                 </tr>
 			    </thead>
 			    <tbody>

@@ -53,7 +53,9 @@ $detPago = new Detalle;
         <!--[if lte IE 7]>
             <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
 <![endif]--> 
-        <?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?> <?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?> <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?> </div>
+        <?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día','value'=>date("d"))); ?> 
+        <?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes','value'=>date("d"))); ?> 
+        <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año','value'=>date("d"))); ?> </div>
       <div class="control-group"> 
         <!--[if lte IE 7]>
             <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>

@@ -225,7 +225,7 @@
   			</li>  	
   			<li class="itemThumbnails tienda_iconos">
   				<div class="dropdown">
-	  				<a href="#" lass="dropdown-toggle" data-toggle="dropdown">
+	  				<a href="#" lass="dropdown-toggle" data-toggle="dropdown" class="color_b">
 	  					Color:
 	  					<img src="/images/colores/C_Multicolor.jpg" alt="Ccolor" width="20">		
 	  					<b class="caret caretthumbs"></b>
@@ -235,7 +235,6 @@
 		              		<a href="#" >
 		              			<img  src="/images/colores/C_Beige.jpg" width="44">
 		              		</a>                	
-		              		<div class="caption"</div>
 	              		</li>
 						<li class="colors"> 
 	          				<a href="#">
@@ -383,11 +382,12 @@
 					</ul>  	
 				</div>	
 			</li>			
-<!-- 			<li class="dropdown item">
-				<div class="">
-					<input type="text" class="" placeholder="Buscar"> 	
+			<li class="item itemInput">
+				<div class="contenedorInput">
+					<input type="text" class="" placeholder="Buscar"> 
+					<button class="btn btn-danger btn-buscar" type="button"><i class="icon-search"></i></button>	
 				</div>
-			</li>	 -->
+			</li>	
 		</ul>	 
 
 </section>

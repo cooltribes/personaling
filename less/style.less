@@ -1734,6 +1734,12 @@ src: url('../fonts/entypo.woff'),
   .itemThumbnails{
     display: inline-block;
     border-right: 1px solid #eee;   
+    .dropdown-menu{
+      width: 260px;
+    }
+    .dropdown-colors{
+      width: 280px;
+    }
   }
   .img-categoria{
     width: 50px;
@@ -1754,7 +1760,25 @@ src: url('../fonts/entypo.woff'),
       }
     }
   }
+  .thumbnails li > a{
+      padding: 0;
+      &:hover{
+        background: white;
+      }
 
+  }
+  .thumbnails li{
+    margin-left: 10px;
+    margin-bottom: 0;
+    min-width: 60px;
+    width: 70px;
+  }
+  .thumbnails .colors{
+    margin-left: 10px;
+    margin-bottom: 5px;
+    min-width: 0;
+    width: 44px;
+  }
 }
 
 .tienda_productos{

@@ -229,16 +229,12 @@ class Orden extends CActiveRecord
 		));
 	}
 	
-	public function vendidas($marca = NULL)
+	public function vendidas($pages = NULL)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
  
- 
-
- 
- 
-		$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
+ 	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
 		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color
 		from tbl_orden_has_productotallacolor o  
 		JOIN tbl_precioTallaColor p ON p.id = o.preciotallacolor_id 
@@ -255,8 +251,18 @@ class Orden extends CActiveRecord
 
 		}
 		
+		
 		$rawData=Yii::app()->db->createCommand($sql)->queryAll();
-
+		
+		if(!is_null($pages)){
+				
+			if(!$pages){
+				$sql="select count(o.preciotallacolor_id) from tbl_orden_has_productotallacolor o WHERE o.tbl_orden_id IN(select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 ) AND o.cantidad > 0";
+				$pages=Yii::app()->db->createCommand($sql)->queryScalar();
+			}
+			else
+				$pages=30;
+		}
 
 				
 				// or using: $rawData=User::model()->findAll(); <--this better represents your question
@@ -264,7 +270,7 @@ class Orden extends CActiveRecord
 				return new CArrayDataProvider($rawData, array(
 				    'id'=>'data',
 				    'pagination'=>array(
-				        'pageSize'=>30,
+				        'pageSize'=>$pages,
 				    ),
 					 
 				    'sort'=>array(
@@ -273,11 +279,6 @@ class Orden extends CActiveRecord
 				        ),
 	    ),
 				));
-		
-		
-		
-		
-		
 		
 		
 

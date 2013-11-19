@@ -151,7 +151,7 @@ class TiendaController extends Controller
 		$dataProvider = $producto->nueva($a);
 		
 		 
-		$this->render('index',
+		$this->render('index_new',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias
 		));	

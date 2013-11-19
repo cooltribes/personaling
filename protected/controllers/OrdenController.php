@@ -83,7 +83,24 @@ public function actionReporte()
 
 
 public function actionReportexls(){
-		
+	
+	$title = array(
+    'font' => array(
+     
+        'size' => 14,
+        'bold' => true,
+        'color' => array(
+            'rgb' => '000000'
+        ),
+    ),
+   /*'fill' => array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'startcolor' => array(
+            'rgb' => '6D2D56',
+        ),
+    ),*/
+);
+
 		Yii::import('ext.phpexcel.XPHPExcel');    
 	
 		$objPHPExcel = XPHPExcel::createPHPExcel();
@@ -99,15 +116,32 @@ public function actionReportexls(){
 			// creando el encabezado
 			$objPHPExcel->setActiveSheetIndex(0)
 						->setCellValue('A1', 'Marca')
-						->setCellValue('A2', 'Nombre')
-						->setCellValue('B2', 'SKU')
-						->setCellValue('C2', 'Color')
-						->setCellValue('D1', 'Talla')
-						->setCellValue('D2', 'Cantidad')
-						->setCellValue('E2', 'Costo')
-						->setCellValue('F2', 'Precio de Venta sin IVA')
-						->setCellValue('G2', 'Precio de Venta con IVA');
+						->setCellValue('B1', 'Nombre')
+						->setCellValue('C1', 'SKU')
+						->setCellValue('D1', 'Color')
+						->setCellValue('E1', 'Talla')
+						->setCellValue('F1', 'Cantidad')
+						->setCellValue('G1', 'Costo (Bs)')
+						->setCellValue('H1', 'Precio de Venta sin IVA (Bs)')
+						->setCellValue('I1', 'Precio de Venta con IVA (Bs)');
 			// encabezado end			
+		 	
+			foreach(range('A','I') as $columnID) {
+    $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        ->setAutoSize(true);
+}  
+			 
+			
+		 	$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+		 	
 		 	
 		 	//Eliminar filtrado por marca antes de consultar
 		 	$fake=false;
@@ -119,8 +153,8 @@ public function actionReportexls(){
 			//fin			
 		 	
 		 	$orden=new Orden;
-		 	$ordenes = $orden->vendidas(); 
-		 	$fila = 1;
+		 	$ordenes = $orden->vendidas(false); 
+		 	$fila = 2;
 		
 			
 			//Reestablecer filtrado por marca si existia
@@ -128,13 +162,15 @@ public function actionReportexls(){
 				Yii::app()->session['idMarca']=$marca;
 		 	//fin	 
 		 
-		 	foreach($ordenes as $data)
+		 	foreach($ordenes->getData() as $data)
 			{
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
                    if($data['look'] == 0)
-                    	{$H=($data['Precio']/1.12); $I=$data['Precio'];}
+                    	{$H=Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), ''); 
+                    	$I=Yii::app()->numberFormatter->formatCurrency($data['Precio'], '');}
 				   else
-               			{$H=$data['pVenta']; $I=$data['pIVA'];}
+               			{$H=Yii::app()->numberFormatter->formatCurrency($data['pVenta'], ''); 
+               			$I=Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '');}
 
 			
 					$objPHPExcel->setActiveSheetIndex(0)
@@ -144,17 +180,11 @@ public function actionReportexls(){
 							->setCellValue('D'.$fila , $data['Color'])
 							->setCellValue('E'.$fila , $data['Talla']) 
 							->setCellValue('F'.$fila , $data['Cantidad']) 
-							->setCellValue('G'.$fila , $data['Costo']) 
+							->setCellValue('G'.$fila , Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')) 
 							->setCellValue('H'.$fila , $H)							
 							->setCellValue('I'.$fila , $I);
 					$fila++;
-					
-					
-					
-					
-					
-						
-				
+
 			} // foreach
 		 
 			// Rename worksheet
@@ -163,7 +193,7 @@ public function actionReportexls(){
 
 			// Redirect output to a clientâ€™s web browser (Excel5)
 			header('Content-Type: application/vnd.ms-excel');
-			header('Content-Disposition: attachment;filename="plantillamasivaprepagada.xls"');
+			header('Content-Disposition: attachment;filename="ReporteVentas.xls"');
 			header('Cache-Control: max-age=0');
 			// If you're serving to IE 9, then the following may be needed
 			header('Cache-Control: max-age=1');

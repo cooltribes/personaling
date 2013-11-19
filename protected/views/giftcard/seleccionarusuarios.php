@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 	'Generar Masivo' =>array('createMasivo'),
         'Seleccionar Usuarios'
 );
-
+$this->pageTitle=Yii::app()->name . ' - Seleccionar Usuarios';
 ?>
 <div class="container">
 <h1>Seleccionar Usuarios</h1>
@@ -138,7 +138,7 @@ $template = '{summary}
   <hr/>
    <div class="row">
         <div class="span2 offset10">
-            <?php echo CHtml::submitButton("Seleccionar Diseño", array('class' => 'btn btn-block btn-danger', 'name' => 'siguiente')); ?>
+            <?php echo CHtml::submitButton("Seleccionar Diseño", array('class' => 'btn btn-block btn-danger', 'name' => 'siguiente', 'id' => 'siguiente')); ?>
         </div>
     </div>
   
@@ -148,6 +148,8 @@ $template = '{summary}
 <!-- /container -->    
 </div>
 <script type="text/javascript">
+   var selected, noselected;
+   var all = Array(); 
     
 function Codigo(){
    $('#check-todos').click(function() { 
@@ -157,17 +159,65 @@ function Codigo(){
         }else {
              inputs.attr('checked', false);
         } 	
-    });
+    });    
     
-    var todos;
+    
     $("input:checkbox").click(function(e){
-        todos = $("input:checkbox:checked");
+        selected = $("input:checkbox:checked[name='seleccionados']");
+        noselected = $("input:checkbox:not(:checked)[name='seleccionados']");
         
-        console.log(todos.size());
-    }); 
+        $.each(selected, function(i, e){
+           
+           var id = $(e).attr("id");
+           //console.log(i + " " + id); 
+           if(all.indexOf(id) == -1){
+              all.push(id);               
+           }
+           
+        });
+        
+        $.each(noselected, function(i, e){
+           
+           var id = $(e).attr("id");
+           //console.log(i + " " + id); 
+           var index = all.indexOf(id);
+           if(index != -1){
+              all.splice(index, 1); 
+           }
+           
+        });
+    });    
+    
+    
 }    
     
     Codigo();
+    
+    $("#siguiente").click(function(e){
+        
+        if(!all.length){
+            bootbox.alert("Debes seleccionar al menos un (1) usuario para el envío de Gift Card");
+            e.preventDefault();            
+            return;
+        }
+        
+        //Crear inputs para enviar al server
+        var form = $("#todosUsuarios");
+        $.each(all, function(i, e){
+           
+           console.log(all);
+           form.append($("<input >").attr({
+                type : "hidden",
+                name : 'seleccionadosH[]',
+           }).val(e));
+           console.log("--");
+           
+           
+        });
+        
+        
+
+    });
     
     
 </script>

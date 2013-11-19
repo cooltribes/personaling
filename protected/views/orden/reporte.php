@@ -28,9 +28,9 @@
                     <th>Color</th>
                     <th>Talla</th>
                     <th>Cantidad</th>
-                    <th>Costo</th>
-                    <th>Precio sin IVA</th>
-                    <th>Precio con IVA</th>
+                    <th>Costo (Bs)</th>
+                    <th>Precio sin IVA (Bs)</th>
+                    <th>Precio con IVA (Bs)</th>
                 </tr>
 			    </thead>
 			    <tbody>
@@ -96,6 +96,6 @@
 	
 
 ?>
-<div class="span3"><a href="#<?php //echo Yii::app()->baseUrl."/orden/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
+<div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/orden/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
 </div>
 </div>

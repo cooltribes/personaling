@@ -56,7 +56,7 @@ $this->breadcrumbs=array(
 
             <div class="row margin_top">
                 <div class="span6"> 
-                    <p class="lead">2. ¿A quién se la envias?</p>                                       
+                    <p class="lead">2. ¿A quién se la envías?</p>                                       
                                         
                                         
                                         <?php echo $form->errorSummary($envio); ?>

@@ -84,7 +84,7 @@ public function actionReporte()
 
 public function actionReportexls(){
 	
-		$title = array(
+	$title = array(
     'font' => array(
      
         'size' => 14,

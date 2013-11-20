@@ -38,7 +38,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             <div class="span6">
                 <input id="idLook" type="hidden" value="<?php echo $model->id ?>" />
               <h1><?php echo $model->title; ?></h1>
-              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> | 100% Disponible</small></p>
+              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> <!-- | 100% Disponible --></small></p>
             </div>
             <div class="span2 share_like">
               <div class="pull-right">
@@ -105,7 +105,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
 	                 <li >  
-	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60));
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60, 'height'=>60));
                       ?>
 	                </li>                	
                 <?php } ?>              
@@ -287,6 +287,98 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           <?php $this->endWidget(); ?>
           <!-- Productos del look OFF -->
 <hr/>
+          <div class="row">
+                <?php
+
+         $this->widget('bootstrap.widgets.TbButton', array(
+                    'buttonType'=>'ajaxButton',
+                    'id'=>'btn-compra', 
+                    'type'=>'warning',
+                    'label'=>'Comprar',
+                    'block'=>'true',
+                       'size'=> 'large',
+                   // 'url'=>array('producto/tallacolor'),
+                   'url'=> CController::createUrl('bolsa/agregar') ,
+                    'htmlOptions'=>array('id'=>'buttonGuardar','class'=>'span2'),
+                    'ajaxOptions'=>array(
+                            'type' => 'POST',
+                            'data'=> "js:$('#producto-form').serialize()",
+
+                            'beforeSend' => "function( request )
+                                 {
+                                   
+                                   
+                                                                      var entro = true; 
+                                   if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
+                                      entro = false;
+                                        alert('debe seleccionar por lo menos una prenda');
+                                        return false;
+                                   }
+
+                                   $('.tallas').each(function(){
+                                           if ($(this).val()==''){
+
+                                               if ($(this).parent().prev('input').prop('checked')){
+                                                  entro = false;
+                                                   bootbox.alert('debe seleccionar todas las tallas');
+                                                   return false;
+                                               }
+                                           }
+
+                                   });
+                                   if (entro){
+                                      if ($('#buttonGuardar').attr('disabled')==true)
+                                        return false;
+                                      $('#buttonGuardar').attr('disabled', true);
+                   }
+                                   
+                                 }",
+
+
+                             'success' => "function( data )
+                                  {
+
+                                     if(data.indexOf('ok')>=0)
+                                    {
+                                        window.location='".$this->createUrl('bolsa/index')."';
+                                    }
+
+
+                                 //alert(data);
+                                  /*
+                                    // handle return data
+                                   // alert( data );
+                                   // $('#table_tallacolor').append(data);
+                                   data = JSON.parse( data );
+                                    if(data.status=='success'){
+                                        // $('#formResult').html('form submitted successfully.');
+                                        //alert('si');
+                                        // $('#Tallacolor-Form')[0].reset();
+                                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+                                    }
+                                         else{
+                                             id = data.id;
+                                             delete data['id'];
+
+                                        $.each(data, function(key, val) {
+                                            key_tmp = key.split('_');
+                                            key_tmp.splice(1,0,id);
+                                            key = key_tmp.join('_');
+
+                                            //alert('#Tallacolor-Form #'+key+'_em_');
+
+                                        $('#Tallacolor-Form #'+key+'_em_').text(val);
+                                        $('#Tallacolor-Form #'+key+'_em_').show();
+                                        });
+                                        }
+                                         */
+                                  }",
+                                //  'data'=>array('id'=>$model->id),
+                    ),
+                ));
+
+                ?>
+          </div>
           <div class="braker_horz_top_1">            
            
             <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y", strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  

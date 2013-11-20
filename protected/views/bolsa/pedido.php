@@ -1,21 +1,22 @@
 <?php
-
+$nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 $user = User::model()->findByPk(Yii::app()->user->id);
-$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+//$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+$tipo_pago = $orden->getTipoPago();
 //echo $orden->pago_id;
 
 ?>
-
+<?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);?>
 <div class="container margin_top">
 <div class="row">
   <div class="span8 offset2">
     <?php
       
-      if($orden->estado==1) // pendiente de pago
+      if($orden->estado==1||$orden->estado==7) // pendiente de pago o pago insuficiente
 	  {
-	  	if($pago->tipo == 1){
+	  	if($tipo_pago == 1 || $tipo_pago == 3){
 	      ?>
     <div class="alert alert-success margin_top_medium margin_bottom">
       <h1>Tu Pedido ha sido recibido con éxito.</h1>
@@ -26,7 +27,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       <hr/>
       <p><strong>Para completar tu comprar debes:</strong></p>
       <ol>
-        <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?> en la siguiente cuenta bancaria: <br>
+        <li> <strong>Realizar el pago</strong>: de <?php echo Yii::app()->numberFormatter->formatCurrency( $orden->getxPagar(), 'Bs.'); ?> via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?> en la siguiente cuenta bancaria: <br>
           <br>
           <ul class="margin_bottom_medium">
             <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
@@ -46,7 +47,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
       </div>
     </section>
     <?php
-      	}else if($pago->tipo == 4){
+      	}else if($tipo_pago == 4){
       		?>
     <div class="alert alert-success margin_top_medium margin_bottom">
       <h1>Tu Pedido ha sido recibido con éxito.</h1>
@@ -57,7 +58,7 @@ $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
     <hr/>
     <p><strong>Para completar tu comprar debes:</strong></p>
     <ol>
-      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?> via MercadoPago. <br>
+      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''); ?> via MercadoPago. <br>
       </li>
       <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
       <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
@@ -367,76 +368,13 @@ else
 
 <!-- Modal Window -->
 <?php 
-$detPago = Detalle::model()->findByPk($orden->detalle_id);
+$detPago = new Detalle;
+$detPago->monto=0;
 ?>
 <div class="modal hide fade" id="myModal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4>Agregar Depósito o Transferencia bancaria ya realizada</h4>
-  </div>
-  <div class="modal-body">
-    <form class="">
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
-<![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-    <div class="controls">   <!--  <?php echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>-->
-       	 <?php echo CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto','value'=>$orden->total)); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="controls controls-row"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
-<![endif]--> 
-        <?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?> <?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?> <?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?> </div>
-      <div class="control-group"> 
-        <!--[if lte IE 7]>
-            <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="form-actions"> <a onclick="enviar(<?php echo $orden->id ?>)" class="btn btn-danger">Confirmar Deposito</a> </div>
-      <p class="well well-small"> <p class='text_align_center'><a title='Formas de Pago' href='<?php echo Yii::app()->baseUrl."/site/formas_de_pago";?>'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
-      </p>
-    </form>
-  </div>
+  <?php $this->renderPartial('//orden/_modal_pago',array('orden_id'=>$orden->id)); ?>
 </div>
-<input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
+<!-- <input type="hidden" id="idDetalle" value="<?php //echo($orden->detalle_id); ?>" /> -->
 
 <!-- // Modal Window --> 
 
@@ -444,7 +382,7 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 	
 	function enviar(id)
 	{	
-		var idDetalle = $("#idDetalle").attr("value");
+		//var idDetalle = $("#idDetalle").attr("value");
 		var nombre= $("#nombre").attr("value");
 		var numeroTrans = $("#numeroTrans").attr("value");
 		var dia = $("#dia").attr("value");
@@ -464,8 +402,8 @@ $detPago = Detalle::model()->findByPk($orden->detalle_id);
 
  		$.ajax({
 	        type: "post", 
-	        url: "../cpago", // action 
-	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto, 'idOrden':id}, 
+	        url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>", // action 
+	        data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'banco':banco, 'cedula':cedula, 'monto':monto, 'idOrden':id}, 
 	        success: function (data) {
 				
 				if(data=="ok")

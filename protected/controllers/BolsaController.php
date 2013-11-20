@@ -45,7 +45,10 @@ class BolsaController extends Controller
 	public function actionIndex()
 	{
 		$usuario = Yii::app()->user->id;
-		
+		$metric = new ShoppingMetric();
+		$metric->user_id = $usuario;
+		$metric->step = ShoppingMetric::STEP_BOLSA;
+		$metric->save();
 		if(!Yii::app()->user->isGuest){
 					
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
@@ -264,8 +267,11 @@ class BolsaController extends Controller
 	
 		public function actionPagos()
 		{
-			$tarjeta = new TarjetaCredito;
-			
+                    
+                    
+                    
+			$tarjeta = new TarjetaCredito;                        
+                        
 			if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
 				if(isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
 				{
@@ -321,7 +327,17 @@ class BolsaController extends Controller
 			}
 			else {
 				//$tarjeta = new TarjetaCredito;
-				$this->render('pago',array('tarjeta'=>$tarjeta));		
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_PAGO;
+				$metric->save();
+                                
+                                $aplicar = new AplicarGC;
+                                
+				$this->render('pago',array(
+                                    'tarjeta'=>$tarjeta,
+                                    'model'=>$aplicar,
+                                        ));		
 			}
 
 		}
@@ -531,6 +547,10 @@ class BolsaController extends Controller
 				//echo '<br/>'.$_POST['tipo_pago'];
 				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
 			}*/
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_CONFIRMAR;
+				$metric->save();
 			$this->render('confirmar',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
 		}
 		
@@ -638,8 +658,14 @@ class BolsaController extends Controller
 				
 					if($dir->save())
 					{
-						$tarjeta = new TarjetaCredito;		
-						$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
+
+						//$tarjeta = new TarjetaCredito;
+						
+						Yii::app()->getSession()->add('idDireccion',$dir->id);
+						$this->redirect(array('bolsa/pagos'));		
+						
+						//$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
+
 						//$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
 					}
 					
@@ -650,6 +676,10 @@ class BolsaController extends Controller
 				
 			}else // si está viniendo de la pagina anterior que muestre todo 
 			{
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_DIRECCIONES;
+				$metric->save();	
 				$this->render('direcciones',array('dir'=>$dir));
 			}
 			
@@ -696,6 +726,10 @@ class BolsaController extends Controller
 					Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta.")); 
 				}	
 			}else{
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_LOGIN;
+				$metric->save();
 				// si no viene del formulario. O bien viene de la pagina anterior
 				$this->render('login',array('model'=>$model));
 			}
@@ -860,13 +894,184 @@ class BolsaController extends Controller
 	
 	}
 	
-	
+	public function actionComprar()
+	{
+		if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
+		 	$respCard = "";
+		 	$usuario = Yii::app()->user->id; 
+			$user = User::model()->findByPk($usuario);
+			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));		
+			switch ($_POST['tipoPago']) {
+			    case 1: // TRANSFERENCIA
+			       	$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario)));
+					$orden = new Orden;
+					$orden->subtotal = $_POST['subtotal'];
+					$orden->descuento = 0;
+					$orden->envio = $_POST['envio'];
+					$orden->iva = $_POST['iva'];
+					$orden->descuentoRegalo = 0;
+					$orden->total = $_POST['total'];
+					$orden->seguro = $_POST['seguro'];
+					$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+					$orden->estado = Orden::ESTADO_ESPERA; // en espera de pago
+					$orden->bolsa_id = $bolsa->id; 
+					$orden->user_id = $usuario;
+					$orden->direccionEnvio_id = $dirEnvio->id;
+					$orden->tipo_guia = $_POST['tipo_guia'];
+					$orden->peso = $_POST['peso'];
+					$okk = round($_POST['total'], 2);
+					$orden->total = $okk;
+					if (!($orden->save())){
+						echo CJSON::encode(array(
+								'status'=> 'error',
+								'error'=> $orden->getErrors(),
+							));
+						Yii::trace('UserID:'.$usuario.' Error al guardar la orden:'.print_r($orden->getErrors(),true), 'registro');	
+						Yii::app()->end();
+						
+					}	
+									
+					if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+						//$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+						$balance_usuario = $user->saldo;
+						if($balance_usuario > 0){
+							$balance = new Balance;
+							$detalle_balance = new Detalle;
+							if($balance_usuario >= $_POST['total']){
+								$orden->cambiarEstado(Orden::ESTADO_CONFIRMADO);
+								
+								$balance->total = $_POST['total']*(-1);
+								$detalle_balance->monto=$_POST['total'];
+							}else{
+								 
+								$orden->cambiarEstado(Orden::ESTADO_INSUFICIENTE);
+								$balance->total = $balance_usuario*(-1);
+								$detalle_balance->monto=$balance_usuario;
+							}
+
+							$detalle_balance->comentario="Uso de Saldo";
+							$detalle_balance->estado=1;
+							$detalle_balance->orden_id=$orden->id;
+							$detalle_balance->tipo_pago = 3;
+							if($detalle_balance->save()){
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $usuario;
+								$balance->tipo = 1;
+								//$balance->total=round($balance->total,2);
+								$balance->save();
+							}
+						}
+					}
+					$this->hacerCompra($bolsa->id,$usuario,$orden->id);
+					// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+					// se agrega este estado en el caso de que no se haya pagado por TDC
+					
+					$estado = new Estado;
+					$estado->estado = 1;
+					$estado->user_id = $usuario;
+					$estado->fecha = date("Y-m-d");
+					$estado->orden_id = $orden->id;
+					$estado->save();
+
+
+					 	// cuando finalice entonces envia id de la orden para redireccionar
+					 echo CJSON::encode(array(
+						'status'=> 'ok',
+						'orden'=> $orden->id,
+						'total'=> $orden->total,
+						'respCard' => $respCard,
+						'descuento'=>$orden->descuento,
+						'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
+					));
+			        break;
+			    case 2: // TARJETA DE CREDITO
+			        echo "i equals 1";
+			        break;
+			    case 3:
+			        echo "i equals 2";
+			        break;
+			}
+				// Generar factura
+			$factura = new Factura;
+			$factura->fecha = date('Y-m-d');
+			$factura->direccion_fiscal_id = $_POST['idDireccion'];  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+			$factura->direccion_envio_id = $_POST['idDireccion'];
+			$factura->orden_id = $orden->id;
+			$factura->save();
+			// Enviar correo con resumen de la compra
+			$user = User::model()->findByPk($usuario);
+			$message            = new YiiMailMessage;
+	        //this points to the file test.php inside the view path
+	        $message->view = "mail_compra";
+			$subject = 'Tu compra en Personaling';
+	        $params              = array('subject'=>$subject, 'orden'=>$orden);
+	        $message->subject    = $subject;
+	        $message->setBody($params, 'text/html');
+	        $message->addTo($user->email);
+			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+	        Yii::app()->mail->send($message);			
+		}
+		 
+	}
+	public function clonarDireccion($direccion){
+		$dirEnvio = new DireccionEnvio;
+					
+		$dirEnvio->nombre = $direccion->nombre;
+		$dirEnvio->apellido = $direccion->apellido;
+		$dirEnvio->cedula = $direccion->cedula;
+		$dirEnvio->dirUno = $direccion->dirUno;
+		$dirEnvio->dirDos = $direccion->dirDos;
+		$dirEnvio->telefono = $direccion->telefono;
+		$dirEnvio->ciudad_id = $direccion->ciudad_id;
+		$dirEnvio->provincia_id = $direccion->provincia_id;
+		$dirEnvio->pais = $direccion->pais;	
+		$dirEnvio->save();
+		return $dirEnvio;
+	}
+	public function hacerCompra($bolsa_id,$usuario,$order_id){
+		$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa_id));	
+								
+		// añadiendo a orden producto
+		foreach($productosBolsa as $prod){
+			$prorden = new OrdenHasProductotallacolor;
+			$prorden->tbl_orden_id = $order_id;
+			$prorden->preciotallacolor_id = $prod->preciotallacolor_id;
+			$prorden->cantidad = $prod->cantidad;
+			$prorden->look_id = $prod->look_id;
+			$prtc = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
+			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
+			if($prod->look_id == 0){ // no es look
+				$prorden->precio = $precio->precioDescuento;
+			} else {
+				$look = Look::model()->findByPk($prod->look_id);
+				if(isset($look)) $prorden->precio = $look->getPrecio(false);										
+			}
+			$prorden->save();
+				//listo y que repita el proceso
+		}
+		//descontando del inventario
+		foreach($productosBolsa as $prod){
+			$uno = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id);
+			$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
+			Preciotallacolor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+			// descuenta y se repite									
+		}
+		// para borrar los productos de la bolsa								
+		foreach($productosBolsa as $prod){
+			$prod->delete();															
+		}
+
+
+		
+
+	}
 	/*
 	 * 
 	 * */
-	public function actionComprar()
+	public function actionComprar2()
 	{
-		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
+			if (Yii::app()->request->isPostRequest) // asegurar que viene en post
 		 {
 		 	$respCard = "";
 		 	$usuario = Yii::app()->user->id; 
@@ -877,14 +1082,15 @@ class BolsaController extends Controller
 				if($_POST['tipoPago']==2)
 				{
 					$detalle = Detalle::model()->findByPk($_POST['idDetalle']); // si viene de tarjeta de credito trae ya el detalle listo
+					
 				}
 				else
 				{
 					$detalle = new Detalle;
 				}
 			
-				if($detalle->save())
-				{
+				if($detalle->save()){
+					
 					$pago = new Pago;
 					$pago->tipo = $_POST['tipoPago']; // trans
 					$pago->tbl_detalle_id = $detalle->id;
@@ -925,7 +1131,8 @@ class BolsaController extends Controller
 							$orden = new Orden;
 							
 							$orden->subtotal = $_POST['subtotal'];
-							$orden->descuento = $_POST['descuento'];
+							//$orden->descuento = $_POST['descuento'];
+							$orden->descuento = 0;
 							$orden->envio = $_POST['envio'];
 							$orden->iva = $_POST['iva'];
 							$orden->descuentoRegalo = 0;
@@ -950,27 +1157,54 @@ class BolsaController extends Controller
 							$orden->total = $okk;
 							
 							if($orden->save()){
+								$detalle->orden_id=$orden->id;
+								$detalle->save();
 								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+								$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+									//$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
 									if($balance_usuario > 0){
 										$balance = new Balance;
 										if($balance_usuario >= $_POST['total']){
-											$orden->descuento = $_POST['total'];
+											/*$orden->descuento = $_POST['total'];
 											$orden->total = 0;
-											$orden->estado = 2; // en espera de confirmación
+											$orden->estado = 2; // en espera de confirmación*/
+											$orden->estado = 3; 
 											$balance->total = $_POST['total']*(-1);
+											$detalle->monto=$_POST['total'];
 										}else{
-											$orden->descuento = $balance_usuario;
-											$orden->total = $_POST['total'] - $balance_usuario;
+											//$orden->descuento = $balance_usuario;
+											//$orden->total = $_POST['total'] - $balance_usuario;
+											
+											$orden->estado = 7; 
 											$balance->total = $balance_usuario*(-1);
+											$detalle->monto=$balance_usuario;
+											
 										}
-										$orden->save();
+										
+										if($orden->save()){
+											
+											$detalle->comentario="Prueba de Saldo";
+											$detalle->estado=1;
+											$detalle->orden_id=$orden->id;
+											if($detalle->save()){
+												$balance->orden_id = $orden->id;
+												$balance->user_id = $usuario;
+												$balance->tipo = 1;
+												$balance->total=round($balance->total,2);
+												
+												$balance->save();
+												
+												$pago->tipo = 3; // trans
+												
+												$pago->save();
+												
+												
+											}
+										}
 										
 										//$balance->total = $orden->descuento*(-1);
-										$balance->orden_id = $orden->id;
-										$balance->user_id = $usuario;
-										$balance->tipo = 1;
-										$balance->save();
+										
+											
 									}
 								}
 								
@@ -1117,7 +1351,8 @@ class BolsaController extends Controller
 			// quitarlos de bolsa tiene producto
 			
 		 }
-		
+
+		 
 	}
 
 	/*
@@ -1127,6 +1362,10 @@ class BolsaController extends Controller
 	{
 		$orden = Orden::model()->findByPk($id);
 		//$pago = Pago::model()->findByPk($orden->pago_id);
+				$metric = new ShoppingMetric();
+				$metric->user_id = Yii::app()->user->id;
+				$metric->step = ShoppingMetric::STEP_PEDIDO;
+				$metric->save();		
 		$this->render('pedido',array('orden'=>$orden));
 	}
 
@@ -1175,31 +1414,30 @@ class BolsaController extends Controller
 		{
 			$usuario = Yii::app()->user->id; 
 			
-			if($_POST['idDetalle'] != 0)
-				$detPago = Detalle::model()->findByPk($_POST['idDetalle']);
-			else
-				$detPago = new Detalle;
-				
+			
+			$detPago = new Detalle;
+			$pago=new Pago;	
 			$detPago->nombre = $_POST['nombre'];
 			$detPago->nTransferencia = $_POST['numeroTrans'];
 			$detPago->comentario = $_POST['comentario'];
 			$detPago->banco = $_POST['banco'];
-			$detPago->monto = $_POST['monto'];
+			$nf = new NumberFormatter("es_VE", NumberFormatter::DECIMAL);
+			$detPago->monto = $nf->parse($_POST['monto']);
 			$detPago->cedula = $_POST['cedula'];
 			$detPago->estado = 0; // defecto
 			$detPago->orden_id = $_POST['idOrden'];
-							
-			$detPago->fecha = $_POST['ano']."/".$_POST['mes']."/".$_POST['dia']." ".date("H:i:s");
+			$detPago->tipo_pago =  1;				
+			$detPago->fecha = $_POST['ano']."-".$_POST['mes']."-".$_POST['dia']." ".date("H:i:s");
 			
 			if($detPago->save())
 			{
 				
-				if($_POST['idDetalle'] != 0)
-					$orden = Orden::model()->findByAttributes(array('detalle_id'=>$_POST['idDetalle']));
-				else
-				{
+					//$pago->tipo = 1; // trans
+					//$pago->tbl_detalle_id = $detPago->id;
+					//$pago->save();
+				
 					$orden = Orden::model()->findByAttributes(array('id'=>$_POST['idOrden']));
-				}
+			
 					
 				$orden->estado = 2;	// se recibió los datos de pago por transferencia
 				
@@ -1222,7 +1460,7 @@ class BolsaController extends Controller
 				}				
 			}
 			else {
-				echo "no";
+				print_r($detPago->getErrors());
 			}
 			
 		}

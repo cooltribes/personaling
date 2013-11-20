@@ -78,11 +78,11 @@ class ProductoController extends Controller
 	public function actionGetImage($id)
 	{
 		$model = $this->loadModel($id);
-		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png'));
+		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> false ));
 		/*echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
 		echo("<br>".Yii::app()->basePath);*/
 		
-		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').'/../'.$image_url);		
+		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').$image_url);		
 		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
 		echo '<img '.$attr.' src="'.$image_url.'" alt>';
 		echo '<input type="hidden" name="producto_id" value="'.$id.'">';
@@ -737,15 +737,23 @@ class ProductoController extends Controller
 	
 	public function actionSuprimir()
 	{
-		$ptc=Preciotallcolor::model()->findByPk($_POST['id']);
-		$apariciones=$ptc->enLooks() + $ptc->enOrdenes();
-			if($apariciones==0)
-			{
-				Yii::app()->user->setFlash('error',UserModule::t("Combinación no puede ser eliminada ya que se encuentra en uso por Ordenes y/o Looks."));
-			}
-			{
-				Yii::app()->user->setFlash('success',UserModule::t("Combinación debió ser Eliminada"));
-			}
+		if(isset($_POST['id']))
+		{
+			$ptc=Preciotallacolor::model()->findByPk($_POST['id']);
+			$lk=$ptc->enLooks();
+			$ord=$ptc->enOrdenes();
+			
+				if(($lk+$ord)>0)
+				{
+						Yii::app()->user->setFlash('error',UserModule::t("Combinación no puede ser eliminada ya que se encuentra en ".$ord." Ordenes y ".$lk." Looks."));				
+				}
+				else{
+					if($ptc->delete())
+						Yii::app()->user->setFlash('success',UserModule::t("Combinación de Talla y Color Eliminada"));
+				}
+		}else{
+			Yii::app()->user->setFlash('error',UserModule::t("Combinación no pudo ser eliminada."));
+		}
 	}
 	
 	
@@ -1141,11 +1149,11 @@ class ProductoController extends Controller
 		if(isset($_GET['alias']))
 		{
 			$seo = Seo::model()->findByAttributes(array('urlAmigable'=>$_GET['alias']));
-			$producto = Producto::model()->findByPk($seo->tbl_producto_id);
+			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
 		}
 		else
 		{
-			$producto = Producto::model()->findByPk($_GET['id']);
+			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
 			$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 		}				
 			
@@ -1557,6 +1565,9 @@ class ProductoController extends Controller
 				
 				$linea++; // saber cual numero de linea es
 				
+				if($row['A']!="")
+				{
+				
 				if($contador == 1) // revisar las columnas
 				{
 					if($row['A']!="Nombre")
@@ -1650,7 +1661,9 @@ class ProductoController extends Controller
 					
 					// 	
 				}
-		
+			
+			}
+
 		} // cierra primer foreach para comprobar
 		
 		
@@ -1913,10 +1926,10 @@ class ProductoController extends Controller
 								
 								// seo
 
-								$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));	
+								$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$prod->id));	
 								
 								if(isset($seo)){
-									$seo->mTitulo = $producto->nombre;
+									$seo->mTitulo = $prod->nombre;
 									$seo->mDescripcion = $row['O'];
 									$seo->pClave = $row['P'];
 									
@@ -1924,10 +1937,10 @@ class ProductoController extends Controller
 								}
 								else {
 									$seo = new Seo;
-									$seo->mTitulo = $producto->nombre;
+									$seo->mTitulo = $prod->nombre;
 									$seo->mDescripcion = $row['O'];
 									$seo->pClave = $row['P'];
-									$seo->tbl_producto_id = $producto->id;
+									$seo->tbl_producto_id = $prod->id;
 									
 									$seo->save();
 								}

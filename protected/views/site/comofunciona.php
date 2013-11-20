@@ -1,4 +1,15 @@
+<?php 
+Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características.', 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
+// Open Graph
+  Yii::app()->clientScript->registerMetaTag('Personaling.com ¿Cómo funciona?', null, null, array('property' => 'og:title'), null); 
+  Yii::app()->clientScript->registerMetaTag('Serás asesorado por actrices, animadoras, celebridades y fashion bloggers. Todos ellos crearán looks adaptados a tus condiciones físicas y gustos para que siempre vayas vestida a la última moda', null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->getBaseUrl() .'/images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
 
+
+?>
 </div>
 </div>
 <article class="como_funciona"> 

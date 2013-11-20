@@ -5,7 +5,7 @@
         <h1>Panel de Control de Usuarios</h1>
       </div>
       <div class="span2">
-        <div class="bg_color10 padding_small color1 text_align_center"><span class="T_large">1844</span><br/>
+          <div class="bg_color10 padding_small color1 text_align_center"><span class="T_large"><?php echo User::model()->count(); ?></span><br/>
           usuarios registrados</div>
       </div>
     </div>
@@ -213,8 +213,8 @@
 	          
             </div>	
  
-      <div class="row margin_top">
-        <div class="span12">
+      <div class=" margin_top">
+        <div class="">
           <h4 class="CAPS braker_bottom margin_bottom_small">REGISTROS</h4>
 	      <ul class="nav nav-tabs">
 	        <li class="active"><a data-toggle="tab" href="#tab1">Tipos</a></li>
@@ -224,6 +224,8 @@
 	        <li><a data-toggle="tab" href="#tab5">Color de Ojos</a></li>
 	        <li><a data-toggle="tab" href="#tab6">Color de Piel</a></li>
 	        <li><a data-toggle="tab" href="#tab7">Tipo de Cuerpo</a></li>
+	        <li><a data-toggle="tab" href="#tab8">Género</a></li>
+	        <li><a data-toggle="tab" href="#tab9">Edades</a></li>
 	      </ul>    
 		    <div class="tab-content">
 		        <div class="tab-pane active" id="tab1">	            
@@ -265,23 +267,23 @@
 						</tr>
 						<tr>
 						  <td>1.55-1.65</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php $alts=Profile::model()->countXestatura(); if(!isset($alts[1]))$alts[1]=0; echo $alts[1];?></td>
+						  <td><?php echo round($alts[1]*$alts[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>1.66-1.75</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($alts[2]))$alts[2]=0;echo $alts[2];?></td>
+						  <td><?php echo round($alts[2]*$alts[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>1.76 -1.85</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($alts[4]))$alts[4]=0; echo $alts[4];?></td>
+						  <td><?php echo round($alts[4]*$alts[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>1.86-1.95</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($alts[8]))$alts[8]=0;echo $alts[8];?></td>
+						  <td><?php echo round($alts[8]*$alts[0],2)?>%</td>
 						</tr>
 					</table>
 		        </div>
@@ -294,62 +296,62 @@
 						</tr>
 						<tr>
 						  <td>Delgada</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php $conts=Profile::model()->countXcontextura(); if(!isset($conts[1]))$conts[1]=0; echo $conts[1];?></td>
+						  <td><?php echo round($conts[1]*$conts[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Media</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($conts[2]))$conts[2]=0; echo $conts[2];?></td>
+						  <td><?php echo round($conts[2]*$conts[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Gruesa</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($conts[4]))$conts[4]=0; echo $conts[4];?></td>
+						  <td><?php echo round($conts[4]*$conts[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Muy Gruesa</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($conts[8]))$conts[8]=0; echo $conts[8];?></td>
+						  <td><?php echo round($conts[8]*$conts[0],2)?>%</td>
 						</tr>
 					</table>
 		        </div>
 		        <div class="tab-pane" id="tab4">
 					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
 						<tr>
-						  <th scope="col">Color</th>
+						  <th scope="col">Cabello</th>
 						  <th scope="col">Cantidad de Usuarios</th>
 						  <th scope="col">% Usuarios</th>
 						</tr>
 						<tr>
 						  <td>Rubio</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php $pelo=Profile::model()->countXpelo(); if(!isset($pelo[1]))$pelo[1]=0; echo $pelo[1];?></td>
+						  <td><?php echo round($pelo[1]*$pelo[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Castaño Claro</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($pelo[2]))$pelo[2]=0; echo $pelo[2];?></td>
+						  <td><?php echo round($pelo[2]*$pelo[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Castaño Oscuro</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($pelo[4]))$pelo[4]=0; echo $pelo[4];?></td>
+						  <td><?php echo round($pelo[4]*$pelo[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Negro</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($pelo[8]))$pelo[8]=0; echo $pelo[8];?></td>
+						  <td><?php echo round($pelo[8]*$pelo[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Rojo</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($pelo[16]))$pelo[16]=0; echo $pelo[16];?></td>
+						  <td><?php echo round($pelo[1]*$pelo[16],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Blanco</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($pelo[32]))$pelo[32]=0; echo $pelo[32];?></td>
+						  <td><?php echo round($pelo[1]*$pelo[32],2)?>%</td>
 						</tr>												
 					</table>
 		        </div>
@@ -361,62 +363,62 @@
 						  <th scope="col">% Usuarios</th>
 						</tr>
 						<tr>
-						  <td>Verde</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td>Verdes</td>
+						  <td><?php $ojos=Profile::model()->countXojos(); if(!isset($ojos[1]))$ojos[1]=0; echo $ojos[1];?></td>
+						  <td><?php echo round($ojos[1]*$ojos[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Azul</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($ojos[2]))$ojos[2]=0; echo $ojos[2];?></td>
+						  <td><?php echo round($ojos[2]*$ojos[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Ambar</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($ojos[4]))$ojos[4]=0; echo $ojos[4];?></td>
+						  <td><?php echo round($ojos[4]*$ojos[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Marrón</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($ojos[8]))$ojos[8]=0; echo $ojos[8];?></td>
+						  <td><?php echo round($ojos[8]*$ojos[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Gris</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($ojos[16]))$ojos[16]=0; echo $ojos[16];?></td>
+						  <td><?php echo round($ojos[1]*$ojos[16],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Negro</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($ojos[32]))$ojos[32]=0; echo $ojos[32];?></td>
+						  <td><?php echo round($ojos[32]*$ojos[0],2)?>%</td>
 						</tr>												
 					</table>		        	
 		        </div>
 		        <div class="tab-pane" id="tab6">
 					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
 						<tr>
-						  <th scope="col">Color</th>
+						  <th scope="col">Tono de Piel</th>
 						  <th scope="col">Cantidad de Usuarios</th>
 						  <th scope="col">% Usuarios</th>
 						</tr>
 						<tr>
 						  <td>Blanca</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php $piel=Profile::model()->countXpiel(); if(!isset($piel[1]))$piel[1]=0; echo $piel[1];?></td>
+						  <td><?php echo round($piel[1]*$piel[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Morena</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($piel[2]))$piel[2]=0; echo $piel[2];?></td>
+						  <td><?php echo round($piel[2]*$piel[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Mulata</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($piel[4]))$piel[4]=0; echo $piel[4];?></td>
+						  <td><?php echo round($piel[4]*$piel[0],2)?>%</td>
 						</tr>												
 					</table>
 		        </div>	
-		        <div class="tab-pane" id="tab6">
+		        <div class="tab-pane" id="tab7">
 					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
 						<tr>
 						  <th scope="col">Tipo</th>
@@ -425,24 +427,70 @@
 						</tr>
 						<tr>
 						  <td>Rectangular</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php $cuerpo=Profile::model()->countXcuerpo(); 
+						  if(!isset($cuerpo[1]))$cuerpo[1]=0;echo $cuerpo[1];?></td>
+						  <td><?php echo round($cuerpo[1]*$cuerpo[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Reloj Arena</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($cuerpo[2]))$cuerpo[2]=0;echo $cuerpo[2];?></td>
+						  <td><?php echo round($cuerpo[2]*$cuerpo[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Triángulo</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($cuerpo[4]))$cuerpo[4]=0;echo $cuerpo[4];?></td>
+						  <td><?php echo round($cuerpo[4]*$cuerpo[0],2)?>%</td>
 						</tr>
 						<tr>
 						  <td>Triángulo Invertido</td>
-						  <td>0</td>
-						  <td>0%</td>
+						  <td><?php if(!isset($cuerpo[8]))$cuerpo[8]=0;echo $cuerpo[8];?></td>
+						  <td><?php echo round($cuerpo[8]*$cuerpo[0],2)?>%</td>
 						</tr>																			
+					</table>
+		        </div>	
+		        <div class="tab-pane" id="tab8">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Género</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+						  <td>Mujeres</td>
+						  <td><?php $genero=Profile::model()->countXgenero(); 
+						  if(!isset($genero[1]))$genero[1]=0;echo $genero[1];?></td>
+						  <td><?php echo round($genero[1]*$genero[0],2)?>%</td>
+						</tr>
+						<tr>
+						  <td>Hombres</td>
+						  <td><?php if(!isset($genero[2]))$genero[2]=0;echo $genero[2];?></td>
+						  <td><?php echo round($genero[2]*$genero[0],2)?>%</td>
+						</tr>
+																								
+					</table>
+		        </div>
+		        <div class="tab-pane" id="tab9">
+					<table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
+						<tr>
+						  <th scope="col">Edades</th>
+						  <th scope="col">Cantidad de Usuarios</th>
+						  <th scope="col">% Usuarios</th>
+						</tr>
+						<tr>
+							<?php 
+							$edades=Profile::model()->countxedad();
+							$porcedad=100/$edades[0];
+							unset($edades[0]);
+							foreach($edades as $edad){
+								echo"<tr><td>Entre ".$edad['edad1']." y ".$edad['edad2']." Años </td>
+								<td>".$edad['total']."</td><td>".round($edad['total']*$porcedad,2)."%</td></tr>";
+								
+							}
+						  
+				
+						  ?></td>
+						 
+																								
 					</table>
 		        </div>			                		        
 		    </div>
@@ -450,13 +498,13 @@
       </div>
       <h2 class="braker_bottom margin_bottom_small margin_top">Últimos usuarios registrados</h2>
       <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#tab1">Clientes</a></li>
-        <li><a data-toggle="tab" href="#tab2">Personal Shoppers</a></li>
-        <li><a data-toggle="tab" href="#tab3">Administradores</a></li>
-        <li><a data-toggle="tab" href="#tab4">Aplicantes a PS</a></li>
+        <li class="active"><a data-toggle="tab" href="#tab10">Clientes</a></li>
+        <li><a data-toggle="tab" href="#tab11">Personal Shoppers</a></li>
+        <li><a data-toggle="tab" href="#tab12">Administradores</a></li>
+        <li><a data-toggle="tab" href="#tab13">Aplicantes a PS</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
+        <div class="tab-pane active" id="tab10">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Nombre</th>
@@ -481,7 +529,7 @@
             
           </table>
         </div>
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="tab11">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Nombre del PS</th>
@@ -505,7 +553,7 @@
             ?>
           </table>
         </div>
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="tab12">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Administrador</th>
@@ -529,7 +577,7 @@
             ?>
           </table>
         </div>
-        <div class="tab-pane" id="tab4">
+        <div class="tab-pane" id="tab13">
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Aplicante</th>

@@ -130,6 +130,8 @@ $looks_recomendados = $look->match($model);
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
               <li><?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
+              <li> <?php echo CHtml::link('Aplicar Gift Card',array('/giftcard/aplicar'),array("title"=>"Aplica una Gift Card")); ?></li>
+              
             </ul>
              
           </div>

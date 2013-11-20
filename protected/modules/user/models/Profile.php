@@ -272,7 +272,7 @@ class Profile extends UActiveRecord
 	
 	public function getSaldo($id , $format=true){
 			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id)->queryScalar();
-			$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
+			//$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;
 	}
 	/* Obtener el url del perfil publico del usuario */
@@ -292,5 +292,105 @@ class Profile extends UActiveRecord
 		return $this->first_name.' '.$this->last_name; 
 	}
 	  
+	 public function countXestatura(){
+	 		$estatura=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(altura) FROM tbl_profiles WHERE altura<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE altura =".$alt)->queryScalar();
+				$estatura[$alt]=$sum;
+			}
+			$estatura[0]=100/array_sum($estatura);			
+			return $estatura;
+		
+	 }
+	 
+	 public function countXcontextura(){
+	 		$cont=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(contextura) FROM tbl_profiles WHERE contextura<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE contextura =".$alt)->queryScalar();
+				$cont[$alt]=$sum;
+			}
+			$cont[0]=100/array_sum($cont);			
+			return $cont;
+		
+	 }
+	 
+	 public function countXpelo(){
+	 		$pelo=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(pelo) FROM tbl_profiles WHERE pelo<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE pelo =".$alt)->queryScalar();
+				$pelo[$alt]=$sum;
+			}
+			$pelo[0]=100/array_sum($pelo);			
+			return $pelo;
+		
+	 }
+	 public function countXojos(){
+	 		$ojos=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(ojos) FROM tbl_profiles WHERE ojos<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE ojos =".$alt)->queryScalar();
+				$ojos[$alt]=$sum;
+			}
+			$ojos[0]=100/array_sum($ojos);		
+			return $ojos;
+		
+	 }
+	 public function countXcuerpo(){
+	 		$cuerpo=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(tipo_cuerpo) FROM tbl_profiles WHERE tipo_cuerpo<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE tipo_cuerpo =".$alt)->queryScalar();
+				$cuerpo[$alt]=$sum;
+			}
+			$cuerpo[0]=100/array_sum($cuerpo);			
+			return $cuerpo;
+		
+	 }
+	 public function countXpiel(){
+	 		$piel=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(piel) FROM tbl_profiles WHERE piel<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE piel =".$alt)->queryScalar();
+				$piel[$alt]=$sum;
+			}
+			$piel[0]=100/array_sum($piel);		
+			return $piel;
+		
+	 }
+	 
+	  public function countXgenero(){
+	 		$sex=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(sex) FROM tbl_profiles WHERE sex<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE sex =".$alt)->queryScalar();
+				$sex[$alt]=$sum;
+			} 
+			$sex[0]=100/array_sum($sex);		
+			return $sex;
+		
+	 }
+	 
+	  public function countXedad(){
+	 		$minmax=Yii::app()->db->createCommand(" select min(birthday) as oldest, max(birthday) as youngest from tbl_profiles where birthday>'0000-00-00' ")->queryRow();	
+	 		$old= date('Y', strtotime($minmax['oldest']));
+			$young=date('Y', strtotime($minmax['youngest']));
+			$todos=0;
+			$block=round(($young-$old)/5,0);
+			for($i=1;$i<6;$i++){
+				$ran[$i]['min']=$young-$block*$i;
+				$ran[$i]['max']=$young-$block*($i-1);
+				$ran[$i]['edad2']=date("Y")-$ran[$i]['min'];
+				$ran[$i]['edad1']=date("Y")-$ran[$i]['max'];
+				$ran[$i]['total']=Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE birthday BETWEEN '".$ran[$i]['min']."-01-01' AND '".$ran[$i]['max']."-12-31'")->queryScalar();
+				$todos+=$ran[$i]['total'];
+			}
+			$ran[0]=$todos;
+			return $ran;
+	 	
+	 				
+	 }
 	 
 }

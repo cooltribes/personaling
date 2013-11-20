@@ -8,9 +8,17 @@ $this->breadcrumbs=array(
 
 $usuario = User::model()->findByPk($orden->user_id); 
 
+
+
+
 ?>
 
-	<?php if(Yii::app()->user->hasFlash('success')){?>
+
+
+
+
+<div class="container margin_top">
+			<?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
 	        <?php echo Yii::app()->user->getFlash('success'); ?>
 	    </div>
@@ -20,8 +28,6 @@ $usuario = User::model()->findByPk($orden->user_id);
 	        <?php echo Yii::app()->user->getFlash('error'); ?>
 	    </div>
 	<?php } ?>
-
-<div class="container margin_top">
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
@@ -129,36 +135,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         Prendas</td>
       <td><p class="T_xlarge margin_top_xsmall"><?php
       
-	if($orden->estado == 7)
-	{
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$orden->user_id,'orden_id'=>$orden->id));
-		if(isset($balance)){
-			$a = $balance->total * -1;
-			echo Yii::app()->numberFormatter->formatDecimal($a); 
-		}
-	}
-	else{
-				
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
-		
-		if(isset($balance))
-		{
-			if($balance->total < 0){
-				$a = $balance->total * -1;
-				echo Yii::app()->numberFormatter->formatDecimal($a);
-			}else {
-				echo Yii::app()->numberFormatter->formatDecimal($orden->total-$orden->descuento);
-			}
-			
-		}
-		else
-		{
-			echo Yii::app()->numberFormatter->formatDecimal($orden->total-$orden->descuento);
-		}
-					
-		
-				
-	}	
+		echo Yii::app()->numberFormatter->formatDecimal($orden->getMontoActivo());
     //  echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
 
         <?php
@@ -252,7 +229,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           	<?php
           	
           	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-          	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+          //	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						
 			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
 			
@@ -278,11 +255,15 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 						echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
-						if($pago->tipo == 2)
+						if($detalle->tipo_pago == 2)
 							echo("<td>Tarjeta de credito</td>");
-							//hacer los demas tipos
+						if($detalle->tipo_pago == 3)
+							echo("<td>Saldo</td>");						
+						if($detalle->tipo_pago == 4)
+							echo("<td>Mercado Pago</td>");	
+														//hacer los demas tipos
 								
 						echo("<td>".$detalle->nTransferencia."</td>");	
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
@@ -296,7 +277,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		          	
 		          		echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
 							//hacer los demas tipos
 								
@@ -353,7 +334,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             }
             ?></td>
             <td><?php echo $orden->peso ?> Kg.</td>
-            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
             <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
@@ -547,7 +528,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 						echo $usuario->profile->first_name." ".$usuario->profile->last_name; 	
 					} ?></td>
             <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
-            <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
+            <!-- <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td> -->
           </tr>
         </table>
         
@@ -573,7 +554,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	          </td>
 	          <td>
 	          	<?php
-	          	echo CHtml::link('Factura', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	echo CHtml::link('Factura Electrónica', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
 	          	?>
 	          </td>
 	          <td>
@@ -635,7 +616,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$precio = $lookpedido->getPrecio(false);
 				echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
 							// echo("<td></td>");
-				echo("<td colspan='8'><strong>".$lookpedido->title."</strong></td>");// Referencia
+				echo("<td colspan='9'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
 				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
 				/*echo("
@@ -653,25 +634,25 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
 				foreach($prodslook as $prodlook){
 					$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
-								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
-								$marca=Marca::model()->findByPk($prdlk->marca_id);
-								$talla=Talla::model()->findByPk($ptclk->talla_id);
-								$color=Color::model()->findByPk($ptclk->color_id);
-								
-								
-								echo("<tr>");
-								echo("<td>".$prdlk->codigo."</td>"); // nombre
-								echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
-								echo("<td>".$marca->nombre."</td>");
-								echo("<td>".$color->valor."</td>");
-								echo("<td>".$talla->valor."</td>");
-								echo("<td>".$prdlk->peso." Kg.</td>");	
-								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
-								echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
-								echo("<td>".$prdlk->almacen."</td>"); 
-							
-								//echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
-								echo("<td></td></tr>");
+                                        $prdlk = Producto::model()->findByPk($ptclk->producto_id);
+                                        $marca=Marca::model()->findByPk($prdlk->marca_id);
+                                        $talla=Talla::model()->findByPk($ptclk->talla_id);
+                                        $color=Color::model()->findByPk($ptclk->color_id);
+
+
+                                        echo("<tr>");
+                                        echo("<td>".$prdlk->codigo."</td>"); // nombre
+                                        echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
+                                        echo("<td>".$marca->nombre."</td>");
+                                        echo("<td>".$color->valor."</td>");
+                                        echo("<td>".$talla->valor."</td>");
+                                        echo("<td>".$prdlk->peso." Kg.</td>");	
+                                        echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
+                                        echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+                                        echo("<td>".$prdlk->almacen."</td>"); 
+
+                                        //echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
+                                        echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");
 				}				
 				
 			}
@@ -891,7 +872,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 
   <!-- MENSAJES ON -->
   
-  <div class="row">
+  <div class="row" id="mensajes">
+  	
+  
+  	
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
@@ -968,101 +952,11 @@ $usuario = User::model()->findByPk($orden->user_id);
 <!-- /container --> 
 
 <!------------------- MODAL REGISTRAR DEPOSITO -----------------> 
-<?php
-
-if($orden->estado == 7){
-    $detPago = new Detalle;
-    ?>
-    <input type="hidden" id="idDetalle" value="0" />
-    <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
-    <?php
-}
-else{
-    $detPago = Detalle::model()->findByPk($orden->detalle_id);
-    ?>
-    <input type="hidden" id="idDetalle" value="<?php echo($orden->detalle_id); ?>" />
-    <input type="hidden" id="idOrden" value="<?php echo $orden->id; ?>" />
-    <?php
-}
-?>
 <div class="modal hide fade" id="modalDeposito">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4>Agregar Depósito o Transferencia bancaria ya realizada</h4>
-  </div>
-  <div class="modal-body">
-    <form class="">
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Número o Código del Depósito<span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-            <?php echo CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')); ?>
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-        <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-            <?php echo CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); ?>
-              <?php //echo CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-          <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)')); ?>
-          <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="controls controls-row">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Fecha del depósito DD/MM/YYY<span class="required">*</span></label>
-<![endif]-->
-<?php echo CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día')); ?>
-<?php echo CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); ?>
-<?php echo CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); ?>
-      </div>
-      <div class="control-group">
-        <!--[if lte IE 7]>
-            <label class="control-label required">Comentarios (Opcional) <span class="required">*</span></label>
-<![endif]-->
-        <div class="controls">
-            <?php echo CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); ?>
-          <div style="display:none" class="help-inline"></div>
-        </div>
-      </div>
-      <div class="form-actions"> <a onclick="enviar()" class="btn btn-danger">Confirmar Deposito</a> </div>
-      <p class='text_align_center'><a title='Formas de Pago' href='<?php echo Yii::app()->baseUrl."/site/formas_de_pago";?>'> Terminos y Condiciones de Recepcion de pagos por Deposito y/o Transferencia</a><br/></p>
-    </form>
-  </div>
+ <?php $this->renderPartial('//orden/_modal_pago',array('orden_id'=>$orden->id)); ?>
 </div>
 
-<!------------------- MODAL WINDOW ON -----------------> 
-
+<!------------------- MODAL WINDOW O 
 <!-- Modal 1 -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -1083,9 +977,9 @@ else{
 
 <script>
 	
- function enviar()
+ function enviar(id)
     {
-        var idDetalle = $("#idDetalle").attr("value");
+        //var idDetalle = $("#idDetalle").attr("value");
         var nombre= $("#nombre").attr("value");
         var numeroTrans = $("#numeroTrans").attr("value");
         var dia = $("#dia").attr("value");
@@ -1094,8 +988,8 @@ else{
         var comentario = $("#comentario").attr("value");
         var banco = $("#banco").attr("value");
         var cedula = $("#cedula").attr("value");
-        var monto = $("#monto").attr("value");
-        var idOrden = $("#idOrden").attr("value");
+        var monto = $("#monto").attr("value"); 
+        var idOrden = id;
 
         if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
         {
@@ -1103,20 +997,20 @@ else{
         }
         else
         {
-        	if(monto.indexOf(',')==(monto.length-2))
-	        	monto+='0';
-			if(monto.indexOf(',')==-1)
-				monto+=',00';
+        	//if(monto.indexOf(',')==(monto.length-2))
+	      //  	monto+='0';
+			//if(monto.indexOf(',')==-1)
+			//	monto+=',00';
 				
-	        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+	      //  var pattern = /^\d+(?:\,\d{0,2})$/ ;
 	        
-	        if (pattern.test(monto)) { 
-	        	monto = monto.replace(',','.'); 
+	      //  if (pattern.test(monto)) { 
+	      //  	monto = monto.replace(',','.'); 
 
 	         $.ajax({
 	            type: "post",
-	            url: "../../bolsa/cpago", // action de controlador de bolsa cpago
-	            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'idDetalle':idDetalle, 'banco':banco, 'cedula':cedula, 'monto':monto},
+	            url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>",//"../../bolsa/cpago", // action de controlador de bolsa cpago
+	            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'banco':banco, 'cedula':cedula, 'monto':monto},
 	            success: function (data) {
 	
 	                if(data=="ok")
@@ -1134,9 +1028,9 @@ else{
 	               }//success
 	           })
            
-           }else{
-	        	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
-	       }
+         //  }else{
+	     //   	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
+	     //  }
            
         }// else grande
 
@@ -1169,7 +1063,7 @@ else{
 	        success: function (data) {
 				if(data=="ok")
 				{
-					window.location.reload();	
+					window.location.reload(true);	
 				}
 	       	}//success
 	       }) 
@@ -1183,7 +1077,7 @@ else{
 		
  		$.ajax({
 	        type: "post", 
-	        url: "../validar", // action 
+	        url: "<?php echo CController::createUrl('orden/validar'); ?>",
 	        data: { 'accion':uno, 'id':id}, 
 	        success: function (data) {
 				if(data=="ok")

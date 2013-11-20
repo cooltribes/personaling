@@ -43,8 +43,19 @@ class Producto extends CActiveRecord
 	public $dos="";
 	public $categoria_id="";
 	public $_precio = null;
-        private $_totalVentas = null;
-        
+    private $_totalVentas = null;
+    
+    public function scopes()
+    {
+        return array(
+            'noeliminados'=>array(
+                'condition'=>'status=1',
+            ),
+            'activos'=>array(
+                'condition'=>'estado=0',
+            ),
+        );
+    }
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -88,7 +99,7 @@ class Producto extends CActiveRecord
 			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen', 'safe', 'on'=>'search'),
 		);
 	}
-
+ 
 	/**
 	 * @return array relational rules.
 	 */
@@ -108,7 +119,8 @@ class Producto extends CActiveRecord
 			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
                 'select'=> 'SUM(cantidad)',
                 ),
-            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),                    
+            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+             'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),                    
             'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
 		);
 	}
@@ -171,6 +183,8 @@ class Producto extends CActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->compare('t.nombre',$this->nombre,true);
 		$criteria->compare('categorias.nombre',$this->nombre,true,'OR');
+		$criteria->compare('t.estado',$this->estado,true);
+		$criteria->compare('status',$this->status,true);
 		/*
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
@@ -294,21 +308,21 @@ class Producto extends CActiveRecord
 	}
 	public function getPrecio($format=true)
 	{
-    if (is_null($this->_precio)) {
-      $c = new CDbCriteria();
-      $c->order = '`id` desc';
-      $c->compare('tbl_producto_id', $this->id);
-      $this->_precio = Precio::model()->find($c);
-    }
-	if (isset($this->_precio->precioImpuesto))
-		if ($format){
-	 		return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioImpuesto);
-		} else {
-			return $this->_precio->precioImpuesto;
-		}
-	else 
-		return 0;	
-	}
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->precioImpuesto))
+                if ($format) {
+                    return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioImpuesto);
+                } else {
+                    return $this->_precio->precioImpuesto;
+                }
+            else
+                return 0;
+        }
 	
 	public function getCantidad($talla=null,$color=null)
 	{
@@ -533,6 +547,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('fecha',$this->fecha,true);
 		
 		$criteria->compare('status',$this->status,true);
+		//$criteria->compare('status',0,true);
 		$criteria->compare('destacado',$this->destacado,true);
 
 		$criteria->compare('peso',$this->peso,true);
@@ -665,6 +680,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 		$criteria->compare('marca_id',$this->marca_id,true);
+		//$criteria->compare('t.estado',0,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		

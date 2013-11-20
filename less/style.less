@@ -1501,10 +1501,12 @@ src: url('../fonts/entypo.woff'),
             }
         .marcas{
           ul li{
-            display: inline;
+            display: inline-block;
             margin-right: 5px;
             margin-top: 4px;
-            line-height: 65px;            
+            line-height: 65px;   
+            width: 60px;
+            height: 60px;         
           }
         }
 
@@ -1716,6 +1718,116 @@ src: url('../fonts/entypo.woff'),
 
 
 /*----------- Tienda ON -------------*/
+
+.bard_tienda{
+  background: #f7f7f7;
+  font-weight: 200;
+  .item {
+    display: inline-block;
+    padding: 1em;
+    border-right: 1px solid #eee;
+    li{
+      border-bottom: 1px solid @color5;
+      padding: 0.5em;
+      font-weight: 200;
+      &:last-child{border-bottom: 0}
+      a:hover{
+        background: @color5;
+        color: #333;
+
+      }   
+      .dropdown-menu{
+        width: 400;
+      }
+    }
+  }
+  .caretthumbs{
+    position: relative;
+    top: 16px;
+  }
+  .itemThumbnails{
+    display: inline-block;
+    border-right: 1px solid #eee;   
+    .dropdown-menu{
+      border: 10px solid #E7E3E7;
+      margin-top: 0;
+      width: 260px;
+    }
+    .dropdown-colors{
+      width: 280px;
+    }
+    .open{
+      background: @color10;
+    }
+    .color_b{
+      b{
+        top: 2px;
+      }
+    }
+  }
+  .img-categoria{
+    width: 50px;
+  }
+  .dropinput{
+    padding: 5px 5px 5px 10px;
+    background: white;
+    small{
+      background: rgb(223, 223, 223);
+      padding: 1px 6px;
+      b.caret{
+        margin-top: 8px;
+        margin-left: 0px;
+        margin-right: 6px;
+        border-top-color: black;
+        border-bottom-color: black;
+
+      }
+    }
+  }
+  .dropdown-menu{
+    border: 0;
+  }
+  .thumbnails{
+    margin-left: 0;
+  }
+  .thumbnails li > a{
+      padding: 0;
+      &:hover{
+        background: white;
+      }
+
+  }
+  .thumbnails li{
+    margin-left: 10px;
+    margin-bottom: 0;
+    min-width: 60px;
+    width: 70px;
+  }
+  .thumbnails .colors{
+    margin-left: 10px;
+    margin-bottom: 5px;
+    min-width: 0;
+    width: 44px;
+  }
+
+  .itemInput{
+    padding: 0;
+    input{
+      margin: 0;
+    }
+    .contenedorInput{
+      position: relative;
+    }
+    .btn-buscar{
+      position: absolute;
+      top: 5px;
+      left: 189px;
+      width: 22px;
+      background: #dfdfdf;
+      padding: 0;
+    }
+  }
+}
 
 .tienda_productos{
     .empty{
@@ -3018,6 +3130,67 @@ img[alt="Loading"]{
 
 }
 
+/*----------------  Listado PS ON ---------------- */
+.user-profile-listado{
+    .infinite_navigation{
+      display:none;
+    }
+    .pshopper{
+      height:470px;
+    }
+}
+/*----------------  Listado PS OFF ---------------- */
+
+/*----------------  GiftCard ON ---------------- */
+      
+      //Estilo para aplicar Gift Card
+      .inputGiftcard{
+          width: 45px;
+      }
+      .contenedorgiftcard{
+          width: 470px;
+          margin: auto;
+      }
+
+      // Preview de giftcard desde el admin
+      .contenedorPreviewGift{
+        position: relative;
+        #para,#mensaje,#forpara,#foremail,#formensaje,#codigo,#fecha,#monto{
+            display: block;
+            position: absolute;  
+        }
+        #forpara,#formensaje{
+            font-size: 1.1em;
+            left: 17px;
+            line-height: 1.6em;
+        }
+        #para,#mensaje{
+            font-size: 1.1em;
+            left: 80px;
+            line-height: 1.6em;                                
+        }
+        #para,#forpara{
+            top: 120px;
+        }
+        #mensaje,#formensaje{
+            top: 140px;
+        }      
+        #codigo{
+            left: 80px;
+            top: 195px;
+        }
+        #fecha{
+            left: 10px;                                
+            top: 252px;
+        }
+        #monto{
+            left: 315px;
+            top: 60px;
+        }          
+      }
+
+/*----------------  GiftCard OFF ---------------- */
+
 /*----------------  Loading bar ON ---------------- */
 .aplicacion-cargando .barra-carga
 {
@@ -3206,7 +3379,7 @@ img[alt="Loading"]{
 /*---------------- BANNERS y BOTONES OFF ------------*/
 
 
-.bolsa-compra, .bolsa-direcciones, .bolsa-confirmar, .bolsa-pagos,  .user-profile-tutipo, .user-profile-tuestilo{
+.bolsa-compra, .bolsa-pagos ,.bolsa-direcciones, .bolsa-confirmar,  .user-profile-tutipo, .user-profile-tuestilo{
     #navegacion_principal  .nav, #wrapper_footer{ display: none;}
 }
 .user-profile-tuestilo,.user-profile-tutipo{
@@ -3331,11 +3504,20 @@ img[alt="Loading"]{
    #scroller-anchor #scroller{
      width:auto;
   }
+
+  .wrapper_home{
+    .box_20130928{
+      h1{
+        span{
+          font-size: 20px;
+        }
+      }
+    }
+   }
+
   #page{ padding-top: 0;}
   body{ background: none;}
   .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}
   .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
 
  }
-
-

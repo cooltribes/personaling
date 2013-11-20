@@ -47,6 +47,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
 					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
+          array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
 					)),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
@@ -58,10 +59,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
 					)
 				),
-                array('label'=>'Ventas', 'url'=>array('/orden/admin')),
+                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Ordenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-					array('label'=>'Campañas', 'url'=>array('/campana/index')),
+
+					         array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                  array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+
 					),
 				),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
@@ -251,7 +255,8 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/sitemap" title="Site Map">Site map</a></li>          
+          <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li> -->
           
         </ul>
       </div>
@@ -280,7 +285,7 @@ if(!Yii::app()->user->isGuest){
     </div>
     <hr/>
     <div class="row">
-      <div class="span12 text_align_center creditos">Personaling &reg; <?php echo date("Y"); ?> | Todos los derechos reservados<br/>
+      <div class="span12 text_align_center creditos">Personaling C.A &reg; <?php echo date("Y"); ?> RIF: J-40236088-6 | Todos los derechos reservados<br/>
        Programado en Venezuela por <a href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> </div>
     </div>
   </footer>
@@ -524,6 +529,7 @@ if(!Yii::app()->user->isGuest){
 
 
 </script>
+
 <!-- Popovers OFF -->
 
 <!-- Google Analytics -->

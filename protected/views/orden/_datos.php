@@ -24,16 +24,28 @@ echo"<tr>";
 	echo "<td>".Yii::app()->numberFormatter->format("#,##0.00",$data->total)."</td>"; // precio
 	//echo "<td>".$data->total."</td>"; // monto total
 	//--------------------
-	$tipoPago = Pago::model()->findByAttributes(array('id'=>$data->pago_id));
-	
-	if($tipoPago->tipo==1)
-		echo "<td>Dep. o Transfer</td>"; // metodo de pago
-	if($tipoPago->tipo==2)
-		echo "<td>Tarjeta de Credito</td>"; 
-	if($tipoPago->tipo==4)
-		echo "<td>MercadoPago</td>"; 
-	// incluir demas tipos luego
-	
+	echo "<td>";
+        
+        if(count($data->detalles)){
+            foreach ($data->detalles as $detallePago){
+            
+            if($detallePago->tipo_pago==1)
+		echo "Dep. o Transfer"; // metodo de pago
+            else if($detallePago->tipo_pago==2)
+                    echo "Tarjeta de Crédito"; 
+            else if($detallePago->tipo_pago==3)
+                    echo "Uso de Balance"; 
+            else if($detallePago->tipo_pago==4)
+                    echo "MercadoPago"; 
+            else
+                    echo "-ERROR EN EL PAGO-";
+            echo "</br>";
+            
+        }
+        }else{
+            echo "Dep. o Transfer"; 
+        }
+	echo "</td>";
 	
 	//----------------------Estado
 	if($data->estado == 1)
@@ -67,9 +79,18 @@ echo"<tr>";
 	
 	//------------------ acciones
 	$canc="";
-	if($data->estado==1)
-		$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href='#'><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
-	
+	if($data->estado==1){
+		//$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href=''><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
+            
+            $canc = "<li>".
+                        CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
+                                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
+                                        array(
+                                        'id'=>'linkCancelar'.$data->id)
+                                    )            
+                     ."</li>";
+            
+        }
 	echo "
 	<td>
 	<div class='dropdown'>
@@ -109,35 +130,7 @@ function modal(id){
 		
 }
 
-function cancelar(id){
-	
-	$.ajax({
-		type: "post",
-		//'url' :'/site/orden/modalventas/'+id,
-		'url' : '<?php echo $this->createUrl('orden/cancelar'); ?>/'+id,
-		data: { 'admin':id}, 
-		'success': function(data){
-			if(data=='ok'){
-			 ajaxUpdateTimeout = setTimeout(function () {
-                        $.fn.yiiListView.update(
-                        'list-auth-items',
-                        {
-                        type: 'POST',	
-                        url: '<?php echo CController::createUrl('orden/admin')?>',
-                        data: ajaxRequest}
-                        
-                        )
-                        },
-                
-                300);
-             } if(data=='no')
-             	alert("No se pudo cancelar la orden");
-			
-		},
-		'cache' :false});	    
-		
-		
-}
+
 </script>
 
 

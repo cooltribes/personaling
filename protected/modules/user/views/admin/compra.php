@@ -148,7 +148,7 @@
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_item',
+	    'itemView'=>'_authitem',
 	    'template'=>$template,
 	    'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'setValues',
@@ -181,7 +181,7 @@
 					{
 					type: 'POST',	
 					url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
-					data: ajaxRequest}
+					data: {'ajaxRequest':ajaxRequest, 'marcaId'=$('#marcas').val()}}
 					
 					)
 					},

@@ -3,12 +3,12 @@
 	   	echo "<td>".$data->id."</td>"; // id
 	   	
 	   	if($data->fecha!="")
-	   		echo "<td>".date("d-m-Y",strtotime($data->fecha))."</td>";
+	   		echo "<td>".date("d/m/Y",strtotime($data->fecha))."</td>";
 		else
 			echo "<td></td>";
 		
 		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->total)."</td>"; // precio
-		
+		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->getxPagar())."</td>"; // precio
 		//----------------------Estado
 		if($data->estado == 1)
 			echo "<td>En espera de pago</td>"; 
@@ -66,15 +66,23 @@
 			echo "</li>";
 			            
             echo "<li><a tabindex='-1' href='detallepedido/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
-            	<li class='divider'></li>
-            	<li>
-            	";
             	
-			echo CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
-			    $this->createUrl('orden/cancelar',array('id'=>$data->id)),
-			    array(
-			    'id'=>'link'.$data->id)
-			);		
+            	";
+            
+            if($data->estado==1){
+                echo "<li class='divider'></li>
+                    <li>".
+                        CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
+                                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
+                                        array(
+                                        'id'=>'linkCancelar'.$data->id)
+                                    )            
+                     ."</li>";
+            }
+		
+			
+            
+            
 
             //echo "</li><li><a tabindex='-1' href='#'><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
           	echo "</ul>

@@ -57,6 +57,7 @@ class Marca extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		'productos' => array(self::HAS_MANY, 'Producto', 'marca_id'),
 		);
 	}
 
@@ -133,6 +134,12 @@ class Marca extends CActiveRecord
 	 {
 		$marca=Marca::model()->findByPk($id);
 		return $marca->nombre;
+		
+	}
+	 
+	public function getAll(){
+		$todas=Marca::model()->findAll();
+		return $todas;
 		
 	}
 	 

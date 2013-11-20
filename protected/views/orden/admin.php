@@ -26,13 +26,26 @@ echo $num;
 ?>
       </p>
         Totales</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 
-      	<?php
-$sql = "SELECT count( * ) as total FROM tbl_orden where estado=1";
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
-?>    	 </p>
-        En espera de pago</td>
+      <td>
+        <p class="T_xlarge margin_top_xsmall"> 
+            <?php
+            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=1";
+            $num = Yii::app()->db->createCommand($sql)->queryScalar();
+            echo $num;
+            ?>    	 
+        </p>
+        En espera de pago
+      </td>
+      <td>
+        <p class="T_xlarge margin_top_xsmall"> 
+            <?php
+            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=5";
+            $num = Yii::app()->db->createCommand($sql)->queryScalar();
+            echo $num;
+            ?>    	 
+        </p>
+        Cancelados
+      </td>
       <td><p class="T_xlarge margin_top_xsmall">
       	      	<?php
 $sql = "SELECT count( * ) as total FROM tbl_orden where estado=2";
@@ -50,6 +63,11 @@ echo $num;
 	?>
 	</p>
         Pago Confirmado</td>
+      <?php
+        $cant = Orden::model()->countByAttributes(array('estado'=>7));
+        ?>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $cant; ?> </p>
+        Pago Insuficiente </td>
         <?php
         $to = Orden::model()->countByAttributes(array('estado'=>4));
         ?>
@@ -229,4 +247,56 @@ $template = '{summary}
     <div class="span3"><a href="<?php echo Yii::app()->baseUrl."/orden/createexcel" ?>" title="Generar Guías Masivas para Zoom" class="btn btn-info">Generar Guías Masivas para Zoom</a></div>
   </div>
 </div>
+<input id="hiddenMensaje" type="hidden">
 <!-- /container --> 
+<script type="text/javascript">
+    
+    
+        $("[id^='linkCancelar']").click(function (e){
+            e.preventDefault();
+            //console.log("click");
+            var urlCancel = $(this).attr('href');    
+            
+            bootbox.dialog("Cuéntanos por qué deseas cancelar este pedido...  \n\
+                <br><br><textarea id='mensajeCancel'  maxlength='255' style='resize:none; width: 520px;' rows='4' cols='400'> ",
+                [{
+                    "label" : "Continuar",
+                    "class" : "btn-danger",
+                    "callback": function() {
+                       // console.log($("#mensajeCancel").val());
+                        $("#hiddenMensaje").val($("#mensajeCancel").val().trim());
+                         var vect = urlCancel.split("cancelar/");
+                        $.ajax({
+                            type: 'GET',
+                            url: 'cancelar',
+                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val(), admin: 1},
+                            success: function(data){
+                                if(data=='ok'){
+                                   ajaxUpdateTimeout = setTimeout(function () {
+                                   $.fn.yiiListView.update(
+                                        'list-auth-items',
+                                        {
+                                            type: 'POST',	
+                                            url: '<?php echo CController::createUrl('orden/admin')?>',
+                                            data: ajaxRequest
+                                        }
+
+                                   )
+                                   },
+                                   300);
+                                   
+                                   bootbox.alert("¡La orden se ha cancelado con éxito!");
+                                } 
+                                if(data=='no'){
+                                   alert("No se pudo cancelar la orden");
+                                }
+                            }
+                        });
+                        
+                    }
+                }]);
+            
+        });
+
+</script>
+

@@ -50,7 +50,7 @@ class PrecioTallaColor extends CActiveRecord
 			array('id, cantidad, producto_id, talla_id, color_id,sku', 'safe', 'on'=>'search'),
 		);
 	}
-
+ 
 	/**
 	 * @return array relational rules.
 	 */
@@ -61,7 +61,7 @@ class PrecioTallaColor extends CActiveRecord
 		return array(
 			'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
 			'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
-                        'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
+            'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
 		);
 	}
  
@@ -88,10 +88,10 @@ class PrecioTallaColor extends CActiveRecord
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 		
 		return $total;
-	}
+	} 
 	
 	public function enLooks($producto= null, $color = null){
-		if(is_null($id))
+		if(is_null($producto)&&is_null($color))
 			$sql = "select count(*) from tbl_look_has_producto l where l.producto_id = ".$this->producto_id." AND l.color_id = ".$this->color_id;
 		else
 			$sql =  "select count(*) from tbl_look_has_producto l where l.producto_id = ".$producto." AND l.color_id = ".$color;

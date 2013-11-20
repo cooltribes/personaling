@@ -68,6 +68,7 @@ class Detalle extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'pagos' => array(self::HAS_MANY, 'Pago', 'tbl_detalle_id'),
+
 		);
 	}
 
@@ -119,9 +120,9 @@ class Detalle extends CActiveRecord
 	public function getSumxOrden($id=null){
 			
 		if(is_null($id))
-			$sql = "select sum(monto) from tbl_detalle where orden_id=".$this->orden_id;
+			$sql = "select sum(monto) from tbl_detalle where estado = 1 AND orden_id=".$this->orden_id;
 		else
-			$sql = "select sum(monto) from tbl_detalle where orden_id=".$id;
+			$sql = "select sum(monto) from tbl_detalle where estado = 1 AND orden_id=".$id;
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 		if(is_null($total))
 			$total=0;

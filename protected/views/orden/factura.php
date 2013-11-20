@@ -107,6 +107,9 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                 </tr>
               </table></td>
           </tr>
+          <tr>
+            <td colspan="2"><span style="color:#F00;border-top: none;">Sin derecho a crédito fiscal</span></td>
+          </tr>
         </table>
         <hr/>
       </section>

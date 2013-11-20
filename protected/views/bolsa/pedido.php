@@ -43,7 +43,7 @@ $tipo_pago = $orden->getTipoPago();
       <hr/>
       <div class="clearfix">
         <div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div>
-    <div class="pull-right"> Si ya has realizado el deposito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aqui</a></div> 
+    <div class="pull-right"> Si ya has realizado el depósito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aquí</a></div> 
       </div>
     </section>
     <?php

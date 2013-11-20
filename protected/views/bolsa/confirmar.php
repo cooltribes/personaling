@@ -75,7 +75,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
         <p><strong>Dirección:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
-        <p> <strong>Telefono</strong>: <?php echo($direccion->telefono); ?> <br/>
+        <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
         
         <!-- Direcciones OFF --> 

@@ -55,12 +55,12 @@
                     <div class="span2 avatar "><a href="<?php echo $look->user->profile->getUrl(); ?>">
             	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
           	</a></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
+                    <div class="span4"> <span class="muted">Look creado por: </span>
                       <h5><a class="url" title="profile" href="#"><span class="fn">
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
-                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+                    <div class="span6"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
                    
@@ -175,12 +175,12 @@
 		                  	<div class="span2 avatar "><a href="<?php echo $look->user->profile->getUrl(); ?>">
             	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
           	</a></div>
-		                    <div class="span5"> <span class="muted">Look creado por: </span>
+		                    <div class="span4"> <span class="muted">Look creado por: </span>
 		                    	<h5><a class="url" title="profile" href="#"><span class="fn">
 		                        	<?php //echo $look->title; ?>
 		                        	<?php echo $look->user->profile->first_name; ?> </span></a></h5>
 		                    </div>
-		                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+		                    <div class="span6"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
 		                </div>
 		                  
 		       		<div class="share_like">

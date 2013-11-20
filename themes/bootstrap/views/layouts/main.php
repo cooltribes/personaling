@@ -59,7 +59,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
 					)
 				),
-                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Ordenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
+                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
 
@@ -159,6 +159,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
+                    '---',
+                    array('label'=>'¿Comprando para alguién más?'),
+                    array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>', 'url'=>array('/site/preguntas_frecuentes')),                    
+                    array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  'url'=>array('/site/preguntas_frecuentes')),                    
                     '---',
                     array('label'=>'Salir', 'url'=>array('//site/logout')),
                 ),

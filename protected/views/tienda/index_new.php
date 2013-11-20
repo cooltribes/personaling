@@ -149,6 +149,7 @@
 					</ul>   
 				</div>  				
   			</li>
+  			
   			<li class="itemThumbnails tienda_iconos">
   				<div class="dropdown">
 	  				<a href="#" lass="dropdown-toggle" data-toggle="dropdown">
@@ -227,140 +228,42 @@
   				<div class="dropdown">
 	  				<a href="#" lass="dropdown-toggle" data-toggle="dropdown" class="color_b">
 	  					Color:
-	  					<img src="/images/colores/C_Multicolor.jpg" alt="Ccolor" width="20">		
-	  					<b class="caret caretthumbs"></b>
+	  					<span id="color_titulo"> <img src="/images/colores/C_Multicolor.jpg" alt="Ccolor" width="44">		
+	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
 					<ul class="dropdown-menu dropdown-colors thumbnails ">
-						<li class="colors"> 
-		              		<a href="#" >
-		              			<img  src="/images/colores/C_Beige.jpg" width="44">
+						
+					<?php foreach($colores as $color){
+						echo '<li class="colors"> 
+		              		<a class="scolor" href="#" >
+		              			'.CHtml::image(Yii::app()->baseUrl ."/images/colores/". $color->path_image, "".$color->valor,array('class'=>'color','id'=>$color->id,'name'=>'color','width'=>'44','style'=>'cursor:pointer')).'
 		              		</a>                	
-	              		</li>
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Azul.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Verde.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Naranja.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Morado.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>	
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Plateado.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>        
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Amarillo.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>           
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Negro.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li> 
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Marron.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>  
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Dorado.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>  	        
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Gris.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>  	   
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Rosado.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Rojo.jpg" width="44">
-	          				</a>                	
-	          			
-	          			</li>
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Blanco.jpg" width="44">
-	          				</a>                	    			
-	          			</li>  
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Multicolor.jpg" width="44">
-	          				</a>                	    			
-	          			</li> 
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/cuadrofucsia.jpg" width="44">
-	          				</a>                	    			
-	          			</li> 	
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Coral.jpg" width="44">
-	          				</a>                	    			
-	          			</li> 	
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/large.jpg" width="44">
-	          				</a>                	    			
-	          			</li> 	
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/C_Turquesa.jpg" width="44">
-	          				</a>                	    			
-	          			</li> 	
-						<li class="colors"> 
-	          				<a href="#">
-	          					<img  src="/images/colores/esmeralda.jpg" width="44">
-	          				</a>                	    			
-	          			</li> 	          			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
+	              		</li>';
+					}  ?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 					</ul>  
 				</div>
   			</li>  					  			
 			<li class="item">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-						<div class="dropinput">
-							Filtrar por precio
-							<small>
+						<div class="dropinput" >
+							<span id="precio_titulo">Filtrar por precio</span>
+							<small> 
 								<b class="caret"></b>
 							</small>
 						</div>
 					</a>
 					<ul class="dropdown-menu" >
-						<li><a href="#">100,00 Bs</a></li>
-						<li><a href="#">200,00 Bs</a></li>
-						<li><a href="#">300,00 Bs</a></li>
-						<li><a href="#">400,00 Bs</a></li>															
+						
+					<?php
+						
+							echo'<li><a class="precio" href="#">Hasta '.Yii::app()->numberFormatter->formatDecimal($rangos[0]["max"]).' Bs</a></li>';
+							echo'<li><a class="precio" href="#">De '.Yii::app()->numberFormatter->formatDecimal($rangos[1]["min"]).' a '
+							.Yii::app()->numberFormatter->formatDecimal($rangos[1]["max"]).' Bs</a></li>';
+							echo'<li><a class="precio" href="#">De '.Yii::app()->numberFormatter->formatDecimal($rangos[2]["min"]).' a '
+							.Yii::app()->numberFormatter->formatDecimal($rangos[2]["max"]).' Bs</a></li>';
+								echo'<li><a class="precio" href="#">Más de '.Yii::app()->numberFormatter->formatDecimal($rangos[3]["min"]).' Bs</a></li>';
+					?>															
 					</ul>  
 				</div>	
 			</li>
@@ -369,16 +272,20 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
-							Filtrar por marca
+							<span id="marca_titulo" >Filtrar por marca</span>
 							<small>
 								<b class="caret"></b>
 							</small>
 						</div>						
 					</a>
 					<ul class="dropdown-menu">	
-						<li><a href="#">Mango</a></li>
-						<li><a href="#">Suiteblanco</a></li>
-						<li><a href="#">Timberland</a></li>																		
+						
+						<?php
+							foreach($marcas as $marca){
+								echo'<li><a class="marca" href="#">'.$marca->nombre.'</a></li>';
+							}
+						?>
+						<li><a class="marca" href="#">Todos</a></li>											
 					</ul>  	
 				</div>	
 			</li>			
@@ -762,3 +669,24 @@
     </div>
 </div>
 <!-- PRODUCTOS OFF -->
+<script>
+		$(".precio").click(function() { 
+            	
+            	$('#precio_titulo').html($(this).html());
+              	
+		});
+       
+         $(".marca").click(function() { 
+            	
+            	$('#marca_titulo').html($(this).html());
+
+		});  
+		
+		$(".scolor").click(function() { 
+            	
+            	$('#color_titulo').html($(this).html());
+              	
+		});                       
+	
+	
+</script>

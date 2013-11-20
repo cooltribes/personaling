@@ -1386,138 +1386,90 @@ if(isset($_POST['Profile']))
 		}
 	
 	public function actionComprafin()
-	{	$ord=false;
-		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
-		 {
+	{
+				if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
 		 	$respCard = "";
 		 	$usuario = Yii::app()->session['usercompra']; 
-		
+			$user = User::model()->findByPk($usuario);
 			
-			if($_POST['tipoPago']==1 || $_POST['tipoPago']==3 ){ // transferencia o Balance
-							
-				
-				$detalle = new Detalle;
-				
-			
-				if($detalle->save())
-				{
-					$pago = new Pago;
-					$pago->tipo = $_POST['tipoPago']; // trans
-					$pago->tbl_detalle_id = $detalle->id;
+			switch ($_POST['tipoPago']) {
+			    case 1: // TRANSFERENCIA
+			       	$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario)));
+					$orden = new Orden;
+					$orden->subtotal = $_POST['subtotal'];
+					$orden->descuento = 0;
+					$orden->envio = $_POST['envio'];
+					$orden->iva = $_POST['iva'];
 					
-					if($pago->save()){
+					$orden->descuentoRegalo = 0;
+					$orden->total = $_POST['total'];
+					$orden->seguro = $_POST['seguro'];
+					$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+					$orden->estado = Orden::ESTADO_ESPERA; // en espera de pago
+					$orden->bolsa_id = 0;
+					$orden->user_id = $usuario;
+					$orden->direccionEnvio_id = $dirEnvio->id;
+					$orden->tipo_guia = $_POST['tipo_guia'];
 					
-					// clonando la direccion
+					$okk = round($_POST['total'], 2);
+					$orden->total = $okk;
+					$orden->admin_id=Yii::app()->user->id;
 					
-					$dir1 = Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>Yii::app()->getSession()->get('usercompra')));
-					
-					
-					$dirEnvio = new DireccionEnvio;
-					
-					$dirEnvio->nombre = $dir1->nombre;
-					$dirEnvio->apellido = $dir1->apellido;
-					$dirEnvio->cedula = $dir1->cedula;
-					$dirEnvio->dirUno = $dir1->dirUno;
-					$dirEnvio->dirDos = $dir1->dirDos;
-					$dirEnvio->telefono = $dir1->telefono;
-					$dirEnvio->ciudad_id = $dir1->ciudad_id;
-					$dirEnvio->provincia_id = $dir1->provincia_id;
-					$dirEnvio->pais = $dir1->pais;
-					
-					
-					
-					
-						if($dirEnvio->save()){
-							// ya esta todo para realizar la orden
-							
-							$orden = new Orden;
-							
-							$orden->subtotal = $_POST['subtotal'];
-							
-							$orden->envio = $_POST['envio'];
-							$orden->iva = $_POST['iva'];
-							$orden->descuentoRegalo = 0;
-							$orden->descuento = 0;
-							$orden->total = $_POST['total'];
-							$orden->seguro = $_POST['seguro'];
-							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
-							$orden->estado = 1; // en espera de pago
-							$orden->bolsa_id = 0; //compra desde admin
-							$orden->user_id = $usuario;
-							$orden->pago_id = $pago->id;
-							$orden->detalle_id = $detalle->id;
-							$orden->direccionEnvio_id = $dirEnvio->id;
-							$orden->tipo_guia = $_POST['tipo_guia'];
-							$orden->admin_id=Yii::app()->user->id;
-							$ptcs = explode(',',Yii::app()->session['ptcs']);
-							$vals = explode(',',Yii::app()->session['vals']);
-							$acpeso=0;
-								// añadiendo a orden producto
-								foreach($ptcs as $ptc)
+					$acpeso=0;
+					$ptcs = explode(',',Yii::app()->session['ptcs']);
+					$vals = explode(',',Yii::app()->session['vals']);		
+					foreach($ptcs as $ptc)
 								{	$inst=Preciotallacolor::model()->findByPk($ptc);
 									$prinst=Producto::model()->findByPk($inst->producto_id);
 									$acpeso+=$prinst->peso;
 								}
 							$orden->peso=$acpeso;
-							
-							if($detalle->nTarjeta!="") // Pagó con TDC
-							{
-								$orden->estado = 3; // Estado: Pago Confirmado
+					
+					
+					
+					if (!($orden->save())){
+						echo CJSON::encode(array(
+								'status'=> 'error',
+								'error'=> $orden->getErrors(),
+							));
+						Yii::trace('UserID:'.$usuario.' Error al guardar la orden:'.print_r($orden->getErrors(),true), 'registro');	
+						Yii::app()->end();
+						
+					}	
+									
+					if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+						//$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+						$balance_usuario = $user->saldo;
+						if($balance_usuario > 0){
+							$balance = new Balance;
+							$detalle_balance = new Detalle;
+							if($balance_usuario >= $_POST['total']){
+								$orden->cambiarEstado(Orden::ESTADO_CONFIRMADO);
+								
+								$balance->total = $_POST['total']*(-1);
+								$detalle_balance->monto=$_POST['total'];
+							}else{
+								 
+								$orden->cambiarEstado(Orden::ESTADO_INSUFICIENTE);
+								$balance->total = $balance_usuario*(-1);
+								$detalle_balance->monto=$balance_usuario;
 							}
-							
-							
-								
-								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									
-									$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->session['usercompra']));
-									
-								
-									if($balance_usuario > 0){
-										$balance = new Balance;
-										if($balance_usuario >= $_POST['total']){
-											/*$orden->descuento = $_POST['total'];
-											$orden->total = 0;
-											$orden->estado = 2; // en espera de confirmación*/
-											$orden->estado = 3; 
-											$balance->total = $_POST['total']*(-1);
-											$detalle->monto=$_POST['total'];
-										}else{
-											//$orden->descuento = $balance_usuario;
-											//$orden->total = $_POST['total'] - $balance_usuario;
-											$orden->estado = 7; 
-											$balance->total = $balance_usuario*(-1);
-											$detalle->monto=$balance_usuario;
-										}
-										
-										if($orden->save()){
-											
-											$detalle->comentario="Prueba de Saldo";
-											$detalle->estado=1;
-											$detalle->orden_id=$orden->id;
-											if($detalle->save()){
-												$balance->orden_id = $orden->id;
-												$balance->user_id = $usuario;
-												$balance->tipo = 1;
-												$balance->total=round($balance->total,2);
-												$balance->save();
-												
-												$pago->tipo = 3; // trans
-												
-												$pago->save();
-												
-												
-											}
-											$ord=true;
-										}
-										
-										//$balance->total = $orden->descuento*(-1);
-										
-											
-									}
-								}
-								if($ord){
-							
-								$i=0;
+
+							$detalle_balance->comentario="Uso de Saldo";
+							$detalle_balance->estado=1;
+							$detalle_balance->orden_id=$orden->id;
+							$detalle_balance->tipo_pago = 3;
+							if($detalle_balance->save()){
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $usuario;
+								$balance->tipo = 1;
+								//$balance->total=round($balance->total,2);
+								$balance->save();
+							}
+						}
+					}
+					
+					$i=0;
 							
 								// añadiendo a orden producto
 								foreach($ptcs as $ptc)
@@ -1550,108 +1502,61 @@ if(isset($_POST['Profile']))
 									Preciotallacolor::model()->updateByPk($ptc, array('cantidad'=>$cantidadNueva));
 									// descuenta y se repite									
 								}
-								
-								
-								// para borrar los productos de la bolsa								
-								
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								// se agrega este estado en el caso de que no se haya pagado por TDC
-								if($detalle->nTarjeta=="")
-								{
-									$estado = new Estado;
-									
-									$estado->estado = 1;
-									$estado->user_id = $usuario;
-									$estado->fecha = date("Y-m-d");
-									$estado->orden_id = $orden->id;
-									
-									if($estado->save())
-										echo "";
-								}
-								else // si pago con tarjeta
-								{
-									
-									$estado = new Estado;
-									
-										$estado->estado = 1;
-										$estado->user_id = $usuario;
-										$estado->fecha = date("Y-m-d");
-										$estado->orden_id = $orden->id;
-										
-										if($estado->save())
-											{
-												// otro estado de una vez ya que ya se pagó el dinero 
-												$estado = new Estado;
-									
-												$estado->estado = 3;
-												$estado->user_id = $usuario;
-												$estado->fecha = date("Y-m-d");
-												$estado->orden_id = $orden->id;
-												
-												if($estado->save())
-												{
-													$detalle->orden_id = $orden->id;
-													$detalle->save();
-												}
-													
-												
-											}// estado
-									
-								}
-								
-								// Generar factura
-								$factura = new Factura;
-								$factura->fecha = date('Y-m-d');
-								$factura->direccion_fiscal_id = $_POST['idDireccion'];  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
-								$factura->direccion_envio_id = $_POST['idDireccion'];
-								$factura->orden_id = $orden->id;
-								$factura->save();
-								
-								// Enviar correo con resumen de la compra
-								$user = User::model()->findByPk($usuario);
-								$message            = new YiiMailMessage;
-						           //this points to the file test.php inside the view path
-						        $message->view = "mail_compra";
-								$subject = 'Tu compra en Personaling';
-						        $params              = array('subject'=>$subject, 'orden'=>$orden);
-						        $message->subject    = $subject;
-						        $message->setBody($params, 'text/html');
-						        $message->addTo($user->email);
-								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
-						        Yii::app()->mail->send($message);
-								
-							// cuando finalice entonces envia id de la orden para redireccionar
-							echo CJSON::encode(array(
-								'status'=> 'ok',
-								'orden'=> $orden->id,
-								'total'=> $orden->total,
-								'respCard' => $respCard,
-								'descuento'=>$orden->descuento
-							));
-							
-							
-							}else{ //orden
-								echo $orden->descuento;
-								echo $orden->total;
-								echo CJSON::encode(array(
-								'status'=> 'error',
-								'error'=> $orden->getErrors(),
-							));
-							}
-						}//direccion de envio
-					} // pago
-				}// detalle
-			}// transferencia
-			
-			// detalle de pago (caso transferencia todo vacio)
-			// tipo de pago y copiar direccion envio
-			// realizar la orden
-			// mover los productos
-			// quitarlos de bolsa tiene producto
-			
-		 }
+					
+					
+					
+					
+					// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+					// se agrega este estado en el caso de que no se haya pagado por TDC
+					
+					$estado = new Estado;
+					$estado->estado = 1;
+					$estado->user_id = $usuario;
+					$estado->fecha = date("Y-m-d");
+					$estado->orden_id = $orden->id;
+					$estado->save();
+
+
+					 	// cuando finalice entonces envia id de la orden para redireccionar
+					 echo CJSON::encode(array(
+						'status'=> 'ok',
+						'orden'=> $orden->id,
+						'total'=> $orden->total,
+						'respCard' => $respCard,
+						'descuento'=>$orden->descuento,
+						'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
+					));
+			        break;
+			    case 2: // TARJETA DE CREDITO
+			        echo "i equals 1";
+			        break;
+			    case 3:
+			        echo "i equals 2";
+			        break;
+			}
+				// Generar factura
+			$factura = new Factura;
+			$factura->fecha = date('Y-m-d');
+			$factura->direccion_fiscal_id = $_POST['idDireccion'];  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+			$factura->direccion_envio_id = $_POST['idDireccion'];
+			$factura->orden_id = $orden->id;
+			$factura->save();
+			// Enviar correo con resumen de la compra
+			$user = User::model()->findByPk($usuario);
+			$message            = new YiiMailMessage;
+	        //this points to the file test.php inside the view path
+	        $message->view = "mail_compra";
+			$subject = 'Tu compra en Personaling';
+	        $params              = array('subject'=>$subject, 'orden'=>$orden);
+	        $message->subject    = $subject;
+	        $message->setBody($params, 'text/html');
+	        $message->addTo($user->email);
+			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+	        Yii::app()->mail->send($message);			
+		}
+		
+		
 		
 	}
 
@@ -1696,4 +1601,23 @@ if(isset($_POST['Profile']))
 		
 		
 	}
+
+	public function clonarDireccion($direccion){
+		$dirEnvio = new DireccionEnvio;
+					
+		$dirEnvio->nombre = $direccion->nombre;
+		$dirEnvio->apellido = $direccion->apellido;
+		$dirEnvio->cedula = $direccion->cedula;
+		$dirEnvio->dirUno = $direccion->dirUno;
+		$dirEnvio->dirDos = $direccion->dirDos;
+		$dirEnvio->telefono = $direccion->telefono;
+		$dirEnvio->ciudad_id = $direccion->ciudad_id;
+		$dirEnvio->provincia_id = $direccion->provincia_id;
+		$dirEnvio->pais = $direccion->pais;	
+		$dirEnvio->save();
+		return $dirEnvio;
+	}
+
+
+
 }

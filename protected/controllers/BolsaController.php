@@ -54,7 +54,7 @@ class BolsaController extends Controller
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
 			
 			if (!is_null($bolsa)){
-				echo $bolsa->actualizar();
+				$bolsa->actualizar();
 				
 			} else {
 				$bolsa = new Bolsa;
@@ -934,6 +934,7 @@ class BolsaController extends Controller
 					if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
 						//$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
 						$balance_usuario = $user->saldo;
+						$balance_usuario = floor($balance_usuario *100)/100;
 						if($balance_usuario > 0){
 							$balance = new Balance;
 							$detalle_balance = new Detalle;

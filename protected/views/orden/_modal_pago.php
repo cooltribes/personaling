@@ -45,7 +45,7 @@ $detPago = new Detalle;
         <!--[if lte IE 7]>
             <label class="control-label required">Nombre del Depositante <span class="required">*</span></label>
 <![endif]-->
-        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','title'=>'Monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar()) ) ); ?>
+        <div class="controls"> <?php echo CHtml::activeTextField($detPago,'monto',array('id'=>'monto','title'=>'Monto','class'=>'span5','placeholder'=>'Monto. Separe los decimales con una coma (,)','value'=>Yii::app()->numberFormatter->formatDecimal(round($orden->getxPagar(),2,PHP_ROUND_HALF_UP)) ) ); ?>
           <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
         </div>
       </div>

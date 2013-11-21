@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','look','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter'),
+                                    'getFilter','upa'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -153,15 +153,29 @@ class TiendaController extends Controller
 		$rangos[2]['max']=($dif*.75)+$lims['minimo'];
 		$rangos[3]['min']=$rangos[2]['max']+1;
 		$rangos[3]['max']=$lims['maximo'];
-
+		
+		
+		$criteria = $producto->nueva2($a);
+		$total=Producto::model()->count($criteria);
+		$pages = new CPagination($total);
+		
+		$pages->pageSize = 12;
+		$pages->applyLimit($criteria);
+        $dataProvider = Producto::model()->findAll($criteria);
 	
-
-		$dataProvider = $producto->nueva($a);
 		$marcas=Marca::model()->findAll();
 		$colores=Color::model()->findAll();
+		
+		
+		$data = array();
+        $data["myValue"] = "Content loaded";
+ 
+    
+		
+		
 		$this->render('index_new',
 		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,'pages'=>$pages,'data'=>$data
 		));	
 			
 	}
@@ -1412,6 +1426,16 @@ public function actionCategorias2(){
             
             echo CJSON::encode($response);
        }
+
+
+	 public function actionUpa()
+    {
+        $data = array();
+        $data["myValue"] = "Content updated in AJAX";
+ 		
+        $this->renderPartial('_datos', array('data'=>$data), false, true);
+    }
+
        
        
         

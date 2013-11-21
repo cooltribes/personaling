@@ -7,7 +7,18 @@
 ?> 
 <div class="page-header">
 <h1>Tienda </h1>
+
 <?php 
+
+foreach ($categorias as $cat){
+	print_r($cat->id);
+	echo "<br/>               ";
+	foreach ($cat->subcategorias as $sub)
+		echo $sub->id."-";
+	echo "<br/>";
+}
+
+
 $arr=Yii::app()->session['bsf'];
 $max=max($arr);
 $min=min($arr);

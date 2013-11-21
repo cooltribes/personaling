@@ -692,11 +692,7 @@ class GiftcardController extends Controller
                 //valida mensaje
                 if($giftcard->validate()){
                     $cantidad = count(Yii::app()->session["users"]);
-//                    echo "<pre>";
-//                    print_r(Yii::app()->session["users"]);
-//                    echo "</pre>";
-
-                    $errors = $this->generarMasivo($cantidad, $giftcard, $envio);
+                    $errors = $this->generarMasivo($giftcard, $envio, $cantidad);
                     
                     
                     if(isset(Yii::app()->session["users"])){
@@ -734,7 +730,7 @@ class GiftcardController extends Controller
          * @param EnvioGiftcard $envio datos del envio
          * @return int errores
          */
-        private function generarMasivo($cant = 1, $modelo, $envio){
+        private function generarMasivo($modelo, $envio, $cant = 1){
             
             $errores = 0;
             $usuarios = User::model()->findAllByAttributes(array("id" => Yii::app()->session["users"]));
@@ -828,22 +824,73 @@ class GiftcardController extends Controller
             return $errores;
             
         }
+        
+        /*Para seleccionar los datos de las tarjetas que se enviaran*/
+        public function actionExportarExcel(){
+                        
+            
+            $giftcard = new Giftcard;
+            
+            if(isset($_POST["Exportar"]) && isset($_POST['Giftcard']) 
+                    && isset($_POST['cantidadGC'])){
+                
+                
+                $giftcard->attributes = $_POST['Giftcard'];
+                $giftcard->estado = 1;
+                $giftcard->comprador = Yii::app()->user->id;
+                $giftcard->codigo = "x"; // para validar los otros campos 
+               
+                //valida mensaje
+                if($giftcard->validate()){
+                    if(is_int((int)$_POST['cantidadGC'])){
+                        $cantidad = $_POST['cantidadGC'];
+//                    echo "<pre>";
+//                    print_r(Yii::app()->session["users"]);
+//                    echo "</pre>";
+
+                        $errors = $this->exportarMasivo($giftcard, $cantidad);
+                        
+                        //echo "Errores: ". $errors;
+
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('success',
+                        UserModule::t("Se han exportado <b>{$cantidad}.</b> Gift Cards con éxito"));
+
+                        $this->redirect(array("index"));
+                        Yii::app()->end();
+                        
+                    }else{
+                        //Agregar errores
+                        $giftcard->addError("monto", "Error Cantidad");
+                    }
+                    
+                }else{
+                    
+
+                }
+                
+            }
+                        
+            
+            $this->render("exportarExcel", array(                
+                'giftcard' => $giftcard,
+                
+            ));
+            
+        }
+        
+        
         /**
          * 
          * @param int $cant Cantidad de Giftcards a generar
          * @param GiftCard $GcModelo Giftcard modelo para usar en montos, fechas y comprador
-         * @param EnvioGiftcard $envio datos del envio
+         
          * @return int errores
          */
-        private function exportarMasivo($cant = 1, $GcModelo){
+        private function exportarMasivo($GcModelo, $cant = 1){
             
             $errores = 0;
            
-            
-//            echo "<pre>";
-//            echo count($usuarios);//print_r($usuarios);
-//            echo "</pre>";
-//            Yii::app()->end();
 //            
             //Documento xls
             $title = array(
@@ -938,60 +985,5 @@ class GiftcardController extends Controller
             return $errores;
             
         }
-        
-        /*Para seleccionar los datos de las tarjetas que se enviaran*/
-        public function actionExportarExcel(){
-                        
-            
-            $giftcard = new Giftcard;
-            
-            if(isset($_POST["Exportar"]) && isset($_POST['Giftcard']) 
-                    && isset($_POST['cantidadGC'])){
-                
-                
-                $giftcard->attributes = $_POST['Giftcard'];
-                $giftcard->estado = 1;
-                $giftcard->comprador = Yii::app()->user->id;
-                $giftcard->codigo = "x"; // para validar los otros campos 
-               
-                //valida mensaje
-                if($giftcard->validate()){
-                    if(is_int((int)$_POST['cantidadGC'])){
-                        $cantidad = $_POST['cantidadGC'];
-//                    echo "<pre>";
-//                    print_r(Yii::app()->session["users"]);
-//                    echo "</pre>";
-
-                        $errors = $this->exportarMasivo($cantidad, $giftcard);
-                        
-                        //echo "Errores: ". $errors;
-
-                        Yii::app()->user->updateSession();
-                        Yii::app()->user->setFlash('success',
-                        UserModule::t("Se han exportado <b>{$cantidad}.</b> Gift Cards con éxito"));
-
-                        $this->redirect(array("index"));
-                        Yii::app()->end();
-                        
-                    }else{
-                        //Agregar errores
-                        $giftcard->addError("monto", "Error Cantidad");
-                    }
-                    
-                }else{
-                    
-
-                }
-                
-            }
-                        
-            
-            $this->render("exportarExcel", array(                
-                'giftcard' => $giftcard,
-                
-            ));
-            
-        }
-        
         
 }

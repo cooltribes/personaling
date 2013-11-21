@@ -702,6 +702,16 @@ src: url('../fonts/entypo.woff'),
         }
 
     }
+    #dropdownUser{
+      .nav-header{
+        font-size: 9px;
+      }
+      .sub_perfil_item{
+        display: block;
+        padding-top: 1.5em;
+        padding-bottom: 1em;
+      }
+    }
 }
 
 .navbar .nav > li > a.btn-danger{
@@ -1726,6 +1736,20 @@ src: url('../fonts/entypo.woff'),
     display: inline-block;
     padding: 1em;
     border-right: 1px solid #eee;
+    li{
+      border-bottom: 1px solid @color5;
+      padding: 0.5em;
+      font-weight: 200;
+      &:last-child{border-bottom: 0}
+      a:hover{
+        background: @color5;
+        color: #333;
+
+      }   
+      .dropdown-menu{
+        width: 400;
+      }
+    }
   }
   .caretthumbs{
     position: relative;
@@ -1735,10 +1759,20 @@ src: url('../fonts/entypo.woff'),
     display: inline-block;
     border-right: 1px solid #eee;   
     .dropdown-menu{
+      border: 10px solid #E7E3E7;
+      margin-top: 0;
       width: 260px;
     }
     .dropdown-colors{
       width: 280px;
+    }
+    .open{
+      background: @color10;
+    }
+    .color_b{
+      b{
+        top: 2px;
+      }
     }
   }
   .img-categoria{
@@ -1754,11 +1788,17 @@ src: url('../fonts/entypo.woff'),
         margin-top: 8px;
         margin-left: 0px;
         margin-right: 6px;
-        border-top-color: #7E7E7E;
-        border-bottom-color: #7E7E7E;
+        border-top-color: black;
+        border-bottom-color: black;
 
       }
     }
+  }
+  .dropdown-menu{
+    border: 0;
+  }
+  .thumbnails{
+    margin-left: 0;
   }
   .thumbnails li > a{
       padding: 0;
@@ -1778,6 +1818,24 @@ src: url('../fonts/entypo.woff'),
     margin-bottom: 5px;
     min-width: 0;
     width: 44px;
+  }
+
+  .itemInput{
+    padding: 0;
+    input{
+      margin: 0;
+    }
+    .contenedorInput{
+      position: relative;
+    }
+    .btn-buscar{
+      position: absolute;
+      top: 5px;
+      left: 189px;
+      width: 22px;
+      background: #dfdfdf;
+      padding: 0;
+    }
   }
 }
 
@@ -3473,5 +3531,3 @@ img[alt="Loading"]{
   .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
 
  }
-
-

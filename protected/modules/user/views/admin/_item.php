@@ -3,7 +3,10 @@
 	//echo "<td>".CHtml::image(Producto::model()->getImageUrl($data['url']), "Imagen", array("width" => "70", "height" => "70"))."</td>";
 	//echo "<td>".$data['url']."</td>";
 	$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data['id']),array('order'=>'orden ASC'));
-	echo "<td align='center'>".CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+	if(sizeof($ima)==0)
+		echo "<td align='center'>".CHtml::image('http://placehold.it/50x50', "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+	else
+		echo "<td align='center'>".CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
 	
 	echo "<td>".$data['Nombre']."</td>";
 	echo "<td>".$data['Marca']."</td>";

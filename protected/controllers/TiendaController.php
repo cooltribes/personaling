@@ -142,18 +142,26 @@ class TiendaController extends Controller
 		$dp=Producto::model()->findAll($producto->nueva2($a));
 
 		
-		$arr=array();
-		foreach($dp as $record) {
-			array_push($arr,$record->getPrecio(false));	
-		 }
-		
-		Yii::app()->session['bsf']=$arr;
+		$lims=Precio::model()->getLimites();
+
+		$dif=$lims['maximo']-$lims['minimo'];
+		$rangos[0]['min']=0;
+		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
+		$rangos[1]['min']=$rangos[0]['max']+1;
+		$rangos[1]['max']=($dif*.50)+$lims['minimo'];
+		$rangos[2]['min']=$rangos[1]['max']+1;
+		$rangos[2]['max']=($dif*.75)+$lims['minimo'];
+		$rangos[3]['min']=$rangos[2]['max']+1;
+		$rangos[3]['max']=$lims['maximo'];
+
+	
+
 		$dataProvider = $producto->nueva($a);
-		
-		 
+		$marcas=Marca::model()->findAll();
+		$colores=Color::model()->findAll();
 		$this->render('index_new',
 		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos
 		));	
 			
 	}

@@ -148,7 +148,7 @@
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_authitem',
+	    'itemView'=>'_item',
 	    'template'=>$template,
 	    'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'setValues',

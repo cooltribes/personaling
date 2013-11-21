@@ -30,8 +30,8 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
                     'clientOptions' => array(
                         'validateOnSubmit' => true,
                     ),
-                    'enableAjaxValidation'=>true,
-                    'enableClientValidation'=>true,
+//                    'enableAjaxValidation'=>true,
+//                    'enableClientValidation'=>true,
                 )); ?>
 		
 		<fieldset>
@@ -92,7 +92,8 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
 			</div>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">                                   
-                                    <button type="submit" name="Exportar" class="btn btn-danger"><i class="icon-download icon-white"></i> Exportar</button>                                  
+                                    <button type="button" id="btnExportar"  class="btn btn-danger"><i class="icon-download icon-white"></i> Exportar</button>                                  
+                                    <input type="hidden" name="Exportar" >
 				</div>
 			</div>			
 		</fieldset>
@@ -121,6 +122,17 @@ $('#EnvioGiftcard_mensaje').keypress(function(){
 $('#EnvioGiftcard_mensaje').focusout(function(){
     $('#mensaje').text( $('#EnvioGiftcard_mensaje').val() );
 });    
+
+    
+    //var click = false;
+    $('#btnExportar').click(function(e){
+        $(this).attr("disabled",true);
+        
+        $("input[name='Exportar']").val("1");
+        $("#form-enviarGift").submit();
+        
+        
+    });    
 
 
         $('#<?php echo CHtml::activeId($giftcard, 'inicio_vigencia') ?>').datepicker({

@@ -558,6 +558,29 @@ class GiftcardController extends Controller
 	 */
 	public function actionIndex()
 	{
+//            if(isset(Yii::app()->session["documentoExcel"])){
+//        
+//                Yii::import('ext.phpexcel.XPHPExcel');    
+//
+//
+//                 // Redirect output to a clientâ€™s web browser (Excel5)
+//                header('Content-Type: application/vnd.ms-excel');
+//                header('Content-Disposition: attachment;filename="GiftCards.xls"');
+//                header('Cache-Control: max-age=0');
+//                // If you're serving to IE 9, then the following may be needed
+//                header('Cache-Control: max-age=1');
+//
+//                // If you're serving to IE over SSL, then the following may be needed
+//                header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+//                header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+//                header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+//                header ('Pragma: public'); // HTTP/1.0
+//
+//
+//                unset(Yii::app()->session["documentoExcel"]);
+//
+//
+//            }
 		$dataProvider = new CActiveDataProvider('Giftcard');
                 
 		$this->render('index',array(
@@ -828,13 +851,21 @@ class GiftcardController extends Controller
         /*Para seleccionar los datos de las tarjetas que se enviaran*/
         public function actionExportarExcel(){
                         
+//            if(isset(Yii::app()->session["documentoExcel"])){    
+//                unset(Yii::app()->session["documentoExcel"]);                                
+//            }
             
+        
             $giftcard = new Giftcard;
-            
-            if(isset($_POST["Exportar"]) && isset($_POST['Giftcard']) 
+//             echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+//                Yii::app()->end();
+            if(isset($_POST["Exportar"]) && $_POST["Exportar"] == 1 &&isset($_POST['Giftcard']) 
                     && isset($_POST['cantidadGC'])){
                 
-                
+               
+
                 $giftcard->attributes = $_POST['Giftcard'];
                 $giftcard->estado = 1;
                 $giftcard->comprador = Yii::app()->user->id;
@@ -848,16 +879,34 @@ class GiftcardController extends Controller
 //                    print_r(Yii::app()->session["users"]);
 //                    echo "</pre>";
 
-                        $errors = $this->exportarMasivo($giftcard, $cantidad);
+                       
+                        $response = $this->exportarMasivo($giftcard, $cantidad);
+//                        echo "<pre>";
+//                        print_r($_POST);
+//                        echo "</pre>";
+//                        //echo "Errores: ". $errors;
+//                        Yii::app()->end();
                         
-                        //echo "Errores: ". $errors;
 
-                        Yii::app()->user->updateSession();
-                        Yii::app()->user->setFlash('success',
-                        UserModule::t("Se han exportado <b>{$cantidad}.</b> Gift Cards con éxito"));
 
-                        $this->redirect(array("index"));
-                        Yii::app()->end();
+                        if(!$response["errors"]){
+                            Yii::app()->session["documentoExcel"] = $response["document"];
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('success',
+                            UserModule::t("Se han exportado <b>{$cantidad}</b> Gift Cards con éxito."));
+                        }else{
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error',
+                            UserModule::t("Hubo un error generando las Gift Cards, intenta de nuevo."));
+                            
+                            if(isset(Yii::app()->session["documentoExcel"])){    
+                                
+                                unset(Yii::app()->session["documentoExcel"]);
+                            }
+                        }
+                        
+                            $this->redirect(array("index"));
+                        
                         
                     }else{
                         //Agregar errores
@@ -955,8 +1004,9 @@ class GiftcardController extends Controller
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A'.($i + 2) ,$model->id) 
                             ->setCellValue('B'.($i + 2), $model->getCodigo())
-                            ->setCellValue('C'.($i + 2) , $model->inicio_vigencia) 
-                            ->setCellValue('D'.($i + 2) , $model->fin_vigencia);
+                            ->setCellValue('C'.($i + 2) , date("d-m-Y", strtotime($model->inicio_vigencia))) 
+                            ->setCellValue('D'.($i + 2) , date("d-m-Y", strtotime($model->fin_vigencia))) ;
+                            
                 }                                   
                  
             }//Fin for
@@ -964,12 +1014,13 @@ class GiftcardController extends Controller
             // Rename worksheet
 	
             $objPHPExcel->setActiveSheetIndex(0);
-
+           
+            
             // Redirect output to a clientâ€™s web browser (Excel5)
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="GiftCards.xls"');
             header('Cache-Control: max-age=0');
-            // If you're serving to IE 9, then the following may be needed
+//            // If you're serving to IE 9, then the following may be needed
             header('Cache-Control: max-age=1');
 
             // If you're serving to IE over SSL, then the following may be needed
@@ -980,9 +1031,14 @@ class GiftcardController extends Controller
 
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save('php://output');
+            Yii::app()->end();
             
+//            $objWriter->save(Yii::getPathOfAlias("webroot")."/docs/giftcards/GiftCards.xls");
+            //$objWriter->save("GiftCards.xls");
+//            echo "FINAL";
+          
             
-            return $errores;
+            return array("document" => $objPHPExcel, "errors" => $errores);
             
         }
         

@@ -346,12 +346,12 @@
 						<tr> 
 						  <td>Rojo</td>
 						  <td><?php if(!isset($pelo[16]))$pelo[16]=0; echo $pelo[16];?></td>
-						  <td><?php echo round($pelo[1]*$pelo[16],2)?>%</td>
+						  <td><?php echo round($pelo[16]*$pelo[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Blanco</td>
 						  <td><?php if(!isset($pelo[32]))$pelo[32]=0; echo $pelo[32];?></td>
-						  <td><?php echo round($pelo[1]*$pelo[32],2)?>%</td>
+						  <td><?php echo round($pelo[0]*$pelo[32],2)?>%</td>
 						</tr>												
 					</table>
 		        </div>
@@ -385,7 +385,7 @@
 						<tr> 
 						  <td>Gris</td>
 						  <td><?php if(!isset($ojos[16]))$ojos[16]=0; echo $ojos[16];?></td>
-						  <td><?php echo round($ojos[1]*$ojos[16],2)?>%</td>
+						  <td><?php echo round($ojos[16]*$ojos[0],2)?>%</td>
 						</tr>
 						<tr> 
 						  <td>Negro</td>

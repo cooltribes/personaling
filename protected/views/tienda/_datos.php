@@ -1,11 +1,10 @@
 
- <div class="span9 tienda_productos">
-      <div class="row" id="catalogo">
+   
       	
 <?php
 
 
-
+echo $data['myValue'];
 foreach($prods as $data): ?>
 	<div class="div_productos">
 	<?php
@@ -142,4 +141,4 @@ endforeach;
 	)); 
 
 
-?></div></div>
+?>

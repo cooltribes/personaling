@@ -182,7 +182,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
 						        ?>
 						        </div>
-						        <?php $this->endWidget(); // formulario ?> 
 							</div>	
 						</div>
 					</div>
@@ -422,7 +421,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         </div>
       </div>
       		      
-      
+      <?php $this->endWidget(); // formulario ?> 
       
     </div>
   </div>

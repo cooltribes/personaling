@@ -287,7 +287,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           <?php $this->endWidget(); ?>
           <!-- Productos del look OFF -->
 <hr/>
-          <div class="row">
+          <div class="row call2action">
                 <?php
 
          $this->widget('bootstrap.widgets.TbButton', array(

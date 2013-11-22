@@ -124,7 +124,36 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 	}
 
+        $itemsUser = array(
+                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
+                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
+                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
+                    // array('label'=>'Perfil', 'url'=>'#'),
+                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
+                    '---',
+                    array('label'=>'¿Comprando para alguién más?'),
+                    //array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>',
+//                    array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise',
+//                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),                    
+                    
+                );
 
+                $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id));
+
+                foreach($otrosPerfiles as $perfil){
+                    $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
+                        'url'=>'',
+                        'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
+                        //'itemOptions' => array('id' => $perfil->id_filter),
+                        );
+                }
+                
+                array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  
+                                            'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal'), //array('/site/preguntas_frecuentes')
+                                            ),                    
+                                        '---',
+                                        array('label'=>'Salir', 'url'=>array('//site/logout')));
 
 
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -152,22 +181,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=>array(
-                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
-                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
-                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-                    // array('label'=>'Perfil', 'url'=>'#'),
-                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
-                    '---',
-                    array('label'=>'¿Comprando para alguién más?'),
-                    array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>', 'url'=>array('')),                    
-                    array('label'=>'<a href="#modalFiltroPerfil" data-toggle="modal">Añadir un nuevo perfil <i class="icon icon-plus"></i></a>',  
-                        'url'=>'',//array('/site/preguntas_frecuentes')
-                        ),                    
-                    '---',
-                    array('label'=>'Salir', 'url'=>array('//site/logout')),
-                ),
+                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 'visible'=>!Yii::app()->user->isGuest,
 				),
             ),
@@ -175,7 +189,6 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
     ),
 ));
-
 
 
 }

@@ -76,7 +76,7 @@ function activarModalNuevo(nuevo){
         $('#save-search').show();
         
         //Poner titulo al modal
-        $('#modalFiltroPerfil .modal-header h3').html("Perfil Corporal");
+        $('#modalFiltroPerfil .modal-header h3').html("Crea un perfil para alguien más (Una amiga, tu mamá, etc.)");
     }
     else
     {
@@ -173,6 +173,76 @@ function getFilter(){
     
 }
 
+
+/*Obtiene los campos pertenecientes a un filtro ID, los carga y luego realiza la búsqueda*/
+function getFilterByClick(idPerfil){
+
+    URL = 'getFilter';
+    ID = idPerfil;
+    $("body").addClass("aplicacion-cargando");  
+    if(ID && ID.trim() !== ''){  
+    
+        $.ajax(
+                URL,
+                {
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { 'id':ID },
+                    beforeSend: function(){
+                        $("body").addClass("aplicacion-cargando");                       
+                        
+                    },
+                    complete: function(){
+                        //$("body").removeClass("aplicacion-cargando");
+                    },
+                    success: function(data){
+                        if(data.status === 'success'){                           
+//                            //Poner titulo
+//                            $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
+                                                       
+                            //Cargar los valores en las variables locales
+                            //console.log(data.filter);                            
+                            valores[0] = data.filter.altura;
+                            valores[1] = data.filter.contextura;
+                            valores[2] = data.filter.pelo;
+                            valores[3] = data.filter.ojos;
+                            valores[4] = data.filter.piel;
+                            valores[5] = data.filter.tipo_cuerpo;                                                    
+                            
+                            //mostrarlos en los campos del modal
+                            //cargarLocal();
+                            //activar para perfil cargado
+                            activarModalNuevo(false);
+                            //Mostrar el boton de editar
+                            $('a.editar-filtro').parent('div').show(); 
+                            
+                            //Buscar
+                            refresh();           
+                        }
+                        //console.log(data.message);
+                    },
+                    error: function( jqXHR, textStatus, errorThrown){
+                        console.log(jqXHR);
+                    }
+                }
+        );
+    }else
+    {  //Cuando el nombre es val = '' 
+      
+      //Ocultar el boton editar
+       $('a.editar-filtro').parent('div').hide();
+       
+       clearFields();       
+       
+       activarModalNuevo(true);
+       
+       limpiarLocal();       
+       //Buscar para actualizar sin los filtros de perfiles
+       refresh(true);
+    }   
+    
+}
+
 function saveFilter(nuevo) {
     
     var action, nombre, boton;
@@ -191,6 +261,7 @@ function saveFilter(nuevo) {
     }   
     
     if (nombre !== '') {
+        $("#profile-name").parent().parent().removeClass("error");
         
         var perfil = $("#modalFiltroPerfil #newFilter-form").find('input, select').serialize();
         
@@ -246,7 +317,9 @@ function saveFilter(nuevo) {
         );
 
     } else {
-        console.log("error, campo nombre vacío.");
+        //console.log("error, campo nombre vacío.");
+        $("#profile-name").parent().parent().addClass("error");
+        $("#profile-name").focus();
     }
 
 }
@@ -391,6 +464,13 @@ $(function() {
         
     });
     
+    //click en los perfiles del dropdown
+    $("#dropdownUser li.sub_perfil_item").click(function(e){
+        e.preventDefault();
+        console.log("Click");
+        getFilterByClick($(this).val());  
+        $(".alert").fadeOut('slow');
+    });
     
     
 });

@@ -145,15 +145,19 @@ class TiendaController extends Controller
 		$lims=Precio::model()->getLimites();
 
 		$dif=$lims['maximo']-$lims['minimo'];
+		
+	
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
-		$rangos[1]['min']=$rangos[0]['max']+1;
+		$rangos[1]['min']=$rangos[0]['max']+0.01;
 		$rangos[1]['max']=($dif*.50)+$lims['minimo'];
-		$rangos[2]['min']=$rangos[1]['max']+1;
+		$rangos[2]['min']=$rangos[1]['max']+0.01;
 		$rangos[2]['max']=($dif*.75)+$lims['minimo'];
-		$rangos[3]['min']=$rangos[2]['max']+1;
-		$rangos[3]['max']=$lims['maximo'];
-		
+		$rangos[3]['min']=$rangos[2]['max']+0.01;
+		$rangos[3]['max']=$lims['maximo']+0.01;
+		for($i=0;$i<4;$i++){
+			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
+		}
 		
 		$criteria = $producto->nueva2($a);
 		$total=Producto::model()->count($criteria);
@@ -170,12 +174,18 @@ class TiendaController extends Controller
 		$data = array();
         $data["myValue"] = "Content loaded";
  
-    
-		
+    	/*  echo CJSON::encode(array(
+                    'status' => 'success',
+                    //'condicion' => $total,
+                    'div' => $this->renderPartial('_datos', array('prods' => $prods,
+                        'pages' => $pages,), true, true)));
+		*/
 		
 		$this->render('index_new',
 		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,'pages'=>$pages,'data'=>$data
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
+		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+		'pages'=>$pages,'data'=>$data
 		));	
 			
 	}

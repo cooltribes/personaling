@@ -4,7 +4,6 @@
 <?php
 
 
-echo $data['myValue'];
 foreach($prods as $data): ?>
 	<div class="div_productos">
 	<?php
@@ -139,6 +138,5 @@ endforeach;
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); 
-
 
 ?>

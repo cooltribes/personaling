@@ -10,6 +10,8 @@
 	 	<ul class="nav unstyled">
   			<li class="item">Tienda de prendas:</li>
   		<?php 
+  			echo CHtml::hiddenField('padrehid',0); 	
+			echo CHtml::hiddenField('hijohid',0); 	
   			foreach($categorias as $padre){
   				echo '<li class="itemThumbnails tienda_iconos">
   				<div class="dropdown">
@@ -51,18 +53,11 @@
 	  				</a>
 					<ul class="dropdown-menu dropdown-colors thumbnails ">
 						
-					<?php foreach($colores as $color){
-						echo '<li class="colors"> 
-		              		
-		              			'.
-		              			
-		              			CHtml::ajaxLink (
-			              			CHtml::image(Yii::app()->baseUrl ."/images/colores/". $color->path_image, "".$color->valor,array('class'=>'color','id'=>$color->id,'name'=>'color','width'=>'44','style'=>'cursor:pointer')),
-	                              	CController::createUrl('tienda/upa'), 
-                             		array('update' => '#catalogo'),array('class'=>'scolor'))
-		              			.'
-		              		               	
-	              		</li>';
+					<?php 
+					echo CHtml::hiddenField('colorhid',0); 
+					foreach($colores as $color){
+						echo '<li class="colors"><a href="#" value="'.$color->id.'"class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+						
 					}  ?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 					</ul>  
 				</div>
@@ -80,13 +75,13 @@
 					<ul class="dropdown-menu" >
 						
 					<?php
-						
-							echo'<li><a class="precio" href="#">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').'</a></li>';
-							echo'<li><a class="precio" href="#">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').'</a></li>';
-							echo'<li><a class="precio" href="#">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').'</a></li>';
-								echo'<li><a class="precio" href="#">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').'</a></li>';
+							echo CHtml::hiddenField('preciohid',0); 
+							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' ('.$rangos[0]['count'].')</a></li>';
+							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
+							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' ('.$rangos[1]['count'].')</a></li>';
+							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
+							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' ('.$rangos[2]['count'].')</a></li>';
+								echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
 					?>															
 					</ul>  
 				</div>	
@@ -105,11 +100,13 @@
 					<ul class="dropdown-menu">	
 						
 						<?php
+							echo CHtml::hiddenField('marcahid',0); 	
 							foreach($marcas as $marca){
-								echo'<li><a class="marca" href="#">'.$marca->nombre.'</a></li>';
+								echo'<li><a class="marca" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
+								 
 							}
 						?>
-						<li><a class="marca" href="#">Todos</a></li>											
+						<li><a class="marca" value="0" href="#">Todos</a></li>											
 					</ul>  	
 				</div>	
 			</li>			
@@ -146,18 +143,25 @@
 		$(".precio").click(function() { 
             	
             	$('#precio_titulo').html($(this).html());
+            	$('#preciohid').val($(this).attr('id'));
+            	alert($('#preciohid').val());
+            	
               	
 		});
        
          $(".marca").click(function() { 
             	
             	$('#marca_titulo').html($(this).html());
+            	$('#marcahid').val($(this).attr('value'));
+            	alert($('#marcahid').val());
 
 		});  
 		
 		$(".scolor").click(function() { 
             	
             	$('#color_titulo').html($(this).html());
+            	$('#colorhid').val($(this).attr('value'));
+            	alert($('#colorhid').val());
               	
 		});                       
 	
@@ -212,5 +216,59 @@ function encantar(id)
    		
    	}  
    	
+function refresh(reset)
+{
+	//alert($('.check_ocasiones').serialize());
+	//alert($('.check_ocasiones').length) 
+    var datosRefresh = $('#preciohid, #colorhid, #marca').serialize();
+
+    
+    console.log(datosRefresh);
+    if(reset){
+        datosRefresh += '&reset=true';
+    }
+    
+    <?php echo CHtml::ajax(array(
+            'url'=>array('tienda/index'),
+            'data'=> "js:datosRefresh",
+            //'data' => array( 'ocasiones' => 55 ),
+            'type'=>'post',
+            'dataType'=>'json',
+            'global' => 'false',
+            'beforeSend' => 'function(){
+                        $("body").addClass("aplicacion-cargando");
+
+            }',
+            'complete' => 'function(){
+                        $("body").removeClass("aplicacion-cargando");
+                        
+                    }',
+            'success'=>"function(data)
+            {
+                           
+                if (data.status == 'failure')
+                {
+                    $('#dialogColor div.divForForm').html(data.div);
+                          // Here is the trick: on submit-> once again this function!
+                    $('#dialogColor div.divForForm form').submit(addColor);
+                }
+                else
+                {
+                 
+                   $('#tienda_looks').html(data.div);
+                  
+                }
+                
+                
+ 
+            } ",
+            ))?>;
+    return false; 
+ 
+}
+
+
+
+
    	
 </script>

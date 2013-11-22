@@ -67,6 +67,15 @@ $this->breadcrumbs=array(
         <li class="span3"> <img alt="Andreas" class="img-circle" src="../images/andreas.jpg" width="250"> <h3>Andreas Miloda</h3>
             <p>Todo producto debe tener un control de calidad, hasta aquellos que están online. Me encargo de lograr que el equipo trabaje de manera homogénea para cumplir las expectativas del cliente durante el desarrollo del proyecto. </p>
         </li>
+        <li class="span3"> <img alt="Carlos" class="img-circle" src="../images/calosth.jpg" width="250"> <h3><a href="https://twitter.com/calosth"target="_blank"  title="Carlos Linares">Carlos Linares</a></h3>
+            <p>Traduzco interfaces visuales, estoy a cargo de maquetar la estructura semantica del contenido y codificar el diseño en CSS,  combino habilidades técnicas, de programación y creatividad para crear experiencias de usuarios acorde a las recientes tendencias de la web </p>
+        </li>        
+        <li class="span3"> <img alt="Nelson" class="img-circle" src="http://placehold.it/250x250" width="250"> <h3><a target="_blank"  title="Carlos Linares">Nelson Ramírez</a></h3>
+            <p>Materializo las ideas que surgen para Personaling, implementando las funcionalidades haciendo uso de las tecnologías a mi alcance. Y aporto ideas cuando se requieren</p>
+        </li>     
+        <li class="span3"> <img alt="Carlos" class="img-circle" src="http://placehold.it/250x250" width="250"> <h3><a target="_blank"  title="Carlos Linares">Carlos Ruiz</a></h3>
+            <p>Hago realidad las ideas  diseñadas en personaling dandole el toque personal al momento de implementar lo diseñado. Cumplo a cabalidad con los requerimientos  aportando soluciones para que se logren de la mejor manera posible.</p>
+        </li>               
     </ul>
     
             <h2 class="margin_top">Board Members <small>(Asesores)</small></h2>

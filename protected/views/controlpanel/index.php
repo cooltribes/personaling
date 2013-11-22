@@ -75,7 +75,7 @@ else
 	 
 	//$url = "https://api.instapago.com/api/payment";
 	*/
-
+/*
 	$data_array = array(
 		"Amount"=>"200.00", // MONTO DE LA COMPRA
 		"Description"=>"Compra de Look de Pruea", // DESCRIPCION 
@@ -93,7 +93,7 @@ else
 
 	$output = Yii::app()->curl->putPago($data_array);
 	print_r($output);
-
+*/
 	/*
 	echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
 	echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO

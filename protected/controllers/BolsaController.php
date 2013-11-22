@@ -297,9 +297,11 @@ class BolsaController extends Controller
 					$tarjeta->numero = $_POST['TarjetaCredito']['numero'];
 					$tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
 					
-					$tarjeta->month = $_POST['mes'];
-					$tarjeta->year = $_POST['ano'];
+					/*$tarjeta->month = $_POST['mes'];
+					$tarjeta->year = $_POST['ano'];*/
 					
+					$tarjeta->month = $_POST['TarjetaCredito']['month'];
+					$tarjeta->year = $_POST['TarjetaCredito']['year'];
 					$tarjeta->ci = $_POST['TarjetaCredito']['ci'];
 					$tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
 					$tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
@@ -774,6 +776,7 @@ class BolsaController extends Controller
 								"Amount"=>$_POST['total'], // MONTO DE LA COMPRA
 								"Description"=>"Tarjeta de Credito", // DESCRIPCION 
 								"CardHolder"=>$tarjeta->nombre, // NOMBRE EN TARJETA
+								"CardHolderID"=>$tarjeta->ci, // CEDULA
 								"CardNumber"=>$tarjeta->numero, // NUMERO DE TARJETA
 								"CVC"=>$tarjeta->codigo, //CODIGO DE SEGURIDAD
 								"ExpirationDate"=>$tarjeta->vencimiento, // FECHA DE VENCIMIENTO
@@ -963,6 +966,7 @@ class BolsaController extends Controller
 							}
 						}
 					}
+
 					$this->hacerCompra($bolsa->id,$usuario,$orden->id);
 					// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					// se agrega este estado en el caso de que no se haya pagado por TDC
@@ -986,7 +990,96 @@ class BolsaController extends Controller
 					));
 			        break;
 			    case 2: // TARJETA DE CREDITO
-			        echo "i equals 1";
+			        $detalle = Detalle::model()->findByPk($_POST['idDetalle']); 
+					$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario)));
+					$orden = new Orden;
+					$orden->subtotal = $_POST['subtotal'];
+					$orden->descuento = 0;
+					$orden->envio = $_POST['envio'];
+					$orden->iva = $_POST['iva'];
+					$orden->descuentoRegalo = 0;
+					$orden->total = $_POST['total'];
+					$orden->seguro = $_POST['seguro'];
+					$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+					$orden->estado = Orden::ESTADO_CONFIRMADO; // en espera de pago
+					$orden->bolsa_id = $bolsa->id; 
+					$orden->user_id = $usuario;
+					$orden->direccionEnvio_id = $dirEnvio->id;
+					$orden->tipo_guia = $_POST['tipo_guia'];
+					$orden->peso = $_POST['peso'];
+					$okk = round($_POST['total'], 2);
+					$orden->total = $okk;
+					if (!($orden->save())){
+						echo CJSON::encode(array(
+								'status'=> 'error',
+								'error'=> $orden->getErrors(),
+							));
+						Yii::trace('UserID:'.$usuario.' Error al guardar la orden:'.print_r($orden->getErrors(),true), 'registro');	
+						Yii::app()->end();
+						
+					}		
+					if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+						//$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+						$balance_usuario = $user->saldo;
+						$balance_usuario = floor($balance_usuario *100)/100;
+						if($balance_usuario > 0){
+							$balance = new Balance;
+							$detalle_balance = new Detalle;
+							if($balance_usuario >= $_POST['total']){
+								//$orden->cambiarEstado(Orden::ESTADO_CONFIRMADO);
+								
+								$balance->total = $_POST['total']*(-1);
+								$detalle_balance->monto=$_POST['total'];
+							}else{
+								 
+								//$orden->cambiarEstado(Orden::ESTADO_CONFIRMADO);
+								$balance->total = $balance_usuario*(-1);
+								$detalle_balance->monto=$balance_usuario;
+							}
+
+							$detalle_balance->comentario="Uso de Saldo";
+							$detalle_balance->estado=1;
+							$detalle_balance->orden_id=$orden->id;
+							$detalle_balance->tipo_pago = 3;
+							if($detalle_balance->save()){
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $usuario;
+								$balance->tipo = 1;
+								//$balance->total=round($balance->total,2);
+								$balance->save();
+							}
+						}
+					}					
+					$this->hacerCompra($bolsa->id,$usuario,$orden->id);		
+					$estado = new Estado;
+					$estado->estado = 1;
+					$estado->user_id = $usuario;
+					$estado->fecha = date("Y-m-d");
+					$estado->orden_id = $orden->id;
+					if($estado->save()){
+					// otro estado de una vez ya que ya se pagó el dinero 
+					$estado = new Estado;
+						$estado->estado = 3;
+						$estado->user_id = $usuario;
+						$estado->fecha = date("Y-m-d");
+						$estado->orden_id = $orden->id;
+						if($estado->save()){
+							$detalle->orden_id = $orden->id;
+							$detalle->tipo_pago = 2;
+							$detalle->save();
+						}
+							
+						
+					}// estado		
+					// cuando finalice entonces envia id de la orden para redireccionar
+					echo CJSON::encode(array(
+						'status'=> 'ok',
+						'orden'=> $orden->id,
+						'total'=> $orden->total,
+						'respCard' => $respCard,
+						'descuento'=>$orden->descuento,
+						'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
+					));			
 			        break;
 			    case 3:
 			        echo "i equals 2";

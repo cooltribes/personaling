@@ -132,7 +132,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						
 										<div class="control-group"> 
 						             		<div class="controls">
-						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cédula de Identidad')); 
+						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cedula de Identidad')); 
 						              			?>
 						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
 						              		</div>
@@ -182,7 +182,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
 						        ?>
 						        </div>
-						        <?php $this->endWidget(); // formulario ?> 
 							</div>	
 						</div>
 					</div>
@@ -386,7 +385,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 
                <input type="hidden" id="aplicarAjax" name="aplicarAjax" /> 
 <!--               <input type="submit" name="aplicarGC" class="btn btn-mini">Aplicar Gift Card</input>-->
-               <button type="button" id="aplicarGC" class="btn btn-mini btn-danger">Aplicar Gift Card</button>
+               <button id="aplicarGC" class="btn btn-mini btn-danger">Aplicar Gift Card</button>
                <?php // $this->endWidget(); // formulario ?>      
                </div>     
 <!--                <div class="span12">
@@ -422,7 +421,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         </div>
       </div>
       		      
-      
+      <?php $this->endWidget(); // formulario ?> 
       
     </div>
   </div>
@@ -452,6 +451,10 @@ else
                 dataType: 'JSON',
                 data: datos,
                 success: function(data){
+                    
+                    //Cambiar el estilo de los inputs
+                    
+                    
                     
                     //si son dos errores agregar ul
                     if(data.length > 1){
@@ -530,7 +533,7 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('1');
-            $("#deposito").prop("checked", true);
+            
             // haciendo que no valide
 	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
@@ -549,7 +552,7 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('4');
-             $("#mercadopago").attr('checked', true);
+            
             // haciendo que no valide
 	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
@@ -568,8 +571,7 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('2');
-            $("#tarjeta").attr('checked', true);
-
+            
             enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
@@ -778,5 +780,5 @@ else
 	        }
 	    });
 	}
-	
+
 </script>

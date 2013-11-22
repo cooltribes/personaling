@@ -12,6 +12,7 @@
   Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->baseUrl .'/images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
 
 ?> 
+<script>alert("NIGGA");</script>
 <div class="page-header">
 <h1>Tienda</h1>
 <?php 

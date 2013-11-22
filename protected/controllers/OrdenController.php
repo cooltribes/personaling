@@ -800,8 +800,7 @@ public function actionValidar()
 		//$body = '<h2>Has solicitado cambiar tu contraseña de Personaling.</h2> Para recibir una nueva contraseña haz clic en el seiguiente link:<br/><br/> '.$activation_url;
 		$porpagar=$orden->getxPagar();
 			
-		if($_POST['accion']=="aceptar")
-		{
+		if($_POST['accion']=="aceptar"){
 			
 			$detalle->estado = 1; // aceptado
 			
@@ -976,13 +975,11 @@ public function actionValidar()
 				}	
 							
 			}// detalle
-		}
-		else if($_POST['accion']=="rechazar")
-		{
+		}else if($_POST['accion']=="rechazar"){
 			$detalle = Detalle::model()->findByPk($_POST['id']);
 			$detalle->estado = 2; // rechazado
 			
-			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
+			$orden = Orden::model()->findByPk($detalle->orden_id);
 			$orden->estado = 1; // regresa a "En espera de pago"
 			
 			if($detalle->save()){

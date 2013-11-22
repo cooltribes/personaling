@@ -226,4 +226,13 @@ class Precio extends CActiveRecord
 		$sql="SELECT MAX(p.precioVenta) as maximo, MIN(p.precioVenta) as minimo from tbl_precio p JOIN tbl_producto pr ON pr.id=p.tbl_producto_id  where pr.estado=0 AND pr.`status`=1";
 		return Yii::app()->db->createCommand($sql)->queryRow();
 	}
+	
+	public function countxRango($min, $max){
+		$sql="SELECT count(p.id) from tbl_precio p JOIN tbl_producto pr ON pr.id=p.tbl_producto_id  where pr.estado=0 AND pr.`status`=1 
+		AND p.precioVenta >".$min." AND p.precioVenta <".$max;
+		return Yii::app()->db->createCommand($sql)->queryScalar();
+	}
+	
+	
+	
 }

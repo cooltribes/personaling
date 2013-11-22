@@ -386,7 +386,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 
                <input type="hidden" id="aplicarAjax" name="aplicarAjax" /> 
 <!--               <input type="submit" name="aplicarGC" class="btn btn-mini">Aplicar Gift Card</input>-->
-               <button id="aplicarGC" class="btn btn-mini btn-danger">Aplicar Gift Card</button>
+               <button type="button" id="aplicarGC" class="btn btn-mini btn-danger">Aplicar Gift Card</button>
                <?php // $this->endWidget(); // formulario ?>      
                </div>     
 <!--                <div class="span12">
@@ -452,10 +452,6 @@ else
                 dataType: 'JSON',
                 data: datos,
                 success: function(data){
-                    
-                    //Cambiar el estilo de los inputs
-                    
-                    
                     
                     //si son dos errores agregar ul
                     if(data.length > 1){

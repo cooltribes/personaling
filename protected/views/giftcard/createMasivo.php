@@ -15,7 +15,7 @@ $this->pageTitle=Yii::app()->name . ' - Crear Gift Cards Masivo';
         <p>Elige la forma de generar las Gift Cards</p>
         <div class="padding_small"><a href="seleccionarusuarios" class="btn btn-warning ">Enviar a usuarios de Personaling</a> </div>
         <div class="padding_small"><a href="" class="btn btn-warning ">Enviar a Terceros</a></div>
-        <div class="padding_small"><a href="" class="btn btn-warning ">Exportar a Excel</a></div>
+        <div class="padding_small"><a href="exportarExcel" class="btn btn-warning ">Exportar a Excel</a></div>
         <div class="padding_small"><a href="" class="btn btn-warning ">Imprimir</a></div>
     </section>
 </div>

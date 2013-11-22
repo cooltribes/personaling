@@ -161,8 +161,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
                     '---',
                     array('label'=>'¿Comprando para alguién más?'),
-                    array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>', 'url'=>array('/site/preguntas_frecuentes')),                    
-                    array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  'url'=>array('/site/preguntas_frecuentes')),                    
+                    array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>', 'url'=>array('')),                    
+                    array('label'=>'<a href="#modalFiltroPerfil" data-toggle="modal">Añadir un nuevo perfil <i class="icon icon-plus"></i></a>',  
+                        'url'=>'',//array('/site/preguntas_frecuentes')
+                        ),                    
                     '---',
                     array('label'=>'Salir', 'url'=>array('//site/logout')),
                 ),

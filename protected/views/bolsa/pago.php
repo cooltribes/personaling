@@ -7,7 +7,17 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 ?>
 <?php $idDireccion = Yii::app()->getSession()->get('idDireccion'); ?>
-
+    					<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+										'id'=>'tarjeta-form',
+										'enableAjaxValidation'=>false,
+										'enableClientValidation'=>true,
+										'clientOptions'=>array(
+											'validateOnSubmit'=>true, 
+										),
+										'htmlOptions'=>array('class'=>''),
+									)); 
+									
+									?>
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
@@ -24,7 +34,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <div class="row">
     <section class="span7">
     	
-    	
+
       <!-- Forma de pago ON -->
 
       		<div class="box_1 padding_small margin_bottom">
@@ -86,17 +96,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						      		
 						      	
 									
-												<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-										'id'=>'tarjeta-form',
-										'enableAjaxValidation'=>false,
-										'enableClientValidation'=>true,
-										'clientOptions'=>array(
-											'validateOnSubmit'=>true, 
-										),
-										'htmlOptions'=>array('class'=>''),
-									)); 
-									
-									?>
+								
 										<div class="control-group"> 
 						             		<div class="controls">
 						             			<?php echo $form->textFieldRow($tarjeta,'nombre',array('class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); 
@@ -132,7 +132,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						
 										<div class="control-group"> 
 						             		<div class="controls">
-						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cedula de Identidad')); 
+						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cédula de Identidad')); 
 						              			?>
 						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
 						              		</div>
@@ -182,13 +182,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
 						        ?>
 						        </div>
-						        <?php $this->endWidget(); // formulario ?> 
+						      
 							</div>	
 						</div>
 					</div>
 				</div>
 			</div>
-
+ 
     </section>
     <?php
 
@@ -335,10 +335,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
               </tr>
             </table>
+
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
             <?php
-                $balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
-
+				$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
+				$balance = floor($balance *100)/100;
                 $class = "";		
 
                 if($balance <= 0){
@@ -428,7 +429,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   </div>
 </div>
 <!-- /container -->
-
+ <?php $this->endWidget(); // formulario ?> 
 <?php
 
 }// si esta logueado
@@ -530,7 +531,7 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('1');
-            
+            $("#deposito").prop("checked", true);
             // haciendo que no valide
 	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
@@ -549,7 +550,7 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('4');
-            
+             $("#mercadopago").attr('checked', true);
             // haciendo que no valide
 	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
@@ -568,7 +569,8 @@ else
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('2');
-            
+            $("#tarjeta").attr('checked', true);
+
             enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
@@ -777,5 +779,5 @@ else
 	        }
 	    });
 	}
-
+	
 </script>

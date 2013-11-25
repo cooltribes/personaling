@@ -61,7 +61,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envio</h4>
+        <h4 class="braker_bottom"> Dirección de Envío</h4>
         <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 

@@ -73,7 +73,7 @@ $this->breadcrumbs=array(
         <li class="span3"> <img alt="Nelson" class="img-circle" src="http://placehold.it/250x250" width="250"> <h3><a target="_blank"  title="Carlos Linares">Nelson Ramírez</a></h3>
             <p>Materializo las ideas que surgen para Personaling, implementando las funcionalidades haciendo uso de las tecnologías a mi alcance. Y aporto ideas cuando se requieren</p>
         </li>     
-        <li class="span3"> <img alt="Carlos" class="img-circle" src="http://placehold.it/250x250" width="250"> <h3><a target="_blank"  title="Carlos Linares">Carlos Ruiz</a></h3>
+        <li class="span3"> <img alt="Carlos" class="img-circle" src="../images/carlos_ruiz.jpg" width="250"> <h3><a target="_blank"  title="Carlos Linares">Carlos Ruiz</a></h3>
             <p>Hago realidad las ideas  diseñadas en personaling dandole el toque personal al momento de implementar lo diseñado. Cumplo a cabalidad con los requerimientos  aportando soluciones para que se logren de la mejor manera posible.</p>
         </li>               
     </ul>

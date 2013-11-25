@@ -8,7 +8,7 @@ if((isset($editar) && $editar)){
   );
 }
 ?>
-<div class="container margin_top tu_perfil">
+<div class="container tu_perfil">
   <div class="row">
     <?php if (isset($editar) && $editar){ ?>
     <!-- SIDEBAR ON -->
@@ -35,6 +35,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     <?php if ( !(isset($editar) && $editar) ){ ?>
           
           <h2 class=""> Debes completar tu test de estilos para poder continuar </h2>
+          <p class="color11">Utilizamos tus características y medidas para que nuestros Personal Shoppers puedan dar en el clavo con los looks que te recomienden. <strong class="color11">¡No te preocupes!</strong> Esta información es confidencial y solo podremos saberla nosotros.</p>
 
     <?php } ?>      
 

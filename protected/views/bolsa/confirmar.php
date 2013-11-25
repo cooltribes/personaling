@@ -11,7 +11,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	$descuento = Yii::app()->getSession()->get('descuento');
 	$total = Yii::app()->getSession()->get('total');
 	if(Yii::app()->getSession()->get('usarBalance') == '1'){
-		$balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+		$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
+		$balance = floor($balance *100)/100;
 		if($balance > 0){
 			if($balance >= $total){
 				$descuento = $total;
@@ -22,6 +23,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			}
 		}
 	}
+//Yii::app()->getSession()->add('descuento',$descuento);
+//Yii::app()->getSession()->add('total',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
@@ -305,7 +308,7 @@ else
 		var tipo_guia = $("#tipo_guia").attr("value");
 		var peso = $("#peso").attr("value");
 		var tarjeta = $("#tarjeta").attr("value");
-		
+		var total_cobrar = "<?php echo $total; ?>";
 		/* lo de la tarjeta */
 		/*
 		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
@@ -337,7 +340,7 @@ else
 		       /* data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
 		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
 		        		}, */
-		        data: { 'tipoPago':tipoPago, 'total':total, 'tarjeta':tarjeta
+		        data: { 'tipoPago':tipoPago, 'total':total_cobrar, 'tarjeta':tarjeta
 		        		}, 		
 		        success: function (data) {
 					

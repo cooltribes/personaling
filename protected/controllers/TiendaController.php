@@ -171,23 +171,48 @@ class TiendaController extends Controller
 		$colores=Color::model()->findAll();
 		
 		
-		$data = array();
-        $data["myValue"] = "Content loaded";
- 
-    	/*  echo CJSON::encode(array(
+  
+    	if(isset($_POST['colorhid'])){
+    			if(isset(Yii::app()->session['f_color'])){
+    				unset(Yii::app()->session['f_color']);
+    			}
+    			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+				
+			if($_POST['colorhid']!=0){
+				Yii::app()->session['f_color'] = $_POST['colorhid'];
+			}
+			if($_POST['marcahid']!=0){
+				Yii::app()->session['f_color'] = $_POST['marcahid'];
+			}
+			if($_POST['preciohid']<4){
+				Yii::app()->session['f_color'] = $_POST['preciohid'];
+			}
+			
+			$criteria = $producto->nueva2($a);
+			$dataProvider = Producto::model()->findAll($criteria);
+    		  echo CJSON::encode(array(
                     'status' => 'success',
                     //'condicion' => $total,
-                    'div' => $this->renderPartial('_datos', array('prods' => $prods,
-                        'pages' => $pages,), true, true)));
-		*/
-		
+                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
+                        'pages' => $pages), true, true)));
+		}
+		else{
 		$this->render('index_new',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
 		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-		'pages'=>$pages,'data'=>$data
+		'pages'=>$pages
 		));	
-			
+		}	
 	}
 	
 	
@@ -1440,10 +1465,8 @@ public function actionCategorias2(){
 
 	 public function actionUpa()
     {
-        $data = array();
-        $data["myValue"] = "Content updated in AJAX";
- 		
-        $this->renderPartial('_datos', array('data'=>$data), false, true);
+        echo "I'M HERE!";
+        break;
     }
 
        

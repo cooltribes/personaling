@@ -1452,6 +1452,7 @@ public function actionCategorias2(){
                    $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
                    $response['message'] = 'Filtro encontrado';
+                   $response['name'] = $filter->name;
                     
                 }else{
                   $response['status'] = 'error';

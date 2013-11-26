@@ -241,7 +241,7 @@ $this->breadcrumbs=array(
     </div>
     <input type="hidden" value="" id="ocasion_actual" />
     
-    <input id="rango_actual" type="hidden" value="" />     
+    <input type="hidden" id="rango_actual" name="rango_actual" value="" />     
     
     
     <div class="navbar-inner sub_menu">
@@ -512,9 +512,12 @@ function refresh(reset)
 	//alert($('.check_ocasiones').length) 
     cargarLocal();
     var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual').serialize();
+    
+    console.log("Antes PRecio\n" + datosRefresh);
+        
     datosRefresh += '&precios=' + $('#rango_actual').val();
     
-    console.log(datosRefresh);
+    console.log("Antes PRecio\n" + datosRefresh);
     if(reset){
         datosRefresh += '&reset=true';
     }
@@ -625,10 +628,31 @@ function encantar(idLook)
        }//success
    })
 
-
 }
 
+$(document).ready(function(){
+
+    //Si venia de otro lugar para crear un perfil
+    <?php if(isset(Yii::app()->session["modalOn"])){ 
+            unset(Yii::app()->session["modalOn"]);
+        ?>
+        $("#modalFiltroPerfil").modal("show");
+    <?php } ?>
+        
+    <?php if(isset(Yii::app()->session["profileOn"])){ ?>
+         var idElem = "<?php echo Yii::app()->session["profileOn"] ?>";
+         
+         //$("#dropdownUser a.sub_perfil_item#"+idElem).click();        
+         clickPerfil(idElem);
+         //console.log("ready");
+         
+    <?php unset(Yii::app()->session["profileOn"]);    
+        } ?>
+});
+
+
 </script>
+
 <script type="text/javascript"> 
   $(function() {
     moveScroller();

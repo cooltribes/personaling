@@ -318,7 +318,8 @@ class BolsaController extends Controller
 						$this->redirect(array('bolsa/confirmar'));
 					}
 					else
-						var_dump($tarjeta->getErrors());
+						//var_dump($tarjeta->getErrors());
+					echo CActiveForm::validate($tarjeta);
 					
 				}
 				else {

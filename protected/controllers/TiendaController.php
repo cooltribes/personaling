@@ -173,6 +173,8 @@ class TiendaController extends Controller
 		
   
     	if(isset($_POST['colorhid'])){
+    		
+				
     			if(isset(Yii::app()->session['f_color'])){
     				unset(Yii::app()->session['f_color']);
     			}
@@ -202,8 +204,8 @@ class TiendaController extends Controller
     		  echo CJSON::encode(array(
                     'status' => 'success',
                     //'condicion' => $total,
-                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages), true, true)));
+                    'div' => $this->renderPartial('_BLAH', array('prods' => $dataProvider,
+                        'pages' => $pages), true, false))); 
 		}
 		else{
 		$this->render('index_new',

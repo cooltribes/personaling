@@ -712,7 +712,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}
 		
 		if(isset(Yii::app()->session['f_color'])){
-			$criteria->addCondition(' color_id = '.Yii::app()->session['f_color']);
+			$criteria->addCondition(' colwor_id = '.Yii::app()->session['f_color']);
 			break;
 		 
 		} 

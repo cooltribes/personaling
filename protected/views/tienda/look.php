@@ -13,9 +13,11 @@ $this->breadcrumbs=array(
         <?php $this->widget('bootstrap.widgets.TbButton', array(
             'label' => 'Looks para Mí',
             'buttonType' => 'button',
+            'type' => 'danger',
             'size' => 'large',
             'htmlOptions' => array(
-                'id' => 'btnMatch'
+                'id' => 'btnMatch',
+                'onclick' => 'js:clickPersonal()',
             ),
                     )); ?>
         
@@ -24,11 +26,12 @@ $this->breadcrumbs=array(
         <?php $this->widget('bootstrap.widgets.TbButton', array(
             'label' => 'Todos los Looks',
             'buttonType' => 'button',
-            'type' => 'danger',
+            //'type' => 'danger',
             'size' => 'large',
             //'disabled' => true,
             'htmlOptions' => array(
-                'id' => 'btnTodos'
+                'id' => 'btnTodos',
+                'onclick' => 'js:clickTodos()',
             ),
                     )); ?>
         

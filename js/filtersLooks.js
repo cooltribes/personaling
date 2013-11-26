@@ -403,6 +403,23 @@ function clickPerfil(idPerfil){
     
 }
 
+//Al hacer click en el boton Looks para *
+function clickPersonal(){
+    
+    console.log("Personal");
+    $("#btnMatch").addClass("btn-danger");
+    $("#btnTodos").removeClass("btn-danger");
+    
+}
+//Al hacer click en el boton Todos los Looks
+function clickTodos(){
+    
+    console.log("Todos");
+    $("#btnTodos").addClass("btn-danger");
+    $("#btnMatch").removeClass("btn-danger");
+    
+}
+
 
 $(function() {
     

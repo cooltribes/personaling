@@ -173,7 +173,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						            	</div>		          					
 										
 										<?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
-								
+						        <div class="text_center_align">
+						        	<p>Esta transacción será procesada de forma segura gracias a la plataforma de:</p>	
+						        	<img src="<?php echo Yii::app()->baseUrl ?>/images/Instapago-logo.png" width="77">
+						        	<img src="<?php echo Yii::app()->baseUrl ?>/images/Banesco-logo.png" width="77">
+						        </div>								
 								<div class="form-actions">
 						            <?php $this->widget('bootstrap.widgets.TbButton', array(
 						            'buttonType'=>'submit',
@@ -184,6 +188,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						        //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
 						        ?>
 						        </div>
+
 						      
 							</div>	
 						</div>

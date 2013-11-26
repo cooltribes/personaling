@@ -1,5 +1,5 @@
 <?php
-
+ 
 class TiendaController extends Controller
 {
 	
@@ -36,7 +36,8 @@ class TiendaController extends Controller
 	{
 		/*$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
-		$producto->status = 1; // no borrados
+		$producto->status = 1; actionindex
+		 * // no borrados
 		$producto->estado = 0; // solo productos activos
 		
 		$a ="a"; 
@@ -116,8 +117,8 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
-		if(isset(Yii::app()->session['idColor'])){
-			unset(Yii::app()->session['idColor']);
+		if(isset(Yii::app()->session['f_color'])){
+			unset(Yii::app()->session['f_color']);
 			
 		}
 		if(isset(Yii::app()->session['idact'])){
@@ -187,24 +188,36 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
 				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 				
 			if($_POST['colorhid']!=0){
 				Yii::app()->session['f_color'] = $_POST['colorhid'];
+			
 			}
 			if($_POST['marcahid']!=0){
-				Yii::app()->session['f_color'] = $_POST['marcahid'];
+				Yii::app()->session['f_marcahid'] = $_POST['marcahid'];
 			}
 			if($_POST['preciohid']<4){
-				Yii::app()->session['f_color'] = $_POST['preciohid'];
+				Yii::app()->session['f_precio'] = $_POST['preciohid'];
 			}
+
 			
 			$criteria = $producto->nueva2($a);
+			$total=Producto::model()->count($criteria);
+			$pages = new CPagination($total);
+			
+			$pages->pageSize = $total;
+			$pages->applyLimit($criteria);
+			
+			
+			
+			
 			$dataProvider = Producto::model()->findAll($criteria);
-    		  echo CJSON::encode(array(
+    		  echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
-                    'div' => $this->renderPartial('_BLAH', array('prods' => $dataProvider,
+                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
                         'pages' => $pages), true, false))); 
 		}
 		else{

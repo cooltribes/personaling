@@ -56,7 +56,7 @@
 					<?php 
 					echo CHtml::hiddenField('colorhid',0); 
 					foreach($colores as $color){
-						echo '<li class="colors"><a href="#" onclick="js:refresh()"  value="'.$color->id.'"class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+						echo '<li class="colors"><a href="#" value="'.$color->id.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 						
 					}  ?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 					</ul>  
@@ -123,20 +123,24 @@
 <!-- BAR OFF -->
 <!-- PRODUCTOS ON -->
 
-<div class="margin_top tienda_productos">
-      <div class="row">
-		<div class="items" id="catalogo">
+<div  class="tienda_productos">
+      <div class="row" id="tienda_productos">
+
 			 
 			<?php
 					$this->renderPartial('_datos',array(
-					'prods'=>$dataProvider,'pages'=>$pages));   
+					'prods'=>$dataProvider,'pages'=>$pages),false,false);   
 				
 				
 			
 			?>																						
-		</div>
+
     </div>
 </div>
+
+
+
+
 
 
 <!-- PRODUCTOS OFF -->
@@ -145,7 +149,7 @@
             	
             	$('#precio_titulo').html($(this).html());
             	$('#preciohid').val($(this).attr('id'));
-            	alert($('#preciohid').val());
+           
             	
               	
 		});
@@ -154,9 +158,19 @@
             	
             	$('#marca_titulo').html($(this).html());
             	$('#marcahid').val($(this).attr('value'));
-            	alert($('#marcahid').val());
+            
 
 		});  
+		
+		$(".scolor").click(function() { 
+            	
+            	$('#color_titulo').html($(this).html());
+            	$('#colorhid').val($(this).attr('value'));
+            	$('#catalogo').html(''); 
+            	refresh();
+
+		});  
+		
 		
 	
 	
@@ -249,11 +263,10 @@ function refresh(reset)
                 }
                 else
                 {
-                   	
-            	
-                   $('#catalogo').html(data.div);
-				   alert('SUCCESS');
-                  
+           
+                   $('#tienda_productos').html(data.div);
+             
+		
                 }
                 
                 

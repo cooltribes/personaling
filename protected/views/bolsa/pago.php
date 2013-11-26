@@ -126,10 +126,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						             		<div class="controls">
 						             	<?php echo $form->dropDownList($tarjeta,'month',array('0'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('class'=>'span1','placeholder'=>'Mes')); ?>
 						                <?php echo $form->dropDownList($tarjeta,'year',array('0'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('class'=>'span1','placeholder'=>'Año')); ?>
-						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						                	<?php echo $form->hiddenField($tarjeta,'vencimiento'); ?>
+						                		<?php echo $form->error($tarjeta,'vencimiento'); ?>
+						                
 						              		</div>
 						            	</div>
-						
+						 
 										<div class="control-group"> 
 						             		<div class="controls">
 						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cedula de Identidad')); 
@@ -142,7 +144,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						             		<div class="controls">
 						             			<?php echo $form->textFieldRow($tarjeta,'direccion',array('class'=>'span5','placeholder'=>'Dirección')); 
 						              			?>
-						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						                	
 						              		</div>
 						            	</div>            	
 						
@@ -150,7 +152,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						             		<div class="controls">
 						             			<?php echo $form->textFieldRow($tarjeta,'ciudad',array('class'=>'span5','placeholder'=>'Ciudad')); 
 						              			?>
-						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+						                	
 						              		</div>
 						            	</div>			
 						
@@ -526,6 +528,22 @@ else
         
     $(document).ready(function() {
 
+////***** RAFA ******///////
+$('#TarjetaCredito_month').change(function(){
+	if (($('#TarjetaCredito_year').val()!=0) && ($('#TarjetaCredito_month').val()!=0))
+		//alert('hola');
+		//alert($('#TarjetaCredito_month').val()+'/'+ $('#TarjetaCredito_year').val())
+		$('#TarjetaCredito_vencimiento').val( $('#TarjetaCredito_month').val()+'/'+ $('#TarjetaCredito_year').val() );
+	
+});
+$('#TarjetaCredito_year').change(function(){
+	if (($('#TarjetaCredito_year').val()!=0) && ($('#TarjetaCredito_month').val()!=0))
+		//alert('hola');
+		//alert($('#TarjetaCredito_month').val()+'/'+ $('#TarjetaCredito_year').val())
+		$('#TarjetaCredito_vencimiento').val($('#TarjetaCredito_month').val()+'/'+$('#TarjetaCredito_year').val());
+	
+});
+///******** FIN RAFA **********//////
         $("#deposito").click(function() {
         	
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";

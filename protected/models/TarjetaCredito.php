@@ -45,17 +45,17 @@ class TarjetaCredito extends CActiveRecord
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
-	{
+	{ 
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
 			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required'),
 			array('user_id, ci', 'numerical', 'integerOnly'=>true),
-			array('nombre', 'length', 'max'=>80),
+			array('nombre', 'length', 'max'=>80), 
 			array('numero', 'length', 'min'=>14, 'max'=>16),
 			array('codigo', 'length', 'min'=>3, 'max'=>4),
-			array('month','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un mes.'),
-			array('year','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un año.'),
+			//array('month','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un mes.'),
+			//array('year','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un año.'),
 			//array('month','compare','compareValue'=>'Mes','operator'=>'!=','message'=>'Seleccione un mes.'),
 			//array('year','compare','compareValue'=>'Año','operator'=>'==','message'=>'Seleccione un año.'),
 			array('zip', 'length', 'max'=>5),

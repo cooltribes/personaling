@@ -382,6 +382,23 @@ function showAlert(type, message){
    $("html, body").animate({ scrollTop: 0 }, "slow");
 }
 
+//al hacer click en "agregar perfil + "
+function clickAgregar(){
+    clearFields();
+    activarModalNuevo(true);
+    $(".alert").fadeOut('slow');
+}
+
+//Al hacer click en un perfil creado
+function clickPerfil(){
+    
+    e.preventDefault();
+    getFilterByClick($(this).prop("id"));  
+    $(".alert").fadeOut('slow');
+    
+}
+
+
 $(function() {
     
     //$("#modalFiltroPerfil").modal('show');
@@ -437,14 +454,6 @@ $(function() {
         
     });
     
-     //Elemento li del menu de usuario para agregar un nuevo filtro
-    $('#agregar-perfil').click(function(e){
-        clearFields();
-        activarModalNuevo(true);
-        $(".alert").fadeOut('slow');
-        
-    });
-    
     
     $(".alert").alert();
     $(".alert .close").click(function(){
@@ -469,19 +478,14 @@ $(function() {
         
     });
     
-    //Click para seleccionar un peril de la lista que esta en el dropdown User
-    $("#dropdownUser a.sub_perfil_item").click(function(e){
-        e.preventDefault();
-        getFilterByClick($(this).prop("id"));  
-        $(".alert").fadeOut('slow');
-    });
+    
     
     //Click Boton todos los looks
-    $('.crear-filtro').click(function(e){
-        clearFields();
-        activarModalNuevo(true);        
-        $(".alert").fadeOut('slow');
-    });
+//    $('.crear-filtro').click(function(e){
+//        clearFields();
+//        activarModalNuevo(true);        
+//        $(".alert").fadeOut('slow');
+//    });
     
     
 });

@@ -18,7 +18,7 @@ class TiendaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index', 'look'), //Se cambió el action look para acá.
+				'actions'=>array('index', 'look', 'redirect'), //Se cambió el action look de * para acá.
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -1469,7 +1469,30 @@ public function actionCategorias2(){
         break;
     }
 
-       
+    //Funcion que se llama cuando se intenta comprar para alguien mas desde afuera de la tienda
+    public function actionRedirect() {
+        
+        $response = array();
+        $response["status"] = "success";
+        
+        if(isset($_POST["agregar"])){            
+         
+          Yii::app()->session["modalOn"] = true;
+          //$this->redirect("look");
+          
+        }elseif(isset($_POST["perfil"])) {
+            
+            Yii::app()->session["profileOn"] = $_POST["perfil"];
+            
+        }else{
+            
+          $response["status"] = "error";
+          
+        }
+        
+        echo CJSON::encode($response);
+        
+    }
        
         
 }

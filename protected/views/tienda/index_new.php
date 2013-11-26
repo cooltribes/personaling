@@ -56,7 +56,7 @@
 					<?php 
 					echo CHtml::hiddenField('colorhid',0); 
 					foreach($colores as $color){
-						echo '<li class="colors"><a href="#" value="'.$color->id.'"class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+						echo '<li class="colors"><a href="#" value="'.$color->id.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 						
 					}  ?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 					</ul>  
@@ -75,7 +75,7 @@
 					<ul class="dropdown-menu" >
 						
 					<?php
-							echo CHtml::hiddenField('preciohid',0); 
+							echo CHtml::hiddenField('preciohid',5); 
 							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' ('.$rangos[0]['count'].')</a></li>';
 							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
 							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' ('.$rangos[1]['count'].')</a></li>';
@@ -123,28 +123,33 @@
 <!-- BAR OFF -->
 <!-- PRODUCTOS ON -->
 
-<div class="margin_top tienda_productos">
-      <div class="row">
-		<div class="items" id="catalogo">
-			
+<div  class="tienda_productos">
+      <div class="row" id="tienda_productos">
+
+			 
 			<?php
 					$this->renderPartial('_datos',array(
-					'prods'=>$dataProvider,'pages'=>$pages,'data'=>$data));   
+					'prods'=>$dataProvider,'pages'=>$pages),false,false);   
+				
 				
 			
-			
-			
 			?>																						
-		</div>
+
     </div>
 </div>
+
+
+
+
+
+
 <!-- PRODUCTOS OFF -->
 <script>
 		$(".precio").click(function() { 
             	
             	$('#precio_titulo').html($(this).html());
             	$('#preciohid').val($(this).attr('id'));
-            	alert($('#preciohid').val());
+           
             	
               	
 		});
@@ -153,7 +158,7 @@
             	
             	$('#marca_titulo').html($(this).html());
             	$('#marcahid').val($(this).attr('value'));
-            	alert($('#marcahid').val());
+            
 
 		});  
 		
@@ -161,9 +166,12 @@
             	
             	$('#color_titulo').html($(this).html());
             	$('#colorhid').val($(this).attr('value'));
-            	alert($('#colorhid').val());
-              	
-		});                       
+            	$('#catalogo').html(''); 
+            	refresh();
+
+		});  
+		
+		
 	
 	
 </script>
@@ -220,10 +228,10 @@ function refresh(reset)
 {
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
-    var datosRefresh = $('#preciohid, #colorhid, #marca').serialize();
+    var datosRefresh = $('#preciohid, #colorhid, #marcahid').serialize();
 
     
-    console.log(datosRefresh);
+    //console.log(datosRefresh);
     if(reset){
         datosRefresh += '&reset=true';
     }
@@ -251,12 +259,14 @@ function refresh(reset)
                     $('#dialogColor div.divForForm').html(data.div);
                           // Here is the trick: on submit-> once again this function!
                     $('#dialogColor div.divForForm form').submit(addColor);
+                    alert('FAIL');
                 }
                 else
                 {
-                 
-                   $('#tienda_looks').html(data.div);
-                  
+           
+                   $('#tienda_productos').html(data.div);
+             
+		
                 }
                 
                 
@@ -266,9 +276,4 @@ function refresh(reset)
     return false; 
  
 }
-
-
-
-
-   	
 </script>

@@ -124,7 +124,56 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 	}
 
+        $itemsUser = array(
+                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
+                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
+                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
+                    // array('label'=>'Perfil', 'url'=>'#'),
+                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
+                    '---',
+                    array('label'=>'¿Comprando para alguién más?'),
+                    //array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>',
+//                    array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise',
+//                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),                    
+                    
+                );
 
+        $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));
+
+        $verMas = count($otrosPerfiles) > 2;       
+        
+        $cont = 0;
+        
+        foreach($otrosPerfiles as $perfil){
+            $cont++;
+            if(strlen($perfil->name) > 15){
+                $perfil->name = substr_replace($perfil->name, " ...", 15);
+            }
+            
+            $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
+                'url'=>'#',
+                'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
+                //'itemOptions' => array('id' => $perfil->id_filter),
+                );
+            
+            if($cont >= 2){
+                break;
+            }
+        }
+        $todos = count($otrosPerfiles);
+        if($verMas){
+           $itemsUser[] =  array('label'=>"Ver todos los perfiles ...",  
+                                    'url'=>'#', 'linkOptions' => array('class' => 'sub_perfil_item'), //array('/site/preguntas_frecuentes')
+                                    );
+        }
+        
+
+        array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  
+                                    'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal', 'id' => 'agregar-perfil'), //array('/site/preguntas_frecuentes')
+                                    ),                    
+                                '---',
+                                array('label'=>'Salir', 'url'=>array('//site/logout')));
 
 
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -152,22 +201,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=>array(
-                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
-                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
-                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-                    // array('label'=>'Perfil', 'url'=>'#'),
-                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
-                    '---',
-                    array('label'=>'¿Comprando para alguién más?'),
-                    array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>', 'url'=>array('')),                    
-                    array('label'=>'<a href="#modalFiltroPerfil" data-toggle="modal">Añadir un nuevo perfil <i class="icon icon-plus"></i></a>',  
-                        'url'=>'',//array('/site/preguntas_frecuentes')
-                        ),                    
-                    '---',
-                    array('label'=>'Salir', 'url'=>array('//site/logout')),
-                ),
+                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 'visible'=>!Yii::app()->user->isGuest,
 				),
             ),
@@ -175,7 +209,6 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
     ),
 ));
-
 
 
 }
@@ -529,6 +562,78 @@ if(!Yii::app()->user->isGuest){
     $('#dropdownUser').on('click',function(){
         $(this).removeClass('open');      
     });
+ 
+ 
+     //Elemento li del menu de usuario para agregar un nuevo filtro
+    $('#agregar-perfil').click(function(e){
+                
+        var urlActual = "<?php echo CController::createUrl(""); ?>";
+        var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
+        var redirect = "<?php echo CController::createUrl("/tienda/redirect"); ?>";        
+        //si esta en tienda de looks
+        if(urlActual === tiendaLooks){
+            clickAgregar();
+        }else{
+        
+        //Llevar a tienda de looks
+            
+            $.ajax({
+                type: 'POST',
+                url: redirect,
+                dataType: 'JSON',
+                data: {agregar : 1},
+                success: function(data){
+
+                    if(data.status == 'success'){
+
+                      window.location = tiendaLooks;  
+
+                    }else if(data.status == 'error'){
+                        
+
+                    }
+                }
+            });
+        }
+            
+        
+    });
+    
+    //Click para seleccionar un peril de la lista que esta en el dropdown User
+    $("#dropdownUser a.sub_perfil_item").click(function(e){
+       console.log("click"); 
+       
+        var urlActual = "<?php echo CController::createUrl(""); ?>";
+        var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
+        var redirect = "<?php echo CController::createUrl("/tienda/redirect"); ?>";        
+        //si esta en tienda de looks
+        if(urlActual === tiendaLooks){
+            clickPerfil();
+        }else{
+        
+        //Llevar a tienda de looks
+            var datos = $(this).prop("id");
+            $.ajax({
+                type: 'POST',
+                url: redirect,
+                dataType: 'JSON',
+                data: {perfil : datos},
+                success: function(data){
+
+                    if(data.status == 'success'){
+
+                      window.location = tiendaLooks;  
+
+                    }else if(data.status == 'error'){
+                        
+
+                    }
+                }
+            });
+        }
+       
+    });
+ 
  
   }
 

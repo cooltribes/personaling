@@ -1,5 +1,5 @@
 <?php
-
+ 
 class TiendaController extends Controller
 {
 	
@@ -13,12 +13,12 @@ class TiendaController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
-                                    'segunda','look','ocasiones','modal','doble', 'crearFiltro',
+                                    'segunda','ocasiones','modal','doble', 'crearFiltro',
                                     'getFilter','upa'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index'),
+				'actions'=>array('index', 'look', 'redirect'), //Se cambió el action look de * para acá.
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -36,7 +36,8 @@ class TiendaController extends Controller
 	{
 		/*$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
-		$producto->status = 1; // no borrados
+		$producto->status = 1; actionindex
+		 * // no borrados
 		$producto->estado = 0; // solo productos activos
 		
 		$a ="a"; 
@@ -116,8 +117,8 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
-		if(isset(Yii::app()->session['idColor'])){
-			unset(Yii::app()->session['idColor']);
+		if(isset(Yii::app()->session['f_color'])){
+			unset(Yii::app()->session['f_color']);
 			
 		}
 		if(isset(Yii::app()->session['idact'])){
@@ -171,23 +172,62 @@ class TiendaController extends Controller
 		$colores=Color::model()->findAll();
 		
 		
-		$data = array();
-        $data["myValue"] = "Content loaded";
- 
-    	/*  echo CJSON::encode(array(
+  
+    	if(isset($_POST['colorhid'])){
+    		
+				
+    			if(isset(Yii::app()->session['f_color'])){
+    				unset(Yii::app()->session['f_color']);
+    			}
+    			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+				
+			if($_POST['colorhid']!=0){
+				Yii::app()->session['f_color'] = $_POST['colorhid'];
+			
+			}
+			if($_POST['marcahid']!=0){
+				Yii::app()->session['f_marcahid'] = $_POST['marcahid'];
+			}
+			if($_POST['preciohid']<4){
+				Yii::app()->session['f_precio'] = $_POST['preciohid'];
+			}
+
+			
+			$criteria = $producto->nueva2($a);
+			$total=Producto::model()->count($criteria);
+			$pages = new CPagination($total);
+			
+			$pages->pageSize = $total;
+			$pages->applyLimit($criteria);
+			
+			
+			
+			
+			$dataProvider = Producto::model()->findAll($criteria);
+    		  echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
-                    'div' => $this->renderPartial('_datos', array('prods' => $prods,
-                        'pages' => $pages,), true, true)));
-		*/
-		
+                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
+                        'pages' => $pages), true, false))); 
+		}
+		else{
 		$this->render('index_new',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
 		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-		'pages'=>$pages,'data'=>$data
+		'pages'=>$pages
 		));	
-			
+		}	
 	}
 	
 	
@@ -1425,6 +1465,7 @@ public function actionCategorias2(){
                    $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
                    $response['message'] = 'Filtro encontrado';
+				   $response['name'] = $filter->name;
                     
                 }else{
                   $response['status'] = 'error';
@@ -1440,13 +1481,34 @@ public function actionCategorias2(){
 
 	 public function actionUpa()
     {
-        $data = array();
-        $data["myValue"] = "Content updated in AJAX";
- 		
-        $this->renderPartial('_datos', array('data'=>$data), false, true);
+        echo "I'M HERE!";
+        break;
     }
 
-       
+    //Funcion que se llama cuando se intenta comprar para alguien mas desde afuera de la tienda
+    public function actionRedirect() {
+        
+        $response = array();
+        $response["status"] = "success";
+        
+        if(isset($_POST["agregar"])){            
+         
+          Yii::app()->session["modalOn"] = true;
+          //$this->redirect("look");
+          
+        }elseif(isset($_POST["perfil"])) {
+            
+            Yii::app()->session["profileOn"] = $_POST["perfil"];
+            
+        }else{
+            
+          $response["status"] = "error";
+          
+        }
+        
+        echo CJSON::encode($response);
+        
+    }
        
         
 }

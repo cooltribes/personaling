@@ -1,4 +1,5 @@
 
+<div class="items" id="catalogo">
    
       	
 <?php
@@ -113,7 +114,7 @@ $prePub="";
 					
 					$con=$id;
 						
-				}
+				}  
 				
 				//echo("</tr>");
 			}
@@ -122,15 +123,15 @@ $prePub="";
 
 ?>
 </div>
+
 <?php
 
-endforeach;
+endforeach;?>
+</div>
 
 
-
-   
-
- $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
+<?php 
+$this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#catalogo',
 	    'itemSelector' => 'div.div_productos',
 	    'loadingText' => 'Consultando Productos',
@@ -138,5 +139,7 @@ endforeach;
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); 
+			
+
 
 ?>

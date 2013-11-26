@@ -571,7 +571,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				$criteria->compare('tbl_categoria_id',$this->categoria_id);
 				
 		}
-
+		
 		$criteria->addCondition('precioDescuento != ""');
 		$criteria->addCondition('orden = 1');
 		
@@ -710,7 +710,11 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				$criteria->compare('tbl_categoria_id',$this->categoria_id);
 				
 		}
-
+		
+		if(isset(Yii::app()->session['f_color'])){
+			$criteria->addCondition('preciotallacolor.color_id = '.Yii::app()->session['f_color']);
+		}
+	
 		$criteria->addCondition('precioDescuento != ""');
 		$criteria->addCondition('orden = 1');
 		

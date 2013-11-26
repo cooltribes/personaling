@@ -15,7 +15,7 @@ $this->breadcrumbs=array(
             'buttonType' => 'button',
             'size' => 'large',
             'htmlOptions' => array(
-
+                'id' => 'btnMatch'
             ),
                     )); ?>
         
@@ -28,7 +28,7 @@ $this->breadcrumbs=array(
             'size' => 'large',
             //'disabled' => true,
             'htmlOptions' => array(
-
+                'id' => 'btnTodos'
             ),
                     )); ?>
         

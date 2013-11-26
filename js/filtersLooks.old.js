@@ -4,7 +4,7 @@
  */
 
 /*
- * FALTA
+ * 
  * poner icono de loading 
  * Poner titulo en modal
  * campos en class error cuando intente guardar con campos en blanco.
@@ -189,8 +189,7 @@ function getFilterByClick(idPerfil){
                     dataType: 'json',
                     data: { 'id':ID },
                     beforeSend: function(){
-                        
-                        $("body").addClass("aplicacion-cargando");
+                        $("body").addClass("aplicacion-cargando");                       
                         
                     },
                     complete: function(){
@@ -440,6 +439,7 @@ $(function() {
      //Elemento li del menu de usuario para agregar un nuevo filtro
     $('#agregar-perfil').click(function(e){
         clearFields();
+        
         activarModalNuevo(true);
         $(".alert").fadeOut('slow');
         
@@ -452,11 +452,12 @@ $(function() {
     });
     
     
-    //FIltrar por precios
-    
     $("#price-ranges a.price-filter").click(function(e){
+
+        
         
         var id = $(this).attr("id");
+        //console.log(id);
 
         if($("#rango_actual").val() !== id){
             
@@ -464,24 +465,27 @@ $(function() {
             $(this).parent().addClass("active-range");
             $("#rango_actual").val(id); 
             
+            //console.log($("#rango_actual .rango_actual").val());
+            
             refresh();
         }
+
+
         
     });
     
-    //Click para seleccionar un peril de la lista que esta en el dropdown User
+    //click en los perfiles del dropdown
     $("#dropdownUser a.sub_perfil_item").click(function(e){
         e.preventDefault();
+//        console.log("Click");
+//        console.log($(this).prop("id"));
         getFilterByClick($(this).prop("id"));  
         $(".alert").fadeOut('slow');
     });
     
-    //Click Boton todos los looks
-    $('.crear-filtro').click(function(e){
-        clearFields();
-        activarModalNuevo(true);        
-        $(".alert").fadeOut('slow');
-    });
     
-    
+});
+
+$(document).ready(function(){
+   
 });

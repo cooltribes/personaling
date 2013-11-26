@@ -139,21 +139,21 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     
                 );
 
-                $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id));
+        $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id));
 
-                foreach($otrosPerfiles as $perfil){
-                    $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
-                        'url'=>'',
-                        'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
-                        //'itemOptions' => array('id' => $perfil->id_filter),
-                        );
-                }
-                
-                array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  
-                                            'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal'), //array('/site/preguntas_frecuentes')
-                                            ),                    
-                                        '---',
-                                        array('label'=>'Salir', 'url'=>array('//site/logout')));
+        foreach($otrosPerfiles as $perfil){
+            $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
+                'url'=>'#',
+                'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
+                //'itemOptions' => array('id' => $perfil->id_filter),
+                );
+        }
+
+        array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  
+                                    'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal', 'id' => 'agregar-perfil'), //array('/site/preguntas_frecuentes')
+                                    ),                    
+                                '---',
+                                array('label'=>'Salir', 'url'=>array('//site/logout')));
 
 
 $this->widget('bootstrap.widgets.TbNavbar',array(

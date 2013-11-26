@@ -201,7 +201,7 @@ class TiendaController extends Controller
 			
 			$criteria = $producto->nueva2($a);
 			$dataProvider = Producto::model()->findAll($criteria);
-    		  echo CJSON::encode(array(
+    		  echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
                     'div' => $this->renderPartial('_BLAH', array('prods' => $dataProvider,

@@ -123,9 +123,9 @@
 <!-- BAR OFF -->
 <!-- PRODUCTOS ON -->
 
-<div class="margin_top tienda_productos">
+<div id="tienda_productos" class="margin_top tienda_productos">
       <div class="row">
-		<div class="items" id="catalogo">
+
 			 
 			<?php
 					$this->renderPartial('_datos',array(
@@ -134,7 +134,7 @@
 				
 			
 			?>																						
-		</div>
+
     </div>
 </div>
 
@@ -251,7 +251,7 @@ function refresh(reset)
                 {
                    	
             	
-                   $('#catalogo').html(data.div);
+                   $('#tienda_productos').html(data.div);
 				   alert('SUCCESS');
                   
                 }

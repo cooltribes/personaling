@@ -263,9 +263,9 @@ function refresh(reset)
                 }
                 else
                 {
-                   	
-            	
+           
                    $('#tienda_productos').html(data.div);
+             
 		
                 }
                 

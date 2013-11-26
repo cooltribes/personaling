@@ -160,11 +160,13 @@ class TiendaController extends Controller
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
 		
+		$criteria = $producto->nueva2($a);
+		$total=Producto::model()->count($criteria);
+		$pages = new CPagination($total);
 		
-		
-		
-		
-        
+		$pages->pageSize = 12;
+		$pages->applyLimit($criteria);
+        $dataProvider = Producto::model()->findAll($criteria);
 	
 		$marcas=Marca::model()->findAll();
 		$colores=Color::model()->findAll();
@@ -186,6 +188,7 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
 				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 				
 			if($_POST['colorhid']!=0){
@@ -198,35 +201,32 @@ class TiendaController extends Controller
 			if($_POST['preciohid']<4){
 				Yii::app()->session['f_precio'] = $_POST['preciohid'];
 			}
+
 			
 			$criteria = $producto->nueva2($a);
 			$total=Producto::model()->count($criteria);
 			$pages = new CPagination($total);
-
-			$pages->pageSize = 12;
+			
+			$pages->pageSize = $total;
 			$pages->applyLimit($criteria);
-
+			
+			
+			
+			
 			$dataProvider = Producto::model()->findAll($criteria);
     		  echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
                     'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages), true, true))); 
+                        'pages' => $pages), true, false))); 
 		}
 		else{
-			
-			$criteria = $producto->nueva2($a);
-			$total=Producto::model()->count($criteria);
-			$pages = new CPagination($total);
-			$dataProvider = Producto::model()->findAll($criteria);
-			$pages->pageSize = 12;
-			$pages->applyLimit($criteria);
-			$this->render('index_new',
-			array('index'=>$producto,
-			'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
-			'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-			'pages'=>$pages
-			));	
+		$this->render('index_new',
+		array('index'=>$producto,
+		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
+		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+		'pages'=>$pages
+		));	
 		}	
 	}
 	

@@ -110,7 +110,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
           </tr>
         </table>
         <hr/>
-       <p>Solo el original da derecho a crédito fiscal
+       <p>Sólo el original da derecho a crédito fiscal
        	<?php 
        	if(Yii::app()->controller->action->id == 'recibo'){
        		echo CHtml::link('<i class="icon-print"></i> Imprimir', $this->createUrl('imprimir', array('id'=>$factura->id, 'documento' => 'recibo')), array('class'=>'btn margin_top pull-right', 'target'=>'_blank'));

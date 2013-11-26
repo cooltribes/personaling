@@ -134,7 +134,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						 
 										<div class="control-group"> 
 						             		<div class="controls">
-						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cedula de Identidad')); 
+						             			<?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cédula de Identidad')); 
 						              			?>
 						                	<div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
 						              		</div>
@@ -549,7 +549,7 @@ $('#TarjetaCredito_year').change(function(){
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('1');
-            
+            $("#deposito").prop("checked", true);
             // haciendo que no valide
 	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
@@ -568,7 +568,7 @@ $('#TarjetaCredito_year').change(function(){
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('4');
-            
+             $("#mercadopago").attr('checked', true);
             // haciendo que no valide
 	        disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
@@ -587,7 +587,8 @@ $('#TarjetaCredito_year').change(function(){
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>";
             $("#adentro").html(añadir);
             $("#tipo_pago").val('2');
-            
+            $("#tarjeta").attr('checked', true);
+
             enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
@@ -796,5 +797,5 @@ $('#TarjetaCredito_year').change(function(){
 	        }
 	    });
 	}
-
+	
 </script>

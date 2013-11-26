@@ -1,4 +1,5 @@
-		<div class="items" id="catalogo">
+
+<div class="items" id="catalogo">
    
       	
 <?php
@@ -126,13 +127,15 @@ $prePub="";
 <?php
 
 endforeach;?>
-</div><?php 
+</div>
+
+
+<?php 
 $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#catalogo',
 	    'itemSelector' => 'div.div_productos',
 	    'loadingText' => 'Consultando Productos',
 	    'donetext' => 'No more',
-	    'id'=>'infinite',
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); 

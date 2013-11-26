@@ -1,5 +1,5 @@
 <?php
-
+ 
 class TiendaController extends Controller
 {
 	
@@ -36,7 +36,8 @@ class TiendaController extends Controller
 	{
 		/*$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
-		$producto->status = 1; // no borrados
+		$producto->status = 1; actionindex
+		 * // no borrados
 		$producto->estado = 0; // solo productos activos
 		
 		$a ="a"; 
@@ -116,8 +117,8 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
-		if(isset(Yii::app()->session['idColor'])){
-			unset(Yii::app()->session['idColor']);
+		if(isset(Yii::app()->session['f_color'])){
+			unset(Yii::app()->session['f_color']);
 			
 		}
 		if(isset(Yii::app()->session['idact'])){
@@ -159,13 +160,11 @@ class TiendaController extends Controller
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
 		
-		$criteria = $producto->nueva2($a);
-		$total=Producto::model()->count($criteria);
-		$pages = new CPagination($total);
 		
-		$pages->pageSize = 12;
-		$pages->applyLimit($criteria);
-        $dataProvider = Producto::model()->findAll($criteria);
+		
+		
+		
+        
 	
 		$marcas=Marca::model()->findAll();
 		$colores=Color::model()->findAll();
@@ -191,29 +190,43 @@ class TiendaController extends Controller
 				
 			if($_POST['colorhid']!=0){
 				Yii::app()->session['f_color'] = $_POST['colorhid'];
+			
 			}
 			if($_POST['marcahid']!=0){
-				Yii::app()->session['f_color'] = $_POST['marcahid'];
+				Yii::app()->session['f_marcahid'] = $_POST['marcahid'];
 			}
 			if($_POST['preciohid']<4){
-				Yii::app()->session['f_color'] = $_POST['preciohid'];
+				Yii::app()->session['f_precio'] = $_POST['preciohid'];
 			}
 			
 			$criteria = $producto->nueva2($a);
+			$total=Producto::model()->count($criteria);
+			$pages = new CPagination($total);
+
+			$pages->pageSize = 12;
+			$pages->applyLimit($criteria);
+
 			$dataProvider = Producto::model()->findAll($criteria);
     		  echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
-                    'div' => $this->renderPartial('_BLAH', array('prods' => $dataProvider,
-                        'pages' => $pages), true, false))); 
+                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
+                        'pages' => $pages), true, true))); 
 		}
 		else{
-		$this->render('index_new',
-		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
-		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-		'pages'=>$pages
-		));	
+			
+			$criteria = $producto->nueva2($a);
+			$total=Producto::model()->count($criteria);
+			$pages = new CPagination($total);
+			$dataProvider = Producto::model()->findAll($criteria);
+			$pages->pageSize = 12;
+			$pages->applyLimit($criteria);
+			$this->render('index_new',
+			array('index'=>$producto,
+			'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
+			'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+			'pages'=>$pages
+			));	
 		}	
 	}
 	
@@ -1452,6 +1465,7 @@ public function actionCategorias2(){
                    $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
                    $response['message'] = 'Filtro encontrado';
+				   $response['name'] = $filter->name;
                     
                 }else{
                   $response['status'] = 'error';

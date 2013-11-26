@@ -64,7 +64,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envio</h4>
+        <h4 class="braker_bottom"> Dirección de Envío</h4>
         <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
@@ -78,7 +78,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
         <p><strong>Dirección:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
-        <p> <strong>Telefono</strong>: <?php echo($direccion->telefono); ?> <br/>
+        <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
         
         <!-- Direcciones OFF --> 

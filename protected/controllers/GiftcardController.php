@@ -349,8 +349,9 @@ class GiftcardController extends Controller
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
                     $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-                            <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com<br/
-                            Para ver la Gift Card permite mostrar las imagenes de este correo <br/><br/>".$datosTarjeta;
+                            <br>
+                            Comienza a disfrutarla entrando en Personaling.com. Y ¡Sientete estupenda! #mipersonaling<br/>
+                            (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>".$datosTarjeta;
                             
                     
                     $params = array('subject' => $subject, 'body' => $body);

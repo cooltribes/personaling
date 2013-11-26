@@ -19,7 +19,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <div class="span8 offset2"> 
      
       <h1>Dirección de envío</h1>
-      <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la seccion inferior:</p>
+      <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:</p>
       <?php 
       
      	$usuario = Yii::app()->user->id; 
@@ -56,7 +56,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		              <div class='span2'>
 		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
 		                  <span class='muted small'> C.I. ".$cadauna->cedula."</span></p>
-		                <p> <strong>Telefono</strong>: ".$cadauna->telefono."</p>
+		                <p> <strong>Teléfono</strong>: ".$cadauna->telefono."</p>
 		              </div>
 		              <div class='span3'>
 		                <p><strong>Dirección:</strong> <br/>
@@ -167,7 +167,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
             
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Numero de Telefono'));
+              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Numero de Teléfono'));
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>

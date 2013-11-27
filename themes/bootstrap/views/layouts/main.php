@@ -188,7 +188,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 
                 array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                array('label'=>'Tu personal Shopper', 'url'=>array('/tienda/look'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                //array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
@@ -601,14 +602,13 @@ if(!Yii::app()->user->isGuest){
     
     //Click para seleccionar un peril de la lista que esta en el dropdown User
     $("#dropdownUser a.sub_perfil_item").click(function(e){
-       console.log("click"); 
-       
+        e.preventDefault();
         var urlActual = "<?php echo CController::createUrl(""); ?>";
         var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
         var redirect = "<?php echo CController::createUrl("/tienda/redirect"); ?>";        
         //si esta en tienda de looks
         if(urlActual === tiendaLooks){
-            clickPerfil();
+            clickPerfil($(this).prop("id"));
         }else{
         
         //Llevar a tienda de looks

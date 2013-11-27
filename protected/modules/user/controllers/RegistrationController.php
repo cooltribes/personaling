@@ -139,7 +139,7 @@ class RegistrationController extends Controller
                             // Para registrar en la lista de correo
                             if (isset($_POST['Profile']['suscribir'])) {
                                 //API key provisional para lista de prueba										
-                                $MailChimp = new MailChimp('78347e50bf7c6299b77dd84fbc24e5be-us7');
+                                $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
                                 $result = $MailChimp->call('lists/subscribe', array(
                                     'id' => '11801985e7',
                                     'email' => array('email' => $_POST['RegistrationForm']['email']),

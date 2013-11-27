@@ -217,6 +217,10 @@ function getFilterByClick(idPerfil){
                             //Mostrar el boton de editar
                             $('a.editar-filtro').parent('div').show(); 
                             
+                            //Cambiar label del boton looks para mi
+                            $("#btnMatch").html("Looks para <b>" + data.name + "</b>");
+                            $("#btnMatch").addClass("btn-danger");
+                            $("#btnTodos").removeClass("btn-danger");
                             //Buscar
                             refresh();           
                         }
@@ -390,11 +394,29 @@ function clickAgregar(){
 }
 
 //Al hacer click en un perfil creado
-function clickPerfil(){
+function clickPerfil(idPerfil){
     
-    e.preventDefault();
-    getFilterByClick($(this).prop("id"));  
+    //e.preventDefault();
+    //getFilterByClick($(this).prop("id"));  
+    getFilterByClick(idPerfil);  
     $(".alert").fadeOut('slow');
+    
+}
+
+//Al hacer click en el boton Looks para *
+function clickPersonal(){
+    
+    console.log("Personal");
+    $("#btnMatch").addClass("btn-danger");
+    $("#btnTodos").removeClass("btn-danger");
+    
+}
+//Al hacer click en el boton Todos los Looks
+function clickTodos(){
+    
+    console.log("Todos");
+    $("#btnTodos").addClass("btn-danger");
+    $("#btnMatch").removeClass("btn-danger");
     
 }
 

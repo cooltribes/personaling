@@ -1,3 +1,16 @@
+<?php 
+
+$pages->currentPage=0;
+
+
+?>
+<style>
+    div.infinite_navigation{
+        display:none;
+    }
+</style>
+
+
 
 <div class="items" id="catalogo">
    

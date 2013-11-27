@@ -105,6 +105,7 @@ class TiendaController extends Controller
 				'pages'=>$pages,
 				'dataProvider'=>$dataProvider,
 				'categorias'=>$categorias,
+	
 				
 
 		));	
@@ -121,22 +122,25 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['f_color']);
 			
 		}
-		if(isset(Yii::app()->session['idact'])){
-			unset(Yii::app()->session['idact']);
+		
+		if(isset(Yii::app()->session['f_marca'])){
+			unset(Yii::app()->session['f_marca']);
 			
 		}
-		if(isset(Yii::app()->session['bsf'])){
-			unset(Yii::app()->session['bsf']);
+		
+		if(isset(Yii::app()->session['max'])){
+			unset(Yii::app()->session['max']);
 			
 		}
-		if(isset(Yii::app()->session['minpr'])){
-			unset(Yii::app()->session['minpr']);
+		if(isset(Yii::app()->session['min'])){
+			unset(Yii::app()->session['min']);
 			
 		}
-		if(isset(Yii::app()->session['maxpr'])){
-			unset(Yii::app()->session['maxpr']);
+		if(isset(Yii::app()->session['p_index'])){
+			unset(Yii::app()->session['p_index']);
 			
 		}
+		
 		$a ="a"; 
 		
 		
@@ -160,25 +164,13 @@ class TiendaController extends Controller
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
 		
-		$criteria = $producto->nueva2($a);
-		$total=Producto::model()->count($criteria);
-		$pages = new CPagination($total);
 		
-		$pages->pageSize = 12;
-		$pages->applyLimit($criteria);
-        $dataProvider = Producto::model()->findAll($criteria);
-	
-		$marcas=Marca::model()->findAll();
-		$colores=Color::model()->findAll();
 		
 		
   
     	if(isset($_POST['colorhid'])){
     		
 				
-    			if(isset(Yii::app()->session['f_color'])){
-    				unset(Yii::app()->session['f_color']);
-    			}
     			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
@@ -190,46 +182,85 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
-				
+				 
 			if($_POST['colorhid']!=0){
+			
 				Yii::app()->session['f_color'] = $_POST['colorhid'];
 			
 			}
 			if($_POST['marcahid']!=0){
-				Yii::app()->session['f_marcahid'] = $_POST['marcahid'];
+			
+				Yii::app()->session['f_marca'] = $_POST['marcahid'];
+			
 			}
 			if($_POST['preciohid']<4){
-				Yii::app()->session['f_precio'] = $_POST['preciohid'];
+			
+				
+				Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
+				Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
+				Yii::app()->session['p_index']=$_POST['preciohid'];
+				
+				
 			}
-
+			else{
+				echo "NA";
+				break;
+			}
+			
 			
 			$criteria = $producto->nueva2($a);
 			$total=Producto::model()->count($criteria);
+			if($total>0){
+			
+		
 			$pages = new CPagination($total);
 			
 			$pages->pageSize = $total;
 			$pages->applyLimit($criteria);
+			 
 			
 			
-			
-			
+			 
 			$dataProvider = Producto::model()->findAll($criteria);
     		  echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
                     'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages), true, false))); 
+                        'pages' => $pages, 'total'=>$total), true,true))); 
+			}
+			else{
+					
+				echo CJSON::encode(array(  
+                    'status' => 'success',
+                    //'condicion' => $total,
+                    'div' => "<span class='empty'>No se encontraron resultados para esta búsqueda.  </span>")); 
+				 
+			}
 		}
 		else{
+			
+		$criteria = $producto->nueva2($a);
+		$total=Producto::model()->count($criteria);
+		$pages = new CPagination($total);
+		
+		$pages->pageSize = 12;
+		$pages->applyLimit($criteria);
+        $dataProvider = Producto::model()->findAll($criteria);
+	
+		$marcas=Marca::model()->findAll();
+		$colores=Color::model()->findAll();
+			 
+			
 		$this->render('index_new',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
 		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-		'pages'=>$pages
+		'pages'=>$pages,
+		'total'=>$total,
 		));	
 		}	
 	}
-	
+	 
 	
 		public function actionFiltrar()
 	{

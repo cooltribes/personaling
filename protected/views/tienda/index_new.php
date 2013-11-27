@@ -54,7 +54,11 @@
 					<ul class="dropdown-menu dropdown-colors thumbnails ">
 						
 					<?php 
-					echo CHtml::hiddenField('colorhid',0); 
+					if(isset(Yii::app()->session['f_color']))
+						echo CHtml::hiddenField('colorhid',Yii::app()->session['f_color']);
+					else {
+						echo CHtml::hiddenField('colorhid',0);
+					}
 					foreach($colores as $color){
 						echo '<li class="colors"><a href="#" value="'.$color->id.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 						
@@ -75,7 +79,11 @@
 					<ul class="dropdown-menu" >
 						
 					<?php
-							echo CHtml::hiddenField('preciohid',5); 
+							if(isset(Yii::app()->session['f_precio']))
+								echo CHtml::hiddenField('preciohid',Yii::app()->session['p_index']);
+							else {
+								echo CHtml::hiddenField('preciohid',5);
+							}
 							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' ('.$rangos[0]['count'].')</a></li>';
 							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
 							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' ('.$rangos[1]['count'].')</a></li>';
@@ -100,7 +108,11 @@
 					<ul class="dropdown-menu">	
 						
 						<?php
-							echo CHtml::hiddenField('marcahid',0); 	
+							if(isset(Yii::app()->session['f_marca']))
+								echo CHtml::hiddenField('marcahid',Yii::app()->session['f_marca']);
+							else {
+								echo CHtml::hiddenField('marcahid',0);
+							}
 							foreach($marcas as $marca){
 								echo'<li><a class="marca" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
 								 
@@ -149,6 +161,8 @@
             	
             	$('#precio_titulo').html($(this).html());
             	$('#preciohid').val($(this).attr('id'));
+            	$('#catalogo').html(''); 
+            	refresh();
            
             	
               	
@@ -158,6 +172,8 @@
             	
             	$('#marca_titulo').html($(this).html());
             	$('#marcahid').val($(this).attr('value'));
+            	$('#catalogo').html(''); 
+            	refresh();
             
 
 		});  

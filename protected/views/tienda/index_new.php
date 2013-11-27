@@ -11,7 +11,11 @@
   			<li class="item">Tienda de prendas:</li>
   		<?php 
   			echo CHtml::hiddenField('padrehid',0); 	
-			echo CHtml::hiddenField('hijohid',0); 	
+			if(isset(Yii::app()->session['f_cat']))
+						echo CHtml::hiddenField('cathid',Yii::app()->session['f_cat']);
+					else {
+						echo CHtml::hiddenField('cathid',0);
+				} 	
   			foreach($categorias as $padre){
   				echo '<li class="itemThumbnails tienda_iconos">
   				<div class="dropdown">
@@ -23,7 +27,7 @@
 					foreach($padre->subcategorias as $hijo){
 						
 						echo '<li class=""> 
-		              		<a href="#" >
+		              		<a class="hijo" value="'.$hijo->id.'" href="#" >
 		              			<img src="'.$hijo->urlImagen.'" width="60">
 		              		</a>                	
 		              		<div class="caption">
@@ -79,18 +83,21 @@
 					<ul class="dropdown-menu" >
 						
 					<?php
-							if(isset(Yii::app()->session['f_precio']))
+							if(isset(Yii::app()->session['p_index'])){
 								echo CHtml::hiddenField('preciohid',Yii::app()->session['p_index']);
+								}
 							else {
 								echo CHtml::hiddenField('preciohid',5);
-							}
+								}
+
 							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' ('.$rangos[0]['count'].')</a></li>';
 							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
 							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' ('.$rangos[1]['count'].')</a></li>';
 							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
 							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' ('.$rangos[2]['count'].')</a></li>';
-								echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
-					?>															
+							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
+							echo'<li><a class="precio" href="#" id="5">Todos</a></li>';
+					?>		
 					</ul>  
 				</div>	
 			</li>
@@ -161,7 +168,8 @@
             	
             	$('#precio_titulo').html($(this).html());
             	$('#preciohid').val($(this).attr('id'));
-            	$('#catalogo').html(''); 
+            	$('#catalogo').remove(); 
+            	$('#tienda_productos').html('');  
             	refresh();
            
             	
@@ -172,7 +180,8 @@
             	
             	$('#marca_titulo').html($(this).html());
             	$('#marcahid').val($(this).attr('value'));
-            	$('#catalogo').html(''); 
+            	$('#catalogo').remove();
+            	$('#tienda_productos').html('');  
             	refresh();
             
 
@@ -182,12 +191,21 @@
             	
             	$('#color_titulo').html($(this).html());
             	$('#colorhid').val($(this).attr('value'));
-            	$('#catalogo').html(''); 
+            	$('#catalogo').remove();
+            	$('#tienda_productos').html(''); 
             	refresh();
 
 		});  
 		
-		
+		$(".hijo").click(function() { 
+            	
+
+            	$('#cathid').val($(this).attr('value'));
+            	$('#catalogo').remove();
+            	$('#tienda_productos').html(''); 
+            	refresh();
+
+		});
 	
 	
 </script>
@@ -242,12 +260,9 @@ function encantar(id)
    	
 function refresh(reset)
 {
-	//alert($('.check_ocasiones').serialize());
-	//alert($('.check_ocasiones').length) 
+
     var datosRefresh = $('#preciohid, #colorhid, #marcahid').serialize();
 
-    
-    //console.log(datosRefresh);
     if(reset){
         datosRefresh += '&reset=true';
     }
@@ -275,7 +290,7 @@ function refresh(reset)
                     $('#dialogColor div.divForForm').html(data.div);
                           // Here is the trick: on submit-> once again this function!
                     $('#dialogColor div.divForForm form').submit(addColor);
-                    alert('FAIL');
+
                 }
                 else
                 {

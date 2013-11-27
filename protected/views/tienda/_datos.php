@@ -1,9 +1,4 @@
-<?php 
 
-$pages->currentPage=0;
-
-
-?>
 <style>
     div.infinite_navigation{
         display:none;
@@ -149,6 +144,7 @@ $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'itemSelector' => 'div.div_productos',
 	    'loadingText' => 'Consultando Productos',
 	    'donetext' => 'No more',
+
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); 

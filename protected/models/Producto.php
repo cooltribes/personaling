@@ -719,6 +719,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			$criteria->addCondition('marca_id = '.Yii::app()->session['f_marca']);
 		}
 	
+	
 		 
 
 		$criteria->addCondition('precioDescuento != ""');

@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-  'Tu Personal Shopper' =>array('site/personal'),
+  'Tu Personal Shopper' =>array('tienda/look'),
   'Todos los looks',
 );
 ?>
@@ -170,7 +170,7 @@ $this->breadcrumbs=array(
           
             <!-- ******   Filtrar por perfil  *****    -->
           
-          <?php if(Yii::app()->user->id && true){ ?>  
+          <?php if(Yii::app()->user->id && false){ ?>  
           <li>
                    <?php echo CHtml::dropDownList("Filtros", "", CHtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)),
                 "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters', 'class'=>'input-medium',
@@ -245,6 +245,7 @@ $this->breadcrumbs=array(
     <input type="hidden" value="" id="ocasion_actual" />
     
     <input type="hidden" id="rango_actual" name="rango_actual" value="" />     
+    <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
     
     
     <div class="navbar-inner sub_menu">
@@ -514,13 +515,10 @@ function refresh(reset)
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
     cargarLocal();
-    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual').serialize();
-    
-    console.log("Antes PRecio\n" + datosRefresh);
+    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual, #perfil_propio').serialize();
         
-    datosRefresh += '&precios=' + $('#rango_actual').val();
-    
-    console.log("Antes PRecio\n" + datosRefresh);
+    datosRefresh += '&precios=' + $('#rango_actual').val();    
+    console.log(datosRefresh);
     if(reset){
         datosRefresh += '&reset=true';
     }

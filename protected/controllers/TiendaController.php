@@ -841,10 +841,8 @@ public function actionCategorias2(){
 		
             $filtroPerfil = false;
             
-            if(isset($_POST['Profile'])){
-                
-                foreach ($_POST['Profile'] as $campo){
-                    
+            if(isset($_POST['Profile'])){                
+                foreach ($_POST['Profile'] as $campo){                    
                     if(!empty($campo)){
                        $filtroPerfil = true;
                        break;
@@ -852,33 +850,86 @@ public function actionCategorias2(){
                 }        
             }
             
+            if(isset($_GET["page"])){
+                echo "<pre>";
+                print_r($_GET["page"]);
+                echo "</pre>";
 
+            }
             if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
-                    || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])) 
+                    || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
+                || isset($_POST['perfil_propio'])) 
             {
 
-                $criteria = new CDbCriteria;
+                $criteria = new CDbCriteria;                
+                   
+                //Si no se resetearon - revisar lo que viene de los inputs 
+                if(!isset($_POST['reset'])){
+                                     
+                    if (isset($_POST['check_ocasiones'])) {
+                        $condicion = "";
+                        $criteria->with = array('categorias');
+                        $criteria->together = true;
+                        foreach ($_POST['check_ocasiones'] as $categoria_id)
+                            $condicion .= "categorias_categorias.categoria_id = " . $categoria_id . " OR ";
+                        $condicion = substr($condicion, 0, -3);
+                        $criteria->addCondition($condicion);
+                    }
+                    if (isset($_POST['check_shopper'])) {
+                        $condicion = "";
+                        foreach ($_POST['check_shopper'] as $user_id)
+                            $condicion .= "user_id = " . $user_id . " OR ";
+                        $condicion = substr($condicion, 0, -3);
+                        $criteria->addCondition($condicion);
+                    }                
 
+                    if (isset($_POST['precios']) && $_POST['precios'] != "") {
 
-                if (isset($_POST['check_ocasiones'])) {
-                    $condicion = "";
-                    $criteria->with = array('categorias');
-                    $criteria->together = true;
-                    foreach ($_POST['check_ocasiones'] as $categoria_id)
-                        $condicion .= "categorias_categorias.categoria_id = " . $categoria_id . " OR ";
-                    $condicion = substr($condicion, 0, -3);
-                    $criteria->addCondition($condicion);
+                        $limits = explode("-", $_POST['precios']);
+
+                        $looks = Look::model()->findAll("status = 2");
+
+                        $inValues = array();                    
+
+                        foreach ($looks as $look) {
+
+                            $price = $look->getPrecio(false);
+
+                            if($price >= $limits[0] && $price <= $limits[1])
+                            {
+                                $inValues[] = $look->id;
+                            }
+                        }                    
+
+                        $criteria->addInCondition('t.id', $inValues);
+                   }  
                 }
-                if (isset($_POST['check_shopper'])) {
-                    $condicion = "";
-                    foreach ($_POST['check_shopper'] as $user_id)
-                        $condicion .= "user_id = " . $user_id . " OR ";
-                    $condicion = substr($condicion, 0, -3);
-                    $criteria->addCondition($condicion);
-                }
-
-                if ($filtroPerfil) {
+                
+                if($_POST['perfil_propio'] == 1){
+                    
                     $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    
+                    $looks = new Look();
+                    $ids = $looks->match($userTmp);
+                    $ids = $ids->getData();
+
+                    $inValues = array();
+
+                    foreach ($ids as $row) {
+                        
+                        $look = Look::model()->findByPk($row['id']);
+                        if($look->matchOcaciones($userTmp)){
+                            $inValues[] = $row["id"];
+                        }                        
+                        
+                    }
+
+                    $criteria->addInCondition('t.id', $inValues);
+                    
+                }else if ($filtroPerfil) {
+                    
+                    $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    
                     $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
                     $looks = new Look();
                     $ids = $looks->match($userTmp);
@@ -892,29 +943,6 @@ public function actionCategorias2(){
 
                     $criteria->addInCondition('t.id', $inValues);                         
                 }
-
-                if (isset($_POST['precios']) && $_POST['precios'] != "") {
-                    
-                    $limits = explode("-", $_POST['precios']);
-                    
-                    $looks = Look::model()->findAll("status = 2");
-                    
-                    $inValues = array();                    
-
-                    foreach ($looks as $look) {
-                        
-                        $price = $look->getPrecio(false);
-                        
-                        if($price >= $limits[0] && $price <= $limits[1])
-                        {
-                            $inValues[] = $look->id;
-                        }
-                        
-                    }                    
-
-                    $criteria->addInCondition('t.id', $inValues);
-               }
-                   
                
                 $criteria->compare('status', 2);
                 $total = Look::model()->count($criteria);
@@ -945,7 +973,29 @@ public function actionCategorias2(){
                 if (isset($_GET['search']))
                     $search = $_GET['search'];
 
-                $criteria = new CDbCriteria;
+                $criteria = new CDbCriteria;                
+                
+                //Para mostrar por defecto los looks recomendados para el usuario
+                //siempre la primera vez que se cargue la página
+                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    
+                $looks = new Look();
+                $ids = $looks->match($userTmp);
+                $ids = $ids->getData();
+
+                $inValues = array();
+
+                foreach ($ids as $row) {
+
+                    $look = Look::model()->findByPk($row['id']);
+                    if($look->matchOcaciones($userTmp)){
+                        $inValues[] = $row["id"];
+                    }                        
+
+                }
+
+                $criteria->addInCondition('t.id', $inValues);
+                
                 $criteria->compare('title', $search, true, 'OR');
                 $criteria->compare('description', $search, true, 'OR');
                 $criteria->compare('status', 2);

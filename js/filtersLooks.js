@@ -398,6 +398,7 @@ function clickPerfil(idPerfil){
     
     //e.preventDefault();
     //getFilterByClick($(this).prop("id"));  
+    $("#perfil_propio").val("0");
     getFilterByClick(idPerfil);  
     $(".alert").fadeOut('slow');
     
@@ -409,6 +410,7 @@ function clickPersonal(){
     console.log("Personal");
     $("#btnMatch").addClass("btn-danger");
     $("#btnTodos").removeClass("btn-danger");
+    refresh(true);
     
 }
 //Al hacer click en el boton Todos los Looks
@@ -417,6 +419,8 @@ function clickTodos(){
     console.log("Todos");
     $("#btnTodos").addClass("btn-danger");
     $("#btnMatch").removeClass("btn-danger");
+    
+    refresh(true); 
     
 }
 

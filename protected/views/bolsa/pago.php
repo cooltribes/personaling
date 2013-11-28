@@ -282,6 +282,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						  
                         $i=0;
 
+                        /*
                         if (empty($precios)) // si no esta vacio
                         {}
                         else{
@@ -291,6 +292,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 $i++;
                               }
                         }
+						*/
+						if (!empty($precio)) foreach ($precios as $i => $x)	$totalPr+=$x*$cantidades[$i];
+						
+						
                     /*    foreach($descuentos as $y)
                           {
                               $totalDe = $totalDe + $y;

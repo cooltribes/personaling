@@ -146,15 +146,10 @@ class TiendaController extends Controller
 		}
 		
 		$a ="a"; 
-		
-		
-		$dp=Producto::model()->findAll($producto->nueva2($a));
-
-		
+	
 		$lims=Precio::model()->getLimites();
 
 		$dif=$lims['maximo']-$lims['minimo'];
-		
 	
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
@@ -168,10 +163,7 @@ class TiendaController extends Controller
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
 		
-		
-		
-		
-  
+		  
     	if(isset($_POST['colorhid'])){
     		
 				

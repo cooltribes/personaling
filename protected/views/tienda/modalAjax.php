@@ -1,3 +1,9 @@
+<style>
+    #modalPerfilesOcultos li {
+        cursor: pointer;
+            
+    }
+</style>
 <div id="modalPerfilesOcultos" class="modal fade" aria-hidden="true" style="display: none;">        
     
     <div class="modal-header">
@@ -6,35 +12,32 @@
     </div>    
       
     <div class="modal-body ">
-        <div class="dropdown open">
-            <ul class="dropdown-menu">
-                <li>
-                  <a class="sub_perfil_item"  tabindex="-1" href="#">
-                      <img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">
-                      Nuevo Perfil de ...
-                  </a>  
-                </li>
-            </ul>
-        </div>
+        <div class="row-fluid margin_bottom_medium margin_top_medium">
+            <div class="span6 offset3">                                     
+                        
+                       <ul class="nav nav-tabs nav-stacked">
+                        
+                        <?php
+                        
+                            $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));
+                            
+                            $elementos = array();
+                            
+                            foreach($otrosPerfiles as $perfil){
+                                
+                                echo '<li class="divider-vertical">
+                                    <a data-dismiss="modal" aria-hidden="true" id="'.$perfil->id_filter.
+                                        '" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg"> '.
+                                        $perfil->name.'</a></li>';                                    
+                                       
+                            }
+                            ?>
+                           </ul>
             
-        <?php 
+            </div>
+        </div>
         
-            $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));
-            echo "Pruesssa";
-            foreach($otrosPerfiles as $perfil){
-                
-
-//                $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
-//                    'url'=>'#',
-//                    'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
-//                    //'itemOptions' => array('id' => $perfil->id_filter),
-//                    );
-                
-                echo "EEE<br>";
-
-            }
-        
-        ?>
+            
         
     </div>
     
@@ -56,3 +59,40 @@
     </div>                    
 
 </div>
+<script type="text/javascript">
+
+ //Click para seleccionar un peril de la lista que esta en el dropdown User
+    $("#modalPerfilesOcultos li a").click(function(e){
+        e.preventDefault();
+        var urlActual = "<?php echo CController::createUrl(""); ?>";
+        var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
+        var redirect = "<?php echo CController::createUrl("/tienda/redirect"); ?>";        
+        //si esta en tienda de looks
+        if(urlActual === tiendaLooks){
+            clickPerfil($(this).prop("id"));
+        }else{
+        
+        //Llevar a tienda de looks
+            var datos = $(this).prop("id");
+            $.ajax({
+                type: 'POST',
+                url: redirect,
+                dataType: 'JSON',
+                data: {perfil : datos},
+                success: function(data){
+
+                    if(data.status == 'success'){
+
+                      window.location = tiendaLooks;  
+
+                    }else if(data.status == 'error'){
+                        
+
+                    }
+                }
+            });
+        }
+       
+    });
+
+</script>

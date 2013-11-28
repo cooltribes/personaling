@@ -232,7 +232,7 @@ function getFilterByClick(idPerfil){
                             }
                             
                             $("li#dropdownUser span#userName").text(data.name);
-                            console.log(data.name);
+                            
                             //Buscar
                             refresh();           
                         }
@@ -306,6 +306,7 @@ function saveFilter(nuevo) {
                             
                             //si es nuevo
                             if(data.idFilter){
+                                
                                 //Agregarlo a la lista de filtros
                                 $('#all_filters').append($("<option />").val(data.idFilter).text(nombre));
                                 $('#all_filters').val(data.idFilter); 
@@ -314,6 +315,26 @@ function saveFilter(nuevo) {
                                 
                                  //Mostrar el boton de editar
                                 $('a.editar-filtro').parent('div').show();
+                                
+                                
+                                 //Cambiar label del boton looks para mi
+                                $("#btnMatch").html("Looks para <b>" + nombre + "</b>");
+                                $("#btnMatch").addClass("btn-danger");
+                                $("#btnTodos").removeClass("btn-danger");
+                                
+                                if(nombre.length > 7){
+                                   nombre = nombre.substring(0,7);
+                                   nombre = nombre.concat("...");
+                                }
+
+                                $("li#dropdownUser span#userName").text(nombre);
+                                
+                                $("li#dropdownUser li.nav-header").after('<li><a class="sub_perfil_item" id="' + data.idFilter +
+                                '" tabindex="-1" href="#"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">' + 
+                                nombre + '</a></li>');
+                                
+                                
+                                
                             }
                             //Guardar en local
                             guardarLocal();                            

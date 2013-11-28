@@ -1593,7 +1593,7 @@ public function actionCategorias2(){
         
         echo CJSON::encode($response);
         
-    }
+    }    
     
     /**
      * Retorna el codigo html para un modal especificado en la variable POST "modal"

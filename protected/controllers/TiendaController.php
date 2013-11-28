@@ -181,11 +181,17 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+				
 				 
 			if($_POST['colorhid']!=0){
 			
 				Yii::app()->session['f_color'] = $_POST['colorhid'];
+			
+			}
+			if($_POST['cathid']!=0){
+			
+				Yii::app()->session['f_cat'] = $_POST['cathid'];
 			
 			}
 			if($_POST['marcahid']!=0){
@@ -213,8 +219,9 @@ class TiendaController extends Controller
 			$pages = new CPagination($total);
 			
 			$pages->pageSize = $total;
+			
 			$pages->applyLimit($criteria);
-			 
+	
 			
 			
 			 

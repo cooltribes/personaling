@@ -1615,7 +1615,7 @@ public function actionCategorias2(){
            $response["data"] =  $this->renderPartial("modalAjax", array(
               "modal" => $_POST["modal"],
            ),
-                   true, true);
+                   true, true);           
             
         }     
         

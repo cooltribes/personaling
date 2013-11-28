@@ -41,7 +41,9 @@ function check_fb(){
                       if(data == "existe"){
                           console.log('existe');
                        //   var Url = "<?php echo Yii::app()->baseUrl; ?>";
-                          window.location = "../site/personal";
+                          //window.location = "../site/personal";
+                          /*Unificacion de la tienda de looks con tu personal shopper*/
+                          window.location = "../tienda/look";
                       }else if(data=='no'){
                           console.log('no existe');
                       //    var Url = <?php echo Yii::app()->baseUrl; ?>+"";
@@ -73,7 +75,10 @@ function check_fb(){
 	                      if(data == "existe"){
 	                          console.log('existe');
 	                         // var Url = <?php echo Yii::app()->baseUrl; ?>+"";
-	                          window.location = "../site/personal";
+                                 
+	                         // window.location = "../site/personal";
+                                 /*Unificacion de la tienda de looks con tu personal shopper*/
+	                          window.location = "../tienda/look";
 	                      }else if(data=="no"){
 	                          console.log('no existe');
 	                          alert("Ud. no se encuentra registrado.");

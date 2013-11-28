@@ -11,7 +11,11 @@
   			<li class="item">Tienda de prendas:</li>
   		<?php 
   			echo CHtml::hiddenField('padrehid',0); 	
-			echo CHtml::hiddenField('hijohid',0); 	
+			if(isset(Yii::app()->session['f_cat']))
+						echo CHtml::hiddenField('cathid',Yii::app()->session['f_cat']);
+					else {
+						echo CHtml::hiddenField('cathid',0);
+				} 	
   			foreach($categorias as $padre){
   				echo '<li class="itemThumbnails tienda_iconos">
   				<div class="dropdown">
@@ -23,7 +27,7 @@
 					foreach($padre->subcategorias as $hijo){
 						
 						echo '<li class=""> 
-		              		<a href="#" >
+		              		<a class="hijo" value="'.$hijo->id.'" href="#" >
 		              			<img src="'.$hijo->urlImagen.'" width="60">
 		              		</a>                	
 		              		<div class="caption">
@@ -48,7 +52,7 @@
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
 	  					Color:
-	  					<span id="color_titulo"> <img src="/images/colores/C_Multicolor.jpg" alt="Color" width="44">		
+	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44">		
 	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
 					<ul class="dropdown-menu dropdown-colors thumbnails ">
@@ -60,9 +64,11 @@
 						echo CHtml::hiddenField('colorhid',0);
 					}
 					foreach($colores as $color){
-						echo '<li class="colors"><a href="#" value="'.$color->id.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+						echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 						
-					}  ?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
+					}  
+						echo '<li class="colors"><a href="#" value="0" class="scolor" title="Todos" ><img width="44" src="'.Yii::app()->baseUrl.'/images/colores/allcolors.png" /></a></li>';
+					?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 					</ul>  
 				</div>
   			</li>  					  			
@@ -79,18 +85,21 @@
 					<ul class="dropdown-menu" >
 						
 					<?php
-							if(isset(Yii::app()->session['f_precio']))
+							if(isset(Yii::app()->session['p_index'])){
 								echo CHtml::hiddenField('preciohid',Yii::app()->session['p_index']);
+								}
 							else {
 								echo CHtml::hiddenField('preciohid',5);
-							}
+								}
+
 							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' ('.$rangos[0]['count'].')</a></li>';
 							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
 							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' ('.$rangos[1]['count'].')</a></li>';
 							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
 							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' ('.$rangos[2]['count'].')</a></li>';
-								echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
-					?>															
+							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
+							echo'<li><a class="precio" href="#" id="5">Todos los precios</a></li>';
+					?>		
 					</ul>  
 				</div>	
 			</li>
@@ -117,15 +126,16 @@
 								echo'<li><a class="marca" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
 								 
 							}
+							echo CHtml::hiddenField('texthid','');
 						?>
-						<li><a class="marca" value="0" href="#">Todos</a></li>											
+						<li><a class="marca" value="0" href="#">Todas las marcas</a></li>											
 					</ul>  	
 				</div>	
 			</li>			
 			<li class="item itemInput">
 				<div class="contenedorInput">
-					<input type="text" class="" placeholder="Buscar"> 
-					<button class="btn btn-danger btn-buscar" type="button"><i class="icon-search"></i></button>	
+					<input type="text" class="" placeholder="Buscar" id="text_search"> 
+					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
 		</ul>	 
@@ -161,7 +171,9 @@
             	
             	$('#precio_titulo').html($(this).html());
             	$('#preciohid').val($(this).attr('id'));
-            	$('#catalogo').html(''); 
+            	$('#catalogo').remove(); 
+            	$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
             	refresh();
            
             	
@@ -172,7 +184,9 @@
             	
             	$('#marca_titulo').html($(this).html());
             	$('#marcahid').val($(this).attr('value'));
-            	$('#catalogo').html(''); 
+            	$('#catalogo').remove();
+            	$('#tienda_productos').html(''); 
+            	$('#text_search').val('');  
             	refresh();
             
 
@@ -182,12 +196,37 @@
             	
             	$('#color_titulo').html($(this).html());
             	$('#colorhid').val($(this).attr('value'));
-            	$('#catalogo').html(''); 
+            	$('#catalogo').remove();
+            	$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
             	refresh();
 
 		});  
 		
+		$(".hijo").click(function() { 
+            	
+
+            	$('#cathid').val($(this).attr('value'));
+            	$('#catalogo').remove();
+            	$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
+            	refresh();
+
+		});
 		
+		$("#btn_search").click(function() { 
+            	
+
+               	$('#catalogo').remove();
+               	$('#cathid').val('0');
+               	$('#colorhid').val('0');
+               	$('#marcahid').val('0');
+               	$('#preciohid').val('5');
+               	$('#texthid').val($('#text_search').val()   );
+            	$('#tienda_productos').html(''); 
+            	refresh();
+
+		});
 	
 	
 </script>
@@ -242,12 +281,14 @@ function encantar(id)
    	
 function refresh(reset)
 {
-	//alert($('.check_ocasiones').serialize());
-	//alert($('.check_ocasiones').length) 
-    var datosRefresh = $('#preciohid, #colorhid, #marcahid').serialize();
 
-    
-    //console.log(datosRefresh);
+  
+
+ 
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid').serialize();
+  
+ 	
+
     if(reset){
         datosRefresh += '&reset=true';
     }
@@ -275,7 +316,7 @@ function refresh(reset)
                     $('#dialogColor div.divForForm').html(data.div);
                           // Here is the trick: on submit-> once again this function!
                     $('#dialogColor div.divForForm form').submit(addColor);
-                    alert('FAIL');
+
                 }
                 else
                 {

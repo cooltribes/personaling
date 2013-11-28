@@ -136,13 +136,19 @@ function carga(id){
 function saldo(id){	
 		
 		var cant=$("#cant").val();
-        if(cant.indexOf(',')==(cant.length-2))
-        	cant+='0';
-		if(cant.indexOf(',')==-1)
-			cant+=',00';
+       
+        if(cant.length>1){
+	        if(cant.indexOf(',')==(cant.length-2))
+	        	cant+='0';
+			if(cant.indexOf(',')==-1)
+				cant+=',00';
+				}
         var pattern = /^\d+(?:\,\d{0,2})$/ ;
-        if (pattern.test(cant)) { 
-          cant=cant.replace(',','.');
+       
+       
+       
+        if (pattern.test(cant)||cant.length<2) { 
+          	cant=cant.replace(',','.');
            
            $.ajax({
 			type: "post",

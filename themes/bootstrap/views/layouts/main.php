@@ -164,7 +164,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         $todos = count($otrosPerfiles);
         if($verMas){
            $itemsUser[] =  array('label'=>"Ver todos los perfiles ...",  
-                                    'url'=>'#', 'linkOptions' => array('class' => 'sub_perfil_item'), //array('/site/preguntas_frecuentes')
+                                    'url'=>'#', 'linkOptions' => array('class' => 'sub_perfil_item ver_todos'), //array('/site/preguntas_frecuentes')
                                     );
         }
         
@@ -596,12 +596,11 @@ if(!Yii::app()->user->isGuest){
                 }
             });
         }
-            
         
     });
     
     //Click para seleccionar un peril de la lista que esta en el dropdown User
-    $("#dropdownUser a.sub_perfil_item").click(function(e){
+    $("#dropdownUser a.sub_perfil_item:not(.ver_todos)").click(function(e){
         e.preventDefault();
         var urlActual = "<?php echo CController::createUrl(""); ?>";
         var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
@@ -631,6 +630,33 @@ if(!Yii::app()->user->isGuest){
                 }
             });
         }
+       
+    });
+    
+    //Click en el elemento del dropdown para ver todos los perfiles ocultos
+    $("#dropdownUser .ver_todos").click(function(e){
+        e.preventDefault();
+        
+//        $("#modalPerfilesOcultos").modal("show");
+//        
+//        return;
+        //Llevar a tienda de looks
+            var urlModal = "<?php echo CController::createUrl("/tienda/modalAjax"); ?>";  
+            
+            
+            $.ajax({
+                type: 'POST',
+                url: urlModal,
+                dataType: 'JSON',
+                data: {modal : "perfiles"},
+                success: function(data){
+                    
+                    $("#modalAjax").append(data.data);
+                    $("#modalPerfilesOcultos").modal("show");
+                    
+                }
+            });
+        
        
     });
  

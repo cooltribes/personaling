@@ -18,7 +18,7 @@ class TiendaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index', 'look', 'redirect'), //Se cambió el action look de * para acá.
+				'actions'=>array('index', 'look', 'redirect', 'modalAjax'), //Se cambió el action look de * para acá.
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -202,10 +202,7 @@ class TiendaController extends Controller
 				
 				
 			}
-			else{
-				echo "NA";
-				break;
-			}
+			
 			
 			
 			$criteria = $producto->nueva2($a);
@@ -882,9 +879,9 @@ public function actionCategorias2(){
             }
             
             if(isset($_GET["page"])){
-                echo "<pre>";
-                print_r($_GET["page"]);
-                echo "</pre>";
+//                echo "<pre>";
+//                print_r($_GET["page"]);
+//                echo "</pre>";
 
             }
             if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
@@ -1586,6 +1583,34 @@ public function actionCategorias2(){
           $response["status"] = "error";
           
         }
+        
+        echo CJSON::encode($response);
+        
+    }
+    
+    /**
+     * Retorna el codigo html para un modal especificado en la variable POST "modal"
+     */
+    public function actionModalAjax() {
+        Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+                                
+        if($_POST["modal"] == "perfiles"){
+            
+           $response["data"] =  $this->renderPartial("modalAjax", array(
+              "modal" => $_POST["modal"],
+           ),
+                   true, true);
+            
+        }     
         
         echo CJSON::encode($response);
         

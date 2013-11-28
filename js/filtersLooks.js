@@ -24,6 +24,7 @@
 
 //Variables locales para el perfil actual
  var valores = Array();
+ var perfilActivo = false;
 
 /*Poner en cero los valores*/
 function limpiarLocal(){
@@ -399,27 +400,33 @@ function clickPerfil(idPerfil){
     //e.preventDefault();
     //getFilterByClick($(this).prop("id"));  
     $("#perfil_propio").val("0");
+    perfilActivo = true;
     getFilterByClick(idPerfil);  
     $(".alert").fadeOut('slow');
     
 }
 
 //Al hacer click en el boton Looks para *
-function clickPersonal(){
+function clickPersonal(){    
     
-    console.log("Personal");
     $("#btnMatch").addClass("btn-danger");
     $("#btnTodos").removeClass("btn-danger");
+    if(!perfilActivo){
+        $("#perfil_propio").val("1");
+    }
+        
     refresh(true);
     
 }
+
+
 //Al hacer click en el boton Todos los Looks
 function clickTodos(){
     
     console.log("Todos");
     $("#btnTodos").addClass("btn-danger");
     $("#btnMatch").removeClass("btn-danger");
-    
+    $("#perfil_propio").val("0");
     refresh(true); 
     
 }
@@ -441,16 +448,18 @@ $(function() {
 
     });
 
-    //Boton guardar y buscar - FIltro nuevo
+    //Boton guardar y buscar - FIltro nuevo (boton del modal)
     $('#save-search').click(function(e) { 
-        
+        $("#perfil_propio").val("0"); //activar otro perfil
+        perfilActivo = true;
         saveFilter(true);
         
     });
     
-    $('#save').click(function(e) {        
-        saveFilter(false);
-    }); 
+    //Boton guardar cuando se edita un perfil en el modal
+//    $('#save').click(function(e) {        
+//        saveFilter(false);
+//    }); 
     
     
     

@@ -1,5 +1,5 @@
 <?php
-
+ 
 class TiendaController extends Controller
 {
 	
@@ -13,12 +13,12 @@ class TiendaController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
-                                    'segunda','look','ocasiones','modal','doble', 'crearFiltro',
+                                    'segunda','ocasiones','modal','doble', 'crearFiltro',
                                     'getFilter','upa'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index'),
+				'actions'=>array('index', 'look', 'redirect', 'modalAjax'), //Se cambió el action look de * para acá.
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -36,7 +36,8 @@ class TiendaController extends Controller
 	{
 		/*$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
-		$producto->status = 1; // no borrados
+		$producto->status = 1; actionindex
+		 * // no borrados
 		$producto->estado = 0; // solo productos activos
 		
 		$a ="a"; 
@@ -104,6 +105,7 @@ class TiendaController extends Controller
 				'pages'=>$pages,
 				'dataProvider'=>$dataProvider,
 				'categorias'=>$categorias,
+	
 				
 
 		));	
@@ -116,26 +118,29 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
-		if(isset(Yii::app()->session['idColor'])){
-			unset(Yii::app()->session['idColor']);
+		if(isset(Yii::app()->session['f_color'])){
+			unset(Yii::app()->session['f_color']);
 			
 		}
-		if(isset(Yii::app()->session['idact'])){
-			unset(Yii::app()->session['idact']);
+		
+		if(isset(Yii::app()->session['f_marca'])){
+			unset(Yii::app()->session['f_marca']);
 			
 		}
-		if(isset(Yii::app()->session['bsf'])){
-			unset(Yii::app()->session['bsf']);
+		
+		if(isset(Yii::app()->session['max'])){
+			unset(Yii::app()->session['max']);
 			
 		}
-		if(isset(Yii::app()->session['minpr'])){
-			unset(Yii::app()->session['minpr']);
+		if(isset(Yii::app()->session['min'])){
+			unset(Yii::app()->session['min']);
 			
 		}
-		if(isset(Yii::app()->session['maxpr'])){
-			unset(Yii::app()->session['maxpr']);
+		if(isset(Yii::app()->session['p_index'])){
+			unset(Yii::app()->session['p_index']);
 			
 		}
+		
 		$a ="a"; 
 		
 		
@@ -159,6 +164,85 @@ class TiendaController extends Controller
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
 		
+		
+		
+		
+  
+    	if(isset($_POST['colorhid'])){
+    		
+				
+    			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+				
+				 
+			if($_POST['colorhid']!=0){
+			
+				Yii::app()->session['f_color'] = $_POST['colorhid'];
+			
+			}
+			if($_POST['cathid']!=0){
+			
+				Yii::app()->session['f_cat'] = $_POST['cathid'];
+			
+			}
+			if($_POST['marcahid']!=0){
+			
+				Yii::app()->session['f_marca'] = $_POST['marcahid'];
+			
+			}
+			if($_POST['preciohid']<4){
+			
+				
+				Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
+				Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
+				Yii::app()->session['p_index']=$_POST['preciohid'];
+				
+				
+			}
+			
+			
+			
+			$criteria = $producto->nueva2($a);
+			$total=Producto::model()->count($criteria);
+			if($total>0){
+			
+		
+			$pages = new CPagination($total);
+			
+			$pages->pageSize = $total;
+			
+			$pages->applyLimit($criteria);
+	
+			
+			
+			 
+			$dataProvider = Producto::model()->findAll($criteria);
+    		  echo CJSON::encode(array(  
+                    'status' => 'success',
+                    //'condicion' => $total,
+                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
+                        'pages' => $pages, 'total'=>$total), true,true))); 
+			}
+			else{
+					
+				echo CJSON::encode(array(  
+                    'status' => 'success',
+                    //'condicion' => $total,
+                    'div' => "<span class='empty'>No se encontraron resultados para esta búsqueda.  </span>")); 
+				 
+			}
+		}
+		else{
+			
 		$criteria = $producto->nueva2($a);
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);
@@ -169,52 +253,18 @@ class TiendaController extends Controller
 	
 		$marcas=Marca::model()->findAll();
 		$colores=Color::model()->findAll();
-		
-		
-  
-    	if(isset($_POST['colorhid'])){
-    			if(isset(Yii::app()->session['f_color'])){
-    				unset(Yii::app()->session['f_color']);
-    			}
-    			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
-				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
-				
-			if($_POST['colorhid']!=0){
-				Yii::app()->session['f_color'] = $_POST['colorhid'];
-			}
-			if($_POST['marcahid']!=0){
-				Yii::app()->session['f_color'] = $_POST['marcahid'];
-			}
-			if($_POST['preciohid']<4){
-				Yii::app()->session['f_color'] = $_POST['preciohid'];
-			}
+			 
 			
-			$criteria = $producto->nueva2($a);
-			$dataProvider = Producto::model()->findAll($criteria);
-    		  echo CJSON::encode(array(
-                    'status' => 'success',
-                    //'condicion' => $total,
-                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages), true, true)));
-		}
-		else{
 		$this->render('index_new',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
 		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-		'pages'=>$pages
+		'pages'=>$pages,
+		'total'=>$total,
 		));	
 		}	
 	}
-	
+	 
 	
 		public function actionFiltrar()
 	{
@@ -826,10 +876,8 @@ public function actionCategorias2(){
 		
             $filtroPerfil = false;
             
-            if(isset($_POST['Profile'])){
-                
-                foreach ($_POST['Profile'] as $campo){
-                    
+            if(isset($_POST['Profile'])){                
+                foreach ($_POST['Profile'] as $campo){                    
                     if(!empty($campo)){
                        $filtroPerfil = true;
                        break;
@@ -837,33 +885,86 @@ public function actionCategorias2(){
                 }        
             }
             
+            if(isset($_GET["page"])){
+//                echo "<pre>";
+//                print_r($_GET["page"]);
+//                echo "</pre>";
 
+            }
             if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
-                    || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])) 
+                    || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
+                || isset($_POST['perfil_propio'])) 
             {
 
-                $criteria = new CDbCriteria;
+                $criteria = new CDbCriteria;                
+                   
+                //Si no se resetearon - revisar lo que viene de los inputs 
+                if(!isset($_POST['reset'])){
+                                     
+                    if (isset($_POST['check_ocasiones'])) {
+                        $condicion = "";
+                        $criteria->with = array('categorias');
+                        $criteria->together = true;
+                        foreach ($_POST['check_ocasiones'] as $categoria_id)
+                            $condicion .= "categorias_categorias.categoria_id = " . $categoria_id . " OR ";
+                        $condicion = substr($condicion, 0, -3);
+                        $criteria->addCondition($condicion);
+                    }
+                    if (isset($_POST['check_shopper'])) {
+                        $condicion = "";
+                        foreach ($_POST['check_shopper'] as $user_id)
+                            $condicion .= "user_id = " . $user_id . " OR ";
+                        $condicion = substr($condicion, 0, -3);
+                        $criteria->addCondition($condicion);
+                    }                
 
+                    if (isset($_POST['precios']) && $_POST['precios'] != "") {
 
-                if (isset($_POST['check_ocasiones'])) {
-                    $condicion = "";
-                    $criteria->with = array('categorias');
-                    $criteria->together = true;
-                    foreach ($_POST['check_ocasiones'] as $categoria_id)
-                        $condicion .= "categorias_categorias.categoria_id = " . $categoria_id . " OR ";
-                    $condicion = substr($condicion, 0, -3);
-                    $criteria->addCondition($condicion);
+                        $limits = explode("-", $_POST['precios']);
+
+                        $looks = Look::model()->findAll("status = 2");
+
+                        $inValues = array();                    
+
+                        foreach ($looks as $look) {
+
+                            $price = $look->getPrecio(false);
+
+                            if($price >= $limits[0] && $price <= $limits[1])
+                            {
+                                $inValues[] = $look->id;
+                            }
+                        }                    
+
+                        $criteria->addInCondition('t.id', $inValues);
+                   }  
                 }
-                if (isset($_POST['check_shopper'])) {
-                    $condicion = "";
-                    foreach ($_POST['check_shopper'] as $user_id)
-                        $condicion .= "user_id = " . $user_id . " OR ";
-                    $condicion = substr($condicion, 0, -3);
-                    $criteria->addCondition($condicion);
-                }
-
-                if ($filtroPerfil) {
+                
+                if($_POST['perfil_propio'] == 1){
+                    
                     $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    
+                    $looks = new Look();
+                    $ids = $looks->match($userTmp);
+                    $ids = $ids->getData();
+
+                    $inValues = array();
+
+                    foreach ($ids as $row) {
+                        
+                        $look = Look::model()->findByPk($row['id']);
+                        if($look->matchOcaciones($userTmp)){
+                            $inValues[] = $row["id"];
+                        }                        
+                        
+                    }
+
+                    $criteria->addInCondition('t.id', $inValues);
+                    
+                }else if ($filtroPerfil) {
+                    
+                    $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    
                     $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
                     $looks = new Look();
                     $ids = $looks->match($userTmp);
@@ -877,29 +978,6 @@ public function actionCategorias2(){
 
                     $criteria->addInCondition('t.id', $inValues);                         
                 }
-
-                if (isset($_POST['precios']) && $_POST['precios'] != "") {
-                    
-                    $limits = explode("-", $_POST['precios']);
-                    
-                    $looks = Look::model()->findAll("status = 2");
-                    
-                    $inValues = array();                    
-
-                    foreach ($looks as $look) {
-                        
-                        $price = $look->getPrecio(false);
-                        
-                        if($price >= $limits[0] && $price <= $limits[1])
-                        {
-                            $inValues[] = $look->id;
-                        }
-                        
-                    }                    
-
-                    $criteria->addInCondition('t.id', $inValues);
-               }
-                   
                
                 $criteria->compare('status', 2);
                 $total = Look::model()->count($criteria);
@@ -930,7 +1008,29 @@ public function actionCategorias2(){
                 if (isset($_GET['search']))
                     $search = $_GET['search'];
 
-                $criteria = new CDbCriteria;
+                $criteria = new CDbCriteria;                
+                
+                //Para mostrar por defecto los looks recomendados para el usuario
+                //siempre la primera vez que se cargue la página
+                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    
+                $looks = new Look();
+                $ids = $looks->match($userTmp);
+                $ids = $ids->getData();
+
+                $inValues = array();
+
+                foreach ($ids as $row) {
+
+                    $look = Look::model()->findByPk($row['id']);
+                    if($look->matchOcaciones($userTmp)){
+                        $inValues[] = $row["id"];
+                    }                        
+
+                }
+
+                $criteria->addInCondition('t.id', $inValues);
+                
                 $criteria->compare('title', $search, true, 'OR');
                 $criteria->compare('description', $search, true, 'OR');
                 $criteria->compare('status', 2);
@@ -1450,6 +1550,7 @@ public function actionCategorias2(){
                    $response['filter']  = $filter->filterProfiles[0]->attributes;
                    $response['status'] = 'success';
                    $response['message'] = 'Filtro encontrado';
+                   $response['name'] = $filter->name;
                     
                 }else{
                   $response['status'] = 'error';
@@ -1469,7 +1570,58 @@ public function actionCategorias2(){
         break;
     }
 
-       
+    //Funcion que se llama cuando se intenta comprar para alguien mas desde afuera de la tienda
+    public function actionRedirect() {
+        
+        $response = array();
+        $response["status"] = "success";
+        
+        if(isset($_POST["agregar"])){            
+         
+          Yii::app()->session["modalOn"] = true;
+          //$this->redirect("look");
+          
+        }elseif(isset($_POST["perfil"])) {
+            
+            Yii::app()->session["profileOn"] = $_POST["perfil"];
+            
+        }else{
+            
+          $response["status"] = "error";
+          
+        }
+        
+        echo CJSON::encode($response);
+        
+    }
+    
+    /**
+     * Retorna el codigo html para un modal especificado en la variable POST "modal"
+     */
+    public function actionModalAjax() {
+        Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+                                
+        if($_POST["modal"] == "perfiles"){
+            
+           $response["data"] =  $this->renderPartial("modalAjax", array(
+              "modal" => $_POST["modal"],
+           ),
+                   true, true);
+            
+        }     
+        
+        echo CJSON::encode($response);
+        
+    }
        
         
 }

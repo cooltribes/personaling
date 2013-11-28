@@ -4,7 +4,7 @@
  */
 
 /*
- * FALTA
+ * 
  * poner icono de loading 
  * Poner titulo en modal
  * campos en class error cuando intente guardar con campos en blanco.
@@ -24,7 +24,6 @@
 
 //Variables locales para el perfil actual
  var valores = Array();
- var perfilActivo = false;
 
 /*Poner en cero los valores*/
 function limpiarLocal(){
@@ -190,8 +189,7 @@ function getFilterByClick(idPerfil){
                     dataType: 'json',
                     data: { 'id':ID },
                     beforeSend: function(){
-                        
-                        $("body").addClass("aplicacion-cargando");
+                        $("body").addClass("aplicacion-cargando");                       
                         
                     },
                     complete: function(){
@@ -218,21 +216,6 @@ function getFilterByClick(idPerfil){
                             //Mostrar el boton de editar
                             $('a.editar-filtro').parent('div').show(); 
                             
-                            //Cambiar label del boton looks para mi
-                            $("#btnMatch").html("Looks para <b>" + data.name + "</b>");
-                            $("#btnMatch").addClass("btn-danger");
-                            $("#btnTodos").removeClass("btn-danger");
-                            
-                            //poner el nombre en el navbar
-                            //var children = $("li#dropdownUser").children();
-                            
-                            if(data.name.length > 7){
-                                data.name = data.name.substring(0,7);
-                                data.name = data.name.concat("...");
-                            }
-                            
-                            $("li#dropdownUser span#userName").text(data.name);
-                            console.log(data.name);
                             //Buscar
                             refresh();           
                         }
@@ -398,65 +381,6 @@ function showAlert(type, message){
    $("html, body").animate({ scrollTop: 0 }, "slow");
 }
 
-//al hacer click en "agregar perfil + "
-function clickAgregar(){
-    clearFields();
-    activarModalNuevo(true);
-    $(".alert").fadeOut('slow');
-}
-
-//Al hacer click en un perfil creado
-function clickPerfil(idPerfil){
-    
-    //e.preventDefault();
-    //getFilterByClick($(this).prop("id"));  
-    $("#perfil_propio").val("0");
-    perfilActivo = true;
-    getFilterByClick(idPerfil);  
-    $(".alert").fadeOut('slow');
-    
-    
-    
-}
-
-//Al hacer click en el boton Looks para *
-function clickPersonal(){    
-    
-    $("#btnMatch").addClass("btn-danger");
-    $("#btnTodos").removeClass("btn-danger");
-    
-    if(!perfilActivo){
-        $("#perfil_propio").val("1");
-    }
-        
-    //desmarcar los filtros de ocasiones y shopper, ocultar divs., desmarcar precios.
-    $('#div_ocasiones input[type=checkbox]').attr('checked', false);
-    $('#div_shopper input[type=checkbox]').attr('checked', false);
-    
-    $('#div_ocasiones').hide();
-    $('#div_shopper').hide();
-    
-    //reset precios
-    $("#price-ranges a.price-filter").parent().removeClass("active-range");
-    $("#rango_actual").val("");
-        
-    refresh(true);
-    
-}
-
-
-//Al hacer click en el boton Todos los Looks
-function clickTodos(){
-    
-    console.log("Todos");
-    $("#btnTodos").addClass("btn-danger");
-    $("#btnMatch").removeClass("btn-danger");
-    $("#perfil_propio").val("0");
-    refresh(true); 
-    
-}
-
-
 $(function() {
     
     //$("#modalFiltroPerfil").modal('show');
@@ -473,18 +397,16 @@ $(function() {
 
     });
 
-    //Boton guardar y buscar - FIltro nuevo (boton del modal)
+    //Boton guardar y buscar - FIltro nuevo
     $('#save-search').click(function(e) { 
-        $("#perfil_propio").val("0"); //activar otro perfil
-        perfilActivo = true;
+        
         saveFilter(true);
         
     });
     
-    //Boton guardar cuando se edita un perfil en el modal
-//    $('#save').click(function(e) {        
-//        saveFilter(false);
-//    }); 
+    $('#save').click(function(e) {        
+        saveFilter(false);
+    }); 
     
     
     
@@ -514,6 +436,15 @@ $(function() {
         
     });
     
+     //Elemento li del menu de usuario para agregar un nuevo filtro
+    $('#agregar-perfil').click(function(e){
+        clearFields();
+        
+        activarModalNuevo(true);
+        $(".alert").fadeOut('slow');
+        
+    });
+    
     
     $(".alert").alert();
     $(".alert .close").click(function(){
@@ -521,11 +452,12 @@ $(function() {
     });
     
     
-    //FIltrar por precios
-    
     $("#price-ranges a.price-filter").click(function(e){
+
+        
         
         var id = $(this).attr("id");
+        //console.log(id);
 
         if($("#rango_actual").val() !== id){
             
@@ -533,19 +465,27 @@ $(function() {
             $(this).parent().addClass("active-range");
             $("#rango_actual").val(id); 
             
+            //console.log($("#rango_actual .rango_actual").val());
+            
             refresh();
         }
+
+
         
     });
     
+    //click en los perfiles del dropdown
+    $("#dropdownUser a.sub_perfil_item").click(function(e){
+        e.preventDefault();
+//        console.log("Click");
+//        console.log($(this).prop("id"));
+        getFilterByClick($(this).prop("id"));  
+        $(".alert").fadeOut('slow');
+    });
     
     
-    //Click Boton todos los looks
-//    $('.crear-filtro').click(function(e){
-//        clearFields();
-//        activarModalNuevo(true);        
-//        $(".alert").fadeOut('slow');
-//    });
-    
-    
+});
+
+$(document).ready(function(){
+   
 });

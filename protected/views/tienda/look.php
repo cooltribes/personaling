@@ -1,12 +1,45 @@
 <?php
 $this->breadcrumbs=array(
-  'Tu Personal Shopper' =>array('site/personal'),
+  'Tu Personal Shopper' =>array('tienda/look'),
   'Todos los looks',
 );
 ?>
 <div class="container">
   <div class="page-header">
-    <h1>Todos los looks</h1>
+<!--    <h1>Todos los looks</h1>-->
+
+<div class="row-fluid margin_bottom_medium">
+    <div class="span6 text_align_right">
+        <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'label' => 'Looks para Mí',
+            'buttonType' => 'button',
+            'type' => 'danger',
+            'size' => 'large',
+            'htmlOptions' => array(
+                'id' => 'btnMatch',
+                'onclick' => 'js:clickPersonal()',
+            ),
+                    )); ?>
+        
+    </div>
+    <div class="span6">
+        <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'label' => 'Todos los Looks',
+            'buttonType' => 'button',
+            //'type' => 'danger',
+            'size' => 'large',
+            //'disabled' => true,
+            'htmlOptions' => array(
+                'id' => 'btnTodos',
+                'onclick' => 'js:clickTodos()',
+            ),
+                    )); ?>
+        
+    </div>
+</div>
+
+
+
   </div>
   <div class="alert in" id="alert-msg" style="display: none">
     <button type="button" class="close" >&times;</button> 
@@ -137,9 +170,9 @@ $this->breadcrumbs=array(
           
             <!-- ******   Filtrar por perfil  *****    -->
           
-          <?php if(Yii::app()->user->id){ ?>  
+          <?php if(Yii::app()->user->id && false){ ?>  
           <li>
-                   <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)),
+                   <?php echo CHtml::dropDownList("Filtros", "", CHtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)),
                 "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters', 'class'=>'input-medium',
                     'style' => 'margin-bottom: 0;margin-top: 5px;')) ?>          	
           </li>
@@ -211,7 +244,8 @@ $this->breadcrumbs=array(
     </div>
     <input type="hidden" value="" id="ocasion_actual" />
     
-    <input id="rango_actual" type="hidden" value="" />     
+    <input type="hidden" id="rango_actual" name="precios" value="" />     
+    <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
     
     
     <div class="navbar-inner sub_menu">
@@ -240,7 +274,7 @@ $this->breadcrumbs=array(
     </div>
   </div>
 </div>
-
+<div id="modalAjax"></div>
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
 <?php 
@@ -273,13 +307,29 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                                 'style' => "display: none;",
                             
                             ))?>
-
+<style>
+    #modalFiltroPerfil legend{
+        line-height: 32px;
+        margin-bottom: 0px;
+    }
+    
+    #modalFiltroPerfil.in > .modal-body {
+        max-height: 657px;
+    }
+   
+</style>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Perfil Corporal</h3>
+        <h3 id="myModalLabel">Crea un perfil para alguien más (Una amiga, tu mamá, etc.)</h3>
     </div>
     <div class="modal-body ">
-        
+      <div class="control-group form-inline" >
+              <div id="campo-nombre">
+                  <?php echo CHtml::label("¿Para quién vas a comprar?", "profile-name", array('class' => 'control-label margin_right_small')); ?>
+                  <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Escribe su nombre')); ?>
+                  <?php //echo CHtml::error($model, $attribute)?>
+              </div>
+          </div>   
       <?php 
       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           'id' => 'newFilter-form',
@@ -295,8 +345,11 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
       ));
       ?>
       <?php // echo $form->errorSummary(array($modelUser,$profile)); ?>
-      <fieldset> 
-        
+      <fieldset>    
+          <legend>
+              ¿Cuáles son sus características?
+          </legend>  
+              
        <div class="control-group" >
               <div class="controls row-fluid" id="caracteristicas">
                 <?php $clase = (isset($editar) && $editar)?'control-group span2':'span2'; ?>
@@ -399,12 +452,12 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <?php $this->endWidget(); ?>
         
   <div class="modal-footer margin_top_medium_minus">
-    <div class="span6">
+<!--    <div class="span6">
       <div class="control-group form-inline  pull-left" >
           <div id="campo-nombre">
-            <!--[if IE]>
-              <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
-            <![endif]-->
+            [if IE]>
+            <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
+            <![endif]
             <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Nombre del perfil')); ?>
             <?php //echo CHtml::error($model, $attribute)?>
 
@@ -424,8 +477,18 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
       </div>         
     
-    </div>
-    <div class="span2">
+    </div>-->
+    <div class="">
+         <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'button',
+                'label' => 'Guardar y Seleccionar Perfil',
+                'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size' => 'large', // null, 'large', 'small' or 'mini'
+                //'block' => 'true',
+                'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')
+            ));          
+          ?> 
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
   </div>                    
@@ -452,14 +515,14 @@ function refresh(reset)
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
     cargarLocal();
-    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual').serialize();
-    datosRefresh += '&precios=' + $('#rango_actual').val();
+    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual, #perfil_propio').serialize();
+        
+    //datosRefresh += '&precios=' + $('#rango_actual').val();    
     
-    console.log(datosRefresh);
     if(reset){
         datosRefresh += '&reset=true';
     }
-    
+    console.log(datosRefresh);
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
             'data'=> "js:datosRefresh",
@@ -523,51 +586,74 @@ function moveScroller() {
     $(window).scroll(move);
     move();
 }
-       function encantar(idLook)
-       {
-           //var idLook = $("#idLook").attr("value");
-           //alert("id:"+idLook);
 
-           $.ajax({
-            type: "post",
-            dataType: 'json',
-            url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
-            data: { 'idLook':idLook},
-            success: function (data) {
+function encantar(idLook)
+{
+   //var idLook = $("#idLook").attr("value");
+   //alert("id:"+idLook);
 
-                if(data.mensaje=="ok")
-                {
-                    var a = "♥";
+   $.ajax({
+    type: "post",
+    dataType: 'json',
+    url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
+    data: { 'idLook':idLook},
+    success: function (data) {
 
-                    //$("#meEncanta").removeClass("btn-link");
-                    $("#meEncanta"+idLook).addClass("btn-link-active");
-                    $("span#like"+idLook).text(a);
+        if(data.mensaje=="ok")
+        {
+            var a = "♥";
 
-                }
+            //$("#meEncanta").removeClass("btn-link");
+            $("#meEncanta"+idLook).addClass("btn-link-active");
+            $("span#like"+idLook).text(a);
 
-                if(data.mensaje=="no")
-                {
-                    alert("Debe primero ingresar como usuario");
-                    //window.location="../../user/login";
-                }
+        }
 
-                if(data.mensaje=="borrado")
-                {
-                    var a = "♡";
+        if(data.mensaje=="no")
+        {
+            alert("Debe primero ingresar como usuario");
+            //window.location="../../user/login";
+        }
 
-                    //alert("borrando");
+        if(data.mensaje=="borrado")
+        {
+            var a = "♡";
 
-                    $("#meEncanta"+idLook).removeClass("btn-link-active");
-                    $("span#like"+idLook).text(a);
+            //alert("borrando");
 
-                }
+            $("#meEncanta"+idLook).removeClass("btn-link-active");
+            $("span#like"+idLook).text(a);
 
-               }//success
-           })
+        }
+
+       }//success
+   })
+
+}
+
+$(document).ready(function(){
+
+    //Si venia de otro lugar para crear un perfil
+    <?php if(isset(Yii::app()->session["modalOn"])){ 
+            unset(Yii::app()->session["modalOn"]);
+        ?>
+        $("#modalFiltroPerfil").modal("show");
+    <?php } ?>
+        
+    <?php if(isset(Yii::app()->session["profileOn"])){ ?>
+         var idElem = "<?php echo Yii::app()->session["profileOn"] ?>";
+         
+         //$("#dropdownUser a.sub_perfil_item#"+idElem).click();        
+         clickPerfil(idElem);
+         //console.log("ready");
+         
+    <?php unset(Yii::app()->session["profileOn"]);    
+        } ?>
+});
 
 
-       }
 </script>
+
 <script type="text/javascript"> 
   $(function() {
     moveScroller();

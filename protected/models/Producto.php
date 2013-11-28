@@ -712,17 +712,30 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}
 		
 		if(isset(Yii::app()->session['f_color'])){
-			$criteria->addCondition(' color_id = '.Yii::app()->session['f_color']);
-			break;
+			$criteria->addCondition('preciotallacolor.color_id = '.Yii::app()->session['f_color']);
+		}
+		
+		if(isset(Yii::app()->session['f_marca'])){
+			$criteria->addCondition('marca_id = '.Yii::app()->session['f_marca']);
+		}
+	
+	
 		 
-		} 
+
 		$criteria->addCondition('precioDescuento != ""');
 		$criteria->addCondition('orden = 1');
 		
 		$criteria->addCondition('cantidad > 0');
-		
+			
 		// $criteria->order = "t.id ASC";
-		$criteria->order = "fecha DESC";
+		if(isset(Yii::app()->session['p_index'])){
+			$criteria->addCondition('precioVenta > '.Yii::app()->session['min']);
+			$criteria->addCondition('precioVenta < '.Yii::app()->session['max']);
+			$criteria->order = "precioVenta ASC";
+		}
+		else
+			$criteria->order = "fecha DESC";
+		
 		$criteria->group = "t.id";
 		$criteria->together = true;
 		

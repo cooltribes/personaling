@@ -1,4 +1,13 @@
 
+<style>
+    div.infinite_navigation{
+        display:none;
+    }
+</style>
+
+
+
+<div class="items" id="catalogo">
    
       	
 <?php
@@ -122,9 +131,24 @@ $prePub="";
 
 ?>
 </div>
+
 <?php
 
-endforeach;
+endforeach;?>
+</div>
+
+
+<?php 
+$this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
+	    'contentSelector' => '#catalogo',
+	    'itemSelector' => 'div.div_productos',
+	    'loadingText' => 'Consultando Productos',
+	    'donetext' => 'No more',
+
+	  //  'afterAjaxUpdate' => 'alert("hola");',
+	    'pages' => $pages,
+	)); 
+			
 
 
 ?>

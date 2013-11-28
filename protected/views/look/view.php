@@ -1,8 +1,32 @@
 <?php
-// $this->breadcrumbs=array(
-    //'Look',
-// );
+$this->breadcrumbs=array(
+  'Todos los looks'=>array('tienda/look'),
+  'Look'
+);
+$this->pageTitle=Yii::app()->name . " - " . $model->title;;
+  Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title.' - '.$model->getPrecio().' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+  Yii::app()->clientScript->registerMetaTag($model->description.' Creado por: '.$model->user->profile->first_name.' '.$model->user->profile->last_name, null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+
+  //Metas de Twitter CARD ON
+
+  Yii::app()->clientScript->registerMetaTag('product', 'twitter:card', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->title, 'twitter:title', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->description, 'twitter:description', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->getPrecio().' Bs.', 'twitter:data1', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('Subtotal', 'twitter:label1', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->user->profile->first_name.' '.$model->user->profile->last_name, 'twitter:data2', null, null, null);  
+  Yii::app()->clientScript->registerMetaTag('Creado por', 'twitter:label2', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('personaling.com', 'twitter:domain', null, null, null);
+
+  //Metas de Twitter CARD OFF
+
+
 ?>
+
+
 
 <div class="container margin_top_small" id="carrito_compras">
   <div class="row">
@@ -14,7 +38,7 @@
             <div class="span6">
                 <input id="idLook" type="hidden" value="<?php echo $model->id ?>" />
               <h1><?php echo $model->title; ?></h1>
-              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> | 100% Disponible</small></p>
+              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> <!-- | 100% Disponible --></small></p>
             </div>
             <div class="span2 share_like">
               <div class="pull-right">
@@ -51,20 +75,23 @@
             </div>
           </div>
           <div class="row-fluid">
+            <?php Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook
+                  //Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), 'twitter:image:src', null, null, null); //Registro de meta para Card de Twitter
 
+            ?>
             <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
 
           </div>
           <div class="hidden-phone row-fluid vcard">
             <div class="span2 avatar ">
-            <a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$model->user->id; ?>" title="perfil" class="url">
+            <a href="<?php $perfil = $model->user->profile; echo $perfil->getUrl(); ?>" title="perfil" class="url">
             <?php echo CHtml::image($model->user->getAvatar(),'Avatar',array("width"=>"84", "class"=>"pull-left photo  img-circle")); //,"height"=>"270" ?>
             </a>
             </div>
             <div class="span5 braker_right row-fluid">
             <div class="span9">
             <span class="muted">Look creado por: </span>
-              <h5><a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$model->user->id; ?>" title="perfil" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
+              <h5><a href="<?php echo $perfil->getUrl(); ?>" title="perfil" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
               <p  class="note"><strong>Bio</strong>: <?php echo $model->user->profile->bio; ?> </p>
             </div>
             <div class="span3">
@@ -72,13 +99,14 @@
             </div>
             </div>
             <!-- Marcas en el look ON -->
-            <div class="span5 margin_top_small">
+            <div class="span5 marcas">
               
               
               <ul class="unstyled">
                 <?php foreach ($model->getMarcas() as $marca){ ?>
-	                 <li class="span3">  
-	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60)); ?>
+	                 <li >  
+	                  	<?php echo CHtml::image($marca->getImageUrl(true),$marca->nombre, array('width'=>60, 'height'=>60));
+                      ?>
 	                </li>                	
                 <?php } ?>              
                                                       
@@ -122,26 +150,11 @@
 
                             'beforeSend' => "function( request )
                                  {
-                                   /*
-                                   $('#btn-comprar').attr('disabled', true);
-                                   var color_id = '';
-                                   $('.colores').each(function(index){
-                                           color_id += $(this).val()+',';
-                                   });
-                                   color_id = color_id.substring(0, color_id.length-1);
-                                   var talla_id = '';
-                                   $('.tallas').each(function(index){
-                                           talla_id +=$(this).val()+ ',';
-                                   });
-                                   talla_id = talla_id.substring(0, talla_id.length-1);
-                                   */
-                                   //alert(talla_id);
-                                   //this.data += '&talla_id='+talla_id+'color_id='+color_id;
-
-
-                                   //return false;
                                    
+                                   
+                                                                      var entro = true;	
                                    if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
+                                   		entro = false;
                                         alert('debe seleccionar por lo menos una prenda');
                                         return false;
                                    }
@@ -150,17 +163,19 @@
                                            if ($(this).val()==''){
 
                                                if ($(this).parent().prev('input').prop('checked')){
-                                                   alert('debe seleccionar todas las tallas');
+                                               		entro = false;
+                                                   bootbox.alert('debe seleccionar todas las tallas');
                                                    return false;
                                                }
                                            }
 
                                    });
-                                   if ($('#buttonGuardar').attr('disabled')==true)
-                                   		return false;
-                                   $('#buttonGuardar').attr('disabled', true);
-                                  // return false;
-
+                                   if (entro){
+                                   		if ($('#buttonGuardar').attr('disabled')==true)
+                                   			return false;
+                                   		$('#buttonGuardar').attr('disabled', true);
+								   }
+                                   
                                  }",
 
 
@@ -210,7 +225,8 @@
               </div>
             </div>
           </div>
-          <p class="muted t_small CAPS braker_bottom">Selecciona las tallas </p>
+          <p class="muted t_small CAPS braker_bottom">Selecciona las tallas </p> 
+          <p class="muted t_small ">Puedes comprar por separado las prendas que te gustan</p>
 
           <!-- Productos del look ON -->
           <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
@@ -225,6 +241,7 @@
                           foreach ($model->lookhasproducto as $lookhasproducto){
                               // $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
                               $image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('type'=>'thumb'));
+                            Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$image_url, null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook                              
             ?>
               <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto">
                 <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />
@@ -248,7 +265,7 @@
                 <div class="metadata_top">
                   <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); ?> </div>
+                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); ?> </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
@@ -270,9 +287,101 @@
           <?php $this->endWidget(); ?>
           <!-- Productos del look OFF -->
 <hr/>
+          <div class="row call2action">
+                <?php
+
+         $this->widget('bootstrap.widgets.TbButton', array(
+                    'buttonType'=>'ajaxButton',
+                    'id'=>'btn-compra', 
+                    'type'=>'warning',
+                    'label'=>'Comprar',
+                    'block'=>'true',
+                       'size'=> 'large',
+                   // 'url'=>array('producto/tallacolor'),
+                   'url'=> CController::createUrl('bolsa/agregar') ,
+                    'htmlOptions'=>array('id'=>'buttonGuardar','class'=>'span2'),
+                    'ajaxOptions'=>array(
+                            'type' => 'POST',
+                            'data'=> "js:$('#producto-form').serialize()",
+
+                            'beforeSend' => "function( request )
+                                 {
+                                   
+                                   
+                                                                      var entro = true; 
+                                   if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
+                                      entro = false;
+                                        alert('debe seleccionar por lo menos una prenda');
+                                        return false;
+                                   }
+
+                                   $('.tallas').each(function(){
+                                           if ($(this).val()==''){
+
+                                               if ($(this).parent().prev('input').prop('checked')){
+                                                  entro = false;
+                                                   bootbox.alert('debe seleccionar todas las tallas');
+                                                   return false;
+                                               }
+                                           }
+
+                                   });
+                                   if (entro){
+                                      if ($('#buttonGuardar').attr('disabled')==true)
+                                        return false;
+                                      $('#buttonGuardar').attr('disabled', true);
+                   }
+                                   
+                                 }",
+
+
+                             'success' => "function( data )
+                                  {
+
+                                     if(data.indexOf('ok')>=0)
+                                    {
+                                        window.location='".$this->createUrl('bolsa/index')."';
+                                    }
+
+
+                                 //alert(data);
+                                  /*
+                                    // handle return data
+                                   // alert( data );
+                                   // $('#table_tallacolor').append(data);
+                                   data = JSON.parse( data );
+                                    if(data.status=='success'){
+                                        // $('#formResult').html('form submitted successfully.');
+                                        //alert('si');
+                                        // $('#Tallacolor-Form')[0].reset();
+                                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+                                    }
+                                         else{
+                                             id = data.id;
+                                             delete data['id'];
+
+                                        $.each(data, function(key, val) {
+                                            key_tmp = key.split('_');
+                                            key_tmp.splice(1,0,id);
+                                            key = key_tmp.join('_');
+
+                                            //alert('#Tallacolor-Form #'+key+'_em_');
+
+                                        $('#Tallacolor-Form #'+key+'_em_').text(val);
+                                        $('#Tallacolor-Form #'+key+'_em_').show();
+                                        });
+                                        }
+                                         */
+                                  }",
+                                //  'data'=>array('id'=>$model->id),
+                    ),
+                ));
+
+                ?>
+          </div>
           <div class="braker_horz_top_1">            
            
-            <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
+            <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y", strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix row-fluid">  
           <?php
@@ -282,12 +391,12 @@
             if(isset($like)) // le ha dado like 
 				    { ?>
           
-          		<div class="span4"><a class="btn-mini  btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a>
+          		<div class="span6"><a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a>
             <?php
 				    }
 			      else {?>
 			       
-			       <div class=" span4"><a class="btn-mini" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a> 
+			       <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a> 
       			<?php
       				}
       			?>	
@@ -296,106 +405,114 @@
           
           	
           </div>            
-          <!-- <div class=""> -->
-          <div class="span3" id="btn-facebook" >
-            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+          <!-- AddThis Button BEGIN -->
+          <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+          <a class="addthis_button_facebook" ></a>
+          <a class="addthis_button_twitter" tw:via="personaling"></a>
+          <a class="addthis_button_pinterest_share" ></a>
           </div>
-          <div  class="span3">
-          <a class="addthis_button_tweet"></a>
-          </div>
-          <div class="span2">
-          <a class="addthis_button_pinterest_pinit"></a>
-          </div>
-          <!-- </div> -->
+          <!-- AddThis Button END --> 
             
-            <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>            
+            <script type="text/javascript">       
+              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
+              var addthis_share = {
+                  templates : {
+                      twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
+                  }
+              }
+            </script> 
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>           
           </div>
           <hr/>
           <div>
-            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_accesorize.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
+            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
           </div>
         </div>
         <!-- Columna secundaria OFF -->
       </div>
-      <div class="braker_horz_top_1" id="tienda_looks">
-        <h3>Otros Looks que te pueden gustar</h3>
-            <div class="row">
-<?php
 
-$cont=0;
+      <?php if($dataProvider->getItemCount() > 0){ //si hay looks que te puedan gustar para mostrar  ?>
 
-    foreach($dataProvider->getData() as $record)
-    {
-        $lookre = Look::model()->findByPk($record['id']);
+        <div class="braker_horz_top_1" id="tienda_looks">
+          <h3>Otros Looks que te pueden gustar</h3>
+              <div class="row">
+        <?php        
+        $cont=0;
+        foreach($dataProvider->getData() as $record)
+        {
+          $lookre = Look::model()->findByPk($record['id']);
 
-        if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id))){
-            if($cont<3){
+          if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id))){
+              if($cont<3){
 
-            //<div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; /images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
+              //<div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; /images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
 
-                   $like = LookEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'look_id'=>$lookre->id));
+                     $like = LookEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'look_id'=>$lookre->id));
 
-                   if(!isset($like)) // no le ha dado like al look
-                {
-                    $cont++;
-?>
+                     if(!isset($like)) // no le ha dado like al look
+                  {
+                      $cont++;
+        ?>
 
-            <div class="span4 look">
-                <article class="item" >
-                    <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
-                      <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
+              <div class="span4 look">
+                  <article class="item" >
+                      <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
+                        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
 
-                      <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
-                      <?php
-                    //"style"=>"display: none",
-                        $script = "$('#"."imglook".$lookre->id."').load(function(){
-                                    //alert('cargo');
-                                    $('#imgloading".$lookre->id."').hide();
-                                    $(this).show();
-                                    //$('#loader_img').hide();
-                        });";
-                          Yii::app()->clientScript->registerScript('img_ps_script'.$lookre->id,$script);
-                      ?>
-                  <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar ">
+                        <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
+                        <?php
+                      //"style"=>"display: none",
+                          $script = "
+										var load_handler = function() {
+										    $('#imgloading".$lookre->id."').hide();
+										    $(this).show();
+										}
+										$('#"."imglook".$lookre->id."').filter(function() {
+										    return this.complete;
+										}).each(load_handler).end().load(load_handler);						 
+									 ";									 
+              						Yii::app()->clientScript->registerScript('img_script'.$lookre->id,$script);
+                        ?>
+                    <div class="hidden-phone margin_top_small vcard row-fluid">
+                      <div class="span2 avatar ">
 
-                        <?php echo CHtml::image($lookre->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                          <?php echo CHtml::image($lookre->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                      </div>
+                      <div class="span4"> <span class="muted">Look creado por: </span>
+                        <h5><a class="url" title="profile" href="#"><span class="fn">
+                          <?php //echo $look->title; ?>
+                          <?php echo $lookre->user->profile->first_name; ?> </span></a></h5>
+                      </div>
+                      <div class="span6"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
                     </div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
-                      <h5><a class="url" title="profile" href="#"><span class="fn">
-                        <?php //echo $look->title; ?>
-                        <?php echo $lookre->user->profile->first_name; ?> </span></a></h5>
-                    </div>
-                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
-                  </div>
-                  <div class="share_like">
-                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                    <div class="btn-group">
-                      <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                      <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                        <!-- AddThis Button BEGIN -->
+                    <div class="share_like">
+                      <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
+                      <div class="btn-group">
+                        <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
+                        <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
+                          <!-- AddThis Button BEGIN -->
 
-                        <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                        <li><a class="addthis_button_tweet"></a></li>
-                        <li><a class="addthis_button_pinterest_pinit"></a></li>
-                      </ul>
-                      <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
-                      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
-                      <!-- AddThis Button END -->
+                          <li><a class="addthis_button_facebook_like" fb:like:layout="box_count"></a> </li>
+                          <li><a class="addthis_button_tweet"></a></li>
+                          <li><a class="addthis_button_pinterest_pinit"></a></li>
+                        </ul>
+                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
+                        <!-- AddThis Button END -->
 
+                      </div>
                     </div>
-                  </div>
-                  <span class="label label-important">Promoción</span> </article>
-              </div>
-<?php
-                } // like
-            } // contador
-        } // match
-    } // foreach
-?>
-              </div>
-      </div>
+                    <span class="label label-important">Promoción</span> </article>
+                </div>
+      <?php
+                  } // like
+              } // contador
+          } // match
+      } // foreach
+      ?>
+                </div>
+        </div>
+      <?php } //  off si hay looks que te puedan gustar para mostrar ?>
 
       <div class="braker_horz_top_1">
         <div class="row">

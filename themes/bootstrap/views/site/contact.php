@@ -7,6 +7,13 @@ $this->pageTitle=Yii::app()->name . ' - Contacto';
 $this->breadcrumbs=array(
 	'Contacto',
 );
+
+// Open Graph
+  Yii::app()->clientScript->registerMetaTag('Personaling.com - Contacto', null, null, array('property' => 'og:title'), null); 
+  Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características', null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->baseUrl .'/images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
 ?>
 
 <div class="row">
@@ -20,8 +27,8 @@ $this->breadcrumbs=array(
 		        <?php echo Yii::app()->user->getFlash('contact'); ?>
 		    </div>
 		<?php } ?>
-
-        <p class="margin_top_medium">Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>.  Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. <strong>¡Gracias!</strong></p>
+ 
+        <p class="margin_top_medium">Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O LLama al  (212) 7202089. <strong>¡Gracias!</strong></p>
         <div class="form">
            
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(

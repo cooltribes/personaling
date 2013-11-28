@@ -20,6 +20,8 @@
  * @property integer $status
  * @property integer $view_counter 
  * @property integer $url_amigable
+ * @property string $sent_on
+ * @property string $approved_on
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -45,6 +47,8 @@ class Look extends CActiveRecord
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	 public $has_ocasiones;
+         private $_totalVentas = null;
+         
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -90,13 +94,18 @@ class Look extends CActiveRecord
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter,deleted', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('has_ocasiones','required','on'=>'update'),
+			array('view_counter','numerical', 'integerOnly'=>true,'on'=>'increaseview'),
+			array('view_counter','required','on'=>'increaseview'),
 			array('title', 'length', 'max'=>45),
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
-			array('description, created_on', 'safe'),
+			array('description, created_on, sent_on, approved_on', 'safe'),
 			array('url_amigable', 'unique', 'message'=>'Url Amigable ya registrada para otro look.'),
+			//array('url_amigable', 'match', 'pattern'=>'/^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/', 'message'=>'Url Amigable presenta caracteres no válidos'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
-			array('id, title, description, altura, contextura, pelo, ojos, tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, campana_id, view_counter, url_amigable', 'safe', 'on'=>'search'),
+			array('id, title, description, altura, contextura, pelo, ojos, 
+                            tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, 
+                            campana_id, view_counter, url_amigable, sent_on, approved_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -146,6 +155,8 @@ class Look extends CActiveRecord
 			'has_ocasiones' => 'Ocasiones',
 			'user_id'=>'Usuario',
 			'url_amigable' => 'Url Amigable',
+                        'sent_on' => 'Fecha de envío',
+                        'approved_on' => 'Fecha de aprobación',
 		);
 	}
 	public function matchOcaciones($user) 
@@ -155,6 +166,8 @@ class Look extends CActiveRecord
 		 
 		//print_r($this->categoriahaslook);
 		//print_r($this->categorias);
+		
+		if ($user!==null){
 		foreach ($this->categorias as $categoria){
 			$algo = $this->_ocasiones[$categoria->padreId];
 			//echo '/'.$user->profile->$algo; 
@@ -162,6 +175,8 @@ class Look extends CActiveRecord
 				return true;
 		}
 		return false;
+		}
+		return true;
 	}
 	public function match($user) 
 	{
@@ -193,7 +208,8 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));*/
 		
-		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
+		if ($user!==null){
+		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE deleted=0 and (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
 		$sql='SELECT id FROM tbl_look WHERE deleted = 0 AND  (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
@@ -213,6 +229,10 @@ class Look extends CActiveRecord
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 5 
 		';
+		} else {
+			$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look where deleted=0')->queryScalar();
+			$sql = 'SELECT id FROM tbl_look WHERE deleted=0';
+		}
 		
 		//$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0))>=2')->queryScalar();
 		//$sql='SELECT id FROM tbl_look WHERE (if(pelo & 2 !=0,1,0)+if(altura & 2 !=0,1,0)) >= 2';
@@ -238,9 +258,12 @@ class Look extends CActiveRecord
 	 */
 	 public function masvendidos($limit = 3)
 	 {		
-		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor a, tbl_look b where a.look_id != 0 and b.deleted = 0 and b.id = a.look_id group by a.look_id order by count(distinct tbl_orden_id) DESC";
-
-		$count = 10; 	
+		$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor a, tbl_look b where b.status = 2 and a.look_id != 0 and b.deleted = 0 and b.id = a.look_id group by a.look_id order by count(distinct tbl_orden_id) DESC";
+                $count = count(Yii::app()->db->createCommand($sql)->query());
+                
+                $limit = $count && $count > $limit?$limit:$count;  
+                
+                //$count = 0;
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
 		   	'pagination'=>array(
@@ -275,6 +298,8 @@ class Look extends CActiveRecord
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('campana_id',$this->campana_id,true);
 		$criteria->compare('url_amigable',$this->url_amigable,true);
+                $criteria->compare('sent_on',$this->sent_on);
+                $criteria->compare('approved_on',$this->approved_on);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -293,6 +318,7 @@ class Look extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('status',$this->status,true);
 		
 		$criteria->order = "created_on DESC";
 		
@@ -370,11 +396,10 @@ class Look extends CActiveRecord
 	public function lookDestacados($limit = 6) 
 	{
 		
-		$criteria=new CDbCriteria;  
-
-		
+		$criteria=new CDbCriteria;  		
 		
 		$criteria->compare('destacado',1);
+		$criteria->compare('status',2);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -420,9 +445,23 @@ class Look extends CActiveRecord
 		else
 			return $this->_precio;
 	}
+        public function getPrecioTotal($format=true)
+	{
+		if (is_null($this->_precio)) {
+				$this->_precio = 0;
+		foreach($this->lookhasproducto as $lookhasproducto){
+			//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+			$this->_precio += $lookhasproducto->producto->getPrecio(false);
+		}
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio);
+		else
+			return $this->_precio;
+	}
 	public function getMarcas(){
 		$marcas = array();
-		foreach ($this->productos_todos as $producto){
+		foreach ($this->productos_todos(array('group'=>'marca_id')) as $producto){
 			$marcas[] = Marca::model()->findByPk($producto->marca_id);
 		}
 		return $marcas;
@@ -522,6 +561,18 @@ class Look extends CActiveRecord
                 return false;
 
         }
+	public function increaseView(){
+		
+				$this->view_counter=$this->view_counter+1;
+				$this->scenario = 'increaseview';
+                if ($this->save())
+					return true;
+				return false;
+				
+
+        
+	}
+	
 	public function createImage(){
 
 		 $look = $this;
@@ -548,7 +599,8 @@ class Look extends CActiveRecord
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	if (isset($image_url)){
 		 			$imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
+				 	//$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/..'.$image_url;
+					$imagenes[$i]->path = $_SERVER['DOCUMENT_ROOT'].$image_url;
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;
@@ -579,7 +631,7 @@ class Look extends CActiveRecord
 		  $imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
 					$imagenes[$i]->top = 0;
-					$imagenes[$i]->left = 630;
+					$imagenes[$i]->left = 5;
 					$imagenes[$i]->width = 70;
 					$imagenes[$i]->height = 70;
 					$imagenes[$i]->angle = 0;
@@ -634,17 +686,19 @@ class Look extends CActiveRecord
 
 	public function getUrl() 
 	{
-		if(isset($this->url_amigable))
-			return Yii::app()->baseUrl."/look/".$this->url_amigable;
+		if(isset($this->url_amigable) && $this->url_amigable != "")
+				return Yii::app()->baseUrl."/looks/".$this->url_amigable;
 		else
 			return Yii::app()->baseUrl."/look/".$this->id;
 		
 	}
+
+
         
          /**
          * Buscar por todos los filtros dados en el array $filters
          */
-        public function buscarPorFiltros($filters) {
+        public function buscarPorFiltros($filters, $personalShopper = 0) {
 //            echo "<pre>";
 //            print_r($filters);
 //            echo "</pre>";
@@ -653,8 +707,10 @@ class Look extends CActiveRecord
             $criteria = new CDbCriteria;
             
             $criteria->with = array();
-            $criteria->select = array();
+            //$criteria->select = array();
             //$criteria->select[] = "t.*";
+            
+            $havingPrecio = '';
             
             for ($i = 0; $i < count($filters['fields']); $i++) {
                 
@@ -666,8 +722,7 @@ class Look extends CActiveRecord
                    $logicOp = 'AND'; 
                 }else{                
                     $logicOp = $filters['rels'][$i-1];                
-                }                  
-                
+                }    
                 
                 if($column == 'campana')
                 {
@@ -686,138 +741,91 @@ class Look extends CActiveRecord
                 
                 if($column == 'precio')
                 {
+                    $criteria->addCondition('(select sum(precios.precioDescuento) from `tbl_look_has_producto` `productos_productos`, `tbl_producto` `productos`, `tbl_precio` `precios` 
+                          where `t`.`id`=`productos_productos`.`look_id` and `productos`.`id`=`productos_productos`.`producto_id` and 
+                          `precios`.`tbl_producto_id`=`productos`.`id`) '
+                    .$comparator.' '.$value.'', $logicOp);                    
+                    
+                    
+                   continue;
+                }   
+                
+                if($column == 'marca')
+                {                                    
+                    
                     $criteria->with['productos'] = array(
                         'select'=> false,
-                        'joinType'=>'INNER JOIN',
-                        'condition'=>'productos.nombres',                        
-                    );
+                        //'joinType'=>'INNER JOIN',
+                        //'condition'=>'productos.nombres = 8',
+                    );    
                     
-                    $criteria->with['productos.precios'] = array(
-                        'select'=> false,
-                        'joinType'=>'INNER JOIN',
-                        //'condition'=>'productos.nombres',                        
-                    );
-                    
-                    $criteria->addCondition('(SELECT IFNULL(SUM(precios.precioDescuento), 0)) '
-                                        .$comparator.' '.$value.'');
-                    
-                    $criteria->group .= 't.id';
-                    
-                    continue;
-                }
-                
-                if($column == 'codigo')
-                {
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare($column, $value,
-                        true, $logicOp);
-                    
-                    continue;
-                }
-                
-                if($column == 'categoria')
-                {
-                    
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare('categorias.nombre', $value,
-                        true, $logicOp);
-                    
-                    if(!in_array('categorias', $criteria->with))
-                    {
-                        $criteria->with[] = 'categorias';
+                    //having
+                    if(!strpos($criteria->group, "t.id")){
+                        $criteria->group = 't.id';
                     }
                     
-                    continue;
-                }
+                    //agregar condicion marca_id
+                    $criteria->addCondition('productos.marca_id'
+                    .$comparator.' '.$value.'', $logicOp);                    
+                    
+                   continue;
+                } 
                 
-                if($column == 'sku')
+                if($column == 'prendas')
                 {
-                    
-                    $value = ($comparator == '=') ? "=".$value."" : $value;
-                    
-                    $criteria->compare('preciotallacolor.sku', $value,
-                        true, $logicOp);
-                    
-                    if(!in_array('preciotallacolor', $criteria->with))
-                    {
-                        $criteria->with[] = 'preciotallacolor';
-                    }
-                   
-                    
-                    continue;
-                }
-                
-                if($column == 'precioVenta' || $column == 'precioDescuento')
-                {
-                    
-                    $criteria->compare('precios.'.$column, $comparator." ".$value,
-                        false, $logicOp);
-                    
-                    if(!in_array('precios', $criteria->with))
-                    {
-                        $criteria->with[] = 'precios';
-                    }
-                    
-                    continue;
-                }
-                
-                
-                if($column == 'total')
-                {
-                                       
-                    $criteria->addCondition('(IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)) '
-                            .$comparator.' '.$value.'');
-                    
-                    
-                    continue;
-                }
-                
-                if($column == 'disponible')
-                {
-                    
-                    $criteria->addCondition('
-                        IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
-                          - 
-                          IFNULL(
-                         (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                          where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                          orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                         0) '
-                            .$comparator.' '.$value.'', $logicOp);
-                    
-                    
-                    continue;
-                }
-                
-                if($column == 'vendida')
-                {
-                   
-                    $criteria->addCondition('(IFNULL(
-                        (select sum(o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                        0)) '
+                  $criteria->addCondition('(select count(look_id) 
+                    from `tbl_look_has_producto` `productos_productos`
+                    where `t`.`id`=`productos_productos`.`look_id`)'
                     .$comparator.' '.$value.'', $logicOp);
-                    
-                    
-                    continue;
-                    
-                }                
+                   
+                   continue;                   
+                }  
                 
-                if($column == 'ventas')
+                if($column == 'cantidad')
                 {
-                    $criteria->addCondition('IFNULL(
-                        (select sum(o_ptc.precio * o_ptc.cantidad) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
-                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
-                        orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
-                        0)'
-                    .$comparator.' '.$value.'', $logicOp);                   
+                    /*
+                     * Por cada orden se esta contando el look como vendido una 
+                     * sola vez asi aparezca dos veces en la misma orden
+                     * 
+                     * Luego se debe corregir para que cuente correctamente si 
+                     * el look ha sido pedido mas de una vez en una orden
+                     */
                     
+                  $criteria->addCondition('
+                    (select count(distinct(orden.id)) from tbl_orden_has_productotallacolor o_ptc, tbl_orden orden
+                    where o_ptc.tbl_orden_id = orden.id
+                    and
+                    o_ptc.look_id > 0
+                    and
+                    o_ptc.look_id = t.id
+                    and
+                    orden.estado IN (3, 4, 8))'
+                    .$comparator.' '.$value.'', $logicOp);
+                   
+                   continue;                   
+                }  
+                
+                if($column == 'monto')
+                {
                     
-                    continue;
-                }
+                  $criteria->addCondition('
+                    (select count(distinct(orden.id)) from tbl_orden_has_productotallacolor o_ptc, tbl_orden orden
+                    where o_ptc.tbl_orden_id = orden.id
+                    and
+                    o_ptc.look_id > 0
+                    and
+                    o_ptc.look_id = t.id
+                    and
+                    orden.estado IN (3, 4, 8))                    
+                    *
+                    (select sum(precios.precioDescuento) from `tbl_look_has_producto` `productos_productos`, `tbl_producto` `productos`, `tbl_precio` `precios` 
+                    where `t`.`id`=`productos_productos`.`look_id` and `productos`.`id`=`productos_productos`.`producto_id` and 
+                    `precios`.`tbl_producto_id`=`productos`.`id`)
+                    '
+                    .$comparator.' '.$value.'', $logicOp);
+                   
+                   continue;                   
+                }  
                 
                 if($column == 'created_on')
                 {
@@ -830,23 +838,93 @@ class Look extends CActiveRecord
                 
             }
                                    
-             
+//            $criteria->select = 't.*';
+            $criteria->having .= $havingPrecio;
             //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
             $criteria->together = true;
-            //$criteria->compare('t.status', '1'); //siempre los no eliminados
+            
+            //si se estan usando los filtros en Mis Looks
+            if($personalShopper){
+                $criteria->compare('t.user_id', $personalShopper); //siempre los no eliminados
+            }
+            
             
 //            echo "Criteria:";
 //            
 //            echo "<pre>";
 //            print_r($criteria->toArray());
 //            echo "</pre>"; 
-//            exit();
+            //exit();
 
 
             return new CActiveDataProvider($this, array(
                 'criteria' => $criteria,
             ));
        }
-
-
+       
+       public function getCantVendidos()
+	{
+		return count($this->findAllBySql('select tbl_orden_id,look_id from tbl_orden 
+                    left join tbl_orden_has_productotallacolor on tbl_orden.id = tbl_orden_has_productotallacolor.tbl_orden_id 
+                    where  estado IN (3, 4, 8) AND look_id = :look_id group by tbl_orden_id, look_id;',
+			array(':look_id'=>$this->id)));
+		
+		
+	}
+        
+	public static function masVistos($limit = 5){
+            $criteria=new CDbCriteria;  		
+		
+            //$criteria-> compare('destacado',1);
+            //$criteria->addInCondition('status', array(2, 1));
+            $criteria->order = "view_counter DESC";
+            return new CActiveDataProvider(__CLASS__, array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                            'pageSize'=>$limit,
+                    ),	
+            ));
+            
+            
+        }
+        
+        public function getTotalVentas($format = true){
+            /*El precio en la tabla tbl_orden_has_productotallacolor esta con IVA ? */
+            
+            if (is_null($this->_totalVentas)){
+                $sql ="SELECT SUM(op.precio) FROM tbl_orden_has_productotallacolor op, tbl_orden o
+                    where o.estado IN (3, 4, 8)
+                    AND
+                    o.id = op.tbl_orden_id
+                    AND
+                    op.look_id = :id";
+                $this->_totalVentas = Yii::app()->db->createCommand($sql)->queryScalar(array("id" => $this->id));
+            }
+            
+		
+            
+            if ($format)
+			return Yii::app()->numberFormatter->formatDecimal($this->_totalVentas);
+		else
+			return $this->_totalVentas;
+            
+            
+        }
+	
+	protected function beforeSave()
+	{
+	   	
+	   if(($this->url_amigable!='')||(!is_null($this->url_amigable))){
+	   	$matches = null;
+			if(!preg_match('/^\\w{1}([a-zA-Z_|\\-]*[a-zA-Z]+[a-zA-Z_|\\-]*)$/', $this->url_amigable, $matches)){
+				$this->url_amigable=NULL;	
+				Yii::app()->user->setFlash('error', 'Url no guardada por presentar caracteres inválidos.');
+				
+			}
+			
+	   }
+	   //echo $this->birthday;
+	   return parent::beforeSave();
+	}
+	
 }

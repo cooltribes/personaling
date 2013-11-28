@@ -181,7 +181,7 @@
 					{
 					type: 'POST',	
 					url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
-					data: ajaxRequest}
+					data: {'ajaxRequest':ajaxRequest, 'marcaId'=$('#marcas').val()}}
 					
 					)
 					},

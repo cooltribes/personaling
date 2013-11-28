@@ -34,17 +34,77 @@ $looks_recomendados = $look->match($model);
         </div>
         <hr/>
         <h5>Tus Compras</h5>
-        <ul class="nav nav-stacked text_align_center" >
-          <li>XX Bs. de Balance en tu Cuenta</li>
-          <li>XX Puntos Ganados</li>
-          <li>XX Pedidos Activos</li>
-          <li>XX Devoluciones Pendientes</li>
-        </ul>
+       <ul class="nav nav-stacked text_align_center" >
+      	 
+      	<?php
+      	
+      	$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+      
+      	if($sum >= 0){
+      	?>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. de Balance en tu Cuenta</li>
+      	<?php
+      	}
+      	else
+      	{
+      	?>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. que adeudas.</li>
+      	<?php
+      	}
+      	?>
+        <!-- <li>XX Puntos Ganados</li> -->
+        
+        <?php
+        
+        $total;
+	
+		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+      	?>
+      	<li><?php echo $total; ?> Pedidos Activos</li>
+      	 <?php
+        
+        $total;
+	
+		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and (estado = 10 OR estado = 9)";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+      	?>
+        <li><?php echo $total; ?> Devoluciones</li>
+      </ul>
         <hr/>
         <h5>Invita a tus amig@s</h5>
         <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style addthis_32x32_style text_align_center"> <a class="addthis_button_preferred_1"></a> <a class="addthis_button_preferred_2"></a> <a class="addthis_button_preferred_3"></a> <a class="addthis_button_preferred_4"></a> <a class="addthis_button_compact"></a> <a class="addthis_counter addthis_bubble_style"></a> </div>
-        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
+        <div class="addthis_toolbox addthis_default_style addthis_32x32_style text_align_center">
+          <a class="addthis_button_preferred_1"></a>
+          <a class="addthis_button_preferred_2"></a>
+          <a class="addthis_button_preferred_3"></a>
+          <a class="addthis_counter addthis_bubble_style"></a>
+        </div>
+        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};
+              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
+              var addthis_share = {
+
+                  url: '<?php echo Yii::app()->request->hostInfo.Yii::app()->request->baseUrl."/".$profile->url; ?>',
+                  title: '<?php echo $profile->first_name." ".$profile->last_name; ?> mi perfil en Personaling.com ?>',
+                  description: '<?php echo $profile->bio; ?>',
+                  templates : {
+                      twitter : "<?php echo $profile->first_name." ".$profile->last_name; ?> mi perfil en Personaling.com <?php echo Yii::app()->request->hostInfo.Yii::app()->request->baseUrl.'/'.$profile->url; ?>  via @personaling "
+                  }
+
+              }   
+              console.log('<?php echo Yii::app()->request->hostInfo.Yii::app()->request->baseUrl."/".$profile->url; ?>');      
+        </script>
+        <?php 
+           //Metas de Facebook CARD ON
+          Yii::app()->clientScript->registerMetaTag($profile->first_name." ".$profile->last_name." - Perfil", null, null, array('property' => 'og:title'), null);
+          Yii::app()->clientScript->registerMetaTag($profile->bio, null, null, array('property' => 'og:description'), null);
+          Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+          Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+          Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$model->getAvatar(), 'og:image', null, null, null);
+
+          //Metas de Facebook CARD OFF
+
+        ?>        
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
         <!-- AddThis Button END --> 
     </aside>
@@ -70,6 +130,8 @@ $looks_recomendados = $look->match($model);
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
               <li><?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
+              <li> <?php echo CHtml::link('Aplicar Gift Card',array('/giftcard/aplicar'),array("title"=>"Aplica una Gift Card")); ?></li>
+              
             </ul>
              
           </div>
@@ -95,9 +157,9 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom">  Conecta tus Redes Sociales </h2>
            <ul class="nav nav-stacked nav-tabs">
-               <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
+<!--                <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
               <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
-              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li>
+              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li> -->
             </ul>
         
         </div>
@@ -111,10 +173,11 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
              <h2 class="braker_bottom">Tus Looks</h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li><a href="#" title="Tus Looks Publicados">Tus Looks Publicados</a></li>
-              <li><a href="#" title="Tus Looks Pendientes por aprobació">Tus Looks Pendientes por aprobación</a></li>
+              <!-- <li><a href="#" title="Tus Looks Publicados">Tus Looks Publicados</a></li> -->
+              <!-- <li><a href="#" title="Tus Looks Pendientes por aprobació">Tus Looks Pendientes por aprobación</a></li> -->
+              <li><a href="#" title="Tus Looks Pendientes por aprobació">Mis looks</a></li>
               
-              <li><a href="#" title="Crear look">Manual para crear un Look</a></li>
+              <li><a href="<?php echo Yii::app()->request->baseUrl ?>/docs/manual_CreaciondeLooks.pdf" title="Crear look">Manual para crear un Look</a></li>
             </ul>
           
           </div>
@@ -176,8 +239,8 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
              <h2 class="braker_bottom">Correo electrónico y contraseña </h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li><a href="cambiar_Correo_electronico.php" title="cambiar corre electronico">Cambiar correo electrónico</a></li>
-              <li> <a href="cambiar_Contrasena.php" title="cambiar contrasena">Cambiar contraseña</a></li>
+              <li><?php echo CHtml::link('Cambiar correo electrónico',array('changeemail'),array("title"=>"Cambia tu correo electrónico")); ?></li>
+              <li><?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
             </ul>
              <h2 class="braker_bottom">Libreta de Direcciones </h2>
            <ul class="nav nav-stacked nav-tabs"> 

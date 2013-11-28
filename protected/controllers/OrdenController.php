@@ -11,22 +11,22 @@ class OrdenController extends Controller
 			'accessControl', // perform access control for CRUD operations
 		);
 	}
-	
+	 
 		/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter. 
-	 * @return array access control rules
+	 * @return array access control rules 
 	 */
 	public function accessRules()
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir'),
+				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial','mensajes'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','admin','getFilter','removeFilter','modalventas','detalles','devoluciones','validar','enviar','factura','mensajes','entregar','calcularenvio','createexcel','importarmasivo'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte','reportexls'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -45,7 +45,7 @@ class OrdenController extends Controller
 		$orden = new Orden;
 		
 		$orden->user_id = Yii::app()->user->id;
-		$dataProvider = $orden->busqueda();
+		$dataProvider = $orden->activas();
 		
 		$this->render('adminUsuario',
 		array('orden'=>$orden,
@@ -54,6 +54,176 @@ class OrdenController extends Controller
 
 	}
 
+public function actionReporte()
+	{ 
+   $orden = new Orden;
+		
+		if(isset(Yii::app()->session['idMarca']))
+			unset(Yii::app()->session['idMarca']);
+		
+		 
+		
+		if(isset($_POST['marcas']))
+			Yii::app()->session['idMarca']=$_POST['marcas'];
+	
+			
+			$dataProvider = $orden->vendidas();
+		
+		
+		//$orden->user_id = Yii::app()->user->id;
+		
+		$marcas=Marca::model()->getAll();
+		$this->render('reporte',
+		array(
+		'dataProvider'=>$dataProvider,'marcas'=>$marcas
+		));
+
+
+	}
+
+
+public function actionReportexls(){
+	
+	$title = array(
+    'font' => array(
+     
+        'size' => 14,
+        'bold' => true,
+        'color' => array(
+            'rgb' => '000000'
+        ),
+    ),
+   /*'fill' => array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'startcolor' => array(
+            'rgb' => '6D2D56',
+        ),
+    ),*/
+);
+
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("Reporte-productos-vendidos")
+		                         ->setSubject("Reporte de Producto Vendidos")
+		                         ->setDescription("Reporte de Productos Vendidos con sus especificaciones individuales")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+
+			// creando el encabezado
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'Marca')
+						->setCellValue('B1', 'Nombre')
+						->setCellValue('C1', 'SKU')
+						->setCellValue('D1', 'Color')
+						->setCellValue('E1', 'Talla')
+						->setCellValue('F1', 'Cantidad')
+						->setCellValue('G1', 'Costo (Bs)')
+						->setCellValue('H1', 'Precio de Venta sin IVA (Bs)')
+						->setCellValue('I1', 'Precio de Venta con IVA (Bs)');
+			// encabezado end			
+		 	
+			foreach(range('A','I') as $columnID) {
+    $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        ->setAutoSize(true);
+}  
+			 
+			
+		 	$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+		 	
+		 	
+		 	//Eliminar filtrado por marca antes de consultar
+		 	$fake=false;
+		 	if(isset(Yii::app()->session['idMarca'])){
+		 		$marca=Yii::app()->session['idMarca'];
+		 		$fake=true;
+		 		unset(Yii::app()->session['idMarca']);
+		 	}
+			//fin			
+		 	
+		 	$orden=new Orden;
+		 	$ordenes = $orden->vendidas(false); 
+		 	$fila = 2;
+		
+			
+			//Reestablecer filtrado por marca si existia
+			if($fake)
+				Yii::app()->session['idMarca']=$marca;
+		 	//fin	 
+		 
+		 	foreach($ordenes->getData() as $data)
+			{
+					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
+                   if($data['look'] == 0)
+                    	{$H=Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), ''); 
+                    	$I=Yii::app()->numberFormatter->formatCurrency($data['Precio'], '');}
+				   else
+               			{$H=Yii::app()->numberFormatter->formatCurrency($data['pVenta'], ''); 
+               			$I=Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '');}
+
+			
+					$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , $data['Marca']) 
+							->setCellValue('B'.$fila , $data['Nombre'])
+							->setCellValue('C'.$fila , $data['SKU']) 
+							->setCellValue('D'.$fila , $data['Color'])
+							->setCellValue('E'.$fila , $data['Talla']) 
+							->setCellValue('F'.$fila , $data['Cantidad']) 
+							->setCellValue('G'.$fila , Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')) 
+							->setCellValue('H'.$fila , $H)							
+							->setCellValue('I'.$fila , $I);
+					$fila++;
+
+			} // foreach
+		 
+			// Rename worksheet
+	
+			$objPHPExcel->setActiveSheetIndex(0);
+
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="ReporteVentas.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			Yii::app()->end();
+				  
+	}
+
+
+	public function actionHistorial()
+	{
+		$orden = new Orden;
+		
+		$orden->user_id = Yii::app()->user->id;
+		$dataProvider = $orden->historial();
+		
+		$this->render('adminUsuario',
+		array('orden'=>$orden,
+		'dataProvider'=>$dataProvider,
+		));
+
+	}
 	
 	/*
 	 * action de detalle desde usuario 
@@ -64,7 +234,8 @@ class OrdenController extends Controller
 		$orden = Orden::model()->findByAttributes(array('id'=>$_GET['id'],'user_id'=>Yii::app()->user->id));
 		
 		if(isset($orden))
-			$this->render('detalleUsuario', array('orden'=>$orden,));
+			$this->render('detalleUsuario', array('orden'=>$orden));
+		
 		else
 			echo "error";
 	}
@@ -82,13 +253,12 @@ class OrdenController extends Controller
 	{
             
             $orden = new Orden;
-            $dataProvider = $orden->search();
+            $dataProvider = $orden->search();               
             
-            if (isset($_POST['query'])){
-                
-                $dataProvider = $orden->filtrado($_POST['query']); 
-                
-            }   
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
             
             //Filtros personalizados
             $filters = array();
@@ -97,7 +267,8 @@ class OrdenController extends Controller
             $filter = new Filter;
             
             
-           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['query'])){
               $_POST = $_SESSION['todoPost'];
             }            
             
@@ -210,11 +381,16 @@ class OrdenController extends Controller
                 }
             }
 
+            if (isset($_POST['query'])){
+                unset($_SESSION["todoPost"]);
+                $dataProvider = $orden->filtrado($_POST['query']); 
+                
+            }
             
             //Ordenar por fecha descendiente
             $criteria = $dataProvider->getCriteria();
             $criteria->order = 'fecha DESC';
-            $dataProvider->setCriteria($criteria);            
+            $dataProvider->setCriteria($criteria);       
 
             $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,
@@ -535,10 +711,30 @@ class OrdenController extends Controller
 			$devueltos = count($_POST['motivos']);
 			$total = OrdenHasProductotallacolor::model()->countByAttributes(array('tbl_orden_id'=>$_POST['orden']));
 			
-			if($devueltos == $total)
-				$orden->estado = 9; // devuelto					
-			else if($devueltos < $total)
+			if($devueltos == $total){
+				$orden->estado = 9; // devuelto
+				
+				$estado = new Estado;
+				
+				$estado->estado = 9;
+				$estado->user_id = $orden->user_id;
+				$estado->fecha = date("Y-m-d");
+				$estado->orden_id = $orden->id;
+				
+				$estado->save();
+			}					
+			else if($devueltos < $total){
 				$orden->estado = 10; // parcialmente devuelto
+				
+				$estado = new Estado;
+				
+				$estado->estado = 10;
+				$estado->user_id = $orden->user_id;
+				$estado->fecha = date("Y-m-d");
+				$estado->orden_id = $orden->id;
+				
+				$estado->save();
+			}
 			
 			$orden->save();
 			
@@ -584,33 +780,36 @@ class OrdenController extends Controller
         //$this->render('recibo', array('factura'=>$factura));
 	}
 	
-	public function actionValidar()
-	{
+	                                                                    
+                                             
+public function actionValidar()
+	{ 
+		
 		// Elementos para enviar el correo, depende del estado en que quede la orden
 		$message            = new YiiMailMessage;
 		$message->view = "mail_template";
-		
+		 
 		$detalle = Detalle::model()->findByPk($_POST['id']);
 		$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
+		$acumulado=$detalle->getSumxOrden();
+		
 		$factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
 		
 		$user = User::model()->findByPk($orden->user_id);
 		//$subject = 'Recupera tu contraseña de Personaling';
 		//$body = '<h2>Has solicitado cambiar tu contraseña de Personaling.</h2> Para recibir una nueva contraseña haz clic en el seiguiente link:<br/><br/> '.$activation_url;
-		
-		
-		if($_POST['accion']=="aceptar")
-		{
+		$porpagar=$orden->getxPagar();
+			
+		if($_POST['accion']=="aceptar"){
 			
 			$detalle->estado = 1; // aceptado
 			
-			
-	
 			if($detalle->save()){
 				/*
 				 * Revisando si lo depositado es > o = al total de la orden. 
 				 * */
-				if($detalle->monto >= $orden->total){
+				$diferencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
+				if( $diferencia_pago >= 0){
 					/*
 					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
 					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
@@ -622,203 +821,165 @@ class OrdenController extends Controller
 						if($factura){
 							$factura->estado = 2;
 							$factura->save();
-						}
-						// Subject y body para el correo
-						$subject = 'Pago aceptado';
-						$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
-						
-						$usuario = Yii::app()->user->id;
-						
-						$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
-							
-						if(isset($desc))
-						{
-							if($desc < 0)
-							{
-								$a = $desc->total + $detalle->monto; // si es menor le sumo lo que depositaron
-								$desc->total = $a;
-								$desc->save();
-							}
-							
-							//si deposito de mas
-							if($detalle->monto > $orden->total)
-							{	
-								$excede = $detalle->monto - $orden->total;
-								$desc->total = $excede;							
-								$desc->save();
-								// Cambio el body del correo para agregar el saldo que sobra
-								$body .= 'Tienes disponible un saldo a favor de '.$excede.' Bs.';
-							}
-						}
-						else					
-						if($detalle->monto > $orden->total)
-						{
-							$excede = $detalle->monto - $orden->total;
-							
-							$balance = new Balance;
-							$balance->orden_id = $orden->id;
-							$balance->user_id = $orden->user_id;
-							$balance->total = $excede;
-							
-							$balance->save();
-							$body .= 'Tienes disponible un saldo a favor de '.$excede.' Bs.';
-						} // si es mayor hace el balance
-						
-													
-							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 							$estado = new Estado;
 													
 							$estado->estado = 3; // pago recibido
-							$estado->user_id = $orden->user_id;
+							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
 									
 							if($estado->save())
 							{
-								echo "ok";	
-							}					
-
+								echo "ok";
+							}
+						}
+						// Subject y body para el correo
+						$subject = 'Pago aceptado';
+						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+						
+						$usuario = Yii::app()->user->id;
+						//$excede = ($detalle->monto-$porpagar);	
+						if(($diferencia_pago) > 0.5)
+						{
+							
+						
+							$balance = new Balance;
+							$balance->orden_id = $orden->id;
+							$balance->user_id = $orden->user_id;
+							$balance->total = $diferencia_pago;
+							
+							$balance->save();
+							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
+						} // si es mayor hace el balance
+						
+													
+							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+					
 					}//orden save
-				}// si es mayor
+				}// si el pago realizado es mayor o igual
 				else{
 					
-					$desc = Balance::model()->findByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
-					
-					if(isset($desc)) // balance existe 
-					{
-						if($desc->total < 0) // debe
-						{
-							$debe = Yii::app()->numberFormatter->formatDecimal($desc->total); 
-							$paga = Yii::app()->numberFormatter->formatDecimal($detalle->monto); 
+					$diferencia_pago = 0-$diferencia_pago;
+					$saldo = Profile::model()->getSaldo($orden->user_id);
+					if($saldo>0){
+
+						$det_bal=new Detalle;
+						//$pag_bal=new Pago;
+						if($saldo>$diferencia_pago){
 							
-							if(($debe * -1) == $paga) // paga exacta la deuda
-							{
-								$detalle->comentario = "deberia aqui";
-								$detalle->save();
-								
-								$desc->delete(); // son identicos, no habria saldo a favor ni en contra por lo tanto se borra el balance
-								
-								$orden->estado = 3; // aprobado el pago
-								$orden->save();
-								if($factura){
-									$factura->estado = 2;
-									$factura->save();
-								}
-								$subject = 'Pago aceptado';
-								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+							$det_bal->monto=$diferencia_pago;
+							$det_bal->fecha=date("Y-m-d H:m:s");
+							$det_bal->comentario="Saldo para completar";
+							$det_bal->estado=1;
+							$det_bal->orden_id=$orden->id;
+							$det_bal->tipo_pago = 3;
+							if($det_bal->save()){
+								//$pag_bal->tbl_detalle_id=$det_bal->id;
+								//$pag_bal->tipo=3;
 								$estado = new Estado;
-														
+													
 								$estado->estado = 3; // pago recibido
-								$estado->user_id = $orden->user_id;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
-								
-							}else 
-							if(($debe * -1) < $paga)
-							{
-								$detalle->comentario = "aqui no";
-								$detalle->save();
-								
-								$valor = $desc->total + $detalle->monto; // lo que debia +lo que pague (como es negativo lo sumo para que subsane la deuda)
-								$desc->total = $valor;
-								$desc->save();
-								
-								$orden->estado = 3;
-								$orden->save();
-								if($factura){
-									$factura->estado = 2;
-									$factura->save();
-								}
-								$subject = 'Pago aceptado';
-								$body = '<h2> Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío.<br/><br/> ';
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								$estado = new Estado;
-														
-								$estado->estado = 3; // pago recibido
-								$estado->user_id = $orden->user_id;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
-								
-							}else 							
-							if(($debe * -1) > $paga) 
-							{
-								$valor = $desc->total + $detalle->monto; // lo que debia + lo que pague (como es negativo lo sumo para que subsane la deuda)
-								$desc->total = $valor;
-								$desc->save();
-								
-								$orden->estado = 7;// aun le faltó
-								$orden->save();
-								$subject = 'Pago insuficiente';
-								$body = 'El pago que realizaste no cubre el monto del pedido, faltan '.$valor.' Bs para pagar toda la orden.<br/><br/> ';
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								$estado = new Estado;
-															
-								$estado->estado = 7; // pago insuficiente
 								$estado->user_id = Yii::app()->user->id;
 								$estado->fecha = date("Y-m-d");
 								$estado->orden_id = $orden->id;
+										
+								if($estado->save())
+								{
+									//$pag_det->save();
+									echo "ok";	
+								}	
+							}
+												
+							
+							$orden->estado = 3;
+							if($orden->save()){
+								
+								$subject = 'Pago aceptado';
+								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+								
+								$usuario = Yii::app()->user->id;
+								
+								if($factura){
+									$factura->estado = 2;
+									$factura->save();
+								}
+								$balance = new Balance;
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $orden->user_id;
+								$balance->total = 0-$diferencia_pago;
+								$balance->tipo=1;
+								
+								$balance->save();
+									
 								
 							}
-							
-						if($estado->save())
-							{
-								echo "ok";	
-							}	
-							
-						}
-						
-					}
-					else { // no hay balance, solo pago menos
-					
-					$detalle->comentario = "aqui jamas";
-					$detalle->save();
-					
-					$orden->estado = 7;
-					if($orden->save()){
-						$falta = $detalle->monto - $orden->total;
-							
-						$balance = new Balance;
-						$balance->orden_id = $orden->id;
-						$balance->user_id = $orden->user_id;
-						$balance->total = $falta;
-						
-						$subject = 'Pago insuficiente';
-						$body = 'El pago que realizaste no cubre el monto del pedido, faltan '.($falta*-1).' Bs para pagar toda la orden.<br/><br/> ';
 								
-						if($balance->save())
-						{
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+						}else{//Saldo no cubre la deuda
+								
+							$orden->estado = 7;
+							
+							if($orden->save()){
+								$balance = new Balance;
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $orden->user_id;
+								$balance->total = 0-$saldo;
+								$balance->tipo=1;								
+								if($balance->save()){
+									$subject = 'Pago insuficiente';
+									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), '').' Bs para pagar toda la orden.<br/><br/> ';
+									$estado = new Estado;
+																
+									
+									$det_bal->monto=$saldo;
+									$det_bal->fecha=date("Y-m-d H:m:s");
+									$det_bal->comentario="Uso Saldo Falta Pago ";
+									$det_bal->estado=1;
+									$det_bal->orden_id=$orden->id;
+									if($det_bal->save()){
+										$estado->estado = 7; // pago insuficiente
+									$estado->user_id = Yii::app()->user->id;
+									$estado->fecha = date("Y-m-d");
+									$estado->orden_id = $orden->id;
+									
+									if($estado->save())
+									{
+										
+									}
+									}	
+								}
+								
+							}
+						}//Saldo no cubrio la deuda
+						
+						
+					}//Saldo positivo
+					else{
+						
+							$subject = 'Pago insuficiente';
+							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->monto.' Bs para pagar toda la orden.<br/><br/> ';
 							$estado = new Estado;
-														
+																	
 							$estado->estado = 7; // pago insuficiente
 							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
-										
-							if($estado->save())
-							{
-								echo "ok";	
-							}	
-						}	
+							$estado->save();
+							//if($estado->save())
+							//{
+								//$pag_bal->tbl_detalle_id=$det_bal->id;
+								//$pag_bal->tipo=3;
+								//$pag_det->save();
+							//}
 						
-					}
-				
-					}
-					
+					}	
 				}	
 							
 			}// detalle
-		}
-		else if($_POST['accion']=="rechazar")
-		{
+		}else if($_POST['accion']=="rechazar"){
 			$detalle = Detalle::model()->findByPk($_POST['id']);
 			$detalle->estado = 2; // rechazado
 			
-			$orden = Orden::model()->findByAttributes(array('detalle_id'=>$detalle->id));
+			$orden = Orden::model()->findByPk($detalle->orden_id);
 			$orden->estado = 1; // regresa a "En espera de pago"
 			
 			if($detalle->save()){
@@ -832,7 +993,7 @@ class OrdenController extends Controller
 						$estado = new Estado;
 											
 						$estado->estado = 6; // pago rechazado
-						$estado->user_id = $usuario;
+						$estado->user_id = Yii::app()->user->id;
 						$estado->fecha = date("Y-m-d");
 						$estado->orden_id = $orden->id;
 							
@@ -849,6 +1010,9 @@ class OrdenController extends Controller
 		$message->addTo($user->email);
 		$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 		Yii::app()->mail->send($message);
+
+
+
 	}
 
 	/*
@@ -857,14 +1021,24 @@ class OrdenController extends Controller
 	 * */
 	public function actionModals($id)
 	{
+		/*	
+		$id = $_GET['id'];	
+		
 		$orden = Orden::model()->findByPk($id);
 		
-		if($orden->estado == 7){
-			$detPago = new Detalle;
-		}
-		else {
-			$detPago = Detalle::model()->findByPk($orden->detalle_id);
-		}
+		//if($orden->estado == 7){
+		//	$detPago = new Detalle;
+		//}
+		//else {
+		//	$detPago = Detalle::model()->findByPk($orden->detalle_id);
+		//}
+		
+		$detPago = new Detalle;
+		//echo $orden->getxPagar();
+		//$nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
+		//echo $nf->formatCurrency($orden->getxPagar(),'Bs.');
+		//echo Yii::app()->format->unformatNumber('123,55');
+		//echo Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(),'Bs.');
 		
 		$datos="";
   		$datos=$datos."<div class='modal-header'>";
@@ -877,6 +1051,7 @@ class OrdenController extends Controller
 		$datos=$datos."<input type='hidden'id='idOrden' value='".$orden->id."' />";
 		
   		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Nombre del Depositante <span class='required'>*</span></label><![endif]-->";
     	$datos=$datos."<div class='controls'>";
       	$datos=$datos. CHtml::activeTextField($detPago,'nombre',array('id'=>'nombre','class'=>'span5','placeholder'=>'Nombre del Depositante')) ;
 		$datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
@@ -884,6 +1059,7 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Número o Código del Depósito <span class='required'>*</span></label><![endif]-->";
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeTextField($detPago,'nTransferencia',array('id'=>'numeroTrans','class'=>'span5','placeholder'=>'Número o Código del Depósito')) ;
 		$datos=$datos."<div style='display:none' class='help-inline'></div>";
@@ -891,6 +1067,7 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Banco<span class='required'>*</span></label><![endif]-->";
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeDropDownList($detPago,'banco',array('Seleccione'=>'Seleccione','Banesco'=>'Banesco. Cuenta: 0134 0277 98 2771093092'),array('id'=>'banco','class'=>'span5')); 
 		//$datos=$datos. CHtml::activeTextField($detPago,'banco',array('id'=>'banco','class'=>'span5','placeholder'=>'Banco donde se realizó el deposito'));
@@ -899,6 +1076,7 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Cedula<span class='required'>*</span></label><![endif]-->";
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeTextField($detPago,'cedula',array('id'=>'cedula','class'=>'span5','placeholder'=>'Cedula del Depositante'));
         $datos=$datos."<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
@@ -906,19 +1084,32 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Monto (separar decimales con coma ',')<span class='required'>*</span></label><![endif]-->";
+		
 		$datos=$datos."<div class='controls'>";
-		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5','placeholder'=>'Monto')); 
+		//$porpagar=Yii::app()->numberFormatter->formatDecimal($data->total-Detalle::model()->getSumxOrden($data->id));	
+		
+		
+		$datos=$datos. CHtml::activeTextField($detPago,'monto',array('id'=>'monto','class'=>'span5',
+                    	'placeholder'=>'Monto. Separe los decimales con una coma (,)',
+                    	'value'=>Yii::app()->numberFormatter->formatDecimal($orden->getxPagar())
+						)
+					); 
+                
 		$datos=$datos. "<div style='display:none' id='RegistrationForm_email_em_' class='help-inline'></div>";
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='controls controls-row'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Fecha del depósito DD/MM/YYYY <span class='required'>*</span></label><![endif]-->";
 		$datos=$datos. CHtml::TextField('dia','',array('id'=>'dia','class'=>'span1','placeholder'=>'Día'));
 		$datos=$datos. CHtml::TextField('mes','',array('id'=>'mes','class'=>'span1','placeholder'=>'Mes')); 
 		$datos=$datos. CHtml::TextField('ano','',array('id'=>'ano','class'=>'span2','placeholder'=>'Año')); 
       	$datos=$datos."</div>";
 		
 		$datos=$datos."<div class='control-group'>";
+		$datos=$datos."<!--[if lte IE 9]>      <label class='control-label required'>Comentario <span class='required'>*</span></label><![endif]-->";
+		
 		$datos=$datos."<div class='controls'>";
 		$datos=$datos. CHtml::activeTextArea($detPago,'comentario',array('id'=>'comentario','class'=>'span5','rows'=>'6','placeholder'=>'Comentarios (Opcional)')); 
         $datos=$datos."<div style='display:none' class='help-inline'></div>";
@@ -931,51 +1122,85 @@ class OrdenController extends Controller
 		$datos=$datos."</div>";
 		$datos=$datos."</div>";
 		
-		if($orden->estado == 7){
-			$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
-		}
-		else {
-			$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
-		}
+		
+		//if($orden->estado == 7){
+		//	$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
+		//}
+		//else {
+		//	$datos=$datos."<input type='hidden' id='idDetalle' value='".$orden->detalle_id."' />";
+		//}
+		
+		$datos=$datos."<input type='hidden' id='idDetalle' value='0' />";
 		echo $datos;
+		 * */
+		echo $this->renderPartial('_modal_pago',array('orden_id'=>$id),true,false); 
+		
 	}
 
 	public function actionCancelar($id)
-	{
-			
-		$orden = Orden::model()->findByPK($id);
-		
+	{   
+            
+            $orden = Orden::model()->findByPK($id);
+		$end="";
 		if($orden->estado==1)
 		{
-			$orden->estado = 5;	// se canceló la orden
-					
-			if($orden->save())
-			{
-				// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-				$estado = new Estado;
-										
-				$estado->estado = 5;
-				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
-				$estado->fecha = date("Y-m-d H:i:s");
-				$estado->orden_id = $orden->id;
+				$ban=true;
+				$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+				foreach($ohptcs as $ohptc){
+					$ptc=Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
+					$ptc->cantidad=$ptc->cantidad+$ohptc->cantidad;
+						if($ptc->save())
+							$ban=true;
+						else{
+							print_r($ptc->getErrors());
+							break;
+						}
 						
-				if($estado->save())
-				{
-					Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
-					
-					$this->redirect(array('listado'));
-					
 				}
-			}	
+							
+						
+					
+				$orden->estado = 5;	// se canceló la orden
+					
+					if($orden->save()&&$ban)
+					{
+						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
+						
+						$estado = new Estado;
+												
+						$estado->estado = 5;
+						$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+						$estado->fecha = date("Y-m-d H:i:s");
+						$estado->orden_id = $orden->id;
+                                                
+                                                //Si hay un motivo de cancelacion
+                                                if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
+                                                    $estado->observacion = $_GET['mensaje'];
+                                                }
+                                                
+								
+						if($estado->save())
+						{
+							Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
+							$end='ok';
+							
+							
+						}
+					}	
 		}
 		else
 		{
 			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
-			$this->redirect(array('listado'));
+			$end='no';
 		}
-		
+		if(isset($_POST['admin']) || isset($_GET['admin'])){
+			echo $end;
+			return 0;
+		}else
+			$this->redirect(array('listado'));
 	}
 
+	
 	/*
 	 *  Action para añadir el tracking y cambiar el estado a enviado
 	 * */
@@ -995,7 +1220,7 @@ class OrdenController extends Controller
 										
 				$estado->estado = 8;
 				$estado->user_id = Yii::app()->user->id; // 
-				$estado->fecha = date("Y-m-d H:i:s");
+				$estado->fecha = date("Y-m-d");
 				$estado->orden_id = $orden->id;
 						
 					if($estado->save())
@@ -1081,10 +1306,10 @@ class OrdenController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
-						$body = "Nos complace informar que tu pedido #".$orden->id." ha sido enviado <br/>
+						$body = "Nos complace informarte que tu pedido #".$orden->id." esta en camino y pronto podrás disfrutar de tu compra
 								<br/>
-								Empresa: Zoom <br/>
-								Número de seguimiento: ".$orden->tracking." <br/> 
+								<br/>
+								Puedes hacer seguimiento a tu pedido a través de la página de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: ".$orden->tracking." <br/> 
 								";
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;
@@ -1124,15 +1349,26 @@ class OrdenController extends Controller
 
 	public function actionMensajes()
 	{
-		$notificar = $_POST['notificar'];
+		if(isset($_POST['notificar']))
+			$notificar = $_POST['notificar'];
+		else 
+			$notificar=0;
+		if(isset($_POST['visible']))
+			$visible = $_POST['visible'];
+		else 
+			$visible=1;
 			
 		$mensaje = new Mensaje;
 		
 		$mensaje->asunto = $_POST['asunto'];
 		$mensaje->cuerpo = $_POST['cuerpo'];
-		$mensaje->visible = $_POST['visible']; // llega 0 o 1, 1 visible, 0 no
+		$mensaje->visible = $visible; // llega 0 o 1, 1 visible, 0 no
 		$mensaje->user_id = $_POST['user_id'];
 		$mensaje->orden_id = $_POST['orden_id']; 
+		if(isset($_POST['admin'])){
+			$mensaje->admin=1;
+			
+		}
 		$mensaje->fecha =  date('Y-m-d H:i:s', strtotime('now'));
 		$mensaje->estado = 0; // sin leer
 		
@@ -1152,7 +1388,8 @@ class OrdenController extends Controller
 				$params = array('subject' => $subject, 'body' => $body);
                 $message->subject = $subject;
                 $message->setBody($params, 'text/html');
-                $message->addTo($usuario->email);
+                if(isnull($mensaje->admin))
+                	$message->addTo($usuario->email);
                 $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                 Yii::app()->mail->send($message);	
 			}		
@@ -1395,7 +1632,7 @@ class OrdenController extends Controller
 			// ==============================================================================
 			
 			$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
- 
+ /*
 			$tabla = $tabla . "<table class='table table-bordered table-hover table-striped'>";
 			 
 			foreach( $sheet_array as $row ) {
@@ -1407,16 +1644,16 @@ class OrdenController extends Controller
 			    $tabla = $tabla . "</tr>";
 			} 
 			 
-			$tabla = $tabla . "</table>"; 
+			$tabla = $tabla . "</table>"; */
 			$tabla = $tabla ."<br/>";
 		 	
 			
 			foreach( $sheet_array as $row ) {
 				
-				if($row['A']=="VENTA DE ENVIOS DE TAQUILLA" || $row['A']=="Fecha"){
+				if($row['A']=="VENTA DE ENVIOS DE TAQUILLA" || $row['A']=="Fecha" || $row['A']==""){
 					// do nothing
 				}else
-				{
+				{/*
 					$tabla = $tabla.'fecha: '.$row['A'].
 									' servicio: '.$row['B'].
 									' guia: '.$row['C'].
@@ -1434,7 +1671,7 @@ class OrdenController extends Controller
 									' valor mercancia: '.$row['O'].
 									' total a pagar: '.$row['P'].
 					 				' usuario: '.$row['Q'].
-									'<br/>';
+									'<br/>';*/
 									
 					$status = strtolower($row['I']);
 					
@@ -1444,8 +1681,11 @@ class OrdenController extends Controller
 						
 						if($orden->estado == 3) // pago confirmado
 						{
-							$orden->estado = 4;
+							$orden->estado = 4; // enviado
+							$orden->tracking = $row['C']; // guia
 							$orden->save();
+						
+							$tabla .= "La orden #".$row['D']." cambió a estado Enviado. Numero de Guia: ".$row['C']." </br>"; 
 						}
 						
 					}				
@@ -1453,9 +1693,7 @@ class OrdenController extends Controller
 				}		
 					
 			}
-			
-			
-			
+
 			
 			
 		}// isset 

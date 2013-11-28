@@ -1,5 +1,8 @@
 <?php
-
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta") => array('micuenta'),
+	UserModule::t("Invitaciones"),
+);
 /** @var $form bootstrap.widgets.TbActiveForm */
 
 $create_time = strtotime($model->create_at);
@@ -83,13 +86,13 @@ $create_date = date('j M Y', $create_time);
             	</div>
                 
                 <div class="row-fluid margin_bottom margin_top padding_top">
-                    <div class="span5">
+                    <div class="span6 offset3">
                         <div onclick="invite_friends()" style="cursor: pointer;" id="boton_facebook" class="text_align_center"><a>Invítalos usando Facebook</a></div>
                     </div>
-                    <div class="span2 text_align_center T_large">- o -</div>
+<!--                     <div class="span2 text_align_center T_large">- o -</div>
                     <div class="span5">
                         <div onclick="invite_friends_twitter()" style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a>Invítalos usando Twitter</a></div>
-                    </div>
+                    </div> -->
                 </div>
                 <?php 
                       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -126,7 +129,7 @@ $create_date = date('j M Y', $create_time);
                                 <div class="controls">
                                     <?php 
                                    echo CHtml::textArea('invite-message',
-                                   'Mira looks creados por Daniela Kosan, Chiquinquirá Delgado y más artistas.',
+                                   'Mira looks creados por las mejores Personal Shopper de Venezuela.',
                                    array('class' => 'span5', 'rows' => '4'));
                                    ?>
                                    <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
@@ -338,11 +341,16 @@ $create_date = date('j M Y', $create_time);
                 var emails = $('input[type=hidden]').filter('[name*="emailList"]');                
                 //si no hay emails
                 if(!emails.size()){
-                 $('#emailInvite-form_bulkEmailList').parent().parent().addClass('error');
-                 $('#User_emails_em_').show();               
+                    $('#emailInvite-form_bulkEmailList').parent().parent().addClass('error');
+                    $('#User_emails_em_').show();               
                     
                  result = false;   
+                }else{
+                   $('#emailInvite-form_bulkEmailList').parent().parent().removeClass('error');
+                   $('#User_emails_em_').hide();  
+                    
                 }
+                    
                 
                 //Si no hay mensaje
 //                var message = $('#invite-message');

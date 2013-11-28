@@ -19,6 +19,10 @@ class User extends CActiveRecord {
     const PRIVACIDAD_AVATAR = 2;
     const PRIVACIDAD_LOOKS = 4;
     const PRIVACIDAD_SHOPPERS = 8;
+    
+    //Tipo de Usuario
+    const TYPE_PSAPPLY = 2;
+    
 
     //Vector de estados para dropdown
     public static $statuses = array(self::STATUS_ACTIVE => 'Activo', self::STATUS_NOACTIVE => 'Inactivo', 
@@ -39,6 +43,7 @@ class User extends CActiveRecord {
      * @var timestamp $lastvisit_at
      * @var timestamp $avatar_url
      * @var timestamp $banner_url
+     * @var int $ps_destacado
      * */
 
     /**
@@ -74,9 +79,9 @@ class User extends CActiveRecord {
                     array('superuser', 'in', 'range' => array(0, 1)),
                     array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
                     array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
-                    array('username, email, superuser, status', 'required'),
+                   array('username, email, superuser, status', 'required'),
                     array('superuser, status,status_register,privacy, twitter_id, facebook_id', 'numerical', 'integerOnly' => true),
-                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url', 'safe', 'on' => 'search'),
+                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url, ps_destacado', 'safe', 'on' => 'search'),
                         ) : ((Yii::app()->user->id == $this->id) ? array(
                             array('username, email', 'required'),
                             array('password', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
@@ -97,7 +102,9 @@ class User extends CActiveRecord {
         if (!isset($relations['profile']))
             $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
         $relations['direccion'] = array(self::HAS_MANY, 'Direccion', 'user_id');
-
+        $relations['saldo'] = array(self::STAT, 'Balance', 'user_id',
+            'select' => 'SUM(total)',
+        );
         $relations['direccionCount'] = array(self::STAT, 'Direccion', 'user_id',
             'select' => 'COUNT(*)',
         );
@@ -106,11 +113,16 @@ class User extends CActiveRecord {
         );
         
         $relations['ordenes'] = array(self::HAS_MANY, 'Orden', 'user_id',
-//            // we don't want to select posts
+
 //                        'select'=>false,
-//                        // but want to get only users with published posts
 //                        'joinType'=>'INNER JOIN',
 //                        'condition'=>'(ordenes.estado = 3 OR ordenes.estado = 4 OR ordenes.estado = 8)',
+            );
+        $relations['looks'] = array(self::HAS_MANY, 'Look', 'user_id',
+
+//                        'select'=>false,
+//                        'joinType'=>'INNER JOIN',
+                        'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
             );
         
         return $relations;
@@ -138,6 +150,8 @@ class User extends CActiveRecord {
             'facebook_id' => UserModule::t("Facebook ID"),
             'avatar_url' => UserModule::t("Avatar"),
             'banner_url' => "Banner",
+            'ps_destacado' => "Destacado",
+            'url' => "Alias",
         );
     }
 
@@ -156,7 +170,7 @@ class User extends CActiveRecord {
                 'condition' => 'superuser=1',
             ),
             'notsafe' => array(
-                'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id, facebook_id,avatar_url, banner_url',
+                'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id, facebook_id,avatar_url, banner_url, ps_destacado',
             ),
         );
     }
@@ -164,7 +178,7 @@ class User extends CActiveRecord {
     public function defaultScope() {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
                     'alias' => 'user',
-                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url',
+                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado',
         ));
     }
 
@@ -209,6 +223,7 @@ class User extends CActiveRecord {
         $criteria->compare('facebook_id', $this->facebook_id);
         $criteria->compare('avatar_url', $this->avatar_url);
         $criteria->compare('banner_url', $this->banner_url);
+        $criteria->compare('ps_destacado', $this->ps_destacado);
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,
@@ -375,6 +390,17 @@ class User extends CActiveRecord {
                 {
                     $criteria->compare("personal_shopper", $comparator.'1', false, $logicOp);
 
+                    
+                }else if($value === 'aplica')
+                {
+                    $criteria->compare("personal_shopper", $comparator.'2', false, $logicOp);
+
+                    
+                }else if($value === 'psDes')
+                {
+                    $criteria->compare("ps_destacado", $comparator.'1', false, $logicOp);
+
+                    
                 }else if($value === 'user')
                 {              
                     $comparator = ($comparator == '=') ? '' : 'NOT ';
@@ -522,7 +548,7 @@ class User extends CActiveRecord {
                 continue;
             }                       
 
-            if ($column == 'lastvisit_at') {
+            if ($column == 'lastvisit_at' || $column == 'create_at') {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);
             }
@@ -547,5 +573,122 @@ class User extends CActiveRecord {
             'criteria' => $criteria,
         ));
     }
+
+		public function getTotalPS()
+	{
+		$sql = "select count(*) from tbl_users where personal_shopper = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	
+	public function getTotalAdmin()
+	{
+		$sql = "select count(*) from tbl_users where superuser = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	public function getTotalClients()
+	{
+		$sql = "select count(*) from tbl_users where superuser = 0 AND personal_shopper = 0";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	
+	public function getTotal()
+	{
+		$sql = "select count(*) from tbl_users where (superuser = 0 AND personal_shopper = 0) OR superuser = 1 OR personal_shopper = 1";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}
+	
+	public function getAplicantes()
+	{
+		$sql = "select count(*) from tbl_users where personal_shopper = 2";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	} 
+	
+	public function getPercent($rol){
+		switch ($rol) {
+		    case 'Admin':
+		        $perc=round($this->getTotalAdmin()*100/$this->getTotal(),2);
+		        break;
+		    case 'PS':
+		        $perc=round($this->getTotalPS()*100/$this->getTotal(),2);
+		        break;
+		    case 'Client':
+		        $perc=round($this->getTotalClients()*100/$this->getTotal(),2);
+		        break;
+			case 'App':
+		        $perc=round($this->getAplicantes()*100/$this->getTotal(),2);
+		        break;
+		    default:
+		       $perc=0;
+				break;
+		}
+		return $perc;
+	}
+	
+	
+	
+	protected function beforeSave()
+	{
+	   	
+	   if($this->personal_shopper>0)
+	   		$this->banner_url='/images/banner/default.jpg';
+	   //echo $this->birthday;
+	   return parent::beforeSave();
+	}
+	
+	public function getLast3($rol){
+		
+
+		
+		switch ($rol) {
+		    case 'Admin':
+		        $sql = "select id from tbl_users where superuser = 1 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+		    case 'PS':
+		        $sql = "select id from tbl_users where personal_shopper = 1 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+		    case 'Client':
+		        $sql = "select id from tbl_users where superuser = 0 AND personal_shopper = 0 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+			case 'App':
+		        $sql = "select id from tbl_users where personal_shopper = 2 order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+		        break;
+		    default:
+		       $sql = "select id from tbl_users order by create_at desc limit 0,3";
+				$total = Yii::app()->db->createCommand($sql)->queryColumn();
+				break;
+		}
+	
+		return $total;
+		
+		
+	}
+	
+	public function getCreate_at($id = null){
+		if(!is_null($id))
+		{
+			$null=$this->findByPk($id);	
+			return $null->create_at; 		
+		}
+		return $this->create_at; 
+	}
+	
+	public function getUsername($id = null){
+		if(!is_null($id))
+		{
+			$null=$this->findByPk($id);	
+			return $null->username; 		
+		}
+		return $this->username; 
+	} 
+	 
 
 }

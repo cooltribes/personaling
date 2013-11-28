@@ -4,6 +4,7 @@
  * Tipo 
  * 1- Deposito o Transferencia
  * 2- Tarjeta de Credito
+ * 3- Balance personal
  * 4- MercadoPago
  */ 
  

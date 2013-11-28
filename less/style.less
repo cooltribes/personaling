@@ -514,6 +514,9 @@ border:0;
 .table-striped tbody tr.warning:nth-child(2n+1) td{
     background-color: #fcf8e3;
 }
+.table-striped tbody tr.info:nth-child(2n+1) td{
+    background-color: #DFF0D8;
+}
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{ background:@color1}
 
 .table-striped  th{
@@ -698,6 +701,16 @@ src: url('../fonts/entypo.woff'),
             position: fixed; background:url(../images/logo_personaling_inverso.png) no-repeat center left;
         }
 
+    }
+    #dropdownUser{
+      .nav-header{
+        font-size: 9px;
+      }
+      .sub_perfil_item{
+        display: block;
+        padding-top: 1.5em;
+        padding-bottom: 1em;
+      }
     }
 }
 
@@ -921,9 +934,51 @@ src: url('../fonts/entypo.woff'),
 /*------------- Home ON -------------*/
 
 .wrapper_home{
-    .padding_top_large;
-    min-height:600px;
-    background: url(../images/bg_home_personaling_chica_1.jpg) no-repeat center  ;
+        margin-bottom: -30px;
+    .carousel .item img{
+      margin: 0 auto;
+    }
+    .box_20130928{
+      width: 48%;
+      margin: 0 auto;
+      position: absolute;
+      text-align: center;
+      top: 150px;
+      left: 26%;
+      background: rgba(255, 255, 255, .9);
+      @box_shadow:0px 0px 3px 7px rgba(0, 0, 0, 0.2);
+      box-shadow: @box_shadow;
+      -moz-box-shadow: @box_shadow;
+      -webkit-box-shadow: @box_shadow;
+      padding: 4em 1.9em;
+      h1{
+        font-size: 18px;
+        line-height: 1.5em;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 1em;
+        margin-bottom: 1em;
+        span{
+          font-size: 24px;
+          .CAPS;
+          display: block;
+          font-weight: bold;
+          font-family: Tahoma, Geneva, sans-serif;
+        }
+      }
+      p {
+        line-height: 2em;
+        font-size: 1.1em;
+          span{
+          font-size: 22px;
+          padding-left: .9em;
+          }
+          span:first-child{ padding-left: 0 !important}
+      }
+
+    }
+    min-height:496px;
+    // background: url(../images/bg_personal_shoppers_home.jpg) top center  ;
+    // background-size: contain;
     .container{ position:relative;}
     .box_home{
         background:rgba(148,227,104,.3);
@@ -1004,6 +1059,19 @@ src: url('../fonts/entypo.woff'),
 
 
 }
+.menciones{
+      border-top: 1px solid #ddd;
+      padding-top: 3.5em;
+      padding-bottom: .5em;
+      text-align: center;
+      blockquote {
+        border-left: medium none;
+        margin: 20px 0 10px;
+        padding: 0;
+        text-align: center;
+      }
+
+}
   .carousel-indicators {
   position: absolute;
   top: 15px;
@@ -1011,6 +1079,7 @@ src: url('../fonts/entypo.woff'),
   z-index: 5;
   margin: 0;
   list-style: none;
+
 }
 
 .carousel-indicators li {
@@ -1058,6 +1127,7 @@ src: url('../fonts/entypo.woff'),
     background-color: #3B5998;
     background-image: url(../images/icon_facebook_registrator.png);
     background-repeat: no-repeat;
+    background-position-y: -2px; 
 }
 
 #boton_twitter a{
@@ -1137,15 +1207,16 @@ src: url('../fonts/entypo.woff'),
                       background-color: #E3DEDE;
                       background-image: url('../images/icon_corazon_vacio.png');
                       background-repeat: no-repeat;
-                      background-position-x: 5px;
-                      background-position-y: 4px;                      
+                      background-position-x: 11px;
+                      background-position-y: 9px;  
+                      text-shadow: none;                    
                     }   
                     .btn-danger_modificado{
                       background: @color1 !important;
                       background-image: url('../images/icon_corazon_lleno.png') !important;
                       background-repeat: no-repeat !important;
-                      background-position-x: 5px !important;
-                      background-position-y: 4px !important;  
+                      background-position-x: 11px !important;
+                      background-position-y: 9px !important;  
                       color: #FFF !important;
                     }      
                     #total-likes{
@@ -1153,8 +1224,8 @@ src: url('../fonts/entypo.woff'),
                       color: #3C4141;              
                       display: inline-block;
                       font-size: 12px;
-                      height: 13px;
-                      line-height: 13px;
+                      height: 25px;
+                      line-height: 23px;
                       left: -12px;
                       padding: 2px 6px;
                       position: relative;
@@ -1420,6 +1491,7 @@ src: url('../fonts/entypo.woff'),
           }
         }
 
+
         .imagen_principal{
             position:relative;
             .margin_bottom_medium;
@@ -1437,10 +1509,14 @@ src: url('../fonts/entypo.woff'),
 
                     }
             }
-
         .marcas{
           ul li{
-            margin: 0 0 5px 0;
+            display: inline-block;
+            margin-right: 5px;
+            margin-top: 4px;
+            line-height: 65px;   
+            width: 60px;
+            height: 60px;         
           }
         }
 
@@ -1458,32 +1534,33 @@ src: url('../fonts/entypo.woff'),
             margin-top:1em;
             .margin_bottom; 
             #btn-encanta{
-              border-radius: 0;
-              background-color: #E3DEDE;
-              background-image: url('../images/icon_corazon_vacio.png');
-              background-repeat: no-repeat;
-              background-position-x: 5px;
-              background-position-y: 4px;   
+                border-radius: 0;
+                background-color: #E3DEDE;
+                background-image: url('../images/icon_corazon_vacio.png');
+                background-repeat: no-repeat;
+                background-position-x: 11px;
+                background-position-y: 9px;  
+                text-shadow: none;  
               
             }   
             .btn-danger_modificado{
-              background: @color1 !important;
-              background-image: url('../images/icon_corazon_lleno.png') !important;
-              background-repeat: no-repeat !important;
-              background-position-x: 5px !important;
-              background-position-y: 4px !important;  
-              color: #FFF !important;
+                background: @color1 !important;
+                background-image: url('../images/icon_corazon_lleno.png') !important;
+                background-repeat: no-repeat !important;
+                background-position-x: 11px !important;
+                background-position-y: 9px !important;  
+                color: #FFF !important;
             }      
             #total-likes{
-              background: #C4BCCD;
-              color: #3C4141;              
-              display: inline-block;
-              font-size: 12px;
-              height: 13px;
-              line-height: 13px;
-              left: -12px;
-              padding: 2px 6px;
-              position: relative;
+                background: #C4BCCD;
+                color: #3C4141;              
+                display: inline-block;
+                font-size: 12px;
+                height: 25px;
+                line-height: 23px;
+                left: -12px;
+                padding: 2px 6px;
+                position: relative;
             }
             // Para alinear y que no se amontonen
             #btn-facebook{
@@ -1521,7 +1598,7 @@ src: url('../fonts/entypo.woff'),
             padding-bottom:1em;
             border-bottom:1px solid #ddd;
             .btn-danger:before, .btn-warning:before{
-                content:'\1F512';
+                content:'\E73D';
                 font-size:2em;
                 margin-right:7px;
                 font-family:entypo;
@@ -1651,6 +1728,116 @@ src: url('../fonts/entypo.woff'),
 
 
 /*----------- Tienda ON -------------*/
+
+.bard_tienda{
+  background: #f7f7f7;
+  font-weight: 200;
+  .item {
+    display: inline-block;
+    padding: 1em;
+    border-right: 1px solid #eee;
+    li{
+      border-bottom: 1px solid @color5;
+      padding: 0.5em;
+      font-weight: 200;
+      &:last-child{border-bottom: 0}
+      a:hover{
+        background: @color5;
+        color: #333;
+
+      }   
+      .dropdown-menu{
+        width: 400;
+      }
+    }
+  }
+  .caretthumbs{
+    position: relative;
+    top: 16px;
+  }
+  .itemThumbnails{
+    display: inline-block;
+    border-right: 1px solid #eee;   
+    .dropdown-menu{
+      border: 10px solid #E7E3E7;
+      margin-top: 0;
+      width: 260px;
+    }
+    .dropdown-colors{
+      width: 280px;
+    }
+    .open{
+      background: @color10;
+    }
+    .color_b{
+      b{
+        top: 2px;
+      }
+    }
+  }
+  .img-categoria{
+    width: 50px;
+  }
+  .dropinput{
+    padding: 5px 5px 5px 10px;
+    background: white;
+    small{
+      background: rgb(223, 223, 223);
+      padding: 1px 6px;
+      b.caret{
+        margin-top: 8px;
+        margin-left: 0px;
+        margin-right: 6px;
+        border-top-color: black;
+        border-bottom-color: black;
+
+      }
+    }
+  }
+  .dropdown-menu{
+    border: 0;
+  }
+  .thumbnails{
+    margin-left: 0;
+  }
+  .thumbnails li > a{
+      padding: 0;
+      &:hover{
+        background: white;
+      }
+
+  }
+  .thumbnails li{
+    margin-left: 10px;
+    margin-bottom: 0;
+    min-width: 60px;
+    width: 70px;
+  }
+  .thumbnails .colors{
+    margin-left: 10px;
+    margin-bottom: 5px;
+    min-width: 0;
+    width: 44px;
+  }
+
+  .itemInput{
+    padding: 0;
+    input{
+      margin: 0;
+    }
+    .contenedorInput{
+      position: relative;
+    }
+    .btn-buscar{
+      position: absolute;
+      top: 5px;
+      left: 189px;
+      width: 22px;
+      background: #dfdfdf;
+      padding: 0;
+    }
+  }
+}
 
 .tienda_productos{
     .empty{
@@ -2088,6 +2275,9 @@ ul.yiiPager .last
     .thumbnail{
         min-height:8em;
     }
+    .box_elemento{
+      min-height: 600px; 
+    }
 }
 /*----------- Activos Graficos OFF ----------*/
 
@@ -2184,8 +2374,9 @@ ul.yiiPager .last
 
 /* Personal Shoppers list */
 .personal_shoppers_list{
+    
+    .personal_shoppers_li{height: 400px;}
     li{
-      height: 400px;
       margin-bottom: 4em;
       overflow: hidden;
       text-align: center;
@@ -2664,7 +2855,13 @@ img[alt="Loading"]{
             a{padding:.3em;}
             }
     }
-
+  .img_crear_look_colores{
+    
+        width:20px;
+        margin-left: 0;
+        margin-right: 5px;        
+    
+  }
 .well_personaling_big{
     border-top:3px solid @color1;
 }
@@ -2727,7 +2924,9 @@ img[alt="Loading"]{
 /* ----------- Publicar Look Administrador ON --------------*/
 #div_ocasiones, #div_tipo{
     a.active{
-        background-color: #222222;
+        background-color: @color1;
+        color: @color3 ;
+        text-shadow: none;
     }  
 }
 /* ----------- Publicar Look Administrador OFF --------------*/
@@ -2744,7 +2943,7 @@ img[alt="Loading"]{
 
 #emailInvite-form_bulkEmails{
     border: 1px white solid;
-    
+    margin-bottom: 0;
     box-shadow: 0 0 10px white inset;
     -moz-box-shadow: 0 0 10px white inset;
     -o-box-shadow: 0 0 10px white inset;
@@ -2879,7 +3078,305 @@ img[alt="Loading"]{
 
 /*------------- Escoge tu estilo registro OFF -------------*/
 
+/*----------------  Como funciona ON ---------------- */
+.como_funciona{
+ .seccion2, .seccion3, .seccion5, .seccion4{
+    p{
+      color: #666;
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 1.5em;
+    }
 
+  } 
+  .seccion1, .seccion2, .seccion3, .seccion5{
+    padding: 5em 0;
+  } 
+  .seccion1{
+    background-color: @color1;
+    color: @color3;
+    margin-top:0;
+    h1{
+      font-weight: 300;
+      font-size: 25px;
+      .CAPS;
+    }
+    .lead{
+      font-weight: 300;
+      font-size: 16px;
+    }
+  }
+  .seccion2{
+    background-color: #f6f2f5;
+    img{
+      padding: 1em 0;
+    }
+  }
+  .seccion3{
+    padding-bottom: 700px;
+    background: url("../images/bg_personal_shoppers_home.jpg") bottom repeat-x;
+    p{
+      color: #666;
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 1.5em;
+    }
+  }
+  .seccion5{
+    img{
+      margin-bottom: 1em;
+      display: block;
+    }
+
+  }
+  .seccion4{
+    background: url("../images/como_rosa2.png") bottom left  no-repeat #fff5f6;
+    padding: 12em 0;
+    margin-bottom: -30px; // mientras se oculta los resultados
+    .como_safari{
+      background: url("../images/como_safari.png") no-repeat center;
+      background-size: cover;
+      padding: 31em 0 7em;
+
+    }
+  }
+
+}
+
+/*----------------  Listado PS ON ---------------- */
+.user-profile-listado{
+    .infinite_navigation{
+      display:none;
+    }
+    .pshopper{
+      height:470px;
+    }
+}
+/*----------------  Listado PS OFF ---------------- */
+
+/*----------------  GiftCard ON ---------------- */
+      
+      //Estilo para aplicar Gift Card
+      .inputGiftcard{
+          width: 45px;
+      }
+      .contenedorgiftcard{
+          width: 470px;
+          margin: auto;
+      }
+
+      // Preview de giftcard desde el admin
+      .contenedorPreviewGift{
+        position: relative;
+        #para,#mensaje,#forpara,#foremail,#formensaje,#codigo,#fecha,#monto{
+            display: block;
+            position: absolute;  
+        }
+        #forpara,#formensaje{
+            font-size: 1.1em;
+            left: 17px;
+            line-height: 1.6em;
+        }
+        #para,#mensaje{
+            font-size: 1.1em;
+            left: 80px;
+            line-height: 1.6em;                                
+        }
+        #para,#forpara{
+            top: 120px;
+        }
+        #mensaje,#formensaje{
+            top: 140px;
+        }      
+        #codigo{
+            left: 80px;
+            top: 195px;
+        }
+        #fecha{
+            left: 10px;                                
+            top: 252px;
+        }
+        #monto{
+            left: 315px;
+            top: 60px;
+        }          
+      }
+
+/*----------------  GiftCard OFF ---------------- */
+
+/*----------------  Loading bar ON ---------------- */
+.aplicacion-cargando .barra-carga
+{
+    display: block;
+    -webkit-animation: shift-rightwards 4s ease-in-out infinite;
+    -moz-animation: shift-rightwards 4s ease-in-out infinite;
+    -ms-animation: shift-rightwards 4s ease-in-out infinite;
+    -o-animation: shift-rightwards 4s ease-in-out infinite;
+    animation: shift-rightwards 4s ease-in-out infinite;
+    -webkit-animation-delay: .4s;
+    -moz-animation-delay: .4s;
+    -o-animation-delay: .4s;
+    animation-delay: .4s;
+}
+.barra-carga
+{
+    position: fixed;
+    display: none;
+    top: 60px;
+    left: 0;
+    right: 0;
+    height: 2.4px;
+    z-index: 800;
+    background: @color6;
+    box-shadow: 0px 0px 7px  rgba(173,54,130,0.6);
+    -moz-box-shadow: 0px 0px 7px  rgba(173,54,130,0.6);
+    -webkit-box-shadow: 0px 0px 7px rgba(173,54,130,0.6);    
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -o-transform: translateX(100%);
+    transform: translateX(100%);
+}
+
+@-webkit-keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+
+}
+@-moz-keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+
+}
+@-o-keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+
+}
+@keyframes shift-rightwards
+{
+    0%
+    {
+        -webkit-transform:translateX(-100%);
+        -moz-transform:translateX(-100%);
+        -o-transform:translateX(-100%);
+        transform:translateX(-100%);
+    }
+
+    40%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    60%
+    {
+        -webkit-transform:translateX(0%);
+        -moz-transform:translateX(0%);
+        -o-transform:translateX(0%);
+        transform:translateX(0%);
+    }
+
+    100%
+    {
+        -webkit-transform:translateX(100%);
+        -moz-transform:translateX(100%);
+        -o-transform:translateX(100%);
+        transform:translateX(100%);
+    }
+}
+/*----------------  Loading bar OFF ---------------- */
 
 
 /*---------------- BANNERS y BOTONES ON ------------*/
@@ -2895,23 +3392,33 @@ img[alt="Loading"]{
 /*---------------- BANNERS y BOTONES OFF ------------*/
 
 
-.bolsa-compra, .bolsa-direcciones{
-
+.bolsa-compra, .bolsa-pagos ,.bolsa-direcciones, .bolsa-confirmar,  .user-profile-tutipo, .user-profile-tuestilo{
     #navegacion_principal  .nav, #wrapper_footer{ display: none;}
 }
-
-
+.user-profile-tuestilo,.user-profile-tutipo{
+    #notificacion_validar{
+      display: none;
+    }
+}
 /*--------------- HACKS ON --------------------*/
 #profile-form{
     select#Profile_pais, select#Profile_day, #Profile_sex_0{
         margin-left:1em;
         }
+
     #Profile_month{
-        margin:0 1em;
+        margin:0 0.5em;
         }
 }
 
 /*--------------- HACKS OFF --------------------*/
+
+
+
+
+
+
+
 
 
 /*---------------------- Responsive Design --------------------*/
@@ -3010,6 +3517,17 @@ img[alt="Loading"]{
    #scroller-anchor #scroller{
      width:auto;
   }
+
+  .wrapper_home{
+    .box_20130928{
+      h1{
+        span{
+          font-size: 20px;
+        }
+      }
+    }
+   }
+
   #page{ padding-top: 0;}
   body{ background: none;}
   .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}

@@ -21,12 +21,14 @@ $this->breadcrumbs=array(
 )); ?>
 
 	<?php echo $form->errorSummary($model); ?>
-  
-  <?php
+<?php
 	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
-	//<input id="accion" type="hidden" value="" />	
+	echo CHtml::hiddenField('id_sig',$model->next($model->id), array('id' => 'id_sig'));
+	
+	//  <input id="id_sig" type="hidden" value="<?php echo $model->next($model->id);" />	
+	
 ?>
-  
+ 
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
@@ -53,7 +55,7 @@ $this->breadcrumbs=array(
                 </div>
             </div>
             <div class="control-group">
-                 	<?php echo $form->textFieldRow($seo, 'urlAmigable', array('class'=>'span5')); ?>
+                 	<?php echo $form->textFieldRow($seo, 'urlAmigable', array('class'=>'span5', 'placeholder'=>'Ejemplo: prenda-color-marca')); ?>
                  <div class="controls">
                 <div class=" muted">Dirección URL del producto</div>
                 </div>
@@ -102,6 +104,14 @@ $this->breadcrumbs=array(
 			'htmlOptions' => array('id'=>'normal'),
 		)); ?>
        	<ul class="nav nav-stacked nav-tabs margin_top">
+       		<?php
+       		if($model->next($model->id) != NULL)
+			{
+       		?>
+       		<li><a id="siguiente" style="cursor: pointer" title="Guardar y Siguiente">Guardar y siguiente producto</a></li>
+       		<?php
+			}
+       		?>
          	<li><a id="nuevo" style="cursor: pointer" title="Guardar y crear nuevo producto">Guardar y crear nuevo producto</a></li>
 			<li><a style="cursor: pointer" title="Restablecer" id="limpiar">Limpiar Formulario</a></li>
         </ul>
@@ -136,12 +146,17 @@ $this->breadcrumbs=array(
 	
 	$('#normal').on('click', function(event) {
 		event.preventDefault();
-		
+		if(valSeo()){
 		// cambio el valor
 		$("#accion").attr("value", "normal");
 
 		// submit del form
 		$('#producto-form').submit();
+		}
+		else
+		{
+			alert("El campo de Url contiene caracteres no válidos")
+		}
 
 	});
 	
@@ -149,14 +164,54 @@ $this->breadcrumbs=array(
 	$('a#nuevo').on('click', function(event) {
 		
 		event.preventDefault();
-		
+		if(valSeo()){
 		$("#accion").attr("value", "nuevo");
 		//alert( $("#accion").attr("value") );
 
 		// submit del form
 		$('#producto-form').submit();
-	
+		}
+		else
+		{
+			alert("El campo de Url contiene caracteres no válidos")
+		}
 	}	
+	);
+	
+	$('a#siguiente').on('click', function(event) {
+		
+		event.preventDefault();
+		if(valSeo()){
+		$("#accion").attr("value", "siguiente");
+		var uno = $("#id_sig").attr("value");
+		
+		if(uno != ""){
+			//alert(uno);
+
+			// submit del form
+			$('#producto-form').submit();
+		}
+		}
+		else
+		{
+			alert("El campo de Url contiene caracteres no válidos")
+		}
+	}	
+	
 	);	
+	/*$('#Seo_urlAmigable').on('input', function() { 
+     // get the current value of the input field.
+     	
+	  //alert($('#Seo_urlAmigable').val());
+ });*/
+ 
+ function valSeo(){
+	 var exp= /^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/;
+	 var val=$('#Seo_urlAmigable').val();
+	 if(val.match(exp))
+	 	return true;
+	else
+		return false;	
+	}		
 		
 </script>

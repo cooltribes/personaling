@@ -21,6 +21,84 @@ class LookController extends Controller
 	public function accessRules()
 	{
 		return array(
+		
+			array('allow', 
+			'actions'=>array('view'),
+			
+			'expression' => 'preg_match( "/^facebookexternalhit/", $_SERVER["HTTP_USER_AGENT"] )',
+			
+			),
+			array('allow',  // allow all ips from facebook
+				'actions'=>array('index','view'),
+				'ips'=>array(
+				'201.210.221.244',
+				'204.15.20.0/22'
+							,'69.63.176.0/20'
+							,'66.220.144.0/20'
+							,'66.220.144.0/21'
+							,'69.63.184.0/21'
+							,'69.63.176.0/21'
+							,'74.119.76.0/22'
+							,'69.171.255.0/24'
+							,'173.252.64.0/18'
+							,'69.171.224.0/19'
+							,'69.171.224.0/20'
+							,'103.4.96.0/22'
+							,'69.63.176.0/24'
+							,'173.252.64.0/19'
+							,'173.252.70.0/24'
+							,'31.13.64.0/18'
+							,'31.13.24.0/21'
+							,'66.220.152.0/21'
+							,'66.220.159.0/24'
+							,'69.171.239.0/24'
+							,'69.171.240.0/20'
+							,'31.13.64.0/19'
+							,'31.13.64.0/24'
+							,'31.13.65.0/24'
+							,'31.13.67.0/24'
+							,'31.13.68.0/24'
+							,'31.13.69.0/24'
+							,'31.13.70.0/24'
+							,'31.13.71.0/24'
+							,'31.13.72.0/24'
+							,'31.13.73.0/24'
+							,'31.13.74.0/24'
+							,'31.13.75.0/24'
+							,'31.13.76.0/24'
+							,'31.13.77.0/24'
+							,'31.13.96.0/19'
+							,'31.13.66.0/24'
+							,'173.252.96.0/19'
+							,'69.63.178.0/24'
+							,'31.13.78.0/24'
+							,'31.13.79.0/24'
+							,'31.13.80.0/24'
+							,'31.13.82.0/24'
+							,'31.13.83.0/24'
+							,'31.13.84.0/24'
+							,'31.13.85.0/24'
+							,'31.13.86.0/24'
+							,'31.13.87.0/24'
+							,'31.13.88.0/24'
+							,'31.13.89.0/24'
+							,'31.13.90.0/24'
+							,'31.13.91.0/24'
+							,'31.13.92.0/24'
+							,'31.13.93.0/24'
+							,'31.13.94.0/24'
+							,'31.13.95.0/24'
+							,'31.13.97.0/24'
+							,'69.171.253.0/24'
+							,'69.63.186.0/24'
+							,'31.13.81.0/24'
+							,'204.15.20.0/22'
+							,'69.63.176.0/20'
+							,'69.63.176.0/21'
+							,'69.63.184.0/21'
+							,'66.220.144.0/20'
+							,'69.63.176.0/20'),
+			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','getimage','updateprice','encantar'),
 				'users'=>array('*'),
@@ -55,7 +133,11 @@ class LookController extends Controller
 			Yii::app()->user->updateSession();
             Yii::app()->user->setFlash('error', 'No se puede eliminar un look que ya ha sido aprobado');
 		}
-		$this->redirect(array('look/admin'));
+		if (Yii::app()->user->isAdmin())
+			$this->redirect(array('look/admin'));
+		else 
+			$this->redirect(array('look/mislooks'));
+
 	}
 	public function actionUpdatePrice()
 	{
@@ -92,6 +174,144 @@ class LookController extends Controller
 		}			
 		$dataProvider = $look->search();
 		
+                
+                /**********************   Para Filtros   *************************/
+                if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+                {
+                    unset($_SESSION['todoPost']);
+                }
+                //Filtros personalizados
+                $filters = array();
+
+                //Para guardar el filtro
+                $filter = new Filter;
+
+
+               if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+                   && !isset($_POST['buscar_look'])){
+                  $_POST = $_SESSION['todoPost'];
+               }            
+
+               if(isset($_POST['dropdown_filter'])){  
+
+                    $_SESSION['todoPost'] = $_POST;          
+
+                    //Validar y tomar sólo los filtros válidos
+                    for($i=0; $i < count($_POST['dropdown_filter']); $i++){
+                        if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
+                                && trim($_POST['textfield_value'][$i]) != '' && $_POST['dropdown_relation'][$i]){
+
+                            $filters['fields'][] = $_POST['dropdown_filter'][$i];
+                            $filters['ops'][] = $_POST['dropdown_operator'][$i];
+                            $filters['vals'][] = $_POST['textfield_value'][$i];
+                            $filters['rels'][] = $_POST['dropdown_relation'][$i];                    
+
+                        }
+                    }     
+                    //Respuesta ajax
+                    $response = array();
+
+                    if (isset($filters['fields'])) {                    
+
+                        $dataProvider = $look->buscarPorFiltros($filters, Yii::app()->user->id);                    
+                        //echo "Total: " . $dataProvider->getItemCount();
+                         //si va a guardar
+                         if (isset($_POST['save'])){                        
+
+                             //si es nuevo
+                             if (isset($_POST['name'])){
+
+                                $filter = Filter::model()->findByAttributes(
+                                                    array('name' => $_POST['name'], 'type' => '5', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                                            );
+
+                                if (!$filter) {
+                                    $filter = new Filter;
+                                    $filter->name = $_POST['name'];
+                                    $filter->type = 5;
+                                    $filter->user_id = Yii::app()->user->id;
+                                    if ($filter->save()) {
+                                        for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                            $filterDetails[] = new FilterDetail();
+                                            $filterDetails[$i]->id_filter = $filter->id_filter;
+                                            $filterDetails[$i]->column = $filters['fields'][$i];
+                                            $filterDetails[$i]->operator = $filters['ops'][$i];
+                                            $filterDetails[$i]->value = $filters['vals'][$i];
+                                            $filterDetails[$i]->relation = $filters['rels'][$i];
+                                            $filterDetails[$i]->save();
+                                        }
+
+                                        $response['status'] = 'success';
+                                        $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';
+                                        $response['idFilter'] = $filter->id_filter;                                    
+
+                                    }
+
+                                //si ya existe
+                                } else {
+                                    $response['status'] = 'error';
+                                    $response['message'] = 'No se pudo guardar el filtro, el nombre <b>"'.
+                                            $filter->name.'"</b> ya existe'; 
+                                }
+
+                              /* si esta guardadndo uno existente */
+                             }else if(isset($_POST['id'])){
+
+                                $filter = Filter::model()->findByPk($_POST['id']); 
+
+                                if ($filter) {
+
+                                    //borrar los existentes
+                                    foreach ($filter->filterDetails as $detail){
+                                        $detail->delete();
+                                    }
+
+                                    //Crear los nuevos
+                                    for ($i = 0; $i < count($filters['fields']); $i++) {
+
+                                        $filterDetails[] = new FilterDetail();
+                                        $filterDetails[$i]->id_filter = $filter->id_filter;
+                                        $filterDetails[$i]->column = $filters['fields'][$i];
+                                        $filterDetails[$i]->operator = $filters['ops'][$i];
+                                        $filterDetails[$i]->value = $filters['vals'][$i];
+                                        $filterDetails[$i]->relation = $filters['rels'][$i];
+                                        $filterDetails[$i]->save();
+                                    }
+
+                                    $response['status'] = 'success';
+                                    $response['message'] = 'Filtro <b>'.$filter->name.'</b> guardado con éxito';                                
+                                //si NO existe el ID
+                                } else {
+                                    $response['status'] = 'error';
+                                    $response['message'] = 'El filtro no existe'; 
+                                }
+
+                             }
+
+                             echo CJSON::encode($response); 
+                             Yii::app()->end();
+
+                         }//fin si esta guardando
+
+                    //si no hay filtros válidos    
+                    }else if (isset($_POST['save'])){
+                        $response['status'] = 'error';
+                        $response['message'] = 'No has seleccionado ningún criterio para filtrar'; 
+                        echo CJSON::encode($response); 
+                        Yii::app()->end();
+                    }
+                }
+                
+                	
+                if(isset($_POST['buscar_look']))
+                {
+                    unset($_SESSION["todoPost"]);
+                    $look->user_id = Yii::app()->user->id;
+                    $look->title = $_POST['buscar_look'];
+                    $dataProvider = $look->search();
+                }			                                
+                
 		$this->render('ps', array('model'=>$look,'dataProvider'=>$dataProvider,'tipo'=>'ps','look'=>$look));	
 		
 	}
@@ -113,9 +333,9 @@ class LookController extends Controller
 		else{
 			$model = Look::model()->findByPk($_GET['id']);
 		}		
-
-		$model->view_counter++;
-		$model->save();
+		
+		$model->increaseView();
+	
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
 		
@@ -206,7 +426,7 @@ header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GM
 		 	$image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('ext'=>'png'));
 		 	if (isset($image_url)){
 		 			$imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::app()->getBasePath() .'/../..'.$image_url;
+				 	$imagenes[$i]->path = $_SERVER['DOCUMENT_ROOT'].$image_url;
 					$imagenes[$i]->top = $lookhasproducto->top;
 					$imagenes[$i]->left = $lookhasproducto->left;
 					$imagenes[$i]->width = $lookhasproducto->width;
@@ -238,7 +458,7 @@ header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GM
 		 $imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
 					$imagenes[$i]->top = 0;
-					$imagenes[$i]->left = 630;
+					$imagenes[$i]->left = 5;
 					$imagenes[$i]->width = 70;
 					$imagenes[$i]->height = 70;
 					$imagenes[$i]->angle = 0;
@@ -382,14 +602,13 @@ public function actionColores(){
 	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	
-	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['color_id'])))->findAll();
+	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['colores'])))->findAll();
 	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);	
 	
 }
 public function actionCategorias(){
-	
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
-	  $categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
+	  	$categorias = false;
+		$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
 	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
@@ -399,11 +618,34 @@ public function actionCategorias(){
 		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+	if ($_POST['padreId']!=0){ 
+	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
+	  
+
+	}
 	  if ($categorias){
 	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	  }else {
-	  	$productos = Producto::model()->with(array('categorias'=>array('condition'=>'tbl_categoria_id='.$_POST['padreId'])))->findAll();
-	  	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
+	  	$with = array();
+	  	if(isset($_POST['padreId']))
+		  	if ($_POST['padreId']!=0)
+				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
+		if(isset($_POST['colores']))
+			if ($_POST['colores']!='')
+				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
+			
+	  	if(isset($_POST['marcas'])){
+		  	if ($_POST['marcas']!='Todas las Marca')	
+		  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
+			else	
+		  		$productos = Producto::model()->with($with)->findAll();
+		} else {
+			$productos = Producto::model()->with($with)->findAll();
+		}
+	  	if (isset($categoria_padre))
+	  		echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
+		else
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null),true,true);
 	  	// echo 'rafa';
 	  }
 }
@@ -443,6 +685,7 @@ public function actionCategorias(){
 	public function actionPublicar($id)
 	{
 		$model = Look::model()->findByPk($id);
+		
 		$temporal = '';
 		foreach($model->categoriahaslook as $categoriahaslook){
 			$temporal .= $categoriahaslook->categoria_id.'#';
@@ -450,13 +693,27 @@ public function actionCategorias(){
 		if ($temporal!='')
 			$model->has_ocasiones = substr($temporal, 0, -1);
 		//echo $model->has_ocasiones;
+		
 		if(isset($_POST['Look'])){
 			$model->attributes=$_POST['Look'];
-
-			if (Yii::app()->user->isAdmin())
-				$model->status = Look::STATUS_APROBADO;
-			else
-				$model->status = Look::STATUS_ENVIADO;
+			
+			if($model->url_amigable == "")
+				$model->url_amigable = NULL; 
+			
+			if (Yii::app()->user->isAdmin()){
+                            $model->status = Look::STATUS_APROBADO;
+                            $model->approved_on = date("Y-m-d H:i:s");
+                            
+                            if(!$model->sent_on){
+                                $model->sent_on = date("Y-m-d H:i:s");
+                            }
+                            
+                        }else{
+                            $model->status = Look::STATUS_ENVIADO;
+                            $model->sent_on = date("Y-m-d H:i:s");
+                        }	
+			
+				
 
 			 
 			
@@ -658,7 +915,26 @@ public function actionCategorias(){
 	}
 	public function actionCreate()
 	{
-		if (isset($_GET['id']))
+	
+//            if(!isset(Yii::app()->session["acceptBrowser"])){
+//                
+//                $browser = get_browser();
+//            
+//                echo "<pre>";
+//                print_r($browser);
+//                echo "</pre>";
+//                
+//                if($browser->)
+//            }
+            //Yii::app()->end();
+            
+
+            
+
+            
+            
+            
+            if (isset($_GET['id']))
 		$model= Look::model()->findByPk($_GET['id']);	
 		else
 		$model=new Look;
@@ -746,7 +1022,7 @@ public function actionCategorias(){
 					
 					$user = User::model()->findByPk(Yii::app()->user->id);
 					$criteria=new CDbCriteria;
-					$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
+					$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" >= recepcion_inicio AND "'.date('Y-m-d H:i:s').'" <= recepcion_fin';
 					if($user->superuser != '1'){
 						$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
 					}
@@ -802,6 +1078,10 @@ public function actionCategorias(){
             
             
             /**********************   Para Filtros   *************************/
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
             //Filtros personalizados
             $filters = array();
             
@@ -809,7 +1089,8 @@ public function actionCategorias(){
             $filter = new Filter;
             
             
-           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+           if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['buscar_look'])){
               $_POST = $_SESSION['todoPost'];
            }            
             
@@ -835,7 +1116,7 @@ public function actionCategorias(){
                 if (isset($filters['fields'])) {                    
                 
                     $dataProvider = $model->buscarPorFiltros($filters);                    
-                     
+                    //echo "Total: " . $dataProvider->getItemCount();
                      //si va a guardar
                      if (isset($_POST['save'])){                        
                          
@@ -924,6 +1205,12 @@ public function actionCategorias(){
             }
             
             
+            
+            if (isset($_POST['buscar_look'])) {
+                unset($_SESSION["todoPost"]);
+                $model->title = $_POST['buscar_look'];
+                $dataProvider = $model->lookAdminAprobar();
+            }
             
             $this->render('admin', array('model' => $model,
                 'dataProvider' => $dataProvider,

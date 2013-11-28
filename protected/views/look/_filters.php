@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -23,13 +23,16 @@
         '5' => 'Cancelado', '6' => 'Pago rechazado', '7' => 'Pago insuficiente',
         '8' => 'Entregado', '9' => 'Devuelto'), array('style' => 'display:none'));
     
-    echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+    echo CHtml::dropDownList('marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
     
     echo CHtml::dropDownList('user_id', '', CHtml::listData(User::model()->with(array(
                                'profile'=>array(),
                             ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
                             array('style' => 'display:none'));
+    
+    echo CHtml::dropDownList('destacado', '', array('1' => 'Sí',
+    '0' => 'No',), array('style' => 'display:none'));
     
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -57,13 +60,14 @@
                                 'view_counter' => 'Visitas',
                                 'user_id' => 'Personal Shopper',
                                 'status' => 'Estado',
-                                'total' => 'Marcas que contiene',
-                                'pago_id' => 'Monto de Ventas',
+                                'marca' => 'Marcas que contiene',
+                                'monto' => 'Monto de Ventas',
                                 'cantidad' => 'Cantidad Vendida',
                                 'created_on' => 'Fecha de Creación',
                                 'campana' => 'Campaña',
                                 'precio' => 'Precio',
-                                'dfgh' => 'Cantidad de Prendas',
+                                'prendas' => 'Cantidad de Prendas',
+                                'destacado' => 'Destacado'
                                 
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

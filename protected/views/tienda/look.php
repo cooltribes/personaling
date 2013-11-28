@@ -1,7 +1,45 @@
-
+<?php
+$this->breadcrumbs=array(
+  'Tu Personal Shopper' =>array('tienda/look'),
+  'Todos los looks',
+);
+?>
 <div class="container">
   <div class="page-header">
-    <h1>Todos los looks</h1>
+<!--    <h1>Todos los looks</h1>-->
+
+<div class="row-fluid margin_bottom_medium">
+    <div class="span6 text_align_right">
+        <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'label' => 'Looks para Mí',
+            'buttonType' => 'button',
+            'type' => 'danger',
+            'size' => 'large',
+            'htmlOptions' => array(
+                'id' => 'btnMatch',
+                'onclick' => 'js:clickPersonal()',
+            ),
+                    )); ?>
+        
+    </div>
+    <div class="span6">
+        <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'label' => 'Todos los Looks',
+            'buttonType' => 'button',
+            //'type' => 'danger',
+            'size' => 'large',
+            //'disabled' => true,
+            'htmlOptions' => array(
+                'id' => 'btnTodos',
+                'onclick' => 'js:clickTodos()',
+            ),
+                    )); ?>
+        
+    </div>
+</div>
+
+
+
   </div>
   <div class="alert in" id="alert-msg" style="display: none">
     <button type="button" class="close" >&times;</button> 
@@ -24,56 +62,107 @@
         <?php 
         
         if(count($categorias))
-				foreach($categorias as $categoria){
-					
-		?>              
+            foreach($categorias as $categoria){            
+	?>              
+              
+            <?php $children = $categoria->getChildren();
+                  $show = false;
+                 foreach($children as $child){
+                     if ($child->hasLooks()){
+                         $show = true;
+                         break;
+                     }
+                 }                 
+                 if($show){
+            ?>    
+                 
               <li> 
         <?php echo CHtml::ajaxLink($categoria->nombre,
-							 Yii::app()->createUrl( 'tienda/ocasiones'),
-							 array( // ajaxOptions
-						    'type' => 'POST',
-						    'dataType'=>'json',
-						    'beforeSend' => "function( request, opts )
-						                     {
-						                       // Set up any pre-sending stuff like initializing progress indicators
-						                       if ($('#ocasion_actual').val() == '".$categoria->id."'){
-						                       	 	$('.dropdown').removeClass('open');
-						                       		$('#div_ocasiones').show();
-						                    		$('#div_shopper').hide();
-						                       	 request.abort();
-						                       } 
-						                       		
-						                       
-						                     }",
-						    'success' => "function( data )
-						                  {
-						                    // handle return data
-						                    //alert( data );
-						                   // alert(data.accion);
-						                   $('#ocasion_actual').val('".$categoria->id."');
-						                   $('.dropdown').removeClass('open');
-						                    $('#div_ocasiones').html(data.div);
-						                    $('#div_ocasiones').show();
-						                    $('#div_shopper').hide();
-						                  }",
-						    'data' => array( 'padreId' => $categoria->id )
-						  ),
-						  array( //htmlOptions
-						   // 'href' => Yii::app()->createUrl( 'tienda/ocasiones' ),
-						   'href'=>'#',
-						    //'class' => 'thumbnail',
-						    'id' => 'categoria'.$categoria->id,
-						    'draggable'=>"false",
-						  )
-						  );    
-		?>  	
+             Yii::app()->createUrl( 'tienda/ocasiones'),
+             array( // ajaxOptions
+                'type' => 'POST',
+                'dataType'=>'json',
+                'beforeSend' => "function( request, opts )
+                                 {
+                                   // Set up any pre-sending stuff like initializing progress indicators
+                                   if ($('#ocasion_actual').val() == '".$categoria->id."'){
+                                            $('.dropdown').removeClass('open');
+                                            $('#div_ocasiones').show();
+                                            $('#div_shopper').hide();
+                                     request.abort();
+                                   } 
+
+
+                                 }",
+                'success' => "function( data )
+                              {
+                                // handle return data
+                                //alert( data );
+                               // alert(data.accion);
+                               $('#ocasion_actual').val('".$categoria->id."');
+                               $('.dropdown').removeClass('open');
+                                $('#div_ocasiones').html(data.div);
+                                $('#div_ocasiones').show();
+                                $('#div_shopper').hide();
+                              }",
+                'data' => array( 'padreId' => $categoria->id )
+              ),
+              array( //htmlOptions
+               // 'href' => Yii::app()->createUrl( 'tienda/ocasiones' ),
+               'href'=>'#',
+                //'class' => 'thumbnail',
+                'id' => 'categoria'.$categoria->id,
+                'draggable'=>"false",
+              )
+              );    
+        ?>  	
               	 
               </li>
-<?php } ?>              
+<?php 
+            } //endif show
+                     } ?>              
 
             
             </ul>
           </li>
+          <!-- Filtro por Precios ON -->
+          <style>
+              li.active-range a{
+                color: #ffffff;
+                background: #6d2d56;
+              }
+          </style>
+          <li class="dropdown">
+
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
+              <ul class="dropdown-menu" id="price-ranges" role="menu" aria-labelledby="dLabel">
+                  <?php foreach ($rangos as $key => $rango){ ?>
+                  <li><a class="btn btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
+                            <?php
+                            if(!$key){
+                                echo "Hasta Bs. {$rango['end']} "; 
+                            }else{
+                                if($key < 3){
+                                    echo "De Bs. {$rango['start']} a Bs. {$rango['end']} "; 
+                                }else{
+                                    echo "Más de Bs. {$rango['start']} ";
+                                }
+                            }
+                             ?>
+                            <span class="color12">
+                                <?php echo "({$rango['count']})" ?>
+                            </span>
+                        </a></li>
+                  <?php } ?>
+                    <li><a class="btn btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
+           <!-- 
+                <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
+                <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
+                <li><a class="btn btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                -->
+            </ul> 
+
+          </li>
+          <!-- Filtro por Precios OFF -->
           <li>
           	<a href="#" onclick="js:show_shopper();" >Personal Shoppers </a>
           	
@@ -81,10 +170,10 @@
           
             <!-- ******   Filtrar por perfil  *****    -->
           
-          <?php if(Yii::app()->user->id){ ?>  
+          <?php if(Yii::app()->user->id && false){ ?>  
           <li>
-                   <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)),
-                "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters',
+                   <?php echo CHtml::dropDownList("Filtros", "", CHtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)),
+                "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters', 'class'=>'input-medium',
                     'style' => 'margin-bottom: 0;margin-top: 5px;')) ?>          	
           </li>
           
@@ -153,7 +242,12 @@
       </nav>
       <!--/.nav-collapse --> 
     </div>
-    <input type="hidden" value="" id="ocasion_actual" /> 
+    <input type="hidden" value="" id="ocasion_actual" />
+    
+    <input type="hidden" id="rango_actual" name="rango_actual" value="" />     
+    <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
+    
+    
     <div class="navbar-inner sub_menu">
     	<div id="div_ocasiones"></div>
 		<div id="div_shopper" style="display: none">
@@ -161,13 +255,18 @@
 					 <nav class="  ">
 					        <ul class="nav">
 					        	<?php $personal_shopper = User::model()->findAll(array('condition'=>'personal_shopper=1'));	?>
-								<?php foreach($personal_shopper as $shopper){?>
-					          <li>
-					            <label>
-					              <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
-					            </label>
-					          </li>	
-								<?php } ?>
+							<?php foreach($personal_shopper as $shopper){
+                                                                if(count($shopper->looks)){
+                                                            ?>
+                                                    
+                                                            <li>
+                                                              <label>
+                                                                <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id;?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name.' '.$shopper->profile->last_name; ?>
+                                                              </label>
+                                                            </li>	
+							<?php 
+                                                                }
+                                                            } ?>
 					        </ul>
 					 </nav>
 				 </form> 
@@ -179,6 +278,7 @@
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
 <?php 
+
 $this->renderPartial('_look',array(
 	'looks'=>$looks,
 	'pages'=>$pages,
@@ -207,13 +307,29 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                                 'style' => "display: none;",
                             
                             ))?>
-
+<style>
+    #modalFiltroPerfil legend{
+        line-height: 32px;
+        margin-bottom: 0px;
+    }
+    
+    #modalFiltroPerfil.in > .modal-body {
+        max-height: 657px;
+    }
+   
+</style>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Perfil Corporal</h3>
+        <h3 id="myModalLabel">Crea un perfil para alguien más (Una amiga, tu mamá, etc.)</h3>
     </div>
     <div class="modal-body ">
-        
+      <div class="control-group form-inline" >
+              <div id="campo-nombre">
+                  <?php echo CHtml::label("¿Para quién vas a comprar?", "profile-name", array('class' => 'control-label margin_right_small')); ?>
+                  <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Escribe su nombre')); ?>
+                  <?php //echo CHtml::error($model, $attribute)?>
+              </div>
+          </div>   
       <?php 
       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           'id' => 'newFilter-form',
@@ -229,8 +345,11 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
       ));
       ?>
       <?php // echo $form->errorSummary(array($modelUser,$profile)); ?>
-      <fieldset> 
-        
+      <fieldset>    
+          <legend>
+              ¿Cuáles son sus características?
+          </legend>  
+              
        <div class="control-group" >
               <div class="controls row-fluid" id="caracteristicas">
                 <?php $clase = (isset($editar) && $editar)?'control-group span2':'span2'; ?>
@@ -333,12 +452,12 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <?php $this->endWidget(); ?>
         
   <div class="modal-footer margin_top_medium_minus">
-    <div class="span6">
+<!--    <div class="span6">
       <div class="control-group form-inline  pull-left" >
           <div id="campo-nombre">
-            <!--[if IE]>
-              <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
-            <![endif]-->
+            [if IE]>
+            <?php echo CHtml::label("Indica un nombre para el perfil:", "profile-name", array('class' => 'control-label')); ?>
+            <![endif]
             <?php echo CHtml::textField('profile-name' ,'', array('placeholder'=>'Nombre del perfil')); ?>
             <?php //echo CHtml::error($model, $attribute)?>
 
@@ -358,8 +477,18 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         <img class="imgloading loadingImg" id="imgloading4" src="../images/loading.gif" alt="Loading" style="display: none;">
       </div>         
     
-    </div>
-    <div class="span2">
+    </div>-->
+    <div class="">
+         <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'button',
+                'label' => 'Guardar y Seleccionar Perfil',
+                'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size' => 'large', // null, 'large', 'small' or 'mini'
+                //'block' => 'true',
+                'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')
+            ));          
+          ?> 
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
   </div>                    
@@ -381,21 +510,37 @@ function show_shopper(){
 	$('#div_shopper').show();
 }
 // here is the magic
-function refresh()
+function refresh(reset)
 {
 	//alert($('.check_ocasiones').serialize());
 	//alert($('.check_ocasiones').length) 
-       
-       
     cargarLocal();
+    var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual, #perfil_propio').serialize();
+        
+    datosRefresh += '&precios=' + $('#rango_actual').val();    
+    console.log(datosRefresh);
+    if(reset){
+        datosRefresh += '&reset=true';
+    }
+    
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
-            'data'=> "js:$('.check_ocasiones, .check_shopper, #newFilter-form').serialize()",
+            'data'=> "js:datosRefresh",
             //'data' => array( 'ocasiones' => 55 ),
             'type'=>'post',
             'dataType'=>'json',
+            'global' => 'false',
+            'beforeSend' => 'function(){
+                        $("body").addClass("aplicacion-cargando");
+
+            }',
+            'complete' => 'function(){
+                        $("body").removeClass("aplicacion-cargando");
+                        
+                    }',
             'success'=>"function(data)
             {
+                           
                 if (data.status == 'failure')
                 {
                     $('#dialogColor div.divForForm').html(data.div);
@@ -441,50 +586,74 @@ function moveScroller() {
     $(window).scroll(move);
     move();
 }
-       function encantar(idLook)
-       {
-           //var idLook = $("#idLook").attr("value");
-           //alert("id:"+idLook);
 
-           $.ajax({
-            type: "post",
-            url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
-            data: { 'idLook':idLook},
-            success: function (data) {
+function encantar(idLook)
+{
+   //var idLook = $("#idLook").attr("value");
+   //alert("id:"+idLook);
 
-                if(data=="ok")
-                {
-                    var a = "♥";
+   $.ajax({
+    type: "post",
+    dataType: 'json',
+    url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
+    data: { 'idLook':idLook},
+    success: function (data) {
 
-                    //$("#meEncanta").removeClass("btn-link");
-                    $("#meEncanta"+idLook).addClass("btn-link-active");
-                    $("span#like"+idLook).text(a);
+        if(data.mensaje=="ok")
+        {
+            var a = "♥";
 
-                }
+            //$("#meEncanta").removeClass("btn-link");
+            $("#meEncanta"+idLook).addClass("btn-link-active");
+            $("span#like"+idLook).text(a);
 
-                if(data=="no")
-                {
-                    alert("Debe primero ingresar como usuario");
-                    //window.location="../../user/login";
-                }
+        }
 
-                if(data=="borrado")
-                {
-                    var a = "♡";
+        if(data.mensaje=="no")
+        {
+            alert("Debe primero ingresar como usuario");
+            //window.location="../../user/login";
+        }
 
-                    //alert("borrando");
+        if(data.mensaje=="borrado")
+        {
+            var a = "♡";
 
-                    $("#meEncanta"+idLook).removeClass("btn-link-active");
-                    $("span#like"+idLook).text(a);
+            //alert("borrando");
 
-                }
+            $("#meEncanta"+idLook).removeClass("btn-link-active");
+            $("span#like"+idLook).text(a);
 
-               }//success
-           })
+        }
+
+       }//success
+   })
+
+}
+
+$(document).ready(function(){
+
+    //Si venia de otro lugar para crear un perfil
+    <?php if(isset(Yii::app()->session["modalOn"])){ 
+            unset(Yii::app()->session["modalOn"]);
+        ?>
+        $("#modalFiltroPerfil").modal("show");
+    <?php } ?>
+        
+    <?php if(isset(Yii::app()->session["profileOn"])){ ?>
+         var idElem = "<?php echo Yii::app()->session["profileOn"] ?>";
+         
+         //$("#dropdownUser a.sub_perfil_item#"+idElem).click();        
+         clickPerfil(idElem);
+         //console.log("ready");
+         
+    <?php unset(Yii::app()->session["profileOn"]);    
+        } ?>
+});
 
 
-       }
 </script>
+
 <script type="text/javascript"> 
   $(function() {
     moveScroller();

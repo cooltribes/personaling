@@ -139,8 +139,9 @@ class MarcaController extends Controller
 	public function actionDelete($id)
 	{
 		$marca = Marca::model()->findByPk($id);
-		$sql = "select count(*) from tbl_orden_has_productotallacolor where preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id IN(select id  from tbl_producto WHERE marca_id = ".$id."))";
+		$sql = "select count(*) from tbl_producto WHERE marca_id = ".$id;
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		
 		if($num<1){
 			if($marca->delete()){
 				Yii::app()->user->setFlash('success',UserModule::t("Marca eliminada exitosamente."));

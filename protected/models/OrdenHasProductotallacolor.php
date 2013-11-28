@@ -49,7 +49,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 			array('tbl_orden_id, preciotallacolor_id, cantidad, look_id, precio, devolucion_id', 'safe', 'on'=>'search'),
 		);
 	}
-
+ 
 	/**
 	 * @return array relational rules.
 	 */
@@ -59,6 +59,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'preciotallacolor' => array(self::BELONGS_TO, 'Preciotallacolor', 'preciotallacolor_id'),
+			'myorden' => array(self::BELONGS_TO, 'Orden', 'tbl_orden_id'),
 		);
 	}
 
@@ -142,5 +143,9 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		
 	}
 	 	
-	
+	public function getVentas(){
+		$sql="SELECT preciotallacolor_id as id ,SUM(cantidad) as cant FROM tbl_orden_has_productotallacolor WHERE tbl_orden_id IN (SELECT id FROM `tbl_orden` `t` WHERE (((t.estado = 3) OR (t.estado = 4)) OR (t.estado = 8)) OR (t.estado = 10)) AND cantidad>0 group by preciotallacolor_id";
+		$result=Yii::app()->db->createCommand($sql)->queryAll();
+		return $result;
+	}
 }

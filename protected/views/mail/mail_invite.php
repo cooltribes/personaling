@@ -60,6 +60,7 @@
                               <td width="3"><a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="30" height="30" title="personaling en pinterest" src="http://personaling.com/contenido_estatico/icon_personaling_twitter.png"></a></td>
                               <td valign="middle"><a title="pinterest" href="https://pinterest.com/personaling/"><img width="30" height="30" title="Personaling en Pinterest" src="http://personaling.com/contenido_estatico/icon_personaling_pinterest.png"></a></td>
                               <td class="w10" width="10"><a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="30" height="30" title="Personaling en Pinterest" src="http://personaling.com/contenido_estatico/icon_personaling_instagram.png"></a></td>
+                              <td class="w10" width="10"><a title="Personaling en Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ"><img width="30" height="30" title="Personaling en youtube" src="http://personaling.com/contenido_estatico/icon_personaling_youtube.png"></a></td>                              
                             </tr>
                           </tbody>
                         </table>
@@ -131,7 +132,8 @@
                       <td class="w580" width="360" valign="top">
                        <span class="hide">
                                                 <p id="permission-reminder" align="left" class="footer-content-left" style="color:#FFFFFF">
-                                                    <span>Recibes este correo porque tienes una invitación para unirte a <a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a> </span></p>
+                                                    <span>Recibes este correo porque tienes una invitación para unirte a <a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a> </span>
+                                                </p>
                                                 </span>
                        </td>
                       <td class="hide w0" width="60"></td>
@@ -140,6 +142,15 @@
                       </td>
                       <td class="w30" width="30"></td>
                     </tr>
+                    <tr>
+                        <td class="w30" width="30"></td>
+                        <td class="w580" width="360" valign="top">
+                        <span class="hide">
+                            <p id="permission-reminder" align="left" class="footer-content-left" style="color:#FFFFFF"><span>Personaling C.A RIF: J-40236088-6</span></p>
+                            </span>
+                            </td>
+                        <td class="hide w0" width="60"></td>
+                    </tr>                      
                     <tr>
                       <td class="w30" width="30"></td>
                       <td class="w580 h0" width="360" height="15"></td>

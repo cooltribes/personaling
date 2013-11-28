@@ -57,6 +57,7 @@ else
 				
 			);
   	$output = Yii::app()->curl->post($url, $data);
+	
 	$doc = new DOMDocument();
 	$doc->loadHTML($output);
 	//echo $data;
@@ -71,15 +72,16 @@ else
 		
 	}
 	//echo $output;
-	*/ 
+	 
 	//$url = "https://api.instapago.com/api/payment";
-	
+	*/
 /*
 	$data_array = array(
 		"Amount"=>"200.00", // MONTO DE LA COMPRA
 		"Description"=>"Compra de Look de Pruea", // DESCRIPCION 
 		"CardHolder"=>"Rafael Angel Palma C", // NOMBRE EN TARJETA
-		"CardNumber"=>"1234123412341234", // NUMERO DE TARJETA
+		"CardHolderID"=>'14502908',
+		"CardNumber"=>"4111111111111111", // NUMERO DE TARJETA
 		"CVC"=>"124", //CODIGO DE SEGURIDAD
 		"ExpirationDate"=>"10/2016", // FECHA DE VENCIMIENTO
 		"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
@@ -90,12 +92,14 @@ else
 	);
 
 	$output = Yii::app()->curl->putPago($data_array);
+	print_r($output);
 */
-	//echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
-	//echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
-	//echo "Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
-	//echo "Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO	
-	
+	/*
+	echo "Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
+	echo "Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
+	echo "Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
+	echo "Code: ".$output->code."<br>"; // 201 = AUTORIZADO 400 = ERROR DATOS 401 = ERROR AUTENTIFICACION 403 = RECHAZADO 503 = ERROR INTERNO	
+	*/
   	?>
   	
   
@@ -310,8 +314,8 @@ else
               <td><?php echo $looks_totales; ?></td>
             </tr>
             <tr>
-              <td><strong>Numero de Looks Activos</strong>:</td>
-              <td>24</td>
+              <td><strong>Numero de Looks Aprobados</strong>:</td>
+              <td><?php echo Look::model()->getAprovados(); ?> </td>
             </tr>
             <tr>
               <td><strong> Numero de Productos Activos</strong>:</td>
@@ -324,13 +328,13 @@ else
               <td><strong>Looks por aprobar</strong>:</td>
               <td><?php echo $looks_aprobar; ?></td>
             </tr>
+          <tr>
+              <td><strong>Pagos por confirmar</strong>:</td>
+              <td><?php echo Orden::model()->getXConfirmar(); ?></td>
+            </tr> 
             <tr>
-              <td><strong> Looks por publicar</strong>:</td>
-              <td>35</td>
-            </tr>
-            <tr>
-              <td><strong>Mensajes por leer</strong>:</td>
-              <td>8</td>
+              <td><strong>Personal Shoppers por aprobar</strong>:</td>
+              <td><?php echo User::model()->aplicantes; ?></td>
             </tr>
           </table>
 </div>        </div>

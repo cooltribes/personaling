@@ -29,8 +29,9 @@ class AdminController extends Controller
 				'actions'=>array('admin','delete','create','update',
                                     'view','corporal','estilos','pedidos','carrito',
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
-                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion','eliminardireccion','comprafin'),
+                                    'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
+                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
+                                    'eliminardireccion','comprafin','mensajes','displaymsj'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -52,18 +53,12 @@ class AdminController extends Controller
 
             $criteria = new CDbCriteria;
 
-            if (isset($_GET['nombre'])) {
-                //$model->nom=$_POST['nombre'];
-                $criteria->alias = 'User';
-                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
-            }
-
             $dataProvider = new CActiveDataProvider('User', array(
-                'criteria' => $criteria,
-                'pagination' => array(
-                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                ),
-            ));
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
 
             //Modelos para el formulario de crear Usuario
             $modelUser = new User;
@@ -114,12 +109,10 @@ class AdminController extends Controller
                         $message = new YiiMailMessage;
                         $message->view = "mail_template";
                         $subject = 'Registro Personaling';
-                        $body = '<h2>Te damos la bienvenida a Personaling.</h2>' . 
-                                '<br/>Tu contraseña provisional es: <strong>'.$originalPass.'</strong><br/>' .
-                                'Puedes cambiarla accediendo a tu cuenta y luego haciendo click '. 
-                                'en la opción Cambiar Contraseña.<br/><br/>Recibes este correo porque se '.
-                                'ha registrado tu dirección en Personaling. '. 
-                                'Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/>  <a href="'.$activation_url.'">Haz click aquí</a>';
+                        $body = '<h2>¡Bienvenido a Personaling.com!</h2><br/>' . 
+                                'Tu registro se ha validado con éxito. <br/><br/>'.
+                                'Tu contraseña provisional es: <strong>'.$originalPass.'</strong><br/><br/>' .
+                                'Esta contraseña puedes cambiarla accediendo a tu cuenta y haciendo click en “cambiar contraseña”. El siguiente paso que debes hacer es validar tu cuenta haciendo click en este enlace: <br/> <br/>  <a href="'.$activation_url.'">Click aquí</a>';
                         $params = array('subject' => $subject, 'body' => $body);
                         $message->subject = $subject;
                         $message->setBody($params, 'text/html');
@@ -151,14 +144,18 @@ class AdminController extends Controller
             
             
              /*********************** Para los filtros *********************/
-             
+             if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
             //Filtros personalizados
             $filters = array();
             
             //Para guardar el filtro
             $filter = new Filter;            
             
-            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['nombre'])){
               $_POST = $_SESSION['todoPost'];
             }            
             
@@ -192,7 +189,7 @@ class AdminController extends Controller
                          if (isset($_POST['name'])){
                             
                             $filter = Filter::model()->findByAttributes(
-                                    array('name' => $_POST['name'], 'type' => '3') //Filtros para ventas
+                                    array('name' => $_POST['name'], 'type' => '3') 
                                     ); 
                             if (!$filter) {
                                 $filter = new Filter;
@@ -271,6 +268,21 @@ class AdminController extends Controller
                 }
             }
             
+            if (isset($_GET['nombre'])) {
+                
+                unset($_SESSION["todoPost"]);
+                $criteria->alias = 'User';
+                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+                
+                $dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
+            }
+
+            
             
             
             $this->render('index', array(
@@ -311,13 +323,76 @@ class AdminController extends Controller
 	     }
 	}
 	
-	public function actionToggle_ps($id){
+        /**
+         * Poner o quitar a un PS en destacado (campo "ps_destacado")
+         * @param type $id id del usuario que es PS
+         */
+	public function actionToggleDestacado($id){
+            $model = User::model()->findByPk($id);
+                                
+            if($model->personal_shopper == 1){ //si es PS                
+
+               $model->ps_destacado = 1 - $model->ps_destacado; // hacer el toggle               
+               $model->fecha_destacado = date("Y-m-d H:i:s");
+               
+                if ($model->save()){
+                    echo CJSON::encode(array(
+                        'status'=>'success',
+                        'personal_shopper'=>$model->ps_destacado,
+                    ));	
+                }else{
+                   Yii::trace('AdminController:117 Error toggleDestacado:'.print_r($model->getErrors(),true), 'registro');
+                           echo CJSON::encode(array(
+                       'status'=>'error',
+                       'personal_shopper'=>$model->ps_destacado,
+                    ));
+                }
+            
+            }
+	}
+        
+        
+        public function actionToggle_ps($id){
 		$model = User::model()->findByPk($id);
-		$model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle
+                $apply = true;
+                
+                if($model->personal_shopper == 2){ //si es aplicante
+                    $apply = true;
+                    
+                    $model->personal_shopper = 1;
+                    
+                    //Enviar mail
+                    $model->activkey = UserModule::encrypting(microtime() . $model->password);
+                    $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
+                    
+                    $message = new YiiMailMessage;
+                    $message->view = "mail_template";
+                    $subject = 'Registro Personaling';
+                    $body = '<h2>¡Felicitaciones! Tu aplicación ha sido aceptada.</h2><br/><br/>
+                        Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.com
+                        <br/><br/>
+                        ¿Nervios? No por favor, sabemos que tienes madera para esto.<br/>
+                        Gracias por querer ser parte de nuestro equipo.<br/><br>
+                        Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
+                        <a href="' . $activation_url.'"> Haz click aquí </a>';
+                    $params = array('subject' => $subject, 'body' => $body);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+                    $message->addTo($model->email);
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    Yii::app()->mail->send($message);
+                    
+                }else{
+                    
+                   $model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle 
+                   
+                }
+		
 		if ($model->save()){
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'personal_shopper'=>$model->personal_shopper,
+                    'apply' => $apply,
 	     ));	
 	     }else{
 	     	Yii::trace('AdminController:117 Error toggle:'.print_r($model->getErrors(),true), 'registro');
@@ -327,6 +402,7 @@ class AdminController extends Controller
 	     ));
 	     }
 	}
+        
        /**
         * Bloquear al usuario, queda en estado STATUS_BANNED
         * @param int $id id del usuario
@@ -537,14 +613,26 @@ if(isset($_POST['Profile']))
 			
 	public function actionCarrito($id)
 	{
-		$model=$this->loadModel();
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$id));
-		$this->render('carrito',array(
-			'model'=>$model,
-			'bolsa'=>$bolsa,
-			'usuario'=>$id,
-		)); 
+		$model = $this->loadModel();
+		$bolsa = new Bolsa;
+		if(isset($bolsa))
+		{
+			$this->render('carrito',array(
+				'model'=>$model,
+				'bolsa'=>$bolsa,
+				'usuario'=>$id,
+			));
+		}
+		else {
+			$this->render('carrito',array(
+				'model'=>$model,
+				'bolsa'=>$bolsa,
+				'usuario'=>$id,
+			));
+		}
+		
 	}
+	
 	public function actionCorporal()
 	{
 		$model=$this->loadModel();
@@ -610,7 +698,8 @@ if(isset($_POST['Profile']))
 				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 			} else $profile->validate();
 		}
-
+                
+                
 		$this->render('update',array(
 			'model'=>$model,
 			'profile'=>$profile,
@@ -686,7 +775,8 @@ if(isset($_POST['Profile']))
 				$this->_model=User::model()->notsafe()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
-		}
+		}                
+                
 		return $this->_model;
 	}
         
@@ -1297,105 +1387,90 @@ if(isset($_POST['Profile']))
 	
 	public function actionComprafin()
 	{
-		 if (Yii::app()->request->isPostRequest) // asegurar que viene en post
-		 {
+				if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
 		 	$respCard = "";
 		 	$usuario = Yii::app()->session['usercompra']; 
-		
+			$user = User::model()->findByPk($usuario);
 			
-			if($_POST['tipoPago']==1 || $_POST['tipoPago']==4 || $_POST['tipoPago']==2){ // transferencia o MP
-				
-				if($_POST['tipoPago']==2)
-				{
-					$detalle = Detalle::model()->findByPk($_POST['idDetalle']); // si viene de tarjeta de credito trae ya el detalle listo
-				}
-				else
-				{
-					$detalle = new Detalle;
-				}
-			
-				if($detalle->save())
-				{
-					$pago = new Pago;
-					$pago->tipo = $_POST['tipoPago']; // trans
-					$pago->tbl_detalle_id = $detalle->id;
+			switch ($_POST['tipoPago']) {
+			    case 1: // TRANSFERENCIA
+			       	$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario)));
+					$orden = new Orden;
+					$orden->subtotal = $_POST['subtotal'];
+					$orden->descuento = 0;
+					$orden->envio = $_POST['envio'];
+					$orden->iva = $_POST['iva'];
 					
-					if($pago->save()){
+					$orden->descuentoRegalo = 0;
+					$orden->total = $_POST['total'];
+					$orden->seguro = $_POST['seguro'];
+					$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+					$orden->estado = Orden::ESTADO_ESPERA; // en espera de pago
+					$orden->bolsa_id = 0;
+					$orden->user_id = $usuario;
+					$orden->direccionEnvio_id = $dirEnvio->id;
+					$orden->tipo_guia = $_POST['tipo_guia'];
 					
-					// clonando la direccion
+					$okk = round($_POST['total'], 2);
+					$orden->total = $okk;
+					$orden->admin_id=Yii::app()->user->id;
 					
-					$dir1 = Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>Yii::app()->getSession()->get('usercompra')));
-					
-					
-					$dirEnvio = new DireccionEnvio;
-					
-					$dirEnvio->nombre = $dir1->nombre;
-					$dirEnvio->apellido = $dir1->apellido;
-					$dirEnvio->cedula = $dir1->cedula;
-					$dirEnvio->dirUno = $dir1->dirUno;
-					$dirEnvio->dirDos = $dir1->dirDos;
-					$dirEnvio->telefono = $dir1->telefono;
-					$dirEnvio->ciudad_id = $dir1->ciudad_id;
-					$dirEnvio->provincia_id = $dir1->provincia_id;
-					$dirEnvio->pais = $dir1->pais;
-					
-					
-					
-					
-						if($dirEnvio->save()){
-							// ya esta todo para realizar la orden
-							
-							$orden = new Orden;
-							
-							$orden->subtotal = $_POST['subtotal'];
-							$orden->descuento = $_POST['descuento'];
-							$orden->envio = $_POST['envio'];
-							$orden->iva = $_POST['iva'];
-							$orden->descuentoRegalo = 0;
-							$orden->total = $_POST['total'];
-							$orden->seguro = $_POST['seguro'];
-							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
-							$orden->estado = 1; // en espera de pago
-							$orden->bolsa_id = 0; //compra desde admin
-							$orden->user_id = $usuario;
-							$orden->pago_id = $pago->id;
-							$orden->detalle_id = $detalle->id;
-							$orden->direccionEnvio_id = $dirEnvio->id;
-							$orden->tipo_guia = $_POST['tipo_guia'];
-							
-							if($detalle->nTarjeta!="") // Pagó con TDC
-							{
-								$orden->estado = 3; // Estado: Pago Confirmado
-							}
-							
-							if($orden->save()){
-								if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-									$balance_usuario = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
-									if($balance_usuario > 0){
-										$balance = new Balance;
-										if($balance_usuario >= $_POST['total']){
-											$orden->descuento = $_POST['total'];
-											$orden->total = 0;
-											$orden->estado = 2; // en espera de confirmación
-											$balance->total = $_POST['total']*(-1);
-										}else{
-											$orden->descuento = $balance_usuario;
-											$orden->total = $_POST['total'] - $balance_usuario;
-											$balance->total = $balance_usuario*(-1);
-										}
-										$orden->save();
-										
-										//$balance->total = $orden->descuento*(-1);
-										$balance->orden_id = $orden->id;
-										$balance->user_id = $usuario;
-										$balance->tipo = 1;
-										$balance->save();
-									}
+					$acpeso=0;
+					$ptcs = explode(',',Yii::app()->session['ptcs']);
+					$vals = explode(',',Yii::app()->session['vals']);		
+					foreach($ptcs as $ptc)
+								{	$inst=Preciotallacolor::model()->findByPk($ptc);
+									$prinst=Producto::model()->findByPk($inst->producto_id);
+									$acpeso+=$prinst->peso;
 								}
+							$orden->peso=$acpeso;
+					
+					
+					
+					if (!($orden->save())){
+						echo CJSON::encode(array(
+								'status'=> 'error',
+								'error'=> $orden->getErrors(),
+							));
+						Yii::trace('UserID:'.$usuario.' Error al guardar la orden:'.print_r($orden->getErrors(),true), 'registro');	
+						Yii::app()->end();
+						
+					}	
+									
+					if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
+						//$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
+						$balance_usuario = $user->saldo;
+						if($balance_usuario > 0){
+							$balance = new Balance;
+							$detalle_balance = new Detalle;
+							if($balance_usuario >= $_POST['total']){
+								$orden->cambiarEstado(Orden::ESTADO_CONFIRMADO);
 								
-								$ptcs = explode(',',Yii::app()->session['ptcs']);
-								$vals = explode(',',Yii::app()->session['vals']);
-								$i=0;
+								$balance->total = $_POST['total']*(-1);
+								$detalle_balance->monto=$_POST['total'];
+							}else{
+								 
+								$orden->cambiarEstado(Orden::ESTADO_INSUFICIENTE);
+								$balance->total = $balance_usuario*(-1);
+								$detalle_balance->monto=$balance_usuario;
+							}
+
+							$detalle_balance->comentario="Uso de Saldo";
+							$detalle_balance->estado=1;
+							$detalle_balance->orden_id=$orden->id;
+							$detalle_balance->tipo_pago = 3;
+							if($detalle_balance->save()){
+								$balance->orden_id = $orden->id;
+								$balance->user_id = $usuario;
+								$balance->tipo = 1;
+								//$balance->total=round($balance->total,2);
+								$balance->save();
+							}
+						}
+					}
+					
+					$i=0;
+							
 								// añadiendo a orden producto
 								foreach($ptcs as $ptc)
 								{
@@ -1427,107 +1502,122 @@ if(isset($_POST['Profile']))
 									Preciotallacolor::model()->updateByPk($ptc, array('cantidad'=>$cantidadNueva));
 									// descuenta y se repite									
 								}
-								
-								
-								// para borrar los productos de la bolsa								
-								
-								
-								// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-								// se agrega este estado en el caso de que no se haya pagado por TDC
-								if($detalle->nTarjeta=="")
-								{
-									$estado = new Estado;
-									
-									$estado->estado = 1;
-									$estado->user_id = $usuario;
-									$estado->fecha = date("Y-m-d");
-									$estado->orden_id = $orden->id;
-									
-									if($estado->save())
-										echo "";
-								}
-								else // si pago con tarjeta
-								{
-									
-									$estado = new Estado;
-									
-										$estado->estado = 1;
-										$estado->user_id = $usuario;
-										$estado->fecha = date("Y-m-d");
-										$estado->orden_id = $orden->id;
-										
-										if($estado->save())
-											{
-												// otro estado de una vez ya que ya se pagó el dinero 
-												$estado = new Estado;
-									
-												$estado->estado = 3;
-												$estado->user_id = $usuario;
-												$estado->fecha = date("Y-m-d");
-												$estado->orden_id = $orden->id;
-												
-												if($estado->save())
-												{
-													$detalle->orden_id = $orden->id;
-													$detalle->save();
-												}
-													
-												
-											}// estado
-									
-								}
-								
-								// Generar factura
-								$factura = new Factura;
-								$factura->fecha = date('Y-m-d');
-								$factura->direccion_fiscal_id = $_POST['idDireccion'];  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
-								$factura->direccion_envio_id = $_POST['idDireccion'];
-								$factura->orden_id = $orden->id;
-								$factura->save();
-								
-								// Enviar correo con resumen de la compra
-								$user = User::model()->findByPk($usuario);
-								$message            = new YiiMailMessage;
-						           //this points to the file test.php inside the view path
-						        $message->view = "mail_compra";
-								$subject = 'Tu compra en Personaling';
-						        $params              = array('subject'=>$subject, 'orden'=>$orden);
-						        $message->subject    = $subject;
-						        $message->setBody($params, 'text/html');
-						        $message->addTo($user->email);
-								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
-						        Yii::app()->mail->send($message);
-								
-							// cuando finalice entonces envia id de la orden para redireccionar
-							echo CJSON::encode(array(
-								'status'=> 'ok',
-								'orden'=> $orden->id,
-								'total'=> $orden->total,
-								'respCard' => $respCard,
-								'descuento'=>$orden->descuento
-							));
-							
-							
-							}else{ //orden
-								echo CJSON::encode(array(
-								'status'=> 'error',
-								'error'=> $orden->getErrors(),
-							));
-							}
-						}//direccion de envio
-					} // pago
-				}// detalle
-			}// transferencia
-			
-			// detalle de pago (caso transferencia todo vacio)
-			// tipo de pago y copiar direccion envio
-			// realizar la orden
-			// mover los productos
-			// quitarlos de bolsa tiene producto
-			
-		 }
+					
+					
+					
+					
+					// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+					// se agrega este estado en el caso de que no se haya pagado por TDC
+					
+					$estado = new Estado;
+					$estado->estado = 1;
+					$estado->user_id = $usuario;
+					$estado->fecha = date("Y-m-d");
+					$estado->orden_id = $orden->id;
+					$estado->save();
+
+
+					 	// cuando finalice entonces envia id de la orden para redireccionar
+					 echo CJSON::encode(array(
+						'status'=> 'ok',
+						'orden'=> $orden->id,
+						'total'=> $orden->total,
+						'respCard' => $respCard,
+						'descuento'=>$orden->descuento,
+						'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
+					));
+			        break;
+			    case 2: // TARJETA DE CREDITO
+			        echo "i equals 1";
+			        break;
+			    case 3:
+			        echo "i equals 2";
+			        break;
+			}
+				// Generar factura
+			$factura = new Factura;
+			$factura->fecha = date('Y-m-d');
+			$factura->direccion_fiscal_id = $_POST['idDireccion'];  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+			$factura->direccion_envio_id = $_POST['idDireccion'];
+			$factura->orden_id = $orden->id;
+			$factura->save();
+			// Enviar correo con resumen de la compra
+			$user = User::model()->findByPk($usuario);
+			$message            = new YiiMailMessage;
+	        //this points to the file test.php inside the view path
+	        $message->view = "mail_compra";
+			$subject = 'Tu compra en Personaling';
+	        $params              = array('subject'=>$subject, 'orden'=>$orden);
+	        $message->subject    = $subject;
+	        $message->setBody($params, 'text/html');
+	        $message->addTo($user->email);
+			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+	        Yii::app()->mail->send($message);			
+		}
+		
+		
 		
 	}
+
+    public function actionMensajes(){
+        
+		$this->render('mensajes');
+		
+		
+    }
 	
+	public function actionDisplaymsj(){
+		if(isset($_POST['msj_id'])){
+			$mensaje = Mensaje::model()->findByPk($_POST['msj_id']);
+			
+			if($mensaje->estado == 0) // no se ha leido
+			{
+				$mensaje->estado = 1;
+				$mensaje->save(); 
+			}
+			
+			$div = "";
+			
+			$div = $div.'<div class="padding_medium bg_color3 ">';
+			$div = $div."<p><strong>De:</strong> Admin <span class='pull-right'><strong> ".date('d/m/Y', strtotime($mensaje->fecha))."</strong> ".date('h:i A', strtotime($mensaje->fecha))."</span></p>";
+			$div = $div."<p> <strong>Asunto:</strong> ".$mensaje->asunto."</p>";
+			$div = $div."<p> ".$mensaje->cuerpo." </p>";
+		/*	$div = $div.'<form class=" margin_top_medium ">
+					  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
+					  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
+				  		</form>'; */
+			$div = $div.'<p><a class="btn btn-danger pull-right" href="'.Yii::app()->getBaseUrl().'/orden/detalles/'.$mensaje->orden_id.'#mensajes" target="_blank"> Responder </a></p>
+				  		';	  		
+			
+			$div = $div."<br/></div>";
+			
+			echo $div;
+		
+
+		
+		}
+		
+		
+		
+	}
+
+	public function clonarDireccion($direccion){
+		$dirEnvio = new DireccionEnvio;
+					
+		$dirEnvio->nombre = $direccion->nombre;
+		$dirEnvio->apellido = $direccion->apellido;
+		$dirEnvio->cedula = $direccion->cedula;
+		$dirEnvio->dirUno = $direccion->dirUno;
+		$dirEnvio->dirDos = $direccion->dirDos;
+		$dirEnvio->telefono = $direccion->telefono;
+		$dirEnvio->ciudad_id = $direccion->ciudad_id;
+		$dirEnvio->provincia_id = $direccion->provincia_id;
+		$dirEnvio->pais = $direccion->pais;	
+		$dirEnvio->save();
+		return $dirEnvio;
+	}
+
+
+
 }

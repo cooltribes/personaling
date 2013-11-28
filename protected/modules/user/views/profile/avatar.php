@@ -1,3 +1,9 @@
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
+$this->breadcrumbs=array(
+  "Tu Cuenta"=>array('micuenta'),
+  UserModule::t("Avatar"),
+);  
+?>
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">
 <?php echo Yii::app()->user->getFlash('profileMessage'); ?>
@@ -43,11 +49,11 @@
     		
     		 <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270","class"=>"img_1")); ?>
     		</div>
-        <div class="text_align_center">
+<!--         <div class="text_align_center">
       		<div id="boton_original" class="btn">original</div> 
       		<div id="boton_mas" class="btn">+</div> 
       		<div id="boton_menos" class="btn">-</div> 
-    		</div>
+    		</div> -->
             	
 
     	 <div class="braker_horz_top_1 ">

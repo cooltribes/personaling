@@ -57,7 +57,9 @@ class Ruta extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'ciudads' => array(self::HAS_MANY, 'Ciudad', 'ruta_id'),
+			'tarifas' => array(self::HAS_MANY, 'Tarifa', 'ruta_id'),
 		);
+		
 	}
 
 	/**

@@ -53,7 +53,7 @@ class Campana extends CActiveRecord
 			array('nombre, recepcion_inicio, recepcion_fin, ventas_inicio, ventas_fin, fecha_creacion', 'required'),
 			array('estado', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>50),
-			array( 'recepcion_inicio','compare','compareValue' => date("Y-m-d H:i:s", time()-(60*60*24)),'operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que la fecha actual.'),
+			array( 'recepcion_inicio','compare','compareValue' => date("Y-m-d H:i:s", time()-(60*60*24)),'operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que la fecha actual.', 'on' => 'insert'),
 			array( 'recepcion_fin','compare','compareAttribute' => 'recepcion_inicio','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
 			array( 'ventas_inicio','compare','compareAttribute' => 'recepcion_fin','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
 			array( 'ventas_fin','compare','compareAttribute' => 'ventas_inicio','operator'=>'>', 'allowEmpty'=>'false', 'message' => '{attribute} debe ser mayor que {compareAttribute}.'),
@@ -71,6 +71,12 @@ class Campana extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'personalshoppers' => array(self::HAS_MANY, 'CampanaHasPersonalShopper', 'campana_id'),
+                    'looks' => array(self::HAS_MANY, 'Look', 'campana_id'),
+                    'lookscreados' => array(self::STAT, 'Look', 'campana_id',
+                    'select'=> 'COUNT(*)',
+                ),
+                    //'personalshoppers' => array(self::MANY_MANY, 'User', '{{CampanaHasPersonalShopper}}(campana_id, user_id)')
 		);
 	}
 
@@ -115,4 +121,202 @@ class Campana extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function getProgress(){
+			$f0 = strtotime($this->recepcion_inicio);
+		   $f1 = strtotime($this->ventas_fin);
+		   $now=strtotime(date("Y-m-d H:i:s"));
+		   if($now<=$f0)
+				return 0;
+		   if($now>=$f1)
+				return 100;
+		   if ($f0 < $f1) { $tmp = $f1; $f1 = $f0; $f0 = $tmp; }
+		   $total = ($f0 - $f1)/ 60 / 60 / 24;
+		   $prog=($now-$f1)/ 60 / 60 / 24;
+		   $prog=$prog*100/$total; 
+		 
+		   return round($prog);
+			
+	}
+	public function daysLeft(){
+			$f0 = strtotime($this->recepcion_inicio);
+		   $f1 = strtotime($this->ventas_fin);
+		   $now=strtotime(date("Y-m-d H:i:s"));
+		   if($now<=$f0)
+				return "Inicia en ".date_format(date_create($this->recepcion_inicio),"d/m/Y");
+		   if($now>=$f1)
+				return "Finalizó en ".date_format(date_create($this->ventas_fin),"d/m/Y");
+		   if ($f0 < $f1) { $tmp = $f1; $f1 = $f0; $f0 = $tmp; }
+		   $total = ($f0 - $f1)/ 60 / 60 / 24;
+		   $prog=($now - $f1)/ 60 / 60 / 24;
+		   return "Finaliza en ".round($total-$prog)." Días (".date_format(date_create($this->ventas_fin),"d/m/Y").")";
+			
+	}
+        
+        /**
+         * Buscar por todos los filtros dados en el array $filters
+         */
+        public function buscarPorFiltros($filters) {
+//            echo "<pre>";
+//            print_r($filters);
+//            echo "</pre>";
+//            Yii::app()->end();
+
+            $criteria = new CDbCriteria;
+            
+            $criteria->with = array();
+            //$criteria->select = array();
+            //$criteria->select[] = "t.*";
+            
+            $having = '';
+            
+            for ($i = 0; $i < count($filters['fields']); $i++) {
+                
+                $column = $filters['fields'][$i];
+                $value = $filters['vals'][$i];
+                $comparator = $filters['ops'][$i];
+                
+                if($i == 0){
+                   $logicOp = 'AND'; 
+                }else{                
+                    $logicOp = $filters['rels'][$i-1];                
+                }    
+                                
+               
+                if($column == 'personalS')
+                {                                    
+                    
+                    $comparator = ($comparator == '=') ? "": " NOT";
+                    
+                    $criteria->with['personalshoppers'] = array(
+                        'select'=> false,
+                        //'joinType'=>'INNER JOIN',
+                       // 'condition'=> '',
+                    );                
+                    
+                    $criteria->addCondition('personalshoppers.campana_id '.$comparator.' IN(
+                            SELECT DISTINCT(campana_id)
+                            FROM tbl_campana_has_personal_shopper
+                            WHERE user_id = '.$value.')', $logicOp);    
+                    
+                    if(!strpos($criteria->group, "t.id")){
+                        $criteria->group = 't.id';
+                    }
+                    
+                   continue;
+                }
+                if($column == 'looks_creados')
+                {                        
+                                 
+                    $criteria->addCondition('
+                    (select count(*) from tbl_look look
+                        where look.campana_id = t.id
+                        and
+                        look.status IN (0, 1)
+                        and
+                        look.deleted = 0)
+                    '
+                    .$comparator.' '.$value.'', $logicOp);                 
+                    
+                   continue;
+                }
+                
+                if($column == 'looks_aprobados')
+                {                        
+                                 
+                    $criteria->addCondition('
+                    (select count(*) from tbl_look look
+                        where look.campana_id = t.id
+                        and
+                        look.status = 2
+                        and
+                        look.deleted = 0)
+                    '
+                    .$comparator.' '.$value.'', $logicOp);                 
+                    
+                   continue;
+                }
+                
+                if($column == 'cantPS')
+                {                        
+                                 
+                    $criteria->addCondition('
+                    (select count(*) from tbl_campana_has_personal_shopper cps
+                     where cps.campana_id = t.id)
+                    '
+                    .$comparator.' '.$value.'', $logicOp);                 
+                    
+                   continue;
+                }
+                
+                if($column == 'cantMarcas')
+                {                        
+                                 
+                    $criteria->addCondition('
+                    (SELECT COUNT(DISTINCT(m.nombre))
+                    FROM tbl_look l, tbl_look_has_producto lp, tbl_producto p, tbl_marca m
+                    WHERE l.campana_id = t.id
+                    AND l.id=lp.look_id 
+                    AND lp.producto_id=p.id 
+                    AND p.marca_id=m.id)
+                    '
+                    .$comparator.' '.$value.'', $logicOp);                 
+                    
+                   continue;
+                }
+                
+                if($column == 'marca')
+                {      
+                    
+                    $comparator = ($comparator == '=') ? "": " NOT";
+                                  
+                    
+                    $criteria->addCondition('t.id '.$comparator.' IN (
+                            SELECT distinct(l.campana_id)
+                            FROM tbl_look l, tbl_look_has_producto lp, tbl_producto p, tbl_marca m
+                            WHERE l.id=lp.look_id 
+                            AND lp.producto_id=p.id 
+                            AND p.marca_id=m.id
+                            AND m.id = '.$value.')', $logicOp);    
+                    
+                    if(!strpos($criteria->group, "t.id")){
+                        $criteria->group = 't.id';
+                    }
+                    
+                                     
+                    
+                   continue;
+                }
+                
+                if($column == 'recepcion_inicio' || $column == 'recepcion_fin'
+                    || $column == 'ventas_inicio' || $column == 'ventas_fin')
+                {
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
+                
+                $criteria->compare("t.".$column, $comparator." ".$value,
+                        false, $logicOp);
+                
+            }
+                                   
+//            $criteria->select = 't.*';
+            $criteria->having .= $having;
+            //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
+            $criteria->together = true;
+            //$criteria->compare('t.status', '1'); //siempre los no eliminados
+            
+//            echo "Criteria:";
+//            
+//            echo "<pre>";
+//            print_r($criteria->toArray());
+//            echo "</pre>"; 
+            //exit();
+
+
+            return new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+            ));
+       }
+
 }

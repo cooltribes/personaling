@@ -11,6 +11,7 @@ $usuarios_totales = User::model()->count();
 $usuarios_activos = User::model()->countByAttributes(array('status'=>1));
 $usuarios_inactivos = User::model()->countByAttributes(array('status'=>0));
 $personal_shoppers = User::model()->countByAttributes(array('personal_shopper'=>1));
+$aplicantesPs = User::model()->countByAttributes(array('personal_shopper'=>2));
 $usuarios_facebook = User::model()->count('facebook_id IS NOT NULL');
 $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
 
@@ -44,6 +45,8 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
         Usuarios Inactivos</td>
       <td><p class="T_xlarge margin_top_xsmall"><?php echo $personal_shoppers; ?></p>
         Personal Shoppers</td>
+      <td><p class="T_xlarge margin_top_xsmall"><?php echo $aplicantesPs; ?></p>
+        Aplicantes a PS</td>
       <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_facebook; ?></p>
         Usuarios de Facebook </td>
       <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_twitter; ?> </p>
@@ -131,7 +134,9 @@ $template = '{summary}
 	    $('#textbox_buscar').keyup(function(e){
 	    	
 			
-			if(e.which != 13) {
+			if(e.which == 13) {
+                        
+                        $('.crear-filtro').click();
 				
 				ajaxRequest = $(this).serialize();
 	        clearTimeout(ajaxUpdateTimeout);

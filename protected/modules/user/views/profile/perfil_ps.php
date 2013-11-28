@@ -1,3 +1,4 @@
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");?>
 <div class="container margin_top tu_perfil">
   <div class="page-header">
     <h1>Perfil</h1>
@@ -5,8 +6,27 @@
   <div class="row">
     <aside class="span3">
       <div class="card">
-      	<?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); //imagen ?>	
+      	<?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); //imagen 	
         
+          //Metas de Twitter CARD ON
+
+          Yii::app()->clientScript->registerMetaTag('summary', 'twitter:card', null, null, null);
+          Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
+          Yii::app()->clientScript->registerMetaTag($model->profile->first_name." ".$model->profile->last_name." - Perfil", 'twitter:title', null, null, null);
+          Yii::app()->clientScript->registerMetaTag($model->profile->bio, 'twitter:description', null, null, null);
+          Yii::app()->clientScript->registerMetaTag('personaling.com', 'twitter:domain', null, null, null);
+          Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$model->getAvatar(), 'twitter:image', null, null, null);
+          //Metas de Twitter CARD OFF
+
+          //Metas de Facebook CARD ON
+          	Yii::app()->clientScript->registerMetaTag($model->profile->first_name." ".$model->profile->last_name." - Perfil", null, null, array('property' => 'og:title'), null);
+			Yii::app()->clientScript->registerMetaTag($model->profile->bio, null, null, array('property' => 'og:description'), null);
+  			Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  			Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+  			Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$model->getAvatar(), 'og:image', null, null, null);
+
+  			//Metas de Facebook CARD OFF
+        ?>        
         <div class="card_content vcard">
           <h4 class="fn"><?php echo $model->profile->first_name.' '.$model->profile->last_name; ?></h4>
           <p><strong>Bio</strong>: <?php echo $model->profile->bio; ?> </p>

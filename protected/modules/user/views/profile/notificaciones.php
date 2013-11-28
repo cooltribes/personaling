@@ -25,14 +25,14 @@ $this->breadcrumbs=array(
               Recibir boletines de noticias de Personaling </label>
             <label class="checkbox">
               <input type="checkbox" value="">
-              Participar en promociones de Personlaing </label>
+              Participar en promociones de Personaling </label>
             <label class="checkbox">
               <input type="checkbox" value="">
               Personaling puede usar mi imagen en campañas de redes sociales y testimonios del sitio. </label>
             <div class="clearfix">
               <label class="radio inline">
                 <input type="radio" id="inlineCheckbox1" value="option1">
-                Menusal </label>
+                Mensual </label>
               <label class="radio inline">
                 <input type="radio" id="inlineCheckbox2" value="option2">
                 Semanal </label>

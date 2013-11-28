@@ -8,11 +8,11 @@
  * 5 - Cancelado
  * 6 - Pago Rechazado
  * 7 - Pago insuficiente
- * 8 - Entregado
+ * 8 - Recibido
  * 9 - Devuelto
  * 10 - Parcialmente devuelto
  * 
- * --------------
+ * -------------- 
  * Tipo de Guia
  * --------------
  * 0 - Envio Estandar
@@ -46,7 +46,15 @@
  */
 class Orden extends CActiveRecord
 {
-	/**
+	const ESTADO_ESPERA = 1;
+	const ESTADO_ESPERA_CONF = 2;
+	const ESTADO_CONFIRMADO = 3;
+	const ESTADO_ENVIADO = 4;
+	const ESTADO_CANCELADO = 5;
+	const ESTADO_RECHAZADO = 6;
+	const ESTADO_INSUFICIENTE = 7;
+	
+	 /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Orden the static model class
@@ -72,12 +80,12 @@ class Orden extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia, peso', 'required'),
-			array('estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tipo_guia', 'numerical', 'integerOnly'=>true),
+			array('bolsa_id, user_id, direccionEnvio_id, tipo_guia, peso', 'required'),
+			array('estado, bolsa_id, user_id,   direccionEnvio_id, tipo_guia', 'numerical', 'integerOnly'=>true),
 			array('subtotal, descuento, envio, iva, descuentoRegalo, total, seguro', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id, pago_id, detalle_id, direccionEnvio_id, tracking, seguro, tipo_guia, peso', 'safe', 'on'=>'search'),
+			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id,   direccionEnvio_id, tracking, seguro, tipo_guia, peso', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -90,11 +98,22 @@ class Orden extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'direccionEnvio' => array(self::BELONGS_TO, 'DireccionEnvio', 'direccionEnvio_id'),
-			'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
+			//'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
-                        
+			'estados' => array(self::HAS_MANY, 'Estado', 'orden_id', 'index'=>'id'),
+			'detalles' => array(self::HAS_MANY, 'Detalle','orden_id'),
+			'ohptc' => array(self::HAS_MANY, 'OrdenHasProductotallacolor','tbl_orden_id'),
+			'totalpagado' => array(self::STAT, 'Detalle', 'orden_id',
+            		'select' => 'SUM(monto)',
+            		'condition' => 'estado = 1'
+        		),
+        	'nproductos' => array(self::STAT, 'OrdenHasProductotallacolor', 'tbl_orden_id',
+            		'select' => 'COUNT(preciotallacolor_id)',
+            		'condition' => 'cantidad > 0'
+        		), 
+     
 		);
 	}
 
@@ -115,8 +134,8 @@ class Orden extends CActiveRecord
 			'fecha' => 'Fecha',
 			'bolsa_id' => 'Bolsa',
 			'user_id' => 'User',
-			'pago_id' => 'Pago',
-			'detalle_id' => 'Detalle',
+			//'pago_id' => 'Pago',
+			//'detalle_id' => 'Detalle',
 			'direccionEnvio_id' => 'Direccion Envio',
 			'tracking' => 'Número de guía',
 			'seguro' => 'Seguro',
@@ -147,8 +166,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha);
 		$criteria->compare('bolsa_id',$this->bolsa_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('pago_id',$this->pago_id);
-		$criteria->compare('detalle_id',$this->detalle_id);
+		//$criteria->compare('pago_id',$this->pago_id);
+		//$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
@@ -177,8 +196,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha);
 		$criteria->compare('bolsa_id',$this->bolsa_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('pago_id',$this->pago_id);
-		$criteria->compare('detalle_id',$this->detalle_id);
+		//$criteria->compare('pago_id',$this->pago_id);
+		//$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
@@ -190,9 +209,123 @@ class Orden extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function activas()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+ 
+		$criteria=new CDbCriteria;
+		$criteria->select='t.*';
+		$criteria->with=array('estados');
+		$criteria->compare('t.user_id',$this->user_id);
+		$criteria->addCondition("t.estado <5 OR t.estado =7  OR (estados.estado = 8 AND estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."' )");
+		//$criteria->addCondition("estados.fecha >'".date('Y-m-d', strtotime('-1 month'))."'");
+		$criteria->together = true;
+		$criteria->group = 't.id';
+		$criteria->order = 't.fecha DESC';
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	
+	public function vendidas($pages = NULL)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+ 
+ 	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
+		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color
+		from tbl_orden_has_productotallacolor o  
+		JOIN tbl_precioTallaColor p ON p.id = o.preciotallacolor_id 
+		JOIN tbl_producto pr ON pr.id = p.producto_id 
+		JOIN tbl_precio pre ON pre.tbl_producto_id = p.producto_id 
+		JOIN tbl_marca m ON m.id=pr.marca_id 
+		JOIN tbl_talla t ON t.id=p.talla_id 
+		JOIN tbl_color c ON c.id=p.color_id where o.tbl_orden_id IN(
+		select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 ) AND o.cantidad > 0 ";
+		
+		if(isset(Yii::app()->session['idMarca'])){
+			if(Yii::app()->session['idMarca']!=0)
+				$sql=$sql." AND m.id=".Yii::app()->session['idMarca'];
+
+		}
+		
+		
+		$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+		
+		if(!is_null($pages)){
+				
+			if(!$pages){
+				$sql="select count(o.preciotallacolor_id) from tbl_orden_has_productotallacolor o WHERE o.tbl_orden_id IN(select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 ) AND o.cantidad > 0";
+				$pages=Yii::app()->db->createCommand($sql)->queryScalar();
+			}
+			else
+				$pages=30;
+		}
+
+				
+				// or using: $rawData=User::model()->findAll(); <--this better represents your question
+	
+				return new CArrayDataProvider($rawData, array(
+				    'id'=>'data',
+				    'pagination'=>array(
+				        'pageSize'=>$pages,
+				    ),
+					 
+				    'sort'=>array(
+				        'attributes'=>array(
+				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo'
+				        ),
+	    ),
+				));
+		
+		
+
+	}
+	
+	public function historial()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+		$criteria->select='t.*';
+		$criteria->with=array('estados');
+		$criteria->compare('t.user_id',$this->user_id);
+		$criteria->addCondition("(t.estado = 8 AND estados.fecha < '".date('Y-m-d', strtotime('-1 month'))."') OR t.estado = 5 ");
+		$criteria->together = true;
+		$criteria->group = 't.id';
+		$criteria->order = 't.fecha DESC';
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	
+	
+	
 	public function getTotalByUser($id){
 		
 		$sql = "select sum(total) from tbl_orden where user_id = ".$id;
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $total;
+		
+	}
+	
+		public function getPurchasedByUser($id){
+		
+		$sql = "select sum(total) from tbl_orden where user_id = ".$id." and (estado = 3 OR estado = 4 OR estado = 8)";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+		if(is_null($total))
+			return 0;
+		return $total;
+		
+	}
+	
+		 
+	public function countOrdersByUser($id){
+		
+		$sql = "select count(id) from tbl_orden where user_id = ".$id." and (estado = 3 OR estado = 4 OR estado = 8)";
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $total;
 		
@@ -214,8 +347,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha);
 		$criteria->compare('bolsa_id',$this->bolsa_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('pago_id',$this->pago_id);
-		$criteria->compare('detalle_id',$this->detalle_id);
+		//$criteria->compare('pago_id',$this->pago_id);
+		//$criteria->compare('detalle_id',$this->detalle_id);
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);	
 		$criteria->compare('seguro',$this->seguro);
@@ -291,7 +424,8 @@ class Orden extends CActiveRecord
                    
                     continue;
                 }
-                
+                // ARREGLAR PAGO_ID NELSON
+                //en vez de tbl_pago.tipo es tbl_detalle.tipo_pago  
                 if($column == 'pago_id'){                
                    
                     if (!strpos($joinPagos, 'tbl_pago')) {
@@ -352,5 +486,80 @@ class Orden extends CActiveRecord
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}  
+	public function getXConfirmar()
+	{
+		$sql = "select count(id) from tbl_orden where estado = 2";
+		$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		return $num;
+	}  
+	public function getTipoPago(){
+		if (isset($this->detalles))
+		foreach ($this->detalles as $detalle){
+			return $detalle->tipo_pago;
+		}
+		return 1;
+		
+	}
+	public function cambiarEstado($estado){
+		$this->estado = $estado;
+		$this->save();
+	}
+	public function getMontoActivo(){
+	if($this->estado == 3 || $this->estado == 8){
+		return $this->total;
+		
+	}
+	if($this->estado == 7)
+	{
+		/*$balance = Balance::model()->findByAttributes(array('user_id'=>$orden->user_id,'orden_id'=>$orden->id));
+		if(isset($balance)){
+			$a = $balance->total * -1;
+			echo Yii::app()->numberFormatter->formatDecimal($a); 
+		}*/
+		//echo 'px'.$orden->getxPagar();
+		//echo 'orden'.$orden->totalpagado; 
+				return $this->getxPagar();
+	}
+	if($this->estado == 1 || $this->estado == 2 || $this->estado == 4 || $this->estado == 5 || $this->estado == 6){
+				
+		$balance = Balance::model()->findByAttributes(array('user_id'=>$this->user_id,'orden_id'=>$this->id, 'tipo'=>0));
+
+		if(isset($balance))
+		{
+			if($balance->total < 0){
+				$a = $balance->total * -1;
+				return $a;
+			}else {
+				return $this->getxPagar();
+			}
+			
+		}
+		else
+		{
+			return $this->getxPagar();
+		}
+					
+		
+				
+	}	
+	}
+	public function getxPagar($id=null){
+			
+		if(is_null($id))
+				$porpagar=$this->total-$this->totalpagado;
+		else
+			{
+				$orden=$this->findByPk($id);
+				$porpagar=$orden->total-$orden->totalpagado;
+			}
+		if($porpagar<0)
+			$porpagar=0;
+		
+		
+		return $porpagar;
+		
+	} 
+	
+	
 	
 }

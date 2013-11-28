@@ -8,7 +8,7 @@
     <div class="page-header">
         <h1>Administrar Mis Looks</small></h1>
     </div>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="table ">
         <tr>
             <th scope="col" colspan="6"> Totales </th>
         </tr> 
@@ -21,10 +21,10 @@
                 Por Aprobar</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(0); ?></p>
                 Por Enviar</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
+            <!--<td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
                 Cancelados </td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?> </p>
-                Devueltos</td>
+                Devueltos</td>-->
         </tr>
     </table>
     <hr/>
@@ -63,14 +63,11 @@
 	
 ?>           
         <div class="span3">
-            <select class="span3">
-                <option>Filtros prestablecidos</option>
-                <option>Filtro 1</option>
-                <option>Filtro 2</option>
-                <option>Filtro 3</option>
-            </select>
+            <?php echo CHtml::dropDownList("Filtros", "", 
+                    Chtml::listData(Filter::model()->findAllByAttributes(array('type' => '5', 'user_id' => Yii::app()->user->id)),
+                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
         </div>
-        <div class="span3"><a href="#" class="btn">Crear nuevo filtro</a></div>
+        <div class="span3"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
         <div class="span2">
         
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -82,6 +79,8 @@
 		)); ?>        	
         </div>
     </div>
+    <hr/>
+        <?php $this->renderPartial('_filtersMisLooks'); ?>
     <hr/>
 <?php
 $template = '{summary}
@@ -130,7 +129,7 @@ $template = '{summary}
 	?>
 
     <hr/>
-    <div class="row">
+<!--     <div class="row">
         <div class="span3">
             <select class="span3">
                 <option>Seleccionar opción</option>
@@ -141,7 +140,7 @@ $template = '{summary}
         </div>
         <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
         <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
-    </div>
+    </div> -->
 </div>
 <!-- /container --> 
 

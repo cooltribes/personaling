@@ -6,16 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en" />
 <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-<link rel="shortcut icon" type="image/x-icon" href="<?php echo Yii::app()->getBaseUrl(); ?>/favicon.ico">
+<?php 
 
-<?php //Yii::app()->bootstrap->register(); ?>
-<!-- Le STYLES -->
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css" />
-
-
-<?php //Yii::app()->less->register(); ?>
-<?php Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' ); ?>
-<!-- Le FONTS -->
+Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css',null);
+// Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
+Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico',null,null);  
+Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
+?>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
 
@@ -24,6 +21,7 @@
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">
+  <div class="barra-carga"></div>
   <div id="navegacion_principal">
 <?php  
 
@@ -46,9 +44,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
 					array('label'=>'General', 'url'=>array('/controlpanel/index')),
 					array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
-					array('label'=>'Usuarios', 'url'=>array('/adorno/index')),
-					array('label'=>'Catálogos', 'url'=>array('/adorno/index')),
+					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
+					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
+          array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
 					)),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
@@ -60,10 +59,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
 					)
 				),
-                array('label'=>'Ventas', 'url'=>array('/orden/admin')),
+                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
                 array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-					array('label'=>'Campañas', 'url'=>array('/campana/index')),
+
+					         array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                  array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+
 					),
 				),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
@@ -86,7 +88,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 
     //Consulta de mensajes
-    $mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1));
+    $mensajes = Mensaje::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->id,'visible'=>1,'admin'=>NULL));
     if(count($mensajes) > 0){
       foreach($mensajes as $msj)
       {
@@ -104,7 +106,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
       $file = explode('.',$user->getAvatar());
       $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
     }
-    $nombre = $profile->first_name.' '.$profile->last_name;
+    
+    $Arraynombre = explode(" ",$profile->first_name);
+    if(strlen($Arraynombre[0]) > 0)
+      $nombre = $Arraynombre[0];
+    else
+     $nombre = $profile->first_name;
+
 		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 
 		if(isset($bolsa))
@@ -116,7 +124,56 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 	}
 
+        $itemsUser = array(
+                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
+                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
+                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
+                    // array('label'=>'Perfil', 'url'=>'#'),
+                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
+                    '---',
+                    array('label'=>'¿Comprando para alguién más?'),
+                    //array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>',
+//                    array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise',
+//                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),                    
+                    
+                );
 
+        $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));
+
+        $verMas = count($otrosPerfiles) > 2;       
+        
+        $cont = 0;
+        
+        foreach($otrosPerfiles as $perfil){
+            $cont++;
+            if(strlen($perfil->name) > 15){
+                $perfil->name = substr_replace($perfil->name, " ...", 15);
+            }
+            
+            $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
+                'url'=>'#',
+                'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
+                //'itemOptions' => array('id' => $perfil->id_filter),
+                );
+            
+            if($cont >= 2){
+                break;
+            }
+        }
+        $todos = count($otrosPerfiles);
+        if($verMas){
+           $itemsUser[] =  array('label'=>"Ver todos los perfiles ...",  
+                                    'url'=>'#', 'linkOptions' => array('class' => 'sub_perfil_item'), //array('/site/preguntas_frecuentes')
+                                    );
+        }
+        
+
+        array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  
+                                    'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal', 'id' => 'agregar-perfil'), //array('/site/preguntas_frecuentes')
+                                    ),                    
+                                '---',
+                                array('label'=>'Salir', 'url'=>array('//site/logout')));
 
 
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -131,9 +188,11 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 
                 array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                array('label'=>'Tu personal Shopper', 'url'=>array('/tienda/look'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                //array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
+                array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
 				        array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
@@ -143,16 +202,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=>array(
-                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
-                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
-                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-                    // array('label'=>'Perfil', 'url'=>'#'),
-                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
-                    '---',
-                    array('label'=>'Salir', 'url'=>array('//site/logout')),
-                ),
+                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 'visible'=>!Yii::app()->user->isGuest,
 				),
             ),
@@ -160,7 +210,6 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
     ),
 ));
-
 
 
 }
@@ -246,13 +295,20 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/sitemap" title="Site Map">Site map</a></li>          
+          <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li> -->
           
         </ul>
       </div>
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
         <p class="lead">Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.</p>
-        <img class="margin_top_medium_minus" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
+        <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
+                        </div><div class="span4"><script type="text/JavaScript">
+                                //<![CDATA[
+                                var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
+                                //]]>
+                                </script></div></div>
       </div>
       <div class="span3 offset1 ">
         <h3>¡Síguenos! </h3>
@@ -269,7 +325,7 @@ if(!Yii::app()->user->isGuest){
     </div>
     <hr/>
     <div class="row">
-      <div class="span12 text_align_center creditos">Personaling &reg; <?php echo date("Y"); ?> | Todos los derechos reservados<br/>
+      <div class="span12 text_align_center creditos">Personaling C.A &reg; <?php echo date("Y"); ?> RIF: J-40236088-6 | Todos los derechos reservados<br/>
        Programado en Venezuela por <a href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> </div>
     </div>
   </footer>
@@ -328,8 +384,8 @@ if(!Yii::app()->user->isGuest){
       },
       function(){
         $('.active_two').hover(function(){},function(){
-          $('#btn-shoppingcart').popover('hide');
-          $('#btn-shoppingcart').removeClass('bg_color10');
+          $('#btn-notifications').popover('hide');
+          $('#btn-notifications').removeClass('bg_color10');
         });   
 
       });
@@ -385,7 +441,7 @@ if(!Yii::app()->user->isGuest){
                     $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
                     $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
                     if($imagen){
-                        $htmlimage = CHtml::image(Yii::app()->baseUrl . $imagen->url, "Imagen ", array("width" => "30", "height" => "30"));
+                        $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                         echo '<div class="span2">'.$htmlimage.'</div>';
                     }
                 }
@@ -452,7 +508,7 @@ if(!Yii::app()->user->isGuest){
         textShoppingCart = listaCarrito + textShoppingCart;
     }  
     if(<?php echo $cont_productos ?> == 0){
-      textShoppingCart = '<p><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
+      textShoppingCart = '<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
     }
  
     //Boton Shopping Cart
@@ -508,11 +564,83 @@ if(!Yii::app()->user->isGuest){
         $(this).removeClass('open');      
     });
  
+ 
+     //Elemento li del menu de usuario para agregar un nuevo filtro
+    $('#agregar-perfil').click(function(e){
+                
+        var urlActual = "<?php echo CController::createUrl(""); ?>";
+        var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
+        var redirect = "<?php echo CController::createUrl("/tienda/redirect"); ?>";        
+        //si esta en tienda de looks
+        if(urlActual === tiendaLooks){
+            clickAgregar();
+        }else{
+        
+        //Llevar a tienda de looks
+            
+            $.ajax({
+                type: 'POST',
+                url: redirect,
+                dataType: 'JSON',
+                data: {agregar : 1},
+                success: function(data){
+
+                    if(data.status == 'success'){
+
+                      window.location = tiendaLooks;  
+
+                    }else if(data.status == 'error'){
+                        
+
+                    }
+                }
+            });
+        }
+            
+        
+    });
+    
+    //Click para seleccionar un peril de la lista que esta en el dropdown User
+    $("#dropdownUser a.sub_perfil_item").click(function(e){
+        e.preventDefault();
+        var urlActual = "<?php echo CController::createUrl(""); ?>";
+        var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
+        var redirect = "<?php echo CController::createUrl("/tienda/redirect"); ?>";        
+        //si esta en tienda de looks
+        if(urlActual === tiendaLooks){
+            clickPerfil($(this).prop("id"));
+        }else{
+        
+        //Llevar a tienda de looks
+            var datos = $(this).prop("id");
+            $.ajax({
+                type: 'POST',
+                url: redirect,
+                dataType: 'JSON',
+                data: {perfil : datos},
+                success: function(data){
+
+                    if(data.status == 'success'){
+
+                      window.location = tiendaLooks;  
+
+                    }else if(data.status == 'error'){
+                        
+
+                    }
+                }
+            });
+        }
+       
+    });
+ 
+ 
   }
 
 
 
 </script>
+
 <!-- Popovers OFF -->
 
 <!-- Google Analytics -->

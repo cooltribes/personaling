@@ -1,16 +1,18 @@
 <?php
+Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 Yii::import('application.components.*');
 require_once "mercadopago-sdk/lib/mercadopago.php";
 $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
-$accessToken = $mp->get_access_token();
+//$accessToken = $mp->get_access_token();
 //var_dump($accessToken);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
 	$descuento = Yii::app()->getSession()->get('descuento');
 	$total = Yii::app()->getSession()->get('total');
 	if(Yii::app()->getSession()->get('usarBalance') == '1'){
-		$balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+		$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
+		$balance = floor($balance *100)/100;
 		if($balance > 0){
 			if($balance >= $total){
 				$descuento = $total;
@@ -21,6 +23,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			}
 		}
 	}
+//Yii::app()->getSession()->add('descuento',$descuento);
+//Yii::app()->getSession()->add('total',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
@@ -53,13 +57,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
   <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
   <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
+  <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envio</h4>
+        <h4 class="braker_bottom"> Dirección de Envío</h4>
         <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
@@ -73,7 +78,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
         <p><strong>Dirección:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
-        <p> <strong>Telefono</strong>: <?php echo($direccion->telefono); ?> <br/>
+        <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
         
         <!-- Direcciones OFF --> 
@@ -93,6 +98,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
 				}else if(Yii::app()->getSession()->get('tipoPago')==2){
 					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
+					
+					$tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
+					
+					$rest = substr($tarjeta->numero, -4);
+					
+					echo "</br>Nombre: ".$tarjeta->nombre."
+					</br>Numero: XXXX XXXX XXXX ".$rest."
+					</br>Vencimiento: ".$tarjeta->vencimiento;
+
+					
 				}
               ?>
           </table>
@@ -172,7 +187,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php
               }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
-              			
+              		/*	
 					 echo CHtml::link("<i class='icon-locked icon-white'></i> Pagar con tarjeta de crédito",
 					    $this->createUrl('modal',array('id'=>'pago')),
 					    array(// for htmlOptions
@@ -183,7 +198,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 					         'return false;}',
 					    'class'=>'btn btn-warning',
 					    'id'=>'pago')
-					);	
+					);	*/
+					
+					echo "<div class='form-actions'><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-warning'> <i class='icon-locked icon-white'></i>Pagar con tarjeta de crédito </a></div>";
 
 				}
 				else {
@@ -211,7 +228,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				//<hr/>
 				?>
         </div>
-        <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date("d/m/Y"); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+        <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
       <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank">Ver Políticas de Envíos y Devoluciones</a></p>
       <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
@@ -265,7 +282,8 @@ else
 				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
 				if(data.status=="ok")
 				{
-					window.location="pedido/"+data.orden+"";
+					
+					window.location=data.url;
 				}else if(data.status=='error'){
 					//console.log(data.error);
 				}
@@ -289,9 +307,10 @@ else
 		var usar_balance = $("#usar_balance").attr("value");
 		var tipo_guia = $("#tipo_guia").attr("value");
 		var peso = $("#peso").attr("value");
-		
+		var tarjeta = $("#tarjeta").attr("value");
+		var total_cobrar = "<?php echo $total; ?>";
 		/* lo de la tarjeta */
-		
+		/*
 		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
 		var nom = $("#nombre").attr("value");
 		var num = $("#numero").attr("value");
@@ -302,15 +321,15 @@ else
 		var ciud = $("#ciudad").attr("value");
 		var est = $("#estado").attr("value");
 		var zip = $("#zip").attr("value");
-		
-		if(idCard=="0") // si no se eligió tarjeta sino que escribio los datos de una nueva tarjeta
+		*/
+		if(tarjeta!="0") // el id de la tarjeta de credito que esta temporal en la pagina anterior
 		{
-			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
+			/*if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
 			{
 				alert("Por favor complete los datos.");
 			}
 			else
-			{
+			{*/
 			
 			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
 			
@@ -318,9 +337,11 @@ else
 		        type: "post",
 		        dataType: 'json',
 		        url: "credito", // action 
-		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
+		       /* data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
 		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
-		        		}, 
+		        		}, */
+		        data: { 'tipoPago':tipoPago, 'total':total_cobrar, 'tarjeta':tarjeta
+		        		}, 		
 		        success: function (data) {
 					
 					if(data.status==201) // pago aprobado
@@ -381,7 +402,7 @@ else
 		       	}//success
 		       })
 			
-			}
+			//}
 		}
 		else
 		{

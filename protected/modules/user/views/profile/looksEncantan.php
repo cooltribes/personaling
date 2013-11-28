@@ -1,5 +1,8 @@
 
 <?php  
+	$this->breadcrumbs=array(
+		'Tus looks',
+	);
   $baseUrl = Yii::app()->baseUrl; 
   $cs = Yii::app()->getClientScript();
   $cs->registerScriptFile($baseUrl.'/js/slider.js');
@@ -49,13 +52,15 @@
                   <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
                   <?php echo CHtml::link($image,$look->getUrl()); ?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
-                    <div class="span2 avatar "><img src="../../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
+                    <div class="span2 avatar "><a href="<?php echo $look->user->profile->getUrl(); ?>">
+            	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+          	</a></div>
+                    <div class="span4"> <span class="muted">Look creado por: </span>
                       <h5><a class="url" title="profile" href="#"><span class="fn">
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
-                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+                    <div class="span6"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
                    
@@ -135,6 +140,7 @@
 	} // si tiene mas de 3 haga el carrusel
 	else
 	{
+		if($cantidad != 0){ // Si hay looks para mostrar
 	?>
 	
 	<div class=" margin_top">
@@ -162,17 +168,19 @@
 						?>
 						
               	<div class="span4">
-                <article class="item" >
+                <article class="item span4" >
 		            <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("width" => "370", "height" => "400", 'class'=>'')); ?>
 		          	<?php echo CHtml::link($image,$look->getUrl()); ?>
 		                <div class="hidden-phone margin_top_small vcard row-fluid">
-		                  	<div class="span2 avatar "><img src="../../images/avatar_sample1.jpg" class="photo  img-circle" width="40"></div>
-		                    <div class="span5"> <span class="muted">Look creado por: </span>
+		                  	<div class="span2 avatar "><a href="<?php echo $look->user->profile->getUrl(); ?>">
+            	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+          	</a></div>
+		                    <div class="span4"> <span class="muted">Look creado por: </span>
 		                    	<h5><a class="url" title="profile" href="#"><span class="fn">
 		                        	<?php //echo $look->title; ?>
 		                        	<?php echo $look->user->profile->first_name; ?> </span></a></h5>
 		                    </div>
-		                    <div class="span5"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+		                    <div class="span6"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
 		                </div>
 		                  
 		       		<div class="share_like">
@@ -231,8 +239,19 @@
 		</div>
 	</div>			
 	<?php	
+		}
+		else{ // Si no hay looks para mostrar ?> 
+			<div class=" margin_top">
+		  		<div class="row margin_bottom_large">
+		    		<div class="span12">
+		      			<h1>Looks que te encantan</h1>	
+		      			<hr>	
+		          		<p class="lead margin_bottom_large margin_top_medium padding_top_medium padding_bottom_large  padding_left_medium padding_right_small " > Puedes seleeccionar un look como <strong>favorito</strong> haciendo clic en el icono <strong> <span class="entypo icon_personaling_medium" style="line-height: 1.1;" >&#9825;</span></strong> que lo acompaña, y en cualquier momento puedes verlos haciendo click en Tus Looks. </p>
+			      	</div>
+			  	</div>
+			</div>
+		<?php } 
 	}
-
 ?>
 </div>
 <hr/>

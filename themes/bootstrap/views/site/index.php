@@ -1,7 +1,16 @@
 <?php
 /* @var $this SiteController */
+// Open Graph
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:title'), null); 
+  Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características', null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url .'images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
+
 
 $this->pageTitle=Yii::app()->name . ' - Página de inicio';
+Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características.', 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
 ?>
 </div>
 </div>
@@ -15,23 +24,63 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
 }
 </style>
 
+
+
 <div class="wrapper_home">
-  <div class="container">
-    <div class="row">
-      <div class="span11 text_align_center margin_top">
-        <div class="box_home  margin_bottom_small">
-          <h1>¡Bienvenid@s!</h1>
-          <p>Recomendaciones personalizadas adaptadas a ti. Una nueva manera de renovar tu clóset. </p>
-          <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">¡Regístrate YA!</a> </div>
-        <div class="box_home_2 hidden-phone"> ¡Tu <span>Personal <br/>
-          Shopper</span> Digital! </div>
-        <div class="box_home_3 hidden-phone"> Registro <br/>
-          <span>¡Gratis!</span></div>
-        <div class="box_home_4 hidden-phone"> <a  href="#myModal" role="button" data-toggle="modal">Mira <strong>cómo funciona</strong> aqui</a></div>
+
+
+  <div id="myCarousel" class="carousel slide">
+
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+      <div class="active item">  <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_4.jpg">
       </div>
+            <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg"></div>
+            <div class="item"><img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/slide_version_20131015_brands.jpg"></div>
+
+
     </div>
+
+
+
+
   </div>
-</div>
+
+    <div class="box_20130928 margin_bottom_small">
+        <h1>Obtén recomendaciones <span>personalizadas adaptadas a ti</span></h1>
+        <p>
+          <span>1.</span> Ingresa tu email
+          <span>2.</span> Indica la forma de tu cuerpo y medidas
+          <span>3.</span> Elige tu estilo
+          <br><span>4.</span> Compra Looks de las mejores marcas recomendados a tu medida
+        </p>
+        <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration" title="Registrate" class="btn btn-danger margin_top_small btn-large">Comienza aquí</a> </div>
+
+  </div>
+
+<!--   <div class="container menciones ">
+    <div class="row"><div class="span3">
+      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_onda.png" alt="Onda estación">
+      <blockquote>"Diseño, tecnología, web y moda" </blockquote>                     
+
+    </div>
+    <div class="span3">
+      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_ojo.png" alt="Revista Ojo">
+
+      <blockquote>"Asesoría de moda en la web venezolana"   </blockquote>                   
+
+    </div>
+    <div class="span3">
+      <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_globovision.png" alt="Globovision">
+
+      <blockquote>"Wayra acelerará este 2013 tres nuevos proyectos emprendedores" </blockquote></div>
+      <div class="span3">
+        <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/logo_universal.png" alt="El Universal">
+
+        <blockquote>"Proyectos emprendedores de Wayra"</blockquote></div></div>
+
+
+      </div> -->
 <?php /*?><div class="note_startupchile"> <a href="#wayra" role="button" data-toggle="modal"><img src="images/note_wayra.png" title="Notas para Wayra"></a></div>
 
 <!-- Modal -->
@@ -141,3 +190,9 @@ $this->pageTitle=Yii::app()->name . ' - Página de inicio';
   </div>
 </div>
 <!-- Modal OFF --> 
+
+<script type="text/javascript">
+$('.carousel').carousel({
+  interval: 5000
+})
+</script>

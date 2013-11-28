@@ -1,13 +1,19 @@
 
+<style>
+    div.infinite_navigation{
+        display:none;
+    }
+</style>
   <div class="row" id="looks">
+  	
 	<?php foreach($looks as $look): ?>
-		<?php //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
+		<?php  //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span4 look">
       <article > 
       	<?php if ($pages->currentPage > 0){ ?>
       	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
       	<?php }else{ ?>
-      	<?php echo CHtml::image('../images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
+      	<?php echo CHtml::image(Yii::app()->baseUrl .'/images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
         <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
         <?php } ?>
         	         
@@ -42,18 +48,22 @@
 							$('#"."imglook".$look->id."').filter(function() {
 							    return this.complete;
 							}).each(load_handler).end().load(load_handler);						 
-						 ";					 
+						 ";		
+						 	Yii::app()->clientScript->registerScript('img_ps_script'.$look->id,$script);			 
   					?>
         <div class="hidden-phone margin_top_small vcard row-fluid">
-          <div class="span2  ">
-            <div class="avatar"> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
-          </div>
-          <div class="span6"> <span class="muted">Look creado por: </span>
+          <div class="span2">
+            <div class="avatar">
+            <a href="<?php echo $look->user->profile->getUrl(); ?>">
+            	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
+          	</a>
+          	</div>
+          <div class="span5"> <span class="muted">Look creado por: </span>
             <h5>
 			<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
 			</h5>
           </div>
-          <div class="span4"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
+          <div class="span5"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
         </div>
         <div class="share_like">
          
@@ -76,7 +86,7 @@
 	<?php endforeach; ?>
 	<script>
 	$('.imglook').on("load",function(){
-		console.log('clicking');
+		//console.log('clicking');
 		$(this).parent().prev("img").hide();
 		$(this).show();
 	});
@@ -85,11 +95,12 @@
    // FB.Canvas.scrollTo(0,0);        
 	});
 </script>
+
 	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#looks',
 	    'itemSelector' => 'div.look',
-	    'loadingText' => 'Loading...',
-	    'donetext' => 'This is the end... my only friend, the end',
+	    'loadingText' => 'Cargando Looks...',
+	    'donetext' => ' ',
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); ?> 

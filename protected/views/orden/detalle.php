@@ -8,9 +8,17 @@ $this->breadcrumbs=array(
 
 $usuario = User::model()->findByPk($orden->user_id); 
 
+
+
+
 ?>
 
-	<?php if(Yii::app()->user->hasFlash('success')){?>
+
+
+
+
+<div class="container margin_top">
+			<?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
 	        <?php echo Yii::app()->user->getFlash('success'); ?>
 	    </div>
@@ -20,8 +28,6 @@ $usuario = User::model()->findByPk($orden->user_id);
 	        <?php echo Yii::app()->user->getFlash('error'); ?>
 	    </div>
 	<?php } ?>
-
-<div class="container margin_top">
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
@@ -32,7 +38,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       	<?php
       	
       	if($orden->fecha!="")
-   			echo date("d-m-Y H:i:s",strtotime($orden->fecha));
+   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
       	
       	?>
       </div></th>
@@ -75,27 +81,49 @@ $usuario = User::model()->findByPk($orden->user_id);
 ?>
 	</p>
         Estado actual</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 1 </p>
+      <td><p class="T_xlarge margin_top_xsmall"> 2 </p>
         Documentos</td>
       <td><p class="T_xlarge margin_top_xsmall"> 2</p>
         Mensajes<br/></td>
         
         <?php
-      $ind_tot = 0;
-	  $look_tot = 0;
-      $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+    $ind_tot = 0;
+	$look_tot = 0;
+    $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
 	
+	$looks_en_orden = Array();
+		
 		foreach ($compra as $tot) {
 			
 			if($tot->look_id == 0)
 			{
-				$ind_tot++;
+				$ind_tot++; 
 			}else{
 				
-				$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
-				foreach($lhp as $cada){
-					$look_tot++;	
+				// si es look se debe revisar cuantos productos tiene el look.
+				
+				if(!in_array($tot->look_id,$looks_en_orden)){	// no hace nada para que no se repita el valor			
+					
+					array_push($looks_en_orden,$tot->look_id); 
+					$revisando = $tot->look_id;
+					
+					foreach($compra as $cadauno)
+					{
+						if($cadauno->look_id == $revisando)
+							$look_tot++;
+						
+					}
+					
+					/*$lhp = LookHasProducto::model()->findAllByAttributes(array('look_id'=>$tot->look_id));
+					
+					foreach($lhp as $cada){
+						$look_tot++;
+					}					
+					
+					*/
 				}
+				
+				
 			}
 			
 		}
@@ -107,36 +135,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         Prendas</td>
       <td><p class="T_xlarge margin_top_xsmall"><?php
       
-	if($orden->estado == 7)
-	{
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$orden->user_id,'orden_id'=>$orden->id));
-		if(isset($balance)){
-			$a = $balance->total * -1;
-			echo Yii::app()->numberFormatter->formatDecimal($a); 
-		}
-	}
-	else{
-				
-		$balance = Balance::model()->findByAttributes(array('user_id'=>$usuario->id,'orden_id'=>$orden->id, 'tipo'=>0));
-		
-		if(isset($balance))
-		{
-			if($balance->total < 0){
-				$a = $balance->total * -1;
-				echo Yii::app()->numberFormatter->formatDecimal($a);
-			}else {
-				echo Yii::app()->numberFormatter->formatDecimal($orden->total);
-			}
-			
-		}
-		else
-		{
-			echo Yii::app()->numberFormatter->formatDecimal($orden->total);
-		}
-					
-		
-				
-	}	
+		echo Yii::app()->numberFormatter->formatDecimal($orden->getMontoActivo());
     //  echo Yii::app()->numberFormatter->formatDecimal($orden->total); ?></p>
 
         <?php
@@ -147,7 +146,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 2)
 		echo "Bs. Pendientes por confirmar";
 	
-	if($orden->estado == 3)
+	if($orden->estado == 3 || $orden->estado == 8)
 		echo "Bs. ya pagados";
 
 	if($orden->estado == 4)
@@ -159,11 +158,17 @@ $usuario = User::model()->findByPk($orden->user_id);
 	if($orden->estado == 7)
 		echo "Bs. que faltan.";
 	
+		
 	// agregar demas estados
      
         ?></td>
       <td>
-
+	<?php
+	
+	if($orden->estado == 8) // recibido
+	{
+		
+	?>	
       	<div class="row margin_top_small">
       		<?php
       		
@@ -177,6 +182,13 @@ $usuario = User::model()->findByPk($orden->user_id);
 			    'htmlOptions'=>array('class'=>'span2 pull-right margin_bottom_xsmall')
 			)); ?>
 		</div>
+	<?php
+	}else
+		{
+			echo '<div class="row margin_top_small"></div>';
+		}
+	?>	
+			
 		<div  class="row">
       		<a onclick="window.print();" class="btn span2  pull-right"><i class="icon-print"></i> Imprimir pedido</a>
       	</div>		
@@ -198,15 +210,15 @@ $usuario = User::model()->findByPk($orden->user_id);
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>eMail</strong>: <?php echo $usuario->email; ?></li>
+                <li><strong>eMail</strong>: <?php echo $usuario->email; ?></li> 
                 <li><strong>Telefono</strong>:<?php echo $usuario->profile->tlf_celular; ?> </li>
                 <li><strong>Ciudad</strong>:<?php echo $usuario->profile->ciudad; ?> </li>
               </ul>
             </div>
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>Cuenta registrada</strong>:<?php echo $usuario->create_at; ?></li>
-                <li><strong>Pedidos validos realizados</strong>: 0</li>
+                <li><strong>Cuenta registrada</strong>:<?php echo date('d/m/Y h:i A', strtotime($usuario->create_at)); ?></li>
+                <li><strong>Pedidos validos realizados</strong>: <?php echo Orden::model()->countByAttributes(array('user_id'=>$orden->user_id,'estado'=>8)); ?></li>
                 <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." Bs."; ?> </li>
               </ul>
             </div>
@@ -217,7 +229,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           	<?php
           	
           	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-          	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+          //	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						
 			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
 			
@@ -243,11 +255,15 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 						echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
-						if($pago->tipo == 2)
+						if($detalle->tipo_pago == 2)
 							echo("<td>Tarjeta de credito</td>");
-							//hacer los demas tipos
+						if($detalle->tipo_pago == 3)
+							echo("<td>Saldo</td>");						
+						if($detalle->tipo_pago == 4)
+							echo("<td>Mercado Pago</td>");	
+														//hacer los demas tipos
 								
 						echo("<td>".$detalle->nTransferencia."</td>");	
 						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
@@ -261,7 +277,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		          	
 		          		echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
 						
-						if($pago->tipo == 1)
+						if($detalle->tipo_pago == 1)
 							echo("<td>Deposito o Transferencia</td>");
 							//hacer los demas tipos
 								
@@ -288,7 +304,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
             <th scope="col">Fecha</th>
-            <th scope="col">Tipo</th>
+           <!--  <th scope="col">Tipo</th>-->
             <th scope="col">Transportista</th>
             <th scope="col">Peso</th>
             <th scope="col">Costo de envio</th>
@@ -296,11 +312,29 @@ $usuario = User::model()->findByPk($orden->user_id);
             <th scope="col"></th>
           </tr>
           <tr>
-            <td>21/12/2012 - 12:21 PM</td>
-            <td>Delivery</td>
-            <td>Zoom</td>
-            <td>0,00 Kg.</td>
-            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php 
+            echo date("d/m/Y",strtotime(Estado::model()->getDate($orden->id, $orden->estado)));?>
+            </td>
+           <!-- <td>Delivery</td>-->
+            <td> 
+            <?php
+            
+            switch ($orden->tipo_guia) {
+                case 0:
+                    echo 'Zoom';
+                    break;
+                case 1:
+                    echo 'Zoom';
+                    break;
+				case 2:
+                    echo 'DHL';
+                    break;
+                default:
+                    break;
+            }
+            ?></td>
+            <td><?php echo $orden->peso ?> Kg.</td>
+            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
             <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
@@ -322,11 +356,14 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$ciudad_envio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
 				$provincia_envio = Provincia::model()->findByPk($direccionEnvio->provincia_id);
             	?>
-              <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
+              <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". ";  ?></div>
+              
+              <span class="locality"><?php echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos; ?>.</span>
               <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
+            <div class="tel margin_top_small"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <div><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
             <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           <!-- <a href="#" class="btn"><i class="icon-edit"></i></a> --> </div>
@@ -371,8 +408,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 					echo("
 					
 					</ul>
-	          		<p> <a onclick='aceptar(".$detalle->id.")' class='btn' title='Aceptar pago'>
-	          		<i class='icon-check'></i> Aceptar</a>
+	          		<p> <a onclick='aceptar(".$detalle->id.")' class='btn btn-info' title='Aceptar pago'>
+	          		<i class='icon-check icon-white'></i> Aceptar</a>
 	          		<a onclick='rechazar(".$detalle->id.")' class='btn' title='Rechazar pago'>Rechazar</a> </p>
 	        		</div>
 	        		
@@ -394,15 +431,16 @@ $usuario = User::model()->findByPk($orden->user_id);
             <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
             Tipo de guía: 
             <?php
+            
             switch ($orden->tipo_guia) {
                 case 0:
-                    echo '0,5 Kg.';
+                    echo 'Zoom hasta 0,5 Kg.';
                     break;
                 case 1:
-                    echo '5 Kg.';
+                    echo 'Zoom entre 0,5 y 5 Kg.';
                     break;
 				case 2:
-                    echo '10 Kg.';
+                    echo 'DHL mayor a 5 Kg.';
                     break;
                 default:
                     break;
@@ -414,14 +452,20 @@ $usuario = User::model()->findByPk($orden->user_id);
         ?>
          <?php 
          if($orden->estado == 4)
-         	echo"<div><a onclick='entregado(".$orden->id.")' class='btn margin_top margin_bottom pull-left'>Registrar Entrega</a></div>"; ?>
+         	echo"<div><a onclick='entregado(".$orden->id.")' class='btn btn-info margin_top margin_bottom pull-left'>Registrar Entrega</a></div>"; ?>
+        
+        <?php if($orden->estado == 1 || $orden->estado == 6
+                || $orden->estado == 7){ ?>
+            <a href="#modalDeposito" role="button" class="btn btn-info margin_top margin_bottom pull-left" data-toggle="modal"><i class="icon-check icon-white"></i> Registrar Pago</a>
+                <?php } ?>
+        
         
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
             <th scope="col">Estado</th>
             <th scope="col">Usuario</th>
             <th scope="col">Fecha</th>
-            <th scope="col">&nbsp;</th>
+<!--            <th scope="col">&nbsp;</th>-->
           </tr>
 
           <?php
@@ -469,16 +513,22 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				$fecha = date("d/m/Y",strtotime($est->fecha));
 				echo("<td>".$fecha." </td>");
-            	echo("<td><a tabindex='-1' href='#'><i class='icon-edit'></i></a></td>");		
+            	//echo("<td><a tabindex='-1' href='#'><i class='icon-edit'></i></a></td>");		
             	echo("</tr>");
 		  	}
 		  
           ?>
           <tr>
             <td>Nuevo Pedido</td>
-            <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
+            <td><?php 
+            		if(!is_null($orden->admin_id)){
+						$comprador=User::model()->findByPk($orden->admin_id);
+						echo $comprador->username;
+					}else{
+						echo $usuario->profile->first_name." ".$usuario->profile->last_name; 	
+					} ?></td>
             <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
-            <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td>
+            <!-- <td><a tabindex="-1" href="#"><i class="icon-edit"></i></a></td> -->
           </tr>
         </table>
         
@@ -504,7 +554,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	          </td>
 	          <td>
 	          	<?php
-	          	echo CHtml::link('Factura', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
+	          	echo CHtml::link('Factura Electrónica', $this->createUrl('factura', array('id'=>$factura->id)), array('target'=>'_blank'));
 	          	?>
 	          </td>
 	          <td>
@@ -548,11 +598,13 @@ $usuario = User::model()->findByPk($orden->user_id);
           <th scope="col">Marca</th>
           <th scope="col">Color</th>
           <th scope="col">Talla</th>
+          <th scope="col">Peso</th>
           <th scope="col">Cant. en Existencia</th>
           <th scope="col">Cant. en Pedido</th>
+          
           <th scope="col">Ubic. Almacen</th>
           <th scope="col">Precio</th>
-          <th scope="col">Acción</th>
+        <!--  <th scope="col">Acción</th>-->
         </tr>
         <?php
         	$row=0;
@@ -564,10 +616,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$precio = $lookpedido->getPrecio(false);
 				echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
 							// echo("<td></td>");
-				echo("<td colspan='8'><strong>".$lookpedido->title."</strong></td>");// Referencia
+				echo("<td colspan='9'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
 				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
-				echo("
+				/*echo("
 							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
 			              	<!-- Link or button to toggle dropdown -->
 			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
@@ -576,30 +628,31 @@ $usuario = User::model()->findByPk($orden->user_id);
 			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
 			              	</ul>
 			            	</div></td>
-							");
+							");*/
 							
 							echo("</tr>");
 				$prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
 				foreach($prodslook as $prodlook){
 					$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
-								$prdlk = Producto::model()->findByPk($ptclk->producto_id);
-								$marca=Marca::model()->findByPk($prdlk->marca_id);
-								$talla=Talla::model()->findByPk($ptclk->talla_id);
-								$color=Color::model()->findByPk($ptclk->color_id);
-								
-								
-								echo("<tr>");
-								echo("<td>".$prdlk->codigo."</td>"); // nombre
-								echo("<td>".$prdlk->nombre."</td>"); // nombre
-								echo("<td>".$marca->nombre."</td>");
-								echo("<td>".$color->valor."</td>");
-								echo("<td>".$talla->valor."</td>");
-								echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
-								echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
-								echo("<td>".$prdlk->almacen."</td>"); 
-								echo("<td></td>"); 
-								//echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
-								echo("<td></td></tr>");
+                                        $prdlk = Producto::model()->findByPk($ptclk->producto_id);
+                                        $marca=Marca::model()->findByPk($prdlk->marca_id);
+                                        $talla=Talla::model()->findByPk($ptclk->talla_id);
+                                        $color=Color::model()->findByPk($ptclk->color_id);
+
+
+                                        echo("<tr>");
+                                        echo("<td>".$prdlk->codigo."</td>"); // nombre
+                                        echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
+                                        echo("<td>".$marca->nombre."</td>");
+                                        echo("<td>".$color->valor."</td>");
+                                        echo("<td>".$talla->valor."</td>");
+                                        echo("<td>".$prdlk->peso." Kg.</td>");	
+                                        echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
+                                        echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+                                        echo("<td>".$prdlk->almacen."</td>"); 
+
+                                        //echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
+                                        echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");
 				}				
 				
 			}
@@ -618,15 +671,16 @@ $usuario = User::model()->findByPk($orden->user_id);
 				
 				echo("<tr>");
 				echo("<td>".$indiv->codigo."</td>");// Referencia
-				echo("<td>".$indiv->nombre."</td>"); // nombre
+				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
 				echo("<td>".$marca->nombre."</td>");
 				echo("<td>".$color->valor."</td>");
-				echo("<td>".$talla->valor."</td>");					
+				echo("<td>".$talla->valor."</td>");	
+				echo("<td>".$indiv->peso." Kg.</td>");					
 				echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
 				echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
 				echo("<td>".$indiv->almacen."</td>"); 
 				echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
-				echo("
+				/*echo("
 							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
 			              	<!-- Link or button to toggle dropdown -->
 			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
@@ -636,7 +690,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 			              	</ul>
 			            	</div></td>
 						");
-						
+						*/
 						echo("</tr>");
 			}
 			
@@ -688,11 +742,15 @@ $usuario = User::model()->findByPk($orden->user_id);
         <tr>
           <th colspan="9" ><div class="text_align_right"><strong>Total</strong></div></th>
           <th >Bs. <?php echo number_format($orden->total, 2, ',', '.'); ?></th>
-        </tr>          
+        </tr>
+        <tr>
+          <td colspan="9" ><div class="text_align_right"><strong>Peso total del pedido</strong></div></td>
+          <td ><?php echo $orden->peso." Kg."; ?></td>
+        </tr>           
       </table>
   
       
-     <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div>
+     <!-- <a href="#" title="Añadir productos" class="btn btn-info"><i class="icon-plus icon-white"></i> Añadir productos</a></div> </div> -->
 <!--     <div class="span5">
    <div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -752,6 +810,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	
 	$devuelto = Devolucion::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$usuario->id));
 	$totaldevuelto = 0;
+	$totalenvio = 0;
 	
 	if(count($devuelto)>0)
 	{
@@ -759,6 +818,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		foreach($devuelto as $each)
 		{
 			$totaldevuelto = $each->montodevuelto;
+			$totalenvio = $each->montoenvio;
 			$ptc = Preciotallacolor::model()->findByPk($each->preciotallacolor_id);
 			$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
 			$precio= Precio::model()->findByAttributes(array('tbl_producto_id'=>$indiv->id));
@@ -797,11 +857,11 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo "0.00"; //$each->montoenvio; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
         </tr>
         <tr>
         	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-        	<th  class="text_align_right"><?php echo ($totaldevuelto + 0); ?> Bs</th>
+        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
         </tr>        
     	</table>
 	</div>
@@ -812,7 +872,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 
   <!-- MENSAJES ON -->
   
-  <div class="row">
+  <div class="row" id="mensajes">
+  	
+  
+  	
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
@@ -849,13 +912,26 @@ $usuario = User::model()->findByPk($orden->user_id);
 			?>	
 			<ul class="media-list">
 			<?php
+				$class=$status="";
 				foreach($mensajes as $msj)
 				{
+					if(!is_null($msj->admin))
+						{	$class='style="background-color:#F5F5F5"';
+							$status='<p class="muted"><i class="icon-circle-arrow-right"></i> <strong>Entrada | </strong> De: <strong> Cliente | </strong><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).$status.'</p>';
+							$icon='';
+						}
+					else {
+							$status='<p class="muted"><i class="icon-circle-arrow-left"></i> <strong>Salida| </strong>Cliente Notificado <strong>| '.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
+							$icon='';
+					}
+	
+						
 					echo '<li class="media braker_bottom">
-          					<div class="media-body">';
+          					<div class="media-body" '.$class.'>';
 					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
-					echo '<p class="muted"><strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'<strong>| Recibido | Cliente: Notificado</strong></p>';
-					echo '<p>'.$msj->cuerpo.'</p>';					
+					echo '<p>'.$msj->cuerpo.'</p>';
+					echo $status;				
+					$class=$status="";
 				}
 			?>
 			</ul>
@@ -875,8 +951,12 @@ $usuario = User::model()->findByPk($orden->user_id);
 </div>
 <!-- /container --> 
 
-<!------------------- MODAL WINDOW ON -----------------> 
+<!------------------- MODAL REGISTRAR DEPOSITO -----------------> 
+<div class="modal hide fade" id="modalDeposito">
+ <?php $this->renderPartial('//orden/_modal_pago',array('orden_id'=>$orden->id)); ?>
+</div>
 
+<!------------------- MODAL WINDOW O 
 <!-- Modal 1 -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -897,6 +977,66 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 <script>
 	
+ function enviar(id)
+    {
+        //var idDetalle = $("#idDetalle").attr("value");
+        var nombre= $("#nombre").attr("value");
+        var numeroTrans = $("#numeroTrans").attr("value");
+        var dia = $("#dia").attr("value");
+        var mes = $("#mes").attr("value");
+        var ano = $("#ano").attr("value");
+        var comentario = $("#comentario").attr("value");
+        var banco = $("#banco").attr("value");
+        var cedula = $("#cedula").attr("value");
+        var monto = $("#monto").attr("value"); 
+        var idOrden = id;
+
+        if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
+        {
+            alert("Por favor complete los datos.");
+        }
+        else
+        {
+        	//if(monto.indexOf(',')==(monto.length-2))
+	      //  	monto+='0';
+			//if(monto.indexOf(',')==-1)
+			//	monto+=',00';
+				
+	      //  var pattern = /^\d+(?:\,\d{0,2})$/ ;
+	        
+	      //  if (pattern.test(monto)) { 
+	      //  	monto = monto.replace(',','.'); 
+
+	         $.ajax({
+	            type: "post",
+	            url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>",//"../../bolsa/cpago", // action de controlador de bolsa cpago
+	            data: { 'nombre':nombre, 'numeroTrans':numeroTrans, 'dia':dia, 'mes':mes, 'ano':ano, 'comentario':comentario, 'idOrden':idOrden, 'banco':banco, 'cedula':cedula, 'monto':monto},
+	            success: function (data) {
+	
+	                if(data=="ok")
+	                {
+	                    window.location.reload();
+	                    //alert("guardado");
+	                    // redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden
+	                }
+	                else
+	                if(data=="no")
+	                {
+	                    alert("Datos invalidos.");
+	                }
+	
+	               }//success
+	           })
+           
+         //  }else{
+	     //   	alert("Formato de cantidad no válido. Separe solo los decimales con una coma (,)");
+	     //  }
+           
+        }// else grande
+
+
+    }        
+        
 	function mensaje(user_id){
 		
 		var asunto = $('#asunto').attr('value');
@@ -923,7 +1063,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	        success: function (data) {
 				if(data=="ok")
 				{
-					window.location.reload();	
+					window.location.reload(true);	
 				}
 	       	}//success
 	       }) 
@@ -937,7 +1077,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		
  		$.ajax({
 	        type: "post", 
-	        url: "../validar", // action 
+	        url: "<?php echo CController::createUrl('orden/validar'); ?>",
 	        data: { 'accion':uno, 'id':id}, 
 	        success: function (data) {
 				if(data=="ok")

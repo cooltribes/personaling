@@ -86,7 +86,6 @@ class Estado extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('id',$this->id);
 		$criteria->compare('estado',$this->estado);
 		$criteria->compare('user_id',$this->user_id);
@@ -96,5 +95,13 @@ class Estado extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function getDate($orden,$estado){
+		$here=$this->findByAttributes(array('estado'=>$estado,'orden_id'=>$orden));
+		if(!is_null($here))
+			return $here->fecha;
+		else 
+			return 0;
 	}
 }

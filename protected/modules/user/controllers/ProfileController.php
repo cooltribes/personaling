@@ -22,7 +22,9 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('modal','modalshopper'),
+
+				'actions'=>array('modal','modalshopper','listado'),
+
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -81,11 +83,10 @@ class ProfileController extends Controller
                     $message = new YiiMailMessage;
                     $message->view = "mail_invite";
                     $subject = 'Invitación a Personaling';
-                    $body = '<h2>¡Hola! Has sido invitad@ a Personaling.</h2>' .
-                            '<br/>Tienes una invitacion por parte de <strong>' . $model->profile->first_name . '</strong> ' .
-                            'para unirte a Personaling:<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
-                            'Puedes registrarte haciendo click en el ' .
-                            'enlace que aparece a continuación:<br/> ' . $registration_url;
+                    $body = '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>' . $model->profile->first_name . '</strong>.' .
+                            '<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
+                            'Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas.<br/><br/>' .
+                            'Puedes registrarte haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $registration_url.'">Click aquí</a>';
                     $params = array('subject' => $subject, 'body' => $body);
                     $message->subject = $subject;
                     $message->setBody($params, 'text/html');
@@ -169,7 +170,30 @@ class ProfileController extends Controller
 	    ));
 	}
 	
+	public function actionListado()
+	{
+		$criteria = new CDbCriteria;
+			$criteria->with=array('user');
+			$criteria->addCondition('personal_shopper = 1 ');
+		
+			
+			
+			$total=User::model()->totalPS;
+			$pages = new CPagination($total);
+			$pages->pageSize = 8;
+			$pages->applyLimit($criteria);
+			$profiles = Profile::model()->findAll($criteria);
+                        
+                        /***    Filtros por Perfil ***/
+                        
+                      
+			$this->render('pshoppers', array(
+				'profs' => $profiles,
+				'pages' => $pages
+			));		
+	}
 	
+	 
 	/*
 	 * 
 	 * */
@@ -194,8 +218,8 @@ class ProfileController extends Controller
 					$id = $model->id;
 					//echo $model->username;
 				} else {
-					echo "(site) Error: no existe el usuario ".$_GET['alias'];
-					Yii::app()->end();
+					// echo "(site) Error: no existe el usuario ".$_GET['alias'];
+					$this->redirect(array('listado'));   
 				}
 			}
         // Yii::app()->end();       
@@ -204,6 +228,7 @@ class ProfileController extends Controller
 			//$looks = Look::model()->findAllByAttributes(array('user_id' => $_GET['id']));					
 			$looks = new Look;
 			$looks->user_id = $id;
+			$looks->status = Look::STATUS_APROBADO; // looks aprobados 
 			$datalook = $looks->busqueda(); 			
 			$datalook->setPagination(array('pageSize'=>4));
 			
@@ -457,7 +482,8 @@ class ProfileController extends Controller
 		            	$model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
 		            	if (!$model->save())	
 							Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');
-						if ($pic->saveAs($nombre ."_orig". $extension)) {
+				
+                                if ($pic->saveAs($nombre ."_orig". $extension)) {
 		                	//echo $nombre;
 		                	$image = Yii::app()->image->load($nombre ."_orig". $extension);
 							$avatar_x = isset($_POST['avatar_x'])?$_POST['avatar_x']:0;
@@ -483,6 +509,7 @@ class ProfileController extends Controller
 					}
 				 }  	
 		} 
+                
 		 $this->render('avatar',array(
 	    	'model'=>$model,
 			//'profile'=>$model->profile,
@@ -592,6 +619,34 @@ class ProfileController extends Controller
 				if ($profile->save())
 				{
 					$model->status_register = User::STATUS_REGISTER_TIPO;
+                                        
+                                        /*Crear el filtro de perfil propio*/
+                                        
+                                        $filter = Filter::model()->findByAttributes(
+                                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                                        );
+
+                                        //si existe ya un filtro, borrarlo.
+                                        if ($filter) {                                            
+                                           $filter->delete(); 
+                                        }
+                                        
+                                        $filter = new Filter;
+                                        $filter->name = "Mi Perfil";
+                                        $filter->type = 0;
+                                        $filter->user_id = Yii::app()->user->id;
+
+                                        if ($filter->save()) {
+                                            $filterProfile = new FilterProfile;
+                                            $filterProfile->attributes = $_POST['Profile'];
+                                            $filterProfile->id_filter = $filter->id_filter;
+
+                                            if($filterProfile->validate()){
+                                                $filterProfile->save();                                                                  
+                                            }
+                                        }
+                                        
+                                        
 					if ($model->save())	
 						$this->redirect(array('/user/profile/tuestilo'));
 					else 
@@ -627,6 +682,43 @@ class ProfileController extends Controller
 			{
 				if ($profile->save())
 				{
+                                    
+                                    /*Crear el filtro de perfil propio*/
+                                        
+                                        $filter = Filter::model()->findByAttributes(
+                                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                                        );
+
+                                        //si NO existe, crear uno nuevo.
+                                        if (!$filter) {                                            
+                                            $filter = new Filter;
+                                            $filter->name = "Mi Perfil";
+                                            $filter->type = 0;
+                                            $filter->user_id = Yii::app()->user->id;
+                                            
+                                            if ($filter->save()) {
+                                                $filterProfile = new FilterProfile;
+                                                $filterProfile->attributes = $_POST['Profile'];
+                                                $filterProfile->id_filter = $filter->id_filter;
+
+                                                if($filterProfile->validate()){
+                                                    $filterProfile->save();                                                                  
+                                                }
+                                            }
+                                            
+                                        }else{
+                                            
+                                            $filterProfile = $filter->filterProfiles[0];
+                                            $filterProfile->attributes = $_POST['Profile'];
+
+                                            if($filterProfile->validate()){
+
+                                                $filterProfile->save();
+                                                
+                                            }
+                                            
+                                        }            
+                                    
 					//$model->status_register = User::STATUS_REGISTER_TIPO;
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();
@@ -817,8 +909,8 @@ class ProfileController extends Controller
 		$prodEncantan->user_id = Yii::app()->user->id;
 		
 		$dataProvider = $prodEncantan->search();
-		
-		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider));
+		$numeroItems = $dataProvider->getTotalItemCount();
+		$this->render('productosEncantan',array('prodEncantan'=>$prodEncantan,'dataProvider'=>$dataProvider,'numeroItems' =>$numeroItems ));
 		
 	}
 	
@@ -1334,17 +1426,20 @@ class ProfileController extends Controller
 	   		}	
 	   	}// else
 		
-       // $datos=$datos.'<div title="talla" class="tallass" style="cursor: pointer" id="10">S</div>';         	     	
-        $datos=$datos.'</div></div></div>';
-          
+        $datos=$datos.'</div></div></div> <div class="row-fluid"> <hr/> ';
+		$marca = Marca::model()->findByPk($producto->marca_id);
+        $datos=$datos.'<h5>Marca</h5>';
+        $datos=$datos.'<div class="thumbnails">';
+        $datos=$datos.'<img width="66px" height="66px" src="'.Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen).'"/>';
         $datos=$datos.'</div>';
+        $datos=$datos.'</div></div></div>';
         $datos=$datos.'</div>';
    
    		$datos=$datos.'</div>';
     	$datos=$datos.'<div class="modal-footer">';
+		$datos=$datos.'<a href="'.$producto->getUrl().'" class="btn btn-info pull-left"> Ver el producto </a>';
     	$datos=$datos.'<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>';
     	$datos=$datos.'</div>';
-    //	$datos=$datos.'</div>';
     
     	$datos=$datos."<script>";
 		
@@ -1440,9 +1535,8 @@ class ProfileController extends Controller
 			$datos=$datos."});"; // tallas click
 			
 		$datos=$datos."});"; // ready
-		
 		// fuera del ready
-		
+		  
 		$datos=$datos."function a(id){";// seleccion de talla
 			$datos=$datos.'$("#vTa").find("div").siblings().removeClass("active");';
 			$datos=$datos.'$("#vTa").find("div#"+id+".tallass").removeClass("tallass");';
@@ -1503,4 +1597,10 @@ class ProfileController extends Controller
 		
 	echo $datos;
 	}
+
+
+		
+			
+		
+	
 }

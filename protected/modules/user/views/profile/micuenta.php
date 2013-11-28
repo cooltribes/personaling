@@ -1,8 +1,7 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-//$this->breadcrumbs=array(
-	//UserModule::t("Profile")=>array('profile'),
-	//UserModule::t("Mi cuenta"),
-//);
+$this->breadcrumbs=array(
+	UserModule::t("Mi cuenta"),
+);
 $look = new Look;
 $looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
 $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));
@@ -54,7 +53,7 @@ $looks_recomendados = $look->match($model);
       <hr/>
       <h5>Tus Compras</h5>
       <ul class="nav nav-stacked text_align_center" >
-      	
+      	 
       	<?php
       	
       	$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
@@ -71,7 +70,7 @@ $looks_recomendados = $look->match($model);
       	<?php
       	}
       	?>
-        <li>XX Puntos Ganados</li>
+        
         
         <?php
         
@@ -81,7 +80,14 @@ $looks_recomendados = $look->match($model);
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
       	?>
       	<li><?php echo $total; ?> Pedidos Activos</li>
-        <li>XX Devoluciones Pendientes</li>
+         <?php
+        
+        $total;
+	
+		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and (estado = 10 OR estado = 9)";
+		$total = Yii::app()->db->createCommand($sql)->queryScalar();
+      	?>
+        <li><?php echo $total; ?> Devoluciones</li>
       </ul>
       <hr/>
       <h5>Invita a tus amig@s</h5>
@@ -106,6 +112,7 @@ $looks_recomendados = $look->match($model);
             <ul class="nav nav-stacked nav-tabs">
             	<li> <?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
             	<li> <?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
+                <li> <?php echo CHtml::link('Aplicar Gift Card',array('/giftcard/aplicar'),array("title"=>"Aplica una Gift Card")); ?></li>
             </ul>
           </div>
         </div>
@@ -128,9 +135,9 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom"> Conecta tus Redes Sociales </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
+<!--               <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
               <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
-              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li>
+              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li> -->
            	  <li><?php echo CHtml::link('Invita a tus amig@s',array('invitaciones'),array("title"=>"Invita a tus amig@s")); ?></li>
             </ul>
           </div>
@@ -201,7 +208,7 @@ $looks_recomendados = $look->match($model);
             <h2 class="braker_bottom"> Notificaciones </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>
-              <li><a href="#" title="Desuscribirse de la lista de correos">Darte de baja de la lista correos (LINK MUERTO)</a></li>
+              <!-- <li><a href="#" title="Desuscribirse de la lista de correos">Darte de baja de la lista correos (LINK MUERTO)</a></li> -->
             </ul>
             <h2 class="braker_bottom"> Privacidad </h2>
             <ul class="nav nav-stacked nav-tabs">

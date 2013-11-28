@@ -51,7 +51,13 @@ class Profile extends UActiveRecord
 			foreach ($model as $field) {
 				$field_rule = array();
 				
-				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_ESTILO||$field->required==ProfileField::REQUIRED_YES_TIPO)
+				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||
+                                        $field->required==ProfileField::REQUIRED_YES_SHOW_REG||
+                                        $field->required==ProfileField::REQUIRED_YES_ESTILO||
+                                        $field->required==ProfileField::REQUIRED_YES_TIPO ||
+                                        $field->required==ProfileField::REQUIRED_YES_PERSONAL_REG ||
+                                        $field->id == 26 ||
+                                        $field->id == 25)
 					 {
                                        if ($field->varname=="first_name")
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Cómo te llamas? '));
@@ -59,6 +65,10 @@ class Profile extends UActiveRecord
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Cuál es tu apellido? '));
 									   else if ($field->varname=="sex")
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Eres mujer/hombre? '));
+                                               
+                                                                           else if ($field->varname=="url" || $field->varname=="bio"
+                                                                                   || $field->varname=="facebook" || $field->varname=="twitter")
+                                               array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} "));
 									   else									   
                                        		array_push($required,$field->varname);
                      }
@@ -146,7 +156,7 @@ class Profile extends UActiveRecord
 		
 		foreach ($model as $field)
 			$labels[$field->varname] = ((Yii::app()->getModule('user')->fieldsMessage)?UserModule::t($field->title,array(),Yii::app()->getModule('user')->fieldsMessage):UserModule::t($field->title));
-			
+		//print_r($labels);	
 		return $labels;
 	}
 	
@@ -169,7 +179,7 @@ class Profile extends UActiveRecord
 		else
 			return $array;
 	}
-	static public function rangeButtons($str,$fieldValue=NULL) {
+	static public function rangeButtons($str,$fieldValue=NULL,$disabled=false) {
 		$rules = explode(';',$str);
 		$array = array();
 		for ($i=0;$i<count($rules);$i++) {
@@ -177,7 +187,7 @@ class Profile extends UActiveRecord
 			if (isset($item[0])){
 				$array[$i]['label'] = ((isset($item[1]))?$item[1]:$item[0]);
 				$array[$i]['url'] = '#'.$item[0];
-				
+				$array[$i]['htmlOptions'] = array('disabled'=>$disabled);
 				if ((int)$item[0]&(int)$fieldValue){
 					
 					//echo 'item'.$item[0].'value'.$fieldValue;
@@ -210,13 +220,22 @@ class Profile extends UActiveRecord
 	
 	public function getFields() {
 		if ($this->regMode) {
-			if (!$this->_modelReg)
-				$this->_modelReg=ProfileField::model()->forRegistration()->findAll();
+			if (!$this->_modelReg){
+                            $this->_modelReg=ProfileField::model()->forRegistration()->findAll();
+                            
+                            if($this->profile_type == 4){ //Personal Shopper
+                                $this->_modelReg = array_merge($this->_modelReg, ProfileField::model()->forPersonalShopperReg()->forOwner()->findAll());
+                            }
+                        }
+				
 			return $this->_modelReg;
 		} else {
 			
 			if (!$this->_model)
 				switch ($this->profile_type){
+					case 0:
+						$this->_model=ProfileField::model()->findAll(); //
+						break;						
 					case 1:
 						$this->_model=ProfileField::model()->forPersonal()->forOwner()->findAll(); //
 						break;
@@ -251,9 +270,9 @@ class Profile extends UActiveRecord
 		return parent::afterFind();
 	}
 	
-	public function getSaldo($id){
-			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id." GROUP BY user_id ")->queryScalar();
-			$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
+	public function getSaldo($id , $format=true){
+			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id)->queryScalar();
+			//$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;
 	}
 	/* Obtener el url del perfil publico del usuario */
@@ -264,9 +283,114 @@ class Profile extends UActiveRecord
 		return Yii::app()->createUrl('user/profile/perfil',array('id'=>$this->user_id));		
 	}
 	/* Obtener el nombre del ususario */
-	public function getNombre(){
+	public function getNombre($id = null){
+		if(!is_null($id))
+		{
+			$null=$this->findByPk($id);	
+			return $null->first_name.' '.$null->last_name; 		
+		}
 		return $this->first_name.' '.$this->last_name; 
 	}
 	  
+	 public function countXestatura(){
+	 		$estatura=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(altura) FROM tbl_profiles WHERE altura<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE altura =".$alt)->queryScalar();
+				$estatura[$alt]=$sum;
+			}
+			$estatura[0]=100/array_sum($estatura);			
+			return $estatura;
+		
+	 }
+	 
+	 public function countXcontextura(){
+	 		$cont=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(contextura) FROM tbl_profiles WHERE contextura<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE contextura =".$alt)->queryScalar();
+				$cont[$alt]=$sum;
+			}
+			$cont[0]=100/array_sum($cont);			
+			return $cont;
+		
+	 }
+	 
+	 public function countXpelo(){
+	 		$pelo=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(pelo) FROM tbl_profiles WHERE pelo<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE pelo =".$alt)->queryScalar();
+				$pelo[$alt]=$sum;
+			}
+			$pelo[0]=100/array_sum($pelo);			
+			return $pelo;
+		
+	 }
+	 public function countXojos(){
+	 		$ojos=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(ojos) FROM tbl_profiles WHERE ojos<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE ojos =".$alt)->queryScalar();
+				$ojos[$alt]=$sum;
+			}
+			$ojos[0]=100/array_sum($ojos);		
+			return $ojos;
+		
+	 }
+	 public function countXcuerpo(){
+	 		$cuerpo=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(tipo_cuerpo) FROM tbl_profiles WHERE tipo_cuerpo<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE tipo_cuerpo =".$alt)->queryScalar();
+				$cuerpo[$alt]=$sum;
+			}
+			$cuerpo[0]=100/array_sum($cuerpo);			
+			return $cuerpo;
+		
+	 }
+	 public function countXpiel(){
+	 		$piel=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(piel) FROM tbl_profiles WHERE piel<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE piel =".$alt)->queryScalar();
+				$piel[$alt]=$sum;
+			}
+			$piel[0]=100/array_sum($piel);		
+			return $piel;
+		
+	 }
+	 
+	  public function countXgenero(){
+	 		$sex=array();
+			$alts = Yii::app()->db->createCommand(" SELECT distinct(sex) FROM tbl_profiles WHERE sex<>0")->queryColumn();
+			foreach($alts as $alt){
+				$sum = Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE sex =".$alt)->queryScalar();
+				$sex[$alt]=$sum;
+			} 
+			$sex[0]=100/array_sum($sex);		
+			return $sex;
+		
+	 }
+	 
+	  public function countXedad(){
+	 		$minmax=Yii::app()->db->createCommand(" select min(birthday) as oldest, max(birthday) as youngest from tbl_profiles where birthday>'0000-00-00' ")->queryRow();	
+	 		$old= date('Y', strtotime($minmax['oldest']));
+			$young=date('Y', strtotime($minmax['youngest']));
+			$todos=0;
+			$block=round(($young-$old)/5,0);
+			for($i=1;$i<6;$i++){
+				$ran[$i]['min']=$young-$block*$i;
+				$ran[$i]['max']=$young-$block*($i-1);
+				$ran[$i]['edad2']=date("Y")-$ran[$i]['min'];
+				$ran[$i]['edad1']=date("Y")-$ran[$i]['max'];
+				$ran[$i]['total']=Yii::app()->db->createCommand(" SELECT count(user_id) FROM tbl_profiles WHERE birthday BETWEEN '".$ran[$i]['min']."-01-01' AND '".$ran[$i]['max']."-12-31'")->queryScalar();
+				$todos+=$ran[$i]['total'];
+			}
+			$ran[0]=$todos;
+			return $ran;
+	 	
+	 				
+	 }
 	 
 }

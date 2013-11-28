@@ -43,7 +43,19 @@ class Producto extends CActiveRecord
 	public $dos="";
 	public $categoria_id="";
 	public $_precio = null;
-        
+    private $_totalVentas = null;
+    
+    public function scopes()
+    {
+        return array(
+            'noeliminados'=>array(
+                'condition'=>'status=1',
+            ),
+            'activos'=>array(
+                'condition'=>'estado=0',
+            ),
+        );
+    }
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -87,7 +99,7 @@ class Producto extends CActiveRecord
 			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen', 'safe', 'on'=>'search'),
 		);
 	}
-
+ 
 	/**
 	 * @return array relational rules.
 	 */
@@ -107,7 +119,8 @@ class Producto extends CActiveRecord
 			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
                 'select'=> 'SUM(cantidad)',
                 ),
-            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),                    
+            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+             'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),                    
             'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
 		);
 	}
@@ -170,6 +183,8 @@ class Producto extends CActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->compare('t.nombre',$this->nombre,true);
 		$criteria->compare('categorias.nombre',$this->nombre,true,'OR');
+		$criteria->compare('t.estado',$this->estado,true);
+		$criteria->compare('status',$this->status,true);
 		/*
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codigo',$this->codigo,true);
@@ -210,6 +225,7 @@ class Producto extends CActiveRecord
 		$criteria->addCondition('orden = 1');
 		
 		$criteria->order = "t.id ASC";
+		$criteria->group="t.id";
 		
 		$criteria->together = true;
 		
@@ -292,25 +308,22 @@ class Producto extends CActiveRecord
 	}
 	public function getPrecio($format=true)
 	{
-
-    if (is_null($this->_precio)) {
-      $c = new CDbCriteria();
-      $c->order = '`id` desc';
-      $c->compare('tbl_producto_id', $this->id);
-      $this->_precio = Precio::model()->find($c);
-    }
-	if (isset($this->_precio->precioDescuento))
-		if ($format){
-	 		return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioDescuento);
-		} else {
-			return $this->_precio->precioDescuento;
-		}
-	else 
-		return 0;
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->precioImpuesto))
+                if ($format) {
+                    return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioImpuesto);
+                } else {
+                    return $this->_precio->precioImpuesto;
+                }
+            else
+                return 0;
+        }
 	
-    
-  		
-	}
 	public function getCantidad($talla=null,$color=null)
 	{
 	if (is_null($talla) and is_null($color))
@@ -490,7 +503,94 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 	}
 	
-		public function multipleColor($idColor, $idact)
+			
+	
+	
+	
+		
+	public function ProductosLook($personal)
+	{
+		$sql = "SELECT c.* FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id group by b.producto_id order by a.created_on DESC";
+		
+		$sql2 = "SELECT count( distinct b.producto_id ) as total FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id order by a.created_on DESC";
+		$num = Yii::app()->db->createCommand($sql2)->queryScalar();
+		$count = $num;	
+		
+		return new CSqlDataProvider($sql, array(
+		    'totalItemCount'=>$count,
+			 'pagination'=>array(
+				'pageSize'=>9,
+			),		    
+
+		));  
+	
+	}
+	
+
+	public function nueva($todos)
+	{
+
+		$criteria=new CDbCriteria;
+		unset(Yii::app()->session['color']);
+		$criteria->compare('id',$this->id);
+		
+		$criteria->compare('codigo',$this->codigo,true);
+		$criteria->compare('t.nombre',$this->nombre,true);
+		$criteria->compare('t.estado',$this->estado,true);
+		$criteria->compare('descripcion',$this->descripcion,true);
+		
+		
+		$criteria->compare('marca_id',$this->marca_id,true);
+		$criteria->compare('fInicio',$this->fInicio,true);
+		$criteria->compare('fFin',$this->fFin,true);
+		
+		$criteria->compare('fecha',$this->fecha,true);
+		
+		$criteria->compare('status',$this->status,true);
+		//$criteria->compare('status',0,true);
+		$criteria->compare('destacado',$this->destacado,true);
+
+		$criteria->compare('peso',$this->peso,true);
+		
+		$criteria->with = array('categorias');
+		$criteria->with = array('precios');
+		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
+		
+		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
+		{
+			if(empty($todos)) // si no tiene hijos devuelve un array vacio por lo que debe buscar por el id de la categoria
+			{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+			}
+			else // si tienes hijos
+				{
+					$criteria->addInCondition("tbl_categoria_id",$todos);
+				}		
+		}else if($todos=="a")
+		{
+				$criteria->compare('tbl_categoria_id',$this->categoria_id);
+				
+		}
+		
+		$criteria->addCondition('precioDescuento != ""');
+		$criteria->addCondition('orden = 1');
+		
+		$criteria->addCondition('cantidad > 0');
+		
+		// $criteria->order = "t.id ASC";
+		$criteria->order = "fecha DESC";
+		$criteria->group = "t.id";
+		$criteria->together = true;
+		
+		return new CActiveDataProvider($this, array(
+       'pagination'=>array('pageSize'=>12,),
+       'criteria'=>$criteria,
+	));
+		
+	}
+	
+	
+	public function multipleColor($idColor, $idact)
 	{
 		// llega un array de ID de color
 		 
@@ -527,6 +627,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 					$colores.='OR color_id = '.$col.' )';
 				
 				$i++;
+				
+				Yii::app()->session['color']=1;
 						
 			}
 			$criteria->addCondition($colores);
@@ -546,16 +648,13 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->addCondition($rangopr);
 	}
 	
-
-		
 	
-		
 			
 	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
 		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
     //    $criteria->params = array(":uno" => "2"); // estado
 	//	$criteria->params = array(":dos" => "1"); // status
-		
+		$criteria->order = "fecha DESC";
 		$criteria->group = 't.id';
 
 		
@@ -566,34 +665,12 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 	}
 	
-	
-	
-	
-		
-	public function ProductosLook($personal)
-	{
-		$sql = "SELECT c.* FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id group by b.producto_id order by a.created_on DESC";
-		
-		$sql2 = "SELECT count( distinct b.producto_id ) as total FROM tbl_look a, tbl_look_has_producto b, tbl_producto c where a.user_id =".$personal." and c.id = b.producto_id and a.id = b.look_id order by a.created_on DESC";
-		$num = Yii::app()->db->createCommand($sql2)->queryScalar();
-		$count = $num;	
-		
-		return new CSqlDataProvider($sql, array(
-		    'totalItemCount'=>$count,
-			 'pagination'=>array(
-				'pageSize'=>9,
-			),		    
 
-		));  
-	
-	}
-	
-
-	public function nueva($todos)
+	public function nueva2($todos)
 	{
 
 		$criteria=new CDbCriteria;
-
+		unset(Yii::app()->session['color']);
 		$criteria->compare('id',$this->id);
 		
 		$criteria->compare('codigo',$this->codigo,true);
@@ -603,6 +680,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 		$criteria->compare('marca_id',$this->marca_id,true);
+		//$criteria->compare('t.estado',0,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
 		
@@ -613,9 +691,9 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 
 		$criteria->compare('peso',$this->peso,true);
 		
-		$criteria->with = array('categorias');
-		$criteria->with = array('precios');
-		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id';
+		
+		$criteria->with = array('preciotallacolor','precios','categorias');
+		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
 		{
@@ -632,23 +710,116 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				$criteria->compare('tbl_categoria_id',$this->categoria_id);
 				
 		}
+		
+		if(isset(Yii::app()->session['f_color'])){
+			$criteria->addCondition('preciotallacolor.color_id = '.Yii::app()->session['f_color']);
+		}
+		
+		if(isset(Yii::app()->session['f_marca'])){
+			$criteria->addCondition('marca_id = '.Yii::app()->session['f_marca']);
+		}
+	
+	
+		 
 
 		$criteria->addCondition('precioDescuento != ""');
 		$criteria->addCondition('orden = 1');
 		
 		$criteria->addCondition('cantidad > 0');
-		
+			
 		// $criteria->order = "t.id ASC";
-		$criteria->order = "fecha DESC";
+		if(isset(Yii::app()->session['p_index'])){
+			$criteria->addCondition('precioVenta > '.Yii::app()->session['min']);
+			$criteria->addCondition('precioVenta < '.Yii::app()->session['max']);
+			$criteria->order = "precioVenta ASC";
+		}
+		else
+			$criteria->order = "fecha DESC";
+		
 		$criteria->group = "t.id";
 		$criteria->together = true;
 		
-		return new CActiveDataProvider($this, array(
-       'pagination'=>array('pageSize'=>12,),
-       'criteria'=>$criteria,
-	));
+		return $criteria;
 		
 	}
+
+public function multipleColor2($idColor, $idact)
+	{
+		// llega un array de ID de color
+		 
+		$colores="";
+		$i=0;
+		$criteria=new CDbCriteria;
+
+        $criteria->select = 't.*';
+		$criteria->with = array('precios','preciotallacolor','categorias');
+        //$criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
+        $criteria->addCondition('t.estado = 0');
+		$criteria->addCondition('t.status = 1');
+     //   $criteria->condition = 't.estado = :uno';
+	//	$criteria->condition = 't.status = :dos';
+	
+	$criteria->together = true;
+	
+	if(is_array($idColor)){
+		if(count($idColor)>0){	
+			
+			foreach($idColor as $col){
+				if(count($idColor)==1){
+					$colores='color_id = '.$col;	
+					break;			
+				}	
+				
+				if($i==0)
+					$colores.='(color_id = '.$col.' ';
+				
+				if($i>0 && $i<count($idColor)-1)
+					$colores.='OR color_id = '.$col.' ';
+				
+				if($i==count($idColor)-1)
+					$colores.='OR color_id = '.$col.' )';
+				
+				$i++;
+				
+				Yii::app()->session['color']=1;
+						
+			}
+			$criteria->addCondition($colores);
+			
+		}
+	}
+	
+	if(isset(Yii::app()->session['idact'])){
+		
+		$categoria= 'tbl_categoria_id ='.$idact;
+		$criteria->addCondition($categoria);
+		
+		
+	}
+	if(isset(Yii::app()->session['minpr'])&&isset(Yii::app()->session['maxpr'])){
+		$rangopr= 'precioDescuento BETWEEN '.Yii::app()->session['minpr'].' AND '.Yii::app()->session['maxpr'];
+		$criteria->addCondition($rangopr);
+	}
+	
+	 
+			
+	//	$criteria->condition = 'tbl_precioTallaColor.color_id = :tres';
+		$criteria->addCondition('cantidad > 0'); // que haya algo en inventario		
+    //    $criteria->params = array(":uno" => "2"); // estado
+	//	$criteria->params = array(":dos" => "1"); // status
+		
+		$criteria->group = 't.id';
+
+		
+		return $criteria;
+		
+	}
+
+
+
+
+
+
 	/**
 	 * Mas vendidos
 	 */
@@ -657,10 +828,11 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			
 		//$sql ="SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM db_personaling.tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id GROUP BY producto_id ORDER by productos DESC";
 		$sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,producto_id FROM tbl_orden_has_productotallacolor left join tbl_precioTallaColor on tbl_orden_has_productotallacolor.preciotallacolor_id = tbl_precioTallaColor.id left join tbl_imagen on tbl_precioTallaColor.producto_id = tbl_imagen.tbl_producto_id left join tbl_producto on tbl_producto.id = tbl_precioTallaColor.producto_id where tbl_imagen.orden = 1 and tbl_producto.status = 1 and tbl_producto.estado = 0 GROUP BY producto_id ORDER by productos DESC";
-		//if (isset($limit))
-		//	$sql.=" LIMIT 0,$limit";
-		//$sql ="SELECT count(distinct tbl_orden_id) as looks,look_id FROM tbl_orden_has_productotallacolor where look_id != 0 group by look_id order by  count(distinct tbl_orden_id) DESC;";
-		$count = 10; 	
+                 $count = count(Yii::app()->db->createCommand($sql)->query());
+                
+                $limit = $count && $count > $limit?$limit:$count;  
+                        
+                //$count = 0;		
 		return new CSqlDataProvider($sql, array(
 		    'totalItemCount'=>$count,
 			 'pagination'=>array(
@@ -877,16 +1049,106 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 	
 	public function getUrl() 
 	{
-		if(isset($this->seo->urlAmigable))
-		{
-			return Yii::app()->baseUrl."/producto/".$this->seo->urlAmigable;
+		//	if(isset($this->url_amigable) && $this->url_amigable != "")	
+		
+		if(isset($this->seo->urlAmigable) && $this->seo->urlAmigable != ""){
+			return Yii::app()->baseUrl."/productos/".$this->seo->urlAmigable;
 		}
-		else
-		{
+		else{
 			return Yii::app()->baseUrl."/producto/detalle/".$this->id;
 		}	
 		
 	}
-			 
+	public function getImgColor($id){
+		$img=0;	
+		if(isset(Yii::app()->session['idColor'])) // llega como parametro el id del color presionado
+		{
+			$colores = explode('#',Yii::app()->session['idColor']);
+			
+			unset($colores[0]);	
+		
+			
+			foreach($colores as $color){
+				$sql = "select id from tbl_imagen where tbl_producto_id =".$id." AND color_id = ".$color;
+				$img = Yii::app()->db->createCommand($sql)->queryScalar();
+				if(!is_null($img))
+					break;
+			}
+		}
+		return $img;
+	}
+	
+	public function Next($id_actual)
+	{
+	    $records=NULL;
+	    
+	    $order="id ASC";
+	
+	    $records = Producto::model()->findAll(
+	    	array('select'=>'id', 'order'=>$order)
+	    );
+	
+	    foreach($records as $i=>$r)
+	       if($r->id == $id_actual)
+	          if(isset($records[$i+1]->id))
+			  	return $records[$i+1]->id;
+			  else
+			  	return NULL;
+	
+	    return NULL;
+	}
+        
+        public static function masVistos($limit = 5){
+            $criteria=new CDbCriteria;  		
+		
+            //$criteria-> compare('destacado',1);
+            //$criteria->addInCondition('status', array(2, 1));
+            $criteria->order = "view_counter DESC";
+            return new CActiveDataProvider(__CLASS__, array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                            'pageSize'=>$limit,
+                    ),	
+            ));
+            
+            
+        }
+        
+        public function getCantVendidos()
+	{
+	
+            return Yii::app()->getDb()->createCommand("select IFNULL(sum(o_ptc.cantidad), 0) from tbl_precioTallaColor ptc, tbl_orden_has_productotallacolor o_ptc, tbl_orden orden 
+                        where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
+                        orden.estado IN (3, 4, 8) and ".$this->id." = ptc.producto_id")->queryScalar();
+		
+	}
+        
+        public function getTotalVentas($format = true){
+            /*El precio en la tabla tbl_orden_has_productotallacolor esta con IVA ? */
+            
+            if (is_null($this->_totalVentas)){
+                $sql ="SELECT SUM(op.precio * op.cantidad) FROM tbl_orden_has_productotallacolor op, tbl_orden o, tbl_precioTallaColor pt
+                    where o.estado IN (3, 4, 8)
+                    AND
+                    o.id = op.tbl_orden_id
+                    AND
+                    op.preciotallacolor_id = pt.id
+                    AND
+                    pt.producto_id = :id";
+                $this->_totalVentas = Yii::app()->db->createCommand($sql)->queryScalar(array("id" => $this->id));
+            }
+            
+		
+            
+            if ($format)
+			return Yii::app()->numberFormatter->formatDecimal($this->_totalVentas);
+		else
+			return $this->_totalVentas;
+            
+            
+        }
+        
+
+ 
 		 
 }

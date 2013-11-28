@@ -1,10 +1,11 @@
+
 <?php
 		$this->pageTitle=Yii::app()->name . ' - Tu Personal Shopper';
 		/* @var $this TiendaController */
 		//
-		//$this->breadcrumbs=array(
-		//	'Tu Personal Shopper',
-		//);
+		$this->breadcrumbs=array(
+			'Tu Personal Shopper',
+		);
 ?>
 <?php  
   $baseUrl = Yii::app()->baseUrl;
@@ -53,7 +54,7 @@
 ?>
               <div class="span4">
                 <article class="item" >
-					<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>                            	
+					<?php echo CHtml::image(Yii::app()->baseUrl .'/images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>                            	
                   	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
                   
                   	<?php echo CHtml::link($image,array('look/view', 'id'=>$look->id)); ?>
@@ -82,16 +83,17 @@
   					?>
                   <div class="hidden-phone margin_top_small vcard row-fluid">
                     <div class="span2 avatar ">
-                    	
+                    	<a href="<?php echo $look->user->profile->getUrl(); ?>">
                     	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                    	</a>
                     </div>
-                    <div class="span5"> <span class="muted">Look creado por: </span>
+                    <div class="span4"> <span class="muted">Look creado por: </span>
                       <h5>
                       	
                       	<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
                       	</h5>
                     </div>
-                    <div class="span5"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(true); ?></span></div>
+                    <div class="span6"><span class="precio"> <small>Bs.</small> <?php echo $look->getPrecio(true); ?></span></div>
                   </div>
                   <div class="share_like">
           <button id="meEncanta<?php echo $look->id; ?>" onclick='encantar(<?php echo $look->id; ?>)' title="Me encanta" class="btn-link <?php echo $look->meEncanta()?"btn-link-active":""; ?>">
@@ -189,4 +191,64 @@
 
 
        }
+</script>
+<!------------------- DETECT BROWSER -----------------> 
+<style>
+    body .buorg{
+        position: absolute;
+        z-index: 111111;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        border-bottom: 1px solid #A29330;
+        background: #FDF2AB;
+        text-align: left;
+        cursor: pointer;
+        font-family: Arial,Helvetica,sans-serif;
+        color: #000;
+        font-size: 12px;
+    }
+    body .buorg div {
+        padding: 15px 36px 15px 10px;
+    }
+    body .buorg div i{
+       margin: 0px 20px;
+    }
+    
+    body #buorgclose {
+        position: absolute;
+        right: 1.5em;
+        top: 1em;
+        height: 20px;
+        width: 19px;
+        padding-left: 12px;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 0;
+    }
+    
+</style>
+<script type="text/javascript"> 
+    var $buoop = {
+        vs: {i:8,f:22,o:15,s:5,n:19},
+        test: false,
+        reminder: 0.1,  //horas para recordatorio                 
+        text: "Tu navegador (%s) <b>no soporta</b> las funcionalidades de ésta página. \n\
+            Es posible que algunas características para crear un look <b>no funcionen correctamente</b>. Puedes\n\
+            <b>continuar bajo tu riesgo</b> o <a %s >Actualizar tu navegador</a>",                       
+        newwindow: true,
+        //url: "youtube",
+       
+    };
+    
+    $buoop.ol = window.onload; 
+    
+    window.onload=function(){ 
+     try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+     var e = document.createElement("script"); 
+     e.setAttribute("type", "text/javascript"); 
+     e.setAttribute("src", "<?php echo Yii::app()->baseUrl . "/js/updateBrowser.js"; ?>"); 
+     document.body.appendChild(e); 
+    } 
+    
 </script>

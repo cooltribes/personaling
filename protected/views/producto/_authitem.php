@@ -50,19 +50,22 @@ echo"<tr>";
 $sql = "select SUM(cantidad) as total from tbl_producto a, tbl_precioTallaColor b where a.id = b.producto_id and a.id =".$data->id; 
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
 
-$sql = "select sum(c.cantidad) from tbl_producto a, tbl_precioTallaColor b, tbl_orden_has_productotallacolor c, tbl_orden d where a.id = b.producto_id
-		and b.id = c.preciotallacolor_id and d.id = c.tbl_orden_id and d.estado = 4 and a.id =".$data->id;
-		 
+//$sql = "select sum(c.cantidad) from tbl_producto a, tbl_precioTallaColor b, tbl_orden_has_productotallacolor c, tbl_orden d where a.id = b.producto_id
+//		and b.id = c.preciotallacolor_id and d.id = c.tbl_orden_id and d.estado = 4 and a.id =".$data->id;
+$sql="select sum(oh.cantidad) from tbl_orden_has_productotallacolor oh JOIN tbl_orden o ON o.id=oh.tbl_orden_id where preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id=".
+	$data->id.") AND (o.estado=3 OR o.estado=4 OR o.estado=8)";	 
 $vend = Yii::app()->db->createCommand($sql)->queryScalar();
 
 
-$sql= "select sum(precio) from tbl_orden_has_productotallacolor where tbl_orden_has_productotallacolor.preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id =".$data->id.")";
+//$sql= "select sum(precio) from tbl_orden_has_productotallacolor where tbl_orden_has_productotallacolor.preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id =".$data->id.")";
+$sql="select sum(oh.precio) from tbl_orden_has_productotallacolor oh JOIN tbl_orden o ON o.id=oh.tbl_orden_id where preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id=".
+	$data->id.") AND (o.estado=3 OR o.estado=4 OR o.estado=8)";
 $totventas = Yii::app()->db->createCommand($sql)->queryScalar();
 
 
 
 
-$total = $num - $vend;
+$total = $num + $vend;
 	
 		echo "<td>".$total."</td>"; // total
 		echo "<td>".$num."</td>"; // disponible

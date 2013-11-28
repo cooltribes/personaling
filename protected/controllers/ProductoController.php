@@ -9,7 +9,6 @@ class ProductoController extends Controller
 	public $layout='//layouts/column2';
 
 	/**
-	 * @return array action filters
 	 */
 	public function filters()
 	{
@@ -35,7 +34,7 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'),
+				'actions'=>array('create','update','suprimir','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -79,11 +78,11 @@ class ProductoController extends Controller
 	public function actionGetImage($id)
 	{
 		$model = $this->loadModel($id);
-		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png'));
+		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> false ));
 		/*echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
 		echo("<br>".Yii::app()->basePath);*/
 		
-		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').'/../'.$image_url);		
+		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').$image_url);		
 		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
 		echo '<img '.$attr.' src="'.$image_url.'" alt>';
 		echo '<input type="hidden" name="producto_id" value="'.$id.'">';
@@ -137,6 +136,9 @@ class ProductoController extends Controller
 					
 					if($_POST['accion'] == "nuevo") // guardar y nuevo
 						$this->redirect(array('create'));
+					
+					if($_POST['accion'] == "siguiente") // guardar y siguiente
+						$this->redirect(array('create','id'=>$_POST['id_sig']));
 					
 			}
 			else // nuevo
@@ -212,6 +214,10 @@ class ProductoController extends Controller
 					
 					if($_POST['accion'] == "nuevo") // guardar y nuevo
 						$this->redirect(array('create'));
+					
+					if($_POST['accion'] == "siguiente") // guardar y siguiente
+						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					
 				}
 				//	$this->redirect(array('view','id'=>$model->id));
 			}
@@ -311,6 +317,9 @@ class ProductoController extends Controller
 					if($_POST['accion'] == "avanzar") // guardar y avanzar
 						$this->redirect(array('seo','id'=>$model->id));
 					
+					if($_POST['accion'] == "siguiente") // guardar y siguiente
+						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					
 			}
 
 
@@ -324,6 +333,9 @@ class ProductoController extends Controller
 	
 	// carga de imagenes
 	public function actionMulti() {
+		
+		if($_POST['accion'] == "siguiente") // guardar y siguiente
+			$this->redirect(array('create','id'=>$_POST['id_sig']));
 				
 		if(!isset($_GET['id'])){
 			$this->redirect(array('producto/imagenes'));
@@ -722,7 +734,29 @@ class ProductoController extends Controller
 	//		'dataProvider'=>$dataProvider,
 	//	));
 	}
-
+	
+	public function actionSuprimir()
+	{
+		if(isset($_POST['id']))
+		{
+			$ptc=Preciotallacolor::model()->findByPk($_POST['id']);
+			$lk=$ptc->enLooks();
+			$ord=$ptc->enOrdenes();
+			
+				if(($lk+$ord)>0)
+				{
+						Yii::app()->user->setFlash('error',UserModule::t("Combinación no puede ser eliminada ya que se encuentra en ".$ord." Ordenes y ".$lk." Looks."));				
+				}
+				else{
+					if($ptc->delete())
+						Yii::app()->user->setFlash('success',UserModule::t("Combinación de Talla y Color Eliminada"));
+				}
+		}else{
+			Yii::app()->user->setFlash('error',UserModule::t("Combinación no pudo ser eliminada."));
+		}
+	}
+	
+	
 
 	public function actionAdmin()
 	{
@@ -750,27 +784,25 @@ class ProductoController extends Controller
 
             
             
-            $producto = new Producto; 
-
-            if (isset($_POST['query']))
-            {
-                    //echo($_POST['query']);	
-                    $producto->nombre = $_POST['query'];
-            }	
+            $producto = new Producto;
 
             $producto->status = 1;
 
             $dataProvider = $producto->search();
 
             /**********************   Para Filtros   *************************/
-            
+            if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['todoPost']);
+            }
              //Filtros personalizados
             $filters = array();
             
             //Para guardar el filtro
             $filter = new Filter;
             
-            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])){
+            if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['query'])){
               $_POST = $_SESSION['todoPost'];
             }
             
@@ -885,6 +917,13 @@ class ProductoController extends Controller
             }
 
 
+            if (isset($_POST['query']))
+            {
+                    //echo($_POST['query']);	
+                    unset($_SESSION["todoPost"]);
+                    $producto->nombre = $_POST['query'];
+                    $dataProvider = $producto->search();
+            }	
 
             $this->render('admin',
             array('model'=>$producto,
@@ -1110,11 +1149,11 @@ class ProductoController extends Controller
 		if(isset($_GET['alias']))
 		{
 			$seo = Seo::model()->findByAttributes(array('urlAmigable'=>$_GET['alias']));
-			$producto = Producto::model()->findByPk($seo->tbl_producto_id);
+			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
 		}
 		else
 		{
-			$producto = Producto::model()->findByPk($_GET['id']);
+			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
 			$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 		}				
 			
@@ -1484,7 +1523,7 @@ class ProductoController extends Controller
 					
 		            if($xls->saveAs($nombre . $extension)){
 			                Yii::app()->user->updateSession();
-							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado y procesado exitosamente."));			            										            	
+							Yii::app()->user->setFlash('success',UserModule::t("El archivo ha sido cargado exitosamente."));			            										            	
 	            	}
 					else{
 						Yii::app()->user->updateSession();
@@ -1497,7 +1536,8 @@ class ProductoController extends Controller
 			// ==============================================================================
 			
 			$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
- 
+ 			
+ 			$tabla = $tabla . "<div class='well well-small margin_top well_personaling_small'>";
 			$tabla = $tabla . "<table class='table table-bordered table-hover table-striped'>";
 			 
 			foreach( $sheet_array as $row ) {
@@ -1510,14 +1550,126 @@ class ProductoController extends Controller
 			}
 			 
 			$tabla = $tabla . "</table>";
+			$tabla = $tabla . "</div>";
 			$tabla = $tabla ."<br/>";
 			
 			$anterior;
 			$pr_id;
 			
+			$contador = 1;
+			$falla = "";
 			
-			foreach( $sheet_array as $row ) {
-			    
+			$linea = 0;
+			
+			foreach( $sheet_array as $row ) {	
+				
+				$linea++; // saber cual numero de linea es
+				
+				if($row['A']!="")
+				{
+				
+				if($contador == 1) // revisar las columnas
+				{
+					if($row['A']!="Nombre")
+						$falla = "Nombre";
+					else if($row['B']!="Descripción")
+						$falla = "Descripción";
+					else if($row['C']!="Referencia")
+						$falla = "Referencia";
+					else if($row['D']!="Marca")
+						$falla = "Marca";
+					else if($row['E']!="Peso")
+						$falla = "Peso";
+					else if($row['F']!="Costo")
+						$falla = "Costo";
+					else if($row['G']!="Precio Venta")
+						$falla = "Precio Venta";
+					else if($row['H']!="Categorías")
+						$falla = "Categorías";	
+					else if($row['I']!="Categorías")
+						$falla = "Categorías";
+					else if($row['J']!="Categorías")
+						$falla = "Categorías";
+					else if($row['K']!="Talla")
+						$falla = "Talla";			
+					else if($row['L']!="Color")
+						$falla = "Color";		
+					else if($row['M']!="Cantidad")
+						$falla = "Cantidad";
+					else if($row['N']!="SKU")
+						$falla = "SKU";
+					else if($row['O']!="MetaDescripción")
+						$falla = "MetaDescripción";
+					else if($row['P']!="Meta tags")
+						$falla = "Meta tags";
+					else if($row['Q']!="Almacén")
+						$falla = "Almacén";		
+					
+					
+					if($falla != "") // algo falló
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("La columna ".$falla." no se encuentra en la columna que debe ir o está mal escrita"));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+					
+					$contador++;
+				}
+				
+				//si pasa las columnas entonces que revise las tallas y coloes
+				
+				//tallas
+				if(isset($row['K']) && $linea > 1)
+				{
+					$talla = Talla::model()->findByAttributes(array('valor'=>$row['K']));
+					
+					if(!isset($talla))
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("La Talla ".$row['K']." no existe en la aplicación. Error en linea: ".$linea));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+				}
+				
+				//colores
+				if(isset($row['L']) && $linea > 1)
+				{
+					$color = Color::model()->findByAttributes(array('valor'=>$row['L']));
+					
+					if(!isset($color)) 
+					{
+						Yii::app()->user->updateSession();
+						Yii::app()->user->setFlash('error',UserModule::t("El Color ".$row['L']." no existe en la aplicación. Error en linea: ".$linea));
+						
+						$total = 0;
+						$actualizar = 0;
+						
+						$this->render('importar_productos',array('total'=>$total,'actualizar'=>$actualizar));
+						Yii::app()->end();
+					}
+				
+					
+					// 	
+				}
+			
+			}
+
+		} // cierra primer foreach para comprobar
+		
+		
+		// segundo foreach, si llega aqui es para insertar y todo es valido
+		foreach( $sheet_array as $row ) {
+						
 				$tabla = $tabla.'<br/><br/>';
 				
 				if($row['A']!="" && $row['A']!="Nombre") // para que no tome la primera ni vacios
@@ -1570,6 +1722,8 @@ class ProductoController extends Controller
 							$precio->costo = $row['F'];
 							$precio->precioVenta = $row['G'];
 							$precio->precioDescuento = $row['G'];
+							$precio->impuesto = 1;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 						}
 						else {
 							$precio = new Precio;
@@ -1577,6 +1731,8 @@ class ProductoController extends Controller
 							$precio->precioVenta = $row['G'];
 							$precio->tbl_producto_id = $producto->id;
 							$precio->precioDescuento = $row['G'];
+							$precio->impuesto = 1;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 						}
 						
 						if($precio->save())
@@ -1650,16 +1806,28 @@ class ProductoController extends Controller
 								}
 							
 							// seo
-														
-								$seo = new Seo;
-								$seo->mTitulo = $producto->nombre;
-								$seo->mDescripcion = $row['O'];
-								$seo->pClave = $row['P'];
-								$seo->tbl_producto_id = $producto->id;
+									
+								$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));	
 								
-								$seo->save();
+								if(isset($seo)){
+									$seo->mTitulo = $producto->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									
+									$seo->save();
+								}
+								else {
+									$seo = new Seo;
+									$seo->mTitulo = $producto->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									$seo->tbl_producto_id = $producto->id;
+									
+									$seo->save();
+								}
+					
 								
-			$tabla = $tabla.'se agregó el producto con id '.$producto->id;
+			$tabla = $tabla.'Se agregó el producto con id '.$producto->id;
 			$tabla = $tabla.', de nombre: '.$producto->nombre;
 			$tabla = $tabla.', precio_id: '.$precio->id;
 			$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';
@@ -1697,6 +1865,8 @@ class ProductoController extends Controller
 							$precio->precioVenta = $row['G'];
 							$precio->tbl_producto_id = $prod->id;
 							$precio->precioDescuento = $row['G'];
+							$precio->impuesto = 1;
+							$precio->precioImpuesto = (double) $row['G'] * 1.12;
 							
 							if($precio->save())
 							{
@@ -1755,16 +1925,29 @@ class ProductoController extends Controller
 								}
 								
 								// seo
-														
-								$seo = new Seo;
-								$seo->mTitulo = $prod->nombre;
-								$seo->mDescripcion = $row['O'];
-								$seo->pClave = $row['P'];
-								$seo->tbl_producto_id = $prod->id;
+
+								$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$prod->id));	
 								
-								$seo->save();
+								if(isset($seo)){
+									$seo->mTitulo = $prod->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									
+									$seo->save();
+								}
+								else {
+									$seo = new Seo;
+									$seo->mTitulo = $prod->nombre;
+									$seo->mDescripcion = $row['O'];
+									$seo->pClave = $row['P'];
+									$seo->tbl_producto_id = $prod->id;
+									
+									$seo->save();
+								}
 								
-		$tabla = $tabla.'se agregó el producto con id '.$prod->id; 
+								
+								
+		$tabla = $tabla.'Se agregó el producto con id '.$prod->id; 
 		$tabla = $tabla.', de nombre: '.$prod->nombre;
 		$tabla = $tabla.', precio_id: '.$precio->id;
 		$tabla = $tabla.', actualizadas categorias y cantidad. Seo_id: '.$seo->id.'<br/>';

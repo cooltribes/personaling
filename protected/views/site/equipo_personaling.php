@@ -7,6 +7,13 @@ $this->pageTitle=Yii::app()->name . ' - Equipo';
 $this->breadcrumbs=array(
 	'Equipo',
 );
+
+// Open Graph
+  Yii::app()->clientScript->registerMetaTag('Personaling.com - Equipo', null, null, array('property' => 'og:title'), null); 
+  Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características', null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->baseUrl .'/images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
 ?>
 
 <!-- SECCION DE EL TEAM ON -->
@@ -31,7 +38,7 @@ $this->breadcrumbs=array(
             <p>Una gran parte de mi vida me la paso escribiendo, otra parte leyendo, la otra trabajando para la moda y la que queda paseando a mi pug. Directora de Contenido de Personaling.com</p>
         </li>
         <li class="span3"> <img alt="Ariana" class="img-circle" src="../images/Ariana.jpg" width="250"> <h3><a href="https://twitter.com/masaria"target="_blank"  title="Ariana">Ariana Basciani</a></h3>
-            <p>Soy parte del equipo de contenido de Personaling.com. Amante de la literatura. Voy cazando tendencias cada día. Mi trabajo es hacer del mundo un lugar con gente mejor vestida. </p>
+            <p>Creo que el buen gusto está íntimamente relacionado con el sentido común y el estado de ánimo. Soy parte del equipo de contenidos y marketing on line de Personaling.com y, mientras no estoy trabajando, me encanta leer libros para cosechar el intelecto. </p>
         </li>
         <li class="span3"> <img alt="Johann" class="img-circle" src="../images/johann.jpg" width="250"> <h3><a href="https://twitter.com/johannmgz"target="_blank"  title="Johann">Johann Marquez</a></h3>
             <p>Soy un apasionado de los negocios, me convierto en un volcán de ideas cuando me vuelco en un proyecto. Donde la gente ve retos yo definitivamente veo oportunidades. Me encanta el proceso creativo que conlleva el materializar una idea.  </p>
@@ -60,6 +67,15 @@ $this->breadcrumbs=array(
         <li class="span3"> <img alt="Andreas" class="img-circle" src="../images/andreas.jpg" width="250"> <h3>Andreas Miloda</h3>
             <p>Todo producto debe tener un control de calidad, hasta aquellos que están online. Me encargo de lograr que el equipo trabaje de manera homogénea para cumplir las expectativas del cliente durante el desarrollo del proyecto. </p>
         </li>
+        <li class="span3"> <img alt="Carlos" class="img-circle" src="../images/calosth.jpg" width="250"> <h3><a href="https://twitter.com/calosth"target="_blank"  title="Carlos Linares">Carlos Linares</a></h3>
+            <p>Traduzco interfaces visuales, estoy a cargo de maquetar la estructura semantica del contenido y codificar el diseño en CSS,  combino habilidades técnicas, de programación y creatividad para crear experiencias de usuarios acorde a las recientes tendencias de la web </p>
+        </li>        
+        <li class="span3"> <img alt="Nelson" class="img-circle" src="http://placehold.it/250x250" width="250"> <h3><a target="_blank"  title="Carlos Linares">Nelson Ramírez</a></h3>
+            <p>Materializo las ideas que surgen para Personaling, implementando las funcionalidades haciendo uso de las tecnologías a mi alcance. Y aporto ideas cuando se requieren</p>
+        </li>     
+        <li class="span3"> <img alt="Carlos" class="img-circle" src="../images/carlos_ruiz.jpg" width="250"> <h3><a target="_blank"  title="Carlos Linares">Carlos Ruiz</a></h3>
+            <p>Hago realidad las ideas  diseñadas en personaling dandole el toque personal al momento de implementar lo diseñado. Cumplo a cabalidad con los requerimientos  aportando soluciones para que se logren de la mejor manera posible.</p>
+        </li>               
     </ul>
     
             <h2 class="margin_top">Board Members <small>(Asesores)</small></h2>

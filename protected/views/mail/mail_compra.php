@@ -60,6 +60,7 @@
                                                             <td width="3"><a title="Personaling en Pinterest" href="https://twitter.com/personaling"> <img width="30" height="30" title="personaling en pinterest" src="http://personaling.com/contenido_estatico/icon_personaling_twitter.png"></a></td>
                                                             <td valign="middle"><a title="pinterest" href="https://pinterest.com/personaling/"><img width="30" height="30" title="Personaling en Pinterest" src="http://personaling.com/contenido_estatico/icon_personaling_pinterest.png"></a></td>
                                                             <td class="w10" width="10"><a title="Personaling en Instagram" href="http://instagram.com/personaling"><img width="30" height="30" title="Personaling en Pinterest" src="http://personaling.com/contenido_estatico/icon_personaling_instagram.png"></a></td>
+                                                            <td class="w10" width="10"><a title="Personaling en Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ"><img width="30" height="30" title="Personaling en youtube" src="http://personaling.com/contenido_estatico/icon_personaling_youtube.png"></a></td>                                                            
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -93,14 +94,15 @@
                                                                 
                                                                 <?php
                                                                     $user = User::model()->findByPk(Yii::app()->user->id);
-                                                                    $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+																	$tipo_pago = $orden->getTipoPago();
+                                                                   // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     //echo $orden->pago_id;
                                                                 ?>
                                                                 <?php
       
                                                                 if($orden->estado==1) // pendiente de pago
                                                         	    {
-                                                        	  	  if($pago->tipo == 1){
+                                                        	  	  if($tipo_pago == 1){
                                                         	   ?>
                                                                 <div class="alert alert-success margin_top_medium margin_bottom">
                                                                         <h1 class="h1">Tu Pedido ha sido recibido con éxito.</h1>
@@ -110,7 +112,7 @@
                                                                     <p><strong>Para completar tu comprar debes:</strong></p>
                                                                     <ol>
                                                                         <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?>
-                                                                        			via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?>
+                                                                        			via transferencia electrónica o depósito bancario antes del <?php  echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days')); ?>
                                                                         			en la siguientes cuenta bancaria: <br>
                                                                             <br/>
                                                                             <ul>
@@ -123,14 +125,14 @@
                                                                                 </li>
                                                                             </ul>
                                                                         </li>
-                                                                        <li><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Mis compras,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
+                                                                        <li><strong>Registra tu pago</strong>: <?php echo CHtml::link('Aquí', $this->createAbsoluteUrl('orden/detallepedido',array('id'=>$orden->id))); ?> ó ingresa a Tu Cuenta - > Tus Pedidos,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
                                                                         <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
                                                                         <li><strong>Envio:</strong> Luego de validar el pago te enviaremos el producto :)</li>
                                                                     </ol>
                                                                     <hr/>
                                                                 </div>
                                                                 <?php
-      	}else if($pago->tipo == 4){
+      	}else if($tipo_pago == 4){
       		?>
                                                                 <div class="alert alert-success margin_top_medium margin_bottom">
                                                                     <h1>Tu Pedido ha sido recibido con éxito.</h1>
@@ -171,16 +173,13 @@
                                                                     <?php } ?>
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Envío:</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio, ''); ?></td>
+                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio+$orden->seguro, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="text-align:left"><b>I.V.A. (12%):</b></th>
                                                                         <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:left"><b>Seguro:</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->seguro, ''); ?></td>
-                                                                    </tr>
+
                                                                     <tr>
                                                                         <td style="text-align:left"><h4 class="color1">TOTAL:</h4></th>
                                                                         <td><h4 class="color1"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
@@ -250,14 +249,17 @@
 									
 							$pre="";
 						 	foreach ($producto->precios as $precio) {
-					   			$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+								//$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto);
+								$pre = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
 							}
 							
 							echo('<tr>');
 							
 							if($imagen){					  	
-								$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-								echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
+							$aaa = CHtml::image('personaling.com/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							if($producto->getImageUrl($color->id)=='http://placehold.it/180')
+								$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
 							}else{
 								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 							}
@@ -266,7 +268,7 @@
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'<br/>
 		                  		</td>
-		                <td style="border-bottom:1px solid #dddddd;">Bs. '.Yii::app()->numberFormatter->formatCurrency($pre, '').'</td>
+		                <td style="border-bottom:1px solid #dddddd;">Bs. '.$pre.'</td>
 		                <td style="border-bottom:1px solid #dddddd;">'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
@@ -321,7 +323,9 @@
 				echo "<tr>";		
 							
 				if($imagen){					  	
-					$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+					$aaa = CHtml::image('personaling.com/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+					if($producto->getImageUrl($color->id)=='http://placehold.it/180')
+						$aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
 					echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
 				}else
 					echo"<td style='border-bottom:1px solid #dddddd;'><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
@@ -336,10 +340,11 @@
 				
 				// precio
 				foreach ($producto->precios as $precio) {
-					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+					//$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto);
+					$pre = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
 				}
 						
-				echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".Yii::app()->numberFormatter->formatCurrency($pre, '')."</td>";
+				echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".$pre."</td>";
 				echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>";
 				echo "</tr>";
 
@@ -392,6 +397,15 @@
                                             <td class="hide w0" width="160" valign="top"><p id="street-address" align="right" class="footer-content-right" style="color:#FFFFFF"><span><a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a></span></p></td>
                                             <td class="w30" width="30"></td>
                                         </tr>
+                                        <tr>
+                                            <td class="w30" width="30"></td>
+                                            <td class="w580" width="360" valign="top">
+                                            <span class="hide">
+                                                <p id="permission-reminder" align="left" class="footer-content-left" style="color:#FFFFFF"><span>Personaling C.A RIF: J-40236088-6</span></p>
+                                                </span>
+                                                </td>
+                                            <td class="hide w0" width="60"></td>
+                                        </tr>                                        
                                         <tr>
                                             <td class="w30" width="30"></td>
                                             <td class="w580 h0" width="360" height="15"></td>

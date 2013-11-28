@@ -1,5 +1,8 @@
 <?php
-
+/* @var $this BolsaController */
+$this->breadcrumbs=array(
+	'Bolsa',
+);
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 $usuario = Yii::app()->user->id;
@@ -97,7 +100,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 				<td width='8%'>
 					<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
 					<input type='text' name="cant[<?php echo $productotallacolor->preciotallacolor_id; ?>][<?php echo $look->id; ?>]" maxlength='2' placeholder='Cant.' value='<?php echo $productotallacolor->cantidad; ?>' class='span1 cantidades'/>
-	            	<a id=<?php echo $productotallacolor->preciotallacolor_id; ?> onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+	            	<a id=""<?php echo $productotallacolor->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	            	
 	            </td>
 	            <td style='cursor: pointer' onclick='eliminar(<?php echo $productotallacolor->preciotallacolor_id; ?>)' id='elim<?php echo $productotallacolor->preciotallacolor_id; ?>'>&times;</td>
@@ -191,7 +194,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					 	<td width='8%'>
 					 		<input type="hidden" value="<?php echo $detalles->cantidad; ?>" />
 							<input type='text' name="cant[<?php echo $detalles->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $detalles->cantidad; ?>' class='span1 cantidades'/>
-			            	<a id=<?php echo $detalles->preciotallacolor_id; ?> onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+                                                <a id="<?php echo $detalles->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	                    	
 	                    </td>
 	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $detalles->preciotallacolor_id; ?>)' id='elim<?php echo $detalles->preciotallacolor_id; ?>'>&times;</td>
@@ -370,7 +373,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				    'label'=>'Completar compra',
 				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				    'size'=>'normal', // null, 'large', 'small' or 'mini'
-				    'url'=>'compra', // action ir 
+				    'url'=> $this->createAbsoluteUrl('bolsa/compra',array(),'https'), // action ir 
 				    'icon'=>'lock white',
 				)); 
 				 
@@ -465,7 +468,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 	        //data: { cantidades:data}, 
 	        data : $('input.cantidades').serialize()+'&bolsa_id=<?php echo $bolsa->id; ?>',
 	        success: function (data) {
-				alert(data);
+				console.log(data);
 				if(data=="ok")
 				{
 					//alert("cantidad actualizada"); 
@@ -510,7 +513,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 	       
 	       
 	        success: function (data) {
-				
+				console.log(data);
 				if(data=="ok")
 				{
 					//alert("cantidad actualizada"); 

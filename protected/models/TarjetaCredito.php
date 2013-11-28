@@ -20,6 +20,9 @@
  */
 class TarjetaCredito extends CActiveRecord
 {
+	public $month;
+	public $year;
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -42,21 +45,26 @@ class TarjetaCredito extends CActiveRecord
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
-	{
+	{ 
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, numero, codigo, vencimiento, direccion, ciudad, zip, estado, user_id', 'required'),
-			array('user_id', 'numerical', 'integerOnly'=>true),
-			array('nombre', 'length', 'max'=>80),
-			array('numero', 'length', 'max'=>25),
-			array('codigo, zip', 'length', 'max'=>10),
+			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required'),
+			array('user_id, ci', 'numerical', 'integerOnly'=>true),
+			array('nombre', 'length', 'max'=>80), 
+			array('numero', 'length', 'min'=>14, 'max'=>16),
+			array('codigo', 'length', 'min'=>3, 'max'=>4),
+			//array('month','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un mes.'),
+			//array('year','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un año.'),
+			//array('month','compare','compareValue'=>'Mes','operator'=>'!=','message'=>'Seleccione un mes.'),
+			//array('year','compare','compareValue'=>'Año','operator'=>'==','message'=>'Seleccione un año.'),
+			array('zip', 'length', 'max'=>5),
 			array('direccion', 'length', 'max'=>150),
 			array('ciudad', 'length', 'max'=>50),
 			array('estado', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, numero, codigo, vencimiento, direccion, ciudad, zip, estado, user_id', 'safe', 'on'=>'search'),
+			array('id, nombre, numero, codigo, vencimiento, ci, direccion, ciudad, zip, estado, user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,12 +88,13 @@ class TarjetaCredito extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
-			'numero' => 'Numero',
-			'codigo' => 'Codigo',
+			'numero' => 'Número',
+			'codigo' => 'Código',
 			'vencimiento' => 'Vencimiento',
-			'direccion' => 'Direccion',
+			'ci' => 'Cédula',
+			'direccion' => 'Dirección',
 			'ciudad' => 'Ciudad',
-			'zip' => 'Zip',
+			'zip' => 'Código Postal',
 			'estado' => 'Estado',
 			'user_id' => 'User',
 		);
@@ -107,6 +116,7 @@ class TarjetaCredito extends CActiveRecord
 		$criteria->compare('numero',$this->numero,true);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('vencimiento',$this->vencimiento,true);
+		$criteria->compare('ci',$this->ci,true);
 		$criteria->compare('direccion',$this->direccion,true);
 		$criteria->compare('ciudad',$this->ciudad,true);
 		$criteria->compare('zip',$this->zip,true);
@@ -117,4 +127,13 @@ class TarjetaCredito extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	protected function beforeValidate()
+	{
+	   $this->vencimiento = $this->month .'/'. $this->year;
+	   //echo $this->birthday;
+	   return parent::beforeValidate();
+	}
+	
+	
 }

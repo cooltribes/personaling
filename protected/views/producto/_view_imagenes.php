@@ -110,6 +110,7 @@ $this->breadcrumbs=array(
   <?php
 	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
 	//<input id="accion" type="hidden" value="" />	
+	echo CHtml::hiddenField('id_sig',$model->next($model->id), array('id' => 'id_sig')); 
 ?>
 
   
@@ -127,6 +128,17 @@ $this->breadcrumbs=array(
                 'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
                 'duplicate' => 'El archivo está duplicado.', // useful, i think
                 'denied' => 'Tipo de archivo invalido.', // useful, i think
+                'htmlOptions' => array('multiple' => 'multiple'),
+                'options'=>array(
+                    'onFileSelect'=>'function(e, v, m){ console.log("onFileSelect - "+v+"\nm: "+m+"\ne: "+e); 
+                       console.log(m); }',
+                    'afterFileSelect'=>'function(e, v, m){ console.log("afterFileSelect - "+v) 
+                        console.log(m);}',
+                    'onFileAppend'=>'function(e, v, m){ console.log("onFileAppend - "+v); console.log(m); }',
+                    'afterFileAppend'=>'function(e, v, m){ console.log("afterFileAppend - "+v); console.log(m);}',
+                    'onFileRemove'=>'function(e, v, m){ console.log("onFileRemove - "+v) }',
+                    'afterFileRemove'=>'function(e, v, m){ console.log("afterFileRemove - "+v) }',
+                 )
             ));
 			
 			?>
@@ -232,7 +244,15 @@ $this->breadcrumbs=array(
 			'label'=>'Guardar',
 		)); ?>
           <ul class="nav nav-stacked nav-tabs margin_top">
-             <li><a href="../seo/<?php echo $model->id; ?>" id="avanzar" title="Guardar y Siguiente" id="limpiar">Guardar y avanzar</a></li>
+             <li><a href="../seo/<?php echo $model->id; ?>" id="avanzar" title="Guardar y avanzar" id="limpiar">Guardar y avanzar</a></li>
+             <?php
+		    	if($model->next($model->id) != NULL)
+				{
+		       	?>
+		       	<li><a id="siguiente" style="cursor: pointer" title="Guardar y Siguiente">Guardar y siguiente producto</a></li>
+		       	<?php
+				}
+		       	?>
           </ul>
         </div>
       </div>
@@ -295,6 +315,22 @@ function addColor(id)
 		
 		}
 	);
+	
+	$('a#siguiente').on('click', function(event) {
+		
+		event.preventDefault();
+		
+		$("#accion").attr("value", "siguiente");
+		var uno = $("#id_sig").attr("value");
+		
+		if(uno != ""){
+			//alert(uno);
+
+			// submit del form
+			$('#producto-form').submit();
+		}
+	}	
+	);	
 	
 	/*
 	$('a#avanzar').on('click', function(event) {

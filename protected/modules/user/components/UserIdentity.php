@@ -11,6 +11,8 @@ class UserIdentity extends CUserIdentity
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_NOTACTIV=4;
 	const ERROR_STATUS_BAN=5;
+        const ERROR_STATUS_APPLY = 6;
+        
 	/**
 	 * Authenticates a user.
 	 * The example implementation makes sure if the username and password
@@ -38,6 +40,10 @@ class UserIdentity extends CUserIdentity
 			$this->errorCode=self::ERROR_STATUS_NOTACTIV;
 		else if($user->status== User::STATUS_BANNED)
 			$this->errorCode=self::ERROR_STATUS_BAN;
+                
+                else if($user->personal_shopper == User::TYPE_PSAPPLY)
+			$this->errorCode=self::ERROR_STATUS_APPLY;
+		
 		else {
 			$this->_id=$user->id;
 			$this->username=$user->username;
@@ -60,6 +66,11 @@ class UserIdentity extends CUserIdentity
 		
 		if ( $user === null ) 
 			$this->errorCode = self::ERROR_USERNAME_INVALID;
+                else if($user->status== User::STATUS_BANNED)
+			$this->errorCode=self::ERROR_STATUS_BAN;
+                
+                else if($user->personal_shopper == User::TYPE_PSAPPLY)
+			$this->errorCode=self::ERROR_STATUS_APPLY;
 		else
 		{
 			$this->_id = $user->id;

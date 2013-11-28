@@ -6,7 +6,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	$descuento = Yii::app()->getSession()->get('descuento');
 	$total = Yii::app()->getSession()->get('total');
 	if(Yii::app()->getSession()->get('usarBalance') == '1'){
-		$balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->user->id." GROUP BY user_id ")->queryScalar();
+		$balance = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".Yii::app()->session['usercompra']." GROUP BY user_id ")->queryScalar();
 		if($balance > 0){
 			if($balance >= $total){
 				$descuento = $total;
@@ -224,7 +224,8 @@ else
 <script>
 	
 	function enviar()
-	{
+	{	
+	
 		$('#boton_completar').attr("disabled", true);
    		var idDireccion = $("#idDireccion").attr("value");
 		var tipoPago = $("#tipoPago").attr("value");

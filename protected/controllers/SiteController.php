@@ -23,8 +23,11 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','top','error','contacto','login','logout','acerca_de','activos_graficos','publicaciones_de_prensa','condiciones_de_envios_y_encomiendas',
-				'formas_de_pago','politicas_y_privacidad','terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes','equipo_personaling','captcha','comofunciona'), 
+				'actions'=>array('index','top','error','contacto','login','logout',
+                                    'acerca_de','activos_graficos','publicaciones_de_prensa',
+                                    'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
+                                    'terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes',
+                                    'equipo_personaling','captcha','comofunciona', 'afterApply','sitemap'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -114,8 +117,16 @@ class SiteController extends Controller
 	public function actionComofunciona()
 	{
 		$this->render('comofunciona');
-	}	
-
+	}
+        
+    public function actionAfterApply()
+	{
+		$this->render('after_apply');
+	}
+    public function actionSitemap()
+	{
+		$this->render('sitemap');
+	}
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
@@ -162,12 +173,20 @@ class SiteController extends Controller
 		$user = User::model()->findByPk(Yii::app()->user->id);
 		$looks = new Look;
 		$productos = new Producto;
-		
+		$psDestacados = new User;
+                
+                
+                $psDestacados = User::model()->findAllByAttributes(array('ps_destacado' => '1'), new CDbCriteria(array(
+                    'limit' => 4,
+                    'order' => 'fecha_destacado DESC'
+                )));
+                
 		$this->render('top',array(
 					'dataProvider' => $looks->masvendidos(3),
 					'dataProvider_productos' => $productos->masvendidos(6),
 					'dataProvider_destacados' => $looks->lookDestacados(3),
-					'user'=>$user,	
+					'user'=>$user,
+                                        'psDestacados' => $psDestacados,//->getPsDestacados(4),
 				));
 	}	
 
@@ -275,15 +294,17 @@ class SiteController extends Controller
 		$div = "";
 		
 		$div = $div.'<div class="padding_medium bg_color3 ">';
-		$div = $div."<p><strong>De:</strong> Admin</p>";
+		$div = $div."<p><strong>De:</strong> Admin <span class='pull-right'><strong> ".date('d/m/Y', strtotime($mensaje->fecha))."</strong> ".date('h:i A', strtotime($mensaje->fecha))."</span></p>";
 		$div = $div."<p> <strong>Asunto:</strong> ".$mensaje->asunto."</p>";
-		$div = $div."<p> <strong>Fecha:</strong> ".date('d/m/Y', strtotime($mensaje->fecha))." </p>";
 		$div = $div."<p> ".$mensaje->cuerpo." </p>";
 	/*	$div = $div.'<form class=" margin_top_medium ">
 				  		<textarea class="span12 nmargin_top_medium" rows="3" placeholder="Escribe tu mensaje..."	></textarea>
 				  		<button class="btn btn-danger"> <span class="entypo color3 icon_personaling_medium" >&#10150;</span> Enviar </button>
 			  		</form>'; */
-		$div = $div."</div>";
+		$div = $div.'<p><a class="btn btn-danger pull-right" href="'.Yii::app()->getBaseUrl().'/orden/detallepedido/'.$mensaje->orden_id.'#mensajes" target="_blank"> Responder </a></p>
+			  		';	  		
+		
+		$div = $div."<br/></div>";
 		
 		echo $div;
 		

@@ -17,8 +17,11 @@
 }
 </style>
 <script language="JavaScript">
+
+
 var dragSrcEl = '';
 function handleDragStart(e) {
+	
 $('.canvas').css('background',"white url('<?php echo Yii::app()->baseUrl.'/images/loading.gif'; ?>') center center no-repeat");
   this.style.opacity = '0.4';  // this / e.target is the source node.
    dragSrcEl = this;
@@ -39,6 +42,7 @@ $('.canvas').css('background',"white url('<?php echo Yii::app()->baseUrl.'/image
   
 }
 function handleDragOver(e) {
+	
   if (e.preventDefault) {
     e.preventDefault(); // Necessary. Allows us to drop.
   }
@@ -49,35 +53,51 @@ function handleDragOver(e) {
 }
 
 function handleDragEnter(e) {
+	
   // this / e.target is the current hover target.
+    if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
   this.classList.add('over');
+  return false;
 }
 
 function handleDragLeave(e) {
+	
+   if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
   this.classList.remove('over');  // this / e.target is previous target element.
+  return false;
 }
 function handleDrop(e) {
-
-	//Calcular la posicion del scroll
 	
+  if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
+	//Calcular la posicion del scroll
+
 	if ($('#tab1').hasClass('active')){
 		scrollTop = $('#div_categorias').scrollTop();
 	} else {
 		scrollTop = $('#div_prendas').scrollTop();	
 	}
-	
+
 	var mouse_position_x = e.dataTransfer.getData("mouse_position_x");
     var mouse_position_y = e.dataTransfer.getData("mouse_position_y");
     x = e.clientX - e.currentTarget.offsetLeft - mouse_position_x;
     y = e.clientY - e.currentTarget.offsetTop - scrollTop - mouse_position_y;
 	//alert('scroll: '+$('#div_categorias').scrollTop()+' clientY: '+e.clientY+' OffsetTop: '+e.currentTarget.offsetTop+' mouse: '+mouse_position_y);
 	//alert(y);
+
   if (e.stopPropagation) {
     e.stopPropagation(); // Stops some browsers from redirecting.
   }
- 
+
   // Don't do anything if dropping the same column we're dragging.
+ 
   if (dragSrcEl != this) {
+  	console.log('handleDrop='+dragSrcEl);
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML; 
     var contenedor = this;
@@ -196,14 +216,22 @@ function handleDrop(e) {
 }
 
 function handleDragEnd(e) {
+	
   // this/e.target is the source node.
+//if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {handleDrop(e);}
+  
 var cols = document.querySelectorAll('.column');
   [].forEach.call(cols, function (col) {
     col.classList.remove('over');
     col.style.opacity = '1';
   });
+  
 }
+$(window).load(function(){
+	$('#btn_siguiente').removeAttr('disabled');
+});
 $(document).ready(function() {
+
 
 /*
 var cols = document.querySelectorAll('.column');
@@ -298,7 +326,9 @@ $('#btn_atras').click(function(){
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				'class'=>'pull-right margin_left_small', 
-		        'onclick'=>"{addPublicar(1);}"
+		        'onclick'=>"{addPublicar(1);}",
+		        'disabled'=>'disabled',
+		        'id'=>'btn_siguiente',
 		       ),	    
 	)); ?>
     <?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -355,7 +385,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <hr/>
 
         <!-- CANVAS ON -->
-        <div class="well well-large canvas" style="z-index=0;overflow:hidden;position: relative;width: 670px;height: 670px" id="div_canvas">
+        <div class="well well-large canvas" style="z-index:0;overflow:hidden;position: relative;width: 670px;height: 670px;-webkit-user-drop: element;" id="div_canvas" dropzone="move s:text/plain">
           <?php 
         
         if (count($model->lookhasproducto)){
@@ -430,7 +460,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   	$(this).parent().remove();
   });   
 	
-	$('#div".$producto->id."_".$hasproducto->color_id." > img').on('load', function () {
+	var load_handler = function() {
 		var height = $(this).attr('height');
 		var width = $(this).attr('width');
 		 $(this).resizable({
@@ -439,8 +469,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		  		$('.seleccionado').removeClass('seleccionado');
 		  		$(this).addClass('seleccionado');
 		  		
-		  	});	
-    });	
+		 	});	
+	}
+	$('#div".$producto->id."_".$hasproducto->color_id." > img').filter(function() {
+	    return this.complete;
+	}).each(load_handler).end().load(load_handler);		
+	
+	
+	
    
     
  ";
@@ -485,21 +521,42 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		    	ui.helper.css('z-index',parseInt(mayor)+1); 
 		    }
 	  			} ); 
-	 
+	 $('#adorno".$adorno->id." > .rotar').draggable({
+			    handle: '.rotar',
+			    opacity: 0.01, 
+			    helper: 'clone',
+			    drag: function(event, ui){
+			        var grados = ui.position.left*-1;
+			        if (grados > 360)
+			        	grados = grados - 360;
+			        var rotateCSS = 'rotate(' + grados + 'deg)';
+			
+			        $(this).parent().css({
+			            '-moz-transform': rotateCSS,
+			            '-webkit-transform': rotateCSS
+			        });
+			    } 
+			});
 	 		$('#adorno".$adorno->id." > span').last().click(function(){
 	 			$(this).parent().remove();
 	  		});
 			   
-			$('#adorno".$adorno->id." > img').on('load', function () {
-				$(this).resizable({
-					aspectRatio: 1
-				}).parent('.ui-wrapper').css('margin','0px').click(function(){
-		  		$('.seleccionado').removeClass('seleccionado');
-		  		$(this).addClass('seleccionado');
-		  		
-		  	});	
-		    });	
-		    
+			
+
+		var load_handler = function() {
+			var height = $(this).attr('height');
+			var width = $(this).attr('width');
+			 $(this).resizable({
+	      		aspectRatio: width/height
+	    	}).parent('.ui-wrapper').css('margin','0px').click(function(){
+			  		$('.seleccionado').removeClass('seleccionado');
+			  		$(this).addClass('seleccionado');
+			  		
+			 	});	
+		}
+		$('#adorno".$adorno->id." > img').filter(function() {
+		    return this.complete;
+		}).each(load_handler).end().load(load_handler);			    
 		 	";
 	        
 	        Yii::app()->clientScript->registerScript('drag'.$adorno->id,$script);
@@ -515,10 +572,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
         </div>
         
-        <div class="margin_bottom_small">
-	        <a class="btn" href="#">Enviar Atrás</a>
-	        <a class="btn" href="#">Enviar Adelante</a>
-        </div>
+
         <!-- CANVAS OFF --> 
       </div>
       <!--
@@ -596,7 +650,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   <!-- marcas -->
                   <div class="margin_top_small margin_bottom_small">
                     <select id="marcas" class="span12" name="marcas">
-                      <option selected>Buscar por Marca</option>
+                      <option selected>Todas las Marca</option>
                       <?php
         			foreach($marcas as $uno){
         				echo "<option value='".$uno->id."'> ".$uno->nombre." </option>";
@@ -610,22 +664,24 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		$('#marcas').change(function(){". CHtml::ajax(
 						 
 			array( // ajaxOptions
-				'url'=>Yii::app()->createUrl( 'look/marcas'),
+				'url'=>Yii::app()->createUrl( 'look/categorias'),
 				'type' => 'POST',
 				'beforeSend' => "function( request )
 				{
 					// Set up any pre-sending stuff like initializing progress indicators
+					$('body').addClass('aplicacion-cargando');
 				}",
 				'success' => "function( data )
 				{
 				// handle return data
 				//alert( data );
 					$('#div_categorias').html(data);
+					$('body').removeClass('aplicacion-cargando');
 				}",
-					'data' => "js:$('#marcas').serialize()",
+					'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 				),
 				array( //htmlOptions
-					'href' => Yii::app()->createUrl( 'look/marcas' ),
+					'href' => Yii::app()->createUrl( 'look/categorias' ),
 					'class' => 'thumbnail',
 					
 					'draggable'=>"false",
@@ -648,6 +704,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						    'type' => 'POST',
 						    'beforeSend' => "function( request )
 						                     {
+						                       	$('body').addClass('aplicacion-cargando');
 						                       // Set up any pre-sending stuff like initializing progress indicators
 						                     }",
 						    'success' => "function( data )
@@ -655,8 +712,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 						                    // handle return data
 						                    //alert( data );
 						                    $('#div_categorias').html(data);
+						                    $('body').removeClass('aplicacion-cargando');
 						                  }",
-						    'data' => "js:$('#formu').serialize()",
+						    'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
@@ -671,32 +729,76 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	?>
                 <div class="span6">
-                  <div class="dropdown"> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
+                	
+                  <div class="dropdown" > <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
+                    
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="crear_look_colores">
-                      <?php 
-  $colores = Color::model()->findAll();
-  foreach($colores as $color){
-  	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20'));
-	  
+  	<?php
   	echo '<li>';
   	
 	echo CHtml::ajaxLink(
-						  $imagen.'  '.$color->valor,
-						  Yii::app()->createUrl( 'look/colores'),
+						  "Todos",
+						  Yii::app()->createUrl( 'look/categorias'),
 						  array( // ajaxOptions
 						    'type' => 'POST',
-						    'beforeSend' => "function( request )
+						    'beforeSend' => "function( request,settings )
 						                     {
+						                       	$('body').addClass('aplicacion-cargando');
 						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       $('#colores').val('');
+						                       
 						                     }",
 						    'success' => "function( data )
 						                  {
 						                    // handle return data
 						                    //alert( data );
+						                    $('#a_colores').html('Todos <span class=\"caret\"></span>');
+						                    $('#a_colores').dropdown('toggle');
 						                    $('#div_categorias').html(data);
+											$('body').removeClass('aplicacion-cargando');
 						                  }",
-						    'data' => array( 'color_id' => $color->id, 'val2' => '2' )
+						     'data' => "js:$('#formu').serialize()+'&colores='",
+						  ),
+						  array( //htmlOptions
+						    'href' => Yii::app()->createUrl( 'look/categorias' ),
+						   // 'class' => 'thumbnail',
+						    'id' => 'colores0',
+						    'draggable'=>"false",
+						    'tabindex'=>'-1',
+						  )
+						);
+	echo '</li>';   
+	?>                 	
+                      <?php 
+  $colores = Color::model()->findAll();
+  foreach($colores as $color){
+  	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20','class'=>'img_crear_look_colores'));
+	  
+  	echo '<li>';
+  	
+	echo CHtml::ajaxLink(
+						  $imagen.'  '.$color->valor,
+						  Yii::app()->createUrl( 'look/categorias'),
+						  array( // ajaxOptions
+						    'type' => 'POST',
+						    'beforeSend' => "function( request,settings )
+						                     {
+						                       	$('body').addClass('aplicacion-cargando');
+						                       // Set up any pre-sending stuff like initializing progress indicators
+						                       $('#colores').val('".$color->id."');
+						                       
+						                     }",
+						    'success' => "function( data )
+						                  {
+						                    // handle return data
+						                    //alert( data );
+						                    $('#a_colores').html('".$imagen.'  '.$color->valor." <span class=\"caret\"></span>');
+						                    $('#a_colores').dropdown('toggle');
+						                    $('#div_categorias').html(data);
+											$('body').removeClass('aplicacion-cargando');
+						                  }",
+						     'data' => "js:$('#formu').serialize()+'&colores=".$color->id."'",
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
@@ -715,6 +817,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 
                 <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->
               </form>
+              <?php echo CHtml::hiddenField('colores'); ?>
             </div>
             <hr/>
             <div id="div_categorias">
@@ -748,8 +851,72 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <div class="divForForm"></div>
 <?php $this->endWidget(); ?>
 
+<!------------------- DETECT BROWSER -----------------> 
+<style>
+    body .buorg{
+        position: absolute;
+        z-index: 111111;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        border-bottom: 1px solid #A29330;
+        background: #FDF2AB;
+        text-align: left;
+        cursor: pointer;
+        font-family: Arial,Helvetica,sans-serif;
+        color: #000;
+        font-size: 12px;
+    }
+    body .buorg div {
+        padding: 15px 36px 15px 10px;
+    }
+    body .buorg div i{
+       margin: 0px 20px;
+    }
+    
+    body #buorgclose {
+        position: absolute;
+        right: 1.5em;
+        top: 1em;
+        height: 20px;
+        width: 19px;
+        padding-left: 12px;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 0;
+    }
+    
+</style>
+<script type="text/javascript"> 
+    var $buoop = {
+        vs: {i:10,f:21,o:10,s:6,n:19},
+        test: false,
+        reminder: 0.1,  //horas para recordatorio                 
+        text: "Tu navegador (%s) <b>no soporta</b> las funcionalidades de ésta página. \n\
+            Es posible que algunas características para crear un look <b>no funcionen correctamente</b>. Puedes\n\
+            <b>continuar bajo tu riesgo</b> o <a %s >Actualizar tu navegador</a>",                       
+        newwindow: true,
+        //url: "youtube",
+       
+    };
+    
+    $buoop.ol = window.onload; 
+    
+    window.onload=function(){ 
+     try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+     var e = document.createElement("script"); 
+     e.setAttribute("type", "text/javascript"); 
+     e.setAttribute("src", "<?php echo Yii::app()->baseUrl . "/js/updateBrowser.js"; ?>"); 
+     document.body.appendChild(e); 
+    } 
+    
+</script>
 <!------------------- MODAL WINDOW OFF -----------------> 
 <script type="text/javascript">
+    
+
+
+    
 
 	function actualizar()
 	{
@@ -878,7 +1045,7 @@ function addPublicar(tipo)
 		//count = 6;
 		//alert(productos_id);
 		//count = count + count_a;
-		if (count >= 3){
+		if (count >= 6){
 			$("#form_productos").submit();
 		} else {
 			bootbox.alert("Debes tener al menos seis productos");

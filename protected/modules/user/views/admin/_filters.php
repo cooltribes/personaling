@@ -17,6 +17,8 @@
                                     'style' => 'display:none'));
     echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
                                                        'ps' => 'Personal Shopper',
+                                                       'psDes' => 'Personal Shopper Destacado',
+                                                       'aplica' => 'Aplicante Personal Shopper',
                                                        'user' => 'Usuario',),
                             array('style' => 'display:none'));    
     
@@ -67,6 +69,7 @@
                                 'fuenteR' => 'Fuente de registro',
                                 'visit' => 'Número de visitas',
                                 'lastvisit_at' => 'Fecha de última visita',
+                                'create_at' => 'Fecha de registro',
                                 'monto' => 'Monto comprado',
                                 'lastorder_at' => 'Fecha de última compra',                                
                                 'looks' => 'Cantidad de looks comprados',                                

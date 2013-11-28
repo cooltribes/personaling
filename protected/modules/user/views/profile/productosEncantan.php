@@ -1,24 +1,40 @@
+<?php 
+$this->breadcrumbs=array(
+  "Tu Cuenta"=>array('micuenta'),
+  UserModule::t("Productos que te encantan"),
+);
+?>
 <div class="container margin_top">
-<div class="page-header">
-  <h1>Productos que te encantan</h1>
-</div>
-<div class="row">
-<div class="span12 tienda_productos">
+  <div class="page-header">
+    <h1>Productos que te encantan</h1>
+  </div>
   <div class="row">
-    <?php
-	$template = '
-			{items}
-   		</div>
-      		{pager}
-	    </div>
-    ';
-	$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos',
-	    'template'=>$template,
-	));    
-	?>
+    <div class="span12 tienda_productos">
+      <?php if ( $numeroItems != 0 ){ // Si  tiene productos que le gusten 
+      ?>
+      <div class="row">
+      <?php
+      	$template = '
+      			{items}
+         		</div>
+            		{pager}
+      	    </div>
+          ';
+      	$this->widget('zii.widgets.CListView', array(
+      	    'id'=>'list-auth-items',
+      	    'dataProvider'=>$dataProvider,
+      	    'itemView'=>'_datos',
+      	    'template'=>$template,
+      	));    
+    	      ?>
+        </div>
+      <?php
+      }else{ ?>
+          <p class="lead margin_bottom_large margin_top_medium padding_top_medium padding_bottom_large  padding_left_medium padding_right_small " > Puedes seleeccionar un producto como <strong>favorito</strong> haciendo clic en el icono <strong> <span class="entypo icon_personaling_medium" style="line-height: 1.1;" >&#9825;</span></strong> que lo acompaña, y en cualquier momento puedes verlos, ingresanado a Tu cuenta, en la sección Tus Encantos/ Favoritos. </p>
+
+      <?php } ?>
+      </div>
+    </div>
   </div>
 </div>
 

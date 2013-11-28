@@ -1,5 +1,13 @@
 <?php 
+Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características.', 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
+Yii::app()->clientScript->registerMetaTag('Personaling.com - Regístrate', null, null, array('property' => 'og:title'), null); 
+Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características', null, null, array('property' => 'og:description'), null);
+Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->baseUrl .'/images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
+
 //$this->breadcrumbs=array(
 	//UserModule::t("Registration"),
 //);
@@ -67,9 +75,9 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1>Regístrate</h1>
-      <div class="row-fluid margin_bottom margin_top">
-            <div id="boton_facebook" class="span5 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
+      <h1 class="text_align_center">Regístrate</h1>
+      <div class="row-fluid margin_bottom margin_top text_align_center">
+            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
 
         	<!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
@@ -88,7 +96,8 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
 	),
 )); ?>
           <fieldset>
-            <legend >O llena los campos a continuación: </legend>
+            <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login">Si ya estas registrado haz click aquí</a></p>
+            <legend class="text_align_center" >O llena los campos a continuación: </legend>
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 	<?php
 	if(isset($_GET['request_ids'])){

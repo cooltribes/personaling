@@ -4,12 +4,11 @@
  */
 
 /*
- * 
+ * FALTA
  * poner icono de loading 
  * Poner titulo en modal
  * campos en class error cuando intente guardar con campos en blanco.
- * bloquear tambien el campo al guardar nuevo
- * reiniciar busqueda al cambiar a -- Tus Perfiles --
+ * 
  */
 
 
@@ -28,15 +27,13 @@
 
 /*Poner en cero los valores*/
 function limpiarLocal(){
-    console.log("Limpiando");
-    console.log(valores);
+    console.log("Limpiando");   
     
     $.each(valores, function(i, elem){
         //console.log("Primero" + elem);
         valores[i] = 0;
         //console.log("Despues" + elem);
     });
-    console.log(valores);
     
 }
 /*Guarda los campos actuales del modal en variables locales*/
@@ -49,7 +46,6 @@ function guardarLocal(){
     //console.log(valores);
 }
 
-/*Cargar los valores del vector local dentro de los campos del modal*/
 function cargarLocal(){
     console.log("Cargando");
     
@@ -78,6 +74,9 @@ function activarModalNuevo(nuevo){
         //mostrar el campo de nombre y el boton guardar y buscar
         $('#campo-nombre').show();
         $('#save-search').show();
+        
+        //Poner titulo al modal
+        $('#modalFiltroPerfil .modal-header h3').html("Crea un perfil para alguien más (Una amiga, tu mamá, etc.)");
     }
     else
     {
@@ -88,6 +87,9 @@ function activarModalNuevo(nuevo){
         //Mostrar el boton guardar y borrar dentro del modal
         $('#save').show();
         $('#remove').show();
+        
+        //Poner titulo al modal
+        $('#modalFiltroPerfil .modal-header h3').html("Perfil Corporal - <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
     }
 }
 
@@ -107,7 +109,7 @@ function getFilter(){
 
     URL = 'getFilter';
     ID = $("#all_filters").val();  
-      
+    $("body").addClass("aplicacion-cargando");  
     if(ID && ID.trim() !== ''){  
     
         $.ajax(
@@ -116,6 +118,13 @@ function getFilter(){
                     type: 'POST',
                     dataType: 'json',
                     data: { 'id':ID },
+                    beforeSend: function(){
+                        $("body").addClass("aplicacion-cargando");                       
+                        
+                    },
+                    complete: function(){
+                        //$("body").removeClass("aplicacion-cargando");
+                    },
                     success: function(data){
                         if(data.status === 'success'){                           
 //                            //Poner titulo
@@ -137,7 +146,6 @@ function getFilter(){
                             //Mostrar el boton de editar
                             $('a.editar-filtro').parent('div').show(); 
                             
-                            
                             //Buscar
                             refresh();           
                         }
@@ -158,10 +166,84 @@ function getFilter(){
        
        activarModalNuevo(true);
        
-       limpiarLocal();      
-       window.console.info("Buscando");
+       limpiarLocal();       
        //Buscar para actualizar sin los filtros de perfiles
-       refresh();
+       refresh(true);
+    }   
+    
+}
+
+
+/*Obtiene los campos pertenecientes a un filtro ID, los carga y luego realiza la búsqueda*/
+function getFilterByClick(idPerfil){
+
+    URL = 'getFilter';
+    ID = idPerfil;
+    $("body").addClass("aplicacion-cargando");  
+    if(ID && ID.trim() !== ''){  
+    
+        $.ajax(
+                URL,
+                {
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { 'id':ID },
+                    beforeSend: function(){
+                        
+                        $("body").addClass("aplicacion-cargando");
+                        
+                    },
+                    complete: function(){
+                        //$("body").removeClass("aplicacion-cargando");
+                    },
+                    success: function(data){
+                        if(data.status === 'success'){                           
+//                            //Poner titulo
+//                            $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
+                                                       
+                            //Cargar los valores en las variables locales
+                            //console.log(data.filter);                            
+                            valores[0] = data.filter.altura;
+                            valores[1] = data.filter.contextura;
+                            valores[2] = data.filter.pelo;
+                            valores[3] = data.filter.ojos;
+                            valores[4] = data.filter.piel;
+                            valores[5] = data.filter.tipo_cuerpo;                                                    
+                            
+                            //mostrarlos en los campos del modal
+                            //cargarLocal();
+                            //activar para perfil cargado
+                            activarModalNuevo(false);
+                            //Mostrar el boton de editar
+                            $('a.editar-filtro').parent('div').show(); 
+                            
+                            //Cambiar label del boton looks para mi
+                            $("#btnMatch").html("Looks para <b>" + data.name + "</b>");
+                            $("#btnMatch").addClass("btn-danger");
+                            $("#btnTodos").removeClass("btn-danger");
+                            //Buscar
+                            refresh();           
+                        }
+                        //console.log(data.message);
+                    },
+                    error: function( jqXHR, textStatus, errorThrown){
+                        console.log(jqXHR);
+                    }
+                }
+        );
+    }else
+    {  //Cuando el nombre es val = '' 
+      
+      //Ocultar el boton editar
+       $('a.editar-filtro').parent('div').hide();
+       
+       clearFields();       
+       
+       activarModalNuevo(true);
+       
+       limpiarLocal();       
+       //Buscar para actualizar sin los filtros de perfiles
+       refresh(true);
     }   
     
 }
@@ -184,6 +266,7 @@ function saveFilter(nuevo) {
     }   
     
     if (nombre !== '') {
+        $("#profile-name").parent().parent().removeClass("error");
         
         var perfil = $("#modalFiltroPerfil #newFilter-form").find('input, select').serialize();
         
@@ -197,9 +280,13 @@ function saveFilter(nuevo) {
                     data: perfil,
                     beforeSend: function(){
                         boton.prop('disabled', true);
+                        $("#profile-name").prop('disabled', true);
+                        $("body").addClass("aplicacion-cargando");
                     },
                     complete: function(){
                         boton.prop('disabled', false);
+                        $("#profile-name").prop('disabled', false);
+                        $("body").removeClass("aplicacion-cargando");
                     },
                     success: function(data) {
                                                 
@@ -217,16 +304,11 @@ function saveFilter(nuevo) {
                                 $('a.editar-filtro').parent('div').show();
                             }
                             //Guardar en local
-                            guardarLocal(); 
-                            
-                            refresh();
-                            
-                                                       
+                            guardarLocal();                            
+                            refresh();                          
                            
                         }
-//                        console.log(data.status);
-//                        console.log(data.message);
-                            //cerrar modal;
+                         
                             $("#modalFiltroPerfil").modal('hide');
                             showAlert(data.status, data.message);                    
 
@@ -240,7 +322,9 @@ function saveFilter(nuevo) {
         );
 
     } else {
-        console.log("error, campo nombre vacío.");
+        //console.log("error, campo nombre vacío.");
+        $("#profile-name").parent().parent().addClass("error");
+        $("#profile-name").focus();
     }
 
 }
@@ -282,8 +366,6 @@ function removeFilter(URL){
                         refresh();
                         
                     }
-                    console.log(data.status);
-                    console.log(data.message);
                     showAlert(data.status, data.message);                    
                     
                 },
@@ -303,6 +385,45 @@ function showAlert(type, message){
    $('#alert-msg').show();
    $("html, body").animate({ scrollTop: 0 }, "slow");
 }
+
+//al hacer click en "agregar perfil + "
+function clickAgregar(){
+    clearFields();
+    activarModalNuevo(true);
+    $(".alert").fadeOut('slow');
+}
+
+//Al hacer click en un perfil creado
+function clickPerfil(idPerfil){
+    
+    //e.preventDefault();
+    //getFilterByClick($(this).prop("id"));  
+    $("#perfil_propio").val("0");
+    getFilterByClick(idPerfil);  
+    $(".alert").fadeOut('slow');
+    
+}
+
+//Al hacer click en el boton Looks para *
+function clickPersonal(){
+    
+    console.log("Personal");
+    $("#btnMatch").addClass("btn-danger");
+    $("#btnTodos").removeClass("btn-danger");
+    refresh(true);
+    
+}
+//Al hacer click en el boton Todos los Looks
+function clickTodos(){
+    
+    console.log("Todos");
+    $("#btnTodos").addClass("btn-danger");
+    $("#btnMatch").removeClass("btn-danger");
+    
+    refresh(true); 
+    
+}
+
 
 $(function() {
     
@@ -350,6 +471,7 @@ $(function() {
         $(".alert").fadeOut('slow');
     });
     
+    /*Boton de crear nuevo filtro*/
     $('.crear-filtro').click(function(e){
         clearFields();
         activarModalNuevo(true);
@@ -363,6 +485,33 @@ $(function() {
     $(".alert .close").click(function(){
         $(".alert").fadeOut('slow');
     });
+    
+    
+    //FIltrar por precios
+    
+    $("#price-ranges a.price-filter").click(function(e){
+        
+        var id = $(this).attr("id");
 
+        if($("#rango_actual").val() !== id){
+            
+            $(this).parent().siblings().removeClass("active-range");
+            $(this).parent().addClass("active-range");
+            $("#rango_actual").val(id); 
+            
+            refresh();
+        }
+        
+    });
+    
+    
+    
+    //Click Boton todos los looks
+//    $('.crear-filtro').click(function(e){
+//        clearFields();
+//        activarModalNuevo(true);        
+//        $(".alert").fadeOut('slow');
+//    });
+    
+    
 });
-

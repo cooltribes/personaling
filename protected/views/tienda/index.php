@@ -1,12 +1,20 @@
  <?php
 	/* @var $this TiendaController */
-	//$this->breadcrumbs=array(
-	//'Tienda',
-	//);
+	$this->breadcrumbs=array(
+	'Tienda',
+	);
+	Yii::app()->clientScript->registerMetaTag("Compra tus marcas preferidas en un solo lugar con tan solo un click en tu casa u oficina: Helly Hansen, women'secret, Mango, Cortefiel, Timberland, Suiteblanco, Accessorize", 'description', null, null, null);
+// Open Graph
+  Yii::app()->clientScript->registerMetaTag('Personaling.com - Tienda', null, null, array('property' => 'og:title'), null); 
+  Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características', null, null, array('property' => 'og:description'), null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+  Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->baseUrl .'/images/icono_preview.jpg', null, null, array('property' => 'og:image'), null); 
 
 ?> 
+<script>alert("NIGGA");</script>
 <div class="page-header">
-<h1>Tienda </h1>
+<h1>Tienda</h1>
 <?php 
 $arr=Yii::app()->session['bsf'];
 $max=max($arr);
@@ -72,60 +80,10 @@ $max=round($max/100, 0)*100;
     </div>
     ';
 
-/*
-	$this->widget('zii.widgets.CListView', array(
-    'id'=>'list-auth-items',
-    'dataProvider'=>$dataProvider,      
-    'template'=>$template,
-    'itemView'=>'_datos2',
-     'afterAjaxUpdate'=>" function(id, data) {
-	    							
-						$(document).ready(function() {
-						  // Handler for .ready() called.
-							  
-							var imag;
-							var original;
-				
-				
-							var segunda;
-							
-							$('.producto').hover(function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).hide();
-								
-								$(this).find('img').eq(0).next().show();
-								}
-							},function(){
-								if ($(this).find('img').length > 1){
-								$(this).find('img').eq(0).show();
-								
-								$(this).find('img').eq(0).next().hide();
-								}
-							}); 						
-							
-						});
-	    				
-						} ",
-    'pager'=>array(
-        'class'=>'ext.infiniteScroll.IasPager', 
-        'rowSelector'=>'.producto', 
-        'listViewId'=>'list-auth-items', 
-        'header'=>'',
-        'loaderText'=>'Loading...',
-        
-        'options'=>array(
-            'history'=>false, 
-            'triggerPageTreshold'=>2, 
-            'trigger'=>'Load more'
-        ),
-    )
-));
-
-*/
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_datos2',
+	    'itemView'=>'_datos3',
 	    'afterAjaxUpdate'=>" function(id, data) {
 	    							
 						$(document).ready(function() {
@@ -229,7 +187,10 @@ $max=round($max/100, 0)*100;
        
             <button id="boton_search" class="btn btn-danger" type="button"><i class="icon-search icon-white"></i></button>
           </div>
-       </form> 
+       </form>
+         <hr/>
+        <button class="btn" onclick="javascript:location.reload()" type="button">Eliminar Filtros</button>
+        
         <hr/>
         
         <!-- para filtrar por campo de texto -->
@@ -295,6 +256,7 @@ $max=round($max/100, 0)*100;
 		"var ajaxUpdateTimeout;
 		var axe;
 		$('.color').click(function(){
+			$('body').addClass('aplicacion-cargando');
 			window.idColor.trim();
 			if(window.idColor.indexOf('#'+$(this).attr('id'))==-1){
 					window.idColor = window.idColor+'#'+$(this).attr('id');				
@@ -310,7 +272,8 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores2') . "',
+				url: '" . CController::createUrl('tienda/colores') . "',
+				complete: function(){ $('body').removeClass('aplicacion-cargando'); },
 				data: {'idColor':window.idColor,
 						'idCategoria':window.idCategoria}
 				}
@@ -346,7 +309,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores2') . "',
+				url: '" . CController::createUrl('tienda/colores') . "',
 				data: {
 						'rango':rango}
 				}
@@ -376,7 +339,7 @@ $max=round($max/100, 0)*100;
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('tienda/colores2') . "',
+				url: '" . CController::createUrl('tienda/colores') . "',
 				data: {
 						'rango':rango}
 				}

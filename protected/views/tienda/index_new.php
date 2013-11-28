@@ -52,7 +52,7 @@
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
 	  					Color:
-	  					<span id="color_titulo"> <img src="/images/colores/C_Multicolor.jpg" alt="Color" width="44">		
+	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44">		
 	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
 					<ul class="dropdown-menu dropdown-colors thumbnails ">
@@ -64,9 +64,11 @@
 						echo CHtml::hiddenField('colorhid',0);
 					}
 					foreach($colores as $color){
-						echo '<li class="colors"><a href="#" value="'.$color->id.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+						echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 						
-					}  ?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
+					}  
+						echo '<li class="colors"><a href="#" value="0" class="scolor" title="Todos" ><img width="44" src="'.Yii::app()->baseUrl.'/images/colores/allcolors.png" /></a></li>';
+					?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 					</ul>  
 				</div>
   			</li>  					  			
@@ -96,7 +98,7 @@
 							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
 							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' ('.$rangos[2]['count'].')</a></li>';
 							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
-							echo'<li><a class="precio" href="#" id="5">Todos</a></li>';
+							echo'<li><a class="precio" href="#" id="5">Todos los precios</a></li>';
 					?>		
 					</ul>  
 				</div>	
@@ -124,15 +126,16 @@
 								echo'<li><a class="marca" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
 								 
 							}
+							echo CHtml::hiddenField('texthid','');
 						?>
-						<li><a class="marca" value="0" href="#">Todos</a></li>											
+						<li><a class="marca" value="0" href="#">Todas las marcas</a></li>											
 					</ul>  	
 				</div>	
 			</li>			
 			<li class="item itemInput">
 				<div class="contenedorInput">
-					<input type="text" class="" placeholder="Buscar"> 
-					<button class="btn btn-danger btn-buscar" type="button"><i class="icon-search"></i></button>	
+					<input type="text" class="" placeholder="Buscar" id="text_search"> 
+					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
 		</ul>	 
@@ -169,7 +172,8 @@
             	$('#precio_titulo').html($(this).html());
             	$('#preciohid').val($(this).attr('id'));
             	$('#catalogo').remove(); 
-            	$('#tienda_productos').html('');  
+            	$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
             	refresh();
            
             	
@@ -181,7 +185,8 @@
             	$('#marca_titulo').html($(this).html());
             	$('#marcahid').val($(this).attr('value'));
             	$('#catalogo').remove();
-            	$('#tienda_productos').html('');  
+            	$('#tienda_productos').html(''); 
+            	$('#text_search').val('');  
             	refresh();
             
 
@@ -193,6 +198,7 @@
             	$('#colorhid').val($(this).attr('value'));
             	$('#catalogo').remove();
             	$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
             	refresh();
 
 		});  
@@ -202,6 +208,21 @@
 
             	$('#cathid').val($(this).attr('value'));
             	$('#catalogo').remove();
+            	$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
+            	refresh();
+
+		});
+		
+		$("#btn_search").click(function() { 
+            	
+
+               	$('#catalogo').remove();
+               	$('#cathid').val('0');
+               	$('#colorhid').val('0');
+               	$('#marcahid').val('0');
+               	$('#preciohid').val('5');
+               	$('#texthid').val($('#text_search').val()   );
             	$('#tienda_productos').html(''); 
             	refresh();
 
@@ -261,7 +282,12 @@ function encantar(id)
 function refresh(reset)
 {
 
-    var datosRefresh = $('#preciohid, #colorhid, #marcahid').serialize();
+  
+
+ 
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid').serialize();
+  
+ 	
 
     if(reset){
         datosRefresh += '&reset=true';

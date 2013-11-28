@@ -601,7 +601,7 @@ if(!Yii::app()->user->isGuest){
     });
     
     //Click para seleccionar un peril de la lista que esta en el dropdown User
-    $("#dropdownUser a.sub_perfil_item:not(.ver_todos)").click(function(e){
+    $("#dropdownUser a.sub_perfil_item:not(.ver_todos), #modalPerfilesOcultos li a").click(function(e){
         e.preventDefault();
         var urlActual = "<?php echo CController::createUrl(""); ?>";
         var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
@@ -651,8 +651,8 @@ if(!Yii::app()->user->isGuest){
                 dataType: 'JSON',
                 data: {modal : "perfiles"},
                 success: function(data){
-                    
-                    $("#modalAjax").append(data.data);
+                    $("#modalAjax").empty();
+                    $("#modalAjax").html(data.data);
                     $("#modalPerfilesOcultos").modal("show");
                     
                 }

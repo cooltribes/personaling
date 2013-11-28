@@ -127,6 +127,10 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['f_marca']);
 			
 		}
+		if(isset(Yii::app()->session['f_cat'])){
+			unset(Yii::app()->session['f_cat']);
+			
+		}
 		
 		if(isset(Yii::app()->session['max'])){
 			unset(Yii::app()->session['max']);
@@ -142,15 +146,10 @@ class TiendaController extends Controller
 		}
 		
 		$a ="a"; 
-		
-		
-		$dp=Producto::model()->findAll($producto->nueva2($a));
-
-		
+	
 		$lims=Precio::model()->getLimites();
 
 		$dif=$lims['maximo']-$lims['minimo'];
-		
 	
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
@@ -164,10 +163,7 @@ class TiendaController extends Controller
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
 		
-		
-		
-		
-  
+		  
     	if(isset($_POST['colorhid'])){
     		
 				
@@ -183,33 +179,38 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				
-				 
-			if($_POST['colorhid']!=0){
-			
-				Yii::app()->session['f_color'] = $_POST['colorhid'];
-			
-			}
-			if($_POST['cathid']!=0){
-			
-				Yii::app()->session['f_cat'] = $_POST['cathid'];
-			
-			}
-			if($_POST['marcahid']!=0){
-			
-				Yii::app()->session['f_marca'] = $_POST['marcahid'];
-			
-			}
-			if($_POST['preciohid']<4){
-			
-				
-				Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
-				Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
-				Yii::app()->session['p_index']=$_POST['preciohid'];
-				
+			if(strlen($_POST['texthid'])>0){
+				Yii::app()->session['f_text'] = $_POST['texthid'];
 				
 			}
 			
+			else{	 
+				if($_POST['colorhid']!=0){
+				
+					Yii::app()->session['f_color'] = $_POST['colorhid'];
+				
+				}
+				if($_POST['cathid']!=0){
+				
+					Yii::app()->session['f_cat'] = $_POST['cathid'];
+	 
+				
+				}
+				if($_POST['marcahid']!=0){
+				
+					Yii::app()->session['f_marca'] = $_POST['marcahid'];
+				
+				}
+				
+				if($_POST['preciohid']<4){
+				
+					Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
+					Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
+					Yii::app()->session['p_index']=$_POST['preciohid'];
+									
+				}
 			
+			}
 			
 			$criteria = $producto->nueva2($a);
 			$total=Producto::model()->count($criteria);
@@ -230,7 +231,7 @@ class TiendaController extends Controller
                     'status' => 'success',
                     //'condicion' => $total,
                     'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages, 'total'=>$total), true,true))); 
+                        'pages' => $pages, 'total'=>$total), true,false))); 
 			}
 			else{
 					

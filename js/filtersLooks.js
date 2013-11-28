@@ -222,6 +222,17 @@ function getFilterByClick(idPerfil){
                             $("#btnMatch").html("Looks para <b>" + data.name + "</b>");
                             $("#btnMatch").addClass("btn-danger");
                             $("#btnTodos").removeClass("btn-danger");
+                            
+                            //poner el nombre en el navbar
+                            //var children = $("li#dropdownUser").children();
+                            
+                            if(data.name.length > 7){
+                                data.name = data.name.substring(0,7);
+                                data.name = data.name.concat("...");
+                            }
+                            
+                            $("li#dropdownUser span#userName").text(data.name);
+                            console.log(data.name);
                             //Buscar
                             refresh();           
                         }
@@ -404,6 +415,8 @@ function clickPerfil(idPerfil){
     getFilterByClick(idPerfil);  
     $(".alert").fadeOut('slow');
     
+    
+    
 }
 
 //Al hacer click en el boton Looks para *
@@ -411,9 +424,21 @@ function clickPersonal(){
     
     $("#btnMatch").addClass("btn-danger");
     $("#btnTodos").removeClass("btn-danger");
+    
     if(!perfilActivo){
         $("#perfil_propio").val("1");
     }
+        
+    //desmarcar los filtros de ocasiones y shopper, ocultar divs., desmarcar precios.
+    $('#div_ocasiones input[type=checkbox]').attr('checked', false);
+    $('#div_shopper input[type=checkbox]').attr('checked', false);
+    
+    $('#div_ocasiones').hide();
+    $('#div_shopper').hide();
+    
+    //reset precios
+    $("#price-ranges a.price-filter").parent().removeClass("active-range");
+    $("#rango_actual").val("");
         
     refresh(true);
     

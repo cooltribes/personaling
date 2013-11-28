@@ -244,7 +244,7 @@ $this->breadcrumbs=array(
     </div>
     <input type="hidden" value="" id="ocasion_actual" />
     
-    <input type="hidden" id="rango_actual" name="rango_actual" value="" />     
+    <input type="hidden" id="rango_actual" name="precios" value="" />     
     <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
     
     
@@ -274,7 +274,7 @@ $this->breadcrumbs=array(
     </div>
   </div>
 </div>
-
+<div id="modalAjax"></div>
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
 <?php 
@@ -517,12 +517,12 @@ function refresh(reset)
     cargarLocal();
     var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual, #perfil_propio').serialize();
         
-    datosRefresh += '&precios=' + $('#rango_actual').val();    
-    console.log(datosRefresh);
+    //datosRefresh += '&precios=' + $('#rango_actual').val();    
+    
     if(reset){
         datosRefresh += '&reset=true';
     }
-    
+    console.log(datosRefresh);
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
             'data'=> "js:datosRefresh",

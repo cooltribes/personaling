@@ -76,7 +76,7 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropinput" >
-							<span id="precio_titulo">Filtrar por precio</span>
+								<span id="precio_titulo">Filtrar por precio</span>
 							<small> 
 								<b class="caret"></b>
 							</small>
@@ -92,18 +92,17 @@
 								echo CHtml::hiddenField('preciohid',5);
 								}
 
-							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' ('.$rangos[0]['count'].')</a></li>';
+							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' <span class="color12">('.$rangos[0]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' ('.$rangos[1]['count'].')</a></li>';
+							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' <span class="color12">('.$rangos[1]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' ('.$rangos[2]['count'].')</a></li>';
-							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
+							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' <span class="color12">('.$rangos[2]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' <span class="color12">('.$rangos[3]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="5">Todos los precios</a></li>';
 					?>		
 					</ul>  
 				</div>	
 			</li>
-
 			<li class="item">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -141,7 +140,11 @@
 		</ul>	 
 
 </section>
-
+<div class="row ">
+	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
+		<a href="" class="btn btn-block">Resetear filtros</a>
+	</div>
+</div>
 <!-- BAR OFF -->
 <!-- PRODUCTOS ON -->
 

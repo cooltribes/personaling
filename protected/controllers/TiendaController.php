@@ -131,6 +131,10 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['f_cat']);
 			
 		}
+		if(isset(Yii::app()->session['f_text'])){
+			unset(Yii::app()->session['f_text']);
+			
+		}
 		
 		if(isset(Yii::app()->session['max'])){
 			unset(Yii::app()->session['max']);

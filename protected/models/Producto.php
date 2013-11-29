@@ -722,10 +722,17 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			$criteria->addCondition('tbl_categoria_id  = '.Yii::app()->session['f_cat']);
 		}
 
-		/*if(isset(Yii::app()->session['f_text'])){
+		if(isset(Yii::app()->session['f_text'])){
 			if(strlen(Yii::app()->session['f_text'])>0)	{
+				$words=array();
+				$palabras=explode( ' ', Yii::app()->session['f_text']);
+				foreach ($palabras as $palabra){
+					$palabra=substr($palabra, 0, -1);
+					if(strlen($palabra)>2)
+						array_push($words,$palabra);
+				}
 			}
-		}*/
+		}
 		
 		 
 

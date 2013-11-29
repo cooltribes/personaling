@@ -292,7 +292,10 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['p_index']);
 			
 		}	
-		
+		if(isset(Yii::app()->session['f_texto'])){
+			unset(Yii::app()->session['f_texto']);
+			
+		}
 		$criteria = $producto->nueva2($a);
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);

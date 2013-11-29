@@ -141,8 +141,9 @@
 
 </section>
 <div class="row ">
+<?php	echo CHtml::hiddenField('resethid',0);?>
 	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
-		<a href="" class="btn btn-block">Resetear filtros</a>
+		<a href="" class="btn btn-block" id="reset">Resetear filtros</a>
 	</div>
 </div>
 <!-- BAR OFF -->
@@ -232,10 +233,20 @@
             	refresh();
 
 		});
+		
+		$("#reset").click(function() { 
+            	
+
+               	$('#catalogo').remove();
+               	$('#resethid').val('1');
+            	$('#tienda_productos').html(''); 
+            	refresh();
+
+		});
 	
 	
 </script>
-
+ 
 <script>
 
 
@@ -291,7 +302,7 @@ function refresh(reset)
 
  $("#catalogo").infinitescroll("destroy");
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid').serialize();
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #resethid').serialize();
   
  	
 

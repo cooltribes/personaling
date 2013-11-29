@@ -5,7 +5,10 @@
     }
 </style>
 
-
+			<?php //echo "paginas".$pages->pageCount; ?> 
+			<?php //echo "items".$pages->itemCount; ?> 
+			<?php //echo "page".$pages->currentPage; ?>
+			<?php //echo "size".$pages->pageSize; ?>
 
 <div class="items" id="catalogo">
    
@@ -139,6 +142,7 @@ endforeach;?>
 
 
 <?php 
+//echo "LORE"; 
 $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#catalogo',
 	    'itemSelector' => 'div.div_productos',

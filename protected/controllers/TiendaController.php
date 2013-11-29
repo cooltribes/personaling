@@ -118,6 +118,7 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
+		/*
 		if(isset(Yii::app()->session['f_color'])){
 			unset(Yii::app()->session['f_color']);
 			
@@ -144,7 +145,7 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['p_index']);
 			
 		}
-		
+		*/
 		$a ="a"; 
 	
 		$lims=Precio::model()->getLimites();
@@ -164,7 +165,10 @@ class TiendaController extends Controller
 		}
 		
 		  
-    	if(isset($_POST['colorhid'])){
+    	if( isset($_POST['colorhid']) ||  (isset($_GET['page']) && isset(Yii::app()->session['bandera']) ) ){
+    	//	if(isset($_POST['colorhid'])){
+    		Yii::app()->session['bandera'] = true;
+		
     		
 				
     			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
@@ -179,29 +183,31 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				
+			if (isset($_POST['texthid']))
 			if(strlen($_POST['texthid'])>0){
 				Yii::app()->session['f_text'] = $_POST['texthid'];
 				
-			}
-			
-			else{	 
+			} else {
+				if (isset($_POST['colorhid']))	 
 				if($_POST['colorhid']!=0){
 				
 					Yii::app()->session['f_color'] = $_POST['colorhid'];
 				
 				}
+				if (isset($_POST['cathid']))
 				if($_POST['cathid']!=0){
 				
 					Yii::app()->session['f_cat'] = $_POST['cathid'];
 	 
 				
 				}
+				if (isset($_POST['marcahid']))
 				if($_POST['marcahid']!=0){
 				
 					Yii::app()->session['f_marca'] = $_POST['marcahid'];
 				
 				}
-				
+				if (isset($_POST['preciohid']))
 				if($_POST['preciohid']<4){
 				
 					Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
@@ -219,7 +225,7 @@ class TiendaController extends Controller
 		
 			$pages = new CPagination($total);
 			
-			$pages->pageSize = $total;
+			$pages->pageSize = 12;
 			
 			$pages->applyLimit($criteria);
 	
@@ -227,11 +233,23 @@ class TiendaController extends Controller
 			
 			 
 			$dataProvider = Producto::model()->findAll($criteria);
-    		  echo CJSON::encode(array(  
+			if ((isset($_GET['page']))){
+							$marcas=Marca::model()->findAll();
+		$colores=Color::model()->findAll();
+				$this->render('index_new',
+						array('index'=>$producto,
+						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
+						'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+						'pages'=>$pages,
+						'total'=>$total,
+						));	
+			} else {
+				    		  echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
                     'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages, 'total'=>$total), true,false))); 
+                        'pages' => $pages, 'total'=>$total), true,true)));
+			}			 
 			}
 			else{
 					
@@ -243,7 +261,34 @@ class TiendaController extends Controller
 			}
 		}
 		else{
+			unset(Yii::app()->session['bandera']);
+		if(isset(Yii::app()->session['f_color'])){
+			unset(Yii::app()->session['f_color']);
 			
+		}
+		
+		if(isset(Yii::app()->session['f_marca'])){
+			unset(Yii::app()->session['f_marca']);
+			
+		}
+		if(isset(Yii::app()->session['f_cat'])){
+			unset(Yii::app()->session['f_cat']);
+			
+		}
+		
+		if(isset(Yii::app()->session['max'])){
+			unset(Yii::app()->session['max']);
+			
+		}
+		if(isset(Yii::app()->session['min'])){
+			unset(Yii::app()->session['min']);
+			
+		}
+		if(isset(Yii::app()->session['p_index'])){
+			unset(Yii::app()->session['p_index']);
+			
+		}	
+		
 		$criteria = $producto->nueva2($a);
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);

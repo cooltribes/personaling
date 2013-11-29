@@ -148,7 +148,7 @@
 <div  class="tienda_productos">
       <div class="row" id="tienda_productos">
 
-			 
+ 
 			<?php
 					$this->renderPartial('_datos',array(
 					'prods'=>$dataProvider,'pages'=>$pages),false,false);   
@@ -171,8 +171,8 @@
             	
             	$('#precio_titulo').html($(this).html());
             	$('#preciohid').val($(this).attr('id'));
-            	$('#catalogo').remove(); 
-            	$('#tienda_productos').html(''); 
+            	//$('#catalogo').remove(); 
+            	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
             	refresh();
            
@@ -184,8 +184,8 @@
             	
             	$('#marca_titulo').html($(this).html());
             	$('#marcahid').val($(this).attr('value'));
-            	$('#catalogo').remove();
-            	$('#tienda_productos').html(''); 
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
             	$('#text_search').val('');  
             	refresh();
             
@@ -196,8 +196,8 @@
             	
             	$('#color_titulo').html($(this).html());
             	$('#colorhid').val($(this).attr('value'));
-            	$('#catalogo').remove();
-            	$('#tienda_productos').html(''); 
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
             	refresh();
 
@@ -207,8 +207,8 @@
             	
 
             	$('#cathid').val($(this).attr('value'));
-            	$('#catalogo').remove();
-            	$('#tienda_productos').html(''); 
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
             	refresh();
 
@@ -284,7 +284,8 @@ function refresh(reset)
 
   
 
- 
+ $("#catalogo").infinitescroll("destroy");
+ //$("#catalogo").infinitescroll = null;
     	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid').serialize();
   
  	
@@ -302,6 +303,11 @@ function refresh(reset)
             'global' => 'false',
             'beforeSend' => 'function(){
                         $("body").addClass("aplicacion-cargando");
+						//$("#catalogo").unbind("scroll");
+						//$("#catalogo").unbind("smartscroll");
+						
+						//return false;
+						
 
             }',
             'complete' => 'function(){
@@ -321,8 +327,8 @@ function refresh(reset)
                 else
                 {
            
-                   $('#tienda_productos').html(data.div);
-             
+                   	$('#tienda_productos').html(data.div);
+             		
 		
                 }
                 

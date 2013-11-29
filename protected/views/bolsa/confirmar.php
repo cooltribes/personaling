@@ -378,6 +378,10 @@ else
 								//alert('El número de tarjeta que introdujó no es un número válido.');
 								window.location="error/2";
 							}
+							if(data.mensaje=="CVC Number Invalid"){
+								//alert('El número de tarjeta que introdujó no es un número válido.');
+								window.location="error/6";
+							}							
 						}
 						
 						if(data.status==401)

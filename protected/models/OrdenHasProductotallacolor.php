@@ -137,9 +137,9 @@ class OrdenHasProductotallacolor extends CActiveRecord
 	
 		public function precioLook($id, $look){
 			
-		$sql="select precio from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=".$look." limit 0,1";	
-		$looks=Yii::app()->db->createCommand($sql)->queryAll();
-		return $looks[0]['precio'];
+		$sql="select sum(precio) from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=".$look;	
+		return  Yii::app()->db->createCommand($sql)->queryScalar();
+		//return $looks[0][0];
 		
 	}
 	 	

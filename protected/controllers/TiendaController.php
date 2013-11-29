@@ -292,8 +292,8 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['p_index']);
 			
 		}	
-		if(isset(Yii::app()->session['f_texto'])){
-			unset(Yii::app()->session['f_texto']);
+		if(isset(Yii::app()->session['f_text'])){
+			unset(Yii::app()->session['f_text']);
 			
 		}
 		$criteria = $producto->nueva2($a);

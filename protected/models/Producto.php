@@ -120,7 +120,8 @@ class Producto extends CActiveRecord
                 'select'=> 'SUM(cantidad)',
                 ),
             'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
-             'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),                    
+             'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),  
+             'mycolor' => array(self::MANY_MANY, 'Color', 'tbl_precioTallaColor(color_id, producto_id)'),                  
             'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
 		);
 	}
@@ -692,7 +693,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('peso',$this->peso,true);
 		
 		
-		$criteria->with = array('preciotallacolor','precios','categorias');
+		$criteria->with = array('preciotallacolor','precios','categorias', 'mymarca','mycolor');
 		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
@@ -711,45 +712,102 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				
 		}
 		
+		//Filtro por color
 		if(isset(Yii::app()->session['f_color'])){
 			$criteria->addCondition('preciotallacolor.color_id = '.Yii::app()->session['f_color']);
 		}
 		
+		//Filtro por marca
 		if(isset(Yii::app()->session['f_marca'])){
 			$criteria->addCondition('marca_id = '.Yii::app()->session['f_marca']);
 		}
+		
+		//Filtro por categoria
 		if(isset(Yii::app()->session['f_cat'])){
 			$criteria->addCondition('tbl_categoria_id  = '.Yii::app()->session['f_cat']);
 		}
-
+		
+		//------------------ BUSQUEDA POR TEXTO (marca, categoria, color, nombre de la prenda) ----------------
+		$text="";
 		if(isset(Yii::app()->session['f_text'])){
 			if(strlen(Yii::app()->session['f_text'])>0)	{
 				$words=array();
 				$palabras=explode( ' ', Yii::app()->session['f_text']);
 				foreach ($palabras as $palabra){
-					$palabra=substr($palabra, 0, -1);
-					if(strlen($palabra)>2)
+					if(substr($palabra, (strlen($palabra)-1), 1)=='s'||substr($palabra, (strlen($palabra)-1), 1)=='S')
+						$palabra=substr($palabra, 0, -2);
+					else
+						$palabra=substr($palabra, 0, -1);
+					if(strlen($palabra)>2){
 						array_push($words,$palabra);
+						
+					}
+						
+				}
+				foreach ($words as $key=>$word){
+					if($key>0)
+						$text=$text." OR ";
+					$text=" categorias.nombre LIKE '%".$word."%' ";
+					$text=$text."OR  mymarca.nombre LIKE '%".$word."%' ";
+					$text=$text."OR  mycolor.valor LIKE '%".$word."%' ";
+					$text=$text."OR  t.nombre LIKE '%".$word."%' ";
 				}
 			}
+			$criteria->addCondition($text);
 		}
-		
+		//---------------------- FIN BUSQUEDA TEXTO -----------------------------------------------------------------
 		 
 
 		$criteria->addCondition('precioDescuento != ""');
 		$criteria->addCondition('orden = 1');
 		
-		$criteria->addCondition('cantidad > 0');
+		$criteria->addCondition('preciotallacolor.cantidad > 0');
 			
 		// $criteria->order = "t.id ASC";
-		if(isset(Yii::app()->session['p_index'])){
-			$criteria->addCondition('precioVenta > '.Yii::app()->session['min']);
-			$criteria->addCondition('precioVenta < '.Yii::app()->session['max']);
-			$criteria->order = "precioVenta ASC";
+		//------------------------- ALEATORIZAR LA VISTA PRINCIPAL -------------------------
+		if(!isset(Yii::app()->session['f_color'])&&!isset(Yii::app()->session['f_text'])){
+			$ran=rand(0,8);
+			switch($ran) {
+			    case 0:
+			        $criteria->order = "t.fecha DESC";
+			        break;
+			    case 1:
+			        $criteria->order = "t.fecha ASC";
+			        break;
+			    case 2:
+			        $criteria->order = "t.descripcion DESC";
+			        break;
+				case 3:
+			        $criteria->order = "t.descripcion ASC";
+			        break;
+				case 4:
+			        $criteria->order = "t.view_counter DESC";
+			        break;
+			    case 5:
+			       $criteria->order = "t.peso ASC";
+			        break;
+				case 6:
+			        $criteria->order = "t.peso DESC";
+			        break;
+				case 7:
+			        $criteria->order = "t.id DESC";
+			        break;
+				case 8:
+			        $criteria->order = "t.id ASC";
+			        break;
+				
+			}
+		}//----------------------- FIN DE ALEATORIZACION ------------------------------------------------
+		else{
+			//Filtro por precio
+			if(isset(Yii::app()->session['p_index'])){
+				$criteria->addCondition('precioVenta > '.Yii::app()->session['min']);
+				$criteria->addCondition('precioVenta < '.Yii::app()->session['max']);
+				$criteria->order = "precioVenta ASC";
+			}
+			else
+				$criteria->order = "fecha DESC";
 		}
-		else
-			$criteria->order = "fecha DESC";
-		
 		$criteria->group = "t.id";
 		$criteria->together = true;
 		

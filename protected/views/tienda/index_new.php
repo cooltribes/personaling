@@ -76,7 +76,7 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropinput" >
-							<span id="precio_titulo">Filtrar por precio</span>
+								<span id="precio_titulo">Filtrar por precio</span>
 							<small> 
 								<b class="caret"></b>
 							</small>
@@ -92,18 +92,17 @@
 								echo CHtml::hiddenField('preciohid',5);
 								}
 
-							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' ('.$rangos[0]['count'].')</a></li>';
+							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' <span class="color12">('.$rangos[0]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' ('.$rangos[1]['count'].')</a></li>';
+							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' <span class="color12">('.$rangos[1]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' ('.$rangos[2]['count'].')</a></li>';
-							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' ('.$rangos[3]['count'].')</a></li>';
+							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' <span class="color12">('.$rangos[2]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' <span class="color12">('.$rangos[3]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="5">Todos los precios</a></li>';
 					?>		
 					</ul>  
 				</div>	
 			</li>
-
 			<li class="item">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -141,7 +140,12 @@
 		</ul>	 
 
 </section>
-
+<div class="row ">
+<?php	echo CHtml::hiddenField('resethid',0);?>
+	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
+		<a href="" class="btn btn-block" id="reset">Resetear filtros</a>
+	</div>
+</div>
 <!-- BAR OFF -->
 <!-- PRODUCTOS ON -->
 
@@ -161,7 +165,9 @@
 </div>
 
 
+ <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
 
+	<?php $this->endWidget(); ?>
 
 
 
@@ -227,10 +233,20 @@
             	refresh();
 
 		});
+		
+		$("#reset").click(function() { 
+            	
+
+               	$('#catalogo').remove();
+               	$('#resethid').val('1');
+            	$('#tienda_productos').html(''); 
+            	refresh();
+
+		});
 	
 	
 </script>
-
+ 
 <script>
 
 
@@ -286,7 +302,7 @@ function refresh(reset)
 
  $("#catalogo").infinitescroll("destroy");
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid').serialize();
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #resethid').serialize();
   
  	
 

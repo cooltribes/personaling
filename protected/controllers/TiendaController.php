@@ -219,6 +219,41 @@ class TiendaController extends Controller
 					Yii::app()->session['p_index']=$_POST['preciohid'];
 									
 				}
+				if (isset($_POST['resethid']))
+				if($_POST['resethid']==1){
+				
+					if(isset(Yii::app()->session['f_color'])){
+						unset(Yii::app()->session['f_color']);
+						
+					}
+					
+					if(isset(Yii::app()->session['f_marca'])){
+						unset(Yii::app()->session['f_marca']);
+						
+					}
+					if(isset(Yii::app()->session['f_cat'])){
+						unset(Yii::app()->session['f_cat']);
+						
+					}
+					
+					if(isset(Yii::app()->session['max'])){
+						unset(Yii::app()->session['max']);
+						
+					}
+					if(isset(Yii::app()->session['min'])){
+						unset(Yii::app()->session['min']);
+						
+					}
+					if(isset(Yii::app()->session['p_index'])){
+						unset(Yii::app()->session['p_index']);
+						
+					}	
+					if(isset(Yii::app()->session['f_text'])){
+						unset(Yii::app()->session['f_text']);
+						
+					}
+									
+				}
 			
 			}
 			
@@ -291,12 +326,11 @@ class TiendaController extends Controller
 		if(isset(Yii::app()->session['p_index'])){
 			unset(Yii::app()->session['p_index']);
 			
+		}	
+		if(isset(Yii::app()->session['f_text'])){
+			unset(Yii::app()->session['f_text']);
+			
 		}
-                if(isset(Yii::app()->session['f_text'])){
-                    unset(Yii::app()->session['f_text']);
-
-                }
-		
 		$criteria = $producto->nueva2($a);
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);

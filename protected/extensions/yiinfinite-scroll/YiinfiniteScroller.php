@@ -33,14 +33,17 @@ class YiinfiniteScroller extends CBasePager {
 
     public function init() {
         $this->getPages()->validateCurrentPage = false;
+        
         parent::init();
     }
 
     public function run() {
-    	//echo "CHAO";
-		//echo $this->pageCount;
-		//echo "chao";
-		//echo $this->currentPage;
+//    	echo "TOTAL ";
+//		echo $this->pageCount;
+//		echo "<br>Actual";
+//		echo $this->currentPage;
+//        if($this->currentPage == $this->pageCount)
+//            return;
         if($this->pageCount > 1) {
             $this->registerClientScript();
             $this->createInfiniteScrollScript();
@@ -93,6 +96,7 @@ class YiinfiniteScroller extends CBasePager {
 
     private function renderNavigation() {
         $next_link = CHtml::link($this->navigationLinkText, $this->createPageUrl($this->currentPage+1));
+        //$next_link = CHtml::link($this->navigationLinkText, $this->createPageUrl($this->currentPage));
         echo '<div class="infinite_navigation">'.$next_link.'</div>';
     }
 

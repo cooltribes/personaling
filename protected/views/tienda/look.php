@@ -1,7 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-  'Tu Personal Shopper' =>array('tienda/look'),
-  'Todos los looks',
+  'Tu Personal Shopper',
 );
 ?>
 <div class="container">
@@ -203,6 +202,7 @@ $this->breadcrumbs=array(
         </ul>
        
         	<?php /** @var BootActiveForm $form */
+                /*
 				$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				     'id'=>'searchForm',
   					  'type'=>'search',
@@ -231,14 +231,14 @@ $this->breadcrumbs=array(
 
 	),
 			)
-				);*/
+				);*//*
 				?>
             <div class="btn-group">
           
               <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'label'=>'Buscar','type'=>'danger')); ?>
             </div>
           </div>
-        <?php $this->endWidget(); ?>
+        <?php $this->endWidget(); */?>
       </nav>
       <!--/.nav-collapse --> 
     </div>
@@ -512,7 +512,8 @@ function show_shopper(){
 // here is the magic
 function refresh(reset)
 {
-    
+    if($("#looks").infinitescroll)
+    $("#looks").infinitescroll("destroy");
     
     cargarLocal();
     var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual, #perfil_propio').serialize();
@@ -549,6 +550,7 @@ function refresh(reset)
                 {
                    //	alert(data.condicion);
                    $('#tienda_looks').html(data.div);
+                  // $('#tienda_looks').html(data);
                    // setTimeout(\"$('#dialogColor').modal('hide') \",3000);
                 }
                 

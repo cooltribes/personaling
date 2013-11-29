@@ -49,9 +49,17 @@ $this->breadcrumbs=array(
                                   
                                   <div class="card_content vcard">
                                       <h4 class="fn"><?php echo $perfil->name; ?></h4>
-                                      <div class="span12">
-                                          <div class="span6"></div>
-                                          <div class="span6"></div>
+                                      <div class="row-fluid">
+                                          <div class="span12 text_align_center">
+                                              <?php $this->widget("bootstrap.widgets.TbButton", array(
+                                                 'buttonType' => 'button',
+                                                 'label' => 'Eliminar',
+                                                 //'type' => 'danger',
+                                                 'icon' => 'remove',
+                                              )); ?>
+                                              
+                                          </div>
+                                          
                                       </div>
                                       
                                   </div>
@@ -75,5 +83,10 @@ $this->breadcrumbs=array(
   </div>
 </div>
 <!-- /container -->
+<script type="text/javascript">
+/*Elimina un filtro dado por ID*/
+
+
+</script>
 
 

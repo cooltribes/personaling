@@ -4,6 +4,7 @@
         display:none;
     }
 </style>
+
   <div class="row" id="looks">
   	
 	<?php foreach($looks as $look): ?>
@@ -103,7 +104,7 @@
 	    'donetext' => ' ',
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
-	    'debug' => true,
+	    //'debug' => true,
 	)); ?> 
 	</div>
   

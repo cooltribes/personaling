@@ -291,7 +291,11 @@ class TiendaController extends Controller
 		if(isset(Yii::app()->session['p_index'])){
 			unset(Yii::app()->session['p_index']);
 			
-		}	
+		}
+                if(isset(Yii::app()->session['f_text'])){
+                    unset(Yii::app()->session['f_text']);
+
+                }
 		
 		$criteria = $producto->nueva2($a);
 		$total=Producto::model()->count($criteria);
@@ -924,6 +928,18 @@ public function actionCategorias2(){
 
 	public function actionLook(){
 		
+            /* 
+             * Si se utilizan filtros y estaba seteada la variable de sesion
+             * Borrarla porque se va a realizar una nueva busqueda por filtros
+             */
+            if((isset(Yii::app()->session['todoPost']) && !isset($_GET['page'])))
+            {
+                unset(Yii::app()->session['todoPost']);
+            }
+            
+            
+            
+            //Comparar si vienen todos los campos de perfil
             $filtroPerfil = false;
             
             if(isset($_POST['Profile'])){                
@@ -935,17 +951,50 @@ public function actionCategorias2(){
                 }        
             }
             
-            if(isset($_GET["page"])){
-//                echo "<pre>";
-//                print_r($_GET["page"]);
-//                echo "</pre>";
-
+            /* 
+             * Si viene la variable page (si se esta paginando con infinitescroll)
+             * y ademas existe la variable de session (ya se habia filtrado) y no viene
+             * nada por el post (no se esta haciendo una nueva busqueda por filtros)
+             * Entonces se saca el valor de la variable de session y se pone en el POST
+             */
+            
+            
+            
+            if(isset($_GET['page']) && isset(Yii::app()->session['todoPost'])
+                    && !(isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
+                    || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
+                || isset($_POST['perfil_propio']))
+               ){
+//                if(isset($_GET['page'])){
+//                    echo "inside<pre>";
+//                    print_r($_GET['page']);
+//                    echo "</pre>";
+//                    Yii::app()->end();
+//
+//                }
+                $_POST = Yii::app()->session['todoPost'];
+                
+            }            
+            
+            $filtroPerfil = false;
+            
+            if(isset($_POST['Profile'])){                
+                foreach ($_POST['Profile'] as $campo){                    
+                    if(!empty($campo)){
+                       $filtroPerfil = true;
+                       break;
+                   } 
+                }        
             }
+            
             if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
                     || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
                 || isset($_POST['perfil_propio'])) 
             {
 
+                
+               Yii::app()->session['todoPost'] = $_POST;
+               
                 $criteria = new CDbCriteria;                
                    
                 //Si no se resetearon - revisar lo que viene de los inputs 
@@ -990,6 +1039,7 @@ public function actionCategorias2(){
                    }  
                 }
                 
+                //Looks recomendados para el usuario
                 if($_POST['perfil_propio'] == 1){
                     
                     $userTmp = User::model()->findByPk(Yii::app()->user->id);
@@ -1011,6 +1061,7 @@ public function actionCategorias2(){
 
                     $criteria->addInCondition('t.id', $inValues);
                     
+                 //Looks recomendados para un perfil   
                 }else if ($filtroPerfil) {
                     
                     $userTmp = User::model()->findByPk(Yii::app()->user->id);
@@ -1035,22 +1086,38 @@ public function actionCategorias2(){
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
-			  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
-				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
                 
-                echo CJSON::encode(array(
-                    'status' => 'success',
-                    'condicion' => $total,
-                    'div' => $this->renderPartial('_look', array('looks' => $looks,
-                        'pages' => $pages,), true, true)));
+                Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+                Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+                Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+                Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+                Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+
+                foreach($looks as $look){
+                   $todoss[] = $look->id; 
+                }
+                      
+                if(!isset($_GET["page"])){
+                    
+                    echo CJSON::encode(array(
+                        'status' => 'success',
+                        'condicion' => $total,
+                        'todos' => $todoss,
+                        'div' => $this->renderPartial('_look', array('looks' => $looks,
+                            'pages' => $pages,), true, true)));
+                    
+                }else{
+                    
+                    echo $this->renderPartial('_look', array('looks' => $looks,
+                        'pages' => $pages,), true, true);              
+                  
+                }
+                                
            } 
            else
            {

@@ -14,7 +14,7 @@
     <div class="modal-body ">
 <!--        <p class="lead">Selecciona un perfil para alguien más</p> 
         <hr>-->
-        <legend class="lead">Selecciona un perfil para alguien más</legend>
+        <h4>Selecciona un perfil para alguien más:</h4>
         <div class="row-fluid margin_bottom_medium margin_top_medium">
             <div class="span6 offset3">                                     
                         

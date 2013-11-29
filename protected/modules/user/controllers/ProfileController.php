@@ -1601,7 +1601,23 @@ class ProfileController extends Controller
 
         /*Vista donde se administran todos los perfiles creados, para editarlos o borrarlos*/
         public function actionTusPerfiles() {
-            
+            if(isset($_POST['id'])){
+                $filter = Filter::model()->findByPk($_POST['id']);                
+                
+                if($filter){ 
+                    
+                   $filter->delete(); 
+                   Yii::app()->user->updateSession();
+                   Yii::app()->user->setFlash('success', 'Se ha eliminado el filtro <b>'.
+                           $filter->name.'</b>');
+                    
+                }else{
+                  Yii::app()->user->updateSession();
+                   Yii::app()->user->setFlash('error', 'Filtro no encontrado');
+                }               
+                
+                
+            }
             $this->render("tusperfiles");
             
             

@@ -497,7 +497,8 @@ class RegistrationController extends Controller
                             }else if($user->status_register == User::STATUS_REGISTER_TIPO){
                                     $this->redirect(array("/user/profile/tuestilo"));
                             }else{
-                                    $this->redirect(array("/site/personal"));
+                                    //$this->redirect(array("/site/personal"));
+                                    $this->redirect(array("/tienda/look"));
                             }
 
                     }

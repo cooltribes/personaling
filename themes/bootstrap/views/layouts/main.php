@@ -280,7 +280,7 @@ if(!Yii::app()->user->isGuest){
   <?php endif?>
   <?php echo $content; ?> </div>
 <!-- page -->
-
+<div id="modalAjax"></div>
 <div id="wrapper_footer">
   <footer class="container">
     <div class="row hidden-phone">
@@ -318,8 +318,8 @@ if(!Yii::app()->user->isGuest){
           </div>
         <hr/>
         <p>Nos Avalan</p>
-        <a href="http://ve.wayra.org/es/startup/personaling"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
-        <a href="#"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
+        <a href="http://ve.wayra.org/es/startup/personaling" target="_blank"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
+        <a href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013" target="_blank"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
         <p class="margin_top_small">Afiliados a</p>
         <img class="margin_top_small_minus" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners">
       </div>

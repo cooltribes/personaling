@@ -274,7 +274,7 @@ $this->breadcrumbs=array(
     </div>
   </div>
 </div>
-<div id="modalAjax"></div>
+
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
 <?php 
@@ -512,12 +512,10 @@ function show_shopper(){
 // here is the magic
 function refresh(reset)
 {
-	//alert($('.check_ocasiones').serialize());
-	//alert($('.check_ocasiones').length) 
+    
+    
     cargarLocal();
     var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual, #perfil_propio').serialize();
-        
-    //datosRefresh += '&precios=' + $('#rango_actual').val();    
     
     if(reset){
         datosRefresh += '&reset=true';

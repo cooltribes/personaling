@@ -779,7 +779,7 @@ class BolsaController extends Controller
 								"CardHolder"=>$tarjeta->nombre, // NOMBRE EN TARJETA
 								"CardHolderID"=>$tarjeta->ci, // CEDULA
 								"CardNumber"=>$tarjeta->numero, // NUMERO DE TARJETA
-								"CVC"=>$tarjeta->codigo, //CODIGO DE SEGURIDAD
+								"CVC"=>"".$tarjeta->codigo, //CODIGO DE SEGURIDAD
 								"ExpirationDate"=>$tarjeta->vencimiento, // FECHA DE VENCIMIENTO
 								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
 								"Address"=>$tarjeta->direccion, // DIRECCION
@@ -1136,12 +1136,14 @@ class BolsaController extends Controller
 			$prorden->look_id = $prod->look_id;
 			$prtc = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
 			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
+			$prorden->precio = $precio->precioDescuento;
+			/*
 			if($prod->look_id == 0){ // no es look
 				$prorden->precio = $precio->precioDescuento;
 			} else {
 				$look = Look::model()->findByPk($prod->look_id);
 				if(isset($look)) $prorden->precio = $look->getPrecio(false);										
-			}
+			}*/
 			$prorden->save();
 				//listo y que repita el proceso
 		}

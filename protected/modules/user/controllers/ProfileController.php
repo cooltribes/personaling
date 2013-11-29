@@ -28,7 +28,7 @@ class ProfileController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan'),
+				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan', 'tusPerfiles'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -1599,6 +1599,13 @@ class ProfileController extends Controller
 	}
 
 
+        /*Vista donde se administran todos los perfiles creados, para editarlos o borrarlos*/
+        public function actionTusPerfiles() {
+            
+            $this->render("tusperfiles");
+            
+            
+        }
 		
 			
 		

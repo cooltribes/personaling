@@ -105,6 +105,7 @@ $looks_recomendados = $look->match($model);
               <li> <?php echo CHtml::link('Tu avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
               <li><?php echo CHtml::link('Tu perfil público',array('profile/perfil'),array("title"=>"Ve tu perfil público")); ?> </li>
+              <li><?php echo CHtml::link('Otros perfiles',array('profile/tusPerfiles'),array("title"=>"Ve los perfiles que has creado")); ?> </li>
             </ul>
           </div>
           <div class="span4">

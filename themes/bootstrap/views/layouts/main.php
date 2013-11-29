@@ -280,7 +280,7 @@ if(!Yii::app()->user->isGuest){
   <?php endif?>
   <?php echo $content; ?> </div>
 <!-- page -->
-
+<div id="modalAjax"></div>
 <div id="wrapper_footer">
   <footer class="container">
     <div class="row hidden-phone">

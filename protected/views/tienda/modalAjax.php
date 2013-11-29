@@ -12,6 +12,9 @@
     </div>    
       
     <div class="modal-body ">
+<!--        <p class="lead">Selecciona un perfil para alguien más</p> 
+        <hr>-->
+        <legend class="lead">Selecciona un perfil para alguien más</legend>
         <div class="row-fluid margin_bottom_medium margin_top_medium">
             <div class="span6 offset3">                                     
                         
@@ -48,7 +51,7 @@
                 'buttonType' => 'link',
                 'label' => 'Administrar Perfiles',
                 'type' => 'danger',
-                'url' => '#'
+                'url' => CController::createUrl('/user/profile/tusPerfiles'),
                 //'size' => 'large', // null, 'large', 'small' or 'mini'
                 //'block' => 'true',
                 //'htmlOptions' => array('id' => 'save-search','class'=>'controls'),//'onclick' => 'js:$("#newFilter-form").submit();')

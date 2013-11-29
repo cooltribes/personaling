@@ -103,6 +103,7 @@
 	    'donetext' => ' ',
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
+	    'debug' => true,
 	)); ?> 
 	</div>
   

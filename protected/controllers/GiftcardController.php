@@ -32,7 +32,7 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviarGiftCard','aplicar'),
+				'actions'=>array('create','update','enviarGiftCard','aplicar', 'comprar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -376,11 +376,7 @@ class GiftcardController extends Controller
             
             $this->render('enviargiftcard', array('model' => $model, 'envio' => $envio));
                 
-	}
-        
-	public function actionEnviarGiftCard(){
-		$this->render('enviargiftcard_usuario');
-	}
+	}	
 
         
         public function actionAplicar(){                           
@@ -1042,5 +1038,51 @@ class GiftcardController extends Controller
             return array("document" => $objPHPExcel, "errors" => $errores);
             
         }
+        
+        
+        /**
+	 * Crear una giftcard desde el usuario, para luego pasar al proceso de compra.
+	 */
+	public function actionComprar()
+	{		
+                $model = new BolsaGC;
+                $envio = new EnvioGiftcard("masivo");
+                
+                if(isset($_POST['BolsaGC']))
+		{                                        
+//                    echo "Datos";
+//                    echo "<pre>";
+//                    print_r($_POST);
+//                    echo "</pre>";
+//
+//                    Yii::app()->end();  
+                    
+                    $model->attributes = $_POST['BolsaGC'];
+                    
+                    $model->user_id = Yii::app()->user->id;
+                    
+
+                    if($model->validate()){
+                        
+                       //$model->plantilla_url = "default.jpg";
+                        
+                        if($model->save()){                            
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('success',UserModule::t("Se ha guardado la Gift Card."));    
+//                            if(isset($_POST["Guardar"])){
+//                                $this->redirect(array('index'));
+//                            }else if(isset($_POST["Enviar"])){
+//                                $this->redirect(array('enviar','id'=>$model->id));
+//                            }
+                            
+                        }                        
+                    }			
+		}
+                
+		$this->render('comprar',array(
+			'model'=>$model,
+			'envio'=>$envio,
+		));
+	}
         
 }

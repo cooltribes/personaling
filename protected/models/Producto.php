@@ -694,7 +694,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 		$criteria->with = array('preciotallacolor','precios','categorias', 'mymarca','mycolor');
-		$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
+		//$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
 		
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
 		{
@@ -758,8 +758,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		//---------------------- FIN BUSQUEDA TEXTO -----------------------------------------------------------------
 		 
 
-		$criteria->addCondition('precioDescuento != ""');
-		$criteria->addCondition('orden = 1');
+		
 		
 		$criteria->addCondition('preciotallacolor.cantidad > 0');
 			

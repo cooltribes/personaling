@@ -1131,17 +1131,12 @@ public function actionCategorias2(){
                 Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
                 Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
                 Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
-
-                foreach($looks as $look){
-                   $todoss[] = $look->id; 
-                }
-                      
+                                      
                 if(!isset($_GET["page"])){
                     
                     echo CJSON::encode(array(
                         'status' => 'success',
-                        'condicion' => $total,
-                        'todos' => $todoss,
+                        'condicion' => $total,                        
                         'div' => $this->renderPartial('_look', array('looks' => $looks,
                             'pages' => $pages,), true, true)));
                     

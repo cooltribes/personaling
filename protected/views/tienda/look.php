@@ -163,7 +163,7 @@ $this->breadcrumbs=array(
           </li>
           <!-- Filtro por Precios OFF -->
           <li>
-          	<a href="#" onclick="js:show_shopper();" >Personal Shoppers </a>
+          	<a id="btnShoppers" href="" onclick="js:show_shopper();" >Personal Shoppers </a>
           	
           </li>
           
@@ -649,6 +649,14 @@ $(document).ready(function(){
          
     <?php unset(Yii::app()->session["profileOn"]);    
         } ?>
+                
+
+        $("#btnShoppers").click(function(e){
+            e.preventDefault();
+        });
+                
+                
+                
 });
 
 

@@ -7,6 +7,7 @@ class GiftcardController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
+        /*CAMBIAR ESTA CONSTANTE CUANDO SE REQUIERA CAMBIAR LA LONGITUD DEL CODIGO DE UNA TARJETA*/
         const DIGITOS_CODIGO = 16;
 	/**
 	 * @return array action filters
@@ -1046,6 +1047,7 @@ class GiftcardController extends Controller
 	public function actionComprar()
 	{		
                 $model = new BolsaGC;
+                $model->monto = 100; //Default
                 $envio = new EnvioGiftcard("masivo");
                 
                 if(isset($_POST['BolsaGC']))
@@ -1066,9 +1068,12 @@ class GiftcardController extends Controller
                         
                        //$model->plantilla_url = "default.jpg";
                         
-                        if($model->save()){                            
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('success',UserModule::t("Se ha guardado la Gift Card."));    
+                        if($model->save()){  
+                            
+                            $this->redirect($this->createAbsoluteUrl('bolsa/authGC',array(),'https'));
+                                    
+//                            Yii::app()->user->updateSession();
+//                            Yii::app()->user->setFlash('success',UserModule::t("Se ha guardado la Gift Card."));    
 //                            if(isset($_POST["Guardar"])){
 //                                $this->redirect(array('index'));
 //                            }else if(isset($_POST["Enviar"])){

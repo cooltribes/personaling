@@ -3,20 +3,21 @@
     <h1>Reporte de Productos Vendidos</small></h1>
   </div>
 <div class="span11">
+
 <?php 
 	$list= CHtml::listData(Marca::model()->findAll(), 'id', 'nombre');
 	$list[0]="Todas";
 	
-	 echo "Desde ".CHtml::textField('inicio',date("d-m-Y"), array(
-                            'append' => '<i class="icon-calendar"></i>',
-                            'class' => 'span1',
+	  echo "<div class='span3'>".CHtml::textField('inicio','', array(
+                            'placeholder' => 'Desde',
+                            'class' => 'span2 ui-datepicker-trigger',
                             
-                        )); 
-	echo " hasta ".CHtml::textField('fin',date("d-m-Y"), array(
-                            'append' => '<i class="icon-calendar"></i>',
-                            'class' => 'span1',
+                        ))."</div>"; 
+	echo "<div class='span3'>".CHtml::textField('fin','', array(
+                            'placeholder' => 'Hasta',
+                            'class' => 'span2 ui-datepicker-trigger',
                             
-                        )); 
+                        ))."</div>"; 
 	echo '<a class="btn margin_bottom_small btn btn-danger" id="fechas" href="#">Buscar</a>';
 	
 	
@@ -92,6 +93,8 @@
 			ajaxRequest = $('#marcas').serialize();
 			marcaId = $('#marcas').val();
 			clearTimeout(ajaxUpdateTimeout);
+			$('#inicio').val('');
+			$('#fin').val('');
 			
 			ajaxUpdateTimeout = setTimeout(function () {
 				$.fn.yiiListView.update(
@@ -140,12 +143,17 @@
 
 
 <script>
-	
-	  
+
+
+	   
 	   
 	   $('#inicio').datepicker({
             dateFormat: "dd-mm-yy",
-                        
+            defaultDate: '-1m',
+            showOn: "both",
+            buttonImage: "<?php echo Yii::app()->baseUrl."/images/cal.png"?>",
+            buttonImageOnly: true,
+
             onSelect: function(selected) {
                         $("#fin").datepicker(
                                 "option","minDate", selected);
@@ -154,10 +162,13 @@
         
            
         $('#fin').datepicker({
-            dateFormat: "dd-mm-yy",
+           dateFormat: "dd-mm-yy",
             maxDate: 0,
+           showOn: "both",
+            buttonImage: "<?php echo Yii::app()->baseUrl."/images/cal.png"?>",
+            buttonImageOnly: true,
         });
-        
+      
 	
 	
 </script>

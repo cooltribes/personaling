@@ -63,11 +63,11 @@ public function actionReporte()
 			if(isset(Yii::app()->session['idMarca']))
 				unset(Yii::app()->session['idMarca']);
 				
-			if(isset($_POST['desde']))
+			if(isset(Yii::app()->session['desde']))
 			{	unset(Yii::app()->session['desde']);
 
 			}
-			if(isset($_POST['hasta']))
+			if(isset(Yii::app()->session['hasta']))
 			{	unset(Yii::app()->session['hasta']);
 
 			}
@@ -77,8 +77,9 @@ public function actionReporte()
 			Yii::app()->session['idMarca']=$_POST['marcas'];
 			
 		if(isset($_POST['desde'])&&isset($_POST['hasta']))
-			{	Yii::app()->session['desde']=$_POST['desde'];
-				Yii::app()->session['hasta']=$_POST['hasta'];
+			{	Yii::app()->session['desde']=date("Y-m-d", strtotime($_POST['desde']));
+				Yii::app()->session['hasta']=date("Y-m-d", strtotime($_POST['hasta']));
+				
 			}
 	
 			

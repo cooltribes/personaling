@@ -155,7 +155,22 @@ class TiendaController extends Controller
 		$lims=Precio::model()->getLimites();
 
 		$dif=$lims['maximo']-$lims['minimo'];
-	
+				
+		
+		
+		$orden[0]="t.fecha DESC";
+		$orden[1]="t.fecha ASC";
+		$orden[2]="t.descripcion DESC";
+		$orden[3]="t.descripcion ASC";
+		$orden[4]="t.view_counter DESC";
+		$orden[5]="t.peso ASC";
+		$orden[6]="t.peso DESC";
+		$orden[7]="t.id DESC";
+		$orden[8]="t.id ASC";
+		
+		
+		
+		
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
 		$rangos[1]['min']=$rangos[0]['max']+0.01;
@@ -258,6 +273,8 @@ class TiendaController extends Controller
 			}
 			
 			$criteria = $producto->nueva2($a);
+			if (isset($_GET['page']))
+				$criteria->order=$orden[Yii::app()->session['order']];
 			$total=Producto::model()->count($criteria);
 			if($total>0){
 			
@@ -273,8 +290,9 @@ class TiendaController extends Controller
 			 
 			$dataProvider = Producto::model()->findAll($criteria);
 			if ((isset($_GET['page']))){
-							$marcas=Marca::model()->findAll();
-		$colores=Color::model()->findAll();
+				
+				$marcas=Marca::model()->findAll();
+				$colores=Color::model()->findAll();
 				$this->render('index_new',
 						array('index'=>$producto,
 						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
@@ -283,7 +301,9 @@ class TiendaController extends Controller
 						'total'=>$total,
 						));	
 			} else {
-				    		  echo CJSON::encode(array(  
+					
+				   
+				    echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
                     'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
@@ -331,7 +351,11 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['f_text']);
 			
 		}
+		if(!isset($_GET['page'])){
+			Yii::app()->session['order']=rand(0,8);
+		}
 		$criteria = $producto->nueva2($a);
+		$criteria->order=$orden[Yii::app()->session['order']];
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);
 		
@@ -341,8 +365,8 @@ class TiendaController extends Controller
 	
 		$marcas=Marca::model()->findAll();
 		$colores=Color::model()->findAll();
-			 
-			
+		
+
 		$this->render('index_new',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 

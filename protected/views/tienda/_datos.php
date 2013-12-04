@@ -35,11 +35,11 @@ $prePub="";
 	else{
 		$ima=Imagen::model()->findByPk($im);
 	}
-	$ord= $ima->orden;
+	/*$ord= $ima->orden;
 	$ord++;
 	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>$ord));
 	if(is_null($segunda))
-		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));
+		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));*/
 	
 	
 	

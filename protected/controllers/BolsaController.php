@@ -775,7 +775,7 @@ class BolsaController extends Controller
 			$detalle->nTransferencia = $output->id;
 			$detalle->nombre = $tarjeta->nombre;
 			$detalle->cedula = $tarjeta->ci;
-			$detalle->monto = $_POST['total'];
+			$detalle->monto = $monto;
 			$detalle->fecha = date("Y-m-d H:i:s");
 			$detalle->banco = 'TDC';
 			$detalle->estado = 1; // aceptado
@@ -1150,7 +1150,7 @@ class BolsaController extends Controller
 							'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
 						));*/
 						$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));
-					} else {
+					} else { 
 						$this->redirect($this->createAbsoluteUrl('bolsa/error',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
 					}			
 			        break;

@@ -58,13 +58,29 @@ public function actionReporte()
 	{ 
    $orden = new Orden;
 		
-		if(isset(Yii::app()->session['idMarca']))
-			unset(Yii::app()->session['idMarca']);
-		
-		 
+		if(!isset($_GET['data_page'])){
+			
+			if(isset(Yii::app()->session['idMarca']))
+				unset(Yii::app()->session['idMarca']);
+				
+			if(isset(Yii::app()->session['desde']))
+			{	unset(Yii::app()->session['desde']);
+
+			}
+			if(isset(Yii::app()->session['hasta']))
+			{	unset(Yii::app()->session['hasta']);
+
+			}
+		}
 		
 		if(isset($_POST['marcas']))
 			Yii::app()->session['idMarca']=$_POST['marcas'];
+			
+		if(isset($_POST['desde'])&&isset($_POST['hasta']))
+			{	Yii::app()->session['desde']=date("Y-m-d", strtotime($_POST['desde']));
+				Yii::app()->session['hasta']=date("Y-m-d", strtotime($_POST['hasta']));
+				
+			}
 	
 			
 			$dataProvider = $orden->vendidas();

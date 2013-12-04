@@ -235,9 +235,10 @@ class Orden extends CActiveRecord
 		// should not be searched.
  
  	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
-		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color
+		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color, ord.fecha as Fecha
 		from tbl_orden_has_productotallacolor o  
 		JOIN tbl_precioTallaColor p ON p.id = o.preciotallacolor_id 
+		JOIN tbl_orden ord ON ord.id = o.tbl_orden_id 
 		JOIN tbl_producto pr ON pr.id = p.producto_id 
 		JOIN tbl_precio pre ON pre.tbl_producto_id = p.producto_id 
 		JOIN tbl_marca m ON m.id=pr.marca_id 
@@ -248,6 +249,12 @@ class Orden extends CActiveRecord
 		if(isset(Yii::app()->session['idMarca'])){
 			if(Yii::app()->session['idMarca']!=0)
 				$sql=$sql." AND m.id=".Yii::app()->session['idMarca'];
+
+		}
+		
+		if(isset(Yii::app()->session['desde'])&&isset(Yii::app()->session['hasta'])){
+			
+				$sql=$sql." AND ord.fecha BETWEEN '".Yii::app()->session['desde']."' AND '".Yii::app()->session['hasta']."'";
 
 		}
 		
@@ -275,7 +282,7 @@ class Orden extends CActiveRecord
 					 
 				    'sort'=>array(
 				        'attributes'=>array(
-				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo'
+				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
 				        ),
 	    ),
 				));

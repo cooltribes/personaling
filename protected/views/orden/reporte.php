@@ -3,10 +3,25 @@
     <h1>Reporte de Productos Vendidos</small></h1>
   </div>
 <div class="span11">
+
 <?php 
 	$list= CHtml::listData(Marca::model()->findAll(), 'id', 'nombre');
 	$list[0]="Todas";
-
+	
+	  echo "<div class='span3'>".CHtml::textField('inicio','', array(
+                            'placeholder' => 'Desde',
+                            'class' => 'span2 ui-datepicker-trigger',
+                            
+                        ))."</div>"; 
+	echo "<div class='span3'>".CHtml::textField('fin','', array(
+                            'placeholder' => 'Hasta',
+                            'class' => 'span2 ui-datepicker-trigger',
+                            
+                        ))."</div>"; 
+	echo '<a class="btn margin_bottom_small btn btn-danger" id="fechas" href="#">Buscar</a>';
+	
+	
+	
 	echo CHtml::dropDownList('marcas', 'Todas', $list, array('empty' => 'Filtrar por marca', 'class'=>'pull-right'));
 	$template = '<br/><br/>
 				<div style="width:100%">
@@ -20,17 +35,18 @@
 			 	
 			  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ta table-hover table-striped">
 			  <thead>
-			  <tr> 
+			  <tr class="sorter"> 
 
-			      <th>Marca</th>
-                    <th>Nombre</th>
+			      <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Marca">Marca</a></th>
+                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Nombre">Nombre</a></th>
                     <th>SKU</th>
-                    <th>Color</th>
-                    <th>Talla</th>
+                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Color">Color</a></th>
+                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Talla">Talla</a></th>
                     <th>Cantidad</th>
-                    <th>Costo (Bs)</th>
+                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Costo">Costo (Bs)</a></th>
                     <th>Precio sin IVA (Bs)</th>
                     <th>Precio con IVA (Bs)</th>
+                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Fecha">Vendido</a></th>
                 </tr>
 			    </thead>
 			    <tbody>
@@ -62,7 +78,7 @@
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
 	      'sortableAttributes'=>array(
-                'Nombre', 'Marca', 'Talla', 'Color', 'Costo'
+                'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
    	),
 	    
 	    
@@ -77,6 +93,8 @@
 			ajaxRequest = $('#marcas').serialize();
 			marcaId = $('#marcas').val();
 			clearTimeout(ajaxUpdateTimeout);
+			$('#inicio').val('');
+			$('#fin').val('');
 			
 			ajaxUpdateTimeout = setTimeout(function () {
 				$.fn.yiiListView.update(
@@ -94,8 +112,63 @@
 		});",CClientScript::POS_READY
 	);
 	
+	Yii::app()->clientScript->registerScript('fecha',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		$('#fechas').click(function() { 
+
+			clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-items',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('orden/reporte') . "',
+				data: {ajaxRequest: ajaxRequest, desde:$('#inicio').val(), hasta:$('#fin').val()}}
+				
+				)
+				},
+		
+		300);
+		return false;
+		});",CClientScript::POS_READY
+	);
+	
 
 ?>
 <div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/orden/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
 </div>
 </div>
+
+
+<script>
+
+
+	   
+	   
+	   $('#inicio').datepicker({
+            dateFormat: "dd-mm-yy",
+            defaultDate: '-1m',
+            showOn: "both",
+            buttonImage: "<?php echo Yii::app()->baseUrl."/images/cal.png"?>",
+            buttonImageOnly: true,
+
+            onSelect: function(selected) {
+                        $("#fin").datepicker(
+                                "option","minDate", selected);
+                        }
+        });
+        
+           
+        $('#fin').datepicker({
+           dateFormat: "dd-mm-yy",
+            maxDate: 0,
+           showOn: "both",
+            buttonImage: "<?php echo Yii::app()->baseUrl."/images/cal.png"?>",
+            buttonImageOnly: true,
+        });
+      
+	
+	
+</script>

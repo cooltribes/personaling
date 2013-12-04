@@ -8,23 +8,9 @@ $mp->sandbox_mode(TRUE);
 //var_dump($accessToken);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
-	$descuento = Yii::app()->getSession()->get('descuento');
-	$total = Yii::app()->getSession()->get('total');
-	if(Yii::app()->getSession()->get('usarBalance') == '1'){
-		$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
-		$balance = floor($balance *100)/100;
-		if($balance > 0){
-			if($balance >= $total){
-				$descuento = $total;
-				$total = 0;
-			}else{
-				$descuento = $balance;
-				$total = $total - $balance;
-			}
-		}
-	}
+	
 //Yii::app()->getSession()->add('descuento',$descuento);
-Yii::app()->getSession()->add('total_tarjeta',$total);	
+//Yii::app()->getSession()->add('total',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
@@ -64,21 +50,24 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envío</h4>
-        <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
+        <h4 class="braker_bottom">Datos de la compra</h4>
         <?php 
-        // direccion de envio 
-        if(isset($tipoPago)){
-        	//echo 'Tipo pago: '.$tipoPago;
-		}
-        $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
-		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
+        //datos de todas las giftcards de la bolsa
+        //Temporalmente solo una
+        //
+        
         ?>
-        <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
-          <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
-        <p><strong>Dirección:</strong> <br/>
-          <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
-        <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
+        <p> <strong>Monto de la GiftCard</strong> <br/>
+          <span class="muted small"><?php echo $giftcard->monto; ?></span>
+        </p>
+        <p>
+            <strong>Fecha de vigencia</strong> <br/>
+            Desde <?php echo  date("d/m/Y"); ?> <br/>
+            Hasta 
+            <?php $now = date('Y-m-d', strtotime('now'));
+                  echo date("d/m/Y", strtotime($now." + 1 year")); ?>
+        </p>
+        <p> <strong>Otros datos</strong>: <?php echo "otros"; ?> <br/>
         </p>
         
         <!-- Direcciones OFF --> 
@@ -91,24 +80,28 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
         <div class=" margin_bottom">
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
             <?php 
-              	if(Yii::app()->getSession()->get('tipoPago')==1)
-				{
-					echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
-				}else if(Yii::app()->getSession()->get('tipoPago')==4){
-					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
-				}else if(Yii::app()->getSession()->get('tipoPago')==2){
-					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
-					
-					$tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
-					
-					$rest = substr($tarjeta->numero, -4);
-					
-					echo "</br>Nombre: ".$tarjeta->nombre."
-					</br>Numero: XXXX XXXX XXXX ".$rest."
-					</br>Vencimiento: ".$tarjeta->vencimiento;
+              	if(Yii::app()->getSession()->get('tipoPago')==1){
+                    
+                    echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
+                
+                    
+                }else if(Yii::app()->getSession()->get('tipoPago')==4){
+                    
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
+                    
+                }else if(Yii::app()->getSession()->get('tipoPago')==2){
+                    
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
 
-					
-				}
+                    $tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
+
+                    $rest = substr($tarjeta->numero, -4);
+
+                    echo "</br>Nombre: ".$tarjeta->nombre."
+                    </br>Numero: XXXX XXXX XXXX ".$rest."
+                    </br>Vencimiento: ".$tarjeta->vencimiento;
+                                        
+                }
               ?>
           </table>
         </div>
@@ -117,87 +110,61 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
       <div class="well well_personaling_big">
-        <h5>Look seleccionado(s): <?php echo Yii::app()->getSession()->get('totalLook'); ?><br/>
-          <?php  
-           	if(Yii::app()->getSession()->get('totalProductosLook') != 0){
-           		echo Yii::app()->getSession()->get('totalProductosLook')." productos que componen los Looks<br/>";
-           	}
-			
-			echo 'Productos individuales: '.Yii::app()->getSession()->get('totalIndiv');
-			?>
+        <h5>Total de Giftcards: <?php echo 1;?>
         </h5>
         <hr/>
         <div class="margin_bottom">
-          <?php  
-          // 	if(Yii::app()->getSession()->get('totalLook') != 0){
-			//	echo "Con la compra del Look completo Ahorras 184 Bs."; 
-			//}
-			?>
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
+              <td><?php echo 'Bs. '.'monto'; ?></td>
             </tr>
-            <tr>
-              <th class="text_align_left">Envío:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
-            </tr>
-            <tr>
-              <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
-            </tr>
-            <?php if($descuento != 0){ // si no hay descuento ?> 
-            <tr>
-              <th class="text_align_left">Descuento:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
-           	</tr>
-           	<?php } ?>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
+              <td><h4><?php echo 'Bs. '.'monto'; ?></h4></td>
             </tr>
           </table>
           <?php
+          /*Para mercadopago*/
               if(Yii::app()->getSession()->get('tipoPago') == 4){
               	$user = User::model()->findByPk(Yii::app()->user->id);
 				$profile = Profile::model()->findByPk(Yii::app()->user->id);
               	$preference = array (
-				    "items" => array (
-				        array (
-				            "title" => "Look seleccionado + productos individuales",
-				            "quantity" => 1,
-				            "currency_id" => "VEF",
-				            "unit_price" => $total
-				            //"unit_price" => 23
-				        )
-				    ),
-				    "payer" => array(
-						"name" => $profile->first_name,
-						"surname" => $profile->last_name,
-						"email" => $user->email
-					),
-					"back_urls" => array(
-						"success" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP',
-						"failure" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP',
-						"pending" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP'
-					),
-				);
-				$preferenceResult = $mp->create_preference($preference);
-				?>
-          <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
-          <?php 
-          } else {
-          	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
-          	$this->widget('bootstrap.widgets.TbButton', array(
-            'type'=>'warning',
-            'size'=>'large',
-            'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
-            'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
-            'icon'=>'locked white',
-        )); 
-		  }
-		  ?>
-          
+                    "items" => array (
+                        array (
+                            "title" => "Look seleccionado + productos individuales",
+                            "quantity" => 1,
+                            "currency_id" => "VEF",
+                            "unit_price" => $total
+                            //"unit_price" => 23
+                        )
+                    ),
+                    "payer" => array(
+                                "name" => $profile->first_name,
+                                "surname" => $profile->last_name,
+                                "email" => $user->email
+                        ),
+                        "back_urls" => array(
+                                "success" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP',
+                                "failure" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP',
+                                "pending" => 'http://personaling.com'.Yii::app()->baseUrl.'/bolsa/successMP'
+                        ),
+                );
+                $preferenceResult = $mp->create_preference($preference);
+                ?>
+              <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
+          <?php
+            /*PARA TARJETA DE CREDITO*/
+              }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
+              	
+                    echo "<div class='form-actions'><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-warning'> <i class='icon-locked icon-white'></i>Pagar con tarjeta de crédito </a></div>";
+               
+               /*DEPOSITO O TRANSFERENCIA*/     
+              }else{
+           ?>
+                  <a id="boton_completar" onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Completar compra</a>
+                  <hr/>
+           <?php } ?>
         </div>
         <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
@@ -221,7 +188,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 else
 {
 	// redirecciona al login porque se murió la sesión
-	header('Location: /site/user/login');	
+	//header('Location: /site/user/login');	
+	$url = CController::createUrl("/user/login");
+        header('Location: '.$url);	
 }
 
 
@@ -279,7 +248,8 @@ else
 		var tipo_guia = $("#tipo_guia").attr("value");
 		var peso = $("#peso").attr("value");
 		var tarjeta = $("#tarjeta").attr("value");
-		var total_cobrar = "<?php echo $total; ?>";
+		//var total_cobrar = "<?php //echo $total; ?>";
+		var total_cobrar = "<?php echo 0; ?>";
 		/* lo de la tarjeta */
 		/*
 		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido

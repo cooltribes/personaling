@@ -60,7 +60,7 @@ $this->breadcrumbs=array(
                                         700 => 700,
                                         800 => 800,
                                         900 => 900,
-                                        1000 => 1000,
+                                        //1000 => 1000,
                                         ),
                                     array('class' => 'span2')); ?>
 
@@ -87,7 +87,8 @@ $this->breadcrumbs=array(
                                                 'type' => 'warning',
                                                 'size' => 'large',
                                             )
-                                        ); ?>                                        
+                                        ); ?>   
+                                        
                                     </div>    
                                     
                                                                                 
@@ -139,6 +140,15 @@ $('#EnvioGiftcard_mensaje').keypress(function(){
 $('#EnvioGiftcard_mensaje').focusout(function(){
     $('#mensaje').text( $('#EnvioGiftcard_mensaje').val() );
 });    
+$('#EnvioGiftcard_mensaje').change(function(){
+    $('#mensaje').text( $('#EnvioGiftcard_mensaje').val() );
+});    
+
+/*Para actualizar el monto al cambiar el dropdown*/
+$('#<?php echo CHtml::activeId($model, "monto") ?>').change(function(){
+    $('#monto').text( $('#<?php echo CHtml::activeId($model, "monto") ?>').val() + " Bs.");
+});
+
 </script>
 <style>
     .contenedorPreviewGift{

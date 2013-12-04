@@ -187,10 +187,11 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php 
           } else {
+          	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
           	$this->widget('bootstrap.widgets.TbButton', array(
             'type'=>'warning',
             'size'=>'large',
-            'label'=>'Completar compra',
+            'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
             'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
             'icon'=>'locked white',
         )); 

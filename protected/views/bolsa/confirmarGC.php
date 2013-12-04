@@ -52,10 +52,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <div class="well">
         <h4 class="braker_bottom">Datos de la compra</h4>
         <?php 
-        //datos de las giftcards de la bolsa
+        //datos de todas las giftcards de la bolsa
+        //Temporalmente solo una
+        //$giftcard = Giftcard::model()->findByAttributes(array("user_id" => ));
         
         ?>
-        <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
+        <p> <strong>Monto de la GiftCard</strong> <br/>
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
         <p><strong>Dirección:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>

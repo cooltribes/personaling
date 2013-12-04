@@ -1882,7 +1882,7 @@ class BolsaController extends Controller
                         ));		
             }
 
-        }
+        }        
         
         /**
 	 * 3. Paso

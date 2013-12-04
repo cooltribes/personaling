@@ -28,7 +28,10 @@ class BolsaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('modal','credito','index','limpiar','eliminardireccion','editar','editardireccion','agregar','actualizar','pagos','compra','eliminar','direcciones','confirmar','comprar','cpago','cambiarTipoPago','error','successMP'),
+				'actions'=>array('modal','credito','index','limpiar',
+                                    'eliminardireccion','editar','editardireccion','agregar','actualizar',
+                                    'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
+                                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -1814,4 +1817,174 @@ class BolsaController extends Controller
 		
 		
 	}
+        
+        /**
+         * 1. Paso
+	 * Paso de autenticacion para la compra de giftcard
+	 */
+	public function actionAuthGC()
+	{
+		if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
+			
+			$model=new UserLogin;
+			$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
+			
+			if(isset($_POST['UserLogin']))
+			{
+				$model->attributes=$_POST['UserLogin'];
+				// validate user input and redirect to previous page if valid
+				
+				if($model->validate()) {
+                                    
+					//Si esta activo - ir al siguiente paso
+					if($user->status == 1){
+						$this->redirect(array('bolsa/pagoGC'));
+					}else{
+						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 
+						$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $user->activkey, "email" => $user->email));
+		
+						$message            = new YiiMailMessage;
+						$message->view = "mail_template";
+						$subject = 'Activa tu cuenta en Personaling';
+						$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+						$params              = array('subject'=>$subject, 'body'=>$body);
+						$message->subject    = $subject;
+						$message->setBody($params, 'text/html');
+						$message->addTo($user->email);
+						$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+						Yii::app()->mail->send($message);
+						$this->refresh();
+					}
+				}else{
+					$this->render('authGC',array('model'=>$model));
+					//Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta")); 
+				}	
+			}else{
+//				$metric = new ShoppingMetric();
+//				$metric->user_id = Yii::app()->user->id;
+//				$metric->step = ShoppingMetric::STEP_LOGIN;
+//				$metric->save();
+				// si no viene del formulario. O bien viene de la pagina anterior
+				$this->render('authGC',array('model'=>$model));
+			}
+		} else{
+			// no va a llegar nadie que no esté logueado
+		}
+	}//fin
+        
+        
+        /**
+	 * 2. Paso
+	 * Paso para escoger el metodo de pago en la compra de giftcard
+         * (solo tarjeta actualmente 04/12/2013)
+	 */	
+        public function actionPagoGC()
+        {
+
+            $tarjeta = new TarjetaCredito; 
+
+            if(isset($_POST['tipo_pago'])){
+                
+                if($_POST['tipo_pago'] == 2 && isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
+                {
+                        echo CActiveForm::validate($_POST['TarjetaCredito']);
+                        Yii::app()->end();
+                }
+                
+                Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+                    
+
+                if($_POST['tipo_pago'] == 2){ // pago de tarjeta de credito
+                    
+//                    echo "<pre>";
+//                    print_r($_POST);
+//                    echo "</pre>";
+                    
+//                    foreach(Yii::app()->getSession() as $name=>$value){
+//                        echo "<br>".$name." - ".$value;
+//                    }
+//                    Yii::app()->end();
+                    $this->redirect(array('bolsa/confirmarGC'));
+
+                        
+                    $usuario = Yii::app()->user->id; 
+
+                    $tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
+                    $tarjeta->numero = $_POST['TarjetaCredito']['numero'];
+                    $tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
+
+                    /*$tarjeta->month = $_POST['mes'];
+                    $tarjeta->year = $_POST['ano'];*/
+
+                    $tarjeta->month = $_POST['TarjetaCredito']['month'];
+                    $tarjeta->year = $_POST['TarjetaCredito']['year'];
+                    $tarjeta->ci = $_POST['TarjetaCredito']['ci'];
+                    $tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
+                    $tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
+                    $tarjeta->zip = $_POST['TarjetaCredito']['zip'];
+                    $tarjeta->estado = $_POST['TarjetaCredito']['estado'];
+                    $tarjeta->user_id = $usuario;		
+
+                    if($tarjeta->save())
+                    {
+                            $tipoPago = $_POST['tipo_pago'];
+
+                            Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
+                            //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
+                            $this->redirect(array('bolsa/confirmar'));
+                    }
+                    else
+                            //var_dump($tarjeta->getErrors());
+                    echo CActiveForm::validate($tarjeta);
+
+                }
+                else {
+                    //$this->render('confirmar');
+                    $this->redirect(array('bolsa/confirmar'));
+                }
+
+            }else{
+                //$tarjeta = new TarjetaCredito;
+//                $metric = new ShoppingMetric();
+//                $metric->user_id = Yii::app()->user->id;
+//                $metric->step = ShoppingMetric::STEP_PAGO;
+//                $metric->save();
+
+                //Buscar todas las giftcards de la bolsa del usuario y totalizar
+                $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => Yii::app()->user->id));
+
+                $total = 0;
+                foreach($giftcards as $gift){
+                    $total += $gift->monto;
+                }
+
+                $this->render('pagoGC',array(
+                    'tarjeta'=>$tarjeta,                       
+                    'total' => $total,
+                        ));		
+            }
+
+        }        
+        
+        /**
+	 * 3. Paso
+	 * Paso para ver el resumen de la compra y hacer el pago
+         * 
+	 */
+        public function actionConfirmarGC()
+        {                
+//                $metric = new ShoppingMetric();
+//                $metric->user_id = Yii::app()->user->id;
+//                $metric->step = ShoppingMetric::STEP_CONFIRMAR;
+//                $metric->save();
+//                echo Yii::app()->getSession()->get('tipoPago');
+//                Yii::app()->end();
+                //$this->render('confirmarGC',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
+                
+                $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
+                $this->render('confirmarGC',array(
+                    'idTarjeta'=> 30,
+                    'giftcard' => $giftcard));
+        }
+        
 }

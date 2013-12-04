@@ -290,7 +290,7 @@ $template = '{summary}
 	function ver_campana(id_campana){
 		var path = location.pathname.split('/');
 		$.ajax({
-		      url: "/"+path[1]+"/campana/view",
+		      url: "<?php echo Yii::app()->baseUrl; ?>/campana/view",
 		      type: "post",
 		      data: { id : id_campana },
 		      success: function(data){

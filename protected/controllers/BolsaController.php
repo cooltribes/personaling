@@ -1977,7 +1977,11 @@ class BolsaController extends Controller
 //                echo Yii::app()->getSession()->get('tipoPago');
 //                Yii::app()->end();
                 //$this->render('confirmarGC',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
-                $this->render('confirmarGC',array('idTarjeta'=> 30));
+                
+                $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
+                $this->render('confirmarGC',array(
+                    'idTarjeta'=> 30,
+                    'giftcard' => $giftcard));
         }
         
 }

@@ -1794,93 +1794,111 @@ class BolsaController extends Controller
         /**
 	 * 2. Paso
 	 * Paso para escoger el metodo de pago en la compra de giftcard
+         * (solo tarjeta actualmente 04/12/2013)
 	 */	
         public function actionPagoGC()
         {
 
-            $tarjeta = new TarjetaCredito;                        
-
-            if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
-                    if(isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
-                    {
-                            echo CActiveForm::validate($_POST['TarjetaCredito']);
-                            Yii::app()->end();
-                    }
-            }
+            $tarjeta = new TarjetaCredito; 
 
             if(isset($_POST['tipo_pago'])){
-                    Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+                
+                if($_POST['tipo_pago'] == 2 && isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
+                {
+                        echo CActiveForm::validate($_POST['TarjetaCredito']);
+                        Yii::app()->end();
+                }
+                
+                Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+                    
 
-                    if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-                            Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
-                    }else{
-                            Yii::app()->getSession()->add('usarBalance','0');
-                    }
+                if($_POST['tipo_pago'] == 2){ // pago de tarjeta de credito
+                    
+//                    echo "<pre>";
+//                    print_r($_POST);
+//                    echo "</pre>";
+                    
+//                    foreach(Yii::app()->getSession() as $name=>$value){
+//                        echo "<br>".$name." - ".$value;
+//                    }
+//                    Yii::app()->end();
+                    $this->redirect(array('bolsa/confirmarGC'));
 
-                    if($_POST['tipo_pago']==2){ // pago de tarjeta de credito
+                        
+                    $usuario = Yii::app()->user->id; 
 
-                            $usuario = Yii::app()->user->id; 
+                    $tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
+                    $tarjeta->numero = $_POST['TarjetaCredito']['numero'];
+                    $tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
 
-                            $tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
-                            $tarjeta->numero = $_POST['TarjetaCredito']['numero'];
-                            $tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
+                    /*$tarjeta->month = $_POST['mes'];
+                    $tarjeta->year = $_POST['ano'];*/
 
-                            /*$tarjeta->month = $_POST['mes'];
-                            $tarjeta->year = $_POST['ano'];*/
+                    $tarjeta->month = $_POST['TarjetaCredito']['month'];
+                    $tarjeta->year = $_POST['TarjetaCredito']['year'];
+                    $tarjeta->ci = $_POST['TarjetaCredito']['ci'];
+                    $tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
+                    $tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
+                    $tarjeta->zip = $_POST['TarjetaCredito']['zip'];
+                    $tarjeta->estado = $_POST['TarjetaCredito']['estado'];
+                    $tarjeta->user_id = $usuario;		
 
-                            $tarjeta->month = $_POST['TarjetaCredito']['month'];
-                            $tarjeta->year = $_POST['TarjetaCredito']['year'];
-                            $tarjeta->ci = $_POST['TarjetaCredito']['ci'];
-                            $tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
-                            $tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
-                            $tarjeta->zip = $_POST['TarjetaCredito']['zip'];
-                            $tarjeta->estado = $_POST['TarjetaCredito']['estado'];
-                            $tarjeta->user_id = $usuario;		
+                    if($tarjeta->save())
+                    {
+                            $tipoPago = $_POST['tipo_pago'];
 
-                            if($tarjeta->save())
-                            {
-                                    $tipoPago = $_POST['tipo_pago'];
-
-                                    Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
-                                    //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
-                                    $this->redirect(array('bolsa/confirmar'));
-                            }
-                            else
-                                    //var_dump($tarjeta->getErrors());
-                            echo CActiveForm::validate($tarjeta);
-
-                    }
-                    else {
-                            //$this->render('confirmar');
+                            Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
+                            //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
                             $this->redirect(array('bolsa/confirmar'));
                     }
+                    else
+                            //var_dump($tarjeta->getErrors());
+                    echo CActiveForm::validate($tarjeta);
 
+                }
+                else {
+                    //$this->render('confirmar');
+                    $this->redirect(array('bolsa/confirmar'));
+                }
+
+            }else{
+                //$tarjeta = new TarjetaCredito;
+//                $metric = new ShoppingMetric();
+//                $metric->user_id = Yii::app()->user->id;
+//                $metric->step = ShoppingMetric::STEP_PAGO;
+//                $metric->save();
+
+                //Buscar todas las giftcards de la bolsa del usuario y totalizar
+                $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => Yii::app()->user->id));
+
+                $total = 0;
+                foreach($giftcards as $gift){
+                    $total += $gift->monto;
+                }
+
+                $this->render('pagoGC',array(
+                    'tarjeta'=>$tarjeta,                       
+                    'total' => $total,
+                        ));		
             }
-            else {
-                    //$tarjeta = new TarjetaCredito;
-//                    $metric = new ShoppingMetric();
-//                    $metric->user_id = Yii::app()->user->id;
-//                    $metric->step = ShoppingMetric::STEP_PAGO;
-//                    $metric->save();
 
-                    $aplicar = new AplicarGC;
-
-                    //Buscar todas las giftcards de la bolsa del usuario y totalizar
-                    $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => Yii::app()->user->id));
-                    
-                    $total = 0;
-                    foreach($giftcards as $gift){
-                        $total += $gift->monto;
-                    }
-                    
-                    
-                    $this->render('pagoGC',array(
-                        'tarjeta'=>$tarjeta,
-                        'model'=>$aplicar,
-                        'total' => $total,
-                            ));		
-            }
-
+        }
+        
+        /**
+	 * 3. Paso
+	 * Paso para ver el resumen de la compra y hacer el pago
+         * 
+	 */
+        public function actionConfirmarGC()
+        {                
+//                $metric = new ShoppingMetric();
+//                $metric->user_id = Yii::app()->user->id;
+//                $metric->step = ShoppingMetric::STEP_CONFIRMAR;
+//                $metric->save();
+//                echo Yii::app()->getSession()->get('tipoPago');
+//                Yii::app()->end();
+                //$this->render('confirmarGC',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
+                $this->render('confirmarGC',array('idTarjeta'=> 30));
         }
         
 }

@@ -7,17 +7,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 ?>
 <?php $idDireccion = Yii::app()->getSession()->get('idDireccion'); ?>
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-            'id'=>'tarjeta-form',
-            'enableAjaxValidation'=>false,
-            'enableClientValidation'=>true,
-            'clientOptions'=>array(
-                    'validateOnSubmit'=>true, 
-            ),
-            'htmlOptions'=>array('class'=>''),
-    )); 
 
-?>
 <style>
         .progreso_compra_giftcard {
             width: 268px;
@@ -98,12 +88,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                            <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago');  ?> -->
                            <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
 
+                           <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+                                        'id'=>'tarjeta-form',
+                                        'enableAjaxValidation'=>false,
+                                        //'enableClientValidation'=>true,
+//                                        'clientOptions'=>array(
+//                                                'validateOnSubmit'=>true, 
+//                                        ),
+                                        'htmlOptions'=>array('class'=>''),
+                                )); 
 
-
-
+                            ?>
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'nombre', array('class' => 'span5', 'placeholder' => 'Nombre impreso en la tarjeta'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'nombre', array('class' => 'span4', 'placeholder' => 'Nombre impreso en la tarjeta'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -111,7 +109,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'numero', array('class' => 'span5', 'placeholder' => 'Número de la tarjeta'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'numero', array('class' => 'span4', 'placeholder' => 'Número de la tarjeta'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -119,7 +117,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'codigo', array('class' => 'span2', 'placeholder' => 'Código de seguridad'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'codigo', array('class' => 'span1', 'placeholder' => 'Código de seguridad'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -138,7 +136,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'ci', array('class' => 'span5', 'placeholder' => 'Cédula de Identidad'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'ci', array('class' => 'span4', 'placeholder' => 'Cédula de Identidad'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -154,7 +152,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'ciudad', array('class' => 'span5', 'placeholder' => 'Ciudad'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'ciudad', array('class' => 'span4', 'placeholder' => 'Ciudad'));
                                    ?>
 
                                </div>
@@ -162,7 +160,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'estado', array('class' => 'span5', 'placeholder' => 'Estado'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'estado', array('class' => 'span4', 'placeholder' => 'Estado'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -176,7 +174,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                </div>
                            </div>		          					
 
-                           <?php echo CHtml::hiddenField('idDireccion', Yii::app()->getSession()->get('idDireccion')); ?>
+                           <?php //echo CHtml::hiddenField('idDireccion', Yii::app()->getSession()->get('idDireccion')); ?>
+                           
+                           <input type="hidden" id="tipo_pago" name="tipo_pago" value="2" />
+                           
                            <div class="text_center_align">
                                <p>Esta transacción será procesada de forma segura gracias a la plataforma de:</p>	
                                <img src="<?php echo Yii::app()->baseUrl ?>/images/Instapago-logo.png" width="77">
@@ -189,12 +190,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                    'type' => 'warning',
                                    'size' => 'large',
                                    'label' => 'Siguiente',
+                                   'icon' => 'lock white',
                                ));
                                //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
                                ?>
                            </div>
 
-
+                        <?php $this->endWidget(); // formulario ?> 
                        </div>	
                    </div>
                </div>
@@ -243,17 +245,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <th class="text_align_left">Subtotal:</th>
                 <td>
                     <?php
-                          
-
-//                        // variables de sesion
-//                        Yii::app()->getSession()->add('subtotal',$totalPr);
-//                        Yii::app()->getSession()->add('descuento',$totalDe);
-//                        Yii::app()->getSession()->add('envio',$envio);
-//                        Yii::app()->getSession()->add('iva',$iva);
-//                        Yii::app()->getSession()->add('total',$t);
-//						Yii::app()->getSession()->add('seguro',$seguro);
-//						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
-//						Yii::app()->getSession()->add('peso',$peso_total);
+//                        Yii::app()->getSession()->add('seguro',$seguro);
+//                        Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
+//                        Yii::app()->getSession()->add('peso',$peso_total);
 						
                         $subtotal = $total;
                         echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($subtotal, '');
@@ -262,7 +256,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </tr> 
               <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>
-                <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($subtotal, ''); ?></h4></td>
+                <td class="text_align_right">
+                    <h4 id="precio_total">
+                    <?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($subtotal, ''); ?>
+                    </h4>
+                </td>
               </tr>
             </table>
 
@@ -276,7 +274,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            //'url'=>'confirmar', // action
 	            'icon'=>'lock white',
 	            'buttonType'=>'submit',
-	           // 'htmlOptions'=>array('onclick'=>'tarjetas()',),
+	            'htmlOptions'=>array('id'=>'btn-siguiente',),
 	        ));
         // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
         ?>
@@ -292,102 +290,40 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   </div>
 </div>
 <!-- /container -->
- <?php $this->endWidget(); // formulario ?> 
+ 
 <?php
 
 }// si esta logueado
 else
 {
     // redirecciona al login porque se murió la sesión
-    header('Location: /user/login');
+    //header('Location: /user/login');
+    $url = CController::createUrl("/user/login");
+    header('Location: '.$url);
 }
 ?>
 
-<script>
+<script>  
 
-    $("#aplicarGC").click(function(e){
-            $("#aplicarAjax").val("1");
-                        
-            var datos = $("#giftCard").find("input").serialize();
-            
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo CController::createUrl("/giftcard/aplicar"); ?>',
-                dataType: 'JSON',
-                data: datos,
-                success: function(data){
-                    
-                    //si son dos errores agregar ul
-                    if(data.length > 1){
-                        
-                        var contenido = "<ul>";
-                        
-                        $.each(data, function(i, dato){
-                            contenido += "<li>" + (dato.message) + "</li>";
-                         });
-                         
-                        contenido += "</ul>";
-                         
-                        showAlert("error", contenido);
-                        
-                    }else{
-                        
-                        if(data[0].type == 'success'){ //si fue success la aplicacion de GC
-                            
-                            var check = $("#usar_balance");
-                            
-                         
-                                var element = $("#usar_balance").next();
-                                
-                                element.parent().removeClass("hidden");
-                                element.animate({                                  
-                                  opacity: 0,
-                                }, {
-                                    duration: 1000,
-                                    complete: function(){
-                                      element.text("Bs. " + data[0].amount);
-                                      showAlert(data[0].type, data[0].message);
-                                    }
-                                } );
-                                
-                                
-                                element.animate({                                  
-                                  opacity: 1,
-                                  //color : "#468847",
-                                }, 1000 );
+//Mostrar alert
+function showAlert(type, message){
+   $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
+   $('#alert-msg').addClass("alert-"+type);
+   $('#alert-msg').children(".msg").html(message);
+   $('#alert-msg').show();
 
-                        }else{
-                            showAlert(data[0].type, data[0].message);  
-                        }
-                        
-                    }
-                    
-                }
-            });    
-            
-            
-            
-        });
+   $("#camposGC").removeClass('success error warning');
+   $('#camposGC').addClass(type);
 
-        //Mostrar alert
-        function showAlert(type, message){
-           $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
-           $('#alert-msg').addClass("alert-"+type);
-           $('#alert-msg').children(".msg").html(message);
-           $('#alert-msg').show();
-           
-           $("#camposGC").removeClass('success error warning');
-           $('#camposGC').addClass(type);
-           
-        }
+}
 
-        $(".alert").alert();
-        $(".alert .close").click(function(){
-            $(".alert").fadeOut('slow');
-        });
+$(".alert").alert();
+$(".alert .close").click(function(){
+    $(".alert").fadeOut('slow');
+});
         
         
-    $(document).ready(function() {
+$(document).ready(function() {
 
 ////***** RAFA ******///////
 $('#TarjetaCredito_month').change(function(){
@@ -508,155 +444,100 @@ $('#TarjetaCredito_year').change(function(){
         	
         });
 
-    $("#completar-compra").click(function(ev){
-           ev.preventDefault();
-           alert("pasar al sig");
-
-           var idDir = $("#id-direccion").attr("value");
-         var tipoPago = 1; // en este caso siempre es transferencia pero hay que pensarlo para los distintos tipos
-
-         $.ajax({
-            type: "post",
-            url: "pagos", // action pagos
-            data: { 'idDir':idDir, 'tipoPago':tipoPago},
-           // success: function (data) {
-             //   if(data == 'ok')
-               // {
-                //    alert("entró");
-                //    window.location="../confirmar";
-                //}
-           //    }//success
-           })
-
-       }); // tallas
-
-
     });
+	
+    //Boton siguiente - General para todos los metodos de pago        
+    $("#btn-siguiente").click(function(e){
+        $("#tarjeta-form").submit();
+    });
+    
+    function tarjetas()
+    {
+            //alert("Entró");
+            /* lo de la tarjeta */
+            //alert($("#tipo_pago").attr("value"));
 
-	function calcular_total(total, balance){
-		if(balance > 0){
-			//console.log('Total: '+total+' - Balance: '+balance);
-			if($('#usar_balance').is(':checked')){
-				$('#usar_balance_hidden').val('1');
-				//console.log('checked');
-				if(balance >= total){
-					$('#descuento').html('Bs. '+total);
-					$('#precio_total').html('Bs. 0');
-				}else{
-					$('#descuento').html('Bs. '+balance.toFixed(2));
-					$('#precio_total').html('Bs. '+(total-balance).toFixed(2));
-				}
-			}else{
-				$('#usar_balance_hidden').val('0');
-				//console.log('not checked');
-				$('#descuento').html('Bs. 0');
-				$('#precio_total').html('Bs. '+total.toFixed(2));
-			}
-		}
-		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
-	}
-	
-	function tarjetas()
-	{
-		//alert("Entró");
-		/* lo de la tarjeta */
-		//alert($("#tipo_pago").attr("value"));
-		
-		if($("#tipo_pago").attr("value") == 2){ // tarjeta
-			
-			var nom = $("#nombre").attr("value");
-			var num = $("#numero").attr("value");
-			var cod = $("#codigo").attr("value");
-			var ci = $("#ci").attr("value");
-			var mes = $("#mes").attr("value");
-			var ano = $("#ano").attr("value");
-			var dir = $("#direccion").attr("value");
-			var ciud = $("#ciudad").attr("value");
-			var est = $("#estado").attr("value");
-			var zip = $("#zip").attr("value");
-			
-			if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano" || ci=="" || dir=="" || ciud=="" || est=="" || zip==""){
-				alert("Por favor complete los datos de la tarjeta.");
-			}
-			else{
-				// alert(" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
-				$("#datos_tarjeta").submit();
-			}
-	
-		}
-		else
-		{
-			$("#datos_tarjeta").submit();
-		}
-		
-	}
-	
-	$('#YourCheckbox').click(function() {
-	
-	    if ($(this).is(':checked'))
-	    {
-	        enableFieldsValidation($('#my-form'), 'YourModel', 'FirstName');
-	        //enableFieldsValidation($('#my-form'), 'YourModel', 'LastName');
-	    }
-	    else
-	    {
-	        disableFieldsValidation($('#my-form'), 'YourModel', 'FirstName');
-	        //disableFieldsValidation($('#my-form'), 'YourModel', 'LastName');
-	    }
-	});
-	
-	function enableFieldsValidation(form, model, fieldName) {
+            if($("#tipo_pago").attr("value") == 2){ // tarjeta
 
-	    // Restore validation for model attributes
-	    $.each(form.data('settings').attributes, function (i, attribute) {
+                    var nom = $("#nombre").attr("value");
+                    var num = $("#numero").attr("value");
+                    var cod = $("#codigo").attr("value");
+                    var ci = $("#ci").attr("value");
+                    var mes = $("#mes").attr("value");
+                    var ano = $("#ano").attr("value");
+                    var dir = $("#direccion").attr("value");
+                    var ciud = $("#ciudad").attr("value");
+                    var est = $("#estado").attr("value");
+                    var zip = $("#zip").attr("value");
+
+                    if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano" || ci=="" || dir=="" || ciud=="" || est=="" || zip==""){
+                            alert("Por favor complete los datos de la tarjeta.");
+                    }
+                    else{
+                            // alert(" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
+                            $("#datos_tarjeta").submit();
+                    }
+
+            }
+            else
+            {
+                    $("#datos_tarjeta").submit();
+            }
+
+    }
 	
-	        if (attribute.model == model && attribute.id == (model + '_' + fieldName))
-	        {
-	            if (attribute.hasOwnProperty('disabledClientValidation')) {
+    function enableFieldsValidation(form, model, fieldName) {
+
+        // Restore validation for model attributes
+        $.each(form.data('settings').attributes, function (i, attribute) {
+
+            if (attribute.model == model && attribute.id == (model + '_' + fieldName))
+            {
+                if (attribute.hasOwnProperty('disabledClientValidation')) {
+
+                    // Restore validation function
+                    attribute.clientValidation = attribute.disabledClientValidation;
+                    delete attribute.disabledClientValidation;
+
+                    // Restore sucess css class
+                    attribute.successCssClass = attribute.disabledSuccessCssClass;
+                    delete attribute.disabledSuccessCssClass;
+                }
+            }
+        });
+    }
 	
-	                // Restore validation function
-	                attribute.clientValidation = attribute.disabledClientValidation;
-	                delete attribute.disabledClientValidation;
-	
-	                // Restore sucess css class
-	                attribute.successCssClass = attribute.disabledSuccessCssClass;
-	                delete attribute.disabledSuccessCssClass;
-	            }
-	        }
-	    });
-	}
-	
-	function disableFieldsValidation(form, model, fieldName) {
-	
-	    $.each(form.data('settings').attributes, function (i, attribute) {
-	
-	        if (attribute.model == model && attribute.id == (model + '_' + fieldName))
-	        {
-	            if (!attribute.hasOwnProperty('disabledClientValidation')) {
-	
-	                // Remove validation function
-	                attribute.disabledClientValidation = attribute.clientValidation;
-	                delete attribute.clientValidation;
-	
-	                // Reset style of elements
-	                $.fn.yiiactiveform.getInputContainer(attribute, form).removeClass(
-	                    attribute.validatingCssClass + ' ' +
-	                    attribute.errorCssClass + ' ' +
-	                    attribute.successCssClass
-	                );
-	
-	                // Reset validation status
-	                attribute.status = 2;
-	
-	                // Hide error messages
-	                form.find('#' + attribute.errorID).toggle(false);
-	
-	                // Dont make it 'green' when validation is called
-	                attribute.disabledSuccessCssClass = attribute.successCssClass;
-	                attribute.successCssClass = '';
-	            }
-	        }
-	    });
-	}
+    function disableFieldsValidation(form, model, fieldName) {
+
+        $.each(form.data('settings').attributes, function (i, attribute) {
+
+            if (attribute.model == model && attribute.id == (model + '_' + fieldName))
+            {
+                if (!attribute.hasOwnProperty('disabledClientValidation')) {
+
+                    // Remove validation function
+                    attribute.disabledClientValidation = attribute.clientValidation;
+                    delete attribute.clientValidation;
+
+                    // Reset style of elements
+                    $.fn.yiiactiveform.getInputContainer(attribute, form).removeClass(
+                        attribute.validatingCssClass + ' ' +
+                        attribute.errorCssClass + ' ' +
+                        attribute.successCssClass
+                    );
+
+                    // Reset validation status
+                    attribute.status = 2;
+
+                    // Hide error messages
+                    form.find('#' + attribute.errorID).toggle(false);
+
+                    // Dont make it 'green' when validation is called
+                    attribute.disabledSuccessCssClass = attribute.successCssClass;
+                    attribute.successCssClass = '';
+                }
+            }
+        });
+    }
 	
 </script>

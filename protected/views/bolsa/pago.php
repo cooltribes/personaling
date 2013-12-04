@@ -571,6 +571,7 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
             
         });
         
@@ -590,6 +591,7 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
             
         });
         
@@ -609,6 +611,7 @@ $('#TarjetaCredito_year').change(function(){
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
             
         });
         
@@ -636,6 +639,7 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+        	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
         });
         
         $("#btn_tarjeta").click(function() {
@@ -654,6 +658,7 @@ $('#TarjetaCredito_year').change(function(){
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+        	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
         	
         });
 

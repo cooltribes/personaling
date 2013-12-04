@@ -17,12 +17,12 @@ $this->breadcrumbs=array(
 	
 	<p> En 10 segundos esta página será redirigida a la Bolsa de Compras</p>
 	<hr/>
-		<a href="../../tienda/index" class="btn btn-danger" title="seguir comprando">Seguir comprando</a> </div>
+		<a href="<?php Yii::app()->createUrl('tienda/index'); ?>" class="btn btn-danger" title="seguir comprando">Seguir comprando</a> </div>
 <script>
 
 	$(document).ready(function() {
 		setTimeout(function(){
-			window.location = '../../bolsa/index';
+			window.location = <?php Yii::app()->createUrl('bolsa/index'); ?>;
 		}, 10000); /* 5 seconds */
 	});
 	

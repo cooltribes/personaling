@@ -18,27 +18,29 @@
 				} 	
   			foreach($categorias as $padre){
   				echo '<li class="itemThumbnails tienda_iconos">
-  				<div class="dropdown">
-	  				<a href="#" lass="dropdown-toggle" data-toggle="dropdown">
-	  					<img class="img-categoria" title="'.$padre->nombre.'" src="'.$padre->urlImagen.'">	
-	  					<b class="caret caretthumbs"></b>	
-	  				</a>
-					<ul class="dropdown-menu thumbnails ">';
-					foreach($padre->subcategorias as $hijo){
+		  			<img class="img-categoria" title="'.$padre->nombre.'" src="'.$padre->urlImagen.'">			  			
+	  				<div class="dropdown">
+		  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		  					<b class="caret caretthumbs"></b>	
+		  				</a>
+		  				<div class="dropdown-menu">
+						<ul class="thumbnails ">';
+						foreach($padre->subcategorias as $hijo){
+							
+							echo '<li class=""> 
+			              		<a class="hijo" value="'.$hijo->id.'" href="#" >
+			              			<img src="'.$hijo->urlImagen.'" width="60">
+			              		</a>                	
+			              		<div class="caption">
+			                  		<p>'.$hijo->nombre.'</p>
+				                </div>
+		              			</li>';
+							
+						}
 						
-						echo '<li class=""> 
-		              		<a class="hijo" value="'.$hijo->id.'" href="#" >
-		              			<img src="'.$hijo->urlImagen.'" width="60">
-		              		</a>                	
-		              		<div class="caption">
-		                  		<p>'.$hijo->nombre.'</p>
-			                </div>
-	              			</li>';
-						
-					}
-					
-					echo '</ul> 
-				</div>   				
+						echo '</ul>
+						<a href="" class="todos">&nbsp FILTRAR POR TODOS LOS ACCESORIOS </a>
+					</div>   				
   			</li>';
 				
   			}
@@ -48,28 +50,31 @@
 
   			
   			
-  			<li class="itemThumbnails tienda_iconos">
+  			<li class="itemThumbnails tienda_iconos itemcolor">
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
-	  					Color:
+	  					Color: &nbsp
 	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44">		
 	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
-					<ul class="dropdown-menu dropdown-colors thumbnails ">
-						
-					<?php 
-					if(isset(Yii::app()->session['f_color']))
-						echo CHtml::hiddenField('colorhid',Yii::app()->session['f_color']);
-					else {
-						echo CHtml::hiddenField('colorhid',0);
-					}
-					foreach($colores as $color){
-						echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
-						
-					}  
-						echo '<li class="colors"><a href="#" value="0" class="scolor" title="Todos" ><img width="44" src="'.Yii::app()->baseUrl.'/images/colores/allcolors.png" /></a></li>';
-					?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
-					</ul>  
+	  				<div class="dropdown-menu dropdown-colors">
+						<ul class=" thumbnails ">
+							
+						<?php 
+						if(isset(Yii::app()->session['f_color']))
+							echo CHtml::hiddenField('colorhid',Yii::app()->session['f_color']);
+						else {
+							echo CHtml::hiddenField('colorhid',0);
+						}
+						foreach($colores as $color){
+							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+							
+						}  
+							echo '<li class="colors"><a href="#" value="0" class="scolor" title="Todos" ><img width="44" src="'.Yii::app()->baseUrl.'/images/colores/allcolors.png" /></a></li>';
+						?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
+						</ul>  
+						<a href="" class="todos">&nbsp FILTRAR POR TODOS LOS COLORES </a>
+					</div>
 				</div>
   			</li>  					  			
 			<li class="item">
@@ -133,7 +138,7 @@
 			</li>			
 			<li class="item itemInput">
 				<div class="contenedorInput">
-					<input type="text" class="" placeholder="Buscar" id="text_search"> 
+					<input type="text" class="input-medium" placeholder="Buscar" id="text_search"> 
 					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	

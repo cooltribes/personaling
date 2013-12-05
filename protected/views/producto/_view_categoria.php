@@ -19,7 +19,7 @@
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Producto - Categorias</small></h1>
-    <h2><?php echo $model->nombre; ?></h2>
+    <h2 ><?php echo $model->nombre."  [<small class='t_small'>Ref: ".$model->codigo."</small>]"; ?></h2>
   </div>
   <!-- SUBMENU ON -->
   <input id="producto" type="hidden" value="<?php echo $model->id ?>" />

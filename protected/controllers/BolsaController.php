@@ -752,6 +752,7 @@ class BolsaController extends Controller
 	 * 
 	*/
 	public function cobrarTarjeta($tarjeta_id,$usuario,$monto){
+		$monto = round($monto,2);
 		Yii::trace('Entro cobrar tarjeta user:'.$usuario, 'registro');
 		//$usuario = Yii::app()->user->id; 
 		$tarjeta = TarjetaCredito::model()->findByPk($tarjeta_id);
@@ -1055,13 +1056,13 @@ class BolsaController extends Controller
 						'descuento'=>$orden->descuento,
 						'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
 					));*/
-					$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));
+					
 			        break;
 			    case 2: // TARJETA DE CREDITO
 			        $resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $usuario, Yii::app()->getSession()->get('total_tarjeta'));
 					if ($resultado['status'] == "ok"){
 				        $detalle = Detalle::model()->findByPk($resultado['idDetalle']); 
-						$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>$_POST['idDireccion'],'user_id'=>$usuario)));
+						$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
 						$orden = new Orden;
 						$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 						$orden->descuento = 0;
@@ -1152,7 +1153,7 @@ class BolsaController extends Controller
 							'descuento'=>$orden->descuento,
 							'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
 						));*/
-						$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));
+						//$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));
 					} else { 
 						$this->redirect($this->createAbsoluteUrl('bolsa/error',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
 					}			
@@ -1164,10 +1165,11 @@ class BolsaController extends Controller
 				// Generar factura
 			$factura = new Factura;
 			$factura->fecha = date('Y-m-d');
-			$factura->direccion_fiscal_id = $_POST['idDireccion'];  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
-			$factura->direccion_envio_id = $_POST['idDireccion'];
+			$factura->direccion_fiscal_id = Yii::app()->getSession()->get('idDireccion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+			$factura->direccion_envio_id =Yii::app()->getSession()->get('idDireccion');
 			$factura->orden_id = $orden->id;
-			$factura->save();
+			if (!$factura->save())
+				Yii::trace('user id:'.Yii::app()->user->id.' Factura error:'.print_r($factura->getErrors(),true), 'registro');
 			// Enviar correo con resumen de la compra
 			$user = User::model()->findByPk($usuario);
 			$message            = new YiiMailMessage;
@@ -1180,7 +1182,8 @@ class BolsaController extends Controller
 	        $message->addTo($user->email);
 			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
 	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
-	        Yii::app()->mail->send($message);			
+	        Yii::app()->mail->send($message);		
+			$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));	
 		//}
 		 
 	}

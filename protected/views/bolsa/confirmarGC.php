@@ -13,14 +13,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //Yii::app()->getSession()->add('total',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
-
+<style>
+        .progreso_compra_giftcard {
+            width: 268px;
+        }
+        .progreso_compra_giftcard .last-done {
+            text-align: center;
+        }
+    </style>
 <div class="container margin_top">
-  <div class="progreso_compra">
+  <div class="progreso_compra progreso_compra_giftcard">
     <div class="clearfix margin_bottom">
       <div class="first-past">Autenticación</div>
-      <div class="middle-past">Dirección<br/>
-        de envío <br/>
-        y facturación</div>
       <div class="middle-past">Método <br/>
         de pago</div>
       <div class="last-done">Confirmar<br/>
@@ -29,7 +33,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación del Pedido</h1>
+      <h1>Confirmación de la Compra</h1>
     </div>
   </div>
   <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />

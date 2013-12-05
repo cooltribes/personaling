@@ -847,6 +847,8 @@ public function actionValidar()
 							if($estado->save())
 							{
 								echo "ok";
+							} else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
 							}
 						}
 						// Subject y body para el correo
@@ -903,7 +905,9 @@ public function actionValidar()
 								{
 									//$pag_det->save();
 									echo "ok";	
-								}	
+								}	else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+							}
 							}
 												
 							
@@ -959,8 +963,10 @@ public function actionValidar()
 									
 									if($estado->save())
 									{
-										
-									}
+										echo "ok";
+									} else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+							}
 									}	
 								}
 								
@@ -979,7 +985,12 @@ public function actionValidar()
 							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
-							$estado->save();
+							if($estado->save())
+									{
+										echo "ok";	
+									}else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+							}
 							//if($estado->save())
 							//{
 								//$pag_bal->tbl_detalle_id=$det_bal->id;

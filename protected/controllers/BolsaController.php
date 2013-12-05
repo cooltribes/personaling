@@ -2101,4 +2101,11 @@ class BolsaController extends Controller
 
 	}
         
+        public function actionPedidoGC($id)
+	{
+		$orden = OrdenGC::model()->findByPk($id);
+				
+		$this->render('pedido',array('orden'=>$orden));
+	}
+        
 }

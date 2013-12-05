@@ -8,17 +8,24 @@
 <section class="bard_tienda">
 
 	 	<ul class="nav unstyled">
-  			<li class="item">Tienda de prendas:</li>
+  			<li class="item">Filtrar:</li>
   		<?php 
-  			echo CHtml::hiddenField('padrehid',0); 	
+  			if(isset(Yii::app()->session['f_padre']))
+						echo CHtml::hiddenField('padrehid',Yii::app()->session['f_padre']);
+					else {
+						echo CHtml::hiddenField('padrehid',0);
+				}
+  			
+  			
 			if(isset(Yii::app()->session['f_cat']))
 						echo CHtml::hiddenField('cathid',Yii::app()->session['f_cat']);
 					else {
 						echo CHtml::hiddenField('cathid',0);
-				} 	
+				} 
+			$i=0;	
   			foreach($categorias as $padre){
   				echo '<li class="itemThumbnails tienda_iconos">
-		  			<img class="img-categoria" title="'.$padre->nombre.'" src="'.$padre->urlImagen.'">			  			
+		  			<img id="'.$padre->nombre.'" class="img-categoria padre" style="cursor:pointer" title="'.$padre->nombre.'" value="'.$padre->id.'" src="'.$padre->urlImagen.'">			  			
 	  				<div class="dropdown">
 		  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 		  					<b class="caret caretthumbs"></b>	
@@ -28,7 +35,7 @@
 						foreach($padre->subcategorias as $hijo){
 							
 							echo '<li class=""> 
-			              		<a class="hijo" value="'.$hijo->id.'" href="#" >
+			              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
 			              			<img src="'.$hijo->urlImagen.'" width="60">
 			              		</a>                	
 			              		<div class="caption">
@@ -39,10 +46,13 @@
 						}
 						
 						echo '</ul>
-						<a href="" class="todos">&nbsp FILTRAR POR TODOS LOS ACCESORIOS </a>
+						<a href="" class="todos">&nbsp TODOS LOS ACCESORIOS </a>
 					</div>   				
   			</li>';
-				
+				$i++;
+				if($i>=3){
+					break;
+				}
   			}
   		
   		?>
@@ -73,7 +83,7 @@
 							echo '<li class="colors"><a href="#" value="0" class="scolor" title="Todos" ><img width="44" src="'.Yii::app()->baseUrl.'/images/colores/allcolors.png" /></a></li>';
 						?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 						</ul>  
-						<a href="" class="todos">&nbsp FILTRAR POR TODOS LOS COLORES </a>
+						<a href="" class="todos">&nbsp TODOS LOS COLORES </a>
 					</div>
 				</div>
   			</li>  					  			
@@ -81,7 +91,7 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropinput" >
-								<span id="precio_titulo">Filtrar por precio</span>
+								<span id="precio_titulo">Por precio</span>
 							<small> 
 								<b class="caret"></b>
 							</small>
@@ -112,7 +122,7 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
-							<span id="marca_titulo" >Filtrar por marca</span>
+							<span id="marca_titulo" >Por marca</span>
 							<small>
 								<b class="caret"></b>
 							</small>
@@ -148,7 +158,7 @@
 <div class="row ">
 <?php	echo CHtml::hiddenField('resethid',0);?>
 	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
-		<a href="" class="btn btn-block" id="reset">Resetear filtros</a>
+		<a href="" class="btn btn-block" id="reset">Limpiar Filtros</a>
 	</div>
 </div>
 <!-- BAR OFF -->
@@ -217,7 +227,25 @@
 		$(".hijo").click(function() { 
             	
 
+            	$(".hijo").css('border','none');
+            	$(this).css('border','solid 2px');            	
+            	$('.padre').css('border','none');
+            	$('#'+$(this).attr('name')).css('border','solid 2px');
             	$('#cathid').val($(this).attr('value'));
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
+            	refresh();
+            	
+
+		});
+		
+		$(".padre").click(function() { 
+            	
+
+            	$(".padre").css('border','none');
+            	$(this).css('border','solid 2px');
+            	$('#padrehid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
@@ -307,7 +335,7 @@ function refresh(reset)
 
  $("#catalogo").infinitescroll("destroy");
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #resethid').serialize();
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid').serialize();
   
  	
 

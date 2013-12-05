@@ -207,32 +207,70 @@ class TiendaController extends Controller
 				Yii::app()->session['f_text'] = $_POST['texthid'];
 				
 			} else {
-				if (isset($_POST['colorhid']))	 
-				if($_POST['colorhid']!=0){
-				
-					Yii::app()->session['f_color'] = $_POST['colorhid'];
-				
+				if (isset($_POST['colorhid'])){	 
+					if($_POST['colorhid']!=0){
+					
+						Yii::app()->session['f_color'] = $_POST['colorhid'];
+					
+					}else{
+						if(isset(Yii::app()->session['f_color'])){
+							unset(Yii::app()->session['f_color']);
+						}
+					}
 				}
-				if (isset($_POST['cathid']))
-				if($_POST['cathid']!=0){
 				
-					Yii::app()->session['f_cat'] = $_POST['cathid'];
-	 
-				
+				if (isset($_POST['cathid'])){
+					if($_POST['cathid']!=0){
+					
+						Yii::app()->session['f_cat'] = $_POST['cathid'];
+		 			}
+					else{
+						if(isset(Yii::app()->session['f_cat'])){
+							unset(Yii::app()->session['f_cat']);
+						}
+					}
 				}
-				if (isset($_POST['marcahid']))
-				if($_POST['marcahid']!=0){
-				
-					Yii::app()->session['f_marca'] = $_POST['marcahid'];
-				
+				if (isset($_POST['padrehid'])){
+					if($_POST['padrehid']!=0){
+					
+						Yii::app()->session['f_padre'] = $_POST['padrehid'];
+		 			}
+					else{
+						if(isset(Yii::app()->session['f_padre'])){
+							unset(Yii::app()->session['f_padre']);
+						}
+					}
 				}
+				
+				
+				if (isset($_POST['marcahid'])){
+					if($_POST['marcahid']!=0){
+					
+						Yii::app()->session['f_marca'] = $_POST['marcahid'];
+					
+					}
+					else{
+						if(isset(Yii::app()->session['f_marca'])){
+							unset(Yii::app()->session['f_marca']);
+						}
+					}
+				}
+				
 				if (isset($_POST['preciohid']))
-				if($_POST['preciohid']<4){
+				{	if($_POST['preciohid']<4){
+					
+						Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
+						Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
+						Yii::app()->session['p_index']=$_POST['preciohid'];
+										
+					}
+					else{
+						if(isset(Yii::app()->session['p_index'])){
+							unset(Yii::app()->session['p_index']);
+						}
+					}
 				
-					Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
-					Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
-					Yii::app()->session['p_index']=$_POST['preciohid'];
-									
+					
 				}
 				if (isset($_POST['resethid']))
 				if($_POST['resethid']==1){

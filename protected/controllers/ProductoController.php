@@ -1127,7 +1127,8 @@ class ProductoController extends Controller
 				  }
 				if ($valid)  
 					echo CJSON::encode(array(
-	                                  'status'=>'success'
+	                                  'status'=>'success',
+	                                  'id'=>$model->id
 	                             ));
 			}
 		} 

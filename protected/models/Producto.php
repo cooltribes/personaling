@@ -725,6 +725,10 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		//Filtro por categoria
 		if(isset(Yii::app()->session['f_cat'])){
 			$criteria->addCondition('tbl_categoria_id  = '.Yii::app()->session['f_cat']);
+		}else{
+			if(isset(Yii::app()->session['f_padre'])){
+				$criteria->addCondition('categorias.padreId = '.Yii::app()->session['f_padre']);
+			}
 		}
 		
 		//------------------ BUSQUEDA POR TEXTO (marca, categoria, color, nombre de la prenda) ----------------

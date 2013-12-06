@@ -1754,6 +1754,7 @@ src: url('../fonts/entypo.woff'),
   .caretthumbs{
     position: relative;
     top: 16px;
+
   }
   .itemThumbnails{
     display: inline-block;
@@ -1765,6 +1766,10 @@ src: url('../fonts/entypo.woff'),
     }
     .dropdown-toggle{
       padding: 1px 7px 33px;
+      b.caret{
+        border-top-color: black;
+        border-bottom-color: black;
+      }      
     }
     .dropdown-menu{
       border: 10px solid #E7E3E7;
@@ -1825,17 +1830,16 @@ src: url('../fonts/entypo.woff'),
     #marca_titulo{
       width: 120px;
     }
+    b.caret{
+      margin-top: 8px;
+      margin-left: 0px;
+      margin-right: 6px;
+      border-top-color: black;
+      border-bottom-color: black;
+    }
     small{
       background: rgb(223, 223, 223);
       padding: 1px 6px;
-      b.caret{
-        margin-top: 8px;
-        margin-left: 0px;
-        margin-right: 6px;
-        border-top-color: black;
-        border-bottom-color: black;
-
-      }
     }
   }
   .dropdown-menu{

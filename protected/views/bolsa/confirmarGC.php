@@ -13,14 +13,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //Yii::app()->getSession()->add('total',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
-
+<style>
+        .progreso_compra_giftcard {
+            width: 268px;
+        }
+        .progreso_compra_giftcard .last-done {
+            text-align: center;
+        }
+    </style>
 <div class="container margin_top">
-  <div class="progreso_compra">
+  <div class="progreso_compra progreso_compra_giftcard">
     <div class="clearfix margin_bottom">
       <div class="first-past">Autenticación</div>
-      <div class="middle-past">Dirección<br/>
-        de envío <br/>
-        y facturación</div>
       <div class="middle-past">Método <br/>
         de pago</div>
       <div class="last-done">Confirmar<br/>
@@ -29,20 +33,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación del Pedido</h1>
+      <h1>Confirmación de la Compra</h1>
     </div>
   </div>
-  <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
-  <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
-  <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
-  <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
-  <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
-  <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
-  <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
-  <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
-  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
-  <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
-  <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
   <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
@@ -58,7 +51,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         
         ?>
         <p> <strong>Monto de la GiftCard</strong> <br/>
-          <span class="muted small"><?php echo $giftcard->monto; ?></span>
+          <span class="muted small"><?php echo $giftcard->monto; ?> Bs.</span>
         </p>
         <p>
             <strong>Fecha de vigencia</strong> <br/>
@@ -67,8 +60,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <?php $now = date('Y-m-d', strtotime('now'));
                   echo date("d/m/Y", strtotime($now." + 1 year")); ?>
         </p>
-        <p> <strong>Otros datos</strong>: <?php echo "otros"; ?> <br/>
-        </p>
+<!--        <p> <strong>Otros datos</strong>: <?php echo "otros"; ?> <br/>
+        </p>-->
         
         <!-- Direcciones OFF --> 
         
@@ -91,15 +84,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     
                 }else if(Yii::app()->getSession()->get('tipoPago')==2){
                     
-                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
+                    echo "<tr class='mp'>
+                            <td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>
+                          </tr>";
 
                     $tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
 
                     $rest = substr($tarjeta->numero, -4);
-
-                    echo "</br>Nombre: ".$tarjeta->nombre."
-                    </br>Numero: XXXX XXXX XXXX ".$rest."
-                    </br>Vencimiento: ".$tarjeta->vencimiento;
+                    echo "<tr class='mp'><td>";
+                        echo "<b>Nombre:</b> ".$tarjeta->nombre."
+                        </br><b>Número:</b> XXXX - XXXX - XXXX - ".$rest."                            
+                        </br><b>Vencimiento:</b> ".$tarjeta->vencimiento;
+                    echo "</td></tr>";
                                         
                 }
               ?>
@@ -117,11 +113,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo 'Bs. '.'monto'; ?></td>
+              <td><?php echo 'Bs. '.$monto; ?></td>
             </tr>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.'monto'; ?></h4></td>
+              <td><h4><?php echo 'Bs. '.$monto; ?></h4></td>
             </tr>
           </table>
           <?php
@@ -155,16 +151,32 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php
             /*PARA TARJETA DE CREDITO*/
-              }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
-              	
-                    echo "<div class='form-actions'><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-warning'> <i class='icon-locked icon-white'></i>Pagar con tarjeta de crédito </a></div>";
-               
-               /*DEPOSITO O TRANSFERENCIA*/     
-              }else{
+              }
+              else{ /*DEPOSITO O TRANSFERENCIA*/ 
+                  
+              	$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			    'id'=>'verticalForm',
+			    'action'=>Yii::app()->createUrl('bolsa/comprarGC'),
+			    'htmlOptions'=>array('class'=>'well'),
+			)); 
+                
+                $tipo_pago = Yii::app()->getSession()->get('tipoPago');
+                echo CHtml::hiddenField('codigo_randon',rand());
+                
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type'=>'warning',
+                    'buttonType'=>'submit',
+                    'size'=>'large',
+                    'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
+                    //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+                    'icon'=>'locked white',
+                    'htmlOptions'=>array('onclick'=>'js:enviar_pago();')
+                )); 
+		
+                $this->endWidget(); 
+                  
+              }
            ?>
-                  <a id="boton_completar" onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Completar compra</a>
-                  <hr/>
-           <?php } ?>
         </div>
         <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
@@ -196,269 +208,296 @@ else
 
 ?>
 <script>
-	
-	function enviar()
-	{
-		$('#boton_completar').attr("disabled", true);
-   		var idDireccion = $("#idDireccion").attr("value");
-		var tipoPago = $("#tipoPago").attr("value");
-		var subtotal = $("#subtotal").attr("value");
-		var descuento = $("#descuento").attr("value");
-		var envio = $("#envio").attr("value");
-		var iva = $("#iva").attr("value");
-		var total = $("#total").attr("value");
-		var usar_balance = $("#usar_balance").attr("value");
-		var seguro = $("#seguro").attr("value");
-		var tipo_guia = $("#tipo_guia").attr("value");
-		var peso = $("#peso").attr("value");
+
+function enviar_pago(){
+		$(this).html("Procesando el Pago...");
+		$(this).attr("disabled", true);
 		
- 		$.ajax({
-	        type: "post",
-	        dataType: 'json',
-	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance,
-	        		'seguro':seguro, 'tipo_guia':tipo_guia, 'peso':peso }, 
-	        success: function (data) {
-				//console.log('Total: '+data.total+' - Descuento: '+data.descuento);
-				if(data.status=="ok")
-				{
-					
-					window.location=data.url;
-				}else if(data.status=='error'){
-					//console.log(data.error);
-				}
-	       	}//success
-	       })
- 			
 	}
-	
-	function enviarTarjeta()
-	{
-		$('#boton_pago_tarjeta').attr("disabled", true);
-		
-   		var idDireccion = $("#idDireccion").attr("value");
-		var tipoPago = $("#tipoPago").attr("value");
-		var subtotal = $("#subtotal").attr("value");
-		var descuento = $("#descuento").attr("value");
-		var envio = $("#envio").attr("value");
-		var iva = $("#iva").attr("value");
-		var total = $("#total").attr("value");
-		var seguro = $("#seguro").attr("value");
-		var usar_balance = $("#usar_balance").attr("value");
-		var tipo_guia = $("#tipo_guia").attr("value");
-		var peso = $("#peso").attr("value");
-		var tarjeta = $("#tarjeta").attr("value");
-		//var total_cobrar = "<?php //echo $total; ?>";
-		var total_cobrar = "<?php echo 0; ?>";
-		/* lo de la tarjeta */
-		/*
-		var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
-		var nom = $("#nombre").attr("value");
-		var num = $("#numero").attr("value");
-		var cod = $("#codigo").attr("value");
-		var mes = $("#mes").attr("value");
-		var ano = $("#ano").attr("value");
-		var dir = $("#direccion").attr("value");
-		var ciud = $("#ciudad").attr("value");
-		var est = $("#estado").attr("value");
-		var zip = $("#zip").attr("value");
-		*/
-		if(tarjeta!="0") // el id de la tarjeta de credito que esta temporal en la pagina anterior
-		{
-			/*if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
-			{
-				alert("Por favor complete los datos.");
-			}
-			else
-			{*/
-			
-			//alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
-			
-				$.ajax({
-		        type: "post",
-		        dataType: 'json',
-		        url: "credito", // action 
-		       /* data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
-		        		'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
-		        		}, */
-		        data: { 'tipoPago':tipoPago, 'total':total_cobrar, 'tarjeta':tarjeta
-		        		}, 		
-		        success: function (data) {
-					
-					if(data.status==201) // pago aprobado
-					{
-						
-						$.ajax({
-					        type: "post",
-					        dataType: 'json',
-					        url: "comprar", // action 
-					        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
-					        		'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
-					        		'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro,'tipo_guia':tipo_guia, 'peso':peso
-					        		}, 
-					        success: function (data) {
-								if(data.status=="ok")
-								{
-									window.location="pedido/"+data.orden+"";
-								}
-					       	}//success
-					      })
-					}
-					else
-					{
-						// no pasó la tarjeta
-						
-						if(data.status==400)
-						{
-							if(data.mensaje=="Credit card has Already Expired"){
-								//alert('La tarjeta que intentó usar ya expiró.');
-								window.location="error/1";
-							}
 
-							if(data.mensaje=="The CardNumber field is not a valid credit card number."){
-								//alert('El número de tarjeta que introdujó no es un número válido.');
-								window.location="error/2";
-							}
-							if(data.mensaje=="CVC Number Invalid"){
-								//alert('El número de tarjeta que introdujó no es un número válido.');
-								window.location="error/6";
-							}							
-						}
-						
-						if(data.status==401)
-						{
-							//alert('error de autenticacion');
-							window.location="error/3";
-						}
-						
-						if(data.status==403)
-						{
-							//alert('No pudimos completar su operación: '+data.mensaje);
-							window.location="error/5";
-						}
-						
-						if(data.status==503)
-						{
-							//alert('error interno');
-							window.location="error/4";
-						}
-					}
-					
-		       	}//success
-		       })
-			
-			//}
-		}
-		else
-		{
-			
-			$.ajax({
-		        type: "post",
-		        dataType: 'json',
-		        url: "credito", // action 
-		        data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard }, 
-		        success: function (data) {
-					
-					if(data.status==201) // pago aprobado
-					{
-						
-						$.ajax({
-					        type: "post",
-					        dataType: 'json',
-					        url: "comprar", // action 
-					        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
-					        		'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
-					        		'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro,'tipo_guia':tipo_guia, 'peso':peso
-					        		}, 
-					        success: function (data) {
-								if(data.status=="ok")
-								{
-									window.location="pedido/"+data.orden+"";
-								}
-					       	}//success
-					      })
-					}
-					else
-					{
-						// no pasó la tarjeta			
-						if(data.status==400){
-							
-							if(data.mensaje=="Credit card has Already Expired"){
-								//alert('La tarjeta que intentó usar ya expiró.');
-								window.location="error/1";
-							}
+function enviar()
+{
+        $('#boton_completar').attr("disabled", true);
+        var idDireccion = $("#idDireccion").attr("value");
+        var tipoPago = $("#tipoPago").attr("value");
+        var subtotal = $("#subtotal").attr("value");
+        var descuento = $("#descuento").attr("value");
+        var envio = $("#envio").attr("value");
+        var iva = $("#iva").attr("value");
+        var total = $("#total").attr("value");
+        var usar_balance = $("#usar_balance").attr("value");
+        var seguro = $("#seguro").attr("value");
+        var tipo_guia = $("#tipo_guia").attr("value");
+        var peso = $("#peso").attr("value");
 
-							if(data.mensaje=="The CardNumber field is not a valid credit card number."){
-								//alert('El número de tarjeta que introdujó no es un número válido.');
-								window.location="error/2";
-							}
-						}
-						
-						if(data.status==401){
-							//alert('error de autenticacion');
-							window.location="error/3";
-						}
-						
-						if(data.status==403){
-							//alert('No pudimos completar su operación: '+data.mensaje);
-							window.location="error/5";
-						}
-						
-						if(data.status==503){
-							//alert('error interno');
-							window.location="error/4";
-						}
-					}
-					
-		       	}//success
-		       })
-				
-		}
-	
-	}
-	
-	function enviar_mp(json)
-	{
-		$('#boton_mp').attr("disabled", true);
-		//alert("return");
-   		var idDireccion = $("#idDireccion").attr("value");
-		var tipoPago = $("#tipoPago").attr("value");
-		var subtotal = $("#subtotal").attr("value");
-		var descuento = $("#descuento").attr("value");
-		var envio = $("#envio").attr("value");
-		var iva = $("#iva").attr("value");
-		var total = $("#total").attr("value");
-		var seguro = $("#seguro").attr("value");
-		var tipo_guia = $("#tipo_guia").attr("value");
-		var peso = $("#peso").attr("value");
+        $.ajax({
+        type: "post",
+        dataType: 'json',
+        url: "comprar", // action 
+        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'usar_balance':usar_balance,
+                        'seguro':seguro, 'tipo_guia':tipo_guia, 'peso':peso }, 
+        success: function (data) {
+            //console.log('Total: '+data.total+' - Descuento: '+data.descuento);
+            if(data.status=="ok")
+            {
 
- 		 if (json.collection_status=='approved'){
-    alert ('Pago acreditado');
-  } else if(json.collection_status=='pending'){
-    alert ('El usuario no completó el pago');
+                    window.location=data.url;
+            }else if(data.status=='error'){
+                    //console.log(data.error);
+            }
+        }//success
+       })
+
+}
+	
+function registrarCompra(){
+
     $.ajax({
-	        type: "post",
-	        dataType: 'json',
-	        url: "comprar", // action 
-	        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id,'seguro':seguro,'tipo_guia':tipo_guia, 'peso':peso}, 
-	        success: function (data) {
-				
-				if(data.status=="ok")
-				{
-					window.location="pedido/"+data.orden+"";
-				}
-	       	}//success
-	       })
-  } else if(json.collection_status=='in_process'){    
-    alert ('El pago está siendo revisado');    
-    
-  } else if(json.collection_status=='rejected'){
-    alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
-  } else if(json.collection_status==null){
-    alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
-  }
- 			
-	}
+        type: "post",
+        dataType: 'json',
+        url: "comprarGC", // action 
+        data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
+                        'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
+                        'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro,'tipo_guia':tipo_guia, 'peso':peso
+                        }, 
+        success: function (data) {
+                        if(data.status=="ok")
+                        {
+                                window.location="pedido/"+data.orden+"";
+                        }
+        }//success
+    })
+
+}
+        
+        
+function enviarTarjeta()
+{
+    $('#boton_pago_tarjeta').attr("disabled", true);
+
+    var idDireccion = $("#idDireccion").attr("value");
+    var tipoPago = $("#tipoPago").attr("value");
+    var subtotal = $("#subtotal").attr("value");
+    var descuento = $("#descuento").attr("value");
+    var envio = $("#envio").attr("value");
+    var iva = $("#iva").attr("value");
+    var total = $("#total").attr("value");
+    var seguro = $("#seguro").attr("value");
+    var usar_balance = $("#usar_balance").attr("value");
+    var tipo_guia = $("#tipo_guia").attr("value");
+    var peso = $("#peso").attr("value");
+    var tarjeta = $("#tarjeta").attr("value");
+    //var total_cobrar = "<?php //echo $total; ?>";
+    var total_cobrar = "<?php echo 0; ?>";
+    /* lo de la tarjeta */
+    /*
+    var idCard = $("#idTarjeta").attr("value"); // por ahora siempre 0, luego deberia ser el id del escogido
+    var nom = $("#nombre").attr("value");
+    var num = $("#numero").attr("value");
+    var cod = $("#codigo").attr("value");
+    var mes = $("#mes").attr("value");
+    var ano = $("#ano").attr("value");
+    var dir = $("#direccion").attr("value");
+    var ciud = $("#ciudad").attr("value");
+    var est = $("#estado").attr("value");
+    var zip = $("#zip").attr("value");
+    */
+    if(tarjeta!="0") // el id de la tarjeta de credito que esta temporal en la pagina anterior
+    {
+            /*if(nom=="" || num=="" || cod=="" || mes=="Mes" || ano=="Ano")
+            {
+                    alert("Por favor complete los datos.");
+            }
+            else
+            {*/
+
+            //alert("idCard: "+idCard+" nombre: "+nom+", numero"+num+", cod:"+cod+", mes y año "+mes+"-"+ano+", dir "+dir+", ciudad "+ciud+", estado "+est+", zip"+zip);
+
+                    $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "credito", // action 
+           /* data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard,'nom':nom,'num':num,'cod':cod,
+                            'mes':mes,'ano':ano,'dir':dir,'ciud':ciud, 'est':est,'zip':zip
+                            }, */
+            data: { 'tipoPago':tipoPago, 'total':total_cobrar, 'tarjeta':tarjeta
+                            }, 		
+            success: function (data) {
+
+                            if(data.status==201) // pago aprobado
+                            {
+
+                                    $.ajax({
+                                    type: "post",
+                                    dataType: 'json',
+                                    url: "comprar", // action 
+                                    data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
+                                                    'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
+                                                    'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro,'tipo_guia':tipo_guia, 'peso':peso
+                                                    }, 
+                                    success: function (data) {
+                                                    if(data.status=="ok")
+                                                    {
+                                                            window.location="pedido/"+data.orden+"";
+                                                    }
+                                    }//success
+                                  })
+                            }
+                            else
+                            {
+                                    // no pasó la tarjeta
+
+                                    if(data.status==400)
+                                    {
+                                            if(data.mensaje=="Credit card has Already Expired"){
+                                                    //alert('La tarjeta que intentó usar ya expiró.');
+                                                    window.location="error/1";
+                                            }
+
+                                            if(data.mensaje=="The CardNumber field is not a valid credit card number."){
+                                                    //alert('El número de tarjeta que introdujó no es un número válido.');
+                                                    window.location="error/2";
+                                            }
+                                            if(data.mensaje=="CVC Number Invalid"){
+                                                    //alert('El número de tarjeta que introdujó no es un número válido.');
+                                                    window.location="error/6";
+                                            }							
+                                    }
+
+                                    if(data.status==401)
+                                    {
+                                            //alert('error de autenticacion');
+                                            window.location="error/3";
+                                    }
+
+                                    if(data.status==403)
+                                    {
+                                            //alert('No pudimos completar su operación: '+data.mensaje);
+                                            window.location="error/5";
+                                    }
+
+                                    if(data.status==503)
+                                    {
+                                            //alert('error interno');
+                                            window.location="error/4";
+                                    }
+                            }
+
+            }//success
+           })
+
+            //}
+    }
+    else
+    {
+
+            $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "credito", // action 
+            data: { 'tipoPago':tipoPago, 'total':total, 'idCard':idCard }, 
+            success: function (data) {
+
+                            if(data.status==201) // pago aprobado
+                            {
+
+                                    $.ajax({
+                                    type: "post",
+                                    dataType: 'json',
+                                    url: "comprar", // action 
+                                    data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal,
+                                                    'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total,
+                                                    'usar_balance':usar_balance, 'idDetalle':data.idDetalle,'seguro':seguro,'tipo_guia':tipo_guia, 'peso':peso
+                                                    }, 
+                                    success: function (data) {
+                                                    if(data.status=="ok")
+                                                    {
+                                                            window.location="pedido/"+data.orden+"";
+                                                    }
+                                    }//success
+                                  })
+                            }
+                            else
+                            {
+                                    // no pasó la tarjeta			
+                                    if(data.status==400){
+
+                                            if(data.mensaje=="Credit card has Already Expired"){
+                                                    //alert('La tarjeta que intentó usar ya expiró.');
+                                                    window.location="error/1";
+                                            }
+
+                                            if(data.mensaje=="The CardNumber field is not a valid credit card number."){
+                                                    //alert('El número de tarjeta que introdujó no es un número válido.');
+                                                    window.location="error/2";
+                                            }
+                                    }
+
+                                    if(data.status==401){
+                                            //alert('error de autenticacion');
+                                            window.location="error/3";
+                                    }
+
+                                    if(data.status==403){
+                                            //alert('No pudimos completar su operación: '+data.mensaje);
+                                            window.location="error/5";
+                                    }
+
+                                    if(data.status==503){
+                                            //alert('error interno');
+                                            window.location="error/4";
+                                    }
+                            }
+
+            }//success
+           })
+
+    }
+
+}
+	
+function enviar_mp(json)
+{
+        $('#boton_mp').attr("disabled", true);
+        //alert("return");
+        var idDireccion = $("#idDireccion").attr("value");
+        var tipoPago = $("#tipoPago").attr("value");
+        var subtotal = $("#subtotal").attr("value");
+        var descuento = $("#descuento").attr("value");
+        var envio = $("#envio").attr("value");
+        var iva = $("#iva").attr("value");
+        var total = $("#total").attr("value");
+        var seguro = $("#seguro").attr("value");
+        var tipo_guia = $("#tipo_guia").attr("value");
+        var peso = $("#peso").attr("value");
+
+         if (json.collection_status=='approved'){
+            alert ('Pago acreditado');
+        } else if(json.collection_status=='pending'){
+            alert ('El usuario no completó el pago');
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                url: "comprar", // action 
+                data: { 'idDireccion':idDireccion, 'tipoPago':tipoPago, 'subtotal':subtotal, 'descuento':descuento, 'envio':envio, 'iva':iva, 'total':total, 'id_transaccion':json.collection_id,'seguro':seguro,'tipo_guia':tipo_guia, 'peso':peso}, 
+                success: function (data) {
+
+                                if(data.status=="ok")
+                                {
+                                        window.location="pedido/"+data.orden+"";
+                                }
+                }//success
+           })
+        } else if(json.collection_status=='in_process'){    
+            alert ('El pago está siendo revisado');    
+
+        } else if(json.collection_status=='rejected'){
+            alert ('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
+        } else if(json.collection_status==null){
+            alert ('El usuario no completó el proceso de pago, no se ha generado ningún pago');
+        }
+
+}
 	
 </script> 
 <script type="text/javascript">

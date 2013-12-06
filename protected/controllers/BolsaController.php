@@ -31,7 +31,7 @@ class BolsaController extends Controller
 				'actions'=>array('modal','credito','index','limpiar',
                                     'eliminardireccion','editar','editardireccion','agregar','actualizar',
                                     'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
-                                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC'),
+                                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -774,29 +774,21 @@ class BolsaController extends Controller
 		Yii::trace('realizo cobro, return:'.print_r($output, true), 'registro');
 		if($output->code == 201){ // PAGO AUTORIZADO
 			$rest = substr($tarjeta->numero, -4);
-			$detalle = new Detalle;
-			$detalle->nTarjeta = $rest;
-			$detalle->nTransferencia = $output->id;
-			$detalle->nombre = $tarjeta->nombre;
-			$detalle->cedula = $tarjeta->ci;
-			$detalle->monto = $monto;
-			$detalle->fecha = date("Y-m-d H:i:s");
-			$detalle->banco = 'TDC';
-			$detalle->estado = 1; // aceptado
-			if($detalle->save()){ // se guardan solo los ultimos 4 numeros y se limpian los datos
-				$tarjeta->numero = $rest;
-				$tarjeta->codigo = " ";
-				$tarjeta->vencimiento = " ";
-				$tarjeta->user_id = $usuario;		
-				$tarjeta->save();
-				// cuando finalice entonces envia id de la orden para redireccionar
-				return array(
-				'codigo'=>$output->code, 
-					'status'=> true, // paso o no
-					'mensaje' => $output->message,
-					'idDetalle' => $detalle->id,
-				);
-			}//detalle
+			 // se guardan solo los ultimos 4 numeros y se limpian los datos
+			$tarjeta->numero = $rest;
+			$tarjeta->codigo = " ";
+			$tarjeta->vencimiento = " ";
+			$tarjeta->user_id = $usuario;		
+			if (!$tarjeta->save())
+				Yii::trace('UserID:'.$usuario.' Error al eliminar tarjeta:'.print_r($tarjeta->getErrors(),true), 'registro');
+			// cuando finalice entonces envia id de la orden para redireccionar
+			return array(
+			'codigo'=>$output->code, 
+				'status'=> true, // paso o no
+				'mensaje' => $output->message,
+				'idDetalle' => $detalle->id,
+				
+			);
 		}else{ // 201
 			$tarjeta->delete();
 			// cuando finalice entonces envia id de la orden para redireccionar
@@ -1065,7 +1057,18 @@ class BolsaController extends Controller
 			    case 2: // TARJETA DE CREDITO
 			        $resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $usuario, Yii::app()->getSession()->get('total_tarjeta'));
 					if ($resultado['status'] == "ok"){
-				        $detalle = Detalle::model()->findByPk($resultado['idDetalle']); 
+						$detalle = new Detalle;
+						$detalle->nTarjeta = $tarjeta->numero;
+						$detalle->nTransferencia = $output["id"];
+						$detalle->nombre = $tarjeta->nombre;
+						$detalle->cedula = $tarjeta->ci;
+						$detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+						$detalle->fecha = date("Y-m-d H:i:s");
+						$detalle->banco = 'TDC';
+						$detalle->estado = 1; // aceptado
+						if(!$detalle->save()){
+							Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
+						}
 						$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
 						$orden = new Orden;
 						$orden->subtotal = Yii::app()->getSession()->get('subtotal');
@@ -1191,6 +1194,7 @@ class BolsaController extends Controller
 		}
 		 
 	}
+        
 	public function clonarDireccion($direccion){
 		$dirEnvio = new DireccionEnvio;
 					
@@ -1896,7 +1900,7 @@ class BolsaController extends Controller
                 }
                 
                 Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
-                    
+                Yii::app()->getSession()->add('idTarjeta',30);    
 
                 if($_POST['tipo_pago'] == 2){ // pago de tarjeta de credito
                     
@@ -1935,7 +1939,7 @@ class BolsaController extends Controller
 
                             Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
                             //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
-                            $this->redirect(array('bolsa/confirmar'));
+                            $this->redirect(array('bolsa/confirmarGC'));
                     }
                     else
                             //var_dump($tarjeta->getErrors());
@@ -1944,10 +1948,11 @@ class BolsaController extends Controller
                 }
                 else {
                     //$this->render('confirmar');
-                    $this->redirect(array('bolsa/confirmar'));
+                    $this->redirect(array('bolsa/confirmarGC'));
                 }
 
-            }else{
+            }
+            else{
                 //$tarjeta = new TarjetaCredito;
 //                $metric = new ShoppingMetric();
 //                $metric->user_id = Yii::app()->user->id;
@@ -1955,12 +1960,17 @@ class BolsaController extends Controller
 //                $metric->save();
 
                 //Buscar todas las giftcards de la bolsa del usuario y totalizar
-                $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => Yii::app()->user->id));
-
-                $total = 0;
-                foreach($giftcards as $gift){
-                    $total += $gift->monto;
-                }
+//                $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => Yii::app()->user->id));
+//
+//                $total = 0;
+//                foreach($giftcards as $gift){
+//                    $total += $gift->monto;
+//                }
+//                
+                
+                $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
+                $total = $giftcard->monto;
+                Yii::app()->getSession()->add('total',$total); 
 
                 $this->render('pagoGC',array(
                     'tarjeta'=>$tarjeta,                       
@@ -1985,10 +1995,152 @@ class BolsaController extends Controller
 //                Yii::app()->end();
                 //$this->render('confirmarGC',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
                 
+                //por los momentos solo la primera giftcard que encuentre
                 $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
+                $monto = Yii::app()->getSession()->get('total');
+                
                 $this->render('confirmarGC',array(
                     'idTarjeta'=> 30,
+                    'monto'=> $monto,
                     'giftcard' => $giftcard));
         }
+        
+        public function actionComprarGC()
+	{
+            if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
+                
+                $codigo_randon = Yii::app()->getSession()->get('codigo_randon');
+                if ($codigo_randon == $_POST['codigo_randon'])
+                        Yii::app()->end();
+                
+                Yii::app()->getSession()->add('codigo_randon',$codigo_randon);	
+                
+                
+                $userId = Yii::app()->user->id; 
+                
+                $tipoPago = Yii::app()->getSession()->get('tipoPago');	
+                
+
+                $total = Yii::app()->getSession()->get('total');
+                
+                switch ($tipoPago) {
+                    case 1:
+                        break;
+                    case 2: // TARJETA DE CREDITO
+                        //$tarjetaId = Yii::app()->getSession()->get('idTarjeta');
+                        //$resultado = $this->cobrarTarjeta($tarjetaId, $userId, $total);
+                        //if ($resultado['status'] == "ok")
+                        if (true)
+                        {
+//                            $detalle = DetallePago::model()->findByPk($resultado['idDetalle']); 
+//                            $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+//                            $tarjeta = TarjetaCredito::model()->findByPk($tarjetaId);
+//                            $detalle = new Detalle;
+//                            $detalle->nTarjeta = $tarjeta->numero;
+//                            $detalle->nTransferencia = $output["id"];
+//                            $detalle->nombre = $tarjeta->nombre;
+//                            $detalle->cedula = $tarjeta->ci;
+//                            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+//                            $detalle->fecha = date("Y-m-d H:i:s");
+//                            $detalle->banco = 'TDC';
+//                            $detalle->estado = 1; // aceptado
+//                            if(!$detalle->save()){
+//                                    Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
+//                            }
+                            $orden = new OrdenGC;
+                            
+                            $orden->estado = Orden::ESTADO_CONFIRMADO;
+                            $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+                            $orden->total = $total;
+                            $orden->user_id = $userId;
+                           
+                            if (!($orden->save())){
+                                    echo CJSON::encode(array(
+                                                    'status'=> 'error',
+                                                    'error'=> $orden->getErrors(),
+                                            ));
+                                    Yii::trace('UserID: '.$userId.' Error al guardar la orden:'.print_r($orden->getErrors(),true), 'registro');	
+                                    Yii::app()->end();
+
+                            }	
+                            //Pasar de la bolsa a las giftcards
+                            $this->crearGC($userId, $orden->id);
+                            
+                            //Generar el detalle de pago
+//                            $detalle->orden_id = $orden->id;
+//                            $detalle->tipo_pago = 2;
+//                            $detalle->save();
+                            
+                        } else { 
+                            $this->redirect($this->createAbsoluteUrl('bolsa/error',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
+                        }			
+                        break;
+                    case 3:			        
+                        break;
+                }
+//                // Generar factura
+//                $factura = new Factura;
+//                $factura->fecha = date('Y-m-d');
+//                $factura->direccion_fiscal_id = Yii::app()->getSession()->get('idDireccion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+//                $factura->direccion_envio_id =Yii::app()->getSession()->get('idDireccion');
+//                $factura->orden_id = $orden->id;
+//                if (!$factura->save())
+//                        Yii::trace('user id:'.Yii::app()->user->id.' Factura error:'.print_r($factura->getErrors(),true), 'registro');
+
+                // Enviar correo con resumen de la compra
+//                $user = User::model()->findByPk($userId);
+//                $message            = new YiiMailMessage;
+//	        //this points to the file test.php inside the view path
+//	        $message->view = "mail_compra";
+//			$subject = 'Tu compra en Personaling';
+//	        $params              = array('subject'=>$subject, 'orden'=>$orden);
+//	        $message->subject    = $subject;
+//	        $message->setBody($params, 'text/html');
+//	        $message->addTo($user->email);
+//			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+//	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+//	        Yii::app()->mail->send($message);		
+			$this->redirect($this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http'));	
+            }
+		 
+	}
+        
+        /**/
+        public function crearGC($userId, $ordeId){
+            
+            $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => $userId));		
+            
+            foreach($giftcards as $gift){
+                
+                $model = new Giftcard;
+                $model->monto = $gift->monto;
+                $model->estado = 2; //Activa
+                $model->inicio_vigencia = date('Y-m-d');
+                $now = date('Y-m-d', strtotime('now'));
+                $model->fin_vigencia = date("Y-m-d", strtotime($now." + 1 year"));
+                $model->comprador = $userId; 
+                
+                do{  
+
+                    $model->codigo = Giftcard::generarCodigo();
+                    $existe = Giftcard::model()->countByAttributes(array('codigo' => $model->codigo));                        
+
+                }while($existe);
+                
+                $model->orden_id = $ordeId;
+                
+                $model->save();
+                $gift->delete();
+                  
+            }
+
+	}
+        
+        public function actionPedidoGC($id)
+	{
+		$orden = OrdenGC::model()->findByPk($id);
+				
+		$this->render('pedidoGC',array('orden'=>$orden));
+	}
         
 }

@@ -6,7 +6,7 @@ Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 ?>
-<?php $idDireccion = Yii::app()->getSession()->get('idDireccion'); ?>
+
 
 <style>
         .progreso_compra_giftcard {
@@ -249,8 +249,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //                        Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
 //                        Yii::app()->getSession()->add('peso',$peso_total);
 						
-                        $subtotal = $total;
-                        echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($subtotal, '');
+                        
+                        echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, '');
                           ?>
                   </td>
               </tr> 
@@ -258,13 +258,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <th class="text_align_left"><h4>Total:</h4></th>
                 <td class="text_align_right">
                     <h4 id="precio_total">
-                    <?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($subtotal, ''); ?>
+                    <?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?>
                     </h4>
                 </td>
               </tr>
-            </table>
-
-            <div id="precio_total_hidden" style="display: none;"><?php echo $subtotal; ?></div>
+            </table>            
             
             <div class="form-actions">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -276,7 +274,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            'buttonType'=>'submit',
 	            'htmlOptions'=>array('id'=>'btn-siguiente',),
 	        ));
-        // <a id="completar-compra" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
+        
         ?>
             </div>
 

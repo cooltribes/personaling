@@ -10,7 +10,7 @@ $this->breadcrumbs=array(
 <div class="row-fluid margin_bottom_medium">
     <div class="span6 text_align_right">
         <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'label' => 'Looks para Mí',
+            'label' => 'Looks para mí',
             'buttonType' => 'button',
             'type' => 'danger',
             'size' => 'large',
@@ -23,7 +23,7 @@ $this->breadcrumbs=array(
     </div>
     <div class="span6">
         <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'label' => 'Todos los Looks',
+            'label' => 'Todos los looks',
             'buttonType' => 'button',
             //'type' => 'danger',
             'size' => 'large',

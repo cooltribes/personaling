@@ -2027,13 +2027,26 @@ class BolsaController extends Controller
                     case 1:
                         break;
                     case 2: // TARJETA DE CREDITO
-                        //$resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $userId, $total);
+                        //$tarjetaId = Yii::app()->getSession()->get('idTarjeta');
+                        //$resultado = $this->cobrarTarjeta($tarjetaId, $userId, $total);
                         //if ($resultado['status'] == "ok")
                         if (true)
                         {
 //                            $detalle = DetallePago::model()->findByPk($resultado['idDetalle']); 
 //                            $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
-
+//                            $tarjeta = TarjetaCredito::model()->findByPk($tarjetaId);
+//                            $detalle = new Detalle;
+//                            $detalle->nTarjeta = $tarjeta->numero;
+//                            $detalle->nTransferencia = $output["id"];
+//                            $detalle->nombre = $tarjeta->nombre;
+//                            $detalle->cedula = $tarjeta->ci;
+//                            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+//                            $detalle->fecha = date("Y-m-d H:i:s");
+//                            $detalle->banco = 'TDC';
+//                            $detalle->estado = 1; // aceptado
+//                            if(!$detalle->save()){
+//                                    Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
+//                            }
                             $orden = new OrdenGC;
                             
                             $orden->estado = Orden::ESTADO_CONFIRMADO;
@@ -2105,7 +2118,7 @@ class BolsaController extends Controller
                 $model->inicio_vigencia = date('Y-m-d');
                 $now = date('Y-m-d', strtotime('now'));
                 $model->fin_vigencia = date("Y-m-d", strtotime($now." + 1 year"));
-                $model->comprador = 1; //Activa
+                $model->comprador = $userId; 
                 
                 do{  
 
@@ -2127,7 +2140,7 @@ class BolsaController extends Controller
 	{
 		$orden = OrdenGC::model()->findByPk($id);
 				
-		$this->render('pedido',array('orden'=>$orden));
+		$this->render('pedidoGC',array('orden'=>$orden));
 	}
         
 }

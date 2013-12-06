@@ -6,6 +6,12 @@ $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
 //$accessToken = $mp->get_access_token();
 //var_dump($accessToken);
+$cs=Yii::app()->clientScript;
+$cs->registerScript('submit','
+$(":submit").mouseup(function() {
+        $(this).attr("disabled",true);
+        $(this).parents("form").submit();
+})',CClientScript::POS_READY);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
 	$descuento = Yii::app()->getSession()->get('descuento');
@@ -187,14 +193,25 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php 
           } else {
+          	
+			$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			    'id'=>'verticalForm',
+			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
+			    'htmlOptions'=>array('class'=>'well'),
+			)); 
           	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
+			echo CHtml::hiddenField('codigo_randon',rand());
           	$this->widget('bootstrap.widgets.TbButton', array(
             'type'=>'warning',
+            'buttonType'=>'submit',
             'size'=>'large',
             'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
-            'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+            //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
             'icon'=>'locked white',
+            'htmlOptions'=>array('onclick'=>'js:enviar_pago();')
         )); 
+		
+		 $this->endWidget(); 
 		  }
 		  ?>
           
@@ -227,7 +244,11 @@ else
 
 ?>
 <script>
-	
+	function enviar_pago(){
+		$(this).html("Procesando el Pago...");
+		$(this).attr("disabled", true);
+		
+	}
 	function enviar()
 	{
 		$('#boton_completar').attr("disabled", true);

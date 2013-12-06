@@ -1044,9 +1044,11 @@ class GiftcardController extends Controller
                         
                        //$model->plantilla_url = "default.jpg";
                         
-                        //por los momentos se van a borrar todas las existentes
-                        //en la bolsa del usuario
-                        //porque se va a trabajar con una sola                        
+                        /*
+                        por los momentos se van a borrar todas las existentes
+                        en la bolsa del usuario
+                        porque se va a trabajar con una sola
+                         */
                         BolsaGC::model()->deleteAllByAttributes(array("user_id" => Yii::app()->user->id));
                         
                         if($model->save()){  

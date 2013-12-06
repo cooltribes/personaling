@@ -36,17 +36,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <h1>Confirmación de la Compra</h1>
     </div>
   </div>
-  <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
-  <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
-  <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
-  <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
-  <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
-  <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
-  <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
-  <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
-  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
-  <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
-  <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
   <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
@@ -162,19 +151,32 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
           <?php
             /*PARA TARJETA DE CREDITO*/
-              }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
-              	
-                    echo "<div class='form-actions'>
-                         <a id='boton_pago_tarjeta' onclick='registrarCompra()' class='pull-left btn-large btn btn-warning'>
-                            <i class='icon-locked icon-white'></i>Pagar con Tarjeta de Crédito 
-                         </a></div>";
-               
-               /*DEPOSITO O TRANSFERENCIA*/     
-              }else{
+              }
+              else{ /*DEPOSITO O TRANSFERENCIA*/ 
+                  
+              	$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			    'id'=>'verticalForm',
+			    'action'=>Yii::app()->createUrl('bolsa/comprarGC'),
+			    'htmlOptions'=>array('class'=>'well'),
+			)); 
+                
+                $tipo_pago = Yii::app()->getSession()->get('tipoPago');
+                echo CHtml::hiddenField('codigo_randon',rand());
+                
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type'=>'warning',
+                    'buttonType'=>'submit',
+                    'size'=>'large',
+                    'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
+                    //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+                    'icon'=>'locked white',
+                    'htmlOptions'=>array('onclick'=>'js:enviar_pago();')
+                )); 
+		
+                $this->endWidget(); 
+                  
+              }
            ?>
-                  <a id="boton_completar" onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Completar compra</a>
-                  <hr/>
-           <?php } ?>
         </div>
         <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
@@ -206,7 +208,13 @@ else
 
 ?>
 <script>
-	
+
+function enviar_pago(){
+		$(this).html("Procesando el Pago...");
+		$(this).attr("disabled", true);
+		
+	}
+
 function enviar()
 {
         $('#boton_completar').attr("disabled", true);

@@ -774,29 +774,21 @@ class BolsaController extends Controller
 		Yii::trace('realizo cobro, return:'.print_r($output, true), 'registro');
 		if($output->code == 201){ // PAGO AUTORIZADO
 			$rest = substr($tarjeta->numero, -4);
-			$detalle = new Detalle;
-			$detalle->nTarjeta = $rest;
-			$detalle->nTransferencia = $output->id;
-			$detalle->nombre = $tarjeta->nombre;
-			$detalle->cedula = $tarjeta->ci;
-			$detalle->monto = $monto;
-			$detalle->fecha = date("Y-m-d H:i:s");
-			$detalle->banco = 'TDC';
-			$detalle->estado = 1; // aceptado
-			if($detalle->save()){ // se guardan solo los ultimos 4 numeros y se limpian los datos
-				$tarjeta->numero = $rest;
-				$tarjeta->codigo = " ";
-				$tarjeta->vencimiento = " ";
-				$tarjeta->user_id = $usuario;		
-				$tarjeta->save();
-				// cuando finalice entonces envia id de la orden para redireccionar
-				return array(
-				'codigo'=>$output->code, 
-					'status'=> true, // paso o no
-					'mensaje' => $output->message,
-					'idDetalle' => $detalle->id,
-				);
-			}//detalle
+			 // se guardan solo los ultimos 4 numeros y se limpian los datos
+			$tarjeta->numero = $rest;
+			$tarjeta->codigo = " ";
+			$tarjeta->vencimiento = " ";
+			$tarjeta->user_id = $usuario;		
+			if (!$tarjeta->save())
+				Yii::trace('UserID:'.$usuario.' Error al eliminar tarjeta:'.print_r($tarjeta->getErrors(),true), 'registro');
+			// cuando finalice entonces envia id de la orden para redireccionar
+			return array(
+			'codigo'=>$output->code, 
+				'status'=> true, // paso o no
+				'mensaje' => $output->message,
+				'idDetalle' => $detalle->id,
+				
+			);
 		}else{ // 201
 			$tarjeta->delete();
 			// cuando finalice entonces envia id de la orden para redireccionar
@@ -1065,7 +1057,18 @@ class BolsaController extends Controller
 			    case 2: // TARJETA DE CREDITO
 			        $resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $usuario, Yii::app()->getSession()->get('total_tarjeta'));
 					if ($resultado['status'] == "ok"){
-				        $detalle = Detalle::model()->findByPk($resultado['idDetalle']); 
+						$detalle = new Detalle;
+						$detalle->nTarjeta = $tarjeta->numero;
+						$detalle->nTransferencia = $output["id"];
+						$detalle->nombre = $tarjeta->nombre;
+						$detalle->cedula = $tarjeta->ci;
+						$detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+						$detalle->fecha = date("Y-m-d H:i:s");
+						$detalle->banco = 'TDC';
+						$detalle->estado = 1; // aceptado
+						if(!$detalle->save()){
+							Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
+						}
 						$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
 						$orden = new Orden;
 						$orden->subtotal = Yii::app()->getSession()->get('subtotal');

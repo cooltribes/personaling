@@ -965,7 +965,11 @@ class BolsaController extends Controller
 	
 	public function actionComprar()
 	{
-		//if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
+		if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
+			$codigo_randon = Yii::app()->getSession()->get('codigo_randon');
+			if ($codigo_randon == $_POST['codigo_randon'])
+				Yii::app()->end();
+			Yii::app()->getSession()->add('codigo_randon',$codigo_randon);	
 		 	$respCard = "";
 		 	$usuario = Yii::app()->user->id; 
 			$user = User::model()->findByPk($usuario);
@@ -1184,7 +1188,7 @@ class BolsaController extends Controller
 	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
 	        Yii::app()->mail->send($message);		
 			$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));	
-		//}
+		}
 		 
 	}
         

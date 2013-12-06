@@ -46,7 +46,7 @@
 						}
 						
 						echo '</ul>
-						<a href="" class="todos">&nbsp TODOS LOS ACCESORIOS </a>
+						<a href="" class="todos">&nbsp '.strtoupper($padre->nombre).' EN GENERAL  </a>
 					</div>   				
   			</li>';
 				$i++;
@@ -80,10 +80,10 @@
 							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 							
 						}  
-							echo '<li class="colors"><a href="#" value="0" class="scolor" title="Todos" ><img width="44" src="'.Yii::app()->baseUrl.'/images/colores/allcolors.png" /></a></li>';
+							
 						?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 						</ul>  
-						<a href="" class="todos">&nbsp TODOS LOS COLORES </a>
+						<a href="#" value="0" class="todos scolor" >TODOS LOS COLORES</a>
 					</div>
 				</div>
   			</li>  					  			
@@ -227,10 +227,10 @@
 		$(".hijo").click(function() { 
             	
 
-            	$(".hijo").css('border','none');
-            	$(this).css('border','solid 2px');            	
-            	$('.padre').css('border','none');
-            	$('#'+$(this).attr('name')).css('border','solid 2px');
+            	$(".hijo").css('outline','none');
+            	$(this).css('outline','solid 2px');            	
+            	$('.padre').css('outline','none');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px');
             	$('#cathid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
@@ -242,10 +242,11 @@
 		
 		$(".padre").click(function() { 
             	
-
-            	$(".padre").css('border','none');
-            	$(this).css('border','solid 2px');
+				$(".hijo").css('outline','none');
+            	$(".padre").css('outline','none');
+            	$(this).css('outline','solid 2px');
             	$('#padrehid').val($(this).attr('value'));
+            	$('#cathid').val('0');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 

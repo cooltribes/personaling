@@ -46,7 +46,7 @@
 						}
 						
 						echo '</ul>
-						<a href="" class="todos">&nbsp '.strtoupper($padre->nombre).' EN GENERAL  </a>
+						<a name="'.$padre->nombre.'" href="#" class="todos allhijos" value="'.strtoupper($padre->id).'">&nbsp '.strtoupper($padre->nombre).' EN GENERAL  </a>
 					</div>   				
   			</li>';
 				$i++;
@@ -64,7 +64,7 @@
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
 	  					Color: &nbsp
-	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44">		
+	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>		
 	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
 	  				<div class="dropdown-menu dropdown-colors">
@@ -107,12 +107,12 @@
 								echo CHtml::hiddenField('preciohid',5);
 								}
 
-							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' <span class="color12">('.$rangos[0]['count'].')</span></a></li>';
-							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' <span class="color12">('.$rangos[1]['count'].')</span></a></li>';
-							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' <span class="color12">('.$rangos[2]['count'].')</span></a></li>';
-							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' <span class="color12">('.$rangos[3]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="0">Hasta '.number_format($rangos[0]["max"],0,",",".").' Bs <span class="color12">('.$rangos[0]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="1">De '.number_format($rangos[1]["min"],0,",",".").' a '
+							.number_format($rangos[1]["max"],0,",",".").' Bs <span class="color12">('.$rangos[1]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="2">De '.number_format($rangos[2]["min"],0,",",".").' a '
+							.number_format($rangos[2]["max"],0,",",".").' Bs <span class="color12">('.$rangos[2]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="3">Más de '.number_format($rangos[3]["min"],0,",",".").' Bs <span class="color12">('.$rangos[3]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="5">Todos los precios</a></li>';
 					?>		
 					</ul>  
@@ -188,6 +188,10 @@
 
 <!-- PRODUCTOS OFF -->
 <script>
+
+		
+
+
 		$(".precio").click(function() { 
             	
             	$('#precio_titulo').html($(this).html());
@@ -215,10 +219,14 @@
 		
 		$(".scolor").click(function() { 
             	
-            	$('#color_titulo').html($(this).html());
+            	
             	$('#colorhid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
+            	if($('#colorhid').val()==0)
+            		$('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
+            	else
+            		$('#color_titulo').html($(this).html());
             	$('#text_search').val(''); 
             	refresh();
 
@@ -251,8 +259,23 @@
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
             	refresh();
+ 
+		});
+		 
+		$(".allhijos").click(function() { 
+            	
+				$(".hijo").css('outline','none');
+            	$(".padre").css('outline','none');
+            	$('#padrehid').val($(this).attr('value'));
+            	$('#cathid').val('0');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px');
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
+            	refresh();
 
 		});
+		
 		
 		$("#btn_search").click(function() { 
             	

@@ -795,7 +795,7 @@ else if($count == 0){
 var comprando = true;
 
 $(document).ready(function(){
-
+alert('<?php echo Yii::app()->baseUrl; ?>/producto/tallas');
 var source = $('#principal').attr("src");
 var imgZ = source.replace(".","_orig.");
 $('.imagen_principal').zoom({url: imgZ});
@@ -855,13 +855,15 @@ $('.imagen_principal').zoom({url: imgZ});
          
       $.ajax({
           type: "post",
-          url: "../tallas", // action Tallas de Producto
+          url: '<?php echo Yii::app()->baseUrl; ?>/producto/tallas', // action Tallas de Producto
           data: { 'idTalla':dataString , 'idProd':prod}, 
           dataType:"json",
           success: function (data) {
             
             if(data.status == 'ok')
             {
+            	if(data.imagenes.length>0){
+            	
               //alert(data.datos);
           var cont="";
           $.each(data.datos,function(clave,valor) {
@@ -942,7 +944,7 @@ $('.imagen_principal').zoom({url: imgZ});
             
                         
             }
-
+			}
           }//success
          })
          

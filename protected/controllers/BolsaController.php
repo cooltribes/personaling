@@ -1832,7 +1832,14 @@ class BolsaController extends Controller
 	 */
 	public function actionAuthGC()
 	{
-		if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
+            // que esté logueado para llegar a esta acción
+            
+		if (!Yii::app()->user->isGuest) { 
+                    //y que tenga giftcards en la bolsa
+                    $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
+                    if(!$giftcard){
+                        $this->redirect(array("giftcard/comprar"));
+                    }
 			
 			$model=new UserLogin;
 			$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
@@ -1969,6 +1976,12 @@ class BolsaController extends Controller
 //                
                 
                 $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
+                
+                if(!$giftcard){
+                    $this->redirect(array("giftcard/comprar"));
+                }
+                
+                
                 $total = $giftcard->monto;
                 Yii::app()->getSession()->add('total',$total); 
 
@@ -1997,6 +2010,11 @@ class BolsaController extends Controller
                 
                 //por los momentos solo la primera giftcard que encuentre
                 $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
+                
+                if(!$giftcard){
+                    $this->redirect(array("giftcard/comprar"));
+                }
+                
                 $monto = Yii::app()->getSession()->get('total');
                 
                 $this->render('confirmarGC',array(
@@ -2105,7 +2123,7 @@ class BolsaController extends Controller
 		 
 	}
         
-        /**/
+        /*Pasar de la bolsa a generar las giftcards*/
         public function crearGC($userId, $ordeId){
             
             $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => $userId));		
@@ -2114,6 +2132,8 @@ class BolsaController extends Controller
                 
                 $model = new Giftcard;
                 $model->monto = $gift->monto;
+                $model->plantilla_url = $gift->plantilla_url;
+                
                 $model->estado = 2; //Activa
                 $model->inicio_vigencia = date('Y-m-d');
                 $now = date('Y-m-d', strtotime('now'));

@@ -70,11 +70,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 ?>
                                 <tr>
                                     <td>
-                                        <img src='http://placehold.it/70x70/' class='margin_bottom'>
+                                        <!--<img src='<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x114.png' class='margin_bottom'>-->
+                                        <img src='<?php echo 
+                                        Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x114.png"; ?>' class='margin_bottom'>
                                     </td>
                                     <td>
                                         <strong>Monto:</strong> <?php echo $giftcard->monto; ?><br/>
-                                        <strong>Codigo:</strong> <?php echo $giftcard->getMascaraCodigo(); ?><br/>
+                                        <strong>Código:</strong> <?php echo $giftcard->getMascaraCodigo(); ?><br/>
                                         <strong>Validez:</strong> <?php echo "Desde ... hasta ..."; ?>
                                     </td>
                                     <td>Bs. <?php echo $giftcard->monto; ?></td>

@@ -1024,25 +1024,37 @@ class GiftcardController extends Controller
 	{		
                 $model = new BolsaGC;
                 $model->monto = 100; //Default
+                $model->plantilla_url = "gift_card_one"; //Default
                 $envio = new EnvioGiftcard("masivo");
                 
                 if(isset($_POST['BolsaGC']))
 		{                                        
-//                    echo "Datos";
-//                    echo "<pre>";
-//                    print_r($_POST);
-//                    echo "</pre>";
-//
-//                    Yii::app()->end();  
+  
                     
                     $model->attributes = $_POST['BolsaGC'];
                     
                     $model->user_id = Yii::app()->user->id;
                     
 
-                    if($model->validate()){
+                    if($model->validate() && $envio->validate()){
                         
-                       //$model->plantilla_url = "default.jpg";
+                        //Guardar los datos del envio pero borrar los anteriores                        
+                        Yii::app()->getSession()->remove('envio');
+                        
+                        Yii::app()->getSession()->add('envio',$_POST['EnvioGiftcard']);
+                        
+//                        echo "Datos";
+//                        echo "<pre>";
+//                        print_r(Yii::app()->getSession()->remove('envio'));
+//                        echo "</pre>";
+//
+//                        echo "<pre>";
+//                        print_r($envio->getErrors());
+//                        echo "</pre>";
+//
+//
+//
+//                        Yii::app()->end();
                         
                         /*
                         por los momentos se van a borrar todas las existentes

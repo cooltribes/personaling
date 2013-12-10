@@ -58,12 +58,14 @@ class BolsaController extends Controller
 			
 			if (!is_null($bolsa)){
 				$bolsa->actualizar();
+				$bolsa->deleteInactivos();
 				
 			} else {
 				$bolsa = new Bolsa;
 				$bolsa->user_id = $usuario;
 				$bolsa->save();
 			}
+			
 			
 			$this->render('bolsa', array('bolsa' => $bolsa)); 
 		}
@@ -710,6 +712,7 @@ class BolsaController extends Controller
 				if($model->validate()) {
 					echo 'Status: '.$user->status;
 					if($user->status == 1){
+
 						$this->redirect(array('bolsa/direcciones'));
 					}else{
 						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 
@@ -732,12 +735,22 @@ class BolsaController extends Controller
 					Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta.")); 
 				}	
 			}else{
-				$metric = new ShoppingMetric();
-				$metric->user_id = Yii::app()->user->id;
-				$metric->step = ShoppingMetric::STEP_LOGIN;
-				$metric->save();
-				// si no viene del formulario. O bien viene de la pagina anterior
-				$this->render('login',array('model'=>$model));
+				$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$user->id));
+				if($bolsa->deleteInactivos()){
+						Yii::app()->session['inactivos']=1;
+						$this->redirect(array('bolsa/index'));
+				}
+				else{
+					$metric = new ShoppingMetric();
+					$metric->user_id = Yii::app()->user->id;
+					$metric->step = ShoppingMetric::STEP_LOGIN;
+					$metric->save();
+					
+					// si no viene del formulario. O bien viene de la pagina anterior
+					$this->render('login',array('model'=>$model));	
+				}	
+				
+				
 			}
 		} else{
 			// no va a llegar nadie que no esté logueado

@@ -49,22 +49,23 @@
           	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>";
 			
             //	<li><a href='#myModal".$data->id."' role='button' data-toggle='modal' tabindex='-1'><i class='icon-edit'></i> Registrar pago</a></li>
-            echo "<li>";
-
-            echo CHtml::link("<i class='icon-edit'></i> Registrar Pago ",
-			    $this->createUrl('orden/modals',array('id'=>$data->id)),
-			    array(// for htmlOptions
-			      'onclick'=>' {'.CHtml::ajax( array(
-			      'url'=>CController::createUrl('orden/modals',array('id'=>$data->id)),
-			           'success'=>"js:function(data){ $('#myModal').html(data);
-								$('#myModal').modal(); }")).
-			         'return false;}',
-			   // 'class'=>'delete-icon',
-			    'id'=>'link'.$data->id)
-			);		
-			
-			echo "</li>";
-			            
+            if($data->estado==1||$data->estado==6||$data->estado==7){
+	            echo "<li>";
+	
+	            echo CHtml::link("<i class='icon-edit'></i> Registrar Pago ",
+				    $this->createUrl('orden/modals',array('id'=>$data->id)),
+				    array(// for htmlOptions
+				      'onclick'=>' {'.CHtml::ajax( array(
+				      'url'=>CController::createUrl('orden/modals',array('id'=>$data->id)),
+				           'success'=>"js:function(data){ $('#myModal').html(data);
+									$('#myModal').modal(); }")).
+				         'return false;}',
+				   // 'class'=>'delete-icon',
+				    'id'=>'link'.$data->id)
+				);		
+				
+				echo "</li>";
+			 }          
             echo "<li><a tabindex='-1' href='detallepedido/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
             	
             	";

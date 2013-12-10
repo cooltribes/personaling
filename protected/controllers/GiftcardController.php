@@ -1023,7 +1023,7 @@ class GiftcardController extends Controller
 	public function actionComprar()
 	{		
                 $model = new BolsaGC;
-                $model->monto = 100; //Default
+                $model->monto = 4; //Default
                 $model->plantilla_url = "gift_card_one"; //Default
                 $envio = new EnvioGiftcard("masivo");
                 
@@ -1036,41 +1036,39 @@ class GiftcardController extends Controller
                     $model->user_id = Yii::app()->user->id;
                     
 
-                    if($model->validate() && $envio->validate()){
+                    if($model->validate()){
                         
-                        //Guardar los datos del envio pero borrar los anteriores                        
-                        Yii::app()->getSession()->remove('envio');
+                        $envio->attributes = $_POST['EnvioGiftcard'];
                         
-                        Yii::app()->getSession()->add('envio',$_POST['EnvioGiftcard']);
+                        Yii::app()->getSession()->remove('entrega');                        
+                        Yii::app()->getSession()->add('entrega',$_POST['entrega']);
                         
-//                        echo "Datos";
-//                        echo "<pre>";
-//                        print_r(Yii::app()->getSession()->remove('envio'));
-//                        echo "</pre>";
-//
-//                        echo "<pre>";
-//                        print_r($envio->getErrors());
-//                        echo "</pre>";
-//
-//
-//
-//                        Yii::app()->end();
-                        
-                        /*
-                        por los momentos se van a borrar todas las existentes
-                        en la bolsa del usuario
-                        porque se va a trabajar con una sola
-                         */
-                        BolsaGC::model()->deleteAllByAttributes(array("user_id" => Yii::app()->user->id));
-                        
-                        if($model->save()){  
+                        //si es para enviar por correo, validar email
+                        if(($_POST['entrega'] == 2 && $envio->validate()) ||
+                                $_POST['entrega'] == 1){
                             
-                            $this->redirect($this->createAbsoluteUrl('bolsa/authGC',array(),'https'));
-                             
+                            //Guardar los datos del envio pero borrar los anteriores                        
+                            Yii::app()->getSession()->remove('envio');                        
+                            Yii::app()->getSession()->add('envio',$_POST['EnvioGiftcard']);
+
+                            /*
+                            por los momentos se van a borrar todas las existentes
+                            en la bolsa del usuario
+                            porque se va a trabajar con una sola
+                             */
+                            BolsaGC::model()->deleteAllByAttributes(array("user_id" => Yii::app()->user->id));
+
+                            if($model->save()){                              
+                                $this->redirect($this->createAbsoluteUrl('bolsa/authGC',array(),'https'));
+                            }  
                             
-                        }                        
+                        }
+                        
+                                              
                     }			
-		}
+		}else{
+                   Yii::app()->getSession()->remove('entrega');  
+                }
                 
 		$this->render('comprar',array(
 			'model'=>$model,

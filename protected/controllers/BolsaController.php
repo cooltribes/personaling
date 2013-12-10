@@ -2096,19 +2096,10 @@ class BolsaController extends Controller
                     case 3:			        
                         break;
                 }
-//                // Generar factura
-//                $factura = new Factura;
-//                $factura->fecha = date('Y-m-d');
-//                $factura->direccion_fiscal_id = Yii::app()->getSession()->get('idDireccion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
-//                $factura->direccion_envio_id =Yii::app()->getSession()->get('idDireccion');
-//                $factura->orden_id = $orden->id;
-//                if (!$factura->save())
-//                        Yii::trace('user id:'.Yii::app()->user->id.' Factura error:'.print_r($factura->getErrors(),true), 'registro');
 
                 // Enviar correo con resumen de la compra
 //                $user = User::model()->findByPk($userId);
 //                $message            = new YiiMailMessage;
-//	        //this points to the file test.php inside the view path
 //	        $message->view = "mail_compra";
 //			$subject = 'Tu compra en Personaling';
 //	        $params              = array('subject'=>$subject, 'orden'=>$orden);
@@ -2118,7 +2109,9 @@ class BolsaController extends Controller
 //			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
 //	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
 //	        Yii::app()->mail->send($message);		
-			$this->redirect($this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http'));	
+                
+                //Ver resumen del pedido
+                $this->redirect($this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http'));	
             }
 		 
 	}
@@ -2151,6 +2144,74 @@ class BolsaController extends Controller
                 
                 $model->save();
                 $gift->delete();
+                
+                //Enviar la giftcard por correo solo si se selecciono email al comprar
+                if(Yii::app()->getSession()->get('entrega')){
+                
+                    $envio = new EnvioGiftcard();
+                    $envio->attributes = Yii::app()->getSession()->get('envio');
+                    
+                    $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";               
+
+                    $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
+                        <table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
+                                <tbody>       
+                        <tr>
+                            <td height='30'>
+                            </td>                                      
+                        </tr>
+                        <tr>
+                        <td style='text-align:right; font-size:42px; color: #333; '>
+                                {$model->monto} Bs.&nbsp;
+                        </td>  
+                        </tr>                                     
+                        <tr>
+                            <td style='font-size: 15px; color: #333; line-height: 20px;'>
+                                &nbsp; &nbsp; Para:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$envio->nombre}
+                            <br>
+                            &nbsp; &nbsp; Mensaje: {$envio->mensaje}
+                            </td>
+                        <tr>
+                            <td style=' font-size: 28px; text-align: center;'>
+                                    {$model->getCodigo()}
+                            </td>
+                        </tr>   
+                        <tr>
+                            <td style='font-size: 11px; color: #333;  line-height: 20px;'>
+                                    &nbsp; Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
+                            </td>                                      		
+                        </tr>                              	
+                        </tbody>
+                    </table> ";
+                    
+                    $personalMes = ""; 
+                    
+                    if($envio->mensaje != ""){
+                        $personalMes = "<br/><br/><i>" . $envio->mensaje . "</i><br/>";
+                    }
+                                      
+                    $message = new YiiMailMessage;
+                    $message->view = "mail_giftcard";
+                    $subject = 'Gift Card de Personaling';
+                    $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
+                            <br>
+                            Comienza a disfrutarla entrando en Personaling.com. Y ¡Siéntete estupenda! #mipersonaling<br/>
+                            (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>".$datosTarjeta;
+                            
+                    
+                    $params = array('subject' => $subject, 'body' => $body);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+
+                    $message->addTo($envio->email);
+
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    Yii::app()->mail->send($message); 
+                
+                    
+                }
+                
+                
                   
             }
 

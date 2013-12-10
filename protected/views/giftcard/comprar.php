@@ -77,7 +77,9 @@ $this->breadcrumbs = array(
 
 
                 <?php
-                echo $form->dropDownListRow($model, 'monto', array(100 => 100,
+                echo $form->dropDownListRow($model, 'monto', array(
+                    4 => 4,
+                    100 => 100,
                     200 => 200,
                     300 => 300,
                     400 => 400,
@@ -104,22 +106,48 @@ $this->breadcrumbs = array(
                     ));
                     ?>                                        
 
-                        <?php echo $form->textAreaRow($envio, 'mensaje', array(
-                            'placeholder' => 'Escribe un mensaje', 'maxlength' => '100'));
-                        ?>
+                    <?php 
+                    echo $form->textAreaRow($envio, 'mensaje', array(
+                        'placeholder' => 'Escribe un mensaje', 'maxlength' => '100'));
+                    
+                    $checkI = $checkE = "";
+                    
+                    if(!Yii::app()->getSession()->contains('entrega') || 
+                            Yii::app()->getSession()->get('entrega') == 1){
+                      
+                        $checkI = 'checked="checked"';  
+                        
+                    }else if(Yii::app()->getSession()->get('entrega') == 2){
+                        
+                        $checkE = 'checked="checked"';  
+                        
+                    }
+                    
+                    ?>
                     <p class="lead">4. Escoge como quieres entregarla</p>
                     
                     <div class="accordion" id="accordionE">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <label class="radio accordion-toggle margin_left_small"
+                                        data-parent="#accordionE">
+                                    <input type="radio" name="entrega" value="1" <?php echo $checkI; ?>> Impresa
+                                </label>                                
+                            </div>
+                            <div id="collapseT" class="accordion-body collapse">
+                            </div>
+                            
+                        </div>
                         <div class="accordion-group">
                             
                             <div class="accordion-heading">
                                <label class="radio accordion-toggle margin_left_small" 
                                       data-toggle="collapse" data-target="#collapseOne" data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="1"> Por correo electrónico
+                                    <input type="radio" name="entrega" value="2" <?php echo $checkE; ?>> Por correo electrónico
                                </label> 
                                 
                             </div>
-                            <div id="collapseOne" class="accordion-body collapse">
+                            <div id="collapseOne" class="accordion-body collapse<?php echo $checkE ? " in":""; ?>">
                               <div class="accordion-inner">
                                 <?php
                                     echo $form->textFieldRow($envio, 'email', array(
@@ -129,17 +157,7 @@ $this->breadcrumbs = array(
                               </div>
                             </div>
                         </div>
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <label class="radio accordion-toggle margin_left_small"
-                                        data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="2"> Impresa
-                                </label>                                
-                            </div>
-                            <div id="collapseT" class="accordion-body collapse">
-                            </div>
-                            
-                        </div>
+                        
                         
                         
                     </div>
@@ -218,7 +236,8 @@ $this->breadcrumbs = array(
     });
 
     $('#plantillas li').click(function(e) {
-
+        
+        $("body").addClass("aplicacion-cargando");
         $(this).siblings().removeClass('active');
         $(this).addClass('active');
 
@@ -234,7 +253,8 @@ $this->breadcrumbs = array(
 
 
         e.preventDefault();
-
+        $("body").removeClass("aplicacion-cargando");
+        
     });
 
 

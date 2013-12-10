@@ -614,7 +614,7 @@ if(isset($_POST['Profile']))
 	public function actionCarrito($id)
 	{
 		$model = $this->loadModel();
-		$bolsa = new Bolsa;
+		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$model->id));
 		if(isset($bolsa))
 		{
 			$this->render('carrito',array(
@@ -623,14 +623,10 @@ if(isset($_POST['Profile']))
 				'usuario'=>$id,
 			));
 		}
-		else {
-			$this->render('carrito',array(
-				'model'=>$model,
-				'bolsa'=>$bolsa,
-				'usuario'=>$id,
-			));
+		else{
+			Yii::app()->user->setFlash('error',UserModule::t("Usuario no ha inicializado su carrito"));
 		}
-		
+	
 	}
 	
 	public function actionCorporal()

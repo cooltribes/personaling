@@ -491,7 +491,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
           ?> 
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
-  </div>                    
+    </div>   
+  </div>                 
 
 <?php $this->endWidget()?>
                 

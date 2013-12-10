@@ -12,7 +12,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <div class="row">
             <div class="span8 offset2">
                 <?php
-                if ($orden->estado == 3) { // Listo el pago
+                    
+
+                    if ($orden->estado == 3) { // Listo el pago
                     ?>   
                     <div class='alert alert-success margin_top_medium margin_bottom'>
                         <h1>Tu compra se ha realizado con éxito.</h1>
@@ -67,18 +69,45 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 
                                 /*Por los momentos una sola giftcard por Compra*/
                                 $giftcard = Giftcard::model()->findByAttributes(array("orden_id" => $orden->id));
+                                $entrega = Yii::app()->getSession()->get('entrega');
+                                $envio = new EnvioGiftcard();
+                                $envio->attributes = Yii::app()->getSession()->get('envio');
                                 ?>
                                 <tr>
                                     <td>
-                                        <img src='http://placehold.it/70x70/' class='margin_bottom'>
+                                        <!--<img src='<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x114.png' class='margin_bottom'>-->
+                                        <img src='<?php echo 
+                                        Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x114.png"; ?>' class='margin_bottom'>
                                     </td>
                                     <td>
-                                        <strong>Monto:</strong> <?php echo $giftcard->monto; ?><br/>
-                                        <strong>Codigo:</strong> <?php echo $giftcard->getMascaraCodigo(); ?><br/>
-                                        <strong>Validez:</strong> <?php echo "Desde ... hasta ..."; ?>
+                                        <strong>Código:</strong> <?php echo $giftcard->getMascaraCodigo(); ?><br/>
+                                        <strong>Validez:</strong> <?php echo "Desde <i>".date("d-m-Y", $giftcard->getInicioVigencia()).
+                                                "</i> hasta <i>".date("d-m-Y", $giftcard->getFinVigencia())."</i>"; ?><br/>
+                                        <?php 
+                                        //si hay para y mensaje
+                                        if($entrega == 2){ ?>
+                                        <strong>Enviada a:</strong> <?php echo $envio->email; ?><br/>
+                                        <?php } ?>
                                     </td>
                                     <td>Bs. <?php echo $giftcard->monto; ?></td>
-                                    <td>Boton</td>
+                                    <td>
+                                    <?php 
+                                    //si era para imprimir
+                                    if($entrega == 1){
+                                        $this->widget("bootstrap.widgets.TbButton", array(
+                                           'buttonType' => "link" ,
+                                           'type' => "danger" ,
+                                           'icon' => "print white" ,
+                                           'label' => "Imprimir" ,
+                                           'url' => "javascript:printElem('#divImprimir')" ,
+                                        ));
+                                    }
+                                    //si era para enviar
+                                    if($entrega == 2){
+                                        echo "<i>Enviada por email</i>";
+                                    } 
+                                    ?>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -105,52 +134,38 @@ else {
 $detPago = new Detalle;
 $detPago->monto = 0;
 ?>
-<div class="modal hide fade" id="myModal">
-    <?php $this->renderPartial('//orden/_modal_pago', array('orden_id' => $orden->id)); ?>
+<div class="hide" id="divImprimir">
+    Nelson
 </div>
 <!-- <input type="hidden" id="idDetalle" value="<?php //echo($orden->detalle_id);  ?>" /> -->
 
 <!-- // Modal Window --> 
 
-<script>
-
-    function enviar(id)
+<script type="text/javascript">
+/*<![CDATA[*/
+    function printElem(elem)
     {
-        //var idDetalle = $("#idDetalle").attr("value");
-        var nombre = $("#nombre").attr("value");
-        var numeroTrans = $("#numeroTrans").attr("value");
-        var dia = $("#dia").attr("value");
-        var mes = $("#mes").attr("value");
-        var ano = $("#ano").attr("value");
-        var comentario = $("#comentario").attr("value");
-        var banco = $("#banco").attr("value");
-        var cedula = $("#cedula").attr("value");
-        var monto = $("#monto").attr("value");
-
-        if (nombre == "" || numeroTrans == "" || monto == "")
-        {
-            alert("Por favor complete los datos.");
-        }
-        else
-        {
-
-            $.ajax({
-                type: "post",
-                url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>", // action 
-                data: {'nombre': nombre, 'numeroTrans': numeroTrans, 'dia': dia, 'mes': mes, 'ano': ano, 'comentario': comentario, 'banco': banco, 'cedula': cedula, 'monto': monto, 'idOrden': id},
-                success: function(data) {
-
-                    if (data == "ok")
-                    {
-                        window.location.reload();
-                        //alert("guardado"); 
-                        // redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
-                    }
-                }//success
-            })
-        }
-
-
+        popup($(elem).html());
     }
 
+    function popup(data) 
+    {        
+        
+        var h = 600;
+        var w = 800;
+        var left = (screen.width - w)/2;
+        var top = (screen.height - h)/2 - 30;
+        var mywindow = window.open('', 'my div', 'height='+h+',width='+w+', left='+left+', top='+top);
+        mywindow.document.write('<html><head><title>my div</title>');
+        /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(data);
+        mywindow.document.write('</ body></html>');
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+/*]]>*/
 </script>

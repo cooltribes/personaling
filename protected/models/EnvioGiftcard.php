@@ -19,7 +19,7 @@ class EnvioGiftcard extends CFormModel
 		// will receive user inputs.
 		return array(
                         array('nombre', 'required', 'message' => "Indica el nombre de quien recibirá la Gift Card", "on" => "insert"),	
-                        array('nombre, email, mensaje', 'safe', "on" => "masivo"),
+                        array('nombre, mensaje', 'safe', "on" => "masivo"),
                         //array('nombre, email, mensaje', 'safe', "on" => "masivo"),
                         array('email', 'required', 'message' => "Debes indicar un email para enviar la Gift Card"),                        
                         array('email', 'email', 'message' => "No es un formato de email válido."),

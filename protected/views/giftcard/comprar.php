@@ -174,28 +174,7 @@ $this->breadcrumbs = array(
                         );
                         ?>   
 
-                    </div>    
-
-
-
-                                        <?php echo $form->textFieldRow($envio, 'nombre', array(
-                                            'placeholder' => 'Nombre del destinatario'
-                                        )); ?>                                        
-                                        
-                                        <?php echo $form->textAreaRow($envio, 'mensaje', array(
-                                            'placeholder' => 'Escribe un mensaje','maxlength'=>'100')); ?>
-                                        
-                                    <div class="control-group margin_top_large text_align_center">
-                                        <?php $this->widget('bootstrap.widgets.TbButton', array(
-                                                'buttonType' => 'submit',
-                                                'label' => 'Comprar',
-                                                'icon' => 'shopping-cart white',
-                                                'type' => 'warning',
-                                                'size' => 'large',
-                                            )
-                                        ); ?>   
-                                        
-                                    </div>    
+                    </div>      
                                     
                                                                                 
 					   

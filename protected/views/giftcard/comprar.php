@@ -103,9 +103,11 @@ $this->breadcrumbs=array(
                                 
                                 <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
                             </div>
-                            <div class="span6 braker_left">
-                                <span  id="forpara">Para:</span><p id="para"></p>                        
-                                <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
+                            <div class="span6">
+                                <span  id="forpara">Para:</span>&nbsp;<span id="para"></span>
+                                <div>
+                                    <span  id="formensaje">Mensaje:</span>&nbsp;<span class="" id="mensaje"></span>
+                                </div>                        
 
                             </div>
                         </div>

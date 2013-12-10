@@ -178,21 +178,50 @@ $this->breadcrumbs = array(
 
 
 
-                </div>	
-                <div class="span5 bg_color5 box_shadow_personaling padding_medium">
-                    <div class="contenedorPreviewGift" >
-                        <span class=" T_xlarge" id="monto"><?php echo $model->monto; ?> Bs.</span>
-                        <span  id="forpara">Para:</span><p id="para"></p>                        
-                        <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
-                        <span class=" T_large color4" id="codigo"> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </span>
-                        <span class=" t_small" id="fecha">
-                            Válida desde <?php echo date("d/m/Y"); ?> hasta el <?php
-                        $now = date('Y-m-d', strtotime('now'));
-                        echo date("d/m/Y", strtotime($now . " + 1 year"));
-                        ?>
-                        </span>
+                                        <?php echo $form->textFieldRow($envio, 'nombre', array(
+                                            'placeholder' => 'Nombre del destinatario'
+                                        )); ?>                                        
+                                        
+                                        <?php echo $form->textAreaRow($envio, 'mensaje', array(
+                                            'placeholder' => 'Escribe un mensaje','maxlength'=>'100')); ?>
+                                        
+                                    <div class="control-group margin_top_large text_align_center">
+                                        <?php $this->widget('bootstrap.widgets.TbButton', array(
+                                                'buttonType' => 'submit',
+                                                'label' => 'Comprar',
+                                                'icon' => 'shopping-cart white',
+                                                'type' => 'warning',
+                                                'size' => 'large',
+                                            )
+                                        ); ?>   
+                                        
+                                    </div>    
+                                    
+                                                                                
+					   
+				</div>	
+				<div class="span5 box_shadow_personaling padding_medium">
+                    <div class="" >
                         <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
+                        <div class="row-fluid margin_top">
+                            <div class="span6 braker_right">
+                                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
+                                
+                                <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
+                            </div>
+                            <div class="span6 braker_left">
+                                <span  id="forpara">Para:</span><p id="para"></p>                        
+                                <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
 
+                            </div>
+                        </div>
+                        <div class="text_center_align">
+                            <span class=" t_small" id="fecha">
+                                Válida desde <?php echo date("d/m/Y"); ?> hasta el <?php 
+                                $now = date('Y-m-d', strtotime('now'));
+                                echo date("d/m/Y", strtotime($now." + 1 year")); ?>
+                            </span>                        
+                        </div>
                     </div>
                 </div>
             </div>

@@ -259,7 +259,7 @@ $this->breadcrumbs = array(
         $('#<?php echo CHtml::activeId($model, "plantilla_url") ?>').val(urlImg[1]);
 
         $(".contenedorPreviewGift img").attr("src",
-                "<?php echo Yii::app()->baseUrl; ?>/images/giftcards/" + urlImg[1] + "_x470.png");
+                "<?php echo Yii::app()->baseUrl; ?>/images/giftcards/" + urlImg[1] + "_x470.jpg");
 
 
         e.preventDefault();

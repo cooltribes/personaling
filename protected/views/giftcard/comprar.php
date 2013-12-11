@@ -43,7 +43,7 @@ $this->breadcrumbs = array(
                     <li class="active" id="GC-gift_card_one">
                         <a href="active">
                             <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x200.png">
+                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x200.jpg">
                             </div>
                         </a>
                     </li>		
@@ -180,8 +180,8 @@ $this->breadcrumbs = array(
 					   
 				</div>	
 				<div class="span5 box_shadow_personaling padding_medium">
-                    <div class="" >
-                        <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
+                    <div class="contenedorPreviewGift" >
+                        <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.jpg" width="470">
                         <div class="row-fluid margin_top">
                             <div class="span6 braker_right">
                                 <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>

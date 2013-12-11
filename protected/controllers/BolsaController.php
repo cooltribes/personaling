@@ -799,7 +799,8 @@ class BolsaController extends Controller
 			'codigo'=>$output->code, 
 				'status'=> true, // paso o no
 				'mensaje' => $output->message,
-				'idDetalle' => $detalle->id,
+				'idOutput' => $output->id,
+				//'idDetalle' => $detalle->id,
 				
 			);
 		}else{ // 201
@@ -817,7 +818,8 @@ class BolsaController extends Controller
 	 * Pago con tarjeta de credito
 	 * */
 	public function actionCredito(){
-		
+			//Yii::trace('delete a look, Error:'.print_r($this->getErrors(), true), 'registro');
+			Yii::trace('Entro credito user:'.Yii::app()->user->id, 'registro');
 			if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
 						
 					if($_POST['tarjeta'] != 0) // grabo temporal la tarjeta
@@ -859,7 +861,7 @@ class BolsaController extends Controller
 							);
 							
 						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
-							
+						Yii::trace('realizo cobro, return:'.print_r($output, true), 'registro');	
 							if($output->code == 201){ // PAGO AUTORIZADO
 							
 								$rest = substr($tarjeta->numero, -4);
@@ -907,7 +909,7 @@ class BolsaController extends Controller
 								));
 									
 							}
-							
+							Yii::trace('salio credito user:'.Yii::app()->user->id, 'registro');
 							//$respCard = $respCard."Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
 						//	$respCard = $respCard."Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
 						//	$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION
@@ -1070,9 +1072,10 @@ class BolsaController extends Controller
 			    case 2: // TARJETA DE CREDITO
 			        $resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $usuario, Yii::app()->getSession()->get('total_tarjeta'));
 					if ($resultado['status'] == "ok"){
+                                                $tarjeta = TarjetaCredito::model()->findByPk(Yii::app()->getSession()->get('idTarjeta'));
 						$detalle = new Detalle;
 						$detalle->nTarjeta = $tarjeta->numero;
-						$detalle->nTransferencia = $output["id"];
+						$detalle->nTransferencia = $resultado["idOutput"];
 						$detalle->nombre = $tarjeta->nombre;
 						$detalle->cedula = $tarjeta->ci;
 						$detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
@@ -1920,19 +1923,17 @@ class BolsaController extends Controller
                 }
                 
                 Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
-                Yii::app()->getSession()->add('idTarjeta',30);    
+                 
 
                 if($_POST['tipo_pago'] == 2){ // pago de tarjeta de credito
                     
-//                    echo "<pre>";
-//                    print_r($_POST);
-//                    echo "</pre>";
+
                     
 //                    foreach(Yii::app()->getSession() as $name=>$value){
 //                        echo "<br>".$name." - ".$value;
 //                    }
 //                    Yii::app()->end();
-                    $this->redirect(array('bolsa/confirmarGC'));
+                    //$this->redirect(array('bolsa/confirmarGC'));
 
                         
                     $usuario = Yii::app()->user->id; 
@@ -1955,7 +1956,7 @@ class BolsaController extends Controller
 
                     if($tarjeta->save())
                     {
-                            $tipoPago = $_POST['tipo_pago'];
+                            //$tipoPago = $_POST['tipo_pago'];
 
                             Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
                             //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
@@ -1988,6 +1989,7 @@ class BolsaController extends Controller
 //                }
 //                
                 
+                //Comprobar que hay giftcards en la bolsa - si no, redirigir a la primera página
                 $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
                 
                 if(!$giftcard){
@@ -2019,7 +2021,7 @@ class BolsaController extends Controller
 //                $metric->save();
 //                echo Yii::app()->getSession()->get('tipoPago');
 //                Yii::app()->end();
-                //$this->render('confirmarGC',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
+                
                 
                 //por los momentos solo la primera giftcard que encuentre
                 $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
@@ -2031,11 +2033,14 @@ class BolsaController extends Controller
                 $monto = Yii::app()->getSession()->get('total');
                 
                 $this->render('confirmarGC',array(
-                    'idTarjeta'=> 30,
+                    'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
                     'monto'=> $monto,
                     'giftcard' => $giftcard));
         }
         
+        /**
+         * Para pasar la tarjeta y cobrar
+         */
         public function actionComprarGC()
 	{
             if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
@@ -2044,42 +2049,37 @@ class BolsaController extends Controller
                 if ($codigo_randon == $_POST['codigo_randon'])
                         Yii::app()->end();
                 
-                Yii::app()->getSession()->add('codigo_randon',$codigo_randon);	
+                Yii::app()->getSession()->add('codigo_randon',$codigo_randon);
                 
-                
-                $userId = Yii::app()->user->id; 
-                
+                $userId = Yii::app()->user->id;                 
                 $tipoPago = Yii::app()->getSession()->get('tipoPago');	
-                
-
                 $total = Yii::app()->getSession()->get('total');
                 
                 switch ($tipoPago) {
                     case 1:
                         break;
                     case 2: // TARJETA DE CREDITO
-                        //$tarjetaId = Yii::app()->getSession()->get('idTarjeta');
-                        //$resultado = $this->cobrarTarjeta($tarjetaId, $userId, $total);
-                        //if ($resultado['status'] == "ok")
-                        if (true)
+                        $tarjetaId = Yii::app()->getSession()->get('idTarjeta');
+                        $resultado = $this->cobrarTarjeta($tarjetaId, $userId, $total);
+//                        if (true)
+                        if ($resultado['status'] == "ok")
                         {
-//                            $detalle = DetallePago::model()->findByPk($resultado['idDetalle']); 
-//                            $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
-//                            $tarjeta = TarjetaCredito::model()->findByPk($tarjetaId);
-//                            $detalle = new Detalle;
-//                            $detalle->nTarjeta = $tarjeta->numero;
-//                            $detalle->nTransferencia = $output["id"];
-//                            $detalle->nombre = $tarjeta->nombre;
-//                            $detalle->cedula = $tarjeta->ci;
-//                            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
-//                            $detalle->fecha = date("Y-m-d H:i:s");
-//                            $detalle->banco = 'TDC';
-//                            $detalle->estado = 1; // aceptado
-//                            if(!$detalle->save()){
-//                                    Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
-//                            }
-                            $orden = new OrdenGC;
+                            $tarjeta = TarjetaCredito::model()->findByPk($tarjetaId);
+                            $detalle = new DetallePago();
+                            $detalle->nTarjeta = $tarjeta->numero;
+                            $detalle->nTransferencia = $resultado["idOutput"];
+                            $detalle->nombre = $tarjeta->nombre;
+                            $detalle->cedula = $tarjeta->ci;
+                            $detalle->monto = $total;
+                            $detalle->fecha = date("Y-m-d H:i:s");
+                            $detalle->banco = 'TDC';
+                            $detalle->estado = 1; // aceptado
                             
+                            if(!$detalle->save()){
+                                    Yii::trace('UserID: '.$userId.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
+                            }
+                            
+                            $orden = new OrdenGC;                            
                             $orden->estado = Orden::ESTADO_CONFIRMADO;
                             $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
                             $orden->total = $total;
@@ -2098,12 +2098,12 @@ class BolsaController extends Controller
                             $this->crearGC($userId, $orden->id);
                             
                             //Generar el detalle de pago
-//                            $detalle->orden_id = $orden->id;
-//                            $detalle->tipo_pago = 2;
-//                            $detalle->save();
+                            $detalle->orden_id = $orden->id;
+                            $detalle->tipo_pago = 2;
+                            $detalle->save();
                             
                         } else { 
-                            $this->redirect($this->createAbsoluteUrl('bolsa/error',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
+                            $this->redirect($this->createAbsoluteUrl('bolsa/errorGC',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
                         }			
                         break;
                     case 3:			        
@@ -2159,11 +2159,12 @@ class BolsaController extends Controller
                 $gift->delete();
                 
                 //Enviar la giftcard por correo solo si se selecciono email al comprar
-                if(Yii::app()->getSession()->get('entrega')){
+                if(Yii::app()->getSession()->get('entrega') == 2){
                 
                     $envio = new EnvioGiftcard();
                     $envio->attributes = Yii::app()->getSession()->get('envio');
                     
+
                     $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";               
 
                     $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
@@ -2225,16 +2226,49 @@ class BolsaController extends Controller
                 }
                 
                 
-                  
             }
 
 	}
         
+        /**
+         * Muestra el detalle de una compra de giftcard,
+         * se puede imprimir la tarjeta
+         */
         public function actionPedidoGC($id)
 	{
 		$orden = OrdenGC::model()->findByPk($id);
 				
 		$this->render('pedidoGC',array('orden'=>$orden));
 	}
+        
+        /**
+         * Para mostrar el Error con el pago de TDC en la compra de una GC
+         */
+        public function actionErrorGC(){
+		
+            $codigo = $_GET['codigo'];
+            
+            $mensaje = $_GET['mensaje'];
+            if ($mensaje=="The CardNumber field is not a valid credit card number."){
+                
+                $mensaje = "El número de tarjeta que introdujo no es un número válido.";
+                
+            }
+            if ($mensaje=="Credit card has Already Expired"){
+                
+                $mensaje = "La tarjeta que introdujo ha expirado.";
+                
+            }
+            if ($codigo == 403){
+                
+                $mensaje = "El pago ha sido rechazado por el banco.";
+                
+            }
+            
+            
+            $this->render('errorGC',array('mensaje'=>$mensaje));
+	}
+        
+        
         
 }

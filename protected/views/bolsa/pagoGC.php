@@ -79,7 +79,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                    <div class="accordion-heading">
                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree" id="btn_tarjeta">
                            <label class="radio">
-                               <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> Tarjeta de Crédito
+                               <input type="radio" name="optionsRadios" id="tarjeta" value="option2" checked="checked"> Tarjeta de Crédito
                            </label>
                        </a>
                    </div>
@@ -91,17 +91,17 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                            <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
                                         'id'=>'tarjeta-form',
                                         'enableAjaxValidation'=>false,
-                                        //'enableClientValidation'=>true,
-//                                        'clientOptions'=>array(
-//                                                'validateOnSubmit'=>true, 
-//                                        ),
+                                        'enableClientValidation'=>true,
+                                        'clientOptions'=>array(
+                                                'validateOnSubmit'=>true, 
+                                        ),
                                         'htmlOptions'=>array('class'=>''),
                                 )); 
 
                             ?>
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'nombre', array('class' => 'span4', 'placeholder' => 'Nombre impreso en la tarjeta'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'nombre', array('class' => 'span3', 'placeholder' => 'Nombre impreso en la tarjeta'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -109,7 +109,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'numero', array('class' => 'span4', 'placeholder' => 'Número de la tarjeta'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'numero', array('class' => 'span3', 'placeholder' => 'Número de la tarjeta'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -136,7 +136,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'ci', array('class' => 'span4', 'placeholder' => 'Cédula de Identidad'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'ci', array('class' => 'span3', 'placeholder' => 'Cédula de Identidad'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -152,7 +152,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'ciudad', array('class' => 'span4', 'placeholder' => 'Ciudad'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'ciudad', array('class' => 'span3', 'placeholder' => 'Ciudad'));
                                    ?>
 
                                </div>
@@ -160,7 +160,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'estado', array('class' => 'span4', 'placeholder' => 'Estado'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'estado', array('class' => 'span3', 'placeholder' => 'Estado'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>
@@ -168,7 +168,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                            <div class="control-group"> 
                                <div class="controls">
-                                   <?php echo $form->textFieldRow($tarjeta, 'zip', array('class' => 'span2', 'placeholder' => 'Código Postal'));
+                                   <?php echo $form->textFieldRow($tarjeta, 'zip', array('class' => 'span1', 'placeholder' => 'Código Postal'));
                                    ?>
                                    <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                </div>

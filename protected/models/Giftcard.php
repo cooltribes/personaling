@@ -21,14 +21,19 @@
  * @property string $fecha_uso
  * @property integer $comprador
  * @property integer $beneficiario
+ * @property integer $orden_id
  *
  * The followings are the available model relations:
  * @property User $UserComprador
  * @property User $UserBeneficiario
+ * @property OrdenGC $Orden
  */
 class Giftcard extends CActiveRecord
 {
     
+        /*CAMBIAR ESTA CONSTANTE CUANDO SE REQUIERA CAMBIAR LA LONGITUD DEL CODIGO DE UNA TARJETA*/
+        const DIGITOS_CODIGO = 16;
+        
         const MAX_MONTO = 1000;
     
 	/**
@@ -73,7 +78,7 @@ class Giftcard extends CActiveRecord
 			array('fecha_uso', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, monto, estado, inicio_vigencia, fin_vigencia, fecha_uso, comprador, beneficiario', 'safe', 'on'=>'search'),
+			array('id, codigo, monto, estado, inicio_vigencia, fin_vigencia, fecha_uso, comprador, beneficiario, orden_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -87,6 +92,7 @@ class Giftcard extends CActiveRecord
 		return array(
 			'UserComprador' => array(self::BELONGS_TO, 'User', 'comprador'),
 			'UserBeneficiario' => array(self::BELONGS_TO, 'User', 'beneficiario'),
+			'Orden' => array(self::BELONGS_TO, 'OrdenGC', 'orden_id'),
 		);
 	}
 
@@ -105,6 +111,7 @@ class Giftcard extends CActiveRecord
 			'fecha_uso' => 'Fecha Uso',
 			'comprador' => 'Comprador',
 			'beneficiario' => 'Beneficiario',
+			'orden_id' => 'Orden',
 		);
 	}
 
@@ -128,6 +135,7 @@ class Giftcard extends CActiveRecord
 		$criteria->compare('fecha_uso',$this->fecha_uso,true);
 		$criteria->compare('comprador',$this->comprador);
 		$criteria->compare('beneficiario',$this->beneficiario);
+		$criteria->compare('orden_id',$this->orden_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -183,6 +191,31 @@ class Giftcard extends CActiveRecord
         public function getMascaraCodigo() {
             
             return 'XXXX-XXXX-XXXX-'.substr($this->codigo, 12,14);
+        }
+        
+        static function generarCodigo(){
+            $cantNum = 8;
+            $cantLet = 8;
+            
+            $l = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            $LETRAS = str_split($l);
+            $NUMEROS = range(0, 9);
+
+            $codigo = array();
+            //Seleccionar cantLet letras
+            for ($i = 0; $i < $cantLet; $i++) {
+                $codigo[] = $LETRAS[array_rand($LETRAS)];
+            }
+            for ($i = 0; $i < $cantNum; $i++) {
+                $codigo[] = array_rand($NUMEROS);
+            }
+            
+            shuffle($codigo);
+
+            $codigo = implode("", $codigo);
+            
+            return $codigo;
         }
 
 }

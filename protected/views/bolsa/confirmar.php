@@ -6,6 +6,12 @@ $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
 //$accessToken = $mp->get_access_token();
 //var_dump($accessToken);
+$cs=Yii::app()->clientScript;
+$cs->registerScript('submit','
+$(":submit").mouseup(function() {
+        $(this).attr("disabled",true);
+        $(this).parents("form").submit();
+})',CClientScript::POS_READY);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
 	$descuento = Yii::app()->getSession()->get('descuento');
@@ -24,7 +30,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		}
 	}
 //Yii::app()->getSession()->add('descuento',$descuento);
-//Yii::app()->getSession()->add('total',$total);	
+Yii::app()->getSession()->add('total_tarjeta',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
@@ -185,48 +191,30 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				$preferenceResult = $mp->create_preference($preference);
 				?>
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
-          <?php
-              }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
-              		/*	
-					 echo CHtml::link("<i class='icon-locked icon-white'></i> Pagar con tarjeta de crédito",
-					    $this->createUrl('modal',array('id'=>'pago')),
-					    array(// for htmlOptions
-					      'onclick'=>' { $("#pago").attr("disabled", true); '.CHtml::ajax( array(
-					      'url'=>CController::createUrl('modal',array('tipo'=>"2")),
-					           'success'=>"js:function(data){ $('#myModal').html(data);
-										$('#myModal').modal(); }")).
-					         'return false;}',
-					    'class'=>'btn btn-warning',
-					    'id'=>'pago')
-					);	*/
-					
-					echo "<div class='form-actions'><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-warning'> <i class='icon-locked icon-white'></i>Pagar con tarjeta de crédito </a></div>";
-
-				}
-				else {
-              	?>
-          			<a id="boton_completar" onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Completar compra</a>
-          			<hr/>
-          		<?php
-              	}
-              //<a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
-              //<hr/>
-			  ?>
-          <?php /*$this->widget('bootstrap.widgets.TbButton', array(
-            'type'=>'danger',
+          <?php 
+          } else {
+          	
+			$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			    'id'=>'verticalForm',
+			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
+			    'htmlOptions'=>array('class'=>'well'),
+			)); 
+          	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
+			echo CHtml::hiddenField('codigo_randon',rand());
+          	$this->widget('bootstrap.widgets.TbButton', array(
+            'type'=>'warning',
+            'buttonType'=>'submit',
             'size'=>'large',
-            'label'=>'Pagar',
-            'url'=>'comprar', // action
-            'icon'=>'shopping-cart white',
+            'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
+            //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+            'icon'=>'locked white',
+            'htmlOptions'=>array('onclick'=>'js:enviar_pago();')
         )); 
-        // <a href="Instrucciones_Deposito_Transferencia.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
-		   * */
-		   
-        ?>
-          <?php
-               	//<a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
-				//<hr/>
-				?>
+		
+		 $this->endWidget(); 
+		  }
+		  ?>
+          
         </div>
         <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
@@ -256,7 +244,11 @@ else
 
 ?>
 <script>
-	
+	function enviar_pago(){
+		$(this).html("Procesando el Pago...");
+		$(this).attr("disabled", true);
+		
+	}
 	function enviar()
 	{
 		$('#boton_completar').attr("disabled", true);

@@ -725,6 +725,10 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		//Filtro por categoria
 		if(isset(Yii::app()->session['f_cat'])){
 			$criteria->addCondition('tbl_categoria_id  = '.Yii::app()->session['f_cat']);
+		}else{
+			if(isset(Yii::app()->session['f_padre'])){
+				$criteria->addCondition('categorias.padreId = '.Yii::app()->session['f_padre']);
+			}
 		}
 		
 		//------------------ BUSQUEDA POR TEXTO (marca, categoria, color, nombre de la prenda) ----------------
@@ -764,7 +768,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			
 		// $criteria->order = "t.id ASC";
 		//------------------------- ALEATORIZAR LA VISTA PRINCIPAL -------------------------
-		if(!isset(Yii::app()->session['f_color'])&&!isset(Yii::app()->session['f_text'])){
+		/*if(!isset(Yii::app()->session['f_color'])&&!isset(Yii::app()->session['f_text'])){
 			$ran=rand(0,8);
 			switch($ran) {
 			    case 0:
@@ -796,8 +800,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			        break;
 				
 			}
-		}//----------------------- FIN DE ALEATORIZACION ------------------------------------------------
-		else{
+		}*///----------------------- FIN DE ALEATORIZACION ------------------------------------------------
+		//else{
 			//Filtro por precio
 			if(isset(Yii::app()->session['p_index'])){
 				$criteria->addCondition('precioVenta > '.Yii::app()->session['min']);
@@ -806,7 +810,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			}
 			else
 				$criteria->order = "fecha DESC";
-		}
+		//     }
 		$criteria->group = "t.id";
 		$criteria->together = true;
 		

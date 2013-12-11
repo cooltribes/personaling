@@ -1,5 +1,20 @@
 <?php
 
+/*
+ * Definicion de los estados de la orden por transferencia
+ * 1 - En espera de pago
+ * 2 - En espera de confirmación
+ * 3 - Pago Confirmado
+ * 4 - Enviado
+ * 5 - Cancelado
+ * 6 - Pago Rechazado
+ * 7 - Pago insuficiente
+ * 8 - Recibido
+ * 9 - Devuelto
+ * 10 - Parcialmente devuelto
+ * 
+ */
+
 /**
  * This is the model class for table "{{ordenGC}}".
  *

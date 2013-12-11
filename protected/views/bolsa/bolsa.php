@@ -24,7 +24,14 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 
 <div class="container margin_top" id="carrito_compras">
   <div class="row margin_bottom_large">
+	
     <div class="span12"> 
+    <?php if(isset(Yii::app()->session['inactivos'])){
+				
+				echo '<div class="alert in alert-block fade alert-warning">Tu bolsa se ha actualizado porque algunos productos no se encuentran disponibles.</div>';
+				unset(Yii::app()->session['inactivos']);
+	}?>
+    	
       <div class="row">
         <article class="span7">
           <h1>Tu bolsa</h1>

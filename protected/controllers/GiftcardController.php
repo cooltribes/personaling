@@ -7,7 +7,8 @@ class GiftcardController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-        const DIGITOS_CODIGO = 16;
+        
+        
 	/**
 	 * @return array action filters
 	 */
@@ -87,7 +88,7 @@ class GiftcardController extends Controller
                         
                         //Generar un codigo que no exista.
                         do{  
-                            $model->codigo = $this->generarCodigo();
+                            $model->codigo = Giftcard::generarCodigo();
                             $existe = Giftcard::model()->countByAttributes(array('codigo' => $model->codigo));                        
                             
                         }while($existe);
@@ -627,31 +628,7 @@ class GiftcardController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-        private function generarCodigo(){
-            $cantNum = 8;
-            $cantLet = 8;
-            
-            $l = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            
-            $LETRAS = str_split($l);
-            $NUMEROS = range(0, 9);
-
-            $codigo = array();
-            //Seleccionar cantLet letras
-            for ($i = 0; $i < $cantLet; $i++) {
-                $codigo[] = $LETRAS[array_rand($LETRAS)];
-            }
-            for ($i = 0; $i < $cantNum; $i++) {
-                $codigo[] = array_rand($NUMEROS);
-            }
-            
-            shuffle($codigo);
-
-            $codigo = implode("", $codigo);
-            
-            return $codigo;
-        }
+       
         
         public function actionDesactivar(){
             
@@ -773,7 +750,7 @@ class GiftcardController extends Controller
                        
                 do{  
 
-                    $model->codigo = $this->generarCodigo();
+                    $model->codigo = Giftcard::generarCodigo();
                     $existe = Giftcard::model()->countByAttributes(array('codigo' => $model->codigo));                        
 
                 }while($existe);
@@ -985,7 +962,7 @@ class GiftcardController extends Controller
                 //generar los $cant codigos       
                 do{  
 
-                    $model->codigo = $this->generarCodigo();
+                    $model->codigo = Giftcard::generarCodigo();
                     $existe = Giftcard::model()->countByAttributes(array('codigo' => $model->codigo));                        
 
                 }while($existe);
@@ -1046,16 +1023,13 @@ class GiftcardController extends Controller
 	public function actionComprar()
 	{		
                 $model = new BolsaGC;
+                $model->monto = 4; //Default
+                $model->plantilla_url = "gift_card_one"; //Default
                 $envio = new EnvioGiftcard("masivo");
                 
                 if(isset($_POST['BolsaGC']))
 		{                                        
-//                    echo "Datos";
-//                    echo "<pre>";
-//                    print_r($_POST);
-//                    echo "</pre>";
-//
-//                    Yii::app()->end();  
+  
                     
                     $model->attributes = $_POST['BolsaGC'];
                     
@@ -1064,25 +1038,44 @@ class GiftcardController extends Controller
 
                     if($model->validate()){
                         
-                       //$model->plantilla_url = "default.jpg";
+                        $envio->attributes = $_POST['EnvioGiftcard'];
                         
-                        if($model->save()){                            
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('success',UserModule::t("Se ha guardado la Gift Card."));    
-//                            if(isset($_POST["Guardar"])){
-//                                $this->redirect(array('index'));
-//                            }else if(isset($_POST["Enviar"])){
-//                                $this->redirect(array('enviar','id'=>$model->id));
-//                            }
+                        Yii::app()->getSession()->remove('entrega');                        
+                        Yii::app()->getSession()->add('entrega',$_POST['entrega']);
+                        
+                        //si es para enviar por correo, validar email
+                        if(($_POST['entrega'] == 2 && $envio->validate()) ||
+                                $_POST['entrega'] == 1){
                             
-                        }                        
+                            //Guardar los datos del envio pero borrar los anteriores                        
+                            Yii::app()->getSession()->remove('envio');                        
+                            Yii::app()->getSession()->add('envio',$_POST['EnvioGiftcard']);
+
+                            /*
+                            por los momentos se van a borrar todas las existentes
+                            en la bolsa del usuario
+                            porque se va a trabajar con una sola
+                             */
+                            BolsaGC::model()->deleteAllByAttributes(array("user_id" => Yii::app()->user->id));
+
+                            if($model->save()){                              
+                                $this->redirect($this->createAbsoluteUrl('bolsa/authGC',array(),'https'));
+                            }  
+                            
+                        }
+                        
+                                              
                     }			
-		}
+		}else{
+                   Yii::app()->getSession()->remove('entrega');  
+                }
                 
 		$this->render('comprar',array(
 			'model'=>$model,
 			'envio'=>$envio,
 		));
 	}
+        
+      
         
 }

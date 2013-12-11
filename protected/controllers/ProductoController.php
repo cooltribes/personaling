@@ -1127,7 +1127,8 @@ class ProductoController extends Controller
 				  }
 				if ($valid)  
 					echo CJSON::encode(array(
-	                                  'status'=>'success'
+	                                  'status'=>'success',
+	                                  'id'=>$model->id
 	                             ));
 			}
 		} 
@@ -1188,6 +1189,8 @@ class ProductoController extends Controller
  */
 	public function actionTallas()
 	{
+		
+
 		$tallas = array();
 		$imgs = array(); // donde se van a ir las imagenes
 		
@@ -1219,7 +1222,6 @@ class ProductoController extends Controller
 				array_push($imgs,$todos); // array de datos de imagenes
 			}	
 		
-			//print_r($tallas);
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',

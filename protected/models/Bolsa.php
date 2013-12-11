@@ -124,6 +124,17 @@ class Bolsa extends CActiveRecord
 		return Yii::app()->db->createCommand($sql)->queryColumn();
 		
 	}
+	
+	public function deleteInactivos(){
+		$return=false;
+		foreach($this->bolsahasproductos as $productobolsa){
+			if($productobolsa->preciotallacolor->producto->status==0 || $productobolsa->preciotallacolor->producto->estado==1 ){
+				if($productobolsa->delete())
+					$return=true; 
+			}
+		}
+		return $return;
+	}
 
  /*
 	public function search()

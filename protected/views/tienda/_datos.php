@@ -24,27 +24,30 @@ $id=0;
 $entro=0;
 $con=0;
 $prePub="";
+$a='';
+$b='';
 	
-	
-	$im=Producto::model()->getImgColor($data->id);
-	
-	
-	if($im==0){
-		$ima = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'1'));
+	$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id),array('order'=>'orden asc'));
+
+	if(isset(Yii::app()->session['f_color'])){
+					
+		if(Yii::app()->session['f_color']!=0){
+			
+			$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id,'color_id'=>$Yii::app()->session['f_color']),array('order'=>'orden asc'));
+						
+		}
+						
 	}
-	else{
-		$ima=Imagen::model()->findByPk($im);
-	}
-	$ord= $ima->orden;
-	$ord++;
-	$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>$ord));
-	if(is_null($segunda))
-		$segunda = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$data->id,'orden'=>'2'));
 	
+	$ima=$ims[0];
+	if(isset($ims[1]))
+		$segunda=$ims[1];
+	else
+		$segunda=$ims[0];
+
+
 	
-	
-	// limitando a que se muestren los status 1 y estado 0
-	
+
 	   	if($data->precios){
 	   	foreach ($data->precios as $precio) {
 	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
@@ -85,7 +88,7 @@ $prePub="";
 						)."		
 												
 						</a>
-						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre." IMSFOR ".count($ims)."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
 						<span class='precio'>Bs. ".$prePub."</span>
 						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
@@ -98,9 +101,8 @@ $prePub="";
 					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover","width" => "270", "height" => "270",'id'=>'img-'.$data->id));	
 					$b = '';
 					if(isset($segunda))
-						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
-					//	$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
-					$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
+					{	$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
+					}
 					echo("<article class='span3'><div class=' articulo producto'>
 					<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 					".$a.$b." 
@@ -118,7 +120,7 @@ $prePub="";
 					)."		
 						 
 					</a>
-					<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+					<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre." IMS ".count($ims)."</a></h3>
 					<a href='".$data->getUrl()."' class='ver_detalle  icon_lupa' title='Ver detalle'></a></header>
 					<span class='precio'>Bs. ".$prePub."</span>
 					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
@@ -156,3 +158,23 @@ $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 
 
 ?>
+
+<script>	
+	
+	
+	$('.producto').hover(function(){		
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).hide();
+		
+		$(this).find("img").eq(0).next().show();
+		}
+	},function(){
+		if ($(this).find("img").length > 1){
+		$(this).find("img").eq(0).show();
+		
+		$(this).find("img").eq(0).next().hide();
+		}
+	});
+	
+
+</script>

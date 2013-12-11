@@ -8,39 +8,51 @@
 <section class="bard_tienda">
 
 	 	<ul class="nav unstyled">
-  			<li class="item">Tienda de prendas:</li>
+  			<li class="item">Filtrar:</li>
   		<?php 
-  			echo CHtml::hiddenField('padrehid',0); 	
+  			if(isset(Yii::app()->session['f_padre']))
+						echo CHtml::hiddenField('padrehid',Yii::app()->session['f_padre']);
+					else {
+						echo CHtml::hiddenField('padrehid',0);
+				}
+  			
+  			
 			if(isset(Yii::app()->session['f_cat']))
 						echo CHtml::hiddenField('cathid',Yii::app()->session['f_cat']);
 					else {
 						echo CHtml::hiddenField('cathid',0);
-				} 	
+				} 
+			$i=0;	
   			foreach($categorias as $padre){
   				echo '<li class="itemThumbnails tienda_iconos">
-  				<div class="dropdown">
-	  				<a href="#" lass="dropdown-toggle" data-toggle="dropdown">
-	  					<img class="img-categoria" title="'.$padre->nombre.'" src="'.$padre->urlImagen.'">	
-	  					<b class="caret caretthumbs"></b>	
-	  				</a>
-					<ul class="dropdown-menu thumbnails ">';
-					foreach($padre->subcategorias as $hijo){
+		  			<img id="'.$padre->nombre.'" class="img-categoria padre" style="cursor:pointer" title="'.$padre->nombre.'" value="'.$padre->id.'" src="'.$padre->urlImagen.'">			  			
+	  				<div class="dropdown">
+		  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		  					<b class="caret caretthumbs"></b>	
+		  				</a>
+		  				<div class="dropdown-menu">
+						<ul class="thumbnails ">';
+						foreach($padre->subcategorias as $hijo){
+							
+							echo '<li class=""> 
+			              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
+			              			<img src="'.$hijo->urlImagen.'" width="60">
+			              		</a>                	
+			              		<div class="caption">
+			                  		<p>'.$hijo->nombre.'</p>
+				                </div>
+		              			</li>';
+							
+						}
 						
-						echo '<li class=""> 
-		              		<a class="hijo" value="'.$hijo->id.'" href="#" >
-		              			<img src="'.$hijo->urlImagen.'" width="60">
-		              		</a>                	
-		              		<div class="caption">
-		                  		<p>'.$hijo->nombre.'</p>
-			                </div>
-	              			</li>';
-						
-					}
-					
-					echo '</ul> 
-				</div>   				
+						echo '</ul>
+						<a name="'.$padre->nombre.'" href="#" class="todos allhijos" value="'.strtoupper($padre->id).'">&nbsp '.strtoupper($padre->nombre).' EN GENERAL  </a>
+					</div>   				
   			</li>';
-				
+				$i++;
+				if($i>=3){
+					break;
+				}
   			}
   		
   		?>
@@ -48,35 +60,38 @@
 
   			
   			
-  			<li class="itemThumbnails tienda_iconos">
+  			<li class="itemThumbnails tienda_iconos itemcolor">
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
-	  					Color:
-	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44">		
+	  					Color: &nbsp
+	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>		
 	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
-					<ul class="dropdown-menu dropdown-colors thumbnails ">
-						
-					<?php 
-					if(isset(Yii::app()->session['f_color']))
-						echo CHtml::hiddenField('colorhid',Yii::app()->session['f_color']);
-					else {
-						echo CHtml::hiddenField('colorhid',0);
-					}
-					foreach($colores as $color){
-						echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
-						
-					}  
-						echo '<li class="colors"><a href="#" value="0" class="scolor" title="Todos" ><img width="44" src="'.Yii::app()->baseUrl.'/images/colores/allcolors.png" /></a></li>';
-					?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
-					</ul>  
+	  				<div class="dropdown-menu dropdown-colors">
+						<ul class=" thumbnails ">
+							
+						<?php 
+						if(isset(Yii::app()->session['f_color']))
+							echo CHtml::hiddenField('colorhid',Yii::app()->session['f_color']);
+						else {
+							echo CHtml::hiddenField('colorhid',0);
+						}
+						foreach($colores as $color){
+							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+							
+						}  
+							
+						?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
+						</ul>  
+						<a href="#" value="0" class="todos scolor" >TODOS LOS COLORES</a>
+					</div>
 				</div>
   			</li>  					  			
 			<li class="item">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropinput" >
-								<span id="precio_titulo">Filtrar por precio</span>
+								<span id="precio_titulo">Por precio</span>
 							<small> 
 								<b class="caret"></b>
 							</small>
@@ -92,12 +107,12 @@
 								echo CHtml::hiddenField('preciohid',5);
 								}
 
-							echo'<li><a class="precio" href="#" id="0">Hasta '.Yii::app()->numberFormatter->formatCurrency($rangos[0]["max"], 'Bs').' <span class="color12">('.$rangos[0]['count'].')</span></a></li>';
-							echo'<li><a class="precio" href="#" id="1">De '.Yii::app()->numberFormatter->formatCurrency($rangos[1]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[1]["max"], 'Bs').' <span class="color12">('.$rangos[1]['count'].')</span></a></li>';
-							echo'<li><a class="precio" href="#" id="2">De '.Yii::app()->numberFormatter->formatCurrency($rangos[2]["min"], '').' a '
-							.Yii::app()->numberFormatter->formatCurrency($rangos[2]["max"], 'Bs').' <span class="color12">('.$rangos[2]['count'].')</span></a></li>';
-							echo'<li><a class="precio" href="#" id="3">Más de '.Yii::app()->numberFormatter->formatCurrency($rangos[3]["min"], 'Bs').' <span class="color12">('.$rangos[3]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="0">Hasta '.number_format($rangos[0]["max"],0,",",".").' Bs <span class="color12">('.$rangos[0]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="1">De '.number_format($rangos[1]["min"],0,",",".").' a '
+							.number_format($rangos[1]["max"],0,",",".").' Bs <span class="color12">('.$rangos[1]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="2">De '.number_format($rangos[2]["min"],0,",",".").' a '
+							.number_format($rangos[2]["max"],0,",",".").' Bs <span class="color12">('.$rangos[2]['count'].')</span></a></li>';
+							echo'<li><a class="precio" href="#" id="3">Más de '.number_format($rangos[3]["min"],0,",",".").' Bs <span class="color12">('.$rangos[3]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="5">Todos los precios</a></li>';
 					?>		
 					</ul>  
@@ -107,7 +122,7 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
-							<span id="marca_titulo" >Filtrar por marca</span>
+							<span id="marca_titulo" >Por marca</span>
 							<small>
 								<b class="caret"></b>
 							</small>
@@ -133,7 +148,7 @@
 			</li>			
 			<li class="item itemInput">
 				<div class="contenedorInput">
-					<input type="text" class="" placeholder="Buscar" id="text_search"> 
+					<input type="text" class="input-medium" placeholder="Buscar" id="text_search"> 
 					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
@@ -143,7 +158,7 @@
 <div class="row ">
 <?php	echo CHtml::hiddenField('resethid',0);?>
 	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
-		<a href="" class="btn btn-block" id="reset">Resetear filtros</a>
+		<a href="" class="btn btn-block" id="reset">Limpiar Filtros</a>
 	</div>
 </div>
 <!-- BAR OFF -->
@@ -173,6 +188,10 @@
 
 <!-- PRODUCTOS OFF -->
 <script>
+
+		
+
+
 		$(".precio").click(function() { 
             	
             	$('#precio_titulo').html($(this).html());
@@ -200,10 +219,14 @@
 		
 		$(".scolor").click(function() { 
             	
-            	$('#color_titulo').html($(this).html());
+            	
             	$('#colorhid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
+            	if($('#colorhid').val()==0)
+            		$('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
+            	else
+            		$('#color_titulo').html($(this).html());
             	$('#text_search').val(''); 
             	refresh();
 
@@ -212,13 +235,47 @@
 		$(".hijo").click(function() { 
             	
 
+            	$(".hijo").css('outline','none');
+            	$(this).css('outline','solid 2px');            	
+            	$('.padre').css('outline','none');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px');
             	$('#cathid').val($(this).attr('value'));
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
+            	refresh();
+            	
+
+		});
+		
+		$(".padre").click(function() { 
+            	
+				$(".hijo").css('outline','none');
+            	$(".padre").css('outline','none');
+            	$(this).css('outline','solid 2px');
+            	$('#padrehid').val($(this).attr('value'));
+            	$('#cathid').val('0');
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
+            	$('#text_search').val(''); 
+            	refresh();
+ 
+		});
+		 
+		$(".allhijos").click(function() { 
+            	
+				$(".hijo").css('outline','none');
+            	$(".padre").css('outline','none');
+            	$('#padrehid').val($(this).attr('value'));
+            	$('#cathid').val('0');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
             	refresh();
 
 		});
+		
 		
 		$("#btn_search").click(function() { 
             	
@@ -302,7 +359,7 @@ function refresh(reset)
 
  $("#catalogo").infinitescroll("destroy");
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #resethid').serialize();
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid').serialize();
   
  	
 

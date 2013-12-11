@@ -113,11 +113,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo 'Bs. '.$monto; ?></td>
+              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($monto, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.$monto; ?></h4></td>
+              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($monto, ''); ?></h4></td>
             </tr>
           </table>
           <?php
@@ -155,7 +155,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               else{ /*DEPOSITO O TRANSFERENCIA*/ 
                   
               	$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-			    'id'=>'verticalForm',
+			    'id'=>'form-Comprar',
 			    'action'=>Yii::app()->createUrl('bolsa/comprarGC'),
 			    'htmlOptions'=>array('class'=>'well'),
 			)); 
@@ -166,11 +166,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'type'=>'warning',
                     'buttonType'=>'submit',
+                    //'buttonType'=>'button',
                     'size'=>'large',
                     'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
                     //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
-                    'icon'=>'locked white',
-                    'htmlOptions'=>array('onclick'=>'js:enviar_pago();')
+                    'icon'=>'lock white',
+                    'loadingText'=>'Cargando',
+                    'htmlOptions'=>array(
+                        //'onclick'=>'js:enviar_pago();',
+                        'id'=>'btnPagarTDC',
+                        )
                 )); 
 		
                 $this->endWidget(); 
@@ -209,11 +214,21 @@ else
 ?>
 <script>
 
+
+$(document).ready(function(){
+    $("#btnPagarTDC").click(function(e){
+	$(this).attr("disabled", true);
+        $(this).html('<i class="icon-lock icon-white"></i> Procesando pago...');
+        $("body").addClass("aplicacion-cargando");
+        $("#form-Comprar").submit();
+        
+    });
+});
+
 function enviar_pago(){
-		$(this).html("Procesando el Pago...");
-		$(this).attr("disabled", true);
-		
-	}
+    $(this).html("Procesando el Pago...");
+    $(this).attr("disabled", true);                               
+}
 
 function enviar()
 {

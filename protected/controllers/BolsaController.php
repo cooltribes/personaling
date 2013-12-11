@@ -2033,11 +2033,14 @@ class BolsaController extends Controller
                 $monto = Yii::app()->getSession()->get('total');
                 
                 $this->render('confirmarGC',array(
-                    'idTarjeta'=> 30,
+                    'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
                     'monto'=> $monto,
                     'giftcard' => $giftcard));
         }
         
+        /**
+         * Para pasar la tarjeta y cobrar
+         */
         public function actionComprarGC()
 	{
             if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
@@ -2062,12 +2065,12 @@ class BolsaController extends Controller
                         if ($resultado['status'] == "ok")
                         {
                             $tarjeta = TarjetaCredito::model()->findByPk($tarjetaId);
-                            $detalle = new Detalle;
+                            $detalle = new DetallePago();
                             $detalle->nTarjeta = $tarjeta->numero;
                             $detalle->nTransferencia = $resultado["idOutput"];
                             $detalle->nombre = $tarjeta->nombre;
                             $detalle->cedula = $tarjeta->ci;
-                            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+                            $detalle->monto = $total;
                             $detalle->fecha = date("Y-m-d H:i:s");
                             $detalle->banco = 'TDC';
                             $detalle->estado = 1; // aceptado
@@ -2095,12 +2098,12 @@ class BolsaController extends Controller
                             $this->crearGC($userId, $orden->id);
                             
                             //Generar el detalle de pago
-//                            $detalle->orden_id = $orden->id;
-//                            $detalle->tipo_pago = 2;
-//                            $detalle->save();
+                            $detalle->orden_id = $orden->id;
+                            $detalle->tipo_pago = 2;
+                            $detalle->save();
                             
                         } else { 
-                            $this->redirect($this->createAbsoluteUrl('bolsa/error',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
+                            $this->redirect($this->createAbsoluteUrl('bolsa/errorGC',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
                         }			
                         break;
                     case 3:			        
@@ -2227,11 +2230,45 @@ class BolsaController extends Controller
 
 	}
         
+        /**
+         * Muestra el detalle de una compra de giftcard,
+         * se puede imprimir la tarjeta
+         */
         public function actionPedidoGC($id)
 	{
 		$orden = OrdenGC::model()->findByPk($id);
 				
 		$this->render('pedidoGC',array('orden'=>$orden));
 	}
+        
+        /**
+         * Para mostrar el Error con el pago de TDC en la compra de una GC
+         */
+        public function actionErrorGC(){
+		
+            $codigo = $_GET['codigo'];
+            
+            $mensaje = $_GET['mensaje'];
+            if ($mensaje=="The CardNumber field is not a valid credit card number."){
+                
+                $mensaje = "El número de tarjeta que introdujo no es un número válido.";
+                
+            }
+            if ($mensaje=="Credit card has Already Expired"){
+                
+                $mensaje = "La tarjeta que introdujo ha expirado.";
+                
+            }
+            if ($codigo == 403){
+                
+                $mensaje = "El pago ha sido rechazado por el banco.";
+                
+            }
+            
+            
+            $this->render('errorGC',array('mensaje'=>$mensaje));
+	}
+        
+        
         
 }

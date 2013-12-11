@@ -124,7 +124,7 @@ $this->breadcrumbs = array(
                     }
                     
                     ?>
-                    <p class="lead">4. Escoge como quieres entregarla</p>
+                    <p class="lead">4. Escoge cómo quieres entregarla</p>
                     
                     <div class="accordion" id="accordionE">
                         <div class="accordion-group">
@@ -174,28 +174,7 @@ $this->breadcrumbs = array(
                         );
                         ?>   
 
-                    </div>    
-
-
-
-                                        <?php echo $form->textFieldRow($envio, 'nombre', array(
-                                            'placeholder' => 'Nombre del destinatario'
-                                        )); ?>                                        
-                                        
-                                        <?php echo $form->textAreaRow($envio, 'mensaje', array(
-                                            'placeholder' => 'Escribe un mensaje','maxlength'=>'100')); ?>
-                                        
-                                    <div class="control-group margin_top_large text_align_center">
-                                        <?php $this->widget('bootstrap.widgets.TbButton', array(
-                                                'buttonType' => 'submit',
-                                                'label' => 'Comprar',
-                                                'icon' => 'shopping-cart white',
-                                                'type' => 'warning',
-                                                'size' => 'large',
-                                            )
-                                        ); ?>   
-                                        
-                                    </div>    
+                    </div>      
                                     
                                                                                 
 					   
@@ -209,17 +188,19 @@ $this->breadcrumbs = array(
                                 
                                 <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
                             </div>
-                            <div class="span6 braker_left">
-                                <span  id="forpara">Para:</span><p id="para"></p>                        
-                                <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
+                            <div class="span6">
+                                <strong  id="forpara">Para:</strong>&nbsp;<span id="para"></span>
+                                <div>
+                                    <strong  id="formensaje">Mensaje:</strong>&nbsp;<span class="" id="mensaje"></span>
+                                </div>                        
 
                             </div>
                         </div>
-                        <div class="text_center_align">
+                        <div class="text_center_align margin_bottom_minus margin_top_small">
                             <span class=" t_small" id="fecha">
-                                Válida desde <?php echo date("d/m/Y"); ?> hasta el <?php 
+                                Válida desde <strong><?php echo date("d/m/Y"); ?> </strong> hasta el <strong><?php 
                                 $now = date('Y-m-d', strtotime('now'));
-                                echo date("d/m/Y", strtotime($now." + 1 year")); ?>
+                                echo date("d/m/Y", strtotime($now." + 1 year")); ?> </strong>
                             </span>                        
                         </div>
                     </div>

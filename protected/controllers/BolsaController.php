@@ -58,12 +58,14 @@ class BolsaController extends Controller
 			
 			if (!is_null($bolsa)){
 				$bolsa->actualizar();
+				$bolsa->deleteInactivos();
 				
 			} else {
 				$bolsa = new Bolsa;
 				$bolsa->user_id = $usuario;
 				$bolsa->save();
 			}
+			
 			
 			$this->render('bolsa', array('bolsa' => $bolsa)); 
 		}
@@ -710,6 +712,7 @@ class BolsaController extends Controller
 				if($model->validate()) {
 					echo 'Status: '.$user->status;
 					if($user->status == 1){
+
 						$this->redirect(array('bolsa/direcciones'));
 					}else{
 						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 
@@ -732,12 +735,22 @@ class BolsaController extends Controller
 					Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta.")); 
 				}	
 			}else{
-				$metric = new ShoppingMetric();
-				$metric->user_id = Yii::app()->user->id;
-				$metric->step = ShoppingMetric::STEP_LOGIN;
-				$metric->save();
-				// si no viene del formulario. O bien viene de la pagina anterior
-				$this->render('login',array('model'=>$model));
+				$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$user->id));
+				if($bolsa->deleteInactivos()){
+						Yii::app()->session['inactivos']=1;
+						$this->redirect(array('bolsa/index'));
+				}
+				else{
+					$metric = new ShoppingMetric();
+					$metric->user_id = Yii::app()->user->id;
+					$metric->step = ShoppingMetric::STEP_LOGIN;
+					$metric->save();
+					
+					// si no viene del formulario. O bien viene de la pagina anterior
+					$this->render('login',array('model'=>$model));	
+				}	
+				
+				
 			}
 		} else{
 			// no va a llegar nadie que no esté logueado
@@ -805,7 +818,8 @@ class BolsaController extends Controller
 	 * Pago con tarjeta de credito
 	 * */
 	public function actionCredito(){
-		
+			//Yii::trace('delete a look, Error:'.print_r($this->getErrors(), true), 'registro');
+			Yii::trace('Entro credito user:'.Yii::app()->user->id, 'registro');
 			if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
 						
 					if($_POST['tarjeta'] != 0) // grabo temporal la tarjeta
@@ -847,7 +861,7 @@ class BolsaController extends Controller
 							);
 							
 						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
-							
+						Yii::trace('realizo cobro, return:'.print_r($output, true), 'registro');	
 							if($output->code == 201){ // PAGO AUTORIZADO
 							
 								$rest = substr($tarjeta->numero, -4);
@@ -895,7 +909,7 @@ class BolsaController extends Controller
 								));
 									
 							}
-							
+							Yii::trace('salio credito user:'.Yii::app()->user->id, 'registro');
 							//$respCard = $respCard."Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
 						//	$respCard = $respCard."Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
 						//	$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION

@@ -91,10 +91,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                            <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
                                         'id'=>'tarjeta-form',
                                         'enableAjaxValidation'=>false,
-                                        //'enableClientValidation'=>true,
-//                                        'clientOptions'=>array(
-//                                                'validateOnSubmit'=>true, 
-//                                        ),
+                                        'enableClientValidation'=>true,
+                                        'clientOptions'=>array(
+                                                'validateOnSubmit'=>true, 
+                                        ),
                                         'htmlOptions'=>array('class'=>''),
                                 )); 
 

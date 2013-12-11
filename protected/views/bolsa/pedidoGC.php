@@ -77,7 +77,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                     <td>
                                         <!--<img src='<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x114.png' class='margin_bottom'>-->
                                         <img src='<?php echo 
-                                        Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x114.png"; ?>' class='margin_bottom'>
+                                        Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x114.jpg"; ?>' class='margin_bottom'>
                                     </td>
                                     <td>
                                         <strong>Código:</strong> <?php echo $giftcard->getMascaraCodigo(); ?><br/>
@@ -135,7 +135,7 @@ $detPago = new Detalle;
 $detPago->monto = 0;
 ?>
 <div class="hide" id="divImprimir">
-    Nelson
+    
 </div>
 <!-- <input type="hidden" id="idDetalle" value="<?php //echo($orden->detalle_id);  ?>" /> -->
 

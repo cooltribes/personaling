@@ -795,7 +795,7 @@ else if($count == 0){
 var comprando = true;
 
 $(document).ready(function(){
-alert('<?php echo Yii::app()->baseUrl; ?>/producto/tallas');
+
 var source = $('#principal').attr("src");
 var imgZ = source.replace(".","_orig.");
 $('.imagen_principal').zoom({url: imgZ});

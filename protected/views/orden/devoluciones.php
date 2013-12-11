@@ -25,8 +25,8 @@ $this->breadcrumbs=array(
 	<input type="hidden" id="orden_id" value="<?php echo $orden->id; ?>" />
 	<hr/>
 	<div class="margin_left_small margin_top">
-		<p class="T_xlarge">3312,00</p>
-		<span>Precio total del pepido</span>
+		<p class="T_xlarge"><?php echo number_format($orden->total, 2, ',', '.');  ?></p>
+		<span>Precio total del pedido</span>
 	</div>
 
    <div> 

@@ -4,7 +4,7 @@ $this->breadcrumbs=array(
 );
 ?>
 <div class="container">
-  <div class="page-header">
+  <div class="span12">
 <!--    <h1>Todos los looks</h1>-->
 
 <div class="row-fluid margin_bottom_medium">

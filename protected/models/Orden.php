@@ -103,6 +103,7 @@ class Orden extends CActiveRecord
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
 			'estados' => array(self::HAS_MANY, 'Estado', 'orden_id', 'index'=>'id'),
+			'mensajes' => array(self::HAS_MANY, 'Mensaje', 'orden_id', 'index'=>'id'),
 			'detalles' => array(self::HAS_MANY, 'Detalle','orden_id'),
 			'ohptc' => array(self::HAS_MANY, 'OrdenHasProductotallacolor','tbl_orden_id'),
 			'totalpagado' => array(self::STAT, 'Detalle', 'orden_id',

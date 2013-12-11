@@ -1,3 +1,7 @@
+<script>
+	$('#ingresa').addClass('active');
+	
+</script>
 <?php /*?><?php
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 $this->breadcrumbs=array(

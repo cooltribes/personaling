@@ -47,24 +47,24 @@ $this->breadcrumbs = array(
                             </div>
                         </a>
                     </li>		
-                    <li id="GC-gift_card_one">
+                    <li id="GC-gift_card_two">
                         <a href="">
                             <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x200.png">
+                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_two_x200.jpg">
                             </div>
                         </a>
                     </li>	
-                    <li id="GC-navidad_2">
+                    <li id="GC-gift_card_three">
                         <a href="">
                             <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/navidad_2_x200.png">
+                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_three_x200.jpg">
                             </div>
                         </a>
                     </li>	
-                    <li id="GC-navidad_1">
+                    <li id="GC-gift_card_four">
                         <a href="">
                             <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/navidad_1_x200.png">
+                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_four_x200.jpg">
                             </div>
                         </a>
                     </li>	

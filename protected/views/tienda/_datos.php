@@ -88,7 +88,7 @@ $b='';
 						)."		
 												
 						</a>
-						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre." IMSFOR ".count($ims)."</a></h3>
+						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
 						<span class='precio'>Bs. ".$prePub."</span>
 						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
@@ -103,7 +103,7 @@ $b='';
 					if(isset($segunda))
 					{	$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 					}
-					echo("<article class='span3'><div class=' articulo producto'>
+					echo("<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'>
 					<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 					".$a.$b." 
 						
@@ -120,7 +120,7 @@ $b='';
 					)."		
 						 
 					</a>
-					<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre." IMS ".count($ims)."</a></h3>
+					<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 					<a href='".$data->getUrl()."' class='ver_detalle  icon_lupa' title='Ver detalle'></a></header>
 					<span class='precio'>Bs. ".$prePub."</span>
 					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
@@ -141,7 +141,28 @@ $b='';
 
 endforeach;?>
 </div>
+<script>	
+function over(id){
+		
 
+		if ($("#prod"+id.toString()).find("img").length > 1){
+		$("#prod"+id.toString()).find("img").eq(0).hide();
+		
+		$("#prod"+id.toString()).find("img").eq(0).next().show();
+		}
+}
+function out(id){
+ 		
+ 	
+		if ($("#prod"+id.toString()).find("img").length > 1){
+		$("#prod"+id.toString()).find("img").eq(0).show();
+		
+		$("#prod"+id.toString()).find("img").eq(0).next().hide();
+		}
+}
+	
+
+</script>
 
 <?php 
 //echo "LORE"; 
@@ -159,22 +180,3 @@ $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 
 ?>
 
-<script>	
-	
-	
-	$('.producto').hover(function(){		
-		if ($(this).find("img").length > 1){
-		$(this).find("img").eq(0).hide();
-		
-		$(this).find("img").eq(0).next().show();
-		}
-	},function(){
-		if ($(this).find("img").length > 1){
-		$(this).find("img").eq(0).show();
-		
-		$(this).find("img").eq(0).next().hide();
-		}
-	});
-	
-
-</script>

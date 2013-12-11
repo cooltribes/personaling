@@ -83,7 +83,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         Estado actual</td>
       <td><p class="T_xlarge margin_top_xsmall"> 2 </p>
         Documentos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 2</p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo count($orden->mensajes);?></p>
         Mensajes<br/></td>
         
         <?php

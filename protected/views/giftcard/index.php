@@ -88,6 +88,8 @@ $this->breadcrumbs = array(
     ?>
   
     <hr/>
+    
+    <?php $this->render ?>
 <!--    <div class="row">
       <div class="span3">
         <select class="span3">

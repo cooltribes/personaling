@@ -1817,25 +1817,34 @@ public function actionCategorias2(){
     
     /**
      * Retorna el codigo html para un modal especificado en la variable POST "modal"
+     * En el archivo main se puso un div con id=modalAjax que esta disponible en
+     * todo el sitio para cuando se requiera mostrar un modal dinamico
      */
     public function actionModalAjax() {
         Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
-				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+        Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+        Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+        Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+        Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
                                 
+        
         if($_POST["modal"] == "perfiles"){
             
            $response["data"] =  $this->renderPartial("modalAjax", array(
               "modal" => $_POST["modal"],
-           ),
-                   true, true);           
+           ), true, true);           
+            
+        }     
+        if($_POST["modal"] == "giftcard"){
+            
+           $response["data"] =  $this->renderPartial("/giftcard/_modalGiftcard", array(
+              "modal" => $_POST["modal"],
+           ), true, true);           
             
         }     
         

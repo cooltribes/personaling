@@ -152,12 +152,13 @@
                                                               </tr>                                                              
                                                           </tbody>
                                                       </table>
-                                      <!-- DATOS GIFT CARD OFF -->
+                                     
 
                                                   </td>
                                               </tr>
                                           </tbody>
-                                      </table>                                      
+                                      </table>
+                                      <!-- DATOS GIFT CARD OFF -->
                                     </div>
                                   </td>
                                 </tr>

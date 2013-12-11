@@ -747,7 +747,8 @@ class BolsaController extends Controller
 	 * Pago con tarjeta de credito
 	 * */
 	public function actionCredito(){
-		
+			//Yii::trace('delete a look, Error:'.print_r($this->getErrors(), true), 'registro');
+			Yii::trace('Entro credito user:'.Yii::app()->user->id, 'registro');
 			if(isset($_POST['tipoPago']) && $_POST['tipoPago'] == 2){ // Pago con TDC
 						
 					if($_POST['tarjeta'] != 0) // grabo temporal la tarjeta
@@ -789,7 +790,7 @@ class BolsaController extends Controller
 							);
 							
 						$output = Yii::app()->curl->putPago($data_array); // se ejecuto
-							
+						Yii::trace('realizo cobro, return:'.print_r($output, true), 'registro');	
 							if($output->code == 201){ // PAGO AUTORIZADO
 							
 								$rest = substr($tarjeta->numero, -4);
@@ -837,7 +838,7 @@ class BolsaController extends Controller
 								));
 									
 							}
-							
+							Yii::trace('salio credito user:'.Yii::app()->user->id, 'registro');
 							//$respCard = $respCard."Success: ".$output->success."<br>"; // 0 = FALLO 1 = EXITO
 						//	$respCard = $respCard."Message:".$output->success."<br>"; // MENSAJE EN EL CASO DE FALLO
 						//	$respCard = $respCard."Id: ".$output->id."<br>"; // EL ID DE LA TRANSACCION

@@ -33,11 +33,12 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviarGiftCard','aplicar', 'comprar'),
+				'actions'=>array('create','update','enviarGiftCard','aplicar', 'comprar', 'adminUser'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','delete','update', 'enviar', 'createMasivo', 'desactivar','seleccionarusuarios',
+				'actions'=>array('index','admin','delete','update',
+                                    'enviar', 'createMasivo', 'desactivar','seleccionarusuarios',
                                     'envioMasivo', 'exportarExcel'),
 				//'users'=>array('admin'),
                                 'expression' => 'UserModule::isAdmin()',
@@ -309,37 +310,6 @@ class GiftcardController extends Controller
                         $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";
                     }
                     
-                    $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
-									<table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
-										<tbody>       
-                                        <tr>
-                                            <td height='30'>
-                                            </td>                                      
-                                        </tr>                                                                          
-										<tr>
-											<td style='text-align:right; font-size:42px; color: #333; '>
-	                                      		{$model->monto} Bs.&nbsp;
-                                      		</td>  
-                                                                                
-                                      	</tr>                                     
-                                      	<tr>
-                                      		<td style='font-size: 15px; color: #333; line-height: 20px;'>
-                                      		    &nbsp; &nbsp; Para:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$envio->nombre}
-                                                <br>
-                                                &nbsp; &nbsp; Mensaje: {$envio->mensaje}
-                                      		</td>
-                                      	<tr>
-                                      		<td style=' font-size: 28px; text-align: center;'>
-                                      			{$model->getCodigo()}
-                                      		</td>
-                                      	</tr>   
-                                      	<tr>
-                                      		<td style='font-size: 11px; color: #333;  line-height: 20px;'>
-                                      			&nbsp; Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
-                                      		</td>                                      		
-                                      	</tr>                              	
-                                     	</tbody>
-                                    </table> ";
                     
                     $personalMes = "";                  
                     if($envio->mensaje != ""){
@@ -349,13 +319,13 @@ class GiftcardController extends Controller
                     $message = new YiiMailMessage;
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
-                    $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
+                    $body = "¡Hola<strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
                             <br>
                             Comienza a disfrutarla entrando en Personaling.com. Y ¡Sientete estupenda! #mipersonaling<br/>
-                            (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>".$datosTarjeta;
+                            (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
                             
                     
-                    $params = array('subject' => $subject, 'body' => $body);
+                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
                     $message->subject = $subject;
                     $message->setBody($params, 'text/html');
 
@@ -600,6 +570,18 @@ class GiftcardController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        /**
+	 * administracion de las giftcards compradas por el usuario.
+	 */
+	public function actionAdminUser()
+	{
+		$model=new Giftcard('search');		
+
+		$this->render('adminUsuario',array(
+			'model'=>$model,
+		));
+	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -762,49 +744,17 @@ class GiftcardController extends Controller
                 //usuario $i
                 $envio->nombre = $usuarios[$i]->profile->first_name;
                 $envio->email = $usuarios[$i]->username;
+                                      
                 
-                $datosTarjeta = '<h3>Datos de la Gift Card:</h3>
-                <table class="w470" width="470" style="margin: 0 auto;" cellpadding="0" height="287" cellspacing="0" border="0" background="http://personaling.com'.Yii::app()->baseUrl.'/images/giftcards/gift_card_one_x470.png">'."
-                    <tbody>       
-                        <tr>
-                            <td height='30'>
-                            </td>                                      
-                        </tr>                                                                          
-                        <tr>
-                                <td style='text-align:right; font-size:42px; color: #333; '>
-                                        {$model->monto} Bs.&nbsp;
-                                </td>  
-
-                        </tr>                                     
-                        <tr>
-                                <td style='font-size: 15px; color: #333; line-height: 20px;'>
-                                    &nbsp; &nbsp; Para:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$envio->nombre}
-                                <br>
-                                &nbsp; &nbsp; Mensaje: {$envio->mensaje}
-                                </td>
-                        <tr>
-                                <td style=' font-size: 28px; text-align: center;'>
-                                        {$model->getCodigo()}
-                                </td>
-                        </tr>   
-                        <tr>
-                                <td style='font-size: 11px; color: #333;  line-height: 20px;'>
-                                        &nbsp; Válida desde ".date("d-m-Y", $model->getInicioVigencia())." hasta ".date("d-m-Y", $model->getFinVigencia())."
-                                </td>                                      		
-                        </tr>                              	
-                    </tbody>
-                </table> ";                        
-                
-
                 $message = new YiiMailMessage;
                 $message->view = "mail_giftcard";
                 $subject = 'Gift Card de Personaling';
                 $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
                         <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com<br/
-                        Para ver la Gift Card permite mostrar las imagenes de este correo <br/><br/>".$datosTarjeta;
+                        Para ver la Gift Card permite mostrar las imagenes de este correo <br/><br/>";
 
 
-                $params = array('subject' => $subject, 'body' => $body);
+                $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
                 $message->subject = $subject;
                 $message->setBody($params, 'text/html');
 

@@ -21,14 +21,14 @@ $this->breadcrumbs = array(
         )
     ); ?>	
     <!-- FLASH OFF --> 
-        <h1>Administrar Gift cards</h1>
+        <h1>Mis Gift Cards</h1>
     </div>
     <div class="row">
-        <div class="span2">
-            <a href="create" class="btn btn-success">Crear Gift Card</a>
+        <div class="span2 offset7">
+            <a href="comprar" class="btn btn-warning"><i class="icon-shopping-cart icon-white"></i> Comprar Gift Card</a>
         </div>
         <div class="span3">
-            <a href="createMasivo" class="btn btn-success">Crear Gift Card Masivo</a>
+            <a href="aplicar" class="btn btn-danger"><i class="icon-gift icon-white"></i> Aplicar una Gift Card</a>
         </div>        
     </div>
     <hr/>
@@ -43,13 +43,15 @@ $this->breadcrumbs = array(
     $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
+            <!--
             <th rowspan="2" scope="col"></th>
-            <th rowspan="2" scope="col">Id</th>
             <th rowspan="2" scope="col">Comprador</th>
+            -->
+            <th rowspan="2" scope="col">Id</th>
             <th rowspan="2" scope="col">Estado</th>
             <th rowspan="2" scope="col">Monto Bs.</th>
             <th colspan="2" scope="col">Vigencia</th>
-            <th rowspan="2" scope="col">Fecha de Aplicacion</th>
+            <th rowspan="2" scope="col">Fecha de Aplicacion<br>Usuario que la aplico</th>
             <th rowspan="2" scope="col">Acciones</th>
         </tr>
         <tr>
@@ -63,8 +65,8 @@ $this->breadcrumbs = array(
 
     $this->widget('zii.widgets.CListView', array(
         'id' => 'list-auth-items',
-        'dataProvider' => $dataProvider,
-        'itemView' => '_view',
+        'dataProvider' => $model->giftcardsUser(),
+        'itemView' => '_viewAdminUser',
         'template' => $template,
         'afterAjaxUpdate' => " function(id, data) {						    	
                         $('#todos').click(function() { 
@@ -132,7 +134,8 @@ $this->breadcrumbs = array(
 
 
 <script type="text/javascript">
-    
+/*<![CDATA[*/
+
 /*Desactivar giftcard*/
 $("[id^='linkDesactivar']").click(function (e){
             e.preventDefault();
@@ -191,6 +194,33 @@ function ver(id){
     });
 
 }
+
+/*Imprimir un div*/
+function printElem(elem)
+{
+    popup($(elem).html());
+}
+
+function popup(data) 
+{        
+
+    var h = 600;
+    var w = 800;
+    var left = (screen.width - w)/2;
+    var top = (screen.height - h)/2 - 30;
+    var mywindow = window.open('', 'GiftCard Personaling', 'height='+h+',width='+w+', left='+left+', top='+top);
+    mywindow.document.write('<html><head><title>GiftCard</title>');
+    /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write(data);
+    mywindow.document.write('</ body></html>');
+
+    mywindow.print();
+    mywindow.close();
+
+    return true;
+}
+/*]]>*/
 
 </script>
 <?php 

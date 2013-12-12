@@ -33,12 +33,12 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviarGiftCard','aplicar', 'comprar', 'adminUser'),
+				'actions'=>array('create','update','enviarGiftCard',
+                                    'aplicar', 'comprar', 'adminUser','enviar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','delete','update',
-                                    'enviar', 'createMasivo', 'desactivar','seleccionarusuarios',
+				'actions'=>array('index','admin','delete','update', 'createMasivo', 'desactivar','seleccionarusuarios',
                                     'envioMasivo', 'exportarExcel'),
 				//'users'=>array('admin'),
                                 'expression' => 'UserModule::isAdmin()',
@@ -288,6 +288,8 @@ class GiftcardController extends Controller
 	/*Action para enviar la Giftcard*/
         public function actionEnviar($id){
             $model = $this->loadModel($id);
+            
+            //Validar que la giftcard sea del usuario o que sea admin
             
             $envio = new EnvioGiftcard;
             

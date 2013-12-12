@@ -3,7 +3,7 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs = array(
-    'Giftcards',
+    'Mis Giftcards',
 );
 ?>
 
@@ -126,7 +126,18 @@ $this->breadcrumbs = array(
 </div>
 
 <div class="modal-footer">
-    <a href="" data-dismiss="modal" class="btn btn-danger">Cerrar</a>    
+    <a href="" data-dismiss="modal" class="btn">Cerrar</a>    
+     <?php 
+        $this->widget("bootstrap.widgets.TbButton", array(
+           'buttonType' => "link" ,
+           'type' => "info" ,
+           'icon' => "print white" ,
+           'label' => "Imprimir" ,
+           'url' => "javascript:printElem('#divImprimir')" ,
+        ));
+
+    ?>
+
 </div>
 
 <?php $this->endWidget(); ?>

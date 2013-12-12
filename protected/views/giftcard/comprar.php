@@ -251,18 +251,19 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
         var urlImg = $(this).attr('id');
         urlImg = urlImg.split("-");
-//    urlImg = urlImg[urlImg.length - 1].split("x");
-//    urlImg = urlImg.slice(0, -1);
-//    console.log(urlImg);
+        
         $('#<?php echo CHtml::activeId($model, "plantilla_url") ?>').val(urlImg[1]);
 
         $(".contenedorPreviewGift img").attr("src",
                 "<?php echo Yii::app()->baseUrl; ?>/images/giftcards/" + urlImg[1] + "_x470.jpg");
-
-
+                
         e.preventDefault();
-        $("body").removeClass("aplicacion-cargando");
+        
 
+    });
+    
+    $(".contenedorPreviewGift img").load(function(e){
+        $("body").removeClass("aplicacion-cargando");
     });
 
 

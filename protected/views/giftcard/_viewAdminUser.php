@@ -44,9 +44,7 @@
                 </li>
                 
                     <?php if ($data->estado == 1) { ?>
-                        <li>
-                        <?php echo CHtml::link('<i class="icon-envelope">  </i>  Enviar', array("enviar", "id" => $data->id)); ?>
-                        </li>
+                        
                     <?php }else if ($data->estado == 2) { ?>
                         <li>
                         <?php echo  CHtml::link("<i class='icon-ban-circle'></i> Desactivar",
@@ -54,6 +52,9 @@
                                         array(
                                         'id'=>'linkDesactivar-'.$data->id)
                                     ); ?>
+                        </li>
+                        <li>
+                        <?php echo CHtml::link('<i class="icon-envelope">  </i>  Enviar', array("enviar", "id" => $data->id)); ?>
                         </li>
                     <?php } ?>
                 

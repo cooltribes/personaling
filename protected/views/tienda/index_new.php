@@ -236,9 +236,9 @@
             	
 
             	$(".hijo").css('outline','none');
-            	$(this).css('outline','solid 2px');            	
+            	$(this).css('outline','solid 2px #6c1b4f');            	
             	$('.padre').css('outline','none');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px #6c1b4f');
             	$('#cathid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
@@ -252,7 +252,7 @@
             	
 				$(".hijo").css('outline','none');
             	$(".padre").css('outline','none');
-            	$(this).css('outline','solid 2px');
+            	$(this).css('outline','solid 2px #6c1b4f');
             	$('#padrehid').val($(this).attr('value'));
             	$('#cathid').val('0');
             	//$('#catalogo').remove();
@@ -268,7 +268,7 @@
             	$(".padre").css('outline','none');
             	$('#padrehid').val($(this).attr('value'));
             	$('#cathid').val('0');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px #6c1b4f');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
@@ -279,7 +279,7 @@
 		
 		$("#btn_search").click(function() { 
             	
-
+			if($('#text_search').val().length>2){
                	$('#catalogo').remove();
                	$('#cathid').val('0');
                	$('#colorhid').val('0');
@@ -288,6 +288,7 @@
                	$('#texthid').val($('#text_search').val()   );
             	$('#tienda_productos').html(''); 
             	refresh();
+           }
 
 		});
 		
@@ -300,6 +301,26 @@
             	refresh();
 
 		});
+		
+		
+		$('#text_search').keyup(function(e){
+		    if(e.keyCode == 13)
+		    {
+		        if($(this).val().length>2){
+		    		$('#catalogo').remove();
+	               	$('#cathid').val('0');
+	               	$('#colorhid').val('0');
+	               	$('#marcahid').val('0');
+	               	$('#preciohid').val('5');
+	               	$('#texthid').val($('#text_search').val()   );
+	            	$('#tienda_productos').html(''); 
+	            	refresh();
+		    		
+		    	}
+		    	
+		    }
+		});
+		
 	
 	
 </script>

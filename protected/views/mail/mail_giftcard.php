@@ -109,7 +109,7 @@
                                                           <tbody>
                                                               <tr>
                                                                   <td class="mcnImageCardBottomImageContent" align="left" valign="top" style="padding-top:18px; padding-right:18px; padding-bottom:0; padding-left:18px; font-family: Helvetica; text-align:center;">
-                                                                      <img alt="" src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x470.jpg"; ?>" width="470" style="max-width:470px;" class="mcnImage blockDropTarget" id="mojo_neapolitan_preview_ImageUploader_281" widgetid="mojo_neapolitan_preview_ImageUploader_281">
+                                                                      <img alt="" src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x470.jpg"; ?>" width="470" style="max-width:470px;" class="mcnImage blockDropTarget" id="mojo_neapolitan_preview_ImageUploader_281" widgetid="mojo_neapolitan_preview_ImageUploader_281">
                                                                       
                                                                   
                                                                   </td>

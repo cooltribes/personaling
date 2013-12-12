@@ -141,6 +141,24 @@ class Giftcard extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	/**
+	 * Busca las Giftcards del usuario
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function giftcardsUser()
+	{
+		
+		$criteria=new CDbCriteria;
+
+		
+		$criteria->compare('comprador',  Yii::app()->user->id);
+		//$criteria->compare('beneficiario',$this->beneficiario);
+		
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
         
          /**
          * This method is invoked before validation starts.

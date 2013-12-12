@@ -1,24 +1,9 @@
 <tr>    
-    <td>
-        <input name="check" type="checkbox" value="">
-    </td>
+    
     
     <td>
         <?php echo $data->id; ?>
-    </td>
-    <td>
-        <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->UserComprador->profile->first_name .
-        ' ' . $data->UserComprador->profile->last_name;
-        ?></h5>
-        <small>
-            <?php
-            if ($data->UserComprador->superuser) {
-                echo "Administrador";
-            }
-            ?>
-        </small>
-
-    </td>
+    </td>    
     <td>
         <?php
         if ($data->estado == 1) {

@@ -2,10 +2,10 @@
 /* @var $this GiftcardController */
 /* @var $model Giftcard */
 
-//$this->breadcrumbs=array(
-//	'Giftcards'=>array('index'),
-//	'Aplicar',
-//);
+$this->breadcrumbs=array(
+	'Mis Giftcards'=>array('adminUser'),
+	'Aplicar',
+);
 
 ?>
 <div class="container">
@@ -92,7 +92,7 @@
                         <?php echo $form->errorSummary($model, "Corrije los siguientes errores:"); ?>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">
-				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i>Aplicar Gift Card</button>
+				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i> Aplicar Gift Card</button>
 				</div>
 			</div>			
 		</fieldset>

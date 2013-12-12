@@ -119,6 +119,73 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     </div>
 
     <!-- /container -->
+<div class="hide" id="divImprimir">
+    
+<div style="width: 350px">
+    
+<table class="table table-condensed" border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageCardBlock">
+  <tbody class="mcnImageCardBlockOuter">
+      <tr>
+          <td class="mcnImageCardBlockInner" valign="top" style="padding-top:9px; padding-right:18px; padding-bottom:9px; padding-left:18px;">
+
+              <table align="right" border="0" cellpadding="0" cellspacing="0" class="mcnImageCardBottomContent" width="100%" style="border: 1px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255);">
+                  <tbody>
+                      <tr>
+                          <td class="mcnImageCardBottomImageContent" align="left" valign="top" style="padding-top:18px; padding-right:18px; padding-bottom:0; padding-left:18px; font-family: Helvetica; text-align:center;">
+                              <img alt="" src="<?php echo 
+                                        Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x531.jpg"; ?>" width="470" style="max-width:470px;" class="mcnImage blockDropTarget" id="mojo_neapolitan_preview_ImageUploader_281" widgetid="mojo_neapolitan_preview_ImageUploader_281">
+
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:9px;">
+                              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageCardBlock">
+                                  <tbody class="mcnImageCardBlockOuter">
+                                      <tr>
+                                          <td class="mcnImageCardBlockInner" valign="" >
+
+                                              <table align="right" border="0" cellpadding="0" cellspacing="0" class="mcnImageCardBottomContent" width="100%">
+                                                  <tbody>
+                                                      <tr>
+                                                          <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:24px; border-right: 1px solid #ddd;" width="213">
+                                                              <span style="font-size:42px; color:#6d2d56;"><?php echo $giftcard->monto ?> Bs</span><br>
+                                                              <br>
+                                                              <span style="color:#9b9894;">Código:  </span><br>
+                                                              <span style="font-size: 14px; color: #000;"><?php echo $giftcard->getCodigo() ?></span>
+                                                          </td>
+                                                          <td valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:9px;" width="263">
+                                                              <br>
+                                                              <strong>Para: </strong><span> <?php echo  $envio->nombre ?></span>
+                                                              <br>
+                                                              <strong>Mensaje:</strong><span><?php echo $envio->mensaje ?></span>
+                                                          </td>
+                                                      </tr>
+                                                  </tbody>
+                                              </table>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>   
+                          </td>                         
+                      </tr>
+                      <tr>
+                          <td style="text-align:center; font-size: 11px; margin-top:20px; padding-bottom:10px; padding-top:10px; font-size: 11px;">
+                              Válida desde <strong><?php echo date("d-m-Y", $giftcard->getInicioVigencia()) ?></strong> hasta <strong><?php echo date("d-m-Y", $giftcard->getFinVigencia()) ?></strong>
+                          </td>
+                      </tr>                                                              
+                  </tbody>
+              </table>
+
+
+          </td>
+      </tr>
+  </tbody>
+</table>
+
+    
+</div>
+    
+</div>
     <?php
 }// si esta logueado
 else {
@@ -134,9 +201,8 @@ else {
 $detPago = new Detalle;
 $detPago->monto = 0;
 ?>
-<div class="hide" id="divImprimir">
-    
-</div>
+
+
 <!-- <input type="hidden" id="idDetalle" value="<?php //echo($orden->detalle_id);  ?>" /> -->
 
 <!-- // Modal Window --> 
@@ -155,8 +221,8 @@ $detPago->monto = 0;
         var w = 800;
         var left = (screen.width - w)/2;
         var top = (screen.height - h)/2 - 30;
-        var mywindow = window.open('', 'my div', 'height='+h+',width='+w+', left='+left+', top='+top);
-        mywindow.document.write('<html><head><title>my div</title>');
+        var mywindow = window.open('', 'GiftCard Personaling', 'height='+h+',width='+w+', left='+left+', top='+top);
+        mywindow.document.write('<html><head><title>GiftCard</title>');
         /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
         mywindow.document.write('</head><body >');
         mywindow.document.write(data);

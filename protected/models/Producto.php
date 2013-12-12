@@ -757,7 +757,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 					$text=$text."OR  t.nombre LIKE '%".$word."%' ";
 				}
 			}
-			$criteria->addCondition($text);
+			if(strlen($text)>3)
+				$criteria->addCondition($text);
 		}
 		//---------------------- FIN BUSQUEDA TEXTO -----------------------------------------------------------------
 		 

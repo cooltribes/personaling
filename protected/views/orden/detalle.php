@@ -29,7 +29,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 	    </div>
 	<?php } ?>
   <div class="page-header">
-    <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
+    <h1>PEDIDO #<?php echo $orden->id; $tracking=$orden->getTracking();
+    if(!is_null($tracking)) 
+    print_r($tracking); ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>

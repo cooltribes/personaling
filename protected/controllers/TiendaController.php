@@ -1835,18 +1835,15 @@ public function actionCategorias2(){
         
         if($_POST["modal"] == "perfiles"){
             
-           $response["data"] =  $this->renderPartial("modalAjax", array(
-              "modal" => $_POST["modal"],
-           ), true, true);           
+           $response["data"] =  $this->renderPartial("_modalAjax", array(), true, true);           
             
         }     
         if($_POST["modal"] == "giftcard"){
             
-           $response["data"] =  $this->renderPartial("/giftcard/_modalGiftcard", array(
-              "modal" => $_POST["modal"],
-           ), true, true);           
+           $response["data"] =  $this->renderPartial("//giftcard/_modalGiftCard", array("id" => $_POST["id"]), true, true);           
             
         }     
+        
         
         echo CJSON::encode($response);
         

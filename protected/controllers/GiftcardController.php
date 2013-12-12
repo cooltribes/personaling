@@ -33,11 +33,12 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviarGiftCard','aplicar', 'comprar'),
+				'actions'=>array('create','update','enviarGiftCard','aplicar', 'comprar', 'adminUser'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','admin','delete','update', 'enviar', 'createMasivo', 'desactivar','seleccionarusuarios',
+				'actions'=>array('index','admin','delete','update',
+                                    'enviar', 'createMasivo', 'desactivar','seleccionarusuarios',
                                     'envioMasivo', 'exportarExcel'),
 				//'users'=>array('admin'),
                                 'expression' => 'UserModule::isAdmin()',
@@ -566,6 +567,18 @@ class GiftcardController extends Controller
 			$model->attributes=$_GET['Giftcard'];
 
 		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+        
+        /**
+	 * administracion de las giftcards compradas por el usuario.
+	 */
+	public function actionAdminUser()
+	{
+		$model=new Giftcard('search');		
+
+		$this->render('adminUsuario',array(
 			'model'=>$model,
 		));
 	}

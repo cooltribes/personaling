@@ -33,8 +33,8 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','enviarGiftCard',
-                                    'aplicar', 'comprar', 'adminUser','enviar'),
+				'actions'=>array('create','update', 'enviar' ,
+                                    'aplicar', 'comprar', 'adminUser'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -290,6 +290,9 @@ class GiftcardController extends Controller
             $model = $this->loadModel($id);
             
             //Validar que la giftcard sea del usuario o que sea admin
+            if(!UserModule::isAdmin() && Yii::app()->user->id != $model->comprador){
+                throw new CHttpException(404,'La página que intentas buscar no existe', 1);
+            }
             
             $envio = new EnvioGiftcard;
             
@@ -340,7 +343,15 @@ class GiftcardController extends Controller
                     Yii::app()->user->setFlash('success',
                             UserModule::t("La Gift Card se ha enviado con éxito a <b>{$envio->email}.</b>"));
                     
-                    $this->redirect(array("index"));
+                    if(UserModule::isAdmin()){
+                        
+                        $this->redirect(array("index"));
+                        
+                    }else{
+                        
+                        $this->redirect(array("adminUser"));
+                        
+                    }
                     
                 }
                 
@@ -596,7 +607,7 @@ class GiftcardController extends Controller
 	{
 		$model=Giftcard::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404,'La página que buscas no existe');
 		return $model;
 	}
 

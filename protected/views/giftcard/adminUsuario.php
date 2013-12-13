@@ -5,7 +5,12 @@
 $this->breadcrumbs = array(
     'Mis Giftcards',
 );
+
+$this->pageTitle = Yii::app()->name . ' - Mis GiftCards';
+
 ?>
+
+
 
 <div class="container">
     <div class="page-header">

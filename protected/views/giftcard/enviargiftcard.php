@@ -54,22 +54,13 @@ $this->breadcrumbs=array(
 			
                         <div class="row margin_top">
                             <div class="span6"> 
-                                <p class="lead">2. ¿A quién se la envías?</p>                                       
+                                <p class="lead">1. ¿A quién se la envías?</p>                                       
 
+                                    <?php echo $form->errorSummary($envio); ?>
 
-                                                    <?php echo $form->errorSummary($envio); ?>
-
-                                                    <?php echo $form->textFieldRow($envio, 'email', array(
-                                                        'placeholder' => 'Email del destinatario')); ?>
-
-                            </div>  
-                        </div>
-
-
-			<div class="row margin_top">
-                            <div class="span6">	
-                                    <p class="lead">3. Personalízala</p>                                       
-
+                                    <?php echo $form->textFieldRow($envio, 'email', array(
+                                        'placeholder' => 'Email del destinatario')); ?>
+                                <p class="lead">3. Personalízala</p>                                       
 
                                     <?php echo $form->textFieldRow($envio, 'nombre', array(
                                         'placeholder' => 'Nombre del destinatario'
@@ -78,9 +69,8 @@ $this->breadcrumbs=array(
                                     <?php echo $form->textAreaRow($envio, 'mensaje', array(
                                         'placeholder' => 'Escribe un mensaje','maxlength'=>'100')); ?>
 
-
-                            </div>	
-                            <div class="span5 box_shadow_personaling padding_medium">
+                            </div> 
+                              <div class="span5 box_shadow_personaling padding_medium">
                                 <div class="contenedorPreviewGift" >
                                     <img src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x470.jpg"; ?>" width="470">
                                     <div class="row-fluid margin_top">
@@ -106,6 +96,16 @@ $this->breadcrumbs=array(
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+
+			<div class="row margin_top">
+                            <div class="span6">	
+                                    
+
+
+                            </div>	
+                          
 			</div>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">                                   

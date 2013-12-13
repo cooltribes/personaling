@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 
 $usuario = User::model()->findByPk($orden->user_id); 
 
-
+$tracking=$orden->getTracking();
 
 
 ?>
@@ -29,9 +29,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 	    </div>
 	<?php } ?>
   <div class="page-header">
-    <h1>PEDIDO #<?php echo $orden->id; $tracking=$orden->getTracking();
-    if(!is_null($tracking)) 
-    print_r($tracking); ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
+    <h1>PEDIDO #<?php echo $orden->id; 
+     ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
@@ -297,8 +296,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		  	?>    
      
      <?php
-     	if($orden->estado == 4) // enviado
-     	{
+     	if($orden->estado==4||$orden->estado==8||$orden->estado==9||$orden->estado==10){
      ?>
      
       <div class="well well-small margin_top well_personaling_small">
@@ -341,10 +339,26 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
+        
+        <?php if(!is_null($tracking))
+        { ?>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+          <tr>
+            <th scope="col">Fecha</th>
+           <!--  <th scope="col">Tipo</th>-->
+            <th scope="col">Estatus</th>
+            </tr>
+         	<?php foreach ($tracking as $track){
+         echo "<tr>
+        	<td>".$track->fecha."</td><td>".$track->descripcion_estatus."</td>        
+          </tr>";
+         }?>
+        </table>
+        <?php } ?>
       </div>      
       <?php
-		} // envío
-      
+		 // envío
+		 }
       ?>
       
       
@@ -773,7 +787,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio); ?></td>
         </tr>
         <tr>
-          <td>Descuento</td>
+          <td>Descuento</td>     
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
         </tr>
         

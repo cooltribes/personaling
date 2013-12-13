@@ -55,7 +55,7 @@ class Orden extends CActiveRecord
 	const ESTADO_CANCELADO = 5;
 	const ESTADO_RECHAZADO = 6;
 	const ESTADO_INSUFICIENTE = 7;
-	var $tracking=NULL;
+
 	
 	 /**
 	 * Returns the static model of the specified AR class.

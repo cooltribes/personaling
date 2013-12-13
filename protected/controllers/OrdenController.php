@@ -669,6 +669,16 @@ public function actionReportexls(){
 	{
 		$orden = Orden::model()->findByPk($id);
 		
+		
+		/*$zoom=Zoom::model()->getCities();
+		foreach ($zoom as $citie){
+			$city=new Zoom;
+			$city->cod=$citie->codciudad;
+			$city->ciudad=$citie->nombre_ciudad;
+			$city->estado=$citie->nombre_estado;
+			$city->save();
+		}*/
+
 		$this->render('detalle', array('orden'=>$orden,));
 	}
 

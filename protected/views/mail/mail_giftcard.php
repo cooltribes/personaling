@@ -125,16 +125,16 @@
                                                                                           <tbody>
                                                                                               <tr>
                                                                                                   <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:24px; border-right: 1px solid #ddd;" width="213">
-                                                                                                      <span style="font-size:42px; color:#6d2d56;"><?php echo $model->monto ?> Bs</span><br>
+                                                                                                      <span style="font-size:42px; color:#6d2d56;"><?php echo $model->monto ?> Bs.</span><br>
                                                                                                       <br>
                                                                                                       <span style="color:#9b9894;">Código:  </span><br>
                                                                                                       <span style="font-size: 14px; color: #000;"><?php echo $model->getCodigo() ?></span>
                                                                                                   </td>
                                                                                                   <td valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:9px;" width="263">
                                                                                                       <br>
-                                                                                                      <strong>Para: </strong><span> <?php echo  $envio->nombre ?></span>
+                                                                                                      <strong>Para: </strong><span> <?php echo " ".$envio->nombre ?></span>
                                                                                                       <br>
-                                                                                                      <strong>Mensaje:</strong><span><?php echo $envio->mensaje ?></span>
+                                                                                                      <strong>Mensaje: </strong><span><?php echo " ".$envio->mensaje ?></span>
                                                                                                   </td>
                                                                                               </tr>
                                                                                           </tbody>

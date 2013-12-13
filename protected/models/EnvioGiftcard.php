@@ -5,8 +5,8 @@ class EnvioGiftcard extends CFormModel
 {
 	
     
-         public $nombre;
          public $email;
+         public $nombre;
          public $mensaje;
          
 

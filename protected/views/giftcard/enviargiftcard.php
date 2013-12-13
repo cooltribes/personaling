@@ -60,7 +60,7 @@ $this->breadcrumbs=array(
 
                                     <?php echo $form->textFieldRow($envio, 'email', array(
                                         'placeholder' => 'Email del destinatario')); ?>
-                                <p class="lead">3. Personalízala</p>                                       
+                                <p class="lead">2. Personalízala</p>                                       
 
                                     <?php echo $form->textFieldRow($envio, 'nombre', array(
                                         'placeholder' => 'Nombre del destinatario'
@@ -97,7 +97,6 @@ $this->breadcrumbs=array(
                                 </div>
                             </div>
                         </div>
-
 
 			<div class="row margin_top">
                             <div class="span6">	

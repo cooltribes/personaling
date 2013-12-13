@@ -299,7 +299,8 @@ class GiftcardController extends Controller
             if(isset($_POST["EnvioGiftcard"])){
                
                 $envio->attributes = $_POST["EnvioGiftcard"];    
-                    
+                $envio->nombre = $_POST["EnvioGiftcard"]["nombre"];    
+                
                 //Si es un email valido, enviar giftcard
                 if($envio->validate()){                         
 

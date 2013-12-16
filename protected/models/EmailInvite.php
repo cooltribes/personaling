@@ -104,4 +104,16 @@ class EmailInvite extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function registrado(){
+		$user=User::model()->findByAttributes(array('email'=>$this->email_invitado));
+		if(is_null($user))
+			return "No Registrado";
+		else{
+			$this->estado=1;
+			$this->save();
+			return "Registrado";
+		}			
+	}
+
 }

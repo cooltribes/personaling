@@ -1,11 +1,17 @@
 <?php
 /* @var $this GiftcardController */
 /* @var $model Giftcard */
+$admin = UserModule::isAdmin()? "Giftcards" : "Mis Giftcards";
+$dir = UserModule::isAdmin()? "index" : "adminUser";
 
 $this->breadcrumbs=array(
-	'Giftcards'=>array('index'),
+	$admin=>array($dir),
 	'Enviar',
 );
+//$this->breadcrumbs=array(
+//	'Giftcards'=>array('index'),
+//	'Enviar',
+//);
 
 ?>
 <div class="container">
@@ -45,68 +51,60 @@ $this->breadcrumbs=array(
                                 Válida Hasta: <strong><?php echo date("d/m/Y", $model->getFinVigencia()); ?> </strong>
                             </span>
 			</aside>
-			<div>
-				<p class="lead">1. Selecciona una Gift Card</p>
-				<ul class="thumbnails">
-					<li> <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x200.png"> </li>	
-				</ul>
+			
+                        <div class="row margin_top">
+                            <div class="span6"> 
+                                <p class="lead">1. ¿A quién se la envías?</p>                                       
 
+                                    <?php echo $form->errorSummary($envio); ?>
 
-			</div>	
+                                    <?php echo $form->textFieldRow($envio, 'email', array(
+                                        'placeholder' => 'Email del destinatario')); ?>
+                                <p class="lead">2. Personalízala</p>                                       
 
-            <div class="row margin_top">
-                <div class="span6"> 
-                    <p class="lead">2. ¿A quién se la envías?</p>                                       
-                                        
-                                        
-                                        <?php echo $form->errorSummary($envio); ?>
-                                       
-                                        <?php echo $form->textFieldRow($envio, 'email', array(
-                                            'placeholder' => 'Email del destinatario')); ?>
-                                                                            
-                </div>  
-            </div>
+                                    <?php echo $form->textFieldRow($envio, 'nombre', array(
+                                        'placeholder' => 'Nombre del destinatario'
+                                    )); ?>                                        
+
+                                    <?php echo $form->textAreaRow($envio, 'mensaje', array(
+                                        'placeholder' => 'Escribe un mensaje','maxlength'=>'100')); ?>
+
+                            </div> 
+                              <div class="span5 box_shadow_personaling padding_medium">
+                                <div class="contenedorPreviewGift" >
+                                    <img src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x470.jpg"; ?>" width="470">
+                                    <div class="row-fluid margin_top">
+                                        <div class="span6 braker_right">
+                                            <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
+
+                                            <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo $model->getMascaraCodigo(); ?> </div>
+                                        </div>
+                                        <div class="span6">
+                                            <strong  id="forpara">Para:</strong>&nbsp;<span id="para"></span>
+                                            <div>
+                                                <strong  id="formensaje">Mensaje:</strong>&nbsp;<span class="" id="mensaje"></span>
+                                            </div>                        
+
+                                        </div>
+                                    </div>
+                                    <div class="text_center_align margin_bottom_minus margin_top_small">
+                                        <span class=" t_small" id="fecha">
+                                            Válida desde <strong><?php echo date("d/m/Y"); ?> </strong> hasta el <strong><?php 
+                                            $now = date('Y-m-d', strtotime('now'));
+                                            echo date("d/m/Y", strtotime($now." + 1 year")); ?> </strong>
+                                        </span>                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 			<div class="row margin_top">
-				<div class="span6">	
-					<p class="lead">3. Personalízala</p>                                       
-                                                                                                                    
+                            <div class="span6">	
+                                    
 
-                                        <?php echo $form->textFieldRow($envio, 'nombre', array(
-                                            'placeholder' => 'Nombre del destinatario'
-                                        )); ?>                                        
-                                        
-                                        <?php echo $form->textAreaRow($envio, 'mensaje', array(
-                                            'placeholder' => 'Escribe un mensaje','maxlength'=>'100')); ?>
-                                                                                
-					   
-				</div>	
-                <div class="span5 box_shadow_personaling padding_medium">
-                    <div class="contenedorPreviewGift" >
-                        <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
-                        <div class="row-fluid margin_top">
-                            <div class="span6 braker_right">
-                                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
-                                
-                                <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
-                            </div>
-                            <div class="span6">
-                                <strong  id="forpara">Para:</strong>&nbsp;<span id="para"></span>
-                                <div>
-                                    <strong  id="formensaje">Mensaje:</strong>&nbsp;<span class="" id="mensaje"></span>
-                                </div>                        
 
-                            </div>
-                        </div>
-                        <div class="text_center_align margin_bottom_minus margin_top_small">
-                            <span class=" t_small" id="fecha">
-                                Válida desde <strong><?php echo date("d/m/Y"); ?> </strong> hasta el <strong><?php 
-                                $now = date('Y-m-d', strtotime('now'));
-                                echo date("d/m/Y", strtotime($now." + 1 year")); ?> </strong>
-                            </span>                        
-                        </div>
-                    </div>
-                </div>
+                            </div>	
+                          
 			</div>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">                                   

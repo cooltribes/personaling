@@ -52,7 +52,7 @@
             <!-- Link or button to toggle dropdown -->
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
                 <li>
-                    <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver', "#modalGiftCard", array(
+                    <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver Detalles', "#modalGiftCard", array(
                         'data-toggle' => "modal",
                         'onClick' => "ver({$data->id})",
                     )); ?>            

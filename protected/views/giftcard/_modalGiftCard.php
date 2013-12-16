@@ -1,4 +1,7 @@
-<?php $model = Giftcard::model()->findByPk($id); ?>
+<?php 
+$model = Giftcard::model()->findByPk($id); 
+$envio = new EnvioGiftcard();
+?>
 <style>
     .margin_zero{
         margin: 0px;
@@ -7,9 +10,11 @@
 <!--<div class="span5 box_shadow_personaling padding_medium margin_zero">-->
    
 
-    <div class="contenedorPreviewGift text_align_center" >
-        <img src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x470.jpg"; ?>" width="470">
-        <div class="row-fluid margin_top">
+    <div class="contenedorPreviewGift" >
+        <div class="text_align_center">
+            <img src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x470.jpg"; ?>" width="470">            
+        </div>
+        <div class="row-fluid margin_top span">
             <div class="span6 braker_right">
                 <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
 
@@ -21,17 +26,7 @@
                     <strong  id="formensaje">Mensaje:</strong>&nbsp;<span class="" id="mensaje"></span>
                 </div>                        -->
                 <div class="span6">
-                    <?php 
-
-                    $this->widget("bootstrap.widgets.TbButton", array(
-                       'buttonType' => "link" ,
-                       'type' => "danger" ,
-                       'icon' => "print white" ,
-                       'label' => "Imprimir" ,
-                       'url' => "javascript:printElem('#divImprimir')" ,
-                    ));
-
-                    ?>
+                   
                 </div>
                 <div class="span6">
                     
@@ -59,7 +54,8 @@
                   <tbody>
                       <tr>
                           <td class="mcnImageCardBottomImageContent" align="left" valign="top" style="padding-top:18px; padding-right:18px; padding-bottom:0; padding-left:18px; font-family: Helvetica; text-align:center;">
-                              <img alt="" src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x531.jpg"; ?>" width="470" style="max-width:470px;" class="mcnImage blockDropTarget" id="mojo_neapolitan_preview_ImageUploader_281" widgetid="mojo_neapolitan_preview_ImageUploader_281">
+                              <img alt="" src="<?php echo 
+                                        Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x531.jpg"; ?>" width="470" style="max-width:470px;" class="mcnImage blockDropTarget" id="mojo_neapolitan_preview_ImageUploader_281" widgetid="mojo_neapolitan_preview_ImageUploader_281">
 
                           </td>
                       </tr>
@@ -74,10 +70,10 @@
                                                   <tbody>
                                                       <tr>
                                                           <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:24px; border-right: 1px solid #ddd;" width="213">
-                                                              <span style="font-size:42px; color:#6d2d56;"><?php echo $giftcard->monto ?> Bs</span><br>
+                                                              <span style="font-size:42px; color:#6d2d56;"><?php echo $model->monto ?> Bs</span><br>
                                                               <br>
                                                               <span style="color:#9b9894;">Código:  </span><br>
-                                                              <span style="font-size: 14px; color: #000;"><?php echo $giftcard->getCodigo() ?></span>
+                                                              <span style="font-size: 14px; color: #000;"><?php echo $model->getCodigo() ?></span>
                                                           </td>
                                                           <td valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:9px;" width="263">
                                                               <br>
@@ -96,7 +92,7 @@
                       </tr>
                       <tr>
                           <td style="text-align:center; font-size: 11px; margin-top:20px; padding-bottom:10px; padding-top:10px; font-size: 11px;">
-                              Válida desde <strong><?php echo date("d-m-Y", $giftcard->getInicioVigencia()) ?></strong> hasta <strong><?php echo date("d-m-Y", $giftcard->getFinVigencia()) ?></strong>
+                              Válida desde <strong><?php echo date("d-m-Y", $model->getInicioVigencia()) ?></strong> hasta <strong><?php echo date("d-m-Y", $model->getFinVigencia()) ?></strong>
                           </td>
                       </tr>                                                              
                   </tbody>

@@ -83,7 +83,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                            </label>
                        </a>
                    </div>
-                   <div class="collapse" id="collapseTree">
+                   <div class="collapse in" id="collapseTree">
                        <div class="well well-small" >
                            <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago');  ?> -->
                            <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            

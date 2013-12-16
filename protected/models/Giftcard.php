@@ -235,5 +235,110 @@ class Giftcard extends CActiveRecord
             
             return $codigo;
         }
+        
+        
+         /**
+         * Buscar por todos los filtros dados en el array $filters
+         */
+        public function buscarPorFiltros($filters) {
+//            echo "<pre>";
+//            print_r($filters);
+//            echo "</pre>";
+//            Yii::app()->end();
+            
+            $criteria = new CDbCriteria;
+            
+            $criteria->with = array();
+            $criteria->select = array();
+            $criteria->select[] = "t.*";
+            
+            for ($i = 0; $i < count($filters['fields']); $i++) {
+                
+                $column = $filters['fields'][$i];
+                $value = $filters['vals'][$i];
+                $comparator = $filters['ops'][$i];
+                
+                if($i == 0){
+                   $logicOp = 'AND'; 
+                }else{                
+                    $logicOp = $filters['rels'][$i-1];                
+                }                 
+                
+                
+                
+                if($column == 'comprador')
+                {
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('UserCompradors.aemail', $value,
+                        true, $logicOp);
+                    
+                    //$criteria->with[] = 'UserComprador';
+//                    $criteria->with['UserComprador'] = array(
+//                        'select' => false,
+//                        'joinType' => 'INNER JOIN',
+//                        'alias' => 'UserComprador'  
+//                        );
+//                    
+//                    //$criteria->alias = 'User';
+//                    $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND
+//                        (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" 
+//                            OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+
+                    
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'beneficiario')
+                {
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('UserBeneficiario.email', $value,
+                        true, $logicOp);
+                    
+                    $criteria->with['UserBeneficiario'] = array(
+                        'select' => false,
+                        'joinType' => 'INNER JOIN',
+                        'alias' => 'UserBeneficiario'  
+                        );
+
+                    
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'inicio_vigencia' || $column == 'fin_vigencia')
+                {
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
+                
+                $criteria->compare("t.".$column, $comparator." ".$value,
+                        false, $logicOp);
+                
+            }
+                                   
+             
+            //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
+            $criteria->together = true;
+            
+            
+//            echo "Criteria:";
+//            
+//            echo "<pre>";
+//            print_r($criteria->toArray());
+//            echo "</pre>"; 
+//            exit();
+
+
+            return new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+            ));
+       }
 
 }

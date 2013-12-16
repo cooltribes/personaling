@@ -1,4 +1,6 @@
 <?php
+include("class.zoom.json.services.php");
+
 /*
  * Definicion de los estados de la orden por transferencia
  * 1 - En espera de pago
@@ -53,6 +55,7 @@ class Orden extends CActiveRecord
 	const ESTADO_CANCELADO = 5;
 	const ESTADO_RECHAZADO = 6;
 	const ESTADO_INSUFICIENTE = 7;
+
 	
 	 /**
 	 * Returns the static model of the specified AR class.
@@ -567,6 +570,21 @@ class Orden extends CActiveRecord
 		return $porpagar;
 		
 	} 
+	
+	public function getTracking($id=null){
+			
+		if(is_null($id))
+				$orden=$this;
+		else
+			{
+				$orden=$this->findByPk($id);
+		}
+		$guia=$orden->tracking;
+		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+	 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>"400933"));
+		//Devuelve array de tracking si lo consigue o null si no
+	} 
+	
 	
 	
 	

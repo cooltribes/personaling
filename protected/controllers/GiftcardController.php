@@ -319,7 +319,7 @@ class GiftcardController extends Controller
                     $message = new YiiMailMessage;
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
-                    $body = "¡Hola<strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
+                    $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
                             <br>
                             Comienza a disfrutarla entrando en Personaling.com. Y ¡Sientete estupenda! #mipersonaling<br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";

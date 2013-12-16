@@ -14,24 +14,12 @@ $envio = new EnvioGiftcard();
         <div class="text_align_center">
             <img src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x470.jpg"; ?>" width="470">            
         </div>
-        <div class="row-fluid margin_top span">
-            <div class="span6 braker_right">
+        <div class=" margin_top ">
+            <div class=" margin_left">
                 <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
 
                 <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo $model->getCodigo(); ?> </div>
             </div>
-            <div class="span6">
-<!--                <strong  id="forpara">Para:</strong>&nbsp;<span id="para"></span>
-                <div>
-                    <strong  id="formensaje">Mensaje:</strong>&nbsp;<span class="" id="mensaje"></span>
-                </div>                        -->
-                <div class="span6">
-                   
-                </div>
-                <div class="span6">
-                    
-                </div>
-
             </div>
         </div>
         <div class="text_center_align margin_bottom_minus margin_top_small">

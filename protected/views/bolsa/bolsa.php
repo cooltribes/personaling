@@ -68,7 +68,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					$talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
 					$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
 					//$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					$doblimg= CHtml::image($producto->getImageUrl($productotallacolor->preciotallacolor->color_id), "Imagen", array("width" => "70", "height" => "70"));
+					$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
 					
 					
                 	//$test = PrecioTallaColor::model()->findByPK($productotallacolor->preciotallacolor->id);
@@ -171,7 +171,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						foreach($imagen as $ima){
 							if($con == 0){	
 								$con++;						  	
-								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x180.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
 								echo "<td>".$aaa."</td>";
 							}
 						}

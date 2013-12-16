@@ -17,13 +17,14 @@
 
 /*
  * Valores para el campo type:
+ * 0 - Filtro por perfil, perteneciente a un usuario
  * 1 - Filtro para Ventas
  * 2 - Filtro para Productos
  * 3 - Filtro para Admin de Usuarios
  * 4 - Filtro para Admin de looks
  * 5 - Filtro para Campanas
  * 6 - Filtro para los personal shopper en Mis Looks
- * 0 - Filtro por perfil, perteneciente a un usuario
+ * 7 - Filtro para las Giftcards
  */
 
 

@@ -56,7 +56,7 @@ $this->pageTitle = Yii::app()->name . ' - Mis GiftCards';
             <th rowspan="2" scope="col">Estado</th>
             <th rowspan="2" scope="col">Monto Bs.</th>
             <th colspan="2" scope="col">Vigencia</th>
-            <th rowspan="2" scope="col">Fecha de Aplicacion<br>Usuario que la aplico</th>
+            <th rowspan="2" scope="col">Fecha de Aplicación<br>Usuario que la aplicó</th>
             <th rowspan="2" scope="col">Acciones</th>
         </tr>
         <tr>

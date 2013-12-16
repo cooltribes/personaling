@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
+<div class="row margin_top margin_bottom" id="filters-view" style="">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -8,35 +8,20 @@
   </div>
 </div>          
     
-<?php
-    echo CHtml::dropDownList('status', '', User::getStatus(), array('style' => 'display:none'));
+<?php   
     
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
                                     'style' => 'display:none'));
-    echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
-                                                       'ps' => 'Personal Shopper',
-                                                       'psDes' => 'Personal Shopper Destacado',
-                                                       'aplica' => 'Aplicante Personal Shopper',
-                                                       'user' => 'Usuario',),
-                            array('style' => 'display:none'));    
     
-    echo CHtml::dropDownList('fuenteR', '', array('face' => 'Facebook',                                                       
-                                                  'user' => 'Registro Normal',
-                                                   ),
-                            array('style' => 'display:none'));    
-    
-    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
-                            array('style' => 'display:none'));
-    
-    echo CHtml::dropDownList('looks_ps', '', CHtml::listData(User::model()->with(array(
-                               'profile'=>array(),
-                            ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
-                            array('style' => 'display:none'));
+    echo CHtml::dropDownList('estado', '', array('1' => 'Inactiva',
+                                               '2' => 'Activa',
+                                               '3' => 'Aplicada',),
+                            array('style' => 'display:none'));      
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUsuarios.js");
+    
     
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -59,22 +44,11 @@
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
                                 'id' => 'ID',
-                                'first_name' => 'Nombre',
-                                'last_name' => 'Apellido',
-                                'email' => 'Correo',
-                                'telefono' => 'Teléfono',
-                                'status' => 'Estado',
-                                'tipoUsuario' => 'Tipo de usuario',
-                                'ciudad' => 'Ciudad',
-                                'fuenteR' => 'Fuente de registro',
-                                'visit' => 'Número de visitas',
-                                'lastvisit_at' => 'Fecha de última visita',
-                                'create_at' => 'Fecha de registro',
-                                'monto' => 'Monto comprado',
-                                'lastorder_at' => 'Fecha de última compra',                                
-                                'looks' => 'Cantidad de looks comprados',                                
-                                'looks_ps' => 'Looks comprados por Personal Shopper',
-                                'prods_marca' => 'Looks comprados por Marca',
+                                'inicio_vigencia' => 'Inicio de Vigencia',
+                                'fin_vigencia' => 'Fin de Vigencia',                                                          
+                                'estado' => 'Estado',
+                                'comprador' => 'Comprador',
+                                'beneficiario' => 'Beneficiario',                                
                                 
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 

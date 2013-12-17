@@ -977,10 +977,13 @@ class BolsaController extends Controller
 			if ($codigo_randon == $_POST['codigo_randon'])
 				Yii::app()->end();
 			Yii::app()->getSession()->add('codigo_randon',$codigo_randon);	
+		 	
 		 	$respCard = "";
 		 	$usuario = Yii::app()->user->id; 
 			$user = User::model()->findByPk($usuario);
 			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+			if (!$bolsa->checkInventario())
+				$this->redirect($this->createAbsoluteUrl('bolsa/index',array('mensaje'=>"Hola"),'http'));
 			$tipoPago = Yii::app()->getSession()->get('tipoPago');		
 			switch ($tipoPago) {
 			    case 1: // TRANSFERENCIA

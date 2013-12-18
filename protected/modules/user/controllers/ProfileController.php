@@ -110,9 +110,9 @@ class ProfileController extends Controller
 //                        }                       
                                             
                     }else{
-                        $invitation->fecha = date('Y-m-d H:i:s');
-                        $invitation->save();
+                        $invitation->fecha = date('Y-m-d H:i:s');                       
                     }
+					 $invitation->save();
 //                    print_r($invitation->getErrors());
 //                    echo "<pre>";
 //                    print_r($invitation->attributes);

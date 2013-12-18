@@ -31,7 +31,7 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin','mensajes','displaymsj'),
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -543,6 +543,32 @@ if(isset($_POST['Profile']))
 		));
 	}
 	
+	public function actionInvitaciones($id)
+	{
+		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		
+        $xEmail= new CActiveDataProvider('EmailInvite', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>50,
+			),
+        ));
+		
+		$xFB= new CActiveDataProvider('FacebookInvite', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>50,
+			),
+        ));
+		
+		$this->render('invitaciones',array(
+			'model'=>$model,
+			'xEmail'=>$xEmail,
+			'xFB'=>$xFB
+		));
+	}
 		
 	public function actionDirecciones()
 	{

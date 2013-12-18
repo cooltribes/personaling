@@ -54,6 +54,10 @@
     		<?php echo CHtml::link('Productos Favoritos',array('productos',
                      'id'=>$model->id,)); ?>
         </li>
+        <li class="<?php if($activo == 10) echo 'active'; ?>">
+    		<?php echo CHtml::link('Invitaciones',array('invitaciones',
+                     'id'=>$model->id,)); ?>
+        </li>
       </ul>
     </div>
   </div>

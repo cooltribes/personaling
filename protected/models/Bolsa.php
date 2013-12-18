@@ -117,7 +117,7 @@ class Bolsa extends CActiveRecord
 		//	$this->save();
 		return $bandera;
 	}
-	public function hayInventario(){
+	public function checkInventario(){
 		foreach($this->bolsahasproductos as $producto)
 		{
 				

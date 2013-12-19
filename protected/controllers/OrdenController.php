@@ -668,16 +668,46 @@ public function actionReportexls(){
 	public function actionDetalles($id)
 	{
 		$orden = Orden::model()->findByPk($id);
+		/*$sql="select * from tbl_zoom where cod NOT IN (select cod_zoom from tbl_ciudad where cod_zoom IS NOT NULL)";
+		$zooms=Yii::app()->db->createCommand($sql)->queryAll();
+	
 		
-		
-		/*$zoom=Zoom::model()->getCities();
-		foreach ($zoom as $citie){
-			$city=new Zoom;
-			$city->cod=$citie->codciudad;
-			$city->ciudad=$citie->nombre_ciudad;
-			$city->estado=$citie->nombre_estado;
-			$city->save();
+		foreach ($zooms as $zoom){
+				
+			
+			
+			echo ucwords(strtolower($zoom['ciudad']))." - ".$zoom['estado']." - ".intval($zoom['estado'])."<br/>";
+			if(strpos($zoom['ciudad'],'(')>0)
+				$zoom['ciudad']= substr($zoom['ciudad'], 0, strpos($zoom['ciudad'],'(')); 
+			   
+			 
+			$city=new Ciudad;
+			$city->nombre=ucwords(strtolower($zoom['ciudad']));
+			$city->cod_zoom=$zoom['cod'];
+			$city->ruta_id=4;
+			$city->provincia_id=intval($zoom['estado']);
+			if(!$city->save())
+				print_r($city->getErrors());
 		}*/
+		/*
+	 * $estados=Provincia::model()->findAll();
+		$i=0;
+		$zoom=Zoom::model()->findAll(array('order'=>'estado'));
+		
+		foreach ($zoom as $ciudad){
+			foreach ($estados as $estado){
+				if(strtoupper($estado->nombre) == strtoupper($ciudad->estado)){
+					$ciudad->estado=$estado->id;
+					$ciudad->save(); 
+					break;
+				}
+			}
+		}
+			*/
+		
+		
+	
+		
 
 		$this->render('detalle', array('orden'=>$orden,));
 	}

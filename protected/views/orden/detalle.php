@@ -10,6 +10,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 $tracking=$orden->getTracking();
 
+if($orden->getFlete())
+	print_r($orden->getFlete());
 
 ?>
 

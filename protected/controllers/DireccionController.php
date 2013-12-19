@@ -58,7 +58,7 @@ class DireccionController extends Controller
 	
 	public function actionCargarCiudades(){
 		if(isset($_POST['provincia_id'])){
-			$ciudades = Ciudad::model()->findAllByAttributes(array('provincia_id'=>$_POST['provincia_id']), array('order'=>'nombre ASC'));
+			$ciudades = Ciudad::model()->findAllBySql("SELECT * FROM tbl_ciudad WHERE provincia_id =".$_POST['provincia_id']." AND cod_zoom IS NOT NULL order by nombre ASC");
 			if(sizeof($ciudades) > 0){
 				$return = '';
 				foreach ($ciudades as $ciudad) {

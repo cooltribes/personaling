@@ -75,8 +75,8 @@ echo"<tr>";
 	if($data->estado == 10)
 		echo "<td>Parcialmente Devuelto</td>";
 	
-	// agregar demas estados
-	
+	// agregar demas estados	
+        
 	//------------------ acciones
 	$canc="";
 	if($data->estado==1){
@@ -91,6 +91,37 @@ echo"<tr>";
                      ."</li>";
             
         }
+        
+        //Si es cancelada, ver motivo
+	$motivo = "";
+        ;
+	if($data->estado == Orden::ESTADO_CANCELADO){
+		//$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href=''><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
+            $mess = Estado::model()->findByAttributes(array(
+               "orden_id" => $data->id,
+               "estado" => Orden::ESTADO_CANCELADO,
+            ), array(
+                'order' => 'fecha DESC'
+            ));
+            
+            if($mess){                
+                $mess = $mess->observacion ;
+            }else{
+                $mess = "";
+            }
+
+            
+            
+            $motivo = "<li>".
+                        CHtml::link("<i class='icon-comment'></i> Ver motivo de cancelación",
+                                        'javascript:verMotivo("'.$mess.'")', array(
+                                        
+                                        )
+                                    )            
+                     ."</li>";
+            
+        }
+        
 	echo "
 	<td>
 	<div class='dropdown'>
@@ -101,7 +132,8 @@ echo"<tr>";
           <ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
             <li><a tabindex='-1' href='detalles/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
             <li><a onclick='modal(".$data->id.")' tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
-            ".$canc."
+            ".$canc.$motivo."
+                    
             
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>
             <li class='divider'></li>
@@ -114,6 +146,12 @@ echo"<tr>";
 		
 ?>
 <script >
+    
+function verMotivo(mensaje){
+    
+    console.log(mensaje);
+}
+    
 function modal(id){
 
 	$.ajax({

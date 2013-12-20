@@ -34,7 +34,7 @@ $this->breadcrumbs=array(
               <div class="row margin_bottom_medium margin_top_medium">
                   <div class="">                                     
 
-                      <ul class="unstyled">
+                      <ul class="unstyled" id="all-profiles">
 
                           <?php
                           $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id), array('order' => 'id_filter DESC'));
@@ -56,6 +56,10 @@ $this->breadcrumbs=array(
                                                  'label' => 'Eliminar',
                                                  //'type' => 'danger',
                                                  'icon' => 'remove',
+                                                 'htmlOptions' => array(
+                                                     "onclick" => "js:removeFilter({$perfil->id_filter})",
+                                                     "id" => "removeBtn"
+                                                 ),
                                               )); ?>
                                               
                                           </div>
@@ -85,7 +89,38 @@ $this->breadcrumbs=array(
 <!-- /container -->
 <script type="text/javascript">
 /*Elimina un filtro dado por ID*/
-
+function removeFilter(ID){     
+    
+    var URL = '<?php echo $this->createUrl('/orden/removeFilter'); ?>';
+    ID = 3000;
+   
+    $("li#"+ ID +" #removeBtn").prop('disabled', true);
+    $.ajax(
+            URL,
+            {
+                type: 'POST',
+                dataType: 'json',
+                data: { 'id':ID },
+                success: function(data){
+                    
+                    if(data.status === 'success'){                       
+                        
+                        $('#all-profiles').find("li#" + ID).fadeOut().remove();                          
+                        
+                    }else{
+                        bootbox.alert(data.message);
+                    }
+                                       
+                    
+                },
+                error: function( jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR);
+                }
+            }
+        );
+        
+    
+}
 
 </script>
 

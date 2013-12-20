@@ -148,8 +148,11 @@ echo"<tr>";
 <script >
     
 function verMotivo(mensaje){
-    
-    console.log(mensaje);
+    if(mensaje.trim() == ""){
+        mensaje = "<i>El usuario no indicó ningun motivo.</i>";
+    }
+
+    bootbox.alert(mensaje);
 }
     
 function modal(id){

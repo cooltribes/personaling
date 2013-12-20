@@ -583,8 +583,28 @@ class Orden extends CActiveRecord
 		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
 	 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>"400933"));
 		//Devuelve array de tracking si lo consigue o null si no
-	} 
+	}
 	
+	public function getFlete($id=null){
+			
+		if(is_null($id))
+				$orden=$this;
+		else
+			{
+				$orden=$this->findByPk($id);
+		}
+		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+	 	return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total));
+	 
+		//Devuelve array de tracking si lo consigue o null si no
+	} 
+	public function calcularTarifa($ciudad,$nproductos,$peso,$total){
+			
+		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+	 	return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$ciudad,NULL,"cantidad_piezas"=>$nproductos, "peso"=>$peso,NULL,"valor_declarado"=>$total));
+	 
+		//Devuelve array de tracking si lo consigue o null si no
+	} 
 	
 	
 	

@@ -31,7 +31,7 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones'),
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar'),
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -955,7 +955,34 @@ if(isset($_POST['Profile']))
 		
 	}
 	
-	
+	public function actionPorComprar(){
+			
+		$html="";
+		$html=$html."<table><tr><th>PRODUCTO</th>
+		<th>DATOS</th><th>CANTIDAD</th></tr>";	
+		$ptcs = explode(',',$_POST['ids']);
+		$vals = explode(',',$_POST['cants']);
+		$i=0;		
+		foreach($ptcs as $ptc)
+		{
+				
+			$obj=Preciotallacolor::model()->findByPk($ptc);	
+			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id),array('order'=>'orden ASC'));
+			if(sizeof($ima)==0)
+				$im="<td align='center'>".CHtml::image('http://placehold.it/50x50', "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+			else
+				$im= "<td align='center'>".CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+							
+			$html=$html."<tr><td>".
+			$im."</td><td>".
+			$ptc."</td><td>".
+			$vals[$i]."</td></tr>";
+			$i++;
+		}
+		$html=$html."</table>";	
+		echo $html;
+		
+	}
 	
 	
 	

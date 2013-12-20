@@ -298,9 +298,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							$direccion = Direccion::model()->findByPk($idDireccion);
 							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
 							//$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,$nproductos,$peso_total,$iva);
-							$envio=$flete->total;
-							$seguro=$flete->seguro;
+							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$iva);
+							if(!is_null($flete)){
+								$envio=$flete->total;
+								$seguro=$flete->seguro;
+							}else{
+								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+								$seguro=$envio*0.13;
+							}
+							
+							
 							$tipo_guia = 1;
 						}else{
 							$peso_adicional = ceil($peso_total-5);

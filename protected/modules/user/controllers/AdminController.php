@@ -923,6 +923,7 @@ if(isset($_POST['Profile']))
 					$row['Marca']=Marca::model()->getMarca($row['Marca']);
 					$row['Talla']=Talla::model()->getTalla($row['Talla']);
 					$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
+					$row['color_id']=$row['Color'];
 					$row['Color']=Color::model()->getColor($row['Color']);
 					$row['precioDescuento']=Precio::model()->getPrecioDescuento($row['id']);	
 					array_push($data,$row);
@@ -958,8 +959,8 @@ if(isset($_POST['Profile']))
 	public function actionPorComprar(){
 			
 		$html="";
-		$html=$html."<table><tr><th>PRODUCTO</th>
-		<th>DATOS</th><th>CANTIDAD</th></tr>";	
+		$html=$html."<table class='table table-striped'><thead><tr><th>PRODUCTO</th>
+		<th>DATOS</th><th>CANTIDAD</th></tr></thead><tbody>";	
 		$ptcs = explode(',',$_POST['ids']);
 		$vals = explode(',',$_POST['cants']);
 		$i=0;		
@@ -967,19 +968,23 @@ if(isset($_POST['Profile']))
 		{
 				
 			$obj=Preciotallacolor::model()->findByPk($ptc);	
-			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id),array('order'=>'orden ASC'));
+			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id,'color_id'=>$obj->color_id ),array('order'=>'orden ASC'));
 			if(sizeof($ima)==0)
+				$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id),array('order'=>'orden ASC'));
+			if(sizeof($ima)==0)	
 				$im="<td align='center'>".CHtml::image('http://placehold.it/50x50', "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
 			else
 				$im= "<td align='center'>".CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
-							
-			$html=$html."<tr><td>".
-			$im."</td><td>".
-			$ptc."</td><td>".
+						 	
+			$html=$html."<tr>".
+			$im."<td>".
+			"Color: ".$obj->mycolor->valor."<br/>".
+			"Marca: ".$obj->producto->mymarca->nombre."<br/>".
+			"Talla: ".$obj->mytalla->valor."   </td><td align='center'>".
 			$vals[$i]."</td></tr>";
 			$i++;
 		}
-		$html=$html."</table>";	
+		$html=$html."</tbody></table>";	
 		echo $html;
 		
 	}

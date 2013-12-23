@@ -197,8 +197,25 @@
 	
 		  
   </div>
-  <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
-        </div>
+
+        
+        <!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h3 id="myModalLabel">Resumen de Compra</h3>
+</div>
+<div class="modal-body" id="modal-body">
+
+</div>
+<div class="modal-footer">
+</div>
+</div>
+        
+        
+        
+        
+        
 <?php
 function compara_fechas($fecha1,$fecha2)
 {
@@ -280,7 +297,7 @@ $(document).ready(function(){
 		'url' :'<?php echo  CController::createUrl('admin/porcomprar');?>',
 		data: { 'ids':arr.toString(), 'cants':arr2.toString()}, 
 		'success': function(data){
-			$('#myModal').html(data);
+			$('#modal-body').html(data);
 			$('#myModal').modal(); 
 		},
 		'cache' :false});

@@ -511,6 +511,7 @@ function show_shopper(){
 	$('#div_shopper').show();
 }
 // here is the magic
+// magic ???
 function refresh(reset)
 {
     if($("#looks").infinitescroll)

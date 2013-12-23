@@ -277,7 +277,7 @@ class Giftcard extends CActiveRecord
                     //$criteria->with[] = 'UserComprador';
                     $criteria->with['UserComprador'] = array(
                         'alias' => 'UserComprador'  
-                        );
+                     );
 //                    
 //                    //$criteria->alias = 'User';
 //                    $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND
@@ -295,13 +295,16 @@ class Giftcard extends CActiveRecord
                     
                     $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
 
-                   // $criteria->addCondition('UserBeneficiario.email '.$value.' OR profB.first_name '.$value, $logicOp);
+                    $criteria->addCondition('UserBeneficiario.email '.$value.' OR profB.first_name '.$value, $logicOp);
                     
-                    $criteria->compare('UserBeneficiario.email', $value,
-                        true, $logicOp);
+//                    $criteria->compare('UserBeneficiario.email', $value,
+//                        true, $logicOp);
                     
                     $criteria->with['UserBeneficiario'] = array(
                         'alias' => 'UserBeneficiario'  
+                        );
+                    $criteria->with['UserBeneficiario.profile'] = array(
+                        'alias' => 'profB'  
                         );
 //                    $criteria->with['UserBeneficiario.profile'] = array(
 //                        'alias' => 'profB'  

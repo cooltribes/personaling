@@ -1188,6 +1188,11 @@ public function actionCategorias2(){
                     $criteria->addInCondition('t.id', $inValues);                         
                 }
                
+                $sort = new CSort("Look");
+                Yii::app()->end();
+                        
+                $sort->applyOrder($criteria);
+                
                 $criteria->compare('status', 2);
                 $total = Look::model()->count($criteria);
                 $pages = new CPagination($total);

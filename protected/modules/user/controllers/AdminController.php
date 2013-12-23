@@ -31,7 +31,9 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar'),
+
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento'),
+
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -1670,6 +1672,30 @@ if(isset($_POST['Profile']))
 		$dirEnvio->pais = $direccion->pais;	
 		$dirEnvio->save();
 		return $dirEnvio;
+	}
+        
+        public function actionSeguimiento($id)
+	{
+		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		$criteria->order = 'created_on DESC';
+       
+		
+		$movimientos = new CActiveDataProvider('ShoppingMetric', array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                                    'pageSize'=>20,
+                            ),
+                    
+                        
+                ));
+		
+		$this->render('seguimiento',array(
+			'model'=>$model,
+			'movimientos'=>$movimientos,
+			
+		));
 	}
 
 

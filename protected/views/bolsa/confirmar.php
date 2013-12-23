@@ -202,14 +202,18 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
 			echo CHtml::hiddenField('codigo_randon',rand());
           	$this->widget('bootstrap.widgets.TbButton', array(
-            'type'=>'warning',
-            'buttonType'=>'submit',
-            'size'=>'large',
-            'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
-            //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
-            'icon'=>'locked white',
-            'htmlOptions'=>array('onclick'=>'js:enviar_pago();')
-        )); 
+                    'type'=>'warning',
+//                    'buttonType'=>'submit',
+                    'buttonType'=>'button',
+                    'size'=>'large',
+                    'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
+                    //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+                    'icon'=>'locked white',
+                    'htmlOptions'=>array(
+//                        'onclick'=>'js:enviar_pago();'
+                        'id' => 'btn-Comprar',
+                        )
+                )); 
 		
 		 $this->endWidget(); 
 		  }
@@ -232,6 +236,25 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
 <?php $this->endWidget(); ?>
 
+<div class="wrapper_home hide">
+            
+    <div class="box_20130928 margin_bottom_small">
+            <h1>
+                <span>Tu pago esta siendo procesado</span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+                Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
+                <b>Atrás</b> en tu navegador
+                <br>
+                ¡Tu compra será completada en instantes!                
+            </p>
+            
+    </div>
+</div>
+
+
 <?php 
 
 }// si esta logueado
@@ -243,7 +266,24 @@ else
 
 
 ?>
+
 <script>
+    
+$(document).ready(function(){
+    $("#btn-Comprar").click(function(e){
+	$(this).attr("disabled", true);
+        $(this).html('<i class="icon-lock icon-white"></i> Procesando pago...');
+        $("body").addClass("aplicacion-cargando");
+        $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
+        $("#verticalForm").submit();
+        //e.preventDefault();
+        
+        
+    });
+});
+    
+    
+    
 	function enviar_pago(){
 		$(this).html("Procesando el Pago...");
 		$(this).attr("disabled", true);

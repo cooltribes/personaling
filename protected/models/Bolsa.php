@@ -65,7 +65,10 @@ class Bolsa extends CActiveRecord
 			'lookHasTblBolsas1' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_user_id'),
 			'ordens' => array(self::HAS_MANY, 'Orden', 'tbl_bolsa_id'),
 			'ordens1' => array(self::HAS_MANY, 'Orden', 'user_id'),
-			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id')
+			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id'),
+			'countproductos' => array(self::STAT, 'BolsaHasProductotallacolor', 'bolsa_id',
+            		'select' => 'SUM(cantidad)'
+        		),
 		); 
 	}
 

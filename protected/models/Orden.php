@@ -601,6 +601,8 @@ class Orden extends CActiveRecord
 	public function calcularTarifa($ciudad,$nproductos,$peso,$total){
 			
 		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+	 	//return array($ciudad,$nproductos,$peso,round($total,2));
+		
 	 	return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$ciudad,NULL,"cantidad_piezas"=>$nproductos, "peso"=>$peso,NULL,"valor_declarado"=>$total));
 	 
 		//Devuelve array de tracking si lo consigue o null si no

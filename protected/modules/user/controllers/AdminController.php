@@ -1049,18 +1049,19 @@ if(isset($_POST['Profile']))
 
 	public function actionComprapago()
 		{
-	
+			
 			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
 			{ 
 				$idDireccion = $_POST['idDireccion'];
 				$tipoPago = $_POST['tipoPago'];
 				echo "if";
+				
 				$this->render('compraconfirm',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
 				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
 				// se le pasan los datos al action confirmar	
 			}  // de direcciones
-		
-				$this->render('comprapago');
+				$vals = explode(',',Yii::app()->session['vals']);
+				$this->render('comprapago',array('vals'=>$vals));
 			
 			
 		

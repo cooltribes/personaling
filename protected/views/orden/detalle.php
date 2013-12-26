@@ -41,7 +41,8 @@ if($orden->getFlete())
       	<?php
       	
       	if($orden->fecha!="")
-   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
+//   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
+   		echo date('d/m/Y - h:i a', strtotime($orden->fecha));
       	
       	?>
       </div></th>

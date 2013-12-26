@@ -291,26 +291,21 @@ class Giftcard extends CActiveRecord
                 if($column == 'beneficiario')
                 {
                     
-                    //$value = ($comparator == '=') ? "=".$value."" : $value;
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
                     
-                    $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
-
-                    $criteria->addCondition('UserBeneficiario.email '.$value.' OR profB.first_name '.$value, $logicOp);
+//                    $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
+//
+//                    $criteria->addCondition('UserBeneficiario.email '.$value.' OR profB.first_name '.$value, $logicOp);
                     
-//                    $criteria->compare('UserBeneficiario.email', $value,
-//                        true, $logicOp);
+                    $criteria->compare('UserBeneficiario.email', $value,
+                        true, $logicOp);
                     
                     $criteria->with['UserBeneficiario'] = array(
                         'alias' => 'UserBeneficiario'  
                         );
-                    $criteria->with['UserBeneficiario.profile'] = array(
-                        'alias' => 'profB'  
-                        );
 //                    $criteria->with['UserBeneficiario.profile'] = array(
 //                        'alias' => 'profB'  
 //                        );
-
-                    
                     
                     
                     continue;

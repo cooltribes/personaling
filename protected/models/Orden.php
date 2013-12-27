@@ -317,7 +317,10 @@ class Orden extends CActiveRecord
 	
 	public function getTotalByUser($id){
 		
-		$sql = "select sum(total) from tbl_orden where user_id = ".$id;
+		$sql = "select sum(total) from tbl_orden where
+                        estado IN (3, 4, 8)
+                        and user_id = ".$id;
+                //Revisar cuales estados de orden se deben incluir
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $total;
 		

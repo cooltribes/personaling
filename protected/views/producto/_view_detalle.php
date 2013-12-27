@@ -803,13 +803,19 @@ $(document).ready(function(){
 
 var source = $('#principal').attr("src");
 var imgZ = source.replace(".","_orig.");
+imgZ = imgZ.replace("png", "jpg");
+
 $('.imagen_principal').zoom({url: imgZ});
+
 
   $(".imagen_principal").hover(function(){
     var source = $('#principal').attr("src");
-    
     var imgZ = source.replace(".","_orig.");
-    $('.imagen_principal').zoom({url: imgZ});
+    
+    imgZ = imgZ.replace("png", "jpg");
+    
+    $('.imagen_principal').zoom({url: imgZ});    
+  
   });
   
    $(".miniaturas_listado_click").click(function(){

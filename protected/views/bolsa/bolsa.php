@@ -26,15 +26,23 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
   <div class="row margin_bottom_large">
 	
     <div class="span12"> 
-    <?php if(isset(Yii::app()->session['inactivos'])){
-				
-				echo '<div class="alert in alert-block fade alert-warning">Tu bolsa se ha actualizado porque algunos productos no se encuentran disponibles.</div>';
-				unset(Yii::app()->session['inactivos']);
-	}?>
+   
     	
       <div class="row">
         <article class="span7">
           <h1>Tu bolsa</h1>
+          <!-- FLASH ON --> 
+            <?php $this->widget('bootstrap.widgets.TbAlert', array(
+                    'block'=>true, // display a larger alert block?
+                    'fade'=>true, // use transitions?
+                    'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+                    'alerts'=>array( // configurations per alert type
+                        'info'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                        'warning'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                    ),
+                )
+            ); ?>	
+            <!-- FLASH OFF --> 
           <form id="form_productos">
           <?php 
           

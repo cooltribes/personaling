@@ -288,7 +288,19 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             ?>
 
                     </span></div>
-                    <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>"><?php echo $lookhasproducto->producto->getCantidad(null,$color_id); ?> unds.</span></div>
+                    <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>">
+                        <?php 
+                        if($lookhasproducto->producto->estado == 0){                        
+                           
+                            echo $lookhasproducto->producto->getCantidad(null,$color_id);
+                            
+                        }else{
+                            
+                            echo "0";
+                            
+                        }
+                            
+                        ?> unds.</span></div>
                   </div>
                 </div>
               </div>

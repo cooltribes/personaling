@@ -142,7 +142,9 @@ class Bolsa extends CActiveRecord
 	public function deleteInactivos(){
 		$return=false;
 		foreach($this->bolsahasproductos as $productobolsa){
-			if($productobolsa->preciotallacolor->producto->status==0 || $productobolsa->preciotallacolor->producto->estado==1 ){
+			if($productobolsa->preciotallacolor->producto->status==0 ||
+                           $productobolsa->preciotallacolor->producto->estado==1 ||
+                           $productobolsa->cantidad == 0){
 				if($productobolsa->delete())
 					$return=true; 
 			}

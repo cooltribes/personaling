@@ -136,7 +136,7 @@ $this->breadcrumbs=array(
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
               <ul class="dropdown-menu" id="price-ranges" role="menu" aria-labelledby="dLabel">
                   <?php foreach ($rangos as $key => $rango){ ?>
-                  <li><a class="btn btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
+                  <li><a class="btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
                             <?php
                             if(!$key){
                                 echo "Hasta Bs. {$rango['end']} "; 
@@ -153,7 +153,7 @@ $this->breadcrumbs=array(
                             </span>
                         </a></li>
                   <?php } ?>
-                    <li><a class="btn btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
+                    <li><a class="btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
            <!-- 
                 <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
                 <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>

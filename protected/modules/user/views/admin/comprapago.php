@@ -297,7 +297,16 @@ $idDireccion=Yii::app()->session['idDireccion'];
 							
 							$direccion = Direccion::model()->findByPk($idDireccion);
 							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-							$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+							
+							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,array_sum($vals),$peso_total,$totalPr);
+							if(!is_null($flete)){
+								$envio=$flete->total;
+								$seguro=$flete->seguro;
+							}else{
+								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+								$seguro=$envio*0.13;
+							}
+							
 						
 							$tipo_guia = 1;
 						}
@@ -333,7 +342,7 @@ $idDireccion=Yii::app()->session['idDireccion'];
 
                         $t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio;
                         
-						$seguro = $t*0.013;
+						
 						
 						$t += $seguro;
 

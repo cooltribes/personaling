@@ -13,7 +13,7 @@
     	<div class="bg_color3   margin_bottom_small padding_small box_1">
            <fieldset>
             <legend >Datos básicos: </legend>
-			<div class="control-group">
+			 <div class="control-group">
               <?php echo $form->labelEx($model,'nombre', array('class' => 'control-label')); ?>
               <div class="controls">
               	<?php echo $form->textField($model,'nombre',array('class'=>'span5','maxlength'=>50, 'placeholder' => 'Nombre/Titulo')); ?>
@@ -382,6 +382,7 @@
        });
     </script>
     </div>
+  </div>
     
 
     

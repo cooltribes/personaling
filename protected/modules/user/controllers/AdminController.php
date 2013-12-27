@@ -1061,7 +1061,13 @@ if(isset($_POST['Profile']))
 				// se le pasan los datos al action confirmar	
 			}  // de direcciones
 				$vals = explode(',',Yii::app()->session['vals']);
-				$this->render('comprapago',array('vals'=>$vals));
+				$ptcs=explode(',',Yii::app()->session['ptcs']);
+				$peso=0; $i=0;
+				foreach ($ptcs as $ptc){
+					$obj=Preciotallacolor::model()->findByPk($ptc);
+					$peso+=$obj->producto->peso*$vals[$i];
+				}
+				$this->render('comprapago',array('cantidad'=>array_sum($vals),'peso_total'=>$peso));
 			
 			
 		

@@ -290,7 +290,7 @@ $idDireccion=Yii::app()->session['idDireccion'];
                           $totalDe=Yii::app()->getSession()->get('descuento');
                           //$envio = Yii::app()->getSession()->get('envio');
                           $envio = 0;
-						  $peso_total = 0;
+						 
 						  $tipo_guia = 0;
 						
 						if($peso_total < 5){
@@ -298,7 +298,7 @@ $idDireccion=Yii::app()->session['idDireccion'];
 							$direccion = Direccion::model()->findByPk($idDireccion);
 							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
 							
-							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,array_sum($vals),$peso_total,$totalPr);
+							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,$cantidad,$peso_total,$totalPr);
 							if(!is_null($flete)){
 								$envio=$flete->total;
 								$seguro=$flete->seguro;

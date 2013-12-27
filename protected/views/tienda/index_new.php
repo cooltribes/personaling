@@ -37,16 +37,25 @@
 							echo '<li class=""> 
 			              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
 			              			<img src="'.$hijo->urlImagen.'" width="60">
+				              		<div class="caption">
+				                  		<p>'.$hijo->nombre.'</p>
+					                </div>
 			              		</a>                	
-			              		<div class="caption">
-			                  		<p>'.$hijo->nombre.'</p>
-				                </div>
 		              			</li>';
 							
 						}
-						
 						echo '</ul>
-						<a name="'.$padre->nombre.'" href="#" class="todos allhijos" value="'.strtoupper($padre->id).'">&nbsp '.strtoupper($padre->nombre).' EN GENERAL  </a>
+						<a name="'.$padre->nombre.'" href="#" class="todos allhijos" value="'.strtoupper($padre->id).'">&nbsp';
+						switch (strtoupper($padre->nombre)) {
+							case 'ROPA':
+								echo "TODA LA ".strtoupper($padre->nombre);
+								break;
+							
+							default:
+								echo "TODOS LOS ".strtoupper($padre->nombre);								
+								break;
+						}
+						echo '</a>
 					</div>   				
   			</li>';
 				$i++;

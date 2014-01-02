@@ -1,8 +1,8 @@
-<div class="container margin_top">
+<div class="row margin_top">
   <div class="page-header">
     <h1>Reporte de Productos Vendidos</small></h1>
   </div>
-<div class="span11">
+<div>
 
 <?php 
 	$list= CHtml::listData(Marca::model()->findAll(), 'id', 'nombre');
@@ -23,14 +23,16 @@
 	
 	
 	echo CHtml::dropDownList('marcas', 'Todas', $list, array('empty' => 'Filtrar por marca', 'class'=>'pull-right'));
-	$template = '<br/><br/>
-				<div style="width:100%">
-					<div  style="width:auto; float:left;"> 
-					{summary}
+	$template = '<br/><hr/>
+				<div>
+					<div class="row">
+						<div  class="span3"> 
+						{summary}
+						</div>
+						<div  class="span4 offset5"> 
+						{sorter}
 					</div>
-					<div  style="width:50%; float:right"> 
-					{sorter}
-					</div>
+				</div>
 			 	 
 			 	
 			  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ta table-hover table-striped">

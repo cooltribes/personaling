@@ -1046,7 +1046,6 @@ public function actionCategorias2(){
             }
             
             
-            
             //Comparar si vienen todos los campos de perfil
             $filtroPerfil = false;
             
@@ -1065,21 +1064,12 @@ public function actionCategorias2(){
              * nada por el post (no se esta haciendo una nueva busqueda por filtros)
              * Entonces se saca el valor de la variable de session y se pone en el POST
              */
-            
-            
-            
             if(isset($_GET['page']) && isset(Yii::app()->session['todoPost'])
                     && !(isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
                     || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
                 || isset($_POST['perfil_propio']))
                ){
-//                if(isset($_GET['page'])){
-//                    echo "inside<pre>";
-//                    print_r($_GET['page']);
-//                    echo "</pre>";
-//                    Yii::app()->end();
-//
-//                }
+                
                 $_POST = Yii::app()->session['todoPost'];
                 
             }            
@@ -1188,6 +1178,11 @@ public function actionCategorias2(){
                     $criteria->addInCondition('t.id', $inValues);                         
                 }
                
+                $sort = new CSort("Look");
+                Yii::app()->end();
+                        
+                $sort->applyOrder($criteria);
+                
                 $criteria->compare('status', 2);
                 $total = Look::model()->count($criteria);
                 $pages = new CPagination($total);

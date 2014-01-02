@@ -872,7 +872,7 @@ class Look extends CActiveRecord
 		
 	}
         
-	public static function masVistos($limit = 5){
+	public static function masVistos($limit = 20){
             $criteria=new CDbCriteria;  		
 		
             //$criteria-> compare('destacado',1);

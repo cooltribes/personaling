@@ -197,7 +197,7 @@ $create_date = date('j M Y', $create_time);
 <!-- /container -->
 <script>
 	$(document).ready(function(){
-	    alert('http://'+window.location.host+'<?php echo Yii::app()->baseUrl; ?>'+'/user/registration');
+	    //alert('http://'+window.location.host+'<?php //echo Yii::app()->baseUrl; ?>'+'/user/registration');
 	    window.fbAsyncInit = function() {
 	        FB.init({
 	            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2

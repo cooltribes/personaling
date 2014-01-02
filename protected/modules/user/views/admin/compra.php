@@ -181,7 +181,7 @@
 					{
 					type: 'POST',	
 					url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
-					data: {'ajaxRequest':ajaxRequest, 'marcaId'=$('#marcas').val()}}
+					data: ajaxRequest}
 					
 					)
 					},
@@ -197,6 +197,25 @@
 	
 		  
   </div>
+
+        
+        <!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h3 id="myModalLabel">Resumen de Compra</h3>
+</div>
+<div class="modal-body" id="modal-body">
+
+</div>
+<div class="modal-footer">
+</div>
+</div>
+        
+        
+        
+        
+        
 <?php
 function compara_fechas($fecha1,$fecha2)
 {
@@ -225,7 +244,13 @@ function compara_fechas($fecha1,$fecha2)
 $(document).ready(function(){
 	  
 	    
-	    	
+	    	$("#ver_orden").click(function() { 
+            	if(arr.toString().length>0)
+            		modal();
+            	else
+            		alert("Aun no se ha agregado ningún producto");
+
+		});
 	
 	          
 	          $("#todos").click(function() { 
@@ -265,7 +290,19 @@ $(document).ready(function(){
 	   	}
  });
  
- 
+ function modal(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'<?php echo  CController::createUrl('admin/porcomprar');?>',
+		data: { 'ids':arr.toString(), 'cants':arr2.toString()}, 
+		'success': function(data){
+			$('#modal-body').html(data);
+			$('#myModal').modal(); 
+		},
+		'cache' :false});
+
+}
 
  
  

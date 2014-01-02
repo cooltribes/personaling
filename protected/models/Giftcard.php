@@ -271,22 +271,18 @@ class Giftcard extends CActiveRecord
                     
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
-                    $criteria->compare('UserCompradors.aemail', $value,
+                    $criteria->compare('UserComprador.email', $value,
                         true, $logicOp);
                     
                     //$criteria->with[] = 'UserComprador';
-//                    $criteria->with['UserComprador'] = array(
-//                        'select' => false,
-//                        'joinType' => 'INNER JOIN',
-//                        'alias' => 'UserComprador'  
-//                        );
+                    $criteria->with['UserComprador'] = array(
+                        'alias' => 'UserComprador'  
+                     );
 //                    
 //                    //$criteria->alias = 'User';
 //                    $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND
 //                        (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" 
-//                            OR User.email LIKE "%' . $_GET['nombre'] . '%")';
-
-                    
+//                            OR User.email LIKE "%' . $_GET['nombre'] . '%")';                    
                     
                     
                     continue;
@@ -297,16 +293,19 @@ class Giftcard extends CActiveRecord
                     
                     $value = ($comparator == '=') ? "=".$value."" : $value;
                     
+//                    $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
+//
+//                    $criteria->addCondition('UserBeneficiario.email '.$value.' OR profB.first_name '.$value, $logicOp);
+                    
                     $criteria->compare('UserBeneficiario.email', $value,
                         true, $logicOp);
                     
                     $criteria->with['UserBeneficiario'] = array(
-                        'select' => false,
-                        'joinType' => 'INNER JOIN',
                         'alias' => 'UserBeneficiario'  
                         );
-
-                    
+//                    $criteria->with['UserBeneficiario.profile'] = array(
+//                        'alias' => 'profB'  
+//                        );
                     
                     
                     continue;

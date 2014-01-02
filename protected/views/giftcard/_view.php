@@ -14,6 +14,8 @@
             <?php
             if ($data->UserComprador->superuser) {
                 echo "Administrador";
+            }else{
+               echo $data->UserComprador->email;
             }
             ?>
         </small>
@@ -41,7 +43,7 @@
     </td>
     <td>        
         <?php echo $data->fecha_uso ? date("d/m/Y", $data->getFechaUso()) . " - ".
-                $data->UserBeneficiario->profile->first_name
+                $data->UserBeneficiario->profile->first_name . "<br><small>". $data->UserBeneficiario->email ."</small>"
                 : "No Aplicada"; ?>
     </td>    
     <td>

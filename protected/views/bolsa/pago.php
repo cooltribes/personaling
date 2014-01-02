@@ -255,7 +255,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						  // busco looks en la bolsa
 						  $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
 						  $num = Yii::app()->db->createCommand($sql)->queryScalar();
-						  
+						  $nproductos=0;
 						  if($num!=0){
 						  	foreach ($bolsa->looks() as $look_id){
 						  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
@@ -263,27 +263,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 								foreach($bolsahasproductotallacolor as $productotallacolor){
 									$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
 									$peso_total += ($producto->peso*$productotallacolor->cantidad); 
+									$nproductos=$nproductos+$productotallacolor->cantidad;
 								}
 							}
 						  }
 						
-						 if($peso_total < 5){
-							
-							$direccion = Direccion::model()->findByPk($idDireccion);
-							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-							$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-						
-							$tipo_guia = 1;
-						}else{
-							$peso_adicional = ceil($peso_total-5);
-							$direccion = Direccion::model()->findByPk($idDireccion);
-							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-							$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
-							if($envio > 327.04){
-								$envio = 327.04;
-							}
-							$tipo_guia = 2;
-						}
+						 
 						  
                         $i=0;
 
@@ -307,12 +292,38 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                           }*/
 
                         $iva = (($totalPr - $totalDe)*0.12);
+						
+						if($peso_total < 5){
+							
+							$direccion = Direccion::model()->findByPk($idDireccion);
+							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+							//$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$iva);
+							if(!is_null($flete)){
+								$envio=$flete->total;
+								$seguro=$flete->seguro;
+							}else{
+								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+								$seguro=$envio*0.13;
+							}
+							
+							
+							$tipo_guia = 1;
+						}else{
+							$peso_adicional = ceil($peso_total-5);
+							$direccion = Direccion::model()->findByPk($idDireccion);
+							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+							$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
+							if($envio > 327.04){
+								$envio = 327.04;
+							}
+							$tipo_guia = 2;
+							$seguro=$envio*0.13;
+						}
 
                         $t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio;
                         
-						$seguro = $t*0.013;
-						
-						$t += $seguro;
+					
 
                         // variables de sesion
                         Yii::app()->getSession()->add('subtotal',$totalPr);
@@ -330,7 +341,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </tr>          
               <tr>
                 <th class="text_align_left">Envío:</th>
-                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
+                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left">I.V.A. (12%):</th>

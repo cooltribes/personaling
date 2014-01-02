@@ -11,6 +11,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 $tracking=$orden->getTracking();
 
 
+
 ?>
 
 
@@ -39,7 +40,8 @@ $tracking=$orden->getTracking();
       	<?php
       	
       	if($orden->fecha!="")
-   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
+//   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
+   		echo date('d/m/Y - h:i a', strtotime($orden->fecha));
       	
       	?>
       </div></th>
@@ -609,16 +611,17 @@ $tracking=$orden->getTracking();
    <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped" align="center">
         <tr>
-          <th scope="col">Referencia</th>
-          <th scope="col">Nombre de la prenda</th>
+<!--          <th scope="col">Referencia</th>
+          <th scope="col">Nombre de la prenda</th>-->
+            <th scope="col" colspan="2">Datos de la Prenda</th>
           <th scope="col">Marca</th>
           <th scope="col">Color</th>
           <th scope="col">Talla</th>
           <th scope="col">Peso</th>
-          <th scope="col">Cant. en Existencia</th>
-          <th scope="col">Cant. en Pedido</th>
+          <th scope="col">Existencia</th>
+          <th scope="col">Pedido</th>
           
-          <th scope="col">Ubic. Almacen</th>
+          <th scope="col">Almacen</th>
           <th scope="col">Precio</th>
         <!--  <th scope="col">Acción</th>-->
         </tr>
@@ -654,11 +657,40 @@ $tracking=$orden->getTracking();
                                         $marca=Marca::model()->findByPk($prdlk->marca_id);
                                         $talla=Talla::model()->findByPk($ptclk->talla_id);
                                         $color=Color::model()->findByPk($ptclk->color_id);
+                                        
+                                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$prdlk->id,'color_id'=>$color->id));
+                                        $contador=0;
+                                        $foto = "";
+                                        $label = $color->valor;
+                                        //$label = "No hay foto</br>para el color</br> ".$color->valor;
+                                        if(isset($imagen)){
+                                                foreach($imagen as $img) {
+                                                        if($contador==0){		 
+                                                                $foto = CHtml::image(Yii::app()->baseUrl . 
+                                                                        str_replace(".","_thumb.",$img->url), "Imagen ", 
+                                                                        array("width" => "70", "height" => "70"));							
+                                                                $contador++;
+                                                        }
+                                                }					  	
+
+
+                                        }else{
+                                            $foto = "<img src='http://placehold.it/70x70' >";
+                                            $label = "No hay foto</br>para el color</br> ".$color->valor;
+                                        }
 
 
                                         echo("<tr>");
-                                        echo("<td>".$prdlk->codigo."</td>"); // nombre
-                                        echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
+                                        //echo("<td>".$prdlk->codigo."</td>"); // nombre
+                                        //echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
+                                        echo("<td style='text-align:center'>".$foto."<br><div>".$label."</div></td>");
+                                        echo('<td style="vertical-align: middle">
+                                            <b>Referencia:</b> '.$prdlk->codigo.
+                                            "</pre><br><b>Nombre de la Prenda:</b> ".
+                                            //CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))
+                                            $prdlk->nombre
+                                            ."</td>");
+                                        
                                         echo("<td>".$marca->nombre."</td>");
                                         echo("<td>".$color->valor."</td>");
                                         echo("<td>".$talla->valor."</td>");
@@ -685,9 +717,40 @@ $tracking=$orden->getTracking();
 				$talla=Talla::model()->findByPk($ptc->talla_id);
 				$color=Color::model()->findByPk($ptc->color_id);
 				
+                                $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id));
+                                $contador=0;
+                                $foto = "";
+                                $label = $color->valor;
+                                //$label = "No hay foto</br>para el color</br> ".$color->valor;
+                                if(isset($imagen)){
+					foreach($imagen as $img) {
+						if($contador==0){		 
+							$foto = CHtml::image(Yii::app()->baseUrl . 
+                                                                str_replace(".","_thumb.",$img->url), "Imagen ", 
+                                                                array("width" => "70", "height" => "70"));							
+							$contador++;
+						}
+					}					  	
+					
+				
+				}else{
+                                    $foto = "<img src='http://placehold.it/70x70' >";
+                                    $label = "No hay foto</br>para el color</br> ".$color->valor;
+                                    
+                                    
+                                }
+                                
 				echo("<tr>");
-				echo("<td>".$indiv->codigo."</td>");// Referencia
-				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
+//				echo("<td>".$indiv->codigo."</td>");// Referencia
+//				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
+				/*Datos resumidos + foto*/
+				echo("<td style='text-align:center'>".$foto."<br><div>".$label."</div></td>");
+                                echo('<td style="vertical-align: middle">
+                                        <b>Referencia:</b> '.$indiv->codigo.
+                                        "</pre><br><b>Nombre de la Prenda:</b> ".
+                                        //CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))
+                                        $indiv->nombre
+                                        ."</td>");
 				echo("<td>".$marca->nombre."</td>");
 				echo("<td>".$color->valor."</td>");
 				echo("<td>".$talla->valor."</td>");	

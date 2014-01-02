@@ -210,12 +210,17 @@
       
           ?>
             <div class="span2 hidden-phone">
+                <?php if($producto->estado == 1){ ?>
+                 <a title="Producto Inactivo" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Inactivo </a>                
+                
               <?php
-              if($cont1 > 0 && $cont2 > 0){
+                }else if($cont1 > 0 && $cont2 > 0){
               ?>
                 <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
-                <?php
-          }else{
+              
+           
+            <?php
+           }else{
             ?>
             <a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Agotado </a>
             <?php
@@ -798,13 +803,19 @@ $(document).ready(function(){
 
 var source = $('#principal').attr("src");
 var imgZ = source.replace(".","_orig.");
+imgZ = imgZ.replace("png", "jpg");
+
 $('.imagen_principal').zoom({url: imgZ});
+
 
   $(".imagen_principal").hover(function(){
     var source = $('#principal').attr("src");
-    
     var imgZ = source.replace(".","_orig.");
-    $('.imagen_principal').zoom({url: imgZ});
+    
+    imgZ = imgZ.replace("png", "jpg");
+    
+    $('.imagen_principal').zoom({url: imgZ});    
+  
   });
   
    $(".miniaturas_listado_click").click(function(){

@@ -1174,7 +1174,7 @@ public function multipleColor2($idColor, $idact)
 	    return NULL;
 	}
         
-        public static function masVistos($limit = 5){
+        public static function masVistos($limit = 20){
             $criteria=new CDbCriteria;  		
 		
             //$criteria-> compare('destacado',1);

@@ -65,7 +65,10 @@ class Bolsa extends CActiveRecord
 			'lookHasTblBolsas1' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_user_id'),
 			'ordens' => array(self::HAS_MANY, 'Orden', 'tbl_bolsa_id'),
 			'ordens1' => array(self::HAS_MANY, 'Orden', 'user_id'),
-			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id')
+			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id'),
+			'countproductos' => array(self::STAT, 'BolsaHasProductotallacolor', 'bolsa_id',
+            		'select' => 'SUM(cantidad)'
+        		),
 		); 
 	}
 
@@ -117,6 +120,17 @@ class Bolsa extends CActiveRecord
 		//	$this->save();
 		return $bandera;
 	}
+	public function checkInventario(){
+		foreach($this->bolsahasproductos as $producto)
+		{
+				
+			if ($producto->cantidad > $producto->preciotallacolor->cantidad)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 	public function looks()
 	{
 		
@@ -128,7 +142,9 @@ class Bolsa extends CActiveRecord
 	public function deleteInactivos(){
 		$return=false;
 		foreach($this->bolsahasproductos as $productobolsa){
-			if($productobolsa->preciotallacolor->producto->status==0 || $productobolsa->preciotallacolor->producto->estado==1 ){
+			if($productobolsa->preciotallacolor->producto->status==0 ||
+                           $productobolsa->preciotallacolor->producto->estado==1 ||
+                           $productobolsa->cantidad == 0){
 				if($productobolsa->delete())
 					$return=true; 
 			}

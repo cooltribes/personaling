@@ -270,7 +270,9 @@
 	
 	$('a#siguiente').on('click', function(event) {
 		
-		event.preventDefault();
+//                console.log($("#id_sig").attr("value"));
+//                return;
+                event.preventDefault();
 		
 		$("#accion").attr("value", "siguiente");
 		var uno = $("#id_sig").attr("value");

@@ -31,7 +31,9 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin','mensajes','displaymsj'),
+
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento'),
+
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -543,6 +545,32 @@ if(isset($_POST['Profile']))
 		));
 	}
 	
+	public function actionInvitaciones($id)
+	{
+		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		
+        $xEmail= new CActiveDataProvider('EmailInvite', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>50,
+			),
+        ));
+		
+		$xFB= new CActiveDataProvider('FacebookInvite', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>50,
+			),
+        ));
+		
+		$this->render('invitaciones',array(
+			'model'=>$model,
+			'xEmail'=>$xEmail,
+			'xFB'=>$xFB
+		));
+	}
 		
 	public function actionDirecciones()
 	{
@@ -825,16 +853,19 @@ if(isset($_POST['Profile']))
 		    	$html=$html.'<h3>Cargar Saldo</h3>';
 		  		$html=$html.'</div>';
 		  		$html=$html.'<div class="modal-body">';
-				$html=$html."<div class='pull-right'><h4>Saldo Actual: ".$saldo."</h4></div>";				
+				$html=$html."<div class='pull-right'><h4>Saldo Actual: ".Yii::app()->numberFormatter->formatDecimal($saldo)."</h4></div>";				
 				$html=$html. CHtml::TextField('cant','',array('id'=>'cant','class'=>'span5','placeholder'=>'Escribe la cantidad separando los decimales con coma (,)')).
-				"<div><a onclick='saldo(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Cargar Cantidad</a></div></div>";
-	
+				"<div class='margin_bottom'><input type='checkbox' id='discount' style='margin:0 0 0 0'> Descontar</div><div><a onclick='saldo(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Cargar Cantidad</a></div></div>";
+	 
 				echo $html;
 			}
-		if(isset($_POST['cant'])&&isset($_POST['id']))	{
+		if(isset($_POST['cant'])&&isset($_POST['id'])&&isset($_POST['desc']))	{
 			
 				$balance=new Balance;
 				$balance->total=$_POST['cant'];
+				if($_POST['desc']){
+					$balance->total=$balance->total*(-1);
+				}
 				$balance->orden_id=0;
 				$balance->user_id=$_POST['id'];
 				$balance->tipo=3;
@@ -897,6 +928,7 @@ if(isset($_POST['Profile']))
 					$row['Marca']=Marca::model()->getMarca($row['Marca']);
 					$row['Talla']=Talla::model()->getTalla($row['Talla']);
 					$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
+					$row['color_id']=$row['Color'];
 					$row['Color']=Color::model()->getColor($row['Color']);
 					$row['precioDescuento']=Precio::model()->getPrecioDescuento($row['id']);	
 					array_push($data,$row);
@@ -929,7 +961,38 @@ if(isset($_POST['Profile']))
 		
 	}
 	
-	
+	public function actionPorComprar(){
+			
+		$html="";
+		$html=$html."<table class='table table-striped'><thead><tr><th>PRODUCTO</th>
+		<th>DATOS</th><th>CANTIDAD</th></tr></thead><tbody>";	
+		$ptcs = explode(',',$_POST['ids']);
+		$vals = explode(',',$_POST['cants']);
+		$i=0;		
+		foreach($ptcs as $ptc)
+		{
+				
+			$obj=Preciotallacolor::model()->findByPk($ptc);	
+			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id,'color_id'=>$obj->color_id ),array('order'=>'orden ASC'));
+			if(sizeof($ima)==0)
+				$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id),array('order'=>'orden ASC'));
+			if(sizeof($ima)==0)	
+				$im="<td align='center'>".CHtml::image('http://placehold.it/50x50', "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+			else
+				$im= "<td align='center'>".CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+						 	
+			$html=$html."<tr>".
+			$im."<td>".
+			"Color: ".$obj->mycolor->valor."<br/>".
+			"Marca: ".$obj->producto->mymarca->nombre."<br/>".
+			"Talla: ".$obj->mytalla->valor."   </td><td align='center'>".
+			$vals[$i]."</td></tr>";
+			$i++;
+		}
+		$html=$html."</tbody></table>";	
+		echo $html;
+		
+	}
 	
 	
 	
@@ -989,18 +1052,25 @@ if(isset($_POST['Profile']))
 
 	public function actionComprapago()
 		{
-	
+			
 			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
 			{ 
 				$idDireccion = $_POST['idDireccion'];
 				$tipoPago = $_POST['tipoPago'];
 				echo "if";
+				
 				$this->render('compraconfirm',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
 				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
 				// se le pasan los datos al action confirmar	
 			}  // de direcciones
-		
-				$this->render('comprapago');
+				$vals = explode(',',Yii::app()->session['vals']);
+				$ptcs=explode(',',Yii::app()->session['ptcs']);
+				$peso=0; $i=0;
+				foreach ($ptcs as $ptc){
+					$obj=Preciotallacolor::model()->findByPk($ptc);
+					$peso+=$obj->producto->peso*$vals[$i];
+				}
+				$this->render('comprapago',array('cantidad'=>array_sum($vals),'peso_total'=>$peso));
 			
 			
 		
@@ -1612,6 +1682,30 @@ if(isset($_POST['Profile']))
 		$dirEnvio->pais = $direccion->pais;	
 		$dirEnvio->save();
 		return $dirEnvio;
+	}
+        
+        public function actionSeguimiento($id)
+	{
+		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		$criteria->order = 'created_on DESC';
+       
+		
+		$movimientos = new CActiveDataProvider('ShoppingMetric', array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                                    'pageSize'=>20,
+                            ),
+                    
+                        
+                ));
+		
+		$this->render('seguimiento',array(
+			'model'=>$model,
+			'movimientos'=>$movimientos,
+			
+		));
 	}
 
 

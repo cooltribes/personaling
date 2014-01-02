@@ -58,7 +58,11 @@ class BolsaController extends Controller
 			
 			if (!is_null($bolsa)){
 				$bolsa->actualizar();
-				$bolsa->deleteInactivos();
+				if($bolsa->deleteInactivos()){
+                                    Yii::app()->user->updateSession();
+                                    Yii::app()->user->setFlash('info',
+                                            UserModule::t("Tu bolsa se ha actualizado porque algunos productos no se encuentran disponibles."));
+                                }
 				
 			} else {
 				$bolsa = new Bolsa;

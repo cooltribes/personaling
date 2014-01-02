@@ -255,7 +255,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                 <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
                 <?php $color_id = $lookhasproducto->color_id; ?>
                 </a>
-                <?php if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 ){ ?>
+                <?php if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 && 
+                        $lookhasproducto->producto->estado == 0){ ?>
                 <?php echo CHtml::checkBox("producto[]",true,array('onclick'=>'js:updatePrice();','value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
                 <?php } else { ?>
                  <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'disabled'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
@@ -265,7 +266,17 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                 <div class="metadata_top">
                   <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); ?> </div>
+                  <?php 
+                    if($lookhasproducto->producto->estado == 0){
+                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); 
+                    }else{
+                        
+                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); 
+                        
+                    }
+                  
+                  ?>
+                </div>
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
@@ -277,7 +288,19 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             ?>
 
                     </span></div>
-                    <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>"><?php echo $lookhasproducto->producto->getCantidad(null,$color_id); ?> unds.</span></div>
+                    <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>">
+                        <?php 
+                        if($lookhasproducto->producto->estado == 0){                        
+                           
+                            echo $lookhasproducto->producto->getCantidad(null,$color_id);
+                            
+                        }else{
+                            
+                            echo "0";
+                            
+                        }
+                            
+                        ?> unds.</span></div>
                   </div>
                 </div>
               </div>

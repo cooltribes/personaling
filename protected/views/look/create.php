@@ -658,6 +658,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         		?>
                     </select>
                   </div>
+
                   <?php
 	Yii::app()->clientScript->registerScript('marca',
 		"
@@ -729,7 +730,16 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	?>
                 <div class="span6">
-                	
+				<!-- Opciones 100% chic ON -->
+                  <div class="margin_bottom_small ">
+                  	<select name="100chic" id="" class="span12">
+                  		<option value="100% chic">100% chic</option>
+                  	</select>
+
+                  </div>
+				<!-- Opciones 100% chic OFF -->
+
+
                   <div class="dropdown" > <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
                     
@@ -813,6 +823,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   ?>
                     </ul>
                   </div>
+
+
+
                 </div>
                 
                 <!-- <div class="span1"> <a href="#" title="cuadricula"></a> <a href="#" title="cuadritula"><i class="icon-th"></i></a> <a href="#" title="lista"><i class="icon-th-list"></i></a> </div>-->

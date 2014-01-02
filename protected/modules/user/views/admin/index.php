@@ -288,3 +288,89 @@ $template = '{summary}
 		});
 	
 </script>
+<script >
+function modal(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'<?php echo  CController::createUrl('admin/contrasena');?>',
+		data: { 'id':id}, 
+		'success': function(data){
+			$('#myModal').html(data);
+			$('#myModal').modal(); 
+		},
+		'cache' :false});
+
+}
+function cambio(id){
+	
+	if($("#psw1").val()==$("#psw2").val())
+	{	
+		var psw=$("#psw2").val();
+		$.ajax({
+			type: "post",
+			'url' :'<?php echo  CController::createUrl('admin/contrasena');?>',
+			data: { 'psw':psw,
+			'id':id}, 
+			'success': function(data){
+				
+			window.location.reload();
+			},
+			'cache' :false});
+	}
+	else{
+		alert("Ambos campos deben coincidir");		
+	}
+
+}
+function carga(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'<?php echo  CController::createUrl('admin/saldo');?>',
+		data: { 'id':id}, 
+		'success': function(data){
+			$('#saldoCarga').html(data);
+			$('#saldoCarga').modal(); 
+		},
+		'cache' :false});
+
+}
+function saldo(id){	
+		
+		var cant=$("#cant").val();
+       	var desc=0;
+        if(cant.length>1){
+	        if(cant.indexOf(',')==(cant.length-2))
+	        	cant+='0';
+			if(cant.indexOf(',')==-1)
+				cant+=',00';
+				}
+        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+       
+       if($('#discount').attr('checked')=='checked')
+       	desc=1;
+       
+        
+        if (pattern.test(cant)||cant.length<2) { 
+          	cant=cant.replace(',','.');
+           
+           $.ajax({
+			type: "post",
+			'url' :'<?php echo  CController::createUrl('admin/saldo');?>',
+			data: { 'cant':cant,
+			'id':id,'desc':desc}, 
+			'success': function(data){
+				window.location.reload();			
+			},
+			'cache' :false});
+        }else{
+        	alert("Formato de cantidad no válido");
+         }     
+}
+
+
+
+
+
+</script>

@@ -853,16 +853,19 @@ if(isset($_POST['Profile']))
 		    	$html=$html.'<h3>Cargar Saldo</h3>';
 		  		$html=$html.'</div>';
 		  		$html=$html.'<div class="modal-body">';
-				$html=$html."<div class='pull-right'><h4>Saldo Actual: ".$saldo."</h4></div>";				
+				$html=$html."<div class='pull-right'><h4>Saldo Actual: ".Yii::app()->numberFormatter->formatDecimal($saldo)."</h4></div>";				
 				$html=$html. CHtml::TextField('cant','',array('id'=>'cant','class'=>'span5','placeholder'=>'Escribe la cantidad separando los decimales con coma (,)')).
-				"<div><a onclick='saldo(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Cargar Cantidad</a></div></div>";
-	
+				"<div class='margin_bottom'><input type='checkbox' id='discount' style='margin:0 0 0 0'> Descontar</div><div><a onclick='saldo(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Cargar Cantidad</a></div></div>";
+	 
 				echo $html;
 			}
-		if(isset($_POST['cant'])&&isset($_POST['id']))	{
+		if(isset($_POST['cant'])&&isset($_POST['id'])&&isset($_POST['desc']))	{
 			
 				$balance=new Balance;
 				$balance->total=$_POST['cant'];
+				if($_POST['desc']){
+					$balance->total=$balance->total*(-1);
+				}
 				$balance->orden_id=0;
 				$balance->user_id=$_POST['id'];
 				$balance->tipo=3;

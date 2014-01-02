@@ -54,7 +54,7 @@ $this->breadcrumbs=array(
 				              <div class="controls">
 				              	<?php echo $form->textArea($marca,'descripcion',array('rows'=>'5','class'=>'span6', 'placeholder' => 'Descripcion de la marca')); ?>
 				                <?php echo $form->error($marca,'descripcion'); ?>
-				              </div>
+				              </div>   
                         </div>
                         
                          <div class="control-group">
@@ -67,6 +67,17 @@ $this->breadcrumbs=array(
 									?>
                             </div>
                         </div>
+                        
+                        <div class="control-group">
+                        	
+                            <div class="controls">
+	                            <?php
+	                            
+					            	echo "<input type='checkbox' name='chic' id='chic'>100% Chic";
+									?>
+                            </div>
+                        </div>
+                        
                         <div class="control-group">
 				              <div class="controls">
 				              	<?php 

@@ -74,11 +74,12 @@ $this->breadcrumbs=array(
 								$marca=Marca::model()->findByPk($prdlk->marca_id);
 								$talla=Talla::model()->findByPk($ptclk->talla_id);
 								$color=Color::model()->findByPk($ptclk->color_id);
-								
+								$ptclk->sku=str_replace('.', '-', $ptclk->sku);
 								if($prodlook->devolucion_id != 0)	
 								{
 									echo("<tr class='error>'");
-									echo("<input id='precio-".$ptclk->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+									echo("<input id='precio-".$ptclk->sku."' type='hidden' value='".$precio->precioImpuesto."' />");
+									echo("<input id='envio-".$ptclk->sku."' type='hidden' value='".$precio->precioImpuesto."' />");
 									echo("<td><input class='check' id='".$ptclk->sku."' type='checkbox' value=''></td>");
 									echo("<td>".$ptclk->sku."</td>"); // nombre
 									echo("<td>".$prdlk->nombre."</td>"); // nombre
@@ -90,7 +91,7 @@ $this->breadcrumbs=array(
 								else
 								{
 									echo("<tr>");
-									echo("<input id='precio-".$ptclk->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+									echo("<input id='precio-".$ptclk->sku."' type='hidden' value='".$precio->precioImpuesto."' />");
 									echo("<td><input class='check' id='".$ptclk->sku."' type='checkbox' value=''></td>");
 									echo("<td>".$ptclk->sku."</td>"); // nombre
 									echo("<td>".$prdlk->nombre."</td>"); // nombre
@@ -130,11 +131,11 @@ $this->breadcrumbs=array(
 						$color=Color::model()->findByPk($ptc->color_id);
 						
 						$op = OrdenHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptc->id));
-						
+						$ptc->sku=str_replace('.', '-', $ptc->sku);
 						if($op->devolucion_id != 0)	
 						{
 							echo("<tr class='error>'");
-							echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+							echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioImpuesto."' />");
 							echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
 							echo("<td>".$ptc->sku."</td>"); // nombre
 							echo("<td>".$indiv->nombre."</td>"); // nombre
@@ -146,7 +147,7 @@ $this->breadcrumbs=array(
 						else
 						{
 							echo("<tr>");
-							echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioDescuento."' />");
+							echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$precio->precioImpuesto."' />");
 							echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
 							echo("<td>".$ptc->sku."</td>");// Referencia
 							echo("<td>".$indiv->nombre."</td>"); // nombre
@@ -205,18 +206,19 @@ $this->breadcrumbs=array(
 			//sumar
 			
 			var id = $(this).attr('id');
-			monto = parseInt(monto) + parseInt($('#precio-'+id).attr('value'));
+
+			monto = parseFloat(monto) + parseFloat($('#precio-'+id).attr('value'));
 			
-			$('#monto').val(monto);
+			$('#monto').val(monto.toString());
 				
 		}
 		else
 		{// restar
 			
 			var id = $(this).attr('id');
-			monto = parseInt(monto) - parseInt($('#precio-'+id).attr('value'));
+			monto = parseFloat(monto) - parseFloat($('#precio-'+id).attr('value'));
 
-			$('#monto').val(monto);		
+			$('#monto').val(Math.round(monto * 100) / 100);		
 			$(".input-medium").prop('selectedIndex',0);		
 		}
 		

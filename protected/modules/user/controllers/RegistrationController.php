@@ -141,7 +141,7 @@ class RegistrationController extends Controller
                                 //API key provisional para lista de prueba										
                                 $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
                                 $result = $MailChimp->call('lists/subscribe', array(
-                                    'id' => '11801985e7',
+                                    'id' => '2bcdb716e8',
                                     'email' => array('email' => $_POST['RegistrationForm']['email']),
                                     'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name']),
                                     'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],

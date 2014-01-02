@@ -154,7 +154,25 @@
 						<li><a class="marca" value="0" href="#">Todas las marcas</a></li>											
 					</ul>  	
 				</div>	
-			</li>			
+			</li>
+			<li class="item">
+				<div class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+						<div class="dropdown100Chic" >
+								<span >100% chic</span>
+							<small> 
+								<b class="caret"></b>
+							</small>
+						</div>
+					</a>
+					<ul class="dropdown-menu" >
+						
+						<li>Titino</li>		
+						<li>Tendinitis</li>		
+
+					</ul>  
+				</div>			
+			</li>
 			<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium" placeholder="Buscar" id="text_search"> 

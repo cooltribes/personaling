@@ -219,7 +219,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 </div>
 <script>
 
-    $('#EnvioGiftcard_nombre').keypress(function() {
+    $('#EnvioGiftcard_nombre').keyup(function() {
         $('#para').text($('#EnvioGiftcard_nombre').val());
     });
 
@@ -227,7 +227,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
         $('#para').text($('#EnvioGiftcard_nombre').val());
     });
 
-    $('#EnvioGiftcard_mensaje').keypress(function() {
+    $('#EnvioGiftcard_mensaje').keyup(function() {
         $('#mensaje').text($('#EnvioGiftcard_mensaje').val());
     });
 

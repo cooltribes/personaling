@@ -13,10 +13,7 @@ $this->breadcrumbs=array(
   </div>
   <div class="row">
     
-     
      	<?php echo $this->renderPartial('_form', array('model'=>$campana)); ?>
-     
-    
     
   </div>
 </div>

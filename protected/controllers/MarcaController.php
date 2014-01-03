@@ -72,6 +72,7 @@ class MarcaController extends Controller
 		}
 		
 		if(isset($_POST['Marca'])){
+			
 			$marca->attributes = $_POST['Marca'];
 			//$marca->urlImagen = $_POST['Marca']['Urlimagen'];
 		
@@ -91,6 +92,12 @@ class MarcaController extends Controller
 				$marca->urlImagen = "{$rnd}-{$images}";
 				
 				$marca->save();
+				if(isset($_POST['chic']))	{
+						$cmarca=new ClasificacionMarca;
+						$cmarca->clasificacion=1;
+						$cmarca->marca_id=$marca->id;
+						$cmarca->save();
+				}
 		        
 		        $nombre = Yii::getPathOfAlias('webroot').'/images/marca/'.$marca->id;
 		        $extension_ori = ".jpg";
@@ -122,6 +129,8 @@ class MarcaController extends Controller
 			}else{
 		    	if($marca->save()){
 		        	Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
+					
+					
 		        }else{
 		        	Yii::app()->user->setFlash('error',UserModule::t("Marca no pudo ser guardada."));
 		        }

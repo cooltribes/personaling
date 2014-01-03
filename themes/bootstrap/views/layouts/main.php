@@ -467,13 +467,13 @@ if(!Yii::app()->user->isGuest){
 
             $bptcolor_Rev = array_reverse($bptcolor);
 
-            foreach($bptcolor_Rev as $detalles){ // cada producto en la bolsa
+            foreach($bptcolor_Rev as $productoBolsa){ // cada producto en la bolsa
 
               if($contadorItems >= 5){
                 break;
               }
 
-                $todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);                
+                $todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);                
                 $producto = Producto::model()->findByPk($todo->producto_id);
                 $talla = Talla::model()->findByPk($todo->talla_id);
                 $color = Color::model()->findByPk($todo->color_id);                  

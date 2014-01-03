@@ -159,9 +159,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				  if(isset($bptcolor)) // si hay productos en la bolsa del usuario
 				  {
 				  
-	                  foreach($bptcolor as $detalles) // cada producto en la bolsa
+	                  foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
 					  {
-					  	$todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);
+					  	$todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
 						
 							$producto = Producto::model()->findByPk($todo->producto_id);
 					  		$talla = Talla::model()->findByPk($todo->talla_id);
@@ -201,18 +201,18 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						array_push($descuentos,$precio->ahorro);		
 						}
 					 
-					 	array_push($cantidades,$detalles->cantidad);
+					 	array_push($cantidades,$productoBolsa->cantidad);
 						
 					 	echo "<td>Bs. ".$pre."</td>";
 						?>
 						
 					 	<td width='8%'>
-					 		<input type="hidden" value="<?php echo $detalles->cantidad; ?>" />
-							<input type='text' name="cant[<?php echo $detalles->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $detalles->cantidad; ?>' class='span1 cantidades'/>
-                                                <a id="<?php echo $detalles->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+					 		<input type="hidden" value="<?php echo $productoBolsa->cantidad; ?>" />
+							<input type='text' name="cant[<?php echo $productoBolsa->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $productoBolsa->cantidad; ?>' class='span1 cantidades'/>
+                                                <a id="<?php echo $productoBolsa->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	                    	
 	                    </td>
-	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $detalles->preciotallacolor_id; ?>)' id='elim<?php echo $detalles->preciotallacolor_id; ?>'>&times;</td>
+	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $productoBolsa->preciotallacolor_id; ?>)' id='elim<?php echo $productoBolsa->preciotallacolor_id; ?>'>&times;</td>
 	                	</tr>
 	                	
 	                	<?php

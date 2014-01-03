@@ -74,6 +74,9 @@ class UserLogin extends CFormModel
                                 case UserIdentity::ERROR_STATUS_APPLY:
 					$this->addError("status",UserModule::t("No puedes iniciar sesión, tu solicitud aún no ha sido aprobada."));
 					break;
+                                case UserIdentity::ERROR_STATUS_DEL:
+					$this->addError("status",UserModule::t("No puedes iniciar sesión, tu cuenta ha sido eliminada."));
+					break;
 				case UserIdentity::ERROR_PASSWORD_INVALID:
 					$this->addError("password",UserModule::t("Password is incorrect."));
 					break;

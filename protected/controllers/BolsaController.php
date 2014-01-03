@@ -517,53 +517,17 @@ class BolsaController extends Controller
 		
 		public function actionConfirmar()
 		{
-			// viene de pagos
-			//var_dump($_POST);
-		/*	if(isset($_POST['tipo_pago'])){
-				Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
-				
-				if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-					Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
-				}else{
-					Yii::app()->getSession()->add('usarBalance','0');
-				}
-				
-				if(isset($_POST['mes']) || isset($_POST['ano'])){ // pago de tarjeta de credito
-					
-					$usuario = Yii::app()->user->id; 
-					
-					$tarjeta = new TarjetaCredito;
-								
-					$tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
-					$tarjeta->numero = $_POST['TarjetaCredito']['numero'];
-					$tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
-					$tarjeta->vencimiento = $_POST['mes']."/".$_POST['ano'];
-					$tarjeta->ci = $_POST['TarjetaCredito']['ci'];
-					$tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
-					$tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
-					$tarjeta->zip = $_POST['TarjetaCredito']['zip'];
-					$tarjeta->estado = $_POST['TarjetaCredito']['estado'];
-					$tarjeta->user_id = $usuario;		
-										
-					if($tarjeta->save())
-					{
-						$idDireccion = $_POST['idDireccion'];
-						$tipoPago = $_POST['tipo_pago'];
-						
-					//	$this->redirect($this->createAbsoluteUrl('bolsa/confirmar',array('tipo_pago'=>$tipoPago,'idDireccion'=>$idDireccion,'idTarjeta'=>$tarjeta->id)));
-					}
-				}
-				
-				Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
-				
-				//echo '<br/>'.$_POST['tipo_pago'];
-				$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
-			}*/
-				$metric = new ShoppingMetric();
-				$metric->user_id = Yii::app()->user->id;
-				$metric->step = ShoppingMetric::STEP_CONFIRMAR;
-				$metric->save();
-			$this->render('confirmar',array('idTarjeta'=> Yii::app()->getSession()->get('idTarjeta')));
+			
+                    $metric = new ShoppingMetric();
+                    $metric->user_id = Yii::app()->user->id;
+                    $metric->step = ShoppingMetric::STEP_CONFIRMAR;
+                    $metric->save();
+
+                    $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+                    $this->render('confirmar',array(
+                        'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
+                        'bolsa' =>  $bolsa,
+                            ));
 		}
 		
 		public function actionEliminardireccion()
@@ -1898,12 +1862,13 @@ class BolsaController extends Controller
 					//Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta")); 
 				}	
 			}else{
-//				$metric = new ShoppingMetric();
-//				$metric->user_id = Yii::app()->user->id;
-//				$metric->step = ShoppingMetric::STEP_LOGIN;
-//				$metric->save();
-				// si no viene del formulario. O bien viene de la pagina anterior
-				$this->render('authGC',array('model'=>$model));
+                            $metric = new ShoppingMetric();
+                            $metric->user_id = Yii::app()->user->id;
+                            $metric->step = ShoppingMetric::STEP_LOGIN;
+                            $metric->tipo_compra = ShoppingMetric::TIPO_GIFTCARD;
+                            $metric->save();
+                            // si no viene del formulario. O bien viene de la pagina anterior
+                            $this->render('authGC',array('model'=>$model));
 			}
 		} else{
 			// no va a llegar nadie que no esté logueado
@@ -1982,10 +1947,11 @@ class BolsaController extends Controller
             }
             else{
                 //$tarjeta = new TarjetaCredito;
-//                $metric = new ShoppingMetric();
-//                $metric->user_id = Yii::app()->user->id;
-//                $metric->step = ShoppingMetric::STEP_PAGO;
-//                $metric->save();
+                $metric = new ShoppingMetric();
+                $metric->user_id = Yii::app()->user->id;
+                $metric->step = ShoppingMetric::STEP_PAGO;
+                $metric->tipo_compra = ShoppingMetric::TIPO_GIFTCARD;
+                $metric->save();
 
                 //Buscar todas las giftcards de la bolsa del usuario y totalizar
 //                $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => Yii::app()->user->id));
@@ -2022,10 +1988,11 @@ class BolsaController extends Controller
 	 */
         public function actionConfirmarGC()
         {                
-//                $metric = new ShoppingMetric();
-//                $metric->user_id = Yii::app()->user->id;
-//                $metric->step = ShoppingMetric::STEP_CONFIRMAR;
-//                $metric->save();
+                $metric = new ShoppingMetric();
+                $metric->user_id = Yii::app()->user->id;
+                $metric->step = ShoppingMetric::STEP_CONFIRMAR;
+                $metric->tipo_compra = ShoppingMetric::TIPO_GIFTCARD;
+                $metric->save();
 //                echo Yii::app()->getSession()->get('tipoPago');
 //                Yii::app()->end();
                 

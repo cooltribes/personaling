@@ -1207,64 +1207,81 @@ public function actionValidar()
 	public function actionCancelar($id)
 	{   
             
-            $orden = Orden::model()->findByPK($id);
-		$end="";
-		if($orden->estado==1)
-		{
-				$ban=true;
-				$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
-				foreach($ohptcs as $ohptc){
-					$ptc=Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
-					$ptc->cantidad=$ptc->cantidad+$ohptc->cantidad;
-						if($ptc->save())
-							$ban=true;
-						else{
-							print_r($ptc->getErrors());
-							break;
-						}
-						
-				}
-							
-						
-					
-				$orden->estado = 5;	// se canceló la orden
-					
-					if($orden->save()&&$ban)
-					{
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
-						
-						$estado = new Estado;
-												
-						$estado->estado = 5;
-						$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
-						$estado->fecha = date("Y-m-d H:i:s");
-						$estado->orden_id = $orden->id;
-                                                
-                                                //Si hay un motivo de cancelacion
-                                                if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
-                                                    $estado->observacion = $_GET['mensaje'];
-                                                }
-                                                
-								
-						if($estado->save())
-						{
-							Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
-							$end='ok';
-							
-							
-						}
-					}	
-		}
-		else
-		{
-			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
-			$end='no';
-		}
-		if(isset($_POST['admin']) || isset($_GET['admin'])){
-			echo $end;
-			return 0;
-		}else
-			$this->redirect(array('listado'));
+            $orden = Orden::model()->findByPK($id);            
+            $response = array();
+            $esAdmin = isset($_POST['admin']) || isset($_GET['admin']);
+            $pagoHecho = $orden->estado == Orden::ESTADO_CONFIRMADO
+                         || $orden->estado == Orden::ESTADO_INSUFICIENTE;   
+            
+
+            /* 
+             * Si la orden esta en espera de pago la puede cancelar el usuario y el admin
+             * Si esta en 2, 3, 7 (con pagos hechos). La puede cancelar solamente el admin y se devuelve
+             * el dinero al usuario
+             */
+            if($orden->estado == Orden::ESTADO_ESPERA || $orden->estado == Orden::ESTADO_RECHAZADO ||
+               ($esAdmin && $pagoHecho))
+            {
+                $ban = false;
+                $ohptcs = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+                foreach($ohptcs as $ohptc){
+                    $ptc=Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
+                    $ptc->cantidad=$ptc->cantidad+$ohptc->cantidad; //devolver inventario
+                        if($ptc->save())
+                            $ban = true;
+                        else{
+                            print_r($ptc->getErrors());
+                            $ban = false;
+                            break;
+                        }
+                }
+                
+                /*Si ha pagado, devolver dinero al saldo*/
+                if($pagoHecho){
+                                               
+                    $balance = new Balance;                    
+                    $totalDevuelto = $balance->total = $orden->totalpagado;
+                    $balance->orden_id = $orden->id;
+                    $balance->user_id = $orden->user_id;
+                    $balance->tipo = 4;
+                    $balance->save();  
+                }
+
+                $orden->estado = 5;	// se canceló la orden
+
+                if($orden->save() && $ban)
+                {
+                    // agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
+                    $estado = new Estado;												
+                    $estado->estado = 5;
+                    $estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+                    $estado->fecha = date("Y-m-d H:i:s");
+                    $estado->orden_id = $orden->id;
+
+                    //Si hay un motivo de cancelacion
+                    if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
+                        $estado->observacion = $_GET['mensaje'];
+                    }		
+                    if($estado->save())
+                    {
+                            Yii::app()->user->setFlash('success', 'Pedido cancelado con éxito.');                                    
+                            $response["status"] = "success";
+                            $response["message"] = "Pedido cancelado con éxito. <br>
+                                Se han agregado <b>".Yii::app()->numberFormatter->format('#,##0.00',$totalDevuelto)." Bs.</b> al saldo del usuario</b>";
+                    }
+                }	
+            }
+            else
+            {
+                Yii::app()->user->setFlash('error', "No se puede cancelar el pedido.");
+                $response["status"] = "error";
+                $response["message"] = "No se puede cancelar el pedido";
+            }
+            if($esAdmin){
+                echo CJSON::encode($response);
+                return 0;
+            }else
+                    $this->redirect(array('listado'));
 	}
 
 	

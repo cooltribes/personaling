@@ -203,11 +203,14 @@ $template = '{summary}
 
 
 
-        $("[id^='linkCancelar']").click(function (e){
+        $("a[id^='linkCancelar']").click(function (e){
             e.preventDefault();
             //console.log("click");
             var urlCancel = $(this).attr('href');
             //console.log(urlCancel);
+            
+            console.log("Hola");
+            return;
 
             $("#mensajeCancel").focus();
 
@@ -233,7 +236,7 @@ $template = '{summary}
                         $.ajax({
                             type: 'GET',
                             url: 'cancelar',
-                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val(), admin: 1},
+                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val()},
                             success: function(data){
 
                                window.location = "<?php echo CController::createUrl('orden/listado'); ?>";

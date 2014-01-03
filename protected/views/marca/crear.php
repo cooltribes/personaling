@@ -74,6 +74,7 @@ $this->breadcrumbs=array(
 	                            <?php
 	                            
 					            	echo "<input type='checkbox' name='chic' id='chic'>100% Chic";
+							
 									?>
                             </div>
                         </div>

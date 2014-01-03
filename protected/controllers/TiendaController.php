@@ -245,6 +245,17 @@ class TiendaController extends Controller
 						}
 					}
 				}
+				if (isset($_POST['100hid'])){
+					if($_POST['100hid']==1){
+					
+						Yii::app()->session['100chic'] = $_POST['100hid'];
+		 			}
+					else{
+						if(isset(Yii::app()->session['100chic'])){
+							unset(Yii::app()->session['100chic']);
+						}
+					}
+				}
 				
 				
 				if (isset($_POST['marcahid'])){
@@ -281,6 +292,11 @@ class TiendaController extends Controller
 				
 					if(isset(Yii::app()->session['f_color'])){
 						unset(Yii::app()->session['f_color']);
+						
+					}
+					
+					if(isset(Yii::app()->session['100chic'])){
+						unset(Yii::app()->session['100chic']);
 						
 					}
 					
@@ -374,6 +390,11 @@ class TiendaController extends Controller
 		
 		if(isset(Yii::app()->session['f_marca'])){
 			unset(Yii::app()->session['f_marca']);
+			
+		}
+		
+		if(isset(Yii::app()->session['100chic'])){
+			unset(Yii::app()->session['100chic']);
 			
 		}
 		if(isset(Yii::app()->session['f_cat'])){

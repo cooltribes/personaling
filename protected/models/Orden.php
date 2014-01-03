@@ -597,8 +597,10 @@ class Orden extends CActiveRecord
 				$orden=$this->findByPk($id);
 		}
 		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
-	 	return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total));
-	 
+	 	//if(is_null($cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total))))
+			//return $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total;
+		//else
+	 		return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total));
 		//Devuelve array de tracking si lo consigue o null si no
 	} 
 	public function calcularTarifa($ciudad,$nproductos,$peso,$total){

@@ -208,7 +208,7 @@ $template = '{summary}
 				                     inputs.attr('checked', false);
 				               	} 	
 							});
-						   
+						   cancelarOrden();
 							} ",
 		'pager'=>array(
 			'header'=>'',
@@ -251,52 +251,55 @@ $template = '{summary}
 <!-- /container --> 
 <script type="text/javascript">
     
-    
-        $("[id^='linkCancelar']").click(function (e){
-            e.preventDefault();
-            //console.log("click");
-            var urlCancel = $(this).attr('href');    
-            
-            bootbox.dialog("Cuéntanos por qué deseas cancelar este pedido...  \n\
-                <br><br><textarea id='mensajeCancel'  maxlength='255' style='resize:none; width: 520px;' rows='4' cols='400'> ",
-                [{
-                    "label" : "Continuar",
-                    "class" : "btn-danger",
-                    "callback": function() {
-                       // console.log($("#mensajeCancel").val());
-                        $("#hiddenMensaje").val($("#mensajeCancel").val().trim());
-                         var vect = urlCancel.split("cancelar/");
-                        $.ajax({
-                            type: 'GET',
-                            url: 'cancelar',
-                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val(), admin: 1},
-                            success: function(data){
-                                if(data=='ok'){
-                                   ajaxUpdateTimeout = setTimeout(function () {
-                                   $.fn.yiiListView.update(
-                                        'list-auth-items',
-                                        {
-                                            type: 'POST',	
-                                            url: '<?php echo CController::createUrl('orden/admin')?>',
-                                            data: ajaxRequest
-                                        }
+/*Para cancelar una orden*/
+function cancelarOrden(){   
 
-                                   )
-                                   },
-                                   300);
-                                   
-                                   bootbox.alert("¡La orden se ha cancelado con éxito!");
-                                } 
-                                if(data=='no'){
-                                   alert("No se pudo cancelar la orden");
+$("a[id^='linkCancelar']").click(function (e){
+    e.preventDefault();
+    var urlCancel = $(this).attr('href');        
+
+    bootbox.dialog("Cuéntanos por qué deseas cancelar este pedido...  \n\
+        <br><br><textarea id='mensajeCancel'  maxlength='255' style='resize:none; width: 520px;' rows='4' cols='400'> ",
+        [{
+            "label" : "Continuar",
+            "class" : "btn-danger",
+            "callback": function() {
+                $("#hiddenMensaje").val($("#mensajeCancel").val().trim());
+                 var vect = urlCancel.split("cancelar/");
+                $.ajax({
+                    type: 'GET',
+                    url: 'cancelar',
+                    dataType: 'JSON',
+                    data: {id: vect[1], mensaje: $("#hiddenMensaje").val(), admin: 1},
+                    success: function(data){
+                        console.log(data);
+                        bootbox.alert(data.message);
+                        if(data.status === 'success'){
+                           ajaxUpdateTimeout = setTimeout(function () {
+                           $.fn.yiiListView.update(
+                                'list-auth-items',
+                                {
+                                    type: 'POST',	
+                                    url: '<?php echo CController::createUrl('orden/admin')?>',
+                                    data: ajaxRequest
                                 }
-                            }
-                        });
+
+                           )
+                           },
+                           300);
+                           
+                        }else if(data.status === 'error'){
+                          
+                        }
                         
                     }
-                }]);
-            
-        });
+                });
+
+            }
+        }]);
+
+}); 
+}    
 
 </script>
 

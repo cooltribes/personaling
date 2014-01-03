@@ -13,7 +13,7 @@
   <div class="row margin_top">
     <div class="span12">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
+        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form" class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
             <legend>Pedidos</legend>
             

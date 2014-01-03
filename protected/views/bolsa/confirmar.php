@@ -95,8 +95,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
                         // $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
 
-                        echo "<tr>";		
-
+                        echo "<tr>";
 //                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
 //                        if($imagen){
 //
@@ -113,8 +112,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 //                            echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 
                         echo "
-                        <td>
-                        <strong>".$producto->nombre."</strong> <br/>
+                        <td>"
+                        .$producto->nombre."<br/>
                         <strong>Color</strong>: ".$color->valor."<br/>
                         <strong>Talla</strong>: ".$talla->valor."</td>
                         ";	
@@ -128,10 +127,10 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
 
 
-                        echo "<td>Bs. ".$pre."</td>";
+                        echo "<td style='width:26%'>Bs. ".$pre."</td>";
                     ?>
 
-                    <td width='8%'>
+              <td width='8%' style="text-align: center">
                       <?php echo $productoBolsa->cantidad; ?>              
                     </td>
             
@@ -209,8 +208,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 			echo 'Productos individuales: '.Yii::app()->getSession()->get('totalIndiv');
 			?>
         </h5>
-        <hr/>
-        <p><i class="icon-exclamation-sign"></i></p>
+        
         <div class="margin_bottom">
           <?php  
           // 	if(Yii::app()->getSession()->get('totalLook') != 0){
@@ -275,7 +273,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 			$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			    'id'=>'verticalForm',
 			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
-			    'htmlOptions'=>array('class'=>'well'),
+			    'htmlOptions'=>array('class'=>'well text_align_center'),
 			)); 
           	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
 			echo CHtml::hiddenField('codigo_randon',rand());

@@ -295,7 +295,6 @@ class Producto extends CActiveRecord
 	public function hijos($items,$op){
 		
 		$ids = array();
-		
 		foreach ($items as $item) {				
 			if($item->hasChildren()){
 				$categ = Categoria::model()->findAllByAttributes(array('padreId'=>$item->id,));
@@ -600,7 +599,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria=new CDbCriteria;
 
         $criteria->select = 't.*';
-		$criteria->with = array('precios','preciotallacolor','categorias');
+		$criteria->with = array('precios','preciotallacolor','categorias','clasificaciones');
         //$criteria->join ='JOIN tbl_precioTallaColor ON tbl_precioTallaColor.producto_id = t.id JOIN tbl_categoria_has_tbl_producto on tbl_categoria_has_tbl_producto.tbl_producto_id  = t.id';
         $criteria->addCondition('t.estado = 0');
 		$criteria->addCondition('t.status = 1');
@@ -644,6 +643,9 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 	}
+	
+		
+	
 	if(isset(Yii::app()->session['minpr'])&&isset(Yii::app()->session['maxpr'])){
 		$rangopr= 'precioDescuento BETWEEN '.Yii::app()->session['minpr'].' AND '.Yii::app()->session['maxpr'];
 		$criteria->addCondition($rangopr);
@@ -730,7 +732,17 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				$criteria->addCondition('categorias.padreId = '.Yii::app()->session['f_padre']);
 			}
 		}
+		/*if(isset(Yii::app()->session['100chic'])){
 		
+		$chic= 'clasificaciones.clasificacion = 1';
+		$criteria->addCondition($chic);		
+		
+	}
+		else{
+			$chic= 'clasificaciones.clasificacion = 1';
+			$criteria->addCondition($chic);		
+		}
+		*/
 		//------------------ BUSQUEDA POR TEXTO (marca, categoria, color, nombre de la prenda) ----------------
 		$text="";
 		if(isset(Yii::app()->session['f_text'])){

@@ -128,6 +128,14 @@ class MarcaController extends Controller
 		        
 			}else{
 		    	if($marca->save()){
+		    		if(isset($_POST['chic']))	{
+			    		if(!$marca->is_100chic){
+							$cmarca=new ClasificacionMarca;
+							$cmarca->clasificacion=1;
+							$cmarca->marca_id=$marca->id;
+							$cmarca->save();				
+						}
+					}
 		        	Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
 					
 					

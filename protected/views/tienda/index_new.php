@@ -159,17 +159,27 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropdown100Chic" >
-								<span >100% chic</span>
+								<span id="100chic" name="1" >100% chic</span>
 							<small> 
 								<b class="caret"></b>
 							</small>
 						</div>
 					</a>
 					<ul class="dropdown-menu" >
-						
-						<li>Titino</li>		
-						<li>Tendinitis</li>		
-
+						<?php
+						if(isset(Yii::app()->session['100chic']))
+								echo CHtml::hiddenField('100hid',1);
+							else {
+								echo CHtml::hiddenField('100hid',0);
+							}
+						foreach($marcas as $marca){
+								if($marca->is_100chic){
+									
+										echo'<li><a class="100chic" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
+								}
+								
+							}	
+						?>
 					</ul>  
 				</div>			
 			</li>
@@ -219,6 +229,8 @@
 		
 
 
+		
+		
 		$(".precio").click(function() { 
             	
             	$('#precio_titulo').html($(this).html());
@@ -228,13 +240,33 @@
             	$('#text_search').val(''); 
             	refresh();
            
-            	
+            	 
               	
 		});
        
          $(".marca").click(function() { 
             	
-            	$('#marca_titulo').html($(this).html());
+            	var titulo;
+            	titulo=$(this).html();
+            	if(titulo.length>13){
+            		titulo=titulo.substring(0,10);
+            		titulo=titulo+'...';
+            	}
+            	
+            	$('#marca_titulo').html(titulo);
+            	
+            	$('#marcahid').val($(this).attr('value'));
+            	//$('#catalogo').remove();
+            	//$('#tienda_productos').html(''); 
+            	$('#text_search').val('');  
+            	refresh();
+            
+
+		});
+		
+		$(".100chic").click(function() { 
+            	
+            	          	
             	$('#marcahid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
@@ -258,6 +290,11 @@
             	refresh();
 
 		});  
+		
+		$("#100chic").click(function() { 
+				$('#100hid').val('1');
+				refresh();
+			});
 		
 		$(".hijo").click(function() { 
             	
@@ -407,7 +444,7 @@ function refresh(reset)
 
  $("#catalogo").infinitescroll("destroy");
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid').serialize();
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid','#100hid').serialize();
   
  	
 

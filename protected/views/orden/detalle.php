@@ -5,7 +5,8 @@ $this->breadcrumbs=array(
 	'Pedidos'=>array('admin'),
 	'Detalle',
 );
-
+if($orden->getFlete())
+	print_r($orden->getFlete());
 $usuario = User::model()->findByPk($orden->user_id); 
 
 $tracking=$orden->getTracking();

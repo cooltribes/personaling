@@ -231,7 +231,7 @@ $tracking=$orden->getTracking();
         
           	<?php
           	
-          	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+          	$productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
           //	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						
 			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
@@ -249,7 +249,7 @@ $tracking=$orden->getTracking();
 	          		</tr>
 	          	");
 			
-				foreach($detalles as $detalle){
+				foreach($productoBolsa as $detalle){
 				
 				echo("<tr>");
 				
@@ -410,9 +410,9 @@ $tracking=$orden->getTracking();
         
         	<?php
         	
-        	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+        	$productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 			
-			foreach($detalles as $detalle){
+			foreach($productoBolsa as $detalle){
 	        	if($detalle->estado == 0 && $detalle->nTransferencia!="") // si esta en default
 				{
 					echo("<div class='alert alert-block '>");

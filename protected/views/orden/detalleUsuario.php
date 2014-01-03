@@ -122,7 +122,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
           <?php
 
-            $detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+            $productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
             // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 
             if($orden->estado != 1 && $orden->estado != 5){
@@ -139,7 +139,7 @@ $usuario = User::model()->findByPk($orden->user_id);
                       </tr>
                   ");
 
-            foreach($detalles as $detalle){
+            foreach($productoBolsa as $detalle){
 
                 echo("<tr>");
 

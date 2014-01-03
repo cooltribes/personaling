@@ -67,6 +67,87 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">
+      <section class="span4">
+      <div class="well ">
+        <h4 class="braker_bottom">Detalles del Pedido</h4>
+        <form id="form_productos">          
+          <!-- Look ON -->
+          <!--<h3 class="braker_bottom">Productos Individuales</h3>-->
+          <div>
+            <table class="table" width="100%" >
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Precio Unitario</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php                  
+		$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));		  
+	          foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
+                    {
+                        $todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
+
+                        $producto = Producto::model()->findByPk($todo->producto_id);
+                        $talla = Talla::model()->findByPk($todo->talla_id);
+                        $color = Color::model()->findByPk($todo->color_id);
+
+                        // $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
+
+                        echo "<tr>";		
+
+//                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
+//                        if($imagen){
+//
+//                            $con = 0;
+//
+//                            foreach($imagen as $ima){
+//                                    if($con == 0){	
+//                                            $con++;						  	
+//                                            $aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x180.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+//                                            echo "<td>".$aaa."</td>";
+//                                    }
+//                            }
+//                        }else
+//                            echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+
+                        echo "
+                        <td>
+                        <strong>".$producto->nombre."</strong> <br/>
+                        <strong>Color</strong>: ".$color->valor."<br/>
+                        <strong>Talla</strong>: ".$talla->valor."</td>
+                        ";	
+
+                        $pre="";
+                        foreach ($producto->precios as $precio) {
+                        $pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+
+
+                        }
+
+
+
+                        echo "<td>Bs. ".$pre."</td>";
+                    ?>
+
+                    <td width='8%'>
+                      <?php echo $productoBolsa->cantidad; ?>              
+                    </td>
+            
+            </tr>
+
+            <?php
+                }// foreach							  
+            ?>
+              </tbody>
+            </table>
+          </div>
+          <!-- Look OFF -->		
+          
+        </form>
+      </div>
+    </section>
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
@@ -86,40 +167,36 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
         <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
-        
         <!-- Direcciones OFF --> 
         
-      </div>
-    </section>
-    <section class="span4">
-      <div class="well ">
+        <hr>
         <h4>Método de Pago Seleccionado</h4>
         <div class=" margin_bottom">
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
             <?php 
               	if(Yii::app()->getSession()->get('tipoPago')==1)
-				{
-					echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
-				}else if(Yii::app()->getSession()->get('tipoPago')==4){
-					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
-				}else if(Yii::app()->getSession()->get('tipoPago')==2){
-					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
-					
-					$tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
-					
-					$rest = substr($tarjeta->numero, -4);
-					
-					echo "</br>Nombre: ".$tarjeta->nombre."
-					</br>Numero: XXXX XXXX XXXX ".$rest."
-					</br>Vencimiento: ".$tarjeta->vencimiento;
+                {
+                    echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
+                }else if(Yii::app()->getSession()->get('tipoPago')==4){
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
+                }else if(Yii::app()->getSession()->get('tipoPago')==2){
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
 
-					
-				}
+                    $tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
+
+                    $rest = substr($tarjeta->numero, -4);
+
+                    echo "</br>Nombre: ".$tarjeta->nombre."
+                    </br>Numero: XXXX XXXX XXXX ".$rest."
+                    </br>Vencimiento: ".$tarjeta->vencimiento;
+                }
               ?>
           </table>
         </div>
+        
       </div>
     </section>
+    
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
       <div class="well well_personaling_big">
@@ -133,6 +210,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 			?>
         </h5>
         <hr/>
+        <p><i class="icon-exclamation-sign"></i></p>
         <div class="margin_bottom">
           <?php  
           // 	if(Yii::app()->getSession()->get('totalLook') != 0){
@@ -208,7 +286,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                     'size'=>'large',
                     'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
                     //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
-                    'icon'=>'locked white',
+                    'icon'=>'lock white',
                     'htmlOptions'=>array(
 //                        'onclick'=>'js:enviar_pago();'
                         'id' => 'btn-Comprar',

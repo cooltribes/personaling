@@ -1687,10 +1687,12 @@ if(isset($_POST['Profile']))
         public function actionSeguimiento($id)
 	{
 		$model=$this->loadModel();
+                
+                /*Para compras en tienda*/
 		$criteria=new CDbCriteria;
-		$criteria->condition = 'user_id = '.$id;
-		$criteria->order = 'created_on DESC';
-       
+		$criteria->compare("user_id", $id);
+                $criteria->compare("tipo_compra", ShoppingMetric::TIPO_TIENDA);
+		$criteria->order = 'created_on DESC';       
 		
 		$movimientos = new CActiveDataProvider('ShoppingMetric', array(
                     'criteria'=>$criteria,
@@ -1700,10 +1702,28 @@ if(isset($_POST['Profile']))
                     
                         
                 ));
+                
+                /*Para compra de giftcards*/
+		$criteriaGC=new CDbCriteria;		
+		$criteriaGC->compare("user_id", $id);
+		$criteriaGC->compare("tipo_compra", ShoppingMetric::TIPO_GIFTCARD);		
+		$criteriaGC->order = 'created_on DESC';
+       
 		
-		$this->render('seguimiento',array(
+		$movimientosGC = new CActiveDataProvider('ShoppingMetric', array(
+                    'criteria'=>$criteriaGC,
+                    'pagination'=>array(
+                                    'pageSize'=>20,
+                            ),
+                    
+                        
+                ));
+
+
+                $this->render('seguimiento',array(
 			'model'=>$model,
 			'movimientos'=>$movimientos,
+			'movimientosGC'=>$movimientosGC,
 			
 		));
 	}

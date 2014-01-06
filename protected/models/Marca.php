@@ -58,7 +58,7 @@ class Marca extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 		'productos' => array(self::HAS_MANY, 'Producto', 'marca_id'),
-		'clasificaciones' => array(self::HAS_MANY, 'ClasificacionMarca', 'marca_id'),
+		//'clasificaciones' => array(self::HAS_MANY, 'ClasificacionMarca', 'marca_id'),
 		);
 	}
 

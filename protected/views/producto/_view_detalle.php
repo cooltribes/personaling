@@ -301,10 +301,10 @@
           }// else
                 ?>                
               </div>
-              <div class="braker_top margin_top_small">
+<!--               <div class="braker_top margin_top_small">
                 <a href="#myModal" role="button" class="btn btn-mini btn-link color9" data-toggle="modal">Ver guia de tallas</a>
               </div>
-            </div>
+ -->            </div>
            </div>
              
              <?php

@@ -890,7 +890,10 @@ if(isset($_POST['Profile']))
 				
 				Yii::app()->session['ptcs']=$_POST['ptcs'];
 				Yii::app()->session['vals']=$_POST['vals'];
-				$this->redirect(array('admin/compradir'));
+                                
+//				$this->redirect(array('admin/compradir'));
+				$this->redirect($this->createAbsoluteUrl('admin/compradir',array(),'https'));
+                                
 				
 			}
 
@@ -1009,6 +1012,7 @@ if(isset($_POST['Profile']))
 				Yii::app()->session['idDireccion']=$_POST['Direccion']['id'];
 				
 				$this->redirect(array('admin/comprapago'));
+//				$this->redirect(array('bolsa/pagosAdmin'));
 			}
 			else
 			if(isset($_POST['Direccion'])) // nuevo registro

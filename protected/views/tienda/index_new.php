@@ -170,9 +170,9 @@
 					<ul class="dropdown-menu" >
 						<?php
 						if(isset(Yii::app()->session['100chic']))
-								echo CHtml::hiddenField('100hid',1);
+								echo CHtml::hiddenField('chic_hid','1');
 							else {
-								echo CHtml::hiddenField('100hid',0);
+								echo CHtml::hiddenField('chic_hid','0');
 							}
 						foreach($marcas as $marca){
 								if($marca->is_100chic){
@@ -260,7 +260,8 @@
             	$('#marcahid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
-            	$('#text_search').val('');  
+            	$('#text_search').val(''); 
+            	
             	refresh();
             
 
@@ -270,6 +271,7 @@
             	
             	          	
             	$('#marcahid').val($(this).attr('value'));
+            	$('#chic_hid').val('1');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val('');  
@@ -294,7 +296,7 @@
 		});  
 		
 		$("#100chic").click(function() { 
-				$('#100hid').val('1');
+				$('#chic_hid').val('1');
 				refresh();
 			});
 		
@@ -446,9 +448,9 @@ function refresh(reset)
 
  $("#catalogo").infinitescroll("destroy");
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid','#100hid').serialize();
+    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid ,#chic_hid').serialize();
   
- 	
+
 
     if(reset){
         datosRefresh += '&reset=true';
@@ -472,16 +474,18 @@ function refresh(reset)
             }',
             'complete' => 'function(){
                         $("body").removeClass("aplicacion-cargando");
+						
                         
                     }',
             'success'=>"function(data)
             {
-                           
+           
                 if (data.status == 'failure')
                 {
                     $('#dialogColor div.divForForm').html(data.div);
                           // Here is the trick: on submit-> once again this function!
                     $('#dialogColor div.divForForm form').submit(addColor);
+                    
 
                 }
                 else

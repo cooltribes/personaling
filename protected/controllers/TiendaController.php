@@ -245,14 +245,14 @@ class TiendaController extends Controller
 						}
 					}
 				}
-				if (isset($_POST['100hid'])){
-					if($_POST['100hid']==1){
+				if (isset($_POST['chic_hid'])){
+					if($_POST['chic_hid']==1){
 					
-						Yii::app()->session['100chic'] = $_POST['100hid'];
+						Yii::app()->session['chic'] = $_POST['chic_hid'];
 		 			}
 					else{
-						if(isset(Yii::app()->session['100chic'])){
-							unset(Yii::app()->session['100chic']);
+						if(isset(Yii::app()->session['chic'])){
+							unset(Yii::app()->session['chic']);
 						}
 					}
 				}
@@ -295,8 +295,8 @@ class TiendaController extends Controller
 						
 					}
 					
-					if(isset(Yii::app()->session['100chic'])){
-						unset(Yii::app()->session['100chic']);
+					if(isset(Yii::app()->session['chic'])){
+						unset(Yii::app()->session['chic']);
 						
 					}
 					
@@ -393,8 +393,8 @@ class TiendaController extends Controller
 			
 		}
 		
-		if(isset(Yii::app()->session['100chic'])){
-			unset(Yii::app()->session['100chic']);
+		if(isset(Yii::app()->session['chic'])){
+			unset(Yii::app()->session['chic']);
 			
 		}
 		if(isset(Yii::app()->session['f_cat'])){

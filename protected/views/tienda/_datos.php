@@ -102,7 +102,7 @@ $b='';
 					$b = '';
 					$style='';
 					if($data->mymarca->is_100chic){
-						$style=" style='border:3px solid #F0F; background-color:#0FF' ";
+						$style=" style='outline:3px solid #F0F; background-color:#0FF' ";
 					}
 					if(isset($segunda))
 					{	$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));

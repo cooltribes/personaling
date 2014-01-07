@@ -121,6 +121,7 @@ class Producto extends CActiveRecord
                 ),
             'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
              'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),  
+             'myclasificaciones' => array(self::HAS_MANY,'ClasificacionMarca','marca_id'),  
              'mycolor' => array(self::MANY_MANY, 'Color', 'tbl_precioTallaColor(color_id, producto_id)'),                  
             'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
 		);
@@ -696,8 +697,11 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 		$criteria->with = array('preciotallacolor','precios','categorias', 'mymarca','mycolor');
-		//$criteria->join ='JOIN tbl_imagen ON tbl_imagen.tbl_producto_id = t.id';
-		
+		if(isset(Yii::app()->session['chic'])){
+			$criteria->join ='JOIN tbl_clasificacion_marca ON tbl_clasificacion_marca.marca_id = t.marca_id';
+			$criteria->addCondition(' tbl_clasificacion_marca.clasificacion = 1 ');
+			
+		}
 		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
 		{
 			if(empty($todos)) // si no tiene hijos devuelve un array vacio por lo que debe buscar por el id de la categoria
@@ -714,14 +718,18 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				
 		}
 		
+		
 		//Filtro por color
 		if(isset(Yii::app()->session['f_color'])){
 			$criteria->addCondition('preciotallacolor.color_id = '.Yii::app()->session['f_color']);
 		}
+	
+					
+		
 		
 		//Filtro por marca
 		if(isset(Yii::app()->session['f_marca'])){
-			$criteria->addCondition('marca_id = '.Yii::app()->session['f_marca']);
+			$criteria->addCondition('t.marca_id = '.Yii::app()->session['f_marca']);
 		}
 		
 		//Filtro por categoria
@@ -732,17 +740,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				$criteria->addCondition('categorias.padreId = '.Yii::app()->session['f_padre']);
 			}
 		}
-		/*if(isset(Yii::app()->session['100chic'])){
 		
-		$chic= 'clasificaciones.clasificacion = 1';
-		$criteria->addCondition($chic);		
 		
-	}
-		else{
-			$chic= 'clasificaciones.clasificacion = 1';
-			$criteria->addCondition($chic);		
-		}
-		*/
 		//------------------ BUSQUEDA POR TEXTO (marca, categoria, color, nombre de la prenda) ----------------
 		$text="";
 		if(isset(Yii::app()->session['f_text'])){

@@ -3,7 +3,9 @@
 	'Tienda',
 	);
 ?>
-
+<div>
+	<img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Titina Penzini">
+</div>
 <!-- BAR ON -->
 <section class="bard_tienda">
 

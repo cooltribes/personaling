@@ -10,7 +10,7 @@
 			else
 				$im= "<td align='center'>".CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
 	echo $im;
-	echo "<td>".$data['Nombre']."</td>";
+	echo "<td>".$data['Nombre']."<br/>SKU: ".$data['SKU']."</td>";
 	echo "<td>".$data['Marca']."</td>";
 	echo "<td>".$data['Color']."</td>";
 	echo "<td>".$data['Talla']."</td>";

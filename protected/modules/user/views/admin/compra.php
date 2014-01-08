@@ -22,7 +22,7 @@
    
     <form class="no_margin_bottom form-search">
     <div class="span4">
-    	<input type="text" name="query" id="query" class="span3">
+    	<input type="text" name="query" id="query" class="span3" placeholder="SKU, nombre, marca o referencia">
    		<a class="btn" id="btn_search_event">Buscar</a>
    	</div>
 	</form>

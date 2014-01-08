@@ -3,8 +3,13 @@
 	'Tienda',
 	);
 ?>
-<div>
-	<img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Titina Penzini">
+<div id="banner100chic" style=" display:none; " class="margin_top ">
+	<div class="margin_bottom">
+		<img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Titina Penzini">
+	</div>
+	<div class="">
+		<a href="#" ><span class="entypo">&larr; </span>Regresar a la tienda</a>
+	</div>
 </div>
 <!-- BAR ON -->
 <section class="bard_tienda">
@@ -275,6 +280,8 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val('');  
+
+            	$('#banner100chic').fadeIn(3000);
             	refresh();
             
 
@@ -297,6 +304,7 @@
 		
 		$("#100chic").click(function() { 
 				$('#chic_hid').val('1');
+				$('#banner100chic').fadeIn(3000);
 				refresh();
 			});
 		

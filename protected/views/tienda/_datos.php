@@ -102,12 +102,12 @@ $b='';
 					$b = '';
 					$style='';
 					if($data->mymarca->is_100chic){
-						$style=" style='outline:3px solid #F0F; background-color:#0FF' ";
+						$style="<div class='is_100chic'> </div> ";
 					}
 					if(isset($segunda))
 					{	$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
 					}
-					echo("<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' ".$style." id='prod".$data->id."'>
+					echo("<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'>".$style."
 					<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 					".$a.$b." 
 						

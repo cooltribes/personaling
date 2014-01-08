@@ -8,7 +8,7 @@
 		<img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Titina Penzini">
 	</div>
 	<div class="">
-		<a href="#" ><span class="entypo">&larr; </span>Regresar a la tienda</a>
+		<a href="#" onclick="unchic()" ><span class="entypo">&larr; </span>Regresar a la tienda</a>
 	</div>
 </div>
 <!-- BAR ON -->
@@ -162,7 +162,7 @@
 					</ul>  	
 				</div>	
 			</li>
-			<li class="item">
+			<li class="item" id="li_chic">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropdown100Chic" >
@@ -179,13 +179,18 @@
 							else {
 								echo CHtml::hiddenField('chic_hid','0');
 							}
+						$chics=0;
 						foreach($marcas as $marca){
 								if($marca->is_100chic){
 									
 										echo'<li><a class="100chic" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
+										$chics++;
 								}
 								
-							}	
+							}
+						if($chics<1){
+							echo "<script>$('#li_chic').hide();</script>";
+						}
 						?>
 					</ul>  
 				</div>			
@@ -259,9 +264,9 @@
             		titulo=titulo.substring(0,10);
             		titulo=titulo+'...';
             	}
-            	$('#chic_hid').val('0');
             	$('#marca_titulo').html(titulo);
-            	
+            	$('#chic_hid').val('0');
+				$('#banner100chic').fadeOut(3000);
             	$('#marcahid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
@@ -296,7 +301,7 @@
             	if($('#colorhid').val()==0)
             		$('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
             	else
-            		$('#color_titulo').html($(this).html());
+            	  $('#color_titulo').html($(this).html());
             	$('#text_search').val(''); 
             	refresh();
 
@@ -307,6 +312,12 @@
 				$('#banner100chic').fadeIn(3000);
 				refresh();
 			});
+			
+		function unchic(){
+				$('#chic_hid').val('0');
+				$('#banner100chic').fadeOut(3000);
+				refresh();
+		}		
 		
 		$(".hijo").click(function() { 
             	

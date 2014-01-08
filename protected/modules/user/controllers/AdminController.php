@@ -912,20 +912,22 @@ if(isset($_POST['Profile']))
 			  	
 	            if (isset($_POST['query']))
 	            {
-	                $q=" AND p.nombre LIKE '%".$_POST['query']."%' ".$q;		
+	                $q=" AND (p.nombre LIKE '%".trim($_POST['query'])."%' OR ptc.sku LIKE '%".trim($_POST['query'])."%'
+	                 OR m.nombre LIKE '%".trim($_POST['query'])."%' OR p.codigo LIKE '%".trim($_POST['query'])."%' )".$q;		
 				      	
 	            }
 				
 				Yii::app()->session['usercompra']=$id;
 	 
-	          	$sql='select p.marca_id as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad  
-					from tbl_precioTallaColor ptc, tbl_producto p 
+	          	$sql='select m.nombre as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad, p.codigo, ptc.sku as SKU 
+					from tbl_precioTallaColor ptc, tbl_producto p JOIN tbl_marca m ON m.id=p.marca_id
 					where ptc.cantidad >0 and p.estado=0 and p.`status`=1 and ptc.producto_id = p.id '.$q;
+			
 				$rawData=Yii::app()->db->createCommand($sql)->queryAll();
 				
 				$data=array();
 				foreach($rawData as $row){
-					$row['Marca']=Marca::model()->getMarca($row['Marca']);
+					//$row['Marca']=Marca::model()->getMarca($row['Marca']);
 					$row['Talla']=Talla::model()->getTalla($row['Talla']);
 					$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
 					$row['color_id']=$row['Color'];

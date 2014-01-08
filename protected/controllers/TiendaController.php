@@ -251,9 +251,9 @@ class TiendaController extends Controller
 						Yii::app()->session['chic'] = $_POST['chic_hid'];
 		 			}
 					else{
-						if(isset(Yii::app()->session['chic'])){
+						
 							unset(Yii::app()->session['chic']);
-						}
+						
 					}
 				}
 				
@@ -262,6 +262,7 @@ class TiendaController extends Controller
 					if($_POST['marcahid']!=0){
 					
 						Yii::app()->session['f_marca'] = $_POST['marcahid'];
+						
 					
 					}
 					else{

@@ -252,7 +252,7 @@
             		titulo=titulo.substring(0,10);
             		titulo=titulo+'...';
             	}
-            	
+            	$('#chic_hid').val('0');
             	$('#marca_titulo').html(titulo);
             	
             	$('#marcahid').val($(this).attr('value'));

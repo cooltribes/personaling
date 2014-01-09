@@ -98,6 +98,12 @@ class MarcaController extends Controller
 						$cmarca->marca_id=$marca->id;
 						$cmarca->save();
 				}
+				else {
+					if($marca->is_100chic){
+							$cmarca=ClasificacionMarca::model()->findByPk(array('marca_id'=>$marca->id,'clasificacion'=>1));
+							$cmarca->delete();			
+						}
+				}
 		        
 		        $nombre = Yii::getPathOfAlias('webroot').'/images/marca/'.$marca->id;
 		        $extension_ori = ".jpg";
@@ -136,6 +142,12 @@ class MarcaController extends Controller
 							$cmarca->save();				
 						}
 					}
+				else {
+					if($marca->is_100chic){
+							$cmarca=ClasificacionMarca::model()->findByPk(array('marca_id'=>$marca->id,'clasificacion'=>1));
+							$cmarca->delete();			
+						}
+				}
 		        	Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
 					
 					

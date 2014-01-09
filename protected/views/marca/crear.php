@@ -72,8 +72,10 @@ $this->breadcrumbs=array(
                         	
                             <div class="controls">
 	                            <?php
-	                            
-					            	echo "<input type='checkbox' name='chic' id='chic'>100% Chic";
+	                            $checked="";
+	                            if($marca->is_100chic)
+									$checked=' checked';
+					            	echo "<input type='checkbox' name='chic' id='chic'".$checked.">100% Chic";
 							
 									?>
                             </div>

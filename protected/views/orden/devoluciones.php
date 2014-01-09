@@ -61,7 +61,7 @@ $this->breadcrumbs=array(
 
                                         echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
                                         echo("<td colspan='5'><strong>".$lookpedido->title."</strong></td>");// Referencia
-                                        echo("<td colspan='2'> Bs. ".number_format($prod->precio, 2, ',', '.')."</td>"); // precio 
+                                        echo("<td colspan='2'><strong>Total:</strong> Bs. ".number_format($prod->precio, 2, ',', '.')."</td>"); // precio 
 
                                 echo("</tr>");	
 
@@ -109,7 +109,7 @@ $this->breadcrumbs=array(
 
                                         echo('
                                                 <td class="span3">
-                                                        <select id="motivo-'.$ptclk->sku.'" class="input-medium">
+                                                        <select disabled="true" id="motivo-'.$ptclk->sku.'" class="input-medium">
                                                           <option>-- Seleccione --</option>
                                                           <option>Cambio de talla</option>
                                                           <option>Cambio por otro articulo</option>
@@ -145,29 +145,29 @@ $this->breadcrumbs=array(
                         if($op->devolucion_id != 0)	
                         {
                                 echo("<tr class='error>'");
-                                echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$prodlook->precio."' />");
+                                echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$prod->precio."' />");
                                 echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
                                 echo("<td>".$ptc->sku."</td>"); // nombre
                                 echo("<td>".$indiv->nombre."</td>"); // nombre
                                 echo("<td>".$color->valor."</td>");
                                 echo("<td>".$talla->valor."</td>");
-                                echo("<td> Bs. ".number_format($prodlook->precio, 2, ',', '.')."</td>");
+                                echo("<td> Bs. ".number_format($prod->precio, 2, ',', '.')."</td>");
                                 echo('<td>Ya se devolvió</td>');
                                 echo("</tr>");
                         }
                         else
                         {
                                 echo("<tr>");
-                                echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$prodlook->precio."' />");
+                                echo("<input id='precio-".$ptc->sku."' type='hidden' value='".$prod->precio."' />");
                                 echo("<td><input class='check' id='".$ptc->sku."' type='checkbox' value=''></td>");
                                 echo("<td>".$ptc->sku."</td>");// Referencia
                                 echo("<td>".$indiv->nombre."</td>"); // nombre
                                 echo("<td>".$color->valor."</td>");
                                 echo("<td>".$talla->valor."</td>");					
-                                echo("<td> Bs. ".number_format($prodlook->precio, 2, ',', '.')."</td>");					
+                                echo("<td> Bs. ".number_format($prod->precio, 2, ',', '.')."</td>");					
                                 echo('
                                         <td class="span3">
-                                                <select id="motivo-'.$ptc->sku.'" class="input-medium">
+                                                <select disabled="true" id="motivo-'.$ptc->sku.'" class="input-medium">
                                                   <option>-- Seleccione --</option>
                                                   <option>Cambio de talla</option>
                                                   <option>Cambio por otro articulo</option>
@@ -238,15 +238,25 @@ function actualizarMonto(precio){
 //            console.log($('#precio-'+id).val());
                 
             actualizarMonto(parseFloat($('#precio-'+id).val()));			
+            $(".input-medium#motivo-"+id).prop('disabled', false);
 
         }
         else
         {// restar
             var id = $(this).attr('id');            
-            actualizarMonto(-parseFloat($('#precio-'+id).val()));			
+            		
             //monto = parseFloat(monto) - parseFloat($('#precio-'+id).attr('value'));            		
-            $(".input-medium").prop('selectedIndex',0);		
+            $(".input-medium#motivo-"+id).prop('selectedIndex',0);            
+            $(".input-medium#motivo-"+id).change();
+            $(".input-medium#motivo-"+id).prop('disabled', true);            
+            
+            actualizarMonto(-parseFloat($('#precio-'+id).val()));	
+            
         }
+       
+       
+       
+       
 
     });
 	
@@ -259,11 +269,12 @@ function actualizarMonto(precio){
                     return this.id;
             }).get().join();
 
-            if( motivos.indexOf("Devolución por prenda dañada") != -1 || motivos.indexOf("Devolución por pedido equivocado") != -1 )
+            if( motivos.indexOf("Devolución por prenda dañada") != -1 
+                    || motivos.indexOf("Devolución por pedido equivocado") != -1 )
             {
 
                 var id = $('#orden_id').attr('value');
-                var monto = $('#monto').attr('value');
+                //var monto = $('#monto').attr('value');
 
                 $.ajax({
                 type: "post", 
@@ -271,9 +282,9 @@ function actualizarMonto(precio){
                 data: { 'orden':id, 'check':checkValues, 'motivos':motivos}, 
                 success: function (data) {
                     
-                    montoEnvio = data;
+                    montoEnvio = parseFloat(data);
                     
-                    
+                    $('#montoenvio').val(montoEnvio);                    
 
                 }//success
                 });	
@@ -281,11 +292,12 @@ function actualizarMonto(precio){
                 //Otros motivos
             }else{
             
-                montoEnvio = 0.00;               
+                montoEnvio = 0.00;   
                 
+                $('#montoenvio').val(montoEnvio);
             }
             
-            $('#montoenvio').val(montoEnvio);
+            
             
             
 	});
@@ -300,8 +312,10 @@ function actualizarMonto(precio){
 			return this.id;
 		}).get().join();
 		
-		if(checkValues=="" || motivos.indexOf("-- Seleccione --") != -1)
-			alert("Prenda no seleccionada o Motivo de devolución no seleccionado para la prenda.");			
+		if(checkValues==""){                    
+                    alert("Debe seleccionar al menos prenda.");
+                }else if(motivos.indexOf("-- Seleccione --") != -1)
+                    alert("Debe indicar un motivo de devolución para las prendas seleccionadas.");			
 		else
 		{
 			

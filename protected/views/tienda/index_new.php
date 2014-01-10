@@ -278,8 +278,7 @@
 		});
 		
 		$(".100chic").click(function() { 
-            	
-            	          	
+            	            	          	
             	$('#marcahid').val($(this).attr('value'));
             	$('#chic_hid').val('1');
             	//$('#catalogo').remove();
@@ -288,9 +287,7 @@
 
             	$('#banner100chic').fadeIn(3000);
             	refresh();
-            
-
-		});  
+        });  
 		
 		$(".scolor").click(function() { 
             	

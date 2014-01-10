@@ -157,8 +157,15 @@ class Marca extends CActiveRecord
 		
 	}
 	
-	public function getIs_100chic(){
-		if(!is_null($this->myclasificaciones)){
+	
+	public function getIs_100chic($id = null){
+		if(is_null($id)){
+			$marca=$this;
+		}
+		else{
+			$marca=$this->findByPk($id);
+		}
+		if(!is_null($marca->myclasificaciones)){
 			if(in_array(1,$this->myclasificaciones)){
 					return true;						
 			}

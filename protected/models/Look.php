@@ -927,4 +927,15 @@ class Look extends CActiveRecord
 	   return parent::beforeSave();
 	}
 	
+	public function getHas_100chic(){
+		if(is_array($this->productos))
+		{		
+			foreach($this->productos as  $producto){
+				if($producto->mymarca->is_100chic)
+					return true;
+			}
+		}
+		return false;
+	}
+	
 }

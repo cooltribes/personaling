@@ -7,10 +7,16 @@
 
   <div class="row" id="looks">
   	
-	<?php foreach($looks as $look): ?>
+	<?php foreach($looks as $look): 
+
+		?>
+		
 		<?php  //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span4 look">
       <article > 
+      	<?php if($look->has_100chic){ ?>
+			<div class="has_100chic"></div>
+      	<?php }?>
       	<?php if ($pages->currentPage > 0){ ?>
       	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
       	<?php }else{ ?>
@@ -61,7 +67,11 @@
           	</div>
           <div class="span5"> <span class="muted">Look creado por: </span>
             <h5>
-			<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
+			<?php 
+			
+		
+			
+			echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
 			</h5>
           </div>
           <div class="span5"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>

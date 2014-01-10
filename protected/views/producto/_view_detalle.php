@@ -391,7 +391,7 @@
         <?php
         }
         ?>
-        <small id="total-likes">
+        <small id="total-likes" class="hidden-tablet hidden-phone">
         <?php 
               // total de likes 
                     $cuantos = UserEncantan::model()->countByAttributes(array('producto_id'=>$producto->id));   

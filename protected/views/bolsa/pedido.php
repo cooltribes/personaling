@@ -2,7 +2,7 @@
 $nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
 if (!Yii::app()->user->isGuest) { // que este logueado
 
-$user = User::model()->findByPk(Yii::app()->user->id);
+$user = User::model()->findByPk($user);
 //$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 $tipo_pago = $orden->getTipoPago();
 //echo $orden->pago_id;
@@ -19,8 +19,16 @@ $tipo_pago = $orden->getTipoPago();
 	  	if($tipo_pago == 1 || $tipo_pago == 3){
 	      ?>
     <div class="alert alert-success margin_top_medium margin_bottom">
-      <h1>Tu Pedido ha sido recibido con éxito.</h1>
-      <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php if($admin){ ?>
+                  <h1>El pedido para <b><?php echo $user->profile->first_name ; ?> </b>se ha realizado con éxito.</h1>
+                  <?php }else{ ?>
+                      <h1>Tu Pedido ha sido recibido con éxito.</h1>                  
+                  <?php } ?>
+      <?php if($admin){ ?>      
+          <p> Se han enviado las instrucciones y el resumen al correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php }else{ ?>
+          <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php } ?>
     </div>
     <section class="bg_color3 margin_bottom_small padding_small box_1">
       <h2>Siguiente paso</h2>
@@ -50,8 +58,16 @@ $tipo_pago = $orden->getTipoPago();
       	}else if($tipo_pago == 4){
       		?>
     <div class="alert alert-success margin_top_medium margin_bottom">
-      <h1>Tu Pedido ha sido recibido con éxito.</h1>
-      <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php if($admin){ ?>
+                  <h1>El pedido para <b><?php echo $user->profile->first_name ; ?> </b>se ha realizado con éxito.</h1>
+                  <?php }else{ ?>
+                      <h1>Tu Pedido ha sido recibido con éxito.</h1>                  
+                  <?php } ?>
+     <?php if($admin){ ?>      
+          <p> Se han enviado las instrucciones y el resumen al correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php }else{ ?>
+          <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php } ?>
     </div>
     <section class="bg_color3 margin_bottom_small padding_small box_1">
     <h2>Siguiente paso</h2>
@@ -90,17 +106,24 @@ $tipo_pago = $orden->getTipoPago();
 	  
 	  if($orden->estado==3) // Listo el pago
 	  {
-	  	echo "
+              ?>
 	  	
-	  	<div class='alert alert-success margin_top_medium margin_bottom'>
-	      <h1>Tu Pedido ha sido recibido con éxito.</h1>
-	     	<p>Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de credito.<br/>
-	     	Tu pedido será enviado en las próximas horas.</p>
-	    </div>
+	  	
+              <div class='alert alert-success margin_top_medium margin_bottom'>
+                  <?php if($admin){ ?>
+                  <h1>El pedido para <b><?php echo $user->profile->first_name ; ?> </b>se ha realizado con éxito.</h1>
+                  <?php }else{ ?>
+                      <h1>Tu Pedido ha sido recibido con éxito.</h1>                  
+                  <?php } ?>
+                      
+                  <p>Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito.<br/>
+                      Tu pedido será enviado en las próximas horas.</p>
+              </div>
 
-	  	";
+	  	
 		
-	  }
+	 <?php 
+                }
       
       ?>
         <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
@@ -133,7 +156,11 @@ $tipo_pago = $orden->getTipoPago();
             </tr>
           </table>
           <hr/>
-          <p>Hemos enviado un resumen de la compra a tu correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
+          <?php if($admin){ ?>                    
+              <p>Hemos enviado un resumen de la compra al correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
+          <?php }else{ ?>              
+              <p>Hemos enviado un resumen de la compra a tu correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
+          <?php } ?>
           <?php
         
         $s1 = "select count( * ) as total from tbl_orden_has_productotallacolor where look_id != 0 and tbl_orden_id = ".$orden->id."";

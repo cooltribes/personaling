@@ -1047,12 +1047,7 @@ class BolsaController extends Controller
                         /*ID del usuario propietario de la bolsa*/
                         $usuario = $admin ? $_POST["user"] : Yii::app()->user->id;
 		 	
-                        if(isset($_POST)){
-                            echo "<pre>";
-                            print_r($_POST);
-                            echo "</pre>";
-                            Yii::app()->end();
-                        }
+                        
                         
 			$user = User::model()->findByPk($usuario);
 			$bolsa = Bolsa::model()->findByAttributes(array(

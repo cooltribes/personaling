@@ -60,7 +60,7 @@ class Bolsa extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_id'),
 			'lookHasTblBolsas1' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_user_id'),
 			'ordens' => array(self::HAS_MANY, 'Orden', 'tbl_bolsa_id'),
@@ -196,8 +196,7 @@ class Bolsa extends CActiveRecord
 				if ($look_id != 0)
 					$pn->look_id = $look_id;	
 				if($pn->save())
-				{// en bolsa tengo id de usuario e id de bolsa
-				
+				{// en bolsa tengo id de usuario e id de bolsa				
 					return "ok";
 				}
 					

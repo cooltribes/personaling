@@ -1506,15 +1506,23 @@ public function actionValidar()
 			
 			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
 			$cont = 0; 
-			
+//			echo count($checks);
+//                        Yii::app()->end();
 			$totalenvio = 0;
 			
+//                        foreach($checks as $uno)
+//			{echo $uno."<br>";
+//                            
+//                        }
+//                        Yii::app()->end();
 			foreach($checks as $uno)
 			{
 				$orden = Orden::model()->findByPk($_POST['orden']);
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno)); 
 				
-				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
+                                if($ptcolor)
+				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" 
+                                        || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
 				{
 					// calculo envio
 					
@@ -1555,6 +1563,7 @@ public function actionValidar()
 			} // foreach
 			
 		echo $totalenvio;						
+//		echo Yii::app()->numberFormatter->formatCurrency($totalenvio, '');
 
 		}	
 

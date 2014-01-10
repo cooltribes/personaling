@@ -5,10 +5,9 @@ $this->breadcrumbs=array(
 );
 if (!Yii::app()->user->isGuest) { // que este logueado
 
-$usuario = Yii::app()->user->id;
+//$usuario = Yii::app()->user->id;
 
 //$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
-
 
 $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
 $num = Yii::app()->db->createCommand($sql)->queryScalar();
@@ -29,8 +28,14 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
    
     	
       <div class="row">
-        <article class="span7">
-          <h1>Tu bolsa</h1>
+        <article class="span7">            
+          <h1>
+          <?php echo $bolsa->admin ? "Bolsa de <strong>{$bolsa->user->profile->first_name}
+                        {$bolsa->user->profile->last_name}</strong>"
+                      : "Tu Bolsa";  ?>
+          </h1>
+          
+          
           <!-- FLASH ON --> 
             <?php $this->widget('bootstrap.widgets.TbAlert', array(
                     'block'=>true, // display a larger alert block?
@@ -232,9 +237,21 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 			}// if de productos individuales
 			else
 			{ 
+                             $mensaje = $bolsa->admin ? "La bolsa está vacía."
+                              : "¿Qué esperas? Looks y prendas increíbles esperan por ti.";   
 			 
-			 echo "<h4 class='braker_bottom margin_top'>¿Qué esperas? Looks y prendas increíbles esperan por ti.</h4>";
-				
+                         echo "<h4 class='braker_bottom margin_top'>{$mensaje}</h4>";
+                         
+                         if($bolsa->admin){
+                             
+                             echo CHtml::link('<i class="icon-shopping-cart icon-white"> 
+                             </i>  Registrar Orden',array("/user/admin/compra", "id"=>$bolsa->user->id),
+                                 array(
+                                     "class" => "btn btn-danger"
+                                 ));
+                             
+                         }
+			 	
 			}
 			
 		?>
@@ -384,11 +401,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                     </table>
                     
                     <?php
-                   $this->widget('bootstrap.widgets.TbButton', array(
+                       /*Si es una compra del admin para el usuario*/
+                       $params = $bolsa->admin ? array("admin" => 1, "user" => $bolsa->user->id) : array();                    
+                       $this->widget('bootstrap.widgets.TbButton', array(
 				    'label'=>'Completar compra',
 				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				    'size'=>'normal', // null, 'large', 'small' or 'mini'
-				    'url'=> $this->createAbsoluteUrl('bolsa/compra',array(),'https'), // action ir 
+				    'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
 				    'icon'=>'lock white',
 				)); 
 				 

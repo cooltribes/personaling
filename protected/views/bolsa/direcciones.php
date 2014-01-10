@@ -1,7 +1,10 @@
 <?php
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 if (!Yii::app()->user->isGuest) { // que este logueado
-
+    $userObject = User::model()->findByPk($user);
+    
+    $nombre = $userObject ? $userObject->profile->first_name." ".$userObject->profile->last_name:
+                "";
 ?>
 
 <div class="container margin_top">
@@ -18,14 +21,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <div class="row">
     <div class="span8 offset2"> 
      
-      <h1>Dirección de envío</h1>
+      <h1>Dirección de envío
+          <br>
+          <?php echo "(Usuario: <b>{$nombre}</b>)"; ?>
+      </h1>
       <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:</p>
       <?php 
       
-     	$usuario = Yii::app()->user->id; 
+//     	$usuario = Yii::app()->user->id; 
+     	$usuario = $user; 
+        $direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
       
-	  	$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
-	  ?>
+      ?>
 	  <?php if( count( $direcciones ) > 0 ){ ?>
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <fieldset>
@@ -49,6 +56,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
 		            echo CHtml::hiddenField('tipo','direccionVieja');
+		            echo CHtml::hiddenField('admin',$admin);
+		            echo CHtml::hiddenField('user',$user);
 					
 		            echo "
 		            <div class='row'>
@@ -232,6 +241,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 </div>
 <!-- /container -->
 
+<?php 
+    /*Campos para compra desde admin*/
+    echo CHtml::hiddenField('admin',$admin);
+    echo CHtml::hiddenField('user',$user);
+
+?>
 <?php $this->endWidget(); ?>
 
 <?php 

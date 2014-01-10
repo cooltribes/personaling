@@ -884,18 +884,58 @@ if(isset($_POST['Profile']))
 	
 	public function actionCompra($id)
 	{
-				if(isset($_POST['ptcs'])&&$_POST['ptcs']!='nothing')
-			{
-								
-				
-				Yii::app()->session['ptcs']=$_POST['ptcs'];
-				Yii::app()->session['vals']=$_POST['vals'];
-                                
-//				$this->redirect(array('admin/compradir'));
-				$this->redirect($this->createAbsoluteUrl('admin/compradir',array(),'https'));
-                                
-				
-			}
+            if(isset($_POST['ptcs']))
+            {
+                if($_POST['ptcs']!='nothing'){ //Selecciono productos
+                    
+                    Yii::app()->session['ptcs']=$_POST['ptcs'];
+                    Yii::app()->session['vals']=$_POST['vals'];                
+
+                    $bolsa = Bolsa::model()->findByAttributes(array(
+                        'user_id'=>$id,
+                        'admin'=> 1,
+                            ));
+
+                    if(!isset($bolsa)) // si no tiene aun un carrito asociado 
+                    {
+                        $bolsa = new Bolsa;
+                        $bolsa->user_id = $id;
+                        $bolsa->admin = 1;
+                        $bolsa->created_on = date("Y-m-d H:i:s");
+                        $bolsa->save();
+                    }                
+
+                    /*id de preciotallacolor y su respectiva cantidad*/
+                    $productos = explode(',',$_POST['ptcs']);
+                    $cantidades = explode(',',$_POST['vals']);
+
+                    for($i=0; $i < count($productos); $i++){
+
+                        $idPrecioTallaColor = $productos[$i];
+                        $cantidad = $cantidades[$i];
+
+                        $precioTallaColor = Preciotallacolor::model()->findByPk($idPrecioTallaColor);
+
+                        $idProducto = $precioTallaColor->producto_id;
+                        $idTalla = $precioTallaColor->talla_id;
+                        $idColor = $precioTallaColor->color_id;
+
+                        //Agregarlo a la bolsa tantas veces como indique la cantidad
+                        for($j=0; $j < $cantidad; $j++){
+
+                            $bolsa->addProducto($idProducto, $idTalla, $idColor);	
+
+                        }                    
+                    }
+                }
+//                $this->redirect(array('admin/compradir'));
+//                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'https'));
+                $this->redirect($this->createAbsoluteUrl('/bolsa/index',array(
+                    "admin" => 1,
+                    "user" => $id,
+                    )));
+
+              }
 
 			
 			if(isset(Yii::app()->session['ptcs'])){

@@ -301,6 +301,8 @@ class BolsaController extends Controller
                     
                     $tarjeta = new TarjetaCredito;                        
 
+                     
+                    
                     if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
                             if(isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
                             {
@@ -310,6 +312,7 @@ class BolsaController extends Controller
                     }
 
                     if(isset($_POST['tipo_pago'])){
+                       
                             Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
 
                             if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
@@ -320,7 +323,7 @@ class BolsaController extends Controller
 
                             if($_POST['tipo_pago']==2){ // pago de tarjeta de credito
 
-                                    $idUsuario = $usuario; 
+                                    $idUsuario = $_POST["user"]; 
 
                                     $tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
                                     $tarjeta->numero = $_POST['TarjetaCredito']['numero'];
@@ -344,7 +347,11 @@ class BolsaController extends Controller
 
                                             Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
                                             //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
-                                            $this->redirect(array('bolsa/confirmar'));
+//                                            $this->redirect(array('bolsa/confirmar'));
+                                            $this->redirect($this->createUrl('bolsa/confirmar', array(
+                                                "admin" => $_POST["admin"],
+                                                "user" => $_POST["user"],
+                                                )));
                                     }
                                     else
                                             //var_dump($tarjeta->getErrors());
@@ -353,7 +360,11 @@ class BolsaController extends Controller
                             }
                             else {
                                     //$this->render('confirmar');
-                                    $this->redirect(array('bolsa/confirmar'));
+//                                    $this->redirect(array('bolsa/confirmar'));
+                                     $this->redirect($this->createUrl('bolsa/confirmar', array(
+                                                "admin" => $_POST["admin"],
+                                                "user" => $_POST["user"],
+                                                )));
                             }
 
                     }
@@ -545,17 +556,36 @@ class BolsaController extends Controller
 		
 		public function actionConfirmar()
 		{
-			
-                    $metric = new ShoppingMetric();
-                    $metric->user_id = Yii::app()->user->id;
-                    $metric->step = ShoppingMetric::STEP_CONFIRMAR;
-                    $metric->save();
+                    /*Si es compra de admin para usuario*/
+                    $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
 
-                    $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+                    /*ID del usuario propietario de la bolsa*/
+                    $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
+			
+                    
+                    if(!$admin){
+                        
+                        $metric = new ShoppingMetric();
+                        $metric->user_id = Yii::app()->user->id;
+                        $metric->step = ShoppingMetric::STEP_CONFIRMAR;
+                        $metric->save();
+                    }
+
+                    $bolsa = Bolsa::model()->findByAttributes(array(
+                            'user_id' => $usuario,
+                            /* Si es la bolsa del admin para el usuario
+                             * o la bolsa normal
+                             */
+                            'admin' => $admin, 
+                            ));
+                    
                     $this->render('confirmar',array(
                         'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
                         'bolsa' =>  $bolsa,
+                        'admin'=> $admin,
+                        'user'=> $usuario,
                             ));
+                    
 		}
 		
 		public function actionEliminardireccion()
@@ -672,7 +702,7 @@ class BolsaController extends Controller
                                     $dir->pais = "Estados Unidos"; 
 
 //				$dir->user_id = Yii::app()->user->id;
-                            $dir->user_id = $usuario;
+                            $dir->user_id = $_POST["user"];
 
                             if($dir->save())
                             {
@@ -1010,11 +1040,28 @@ class BolsaController extends Controller
 			if ($codigo_randon == $_POST['codigo_randon'])
 				Yii::app()->end();
 			Yii::app()->getSession()->add('codigo_randon',$codigo_randon);	
+                        
+                         /*Si es compra de admin para usuario*/
+                        $admin = isset($_POST["admin"]) && $_POST["admin"] == 1;
+
+                        /*ID del usuario propietario de la bolsa*/
+                        $usuario = $admin ? $_POST["user"] : Yii::app()->user->id;
 		 	
-		 	$respCard = "";
-		 	$usuario = Yii::app()->user->id; 
+                        if(isset($_POST)){
+                            echo "<pre>";
+                            print_r($_POST);
+                            echo "</pre>";
+                            Yii::app()->end();
+                        }
+                        
 			$user = User::model()->findByPk($usuario);
-			$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+			$bolsa = Bolsa::model()->findByAttributes(array(
+                            'user_id' => $usuario,
+                            /* Si es la bolsa del admin para el usuario
+                             * o la bolsa normal
+                             */
+                            'admin' => $admin, 
+                            ));
 			if (!$bolsa->checkInventario())
 				$this->redirect($this->createAbsoluteUrl('bolsa/index',array('mensaje'=>"Hola"),'http'));
 			$tipoPago = Yii::app()->getSession()->get('tipoPago');		
@@ -1038,6 +1085,12 @@ class BolsaController extends Controller
 					$orden->peso = Yii::app()->getSession()->get('peso');
 					$total_orden = round(Yii::app()->getSession()->get('total'), 2);
 					$orden->total = $total_orden;
+                                        
+                                        /*Si es compra del admin para el usuario*/
+                                        if($admin){
+                                            $orden->admin_id = Yii::app()->user->id;
+                                        }
+                                        
 					if (!($orden->save())){
 						echo CJSON::encode(array(
 								'status'=> 'error',
@@ -1230,19 +1283,24 @@ class BolsaController extends Controller
 			if (!$factura->save())
 				Yii::trace('user id:'.Yii::app()->user->id.' Factura error:'.print_r($factura->getErrors(),true), 'registro');
 			// Enviar correo con resumen de la compra
-			$user = User::model()->findByPk($usuario);
+//			$user = User::model()->findByPk($usuario);
 			$message            = new YiiMailMessage;
-	        //this points to the file test.php inside the view path
-	        $message->view = "mail_compra";
-			$subject = 'Tu compra en Personaling';
-	        $params              = array('subject'=>$subject, 'orden'=>$orden);
-	        $message->subject    = $subject;
-	        $message->setBody($params, 'text/html');
-	        $message->addTo($user->email);
-			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
-	        Yii::app()->mail->send($message);		
-			$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));	
+                        //this points to the file test.php inside the view path
+                        $message->view = "mail_compra";
+                                $subject = 'Tu compra en Personaling';
+                        $params              = array('subject'=>$subject, 'orden'=>$orden);
+                        $message->subject    = $subject;
+                        $message->setBody($params, 'text/html');
+                        $message->addTo($user->email);
+                                $message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+                        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+                        Yii::app()->mail->send($message);	
+                        
+                        $this->redirect($this->createAbsoluteUrl('bolsa/pedido',array(
+                            'id'=>$orden->id,
+                            'admin' => $admin,
+                            'user' => $usuario,
+                                ),'http'));	
 		}
 		 
 	}
@@ -1594,14 +1652,25 @@ class BolsaController extends Controller
 	 * 
 	 * */
 	public function actionPedido($id)
-	{
-		$orden = Orden::model()->findByPk($id);
-		//$pago = Pago::model()->findByPk($orden->pago_id);
-				$metric = new ShoppingMetric();
-				$metric->user_id = Yii::app()->user->id;
-				$metric->step = ShoppingMetric::STEP_PEDIDO;
-				$metric->save();		
-		$this->render('pedido',array('orden'=>$orden));
+	{  
+            /*Si es compra de admin para usuario*/
+            $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
+            /*ID del usuario propietario de la bolsa*/
+            $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
+            
+            $orden = Orden::model()->findByPk($id);
+            //$pago = Pago::model()->findByPk($orden->pago_id);
+            if(!$admin){                
+                $metric = new ShoppingMetric();
+                $metric->user_id = Yii::app()->user->id;
+                $metric->step = ShoppingMetric::STEP_PEDIDO;
+                $metric->save();		
+            }
+            $this->render('pedido',array(
+                 'orden'=>$orden,
+                 'admin'=>$admin,
+                 'user'=>$usuario,
+                ));
 	}
 
 	/*

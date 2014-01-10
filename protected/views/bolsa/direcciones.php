@@ -23,7 +23,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
      
       <h1>Dirección de envío
           <br>
-          <?php echo "(Usuario: <b>{$nombre}</b>)"; ?>
+          <?php
+          if($admin){
+              echo "(Usuario: <b>{$nombre}</b>)"; 
+          }
+          ?>
       </h1>
       <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:</p>
       <?php 

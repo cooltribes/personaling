@@ -49,7 +49,19 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación del Pedido</h1>
+      <h1>Confirmación del Pedido
+          <br>
+          <?php 
+              $userObject = User::model()->findByPk($user);
+              $nombre = $userObject ? $userObject->profile->first_name." ".$userObject->profile->last_name:
+                        "";
+               if($admin){
+                  echo "(Usuario: <b>{$nombre}</b>)"; 
+               }
+
+          ?>
+      
+      </h1>
     </div>
   </div>
   <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
@@ -277,6 +289,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 			)); 
           	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
 			echo CHtml::hiddenField('codigo_randon',rand());
+                        echo CHtml::hiddenField('admin',$admin);
+		            echo CHtml::hiddenField('user',$user);
           	$this->widget('bootstrap.widgets.TbButton', array(
                     'type'=>'warning',
 //                    'buttonType'=>'submit',

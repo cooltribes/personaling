@@ -336,7 +336,7 @@ class TiendaController extends Controller
 			}
 			
 			$criteria = $producto->nueva2($a);
-			if (isset($_GET['page'])&&!isset(Yii::app()->session['f_text'])&&!isset(Yii::app()->session['f_color']))
+			if (isset($_GET['page'])&&!isset(Yii::app()->session['f_text'])&&!isset(Yii::app()->session['f_color'])||isset($_GET['page'])&&!isset(Yii::app()->session['f_text'])&&!isset(Yii::app()->session['chic']))
 				$criteria->order=$orden[Yii::app()->session['order']];
 			$total=Producto::model()->count($criteria);
 			if($total>0){

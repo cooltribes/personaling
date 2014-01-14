@@ -528,7 +528,11 @@ $tracking=$orden->getTracking();
 				
 				
 				$usu = User::model()->findByPk($est->user_id);
-				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
+				if (isset($usu))
+					echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
+				else 
+						echo ("<td>Admin</td>");
+				
 				
 				$fecha = date("d/m/Y",strtotime($est->fecha));
 				echo("<td>".$fecha." </td>");

@@ -149,7 +149,7 @@ return array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
      			//'caseSensitive'=>false, 
-     			'baseUrl'=>'/site',  
+     			'baseUrl'=>'/develop',  
 			'rules'=>array(
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',

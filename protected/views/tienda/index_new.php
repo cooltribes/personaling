@@ -153,7 +153,12 @@
 								echo CHtml::hiddenField('marcahid',0);
 							}
 							foreach($marcas as $marca){
-								echo'<li><a class="marca" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
+								$cien="not_cien";
+								if($marca->is_100chic){
+									$cien="cien";
+								}
+								
+								echo'<li><a class="marca '.$cien.'" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
 								 
 							}
 							echo CHtml::hiddenField('texthid','');
@@ -265,8 +270,7 @@
             		titulo=titulo+'...';
             	}
             	$('#marca_titulo').html(titulo);
-            	$('#chic_hid').val('0');
-				$('#banner100chic').fadeOut(3000);
+            	
             	$('#marcahid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
@@ -288,6 +292,21 @@
             	$('#banner100chic').fadeIn(3000);
             	refresh();
         });  
+		
+		$(".cien").click(function() { 
+            	
+            	$('#chic_hid').val('1');
+            	$('#banner100chic').fadeIn(3000);
+            	
+        });  
+		
+		$(".not_cien").click(function() { 
+            	
+            	$('#chic_hid').val('0');
+				$('#banner100chic').fadeOut(3000);
+            	
+        }); 
+		
 		
 		$(".scolor").click(function() { 
             	

@@ -15,7 +15,7 @@
 <div class="span4 look">
       <article > 
       	<?php if($look->has_100chic){ ?>
-			<div class="has_100chic"></div>
+		<!--	<div class="has_100chic"></div> -->
       	<?php }?>
       	<?php if ($pages->currentPage > 0){ ?>
       	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>

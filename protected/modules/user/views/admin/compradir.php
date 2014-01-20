@@ -1,5 +1,5 @@
 <?php
-
+Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 if ((!Yii::app()->user->isGuest)&&isset(Yii::app()->session['usercompra'])) { // que este logueado como admin
 
 

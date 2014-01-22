@@ -300,15 +300,16 @@ echo CHtml::hiddenField('user',$user);
                           }*/
 
                         $iva = (($totalPr - $totalDe)*0.12);
-						
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) ;
 						if($peso_total < 5){
 							
 							$direccion = Direccion::model()->findByPk($idDireccion);
 							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
 							//$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$iva);
+							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$t);
+							
 							if(!is_null($flete)){
-								$envio=$flete->total;
+								$envio=$flete->total-$flete->seguro;
 								$seguro=$flete->seguro;
 							}else{
 								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
@@ -329,7 +330,7 @@ echo CHtml::hiddenField('user',$user);
 							$seguro=$envio*0.13;
 						}
 
-                        $t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio;
+                        $t = $t + $envio;
                         
 					
 
@@ -349,7 +350,7 @@ echo CHtml::hiddenField('user',$user);
               </tr>          
               <tr>
                 <th class="text_align_left">Envío:</th>
-                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
+                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
               </tr>
               <tr>
                 <th class="text_align_left">I.V.A. (12%):</th>

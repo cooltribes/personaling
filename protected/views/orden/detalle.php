@@ -6,9 +6,10 @@ $this->breadcrumbs=array(
 	'Detalle',
 );
 if($orden->getFlete())
-	print_r($orden->getFlete());echo "<br/>";
-print_r($orden->calcularTarifa(17,1,0.4, 3290)); 
-echo $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total."<br/>"."17 - 1 - 0.4 - 3290";
+	print_r($orden->getFlete());// REVISION ZOOM 
+	//echo "<br/>";
+//print_r($orden->calcularTarifa(17,1,0.4, 3290)); 
+//echo $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total."<br/>"."17 - 1 - 0.4 - 3290";
 $usuario = User::model()->findByPk($orden->user_id); 
 
 $tracking=$orden->getTracking();

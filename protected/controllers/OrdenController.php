@@ -181,14 +181,11 @@ public function actionReportexls(){
 		 	foreach($ordenes->getData() as $data)
 			{
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
-                   if($data['look'] == 0)
-                    	{$H=Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), ''); 
-                    	$I=Yii::app()->numberFormatter->formatCurrency($data['Precio'], '');}
-				   else
-               			{$H=Yii::app()->numberFormatter->formatCurrency($data['pVenta'], ''); 
-               			$I=Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '');}
+             
+                    $H=Yii::app()->numberFormatter->formatCurrency($data['Precio'], ''); 
+                    $I=Yii::app()->numberFormatter->formatCurrency(($data['Precio']+($data['Precio']*0.12)), '');
 
-			
+
 					$objPHPExcel->setActiveSheetIndex(0)
 							->setCellValue('A'.$fila , $data['Marca']) 
 							->setCellValue('B'.$fila , $data['Nombre'])

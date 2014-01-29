@@ -10,11 +10,14 @@ $looks_aprobar = Look::model()->countByAttributes(array('status'=>1)); // por ap
 
 	$ordenes = Orden::model()->findAll();
 	$sumatoria = 0;
+	$ordenesValidas=0;
 	
 	foreach($ordenes as $uno)
 	{
 		if($uno->estado != 5)
-			$sumatoria = $sumatoria + $uno->total;	
+			$sumatoria = $sumatoria + $uno->total;
+		if($uno->estado == 3 || $uno->estado == 8 || $uno->estado == 4 )
+			$ordenesValidas = $sumatoria + $uno->total;
 	}
 
 /* forma anterior */	
@@ -301,9 +304,14 @@ else
               <td><strong>Ventas Totales</strong>:</td>
               <td><?php echo Yii::app()->numberFormatter->formatDecimal($sumatoria); ?> Bs.</td>
             </tr>
+            
             <tr>
               <td><strong> Promedio de Ventas</strong>:</td>
               <td><?php echo Yii::app()->numberFormatter->formatDecimal($promedio); ?> Bs / Venta.</td>
+            </tr>
+            <tr>
+              <td><strong>Ordenes por enviar, enviadas y recibidas</strong>:</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($ordenesValidas); ?> Bs.</td>
             </tr>
             <tr>
               <td><strong>Numero de Usuarios registrados</strong>:</td>
@@ -320,6 +328,23 @@ else
             <tr>
               <td><strong> Numero de Productos Activos</strong>:</td>
               <td><?php echo $productos_activos; ?></td>
+            </tr>
+            <tr>
+              <td colspan="2" align="center"><strong>PAGOS ACEPTADOS</strong></td>
+              
+            </tr>
+            <tr>
+              <td><strong> Deposito o Transferencia</strong>:</td>
+              <td><?php $detalle=new Detalle; 
+              echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxDeposito)." Bs";?></td>
+            </tr>
+            <tr>
+              <td><strong> Tarjeta de Crédito</strong>:</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxTDC)." Bs"; ?></td>
+            </tr>
+            <tr>
+              <td><strong> Uso de Saldo</strong>:</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxSaldo)." Bs"; ?></td>
             </tr>
           </table>
           <h4 class="margin_top">ACCIONES PENDIENTES</h4>

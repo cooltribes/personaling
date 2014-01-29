@@ -112,7 +112,10 @@ $usuario = User::model()->findByPk($orden->user_id);
     // agregar demas estados
 ?>
        </td>
-         <td><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white"></i> Reportar Pago </td>
+         <td><?php if ($orden->estado==1||$orden->estado==6||$orden->estado==7){?><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white">
+         	
+         </i> Reportar Pago }
+         	<?php } ?></td>
           <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
   </table>

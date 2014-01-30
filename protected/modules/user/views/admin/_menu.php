@@ -58,6 +58,11 @@
     		<?php echo CHtml::link('Invitaciones',array('invitaciones',
                      'id'=>$model->id,)); ?>
         </li>
+   
+        <li class="<?php if($activo == 11) echo 'active'; ?>">
+    		<?php echo CHtml::link('Balance',array('balance',
+                     'id'=>$model->id,)); ?>
+        </li>
       </ul>
     </div>
   </div>

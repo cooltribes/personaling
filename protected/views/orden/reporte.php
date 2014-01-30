@@ -91,13 +91,22 @@
 
 	Yii::app()->clientScript->registerScript('marca',
 		"var ajaxUpdateTimeout;
-		var ajaxRequest; 
+		var ajaxRequest;
+		var inicio;
+		var fin;
 		$('#marcas').change(function(){
 			ajaxRequest = $('#marcas').serialize();
 			marcaId = $('#marcas').val();
 			clearTimeout(ajaxUpdateTimeout);
-			$('#inicio').val('');
-			$('#fin').val('');
+			if($('#inicio').val()=='')
+				inicio='2010-01-01';
+			else
+				inicio=$('#inicio').val();
+			if($('#fin').val()=='')
+				fin='3500-01-01';
+			else
+				fin=$('#fin').val();				
+			
 			
 			ajaxUpdateTimeout = setTimeout(function () {
 				$.fn.yiiListView.update(
@@ -105,7 +114,7 @@
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('orden/reporte') . "',
-				data: ajaxRequest}
+				data: {ajaxRequest:ajaxRequest, desde:inicio, hasta:fin, marcas:marcaId }}
 				
 				)
 				},
@@ -119,7 +128,7 @@
 		"var ajaxUpdateTimeout;
 		var ajaxRequest; 
 		$('#fechas').click(function() { 
-
+			marcaId = $('#marcas').val();
 			clearTimeout(ajaxUpdateTimeout);
 			
 			ajaxUpdateTimeout = setTimeout(function () {
@@ -128,7 +137,7 @@
 				{
 				type: 'POST',	
 				url: '" . CController::createUrl('orden/reporte') . "',
-				data: {ajaxRequest: ajaxRequest, desde:$('#inicio').val(), hasta:$('#fin').val()}}
+				data: {ajaxRequest: ajaxRequest, desde:$('#inicio').val(), hasta:$('#fin').val(), marcas:marcaId}}
 				
 				)
 				},

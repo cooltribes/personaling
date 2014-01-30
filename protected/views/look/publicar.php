@@ -5,6 +5,30 @@ $this->breadcrumbs=array(
 );
 $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::STATUS_APROBADO) && !Yii::app()->user->isAdmin())
 ?>
+
+<script>
+  $(function() {
+    $( "#slider" ).slider({
+      range: true,
+      min: 10,
+      max: 85,
+      values: [ <?php echo $model->edadMin ?> , <?php echo $model->edadMax;?> ],
+      slide: function( event, ui ) {
+        $( "#edad" ).html( "De " + ui.values[ 0 ] + " a " + ui.values[ 1 ]+" Años" );
+        $('#Look_edadMin').val(ui.values[ 0 ]); 
+        $('#Look_edadMax').val(ui.values[ 1 ]);  
+        
+      
+        
+      }
+    });
+    $( "#edad" ).html( "De " + $( "#slider" ).slider( "values", 0 ) +
+      " a " + $( "#slider" ).slider( "values", 1 )+" Años" );
+  });
+ </script> 
+ <style>
+ 	 #slider .ui-slider-range { background: #6d2d56; }
+ </style>
 <div class="container margin_top" id="crear_look">
   <div class="page-header">
   		<!-- FLASH ON --> 
@@ -249,6 +273,25 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
           </div>
           <hr/>
+          
+          
+          <h4> ¿A chicas de que edad va dirigido este look?</h4>
+          
+          <div class="control-group">
+            <div class="controls">
+              	<p>
+				  <div id="edad" style="border:0; font-weight:bold; background:none;"></div>
+				</p>
+				<?php
+					echo $form->hiddenField($model,'edadMin'); 
+					echo $form->hiddenField($model,'edadMax'); 
+				?>
+              	<div id="slider"></div>
+            </div>
+          </div>
+          <hr/>
+          
+          
           <div id="div_tipo">
           <h4>Escoge al tipo de usuaria que favorece</h4>
           <div class="control-group">
@@ -349,8 +392,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         
         </section >
         <section class="well">
-          <h4><strong>3.</strong> Terminaste, solo presiona enviar  </h4>
-          <?php if ($model->status == Look::STATUS_CREADO || Yii::app()->user->isAdmin()){ ?>
+              <?php if ($model->status == Look::STATUS_CREADO || Yii::app()->user->isAdmin()){ ?>
+              	<h4><strong>3.</strong> Terminaste, solo presiona enviar  </h4>
+      
           <div class="row">
             <div class="pull-right"> 
             	<a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> 
@@ -368,6 +412,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <?php } ?>
          <?php if ($model->status == Look::STATUS_ENVIADO && !Yii::app()->user->isAdmin()){ ?>
          	Tu look esta pendiente por aprobar, Gracias
+         	<script>$('#slider').hide();</script>
          <?php } ?>
         
      <?php $this->endWidget(); ?>

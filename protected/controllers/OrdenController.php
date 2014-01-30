@@ -139,7 +139,8 @@ public function actionReportexls(){
 						->setCellValue('F1', 'Cantidad')
 						->setCellValue('G1', 'Costo (Bs)')
 						->setCellValue('H1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('I1', 'Precio de Venta con IVA (Bs)');
+						->setCellValue('I1', 'Precio de Venta con IVA (Bs)')
+						->setCellValue('J1', 'Vendido en');
 			// encabezado end			
 		 	
 			foreach(range('A','I') as $columnID) {
@@ -157,15 +158,16 @@ public function actionReportexls(){
 			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
 		 	
 		 	
 		 	//Eliminar filtrado por marca antes de consultar
-		 	$fake=false;
+		 	/*$fake=false;
 		 	if(isset(Yii::app()->session['idMarca'])){
 		 		$marca=Yii::app()->session['idMarca'];
 		 		$fake=true;
 		 		unset(Yii::app()->session['idMarca']);
-		 	}
+		 	}*/
 			//fin			
 		 	
 		 	$orden=new Orden;
@@ -174,21 +176,18 @@ public function actionReportexls(){
 		
 			
 			//Reestablecer filtrado por marca si existia
-			if($fake)
-				Yii::app()->session['idMarca']=$marca;
+			/*if($fake)
+				Yii::app()->session['idMarca']=$marca;*/
 		 	//fin	 
 		 
 		 	foreach($ordenes->getData() as $data)
 			{
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
-                   if($data['look'] == 0)
-                    	{$H=Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), ''); 
-                    	$I=Yii::app()->numberFormatter->formatCurrency($data['Precio'], '');}
-				   else
-               			{$H=Yii::app()->numberFormatter->formatCurrency($data['pVenta'], ''); 
-               			$I=Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '');}
+             
+                    $H=number_format($data['Precio'],2,',','.'); 
+                    $I=number_format(($data['Precio']+($data['Precio']*0.12)),2,',','.');
 
-			
+
 					$objPHPExcel->setActiveSheetIndex(0)
 							->setCellValue('A'.$fila , $data['Marca']) 
 							->setCellValue('B'.$fila , $data['Nombre'])
@@ -196,9 +195,10 @@ public function actionReportexls(){
 							->setCellValue('D'.$fila , $data['Color'])
 							->setCellValue('E'.$fila , $data['Talla']) 
 							->setCellValue('F'.$fila , $data['Cantidad']) 
-							->setCellValue('G'.$fila , Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')) 
-							->setCellValue('H'.$fila , $H)							
-							->setCellValue('I'.$fila , $I);
+							->setCellValue('G'.$fila , number_format($data['Costo'],2,',','.')) 
+							->setCellValue('H'.$fila , trim($H))							
+							->setCellValue('I'.$fila , trim($I))
+							->setCellValue('J'.$fila ,date("d/m/Y",strtotime($data['Fecha'])));
 					$fila++;
 
 			} // foreach

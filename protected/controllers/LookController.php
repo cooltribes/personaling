@@ -714,8 +714,9 @@ public function actionCategorias(){
                         }	
 			
 				
+			$model->edadMin=$_POST['Look']['edadMin'];
+			$model->edadMax=$_POST['Look']['edadMax'];
 
-			 
 			
 			if($model->save())
             {

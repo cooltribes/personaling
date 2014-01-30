@@ -133,7 +133,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
+              	<?php 
+              	
+              	 echo CHtml::hiddenField('admin',$admin);
+    			echo CHtml::hiddenField('user',$user);
+              	echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -178,7 +182,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </div>
             </div>
             <div class="control-group"> 
-            
+            	
               <div class="controls">
               	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Numero de Teléfono'));
 				 ?>
@@ -247,8 +251,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 <?php 
     /*Campos para compra desde admin*/
-    echo CHtml::hiddenField('admin',$admin);
-    echo CHtml::hiddenField('user',$user);
+   
 
 ?>
 <?php $this->endWidget(); ?>

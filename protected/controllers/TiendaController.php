@@ -336,7 +336,11 @@ class TiendaController extends Controller
 			}
 			
 			$criteria = $producto->nueva2($a);
-			if (isset($_GET['page'])&&!isset(Yii::app()->session['f_text'])&&!isset(Yii::app()->session['f_color'])||isset($_GET['page'])&&!isset(Yii::app()->session['f_text'])&&!isset(Yii::app()->session['chic']))
+			if (isset($_GET['page'])&&
+			(!isset(Yii::app()->session['f_cat'])&&
+			!isset(Yii::app()->session['f_text'])&&
+			!isset(Yii::app()->session['f_color'])&&
+			!isset(Yii::app()->session['chic'])))
 				$criteria->order=$orden[Yii::app()->session['order']];
 			$total=Producto::model()->count($criteria);
 			if($total>0){
@@ -1201,7 +1205,7 @@ public function actionCategorias2(){
                 }
                
                 $sort = new CSort("Look");
-                Yii::app()->end();
+                //Yii::app()->end();   // NELSON QUE HICISTE NELSON
                         
                 $sort->applyOrder($criteria);
                 

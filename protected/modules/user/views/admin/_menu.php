@@ -16,7 +16,7 @@
       <ul class="nav">
         <li class="<?php if($activo == 1) echo 'active'; ?>">
         	
-        	<?php echo CHtml::link('Datos Básicos',array('update',
+        	<?php echo CHtml::link('Datos',array('update',
                                      'id'=>$model->id,)); ?>
         </li>
 		<li class="<?php if($activo == 2) echo 'active'; ?>">
@@ -60,7 +60,11 @@
         </li>
    
         <li class="<?php if($activo == 11) echo 'active'; ?>">
-    		<?php echo CHtml::link('Balance',array('balance',
+    		<?php echo CHtml::link('Saldo',array('balance',
+                     'id'=>$model->id,)); ?>
+        </li>
+        <li class="<?php if($activo == 12) echo 'active'; ?>">
+    		<?php echo CHtml::link('Seguimiento',array('seguimiento',
                      'id'=>$model->id,)); ?>
         </li>
       </ul>

@@ -37,8 +37,17 @@
 
   //Metas de Twitter CARD OFF
 
+
+
+
 ?>
 <!-- FLASH OFF -->
+
+
+
+
+
+
 
 <div class="container margin_top" id="carrito_compras">
   <div class="row detalle_producto">
@@ -113,6 +122,13 @@
           
           echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "producto", array('id'=>'principal','rel'=>'image_src'));
           echo "<!-- FOTO principal OFF -->";
+		  
+		   if($producto->mymarca->is_100chic){
+	
+				echo "<div align='center'> <strong>----------------------------------------- 100% CHIC -------------------------------------------------</strong></div>";
+				
+		  }
+		  
                 echo "</div>";  
                 echo "</div>";  
           
@@ -138,15 +154,26 @@
         }// que no es la primera en el orden
       }
       
+     
+      
+      
+      
       echo "</div></div>";
             
       /*
             <!-- FOTOS Secundarias OFF -->
        * */
       
-            ?>
+         
+          
+          
+          ?>
+            
+            
+            
             
           </div>
+          
         </article>
         <!-- Columna principal OFF --> 
         
@@ -166,6 +193,12 @@
       ?></h4>
             </div>
             <?php
+         
+         
+            
+            
+            
+            
           $valores = Array();
                 $cantcolor = Array();
                 $cont1 = 0;
@@ -230,6 +263,14 @@
           </div>
           
           <?php
+          
+          
+          
+          if($producto->mymarca->is_100chic){
+	
+				echo "<div align='center'> <strong>---------------------- MINIBANNER ----------------------------</strong></div>";
+		}   
+          
           if($cont1 > 0 && $cont2 > 0){
           ?>
           

@@ -298,7 +298,7 @@ else
          <div class="well well_personaling_big"> 
                    <h4 class="margin_top CAPS">Estadisticas</h4>
 
-         
+      
          <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Ventas Totales</strong>:</td>

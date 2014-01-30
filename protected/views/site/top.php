@@ -48,7 +48,7 @@ function str_lreplace($search, $replace, $subject)
                         <div class="span4">
                             <article class="item span4" >
                             	<?php if($look->has_100chic){ ?>
-									<div class="has_100chic"></div>
+									<!-- <div class="has_100chic"></div> -->
 						      	<?php }?>
                             	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
                             	

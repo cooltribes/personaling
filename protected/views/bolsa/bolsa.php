@@ -373,10 +373,14 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						// variables de sesion
 						Yii::app()->getSession()->add('subtotal',$totalPr);
 						Yii::app()->getSession()->add('descuento',$totalDe);
-						Yii::app()->getSession()->add('envio',$envio);
+					
 						Yii::app()->getSession()->add('iva',$iva);
 						Yii::app()->getSession()->add('total',$t);
+						/*
+						Yii::app()->getSession()->add('envio',$envio);
 						Yii::app()->getSession()->add('seguro',$seguro);  
+						
+						*/
 						
 						//echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                       	?>

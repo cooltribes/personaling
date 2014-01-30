@@ -130,4 +130,14 @@ class Detalle extends CActiveRecord
 		
 	}
 	
+	public function getSumxDeposito(){
+		return Yii::app()->db->createCommand("select sum(monto) from tbl_detalle where estado=1 AND tipo_pago=1")->queryScalar();
+	}
+	public function getSumxTDC(){
+		return Yii::app()->db->createCommand("select sum(monto) from tbl_detalle where estado=1 AND tipo_pago=2")->queryScalar();
+	}
+	public function getSumxSaldo(){
+		return Yii::app()->db->createCommand("select sum(monto) from tbl_detalle where estado=1 AND tipo_pago=3")->queryScalar();
+	}
+	
 }

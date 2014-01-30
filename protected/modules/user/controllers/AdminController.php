@@ -32,7 +32,7 @@ class AdminController extends Controller
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
 
-                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento'),
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance'),
 
 
 								//'users'=>array('admin'),
@@ -1675,6 +1675,22 @@ if(isset($_POST['Profile']))
     public function actionMensajes(){
         
 		$this->render('mensajes');
+		
+		
+    }
+	 public function actionBalance($id){
+			
+        
+		$model=$this->loadModel();
+		$balances=Balance::model()->findAllByAttributes(array('user_id'=>$id));
+		
+       
+		
+		$this->render('balance',array(
+			'model'=>$model,
+			'balances'=>$balances
+			
+		));
 		
 		
     }

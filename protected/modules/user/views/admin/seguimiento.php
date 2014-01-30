@@ -8,7 +8,7 @@ $this->breadcrumbs = array(
         <h1>Editar Usuario</small></h1>
     </div>
     <!-- SUBMENU ON -->
-    <?php $this->renderPartial('_menu', array('model' => $model, 'activo' => 11)); ?>
+    <?php $this->renderPartial('_menu', array('model' => $model, 'activo' => 12)); ?>
     <!-- SUBMENU OFF -->
     <div class="row margin_top">
         <div class="span12">

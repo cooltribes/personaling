@@ -27,7 +27,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 
 
 <div class="wrapper_home">
-
+<?php echo Yii::app()->params["pais"] ?>
 
   <div id="myCarousel" class="carousel slide">
 

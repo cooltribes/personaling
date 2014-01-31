@@ -77,17 +77,16 @@ $b='';
 					$b = '';
 					$style='';
 					if($data->mymarca->is_100chic){
-						$style="<div class='is_100chic'> </div> ";
+						$style="<span class=' btn btn-block is_100chic'> <span>100% Chic</span> </span> ";
 					}
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 						//$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-						echo($encabezado.$style."
+						echo($encabezado."
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
-						".$a.$b." 
-						 
-						".CHtml::link("Vista Rápida",
+						".$a.$b.
+						CHtml::link("Vista Rápida",
 						    $this->createUrl('modal',array('id'=>$data->id)),
 						    array(// for htmlOptions
 						      'onclick'=>' {'.CHtml::ajax( array(
@@ -97,7 +96,7 @@ $b='';
 						         'return false;}',
 						    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
 						    'id'=>'prodencanta')
-						)."		
+						).$style."		
 												
 						</a>
 						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>

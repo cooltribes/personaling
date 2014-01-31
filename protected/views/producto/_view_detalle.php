@@ -125,7 +125,7 @@
 		  
 		   if($producto->mymarca->is_100chic){
 	
-				echo "<div align='center'> <strong>----------------------------------------- 100% CHIC -------------------------------------------------</strong></div>";
+				echo "<div class='text_align_center btn-block is_100chic'> <span>100% CHIC</span> </div>";
 				
 		  }
 		  
@@ -263,14 +263,11 @@
           </div>
           
           <?php
-          
-          
-          
           if($producto->mymarca->is_100chic){
-	
-				echo "<div align='center'> <strong>---------------------- MINIBANNER ----------------------------</strong></div>";
-		}   
-          
+	       ?>
+            <img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
+		  <?php
+		  }   
           if($cont1 > 0 && $cont2 > 0){
           ?>
           

@@ -12,7 +12,7 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Personaling',
 	'timeZone' => 'America/Caracas', 
-	'language' => 'es',
+	'language' => 've',
 	// preloading 'log' component
 	'preload'=>array('log','bootstrap'),
 	'theme'=>'bootstrap',

@@ -264,10 +264,13 @@
           
           <?php
           if($producto->mymarca->is_100chic){
+          	echo CHtml::hiddenField('chic',1);
 	       ?>
             <img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
 		  <?php
-		  }   
+		  }
+		  else
+		  	echo CHtml::hiddenField('chic',0);   
           if($cont1 > 0 && $cont2 > 0){
           ?>
           
@@ -972,6 +975,10 @@ $('.imagen_principal').zoom({url: imgZ});
             
             // cambiando la imagen principal :@
             $(".imagen_principal").fadeOut("10",function(){
+            	if($('#chic').val()==1){
+            		zona=zona+"<div class='text_align_center btn-block is_100chic'> <span>100% CHIC</span> </div>";
+            	}
+            	
               $(".imagen_principal").html(zona);
               
                 var source = $('#principal').attr("src");

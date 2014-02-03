@@ -2,7 +2,8 @@
 
 return array (
 
-     'PRONUNCIACION' => 'Chilena'
+     'PRONUNCIACION' => 'Chilena',
+     'currSym'=>'$'
 
 );
 

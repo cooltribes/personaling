@@ -2,7 +2,8 @@
 
 return array (
 
-     'PRONUNCIACION' => 'Españoleta'
+     'PRONUNCIACION' => 'Española',
+     'currSym'=>'€'
 
 );
 

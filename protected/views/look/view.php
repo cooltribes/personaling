@@ -127,7 +127,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           <!-- Boton de comprar  -->
           <div class="row-fluid call2action">
             <div class="span6">
-              <h4 class="precio" ><div id="price"><span>Subtotal</span> Bs. <?php echo $model->getPrecio(); ?></div></h4>
+              <h4 class="precio" ><div id="price"><span>Subtotal</span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></div></h4>
             </div>
             <div class="span6">
               <div class="">

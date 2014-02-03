@@ -50,7 +50,7 @@ $b='';
 
 	   	if($data->precios){
 	   	foreach ($data->precios as $precio) {
-	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
+	   		$prePub = Yii::app()->numberFormatter->format("###0.00",$precio->precioImpuesto);
 	   		//$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 			}
 		}
@@ -96,12 +96,12 @@ $b='';
 						         'return false;}',
 						    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
 						    'id'=>'prodencanta')
-						).$style."		
+						).$style."		 
 												
 						</a>
 						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
-						<span class='precio'>Bs. ".$prePub."</span>".$gusta);
+						<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$prePub."</span>".$gusta);
 						
 						
 						$con=$id;

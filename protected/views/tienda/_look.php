@@ -74,7 +74,7 @@
 			echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
 			</h5>
           </div>
-          <div class="span5"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
+          <div class="span5"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym')?> </small><?php echo $look->getPrecio(); ?></span></div>
         </div>
         <div class="share_like">
          

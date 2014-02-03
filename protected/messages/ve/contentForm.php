@@ -2,7 +2,8 @@
 
 return array (
 
-     'PRONUNCIACION' => 'Venezolana'
+     'PRONUNCIACION' => 'Venezolana',
+     'currSym'=>'Bs'
 
 );
 

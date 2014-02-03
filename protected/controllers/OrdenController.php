@@ -1503,9 +1503,13 @@ public function actionValidar()
 		if(isset($_POST['orden']) && isset($_POST['check']))
 		{
 			$orden = Orden::model()->findByPk($_POST['orden']);
-			
+			$devolver=array();
+			$nproductos=0;
+			$peso=0;
+			$costo=0;
+			$cont=0;
 			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
-			$cont = 0; 
+			
 //			echo count($checks);
 //                        Yii::app()->end();
 			$totalenvio = 0;
@@ -1513,19 +1517,26 @@ public function actionValidar()
 //                        foreach($checks as $uno)
 //			{echo $uno."<br>";
 //                            
-//                        }
+//                       }
 //                        Yii::app()->end();
+			
+			$orden = Orden::model()->findByPk($_POST['orden']);
+			
 			foreach($checks as $uno)
 			{
-				$orden = Orden::model()->findByPk($_POST['orden']);
+				
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno)); 
 				
-                                if($ptcolor)
+				
+             if($ptcolor)
 				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" 
                                         || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
 				{
+							
+					array_push($devolver,$ptcolor->id);	
+							
 					// calculo envio
-					
+					/*
 					$producto = Producto::model()->findByPk($ptcolor->producto_id);
 					$peso_total = $producto->peso; 
 					
@@ -1553,19 +1564,62 @@ public function actionValidar()
 						}
 							
 						$tipo_guia = 2;
-					}
-					
-					$totalenvio += $envio;
+					}*/
 					
 				} // if motivos
 
+				
+				
 				$cont++;
 			} // foreach
 			
-		echo $totalenvio;						
+			
+			$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));	
+		
+			foreach($ohptcs as $ohptc){
+				
+				if(!in_array($ohptc->preciotallacolor_id,$devolver)){
+					$nproductos=$nproductos+$ohptc->cantidad;
+					$costo=$costo+$ohptc->precio;
+					$peso+=$ohptc->cantidad*$ptcolor->producto->peso;	
+				}
+				
+			}
+			
+			if($peso< 5){      
+							
+						
+						$flete=Orden::model()->calcularTarifa($orden->direccionEnvio->myciudad->cod_zoom,$nproductos,$peso,$costo);
+							
+							if(!is_null($flete)){
+								$envio=$flete->total - $orden->flete;
+					
+							}else{
+								$envio =Tarifa::model()->calcularEnvio($peso,$orden->direccionEnvio->myciudad->ruta_id);
+								$seguro=$envio*0.13;
+							}
+							
+							
+							$tipo_guia = 1;
+							
+			}else{
+							$peso_adicional = ceil($peso-5);
+							$envio = 163.52 + ($peso*$orden->direccionEnvio->myciudad->ruta->precio);
+							if($envio > 327.04){
+								$envio = 327.04;
+							}
+							$tipo_guia = 2;
+							
+			}
+			
+					
+			
+			
+									
 //		echo Yii::app()->numberFormatter->formatCurrency($totalenvio, '');
 
 		}	
+	echo ($orden->envio-$envio);
 
 	}
 

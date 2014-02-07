@@ -1,4 +1,4 @@
-,<?php
+<?php
 
 $this->breadcrumbs=array(
     'Pedidos'=>array('listado'),
@@ -20,15 +20,14 @@ $usuario = User::model()->findByPk($orden->user_id);
     <?php } ?>
 <div class="container margin_top">
   <div class="page-header">
-    <h1>PEDIDO #<?php echo $orden->id; ?></h1>
+    <h1> <?php echo Yii::t('contentForm', 'Order').' #'.$orden->id; ?></h1>
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
-      <th scope="col" colspan="4">Fecha del Pedido:
+      <th scope="col" colspan="4">  
           <?php
-
           if($orden->fecha!="")
-               echo date("d/m/Y - h:i a",strtotime($orden->fecha)).".";
+               echo Yii::t('contentForm','Order Date').' '.date("d/m/Y - h:i a",strtotime($orden->fecha)).".";
 
           ?>
           </th>
@@ -39,38 +38,41 @@ $usuario = User::model()->findByPk($orden->user_id);
 <?php
 //----------------------Estado
     if($orden->estado == 1)
-        echo "En espera de pago";
+        echo Yii::t('contentForm','Awaiting payment');
 
     if($orden->estado == 2)
-        echo "Espera confirmación";
+        echo Yii::t('contentForm','Awaiting confimation');
 
     if($orden->estado == 3)
-        echo "Pago Confirmado";
+        echo Yii::t('contentForm','Payment confirmet');
 
     if($orden->estado == 4)
-        echo "Pedido Enviado";
+        echo Yii::t('contentForm','Order Sent');
 
     if($orden->estado == 5)
-        echo "Orden Cancelada";
+        echo Yii::t('contentForm','Order Cancelled');
 
     if($orden->estado == 6)
-        echo "Pago Rechazado";
+        echo Yii::t('contentForm','Paryment declined');
 
     if($orden->estado == 7)
-        echo "Pago Insuficiente";
+        echo Yii::t('contentForm','Underpayment');
+
 
     if($orden->estado == 9)
-        echo "Devuelto";
+        echo Yii::t('contentForm','Returned');
+
 
     if($orden->estado == 10)
-        echo "Devolución Parcial";
+        echo Yii::t('contentForm','Parcial Returned');
+
 
     // agregar demas estados
 ?>
           </p>
-        Estado actual</td>
+       <?php  echo Yii::t('contentForm','Current state'); ?></td>
       <td><p class="T_xlarge margin_top_xsmall"> 2 </p>
-        Documentos</td>
+        <?php  echo Yii::t('contentForm','Documents'); ?></td>
 
      <?php
       $ind_tot = 0;
@@ -83,7 +85,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 
       <td><p class="T_xlarge margin_top_xsmall"><?php   echo count($compra); ?></p>
-        Prendas<br/></td>
+        <?php echo Yii::t('contentForm','Items'); ?><br/></td>
       <td><p class="T_xlarge margin_top_xsmall"><?php
 
    echo Yii::app()->numberFormatter->formatDecimal($orden->getMontoActivo());
@@ -92,29 +94,29 @@ $usuario = User::model()->findByPk($orden->user_id);
         <?php
 //----------------------Estado
     if($orden->estado == 1)
-        echo "Bs. Pendientes por pagar";
+        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending payment');
 
     if($orden->estado == 2)
-        echo "Bs. Pendientes por confirmar";
+        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending confirmation');
 
     if($orden->estado == 3 || $orden->estado == 8)
-        echo "Bs. ya pagados";
+        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending confirmation');
 
     if($orden->estado == 4)
-        echo "Bs. ya pagados";
+        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Paid');
 
     if($orden->estado == 5)
-        echo "Orden Cancelada";
+        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Order Cancelled');
 
     if($orden->estado == 7 && isset($balance))
-        echo "Bs. que faltan.";
+        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Missing');
 
     // agregar demas estados
 ?>
        </td>
          <td><?php if ($orden->estado==1||$orden->estado==6||$orden->estado==7){?><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white">
          	
-         </i> Reportar Pago }
+         </i> Reportar Pago
          	<?php } ?></td>
           <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>

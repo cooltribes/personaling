@@ -46,7 +46,7 @@ return array (
 
      
      'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
-     'No messages have been posted' => 'No se han enviado mensajes'
+     'No messages have been posted' => 'No se han enviado mensajes',
      'Nro. looks' => 'No. de looks',
      'Nro items' => 'No. de Prendas',
      'Name of items' => 'Nombre de la prenda',
@@ -55,13 +55,13 @@ return array (
 
      'Order' => 'Pedido',
      'Order Cancelled' => 'Orden Cancelada',
-     'Order Date' => 'Fecha de pedido',
+     'Order Date' => 'Fecha del pedido',
      'Order Sent' => 'Pedido enviado',
      'Order Summary' => 'Resumen del pedido',
      'Output' => 'Salida',
      
      'Paid' => 'Ya pagados',
-     'Parcial Returned' => 'Devolución Parcial'.
+     'Parcial Returned' => 'Devolución Parcial',
      'Payment confirmet' => 'Pago confirmado',
      'Payment declined' => 'Pago Rechazado',
      'Payment report' => 'Informe de pago',

@@ -317,7 +317,7 @@ class Producto extends CActiveRecord
             }
             if (isset($this->_precio->precioImpuesto))
                 if ($format) {
-                    return Yii::app()->numberFormatter->formatDecimal($this->_precio->precioImpuesto);
+                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);
                 } else {
                     return $this->_precio->precioImpuesto;
                 }

@@ -48,18 +48,18 @@ $b='';
 
 	
 
-	   	if($data->precios){
+	   	/*if($data->precios){
 	   	foreach ($data->precios as $precio) {
-	   		$prePub = Yii::app()->numberFormatter->format("###0.00",$precio->precioImpuesto);
+	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
 	   		//$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 			}
-		}
-		
+		}*/ 
+		$prePub=$data->precio;
 		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
 		if(isset($ima)){
 			
-			if($prePub!="")
-			{
+			//if($prePub!=""){
+			
 				//echo"<tr>";
 				$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$data->id));
             	
@@ -101,7 +101,7 @@ $b='';
 						</a>
 						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
-						<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$prePub."</span>".$gusta);
+						<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</span>".$gusta);
 						
 						
 						$con=$id;
@@ -143,7 +143,7 @@ $b='';
 				  
 				
 				//echo("</tr>");
-			}
+			//}
 		
 		}
 

@@ -91,14 +91,17 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					//	echo Color::model()->findByPk($test->color_id)->valor;
 					//}
 					$pre="";
-					 	foreach ($producto->precios as $precio) {
+					/* 	foreach ($producto->precios as $precio) {
 				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 						
 						array_push($precios,$precio->precioDescuento);	
 						array_push($descuentos,$precio->ahorro);		
 						}
-					 
+					 */
 					 	array_push($cantidades,$productotallacolor->cantidad);
+					 	$pre = $producto->precio;
+						array_push($precios,$producto->getPrecio(false));	
+						array_push($descuentos,0);
                 	?>
                 <tr>
                   <?php
@@ -115,7 +118,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
                     <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?></td>
                   
-                  <td>Bs. <?php echo $pre; ?></td>
+                  <td> <?php echo Yii::t('contentForm', 'currSym').' '.$pre; ?></td>
                   
 				<td width='8%'>
 					<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
@@ -199,16 +202,19 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						";	
 				 	
 					 	$pre="";
-					 	foreach ($producto->precios as $precio) {
+					 	/*foreach ($producto->precios as $precio) {
 				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 						
 						array_push($precios,$precio->precioDescuento);	
 						array_push($descuentos,$precio->ahorro);		
-						}
-					 
+						}*/
+						$pre = $producto->precio;
+						array_push($precios,$producto->getPrecio(false));	
+						array_push($descuentos,0);
+					 	
 					 	array_push($cantidades,$productoBolsa->cantidad);
 						
-					 	echo "<td>Bs. ".$pre."</td>";
+					 	echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
 						?>
 						
 					 	<td width='8%'>

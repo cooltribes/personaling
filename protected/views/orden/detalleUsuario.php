@@ -11,7 +11,7 @@ $usuario = User::model()->findByPk($orden->user_id);
     <?php if(Yii::app()->user->hasFlash('success')){?>
         <div class="alert in alert-block fade alert-success text_align_center">
             <?php echo Yii::app()->user->getFlash('success'); ?>
-        </div>
+        </div> 
     <?php } ?>
     <?php if(Yii::app()->user->hasFlash('error')){?>
         <div class="alert in alert-block fade alert-error text_align_center">
@@ -37,34 +37,8 @@ $usuario = User::model()->findByPk($orden->user_id);
       <td><p class="T_xlarge margin_top_xsmall color1">
 <?php
 //----------------------Estado
-    if($orden->estado == 1)
-        echo Yii::t('contentForm','Awaiting payment');
 
-    if($orden->estado == 2)
-        echo Yii::t('contentForm','Awaiting confimation');
-
-    if($orden->estado == 3)
-        echo Yii::t('contentForm','Payment confirmet');
-
-    if($orden->estado == 4)
-        echo Yii::t('contentForm','Order Sent');
-
-    if($orden->estado == 5)
-        echo Yii::t('contentForm','Order Cancelled');
-
-    if($orden->estado == 6)
-        echo Yii::t('contentForm','Paryment declined');
-
-    if($orden->estado == 7)
-        echo Yii::t('contentForm','Underpayment');
-
-
-    if($orden->estado == 9)
-        echo Yii::t('contentForm','Returned');
-
-
-    if($orden->estado == 10)
-        echo Yii::t('contentForm','Parcial Returned');
+   echo $orden->textestado;
 
 
     // agregar demas estados
@@ -93,8 +67,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 
         <?php
 //----------------------Estado
+
     if($orden->estado == 1)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending payment');
+
 
     if($orden->estado == 2)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending confirmation');
@@ -107,9 +83,10 @@ $usuario = User::model()->findByPk($orden->user_id);
 
     if($orden->estado == 5)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Order Cancelled');
-
+      
     if($orden->estado == 7 && isset($balance))
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Missing');
+
 
     // agregar demas estados
 ?>
@@ -275,7 +252,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <th scope="col">Estado</th>
             <th scope="col">Usuario</th>
             <th scope="col">Fecha</th>
-          </tr>
+          </tr> 
           <?php
 
           $estados = Estado::model()->findAllByAttributes(array('orden_id'=>$orden->id),array('order'=>'id DESC'));
@@ -284,32 +261,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               {
                   echo("<tr>");
 
-                if($est->estado==1)
-                    echo("<td>Pendiente de Pago</td>");
-
-                if($est->estado==2)
-                    echo("<td>Pendiente por confirmar</td>");
-
-                if($est->estado==3)
-                    echo("<td>Pago Confirmado</td>");
-
-                if($est->estado == 4)
-                    echo("<td>Pedido Enviado</td>");
-
-                if($est->estado==5)
-                    echo("<td>Orden Cancelada</td>");
-
-                if($est->estado==6)
-                    echo("<td>Pago Rechazado</td>");
-
-                if($est->estado == 7)
-                    echo "<td>Pago Insuficiente</td>";
-
-                if($est->estado == 9)
-                    echo "<td>Devuelto</td>";
-
-                if($est->estado == 10)
-                    echo "<td>Parcialmente Devuelto</td>";
+                echo"<td>".$orden->getTextEstado($est->estado)."</td>";
 
                 $usu = User::model()->findByPk($est->user_id);
                 echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");

@@ -83,7 +83,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
     if($orden->estado == 5)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Order Cancelled');
-      
+
     if($orden->estado == 7 && isset($balance))
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Missing');
 
@@ -93,9 +93,9 @@ $usuario = User::model()->findByPk($orden->user_id);
        </td>
          <td><?php if ($orden->estado==1||$orden->estado==6||$orden->estado==7){?><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white">
          	
-         </i> Reportar Pago
+         </i> <?php echo Yii::t('contentForm','Payment report'); ?>
          	<?php } ?></td>
-          <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
+          <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> <?php echo Yii::t('contentForm','Print order'); ?></a></td>
     </tr>
   </table>
   <hr/>
@@ -114,10 +114,10 @@ $usuario = User::model()->findByPk($orden->user_id);
                   <h3 class='braker_bottom '> Método de Pago</h3>
                     <table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
                       <tr>
-                        <th scope='col'>Fecha</th>
-                        <th scope='col'>Método de pago</th>
-                        <th scope='col'>ID de Transaccion</th>
-                        <th scope='col'>Monto</th>
+                        <th scope='col'>".Yii::t('contentForm','Date')."</th>
+                        <th scope='col'>".Yii::t('contentForm','Payment method')."</th>
+                        <th scope='col'>".Yii::t('contentForm','ID Transaction')."</th>
+                        <th scope='col'>".Yii::t('contentForm','Amount')."</th>
                       </tr>
                   ");
 
@@ -131,11 +131,11 @@ $usuario = User::model()->findByPk($orden->user_id);
                         echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 
                         if($detalle->tipo_pago == 1)
-                            echo("<td>Deposito en espera de confirmacion</td>");
+                            echo("<td>".Yii::t('contentForm','Awaiting confirmation deposit')."</td>");
                             //hacer los demas tipos
 
                         echo("<td>".$detalle->nTransferencia."</td>");
-                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym').".</td>");
                     }
                     else
                         if($detalle->estado == 1) // si fue aceptado
@@ -144,16 +144,16 @@ $usuario = User::model()->findByPk($orden->user_id);
                             echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 
                             if($detalle->tipo_pago == 1)
-                                echo("<td>Deposito o Transferencia</td>");
+                                echo("<td>".Yii::t('contentForm','Deposit or Transference')."</td>");
                             if($detalle->tipo_pago == 2)
-                                echo("<td>Tarjeta de credito</td>");
+                                echo("<td>".Yii::t('contentForm','Credit Card')."</td>");
  						if($detalle->tipo_pago == 3)
-							echo("<td>Saldo</td>");						
+							echo("<td>".Yii::t('contentForm','Balance')."</td>");						
 						if($detalle->tipo_pago == 4)
-							echo("<td>Mercado Pago</td>");	                               //hacer los demas tipos
+							echo("<td>".Yii::t('contentForm','MercadoPago')."</td>");	                               //hacer los demas tipos
 
                             echo("<td>".$detalle->nTransferencia."</td>");
-                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</td>");
 
                         }
                     else if($detalle->estado == 2) // rechazado
@@ -162,11 +162,11 @@ $usuario = User::model()->findByPk($orden->user_id);
                         echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
 
                         if($detalle->tipo_pago == 1)
-                            echo("<td>Deposito o Transferencia</td>");
+                            echo("<td>".Yii::t('contentForm','Deposit or Transference')."</td>");
                             //hacer los demas tipos
 
-                        echo("<td> PAGO RECHAZADO </td>");
-                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+                        echo("<td>".Yii::t('contentForm','Payment declined')."</td>");
+                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</td>");
 
                         }
 
@@ -183,15 +183,15 @@ $usuario = User::model()->findByPk($orden->user_id);
      ?>
 
       <div class="well well-small margin_top well_personaling_small">
-        <h3 class="braker_bottom "> Envio </h3>
+        <h3 class="braker_bottom "> <?php echo Yii::t('contentForm','Shipping'); ?> </h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
-            <th scope="col">Fecha estimada de entrega</th>
-            <th scope="col">Tipo</th>
-            <th scope="col">Transportista</th>
-            <th scope="col">Peso</th>
-            <th scope="col">Costo de envio</th>
-            <th scope="col">Numero de seguimiento</th>
+            <th scope="col"><?php echo Yii::t('contentForm','Date estimated delivery'); ?></th>
+            <th scope="col"><?php echo Yii::t('contentForm','Type'); ?></th>
+            <th scope="col"><?php echo Yii::t('contentForm','Courier delivery'); ?></th>
+            <th scope="col"><?php echo Yii::t('contentForm','Weigth'); ?></th>
+            <th scope="col"><?php echo Yii::t('contentForm','Shipping cost'); ?></th>
+            <th scope="col"><?php echo Yii::t('contentForm','Tracking'); ?></th>
           </tr>
           <tr>
             <td>21/12/2012 - 12:21 PM</td>
@@ -210,7 +210,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
       <div class="row-fluid">
           <div class="span12">
-          <h3 class="braker_bottom margin_top">Dirección de envío</h3>
+          <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Shipping address'); ?></h3>
           <div class="vcard">
             <div class="adr">
                 <?php
@@ -222,8 +222,8 @@ $usuario = User::model()->findByPk($orden->user_id);
               <span class="locality"><?php echo $ciudad->nombre ?>, <?php echo $provincia->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
-            <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+            <div class="tel margin_top_small"> <span class="type"><strong><?php echo Yii::t('contentForm','Phone');  ?></strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
+            <div><strong><?php echo Yii::t('contentForm','Email');  ?></strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div></div>
 
         <!--
@@ -246,12 +246,12 @@ $usuario = User::model()->findByPk($orden->user_id);
     </div>
     <div class="span5">
       <div class="well well_personaling_big">
-        <h3 class="braker_bottom"><strong>Progreso del pedido</strong></h3>
+        <h3 class="braker_bottom"><strong><?php echo Yii::t('contentForm','Progress order');  ?></strong></h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
-            <th scope="col">Estado</th>
-            <th scope="col">Usuario</th>
-            <th scope="col">Fecha</th>
+            <th scope="col"><?php echo Yii::t('contentForm','State');  ?></th>
+            <th scope="col"><?php echo Yii::t('contentForm','User');  ?></th>
+            <th scope="col"><?php echo Yii::t('contentForm','Date');  ?></th>
           </tr> 
           <?php
 
@@ -273,19 +273,19 @@ $usuario = User::model()->findByPk($orden->user_id);
 
           ?>
           <tr>
-            <td>Nuevo Pedido</td>
+            <td><?php echo Yii::t('contentForm','New Order');  ?></td>
             <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
             <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
           </tr>
         </table>
       </div>
 
-  <div class="well well-small margin_top well_personaling_small">  <h3 class="braker_bottom margin_top"> Documentos</h3>
+  <div class="well well-small margin_top well_personaling_small">  <h3 class="braker_bottom margin_top"> <?php echo Yii::t('contentForm','Documents');  ?></h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
-          <th scope="col">Fecha</th>
-          <th scope="col">Documento</th>
-          <th scope="col">Número</th>
+          <th scope="col"><?php echo Yii::t('contentForm','Date');  ?></th>
+          <th scope="col"><?php echo Yii::t('contentForm','Document');  ?></th>
+          <th scope="col"><?php echo Yii::t('contentForm','Number');  ?></th>
         </tr>
         <?php
         $factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
@@ -342,14 +342,14 @@ $usuario = User::model()->findByPk($orden->user_id);
    <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped" align="center">
         <tr>
-          <th scope="col">Nombre de la prenda</th>
-          <th scope="col">Marca</th>
-          <th scope="col">Color</th>
-          <th scope="col">Talla</th>
+          <th scope="col"><?php echo Yii::t('contentForm','Name of items');  ?></th>
+          <th scope="col"><?php echo Yii::t('contentForm','Brand');  ?></th>
+          <th scope="col"><?php echo Yii::t('contentForm','Color');  ?></th>
+          <th scope="col"><?php echo Yii::t('contentForm','Size');  ?></th>
 
-          <th scope="col">Cant.</th>
+          <th scope="col"><?php echo Yii::t('contentForm','Quantity');  ?></th>
 
-          <th scope="col">Precio</th>
+          <th scope="col"><?php echo Yii::t('contentForm','Price');  ?></th>
 
         </tr>
         <?php
@@ -396,7 +396,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             //INDIVIDUALES
 
             if($individuales>0)
-            echo("<tr><td colspan='6' class='bg_color5'><strong>Prendas Individuales</strong></td></tr>");
+            echo("<tr><td colspan='6' class='bg_color5'><strong>".Yii::t('contentForm','Individual items')."</strong></td></tr>");
            // $separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);
               $separados = OrdenHasProductotallacolor::model()->findAllByAttributes(array("tbl_orden_id"=>$orden->id, "look_id"=>0));
             foreach($separados as $prod){
@@ -448,35 +448,35 @@ $usuario = User::model()->findByPk($orden->user_id);
 
   </div>
     <div class="span5">
-      <div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> Resumen del Pedido</h3>
+      <div class="well well-small margin_top well_personaling_small"> <h3 class="braker_bottom margin_top"> <?php echo Yii::t('contentForm','Order Summary');  ?></h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
-          <th scope="col">No de Looks</th>
+          <th scope="col"><?php echo Yii::t('contentForm','Nro. looks');  ?></th>
           <th scope="col"><?php echo($looks); ?></th>
         </tr>
         <tr>
-          <td>No de Prendas</td>
+          <td><?php echo Yii::t('contentForm','Nro. items');  ?></td>
           <td><?php echo($individuales); ?></td>
         </tr>
         <tr>
-          <td>SubTotal</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal). " Bs."; ?></td>
+          <td><?php echo Yii::t('contentForm','Subtotal');  ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
         <tr>
-          <td>Descuento</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento). " Bs."; ?></td>
+          <td><?php echo Yii::t('contentForm','Discount');  ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
         <tr>
-          <td>Envio y Transporte</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio). " Bs."; ?></td>
+          <td><?php echo Yii::t('contentForm','Shipping and Transport');  ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
         <tr>
-          <td>Impuesto</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva). " Bs."; ?></td>
+          <td><?php echo Yii::t('contentForm','Tax');  ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
         <tr>
-          <td>Total</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " Bs."; ?></td>
+          <td><?php echo Yii::t('contentForm','Total');  ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
       </table></div>
     </div>
@@ -521,17 +521,17 @@ Para una futura iteración
  <hr/>
      <div class="row">
 		   <div class="span12 well well-small margin_top well_personaling_small">
-		     <h3 class="braker_bottom margin_top">Productos devueltos</h3>
+		     <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Retuned items');  ?></h3>
 		      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
 		        <tr>
 
-		            <th scope="col">Referencia</th>
-		            <th scope="col">Nombre</th>
-		            <th scope="col">Marca</th>
-		            <th scope="col">Color</th>
-		            <th scope="col">Talla</th>
-		            <th scope="col">Motivo</th>
-		            <th scope="col">Precio</th>
+		            <th scope="col"><?php echo Yii::t('contentForm','Reference');  ?></th>
+		            <th scope="col"><?php echo Yii::t('contentForm','Name');  ?></th>
+		            <th scope="col"><?php echo Yii::t('contentForm','Brand');  ?></th>
+		            <th scope="col"><?php echo Yii::t('contentForm','Color');  ?></th>
+		            <th scope="col"><?php echo Yii::t('contentForm','Size');  ?></th>
+		            <th scope="col"><?php echo Yii::t('contentForm','Reason');  ?></th>
+		            <th scope="col"><?php echo Yii::t('contentForm','Price');  ?></th>
 		        </tr>
 		    <?php
 
@@ -570,25 +570,25 @@ Para una futura iteración
 		    {
 		    ?>
 		        <tr>
-		            <td>No se ha devuelto ningún producto de esta orden.</td>
+		            <td><?php echo Yii::t('contentForm','None of the items returned');  ?></td>
 		        </tr>
 		    <?php
 		    }
 		    ?>
 		        <tr>
-		            <th colspan="7"><div class="text_align_right"><strong>Resumen</strong></div></th>
+		            <th colspan="7"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Sumary');  ?></strong></div></th>
 		        </tr>
 		        <tr>
-		            <td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-		            <td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
+		            <td colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Amount returned');  ?>:</strong></div></td>
+		            <td  class="text_align_right"><?php echo $totaldevuelto." ".Yii::t('contentForm','currSym'); ?></td>
 		        </tr>
 		        <tr>
-		            <td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-		            <td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
+		            <td colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Value for returned shipping');  ?>:</strong></div></td>
+		            <td  class="text_align_right"><?php echo $totalenvio; ?> <?php echo Yii::t('contentForm','currSym');  ?></td>
 		        </tr>
 		        <tr>
-		            <th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
+		            <th colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Total returned');  ?></strong></div></th>
+		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio)." ".Yii::t('contentForm','currSym')."."?>;</th>
 		        </tr>
 		        </table>
 		    </div>

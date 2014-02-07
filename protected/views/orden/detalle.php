@@ -54,35 +54,7 @@ $tracking=$orden->getTracking();
    	<td><p class="T_xlarge margin_top_xsmall color1">
 <?php
 //----------------------Estado
-	if($orden->estado == 1)
-		echo "En espera de pago"; 
-	
-	if($orden->estado == 2)
-		echo "Espera confirmación";
-	
-	if($orden->estado == 3)
-		echo "Pago Confirmado";
-
-	if($orden->estado == 4)
-		echo "Pedido Enviado";
-	
-	if($orden->estado == 5)
-		echo "Orden Cancelada";	
-	
-	if($orden->estado == 6)
-		echo "Pago Rechazado";
-
-	if($orden->estado == 7)
-		echo "Pago Insuficiente";
-	
-	if($orden->estado == 8)
-		echo "Orden Entregada";
-	
-	if($orden->estado == 9)
-		echo "Devuelto";
-		
-	if($orden->estado == 10)
-		echo "Devolución Parcial";
+	echo $orden->textestado;
 	
 	// agregar demas estados
 ?>
@@ -498,36 +470,9 @@ $tracking=$orden->getTracking();
 		  	{
 		  		echo("<tr>");
 				
-				if($est->estado==1)
-					echo("<td>Pendiente de Pago</td>");
 				
-				if($est->estado==2)
-					echo("<td>Pendiente por confirmar</td>");
+					echo "<td>".$orden->getTextEstado($est->estado)."</td>";
 				
-				if($est->estado==3)
-					echo("<td>Pago Confirmado</td>");
-				
-				if($est->estado==4)
-					echo("<td>Pedido enviado</td>");			 
-				
-				
-				if($est->estado == 5)
-					echo "<td>Orden Cancelada</td>";	
-				
-				if($est->estado==6)
-					echo("<td>Pago Rechazado</td>");
-				
-				if($est->estado == 7)
-					echo "<td>Pago Insuficiente</td>";
-				
-				if($est->estado == 8)
-					echo "<td>Orden Entregada</td>";
-				
-				if($est->estado == 9)
-					echo "<td>Devuelto</td>";
-		
-				if($est->estado == 10)
-					echo "<td>Parcialmente Devuelto</td>";
 				
 				
 				$usu = User::model()->findByPk($est->user_id);

@@ -10,7 +10,7 @@
                     <td>".$data['Cantidad']."</td>
                     <td>".Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')."</td>
                     <td>".Yii::app()->numberFormatter->formatCurrency($data['Precio'], '')."</td>
-                    <td>".Yii::app()->numberFormatter->formatCurrency(($data['Precio']+($data['Precio']*0.12)), '')."</td>
+                    <td>".Yii::app()->numberFormatter->formatCurrency(($data['Precio']*1.12), '')."</td>
                     <td>".date("d/m/Y",strtotime($data['Fecha']))."</td></tr>";
 
 ?>

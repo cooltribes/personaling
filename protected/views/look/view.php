@@ -280,7 +280,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
-                    <div class="span7"><span>Bs.
+                    <div class="span7"><span> <?php echo Yii::t('contentForm', 'currSym'); ?>
                         <?php foreach ($lookhasproducto->producto->precios as $precio) {
                        echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
                        }

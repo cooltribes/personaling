@@ -29,9 +29,7 @@ echo $num;
       <td>
         <p class="T_xlarge margin_top_xsmall"> 
             <?php
-            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=1";
-            $num = Yii::app()->db->createCommand($sql)->queryScalar();
-            echo $num;
+                echo $orden->countxEstado(1);
             ?>    	 
         </p>
         En espera de pago
@@ -39,9 +37,7 @@ echo $num;
       <td>
         <p class="T_xlarge margin_top_xsmall"> 
             <?php
-            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=5";
-            $num = Yii::app()->db->createCommand($sql)->queryScalar();
-            echo $num;
+            echo $orden->countxEstado(5);
             ?>    	 
         </p>
         Cancelados
@@ -57,26 +53,22 @@ echo $num;
         Confirmación</td>
       <td><p class="T_xlarge margin_top_xsmall">
 	<?php
-	$sql = "SELECT count( * ) as total FROM tbl_orden where estado=3";
-	$num = Yii::app()->db->createCommand($sql)->queryScalar();
-	echo $num;
+	echo $orden->countxEstado(3);
 	?>
 	</p>
         Pago Confirmado</td>
-      <?php
-        $cant = Orden::model()->countByAttributes(array('estado'=>7));
-        ?>
-      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $cant; ?> </p>
+      
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $orden->countxEstado(7);?> </p>
         Pago Insuficiente </td>
         <?php
-        $to = Orden::model()->countByAttributes(array('estado'=>4));
+        
         ?>
-      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $to; ?> </p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $orden->countxEstado(4); ?> </p>
         Enviados </td>
         <?php
-        $recibidos = Orden::model()->countByAttributes(array('estado'=>8));
+        
         ?>
-      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $recibidos; ?>  </p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $orden->countxEstado(8); ?>  </p>
         Recibidos</td>
       <td><p class="T_xlarge margin_top_xsmall">  <?php echo Orden::model()->getDevueltas(); ?>  </p>
         Devuelto</td>

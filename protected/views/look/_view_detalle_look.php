@@ -16,7 +16,7 @@
         	<?php foreach($model->lookhasproducto as $lookhasproducto){ ?>     
 <tr> <th scope="row"><?php echo $lookhasproducto->producto->nombre; ?></th>
  <td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> disponibles</td>
-<td>           <?php   echo $lookhasproducto->producto->getPrecio(); ?> Bs.</td>
+<td>           <?php   echo $lookhasproducto->producto->getPrecio().' '.Yii::t('contentForm', 'currSym'); ?> </td>
 
  
 </tr>

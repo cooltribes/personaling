@@ -613,6 +613,44 @@ class Orden extends CActiveRecord
 		//Devuelve array de tracking si lo consigue o null si no
 	} 
 	
+	public function countxEstado($estado){
+		return count($this->findAllByAttributes(array('estado'=>$estado)));
+	}
+	
+	public function getTextEstado($estado = null){
+		if(is_null($estado)){
+			$estado=$this->estado;
+		}
+		
+		if($estado == 1)
+        return "En espera de pago";
+
+    	if($estado == 2)
+       	return "Espera confirmación";
+
+    	if($estado == 3)
+        return  "Pago Confirmado";
+
+    	if($estado == 4)
+        return "Pedido Enviado";
+
+    	if($estado == 5)
+        return "Orden Cancelada";
+
+    	if($estado == 6)
+        return "Pago Rechazado";
+
+    	if($estado == 7)
+        return  "Pago Insuficiente";
+
+   		if($estado == 9)
+        return  "Devuelto";
+
+    	if($estado == 10)
+        return  "Devolución Parcial";
+		
+	}
+	
 	
 	
 }

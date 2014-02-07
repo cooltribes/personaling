@@ -181,14 +181,14 @@
         <div class="span4 columna_secundaria margin_bottom margin_top padding_top">
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span>Subtotal</span> Bs. 
-                <?php foreach ($producto->precios as $precio) {
-            echo Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto); // precio con IVA
-              Yii::app()->clientScript->registerMetaTag(Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto). ' Bs.', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
+              <h4 class="precio" ><span>Subtotal</span> <?php echo Yii::t('contentForm', 'currSym').' ';   
+               
+            echo $producto->precio; // precio con IVA
+              Yii::app()->clientScript->registerMetaTag($producto->precio.' '.Yii::t('contentForm', 'currSym').' ', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
               Yii::app()->clientScript->registerMetaTag('Precio', 'twitter:label1', null, null, null); // registrar tag de precio de Twitter
-                Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto). ' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+                Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.$producto->precio. ' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
 
-            }
+            
   
       ?></h4>
             </div>

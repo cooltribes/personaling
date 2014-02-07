@@ -11,7 +11,7 @@ $usuario = User::model()->findByPk($orden->user_id);
     <?php if(Yii::app()->user->hasFlash('success')){?>
         <div class="alert in alert-block fade alert-success text_align_center">
             <?php echo Yii::app()->user->getFlash('success'); ?>
-        </div>
+        </div> 
     <?php } ?>
     <?php if(Yii::app()->user->hasFlash('error')){?>
         <div class="alert in alert-block fade alert-error text_align_center">
@@ -38,32 +38,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       <td><p class="T_xlarge margin_top_xsmall color1">
 <?php
 //----------------------Estado
-    if($orden->estado == 1)
-        echo "En espera de pago";
-
-    if($orden->estado == 2)
-        echo "Espera confirmación";
-
-    if($orden->estado == 3)
-        echo "Pago Confirmado";
-
-    if($orden->estado == 4)
-        echo "Pedido Enviado";
-
-    if($orden->estado == 5)
-        echo "Orden Cancelada";
-
-    if($orden->estado == 6)
-        echo "Pago Rechazado";
-
-    if($orden->estado == 7)
-        echo "Pago Insuficiente";
-
-    if($orden->estado == 9)
-        echo "Devuelto";
-
-    if($orden->estado == 10)
-        echo "Devolución Parcial";
+   echo $orden->textestado;
 
     // agregar demas estados
 ?>
@@ -91,23 +66,18 @@ $usuario = User::model()->findByPk($orden->user_id);
 
         <?php
 //----------------------Estado
-    if($orden->estado == 1)
+    if($orden->estado == 1 || ($orden->estado == 7 && isset($balance)))
         echo "Bs. Pendientes por pagar";
 
     if($orden->estado == 2)
         echo "Bs. Pendientes por confirmar";
 
-    if($orden->estado == 3 || $orden->estado == 8)
+    if($orden->estado == 3 || $orden->estado == 8 || $orden->estado == 4)
         echo "Bs. ya pagados";
-
-    if($orden->estado == 4)
-        echo "Bs. ya pagados";
-
+	
     if($orden->estado == 5)
         echo "Orden Cancelada";
 
-    if($orden->estado == 7 && isset($balance))
-        echo "Bs. que faltan.";
 
     // agregar demas estados
 ?>
@@ -273,7 +243,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <th scope="col">Estado</th>
             <th scope="col">Usuario</th>
             <th scope="col">Fecha</th>
-          </tr>
+          </tr> 
           <?php
 
           $estados = Estado::model()->findAllByAttributes(array('orden_id'=>$orden->id),array('order'=>'id DESC'));
@@ -282,32 +252,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               {
                   echo("<tr>");
 
-                if($est->estado==1)
-                    echo("<td>Pendiente de Pago</td>");
-
-                if($est->estado==2)
-                    echo("<td>Pendiente por confirmar</td>");
-
-                if($est->estado==3)
-                    echo("<td>Pago Confirmado</td>");
-
-                if($est->estado == 4)
-                    echo("<td>Pedido Enviado</td>");
-
-                if($est->estado==5)
-                    echo("<td>Orden Cancelada</td>");
-
-                if($est->estado==6)
-                    echo("<td>Pago Rechazado</td>");
-
-                if($est->estado == 7)
-                    echo "<td>Pago Insuficiente</td>";
-
-                if($est->estado == 9)
-                    echo "<td>Devuelto</td>";
-
-                if($est->estado == 10)
-                    echo "<td>Parcialmente Devuelto</td>";
+                echo"<td>".$orden->getTextEstado($est->estado)."</td>";
 
                 $usu = User::model()->findByPk($est->user_id);
                 echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");

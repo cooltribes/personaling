@@ -10,35 +10,7 @@
 		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->total)."</td>"; // precio
 		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->getxPagar())."</td>"; // precio
 		//----------------------Estado
-		if($data->estado == 1)
-			echo "<td>En espera de pago</td>"; 
-		
-		if($data->estado == 2)
-			echo "<td>En espera de confirmación</td>"; 
-		
-		if($data->estado == 3)
-			echo "<td>Pago Confirmado</td>";
-		
-		if($data->estado == 4)
-			echo "<td>Orden Enviada</td>";
-			
-		if($data->estado == 5)
-			echo "<td>Orden Cancelada</td>";
-		
-	if($data->estado == 6)
-		echo "<td>Pago Rechazado</td>";
-		
-	if($data->estado == 7)
-		echo "<td>Pago Insuficiente</td>";
-		
-	if($data->estado == 8)
-		echo "<td>Orden Entregada</td>";
-		
-	if($data->estado == 9)
-		echo "<td>Orden Devuelta</td>";
-		
-	if($data->estado == 10)
-		echo "<td>Parcialmente Devuelto</td>";
+		echo "<td>".$orden->textestado."</td>";
 			
 		// agregar demas estados
 		

@@ -33,6 +33,7 @@ return array (
 
      'Email' => 'Email',
 
+     'From' => 'De',
      
      'ID Transaction' => 'ID de Transaccion',
      'Individual items' => 'Prendas individuales',
@@ -83,7 +84,7 @@ return array (
      
      'Reason' => 'Motivo',
      'Reference' => 'Referencia',
-     'Retuned items' => 'Productos devueltos',
+     'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
 
      'Shipping' => 'Envío',

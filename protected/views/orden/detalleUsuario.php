@@ -198,7 +198,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td>Delivery</td>
             <td>Zoom</td>
             <td>0,00 Kg.</td>
-            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo $orden->envio.' '.Yii::t('contentForm','currSym'); ?> .</td>
             <td><?php echo $orden->tracking; ?></td>
           </tr>
         </table>
@@ -521,7 +521,7 @@ Para una futura iteración
  <hr/>
      <div class="row">
 		   <div class="span12 well well-small margin_top well_personaling_small">
-		     <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Retuned items');  ?></h3>
+		     <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Returned items');  ?></h3>
 		      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
 		        <tr>
 
@@ -588,7 +588,7 @@ Para una futura iteración
 		        </tr>
 		        <tr>
 		            <th colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Total returned');  ?></strong></div></th>
-		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio)." ".Yii::t('contentForm','currSym')."."?>;</th>
+		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio)." ".Yii::t('contentForm','currSym')."."?></th>
 		        </tr>
 		        </table>
 		    </div>
@@ -601,7 +601,7 @@ Para una futura iteración
   
   <div class="row" id="mensajes">
     <div class="span7">
-      <h3 class="braker_bottom margin_top">MENSAJES</h3>
+      <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Messages'); ?></h3>
       <form>
         <!--<div class="control-group">
           <select>
@@ -613,7 +613,7 @@ Para una futura iteración
           </select>
         </div>-->
         <div class="control-group">
-        	<input type="text" id="asunto" placeholder="Asunto Del Mensaje" />
+        	<input type="text" id="asunto" placeholder="<?php echo Yii::t('contentForm','Subject'); ?>" />
           	<textarea id="cuerpo" name="cuerpo" cols="" class="span7" rows="4" placeholder="Mensaje"></textarea>
         </div>
        <!-- <div class="control-group">
@@ -623,10 +623,11 @@ Para una futura iteración
         </div>-->
           <label class="checkbox">
         <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id.",".$orden->id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  Enviar comentario</a> </div>
+      </label>
       </form>
     </div>
     <div class="span5">
-      <h3 class="braker_bottom margin_top">Historial de Mensajes</h3>
+      <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Message history'); ?></h3>
       <?php
       
       	$mensajes = Mensaje::model()->findAllByAttributes(array('orden_id'=>$orden->id,'user_id'=>$orden->user_id));
@@ -641,13 +642,13 @@ Para una futura iteración
 				{
 					if(is_null($msj->admin))
 						{	$class='style="background-color:#F5F5F5"';
-							$from='<i class="icon-circle-arrow-right"></i> <strong>Entrada | </strong> De: <strong>Admin | </strong> ';
+							$from='<i class="icon-circle-arrow-right"></i> <strong>'.Yii::t('contentForm','Input').' | </strong> '.Yii::t('contentForm','From').': <strong>Admin | </strong> ';
 						}
 					else
-						$from='<i class="icon-circle-arrow-left"></i> <strong>Salida | </strong> Status: <strong>Enviado | </strong> ';
+						$from='<i class="icon-circle-arrow-left"></i> <strong>'.Yii::t('contentForm','Output').' | </strong> Status: <strong>Enviado | </strong> ';
 					echo '<li class="media braker_bottom">
           					<div class="media-body" '.$class.'>';
-					echo '<h4 class="color4"><i class=" icon-comment"></i> Asunto: '.$msj->asunto.'</h4>';	
+					echo '<h4 class="color4"><i class=" icon-comment"></i> '.Yii::t('contentForm','Subject').': '.$msj->asunto.'</h4>';	
 					echo '<p>'.$msj->cuerpo.'</p>';	
 					echo '<p class="muted">'.$from.'<strong>'.date('d/m/Y', strtotime($msj->fecha)).'</strong> '.date('h:i A', strtotime($msj->fecha)).'</p>';
 					$class="";				
@@ -657,12 +658,13 @@ Para una futura iteración
 			<?php
 		}
 		else {
-			echo '<h4 class="color4">No se han enviado mensajes.</h4>';	
+			echo '<h4 class="color4">'.Yii::t('contentForm','No messages have been posted').'</h4>';	
 		}
       
       ?>
       
     </div>
+
     
     <!-- MENSAJES OFF -->
      

@@ -48,7 +48,7 @@ echo"<tr>";
 	echo "</td>";
 	
 	//----------------------Estado
-	echo "<td>".$orden->textestado."</td>";
+	echo "<td>".$data->textestado."</td>";
 	// agregar demas estados	
         
 	//------------------ acciones

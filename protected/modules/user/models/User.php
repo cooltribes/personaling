@@ -718,6 +718,11 @@ class User extends CActiveRecord {
 		}
 		return $this->username; 
 	} 
+        
+        
+	public function getEdad(){
+		
+	} 
 	 
 
 }

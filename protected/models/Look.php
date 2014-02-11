@@ -209,6 +209,15 @@ class Look extends CActiveRecord
 		));*/
 		
 		if ($user!==null){
+                    
+//                    echo "<pre>";
+//                    print_r($user->profile->birthday);
+//                    echo "</pre>";
+//                    
+////                    echo date("d/m/Y", time()."-".strtotime($user->profile->birthday));
+//                    echo date("d/m/Y", time() - strtotime($user->profile->birthday));
+//                    Yii::app()->end();
+                    
 		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE deleted=0 and (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
 		$sql='SELECT id FROM tbl_look WHERE deleted = 0 AND  (
@@ -228,6 +237,9 @@ class Look extends CActiveRecord
 			if('.$user->profile->piel.' & piel !=0,1,0)+
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 5 
+		UNION ALL '.
+		'SELECT id FROM tbl_look WHERE deleted = 0 AND 
+                    
 		';
 		} else {
 			$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look where deleted=0')->queryScalar();
@@ -932,6 +944,22 @@ class Look extends CActiveRecord
 		{		
 			foreach($this->productos as  $producto){
 				if($producto->mymarca->is_100chic)
+					return true;
+			}
+		}
+		return false;
+	}
+        
+        /**
+         * Se revisa si el look tiene al menos una prenda en existencia,
+         * disponible y activa.
+         */
+	public function getIsVisible(){
+		if(is_array($this->productos))
+		{		
+			foreach($this->lookhasproducto as $lookhasproducto){
+				if($lookhasproducto->producto->getCantidad(null, $lookhasproducto->color_id) > 0 && 
+                                    $lookhasproducto->producto->estado == 0)
 					return true;
 			}
 		}

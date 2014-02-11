@@ -67,13 +67,13 @@ $usuario = User::model()->findByPk($orden->user_id);
         <?php
 //----------------------Estado
     if($orden->estado == 1 || ($orden->estado == 7 && isset($balance)))
-        echo "Bs. Pendientes por pagar";
+        echo Yii::t('contentForm', 'currSym').' '."Pendientes por pagar";
 
     if($orden->estado == 2)
-        echo "Bs. Pendientes por confirmar";
+        echo Yii::t('contentForm', 'currSym').' '."Pendientes por confirmar";
 
     if($orden->estado == 3 || $orden->estado == 8 || $orden->estado == 4)
-        echo "Bs. ya pagados";
+        echo Yii::t('contentForm', 'currSym').' '."ya pagados";
 	
     if($orden->estado == 5)
         echo "Orden Cancelada";
@@ -84,7 +84,7 @@ $usuario = User::model()->findByPk($orden->user_id);
        </td>
          <td><?php if ($orden->estado==1||$orden->estado==6||$orden->estado==7){?><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white">
          	
-         </i> Reportar Pago }
+         </i> Reportar Pago 
          	<?php } ?></td>
           <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> Imprimir pedido</a></td>
     </tr>
@@ -189,7 +189,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td>Delivery</td>
             <td>Zoom</td>
             <td>0,00 Kg.</td>
-            <td><?php echo $orden->envio; ?> Bs.</td>
+            <td><?php echo $orden->envio+$orden->seguro.' '.Yii::t('contentForm', 'currSym'); ?></td>
             <td><?php echo $orden->tracking; ?></td>
           </tr>
         </table>
@@ -451,23 +451,23 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
           <td>SubTotal</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal). " Bs."; ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal).' '.Yii::t('contentForm', 'currSym'); ?></td>
         </tr>
         <tr>
           <td>Descuento</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento). " Bs."; ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento).' '.Yii::t('contentForm', 'currSym');?></td>
         </tr>
         <tr>
           <td>Envio y Transporte</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio). " Bs."; ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio).' '.Yii::t('contentForm', 'currSym'); ?></td>
         </tr>
         <tr>
           <td>Impuesto</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva). " Bs."; ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva).' '.Yii::t('contentForm', 'currSym'); ?></td>
         </tr>
         <tr>
           <td>Total</td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " Bs."; ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total).' '.Yii::t('contentForm', 'currSym'); ?></td>
         </tr>
       </table></div>
     </div>
@@ -571,15 +571,15 @@ Para una futura iteración
 		        </tr>
 		        <tr>
 		            <td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-		            <td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
+		            <td  class="text_align_right"><?php echo $totaldevuelto.' '.Yii::t('contentForm', 'currSym');; ?> </td>
 		        </tr>
 		        <tr>
 		            <td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-		            <td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
+		            <td  class="text_align_right"><?php echo $totalenvio.' '.Yii::t('contentForm', 'currSym'); ?> </td>
 		        </tr>
 		        <tr>
 		            <th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
+		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio).' '.Yii::t('contentForm', 'currSym'); ?> Bs</th>
 		        </tr>
 		        </table>
 		    </div>

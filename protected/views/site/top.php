@@ -87,7 +87,7 @@ function str_lreplace($search, $replace, $subject)
                                         	<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
                                         </h5>
                                     </div>
-                                    <div class="span6"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                                    <div class="span6"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym').' ';?></small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -157,7 +157,7 @@ function str_lreplace($search, $replace, $subject)
                                     <div class="span4"> <span class="muted">Look creado por: </span>
                                         <h5><?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?></h5>
                                     </div>
-                                    <div class="span6"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                                    <div class="span6"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym').' ';?></small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>

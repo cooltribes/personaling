@@ -35,7 +35,7 @@ $tipo_pago = $orden->getTipoPago();
       <hr/>
       <p><strong>Para completar tu comprar debes:</strong></p>
       <ol>
-        <li> <strong>Realizar el pago</strong>: de <?php echo Yii::app()->numberFormatter->formatCurrency( $orden->getxPagar(), 'Bs.'); ?> via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?> en la siguiente cuenta bancaria: <br>
+        <li> <strong>Realizar el pago</strong>: de <?php echo Yii::app()->numberFormatter->formatCurrency( $orden->getxPagar(), Yii::t('contentForm', 'currSym').' '); ?> via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?> en la siguiente cuenta bancaria: <br>
           <br>
           <ul class="margin_bottom_medium">
             <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
@@ -74,7 +74,7 @@ $tipo_pago = $orden->getTipoPago();
     <hr/>
     <p><strong>Para completar tu comprar debes:</strong></p>
     <ol>
-      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''); ?> via MercadoPago. <br>
+      <li> <strong>Realizar el pago</strong>: de <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''); ?> via MercadoPago. <br>
       </li>
       <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
       <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
@@ -134,25 +134,25 @@ $tipo_pago = $orden->getTipoPago();
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
             </tr>
             <?php if($orden->descuento != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left">Descuento:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
             </tr>
             <?php } ?>            
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
             </tr>
             <tr>
-              <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
+              <th class="text_align_left">I.V.A. (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
             </tr>            
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
+              <td><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
             </tr>
           </table>
           <hr/>
@@ -244,7 +244,7 @@ $tipo_pago = $orden->getTipoPago();
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'</td>
 		                  		</td>
-		                <td>Bs. '.$pre.'</td>
+		                <td>'.Yii::t('contentForm', 'currSym').' '.$pre.'</td>
 		                <td>'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
@@ -363,7 +363,7 @@ $tipo_pago = $orden->getTipoPago();
 					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 				}
 						
-					echo "<td>Bs. ".$pre."</td>";
+					echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
 					echo "<td>".$individual->cantidad."</td>
 					</tr>";
 

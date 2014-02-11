@@ -41,7 +41,7 @@ else
 			</a>
 			<header><h3><a href='".$producto->getUrl()."' title='".$producto->nombre."'>".$producto->nombre."</a></h3>
 			<a href='".$producto->getUrl()."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
-			<span class='precio'>Bs. ".$prePub."</span>
+			<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$prePub."</span>
 			<a id='like".$producto->id."' onclick='encantar(".$producto->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
 
 ?>

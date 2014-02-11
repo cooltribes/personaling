@@ -392,21 +392,21 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       	?>
                       <tr>
                         <th class="text_align_left">Productos:</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
                       </tr>
                       <?php if($totalDe != 0){ // si no hay descuento ?> 
                       <tr>
                         <th class="text_align_left">Descuento:</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
                       </tr>
                       <?php } ?>
                       <tr>
                         <th class="text_align_left">I.V.A. (12%):</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
                       </tr>
                       <tr>
                         <th class="text_align_left"><h4>Subtotal:</h4></th>
-                        <td class="text_align_right"><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
+                        <td class="text_align_right"><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
                       </tr>
                     </table>
                     

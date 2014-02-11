@@ -9,10 +9,6 @@
   	
 	<?php foreach($looks as $look): 
                 if(!$look->getIsVisible()){
-//                    echo '<div class="span4 look">
-//                          <article > 
-//                          NADA
-//                          </article> </div>';
                     continue;
                 }
 		?>

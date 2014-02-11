@@ -18,29 +18,23 @@
         <div class="row-fluid margin_bottom_medium margin_top_medium">
             <div class="span6 offset3">                                     
                         
-                       <ul class="nav nav-tabs nav-stacked">
-                        
-                        <?php
-                        
-                            $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));
-                            
-                            $elementos = array();
-                            
-                            foreach($otrosPerfiles as $perfil){
-                                
-                                echo '<li class="divider-vertical">
-                                    <a data-dismiss="modal" aria-hidden="true" id="'.$perfil->id_filter.
-                                        '" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg"> '.
-                                        $perfil->name.'</a></li>';                                    
-                                       
-                            }
-                            ?>
-                           </ul>
+               <ul class="nav nav-tabs nav-stacked">
+                <?php
+                $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));                            
+
+                foreach($otrosPerfiles as $perfil){
+
+                    echo '<li class="divider-vertical">
+                        <a data-dismiss="modal" aria-hidden="true" id="'.$perfil->id_filter.
+                            '" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg"> '.
+                            $perfil->name.'</a></li>';                                    
+
+                }
+                ?>
+               </ul>
             
             </div>
         </div>
-        
-            
         
     </div>
     

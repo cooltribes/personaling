@@ -89,7 +89,7 @@ $this->breadcrumbs = array(
                     800 => 800,
                     900 => 900,
                     1000 => 1000,
-                        ), array('class' => 'span2'));
+                        ), array('class' => 'span1', 'append' => 'Bs.'));
                 ?>
 
             </div>	

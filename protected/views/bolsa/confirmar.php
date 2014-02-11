@@ -37,7 +37,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
-      <div class="first-past">Autenticación</div>
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
       <div class="middle-past">Dirección<br/>
         de envío <br/>
         y facturación</div>
@@ -49,7 +49,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación del Pedido
+      <h1><?php echo Yii::t('contentForm','Order confirmation'); ?>
           <br>
           <?php 
               $userObject = User::model()->findByPk($user);
@@ -81,7 +81,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   <div class="row margin_top_medium">
       <section class="span4">
       <div class="well ">
-        <h4 class="braker_bottom">Detalles del Pedido</h4>
+        <h4 class="braker_bottom"><?php echo Yii::t('contentForm','Order Details'); ?></h4>
         <form id="form_productos">          
           <!-- Look ON -->
           <!--<h3 class="braker_bottom">Productos Individuales</h3>-->
@@ -89,9 +89,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             <table class="table" width="100%" >
               <thead>
                 <tr>
-                  <th>Producto</th>
-                  <th>Precio Unitario</th>
-                  <th>Cantidad</th>
+                  <th><?php echo Yii::t('contentForm','Product'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Unit price'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Quantity'); ?></th>
                 </tr>
               </thead>
               <tbody>
@@ -162,7 +162,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envío</h4>
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>
         <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
@@ -174,7 +174,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
-        <p><strong>Dirección:</strong> <br/>
+        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
         <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>

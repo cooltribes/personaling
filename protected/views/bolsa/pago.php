@@ -299,8 +299,8 @@ echo CHtml::hiddenField('user',$user);
                               $totalDe = $totalDe + $y;
                           }*/
 
-                        $iva = (($totalPr - $totalDe)*0.12);
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) ;
+                        $iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA'));
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) ;
 						if($peso_total < 5){
 							
 							$direccion = Direccion::model()->findByPk($idDireccion);
@@ -330,7 +330,7 @@ echo CHtml::hiddenField('user',$user);
 							$seguro=$envio*0.13;
 						}
 
-                        $t = $t + $envio;
+                        $t = $t + $envio + $seguro;
                         
 					
 
@@ -344,27 +344,27 @@ echo CHtml::hiddenField('user',$user);
 						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
 						Yii::app()->getSession()->add('peso',$peso_total);
 						
-                        echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
+                        echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   </td>
               </tr>          
               <tr>
                 <th class="text_align_left">Envío:</th>
-                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
+                <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
               </tr>
               <tr>
-                <th class="text_align_left">I.V.A. (12%):</th>
-                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
+                <th class="text_align_left">I.V.A. (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+                <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
               </tr>
               <?php if($totalDe != 0){ // si no hay descuento ?> 
               <tr>
                 <th class="text_align_left">Descuento:</th>
-                <td class="text_align_right" id="descuento"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+                <td class="text_align_right" id="descuento"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
               <?php } ?>
               <tr>
                 <th class="text_align_left"><h4>Total:</h4></th>
-                <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
+                <td class="text_align_right"><h4 id="precio_total"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
               </tr>
             </table>
 
@@ -381,7 +381,7 @@ echo CHtml::hiddenField('user',$user);
             <div>
                 <label class="checkbox<?php echo $class; ?>">
                 <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                Usar Balance disponible: <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
               </label>
             </div>
 	    

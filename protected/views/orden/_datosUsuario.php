@@ -10,7 +10,7 @@
 		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->total)."</td>"; // precio
 		echo "<td>".Yii::app()->numberFormatter->formatDecimal($data->getxPagar())."</td>"; // precio
 		//----------------------Estado
-		echo "<td>".$orden->textestado."</td>";
+		echo "<td>".$data->textestado."</td>";
 			
 		// agregar demas estados
 		

@@ -67,6 +67,17 @@ $usuario = User::model()->findByPk($orden->user_id);
 
         <?php
 //----------------------Estado
+<<<<<<< HEAD
+    if($orden->estado == 1 || ($orden->estado == 7 && isset($balance)))
+        echo Yii::t('contentForm', 'currSym').' '."Pendientes por pagar";
+
+    if($orden->estado == 2)
+        echo Yii::t('contentForm', 'currSym').' '."Pendientes por confirmar";
+
+    if($orden->estado == 3 || $orden->estado == 8 || $orden->estado == 4)
+        echo Yii::t('contentForm', 'currSym').' '."ya pagados";
+	
+=======
 
     if($orden->estado == 1)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending payment');
@@ -81,6 +92,7 @@ $usuario = User::model()->findByPk($orden->user_id);
     if($orden->estado == 4)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Paid');
 
+>>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
     if($orden->estado == 5)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Order Cancelled');
 
@@ -93,7 +105,11 @@ $usuario = User::model()->findByPk($orden->user_id);
        </td>
          <td><?php if ($orden->estado==1||$orden->estado==6||$orden->estado==7){?><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white">
          	
+<<<<<<< HEAD
+         </i> Reportar Pago 
+=======
          </i> <?php echo Yii::t('contentForm','Payment report'); ?>
+>>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
          	<?php } ?></td>
           <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> <?php echo Yii::t('contentForm','Print order'); ?></a></td>
     </tr>
@@ -198,7 +214,11 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td>Delivery</td>
             <td>Zoom</td>
             <td>0,00 Kg.</td>
+<<<<<<< HEAD
+            <td><?php echo $orden->envio+$orden->seguro.' '.Yii::t('contentForm', 'currSym'); ?></td>
+=======
             <td><?php echo $orden->envio.' '.Yii::t('contentForm','currSym'); ?> .</td>
+>>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
             <td><?php echo $orden->tracking; ?></td>
           </tr>
         </table>
@@ -459,6 +479,26 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo($individuales); ?></td>
         </tr>
         <tr>
+<<<<<<< HEAD
+          <td>SubTotal</td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal).' '.Yii::t('contentForm', 'currSym'); ?></td>
+        </tr>
+        <tr>
+          <td>Descuento</td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento).' '.Yii::t('contentForm', 'currSym');?></td>
+        </tr>
+        <tr>
+          <td>Envio y Transporte</td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio).' '.Yii::t('contentForm', 'currSym'); ?></td>
+        </tr>
+        <tr>
+          <td>Impuesto</td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva).' '.Yii::t('contentForm', 'currSym'); ?></td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total).' '.Yii::t('contentForm', 'currSym'); ?></td>
+=======
           <td><?php echo Yii::t('contentForm','Subtotal');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
@@ -477,6 +517,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         <tr>
           <td><?php echo Yii::t('contentForm','Total');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " ".Yii::t('contentForm','currSym')."."; ?></td>
+>>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
         </tr>
       </table></div>
     </div>
@@ -579,6 +620,18 @@ Para una futura iteración
 		            <th colspan="7"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Sumary');  ?></strong></div></th>
 		        </tr>
 		        <tr>
+<<<<<<< HEAD
+		            <td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
+		            <td  class="text_align_right"><?php echo $totaldevuelto.' '.Yii::t('contentForm', 'currSym');; ?> </td>
+		        </tr>
+		        <tr>
+		            <td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
+		            <td  class="text_align_right"><?php echo $totalenvio.' '.Yii::t('contentForm', 'currSym'); ?> </td>
+		        </tr>
+		        <tr>
+		            <th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
+		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio).' '.Yii::t('contentForm', 'currSym'); ?> Bs</th>
+=======
 		            <td colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Amount returned');  ?>:</strong></div></td>
 		            <td  class="text_align_right"><?php echo $totaldevuelto." ".Yii::t('contentForm','currSym'); ?></td>
 		        </tr>
@@ -589,6 +642,7 @@ Para una futura iteración
 		        <tr>
 		            <th colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Total returned');  ?></strong></div></th>
 		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio)." ".Yii::t('contentForm','currSym')."."?></th>
+>>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
 		        </tr>
 		        </table>
 		    </div>

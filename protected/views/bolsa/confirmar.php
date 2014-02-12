@@ -37,7 +37,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
-      <div class="first-past">Autenticación</div>
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
       <div class="middle-past">Dirección<br/>
         de envío <br/>
         y facturación</div>
@@ -49,7 +49,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación del Pedido
+      <h1><?php echo Yii::t('contentForm','Order confirmation'); ?>
           <br>
           <?php 
               $userObject = User::model()->findByPk($user);
@@ -81,7 +81,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   <div class="row margin_top_medium">
       <section class="span4">
       <div class="well ">
-        <h4 class="braker_bottom">Detalles del Pedido</h4>
+        <h4 class="braker_bottom"><?php echo Yii::t('contentForm','Order Details'); ?></h4>
         <form id="form_productos">          
           <!-- Look ON -->
           <!--<h3 class="braker_bottom">Productos Individuales</h3>-->
@@ -89,9 +89,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             <table class="table" width="100%" >
               <thead>
                 <tr>
-                  <th>Producto</th>
-                  <th>Precio Unitario</th>
-                  <th>Cantidad</th>
+                  <th><?php echo Yii::t('contentForm','Product'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Unit price'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Quantity'); ?></th>
                 </tr>
               </thead>
               <tbody>
@@ -139,7 +139,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
 
 
-                        echo "<td style='width:26%'>Bs. ".$pre."</td>";
+                        echo "<td style='width:26%'>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
                     ?>
 
               <td width='8%' style="text-align: center">
@@ -162,7 +162,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envío</h4>
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>
         <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
@@ -174,7 +174,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
-        <p><strong>Dirección:</strong> <br/>
+        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
         <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
@@ -230,25 +230,25 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
             </tr>
             <tr>
-              <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
+              <th class="text_align_left">I.V.A. (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
             </tr>
             <?php if($descuento != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left">Descuento:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
            	</tr>
            	<?php } ?>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
+              <td><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
             </tr>
           </table>
           <?php

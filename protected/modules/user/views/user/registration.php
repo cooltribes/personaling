@@ -378,4 +378,55 @@ function check_fb(){
 function check_twitter(){
 	console.log("Twitter");
 }
+
+$('#Profile_day').on('change', validarFecha);
+$('#Profile_month').on('change', validarFecha);
+$('#Profile_year').on('change', validarFecha);
+
+function validarFecha(){
+        var day = $('#Profile_day').val();
+        var month = $('#Profile_month').val();
+        var year = $('#Profile_anio').val();
+        
+        if(day != '-1' && month != '-1' && year != '-1'){
+                if(validarAnio(day, month, year)){
+                        $('#Campana_ventas_fin').val(year+'-'+month+'-'+day+' 23:59:59');
+                }else{
+                        $('#Profile_day').val('-1'); 
+                        $('#Profile_month').val('-1');
+                        $('#Profile_year').val('-1');
+                }
+        }
+}
+
+function validarAnio(dia, mes, anio){
+    var numDias = 31;
+    //console.log('Dia: '+dia+' - Mes: '+mes+' - Año: '+anio);
+
+    if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
+        numDias = 30;
+    }
+
+    if(mes == 2){
+        if(comprobarSiBisisesto(anio)){
+            numDias = 29;
+        }else{
+            numDias = 28;
+        }
+    }
+
+    if(dia > numDias){
+        return false;
+    }
+    return true;
+}
+
+function comprobarSiBisisesto(anio){
+    if ( ( anio % 100 != 0) && ((anio % 4 == 0) || (anio % 400 == 0))) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 </script>

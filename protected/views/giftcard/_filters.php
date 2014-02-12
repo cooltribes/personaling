@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="">
+<div class="row margin_top margin_bottom" id="filters-view" style="display:none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">

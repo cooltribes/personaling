@@ -58,7 +58,7 @@
 </div>
 <script type="text/javascript">
 
- //Click para seleccionar un peril de la lista que esta en el dropdown User
+ //Click para seleccionar un perfil de la lista que esta en el dropdown User
     $("#modalPerfilesOcultos li a").click(function(e){
         e.preventDefault();
         var urlActual = "<?php echo CController::createUrl(""); ?>";

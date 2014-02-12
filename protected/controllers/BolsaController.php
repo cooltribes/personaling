@@ -734,7 +734,8 @@ class BolsaController extends Controller
     //				$metric->user_id = Yii::app()->user->id;
                                 $metric->user_id = $usuario;
                                 $metric->step = ShoppingMetric::STEP_DIRECCIONES;
-                                $metric->save();	
+                                $metric->save();
+                              
                             }
                             
                             $this->render('direcciones',array(

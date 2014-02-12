@@ -52,7 +52,7 @@ echo CHtml::hiddenField('user',$user);
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
        -->
             <div class="accordion" id="accordion2">	
-                    <div class="accordion-group">
+<!--                    <div class="accordion-group">
                             <div class="accordion-heading">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="btn_mercadopago">
                                             <label class="radio">
@@ -66,7 +66,7 @@ echo CHtml::hiddenField('user',$user);
                                     </div>
 
                             </div>
-                    </div>
+                    </div>-->
 
                     <div class="accordion-group">
                             <div class="accordion-heading">

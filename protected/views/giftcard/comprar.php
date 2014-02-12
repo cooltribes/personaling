@@ -76,21 +76,26 @@ $this->breadcrumbs = array(
                 <p class="lead">2. Selecciona el monto</p>
                 <?php echo $form->errorSummary($model); ?>
 
-
-                <?php
-                echo $form->dropDownListRow($model, 'monto', array(
-                    100 => 100,
-                    200 => 200,
-                    300 => 300,
-                    400 => 400,
-                    500 => 500,
-                    600 => 600,
-                    700 => 700,
-                    800 => 800,
-                    900 => 900,
-                    1000 => 1000,
-                        ), array('class' => 'span2'));
-                ?>
+                <div class="control-group input-append">
+                    <label class="control-label required" for="BolsaGC_monto">Monto <span class="required">*</span></label>
+                    <div class="controls">
+                        <?php echo CHtml::activeDropDownList($model, 'monto', array(
+                        100 => 100,
+                        200 => 200,
+                        300 => 300,
+                        400 => 400,
+                        500 => 500,
+                        600 => 600,
+                        700 => 700,
+                        800 => 800,
+                        900 => 900,
+                        1000 => 1000,
+                        ), array('class' => 'span1',)); ?>
+                        <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                    </div>
+                    
+                </div>
+               
 
             </div>	
 

@@ -67,7 +67,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
         <?php
 //----------------------Estado
-<<<<<<< HEAD
+
     if($orden->estado == 1 || ($orden->estado == 7 && isset($balance)))
         echo Yii::t('contentForm', 'currSym').' '."Pendientes por pagar";
 
@@ -76,23 +76,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
     if($orden->estado == 3 || $orden->estado == 8 || $orden->estado == 4)
         echo Yii::t('contentForm', 'currSym').' '."ya pagados";
-	
-=======
 
-    if($orden->estado == 1)
-        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending payment');
-
-
-    if($orden->estado == 2)
-        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending confirmation');
-
-    if($orden->estado == 3 || $orden->estado == 8)
-        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Pending confirmation');
-
-    if($orden->estado == 4)
-        echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Paid');
-
->>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
     if($orden->estado == 5)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Order Cancelled');
 
@@ -105,11 +89,9 @@ $usuario = User::model()->findByPk($orden->user_id);
        </td>
          <td><?php if ($orden->estado==1||$orden->estado==6||$orden->estado==7){?><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white">
          	
-<<<<<<< HEAD
-         </i> Reportar Pago 
-=======
+
          </i> <?php echo Yii::t('contentForm','Payment report'); ?>
->>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
+
          	<?php } ?></td>
           <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> <?php echo Yii::t('contentForm','Print order'); ?></a></td>
     </tr>

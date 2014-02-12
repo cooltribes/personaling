@@ -368,9 +368,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       		$totalDe = $totalDe + $y;
                       	}*/
 						
-						$iva = (($totalPr - $totalDe)*0.12); 
+						$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')); 
 						
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) + $envio; 
 						
 						$seguro = $t*0.013;
 						
@@ -401,7 +401,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       </tr>
                       <?php } ?>
                       <tr>
-                        <th class="text_align_left">I.V.A. (12%):</th>
+                        <th class="text_align_left">I.V.A. (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
                         <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
                       </tr>
                       <tr>

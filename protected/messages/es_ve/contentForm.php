@@ -7,7 +7,9 @@ return array (
      'IVA' => '0.12',
      'IVAtext' => '12%',
 
+     'Address' => 'Dirección',
      'Amount' => 'Monto',
+     'Amount Gift Card' => 'Monto de l GiftCard',
      'Amount returned' => 'Monto devuelto',
      'Authentication' => 'Autenticación',
      'Awaiting confimation' => 'Espera confirmación',
@@ -23,9 +25,10 @@ return array (
      'Credit Card' => 'Tarjeta de Credito',
      'Color' => 'Color',
      'Courier delivery' => 'Transportista',
-     'Confirm <br> purchase' => 'Confirmar <br> Compra',
+     'Confirm <br>purchase' => 'Confirmar <br/>Compra',
      'Current state' => 'Estado Actual',
      'Confirm your credentials' => 'Confirma tus datos',
+     'Confirmation of Purchase' => 'Confirmación de la Compra',
      'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
      'Complete purchase' => 'Completar compra',
 
@@ -33,16 +36,19 @@ return array (
      'Date' => 'Fecha',
      'Date estimated delivery' => 'Fecha estimada de entrega',
      'Deposit or Transference' => 'Depósito o Transferencia',
+     'Deposit or Bank Transference' => 'Depósito o Transferencia Bancaria',
      'Discount' => 'Descuento',
      'Document' => 'Documento',
      'Documents' => 'Documentos',
 
-
+     'Effective date' => 'Fecha de vigencia',
      'Email' => 'Email',
      'Empty shopping bag' => 'Vaciar la Bolsa de Compras',
+     'Expiration' => 'Vencimiento',
 
      'From' => 'De',
-     
+     'From1' => 'Desde',
+
      'ID Transaction' => 'ID de Transaccion',
      'Individual items' => 'Prendas individuales',
      'Individual products' => 'Productos Individuales',
@@ -81,14 +87,20 @@ return array (
      
      'Paid' => 'Ya pagados',
      'Parcial Returned' => 'Devolución Parcial',
+     'Pay MercadoPago' => 'Pagar con MercadoPago',
+     'Pay with credit card' => 'Pagar con tarjeta de crédito',
      'Payment confirmet' => 'Pago confirmado',
      'Payment declined' => 'Pago Rechazado',
      'Payment report' => 'Reportar Pago',
      'Payment method' => 'Método de Pago',
+     'Payment Method Selected' => 'Método de Pago Seleccionado',
      'Payment <br> method' => 'Método <br> de Pago',
      'Pending payment' => 'Pendientes por pagar',
      'Pending confirmation' => 'Pendientes por confirmar',
+     'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
+                <b>Atrás</b> en tu navegador',
      'Phone' => 'Teléfono',
+     'Purchasing Information' => 'Datos de la compra',
      'Print order' => 'Imprimir Pedido',
      'Price' => 'Precio',
      'Product' => 'Producto',
@@ -111,17 +123,19 @@ return array (
      'State' => 'Estado',
      'Size' => 'Talla',
      'Subtotal' => 'Subtotal',
+     'Shipping <br/>and billing<br/> address' => 'Dirección<br/>de envío <br/> y facturación',
      'Shipping and Transport' =>'Envío y transporte',
      'Sumary' => 'Resumen',
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
      'Send Comment' => 'Enviar comentario',
-     'Selected looks' => 'Looks seleccionado',
+     'Selected looks' => 'Looks seleccionados',
      'Subject' => 'Asunto',
 
 
      'Tax' => 'Impuesto',
      'The bag is empty' => 'La bolsa está vacia',
      'Total' => 'Total',
+     'Total Gift Cards' => 'Total de Gift Cards',
      'Total returned' => 'Total devuelto',
      'Type' => 'Tipo',
      'Tracking' => 'Número de seguimiento',
@@ -129,6 +143,7 @@ return array (
 
      'Underpayment' => 'Pago Insuficiente',
      'Unit price' => 'Precio unitario',
+     'Until' => 'Hasta',
      'User' => 'Usuario',
      'Update all' => 'Actualizar todo',
 
@@ -136,6 +151,8 @@ return array (
      'Value for returned shipping' => 'Monto por envío devuelto',
 
      'Your bag' =>'Tu bolsa',
+     'Your payment is being processed'=> 'Tu pago esta siendo procesado',
+     'Your purchase will be completed in seconds!' => '¡Tu compra será completada en instantes!',
 
      'Weigth' => 'Peso',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',

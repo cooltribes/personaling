@@ -9,19 +9,25 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 <div class="container margin_top">
     <div class="progreso_compra">
-      <div class="clearfix margin_bottom">
-        <div class="first-past">Autenticación</div>
-        <div class="middle-done">Dirección<br/>de envío <br/>y facturación</div>
-        <div class="middle-not_done">Método <br/>de pago</div>
-        <div class="last-not_done">Confirmar<br/>compra</div>
+    <div class="clearfix margin_bottom">
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
       </div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Payment <br> method'); ?>
+      </div>
+      <div class="last-done">
+        <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
+      </div>
+    </div>
       
   </div>
 
   <div class="row">
     <div class="span8 offset2"> 
      
-      <h1>Dirección de envío
+      <h1><?php echo Yii::t('contentForm','Shipping address'); ?>
           <br>
           <?php
           if($admin){

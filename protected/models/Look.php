@@ -208,15 +208,7 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));*/
 		
-		if ($user!==null){
-                    
-//                    echo "<pre>";
-//                    print_r($user->profile->birthday);
-//                    echo "</pre>";
-//                    
-////                    echo date("d/m/Y", time()."-".strtotime($user->profile->birthday));
-//                    echo date("d/m/Y", time() - strtotime($user->profile->birthday));
-//                    Yii::app()->end();
+		if ($user!==null){                      
                     
 		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE deleted=0 and (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
@@ -228,6 +220,8 @@ class Look extends CActiveRecord
 			if('.$user->profile->piel.' & piel !=0,1,0)+
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 6 
+                AND ('.$user->getEdad().' BETWEEN edadMin AND edadMax)
+                    
 		UNION ALL '.
 		'SELECT id FROM tbl_look WHERE deleted = 0 AND (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
@@ -237,10 +231,9 @@ class Look extends CActiveRecord
 			if('.$user->profile->piel.' & piel !=0,1,0)+
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 5 
-		UNION ALL '.
-		'SELECT id FROM tbl_look WHERE deleted = 0 AND 
-                    
+                AND ('.$user->getEdad().' BETWEEN edadMin AND edadMax)
 		';
+                
 		} else {
 			$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look where deleted=0')->queryScalar();
 			$sql = 'SELECT id FROM tbl_look WHERE deleted=0';

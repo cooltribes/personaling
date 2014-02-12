@@ -721,7 +721,11 @@ class User extends CActiveRecord {
         
         
 	public function getEdad(){
-		
+            
+            $hoy = new DateTime();
+            $edad = $hoy->diff(DateTime::createFromFormat('Y-m-d', $this->profile->birthday));
+            return $edad->y;
+            
 	} 
 	 
 

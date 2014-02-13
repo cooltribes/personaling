@@ -25,8 +25,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
           <tr>
           <tr>
             <td><strong>Cliente / Razón Social:</strong> 
-              <?php
-			  //echo $profile->first_name.' '.$profile->last_name;
+              <?php			  
 			  echo $direccion_fiscal->nombre.' '.$direccion_fiscal->apellido;
               ?>
               <br/>
@@ -63,22 +62,6 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                   <th scope="col">Total</th>
                 </tr>
                 <?php
-                /*
-                foreach ($factura->orden->productos as $ptc) {
-                	$orden_ptc = OrdenHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptc->id, 'tbl_orden_id'=>$factura->orden->id));
-					$producto = Producto::model()->findByPk($ptc->producto_id);
-					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
-					
-                    ?>
-                    <tr>
-	                  <td><?php echo $ptc->sku; ?></td>
-	                  <td><?php echo $producto->nombre; ?></td>
-	                  <td><?php echo $orden_ptc->cantidad; ?></td>
-	                  <td>Bs. <?php echo number_format($precio->precioVenta, 2, ',', '.'); ?></td>
-	                  <td>Bs. <?php echo number_format($orden_ptc->cantidad*$precio->precioVenta, 2, ',', '.'); ?></td>
-	                </tr>
-					<?php
-                }*/
                 foreach($factura->orden->ohptc as $ordenhasproducto) {
                 	?>
                      <tr>

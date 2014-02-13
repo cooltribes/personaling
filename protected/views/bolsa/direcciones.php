@@ -77,6 +77,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		                  ".$cadauna->dirDos.". 
 		                  ".$ciudad->nombre.", ".$provincia->nombre.". </br>
 		                  ".$cadauna->pais." </p>
+		                  
 		              </div>
 		              <div class='span2 margin_top_medium'>
 		                <p>

@@ -95,7 +95,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			            'size'=>'normal',
 			            'label'=>'Usar esta dirección',
 			        )); 
-					
+					     	echo "<br><input type='checkbox' class='shippingAddress' value='".$cadauna->id."'>Esta es mi dirección de envío<br>";
+							echo "<input type='checkbox' class='billingAddress' value='".$cadauna->id."'>Esta es mi dirección de facturación<br>";
 					echo"
 		                <br/>
 		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>Editar</a> <br/>
@@ -244,8 +245,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             'size'=>'large',
             'label'=>'Usar esta dirección',
         )); 
+		
+		
         //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
         ?>
+   
+        	
+        
             </div>
            
           </fieldset>
@@ -334,4 +340,13 @@ else
 			});
 		}
 	});
+	$('.shippingAddress').change(function(){
+		if($(this).is(':checked')){
+			$('.shippingAddress').attr('checked','');
+			$(this).attr('checked','checked');
+		}
+		
+	});
+	
+	
 </script>

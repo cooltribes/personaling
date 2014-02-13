@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-	'Pedidos'=>array('admin'),
-	'Importar envíos masivos',
+    Yii::t('backEnd', 'Orders')=>array('admin'),
+    Yii::t('backEnd', 'Import bulk shipments'),
 );
 ?>
   	<!-- FLASH ON --> 
@@ -34,19 +34,19 @@ $this->breadcrumbs=array(
 	<div class="row margin_top">
     	<div class="span12">
     		<div class="page-header">
-    			<h1>Importar Envios</h1>
+                    <h1><?php echo Yii::t('backEnd', 'Import Shipments'); ?></h1>
   			</div>
       		<div class="bg_color3   margin_bottom_small padding_small box_1">
         		<fieldset>
-            		<legend>Subir archivo a procesar: </legend>
+                            <legend><?php echo Yii::t('backEnd', 'Upload file'); ?></legend>
             
 		            <div class="well well-large">
 		              <?php
 		            	$this->widget('CMultiFileUpload', array(
 		                'name' => 'url',
 		                'accept' => 'xls|xlsx', // useful for verifying files
-		                'duplicate' => 'El archivo está duplicado.', // useful, i think
-		                'denied' => 'Tipo de archivo invalido.', // useful, i think
+		                'duplicate' => Yii::t('backEnd', 'Duplicated file'), // useful, i think
+		                'denied' => Yii::t('backEnd', 'Invalid file'), // useful, i think
 		            ));
 					
 					?>
@@ -56,7 +56,7 @@ $this->breadcrumbs=array(
 			            <?php $this->widget('bootstrap.widgets.TbButton', array(
 							'buttonType'=>'submit',
 							'type'=>'danger',
-							'label'=>'Cargar Archivo',
+							'label'=>  Yii::t('backEnd', 'Upload'),
 						)); ?>
 			        </div>
 	            

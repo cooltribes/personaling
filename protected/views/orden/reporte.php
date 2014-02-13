@@ -76,7 +76,7 @@
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_authitem',
+	    'itemView'=>'_datosProductos',
 	    'template'=>$template,
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',

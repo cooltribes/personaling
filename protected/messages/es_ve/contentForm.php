@@ -8,6 +8,8 @@ return array (
      'IVAtext' => '12%',
 
      'Address' => 'Dirección',
+     'Addresses used above' => 'Las direcciones utilizadas anteriormente',
+     'Add a new shipping address' => 'Agregar una nueva dirección de envío',
      'Amount' => 'Monto',
      'Amount Gift Card' => 'Monto de l GiftCard',
      'Amount returned' => 'Monto devuelto',
@@ -21,6 +23,7 @@ return array (
      'Bag' => 'Bolsa',
      'Brand' => 'Marca',
 
+     'Choose an address for shipment of your purchase from your address book or enter a new one in the lower section' =>'Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Created for' => 'Creado por',
      'Credit Card' => 'Tarjeta de Credito',
      'Color' => 'Color',
@@ -31,6 +34,7 @@ return array (
      'Confirmation of Purchase' => 'Confirmación de la Compra',
      'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
      'Complete purchase' => 'Completar compra',
+     'C.I' => 'C.I',
 
      
      'Date' => 'Fecha',
@@ -40,7 +44,9 @@ return array (
      'Discount' => 'Descuento',
      'Document' => 'Documento',
      'Documents' => 'Documentos',
+     'Delete' => 'Eliminar',
 
+     'Edit' => 'Editar',
      'Effective date' => 'Fecha de vigencia',
      'Email' => 'Email',
      'Empty shopping bag' => 'Vaciar la Bolsa de Compras',
@@ -145,11 +151,13 @@ return array (
      'Unit price' => 'Precio unitario',
      'Until' => 'Hasta',
      'User' => 'Usuario',
+     'Use this address' => 'Usar esta dirección',
      'Update all' => 'Actualizar todo',
 
 
      'Value for returned shipping' => 'Monto por envío devuelto',
 
+     'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'Your bag' =>'Tu bolsa',
      'Your payment is being processed'=> 'Tu pago esta siendo procesado',
      'Your purchase will be completed in seconds!' => '¡Tu compra será completada en instantes!',

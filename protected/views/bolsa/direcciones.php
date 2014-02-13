@@ -35,7 +35,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           }
           ?>
       </h1>
-      <p>Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:</p>
+      <p><?php echo Yii::t('contentForm','Choose an address for shipment of your purchase from your address book or enter a new one in the lower section'); ?></p>
       <?php 
       
 //     	$usuario = Yii::app()->user->id; 
@@ -46,7 +46,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	  <?php if( count( $direcciones ) > 0 ){ ?>
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <fieldset>
-            <legend >Direcciones utilizadas anteriormente: </legend>
+            <legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
             <?php
             }
             if(isset($direcciones)){
@@ -74,11 +74,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		            
 		              <div class='span2'>
 		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
-		                  <span class='muted small'> C.I. ".$cadauna->cedula."</span></p>
-		                <p> <strong>Teléfono</strong>: ".$cadauna->telefono."</p>
+		                  <span class='muted small'> ".Yii::t('contentForm','C.I')." ".$cadauna->cedula."</span></p>
+		                <p> <strong>".Yii::t('contentForm','Phone')."</strong>: ".$cadauna->telefono."</p>
 		              </div>
 		              <div class='span3'>
-		                <p><strong>Dirección:</strong> <br/>
+		                <p><strong>".Yii::t('contentForm','Address').":</strong> <br/>
 		                  ".$cadauna->dirUno." </br>
 		                  ".$cadauna->dirDos.". 
 		                  ".$ciudad->nombre.", ".$provincia->nombre.". </br>
@@ -93,14 +93,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			            'buttonType'=>'submit',
 			            'type'=>'danger',
 			            'size'=>'normal',
-			            'label'=>'Usar esta dirección',
+			            'label'=>Yii::t('contentForm','Use this address'),
 			        )); 
 					     	echo "<br><input type='checkbox' class='shippingAddress' value='".$cadauna->id."'>Esta es mi dirección de envío<br>";
 							echo "<input type='checkbox' class='billingAddress' value='".$cadauna->id."'>Esta es mi dirección de facturación<br>";
 					echo"
 		                <br/>
-		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>Editar</a> <br/>
-		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar' data-loading-text='Eliminando...' id='eliminar".$cadauna->id."'>Eliminar</a></p>
+		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>".Yii::t('contentForm','Edit')."</a> <br/>
+		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar' data-loading-text='Eliminando...' id='eliminar".$cadauna->id."'>".Yii::t('contentForm','Delete')."</a></p>
 		              </div>
 		            </div>
 			  		<div class='mensaje".$cadauna->id."' ></div>
@@ -111,7 +111,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			  	}
 	  		}
 			else {
-				echo "<legend>No tiene direcciones registradas</legend>";					
+				echo "<legend>".Yii::t('contentForm','You don\'t have any saved address')."</legend>";					
 			}
  	
       ?>
@@ -137,13 +137,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form" enctype="multipart/form-data">
           <fieldset>
-            <legend >Incluir una nueva dirección de envío: </legend>
+            <legend> <?php echo Yii::t('contentForm','Add a new shipping address'); ?>: </legend>
             <div class="control-group"> 
              
               <div class="controls">
               	<?php 
               	
-              	 echo CHtml::hiddenField('admin',$admin);
+              	echo CHtml::hiddenField('admin',$admin);
     			echo CHtml::hiddenField('user',$user);
               	echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">

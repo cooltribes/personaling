@@ -4,7 +4,7 @@
   <div class="alert in" id="alert-msg" style="display: none">
     <button type="button" class="close" >&times;</button> 
     <!--data-dismiss="alert"-->
-    <div class="msg">loren ipsum</div>
+    <div class="msg"></div>
   </div>
 </div>          
     
@@ -72,12 +72,6 @@
                         
                             <a href="#" class="btn span_add" style="float: right" title="Agregar nuevo campo"> + </a>
                             <a href="#" class="btn btn-danger span_delete" style="display:none; float: right" title="Eliminar campo"> - </a> 
-                        
-                        
-                        
-                       
-                        
-                        
 
                     </div>
                 </div>    
@@ -99,9 +93,6 @@
     <div class="span1 pull-right">
         <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  
     </div>
-    
-    
-    
     
 </div>
 <script type="text/javascript">

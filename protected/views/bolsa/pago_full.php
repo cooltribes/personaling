@@ -28,7 +28,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <!-- Forma de pago ON -->
 
       		<div class="box_1 padding_small margin_bottom">
-        		<h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago</h4>
+        		<h4 class="braker_bottom margin_bottom_medium "><?php echo Yii::t('contentForm','Choose the payment method'); ?></h4>
        <!--
        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>

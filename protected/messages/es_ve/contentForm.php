@@ -9,6 +9,8 @@ return array (
 
      'Address' => 'Dirección',
      'Addresses used above' => 'Las direcciones utilizadas anteriormente',
+     'Address Line 1: (Avenue, Street, complex, Residential, etc.).' => 'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)',
+     'Address Line 2: (Building, Floor, Number, apartment, etc.)' => 'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc.)',
      'Add a new shipping address' => 'Agregar una nueva dirección de envío',
      'Amount' => 'Monto',
      'Amount Gift Card' => 'Monto de l GiftCard',
@@ -55,6 +57,7 @@ return array (
      'From' => 'De',
      'From1' => 'Desde',
 
+     'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
      'Individual items' => 'Prendas individuales',
      'Individual products' => 'Productos Individuales',
@@ -73,6 +76,7 @@ return array (
      
      'Name' => 'Nombre',
      'Name of items' => 'Nombre de productos',
+     'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
      'New order' => 'Nuevo Pedido',
      'Next' => 'Siguiente',
      'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
@@ -81,6 +85,7 @@ return array (
      'Nro. items' => 'No. de Prendas',
      'Number' => 'Número',
 
+     'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
 
      'Order' => 'Pedido',
      'Order Cancelled' => 'Orden Cancelada',
@@ -106,6 +111,7 @@ return array (
      'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
                 <b>Atrás</b> en tu navegador',
      'Phone' => 'Teléfono',
+     'Phone number' => 'Número de teléfono',
      'Purchasing Information' => 'Datos de la compra',
      'Print order' => 'Imprimir Pedido',
      'Price' => 'Precio',
@@ -135,6 +141,7 @@ return array (
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
      'Send Comment' => 'Enviar comentario',
      'Selected looks' => 'Looks seleccionados',
+     'Select a province' => 'Selecciona un estado',
      'Subject' => 'Asunto',
 
 

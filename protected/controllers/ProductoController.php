@@ -760,30 +760,7 @@ class ProductoController extends Controller
 
 	public function actionAdmin()
 	{
-            /* if(isset($_GET['caso'])){
-                    $caso = $_GET['caso'];
-
-                    if($caso==1)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error',UserModule::t("Seleccione al menos un producto."));
-                    }
-
-                    if($caso==2)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error',UserModule::t("Seleccione una acción"));
-                    }
-
-                    if($caso==3)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('success',UserModule::t("Los productos han sido activados."));
-                    }
-            }// isset */
-
-            
-            
+                      
             $producto = new Producto;
 
             $producto->status = 1;

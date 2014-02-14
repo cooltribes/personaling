@@ -11,13 +11,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
-      <div class="middle-past">
+      <div class="middle-done">
         <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
       </div>
-      <div class="middle-past">
+      <div class="middle-not_done">
         <?php echo Yii::t('contentForm','Payment <br> method'); ?>
       </div>
-      <div class="last-done">
+      <div class="last-not_done">
         <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
       </div>
     </div>
@@ -145,7 +145,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               	
               	echo CHtml::hiddenField('admin',$admin);
     			echo CHtml::hiddenField('user',$user);
-              	echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
+              	echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the person to whom you send'))); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -154,7 +154,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'apellido',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Apellido de la persona a la que envias tu compra')); 
+              	<?php echo $form->textFieldRow($dir,'apellido',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Last name of the person to whom you send'))); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Apellido de la persona a la que envias tu compra" name="RegistrationForm[email]" class="span4">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -163,7 +163,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'cedula',array('class'=>'span4','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona a la que envias')); 
+              	<?php echo $form->textFieldRow($dir,'cedula',array('class'=>'span4','maxlength'=>20,'placeholder'=>Yii::t('contentForm','ID of the person to whom you send'))); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                
@@ -173,7 +173,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
            
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'dirUno',array('class'=>'span4','maxlength'=>120,'placeholder'=>'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)'));
+              	<?php echo $form->textFieldRow($dir,'dirUno',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 1: (Avenue, Street, complex, Residential, etc.).')));
 				//<input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" name="RegistrationForm[email]" class="span4">
 				 ?>
                 
@@ -183,7 +183,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
             
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'dirDos',array('class'=>'span4','maxlength'=>120,'placeholder'=>'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)'));
+              	<?php echo $form->textFieldRow($dir,'dirDos',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 2: (Building, Floor, Number, apartment, etc.)')));
 				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" name="RegistrationForm[email]" class="span4">
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -192,7 +192,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
             	
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Numero de Teléfono'));
+              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>Yii::t('contentForm','Phone number')));
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -200,7 +200,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
               
               <div class="controls">
-              	<?php echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione un estado...'));?>
+              	<?php echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => Yii::t('contentForm','Select a province')));?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -243,7 +243,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
-            'label'=>'Usar esta dirección',
+            'label'=>Yii::t('contentForm','Use this address'),
         )); 
 		
 		

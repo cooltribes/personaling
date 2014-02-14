@@ -22,14 +22,16 @@ echo CHtml::hiddenField('user',$user);
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
-      <div class="first-past">Autenticación</div>
-      <div class="middle-past">Dirección<br/>
-        de envío <br/>
-        y facturación</div>
-      <div class="middle-done">Método <br/>
-        de pago</div>
-      <div class="last-not_done">Confirmar<br/>
-        compra</div>
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
+    </div>
+      <div class="middle-done">
+        <?php echo Yii::t('contentForm','Payment <br> method'); ?>
+    </div>
+      <div class="last-not_done">
+        <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
+    </div>
     </div>
   </div>
   <div class="row">

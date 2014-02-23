@@ -443,6 +443,35 @@ class User extends CActiveRecord {
                         
                 continue;
             }
+            /*Saldo disponible*/
+            if($column == 'balance')
+            { 
+                
+                 $criteria->addCondition('(IFNULL(
+                     (
+                        SELECT SUM(total) as total FROM tbl_balance WHERE user_id = user.id 
+                               
+                      ), 0))  '
+                                        . $comparator . ' ' . $value . '', $logicOp);
+                        
+                continue;
+            }
+            
+            /*Invitaciones*/
+            if($column == 'invitaciones')
+            { 
+                
+                 $criteria->addCondition('(IFNULL(
+                     (
+                        (SELECT count(*) as total FROM tbl_email_invite WHERE user_id=user.id) 
+                        + 
+                        (SELECT count(*) as total FROM tbl_facebook_invite WHERE user_id=user.id)
+                               
+                      ), 0))  '
+                     . $comparator . ' ' . $value . '', $logicOp);
+                        
+                continue;
+            }
 
             if($column == 'looks')
             { 
@@ -688,6 +717,15 @@ class User extends CActiveRecord {
 			return $null->username; 		
 		}
 		return $this->username; 
+	} 
+        
+        
+	public function getEdad(){
+            
+            $hoy = new DateTime();
+            $edad = $hoy->diff(DateTime::createFromFormat('Y-m-d', $this->profile->birthday));
+            return $edad->y;
+            
 	} 
 	 
 

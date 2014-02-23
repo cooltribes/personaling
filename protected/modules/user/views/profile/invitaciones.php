@@ -197,11 +197,11 @@ $create_date = date('j M Y', $create_time);
 <!-- /container -->
 <script>
 	$(document).ready(function(){
-	    
+	    //alert('http://'+window.location.host+'<?php //echo Yii::app()->baseUrl; ?>'+'/user/registration');
 	    window.fbAsyncInit = function() {
 	        FB.init({
 	            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
-	            channelUrl : 'http://personaling.com/site/user/registration', // Channel File
+	            channelUrl : 'http://'+window.location.host+'<?php echo Yii::app()->baseUrl; ?>'+'/user/registration', // Channel File
 	            status     : true, // check login status
 	            cookie     : true, // enable cookies to allow the server to access the session
 	            xfbml      : true,  // parse XFBML
@@ -221,7 +221,9 @@ $create_date = date('j M Y', $create_time);
 	});
 
 	function invite_friends(){
+		
 		FB.getLoginStatus(function(response){
+			
 	        //console.log("response: "+response.status);
 	        if (response.status === 'connected') {
 	        	// está conectado a facebook y además ya tiene permiso de usar la aplicacion personaling

@@ -1,17 +1,16 @@
 <?php
 $this->breadcrumbs=array(
-  'Tu Personal Shopper' =>array('tienda/look'),
-  'Todos los looks',
+  'Tu Personal Shopper',
 );
 ?>
 <div class="container">
-  <div class="page-header">
+  <div class="span12">
 <!--    <h1>Todos los looks</h1>-->
 
 <div class="row-fluid margin_bottom_medium">
     <div class="span6 text_align_right">
         <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'label' => 'Looks para Mí',
+            'label' => 'Looks para mí',
             'buttonType' => 'button',
             'type' => 'danger',
             'size' => 'large',
@@ -24,7 +23,7 @@ $this->breadcrumbs=array(
     </div>
     <div class="span6">
         <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'label' => 'Todos los Looks',
+            'label' => 'Todos los looks',
             'buttonType' => 'button',
             //'type' => 'danger',
             'size' => 'large',
@@ -137,7 +136,7 @@ $this->breadcrumbs=array(
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
               <ul class="dropdown-menu" id="price-ranges" role="menu" aria-labelledby="dLabel">
                   <?php foreach ($rangos as $key => $rango){ ?>
-                  <li><a class="btn btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
+                  <li><a class="btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
                             <?php
                             if(!$key){
                                 echo "Hasta Bs. {$rango['end']} "; 
@@ -154,7 +153,7 @@ $this->breadcrumbs=array(
                             </span>
                         </a></li>
                   <?php } ?>
-                    <li><a class="btn btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
+                    <li><a class="btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
            <!-- 
                 <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
                 <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
@@ -164,7 +163,7 @@ $this->breadcrumbs=array(
           </li>
           <!-- Filtro por Precios OFF -->
           <li>
-          	<a href="#" onclick="js:show_shopper();" >Personal Shoppers </a>
+          	<a id="btnShoppers" href="" onclick="js:show_shopper();" >Personal Shoppers </a>
           	
           </li>
           
@@ -203,6 +202,7 @@ $this->breadcrumbs=array(
         </ul>
        
         	<?php /** @var BootActiveForm $form */
+                /*
 				$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				     'id'=>'searchForm',
   					  'type'=>'search',
@@ -231,20 +231,20 @@ $this->breadcrumbs=array(
 
 	),
 			)
-				);*/
+				);*//*
 				?>
             <div class="btn-group">
           
               <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'label'=>'Buscar','type'=>'danger')); ?>
             </div>
           </div>
-        <?php $this->endWidget(); ?>
+        <?php $this->endWidget(); */?>
       </nav>
       <!--/.nav-collapse --> 
     </div>
     <input type="hidden" value="" id="ocasion_actual" />
     
-    <input type="hidden" id="rango_actual" name="rango_actual" value="" />     
+    <input type="hidden" id="rango_actual" name="precios" value="" />     
     <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
     
     
@@ -491,7 +491,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
           ?> 
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
-  </div>                    
+    </div>   
+  </div>                 
 
 <?php $this->endWidget()?>
                 
@@ -510,19 +511,19 @@ function show_shopper(){
 	$('#div_shopper').show();
 }
 // here is the magic
+// magic ???
 function refresh(reset)
 {
-	//alert($('.check_ocasiones').serialize());
-	//alert($('.check_ocasiones').length) 
+    if($("#looks").infinitescroll)
+    $("#looks").infinitescroll("destroy");
+    
     cargarLocal();
     var datosRefresh = $('.check_ocasiones, .check_shopper, #newFilter-form, #rango_actual, #perfil_propio').serialize();
-        
-    datosRefresh += '&precios=' + $('#rango_actual').val();    
-    console.log(datosRefresh);
+    
     if(reset){
         datosRefresh += '&reset=true';
     }
-    
+    console.log(datosRefresh);
     <?php echo CHtml::ajax(array(
             'url'=>array('tienda/look'),
             'data'=> "js:datosRefresh",
@@ -551,6 +552,7 @@ function refresh(reset)
                 {
                    //	alert(data.condicion);
                    $('#tienda_looks').html(data.div);
+                  // $('#tienda_looks').html(data);
                    // setTimeout(\"$('#dialogColor').modal('hide') \",3000);
                 }
                 
@@ -649,6 +651,14 @@ $(document).ready(function(){
          
     <?php unset(Yii::app()->session["profileOn"]);    
         } ?>
+                
+
+        $("#btnShoppers").click(function(e){
+            e.preventDefault();
+        });
+                
+                
+                
 });
 
 

@@ -67,6 +67,7 @@ class DireccionEnvio extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'ordens' => array(self::HAS_MANY, 'Orden', 'direccionEnvio_id'),
+			'myciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id'),
 		);
 	}
 

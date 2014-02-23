@@ -31,7 +31,9 @@ class AdminController extends Controller
                                     'direcciones','avatar', 'productos', 'looks','toggle_ps',
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-                                    'eliminardireccion','comprafin','mensajes','displaymsj'),
+
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance'),
+
 
 								//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -543,6 +545,32 @@ if(isset($_POST['Profile']))
 		));
 	}
 	
+	public function actionInvitaciones($id)
+	{
+		$model=$this->loadModel();
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'user_id = '.$id;
+		
+        $xEmail= new CActiveDataProvider('EmailInvite', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>50,
+			),
+        ));
+		
+		$xFB= new CActiveDataProvider('FacebookInvite', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+				'pageSize'=>50,
+			),
+        ));
+		
+		$this->render('invitaciones',array(
+			'model'=>$model,
+			'xEmail'=>$xEmail,
+			'xFB'=>$xFB
+		));
+	}
 		
 	public function actionDirecciones()
 	{
@@ -614,7 +642,7 @@ if(isset($_POST['Profile']))
 	public function actionCarrito($id)
 	{
 		$model = $this->loadModel();
-		$bolsa = new Bolsa;
+		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$model->id));
 		if(isset($bolsa))
 		{
 			$this->render('carrito',array(
@@ -623,14 +651,10 @@ if(isset($_POST['Profile']))
 				'usuario'=>$id,
 			));
 		}
-		else {
-			$this->render('carrito',array(
-				'model'=>$model,
-				'bolsa'=>$bolsa,
-				'usuario'=>$id,
-			));
+		else{
+			Yii::app()->user->setFlash('error',UserModule::t("Usuario no ha inicializado su carrito"));
 		}
-		
+	
 	}
 	
 	public function actionCorporal()
@@ -829,16 +853,19 @@ if(isset($_POST['Profile']))
 		    	$html=$html.'<h3>Cargar Saldo</h3>';
 		  		$html=$html.'</div>';
 		  		$html=$html.'<div class="modal-body">';
-				$html=$html."<div class='pull-right'><h4>Saldo Actual: ".$saldo."</h4></div>";				
+				$html=$html."<div class='pull-right'><h4>Saldo Actual: ".Yii::app()->numberFormatter->formatDecimal($saldo)."</h4></div>";				
 				$html=$html. CHtml::TextField('cant','',array('id'=>'cant','class'=>'span5','placeholder'=>'Escribe la cantidad separando los decimales con coma (,)')).
-				"<div><a onclick='saldo(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Cargar Cantidad</a></div></div>";
-	
+				"<div class='margin_bottom'><input type='checkbox' id='discount' style='margin:0 0 0 0'> Descontar</div><div><a onclick='saldo(".$_POST['id'].")' class='btn btn-danger margin_bottom_medium pull-left'>Cargar Cantidad</a></div></div>";
+	 
 				echo $html;
 			}
-		if(isset($_POST['cant'])&&isset($_POST['id']))	{
+		if(isset($_POST['cant'])&&isset($_POST['id'])&&isset($_POST['desc']))	{
 			
 				$balance=new Balance;
 				$balance->total=$_POST['cant'];
+				if($_POST['desc']){
+					$balance->total=$balance->total*(-1);
+				}
 				$balance->orden_id=0;
 				$balance->user_id=$_POST['id'];
 				$balance->tipo=3;
@@ -857,15 +884,58 @@ if(isset($_POST['Profile']))
 	
 	public function actionCompra($id)
 	{
-				if(isset($_POST['ptcs'])&&$_POST['ptcs']!='nothing')
-			{
-								
-				
-				Yii::app()->session['ptcs']=$_POST['ptcs'];
-				Yii::app()->session['vals']=$_POST['vals'];
-				$this->redirect(array('admin/compradir'));
-				
-			}
+            if(isset($_POST['ptcs']))
+            {
+                if($_POST['ptcs']!='nothing'){ //Selecciono productos
+                    
+                    Yii::app()->session['ptcs']=$_POST['ptcs'];
+                    Yii::app()->session['vals']=$_POST['vals'];                
+
+                    $bolsa = Bolsa::model()->findByAttributes(array(
+                        'user_id'=>$id,
+                        'admin'=> 1,
+                            ));
+
+                    if(!isset($bolsa)) // si no tiene aun un carrito asociado 
+                    {
+                        $bolsa = new Bolsa;
+                        $bolsa->user_id = $id;
+                        $bolsa->admin = 1;
+                        $bolsa->created_on = date("Y-m-d H:i:s");
+                        $bolsa->save();
+                    }                
+
+                    /*id de preciotallacolor y su respectiva cantidad*/
+                    $productos = explode(',',$_POST['ptcs']);
+                    $cantidades = explode(',',$_POST['vals']);
+
+                    for($i=0; $i < count($productos); $i++){
+
+                        $idPrecioTallaColor = $productos[$i];
+                        $cantidad = $cantidades[$i];
+
+                        $precioTallaColor = Preciotallacolor::model()->findByPk($idPrecioTallaColor);
+
+                        $idProducto = $precioTallaColor->producto_id;
+                        $idTalla = $precioTallaColor->talla_id;
+                        $idColor = $precioTallaColor->color_id;
+
+                        //Agregarlo a la bolsa tantas veces como indique la cantidad
+                        for($j=0; $j < $cantidad; $j++){
+
+                            $bolsa->addProducto($idProducto, $idTalla, $idColor);	
+
+                        }                    
+                    }
+                }
+//                $this->redirect(array('admin/compradir'));
+//                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'https'));
+                $this->redirect($this->createAbsoluteUrl('/bolsa/index',array(
+                    "admin" => 1,
+                    "user" => $id,
+                    )));
+
+              }
 
 			
 			if(isset(Yii::app()->session['ptcs'])){
@@ -885,22 +955,25 @@ if(isset($_POST['Profile']))
 			  	
 	            if (isset($_POST['query']))
 	            {
-	                $q=" AND p.nombre LIKE '%".$_POST['query']."%' ".$q;		
+	                $q=" AND (p.nombre LIKE '%".trim($_POST['query'])."%' OR ptc.sku LIKE '%".trim($_POST['query'])."%'
+	                 OR m.nombre LIKE '%".trim($_POST['query'])."%' OR p.codigo LIKE '%".trim($_POST['query'])."%' )".$q;		
 				      	
 	            }
 				
 				Yii::app()->session['usercompra']=$id;
 	 
-	          	$sql='select p.marca_id as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad  
-					from tbl_precioTallaColor ptc, tbl_producto p 
+	          	$sql='select m.nombre as Marca, ptc.talla_id as Talla, ptc.color_id as Color, ptc.id as ptcid, p.id, p.nombre as Nombre, ptc.cantidad, p.codigo, ptc.sku as SKU 
+					from tbl_precioTallaColor ptc, tbl_producto p JOIN tbl_marca m ON m.id=p.marca_id
 					where ptc.cantidad >0 and p.estado=0 and p.`status`=1 and ptc.producto_id = p.id '.$q;
+			
 				$rawData=Yii::app()->db->createCommand($sql)->queryAll();
 				
 				$data=array();
 				foreach($rawData as $row){
-					$row['Marca']=Marca::model()->getMarca($row['Marca']);
+					//$row['Marca']=Marca::model()->getMarca($row['Marca']);
 					$row['Talla']=Talla::model()->getTalla($row['Talla']);
 					$row['url']=Imagen::model()->getImagen($row['id'],$row['Color']);
+					$row['color_id']=$row['Color'];
 					$row['Color']=Color::model()->getColor($row['Color']);
 					$row['precioDescuento']=Precio::model()->getPrecioDescuento($row['id']);	
 					array_push($data,$row);
@@ -933,7 +1006,38 @@ if(isset($_POST['Profile']))
 		
 	}
 	
-	
+	public function actionPorComprar(){
+			
+		$html="";
+		$html=$html."<table class='table table-striped'><thead><tr><th>PRODUCTO</th>
+		<th>DATOS</th><th>CANTIDAD</th></tr></thead><tbody>";	
+		$ptcs = explode(',',$_POST['ids']);
+		$vals = explode(',',$_POST['cants']);
+		$i=0;		
+		foreach($ptcs as $ptc)
+		{
+				
+			$obj=Preciotallacolor::model()->findByPk($ptc);	
+			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id,'color_id'=>$obj->color_id ),array('order'=>'orden ASC'));
+			if(sizeof($ima)==0)
+				$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$obj->producto_id),array('order'=>'orden ASC'));
+			if(sizeof($ima)==0)	
+				$im="<td align='center'>".CHtml::image('http://placehold.it/50x50', "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+			else
+				$im= "<td align='center'>".CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'))."</td>";
+						 	
+			$html=$html."<tr>".
+			$im."<td>".
+			"Color: ".$obj->mycolor->valor."<br/>".
+			"Marca: ".$obj->producto->mymarca->nombre."<br/>".
+			"Talla: ".$obj->mytalla->valor."   </td><td align='center'>".
+			$vals[$i]."</td></tr>";
+			$i++;
+		}
+		$html=$html."</tbody></table>";	
+		echo $html;
+		
+	}
 	
 	
 	
@@ -950,6 +1054,7 @@ if(isset($_POST['Profile']))
 				Yii::app()->session['idDireccion']=$_POST['Direccion']['id'];
 				
 				$this->redirect(array('admin/comprapago'));
+//				$this->redirect(array('bolsa/pagosAdmin'));
 			}
 			else
 			if(isset($_POST['Direccion'])) // nuevo registro
@@ -993,18 +1098,25 @@ if(isset($_POST['Profile']))
 
 	public function actionComprapago()
 		{
-	
+			
 			if(isset($_POST['idDireccion'])) // escogiendo cual es la preferencia de pago
 			{ 
 				$idDireccion = $_POST['idDireccion'];
 				$tipoPago = $_POST['tipoPago'];
 				echo "if";
+				
 				$this->render('compraconfirm',array('idDireccion'=>$idDireccion,'tipoPago'=>$tipoPago));
 				//$this->redirect(array('bolsa/confirmar','idDireccion'=>$idDireccion, 'tipoPago'=>$tipoPago)); 
 				// se le pasan los datos al action confirmar	
 			}  // de direcciones
-		
-				$this->render('comprapago');
+				$vals = explode(',',Yii::app()->session['vals']);
+				$ptcs=explode(',',Yii::app()->session['ptcs']);
+				$peso=0; $i=0;
+				foreach ($ptcs as $ptc){
+					$obj=Preciotallacolor::model()->findByPk($ptc);
+					$peso+=$obj->producto->peso*$vals[$i];
+				}
+				$this->render('comprapago',array('cantidad'=>array_sum($vals),'peso_total'=>$peso));
 			
 			
 		
@@ -1566,6 +1678,22 @@ if(isset($_POST['Profile']))
 		
 		
     }
+	 public function actionBalance($id){
+			
+        
+		$model=$this->loadModel();
+		$balances=Balance::model()->findAllByAttributes(array('user_id'=>$id));
+		
+       
+		
+		$this->render('balance',array(
+			'model'=>$model,
+			'balances'=>$balances
+			
+		));
+		
+		
+    }
 	
 	public function actionDisplaymsj(){
 		if(isset($_POST['msj_id'])){
@@ -1616,6 +1744,50 @@ if(isset($_POST['Profile']))
 		$dirEnvio->pais = $direccion->pais;	
 		$dirEnvio->save();
 		return $dirEnvio;
+	}
+        
+        public function actionSeguimiento($id)
+	{
+		$model=$this->loadModel();
+                
+                /*Para compras en tienda*/
+		$criteria=new CDbCriteria;
+		$criteria->compare("user_id", $id);
+                $criteria->compare("tipo_compra", ShoppingMetric::TIPO_TIENDA);
+		$criteria->order = 'created_on DESC';       
+		
+		$movimientos = new CActiveDataProvider('ShoppingMetric', array(
+                    'criteria'=>$criteria,
+                    'pagination'=>array(
+                                    'pageSize'=>20,
+                            ),
+                    
+                        
+                ));
+                
+                /*Para compra de giftcards*/
+		$criteriaGC=new CDbCriteria;		
+		$criteriaGC->compare("user_id", $id);
+		$criteriaGC->compare("tipo_compra", ShoppingMetric::TIPO_GIFTCARD);		
+		$criteriaGC->order = 'created_on DESC';
+       
+		
+		$movimientosGC = new CActiveDataProvider('ShoppingMetric', array(
+                    'criteria'=>$criteriaGC,
+                    'pagination'=>array(
+                                    'pageSize'=>20,
+                            ),
+                    
+                        
+                ));
+
+
+                $this->render('seguimiento',array(
+			'model'=>$model,
+			'movimientos'=>$movimientos,
+			'movimientosGC'=>$movimientosGC,
+			
+		));
 	}
 
 

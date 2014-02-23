@@ -18,7 +18,7 @@ class TiendaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index', 'look', 'redirect'), //Se cambió el action look de * para acá.
+				'actions'=>array('index', 'look', 'redirect', 'modalAjax'), //Se cambió el action look de * para acá.
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -118,6 +118,7 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
+		/*
 		if(isset(Yii::app()->session['f_color'])){
 			unset(Yii::app()->session['f_color']);
 			
@@ -125,6 +126,14 @@ class TiendaController extends Controller
 		
 		if(isset(Yii::app()->session['f_marca'])){
 			unset(Yii::app()->session['f_marca']);
+			
+		}
+		if(isset(Yii::app()->session['f_cat'])){
+			unset(Yii::app()->session['f_cat']);
+			
+		}
+		if(isset(Yii::app()->session['f_text'])){
+			unset(Yii::app()->session['f_text']);
 			
 		}
 		
@@ -140,35 +149,49 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['p_index']);
 			
 		}
-		
+		*/
 		$a ="a"; 
-		
-		
-		$dp=Producto::model()->findAll($producto->nueva2($a));
-
-		
+	
 		$lims=Precio::model()->getLimites();
 
 		$dif=$lims['maximo']-$lims['minimo'];
+				
 		
-	
+		
+		$orden[0]="t.fecha DESC";
+		$orden[1]="t.fecha ASC";
+		$orden[2]="t.descripcion DESC";
+		$orden[3]="t.descripcion ASC";
+		$orden[4]="t.view_counter DESC";
+		$orden[5]="t.peso ASC";
+		$orden[6]="t.peso DESC";
+		$orden[7]="t.id DESC";
+		$orden[8]="t.id ASC";
+		
+		
+		
+		
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
+		$rangos[0]['max']=round($rangos[0]['max']/100, 0)*100;
 		$rangos[1]['min']=$rangos[0]['max']+0.01;
 		$rangos[1]['max']=($dif*.50)+$lims['minimo'];
+		$rangos[1]['max']=round($rangos[1]['max']/100, 0)*100;
 		$rangos[2]['min']=$rangos[1]['max']+0.01;
 		$rangos[2]['max']=($dif*.75)+$lims['minimo'];
+		$rangos[2]['max']=round($rangos[2]['max']/100, 0)*100;
 		$rangos[3]['min']=$rangos[2]['max']+0.01;
 		$rangos[3]['max']=$lims['maximo']+0.01;
+		
 		for($i=0;$i<4;$i++){
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
 		
+		  
+    	if( isset($_POST['colorhid']) ||  (isset($_GET['page']) && isset(Yii::app()->session['bandera']) ) ){
+    	//	if(isset($_POST['colorhid'])){
+    		Yii::app()->session['bandera'] = true;
 		
-		
-		
-  
-    	if(isset($_POST['colorhid'])){
     		
 				
     			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
@@ -183,42 +206,149 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				
-				 
-			if($_POST['colorhid']!=0){
-			
-				Yii::app()->session['f_color'] = $_POST['colorhid'];
-			
-			}
-			if($_POST['cathid']!=0){
-			
-				Yii::app()->session['f_cat'] = $_POST['cathid'];
-			
-			}
-			if($_POST['marcahid']!=0){
-			
-				Yii::app()->session['f_marca'] = $_POST['marcahid'];
-			
-			}
-			if($_POST['preciohid']<4){
-			
+			if (isset($_POST['texthid']))
+			if(strlen($_POST['texthid'])>0){
+				Yii::app()->session['f_text'] = $_POST['texthid'];
 				
-				Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
-				Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
-				Yii::app()->session['p_index']=$_POST['preciohid'];
+			} else {
+				if (isset($_POST['colorhid'])){	 
+					if($_POST['colorhid']!=0){
+					
+						Yii::app()->session['f_color'] = $_POST['colorhid'];
+					
+					}else{
+						if(isset(Yii::app()->session['f_color'])){
+							unset(Yii::app()->session['f_color']);
+						}
+					}
+				}
+				
+				if (isset($_POST['cathid'])){
+					if($_POST['cathid']!=0){
+					
+						Yii::app()->session['f_cat'] = $_POST['cathid'];
+		 			}
+					else{
+						if(isset(Yii::app()->session['f_cat'])){
+							unset(Yii::app()->session['f_cat']);
+						}
+					}
+				} 
+				if (isset($_POST['padrehid'])){
+					if($_POST['padrehid']!=0){
+					
+						Yii::app()->session['f_padre'] = $_POST['padrehid'];
+		 			}
+					else{
+						if(isset(Yii::app()->session['f_padre'])){
+							unset(Yii::app()->session['f_padre']);
+						}
+					}
+				}
+				if (isset($_POST['chic_hid'])){
+					if($_POST['chic_hid']==1){
+					
+						Yii::app()->session['chic'] = $_POST['chic_hid'];
+		 			}
+					else{
+						
+							unset(Yii::app()->session['chic']);
+						
+					}
+				}
 				
 				
+				if (isset($_POST['marcahid'])){
+					if($_POST['marcahid']!=0){
+					
+						Yii::app()->session['f_marca'] = $_POST['marcahid'];
+						
+					
+					}
+					else{
+						if(isset(Yii::app()->session['f_marca'])){
+							unset(Yii::app()->session['f_marca']);
+						}
+					}
+				}
+				
+				if (isset($_POST['preciohid']))
+				{	if($_POST['preciohid']<4){
+					
+						Yii::app()->session['max']=$rangos[$_POST['preciohid']]['max'];
+						Yii::app()->session['min']=$rangos[$_POST['preciohid']]['min'];
+						Yii::app()->session['p_index']=$_POST['preciohid'];
+										
+					}
+					else{
+						if(isset(Yii::app()->session['p_index'])){
+							unset(Yii::app()->session['p_index']);
+						}
+					}
+				
+					
+				}
+				if (isset($_POST['resethid']))
+				if($_POST['resethid']==1){
+				
+					if(isset(Yii::app()->session['f_color'])){
+						unset(Yii::app()->session['f_color']);
+						
+					}
+					
+					if(isset(Yii::app()->session['chic'])){
+						unset(Yii::app()->session['chic']);
+						
+					}
+					
+					if(isset(Yii::app()->session['f_marca'])){
+						unset(Yii::app()->session['f_marca']);
+						
+					}
+					if(isset(Yii::app()->session['f_cat'])){
+						unset(Yii::app()->session['f_cat']);
+						
+					}
+					
+					if(isset(Yii::app()->session['max'])){
+						unset(Yii::app()->session['max']);
+						
+					}
+					if(isset(Yii::app()->session['min'])){
+						unset(Yii::app()->session['min']);
+						
+					}
+					if(isset(Yii::app()->session['p_index'])){
+						unset(Yii::app()->session['p_index']);
+						
+					}	
+					if(isset(Yii::app()->session['f_text'])){
+						unset(Yii::app()->session['f_text']);
+						
+					}
+					if(isset(Yii::app()->session['f_padre'])){
+						unset(Yii::app()->session['f_padre']);
+						
+					}
+									
+				}
+			
 			}
-			
-			
 			
 			$criteria = $producto->nueva2($a);
+			if (isset($_GET['page'])&&
+			(!isset(Yii::app()->session['f_cat'])&&
+			!isset(Yii::app()->session['f_text'])&&
+			!isset(Yii::app()->session['f_color'])&&
+			!isset(Yii::app()->session['chic'])))
+				$criteria->order=$orden[Yii::app()->session['order']];
 			$total=Producto::model()->count($criteria);
 			if($total>0){
 			
 		
 			$pages = new CPagination($total);
 			
-			$pages->pageSize = $total;
+			$pages->pageSize = 12;
 			
 			$pages->applyLimit($criteria);
 	
@@ -226,11 +356,26 @@ class TiendaController extends Controller
 			
 			 
 			$dataProvider = Producto::model()->findAll($criteria);
-    		  echo CJSON::encode(array(  
+			if ((isset($_GET['page']))){
+				
+				$marcas=Marca::model()->findAll();
+				$colores=Color::model()->findAll();
+				$this->render('index_new',
+						array('index'=>$producto,
+						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
+						'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+						'pages'=>$pages,
+						'total'=>$total,
+						));	
+			} else {
+					
+				   
+				    echo CJSON::encode(array(  
                     'status' => 'success',
                     //'condicion' => $total,
                     'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages, 'total'=>$total), true,true))); 
+                        'pages' => $pages, 'total'=>$total), true,true)));
+			}			 
 			}
 			else{
 					
@@ -242,8 +387,51 @@ class TiendaController extends Controller
 			}
 		}
 		else{
+			unset(Yii::app()->session['bandera']);
+		if(isset(Yii::app()->session['f_color'])){
+			unset(Yii::app()->session['f_color']);
 			
+		}
+		
+		if(isset(Yii::app()->session['f_marca'])){
+			unset(Yii::app()->session['f_marca']);
+			
+		}
+		
+		if(isset(Yii::app()->session['chic'])){
+			unset(Yii::app()->session['chic']);
+			
+		}
+		if(isset(Yii::app()->session['f_cat'])){
+			unset(Yii::app()->session['f_cat']);
+			
+		}
+		
+		if(isset(Yii::app()->session['max'])){
+			unset(Yii::app()->session['max']);
+			
+		}
+		if(isset(Yii::app()->session['min'])){
+			unset(Yii::app()->session['min']);
+			
+		}
+		if(isset(Yii::app()->session['p_index'])){
+			unset(Yii::app()->session['p_index']);
+			
+		}	
+		if(isset(Yii::app()->session['f_text'])){
+			unset(Yii::app()->session['f_text']);
+			
+		}
+		if(isset(Yii::app()->session['f_padre'])){
+			unset(Yii::app()->session['f_padre']);
+			
+		}
+		if(!isset($_GET['page'])){
+			Yii::app()->session['order']=rand(0,8);
+		}
 		$criteria = $producto->nueva2($a);
+		$criteria->order=$orden[Yii::app()->session['order']];
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);
 		
@@ -253,8 +441,8 @@ class TiendaController extends Controller
 	
 		$marcas=Marca::model()->findAll();
 		$colores=Color::model()->findAll();
-			 
-			
+		
+
 		$this->render('index_new',
 		array('index'=>$producto,
 		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
@@ -874,6 +1062,17 @@ public function actionCategorias2(){
 
 	public function actionLook(){
 		
+            /* 
+             * Si se utilizan filtros y estaba seteada la variable de sesion
+             * Borrarla porque se va a realizar una nueva busqueda por filtros
+             */
+            if((isset(Yii::app()->session['todoPost']) && !isset($_GET['page'])))
+            {
+                unset(Yii::app()->session['todoPost']);
+            }
+            
+            
+            //Comparar si vienen todos los campos de perfil
             $filtroPerfil = false;
             
             if(isset($_POST['Profile'])){                
@@ -885,17 +1084,41 @@ public function actionCategorias2(){
                 }        
             }
             
-            if(isset($_GET["page"])){
-                echo "<pre>";
-                print_r($_GET["page"]);
-                echo "</pre>";
-
+            /* 
+             * Si viene la variable page (si se esta paginando con infinitescroll)
+             * y ademas existe la variable de session (ya se habia filtrado) y no viene
+             * nada por el post (no se esta haciendo una nueva busqueda por filtros)
+             * Entonces se saca el valor de la variable de session y se pone en el POST
+             */
+            if(isset($_GET['page']) && isset(Yii::app()->session['todoPost'])
+                    && !(isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
+                    || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
+                || isset($_POST['perfil_propio']))
+               ){
+                
+                $_POST = Yii::app()->session['todoPost'];
+                
+            }            
+            
+            $filtroPerfil = false;
+            
+            if(isset($_POST['Profile'])){                
+                foreach ($_POST['Profile'] as $campo){                    
+                    if(!empty($campo)){
+                       $filtroPerfil = true;
+                       break;
+                   } 
+                }        
             }
+            
             if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
                     || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
                 || isset($_POST['perfil_propio'])) 
             {
 
+                
+               Yii::app()->session['todoPost'] = $_POST;
+               
                 $criteria = new CDbCriteria;                
                    
                 //Si no se resetearon - revisar lo que viene de los inputs 
@@ -940,6 +1163,7 @@ public function actionCategorias2(){
                    }  
                 }
                 
+                //Looks recomendados para el usuario
                 if($_POST['perfil_propio'] == 1){
                     
                     $userTmp = User::model()->findByPk(Yii::app()->user->id);
@@ -961,6 +1185,7 @@ public function actionCategorias2(){
 
                     $criteria->addInCondition('t.id', $inValues);
                     
+                 //Looks recomendados para un perfil   
                 }else if ($filtroPerfil) {
                     
                     $userTmp = User::model()->findByPk(Yii::app()->user->id);
@@ -979,28 +1204,44 @@ public function actionCategorias2(){
                     $criteria->addInCondition('t.id', $inValues);                         
                 }
                
+                $sort = new CSort("Look");
+                //Yii::app()->end();   // NELSON QUE HICISTE NELSON
+                        
+                $sort->applyOrder($criteria);
+                
                 $criteria->compare('status', 2);
                 $total = Look::model()->count($criteria);
                 $pages = new CPagination($total);
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
-			  	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
-				Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
                 
-                echo CJSON::encode(array(
-                    'status' => 'success',
-                    'condicion' => $total,
-                    'div' => $this->renderPartial('_look', array('looks' => $looks,
-                        'pages' => $pages,), true, true)));
+                Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+                Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+                Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+                Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+                Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+                Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+                                      
+                if(!isset($_GET["page"])){
+                    
+                    echo CJSON::encode(array(
+                        'status' => 'success',
+                        'condicion' => $total,                        
+                        'div' => $this->renderPartial('_look', array('looks' => $looks,
+                            'pages' => $pages,), true, true)));
+                    
+                }else{
+                    
+                    echo $this->renderPartial('_look', array('looks' => $looks,
+                        'pages' => $pages,), true, true);              
+                  
+                }
+                                
            } 
            else
            {
@@ -1140,7 +1381,7 @@ public function actionCategorias2(){
        	$datos=$datos.'<div class="span7">';
 		
 		foreach ($producto->precios as $precio) {
-   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span> Bs. '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
+   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span>'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
    		}
 
         $datos=$datos.'</div>';
@@ -1590,6 +1831,40 @@ public function actionCategorias2(){
           $response["status"] = "error";
           
         }
+        
+        echo CJSON::encode($response);
+        
+    }    
+    
+    /**
+     * Retorna el codigo html para un modal especificado en la variable POST "modal"
+     * En el archivo main se puso un div con id=modalAjax que esta disponible en
+     * todo el sitio para cuando se requiera mostrar un modal dinamico
+     */
+    public function actionModalAjax() {
+        Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+        Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+        Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+        Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+        Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+        Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+                                
+        
+        if($_POST["modal"] == "perfiles"){
+            
+           $response["data"] =  $this->renderPartial("_modalAjax", array(), true, true);           
+            
+        }     
+        if($_POST["modal"] == "giftcard"){
+            
+           $response["data"] =  $this->renderPartial("//giftcard/_modalGiftCard", array("id" => $_POST["id"]), true, true);           
+            
+        }     
+        
         
         echo CJSON::encode($response);
         

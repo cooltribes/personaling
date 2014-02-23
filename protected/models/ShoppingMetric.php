@@ -8,6 +8,7 @@
  * @property integer $user_id
  * @property integer $step
  * @property string $created_on
+ * @property integer $tipo_compra
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -25,6 +26,12 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_PAGO = 3;
 	const STEP_CONFIRMAR = 4; 
 	const STEP_PEDIDO = 5; 
+        
+        /*TIPOS DE COMPRA*/
+	const TIPO_TIENDA = 0; 
+	const TIPO_GIFTCARD = 1; 
+        
+        
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -49,11 +56,11 @@ class ShoppingMetric extends CActiveRecord
 		array('created_on','default',
               'value'=>new CDbExpression('NOW()'),
               'setOnEmpty'=>false,'on'=>'insert'), 
-			array('user_id, step, created_on', 'required'),
-			array('user_id, step', 'numerical', 'integerOnly'=>true),
+			array('user_id, step, created_on, tipo_compra', 'required'),
+			array('user_id, step, tipo_compra', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_id, step, created_on', 'safe', 'on'=>'search'),
+			array('id, user_id, step, created_on, tipo_compra', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,6 +86,7 @@ class ShoppingMetric extends CActiveRecord
 			'user_id' => 'User',
 			'step' => 'Step',
 			'created_on' => 'Created On',
+			'tipo_compra' => 'Tipo de compra',
 		);
 	}
 
@@ -96,6 +104,7 @@ class ShoppingMetric extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('step',$this->step);
+		$criteria->compare('tipo_compra',$this->step);
 		$criteria->compare('created_on',$this->created_on,true);
 
 		return new CActiveDataProvider($this, array(

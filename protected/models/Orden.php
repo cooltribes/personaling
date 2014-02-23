@@ -1,4 +1,6 @@
 <?php
+include("class.zoom.json.services.php");
+
 /*
  * Definicion de los estados de la orden por transferencia
  * 1 - En espera de pago
@@ -53,6 +55,7 @@ class Orden extends CActiveRecord
 	const ESTADO_CANCELADO = 5;
 	const ESTADO_RECHAZADO = 6;
 	const ESTADO_INSUFICIENTE = 7;
+
 	
 	 /**
 	 * Returns the static model of the specified AR class.
@@ -103,6 +106,7 @@ class Orden extends CActiveRecord
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
 			'looks' => array(self::MANY_MANY, 'Look', 'tbl_orden_has_productotallacolor(tbl_orden_id, look_id)','condition'=>'looks_looks.look_id > 0'),
 			'estados' => array(self::HAS_MANY, 'Estado', 'orden_id', 'index'=>'id'),
+			'mensajes' => array(self::HAS_MANY, 'Mensaje', 'orden_id', 'index'=>'id'),
 			'detalles' => array(self::HAS_MANY, 'Detalle','orden_id'),
 			'ohptc' => array(self::HAS_MANY, 'OrdenHasProductotallacolor','tbl_orden_id'),
 			'totalpagado' => array(self::STAT, 'Detalle', 'orden_id',
@@ -235,9 +239,10 @@ class Orden extends CActiveRecord
 		// should not be searched.
  
  	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
-		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color
+		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color, ord.fecha as Fecha
 		from tbl_orden_has_productotallacolor o  
 		JOIN tbl_precioTallaColor p ON p.id = o.preciotallacolor_id 
+		JOIN tbl_orden ord ON ord.id = o.tbl_orden_id 
 		JOIN tbl_producto pr ON pr.id = p.producto_id 
 		JOIN tbl_precio pre ON pre.tbl_producto_id = p.producto_id 
 		JOIN tbl_marca m ON m.id=pr.marca_id 
@@ -248,6 +253,12 @@ class Orden extends CActiveRecord
 		if(isset(Yii::app()->session['idMarca'])){
 			if(Yii::app()->session['idMarca']!=0)
 				$sql=$sql." AND m.id=".Yii::app()->session['idMarca'];
+
+		}
+		
+		if(isset(Yii::app()->session['desde'])&&isset(Yii::app()->session['hasta'])){
+			
+				$sql=$sql." AND ord.fecha BETWEEN '".Yii::app()->session['desde']."' AND '".Yii::app()->session['hasta']."'";
 
 		}
 		
@@ -275,7 +286,7 @@ class Orden extends CActiveRecord
 					 
 				    'sort'=>array(
 				        'attributes'=>array(
-				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo'
+				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
 				        ),
 	    ),
 				));
@@ -306,7 +317,10 @@ class Orden extends CActiveRecord
 	
 	public function getTotalByUser($id){
 		
-		$sql = "select sum(total) from tbl_orden where user_id = ".$id;
+		$sql = "select sum(total) from tbl_orden where
+                        estado IN (3, 4, 8)
+                        and user_id = ".$id;
+                //Revisar cuales estados de orden se deben incluir
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $total;
 		
@@ -559,6 +573,83 @@ class Orden extends CActiveRecord
 		return $porpagar;
 		
 	} 
+	
+	public function getTracking($id=null){
+			
+		if(is_null($id))
+				$orden=$this;
+		else
+			{
+				$orden=$this->findByPk($id);
+		}
+		$guia=$orden->tracking;
+		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+	 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>"400933"));
+		//Devuelve array de tracking si lo consigue o null si no
+	}
+	
+	public function getFlete($id=null){
+			
+		if(is_null($id))
+				$orden=$this;
+		else
+			{
+				$orden=$this->findByPk($id);
+		}
+		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+	 	//if(is_null($cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total))))
+			//return $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total;
+		//else
+	 		return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total));
+		//Devuelve array de tracking si lo consigue o null si no
+	} 
+	public function calcularTarifa($ciudad,$nproductos,$peso,$total){
+			
+		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+	 	//return array($ciudad,$nproductos,$peso,round($total,2));
+		
+	 	return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$ciudad,NULL,"cantidad_piezas"=>$nproductos, "peso"=>$peso,NULL,"valor_declarado"=>$total));
+	 
+		//Devuelve array de tracking si lo consigue o null si no
+	} 
+	
+	public function countxEstado($estado){
+		return count($this->findAllByAttributes(array('estado'=>$estado)));
+	}
+	
+	public function getTextEstado($estado = null){
+		if(is_null($estado)){
+			$estado=$this->estado;
+		}
+		
+		if($estado == 1)
+        return "En espera de pago";
+
+    	if($estado == 2)
+       	return "Espera confirmación";
+
+    	if($estado == 3)
+        return  "Pago Confirmado";
+
+    	if($estado == 4)
+        return "Pedido Enviado";
+
+    	if($estado == 5)
+        return "Orden Cancelada";
+
+    	if($estado == 6)
+        return "Pago Rechazado";
+
+    	if($estado == 7)
+        return  "Pago Insuficiente";
+
+   		if($estado == 9)
+        return  "Devuelto";
+
+    	if($estado == 10)
+        return  "Devolución Parcial";
+		
+	}
 	
 	
 	

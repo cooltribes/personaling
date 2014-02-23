@@ -6,6 +6,12 @@ $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
 //$accessToken = $mp->get_access_token();
 //var_dump($accessToken);
+$cs=Yii::app()->clientScript;
+$cs->registerScript('submit','
+$(":submit").mouseup(function() {
+        $(this).attr("disabled",true);
+        $(this).parents("form").submit();
+})',CClientScript::POS_READY);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
 	$descuento = Yii::app()->getSession()->get('descuento');
@@ -24,26 +30,40 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		}
 	}
 //Yii::app()->getSession()->add('descuento',$descuento);
-//Yii::app()->getSession()->add('total',$total);	
+Yii::app()->getSession()->add('total_tarjeta',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
-      <div class="first-past">Autenticación</div>
-      <div class="middle-past">Dirección<br/>
-        de envío <br/>
-        y facturación</div>
-      <div class="middle-past">Método <br/>
-        de pago</div>
-      <div class="last-done">Confirmar<br/>
-        compra</div>
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
+      </div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Payment <br> method'); ?>
+      </div>
+      <div class="last-done">
+        <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
+      </div>
     </div>
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación del Pedido</h1>
+      <h1><?php echo Yii::t('contentForm','Order confirmation'); ?>
+          <br>
+          <?php 
+              $userObject = User::model()->findByPk($user);
+              $nombre = $userObject ? $userObject->profile->first_name." ".$userObject->profile->last_name:
+                        "";
+               if($admin){
+                  echo "(Usuario: <b>{$nombre}</b>)"; 
+               }
+
+          ?>
+      
+      </h1>
     </div>
   </div>
   <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
@@ -61,10 +81,90 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">
+      <section class="span4">
+      <div class="well ">
+        <h4 class="braker_bottom"><?php echo Yii::t('contentForm','Order Details'); ?></h4>
+        <form id="form_productos">          
+          <!-- Look ON -->
+          <!--<h3 class="braker_bottom">Productos Individuales</h3>-->
+          <div>
+            <table class="table" width="100%" >
+              <thead>
+                <tr>
+                  <th><?php echo Yii::t('contentForm','Product'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Unit price'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Quantity'); ?></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php                  
+		$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));		  
+	          foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
+                    {
+                        $todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
+
+                        $producto = Producto::model()->findByPk($todo->producto_id);
+                        $talla = Talla::model()->findByPk($todo->talla_id);
+                        $color = Color::model()->findByPk($todo->color_id);
+
+                        // $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
+
+                        echo "<tr>";
+//                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
+//                        if($imagen){
+//
+//                            $con = 0;
+//
+//                            foreach($imagen as $ima){
+//                                    if($con == 0){	
+//                                            $con++;						  	
+//                                            $aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x180.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+//                                            echo "<td>".$aaa."</td>";
+//                                    }
+//                            }
+//                        }else
+//                            echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+
+                        echo "
+                        <td>"
+                        .$producto->nombre."<br/>
+                        <strong>Color</strong>: ".$color->valor."<br/>
+                        <strong>Talla</strong>: ".$talla->valor."</td>
+                        ";	
+
+                        $pre="";
+                        foreach ($producto->precios as $precio) {
+                        $pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+
+
+                        }
+
+
+
+                        echo "<td style='width:26%'>Bs. ".$pre."</td>";
+                    ?>
+
+              <td width='8%' style="text-align: center">
+                      <?php echo $productoBolsa->cantidad; ?>              
+                    </td>
+            
+            </tr>
+
+            <?php
+                }// foreach							  
+            ?>
+              </tbody>
+            </table>
+          </div>
+          <!-- Look OFF -->		
+          
+        </form>
+      </div>
+    </section>
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envío</h4>
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>
         <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
@@ -76,57 +176,53 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
-        <p><strong>Dirección:</strong> <br/>
+        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
-        <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
+        <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
-        
         <!-- Direcciones OFF --> 
         
-      </div>
-    </section>
-    <section class="span4">
-      <div class="well ">
-        <h4>Método de Pago Seleccionado</h4>
-        <div class=" margin_bottom">
+        <hr>
+        <h4><?php echo Yii::t('contentForm','Payment Method Selected'); ?></h4>
+        <div class=" margin_bottom"> 
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
             <?php 
               	if(Yii::app()->getSession()->get('tipoPago')==1)
-				{
-					echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
-				}else if(Yii::app()->getSession()->get('tipoPago')==4){
-					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
-				}else if(Yii::app()->getSession()->get('tipoPago')==2){
-					echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
-					
-					$tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
-					
-					$rest = substr($tarjeta->numero, -4);
-					
-					echo "</br>Nombre: ".$tarjeta->nombre."
-					</br>Numero: XXXX XXXX XXXX ".$rest."
-					</br>Vencimiento: ".$tarjeta->vencimiento;
+                {
+                    echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','Deposit or Bank Transference').".</td></tr>";
+                }else if(Yii::app()->getSession()->get('tipoPago')==4){
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i>".Yii::t('contentForm','MercadoPago').".</td></tr>";
+                }else if(Yii::app()->getSession()->get('tipoPago')==2){
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','Credit Card').".</td></tr>";
 
-					
-				}
+                    $tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
+
+                    $rest = substr($tarjeta->numero, -4);
+
+                    echo "</br>".Yii::t('contentForm','Name').": ".$tarjeta->nombre."
+                    </br>".Yii::t('contentForm','Number').": XXXX XXXX XXXX ".$rest."
+                    </br>".Yii::t('contentForm','Expiration').": ".$tarjeta->vencimiento;
+                }
               ?>
           </table>
         </div>
+        
       </div>
     </section>
+    
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
       <div class="well well_personaling_big">
-        <h5>Look seleccionado(s): <?php echo Yii::app()->getSession()->get('totalLook'); ?><br/>
+        <h5><?php echo Yii::t('contentForm','Selected looks').': '.Yii::app()->getSession()->get('totalLook'); ?><br/>
           <?php  
            	if(Yii::app()->getSession()->get('totalProductosLook') != 0){
-           		echo Yii::app()->getSession()->get('totalProductosLook')." productos que componen los Looks<br/>";
+           		echo Yii::app()->getSession()->get('totalProductosLook')." ".Yii::t('contentForm','Products that make the Looks')."<br/>";
            	}
 			
-			echo 'Productos individuales: '.Yii::app()->getSession()->get('totalIndiv');
+			echo Yii::t('contentForm','Individual products').': '.Yii::app()->getSession()->get('totalIndiv');
 			?>
         </h5>
-        <hr/>
+        
         <div class="margin_bottom">
           <?php  
           // 	if(Yii::app()->getSession()->get('totalLook') != 0){
@@ -135,11 +231,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			?>
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
-              <th class="text_align_left">Subtotal:</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal') ?>:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>
             <tr>
-              <th class="text_align_left">Envío:</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping') ?>:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
             </tr>
             <tr>
@@ -148,12 +244,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </tr>
             <?php if($descuento != 0){ // si no hay descuento ?> 
             <tr>
-              <th class="text_align_left">Descuento:</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
            	</tr>
            	<?php } ?>
             <tr>
-              <th class="text_align_left"><h4>Total:</h4></th>
+              <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total') ?>:</h4></th>
               <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
             </tr>
           </table>
@@ -184,54 +280,42 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				);
 				$preferenceResult = $mp->create_preference($preference);
 				?>
-          <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
-          <?php
-              }else if(Yii::app()->getSession()->get('tipoPago') == 2){ // tarjeta
-              		/*	
-					 echo CHtml::link("<i class='icon-locked icon-white'></i> Pagar con tarjeta de crédito",
-					    $this->createUrl('modal',array('id'=>'pago')),
-					    array(// for htmlOptions
-					      'onclick'=>' { $("#pago").attr("disabled", true); '.CHtml::ajax( array(
-					      'url'=>CController::createUrl('modal',array('tipo'=>"2")),
-					           'success'=>"js:function(data){ $('#myModal').html(data);
-										$('#myModal').modal(); }")).
-					         'return false;}',
-					    'class'=>'btn btn-warning',
-					    'id'=>'pago')
-					);	*/
-					
-					echo "<div class='form-actions'><a id='boton_pago_tarjeta' onclick='enviarTarjeta()' class='pull-left btn-large btn btn-warning'> <i class='icon-locked icon-white'></i>Pagar con tarjeta de crédito </a></div>";
-
-				}
-				else {
-              	?>
-          			<a id="boton_completar" onclick="enviar()" class="btn btn-warning"><i class="icon-locked icon-white"></i> Completar compra</a>
-          			<hr/>
-          		<?php
-              	}
-              //<a href="confirmacion_compra.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Realizar Pago (TDC)</a> 
-              //<hr/>
-			  ?>
-          <?php /*$this->widget('bootstrap.widgets.TbButton', array(
-            'type'=>'danger',
-            'size'=>'large',
-            'label'=>'Pagar',
-            'url'=>'comprar', // action
-            'icon'=>'shopping-cart white',
-        )); 
-        // <a href="Instrucciones_Deposito_Transferencia.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Pago Trans/Dep</a>
-		   * */
-		   
-        ?>
-          <?php
-               	//<a href="pago_por_verificar.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Si ya hizo la Trans/Dep</a>
-				//<hr/>
-				?>
+          <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago') ?></a>
+          <?php 
+          } else {
+          	
+			$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+			    'id'=>'verticalForm',
+			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
+			    'htmlOptions'=>array('class'=>'well text_align_center'),
+			)); 
+          	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
+			echo CHtml::hiddenField('codigo_randon',rand());
+                        echo CHtml::hiddenField('admin',$admin);
+		            echo CHtml::hiddenField('user',$user);
+          	$this->widget('bootstrap.widgets.TbButton', array(
+                    'type'=>'warning',
+//                    'buttonType'=>'submit',
+                    'buttonType'=>'button',
+                    'size'=>'large',
+                    'label'=>$tipo_pago==2?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Complete purchase'),
+                    //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+                    'icon'=>'lock white',
+                    'htmlOptions'=>array(
+//                        'onclick'=>'js:enviar_pago();'
+                        'id' => 'btn-Comprar',
+                        )
+                )); 
+		
+		 $this->endWidget(); 
+		  }
+		  ?>
+          
         </div>
-        <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+        <p><i class="icon-calendar"></i><?php echo Yii::t('contentForm','Date estimated delivery') ?>: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
-      <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank">Ver Políticas de Envíos y Devoluciones</a></p>
-      <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
+      <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank"><?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?></a></p>
+      <p class="muted"><i class="icon-comment"></i> <?php echo Yii::t('contentForm', 'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm'); ?></p>
       
       <!-- Resumen de Productos OFF --> 
       
@@ -244,6 +328,24 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 <?php $this->endWidget(); ?>
 
+<div class="wrapper_home hide">
+            
+    <div class="box_20130928 margin_bottom_small">
+            <h1>
+                <span><?php echo Yii::t('contentForm', 'Your payment is being processed'); ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php echo Yii::t('contentForm', 'Your purchase will be completed in seconds!'); ?>                
+            </p>
+            
+    </div>
+</div>
+
+
 <?php 
 
 }// si esta logueado
@@ -255,8 +357,29 @@ else
 
 
 ?>
+
 <script>
-	
+    
+$(document).ready(function(){
+    $("#btn-Comprar").click(function(e){
+	$(this).attr("disabled", true);
+        $(this).html('<i class="icon-lock icon-white"></i> Procesando pago...');
+        $("body").addClass("aplicacion-cargando");
+        $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
+        $("#verticalForm").submit();
+        //e.preventDefault();
+        
+        
+    });
+});
+    
+    
+    
+	function enviar_pago(){
+		$(this).html("Procesando el Pago...");
+		$(this).attr("disabled", true);
+		
+	}
 	function enviar()
 	{
 		$('#boton_completar').attr("disabled", true);
@@ -378,6 +501,10 @@ else
 								//alert('El número de tarjeta que introdujó no es un número válido.');
 								window.location="error/2";
 							}
+							if(data.mensaje=="CVC Number Invalid"){
+								//alert('El número de tarjeta que introdujó no es un número válido.');
+								window.location="error/6";
+							}							
 						}
 						
 						if(data.status==401)

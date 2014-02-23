@@ -208,7 +208,8 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));*/
 		
-		if ($user!==null){
+		if ($user!==null){                      
+                    
 		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE deleted=0 and (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
 		$sql='SELECT id FROM tbl_look WHERE deleted = 0 AND  (
@@ -219,6 +220,8 @@ class Look extends CActiveRecord
 			if('.$user->profile->piel.' & piel !=0,1,0)+
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 6 
+                AND ('.$user->getEdad().' BETWEEN edadMin AND edadMax)
+                    
 		UNION ALL '.
 		'SELECT id FROM tbl_look WHERE deleted = 0 AND (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
@@ -228,7 +231,9 @@ class Look extends CActiveRecord
 			if('.$user->profile->piel.' & piel !=0,1,0)+
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 5 
+                AND ('.$user->getEdad().' BETWEEN edadMin AND edadMax)
 		';
+                
 		} else {
 			$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look where deleted=0')->queryScalar();
 			$sql = 'SELECT id FROM tbl_look WHERE deleted=0';
@@ -872,7 +877,7 @@ class Look extends CActiveRecord
 		
 	}
         
-	public static function masVistos($limit = 5){
+	public static function masVistos($limit = 20){
             $criteria=new CDbCriteria;  		
 		
             //$criteria-> compare('destacado',1);
@@ -925,6 +930,33 @@ class Look extends CActiveRecord
 	   }
 	   //echo $this->birthday;
 	   return parent::beforeSave();
+	}
+	
+	public function getHas_100chic(){
+		if(is_array($this->productos))
+		{		
+			foreach($this->productos as  $producto){
+				if($producto->mymarca->is_100chic)
+					return true;
+			}
+		}
+		return false;
+	}
+        
+        /**
+         * Se revisa si el look tiene al menos una prenda en existencia,
+         * disponible y activa.
+         */
+	public function getIsVisible(){
+		if(is_array($this->productos))
+		{		
+			foreach($this->lookhasproducto as $lookhasproducto){
+				if($lookhasproducto->producto->getCantidad(null, $lookhasproducto->color_id) > 0 && 
+                                    $lookhasproducto->producto->estado == 0)
+					return true;
+			}
+		}
+		return false;
 	}
 	
 }

@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 class OrdenController extends Controller
 {	
@@ -58,13 +58,29 @@ public function actionReporte()
 	{ 
    $orden = new Orden;
 		
-		if(isset(Yii::app()->session['idMarca']))
-			unset(Yii::app()->session['idMarca']);
-		
-		 
+		if(!isset($_GET['data_page'])){
+			
+			if(isset(Yii::app()->session['idMarca']))
+				unset(Yii::app()->session['idMarca']);
+				
+			if(isset(Yii::app()->session['desde']))
+			{	unset(Yii::app()->session['desde']);
+
+			}
+			if(isset(Yii::app()->session['hasta']))
+			{	unset(Yii::app()->session['hasta']);
+
+			}
+		}
 		
 		if(isset($_POST['marcas']))
 			Yii::app()->session['idMarca']=$_POST['marcas'];
+			
+		if(isset($_POST['desde'])&&isset($_POST['hasta']))
+			{	Yii::app()->session['desde']=date("Y-m-d", strtotime($_POST['desde']));
+				Yii::app()->session['hasta']=date("Y-m-d", strtotime($_POST['hasta']));
+				
+			}
 	
 			
 			$dataProvider = $orden->vendidas();
@@ -123,7 +139,8 @@ public function actionReportexls(){
 						->setCellValue('F1', 'Cantidad')
 						->setCellValue('G1', 'Costo (Bs)')
 						->setCellValue('H1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('I1', 'Precio de Venta con IVA (Bs)');
+						->setCellValue('I1', 'Precio de Venta con IVA (Bs)')
+						->setCellValue('J1', 'Vendido en');
 			// encabezado end			
 		 	
 			foreach(range('A','I') as $columnID) {
@@ -141,15 +158,16 @@ public function actionReportexls(){
 			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
 		 	
 		 	
 		 	//Eliminar filtrado por marca antes de consultar
-		 	$fake=false;
+		 	/*$fake=false;
 		 	if(isset(Yii::app()->session['idMarca'])){
 		 		$marca=Yii::app()->session['idMarca'];
 		 		$fake=true;
 		 		unset(Yii::app()->session['idMarca']);
-		 	}
+		 	}*/
 			//fin			
 		 	
 		 	$orden=new Orden;
@@ -158,21 +176,18 @@ public function actionReportexls(){
 		
 			
 			//Reestablecer filtrado por marca si existia
-			if($fake)
-				Yii::app()->session['idMarca']=$marca;
+			/*if($fake)
+				Yii::app()->session['idMarca']=$marca;*/
 		 	//fin	 
 		 
 		 	foreach($ordenes->getData() as $data)
 			{
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
-                   if($data['look'] == 0)
-                    	{$H=Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), ''); 
-                    	$I=Yii::app()->numberFormatter->formatCurrency($data['Precio'], '');}
-				   else
-               			{$H=Yii::app()->numberFormatter->formatCurrency($data['pVenta'], ''); 
-               			$I=Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '');}
+             
+                    $H=number_format($data['Precio'],2,',','.'); 
+                    $I=number_format(($data['Precio']+($data['Precio']*0.12)),2,',','.');
 
-			
+
 					$objPHPExcel->setActiveSheetIndex(0)
 							->setCellValue('A'.$fila , $data['Marca']) 
 							->setCellValue('B'.$fila , $data['Nombre'])
@@ -180,9 +195,10 @@ public function actionReportexls(){
 							->setCellValue('D'.$fila , $data['Color'])
 							->setCellValue('E'.$fila , $data['Talla']) 
 							->setCellValue('F'.$fila , $data['Cantidad']) 
-							->setCellValue('G'.$fila , Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')) 
-							->setCellValue('H'.$fila , $H)							
-							->setCellValue('I'.$fila , $I);
+							->setCellValue('G'.$fila , number_format($data['Costo'],2,',','.')) 
+							->setCellValue('H'.$fila , trim($H))							
+							->setCellValue('I'.$fila , trim($I))
+							->setCellValue('J'.$fila ,date("d/m/Y",strtotime($data['Fecha'])));
 					$fila++;
 
 			} // foreach
@@ -652,7 +668,47 @@ public function actionReportexls(){
 	public function actionDetalles($id)
 	{
 		$orden = Orden::model()->findByPk($id);
+		/*$sql="select * from tbl_zoom where cod NOT IN (select cod_zoom from tbl_ciudad where cod_zoom IS NOT NULL)";
+		$zooms=Yii::app()->db->createCommand($sql)->queryAll();
+	
 		
+		foreach ($zooms as $zoom){
+				
+			
+			
+			echo ucwords(strtolower($zoom['ciudad']))." - ".$zoom['estado']." - ".intval($zoom['estado'])."<br/>";
+			if(strpos($zoom['ciudad'],'(')>0)
+				$zoom['ciudad']= substr($zoom['ciudad'], 0, strpos($zoom['ciudad'],'(')); 
+			   
+			 
+			$city=new Ciudad;
+			$city->nombre=ucwords(strtolower($zoom['ciudad']));
+			$city->cod_zoom=$zoom['cod'];
+			$city->ruta_id=4;
+			$city->provincia_id=intval($zoom['estado']);
+			if(!$city->save())
+				print_r($city->getErrors());
+		}*/
+		/*
+	 * $estados=Provincia::model()->findAll();
+		$i=0;
+		$zoom=Zoom::model()->findAll(array('order'=>'estado'));
+		
+		foreach ($zoom as $ciudad){
+			foreach ($estados as $estado){
+				if(strtoupper($estado->nombre) == strtoupper($ciudad->estado)){
+					$ciudad->estado=$estado->id;
+					$ciudad->save(); 
+					break;
+				}
+			}
+		}
+			*/
+		
+		
+	
+		
+
 		$this->render('detalle', array('orden'=>$orden,));
 	}
 
@@ -831,6 +887,8 @@ public function actionValidar()
 							if($estado->save())
 							{
 								echo "ok";
+							} else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
 							}
 						}
 						// Subject y body para el correo
@@ -887,7 +945,9 @@ public function actionValidar()
 								{
 									//$pag_det->save();
 									echo "ok";	
-								}	
+								}	else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+							}
 							}
 												
 							
@@ -943,8 +1003,10 @@ public function actionValidar()
 									
 									if($estado->save())
 									{
-										
-									}
+										echo "ok";
+									} else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+							}
 									}	
 								}
 								
@@ -963,7 +1025,12 @@ public function actionValidar()
 							$estado->user_id = Yii::app()->user->id;
 							$estado->fecha = date("Y-m-d");
 							$estado->orden_id = $orden->id;
-							$estado->save();
+							if($estado->save())
+									{
+										echo "ok";	
+									}else {
+								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+							}
 							//if($estado->save())
 							//{
 								//$pag_bal->tbl_detalle_id=$det_bal->id;
@@ -1140,64 +1207,81 @@ public function actionValidar()
 	public function actionCancelar($id)
 	{   
             
-            $orden = Orden::model()->findByPK($id);
-		$end="";
-		if($orden->estado==1)
-		{
-				$ban=true;
-				$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
-				foreach($ohptcs as $ohptc){
-					$ptc=Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
-					$ptc->cantidad=$ptc->cantidad+$ohptc->cantidad;
-						if($ptc->save())
-							$ban=true;
-						else{
-							print_r($ptc->getErrors());
-							break;
-						}
-						
-				}
-							
-						
-					
-				$orden->estado = 5;	// se canceló la orden
-					
-					if($orden->save()&&$ban)
-					{
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
-						
-						$estado = new Estado;
-												
-						$estado->estado = 5;
-						$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
-						$estado->fecha = date("Y-m-d H:i:s");
-						$estado->orden_id = $orden->id;
-                                                
-                                                //Si hay un motivo de cancelacion
-                                                if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
-                                                    $estado->observacion = $_GET['mensaje'];
-                                                }
-                                                
-								
-						if($estado->save())
-						{
-							Yii::app()->user->setFlash('success', 'Se ha cancelado la orden.');
-							$end='ok';
-							
-							
-						}
-					}	
-		}
-		else
-		{
-			Yii::app()->user->setFlash('error', "No es posible cancelar la orden dado que ya se ha registrado algún pago.");
-			$end='no';
-		}
-		if(isset($_POST['admin']) || isset($_GET['admin'])){
-			echo $end;
-			return 0;
-		}else
-			$this->redirect(array('listado'));
+            $orden = Orden::model()->findByPK($id);            
+            $response = array();
+            $esAdmin = isset($_POST['admin']) || isset($_GET['admin']);
+            $pagoHecho = $orden->estado == Orden::ESTADO_CONFIRMADO
+                         || $orden->estado == Orden::ESTADO_INSUFICIENTE;   
+            
+
+            /* 
+             * Si la orden esta en espera de pago la puede cancelar el usuario y el admin
+             * Si esta en 2, 3, 7 (con pagos hechos). La puede cancelar solamente el admin y se devuelve
+             * el dinero al usuario
+             */
+            if($orden->estado == Orden::ESTADO_ESPERA || $orden->estado == Orden::ESTADO_RECHAZADO ||
+               ($esAdmin && $pagoHecho))
+            {
+                $ban = false;
+                $ohptcs = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+                foreach($ohptcs as $ohptc){
+                    $ptc=Preciotallacolor::model()->findByPk($ohptc->preciotallacolor_id);
+                    $ptc->cantidad=$ptc->cantidad+$ohptc->cantidad; //devolver inventario
+                        if($ptc->save())
+                            $ban = true;
+                        else{
+                            print_r($ptc->getErrors());
+                            $ban = false;
+                            break;
+                        }
+                }
+                
+                /*Si ha pagado, devolver dinero al saldo*/
+                if($pagoHecho){
+                                               
+                    $balance = new Balance;                    
+                    $totalDevuelto = $balance->total = $orden->totalpagado;
+                    $balance->orden_id = $orden->id;
+                    $balance->user_id = $orden->user_id;
+                    $balance->tipo = 4;
+                    $balance->save();  
+                }
+
+                $orden->estado = 5;	// se canceló la orden
+
+                if($orden->save() && $ban)
+                {
+                    // agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado						
+                    $estado = new Estado;												
+                    $estado->estado = 5;
+                    $estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+                    $estado->fecha = date("Y-m-d H:i:s");
+                    $estado->orden_id = $orden->id;
+
+                    //Si hay un motivo de cancelacion
+                    if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
+                        $estado->observacion = $_GET['mensaje'];
+                    }		
+                    if($estado->save())
+                    {
+                            Yii::app()->user->setFlash('success', 'Pedido cancelado con éxito.');                                    
+                            $response["status"] = "success";
+                            $response["message"] = "Pedido cancelado con éxito. <br>
+                                Se han agregado <b>".Yii::app()->numberFormatter->format('#,##0.00',$totalDevuelto)." Bs.</b> al saldo del usuario</b>";
+                    }
+                }	
+            }
+            else
+            {
+                Yii::app()->user->setFlash('error', "No se puede cancelar el pedido.");
+                $response["status"] = "error";
+                $response["message"] = "No se puede cancelar el pedido";
+            }
+            if($esAdmin){
+                echo CJSON::encode($response);
+                return 0;
+            }else
+                    $this->redirect(array('listado'));
 	}
 
 	
@@ -1419,21 +1503,40 @@ public function actionValidar()
 		if(isset($_POST['orden']) && isset($_POST['check']))
 		{
 			$orden = Orden::model()->findByPk($_POST['orden']);
-			
+			$devolver=array();
+			$nproductos=0;
+			$peso=0;
+			$costo=0;
+			$cont=0;
 			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
-			$cont = 0; 
 			
+//			echo count($checks);
+//                        Yii::app()->end();
 			$totalenvio = 0;
+			
+//                        foreach($checks as $uno)
+//			{echo $uno."<br>";
+//                            
+//                       }
+//                        Yii::app()->end();
+			
+			$orden = Orden::model()->findByPk($_POST['orden']);
 			
 			foreach($checks as $uno)
 			{
-				$orden = Orden::model()->findByPk($_POST['orden']);
+				
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno)); 
 				
-				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
+				
+             if($ptcolor)
+				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" 
+                                        || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
 				{
+							
+					array_push($devolver,$ptcolor->id);	
+							
 					// calculo envio
-					
+					/*
 					$producto = Producto::model()->findByPk($ptcolor->producto_id);
 					$peso_total = $producto->peso; 
 					
@@ -1461,18 +1564,62 @@ public function actionValidar()
 						}
 							
 						$tipo_guia = 2;
-					}
-					
-					$totalenvio += $envio;
+					}*/
 					
 				} // if motivos
 
+				
+				
 				$cont++;
 			} // foreach
 			
-		echo $totalenvio;						
+			
+			$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));	
+		
+			foreach($ohptcs as $ohptc){
+				
+				if(!in_array($ohptc->preciotallacolor_id,$devolver)){
+					$nproductos=$nproductos+$ohptc->cantidad;
+					$costo=$costo+$ohptc->precio;
+					$peso+=$ohptc->cantidad*$ptcolor->producto->peso;	
+				}
+				
+			}
+			
+			if($peso< 5){      
+							
+						
+						$flete=Orden::model()->calcularTarifa($orden->direccionEnvio->myciudad->cod_zoom,$nproductos,$peso,$costo);
+							
+							if(!is_null($flete)){
+								$envio=$flete->total - $orden->flete;
+					
+							}else{
+								$envio =Tarifa::model()->calcularEnvio($peso,$orden->direccionEnvio->myciudad->ruta_id);
+								$seguro=$envio*0.13;
+							}
+							
+							
+							$tipo_guia = 1;
+							
+			}else{
+							$peso_adicional = ceil($peso-5);
+							$envio = 163.52 + ($peso*$orden->direccionEnvio->myciudad->ruta->precio);
+							if($envio > 327.04){
+								$envio = 327.04;
+							}
+							$tipo_guia = 2;
+							
+			}
+			
+					
+			
+			
+									
+//		echo Yii::app()->numberFormatter->formatCurrency($totalenvio, '');
 
 		}	
+	echo ($orden->envio-$envio);
 
 	}
 

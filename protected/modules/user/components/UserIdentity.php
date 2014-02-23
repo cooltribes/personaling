@@ -12,6 +12,7 @@ class UserIdentity extends CUserIdentity
 	const ERROR_STATUS_NOTACTIV=4;
 	const ERROR_STATUS_BAN=5;
         const ERROR_STATUS_APPLY = 6;
+	const ERROR_STATUS_DEL = 7;
         
 	/**
 	 * Authenticates a user.
@@ -40,6 +41,8 @@ class UserIdentity extends CUserIdentity
 			$this->errorCode=self::ERROR_STATUS_NOTACTIV;
 		else if($user->status== User::STATUS_BANNED)
 			$this->errorCode=self::ERROR_STATUS_BAN;
+		else if($user->status== User::STATUS_DELETED)
+			$this->errorCode=self::ERROR_STATUS_DEL;
                 
                 else if($user->personal_shopper == User::TYPE_PSAPPLY)
 			$this->errorCode=self::ERROR_STATUS_APPLY;

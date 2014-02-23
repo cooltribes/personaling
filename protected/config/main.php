@@ -12,7 +12,8 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Personaling',
 	'timeZone' => 'America/Caracas', 
-	'language' => 'es',
+	'language' => 'es_ve',
+	'sourceLanguage'=>'es_VE',
 	// preloading 'log' component
 	'preload'=>array('log','bootstrap'),
 	'theme'=>'bootstrap',
@@ -149,7 +150,7 @@ return array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
      			//'caseSensitive'=>false, 
-     			'baseUrl'=>'/site',  
+     			'baseUrl'=>'/develop',  
 			'rules'=>array(
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',

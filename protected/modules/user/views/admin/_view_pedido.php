@@ -32,10 +32,25 @@
 	</td>
 	<td>
 		<?php
-		if($data->pago->tipo==1)
-			echo "Depósito / Transferencia"; // metodo de pago
-		if($data->pago->tipo==4)
-			echo "MercadoPago"; 
+		if(count($data->detalles)){
+                    foreach ($data->detalles as $detallePago){
+
+                    if($detallePago->tipo_pago==1)
+                        echo "Dep. o Transfer"; // metodo de pago
+                    else if($detallePago->tipo_pago==2)
+                            echo "Tarjeta de Crédito"; 
+                    else if($detallePago->tipo_pago==3)
+                            echo "Uso de Balance"; 
+                    else if($detallePago->tipo_pago==4)
+                            echo "MercadoPago"; 
+                    else
+                            echo "-ERROR EN EL PAGO-";
+                    echo "</br>";
+
+                }
+                }else{
+                    echo "Dep. o Transfer"; 
+                }
 		?>
 	</td>
 	<td>

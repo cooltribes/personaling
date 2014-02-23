@@ -58,6 +58,7 @@ class Marca extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 		'productos' => array(self::HAS_MANY, 'Producto', 'marca_id'),
+		//'clasificaciones' => array(self::HAS_MANY, 'ClasificacionMarca', 'marca_id'),
 		);
 	}
 
@@ -140,6 +141,37 @@ class Marca extends CActiveRecord
 	public function getAll(){
 		$todas=Marca::model()->findAll();
 		return $todas;
+		
+	}
+	public function getMyclasificaciones(){
+		$class=ClasificacionMarca::model()->findAllByAttributes(array('marca_id'=>$this->id));
+		$return=array();
+		if(count($class)==0)
+			return null;
+		else {
+			foreach($class as $clas){
+				array_push($return,$clas->clasificacion);
+			}
+			return $return;
+		}
+		
+	}
+	
+	
+	public function getIs_100chic($id = null){
+		if(is_null($id)){
+			$marca=$this;
+		}
+		else{
+			$marca=$this->findByPk($id);
+		}
+		if(!is_null($marca->myclasificaciones)){
+			if(in_array(1,$this->myclasificaciones)){
+					return true;						
+			}
+		}
+		
+			return false;
 		
 	}
 	 

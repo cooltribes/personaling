@@ -16,7 +16,7 @@ $this->breadcrumbs=array(
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Producto - Tallas y Colores</small></h1>
-    <h2><?php echo $model->nombre; ?></h2>
+    <h2 ><?php echo $model->nombre."  [<small class='t_small'>Ref: ".$model->codigo."</small>]"; ?></h2>
   </div>
   <!-- SUBMENU ON -->
   <?php echo $this->renderPartial('menu_agregar_producto', array('model'=>$model,'opcion'=>6)); ?>
@@ -472,8 +472,34 @@ $this->breadcrumbs=array(
 				?> 
                 <ul class="nav nav-stacked nav-tabs margin_top">
                     <li>
-                    	<a id="guardaravanzar" href="#"  title="Guardar y avanzar" >Guardar y avanzar</a>
+                    	
                  <?php 		 		 
+				   
+				   $this->widget('bootstrap.widgets.TbButton', array(
+				    'buttonType'=>'ajaxButton',
+				    'label'=>'Guardar y Avanzar',
+				    'block'=>'true',
+				 
+				    'url'=> CController::createUrl('producto/tallacolor',array('id'=>$model->id)) ,
+				   'htmlOptions'=>array('id'=>'saveandgo','class'=>'btn btn-block boton_link transition_all color11'),
+				    'ajaxOptions'=>array(
+				    	    'type' => 'POST',
+				    	    'data'=> "js:$('#Tallacolor-Form').serialize()",
+		                    'success' => "function( data )
+				                  {
+
+				                   data = JSON.parse( data );
+				                   if(data.status=='success'){
+				                        $('.error').hide();
+				                        //$('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+				                        $('#MensajeError').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
+										window.location.href = '../imagenes/'+data.id+'';
+									}
+				                  }",
+					),
+				)); 
+				   
+				   
 				   
 				//     echo CHtml::ajaxLink(
 				// 	  "Guardar y avanzar",

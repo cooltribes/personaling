@@ -83,20 +83,32 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
                                         <?php echo $form->errorSummary(array($giftcard, $envio)); ?>
 					   
 				</div>	
-				<div class="span5 bg_color5 box_shadow_personaling padding_medium">
-                                    <div class="contenedorPreviewGift" >
-                                        <span class=" T_xlarge" id="monto"><?php echo "X"//$model->monto; ?> Bs. </span>
-                                        <span  id="forpara">Para:</span><p id="para">
-                                            <b><?php echo count(Yii::app()->session["users"]); ?></b> Usuario<?php echo count(Yii::app()->session["users"]) > 1? "s":"" ?> Personaling
-                                        </p>                        
-                                        <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
-                                        <span class=" T_large color4" id="codigo"> <?php echo "XXXX-XXXX-XXXX-XXXX";//$model->getMascaraCodigo(); ?> </span>
-                                        <span class=" t_small" id="fecha">Válida desde <?php echo "fecha";//echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el 
-                                            <?php //echo date("d/m/Y", $model->getFinVigencia()); ?> </span>
-                                        <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
 
-                                    </div>
-				</div>
+                <div class="span5 box_shadow_personaling padding_medium">
+                    <div class="contenedorPreviewGift" >
+                        <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
+                        <div class="row-fluid margin_top">
+                            <div class="span6 braker_right">
+                                <div class=" T_xlarge color1" id="monto"><?php echo "X"//$model->monto; ?> Bs. </div>
+                                
+                                <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo "XXXX-XXXX-XXXX-XXXX";//$model->getMascaraCodigo(); ?> </div>
+                            </div>
+                            <div class="span6">
+                                <strong  id="forpara">Para:</strong>&nbsp;<span id="para"><b><?php echo count(Yii::app()->session["users"]); ?></b> Usuario<?php echo count(Yii::app()->session["users"]) > 1? "s":"" ?> Personaling</span>
+                                <div>
+                                    <strong  id="formensaje">Mensaje:</strong>&nbsp;<span class="" id="mensaje"></span>
+                                </div>                        
+
+                            </div>
+                        </div>
+                        <div class="text_center_align margin_bottom_minus margin_top_small">
+                            <span class=" t_small" id="fecha">
+                                Válida desde <?php echo "fecha";//echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el 
+                                            <?php //echo date("d/m/Y", $model->getFinVigencia()); ?>
+                            </span>                        
+                        </div>
+                    </div>
+                </div>                
 			</div>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">                                   

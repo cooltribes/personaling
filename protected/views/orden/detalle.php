@@ -5,9 +5,14 @@ $this->breadcrumbs=array(
 	'Pedidos'=>array('admin'),
 	'Detalle',
 );
-
+if($orden->getFlete())
+	print_r($orden->getFlete());// REVISION ZOOM 
+	//echo "<br/>";
+//print_r($orden->calcularTarifa(17,1,0.4, 3290)); 
+//echo $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total."<br/>"."17 - 1 - 0.4 - 3290";
 $usuario = User::model()->findByPk($orden->user_id); 
 
+$tracking=$orden->getTracking();
 
 
 
@@ -29,7 +34,8 @@ $usuario = User::model()->findByPk($orden->user_id);
 	    </div>
 	<?php } ?>
   <div class="page-header">
-    <h1>PEDIDO #<?php echo $orden->id; ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
+    <h1>PEDIDO #<?php echo $orden->id; 
+     ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
     <tr>
@@ -38,7 +44,8 @@ $usuario = User::model()->findByPk($orden->user_id);
       	<?php
       	
       	if($orden->fecha!="")
-   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
+//   		echo date('d/m/Y - h:i a', strtotime($orden->fecha. ' + 3 days'));
+   		echo date('d/m/Y - h:i a', strtotime($orden->fecha));
       	
       	?>
       </div></th>
@@ -47,35 +54,7 @@ $usuario = User::model()->findByPk($orden->user_id);
    	<td><p class="T_xlarge margin_top_xsmall color1">
 <?php
 //----------------------Estado
-	if($orden->estado == 1)
-		echo "En espera de pago"; 
-	
-	if($orden->estado == 2)
-		echo "Espera confirmación";
-	
-	if($orden->estado == 3)
-		echo "Pago Confirmado";
-
-	if($orden->estado == 4)
-		echo "Pedido Enviado";
-	
-	if($orden->estado == 5)
-		echo "Orden Cancelada";	
-	
-	if($orden->estado == 6)
-		echo "Pago Rechazado";
-
-	if($orden->estado == 7)
-		echo "Pago Insuficiente";
-	
-	if($orden->estado == 8)
-		echo "Orden Entregada";
-	
-	if($orden->estado == 9)
-		echo "Devuelto";
-		
-	if($orden->estado == 10)
-		echo "Devolución Parcial";
+	echo $orden->textestado;
 	
 	// agregar demas estados
 ?>
@@ -83,7 +62,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         Estado actual</td>
       <td><p class="T_xlarge margin_top_xsmall"> 2 </p>
         Documentos</td>
-      <td><p class="T_xlarge margin_top_xsmall"> 2</p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo count($orden->mensajes);?></p>
         Mensajes<br/></td>
         
         <?php
@@ -228,7 +207,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         
           	<?php
           	
-          	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+          	$productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
           //	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 						
 			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
@@ -246,7 +225,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 	          		</tr>
 	          	");
 			
-				foreach($detalles as $detalle){
+				foreach($productoBolsa as $detalle){
 				
 				echo("<tr>");
 				
@@ -295,8 +274,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 		  	?>    
      
      <?php
-     	if($orden->estado == 4) // enviado
-     	{
+     	if($orden->estado==4||$orden->estado==8||$orden->estado==9||$orden->estado==10){
      ?>
      
       <div class="well well-small margin_top well_personaling_small">
@@ -339,10 +317,26 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
         </table>
+        
+        <?php if(!is_null($tracking))
+        { ?>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+          <tr>
+            <th scope="col">Fecha</th>
+           <!--  <th scope="col">Tipo</th>-->
+            <th scope="col">Estatus</th>
+            </tr>
+         	<?php foreach ($tracking as $track){
+         echo "<tr>
+        	<td>".$track->fecha."</td><td>".$track->descripcion_estatus."</td>        
+          </tr>";
+         }?>
+        </table>
+        <?php } ?>
       </div>      
       <?php
-		} // envío
-      
+		 // envío
+		 }
       ?>
       
       
@@ -392,9 +386,9 @@ $usuario = User::model()->findByPk($orden->user_id);
         
         	<?php
         	
-        	$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+        	$productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 			
-			foreach($detalles as $detalle){
+			foreach($productoBolsa as $detalle){
 	        	if($detalle->estado == 0 && $detalle->nTransferencia!="") // si esta en default
 				{
 					echo("<div class='alert alert-block '>");
@@ -476,40 +470,17 @@ $usuario = User::model()->findByPk($orden->user_id);
 		  	{
 		  		echo("<tr>");
 				
-				if($est->estado==1)
-					echo("<td>Pendiente de Pago</td>");
 				
-				if($est->estado==2)
-					echo("<td>Pendiente por confirmar</td>");
+					echo "<td>".$orden->getTextEstado($est->estado)."</td>";
 				
-				if($est->estado==3)
-					echo("<td>Pago Confirmado</td>");
-				
-				if($est->estado==4)
-					echo("<td>Pedido enviado</td>");			 
-				
-				
-				if($est->estado == 5)
-					echo "<td>Orden Cancelada</td>";	
-				
-				if($est->estado==6)
-					echo("<td>Pago Rechazado</td>");
-				
-				if($est->estado == 7)
-					echo "<td>Pago Insuficiente</td>";
-				
-				if($est->estado == 8)
-					echo "<td>Orden Entregada</td>";
-				
-				if($est->estado == 9)
-					echo "<td>Devuelto</td>";
-		
-				if($est->estado == 10)
-					echo "<td>Parcialmente Devuelto</td>";
 				
 				
 				$usu = User::model()->findByPk($est->user_id);
-				echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
+				if (isset($usu))
+					echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
+				else 
+						echo ("<td>Admin</td>");
+				
 				
 				$fecha = date("d/m/Y",strtotime($est->fecha));
 				echo("<td>".$fecha." </td>");
@@ -593,16 +564,17 @@ $usuario = User::model()->findByPk($orden->user_id);
    <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped" align="center">
         <tr>
-          <th scope="col">Referencia</th>
-          <th scope="col">Nombre de la prenda</th>
+<!--          <th scope="col">Referencia</th>
+          <th scope="col">Nombre de la prenda</th>-->
+            <th scope="col" colspan="2">Datos de la Prenda</th>
           <th scope="col">Marca</th>
           <th scope="col">Color</th>
           <th scope="col">Talla</th>
           <th scope="col">Peso</th>
-          <th scope="col">Cant. en Existencia</th>
-          <th scope="col">Cant. en Pedido</th>
+          <th scope="col">Existencia</th>
+          <th scope="col">Pedido</th>
           
-          <th scope="col">Ubic. Almacen</th>
+          <th scope="col">Almacen</th>
           <th scope="col">Precio</th>
         <!--  <th scope="col">Acción</th>-->
         </tr>
@@ -638,11 +610,40 @@ $usuario = User::model()->findByPk($orden->user_id);
                                         $marca=Marca::model()->findByPk($prdlk->marca_id);
                                         $talla=Talla::model()->findByPk($ptclk->talla_id);
                                         $color=Color::model()->findByPk($ptclk->color_id);
+                                        
+                                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$prdlk->id,'color_id'=>$color->id));
+                                        $contador=0;
+                                        $foto = "";
+                                        $label = $color->valor;
+                                        //$label = "No hay foto</br>para el color</br> ".$color->valor;
+                                        if(isset($imagen)){
+                                                foreach($imagen as $img) {
+                                                        if($contador==0){		 
+                                                                $foto = CHtml::image(Yii::app()->baseUrl . 
+                                                                        str_replace(".","_thumb.",$img->url), "Imagen ", 
+                                                                        array("width" => "70", "height" => "70"));							
+                                                                $contador++;
+                                                        }
+                                                }					  	
+
+
+                                        }else{
+                                            $foto = "<img src='http://placehold.it/70x70' >";
+                                            $label = "No hay foto</br>para el color</br> ".$color->valor;
+                                        }
 
 
                                         echo("<tr>");
-                                        echo("<td>".$prdlk->codigo."</td>"); // nombre
-                                        echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
+                                        //echo("<td>".$prdlk->codigo."</td>"); // nombre
+                                        //echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
+                                        echo("<td style='text-align:center'>".$foto."<br><div>".$label."</div></td>");
+                                        echo('<td style="vertical-align: middle">
+                                            <b>Referencia:</b> '.$prdlk->codigo.
+                                            "</pre><br><b>Nombre de la Prenda:</b> ".
+                                            //CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))
+                                            $prdlk->nombre
+                                            ."</td>");
+                                        
                                         echo("<td>".$marca->nombre."</td>");
                                         echo("<td>".$color->valor."</td>");
                                         echo("<td>".$talla->valor."</td>");
@@ -669,9 +670,40 @@ $usuario = User::model()->findByPk($orden->user_id);
 				$talla=Talla::model()->findByPk($ptc->talla_id);
 				$color=Color::model()->findByPk($ptc->color_id);
 				
+                                $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id));
+                                $contador=0;
+                                $foto = "";
+                                $label = $color->valor;
+                                //$label = "No hay foto</br>para el color</br> ".$color->valor;
+                                if(isset($imagen)){
+					foreach($imagen as $img) {
+						if($contador==0){		 
+							$foto = CHtml::image(Yii::app()->baseUrl . 
+                                                                str_replace(".","_thumb.",$img->url), "Imagen ", 
+                                                                array("width" => "70", "height" => "70"));							
+							$contador++;
+						}
+					}					  	
+					
+				
+				}else{
+                                    $foto = "<img src='http://placehold.it/70x70' >";
+                                    $label = "No hay foto</br>para el color</br> ".$color->valor;
+                                    
+                                    
+                                }
+                                
 				echo("<tr>");
-				echo("<td>".$indiv->codigo."</td>");// Referencia
-				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
+//				echo("<td>".$indiv->codigo."</td>");// Referencia
+//				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
+				/*Datos resumidos + foto*/
+				echo("<td style='text-align:center'>".$foto."<br><div>".$label."</div></td>");
+                                echo('<td style="vertical-align: middle">
+                                        <b>Referencia:</b> '.$indiv->codigo.
+                                        "</pre><br><b>Nombre de la Prenda:</b> ".
+                                        //CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))
+                                        $indiv->nombre
+                                        ."</td>");
 				echo("<td>".$marca->nombre."</td>");
 				echo("<td>".$color->valor."</td>");
 				echo("<td>".$talla->valor."</td>");	
@@ -771,7 +803,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio); ?></td>
         </tr>
         <tr>
-          <td>Descuento</td>
+          <td>Descuento</td>     
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento); ?></td>
         </tr>
         

@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -64,9 +64,11 @@
                                 'email' => 'Correo',
                                 'telefono' => 'Teléfono',
                                 'status' => 'Estado',
+                                'balance' => 'Saldo Disponible',
                                 'tipoUsuario' => 'Tipo de usuario',
                                 'ciudad' => 'Ciudad',
                                 'fuenteR' => 'Fuente de registro',
+                                'invitaciones' => 'Invitaciones enviadas',
                                 'visit' => 'Número de visitas',
                                 'lastvisit_at' => 'Fecha de última visita',
                                 'create_at' => 'Fecha de registro',

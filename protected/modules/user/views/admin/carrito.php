@@ -144,9 +144,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				  if(isset($bptcolor)) // si hay productos en la bolsa del usuario
 				  {
 				  
-	                  foreach($bptcolor as $detalles) // cada producto en la bolsa
+	                  foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
 					  {
-					  	$todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);
+					  	$todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
 						
 					  		$producto = Producto::model()->findByPk($todo->producto_id);
 					  		$talla = Talla::model()->findByPk($todo->talla_id);
@@ -177,12 +177,12 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						array_push($descuentos,$precio->ahorro);		
 						}
 					 
-					 	array_push($cantidades,$detalles->cantidad);
+					 	array_push($cantidades,$productoBolsa->cantidad);
 						
 					 	echo "<td>Bs. ".$pre."</td>";
-					 	echo"<td width='8%'><input type='text' id='cant".$detalles->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$detalles->cantidad."' class='span1'/>
-	                    <a id=".$detalles->preciotallacolor_id." onclick='actualizar(".$detalles->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
-	                  	<td style='cursor: pointer' onclick='eliminar(".$detalles->preciotallacolor_id.")' id='elim".$detalles->preciotallacolor_id."'>&times;</td>
+					 	echo"<td width='8%'><input type='text' id='cant".$productoBolsa->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$productoBolsa->cantidad."' class='span1'/>
+	                    <a id=".$productoBolsa->preciotallacolor_id." onclick='actualizar(".$productoBolsa->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
+	                  	<td style='cursor: pointer' onclick='eliminar(".$productoBolsa->preciotallacolor_id.")' id='elim".$productoBolsa->preciotallacolor_id."'>&times;</td>
 	                	</tr>";
 				  	}// foreach
 				}//if isset    

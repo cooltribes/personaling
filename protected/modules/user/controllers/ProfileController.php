@@ -28,7 +28,7 @@ class ProfileController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan'),
+				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan', 'tusPerfiles'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -110,9 +110,9 @@ class ProfileController extends Controller
 //                        }                       
                                             
                     }else{
-                        $invitation->fecha = date('Y-m-d H:i:s');
-                        $invitation->save();
+                        $invitation->fecha = date('Y-m-d H:i:s');                       
                     }
+					 $invitation->save();
 //                    print_r($invitation->getErrors());
 //                    echo "<pre>";
 //                    print_r($invitation->attributes);
@@ -1599,6 +1599,29 @@ class ProfileController extends Controller
 	}
 
 
+        /*Vista donde se administran todos los perfiles creados, para editarlos o borrarlos*/
+        public function actionTusPerfiles() {
+            if(isset($_POST['id'])){
+                $filter = Filter::model()->findByPk($_POST['id']);                
+                
+                if($filter){ 
+                    
+                   $filter->delete(); 
+                   Yii::app()->user->updateSession();
+                   Yii::app()->user->setFlash('success', 'Se ha eliminado el filtro <b>'.
+                           $filter->name.'</b>');
+                    
+                }else{
+                  Yii::app()->user->updateSession();
+                   Yii::app()->user->setFlash('error', 'Filtro no encontrado');
+                }               
+                
+                
+            }
+            $this->render("tusperfiles");
+            
+            
+        }
 		
 			
 		

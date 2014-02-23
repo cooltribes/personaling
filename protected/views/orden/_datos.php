@@ -48,49 +48,52 @@ echo"<tr>";
 	echo "</td>";
 	
 	//----------------------Estado
-	if($data->estado == 1)
-		echo "<td>En espera de pago</td>"; 
-	
-	if($data->estado == 2)
-		echo "<td>En espera de confirmación</td>"; 
-	
-	if($data->estado == 3)
-		echo "<td>Pago Confirmado</td>";
-		
-	if($data->estado == 4)
-		echo "<td>Orden Enviada</td>";
-	
-	if($data->estado == 5)
-		echo "<td>Orden Cancelada</td>";
-		
-	if($data->estado == 7)
-		echo "<td>Pago Insuficiente</td>";
+	echo "<td>".$data->textestado."</td>";
+	// agregar demas estados	
         
-    if($data->estado == 8)
-		echo "<td>Entregado</td>";
-	
-	if($data->estado == 9)
-		echo "<td>Orden Devuelta</td>";
-		
-	if($data->estado == 10)
-		echo "<td>Parcialmente Devuelto</td>";
-	
-	// agregar demas estados
-	
 	//------------------ acciones
 	$canc="";
-	if($data->estado==1){
+	if($data->estado == Orden::ESTADO_ESPERA || $data->estado == Orden::ESTADO_CONFIRMADO
+            ||$data->estado == Orden::ESTADO_RECHAZADO
+            || $data->estado == Orden::ESTADO_INSUFICIENTE){
 		//$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href=''><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
             
             $canc = "<li>".
-                        CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
-                                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
-                                        array(
-                                        'id'=>'linkCancelar'.$data->id)
+                    CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
+                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
+                        array(
+                        'id'=>'linkCancelar'.$data->id,
+                        //'onclick' => "cancelarOrden()",
+                         )
+                    )            
+                    ."</li>";
+            
+        }
+        
+        //Si es cancelada, ver motivo
+	$motivo = "";
+        
+	if($data->estado == Orden::ESTADO_CANCELADO){
+		//$canc="<li><a onclick='cancelar(".$data->id.")' tabindex='-1' href=''><i class='icon-ban-circle'></i> Cancelar Orden</a></li>";
+            $message = Estado::model()->findByAttributes(array(
+               "orden_id" => $data->id,
+               "estado" => Orden::ESTADO_CANCELADO,
+            ), array(
+                'order' => 'fecha DESC'
+            ));
+            
+            $message = $message ? $message->observacion : "";            
+                        
+            $motivo = "<li>".
+                        CHtml::link("<i class='icon-comment'></i> Ver motivo de cancelación",
+                                        'javascript:verMotivo("'.$message.'")', array(
+                                        
+                                        )
                                     )            
                      ."</li>";
             
         }
+        
 	echo "
 	<td>
 	<div class='dropdown'>
@@ -101,7 +104,9 @@ echo"<tr>";
           <ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
             <li><a tabindex='-1' href='detalles/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
             <li><a onclick='modal(".$data->id.")' tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
-            ".$canc."
+            ".$canc.
+             $motivo."
+                    
             
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>
             <li class='divider'></li>
@@ -114,6 +119,15 @@ echo"<tr>";
 		
 ?>
 <script >
+    
+function verMotivo(mensaje){
+    if(mensaje.trim() == ""){
+        mensaje = "<i>El usuario no indicó ningun motivo.</i>";
+    }
+
+    bootbox.alert("\"" + mensaje + "\".");
+}
+    
 function modal(id){
 
 	$.ajax({
@@ -129,6 +143,7 @@ function modal(id){
 		
 		
 }
+
 
 
 </script>

@@ -60,12 +60,15 @@ class Bolsa extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'lookHasTblBolsas' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_id'),
 			'lookHasTblBolsas1' => array(self::HAS_MANY, 'LookHasTblBolsa', 'tbl_bolsa_user_id'),
 			'ordens' => array(self::HAS_MANY, 'Orden', 'tbl_bolsa_id'),
 			'ordens1' => array(self::HAS_MANY, 'Orden', 'user_id'),
-			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id')
+			'bolsahasproductos' => array(self::HAS_MANY,'BolsaHasProductotallacolor','bolsa_id'),
+			'countproductos' => array(self::STAT, 'BolsaHasProductotallacolor', 'bolsa_id',
+            		'select' => 'SUM(cantidad)'
+        		),
 		); 
 	}
 
@@ -117,12 +120,36 @@ class Bolsa extends CActiveRecord
 		//	$this->save();
 		return $bandera;
 	}
+	public function checkInventario(){
+		foreach($this->bolsahasproductos as $producto)
+		{
+				
+			if ($producto->cantidad > $producto->preciotallacolor->cantidad)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 	public function looks()
 	{
 		
 		$sql = "select look_id from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$this->id." group by look_id";
 		return Yii::app()->db->createCommand($sql)->queryColumn();
 		
+	}
+	
+	public function deleteInactivos(){
+		$return=false;
+		foreach($this->bolsahasproductos as $productobolsa){
+			if($productobolsa->preciotallacolor->producto->status==0 ||
+                           $productobolsa->preciotallacolor->producto->estado==1 ||
+                           $productobolsa->cantidad == 0){
+				if($productobolsa->delete())
+					$return=true; 
+			}
+		}
+		return $return;
 	}
 
  /*
@@ -169,8 +196,7 @@ class Bolsa extends CActiveRecord
 				if ($look_id != 0)
 					$pn->look_id = $look_id;	
 				if($pn->save())
-				{// en bolsa tengo id de usuario e id de bolsa
-				
+				{// en bolsa tengo id de usuario e id de bolsa				
 					return "ok";
 				}
 					

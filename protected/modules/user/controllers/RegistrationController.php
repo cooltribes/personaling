@@ -136,20 +136,31 @@ class RegistrationController extends Controller
                             }
 
 
+                            $group = array();
+
                             // Para registrar en la lista de correo
                             if (isset($_POST['Profile']['suscribir'])) {
-                                //API key provisional para lista de prueba										
-                                $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
-                                $result = $MailChimp->call('lists/subscribe', array(
-                                    'id' => '11801985e7',
-                                    'email' => array('email' => $_POST['RegistrationForm']['email']),
-                                    'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name']),
-                                    'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],
-                                    'mc_language' => 'es',
-                                    'update_existing' => true,
-                                    'replace_interests' => false,
-                                ));
+                                $group = array(
+                                    array(
+                                        'name' => 'Personaling Newsletter',
+                                        'groups' => array('Suscrito'),
+                                    )
+                                );                                								
                             }
+
+                            //API key para lista de Personaling en Mailchimp
+                            $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
+                            $result = $MailChimp->call('lists/subscribe', array(
+                                'id' => '2bcdb716e8',
+                                'email' => array('email' => $_POST['RegistrationForm']['email']),
+                                'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name'], 'GROUPINGS' => $group),
+                                'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],
+                                'mc_language' => 'es',
+                                'update_existing' => true,
+                                'replace_interests' => false,
+                                'double_optin' => false,
+                                'send_welcome' => false,
+                            ));
 
 
                             //Si se registra por invitación
@@ -497,7 +508,8 @@ class RegistrationController extends Controller
                             }else if($user->status_register == User::STATUS_REGISTER_TIPO){
                                     $this->redirect(array("/user/profile/tuestilo"));
                             }else{
-                                    $this->redirect(array("/site/personal"));
+                                    //$this->redirect(array("/site/personal"));
+                                    $this->redirect(array("/tienda/look"));
                             }
 
                     }

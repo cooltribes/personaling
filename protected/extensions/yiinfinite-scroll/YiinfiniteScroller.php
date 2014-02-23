@@ -14,6 +14,7 @@
 class YiinfiniteScroller extends CBasePager {
 
     public $contentSelector = '#content';
+    public $navigationLinkText = 'next';
 
     private $_options = array(
         'loadingImg'    => null,
@@ -21,6 +22,7 @@ class YiinfiniteScroller extends CBasePager {
         'donetext'      => null,
         'itemSelector'  => null,
         'errorCallback' => null,
+        'debug' => null,
     );
 
     private $_default_options = array(
@@ -31,15 +33,24 @@ class YiinfiniteScroller extends CBasePager {
 
     public function init() {
         $this->getPages()->validateCurrentPage = false;
+        
         parent::init();
     }
 
     public function run() {
-        $this->registerClientScript();
-        $this->createInfiniteScrollScript();
-        $this->renderNavigation();
+//    	echo "TOTAL ";
+//		echo $this->pageCount;
+//		echo "<br>Actual";
+//		echo $this->currentPage;
+//        if($this->currentPage == $this->pageCount)
+//            return;
+        if($this->pageCount > 1) {
+            $this->registerClientScript();
+            $this->createInfiniteScrollScript();
+            $this->renderNavigation();
+        }
 
-        if($this->getPages()->getPageCount() > 0 && $this->theresNoMorePages()) {
+        if($this->currentPageDoesntExists()) {
             throw new CHttpException(404);
         }
     }
@@ -61,15 +72,19 @@ class YiinfiniteScroller extends CBasePager {
     }
 
     public function registerClientScript() {
-        $url = CHtml::asset(Yii::getPathOfAlias('ext.yiinfinite-scroll.assets').'/jquery.infinitescroll.min.js');
+        //$url = CHtml::asset(Yii::getPathOfAlias('ext.yiinfinite-scroll.assets').'/jquery.infinitescroll.min.js');
+		//echo "HOLA";
+		$url = CHtml::asset(Yii::getPathOfAlias('ext.yiinfinite-scroll.assets').'/jquery.infinitescroll.js');
         Yii::app()->clientScript->registerScriptFile($url);
     }
 
     private function createInfiniteScrollScript() {
+    	//echo "RAFA";
         Yii::app()->clientScript->registerScript(
-                uniqid(),
-                "$('{$this->contentSelector}').infinitescroll(".$this->buildInifiniteScrollOptions().");"
+            uniqid(),
+            "$('{$this->contentSelector}').infinitescroll(".$this->buildInifiniteScrollOptions().");"
         );
+		//echo "$('{$this->contentSelector}').infinitescroll(".$this->buildInifiniteScrollOptions().");";
     }
 
     private function buildInifiniteScrollOptions() {
@@ -80,12 +95,18 @@ class YiinfiniteScroller extends CBasePager {
     }
 
     private function renderNavigation() {
-        $next_link = CHtml::link('next',$this->createPageUrl($this->getCurrentPage(false)+1));
+        $next_link = CHtml::link($this->navigationLinkText, $this->createPageUrl($this->currentPage+1));
+        //$next_link = CHtml::link($this->navigationLinkText, $this->createPageUrl($this->currentPage));
         echo '<div class="infinite_navigation">'.$next_link.'</div>';
     }
 
-    private function theresNoMorePages() {
-        return $this->getPages()->getCurrentPage() >= $this->getPages()->getPageCount();
+    private function currentPageDoesntExists() {
+    	//echo $this->currentPage.'/'.$this->pageCount;
+        if($this->pageCount > 1) {
+            return $this->currentPage >= $this->pageCount;
+        } else {
+            return $this->currentPage > 0;
+        }
     }
 
 }

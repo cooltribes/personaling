@@ -86,7 +86,8 @@ class Curl extends CComponent {
 	public function putPago($data) {
 			
 
-		$url = "https://api.instapago.com/payment/";
+		//$url = "https://api.instapago.com/payment/";
+		$url = "http://personaling.com/payment/";
 			
 		$data_keys = array(
 		"KeyId"=> "069C794A-6917-4283-B26F-2AFC7F685A96",
@@ -101,6 +102,8 @@ class Curl extends CComponent {
 		$this->setOption(CURLOPT_SSL_VERIFYPEER, 0);
 		$this->setOption(CURLOPT_USERPWD,"069C794A-6917-4283-B26F-2AFC7F685A96");
 		$this->setOption(CURLOPT_POST, 1);
+		$this->setOption(CURLOPT_CONNECTTIMEOUT, 100);
+		$this->setOption(CURLOPT_TIMEOUT, 100);
 		//$this->setOption(CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
 		$this->setOption(CURLOPT_POSTFIELDS, $data_string);
 		$this->setOption(CURLOPT_RETURNTRANSFER, 1);

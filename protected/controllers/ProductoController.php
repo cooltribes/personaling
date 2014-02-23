@@ -760,30 +760,7 @@ class ProductoController extends Controller
 
 	public function actionAdmin()
 	{
-            /* if(isset($_GET['caso'])){
-                    $caso = $_GET['caso'];
-
-                    if($caso==1)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error',UserModule::t("Seleccione al menos un producto."));
-                    }
-
-                    if($caso==2)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error',UserModule::t("Seleccione una acción"));
-                    }
-
-                    if($caso==3)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('success',UserModule::t("Los productos han sido activados."));
-                    }
-            }// isset */
-
-            
-            
+                      
             $producto = new Producto;
 
             $producto->status = 1;
@@ -1127,7 +1104,8 @@ class ProductoController extends Controller
 				  }
 				if ($valid)  
 					echo CJSON::encode(array(
-	                                  'status'=>'success'
+	                                  'status'=>'success',
+	                                  'id'=>$model->id
 	                             ));
 			}
 		} 
@@ -1149,11 +1127,13 @@ class ProductoController extends Controller
 		if(isset($_GET['alias']))
 		{
 			$seo = Seo::model()->findByAttributes(array('urlAmigable'=>$_GET['alias']));
-			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
+//			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
+			$producto = Producto::model()->noeliminados()->findByPk($seo->tbl_producto_id);
 		}
 		else
 		{
-			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
+//			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
+			$producto = Producto::model()->noeliminados()->findByPk($_GET['id']);
 			$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 		}				
 			
@@ -1188,6 +1168,8 @@ class ProductoController extends Controller
  */
 	public function actionTallas()
 	{
+		
+
 		$tallas = array();
 		$imgs = array(); // donde se van a ir las imagenes
 		
@@ -1219,7 +1201,6 @@ class ProductoController extends Controller
 				array_push($imgs,$todos); // array de datos de imagenes
 			}	
 		
-			//print_r($tallas);
 		
 		echo CJSON::encode(array(
 			'status'=> 'ok',

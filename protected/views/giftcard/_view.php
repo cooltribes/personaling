@@ -1,7 +1,8 @@
-<tr>
+<tr>    
     <td>
         <input name="check" type="checkbox" value="">
     </td>
+    
     <td>
         <?php echo $data->id; ?>
     </td>
@@ -13,6 +14,8 @@
             <?php
             if ($data->UserComprador->superuser) {
                 echo "Administrador";
+            }else{
+               echo $data->UserComprador->email;
             }
             ?>
         </small>
@@ -38,8 +41,10 @@
     <td>
         <?php echo date("d/m/Y", $data->getFinVigencia()); ?>
     </td>
-    <td>
-        <?php echo $data->fecha_uso ? date("d/m/Y", $data->getFechaUso()) : "No Aplicada"; ?>
+    <td>        
+        <?php echo $data->fecha_uso ? date("d/m/Y", $data->getFechaUso()) . " - ".
+                $data->UserBeneficiario->profile->first_name . "<br><small>". $data->UserBeneficiario->email ."</small>"
+                : "No Aplicada"; ?>
     </td>    
     <td>
         <div class="dropdown"> 
@@ -49,8 +54,9 @@
             <!-- Link or button to toggle dropdown -->
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
                 <li>
-                    <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver', "#modal-{$data->id}", array(
-                        'data-toggle' => "modal"
+                    <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver Detalles', "#modalGiftCard", array(
+                        'data-toggle' => "modal",
+                        'onClick' => "ver({$data->id})",
                     )); ?>            
                 </li>
                 
@@ -74,21 +80,3 @@
         </div>
     </td>
 </tr>
-<?php $this->beginWidget("bootstrap.widgets.TbModal", array(
-   'id' => "modal-{$data->id}", 
-)); ?>
-
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>Modal header</h3>
-  </div>
-  <div class="modal-body">
-    <p>One fine body…</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn">Close</a>
-    <a href="#" class="btn btn-primary">Save changes</a>
-  </div>
-
-
-<?php $this->endWidget(); ?>

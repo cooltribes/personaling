@@ -1317,6 +1317,16 @@ src: url('../fonts/entypo.woff'),
         -moz-box-shadow: 5px 5px 0 #ddd;
         -o-box-shadow: 5px 5px 0 #ddd;
         -webkit-box-shadow: 5px 5px 0 #ddd;
+        
+        .is_100chic{
+          background-image: url(../images/round_100_chic.png);
+          background-color: #b59ac5;
+          background-repeat: no-repeat;
+          color: #fff;  
+          text-shadow: none; 
+          padding-top: 7px;
+          padding-bottom: 7px;
+        }
 
         }
     .imagenes_secundarias{
@@ -1734,7 +1744,7 @@ src: url('../fonts/entypo.woff'),
   font-weight: 200;
   .item {
     display: inline-block;
-    padding: 1em;
+    padding: 11px 1em 8px;
     border-right: 1px solid #eee;
     li{
       border-bottom: 1px solid @color5;
@@ -1754,20 +1764,61 @@ src: url('../fonts/entypo.woff'),
   .caretthumbs{
     position: relative;
     top: 16px;
+
   }
   .itemThumbnails{
     display: inline-block;
     border-right: 1px solid #eee;   
+    .dropdown{
+      display: inline-block;
+      vertical-align: top;
+
+    }
+    .dropdown-toggle{
+      padding: 1px 7px 33px;
+      b.caret{
+        border-top-color: black;
+        border-bottom-color: black;
+      }      
+    }
     .dropdown-menu{
       border: 10px solid #E7E3E7;
-      margin-top: 0;
+      border-bottom: 0;
+      margin-top: 31px;
       width: 260px;
+      padding-bottom: 0px;
+      .todos{
+        background: #e7e3e7;
+        color: black;
+        display: block;
+        padding: 8px 5px;
+        text-align: center;
+        font-size: 11px;
+        &:before{
+          content :"\2190";
+          font-size: 20px;
+          vertical-align: top; 
+        }
+        &:hover{
+          color: @color1;
+        }
+      }
+
+      li > a {
+          white-space: normal;
+      }
+      
     }
     .dropdown-colors{
       width: 280px;
+      margin-top: 0px;
     }
+
     .open{
       background: @color10;
+      .dropdown-toggle{
+        background: @color10;
+      }
     }
     .color_b{
       b{
@@ -1775,23 +1826,44 @@ src: url('../fonts/entypo.woff'),
       }
     }
   }
+  .dropdown100Chic{
+    color: black;
+    background: #e3dede; 
+    padding: 5px 5px 5px 10px;
+    b.caret{
+      border-top-color: black;
+      border-bottom-color: black;
+    }      
+  }
+  .itemcolor{
+    padding-top: 5px;
+    vertical-align: top;
+  }
   .img-categoria{
     width: 50px;
   }
   .dropinput{
     padding: 5px 5px 5px 10px;
     background: white;
+    #precio_titulo,#marca_titulo{
+      display: inline-block;
+    }
+    #precio_titulo{
+      width: 170px;
+    }    
+    #marca_titulo{
+      width: 95px;
+    }
+    b.caret{
+      margin-top: 8px;
+      margin-left: 0px;
+      margin-right: 6px;
+      border-top-color: black;
+      border-bottom-color: black;
+    }
     small{
       background: rgb(223, 223, 223);
       padding: 1px 6px;
-      b.caret{
-        margin-top: 8px;
-        margin-left: 0px;
-        margin-right: 6px;
-        border-top-color: black;
-        border-bottom-color: black;
-
-      }
     }
   }
   .dropdown-menu{
@@ -1804,6 +1876,7 @@ src: url('../fonts/entypo.woff'),
       padding: 0;
       &:hover{
         background: white;
+        color: rgb(51, 51, 51);
       }
 
   }
@@ -1812,12 +1885,15 @@ src: url('../fonts/entypo.woff'),
     margin-bottom: 0;
     min-width: 60px;
     width: 70px;
+    height: 100px;
+    text-align: center;
   }
   .thumbnails .colors{
     margin-left: 10px;
     margin-bottom: 5px;
     min-width: 0;
     width: 44px;
+    height: 47px;
   }
 
   .itemInput{
@@ -1831,12 +1907,17 @@ src: url('../fonts/entypo.woff'),
     .btn-buscar{
       position: absolute;
       top: 5px;
-      left: 189px;
+      left: 133px;
       width: 22px;
       background: #dfdfdf;
       padding: 0;
     }
   }
+}
+
+#banner100chic .entypo{
+  font-size: 24px;
+  vertical-align: middle;
 }
 
 .tienda_productos{
@@ -1879,9 +1960,9 @@ src: url('../fonts/entypo.woff'),
                 opacity:0;
                 .transition_all;
                 background:#1abc9c;
-                padding:0.5em;
+                padding:0.6em;
                 border:none;
-                z-index: 1000;
+                z-index: 999;
                 position:relative;
                 margin-top:-33px;
                 text-transform: uppercase;
@@ -1989,6 +2070,19 @@ src: url('../fonts/entypo.woff'),
     img{
         max-width:100%;
         }
+    }
+
+    .is_100chic{
+        background-image: url(../images/round_100_chic.png);
+        background-color: #b59ac5;
+        background-repeat: no-repeat;
+        border: 0; 
+        color: #fff;
+        margin-top: -34px;  
+        opacity: 0.7767656456; 
+        padding: 0.5em;   
+        position: absolute;  
+        text-shadow: none;
     }
 }
 
@@ -2251,6 +2345,17 @@ ul.yiiPager .last
                     small{ font-size:.6em;}
                      }
             }
+
+            .has_100chic{
+                  background-image: url(../images/100chic.png);
+                  background-repeat: no-repeat;
+                  background-position: 6px;
+                  top: 90px;
+                  height: 100%;
+                  left: 335px;
+                  position: absolute;
+                  width: 100%;                 
+            }
         }
 
     // Cambios del modal para hacerlo mas ancho
@@ -2424,7 +2529,18 @@ ul.yiiPager .last
     .span4{
                 // background: url(../images/shdow_productos_tienda.png) no-repeat center bottom;
                 padding-bottom:9px;
+                position: relative;
                 .margin_bottom;
+                  .has_100chic{
+                    background-image: url(../images/100chic.png);
+                    background-repeat: no-repeat;
+                    background-position: 6px;
+                    top: 79px;
+                    height: 100%;
+                    left: 337px;
+                    position: absolute;
+                    width: 100%;                 
+                  }
     }
     .tab-content{ overflow:inherit;}
     .item{
@@ -2489,6 +2605,8 @@ ul.yiiPager .last
             }
 
         }
+
+
     }
 
 
@@ -3166,41 +3284,7 @@ img[alt="Loading"]{
       }
 
       // Preview de giftcard desde el admin
-      .contenedorPreviewGift{
-        position: relative;
-        #para,#mensaje,#forpara,#foremail,#formensaje,#codigo,#fecha,#monto{
-            display: block;
-            position: absolute;  
-        }
-        #forpara,#formensaje{
-            font-size: 1.1em;
-            left: 17px;
-            line-height: 1.6em;
-        }
-        #para,#mensaje{
-            font-size: 1.1em;
-            left: 80px;
-            line-height: 1.6em;                                
-        }
-        #para,#forpara{
-            top: 120px;
-        }
-        #mensaje,#formensaje{
-            top: 140px;
-        }      
-        #codigo{
-            left: 80px;
-            top: 195px;
-        }
-        #fecha{
-            left: 10px;                                
-            top: 252px;
-        }
-        #monto{
-            left: 315px;
-            top: 60px;
-        }          
-      }
+
 
 /*----------------  GiftCard OFF ---------------- */
 
@@ -3399,6 +3483,9 @@ img[alt="Loading"]{
     #notificacion_validar{
       display: none;
     }
+}
+.bolsa-authGC , .bolsa-pagoGC, .bolsa-confirmarGC, .bolsa-errorGC{
+    #navegacion_principal  .nav, #wrapper_footer{ display: none;}
 }
 /*--------------- HACKS ON --------------------*/
 #profile-form{

@@ -1,4 +1,5 @@
 <?php 
+$this->pageTitle="Cómo funciona Personaling";
 Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características.', 'description', null, null, null);
 Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
 // Open Graph
@@ -33,7 +34,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 	<section class="seccion2">
 		<div class="container"><h1>MARCAS RECONOCIDAS</h1>
 			<p>¡Tus marcas preferidas en un solo lugar! ¡Con tan solo un click en tu casa u oficina!</p>
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/como_brands2.png" alt="Bimba y lola, Mango, Accesorize ">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/como_brands.png" alt="Bimba y lola, Mango, Accesorize , Cortefiel, HellyHansen, Women'secret, SuiteBlanco, Melao, Jessus Zambrano">
 
 		</div>
 	</section>

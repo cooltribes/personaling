@@ -21,13 +21,21 @@
  * @property string $fecha_uso
  * @property integer $comprador
  * @property integer $beneficiario
+ * @property integer $orden_id
  *
  * The followings are the available model relations:
  * @property User $UserComprador
  * @property User $UserBeneficiario
+ * @property OrdenGC $Orden
  */
 class Giftcard extends CActiveRecord
 {
+    
+        /*CAMBIAR ESTA CONSTANTE CUANDO SE REQUIERA CAMBIAR LA LONGITUD DEL CODIGO DE UNA TARJETA*/
+        const DIGITOS_CODIGO = 16;
+        
+        const MAX_MONTO = 1000;
+    
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -65,12 +73,12 @@ class Giftcard extends CActiveRecord
                     
                         array('codigo', 'unique', 'message'=>'Código de gift card ya registrado.'),
 			array('estado, comprador, beneficiario', 'numerical', 'integerOnly'=>true),
-			array('monto', 'numerical'),
+			array('monto', 'numerical', 'max' => self::MAX_MONTO),
 			array('codigo', 'length', 'max'=>25),
 			array('fecha_uso', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, monto, estado, inicio_vigencia, fin_vigencia, fecha_uso, comprador, beneficiario', 'safe', 'on'=>'search'),
+			array('id, codigo, monto, estado, inicio_vigencia, fin_vigencia, fecha_uso, comprador, beneficiario, orden_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -84,6 +92,7 @@ class Giftcard extends CActiveRecord
 		return array(
 			'UserComprador' => array(self::BELONGS_TO, 'User', 'comprador'),
 			'UserBeneficiario' => array(self::BELONGS_TO, 'User', 'beneficiario'),
+			'Orden' => array(self::BELONGS_TO, 'OrdenGC', 'orden_id'),
 		);
 	}
 
@@ -102,6 +111,7 @@ class Giftcard extends CActiveRecord
 			'fecha_uso' => 'Fecha Uso',
 			'comprador' => 'Comprador',
 			'beneficiario' => 'Beneficiario',
+			'orden_id' => 'Orden',
 		);
 	}
 
@@ -125,6 +135,25 @@ class Giftcard extends CActiveRecord
 		$criteria->compare('fecha_uso',$this->fecha_uso,true);
 		$criteria->compare('comprador',$this->comprador);
 		$criteria->compare('beneficiario',$this->beneficiario);
+		$criteria->compare('orden_id',$this->orden_id);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	/**
+	 * Busca las Giftcards del usuario
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function giftcardsUser()
+	{
+		
+		$criteria=new CDbCriteria;
+
+		
+		$criteria->compare('comprador',  Yii::app()->user->id);
+		//$criteria->compare('beneficiario',$this->beneficiario);
+		
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -181,5 +210,134 @@ class Giftcard extends CActiveRecord
             
             return 'XXXX-XXXX-XXXX-'.substr($this->codigo, 12,14);
         }
+        
+        static function generarCodigo(){
+            $cantNum = 8;
+            $cantLet = 8;
+            
+            $l = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            $LETRAS = str_split($l);
+            $NUMEROS = range(0, 9);
+
+            $codigo = array();
+            //Seleccionar cantLet letras
+            for ($i = 0; $i < $cantLet; $i++) {
+                $codigo[] = $LETRAS[array_rand($LETRAS)];
+            }
+            for ($i = 0; $i < $cantNum; $i++) {
+                $codigo[] = array_rand($NUMEROS);
+            }
+            
+            shuffle($codigo);
+
+            $codigo = implode("", $codigo);
+            
+            return $codigo;
+        }
+        
+        
+         /**
+         * Buscar por todos los filtros dados en el array $filters
+         */
+        public function buscarPorFiltros($filters) {
+//            echo "<pre>";
+//            print_r($filters);
+//            echo "</pre>";
+//            Yii::app()->end();
+            
+            $criteria = new CDbCriteria;
+            
+            $criteria->with = array();
+            $criteria->select = array();
+            $criteria->select[] = "t.*";
+            
+            for ($i = 0; $i < count($filters['fields']); $i++) {
+                
+                $column = $filters['fields'][$i];
+                $value = $filters['vals'][$i];
+                $comparator = $filters['ops'][$i];
+                
+                if($i == 0){
+                   $logicOp = 'AND'; 
+                }else{                
+                    $logicOp = $filters['rels'][$i-1];                
+                }                 
+                
+                
+                
+                if($column == 'comprador')
+                {
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+                    $criteria->compare('UserComprador.email', $value,
+                        true, $logicOp);
+                    
+                    //$criteria->with[] = 'UserComprador';
+                    $criteria->with['UserComprador'] = array(
+                        'alias' => 'UserComprador'  
+                     );
+//                    
+//                    //$criteria->alias = 'User';
+//                    $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND
+//                        (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" 
+//                            OR User.email LIKE "%' . $_GET['nombre'] . '%")';                    
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'beneficiario')
+                {
+                    
+                    $value = ($comparator == '=') ? "=".$value."" : $value;
+                    
+//                    $value = ($comparator == '=') ? "= '".$value."'" : "LIKE '%".$value."%'";
+//
+//                    $criteria->addCondition('UserBeneficiario.email '.$value.' OR profB.first_name '.$value, $logicOp);
+                    
+                    $criteria->compare('UserBeneficiario.email', $value,
+                        true, $logicOp);
+                    
+                    $criteria->with['UserBeneficiario'] = array(
+                        'alias' => 'UserBeneficiario'  
+                        );
+//                    $criteria->with['UserBeneficiario.profile'] = array(
+//                        'alias' => 'profB'  
+//                        );
+                    
+                    
+                    continue;
+                }
+                
+                if($column == 'inicio_vigencia' || $column == 'fin_vigencia')
+                {
+                    $value = strtotime($value);
+                    $value = date('Y-m-d H:i:s', $value);
+                }
+                
+                $criteria->compare("t.".$column, $comparator." ".$value,
+                        false, $logicOp);
+                
+            }
+                                   
+             
+            //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
+            $criteria->together = true;
+            
+            
+//            echo "Criteria:";
+//            
+//            echo "<pre>";
+//            print_r($criteria->toArray());
+//            echo "</pre>"; 
+//            exit();
+
+
+            return new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+            ));
+       }
 
 }

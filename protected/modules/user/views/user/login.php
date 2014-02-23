@@ -1,3 +1,7 @@
+<script>
+	$('#ingresa').addClass('active');
+	
+</script>
 <?php /*?><?php
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 $this->breadcrumbs=array(
@@ -73,7 +77,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
             'size'=>'large',
             'label'=>'Entrar',
         )); ?>
-         <span class="margin_left_small"> Si no tienes cuenta, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate">Regístrate aqui</a></span>
+         <span class="margin_left_small"> Si no tienes cuenta, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate">Regístrate aquí</a></span>
 	</div>
           </fieldset>
         <?php $this->endWidget(); ?>

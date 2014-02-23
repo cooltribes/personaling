@@ -2,10 +2,10 @@
 /* @var $this GiftcardController */
 /* @var $model Giftcard */
 
-//$this->breadcrumbs=array(
-//	'Giftcards'=>array('index'),
-//	'Aplicar',
-//);
+$this->breadcrumbs=array(
+	'Mis Giftcards'=>array('adminUser'),
+	'Aplicar',
+);
 
 ?>
 <div class="container">
@@ -41,7 +41,7 @@
                         <!-- FLASH OFF --> 
 			<div class="margin_bottom text_align_center">
                 <div class="contenedorgiftcard bg_color5 padding_small box_shadow">
-				    <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470_desf.png" width="470">
+				    <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470_desf.jpg" width="470">
                 </div>
 			</div>				
 			<div class="row margin_top text_align_center">
@@ -92,7 +92,7 @@
                         <?php echo $form->errorSummary($model, "Corrije los siguientes errores:"); ?>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">
-				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i>Aplicar Gift Card</button>
+				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i> Aplicar Gift Card</button>
 				</div>
 			</div>			
 		</fieldset>

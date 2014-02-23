@@ -2,7 +2,7 @@
 $nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
 if (!Yii::app()->user->isGuest) { // que este logueado
 
-$user = User::model()->findByPk(Yii::app()->user->id);
+$user = User::model()->findByPk($user);
 //$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 $tipo_pago = $orden->getTipoPago();
 //echo $orden->pago_id;
@@ -19,46 +19,67 @@ $tipo_pago = $orden->getTipoPago();
 	  	if($tipo_pago == 1 || $tipo_pago == 3){
 	      ?>
     <div class="alert alert-success margin_top_medium margin_bottom">
-      <h1>Tu Pedido ha sido recibido con éxito.</h1>
-      <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php if($admin){ ?>
+                  <h1><?php echo Yii::t('contentForm','The order to <b>{name}</b> has successfully completed',array('{name}'=>$user->profile->first_name)); ?>  </h1>
+                  <?php }else{ ?>
+                      <h1> <?php echo Yii::t('contentForm','Your order has been successfully received.'); ?></h1>                  
+                  <?php } ?>
+      <?php if($admin){ ?>      
+          <p> <?php echo Yii::t('contentForm','Instructions have been sent and email summary: {email}',array('{email}'=>$user->email)) ?></p>
+      <?php }else{ ?>
+          <p> <?php echo Yii::t('contentForm','Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)',array('{email}'=>$user->email)); ?></p>
+      <?php } ?>
     </div>
     <section class="bg_color3 margin_bottom_small padding_small box_1">
-      <h2>Siguiente paso</h2>
+      <h2><?php echo Yii::t('contentForm', 'Next step'); ?></h2>
       <hr/>
-      <p><strong>Para completar tu comprar debes:</strong></p>
+      <p><strong><?php echo Yii::t('contentForm','To complete your purchase you must:'); ?></strong></p>
       <ol>
-        <li> <strong>Realizar el pago</strong>: de <?php echo Yii::app()->numberFormatter->formatCurrency( $orden->getxPagar(), 'Bs.'); ?> via transferencia electrónica o depósito bancario antes del <?php echo date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days')); ?> en la siguiente cuenta bancaria: <br>
-          <br>
+        <li> <?php echo Yii::t('contentForm','<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:',array('{monto}' => Yii::app()->numberFormatter->formatCurrency( $orden->getxPagar(), Yii::t('contentForm', 'currSym').' '),'{date}' =>date('d-m-Y H:i:s', strtotime($orden->fecha. ' + 3 days') ))); ?>  
+        	<br>
+          	<br>
           <ul class="margin_bottom_medium">
-            <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
-            <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
-            <li><strong>RIF:</strong> Nº J-40236088-6</li>
-            <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
+            <li><strong><?php echo Yii::t('contentForm','Account Number:'); ?></strong> 0134-0277-98-2771093092</li>
+            <li><strong><?php echo Yii::t('contentForm','Account holder:'); ?></strong>PERSONALING C.A.</li>
+            <li><strong><?php echo Yii::t('contentForm','RIF:'); ?>:</strong> Nº J-40236088-6</li>
+            <li><strong><?php echo Yii::t('contentForm','Email:'); ?>:</strong> ventas@personaling.com</li>
           </ul>
         </li>
-        <li class="margin_bottom_medium"><strong>Registra tu pago</strong>: a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos,  selecciona el pedido que deseas Pagar y la opción Registrar Pago.</li>
-        <li class="margin_bottom_medium"><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.</li>
-        <li><strong>Envío:</strong> Luego de validar el pago te enviaremos el producto :)</li>
+        <li class="margin_bottom_medium">
+        	<?php echo Yii::t('contentForm','<strong>Add your payment:</strong> through the link sent to your email or login to Your Account -> Your Orders, select the order you want to pay and Save Pay option.'); ?>
+        </li>
+        <li class="margin_bottom_medium">
+        	<?php echo Yii::t('contentForm','<strong>Process Validation:</strong> usually takes 1 to 5 business days and is to validate your transfer or deposit with our bank. You can check the status of your purchase in your profile.'); ?>
+        </li>
+        <li><?php echo Yii::t('contentForm','<strong>Shipping:</strong> After confirm payment we will send the product :)'); ?></li>
       </ol>
       <hr/>
       <div class="clearfix">
-        <div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> Imprime estas instrucciones</a></div>
-    <div class="pull-right"> Si ya has realizado el depósito <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" >haz click aquí</a></div> 
+        <div class="pull-left"><a onclick="window.print();" class="btn"><i class="icon-print"></i> <?php echo Yii::t('contentForm','Print these instructions'); ?></a></div>
+    <div class="pull-right"> <?php echo Yii::t('contentForm','If you\'ve made ​​your deposit'); ?> <a href="#myModal" role="button" class="btn btn-mini" data-toggle="modal" ><?php echo Yii::t('contentForm','click here'); ?></a></div> 
       </div>
     </section>
     <?php
       	}else if($tipo_pago == 4){
       		?>
     <div class="alert alert-success margin_top_medium margin_bottom">
-      <h1>Tu Pedido ha sido recibido con éxito.</h1>
-      <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php if($admin){ ?>
+                  <h1>El pedido para <b><?php echo $user->profile->first_name ; ?> </b>se ha realizado con éxito.</h1>
+                  <?php }else{ ?>
+                      <h1>Tu Pedido ha sido recibido con éxito.</h1>                  
+                  <?php } ?>
+     <?php if($admin){ ?>      
+          <p> Se han enviado las instrucciones y el resumen al correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php }else{ ?>
+          <p> A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <?php echo $user->email; ?>)</p>
+      <?php } ?>
     </div>
     <section class="bg_color3 margin_bottom_small padding_small box_1">
     <h2>Siguiente paso</h2>
     <hr/>
     <p><strong>Para completar tu comprar debes:</strong></p>
     <ol>
-      <li> <strong>Realizar el pago</strong>: de Bs. <?php echo Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''); ?> via MercadoPago. <br>
+      <li> <strong>Realizar el pago</strong>: de <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''); ?> via MercadoPago. <br>
       </li>
       <li><strong>Registra tu pago</strong>: a través del sistema MercadoPago.</li>
       <li><strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.</li>
@@ -90,17 +111,24 @@ $tipo_pago = $orden->getTipoPago();
 	  
 	  if($orden->estado==3) // Listo el pago
 	  {
-	  	echo "
+              ?>
 	  	
-	  	<div class='alert alert-success margin_top_medium margin_bottom'>
-	      <h1>Tu Pedido ha sido recibido con éxito.</h1>
-	     	<p>Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de credito.<br/>
-	     	Tu pedido será enviado en las próximas horas.</p>
-	    </div>
+	  	
+              <div class='alert alert-success margin_top_medium margin_bottom'>
+                  <?php if($admin){ ?>
+                  <h1>El pedido para <b><?php echo $user->profile->first_name ; ?> </b>se ha realizado con éxito.</h1>
+                  <?php }else{ ?>
+                      <h1>Tu Pedido ha sido recibido con éxito.</h1>                  
+                  <?php } ?>
+                      
+                  <p>Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito.<br/>
+                      Tu pedido será enviado en las próximas horas.</p>
+              </div>
 
-	  	";
+	  	
 		
-	  }
+	 <?php 
+                }
       
       ?>
         <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
@@ -111,29 +139,33 @@ $tipo_pago = $orden->getTipoPago();
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <th class="text_align_left">Subtotal:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
             </tr>
             <?php if($orden->descuento != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left">Descuento:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
             </tr>
             <?php } ?>            
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
             </tr>
             <tr>
-              <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
+              <th class="text_align_left">I.V.A. (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
             </tr>            
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
+              <td><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
             </tr>
           </table>
           <hr/>
-          <p>Hemos enviado un resumen de la compra a tu correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
+          <?php if($admin){ ?>                    
+              <p>Hemos enviado un resumen de la compra al correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
+          <?php }else{ ?>              
+              <p>Hemos enviado un resumen de la compra a tu correo electrónico: <strong><?php echo $user->email; ?></strong> </p>
+          <?php } ?>
           <?php
         
         $s1 = "select count( * ) as total from tbl_orden_has_productotallacolor where look_id != 0 and tbl_orden_id = ".$orden->id."";
@@ -217,7 +249,7 @@ $tipo_pago = $orden->getTipoPago();
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'</td>
 		                  		</td>
-		                <td>Bs. '.$pre.'</td>
+		                <td>'.Yii::t('contentForm', 'currSym').' '.$pre.'</td>
 		                <td>'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
@@ -336,7 +368,7 @@ $tipo_pago = $orden->getTipoPago();
 					$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 				}
 						
-					echo "<td>Bs. ".$pre."</td>";
+					echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
 					echo "<td>".$individual->cantidad."</td>
 					</tr>";
 

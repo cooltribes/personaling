@@ -16,7 +16,7 @@
         	<?php foreach($model->lookhasproducto as $lookhasproducto){ ?>     
 <tr> <th scope="row"><?php echo $lookhasproducto->producto->nombre; ?></th>
  <td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> disponibles</td>
-<td>           <?php   echo $lookhasproducto->producto->getPrecio(); ?> Bs.</td>
+<td>           <?php   echo $lookhasproducto->producto->getPrecio().' '.Yii::t('contentForm', 'currSym'); ?> </td>
 
  
 </tr>
@@ -81,13 +81,29 @@
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
 		)); ?>    	
     	<a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> 
-    <?php $this->widget('bootstrap.widgets.TbButton', array(
-			'label'=>'Editar',
-			'icon'=>'edit',
-			'url' => CController::createUrl('look/edit',array('id'=>$model->id)),
-			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-			//'size'=>'large', // null, 'large', 'small' or 'mini'
-		)); ?>
+    <?php 
+
+        if($model->status == 1 || $model->status == 2){
+
+            $this->widget('bootstrap.widgets.TbButton', array(
+    			'label'=>'Consultar',
+    			'icon'=>'info-sign',
+    			'url' => CController::createUrl('look/edit',array('id'=>$model->id)),
+    			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+    			//'size'=>'large', // null, 'large', 'small' or 'mini'
+    		)); 
+        }
+        else{
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>'Editar',
+                'icon'=>'edit',
+                'url' => CController::createUrl('look/edit',array('id'=>$model->id)),
+                //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size'=>'large', // null, 'large', 'small' or 'mini'
+            ));             
+        }
+
+    ?>
  <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'label'=>'Ver',
 			'icon'=>'eye-open',

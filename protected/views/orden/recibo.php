@@ -15,11 +15,11 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
         <h1>Recibo</h1>
         <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered">
           <tr>
-            <td width="50%"><strong> PERSONALING,  C.A</strong><br/>
+            <td width="50%"><strong> PERSONALING  C.A</strong><br/>
               Avenida Santiago Mariño - Edificio Miramar. Torre A. Oficina 17.<br/>
               Isla de Margarita<br/>
               Venezuela 2001<br/>
-              RIF J-XXXX </td>
+              RIF J-40236088-6 </td>
             <td width="50%"><div class="text_align_right"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/logo_personaling.png" width="284" height="36" alt="Personaling"><br/><strong> Número de recibo: <span style="color:#F00"><?php echo str_pad($factura->id, 4, '0', STR_PAD_LEFT); ?></span> </strong> <br/>
                 <strong> Fecha de emisión:</strong> <?php echo date('d/m/Y', strtotime($factura->fecha)); ?> </div></td>
           </tr>
@@ -74,7 +74,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
 	                  <td><?php echo $producto->nombre; ?></td>
 	                  <td><?php echo $orden_ptc->cantidad; ?></td>
 	                  <td>Bs. <?php echo number_format($precio->precioVenta, 2, ',', '.'); ?></td>
-	                  <td>Bs. <?php echo number_format($orden_ptc->cantidad*$precio->precioVenta, 2, ',', '.'); ?></td>
+	                  <td>Bs. <?php echo number_format($orden_ptc->cantidad*$orden_ptc->precio, 2, ',', '.'); ?></td>
 	                </tr>
 					<?php
                 }

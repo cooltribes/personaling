@@ -37,8 +37,17 @@
 
   //Metas de Twitter CARD OFF
 
+
+
+
 ?>
 <!-- FLASH OFF -->
+
+
+
+
+
+
 
 <div class="container margin_top" id="carrito_compras">
   <div class="row detalle_producto">
@@ -113,6 +122,13 @@
           
           echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "producto", array('id'=>'principal','rel'=>'image_src'));
           echo "<!-- FOTO principal OFF -->";
+		  
+		   if($producto->mymarca->is_100chic){
+	
+				echo "<div class='text_align_center btn-block is_100chic'> <span>100% CHIC</span> </div>";
+				
+		  }
+		  
                 echo "</div>";  
                 echo "</div>";  
           
@@ -138,15 +154,26 @@
         }// que no es la primera en el orden
       }
       
+     
+      
+      
+      
       echo "</div></div>";
             
       /*
             <!-- FOTOS Secundarias OFF -->
        * */
       
-            ?>
+         
+          
+          
+          ?>
+            
+            
+            
             
           </div>
+          
         </article>
         <!-- Columna principal OFF --> 
         
@@ -154,18 +181,24 @@
         <div class="span4 columna_secundaria margin_bottom margin_top padding_top">
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span>Subtotal</span> Bs. 
-                <?php foreach ($producto->precios as $precio) {
-            echo Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto); // precio con IVA
-              Yii::app()->clientScript->registerMetaTag(Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto). ' Bs.', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
+              <h4 class="precio" ><span>Subtotal</span> <?php echo Yii::t('contentForm', 'currSym').' ';   
+               
+            echo $producto->precio; // precio con IVA
+              Yii::app()->clientScript->registerMetaTag($producto->precio.' '.Yii::t('contentForm', 'currSym').' ', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
               Yii::app()->clientScript->registerMetaTag('Precio', 'twitter:label1', null, null, null); // registrar tag de precio de Twitter
-                Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto). ' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+                Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.$producto->precio. ' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
 
-            }
+            
   
       ?></h4>
             </div>
             <?php
+         
+         
+            
+            
+            
+            
           $valores = Array();
                 $cantcolor = Array();
                 $cont1 = 0;
@@ -210,12 +243,17 @@
       
           ?>
             <div class="span2 hidden-phone">
+                <?php if($producto->estado == 1){ ?>
+                 <a title="Producto Inactivo" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Inactivo </a>                
+                
               <?php
-              if($cont1 > 0 && $cont2 > 0){
+                }else if($cont1 > 0 && $cont2 > 0){
               ?>
                 <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
-                <?php
-          }else{
+              
+           
+            <?php
+           }else{
             ?>
             <a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Agotado </a>
             <?php
@@ -225,6 +263,14 @@
           </div>
           
           <?php
+          if($producto->mymarca->is_100chic){
+          	echo CHtml::hiddenField('chic',1);
+	       ?>
+            <img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
+		  <?php
+		  }
+		  else
+		  	echo CHtml::hiddenField('chic',0);   
           if($cont1 > 0 && $cont2 > 0){
           ?>
           
@@ -296,10 +342,10 @@
           }// else
                 ?>                
               </div>
-              <div class="braker_top margin_top_small">
+<!--               <div class="braker_top margin_top_small">
                 <a href="#myModal" role="button" class="btn btn-mini btn-link color9" data-toggle="modal">Ver guia de tallas</a>
               </div>
-            </div>
+ -->            </div>
            </div>
              
              <?php
@@ -386,7 +432,7 @@
         <?php
         }
         ?>
-        <small id="total-likes">
+        <small id="total-likes" class="hidden-tablet hidden-phone">
         <?php 
               // total de likes 
                     $cuantos = UserEncantan::model()->countByAttributes(array('producto_id'=>$producto->id));   
@@ -798,13 +844,19 @@ $(document).ready(function(){
 
 var source = $('#principal').attr("src");
 var imgZ = source.replace(".","_orig.");
+imgZ = imgZ.replace("png", "jpg");
+
 $('.imagen_principal').zoom({url: imgZ});
+
 
   $(".imagen_principal").hover(function(){
     var source = $('#principal').attr("src");
-    
     var imgZ = source.replace(".","_orig.");
-    $('.imagen_principal').zoom({url: imgZ});
+    
+    imgZ = imgZ.replace("png", "jpg");
+    
+    $('.imagen_principal').zoom({url: imgZ});    
+  
   });
   
    $(".miniaturas_listado_click").click(function(){
@@ -855,13 +907,15 @@ $('.imagen_principal').zoom({url: imgZ});
          
       $.ajax({
           type: "post",
-          url: "../tallas", // action Tallas de Producto
+          url: '<?php echo Yii::app()->baseUrl; ?>/producto/tallas', // action Tallas de Producto
           data: { 'idTalla':dataString , 'idProd':prod}, 
           dataType:"json",
           success: function (data) {
             
             if(data.status == 'ok')
             {
+            	if(data.imagenes.length>0){
+            	
               //alert(data.datos);
           var cont="";
           $.each(data.datos,function(clave,valor) {
@@ -921,6 +975,10 @@ $('.imagen_principal').zoom({url: imgZ});
             
             // cambiando la imagen principal :@
             $(".imagen_principal").fadeOut("10",function(){
+            	if($('#chic').val()==1){
+            		zona=zona+"<div class='text_align_center btn-block is_100chic'> <span>100% CHIC</span> </div>";
+            	}
+            	
               $(".imagen_principal").html(zona);
               
                 var source = $('#principal').attr("src");
@@ -942,7 +1000,7 @@ $('.imagen_principal').zoom({url: imgZ});
             
                         
             }
-
+			}
           }//success
          })
          

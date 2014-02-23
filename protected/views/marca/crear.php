@@ -33,7 +33,7 @@ $this->breadcrumbs=array(
             <div class="bg_color3 margin_bottom_small padding_small box_1">
                 <form class="form-stacked personaling_form padding_top_small" >
                     <fieldset>
-                    	<br>
+                    		                                  	
                     	<div class="control-group">
                               <?php echo $form->labelEx($marca,'nombre', array('class' => 'control-label required')); ?>
 				              <div class="controls">
@@ -47,7 +47,7 @@ $this->breadcrumbs=array(
 				              <div class="controls">
 				              	<?php echo $form->textArea($marca,'descripcion',array('rows'=>'5','class'=>'span6', 'placeholder' => 'Descripcion de la marca')); ?>
 				                <?php echo $form->error($marca,'descripcion'); ?>
-				              </div>
+				              </div>   
                         </div>
                         
                          <div class="control-group">
@@ -60,6 +60,20 @@ $this->breadcrumbs=array(
 									?>
                             </div>
                         </div>
+                        
+                        <div class="control-group">
+                        	
+                            <div class="controls">
+	                            <?php
+	                            $checked="";
+	                            if($marca->is_100chic)
+									$checked=' checked';
+					            	echo "<input type='checkbox' name='chic' id='chic'".$checked.">100% Chic";
+							
+									?>
+                            </div>
+                        </div>
+                        
                         <div class="control-group">
 				              <div class="controls">
 				              	<?php 

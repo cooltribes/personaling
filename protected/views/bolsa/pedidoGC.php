@@ -1,0 +1,237 @@
+<?php
+$nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
+if (!Yii::app()->user->isGuest) { // que este logueado
+    $user = User::model()->findByPk(Yii::app()->user->id);
+//$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+//$tipo_pago = $orden->getTipoPago();
+    $tipo_pago = 2; //tarjeta
+//echo $orden->pago_id;
+    ?>
+    <?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);  ?>
+    <div class="container margin_top">
+        <div class="row">
+            <div class="span8 offset2">
+                <?php
+                    
+
+                    if ($orden->estado == 3) { // Listo el pago
+                    ?>   
+                    <div class='alert alert-success margin_top_medium margin_bottom'>
+                        <h1>Tu compra se ha realizado con éxito.</h1>
+                        <p>Hemos recibido los datos de la compra así como los de tu pago con tarjeta de crédito.<br/>
+                            Tu GiftCard está disponible para ser aplicada en cualquier momento.</p>
+                    </div>
+                    <?php
+                }
+                ?>
+                <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+                    <h3>Resumen del pedido </h3>
+                    <p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p>
+                    
+                    <hr/>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <th class="text_align_left">Subtotal:</th>
+                            <td><?php echo 'Bs. ' . Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></td>
+                        </tr>           
+                        <tr>
+                            <th class="text_align_left"><h4>Total:</h4></th>
+                        <td><h4><?php echo 'Bs. ' . Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <p>Hemos enviado un resumen de la compra a tu correo electrónico: <strong><?php echo $user->email; ?></strong> </p>          
+                    <h3 class="margin_top">Detalles del Pedido</h3>
+                    <div>
+                        <table class='table' width='100%' >
+                            <thead>                                
+                                <tr>
+                                    <th colspan='2'>GiftCard</th>
+                                    <th>Monto</th>
+                                    <th>Imprimir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                ////            $aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$img->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+////            echo "<td>".$aaa."</td>";
+//             echo"<td><img src='http://placehold.it/70x70/' class='margin_bottom'></td>";
+//            echo "
+//                <td>
+//                <strong>".$producto->nombre."</strong> <br/>
+//                <strong>Color</strong>: ".$color->valor."<br/>
+//                <strong>Talla</strong>: ".$talla->valor."</td>
+//                </td>
+//                ";
+//            echo "<td>Bs. ".$pre."</td>";
+//                    echo "<td>".$individual->cantidad."</td>
+//                    ";
+                                
+                                /*Por los momentos una sola giftcard por Compra*/
+                                $giftcard = Giftcard::model()->findByAttributes(array("orden_id" => $orden->id));
+                                $entrega = Yii::app()->getSession()->get('entrega');
+                                $envio = new EnvioGiftcard();
+                                $envio->attributes = Yii::app()->getSession()->get('envio');
+                                ?>
+                                <tr>
+                                    <td>
+                                        <!--<img src='<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x114.png' class='margin_bottom'>-->
+                                        <img src='<?php echo 
+                                        Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x114.jpg"; ?>' class='margin_bottom'>
+                                    </td>
+                                    <td>
+                                        <strong>Código:</strong> <?php echo $giftcard->getMascaraCodigo(); ?><br/>
+                                        <strong>Validez:</strong> <?php echo "Desde <i>".date("d-m-Y", $giftcard->getInicioVigencia()).
+                                                "</i> hasta <i>".date("d-m-Y", $giftcard->getFinVigencia())."</i>"; ?><br/>
+                                        <?php 
+                                        //si hay para y mensaje
+                                        if($entrega == 2){ ?>
+                                        <strong>Enviada a:</strong> <?php echo $envio->email; ?><br/>
+                                        <?php } ?>
+                                    </td>
+                                    <td>Bs. <?php echo $giftcard->monto; ?></td>
+                                    <td>
+                                    <?php 
+                                    //si era para imprimir
+                                    if($entrega == 1){
+                                        $this->widget("bootstrap.widgets.TbButton", array(
+                                           'buttonType' => "link" ,
+                                           'type' => "danger" ,
+                                           'icon' => "print white" ,
+                                           'label' => "Imprimir" ,
+                                           'url' => "javascript:printElem('#divImprimir')" ,
+                                        ));
+                                    }
+                                    //si era para enviar
+                                    if($entrega == 2){
+                                        echo "<i>Enviada por email</i>";
+                                    } 
+                                    ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <hr/>
+                <a href="../../tienda/index" class="btn btn-danger" title="seguir comprando">Ir a la tienda</a> </div>
+        </div>
+    </div>
+
+    <!-- /container -->
+<div class="hide" id="divImprimir">
+    
+<div style="width: 350px">
+    
+<table class="table table-condensed" border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageCardBlock">
+  <tbody class="mcnImageCardBlockOuter">
+      <tr>
+          <td class="mcnImageCardBlockInner" valign="top" style="padding-top:9px; padding-right:18px; padding-bottom:9px; padding-left:18px;">
+
+              <table align="right" border="0" cellpadding="0" cellspacing="0" class="mcnImageCardBottomContent" width="100%" style="border: 1px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255);">
+                  <tbody>
+                      <tr>
+                          <td class="mcnImageCardBottomImageContent" align="left" valign="top" style="padding-top:18px; padding-right:18px; padding-bottom:0; padding-left:18px; font-family: Helvetica; text-align:center;">
+                              <img alt="" src="<?php echo 
+                                        Yii::app()->baseUrl."/images/giftcards/{$giftcard->plantilla_url}_x531.jpg"; ?>" width="470" style="max-width:470px;" class="mcnImage blockDropTarget" id="mojo_neapolitan_preview_ImageUploader_281" widgetid="mojo_neapolitan_preview_ImageUploader_281">
+
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:9px;">
+                              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageCardBlock">
+                                  <tbody class="mcnImageCardBlockOuter">
+                                      <tr>
+                                          <td class="mcnImageCardBlockInner" valign="" >
+
+                                              <table align="right" border="0" cellpadding="0" cellspacing="0" class="mcnImageCardBottomContent" width="100%">
+                                                  <tbody>
+                                                      <tr>
+                                                          <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:24px; border-right: 1px solid #ddd;" width="213">
+                                                              <span style="font-size:42px; color:#6d2d56;"><?php echo $giftcard->monto ?> Bs</span><br>
+                                                              <br>
+                                                              <span style="color:#9b9894;">Código:  </span><br>
+                                                              <span style="font-size: 14px; color: #000;"><?php echo $giftcard->getCodigo() ?></span>
+                                                          </td>
+                                                          <td valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:9px;" width="263">
+                                                              <br>
+                                                              <strong>Para: </strong><span> <?php echo  $envio->nombre ?></span>
+                                                              <br>
+                                                              <strong>Mensaje:</strong><span><?php echo $envio->mensaje ?></span>
+                                                          </td>
+                                                      </tr>
+                                                  </tbody>
+                                              </table>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>   
+                          </td>                         
+                      </tr>
+                      <tr>
+                          <td style="text-align:center; font-size: 11px; margin-top:20px; padding-bottom:10px; padding-top:10px; font-size: 11px;">
+                              Válida desde <strong><?php echo date("d-m-Y", $giftcard->getInicioVigencia()) ?></strong> hasta <strong><?php echo date("d-m-Y", $giftcard->getFinVigencia()) ?></strong>
+                          </td>
+                      </tr>                                                              
+                  </tbody>
+              </table>
+
+
+          </td>
+      </tr>
+  </tbody>
+</table>
+
+    
+</div>
+    
+</div>
+    <?php
+}// si esta logueado
+else {
+    // redirecciona al login porque se murió la sesión
+//	header('Location: /user/login');
+    $url = CController::createUrl("/user/login");
+    header('Location: ' . $url);
+}
+?>
+
+<!-- Modal Window -->
+<?php
+$detPago = new Detalle;
+$detPago->monto = 0;
+?>
+
+
+<!-- <input type="hidden" id="idDetalle" value="<?php //echo($orden->detalle_id);  ?>" /> -->
+
+<!-- // Modal Window --> 
+
+<script type="text/javascript">
+/*<![CDATA[*/
+    function printElem(elem)
+    {
+        popup($(elem).html());
+    }
+
+    function popup(data) 
+    {        
+        
+        var h = 600;
+        var w = 800;
+        var left = (screen.width - w)/2;
+        var top = (screen.height - h)/2 - 30;
+        var mywindow = window.open('', 'GiftCard Personaling', 'height='+h+',width='+w+', left='+left+', top='+top);
+        mywindow.document.write('<html><head><title>GiftCard</title>');
+        /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(data);
+        mywindow.document.write('</ body></html>');
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+/*]]>*/
+</script>

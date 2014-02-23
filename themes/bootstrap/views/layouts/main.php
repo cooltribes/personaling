@@ -128,6 +128,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
                     array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
+                    array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
@@ -164,7 +165,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         $todos = count($otrosPerfiles);
         if($verMas){
            $itemsUser[] =  array('label'=>"Ver todos los perfiles ...",  
-                                    'url'=>'#', 'linkOptions' => array('class' => 'sub_perfil_item'), //array('/site/preguntas_frecuentes')
+                                    'url'=>'#', 'linkOptions' => array('class' => 'sub_perfil_item ver_todos'), //array('/site/preguntas_frecuentes')
                                     );
         }
         
@@ -195,14 +196,16 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
-				        array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+                array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest),                 
+				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Ingresa', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
+                	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'Ingresa', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
+                //array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
+                array('label'=>$avatar."<span id='userName'>{$nombre}</span>", 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 'visible'=>!Yii::app()->user->isGuest,
 				),
             ),
@@ -279,7 +282,7 @@ if(!Yii::app()->user->isGuest){
   <?php endif?>
   <?php echo $content; ?> </div>
 <!-- page -->
-
+<div id="modalAjax"></div>
 <div id="wrapper_footer">
   <footer class="container">
     <div class="row hidden-phone">
@@ -317,8 +320,8 @@ if(!Yii::app()->user->isGuest){
           </div>
         <hr/>
         <p>Nos Avalan</p>
-        <a href="http://ve.wayra.org/es/startup/personaling"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
-        <a href="#"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
+        <a href="http://ve.wayra.org/es/startup/personaling" target="_blank"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Wayra"></a>
+        <a href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013" target="_blank"><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Concurso Ideas"></a>
         <p class="margin_top_small">Afiliados a</p>
         <img class="margin_top_small_minus" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners">
       </div>
@@ -465,13 +468,13 @@ if(!Yii::app()->user->isGuest){
 
             $bptcolor_Rev = array_reverse($bptcolor);
 
-            foreach($bptcolor_Rev as $detalles){ // cada producto en la bolsa
+            foreach($bptcolor_Rev as $productoBolsa){ // cada producto en la bolsa
 
               if($contadorItems >= 5){
                 break;
               }
 
-                $todo = Preciotallacolor::model()->findByPk($detalles->preciotallacolor_id);                
+                $todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);                
                 $producto = Producto::model()->findByPk($todo->producto_id);
                 $talla = Talla::model()->findByPk($todo->talla_id);
                 $color = Color::model()->findByPk($todo->color_id);                  
@@ -596,12 +599,11 @@ if(!Yii::app()->user->isGuest){
                 }
             });
         }
-            
         
     });
     
     //Click para seleccionar un peril de la lista que esta en el dropdown User
-    $("#dropdownUser a.sub_perfil_item").click(function(e){
+    $("#dropdownUser a.sub_perfil_item:not(.ver_todos), #modalPerfilesOcultos li a").click(function(e){
         e.preventDefault();
         var urlActual = "<?php echo CController::createUrl(""); ?>";
         var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
@@ -631,6 +633,33 @@ if(!Yii::app()->user->isGuest){
                 }
             });
         }
+       
+    });
+    
+    //Click en el elemento del dropdown para ver todos los perfiles ocultos
+    $("#dropdownUser .ver_todos").click(function(e){
+        e.preventDefault();
+        
+//        $("#modalPerfilesOcultos").modal("show");
+//        
+//        return;
+        //Llevar a tienda de looks
+            var urlModal = "<?php echo CController::createUrl("/tienda/modalAjax"); ?>";  
+            
+            
+            $.ajax({
+                type: 'POST',
+                url: urlModal,
+                dataType: 'JSON',
+                data: {modal : "perfiles"},
+                success: function(data){
+                    $("#modalAjax").empty();
+                    $("#modalAjax").html(data.data);
+                    $("#modalPerfilesOcultos").modal("show");
+                    
+                }
+            });
+        
        
     });
  

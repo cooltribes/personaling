@@ -72,6 +72,7 @@ return array (
      'From1' => 'Desde',
 
      'Gift Card' => 'Gift Card',
+     'Go to Store' => 'Ir a la tienda',
 
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
 
@@ -95,6 +96,7 @@ return array (
      '<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
      'MercadoPago' => 'MercadoPago',
      'Message history' => 'Historial de Mensajes',
+     'Message' => 'Mensaje',
      'Messages' => 'Mensajes',
      'Method ' => 'Método',
      'Month' => 'Mes',
@@ -145,6 +147,7 @@ return array (
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
      'Purchasing Information' => 'Datos de la compra',
+     'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
      'Print these instructions' => 'Imprime estas instrucciones',
      'Price' => 'Precio',
@@ -163,6 +166,8 @@ return array (
      'Reference' => 'Referencia',
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
+
+
      'Save' => 'Guardar',
      'Shipping' => 'Envío',
      '<strong>Shipping:</strong> After confirm payment we will send the product :)' => '<strong>Envío:</strong> Luego de validar el pago te enviaremos el producto :)',
@@ -176,6 +181,8 @@ return array (
      'Security Code' => 'Código de Seguridad',
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
      'Send Comment' => 'Enviar comentario',
+     'Sent by email' => 'Enviada por email',
+     'Sent to:' => 'Enviada a:',
      'Selected looks' => 'Looks seleccionados',
      'Select a province' => 'Selecciona un estado',
      'Subject' => 'Asunto',
@@ -187,6 +194,8 @@ return array (
      'The bag is empty' => 'La bolsa está vacia',
      'The order to <b><{name}</b> has successfully completed' => 'El pedido para <b><{name}</b> se ha realizado con éxito.',
      'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
+     'To' => 'Hasta',
+     'To1' => 'Para',
      'To complete your purchase you must:' => 'Para completar tu comprar debes:',
      'Total' => 'Total',
      'Total Gift Cards' => 'Total de Gift Cards',
@@ -205,6 +214,7 @@ return array (
      'Use Balance available:' => 'Usar balance disponible',
 
 
+     'Valid from <strong>{start}</strong> until <strong>{end}</strong>' => 'Válido desde <strong>{start}</strong> hasta <strong>{end}</strong>',
      'Validity' => 'Validez',
      'Value for returned shipping' => 'Monto por envío devuelto',
 

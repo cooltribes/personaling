@@ -772,6 +772,12 @@ class ProductoController extends Controller
             {
                 unset($_SESSION['todoPost']);
             }
+            
+            if((isset($_SESSION['searchBox']) && !isset($_POST['query']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['searchBox']);
+            }
+            
              //Filtros personalizados
             $filters = array();
             
@@ -894,6 +900,11 @@ class ProductoController extends Controller
             }
 
 
+            if(isset($_GET['ajax']) && isset($_SESSION['searchBox'])
+               && !isset($_POST['query'])){
+              $_POST['query'] = $_SESSION['searchBox'];
+            }
+            
             if (isset($_POST['query']))
             {
                     //echo($_POST['query']);	

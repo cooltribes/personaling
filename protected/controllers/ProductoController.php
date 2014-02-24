@@ -899,15 +899,25 @@ class ProductoController extends Controller
                 }
             }
 
+//            if(isset($_SESSION['searchBox'])){
+//                
+//            echo "<pre>";
+//            print_r($_SESSION['searchBox']);
+//            echo "</pre>";
+//            Yii::app()->end();
+//            }
 
             if(isset($_GET['ajax']) && isset($_SESSION['searchBox'])
                && !isset($_POST['query'])){
+//                echo "dd";
+//                Yii::app()->end();
               $_POST['query'] = $_SESSION['searchBox'];
             }
             
             if (isset($_POST['query']))
             {
                     //echo($_POST['query']);	
+                    $_SESSION['searchBox'] = $_POST['query'];
                     unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
                     $dataProvider = $producto->search();

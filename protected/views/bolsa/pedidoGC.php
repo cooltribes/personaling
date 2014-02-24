@@ -150,7 +150,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                                           <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:24px; border-right: 1px solid #ddd;" width="213">
                                                               <span style="font-size:42px; color:#6d2d56;"><?php echo $giftcard->monto.' '.Yii::t('contentForm','currSym');?>.</span><br>
                                                               <br>
-                                                              <span style="color:#9b9894;"><?php echo Yii::t('contentForm','Go to Store'); ?>:  </span><br>
+                                                              <span style="color:#9b9894;"><?php echo Yii::t('contentForm','Code'); ?>:  </span><br>
                                                               <span style="font-size: 14px; color: #000;"><?php echo $giftcard->getCodigo() ?></span>
                                                           </td>
                                                           <td valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:9px;" width="263">

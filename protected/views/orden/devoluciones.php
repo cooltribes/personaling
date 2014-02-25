@@ -190,15 +190,15 @@ $this->breadcrumbs=array(
         </tr>       
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto a devolver Bs.:</strong></div></td>
-        	<td class="text_align_right"><input type="text" readonly="readonly" id="monto" value="000,00" /> </td>
+        	<td class="text_align_right"><input class="text_align_right" type="text" readonly="readonly" id="monto" value="000,00" /> </td>
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto por envío a devolver Bs.:</strong></div></td>
-        	<td  class="text_align_right"><input type="text" readonly="readonly" id="montoenvio" value="000,00" /> </td>
+        	<td  class="text_align_right"><input class="text_align_right" type="text" readonly="readonly" id="montoenvio" value="000,00" /> </td>
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Total Bs.:</strong></div></td>
-        	<td  class="text_align_right"><input type="text" readonly="readonly" id="montoTotal" value="000,00" /></td>
+        	<td  class="text_align_right"><input class="text_align_right" type="text" readonly="readonly" id="montoTotal" value="000,00" /></td>
         </tr>        
     	</table>
     	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning btn-large">Hacer devolución</a>
@@ -273,6 +273,7 @@ function actualizarMonto(precio){
                     || motivos.indexOf("Devolución por pedido equivocado") != -1 )
             {
 
+                
                 var id = $('#orden_id').attr('value');
                 //var monto = $('#monto').attr('value');
 
@@ -283,8 +284,9 @@ function actualizarMonto(precio){
                 success: function (data) {
                     
                     montoEnvio = parseFloat(data);
-                    
-                    $('#montoenvio').val(montoEnvio);                    
+                    $('#montoenvio').val(montoEnvio);
+                    actualizarTotal();  
+                                        
 
                 }//success
                 });	
@@ -294,10 +296,11 @@ function actualizarMonto(precio){
             
                 montoEnvio = 0.00;   
                 
-                $('#montoenvio').val(montoEnvio);
+                //$('#montoenvio').val(montoEnvio);
             }
             
-            
+            $('#montoenvio').val(montoEnvio);
+            actualizarTotal();  
             
             
 	});
@@ -321,18 +324,19 @@ function actualizarMonto(precio){
 			
                     var id = $('#orden_id').attr('value');
                     var monto = $('#monto').attr('value');
-                    var envio = $('#montoenvio').attr('value');
-
+                    var envio = $('#montoenvio').attr('value');                   
+                    
+                    
                     $.ajax({
-                    type: "post", 
-                    url: "orden/devoluciones", // action 
-                    data: { 'orden':id, 'check':checkValues, 'monto':monto, 'motivos':motivos, 'envio':envio}, 
-                    success: function (data) {
+                        type: "post", 
+                        url: "orden/devoluciones", // action 
+                        data: { 'orden':id, 'check':checkValues, 'monto':monto, 'motivos':motivos, 'envio':envio}, 
+                        success: function (data) {
 
-                        if(data=="ok")
-                                window.location.reload();
+                            if(data=="ok")
+                                    window.location.reload();
 
-                    }//success
+                        }//success
                     });				
 		
 		}

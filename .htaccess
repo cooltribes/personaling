@@ -12,5 +12,7 @@ RewriteCond %{REMOTE_ADDR} !190\.36\.173\.103
 RewriteCond %{REMOTE_ADDR} !190\.78\.40\.224
 RewriteCond %{REMOTE_ADDR} !201\.248\.229\.119
 RewriteCond %{REMOTE_ADDR} !186\.93\.234\.27
+RewriteCond %{REMOTE_ADDR} !186\.91\.41\.21
+
 
 RewriteRule (.*) http://www.personaling.com/$1 [R=301,L]

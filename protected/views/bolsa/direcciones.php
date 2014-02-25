@@ -41,7 +41,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //     	$usuario = Yii::app()->user->id; 
      	$usuario = $user; 
         $direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
-      
+     
       ?>
 	  <?php if( count( $direcciones ) > 0 ){ ?>
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
@@ -83,20 +83,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		                  ".$cadauna->dirDos.". 
 		                  ".$ciudad->nombre.", ".$provincia->nombre.". </br>
 		                  ".$cadauna->pais." </p>
-		                  
+		                      
 		              </div>
 		              <div class='span2 margin_top_medium'>
 		                <p>
 					";
-					
+					echo "<input type='checkbox' id='sh-".$cadauna->id."' class='shippingAddress' value='".$cadauna->id."'/>Esta es mi dirección de envío<br/>";
+					echo "<input type='checkbox' id='bl-".$cadauna->id."' class='billingAddress' value='".$cadauna->id."'/>Esta es mi dirección de facturación";
 					$this->widget('bootstrap.widgets.TbButton', array(
 			            'buttonType'=>'submit',
 			            'type'=>'danger',
 			            'size'=>'normal',
 			            'label'=>Yii::t('contentForm','Use this address'),
 			        )); 
-					     	echo "<br><input type='checkbox' class='shippingAddress' value='".$cadauna->id."'>Esta es mi dirección de envío<br>";
-							echo "<input type='checkbox' class='billingAddress' value='".$cadauna->id."'>Esta es mi dirección de facturación<br>";
+					     	
 					echo"
 		                <br/>
 		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>".Yii::t('contentForm','Edit')."</a> <br/>
@@ -341,10 +341,10 @@ else
 		}
 	});
 	$('.shippingAddress').change(function(){
-		if($(this).is(':checked')){
-			$('.shippingAddress').attr('checked','');
+
+			$('.shippingAddress').attr('checked', false);
 			$(this).attr('checked','checked');
-		}
+		
 		
 	});
 	

@@ -15,6 +15,7 @@ return array (
      'Address Line 1: (Avenue, Street, complex, Residential, etc.).' => 'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)',
      'Address Line 2: (Building, Floor, Number, apartment, etc.)' => 'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc.)',
      'Add a new shipping address' => 'Agregar una nueva dirección de envío',
+     '<strong>Add your payment:</strong> through MercadoPago system.' => '<strong>Registra tu pago</strong>: a través del sistema MercadoPago.',
      'Amount' => 'Monto',
      'Amount Gift Card' => 'Monto de l GiftCard',
      'Amount returned' => 'Monto devuelto',
@@ -31,6 +32,7 @@ return array (
 
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
+     'Code' => 'Código',
      'Choose an address for shipment of your purchase from your address book or enter a new one in the lower section' =>'Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
      'click here' => 'haz click aquí',
@@ -41,6 +43,7 @@ return array (
      'Confirm <br>purchase' => 'Confirmar <br/>Compra',
      'Current state' => 'Estado Actual',
      'Confirm your credentials' => 'Confirma tus datos',
+     'Confirmation number' => 'Número de confirmación',
      'Confirmation of Purchase' => 'Confirmación de la Compra',
      'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
 
@@ -68,6 +71,9 @@ return array (
      'From' => 'De',
      'From1' => 'Desde',
 
+     'Gift Card' => 'Gift Card',
+     'Go to Store' => 'Ir a la tienda',
+
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
 
      'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
@@ -90,6 +96,7 @@ return array (
      '<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
      'MercadoPago' => 'MercadoPago',
      'Message history' => 'Historial de Mensajes',
+     'Message' => 'Mensaje',
      'Messages' => 'Mensajes',
      'Method ' => 'Método',
      'Month' => 'Mes',
@@ -116,10 +123,11 @@ return array (
      'Order Cancelled' => 'Orden Cancelada',
      'Order confirmation' => 'Confirmación del pedido',
      'Order Date' => 'Fecha del pedido',
-     'Order Details' => 'Detalles del pedido',
+     'Order Details' => 'Detalles del Pedido',
      'Order Sent' => 'Pedido enviado',
      'Order Summary' => 'Resumen del pedido',
      'Order for the user' => 'Pedido para el usuario',
+     'Order is process' => 'Pedido en proceso',
      'Output' => 'Salida',
      
      'Paid' => 'Ya pagados',
@@ -139,6 +147,7 @@ return array (
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
      'Purchasing Information' => 'Datos de la compra',
+     'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
      'Print these instructions' => 'Imprime estas instrucciones',
      'Price' => 'Precio',
@@ -147,7 +156,7 @@ return array (
      'Products that make the Looks' => 'Productos que componen los Looks',
      'Progress order' => 'Progreso del pedido',
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days and is to validate your transfer or deposit with our bank. You can check the status of your purchase in your profile.' => '<strong>Proceso de validación:</strong> usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.',
-     
+     '<strong>Process Validation:</strong> usually takes 1 to 5 business days of validating your payment.' => '<strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.',
 
      'Quantity' => 'Cantidad',
      
@@ -157,6 +166,8 @@ return array (
      'Reference' => 'Referencia',
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
+
+
      'Save' => 'Guardar',
      'Shipping' => 'Envío',
      '<strong>Shipping:</strong> After confirm payment we will send the product :)' => '<strong>Envío:</strong> Luego de validar el pago te enviaremos el producto :)',
@@ -170,6 +181,8 @@ return array (
      'Security Code' => 'Código de Seguridad',
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
      'Send Comment' => 'Enviar comentario',
+     'Sent by email' => 'Enviada por email',
+     'Sent to:' => 'Enviada a:',
      'Selected looks' => 'Looks seleccionados',
      'Select a province' => 'Selecciona un estado',
      'Subject' => 'Asunto',
@@ -181,6 +194,8 @@ return array (
      'The bag is empty' => 'La bolsa está vacia',
      'The order to <b><{name}</b> has successfully completed' => 'El pedido para <b><{name}</b> se ha realizado con éxito.',
      'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
+     'To' => 'Hasta',
+     'To1' => 'Para',
      'To complete your purchase you must:' => 'Para completar tu comprar debes:',
      'Total' => 'Total',
      'Total Gift Cards' => 'Total de Gift Cards',
@@ -199,15 +214,26 @@ return array (
      'Use Balance available:' => 'Usar balance disponible',
 
 
+     'Valid from <strong>{start}</strong> until <strong>{end}</strong>' => 'Válido desde <strong>{start}</strong> hasta <strong>{end}</strong>',
+     'Validity' => 'Validez',
      'Value for returned shipping' => 'Monto por envío devuelto',
 
      'Year' => 'Año',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'Your bag' =>'Tu bolsa',
+     'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
+     'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',
      'Your order has been successfully received.' => 'Tu Pedido ha sido recibido con éxito.',
      'Your payment is being processed'=> 'Tu pago esta siendo procesado',
      'Your purchase will be completed in seconds!' => '¡Tu compra será completada en instantes!',
 
+     'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
+     'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',
+     'We received the data of purchase as well as your credit card payment.' => 'Hemos recibido los datos de la compra así como los de tu pago con tarjeta de crédito.',
+     'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos de pedido asi como de tu pago con transferencia o depósito bancario',
+     'We received the order data as well as your credit card payment. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito.<br/> Tu pedido será enviado en las próximas horas.',
+
+     'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
      'Weigth' => 'Peso',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
 

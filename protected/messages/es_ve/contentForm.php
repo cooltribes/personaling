@@ -28,7 +28,9 @@ return array (
 
      'Balance' => 'Saldo',
      'Bag' => 'Bolsa',
+     'Biography' => 'Bio',
      'Brand' => 'Marca',
+     'Buy' => 'Comprar',
 
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
@@ -101,7 +103,7 @@ return array (
      'Method ' => 'Método',
      'Month' => 'Mes',
      'Missing' => 'que faltan',
-
+     'Must select at least one item' => 'Debes seleccionar por lo menos una prenda',
 
      
      'Name' => 'Nombre',
@@ -118,6 +120,9 @@ return array (
      'Number' => 'Número',
 
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
+     'Look created by' => 'Look creado por',
+     'Look description'  => 'Descripción del look',
+     'Like' => 'Me encanta',
 
      'Order' => 'Pedido',
      'Order Cancelled' => 'Orden Cancelada',
@@ -129,6 +134,7 @@ return array (
      'Order for the user' => 'Pedido para el usuario',
      'Order is process' => 'Pedido en proceso',
      'Output' => 'Salida',
+     'On this look' => 'En este look',
      
      'Paid' => 'Ya pagados',
      'Parcial Returned' => 'Devolución Parcial',
@@ -157,11 +163,14 @@ return array (
      'Progress order' => 'Progreso del pedido',
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days and is to validate your transfer or deposit with our bank. You can check the status of your purchase in your profile.' => '<strong>Proceso de validación:</strong> usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.',
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days of validating your payment.' => '<strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.',
+     'Promotion' => 'Promoción',
+
 
      'Quantity' => 'Cantidad',
      
      
      'Reason' => 'Motivo',
+     'Recently viewed' => 'Vistos recientemente',
      'Redeem Gift Card' => 'Canjear Gift Card',
      'Reference' => 'Referencia',
      'Returned items' => 'Productos devueltos',
@@ -174,6 +183,7 @@ return array (
      'Shipping address' => 'Dirección de envío',
      'Shipping cost' => 'Costo de envío',
      'State' => 'Estado',
+     'Style' => 'Estilo',
      'Size' => 'Talla',
      'Subtotal' => 'Subtotal',
      'Shipping <br/>and billing<br/> address' => 'Dirección<br/>de envío <br/> y facturación',
@@ -185,6 +195,7 @@ return array (
      'Sent to:' => 'Enviada a:',
      'Selected looks' => 'Looks seleccionados',
      'Select a province' => 'Selecciona un estado',
+     'Select the size' => 'Selecciona la talla',
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
@@ -219,7 +230,9 @@ return array (
      'Value for returned shipping' => 'Monto por envío devuelto',
 
      'Year' => 'Año',
+     'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
+     'You must select all sizes' => 'Debes seleccionar todas las tallas',
      'Your bag' =>'Tu bolsa',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
      'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',

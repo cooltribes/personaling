@@ -792,7 +792,7 @@ class ProductoController extends Controller
             
             if(isset($_POST['dropdown_filter'])){   
                 
-                
+                unset($_SESSION['searchBox']);
                 $_SESSION['todoPost'] = $_POST;
                 //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){

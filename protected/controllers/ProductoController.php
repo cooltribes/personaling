@@ -772,6 +772,12 @@ class ProductoController extends Controller
             {
                 unset($_SESSION['todoPost']);
             }
+            
+            if((isset($_SESSION['searchBox']) && !isset($_POST['query']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['searchBox']);
+            }
+            
              //Filtros personalizados
             $filters = array();
             
@@ -786,7 +792,7 @@ class ProductoController extends Controller
             
             if(isset($_POST['dropdown_filter'])){   
                 
-                
+                unset($_SESSION['searchBox']);
                 $_SESSION['todoPost'] = $_POST;
                 //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){
@@ -893,10 +899,25 @@ class ProductoController extends Controller
                 }
             }
 
+//            if(isset($_SESSION['searchBox'])){
+//                
+//            echo "<pre>";
+//            print_r($_SESSION['searchBox']);
+//            echo "</pre>";
+//            Yii::app()->end();
+//            }
 
+            if(isset($_GET['ajax']) && isset($_SESSION['searchBox'])
+               && !isset($_POST['query'])){
+//                echo "dd";
+//                Yii::app()->end();
+              $_POST['query'] = $_SESSION['searchBox'];
+            }
+            
             if (isset($_POST['query']))
             {
                     //echo($_POST['query']);	
+                    $_SESSION['searchBox'] = $_POST['query'];
                     unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
                     $dataProvider = $producto->search();

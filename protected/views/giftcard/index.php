@@ -148,14 +148,16 @@ $this->breadcrumbs = array(
         'template' => $template,
         'afterAjaxUpdate' => " function(id, data) {						    	
                         $('#todos').click(function() { 
-                inputs = $('table').find('input').filter('[type=checkbox]');
+                            inputs = $('table').find('input').filter('[type=checkbox]');
 
-                                if($(this).attr('checked')){
-                     inputs.attr('checked', true);
-                }else {
-                     inputs.attr('checked', false);
-                } 	
+                                            if($(this).attr('checked')){
+                                 inputs.attr('checked', true);
+                            }else {
+                                 inputs.attr('checked', false);
+                            } 	
                         });
+                        
+                        desactivarGC();
 
                     } ",
         'pager' => array(
@@ -213,6 +215,9 @@ $this->breadcrumbs = array(
 
 <script type="text/javascript">
     
+function desactivarGC(){
+    
+    
 /*Desactivar giftcard*/
 $("[id^='linkDesactivar']").click(function (e){
             e.preventDefault();
@@ -251,6 +256,7 @@ $("[id^='linkDesactivar']").click(function (e){
             });
             
         });
+}
 
 /*Ver modal con datos de la giftcard*/
 function ver(id){

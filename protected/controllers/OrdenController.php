@@ -754,9 +754,10 @@ public function actionReportexls(){
 			}
 			
 			// devolviendo el saldo
+                        //tambien agregado el envio
 			
 			$balance = new Balance;
-			$balance->total = $_POST['monto'];
+			$balance->total = $_POST['monto'] + $_POST['envio'];
 			$balance->orden_id = $_POST['orden'];
 			$balance->user_id = $orden->user_id;
 			$balance->tipo = 4;

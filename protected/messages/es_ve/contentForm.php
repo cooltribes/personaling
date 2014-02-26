@@ -7,6 +7,7 @@ return array (
      'IVA' => '0.12',
      'IVAtext' => '12%',
 
+     'Action' => 'Acción',
      'Account Number:' => 'Cuenta Corriente Nº',
      'Account holder:' => 'Titular de la cuenta:',
      '<strong>Add your payment:</strong> through the link sent to your email or login to Your Account -> Your Orders, select the order you want to pay and Save Pay option.' => '<strong>Registra tu pago:</strong> a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos, selecciona el pedido que deseas Pagar y la opción Registrar Pago.',
@@ -25,6 +26,7 @@ return array (
      'Awaiting payment' => 'En espera de pago',
      'Apply Gift Card' => 'Aplicar Gift Card',
      'Approve' => 'Aprobar',
+     'Approved' => 'Aprobados',
 
 
      'Balance' => 'Saldo',
@@ -35,10 +37,14 @@ return array (
 
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
+     'Campaign progress' => 'Progreso de la campaña',
+
      'Code' => 'Código',
      'Choose an address for shipment of your purchase from your address book or enter a new one in the lower section' =>'Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
      'click here' => 'haz click aquí',
+     'Create Look' => 'Crear Look',
+     'Create new filter' => 'Crear nuevo filtro',
      'Created for' => 'Creado por',
      'Credit Card' => 'Tarjeta de Credito',
      'Color' => 'Color',
@@ -102,6 +108,7 @@ return array (
      'Keep buying'  => 'Seguir comprando',
 
      '<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
+     'Manage my Looks' => 'Administrar mis Looks',
      'MercadoPago' => 'MercadoPago',
      'Message history' => 'Historial de Mensajes',
      'Message' => 'Mensaje',
@@ -161,10 +168,12 @@ return array (
      'Phone number' => 'Número de teléfono',
      'Purchasing Information' => 'Datos de la compra',
      'Publish Look' => 'Publicar Look',
+     'Preset filters' => 'Filtros Preestablecidos',
      'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
      'Print these instructions' => 'Imprime estas instrucciones',
      'Price' => 'Precio',
+     'Price in' => 'Precio en',
      'Product' => 'Producto',
      'Products' => 'Productos',
      'Products that make the Looks' => 'Productos que componen los Looks',
@@ -186,6 +195,7 @@ return array (
 
 
      'Save' => 'Guardar',
+     'Sales in' => 'Ventas en',
      'Shipping' => 'Envío',
      '<strong>Shipping:</strong> After confirm payment we will send the product :)' => '<strong>Envío:</strong> Luego de validar el pago te enviaremos el producto :)',
      'Shipping address' => 'Dirección de envío',
@@ -206,6 +216,8 @@ return array (
      'Select a province' => 'Selecciona un estado',
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
+     'Search' => 'Buscar',
+     'Sold' => 'Vendidos',
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
@@ -219,7 +231,10 @@ return array (
      'To1' => 'Para',
      'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
      'To complete your purchase you must:' => 'Para completar tu comprar debes:',
+     'To approve' => 'Por aprobar',
+     'To send' => 'Por enviar',
      'Total' => 'Total',
+     'Totals' => 'Totales',
      'Total Gift Cards' => 'Total de Gift Cards',
      'Total returned' => 'Total devuelto',
      'Type' => 'Tipo',
@@ -234,6 +249,7 @@ return array (
      'User' => 'Usuario',
      'Use this address' => 'Usar esta dirección',
      'Update all' => 'Actualizar todo',
+     'Update date' => 'Fecha de carga',
      'Use Balance available:' => 'Usar balance disponible',
 
 

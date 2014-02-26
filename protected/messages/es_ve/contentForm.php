@@ -24,6 +24,7 @@ return array (
      'Awaiting confirmation deposit'=> 'Depósito en espera de confirmación',
      'Awaiting payment' => 'En espera de pago',
      'Apply Gift Card' => 'Aplicar Gift Card',
+     'Approve' => 'Aprobar',
 
 
      'Balance' => 'Saldo',
@@ -50,6 +51,7 @@ return array (
      'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
 
      'Complete purchase' => 'Completar compra',
+     'Complete the following fields:' => 'Completa los siguientes campos:',
      'C.I' => 'C.I',
 
      
@@ -72,11 +74,13 @@ return array (
 
      'From' => 'De',
      'From1' => 'Desde',
+     'Finished, just press send' => 'Terminaste, solo presiona enviar',
 
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
 
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
+     'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
 
      'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
@@ -89,9 +93,11 @@ return array (
      'Instructions have been sent and email summary: {email}' => ' Se han enviado las instrucciones y el resumen al correo electrónico: {email}',
      'In 10 seconds this page will be redirected to the Shopping Bag' => 'En 10 segundos esta página será redirigida a la Bolsa de Compras',
      'In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag' => 'En <b id="segundos">10</b> segundos serás redirigid@ al proceso de compra nuevamente',     
+     'In which occasion you think this Look could be used?' => '¿En que ocasión se puede usar este look?',
      'Items' => 'Prendas',
      'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
      'I.V.A' => 'I.V.A',
+
 
      'Keep buying'  => 'Seguir comprando',
 
@@ -119,6 +125,7 @@ return array (
      'Nro. items' => 'No. de Prendas',
      'Number' => 'Número',
 
+     'Last step' => 'Último paso',
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
      'Look created by' => 'Look creado por',
      'Look description'  => 'Descripción del look',
@@ -153,6 +160,7 @@ return array (
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
      'Purchasing Information' => 'Datos de la compra',
+     'Publish Look' => 'Publicar Look',
      'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
      'Print these instructions' => 'Imprime estas instrucciones',
@@ -190,11 +198,13 @@ return array (
      'Shipping and Transport' =>'Envío y transporte',
      'Security Code' => 'Código de Seguridad',
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
+     'Send' => 'Enviar',
      'Send Comment' => 'Enviar comentario',
      'Sent by email' => 'Enviada por email',
      'Sent to:' => 'Enviada a:',
      'Selected looks' => 'Looks seleccionados',
      'Select a province' => 'Selecciona un estado',
+     'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',
@@ -207,11 +217,13 @@ return array (
      'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
      'To' => 'Hasta',
      'To1' => 'Para',
+     'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
      'To complete your purchase you must:' => 'Para completar tu comprar debes:',
      'Total' => 'Total',
      'Total Gift Cards' => 'Total de Gift Cards',
      'Total returned' => 'Total devuelto',
      'Type' => 'Tipo',
+     'Type a description for this look' => 'Escriba una descripción para este look',
      'Tracking' => 'Número de seguimiento',
      'Try again' => 'Intentar nuevamente',
 
@@ -232,6 +244,7 @@ return array (
      'Year' => 'Año',
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
+     'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
      'You must select all sizes' => 'Debes seleccionar todas las tallas',
      'Your bag' =>'Tu bolsa',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
@@ -249,6 +262,14 @@ return array (
      'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
      'Weigth' => 'Peso',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
+     'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
+     'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',
+     'What type of body you favors?' => '¿A qué tipo de cuerpo le favorece más?',
+     'What hair color would look better?' => '¿Con qué color de cabello quedaría mejor?',
+     'What eye color is look better?' => '¿Con qué color de ojos queda mejor?',
+     'What body type should I use?' => '¿Qué tipo de cuerpo debería usarlo?',
+     'What skin color is best suited to this Look?' => '¿Qué color de piel se adapta mejor a este look?',
+     'Write a friendly URL to this look.' => 'Escribe una url amigable para este look.',
 
      'Zip code' => 'Código postal',
 

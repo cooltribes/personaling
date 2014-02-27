@@ -7,6 +7,7 @@ return array (
      'IVA' => '0.12',
      'IVAtext' => '12%',
 
+     'Action' => 'Acción',
      'Account Number:' => 'Cuenta Corriente Nº',
      'Account holder:' => 'Titular de la cuenta:',
      '<strong>Add your payment:</strong> through the link sent to your email or login to Your Account -> Your Orders, select the order you want to pay and Save Pay option.' => '<strong>Registra tu pago:</strong> a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos, selecciona el pedido que deseas Pagar y la opción Registrar Pago.',
@@ -24,6 +25,8 @@ return array (
      'Awaiting confirmation deposit'=> 'Depósito en espera de confirmación',
      'Awaiting payment' => 'En espera de pago',
      'Apply Gift Card' => 'Aplicar Gift Card',
+     'Approve' => 'Aprobar',
+     'Approved' => 'Aprobados',
 
 
      'Balance' => 'Saldo',
@@ -34,10 +37,14 @@ return array (
 
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
+     'Campaign progress' => 'Progreso de la campaña',
+     'Campaigns don\'t have available at this time' => 'No tenemos campañas disponibles en este momento',
      'Code' => 'Código',
      'Choose an address for shipment of your purchase from your address book or enter a new one in the lower section' =>'Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
      'click here' => 'haz click aquí',
+     'Create Look' => 'Crear Look',
+     'Create new filter' => 'Crear nuevo filtro',
      'Created for' => 'Creado por',
      'Credit Card' => 'Tarjeta de Credito',
      'Color' => 'Color',
@@ -50,6 +57,7 @@ return array (
      'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
 
      'Complete purchase' => 'Completar compra',
+     'Complete the following fields:' => 'Completa los siguientes campos:',
      'C.I' => 'C.I',
 
      
@@ -72,11 +80,13 @@ return array (
 
      'From' => 'De',
      'From1' => 'Desde',
+     'Finished, just press send' => 'Terminaste, solo presiona enviar',
 
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
 
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
+     'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
 
      'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
@@ -89,13 +99,16 @@ return array (
      'Instructions have been sent and email summary: {email}' => ' Se han enviado las instrucciones y el resumen al correo electrónico: {email}',
      'In 10 seconds this page will be redirected to the Shopping Bag' => 'En 10 segundos esta página será redirigida a la Bolsa de Compras',
      'In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag' => 'En <b id="segundos">10</b> segundos serás redirigid@ al proceso de compra nuevamente',     
+     'In which occasion you think this Look could be used?' => '¿En que ocasión se puede usar este look?',
      'Items' => 'Prendas',
      'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
      'I.V.A' => 'I.V.A',
 
+
      'Keep buying'  => 'Seguir comprando',
 
      '<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
+     'Manage my Looks' => 'Administrar mis Looks',
      'MercadoPago' => 'MercadoPago',
      'Message history' => 'Historial de Mensajes',
      'Message' => 'Mensaje',
@@ -119,6 +132,7 @@ return array (
      'Nro. items' => 'No. de Prendas',
      'Number' => 'Número',
 
+     'Last step' => 'Último paso',
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
      'Look created by' => 'Look creado por',
      'Look description'  => 'Descripción del look',
@@ -153,10 +167,13 @@ return array (
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
      'Purchasing Information' => 'Datos de la compra',
+     'Publish Look' => 'Publicar Look',
+     'Preset filters' => 'Filtros Preestablecidos',
      'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
      'Print these instructions' => 'Imprime estas instrucciones',
      'Price' => 'Precio',
+     'Price in' => 'Precio en',
      'Product' => 'Producto',
      'Products' => 'Productos',
      'Products that make the Looks' => 'Productos que componen los Looks',
@@ -178,6 +195,7 @@ return array (
 
 
      'Save' => 'Guardar',
+     'Sales in' => 'Ventas en',
      'Shipping' => 'Envío',
      '<strong>Shipping:</strong> After confirm payment we will send the product :)' => '<strong>Envío:</strong> Luego de validar el pago te enviaremos el producto :)',
      'Shipping address' => 'Dirección de envío',
@@ -190,12 +208,16 @@ return array (
      'Shipping and Transport' =>'Envío y transporte',
      'Security Code' => 'Código de Seguridad',
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
+     'Send' => 'Enviar',
      'Send Comment' => 'Enviar comentario',
      'Sent by email' => 'Enviada por email',
      'Sent to:' => 'Enviada a:',
      'Selected looks' => 'Looks seleccionados',
      'Select a province' => 'Selecciona un estado',
+     'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
+     'Search' => 'Buscar',
+     'Sold' => 'Vendidos',
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
@@ -207,11 +229,16 @@ return array (
      'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
      'To' => 'Hasta',
      'To1' => 'Para',
+     'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
      'To complete your purchase you must:' => 'Para completar tu comprar debes:',
+     'To approve' => 'Por aprobar',
+     'To send' => 'Por enviar',
      'Total' => 'Total',
+     'Totals' => 'Totales',
      'Total Gift Cards' => 'Total de Gift Cards',
      'Total returned' => 'Total devuelto',
      'Type' => 'Tipo',
+     'Type a description for this look' => 'Escriba una descripción para este look',
      'Tracking' => 'Número de seguimiento',
      'Try again' => 'Intentar nuevamente',
 
@@ -222,6 +249,7 @@ return array (
      'User' => 'Usuario',
      'Use this address' => 'Usar esta dirección',
      'Update all' => 'Actualizar todo',
+     'Update date' => 'Fecha de carga',
      'Use Balance available:' => 'Usar balance disponible',
 
 
@@ -232,6 +260,7 @@ return array (
      'Year' => 'Año',
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
+     'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
      'You must select all sizes' => 'Debes seleccionar todas las tallas',
      'Your bag' =>'Tu bolsa',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
@@ -247,8 +276,17 @@ return array (
      'We received the order data as well as your credit card payment. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito.<br/> Tu pedido será enviado en las próximas horas.',
 
      'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
+     'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
+     'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
+     'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',
+     'What type of body you favors?' => '¿A qué tipo de cuerpo le favorece más?',
+     'What hair color would look better?' => '¿Con qué color de cabello quedaría mejor?',
+     'What eye color is look better?' => '¿Con qué color de ojos queda mejor?',
+     'What body type should I use?' => '¿Qué tipo de cuerpo debería usarlo?',
+     'What skin color is best suited to this Look?' => '¿Qué color de piel se adapta mejor a este look?',
+     'Write a friendly URL to this look.' => 'Escribe una url amigable para este look.',
 
      'Zip code' => 'Código postal',
 

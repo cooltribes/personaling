@@ -9,7 +9,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 )); ?>
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3>Publicar look</h3>
+    <h3><?php echo Yii::t('contentForm','Publish Look'); ?></h3>
   </div>
   
       <div class="modal-body">
@@ -35,7 +35,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
         </div>
         <hr/>
-        <h4>Escoge al tipo de usuaria que favorece</h4>
+        <h4><?php echo Yii::t('contentForm','Select the type of user that favors'); ?></h4>
         <div class="control-group">
             <label class="control-label required">Condición Física:</label>
             <div class="controls">
@@ -48,7 +48,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label required">Color de Cabello:</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','Hair Color'); ?>:</label>
             <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -59,7 +59,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label required">Altura:</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','Height'); ?>:</label>
             <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -70,7 +70,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label required">Color de Ojos:</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','Eye Color'); ?>:</label>
             <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -81,7 +81,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label required">Forma de Cuerpo :</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','Body Shape'); ?>:</label>
             <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -92,7 +92,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label required">Color de Piel:</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','Skin Color'); ?>:</label>
             <div class="controls">
             	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -109,9 +109,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         'Atrevida',
         'Conservador',
     )); ?>
-                <div class=" muted" style="display:none">Ayuda</div>
+                <div class=" muted" style="display:none"><?php echo Yii::t('contentForm','Help'); ?></div>
             </div>
         </div>
     </div>
-  <div class="modal-footer"> <a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> <a href="Look_seleccionado.php" title="Publicar" class="btn btn-danger" >Publicar</a> </div>
+  <div class="modal-footer"> <a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> <?php echo Yii::t('contentForm','Cancel'); ?></a> <a href="Look_seleccionado.php" title="Publicar" class="btn btn-danger" ><?php echo Yii::t('contentForm','Publish'); ?></a> </div>
   <?php $this->endWidget(); ?>

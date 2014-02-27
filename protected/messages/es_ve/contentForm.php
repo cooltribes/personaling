@@ -17,6 +17,7 @@ return array (
      'Address Line 2: (Building, Floor, Number, apartment, etc.)' => 'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc.)',
      'Add a new shipping address' => 'Agregar una nueva dirección de envío',
      '<strong>Add your payment:</strong> through MercadoPago system.' => '<strong>Registra tu pago</strong>: a través del sistema MercadoPago.',
+     'All Brands' => 'Todas las Marcas',
      'Amount' => 'Monto',
      'Amount Gift Card' => 'Monto de l GiftCard',
      'Amount returned' => 'Monto devuelto',
@@ -27,12 +28,16 @@ return array (
      'Apply Gift Card' => 'Aplicar Gift Card',
      'Approve' => 'Aprobar',
      'Approved' => 'Aprobados',
+     'availables' => 'disponibles',
 
 
      'Balance' => 'Saldo',
      'Bag' => 'Bolsa',
      'Biography' => 'Bio',
+     'Body shape' => 'Forma de Cuerpo',
      'Brand' => 'Marca',
+     'Brands' => 'Marcas',     
+     'Bring front' => 'Traer al frente',
      'Buy' => 'Comprar',
 
      'Card numbers' => 'Número de la tarjeta',
@@ -43,10 +48,12 @@ return array (
      'Choose an address for shipment of your purchase from your address book or enter a new one in the lower section' =>'Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
      'click here' => 'haz click aquí',
+     'Clear Filter' => 'Borra Filtro',
      'Create Look' => 'Crear Look',
      'Create new filter' => 'Crear nuevo filtro',
      'Created for' => 'Creado por',
      'Credit Card' => 'Tarjeta de Credito',
+     'Create your Look here' => 'Crea tus Looks aquí',
      'Color' => 'Color',
      'Courier delivery' => 'Transportista',
      'Confirm <br>purchase' => 'Confirmar <br/>Compra',
@@ -70,24 +77,31 @@ return array (
      'Documents' => 'Documentos',
      'Delete' => 'Eliminar',
      'Details of your credit card' => 'Datos de tu tarjeta de crédito',
+     'Decotarions' => 'Adornos',
 
      'Edit' => 'Editar',
      'Edit shipping address' => 'Editar dirección de envío',
      'Effective date' => 'Fecha de vigencia',
      'Email' => 'Email',
      'Empty shopping bag' => 'Vaciar la Bolsa de Compras',
+     'Eye Color' => 'Color de Ojos',
      'Expiration' => 'Vencimiento',
 
      'From' => 'De',
      'From1' => 'Desde',
      'Finished, just press send' => 'Terminaste, solo presiona enviar',
+     'Filter by Colors' => 'Filtrar por Colores',
 
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
 
+     'Hair Color' => 'Color de Cabello',
+     'Height' => 'Altura',
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
      'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
+     'Help' => 'Ayuda',
 
+     'ID' => 'ID',
      'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
      'Identity card' => 'Cédula de Identidad',
@@ -150,6 +164,7 @@ return array (
      'Output' => 'Salida',
      'On this look' => 'En este look',
      
+     'P.S' => 'P.S',
      'Paid' => 'Ya pagados',
      'Parcial Returned' => 'Devolución Parcial',
      'Pay MercadoPago' => 'Pagar con MercadoPago',
@@ -183,6 +198,7 @@ return array (
      'Promotion' => 'Promoción',
 
 
+
      'Quantity' => 'Cantidad',
      
      
@@ -195,12 +211,15 @@ return array (
 
 
      'Save' => 'Guardar',
+     'Save draft' => 'Guardar borrador',
+     'Save Filter' => 'Guardar Filtro',
      'Sales in' => 'Ventas en',
      'Shipping' => 'Envío',
      '<strong>Shipping:</strong> After confirm payment we will send the product :)' => '<strong>Envío:</strong> Luego de validar el pago te enviaremos el producto :)',
      'Shipping address' => 'Dirección de envío',
      'Shipping cost' => 'Costo de envío',
      'State' => 'Estado',
+     'Start by dragging the panel items right up here. Just click on them and move them to this box.' => 'Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro.',
      'Style' => 'Estilo',
      'Size' => 'Talla',
      'Subtotal' => 'Subtotal',
@@ -212,11 +231,16 @@ return array (
      'Send Comment' => 'Enviar comentario',
      'Sent by email' => 'Enviada por email',
      'Sent to:' => 'Enviada a:',
+     'Send back' => 'Llevar atrás',
+     'Select' => 'Seleccione',
      'Selected looks' => 'Looks seleccionados',
      'Select a province' => 'Selecciona un estado',
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
      'Search' => 'Buscar',
+     'Search by Categories' => 'Buscar por Categorias',
+     'Search and save new filter' => 'Buscar y Guardar Nuevo Filtro',
+     'Skin Color' =>'Color de Piel',
      'Sold' => 'Vendidos',
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',

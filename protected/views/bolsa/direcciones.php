@@ -75,7 +75,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		              <div class='span2'>
 		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
 		                  <span class='muted small'> ".Yii::t('contentForm','C.I')." ".$cadauna->cedula."</span></p>
-		                <p> <strong>".Yii::t('contentForm','Phone')."</strong>: ".$cadauna->telefono."</p>
+		                <p> <strong>	".Yii::t('contentForm','Phone')."</strong>: ".$cadauna->telefono."</p>
 		              </div>
 		              <div class='span3'>
 		                <p><strong>".Yii::t('contentForm','Address').":</strong> <br/>
@@ -88,8 +88,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		              <div class='span2 margin_top_medium'>
 		                <p>
 					";
-					echo "<input type='checkbox' id='sh-".$cadauna->id."' class='shippingAddress' value='".$cadauna->id."'/>Esta es mi dirección de envío<br/>";
-					echo "<input type='checkbox' id='bl-".$cadauna->id."' class='billingAddress' value='".$cadauna->id."'/>Esta es mi dirección de facturación";
 					$this->widget('bootstrap.widgets.TbButton', array(
 			            'buttonType'=>'submit',
 			            'type'=>'danger',
@@ -102,6 +100,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>".Yii::t('contentForm','Edit')."</a> <br/>
 		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar' data-loading-text='Eliminando...' id='eliminar".$cadauna->id."'>".Yii::t('contentForm','Delete')."</a></p>
 		              </div>
+		            </div>
+		            <div class='border_1'>		            	
+						<label class='checkbox'>
+						  <input class='billingAddress' type='checkbox' value=''>
+						  Utilizar como direccion de facturación.
+						</label>
 		            </div>
 			  		<div class='mensaje".$cadauna->id."' ></div>
 		            <hr/>";
@@ -340,9 +344,9 @@ else
 			});
 		}
 	});
-	$('.shippingAddress').change(function(){
+	$('.billingAddress').change(function(){
 
-			$('.shippingAddress').attr('checked', false);
+			$('.billingAddress').attr('checked', false);
 			$(this).attr('checked','checked');
 		
 		

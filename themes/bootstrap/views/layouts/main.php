@@ -57,6 +57,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Productos', 'url'=>array('/producto/admin')),
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte')
 					)
 				),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),

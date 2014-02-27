@@ -38,7 +38,7 @@ return array (
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
      'Campaign progress' => 'Progreso de la campaña',
-
+     'Campaigns don\'t have available at this time' => 'No tenemos campañas disponibles en este momento',
      'Code' => 'Código',
      'Choose an address for shipment of your purchase from your address book or enter a new one in the lower section' =>'Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
@@ -276,6 +276,7 @@ return array (
      'We received the order data as well as your credit card payment. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito.<br/> Tu pedido será enviado en las próximas horas.',
 
      'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
+     'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
      'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',

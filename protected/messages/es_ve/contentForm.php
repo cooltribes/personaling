@@ -8,6 +8,7 @@ return array (
      'IVAtext' => '12%',
 
      'Action' => 'Acción',
+     'Actions' => 'Acciones',
      'Account Number:' => 'Cuenta Corriente Nº',
      'Account holder:' => 'Titular de la cuenta:',
      '<strong>Add your payment:</strong> through the link sent to your email or login to Your Account -> Your Orders, select the order you want to pay and Save Pay option.' => '<strong>Registra tu pago:</strong> a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos, selecciona el pedido que deseas Pagar y la opción Registrar Pago.',
@@ -39,6 +40,7 @@ return array (
      'Brands' => 'Marcas',     
      'Bring front' => 'Traer al frente',
      'Buy' => 'Comprar',
+     'Buyer' => 'Comprador',
 
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
@@ -51,6 +53,7 @@ return array (
      'Clear Filter' => 'Borra Filtro',
      'Create Look' => 'Crear Look',
      'Create new filter' => 'Crear nuevo filtro',
+     'Create Gift Card' => 'Crear GiftCard',
      'Created for' => 'Creado por',
      'Credit Card' => 'Tarjeta de Credito',
      'Create your Look here' => 'Crea tus Looks aquí',
@@ -70,6 +73,7 @@ return array (
      
      'Date' => 'Fecha',
      'Date estimated delivery' => 'Fecha estimada de entrega',
+     'Date of Application <br> User who applied it' => 'Fecha de Aplicación<br>Usuario que la aplicó',
      'Deposit or Transference' => 'Depósito o Transferencia',
      'Deposit or Bank Transference' => 'Depósito o Transferencia Bancaria',
      'Discount' => 'Descuento',
@@ -123,6 +127,8 @@ return array (
 
      '<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
      'Manage my Looks' => 'Administrar mis Looks',
+     'Manage Gift Card' => 'Administrar Gift Cards',
+     'Massive Export' => 'Exportación Masiva',
      'MercadoPago' => 'MercadoPago',
      'Message history' => 'Historial de Mensajes',
      'Message' => 'Mensaje',

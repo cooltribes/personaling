@@ -40,7 +40,9 @@ return array (
      'Brands' => 'Marcas',     
      'Bring front' => 'Traer al frente',
      'Buy' => 'Comprar',
+     'Buy Gift Card' => 'Comprar Gift Card',
      'Buyer' => 'Comprador',
+     'By email' => 'Por correo electrónico',
 
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
@@ -49,6 +51,7 @@ return array (
      'Code' => 'Código',
      'Choose an address for shipment of your purchase from your address book or enter a new one in the lower section' =>'Elige una dirección para el envio de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
+     'Choose how you want to deliver it' => 'Escoge cómo quieres entregarla',
      'click here' => 'haz click aquí',
      'Clear Filter' => 'Borra Filtro',
      'Create Look' => 'Crear Look',
@@ -69,6 +72,7 @@ return array (
      'Complete purchase' => 'Completar compra',
      'Complete the following fields:' => 'Completa los siguientes campos:',
      'C.I' => 'C.I',
+     'Customize it' => 'Personalízala',
 
      
      'Date' => 'Fecha',
@@ -193,6 +197,7 @@ return array (
      'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
      'Print these instructions' => 'Imprime estas instrucciones',
+     'Printed' => 'Impresa',
      'Price' => 'Precio',
      'Price in' => 'Precio en',
      'Product' => 'Producto',
@@ -239,10 +244,12 @@ return array (
      'Sent to:' => 'Enviada a:',
      'Send back' => 'Llevar atrás',
      'Select' => 'Seleccione',
-     'Selected looks' => 'Looks seleccionados',
+     'Select a design for the Gift Card' => 'Selecciona un diseño para la Gift Card',
      'Select a province' => 'Selecciona un estado',
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
+     'Select the price' => 'Selecciona el monto',
+     'Selected looks' => 'Looks seleccionados',
      'Search' => 'Buscar',
      'Search by Categories' => 'Buscar por Categorias',
      'Search and save new filter' => 'Buscar y Guardar Nuevo Filtro',
@@ -283,7 +290,7 @@ return array (
      'Use Balance available:' => 'Usar balance disponible',
 
 
-     'Valid from <strong>{start}</strong> until <strong>{end}</strong>' => 'Válido desde <strong>{start}</strong> hasta <strong>{end}</strong>',
+     'Valid from <strong>{start}</strong> until <strong>{end}</strong>' => 'Válida desde <strong>{start}</strong> hasta <strong>{end}</strong>',
      'Validity' => 'Validez',
      'Value for returned shipping' => 'Monto por envío devuelto',
 
@@ -316,7 +323,9 @@ return array (
      'What eye color is look better?' => '¿Con qué color de ojos queda mejor?',
      'What body type should I use?' => '¿Qué tipo de cuerpo debería usarlo?',
      'What skin color is best suited to this Look?' => '¿Qué color de piel se adapta mejor a este look?',
+     'Whom you send him' => 'A quién se la envías',
      'Write a friendly URL to this look.' => 'Escribe una url amigable para este look.',
+     'Write message' => 'Escribe un mensaje',
 
      'Zip code' => 'Código postal',
 

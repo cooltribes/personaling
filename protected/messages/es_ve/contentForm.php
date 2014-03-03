@@ -20,6 +20,7 @@ return array (
      '<strong>Add your payment:</strong> through MercadoPago system.' => '<strong>Registra tu pago</strong>: a través del sistema MercadoPago.',
      'All Brands' => 'Todas las Marcas',
      'Amount' => 'Monto',
+     'Amount in' => 'Monto en',
      'Amount Gift Card' => 'Monto de l GiftCard',
      'Amount returned' => 'Monto devuelto',
      'Authentication' => 'Autenticación',
@@ -141,6 +142,7 @@ return array (
      'Month' => 'Mes',
      'Missing' => 'que faltan',
      'Must select at least one item' => 'Debes seleccionar por lo menos una prenda',
+     'My Gift Cards' => 'Mis Gift Cards',
 
      
      'Name' => 'Nombre',

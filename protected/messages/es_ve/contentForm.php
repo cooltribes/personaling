@@ -253,6 +253,7 @@ return array (
      'Search' => 'Buscar',
      'Search by Categories' => 'Buscar por Categorias',
      'Search and save new filter' => 'Buscar y Guardar Nuevo Filtro',
+     'Search the code of your Gift Card' => 'Busca el código en tu Gift Card',
      'Skin Color' =>'Color de Piel',
      'Sold' => 'Vendidos',
      'Subject' => 'Asunto',

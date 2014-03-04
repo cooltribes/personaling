@@ -203,7 +203,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
                                 <?php 
                                 $now = date('Y-m-d', strtotime('now'));
                                 echo Yii::t('contentForm','Valid from <strong>{start}</strong> until <strong>{end}</strong>',array('{start}'=>date("d/m/Y"),'{end}'=>date("d/m/Y", strtotime($now . " + 1 year")))) ?>
-                                ?> </strong>
+                                 </strong>
                             </span>                        
                         </div>
                     </div>

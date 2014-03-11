@@ -52,7 +52,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             }
             if(isset($direcciones)){
 	       		$this->renderPartial('_direcciones', array(
-	       		'direcciones'=>$direcciones) , 
+	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin) , 
 	       		false);
 	  		}
 			else {
@@ -75,15 +75,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		'validateOnSubmit'=>true, 
 		'afterValidate'=>"js:function(form, data, hasError) {
 				if(!hasError)
-				{agregar(); }
-				
-				
- 
-}
-	
-	
-	
-	"
+				{agregar(); }}"
 		
 	),
 	'htmlOptions'=>array('class'=>'form-horizontal'),
@@ -100,8 +92,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <div class="controls">
               	<?php 
               	
-              	echo CHtml::hiddenField('admin',$admin);
-    			echo CHtml::hiddenField('user',$user);
+              	
               	echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the person to whom you send'))); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
@@ -249,6 +240,18 @@ else
     		e.preventDefault();
     		
 	 });
+	 
+	 $('#direccionUsada').submit(function(e) {
+    		
+    		if($('#billAdd').val()=='0'){
+    			e.preventDefault();
+    			alert("Debe seleccionar una dirección de Facturación");
+    		}
+    		else{
+    			$('#direccionUsada').submit();
+    		}
+    		
+	 });
 	
 	
 	function agregar(){
@@ -267,7 +270,7 @@ else
 				
 			
 	    		$.ajax({
-				      url: "<?php echo Yii::app()->createUrl('direccion/addDireccion'); ?>",
+				      url: "<?php echo Yii::app()->createUrl('direccion/addDireccion',array('user'=>$user,'admin'=>$admin)); ?>",
 				      type: "post",
 				      data: {
 				      	nombre:nom,
@@ -284,9 +287,15 @@ else
 				      	 },
 				      success: function(data){
 				           $('#anteriores').html(data);
+				           $('#direccion_nueva').each(function(){
+                				this.reset();   //Here form fields will be cleared.
+           					 });
+							$("#Direccion_ciudad_id option[value='']").attr('selected', true);
+							
+				           
 				      },
 				      error:function(){
-				      	alert("NOTHIN'");
+				  
 				      }
 				});
 			
@@ -361,8 +370,11 @@ else
 	
 	$('.billingAddress').change(function(){
 
+			$('.hidBill').val($(this).val());
+
 			$('.billingAddress').attr('checked', false);
 			$(this).attr('checked','checked');
+			
 		
 		
 	});

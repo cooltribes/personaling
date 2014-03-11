@@ -163,13 +163,13 @@ class DireccionController extends Controller
 		));
 	}
 	
-	public function actionAddDireccion(){
+	public function actionAddDireccion($user,$admin){
 		$direccion=new Direccion;
 		$direccion->attributes=$_POST;
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
 			echo $this->renderPartial('/bolsa/_direcciones', array(
-	       		'direcciones'=>$direcciones) , 
+	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin) , 
 	       		true);
 		}
 		

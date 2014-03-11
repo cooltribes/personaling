@@ -1,3 +1,6 @@
+	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+          <fieldset id="anteriores">
+            <legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
 <?php 
 	foreach($direcciones as $cadauna){
 	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
@@ -8,14 +11,17 @@
 						'enableAjaxValidation'=>false,
 						'enableClientValidation'=>true,
 						'clientOptions'=>array(
-							'validateOnSubmit'=>true, 
+							'validateOnSubmit'=>true,
+								
 						),
 						'htmlOptions'=>array('class'=>'form-horizontal  direccion'.$cadauna->id ),
 					));
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
 		            echo CHtml::hiddenField('tipo','direccionVieja');
-		            
+					echo CHtml::hiddenField('billAdd','0',array('class'=>'hidBill'));
+		            echo CHtml::hiddenField('admin',$admin);
+    				echo CHtml::hiddenField('user',$user);
 					
 		            echo "
 		            <div class='row'>
@@ -51,7 +57,7 @@
 		            </div>
 		            <div class='border_1'>		            	
 						<label class='checkbox'>
-						  <input class='billingAddress' type='checkbox' value=''>
+						  <input  class='billingAddress' type='checkbox' value='".$cadauna->id."'>
 						  Utilizar como direccion de facturación.
 						</label>
 		            </div>
@@ -62,3 +68,8 @@
 
 			  	}
 			  	?>
+			  	
+       </fieldset>
+       
+      </form>
+    </section>

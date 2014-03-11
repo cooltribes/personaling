@@ -18,11 +18,13 @@ return array (
      'Address Line 2: (Building, Floor, Number, apartment, etc.)' => 'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc.)',
      'Add a new shipping address' => 'Agregar una nueva dirección de envío',
      '<strong>Add your payment:</strong> through MercadoPago system.' => '<strong>Registra tu pago</strong>: a través del sistema MercadoPago.',
+     'Admin Profiles' => 'Administrar Perfiles',
      'All the' => 'Toda la',
      'All the1' => 'Todos los',
      'All Brands' => 'Todas las Marcas',
      'All colors' => 'Todos los colores',
      'All price' => 'Todos los precios',
+     'All your profiles' => 'Todos tus perfiles',
      'Amount' => 'Monto',
      'Amount in' => 'Monto en',
      'Amount Gift Card' => 'Monto de l GiftCard',
@@ -40,6 +42,7 @@ return array (
      'Balance' => 'Saldo',
      'Bag' => 'Bolsa',
      'Back to shop' => 'Regresar a la tienda',
+     'Best selling items' => 'Prendas más vendidas',
      'Biography' => 'Bio',
      'Body shape' => 'Forma de Cuerpo',
      'Brand' => 'Marca',
@@ -109,6 +112,7 @@ return array (
 
      'From' => 'De',
      'From1' => 'Desde',
+     'From Our Magazine' => 'Desde Nuestra Magazine',
      'Finished, just press send' => 'Terminaste, solo presiona enviar',
      'Filter' => 'Filtrar',
      'Filter by Colors' => 'Filtrar por Colores',
@@ -175,7 +179,10 @@ return array (
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
      'Look created by' => 'Look creado por',
      'Look description'  => 'Descripción del look',
+     'Looks best sellers' => 'Looks más vendidos',
+     "Looks in promotion" => 'Looks en promoción',
      'Like' => 'Me encanta',
+
 
      'Order' => 'Pedido',
      'Order Cancelled' => 'Orden Cancelada',
@@ -205,6 +212,7 @@ return array (
      'Pending confirmation' => 'Pendientes por confirmar',
      'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
                 <b>Atrás</b> en tu navegador',
+     'Personal Shoppers outstanding' => 'Personal shoppers destacados',
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
      'Purchasing Information' => 'Datos de la compra',
@@ -255,6 +263,7 @@ return array (
      'Shipping <br/>and billing<br/> address' => 'Dirección<br/>de envío <br/> y facturación',
      'Shipping and Transport' =>'Envío y transporte',
      'Security Code' => 'Código de Seguridad',
+     'See all looks' => 'Ver todos los looks',
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
      'Send' => 'Enviar',
      'Send Comment' => 'Enviar comentario',
@@ -268,6 +277,7 @@ return array (
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
      'Select the price' => 'Selecciona el monto',
+     'Select a profile for someone else' => 'Selecciona un perfil para alguien más',
      'Selected looks' => 'Looks seleccionados',
      'Search' => 'Buscar',
      'Search by Categories' => 'Buscar por Categorias',
@@ -308,6 +318,7 @@ return array (
      'Use this address' => 'Usar esta dirección',
      'Update all' => 'Actualizar todo',
      'Update date' => 'Fecha de carga',
+     '¡Upss! To all of us has broken a heel ever, refreshes the screen tu try more later.' => '¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
      'Use Balance available:' => 'Usar balance disponible',
 
 

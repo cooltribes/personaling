@@ -699,7 +699,10 @@ if(isset($_POST['Profile']))
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
-		$profile=$model->profile;
+		
+	
+			$profile=$model->profile;
+
 		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))

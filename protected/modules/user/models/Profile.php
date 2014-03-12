@@ -45,7 +45,8 @@ class Profile extends UActiveRecord
 			$float = array();		
 			$decimal = array();
 			$rules = array();
-			
+			array_push($rules,array('facebook, twitter, url, bio', 'type','type'=>'string','allowEmpty'=>true,'on'=>'notPS' ));	
+		
 			$model=$this->getFields();
 			
 			foreach ($model as $field) {
@@ -68,7 +69,9 @@ class Profile extends UActiveRecord
                                                
                                                                            else if ($field->varname=="url" || $field->varname=="bio"
                                                                                    || $field->varname=="facebook" || $field->varname=="twitter")
-                                               array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} "));
+                                               { array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} "));
+											   	 
+											   }
 									   else									   
                                        		array_push($required,$field->varname);
                      }
@@ -127,6 +130,7 @@ class Profile extends UActiveRecord
 			
 			$this->_rules = $rules;
 		}
+		
 		return $this->_rules;
 	}
 

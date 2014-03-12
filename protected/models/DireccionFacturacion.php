@@ -14,7 +14,6 @@
  * @property integer $ciudad_id
  * @property integer $provincia_id
  * @property string $pais
- * @property integer $facturacion
  *
  * The followings are the available model relations:
  * @property Ciudad $ciudad
@@ -48,14 +47,14 @@ class DireccionFacturacion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ciudad_id, provincia_id, facturacion', 'numerical', 'integerOnly'=>true),
+			array('ciudad_id, provincia_id', 'numerical', 'integerOnly'=>true),
 			array('nombre, apellido', 'length', 'max'=>100),
 			array('cedula', 'length', 'max'=>20),
 			array('dirUno, dirDos', 'length', 'max'=>120),
 			array('telefono, pais', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, apellido, cedula, dirUno, dirDos, telefono, ciudad_id, provincia_id, pais, facturacion', 'safe', 'on'=>'search'),
+			array('id, nombre, apellido, cedula, dirUno, dirDos, telefono, ciudad_id, provincia_id, pais', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,7 +68,6 @@ class DireccionFacturacion extends CActiveRecord
 		return array(
 			'ciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id'),
 			'provincia' => array(self::BELONGS_TO, 'Provincia', 'provincia_id'),
-			'ordens' => array(self::HAS_MANY, 'Orden', 'direccionEnvio_id'),
 		);
 	}
 
@@ -89,7 +87,6 @@ class DireccionFacturacion extends CActiveRecord
 			'ciudad_id' => 'Ciudad',
 			'provincia_id' => 'Provincia',
 			'pais' => 'Pais',
-			'facturacion' => 'Facturacion',
 		);
 	}
 
@@ -114,7 +111,6 @@ class DireccionFacturacion extends CActiveRecord
 		$criteria->compare('ciudad_id',$this->ciudad_id);
 		$criteria->compare('provincia_id',$this->provincia_id);
 		$criteria->compare('pais',$this->pais,true);
-		$criteria->compare('facturacion',$this->facturacion);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

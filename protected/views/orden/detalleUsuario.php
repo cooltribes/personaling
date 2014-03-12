@@ -643,7 +643,7 @@ Para una futura iteración
 -->
 		            <td colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Amount returned');  ?>:</strong></div></td>
 		            <td  class="text_align_right"><?php echo $totaldevuelto." ".Yii::t('contentForm','currSym'); ?></td>
-		        </tr>
+		        </tr> 
 		        <tr>
 		            <td colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Value for returned shipping');  ?>:</strong></div></td>
 		            <td  class="text_align_right"><?php echo $totalenvio; ?> <?php echo Yii::t('contentForm','currSym');  ?></td>

@@ -3,7 +3,7 @@
 class AdminController extends Controller
 {
 	public $defaultAction = 'admin';
-	public $layout='//layouts/column2';
+	// public $layout='//layouts/column2';
 	
 	private $_model;
 
@@ -998,7 +998,6 @@ if(isset($_POST['Profile']))
 				
 				
 				 
-				
 				
 	            $this->render('compra', array(   'dataProvider'=>$dataProvider,
 	            ));	

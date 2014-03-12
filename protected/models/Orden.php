@@ -101,6 +101,7 @@ class Orden extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'direccionEnvio' => array(self::BELONGS_TO, 'DireccionEnvio', 'direccionEnvio_id'),
+			'direccionFacturacion' => array(self::BELONGS_TO, 'DireccionFacturacion', 'direccionFacturacion_id'),
 			//'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),

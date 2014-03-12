@@ -196,11 +196,10 @@ $usuario = User::model()->findByPk($orden->user_id);
             <td>Delivery</td>
             <td>Zoom</td>
             <td>0,00 Kg.</td>
-<<<<<<< HEAD
+
             <td><?php echo $orden->envio+$orden->seguro.' '.Yii::t('contentForm', 'currSym'); ?></td>
-=======
-            <td><?php echo $orden->envio.' '.Yii::t('contentForm','currSym'); ?> .</td>
->>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
+        <!--  <td><?php echo $orden->envio.' '.Yii::t('contentForm','currSym'); ?> .</td>
+-->
             <td><?php echo $orden->tracking; ?></td>
           </tr>
         </table>
@@ -211,24 +210,51 @@ $usuario = User::model()->findByPk($orden->user_id);
       ?>
 
       <div class="row-fluid">
-          <div class="span12">
-          <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Shipping address'); ?></h3>
+     <div class="span12">
+          <h3 class="braker_bottom margin_top_small">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
-                <?php
-                $direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
-                $ciudad = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
-                $provincia = Provincia::model()->findByPk($direccionEnvio->provincia_id);
-                ?>
-              <div class="street-address"><i class="icon-map-marker"></i><?php echo " ".$direccionEnvio->nombre." ".$direccionEnvio->apellido.". "; echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;  ?></div>
-              <span class="locality"><?php echo $ciudad->nombre ?>, <?php echo $provincia->nombre; ?>.</span>
+            	<?php
+            	$direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+				$ciudad_envio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+				$provincia_envio = Provincia::model()->findByPk($direccionEnvio->provincia_id);
+            	?>
+              <div class="street-address"><i class="icon-map-marker"></i><?php echo $direccionEnvio->nombre." ".$direccionEnvio->apellido.". ";  ?></div>
+              
+              <span class="locality"><?php echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos; ?>.</span>
+              <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
-            <div class="tel margin_top_small"> <span class="type"><strong><?php echo Yii::t('contentForm','Phone');  ?></strong>:</span><?php echo $direccionEnvio->telefono; ?></div>
-            <div><strong><?php echo Yii::t('contentForm','Email');  ?></strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
-          </div></div>
-
-        <!--
+           <div class="row-fluid tel pull_left">
+            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
+            <div class="span4"><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+          </div>
+          </div>
+   <?php
+            	if(isset($orden->direccionFacturacion)){
+            		
+            	?>
+           <h3 class="braker_bottom margin_top_small">Dirección de facturación</h3>
+          <div class="vcard">
+            <div class="adr">
+            	
+              <div class="street-address"><i class="icon-map-marker"></i><?php echo $orden->direccionFacturacion->nombre." ".$orden->direccionFacturacion->apellido.". ";  ?></div>
+              
+              <span class="locality"><?php echo $orden->direccionFacturacion->dirUno.", ".$orden->direccionFacturacion->dirDos; ?>.</span>
+              <span class="locality"><?php echo $orden->direccionFacturacion->ciudad->nombre ?>, <?php echo $orden->direccionFacturacion->provincia->nombre; ?>.</span>
+              <div class="country-name"><?php echo $orden->direccionFacturacion->pais; ?></div>
+            </div>
+           <div class="row-fluid tel pull_left">
+            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
+            <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
+            <div class="span4"><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+          </div>
+          </div>
+          <?php } ?>
+          <!-- <a href="#" class="btn"><i class="icon-edit"></i></a> --> </div>
+          
+        <!--  
         <div class="span6">
           <h3 class="braker_bottom margin_top">Dirección de Facturación</h3>
           <div class="vcard">
@@ -240,9 +266,10 @@ $usuario = User::model()->findByPk($orden->user_id);
             <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
             <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
             <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
+            <a href="#" class="btn"><i class="icon-edit"></i></a> </div>
         </div>
-        </div>
-       -->
+        -->
+        
 
       </div>
     </div>
@@ -461,7 +488,7 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo($individuales); ?></td>
         </tr>
         <tr>
-<<<<<<< HEAD
+<!--
           <td>SubTotal</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal).' '.Yii::t('contentForm', 'currSym'); ?></td>
         </tr>
@@ -480,7 +507,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         <tr>
           <td>Total</td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total).' '.Yii::t('contentForm', 'currSym'); ?></td>
-=======
+-->
           <td><?php echo Yii::t('contentForm','Subtotal');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->subtotal). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
@@ -490,7 +517,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
           <td><?php echo Yii::t('contentForm','Shipping and Transport');  ?></td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio). " ".Yii::t('contentForm','currSym')."."; ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
         <tr>
           <td><?php echo Yii::t('contentForm','Tax');  ?></td>
@@ -499,7 +526,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         <tr>
           <td><?php echo Yii::t('contentForm','Total');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " ".Yii::t('contentForm','currSym')."."; ?></td>
->>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
+
         </tr>
       </table></div>
     </div>
@@ -602,7 +629,7 @@ Para una futura iteración
 		            <th colspan="7"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Sumary');  ?></strong></div></th>
 		        </tr>
 		        <tr>
-<<<<<<< HEAD
+<!--
 		            <td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
 		            <td  class="text_align_right"><?php echo $totaldevuelto.' '.Yii::t('contentForm', 'currSym');; ?> </td>
 		        </tr>
@@ -613,7 +640,7 @@ Para una futura iteración
 		        <tr>
 		            <th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
 		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio).' '.Yii::t('contentForm', 'currSym'); ?> Bs</th>
-=======
+-->
 		            <td colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Amount returned');  ?>:</strong></div></td>
 		            <td  class="text_align_right"><?php echo $totaldevuelto." ".Yii::t('contentForm','currSym'); ?></td>
 		        </tr>
@@ -624,7 +651,7 @@ Para una futura iteración
 		        <tr>
 		            <th colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Total returned');  ?></strong></div></th>
 		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio)." ".Yii::t('contentForm','currSym')."."?></th>
->>>>>>> e9d90b161b45bfdfc8485b4b16868fa08abfc27f
+
 		        </tr>
 		        </table>
 		    </div>

@@ -27,7 +27,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <div class="row">
     <div class="span8 offset2"> 
      
-      <h1><?php echo Yii::t('contentForm','Shipping address'); ?>
+      <h1><?php echo Yii::t('contentForm','Shipping and billing address'); ?>
           <br>
           <?php
           if($admin){
@@ -35,7 +35,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           }
           ?>
       </h1>
-      <p><?php echo Yii::t('contentForm','Choose an address for shipment of your purchase from your address book or enter a new one in the lower section'); ?></p>
+      <p><?php echo Yii::t('contentForm','Choose a shipping address and billing of your purchase from your address book or enter a new one in the bottom section'); ?></p>
       <?php 
       
 //     	$usuario = Yii::app()->user->id; 
@@ -52,7 +52,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             }
             if(isset($direcciones)){
 	       		$this->renderPartial('_direcciones', array(
-	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin) , 
+	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin,'nueva'=>true) , 
 	       		false);
 	  		}
 			else {
@@ -187,9 +187,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </div>
             </div>
             <div class="form-actions">
-            	
-            	<input type="button" onclick="agregar()" value="BOTON"/>
-            	
+            	            	
             <?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
             'type'=>'danger',
@@ -245,7 +243,7 @@ else
     		
     		if($('#billAdd').val()=='0'){
     			e.preventDefault();
-    			alert("Debe seleccionar una dirección de Facturación");
+    			alert("Debes seleccionar una dirección de Facturación");
     		}
     		else{
     			$('#direccionUsada').submit();
@@ -255,7 +253,7 @@ else
 	
 	
 	function agregar(){
-		
+				$('body').addClass('aplicacion-cargando');
 				var nom=$('#Direccion_nombre').val();
 				var ap=$('#Direccion_apellido').val();
 				var ced=$('#Direccion_cedula').val();
@@ -291,8 +289,11 @@ else
                 				this.reset();   //Here form fields will be cleared.
            					 });
 							$("#Direccion_ciudad_id option[value='']").attr('selected', true);
-							
-				           
+		                    $('html, body').animate({
+		                        scrollTop: ($('#scrollNueva').offset().top - 150)
+		                    }, 500);
+							$('body').removeClass('aplicacion-cargando');
+							$('#scrollNueva').removeClass('alert-success');											           
 				      },
 				      error:function(){
 				  

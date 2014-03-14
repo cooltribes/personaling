@@ -169,7 +169,7 @@ class DireccionController extends Controller
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
 			echo $this->renderPartial('/bolsa/_direcciones', array(
-	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin) , 
+	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ) , 
 	       		true);
 		}
 		

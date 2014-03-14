@@ -27,7 +27,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <div class="row">
     <div class="span8 offset2"> 
      
-      <h1><?php echo Yii::t('contentForm','Shipping and billing address'); ?>
+      <h1><?php echo  Yii::t('contentForm','Shipping and billing address'); ?>
           <br>
           <?php
           if($admin){
@@ -145,6 +145,34 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+            
+            <div class="control-group"> 
+              
+              <div class="controls">
+              	<?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              		$pais=Pais::model()->findByAttributes(array('idioma'=>Yii::app()->getLanguage()));
+              		if($pais->grupo==0)
+              			echo ' <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="'.$pais->nombre.'" />';
+					else{
+						 echo $form->dropDownListRow(
+						 	$dir,'pais', CHtml::listData(
+						 		Pais::model()->findAllByAttributes(
+						 			array(
+						 				'grupo'=>$pais->grupo),
+						 			array(
+						 				'order' => 'nombre')
+								),'id','nombre'
+							), array(
+								'empty' => Yii::t(
+									'contentForm','Select a country')
+								)
+							);
+					}
+              		
+ 	 			 ?>
+              </div>
+            </div>
+            
             <div class="control-group"> 
               
               <div class="controls">
@@ -153,6 +181,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+            
+            
+            
             <div class="control-group"> 
               <div class="controls">
               	<?php 
@@ -177,12 +208,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             
               <div class="controls">
               	
-              	 <?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
-              	
- 	 			 ?>
+              	 
  	 			 
- 	 			 <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="Venezuela" />
- 	 			 
+ 	 			
+ 	 		
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>

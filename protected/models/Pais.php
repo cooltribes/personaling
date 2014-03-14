@@ -1,22 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "{{provincia}}".
+ * This is the model class for table "{{pais}}".
  *
- * The followings are the available columns in table '{{provincia}}':
+ * The followings are the available columns in table '{{pais}}':
  * @property integer $id
  * @property string $nombre
- * @property string $pais_id
- *
- * The followings are the available model relations:
- * @property Ciudad[] $ciudads
+ * @property string $dominio
+ * @property string $idioma
+ * @property integer $grupo
  */
-class Provincia extends CActiveRecord
+class Pais extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Provincia the static model class
+	 * @return Pais the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -28,7 +27,7 @@ class Provincia extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{provincia}}';
+		return '{{pais}}';
 	}
 
 	/**
@@ -39,11 +38,14 @@ class Provincia extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre', 'required'),
-			array('nombre', 'length', 'max'=>50),
+			array('nombre, dominio, idioma', 'required'),
+			array('grupo', 'numerical', 'integerOnly'=>true),
+			array('nombre', 'length', 'max'=>150),
+			array('dominio', 'length', 'max'=>3),
+			array('idioma', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre', 'safe', 'on'=>'search'),
+			array('id, nombre, dominio, idioma, grupo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,8 +57,6 @@ class Provincia extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'ciudads' => array(self::HAS_MANY, 'Ciudad', 'provincia_id'),
-			'ciudads' => array(self::BELONGS_TO, 'Pais', 'pais_id'),
 		);
 	}
 
@@ -68,6 +68,9 @@ class Provincia extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
+			'dominio' => 'Dominio',
+			'idioma' => 'Idioma',
+			'grupo' => 'Grupo',
 		);
 	}
 
@@ -84,6 +87,9 @@ class Provincia extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('dominio',$this->dominio,true);
+		$criteria->compare('idioma',$this->idioma,true);
+		$criteria->compare('grupo',$this->grupo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

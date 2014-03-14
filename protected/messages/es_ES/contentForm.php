@@ -3,7 +3,7 @@
 return array (
 
 	'PRONUNCIACION' => 'Española',
-	'currSym'=>'€'
+	'currSym'=>'€',
 
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
@@ -114,6 +114,7 @@ return array (
 	'Finished, just press send' => 'Terminaste, solo presiona enviar',
 	'Filter' => 'Filtrar',
 	'Filter by Colors' => 'Filtrar por Colores',
+	'First'=>'Primera',
 
 	'Gift Card' => 'Gift Card',
 	'Go to Store' => 'Ir a la tienda',
@@ -145,6 +146,8 @@ return array (
 
 	'Keep buying'  => 'Seguir comprando',
 
+	'Last'=>'Última',
+	
 	'<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
 	'Manage my Looks' => 'Administrar mis Looks',
 	'Manage Gift Card' => 'Administrar Gift Cards',
@@ -216,6 +219,7 @@ return array (
 	'Purchasing Information' => 'Datos de la compra',
 	'Publish Look' => 'Publicar Look',
 	'Preset filters' => 'Filtros Preestablecidos',
+	'Previous'=>'Anterior',
 	'Print' => 'Imprimir',
 	'Print order' => 'Imprimir Pedido',
 	'Print these instructions' => 'Imprime estas instrucciones',
@@ -358,7 +362,10 @@ return array (
 	'Write message' => 'Escribe un mensaje',
 
 	'Zip code' => 'Código postal',
+	
 
+	
+	
 );
 
 ?>

@@ -116,6 +116,7 @@ return array (
      'Finished, just press send' => 'Terminaste, solo presiona enviar',
      'Filter' => 'Filtrar',
      'Filter by Colors' => 'Filtrar por Colores',
+     'First'=>'Primera',
 
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
@@ -144,6 +145,7 @@ return array (
      'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
      'I.V.A' => 'I.V.A',
 
+	 'Last'=>'Última',
 
      'Keep buying'  => 'Seguir comprando',
 
@@ -218,6 +220,7 @@ return array (
      'Purchasing Information' => 'Datos de la compra',
      'Publish Look' => 'Publicar Look',
      'Preset filters' => 'Filtros Preestablecidos',
+     'Previous'=>'Anterior',
      'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
      'Print these instructions' => 'Imprime estas instrucciones',
@@ -231,6 +234,7 @@ return array (
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days and is to validate your transfer or deposit with our bank. You can check the status of your purchase in your profile.' => '<strong>Proceso de validación:</strong> usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.',
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days of validating your payment.' => '<strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.',
      'Promotion' => 'Promoción',
+     
 
 
 

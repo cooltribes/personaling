@@ -562,7 +562,7 @@ class BolsaController extends Controller
                     /*ID del usuario propietario de la bolsa*/
                     $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
 			
-                    
+                    /*Si es compra normal del usuario*/
                     if(!$admin){
                         
                         $metric = new ShoppingMetric();
@@ -1256,7 +1256,10 @@ class BolsaController extends Controller
 							}
 								
 							
-						}// estado		
+						}// estado                                                
+                                                
+                                                
+                                                
 						// cuando finalice entonces envia id de la orden para redireccionar
 						/*
 						echo CJSON::encode(array(

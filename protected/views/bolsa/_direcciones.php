@@ -1,11 +1,15 @@
-	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-          <fieldset id="anteriores">
-            <legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
 <?php 
 	foreach($direcciones as $cadauna){
 	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
 					$provincia = Provincia::model()->findByPk($cadauna->provincia_id);
-
+					if(isset($iddireccionNueva)){
+						if( $iddireccionNueva == $cadauna->id)
+							echo '<div id="scrollNueva" class="padding_top_xsmall padding_right_xsmall padding_left_xsmall alert-success transition_all_6s">';
+						else
+							echo '<div class="padding_top_xsmall padding_right_xsmall padding_left_xsmall ">';	
+					}
+					else
+						echo '<div class="padding_top_xsmall padding_right_xsmall padding_left_xsmall ">';					
 			       $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 						'id'=>'direccionUsada',
 						'enableAjaxValidation'=>false,
@@ -24,8 +28,7 @@
     				echo CHtml::hiddenField('user',$user);
 					
 		            echo "
-		            <div class='row'>
-		            
+		            <div class='row'>		            
 		              <div class='span2'>
 		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
 		                  <span class='muted small'> ".Yii::t('contentForm','C.I')." ".$cadauna->cedula."</span></p>
@@ -45,8 +48,8 @@
 					$this->widget('bootstrap.widgets.TbButton', array(
 			            'buttonType'=>'submit',
 			            'type'=>'danger',
-			            'size'=>'normal',
-			            'label'=>Yii::t('contentForm','Use this address'),
+			            'size'=>'small',
+			            'label'=>Yii::t('contentForm','Use this shipping address'),
 			        )); 
 					     	
 					echo"
@@ -55,21 +58,17 @@
 		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar' data-loading-text='Eliminando...' id='eliminar".$cadauna->id."'>".Yii::t('contentForm','Delete')."</a></p>
 		              </div>
 		            </div>
-		            <div class='border_1'>		            	
+		            <div class=''>		            	
 						<label class='checkbox'>
 						  <input  class='billingAddress' type='checkbox' value='".$cadauna->id."'>
-						  Utilizar como direccion de facturación.
+						  ".Yii::t('contentForm','Use this as billing address')."
 						</label>
 		            </div>
 			  		<div class='mensaje".$cadauna->id."' ></div>
-		            <hr/>";
-			  		
+		            ";
+			  		echo '</div><hr/>';
 			  		$this->endWidget();
 
 			  	}
 			  	?>
 			  	
-       </fieldset>
-       
-      </form>
-    </section>

@@ -111,12 +111,21 @@ $template = '{summary}
     </table>
     {pager}
 	';
+        $pagerParams=array(
+            'header'=>'',
+            'prevPageLabel' => Yii::t('contentForm','Previous'),
+            'nextPageLabel' => Yii::t('contentForm','Next'),
+            'firstPageLabel'=> Yii::t('contentForm','First'),
+            'lastPageLabel'=> Yii::t('contentForm','Last'),
+            'htmlOptions'=>array(
+                'class'=>'pagination pagination-right'));
 
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_look',
 	    'template'=>$template,
+        'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',        
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	
 							$('#todos').click(function() { 
@@ -130,12 +139,7 @@ $template = '{summary}
 							});
 						   
 							} ",
-		'pager'=>array(
-			'header'=>'',
-			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
-		)
-		),					
+		'pager'=>$pagerParams,					
 	));    
 	?>
     <hr/>

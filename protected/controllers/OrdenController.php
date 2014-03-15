@@ -667,75 +667,8 @@ public function actionReportexls(){
 
 	public function actionDetalles($id)
 	{
-		$orden = Orden::model()->findByPk($id);                
+		$orden = Orden::model()->findByPk($id);  
                 
-                /*Pagar comision a las PS involucradas en la venta*/
-                
-                $sumaComisiones = array();
-                foreach($orden->ohptc as $productoEnOrden)
-                {                                                    
-                    //Incluir en la comision solo los productos que estan en un look
-                    if($productoEnOrden->look_id > 0){
-
-                        $lookActual = Look::model()->findByPk($productoEnOrden->look_id);
-                        
-                        //Comisión de la PS dueña del look
-//                        $comision = $lookActual->user->profile->comision;
-//                        $tipoComision = $lookActual->user->profile->tipo_comision;
-                        $comision = 7;
-                        $tipoComision = 1; //1=%, 2=fijo                       
-                        
-                        //Si la comisión es por Porcentaje
-                        if($tipoComision == 1){
-                            
-                            $comision /= 100;
-                            $montoVenta = $productoEnOrden->precio * $productoEnOrden->cantidad;
-                            $comisionAgregada = $montoVenta * $comision;                           
-                            
-
-//                        echo "<br><br>Producto: ";
-//                        echo "<pre>";
-//                        print_r($productoEnOrden->attributes);
-//                        echo "</pre>";
-//                        echo "comisión: ".$comision;
-//                        echo "<br>Monto: ".$productoEnOrden->precio * $productoEnOrden->cantidad;
-//                        echo "<br>Agregar al balance: ".$comisionAgregada;
-                        
-                            //Si la comisión es un monto fijo
-                        }else if($tipoComision == 2){
-                            
-                            $comisionAgregada = $comision;
-                            
-                        } 
-                        $idUsuario = $lookActual->user->id;
-                        //si ya hay comisiones por el look/usuario actual, sumar
-                        if(key_exists($idUsuario, $sumaComisiones)){
-
-                            $sumaComisiones[$idUsuario] += $comisionAgregada;
-
-                        //si no hay, agregarlo al array    
-                        }else{
-
-                            $sumaComisiones[$idUsuario] = $comisionAgregada;                                
-
-                        }
-
-                    }
-
-                } //fin foreach para cada producto de la orden
-                
-                //Agregar la suma total de comisiones por usuario a su
-                //respectivo balance
-                foreach($sumaComisiones as $idUsuario => $comisionPs){                    
-
-                    $balance = new Balance();
-                    $balance->total = $comisionPs;
-                    $balance->orden_id = $orden->id;
-                    $balance->user_id = $idUsuario;
-                    $balance->tipo = 5; //balance para comisiones
-                    //$balance->save();
-                    
-                }       
                 
 		/*$sql="select * from tbl_zoom where cod NOT IN (select cod_zoom from tbl_ciudad where cod_zoom IS NOT NULL)";
 		$zooms=Yii::app()->db->createCommand($sql)->queryAll();
@@ -980,7 +913,9 @@ public function actionValidar()
 							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
 						} // si es mayor hace el balance
 						
-													
+						/*Pagar comision a las PS involucradas en la venta*/
+                                                Orden::model()->pagarComisiones($orden); 
+                                                
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					
 					}//orden save
@@ -1040,6 +975,9 @@ public function actionValidar()
 								$balance->tipo=1;
 								
 								$balance->save();
+                                                                
+                                                                /*Pagar comision a las PS involucradas en la venta*/
+                                                                Orden::model()->pagarComisiones($orden); 
 									
 								
 							}

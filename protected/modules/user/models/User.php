@@ -727,6 +727,17 @@ class User extends CActiveRecord {
             return $edad->y;
             
 	} 
+        
+        function getSaldoPorComisiones() {
+            
+            //Balance tipo 5 = por commisiones
+            $saldo = Yii::app()->db->createCommand(
+                    "SELECT SUM(total) as total FROM tbl_balance WHERE tipo = 5
+                     AND user_id=".$this->id)
+                    ->queryScalar();
+            
+            return Yii::app()->numberFormatter->formatDecimal($saldo);            
+        }
 	 
 
 }

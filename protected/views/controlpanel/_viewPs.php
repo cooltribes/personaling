@@ -17,7 +17,8 @@
     <!--DATOS PERSONALES-->
     
     <td>
-        <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name . ' ' . $data->profile->last_name; ?></h5>
+        <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name . ' '
+                . $data->profile->last_name; ?></h5>
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
             <?php
             if ($data->personal_shopper == 1) {
@@ -73,33 +74,11 @@
         <?php if ($data->getCreatetime()) echo date("d/m/Y", $data->getCreatetime());
             else echo 'N/D'; ?>
     </td>
-    <td>
-        <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="admin_pedidos_detalles.php" title="acciones"> <i class="icon-cog"></i></a> 
-            <!-- Link or button to toggle dropdown -->
-            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-                <li>
-<?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver', array("profile/perfil", "id" => $data->id)); ?>            
-                </li>
-                <li>
-
-                <?php echo CHtml::link('<i class="icon-edit">  </i>  Editar', array("admin/update", "id" => $data->id)); ?>
-                </li>
-                <li><a title="Cambiar contraseña" href="#" onclick='modal(<?php echo $data->id; ?>)'>  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
-                    <?php if ($data->status == 0) { ?>
-                    <li>
-                    <?php echo CHtml::link('<i class="icon-refresh">  </i>  Reenviar Email de Verificación', array("admin/resendvalidationemail", "id" => $data->id)); ?>
-                    </li>
-<?php } ?>
-                <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>
-                <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
-                <li> <?php echo CHtml::link('<i class="icon-shopping-cart">  </i>  Registrar Orden', array("admin/compra", "id" => $data->id)); ?>
-
-                <li class="divider"></li>
-                <li><a title="Eliminar" href="#">  <i class="icon-trash">  </i>  Eliminar</a></li>
-            </ul>
-        </div>
-<?php if ($data->status == 0) { ?>
-<?php } ?>
+    
+    <!--VER DETALLES-->
+    <td style="text-align: center">
+       <?php echo CHtml::link('<i class="icon-eye-open"></i>',
+               array("profile/perfil", "id" => $data->id)); ?>            
     </td>
 </tr>
 <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>

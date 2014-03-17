@@ -81,11 +81,11 @@ $template = '{summary}
     <tr>
       <th rowspan="2" scope="col"><input name="Check" type="checkbox" value="Check"></th>
       <th colspan="3" rowspan="2" scope="col">Usuario</th>
-      <th colspan="2" scope="col">Ventas</th>
-      <th rowspan="2" scope="col">Comisión<br>Actual</th>
-      <th colspan="2" scope="col">Saldo (Bs)</th>
+      <th colspan="2" scope="col" style="text-align: center">Ventas</th>
+      <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Actual</th>
+      <th colspan="2" scope="col" style="text-align: center">Saldo (Bs)</th>
       <th rowspan="2" scope="col">Fecha de Registro</th>
-      <th rowspan="2" scope="col"></th>
+      <th rowspan="2" scope="col">Detalle</th>
     </tr>
         <tr>
       <th scope="col">Looks Completos</th>
@@ -95,8 +95,7 @@ $template = '{summary}
     </tr>
     {items}
     </table>
-    {pager}
-	';
+    {pager}';
 
 $this->widget('zii.widgets.CListView', array(
     'id' => 'list-auth-items',
@@ -161,24 +160,89 @@ Yii::app()->clientScript->registerScript('search', "var ajaxUpdateTimeout;
 
 <hr/>
 <div class="row">
-    <div class="span3"><select class="span3">
-            <option>Seleccionar usuarios</option>
-            <option>Lorem</option>
-            <option>Ipsum 2</option>
-            <option>Lorem</option>
-        </select></div>
-    <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
+    <div class="span3">
+        <select class="span3 hidden">
+            <option>Seleccione una acción</option>
+            <option>Cambiar comisión</option>
+            <option>Cambiar validez de la bolsa</option>            
+        </select>
+        <?php 
+        echo CHtml::dropDownList("Filtros", "", array("1" => "Cambiar comisión",
+                                "2" => "Cambiar validez de la bolsa"),
+                array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
+        ?>
+    </div>
+    <div class="span1">
+        <a id="btnProcesar" title="Procesar" class="btn btn-danger">Procesar</a>
+    </div>
 </div>
 </div>
+
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array(
+                                'id' => 'modalComision',
+                            ),
+                            array(
+                                'class' => 'modal fade hide',
+                                'tabindex' => "-1",
+                                'role' => "dialog",
+                                'aria-labelledby' => "myModalLabel",
+                                'aria-hidden' => "true",
+                                //'style' => "display: none;",
+                            
+                            ))?>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Cambiar comisión de ventas para los Personal Shoppers</h3>
+    </div>
+    <div class="modal-body">
+      
+    </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>    
+    <?php
+//    $this->widget('bootstrap.widgets.TbButton', array(
+//        'buttonType' => 'button',
+//        'label' => 'Crear',
+//        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+//        //'size' => 'large', // null, 'large', 'small' or 'mini'
+//        //'block' => 'true',
+//        'htmlOptions' => array('onclick' => 'js:$("#newUser-form").submit();')
+//    ));
+    ?>
+  </div>                    
+
+<?php $this->endWidget()?>
 <!-- /container -->
-<script>
+<script >
+    
+    /*Boton de acciones masivas, para cambiar comision y tiempo*/
+    $("#btnProcesar").click(function(){
+        var accion = $("#listaAcciones").val();
+        
+        if(accion < 1){
+            bootbox.alert("Debes seleccionar una acción para aplicar!");
+            return;
+        }
+        
+        //Si es para cambiar comisión
+        if(accion == 1){
+            
+            $('#modalComision').modal();  
+
+
+        //Si es para cambiar tiempo limite     
+        }else if(accion == 2){
+            bootbox.alert("nada");
+        }        
+       
+    });
+    
     $('#search-form').attr('action', '');
     $('#search-form').submit(function() {
         return false;
     });
-
-</script>
-<script >
+    
     function modal(id) {
 
         $.ajax({

@@ -164,26 +164,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>
-        <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
-        <?php 
-        // direccion de envio 
-        if(isset($tipoPago)){
-        	//echo 'Tipo pago: '.$tipoPago;
-		}
-        $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
-		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
-        ?>
-        <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
-          <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
-        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
-          <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
-        <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($direccion->telefono); ?> <br/>
-        </p>
-        <!-- Direcciones OFF --> 
-        
-        <hr>
-        <h4><?php echo Yii::t('contentForm','Payment Method Selected'); ?></h4>
+             <h4><?php echo Yii::t('contentForm','Payment Method Selected'); ?></h4>
         <div class=" margin_bottom"> 
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
             <?php 
@@ -206,6 +187,42 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
               ?>
           </table>
         </div>
+      	
+      	 	   <hr>
+      	
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>
+        <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
+        <?php 
+        // direccion de envio 
+        if(isset($tipoPago)){
+        	//echo 'Tipo pago: '.$tipoPago;
+		}
+        $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
+		$facturacion= Direccion::model()->findByPk(Yii::app()->getSession()->get('idFacturacion'));
+		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
+        ?>
+        <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
+          <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
+        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
+          <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
+        <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($direccion->telefono); ?> <br/>
+        </p>
+         	   <hr>
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Billing address'); ?></h4>
+        <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
+        <?php 
+     
+        ?>
+        <p> <strong><?php echo($facturacion->nombre." ".$facturacion->apellido); ?></strong> <br/>
+          <span class="muted small"> C.I. <?php echo($facturacion->cedula); ?></span></p>
+        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
+          <?php echo($facturacion->dirUno.". ".$facturacion->dirDos.", ".$facturacion->ciudad->nombre.", ".$facturacion->ciudad->provincia->nombre.". ".$facturacion->pais); ?> </p>
+        <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($facturacion->telefono); ?> <br/>
+        </p>
+        
+        <!-- Direcciones OFF --> 
+        
+     
         
       </div>
     </section>

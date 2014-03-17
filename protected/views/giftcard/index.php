@@ -21,7 +21,7 @@ $this->breadcrumbs = array(
         )
     ); ?>	
     <!-- FLASH OFF --> 
-        <h1>Administrar Gift cards</h1>
+        <h1><?php echo Yii::t('contentForm' , 'Manage Gift Card'); ?></h1>
     </div>
     <style>
         input.input-search{
@@ -101,12 +101,12 @@ $this->breadcrumbs = array(
                 "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
 
     </div>
-        <div class="span2"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
+        <div class="span2"><a href="#" class="btn crear-filtro"><?php echo Yii::t('contentForm' , 'Create new filter'); ?></a></div>
         <div class="span2 offset2">
-            <a href="create" class="btn btn-success">Crear GiftCard</a>
+            <a href="create" class="btn btn-success"><?php echo Yii::t('contentForm' , 'Create Gift Card'); ?></a>
         </div>
         <div class="span2">
-            <a href="createMasivo" class="btn btn-success">Exportación Masiva</a>
+            <a href="createMasivo" class="btn btn-success"><?php echo Yii::t('contentForm' , 'Massive Export'); ?></a>
         </div>        
     </div>
     <hr/>
@@ -124,17 +124,17 @@ $this->breadcrumbs = array(
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
             <th rowspan="2" scope="col"></th>
-            <th rowspan="2" scope="col">Id</th>
-            <th rowspan="2" scope="col">Comprador</th>
-            <th rowspan="2" scope="col">Estado</th>
-            <th rowspan="2" scope="col">Monto en '.Yii::t('contentForm', 'currSym').'</th>
-            <th colspan="2" scope="col">Vigencia</th>
-            <th rowspan="2" scope="col">Fecha de Aplicación<br>Usuario que la aplicó</th>
-            <th rowspan="2" scope="col">Acciones</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'ID').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Buyer').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'State').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Amount').' '.Yii::t('contentForm', 'currSym').'</th>
+            <th colspan="2" scope="col">'.Yii::t('contentForm' , 'Validity').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Date of Application <br> User who applied it').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>
         </tr>
         <tr>
-            <th scope="col">Desde</th>
-            <th scope="col">Hasta</th>
+            <th scope="col">'.Yii::t('contentForm' , 'From1').'</th>
+            <th scope="col">'.Yii::t('contentForm' , 'Until').'</th>
         </tr>
     {items}
     </table>
@@ -148,14 +148,16 @@ $this->breadcrumbs = array(
         'template' => $template,
         'afterAjaxUpdate' => " function(id, data) {						    	
                         $('#todos').click(function() { 
-                inputs = $('table').find('input').filter('[type=checkbox]');
+                            inputs = $('table').find('input').filter('[type=checkbox]');
 
-                                if($(this).attr('checked')){
-                     inputs.attr('checked', true);
-                }else {
-                     inputs.attr('checked', false);
-                } 	
+                                            if($(this).attr('checked')){
+                                 inputs.attr('checked', true);
+                            }else {
+                                 inputs.attr('checked', false);
+                            } 	
                         });
+                        
+                        desactivarGC();
 
                     } ",
         'pager' => array(
@@ -213,6 +215,9 @@ $this->breadcrumbs = array(
 
 <script type="text/javascript">
     
+function desactivarGC(){
+    
+    
 /*Desactivar giftcard*/
 $("[id^='linkDesactivar']").click(function (e){
             e.preventDefault();
@@ -251,6 +256,7 @@ $("[id^='linkDesactivar']").click(function (e){
             });
             
         });
+}
 
 /*Ver modal con datos de la giftcard*/
 function ver(id){

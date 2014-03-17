@@ -48,7 +48,7 @@ $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::
     )
 ); ?>	
 <!-- FLASH OFF --> 
-    <h1>Publicar Look</h1>
+    <h1><?php echo Yii::t('contentForm','Publish Look'); ?></h1>
   </div>
   <div class="row">
     <section class="span6">
@@ -69,11 +69,11 @@ $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::
       <?php if (Yii::app()->user->isAdmin()){ ?>
       <!-- Tabla  para el admin ON -->
       <hr/>
-      <h4>Productos que componen el Look </h4>
+      <h4><?php echo Yii::t('contentForm','Products that make the Looks'); ?></h4>
       <table width="100%" class="table">
         <thead>
           <tr>
-            <th colspan="2">Producto</th>
+            <th colspan="2"><?php echo Yii::t('contentForm','Product'); ?></th>
            <!-- <th>Cantidad</th> -->
           </tr>
         </thead>
@@ -129,15 +129,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		'validateOnSubmit'=>true,
 	),
 )); ?>      	
-        <legend class="lead">Ultimo paso</legend>
+        <legend class="lead"><?php echo Yii::t('contentForm','Last step'); ?></legend>
         <section class="well">
-          <h4><strong>1.</strong> Completa los siguientes campos:</h4>
+          <h4><strong>1.</strong><?php echo Yii::t('contentForm','Complete the following fields:'); ?></h4>
           <!-- <p>LLena los siguientes campos:</p> -->
           <div class="control-group"> 
             <!--[if lte IE 7]>
               <label class="control-label required">Titulo del look <span class="required">*</span></label>
   <![endif]-->
-  		¿Qué nombre le pondrías a este look? 
+  		<?php echo Yii::t('contentForm','What name would you give this Look?'); ?>
             <div class="controls">
                <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45,'disabled'=>$disabled)); ?>
                <?php echo $form->error($model,'title'); ?>
@@ -147,7 +147,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <!--[if lte IE 7]>
               <label class="control-label required">Descripción del look <span class="required">*</span></label>
   <![endif]-->
-           Escribe una descripción para este look
+      <?php echo Yii::t('contentForm','Type a description for this look'); ?>
             <div class="controls">
   			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50,'class'=>'span5','disabled'=>$disabled)); ?>
   			<?php echo $form->error($model,'description'); ?>
@@ -162,7 +162,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
           
            <div class="control-group ">
-           	Escribe una url amigable para este look. 
+      <?php echo Yii::t('contentForm','Write a friendly URL to this look.'); ?>
             <div class="controls">
                <?php echo $form->textFieldRow($model, 'url_amigable'); ?>
                <?php echo $form->error($model, 'url_amigable'); ?>
@@ -227,7 +227,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         </section>
 
         <section class="well">
-          <h4><strong>2.</strong> ¿En que ocasión se puede usar este look?</h4>
+          <h4><strong>2.</strong> <?php echo Yii::t('contentForm','In which occasion you think this Look could be used?'); ?></h4>
           <div id="div_ocasiones">
           <?php $categorias = Categoria::model()->findAllByAttributes(array('padreId'=>'2')); ?>
           <?php echo $form->hiddenField($model,'has_ocasiones'); ?>
@@ -258,7 +258,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <?php echo CHtml::hiddenField('categorias',$model->has_ocasiones); ?>
           </div>
           <hr/>
-          <h4> ¿Que estilo se adapta a este look?</h4>
+          <h4><?php echo Yii::t('contentForm','What style suits this Look?'); ?></h4>
           
           <div class="control-group">
             <div class="controls">
@@ -280,7 +280,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <hr/>
           
           
-          <h4> ¿A chicas de que edad va dirigido este look?</h4>
+          <h4><?php echo Yii::t('contentForm','To what age girls should focus this clothes?'); ?></h4>
           
           <div class="control-group">
             <div class="controls">
@@ -298,11 +298,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           
           
           <div id="div_tipo">
-          <h4>Escoge al tipo de usuaria que favorece</h4>
+          <h4><?php echo Yii::t('contentForm','Select the type of user that favors'); ?></h4>
           <div class="control-group">
           	
           	<?php echo CHtml::checkBox('contextura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
-            <label class="control-label required">¿A qué tipo de cuerpo le favorece más?</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','What type of body you favors?'); ?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
                   <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -317,7 +317,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
           <div class="control-group">
           	<?php echo CHtml::checkBox('pelo',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
-            <label class="control-label required">¿Con qué color de cabello quedaría mejor?</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','What hair color would look better?');?></label>
             <div class="controls">
             		
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
@@ -334,7 +334,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
           <div class="control-group">
           	<?php echo CHtml::checkBox('altura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
-            <label class="control-label required">¿Cuánto debe medir la mujer que use este look?</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','How much should measure the woman who wears this Look?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
                   <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -349,7 +349,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
           <div class="control-group">
           	<?php echo CHtml::checkBox('ojos',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
-            <label class="control-label required">¿Con qué color de ojos queda mejor?</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','What eye color is look better?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
                   <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -363,8 +363,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
           </div>
           <div class="control-group">
-          	<?php echo CHtml::checkBox('tipo_cuerpo',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
-            <label class="control-label required">¿Qué tipo de cuerpo debería usarlo?</label>
+          	<?php echo CHtml::checkBox('tipo_cuerpo',false,array('class'=>'select_todos', 'disabled'=>$disabled));?>
+            <label class="control-label required"><?php echo Yii::t('contentForm','What body type should I use?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
                   <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -379,7 +379,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
           <div class="control-group">
           	<?php echo CHtml::checkBox('piel',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
-            <label class="control-label required">¿Qué color de piel se adapta mejor a este look?</label>
+            <label class="control-label required"><?php echo Yii::t('contentForm','What skin color is best suited to this Look?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                   <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -398,15 +398,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         </section >
         <section class="well">
               <?php if ($model->status == Look::STATUS_CREADO || Yii::app()->user->isAdmin()){ ?>
-              	<h4><strong>3.</strong> Terminaste, solo presiona enviar  </h4>
+              	<h4><strong>3.</strong> <?php echo Yii::t('contentForm','Finished, just press send');?>  </h4>
       
           <div class="row">
             <div class="pull-right"> 
-            	<a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> Cancelar</a> 
+            	<a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> <?php echo Yii::t('contentForm','Cancel');?> </a> 
             	
             	<?php $this->widget('bootstrap.widgets.TbButton', array(
     				'buttonType'=>'submit',
-    			    'label'=>Yii::app()->user->isAdmin()?'Aprobar':'Enviar',
+    			    'label'=>Yii::app()->user->isAdmin()?Yii::t('contentForm','Approve'):Yii::t('contentForm','Send'),
     			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
     			    'size'=>'large', // null, 'large', 'small' or 'mini'
     			)); ?>
@@ -416,7 +416,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         
         <?php } ?>
          <?php if ($model->status == Look::STATUS_ENVIADO && !Yii::app()->user->isAdmin()){ ?>
-         	Tu look esta pendiente por aprobar, Gracias
+         	<?php echo Yii::t('contentForm','Your phone is pending for passing, Thanks');?>
          	<script>$('#slider').hide();</script>
          <?php } ?>
         

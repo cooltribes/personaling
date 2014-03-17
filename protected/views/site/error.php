@@ -14,7 +14,7 @@ $this->breadcrumbs=array(
     <h1 class="T_superlarge"><?php echo $code; ?></h1>
          <div class="error"> <strong>Detalles</strong>: <?php echo CHtml::encode($message); ?> </div>
 
-    <h2 class="bg_color4 color3 padding_left_xsmall">¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.  </h2>
+    <h2 class="bg_color4 color3 padding_left_xsmall"><?php echo Yii::t('contentForm','¡Upss! To all of us has broken a heel ever, refreshes the screen tu try more later.'); ?>  </h2>
      <?php /*?><p class="lead">
      Aqui te dejamos un par de links que pueden ayudarte con lo que buscas
      </p>

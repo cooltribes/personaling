@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar','cargarCiudades'),
+				'actions'=>array('create','update','editar','cargarCiudades','addDireccion'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -161,6 +161,18 @@ class DireccionController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+	}
+	
+	public function actionAddDireccion($user,$admin){
+		$direccion=new Direccion;
+		$direccion->attributes=$_POST;
+		if($direccion->save()){
+			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
+			echo $this->renderPartial('/bolsa/_direcciones', array(
+	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ) , 
+	       		true);
+		}
+		
 	}
 
 	/**

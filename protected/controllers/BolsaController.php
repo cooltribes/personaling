@@ -562,7 +562,7 @@ class BolsaController extends Controller
                     /*ID del usuario propietario de la bolsa*/
                     $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
 			
-                    
+                    /*Si es compra normal del usuario*/
                     if(!$admin){
                         
                         $metric = new ShoppingMetric();
@@ -676,6 +676,8 @@ class BolsaController extends Controller
 
 
                             Yii::app()->getSession()->add('idDireccion',$dirEnvio);
+							Yii::app()->getSession()->add('idFacturacion',$_POST['billAdd']);
+							
 
 //				$this->redirect(array('bolsa/pagos'));
                             $this->redirect($this->createUrl('bolsa/pagos', array(
@@ -1064,6 +1066,7 @@ class BolsaController extends Controller
 			switch ($tipoPago) {
 			    case 1: // TRANSFERENCIA
 			       	$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+					$dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
 					$orden = new Orden;
 					$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 					$orden->descuento = 0;
@@ -1077,6 +1080,7 @@ class BolsaController extends Controller
 					$orden->bolsa_id = $bolsa->id; 
 					$orden->user_id = $usuario;
 					$orden->direccionEnvio_id = $dirEnvio->id;
+					$orden->direccionFacturacion_id = $dirFacturacion->id;
 					$orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
 					$orden->peso = Yii::app()->getSession()->get('peso');
 					$total_orden = round(Yii::app()->getSession()->get('total'), 2);
@@ -1171,6 +1175,7 @@ class BolsaController extends Controller
 							Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
 						}
 						$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+						$dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
 						$orden = new Orden;
 						$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 						$orden->descuento = 0;
@@ -1184,6 +1189,7 @@ class BolsaController extends Controller
 						$orden->bolsa_id = $bolsa->id; 
 						$orden->user_id = $usuario;
 						$orden->direccionEnvio_id = $dirEnvio->id;
+						$orden->direccionFacturacion_id = $dirFacturacion->id;
 						$orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
 						$orden->peso = Yii::app()->getSession()->get('peso');
 						$total_orden = round(Yii::app()->getSession()->get('total'), 2);
@@ -1250,7 +1256,12 @@ class BolsaController extends Controller
 							}
 								
 							
-						}// estado		
+						}// estado                                                                                                
+                                                
+                                                /*Pagar comision a las PS involucradas en la venta*/
+                                                Orden::model()->pagarComisiones($orden);  
+                                                
+                                                
 						// cuando finalice entonces envia id de la orden para redireccionar
 						/*
 						echo CJSON::encode(array(
@@ -1273,7 +1284,7 @@ class BolsaController extends Controller
 				// Generar factura
 			$factura = new Factura;
 			$factura->fecha = date('Y-m-d');
-			$factura->direccion_fiscal_id = Yii::app()->getSession()->get('idDireccion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+			$factura->direccion_fiscal_id = Yii::app()->getSession()->get('idFacturacion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
 			$factura->direccion_envio_id =Yii::app()->getSession()->get('idDireccion');
 			$factura->orden_id = $orden->id;
 			if (!$factura->save())
@@ -1301,8 +1312,11 @@ class BolsaController extends Controller
 		 
 	}
         
-	public function clonarDireccion($direccion){
-		$dirEnvio = new DireccionEnvio;
+	public function clonarDireccion($direccion, $facturacion = false){
+		if($facturacion)
+			$dirEnvio=new DireccionFacturacion;	
+		else
+			$dirEnvio = new DireccionEnvio;
 					
 		$dirEnvio->nombre = $direccion->nombre;
 		$dirEnvio->apellido = $direccion->apellido;

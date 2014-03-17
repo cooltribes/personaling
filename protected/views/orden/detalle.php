@@ -177,7 +177,7 @@ $tracking=$orden->getTracking();
   <hr/>
   <div class="row">
     <div class="span7">
-      <h3 class="braker_bottom margin_top"> Información del cliente</h3>
+      <h3 class="braker_bottom margin_top_small"> Información del cliente</h3>
       <div class="row">
         <div class="span1">
         	<?php
@@ -277,7 +277,7 @@ $tracking=$orden->getTracking();
      	if($orden->estado==4||$orden->estado==8||$orden->estado==9||$orden->estado==10){
      ?>
      
-      <div class="well well-small margin_top well_personaling_small">
+      <div class="well well-small margin_top_small well_personaling_small">
         <h3 class="braker_bottom "> Transporte </h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
@@ -342,7 +342,7 @@ $tracking=$orden->getTracking();
       
       <div class="row-fluid">
         <div class="span12">
-          <h3 class="braker_bottom margin_top">Dirección de envío</h3>
+          <h3 class="braker_bottom margin_top_small">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
             	<?php
@@ -356,10 +356,33 @@ $tracking=$orden->getTracking();
               <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
-            <div><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
-            <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+           <div class="row-fluid tel pull_left">
+            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
+            <div class="span4"><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
+          </div>
+   <?php
+            	if(isset($orden->direccionFacturacion)){
+            		
+            	?>
+           <h3 class="braker_bottom margin_top_small">Dirección de facturación</h3>
+          <div class="vcard">
+            <div class="adr">
+            	
+              <div class="street-address"><i class="icon-map-marker"></i><?php echo $orden->direccionFacturacion->nombre." ".$orden->direccionFacturacion->apellido.". ";  ?></div>
+              
+              <span class="locality"><?php echo $orden->direccionFacturacion->dirUno.", ".$orden->direccionFacturacion->dirDos; ?>.</span>
+              <span class="locality"><?php echo $orden->direccionFacturacion->ciudad->nombre ?>, <?php echo $orden->direccionFacturacion->provincia->nombre; ?>.</span>
+              <div class="country-name"><?php echo $orden->direccionFacturacion->pais; ?></div>
+            </div>
+           <div class="row-fluid tel pull_left">
+            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
+            <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
+            <div class="span4"><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+          </div>
+          </div>
+          <?php } ?>
           <!-- <a href="#" class="btn"><i class="icon-edit"></i></a> --> </div>
           
         <!--  

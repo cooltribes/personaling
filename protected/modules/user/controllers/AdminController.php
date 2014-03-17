@@ -3,7 +3,7 @@
 class AdminController extends Controller
 {
 	public $defaultAction = 'admin';
-	public $layout='//layouts/column2';
+	// public $layout='//layouts/column2';
 	
 	private $_model;
 
@@ -699,7 +699,10 @@ if(isset($_POST['Profile']))
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
-		$profile=$model->profile;
+		
+	
+			$profile=$model->profile;
+
 		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
@@ -998,7 +1001,6 @@ if(isset($_POST['Profile']))
 				
 				
 				 
-				
 				
 	            $this->render('compra', array(   'dataProvider'=>$dataProvider,
 	            ));	

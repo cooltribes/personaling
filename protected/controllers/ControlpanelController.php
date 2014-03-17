@@ -19,7 +19,9 @@ class ControlpanelController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','delete','ventas','pedidos','usuarios', 'looks', 'productos','ingresos'),
+				'actions'=>array('index','delete','ventas',
+                                    'pedidos','usuarios', 'looks', 'productos','ingresos',
+                                    'remuneracion'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -283,4 +285,27 @@ class ControlpanelController extends Controller
 		);
 	}
 	*/
+        
+        public function actionRemuneracion() {
+
+            $model = new User('search');
+            $model->unsetAttributes();  // clear any default values
+            
+            /*Enviar a la vista el listado de todos los PS*/
+            $criteria = new CDbCriteria;
+            $criteria->compare("personal_shopper", 1);
+
+            $dataProvider = new CActiveDataProvider('User', array(
+                'criteria' => $criteria,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
+
+
+            $this->render('remuneracion', array(
+                'model' => $model,                
+                'dataProvider' => $dataProvider,
+            ));
+        }
 }

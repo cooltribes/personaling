@@ -47,7 +47,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
 					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
-          array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                        array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneracion')),
 					)),
                 array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
@@ -57,6 +58,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Productos', 'url'=>array('/producto/admin')),
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte')
 					)
 				),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),

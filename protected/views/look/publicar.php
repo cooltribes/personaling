@@ -10,9 +10,14 @@ $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::
   $(function() {
     $( "#slider" ).slider({
       range: true,
-      min: 10,
+      min: 10, 
       max: 85,
-      values: [ <?php echo $model->edadMin ?> , <?php echo $model->edadMax;?> ],
+      <?php if(is_null($model->edadMin)){
+      		$model->edadMin=20;
+			 $model->edadMax=45;
+      }
+      ?>
+      values: [ parseInt(<?php echo $model->edadMin ?>) , parseInt(<?php echo $model->edadMax;?>) ],
       slide: function( event, ui ) {
         $( "#edad" ).html( "De " + ui.values[ 0 ] + " a " + ui.values[ 1 ]+" Años" );
         $('#Look_edadMin').val(ui.values[ 0 ]); 

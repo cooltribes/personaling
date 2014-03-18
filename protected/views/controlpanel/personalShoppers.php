@@ -62,7 +62,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         </div>
     </div>
     <div class="span3">
-        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 3'), "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters'))
+        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 8'), "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters'))
         ?>
     </div>
     <div class="span3 "><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
@@ -70,7 +70,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 </div>
 
 <hr/>
-<?php //  $this->renderPartial("_filters"); ?>
+<?php   $this->renderPartial("_filters"); ?>
 <hr/>
 <?php
 $template = '{summary}

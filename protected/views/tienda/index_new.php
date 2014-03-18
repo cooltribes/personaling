@@ -511,7 +511,7 @@ function refresh(reset)
 
 	
  //$("#catalogo").infinitescroll = null;
-    alert($('#chic_hid').val());
+
 	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid ,#chic_hid').serialize();
   
 

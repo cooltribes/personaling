@@ -133,7 +133,7 @@ $looks_recomendados = $look->match($model);
             </ul>
           </div>
           <div class="span4">
-            <h2 class="braker_bottom"> Tus Encantos/Favoritos </h2>
+            <h2 class="braker_bottom"> Mis Favoritos </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Looks',array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
               <li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>

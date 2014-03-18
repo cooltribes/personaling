@@ -31,7 +31,7 @@ $looks_recomendados = $look->match($model);
       <div class="card">
       	
       	
-        <?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); ?>
+        <?php echo CHtml::image($model->getAvatar(),'Foto',array("width"=>"270", "height"=>"270")); ?>
         <div class="card_content vcard">
           <h4 class="fn"><?php echo $profile->first_name." ".$profile->last_name; ?></h4>
           <p class="muted">Miembro desde: <?php echo Yii::app()->dateFormatter->format("d MMM y",strtotime($model->create_at)); ?></p>
@@ -102,7 +102,7 @@ $looks_recomendados = $look->match($model);
             <h2 class="braker_bottom"> Tu Perfil</h2>
             <ul class="nav nav-stacked nav-tabs">
               <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
-              <li> <?php echo CHtml::link('Tu avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
+              <li> <?php echo CHtml::link('Tu foto',array('profile/avatar'),array("title"=>"Edita tu foto")); ?></li>
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
               <li><?php echo CHtml::link('Tu perfil público',array('profile/perfil'),array("title"=>"Ve tu perfil público")); ?> </li>
               <li><?php echo CHtml::link('Otros perfiles',array('profile/tusPerfiles'),array("title"=>"Ve los perfiles que has creado")); ?> </li>

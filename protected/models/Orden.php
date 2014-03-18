@@ -667,10 +667,10 @@ class Orden extends CActiveRecord
                     $lookActual = Look::model()->findByPk($productoEnOrden->look_id);
 
                     //Comisión de la PS dueña del look
-    //                        $comision = $lookActual->user->profile->comision;
-    //                        $tipoComision = $lookActual->user->profile->tipo_comision;
-                    $comision = 7;
-                    $tipoComision = 1; //1=%, 2=fijo                       
+                    $comision = $lookActual->user->profile->comision;
+                    $tipoComision = $lookActual->user->profile->tipo_comision;
+//                    $comision = 7;
+//                    $tipoComision = 1; //1=%, 2=fijo                       
 
                     //Si la comisión es por Porcentaje
                     if($tipoComision == 1){

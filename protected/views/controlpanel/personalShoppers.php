@@ -6,9 +6,6 @@
 //);
 
 
-$usuarios_totales = User::model()->count();
-$usuarios_activos = User::model()->countByAttributes(array('status' => 1));
-$usuarios_inactivos = User::model()->countByAttributes(array('status' => 0));
 $personal_shoppers = User::model()->countByAttributes(array('personal_shopper' => 1));
 $aplicantesPs = User::model()->countByAttributes(array('personal_shopper' => 2));
 $usuarios_facebook = User::model()->count('facebook_id IS NOT NULL');
@@ -32,25 +29,25 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     <div class="page-header">
         <h1>Remuneración - Personal Shoppers</h1>
     </div>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table hidden">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
         <tr>
             <th scope="col" colspan="6"> Totales </th>
         </tr>
         <tr>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_totales; ?></p>
-                Usuarios Totales</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_activos; ?></p>
-                Usuarios Activos</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_inactivos; ?></p>
-                Usuarios Inactivos</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $personal_shoppers; ?></p>
-                Personal Shoppers</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $aplicantesPs; ?></p>
-                Aplicantes a PS</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_facebook; ?></p>
-                Usuarios de Facebook </td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $usuarios_twitter; ?> </p>
-                Usuarios de Twitter</td>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo $totalGeneradoComisiones." ".Yii::t('contentForm', 'currSym'); ?></p>
+                Total generado en comsiones</td>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasGeneraronComision; ?></p>
+                Ventas con comisión</td>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasNoGeneraronComision; ?></p>
+                Ventas sin comisión</td>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo 34; ?></p>
+                Looks vendidos (con comisión)</td>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo $prodsVendidosComision; ?></p>
+                Productos vendidos (con comisión)</td>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo 22; ?></p>
+                PS con ventas</td>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo 56; ?> </p>
+                PS sin ventas</td>
         </tr>
     </table>
     <hr/>

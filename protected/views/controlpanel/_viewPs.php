@@ -36,7 +36,8 @@
             }
             ?> </small>
     </td>
-        
+    
+    <!--TELF - EMAIL - CIUDAD-->
     <td>
         <small><?php echo $data->email; ?><br/>
             <strong>Telf.</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
@@ -50,14 +51,25 @@
     </td>
     
     <!--LOOKS COMPLETOS-->
-    <td><?php echo $data->ordenCount; ?></td>
+    <td>
+        <?php
+            echo $data->getLooksVendidos();
+        ?>
+    </td>
     
     <!--PRODUCTOS VENDIDOS-->
-    <td><?php echo $data->direccionCount; ?></td>
+    <td>
+        <?php 
+            echo $data->getProductosVendidos();
+
+        ?>
+    </td>
     
     <!--COMISION ACTUAL-->
     <td>
-        <?php echo "5 %"; ?>
+        <?php 
+            echo $data->getComision();
+        ?>
     </td>
     
     <!--SALDO EN COMISIONES-->

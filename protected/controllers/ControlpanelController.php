@@ -21,7 +21,7 @@ class ControlpanelController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','delete','ventas',
                                     'pedidos','usuarios', 'looks', 'productos','ingresos',
-                                    'remuneracion'),
+                                    'remuneraciones', 'personalshoppers'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -286,8 +286,34 @@ class ControlpanelController extends Controller
 	}
 	*/
         
-        public function actionRemuneracion() {
+        /*Ver las estadisticas generales referentes a remuneraciones*/
+        public function actionRemuneraciones() {
 
+            /*Datos para las estadísticas*/
+            $totalGeneradoComisiones = Yii::app()->db->createCommand()
+                                       ->select("SUM(total)")->from("tbl_balance")
+                                       ->where("tipo = 5")->queryScalar();
+            
+            $ventasGeneraronComision = Yii::app()->db->createCommand()
+                                       ->select("count(distinct(orden_id))")->from("tbl_balance")
+                                       ->where("tipo = 5")->queryScalar();
+            
+            $ventasNoGeneraronComision = Yii::app()->db->createCommand()
+                                       ->select("count(distinct(orden_id))")->from("tbl_balance")
+                                       ->where("tipo != 5")->queryScalar();
+            
+            $prodsVendidosComision = Yii::app()->db->createCommand(
+                                        "SELECT IFNULL(SUM(o.cantidad), 0)
+                                        FROM tbl_orden_has_productotallacolor o
+                                        WHERE o.look_id > 0 AND o.tbl_orden_id IN 
+                                        (SELECT DISTINCT(b.orden_id)
+                                        FROM tbl_balance b
+                                        WHERE tipo = 5)")->queryScalar();
+            
+            
+            
+            
+            
             $model = new User('search');
             $model->unsetAttributes();  // clear any default values
             
@@ -303,9 +329,56 @@ class ControlpanelController extends Controller
             ));
 
 
-            $this->render('remuneracion', array(
+            $this->render('personalShoppers', array(
                 'model' => $model,                
                 'dataProvider' => $dataProvider,
+                'totalGeneradoComisiones' => $totalGeneradoComisiones,
+                'ventasGeneraronComision' => $ventasGeneraronComision,
+                'ventasNoGeneraronComision' => $ventasNoGeneraronComision,
+                'prodsVendidosComision' => $prodsVendidosComision,
+            ));
+        }
+        
+        
+        /* Ver el listado de personalshoppers con sus respectivos datos
+         * relacionados a las comisiones
+         */
+        public function actionPersonalshoppers() {
+
+            /*Datos para las estadísticas*/
+            $totalGeneradoComisiones = Yii::app()->db->createCommand()
+                                       ->select("SUM(total)")->from("tbl_balance")
+                                       ->where("tipo = 5")->queryScalar();
+            
+            $ventasGeneraronComision = Yii::app()->db->createCommand()
+                                       ->select("count(distinct(orden_id))")->from("tbl_balance")
+                                       ->where("tipo = 5")->queryScalar();
+            
+            $ventasNoGeneraronComision = Yii::app()->db->createCommand()
+                                       ->select("count(distinct(orden_id))")->from("tbl_balance")
+                                       ->where("tipo != 5")->queryScalar();
+            
+            $model = new User('search');
+            $model->unsetAttributes();  // clear any default values
+            
+            /*Enviar a la vista el listado de todos los PS*/
+            $criteria = new CDbCriteria;
+            $criteria->compare("personal_shopper", 1);
+
+            $dataProvider = new CActiveDataProvider('User', array(
+                'criteria' => $criteria,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
+
+
+            $this->render('personalShoppers', array(
+                'model' => $model,                
+                'dataProvider' => $dataProvider,
+                'totalGeneradoComisiones' => $totalGeneradoComisiones,
+                'ventasGeneraronComision' => $ventasGeneraronComision,
+                'ventasNoGeneraronComision' => $ventasNoGeneraronComision,
             ));
         }
 }

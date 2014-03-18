@@ -112,4 +112,13 @@ class Filter extends CActiveRecord
             'criteria'=>$criteria,
         ));
     }
+    
+    public static function guardarFiltro($tipo)
+    {
+        
+        
+        
+        
+    }
+    
 }

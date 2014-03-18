@@ -358,6 +358,14 @@ class ControlpanelController extends Controller
                                        ->select("count(distinct(orden_id))")->from("tbl_balance")
                                        ->where("tipo != 5")->queryScalar();
             
+            $prodsVendidosComision = Yii::app()->db->createCommand(
+                                        "SELECT IFNULL(SUM(o.cantidad), 0)
+                                        FROM tbl_orden_has_productotallacolor o
+                                        WHERE o.look_id > 0 AND o.tbl_orden_id IN 
+                                        (SELECT DISTINCT(b.orden_id)
+                                        FROM tbl_balance b
+                                        WHERE tipo = 5)")->queryScalar();
+            
             $model = new User('search');
             $model->unsetAttributes();  // clear any default values
             
@@ -379,6 +387,7 @@ class ControlpanelController extends Controller
                 'totalGeneradoComisiones' => $totalGeneradoComisiones,
                 'ventasGeneraronComision' => $ventasGeneraronComision,
                 'ventasNoGeneraronComision' => $ventasNoGeneraronComision,
+                'prodsVendidosComision' => $prodsVendidosComision,
             ));
         }
 }

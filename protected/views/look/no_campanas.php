@@ -3,13 +3,13 @@
     <div class="span8 offset2">
       <section class="box_1 bg_mancha_1  margin_top  margin_bottom_small padding_small">
         <div class="page-header">
-          <h1>No tenemos campañas disponibles en este momento</h1>
+          <h1><?php echo Yii::t('contentForm','Campaigns don\'t have available at this time'); ?></h1>
         </div>
-        <p>Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a> </p>
+        <p><?php echo  Yii::t('contentForm','We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>'); ?> </p>
       </section>
       <hr/>
       <?php
-      echo CHtml::link('Seguir comprando', $this->createUrl('/tienda/index'), array('class'=>'btn'));
+      echo CHtml::link(Yii::t('contentForm','Keep buying'), $this->createUrl('/tienda/index'), array('class'=>'btn'));
       ?>
       </div>
   </div>

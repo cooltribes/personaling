@@ -6,7 +6,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     $nombre = $userObject ? $userObject->profile->first_name." ".$userObject->profile->last_name:
                 "";
 ?>
-
+<script> var error=0;</script>
 <div class="container margin_top">
     <div class="progreso_compra">
     <div class="clearfix margin_bottom">
@@ -27,7 +27,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <div class="row">
     <div class="span8 offset2"> 
      
-      <h1><?php echo Yii::t('contentForm','Shipping address'); ?>
+      <h1><?php echo  Yii::t('contentForm','Shipping and billing address'); ?>
           <br>
           <?php
           if($admin){
@@ -35,80 +35,25 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           }
           ?>
       </h1>
-      <p><?php echo Yii::t('contentForm','Choose an address for shipment of your purchase from your address book or enter a new one in the lower section'); ?></p>
+      <p><?php echo Yii::t('contentForm','Choose a shipping address and billing of your purchase from your address book or enter a new one in the bottom section'); ?></p>
       <?php 
       
 //     	$usuario = Yii::app()->user->id; 
      	$usuario = $user; 
         $direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
-      
+     	echo CHtml::hiddenField('admin',$admin);
+		echo CHtml::hiddenField('user',$user);
       ?>
 	  <?php if( count( $direcciones ) > 0 ){ ?>
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
-          <fieldset>
+          <fieldset id="anteriores">
             <legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
             <?php
             }
             if(isset($direcciones)){
-	       		foreach($direcciones as $cadauna){
-	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
-					$provincia = Provincia::model()->findByPk($cadauna->provincia_id);
-
-			       $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-						'id'=>'direccionUsada',
-						'enableAjaxValidation'=>false,
-						'enableClientValidation'=>true,
-						'clientOptions'=>array(
-							'validateOnSubmit'=>true, 
-						),
-						'htmlOptions'=>array('class'=>'form-horizontal  direccion'.$cadauna->id ),
-					));
-						
-		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
-		            echo CHtml::hiddenField('tipo','direccionVieja');
-		            echo CHtml::hiddenField('admin',$admin);
-		            echo CHtml::hiddenField('user',$user);
-					
-		            echo "
-		            <div class='row'>
-		            
-		              <div class='span2'>
-		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
-		                  <span class='muted small'> ".Yii::t('contentForm','C.I')." ".$cadauna->cedula."</span></p>
-		                <p> <strong>".Yii::t('contentForm','Phone')."</strong>: ".$cadauna->telefono."</p>
-		              </div>
-		              <div class='span3'>
-		                <p><strong>".Yii::t('contentForm','Address').":</strong> <br/>
-		                  ".$cadauna->dirUno." </br>
-		                  ".$cadauna->dirDos.". 
-		                  ".$ciudad->nombre.", ".$provincia->nombre.". </br>
-		                  ".$cadauna->pais." </p>
-		                  
-		              </div>
-		              <div class='span2 margin_top_medium'>
-		                <p>
-					";
-					
-					$this->widget('bootstrap.widgets.TbButton', array(
-			            'buttonType'=>'submit',
-			            'type'=>'danger',
-			            'size'=>'normal',
-			            'label'=>Yii::t('contentForm','Use this address'),
-			        )); 
-					     	echo "<br><input type='checkbox' class='shippingAddress' value='".$cadauna->id."'>Esta es mi dirección de envío<br>";
-							echo "<input type='checkbox' class='billingAddress' value='".$cadauna->id."'>Esta es mi dirección de facturación<br>";
-					echo"
-		                <br/>
-		                  <a style='cursor: pointer;' onclick='editar(".$cadauna->id.")' title='editar'>".Yii::t('contentForm','Edit')."</a> <br/>
-		                  <a style='cursor: pointer;' onclick='eliminar(".$cadauna->id.")' title='eliminar' data-loading-text='Eliminando...' id='eliminar".$cadauna->id."'>".Yii::t('contentForm','Delete')."</a></p>
-		              </div>
-		            </div>
-			  		<div class='mensaje".$cadauna->id."' ></div>
-		            <hr/>";
-			  		
-			  		$this->endWidget();
-
-			  	}
+	       		$this->renderPartial('_direcciones', array(
+	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin,'nueva'=>true) , 
+	       		false);
 	  		}
 			else {
 				echo "<legend>".Yii::t('contentForm','You don\'t have any saved address')."</legend>";					
@@ -128,6 +73,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	'enableClientValidation'=>true,
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true, 
+		'afterValidate'=>"js:function(form, data, hasError) {
+				if(!hasError)
+				{agregar(); }}"
+		
 	),
 	'htmlOptions'=>array('class'=>'form-horizontal'),
 )); 
@@ -143,8 +92,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <div class="controls">
               	<?php 
               	
-              	echo CHtml::hiddenField('admin',$admin);
-    			echo CHtml::hiddenField('user',$user);
+              	
               	echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the person to whom you send'))); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
@@ -197,6 +145,34 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+            
+            <div class="control-group"> 
+              
+              <div class="controls">
+              	<?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              		$pais=Pais::model()->findByAttributes(array('idioma'=>Yii::app()->getLanguage()));
+              		if($pais->grupo==0)
+              			echo ' <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="'.$pais->nombre.'" />';
+					else{
+						 echo $form->dropDownListRow(
+						 	$dir,'pais', CHtml::listData(
+						 		Pais::model()->findAllByAttributes(
+						 			array(
+						 				'grupo'=>$pais->grupo),
+						 			array(
+						 				'order' => 'nombre')
+								),'id','nombre'
+							), array(
+								'empty' => Yii::t(
+									'contentForm','Select a country')
+								)
+							);
+					}
+              		
+ 	 			 ?>
+              </div>
+            </div>
+            
             <div class="control-group"> 
               
               <div class="controls">
@@ -205,6 +181,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+            
+            
+            
             <div class="control-group"> 
               <div class="controls">
               	<?php 
@@ -229,21 +208,21 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             
               <div class="controls">
               	
-              	 <?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
-              	
- 	 			 ?>
+              	 
  	 			 
- 	 			 <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="Venezuela" />
- 	 			 
+ 	 			
+ 	 		
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
             <div class="form-actions">
+            	            	
             <?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
-            'label'=>Yii::t('contentForm','Use this address'),
+            'label'=>'Guardar en mis direcciones',
+            'id'=>'agregar'
         )); 
 		
 		
@@ -282,6 +261,81 @@ else
 ?>
 
 <script>
+	
+	
+	$('#direccion_nueva').submit(function(e) {
+    		e.preventDefault();
+    		
+	 });
+	 
+	 $('#direccionUsada').submit(function(e) {
+    		
+    		if($('#billAdd').val()=='0'){
+    			e.preventDefault();
+    			alert("Debes seleccionar una dirección de Facturación");
+    		}
+    		else{
+    			$('#direccionUsada').submit();
+    		}
+    		
+	 });
+	
+	
+	function agregar(){
+				$('body').addClass('aplicacion-cargando');
+				var nom=$('#Direccion_nombre').val();
+				var ap=$('#Direccion_apellido').val();
+				var ced=$('#Direccion_cedula').val();
+				
+				var d1 =$('#Direccion_dirUno').val();
+				var d2=$('#Direccion_dirDos').val();
+				var tel=$('#Direccion_telefono').val();
+				var prov=$('#Direccion_provincia_id').val();
+				var ciu=$('#Direccion_ciudad_id').val();
+				var pa=$('#Direccion_pais').val();
+				var us=<?php echo $usuario; ?>
+				
+			
+	    		$.ajax({
+				      url: "<?php echo Yii::app()->createUrl('direccion/addDireccion',array('user'=>$user,'admin'=>$admin)); ?>",
+				      type: "post",
+				      data: {
+				      	nombre:nom,
+				      	apellido:ap,
+				      	cedula:ced,
+				      	dirUno:d1,
+				      	dirDos:d2,
+				      	telefono:tel,
+				      	provincia_id:prov,
+				      	ciudad_id:ciu,
+				      	pais:pa,
+				      	user_id:us
+				      	
+				      	 },
+				      success: function(data){
+				           $('#anteriores').html(data);
+				           $('#direccion_nueva').each(function(){
+                				this.reset();   //Here form fields will be cleared.
+           					 });
+							$("#Direccion_ciudad_id option[value='']").attr('selected', true);
+		                    $('html, body').animate({
+		                        scrollTop: ($('#scrollNueva').offset().top - 150)
+		                    }, 500);
+							$('body').removeClass('aplicacion-cargando');
+							$('#scrollNueva').removeClass('alert-success');											           
+				      },
+				      error:function(){
+				  
+				      }
+				});
+			
+		
+	}
+	
+	
+	
+	
+	
 	
 	function eliminar(id)
 	{
@@ -340,11 +394,18 @@ else
 			});
 		}
 	});
-	$('.shippingAddress').change(function(){
-		if($(this).is(':checked')){
-			$('.shippingAddress').attr('checked','');
+	
+	
+	
+	
+	$('.billingAddress').change(function(){
+
+			$('.hidBill').val($(this).val());
+
+			$('.billingAddress').attr('checked', false);
 			$(this).attr('checked','checked');
-		}
+			
+		
 		
 	});
 	

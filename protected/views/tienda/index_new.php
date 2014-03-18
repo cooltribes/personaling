@@ -3,19 +3,35 @@
 	'Tienda',
 	);
 ?>
+
+<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->
+  <div id="ModalSuspencion" class="modal fade in"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-body">
+      <h3>Disculpa los inconvenientes...</h3>
+      <p>Por razones de mantenimiento,<br>
+        las compras están temporalmente suspendidas.
+      </p>
+      <p class="pull-right">¡Volveremos Pronto!</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="cerrarModalSuspencion" class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    </div>
+  </div>  
+<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
+
 <div id="banner100chic" style=" display:none; " class="margin_top ">
 	<div class="margin_bottom">
 		<img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Titina Penzini">
 	</div>
 	<div class="">
-		<a href="#" onclick="unchic()" ><span class="entypo">&larr; </span>Regresar a la tienda</a>
+		<a href="#" onclick="unchic()" ><span class="entypo">&larr; </span>	<?php echo Yii::t('contentForm','Back to shop');?></a>
 	</div>
 </div>
 <!-- BAR ON -->
 <section class="bard_tienda">
 
 	 	<ul class="nav unstyled">
-  			<li class="item">Filtrar:</li>
+  			<li class="item">	<?php echo Yii::t('contentForm','Filter');?>:</li>
   		<?php 
   			if(isset(Yii::app()->session['f_padre']))
 						echo CHtml::hiddenField('padrehid',Yii::app()->session['f_padre']);
@@ -52,14 +68,14 @@
 							
 						}
 						echo '</ul>
-						<a name="'.$padre->nombre.'" href="#" class="todos allhijos" value="'.strtoupper($padre->id).'">&nbsp';
+						<a name="'.$padre->nombre.'" href="#" class="todos allhijos CAPS" value="'.strtoupper($padre->id).'">&nbsp';
 						switch (strtoupper($padre->nombre)) {
 							case 'ROPA':
-								echo "TODA LA ".strtoupper($padre->nombre);
+								echo Yii::t('contentForm','All the')." ".strtoupper($padre->nombre);
 								break;
 							
 							default:
-								echo "TODOS LOS ".strtoupper($padre->nombre);								
+								echo Yii::t('contentForm','All the1')." ".strtoupper($padre->nombre);							
 								break;
 						}
 						echo '</a>
@@ -79,7 +95,7 @@
   			<li class="itemThumbnails tienda_iconos itemcolor">
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
-	  					Color: &nbsp
+	  					<?php echo Yii::t('contentForm','Color');?>: &nbsp
 	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>		
 	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
@@ -99,7 +115,7 @@
 							
 						?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 						</ul>  
-						<a href="#" value="0" class="todos scolor" >TODOS LOS COLORES</a>
+						<a href="#" value="0" class="todos scolor CAPS" ><?php echo Yii::t('contentForm','All colors');?></a>
 					</div>
 				</div>
   			</li>  					  			
@@ -107,7 +123,7 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropinput" >
-								<span id="precio_titulo">Por precio</span>
+								<span id="precio_titulo"><?php echo Yii::t('contentForm','By price');?></span>
 							<small> 
 								<b class="caret"></b>
 							</small>
@@ -129,7 +145,7 @@
 							echo'<li><a class="precio" href="#" id="2">De '.number_format($rangos[2]["min"],0,",",".").' a '
 							.number_format($rangos[2]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color12">('.$rangos[2]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="3">Más de '.number_format($rangos[3]["min"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color12">('.$rangos[3]['count'].')</span></a></li>';
-							echo'<li><a class="precio" href="#" id="5">Todos los precios</a></li>';
+							echo'<li><a class="precio" href="#" id="5">'.Yii::t('contentForm','All price').'</a></li>';
 					?>		
 					</ul>  
 				</div>	
@@ -138,7 +154,7 @@
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
-							<span id="marca_titulo" >Por marca</span>
+							<span id="marca_titulo" ><?php echo Yii::t('contentForm','By brand');?></span>
 							<small>
 								<b class="caret"></b>
 							</small>
@@ -163,7 +179,7 @@
 							}
 							echo CHtml::hiddenField('texthid','');
 						?>
-						<li><a class="marca" value="0" href="#">Todas las marcas</a></li>											
+						<li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
 					</ul>  	
 				</div>	
 			</li>
@@ -202,7 +218,7 @@
 			</li>
 			<li class="item itemInput">
 				<div class="contenedorInput">
-					<input type="text" class="input-medium" placeholder="Buscar" id="text_search"> 
+					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search"> 
 					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
@@ -212,7 +228,7 @@
 <div class="row ">
 <?php	echo CHtml::hiddenField('resethid',0);?>
 	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
-		<a href="" class="btn btn-block" id="reset">Limpiar Filtros</a>
+		<a href="" class="btn btn-block" id="reset"><?php echo Yii::t('contentForm','Clean Filters');?></a>
 	</div>
 </div>
 <!-- BAR OFF -->
@@ -255,7 +271,7 @@
             	//$('#catalogo').remove(); 
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
            
             	 
               	
@@ -275,8 +291,8 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	
-            	refresh();
+            	$('#chic_hid').val('0');
+            	preRefresh();
             
 
 		});
@@ -290,7 +306,7 @@
             	$('#text_search').val('');  
 
             	$('#banner100chic').fadeIn(3000);
-            	refresh();
+            	preRefresh();
         });  
 		
 		$(".cien").click(function() { 
@@ -302,6 +318,7 @@
 		
 		$(".not_cien").click(function() { 
             	
+				
             	$('#chic_hid').val('0');
 				$('#banner100chic').fadeOut(3000);
             	
@@ -319,20 +336,20 @@
             	else
             	  $('#color_titulo').html($(this).html());
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
 
 		});  
 		
 		$("#100chic").click(function() { 
 				$('#chic_hid').val('1');
 				$('#banner100chic').fadeIn(3000);
-				refresh();
+				preRefresh();
 			});
 			
 		function unchic(){
 				$('#chic_hid').val('0');
 				$('#banner100chic').fadeOut(3000);
-				refresh();
+				preRefresh();
 		}		
 		
 		$(".hijo").click(function() { 
@@ -346,7 +363,7 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
             	
 
 		});
@@ -361,7 +378,7 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
  
 		});
 		 
@@ -375,7 +392,7 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
 
 		});
 		
@@ -390,7 +407,7 @@
                	$('#preciohid').val('5');
                	$('#texthid').val($('#text_search').val()   );
             	$('#tienda_productos').html(''); 
-            	refresh();
+            	preRefresh();
            }
 
 		});
@@ -401,7 +418,7 @@
                	$('#catalogo').remove();
                	$('#resethid').val('1');
             	$('#tienda_productos').html(''); 
-            	refresh();
+            	preRefresh();
 
 		});
 		
@@ -417,7 +434,7 @@
 	               	$('#preciohid').val('5');
 	               	$('#texthid').val($('#text_search').val()   );
 	            	$('#tienda_productos').html(''); 
-	            	refresh();
+	            	preRefresh();
 		    		
 		    	}
 		    	
@@ -475,15 +492,27 @@ function encantar(id)
    		
    		
    	}  
-   	
+   
+function preRefresh(){
+	try{
+		 
+
+		$("#catalogo").infinitescroll("destroy");
+	
+			refresh();
+		}
+	catch(e){
+		 refresh();
+		}
+}
+   
 function refresh(reset)
 {
 
-  
-
- $("#catalogo").infinitescroll("destroy");
+	
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid ,#chic_hid').serialize();
+    alert($('#chic_hid').val());
+	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid ,#chic_hid').serialize();
   
 
 
@@ -540,3 +569,4 @@ function refresh(reset)
 }
 </script>
  
+

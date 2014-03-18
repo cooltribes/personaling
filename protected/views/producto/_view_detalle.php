@@ -181,7 +181,7 @@
         <div class="span4 columna_secundaria margin_bottom margin_top padding_top">
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span>Subtotal</span> <?php echo Yii::t('contentForm', 'currSym').' ';   
+              <h4 class="precio" ><span><?php echo Yii::t('contentForm','Subtotal'); ?></span> <?php echo Yii::t('contentForm', 'currSym').' ';   
                
             echo $producto->precio; // precio con IVA
               Yii::app()->clientScript->registerMetaTag($producto->precio.' '.Yii::t('contentForm', 'currSym').' ', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
@@ -244,18 +244,18 @@
           ?>
             <div class="span2 hidden-phone">
                 <?php if($producto->estado == 1){ ?>
-                 <a title="Producto Inactivo" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Inactivo </a>                
+                 <a title="Producto Inactivo" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> <?php echo Yii::t('contentForm','Inactive'); ?> </a>                
                 
               <?php
                 }else if($cont1 > 0 && $cont2 > 0){
               ?>
-                <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
+                <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy'); ?> </a>
               
            
             <?php
            }else{
             ?>
-            <a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> Agotado </a>
+            <a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> <?php echo Yii::t('contentForm','Sold out'); ?> </a>
             <?php
           }
                 ?>
@@ -274,11 +274,11 @@
           if($cont1 > 0 && $cont2 > 0){
           ?>
           
-          <p class="muted t_small CAPS">Selecciona Color y talla </p>
+          <p class="muted t_small CAPS"> <?php echo Yii::t('contentForm','Select color and size'); ?></p>
           
           <div class="row-fluid">
             <div class="span6">
-              <h5>Colores</h5>
+              <h5><?php echo Yii::t('contentForm','Colors'); ?></h5>
               <div id="vCo" class="clearfix colores">
                 <?php
 
@@ -314,7 +314,7 @@
               </div>
             </div>
             <div class="span6">
-              <h5>Tallas</h5>
+              <h5><?php echo Yii::t('contentForm','Sizes'); ?></h5>
               <div id="vTa" class="clearfix tallas">
                 <?php
                 
@@ -353,7 +353,7 @@
              ?>
              
              <div class="call2action visible-phone"><hr/>
-                <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> Comprar </a>
+                <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy'); ?> </a>
             </div>
          
             <?php  $marca = Marca::model()->findByPk($producto->marca_id);
@@ -362,9 +362,9 @@
              ?>
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
-              <li class="active"><a href="#descripcion" data-toggle="tab">Descripción</a></li>
-              <li><a href="#detalles" data-toggle="tab">Detalles</a></li>
-              <li><a href="#envio" data-toggle="tab">Envio</a></li>
+              <li class="active"><a href="#descripcion" data-toggle="tab"><?php echo Yii::t('contentForm','Description'); ?></a></li>
+              <li><a href="#detalles" data-toggle="tab"><?php echo Yii::t('contentForm','Details'); ?></a></li>
+              <li><a href="#envio" data-toggle="tab"><?php echo Yii::t('contentForm','Delivery'); ?></a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="descripcion">
@@ -377,7 +377,7 @@
                   ?>   
                   </div>
                   <div class="span6">
-                    <p><strong>Descripción</strong>: <?php echo $producto->descripcion; ?></p> 
+                    <p><strong><?php echo Yii::t('contentForm','Description'); ?></strong>: <?php echo $producto->descripcion; ?></p> 
                   </div>
                 </div>
               </div>
@@ -395,15 +395,15 @@
           </div>               
                     <div class="span9">
                     <p><strong><?php echo (null!==$marca)?$marca->nombre:'N/D'; ?></strong></p>
-                      <p><strong>Descripción</strong>: <?php echo (null!==$marca)?$marca->descripcion:'N/D'; ?></p> 
-            <p><strong>Peso</strong> <?php echo  $producto->peso; ?> </p>
+                      <p><strong><?php echo Yii::t('contentForm','Description'); ?></strong>: <?php echo (null!==$marca)?$marca->descripcion:'N/D'; ?></p> 
+            <p><strong><?php echo Yii::t('contentForm','Weight'); ?></strong> <?php echo  $producto->peso; ?> </p>
                     </div>
         </div>
               </div>
               </div>
               <div class="tab-pane" id="envio">
               <div class="row">
-                <div class="span3"><p class="padding_top_small">Nuestros envíos se realizan a través de:</p></div>
+                <div class="span3"><p class="padding_top_small"><?php echo Yii::t('contentForm','Our deliveries through'); ?>:</p></div>
               </div>
               <div class="row">
                 <div class="span3"><img height="60px"  src="<?php echo Yii::app()->baseUrl; ?>/images/logos_carriers.png"/></div>
@@ -413,7 +413,7 @@
           </div>
           <div class="braker_horz_top_1">
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
-              Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
+              <?php echo Yii::t('contentForm','Date estimated delivery'); ?>: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
           </div>
           <div class="braker_horz_top_1 addthis row-fluid padding_bottom_medium"> 
             
@@ -421,14 +421,14 @@
               if(isset($like)) // le ha dado like 
         {
             ?>
-            <div class="span6"><a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta</a> &nbsp;
+            <div class="span6"><a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> <?php echo Yii::t('contentForm','Like'); ?></a> &nbsp;
               <?php
         }
         else {
         ?>
        <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
       
-      &nbsp; </span> Me encanta</a> &nbsp;
+      &nbsp; </span> <?php echo Yii::t('contentForm','Like'); ?></a> &nbsp;
         <?php
         }
         ?>
@@ -475,7 +475,7 @@ $cont=0;
 <?php if($count > 0){  ?>
 
 <div class="braker_horz_top_1 hidden-phone">
-    <h3>Looks recomendados con este producto</h3>
+    <h3><?php echo Yii::t('contentForm','Recommended Looks with this product'); ?></h3>
     <div id="myCarousel" class="carousel slide"> 
       <!-- Carousel items -->
       <div class="carousel-inner">
@@ -502,7 +502,7 @@ $cont=0;
 else if($count == 0){
   ?>
   <div class="braker_horz_top_1 hidden-phone">
-    <h3>Looks recomendados con este producto</h3>
+    <h3><?php echo Yii::t('contentForm','Recommended Looks with this product'); ?></h3>
     
     <?php
   echo CHtml::image(Yii::app()->request->baseUrl.'/images/Ups_Personaling.jpg',"Imagen ", array("width" => "370", "height" => "370",'class'=>'img_1'));

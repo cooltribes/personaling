@@ -101,6 +101,7 @@ class Orden extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'direccionEnvio' => array(self::BELONGS_TO, 'DireccionEnvio', 'direccionEnvio_id'),
+			'direccionFacturacion' => array(self::BELONGS_TO, 'DireccionFacturacion', 'direccionFacturacion_id'),
 			//'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
@@ -650,6 +651,74 @@ class Orden extends CActiveRecord
         return  "Devolución Parcial";
 		
 	}
+        
+        /**
+         * Revisar la orden y los looks involucrados para asignarle a los
+         * respectivos PS su comisión ganada.
+         */
+        public function pagarComisiones($orden){            
+           
+            $sumaComisiones = array();
+            foreach($orden->ohptc as $productoEnOrden)
+            {                                                    
+                //Incluir en la comision solo los productos que estan en un look
+                if($productoEnOrden->look_id > 0){
+
+                    $lookActual = Look::model()->findByPk($productoEnOrden->look_id);
+
+                    //Comisión de la PS dueña del look
+                    $comision = $lookActual->user->profile->comision;
+                    $tipoComision = $lookActual->user->profile->tipo_comision;
+//                    $comision = 7;
+//                    $tipoComision = 1; //1=%, 2=fijo                       
+
+                    //Si la comisión es por Porcentaje
+                    if($tipoComision == 1){
+
+                        $comision /= 100;
+                        $montoVenta = $productoEnOrden->precio * $productoEnOrden->cantidad;
+                        $comisionAgregada = $montoVenta * $comision;                                                         
+
+                        //Si la comisión es un monto fijo
+                    }else if($tipoComision == 2){
+
+                        $comisionAgregada = $comision;
+
+                    } 
+                    $idUsuario = $lookActual->user->id;
+                    //si ya hay comisiones por el look/usuario actual, sumar
+                    if(key_exists($idUsuario, $sumaComisiones)){
+
+                        $sumaComisiones[$idUsuario] += $comisionAgregada;
+
+                    //si no hay, agregarlo al array    
+                    }else{
+
+                        $sumaComisiones[$idUsuario] = $comisionAgregada;                                
+
+                    }
+
+                }
+
+            } //fin foreach para cada producto de la orden
+
+            //Agregar la suma total de comisiones por usuario a su
+            //respectivo balance
+            foreach($sumaComisiones as $idUsuario => $comisionPs){                    
+
+                $balance = new Balance();
+                $balance->total = $comisionPs;
+                $balance->orden_id = $orden->id;
+                $balance->user_id = $idUsuario;
+                $balance->tipo = 5; //balance para comisiones
+                //$balance->save();
+
+            } 
+
+            
+            
+            
+        }
 	
 	
 	

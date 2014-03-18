@@ -6,21 +6,21 @@
 ?>
 <div class="container margin_top">
     <div class="page-header">
-        <h1>Administrar Mis Looks</small></h1>
+        <h1><?php echo Yii::t('contentForm','Manage my Looks'); ?></small></h1>
     </div>
     <table width="60%" border="0" cellspacing="0" cellpadding="0" class="table ">
         <tr>
-            <th scope="col" colspan="6"> Totales </th>
+            <th scope="col" colspan="6"> <?php echo Yii::t('contentForm','Totals'); ?> </th>
         </tr> 
         <tr>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalbyUser(); ?> </p>
-                Totales</td>
+                <?php echo Yii::t('contentForm','Totals'); ?></td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(2); ?> </p>
-                Aprobados</td>
+                <?php echo Yii::t('contentForm','Approved'); ?></td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(1); ?> </p>
-                Por Aprobar</td>
+                <?php echo Yii::t('contentForm','To approve'); ?></td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getxStatusbyUser(0); ?></p>
-                Por Enviar</td>
+                <?php echo Yii::t('contentForm','To send'); ?></td>
             <!--<td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
                 Cancelados </td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?> </p>
@@ -31,7 +31,7 @@
     <div class="row margin_top margin_bottom ">
         <div class="span4">
             <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
-                <input class="span3" id="buscar_look" type="text" placeholder="Buscar">
+                <input class="span3" id="buscar_look" type="text" placeholder="<?php echo Yii::t('contentForm','Search'); ?>">
             </div>
         </div>
   <?php
@@ -65,14 +65,14 @@
         <div class="span3">
             <?php echo CHtml::dropDownList("Filtros", "", 
                     Chtml::listData(Filter::model()->findAllByAttributes(array('type' => '5', 'user_id' => Yii::app()->user->id)),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- '.Yii::t('contentForm','Preset filters').' --', 'id' => 'all_filters')) ?>
         </div>
-        <div class="span3"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
+        <div class="span3"><a href="#" class="btn crear-filtro"><?php echo Yii::t('contentForm','Create new filter'); ?></a></div>
         <div class="span2">
         
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType' => 'link',
-			'label'=>'Crear Look',
+			'label'=>Yii::t('contentForm','Create Look'),
 			'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			'size'=>'normal', // null, 'large', 'small' or 'mini'
 			'url' => 'create',
@@ -87,25 +87,35 @@ $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
             <th scope="col"></th>
-            <th colspan="2" scope="col">Look</th>
-            <th scope="col">Precio en '.Yii::t('contentForm', 'currSym').'</th>
-            <th scope="col">Vendidos</th>
-            <th scope="col">Ventas en '.Yii::t('contentForm', 'currSym').'.</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Fecha de Carga</th>
-            <th scope="col">Progreso de la campaña</th>
-            <th scope="col">Acción</th>
+            <th colspan="2" scope="col">'.Yii::t('contentForm','Look').'</th>
+            <th scope="col">'.Yii::t('contentForm', 'Price in').' '.Yii::t('contentForm', 'currSym').'</th>
+            <th scope="col">'.Yii::t('contentForm', 'Sold').'</th>
+            <th scope="col">'.Yii::t('contentForm', 'Sales in').' '.Yii::t('contentForm', 'currSym').'.</th>
+            <th scope="col">'.Yii::t('contentForm', 'State').'</th>
+            <th scope="col">'.Yii::t('contentForm', 'Update date').'</th>
+            <th scope="col">'.Yii::t('contentForm', 'Campaign progress').'</th>
+            <th scope="col">'.Yii::t('contentForm', 'Action').'</th>
         </tr>
     {items}
     </table>
     {pager}
 	';
 
+        $pagerParams=array(
+            'header'=>'',
+            'prevPageLabel' => Yii::t('contentForm','Previous'),
+            'nextPageLabel' => Yii::t('contentForm','Next'),
+            'firstPageLabel'=> Yii::t('contentForm','First'),
+            'lastPageLabel'=> Yii::t('contentForm','Last'),
+            'htmlOptions'=>array(
+                'class'=>'pagination pagination-right'));
+
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_ps',
 	    'template'=>$template,
+        'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',   
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	
 							$('#todos').click(function() { 
@@ -119,12 +129,7 @@ $template = '{summary}
 							});
 						   
 							} ",
-		'pager'=>array(
-			'header'=>'',
-			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
-		)
-		),					
+		'pager'=>$pagerParams,					
 	));    
 	?>
 

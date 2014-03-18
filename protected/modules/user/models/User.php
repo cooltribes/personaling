@@ -727,6 +727,68 @@ class User extends CActiveRecord {
             return $edad->y;
             
 	} 
+        
+        /*Calcula el saldo que tiene una PS percibido por comisiones en ventas*/
+        function getSaldoPorComisiones() {
+            
+            //Balance tipo 5 = por commisiones
+            $saldo = Yii::app()->db->createCommand(
+                    "SELECT SUM(total) as total FROM tbl_balance WHERE tipo = 5
+                     AND user_id=".$this->id)
+                    ->queryScalar();
+            
+            return Yii::app()->numberFormatter->formatDecimal($saldo);            
+        }
+        
+        /*Todos los productos vendidos como parte de looks de una PS*/
+        function getProductosVendidos() {
+            
+            //Guardar los ids de los looks de esta PS
+            $looksIds = array();
+            foreach($this->looks as $look){
+                $looksIds[] = $look->id;
+            }
+            
+            //Si no tiene looks, los productos vendidos son 0
+            if(empty($looksIds)){
+                return 0;
+            }
+            
+            //buscar ventas de esos looks.
+            $total = Yii::app()->db->createCommand()->select("IFNULL(SUM(o.cantidad), 0)")
+                    ->from("tbl_orden_has_productotallacolor as o")
+                    ->where(array("in", "o.look_id", $looksIds))
+                    ->queryScalar();
+            
+            return $total;
+        }
 	 
+        /*Todos los productos vendidos como parte de looks de una PS*/
+        function getLooksVendidos() {
+            
+           
+            $total = 0;
+            return $total;
+        }
+        
+        /*Obtiene la comision del PS formateada de acuerdo al tipo*/
+        function getComision() {
+           
+            $comision = $this->profile->comision . " ";
+            
+            //Porcentaje
+            if($this->profile->tipo_comision == 1){
+                
+                $comision .= "%";
+                
+            }else if($this->profile->tipo_comision == 2){
+                
+                $comision .= Yii::t('contentForm', 'currSym');
+                
+            }
+            
+            return $comision;
+        }
+        
 
 }

@@ -8,13 +8,13 @@
     
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Todos tus perfiles</h3>
+        <h3><?php echo Yii::t('contentForm','All your profiles'); ?></h3>
     </div>    
       
     <div class="modal-body ">
 <!--        <p class="lead">Selecciona un perfil para alguien más</p> 
         <hr>-->
-        <h4>Selecciona un perfil para alguien más:</h4>
+        <h4><?php echo Yii::t('contentForm','Select a profile for someone else'); ?>:</h4>
         <div class="row-fluid margin_bottom_medium margin_top_medium">
             <div class="span6 offset3">                                     
                         
@@ -43,7 +43,7 @@
             <?php
             $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType' => 'link',
-                'label' => 'Administrar Perfiles',
+                'label' => Yii::t('contentForm','Admin Profiles'),
                 'type' => 'danger',
                 'url' => CController::createUrl('/user/profile/tusPerfiles'),
                 //'size' => 'large', // null, 'large', 'small' or 'mini'

@@ -114,7 +114,8 @@ class Filter extends CActiveRecord
         ));
     }
     
-    public static function guardarFiltro($tipo, &$dataProvider, &$model)
+        
+    public static function guardarFiltro($tipo, &$dataProvider, &$model, $campoBuscar)
     {
          if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
             {
@@ -127,7 +128,7 @@ class Filter extends CActiveRecord
             $filter = new Filter;            
             
             if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
-               && !isset($_POST['nombre'])){
+               && !isset($_POST[$campoBuscar])){
               $_POST = $_SESSION['todoPost'];
             }            
             
@@ -150,9 +151,9 @@ class Filter extends CActiveRecord
                 //Respuesta ajax
                 $response = array();
                 
-                if (isset($filters['fields'])) {      
-                    
-                    $dataProvider = $model->buscarPorFiltros($filters);                    
+                if (isset($filters['fields'])) {                         
+                       
+                    $dataProvider = $model->buscarPorFiltros($filters);                                         
                     
                      //si va a guardar
                      if (isset($_POST['save'])){                        

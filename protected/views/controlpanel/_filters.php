@@ -36,7 +36,7 @@
                             array('style' => 'display:none'));
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersPS.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUsuarios.js");
     
     
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -59,25 +59,17 @@
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
                                 'id' => 'ID',
-                                'first_name' => 'Nombre',
-                                'last_name' => 'Apellido',
-                                'email' => 'Correo',
-                                'telefono' => 'Teléfono',
-                                'status' => 'Estado',
-                                'balance' => 'Saldo Disponible',
-                                'tipoUsuario' => 'Tipo de usuario',
-                                'ciudad' => 'Ciudad',
-                                'fuenteR' => 'Fuente de registro',
-                                'invitaciones' => 'Invitaciones enviadas',
-                                'visit' => 'Número de visitas',
-                                'lastvisit_at' => 'Fecha de última visita',
-                                'create_at' => 'Fecha de registro',
-                                'monto' => 'Monto comprado',
-                                'lastorder_at' => 'Fecha de última compra',                                
-                                'looks' => 'Cantidad de looks comprados',                                
-                                'looks_ps' => 'Looks comprados por Personal Shopper',
-                                'prods_marca' => 'Looks comprados por Marca',
-                                
+                                'first_name+2' => 'Nombre',
+                                'last_name+2' => 'Apellido',
+                                'email+2' => 'Correo',
+                                'balance+2' => 'Saldo disponible',                                                                
+                                'saldoComisiones+2' => '-Saldo en comisiones',                                                                                                
+                                'create_at+2' => 'Fecha de registro',                                
+                                'prodsVendidos+2' => '-Productos vendidos',                                
+                                'looksVendidos+2' => '-Looks vendidos',                                                                
+                                'comision+2' => '-Comisión',                                                                
+                                'tipoComision+2' => '-Tipo de comisión', 
+                                'tipoComision+2' => '-Tipo de comisión', 
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
@@ -98,12 +90,6 @@
                         
                             <a href="#" class="btn span_add" style="float: right" title="Agregar nuevo campo"> + </a>
                             <a href="#" class="btn btn-danger span_delete" style="display:none; float: right" title="Eliminar campo"> - </a> 
-                        
-                        
-                        
-                       
-                        
-                        
 
                     </div>
                 </div>    

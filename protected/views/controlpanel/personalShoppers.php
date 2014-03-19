@@ -5,11 +5,6 @@
 //'Usuarios',
 //);
 
-
-$personal_shoppers = User::model()->countByAttributes(array('personal_shopper' => 1));
-$aplicantesPs = User::model()->countByAttributes(array('personal_shopper' => 2));
-$usuarios_facebook = User::model()->count('facebook_id IS NOT NULL');
-$usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
 ?>
 <div class="container margin_top">
 

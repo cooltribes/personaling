@@ -18,7 +18,7 @@ $this->breadcrumbs=array(
 			<div class="margin_bottom">
 				<p class="lead">1. Elige como enviarla</p>
 				<div class="btn-group" data-toggle="buttons-radio">
-				  <button type="button" class="btn btn-info">Email</button>
+				  <button type="button" class="btn btn-info">Correo electrónico</button>
 				  <button type="button" class="btn btn-info">Impreso</button>
 				</div>
 			</div>				
@@ -55,9 +55,9 @@ $this->breadcrumbs=array(
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="inputEmail">Email</label>
+						<label class="control-label" for="inputEmail">Correo electrónico</label>
 						<div class="controls row-fluid">
-				      			<input class="span6" type="text" id="inputEmail" placeholder="Email">
+				      			<input class="span6" type="text" id="inputEmail" placeholder="Correo electrónico">
 						</div>
 					</div>			
 			  		<div class="control-group">

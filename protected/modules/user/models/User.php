@@ -341,14 +341,25 @@ class User extends CActiveRecord {
 
         $criteria->with = array();
         $criteria->select = array();
-        //$criteria->select[] = "t.*";
+         
+        /*Ver si hay un filtro para PS*/
+        $paraPS = false;
+        foreach ($filters['fields'] as $key => $campo) {
+            if(strpos($campo, "_2")){
+                $paraPS = true;                          
+                $filters['fields'][$key] = strtr($campo, array("_2"=>"")); 
+            }
+        }
+        //buscar solo dentro de los PS
+        if($paraPS) $criteria->compare("personal_shopper", 1);
 
+        //recorrer los filtros para armar el criteria
         for ($i = 0; $i < count($filters['fields']); $i++) {
 
             $column = $filters['fields'][$i];
             $value = $filters['vals'][$i];
             $comparator = $filters['ops'][$i];
-
+            
             if ($i == 0) 
             {
                 $logicOp = 'AND';
@@ -360,7 +371,7 @@ class User extends CActiveRecord {
 
             /* Usuarios */
             if ($column == 'first_name' || $column == 'last_name'
-                    || $column == 'email' || $column == 'ciudad')
+               || $column == 'email' || $column == 'ciudad')
             {
                 
                 $value = ($comparator == '=') ? "=" . $value . "" : $value;
@@ -413,8 +424,7 @@ class User extends CActiveRecord {
             }
             
             if($column === 'fuenteR')
-            {                                
-                
+            {   
                 if($value === 'face')
                 {
                    $comparator = $comparator === '=' ? 'NOT ' : '';                   
@@ -422,7 +432,6 @@ class User extends CActiveRecord {
                 }else if($value === 'user')
                 {
                     $comparator = $comparator === '=' ? '' : 'NOT ';
-
                 }
                 
                 $criteria->addCondition('facebook_id IS '.$comparator.'NULL', $logicOp);
@@ -433,14 +442,12 @@ class User extends CActiveRecord {
 
             if($column == 'monto')
             { 
-
                  $criteria->addCondition('(IFNULL((select SUM(orden.total) 
 		from tbl_orden orden 
 		where orden.user_id = user.id 
 			AND 
 		(orden.estado = 3 OR orden.estado = 4 OR orden.estado = 8)), 0))  '
-                                        . $comparator . ' ' . $value . '', $logicOp);
-                        
+                                        . $comparator . ' ' . $value . '', $logicOp);                        
                 continue;
             }
             /*Saldo disponible*/
@@ -577,6 +584,25 @@ class User extends CActiveRecord {
                 continue;
             }                       
 
+            /*Looks vendidos por PS*/
+            if($column == 'looks_vendidos'){
+                
+            }
+
+            /*Saldo ganado por comisiones*/
+            if($column == 'saldoComisiones')
+            {                 
+                 $criteria->addCondition('(IFNULL(
+                     (
+                        SELECT SUM(total) as total FROM tbl_balance WHERE user_id = user.id
+                        AND tipo = 5
+
+                      ), 0))  '
+                    . $comparator . ' ' . $value . '', $logicOp);
+                        
+                continue;
+            }
+            
             if ($column == 'lastvisit_at' || $column == 'create_at') {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);
@@ -584,18 +610,14 @@ class User extends CActiveRecord {
             
             $criteria->compare($column, $comparator . " " . $value, false, $logicOp);
         }
+        
+        $criteria->together = true;        
 
-
-        //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
-        $criteria->together = true;
-        //$criteria->compare('t.status', '1'); //siempre los no eliminados
-
-//        echo "Criteria:";
-//
+//        echo "<br>Criteria:<br>";
 //        echo "<pre>";
 //        print_r($criteria->toArray());
 //        echo "</pre>";
-//            exit();
+//        Yii::app()->end();   
 
 
         return new CActiveDataProvider($this, array(
@@ -603,6 +625,8 @@ class User extends CActiveRecord {
         ));
     }
 
+   
+    
 		public function getTotalPS()
 	{
 		$sql = "select count(*) from tbl_users where personal_shopper = 1";

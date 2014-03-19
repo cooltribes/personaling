@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+<div class="row" id="filters-view" style="display: none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -49,8 +49,7 @@
 		
 ?>
     
-    <h4>Nuevo Filtro:</h4>
-    
+    <h4 class="pepe">Nueva búsqueda avanzada:</h4>
     <fieldset>
         <div id="filters-container" class="clearfix">
             <div id="filter">
@@ -116,8 +115,8 @@
     <div class="span2 pull-right">
         <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
     </div>
-    <div class="span3 pull-right">
-        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Nuevo Filtro</a> 
+    <div class="span2 pull-right">
+        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar</a> 
     </div>
     <div class="span2 pull-right" style="display: none">
         <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar Filtro</a> 
@@ -129,6 +128,7 @@
     
     
     
+
 </div>
 <script type="text/javascript">
 /*<![CDATA[*/

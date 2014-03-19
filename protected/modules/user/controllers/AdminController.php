@@ -750,7 +750,7 @@ if(isset($_POST['Profile']))
 			$message->addTo($model->email);
 			$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 			Yii::app()->mail->send($message);
-			Yii::app()->user->setFlash('success',"El email de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
+			Yii::app()->user->setFlash('success',"El correo electrónico de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
 			$this->redirect(array('/user/admin'));
 		
 	}

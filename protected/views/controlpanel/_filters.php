@@ -14,26 +14,18 @@
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
-                                    'style' => 'display:none'));
-    echo CHtml::dropDownList('tipoUsuario', '', array('admin' => 'Administrador',
-                                                       'ps' => 'Personal Shopper',
-                                                       'psDes' => 'Personal Shopper Destacado',
-                                                       'aplica' => 'Aplicante Personal Shopper',
-                                                       'user' => 'Usuario',),
-                            array('style' => 'display:none'));    
+                                    'style' => 'display:none'));        
     
-    echo CHtml::dropDownList('fuenteR', '', array('face' => 'Facebook',                                                       
-                                                  'user' => 'Registro Normal',
-                                                   ),
+    echo CHtml::dropDownList('tipo_comision_2', '', 
+                        array('1' => 'Porcentaje (%)',                                                       
+                          '2' => 'Valor fijo ('
+                        .Yii::t('contentForm', 'currSym').")",
+                                                           ),
                             array('style' => 'display:none'));    
     
     echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
-                            array('style' => 'display:none'));
+                            array('style' => 'display:none'));    
     
-    echo CHtml::dropDownList('looks_ps', '', CHtml::listData(User::model()->with(array(
-                               'profile'=>array(),
-                            ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
-                            array('style' => 'display:none'));
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUsuarios.js");
@@ -59,25 +51,16 @@
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
                                 'id' => 'ID',
-                                'first_name' => 'Nombre',
-                                'last_name' => 'Apellido',
-                                'email' => 'Correo',
-                                'telefono' => 'Teléfono',
-                                'status' => 'Estado',
-                                'balance' => 'Saldo Disponible',
-                                'tipoUsuario' => 'Tipo de usuario',
-                                'ciudad' => 'Ciudad',
-                                'fuenteR' => 'Fuente de registro',
-                                'invitaciones' => 'Invitaciones enviadas',
-                                'visit' => 'Número de visitas',
-                                'lastvisit_at' => 'Fecha de última visita',
-                                'create_at' => 'Fecha de registro',
-                                'monto' => 'Monto comprado',
-                                'lastorder_at' => 'Fecha de última compra',                                
-                                'looks' => 'Cantidad de looks comprados',                                
-                                'looks_ps' => 'Looks comprados por Personal Shopper',
-                                'prods_marca' => 'Looks comprados por Marca',
-                                
+                                'first_name_2' => 'Nombre',
+                                'last_name_2' => 'Apellido',
+                                'email_2' => 'Correo',
+                                'balance_2' => 'Saldo disponible',                                                                
+                                'saldoComisiones_2' => 'Saldo en comisiones',                                                                                                
+                                'create_at_2' => 'Fecha de registro',                                
+//                                'prodsVendidos+2' => '-Productos vendidos',                                
+//                                'looksVendidos+2' => '-Looks vendidos',                                                                
+                                'comision_2' => 'Comisión actual',                                                                
+                                'tipo_comision_2' => 'Tipo de comisión',
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
@@ -98,12 +81,6 @@
                         
                             <a href="#" class="btn span_add" style="float: right" title="Agregar nuevo campo"> + </a>
                             <a href="#" class="btn btn-danger span_delete" style="display:none; float: right" title="Eliminar campo"> - </a> 
-                        
-                        
-                        
-                       
-                        
-                        
 
                     </div>
                 </div>    

@@ -5,11 +5,6 @@
 //'Usuarios',
 //);
 
-
-$personal_shoppers = User::model()->countByAttributes(array('personal_shopper' => 1));
-$aplicantesPs = User::model()->countByAttributes(array('personal_shopper' => 2));
-$usuarios_facebook = User::model()->count('facebook_id IS NOT NULL');
-$usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
 ?>
 <div class="container margin_top">
 
@@ -35,15 +30,15 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         </tr>
         <tr>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $totalGeneradoComisiones." ".Yii::t('contentForm', 'currSym'); ?></p>
-                Total generado en comsiones</td>
+                Total generado<br>en comsiones</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasGeneraronComision; ?></p>
                 Ventas con comisión</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasNoGeneraronComision; ?></p>
                 Ventas sin comisión</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo 34; ?></p>
-                Looks vendidos (con comisión)</td>
+                Looks vendidos<br>(con comisión)</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $prodsVendidosComision; ?></p>
-                Productos vendidos (con comisión)</td>
+                Productos vendidos<br>(con comisión)</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo 22; ?></p>
                 PS con ventas</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo 56; ?> </p>
@@ -62,7 +57,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         </div>
     </div>
     <div class="span3">
-        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 3'), "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters'))
+        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 8'), "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters'))
         ?>
     </div>
     <div class="span3 "><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
@@ -70,7 +65,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 </div>
 
 <hr/>
-<?php //  $this->renderPartial("_filters"); ?>
+<?php   $this->renderPartial("_filters"); ?>
 <hr/>
 <?php
 $template = '{summary}

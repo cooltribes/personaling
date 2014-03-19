@@ -379,6 +379,25 @@ class ControlpanelController extends Controller
                     'pageSize' => Yii::app()->getModule('user')->user_page_size,
                 ),
             ));
+            
+             /*********************** Para los filtros *********************/
+            Filter::guardarFiltro(8, $dataProvider, $model, 'nombre');
+            
+            if (isset($_GET['nombre'])) {
+                
+                unset($_SESSION["todoPost"]);
+                $criteria->alias = 'User';
+                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+                //$criteria->compare("personal_shopper", 1); //solo con los personalShoppers
+                
+                
+                $dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
+            }
 
 
             $this->render('personalShoppers', array(

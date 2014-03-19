@@ -36,7 +36,7 @@ class EnvioGiftcard extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'email' => 'Email',
+			'email' => 'Correo electrónico',
 			'nombre' => 'Para',
 			'mensaje' => 'Mensaje',
 		);

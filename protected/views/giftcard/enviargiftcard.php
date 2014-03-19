@@ -59,7 +59,7 @@ $this->breadcrumbs=array(
                                     <?php echo $form->errorSummary($envio); ?>
 
                                     <?php echo $form->textFieldRow($envio, 'email', array(
-                                        'placeholder' => 'Email del destinatario')); ?>
+                                        'placeholder' => 'Correo electrónico del destinatario')); ?>
                                 <p class="lead">2. Personalízala</p>                                       
 
                                     <?php echo $form->textFieldRow($envio, 'nombre', array(

@@ -49,7 +49,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
     <div class="box_20130928 margin_bottom_small">
         <h1>Obtén recomendaciones <span>personalizadas adaptadas a ti</span></h1>
         <p>
-          <span>1.</span> Ingresa tu email
+          <span>1.</span> Ingresa tu correo electrónico
           <span>2.</span> Indica la forma de tu cuerpo y medidas
           <span>3.</span> Elige tu estilo
           <br><span>4.</span> Compra Looks de las mejores marcas recomendados a tu medida

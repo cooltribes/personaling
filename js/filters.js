@@ -66,7 +66,7 @@ function clearFilters() {
     $('.span_add').last().show();      
     
     //Titulo
-    $('#form_filtros h4').html("Nuevo Filtro:");
+    $('#form_filtros h4').html("Nueva búsqueda avanzada:");
                             
     //Ocultar el botón guardar
     $('#filter-save2').parent('div').hide();

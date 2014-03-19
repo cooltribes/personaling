@@ -291,7 +291,8 @@ function searchAndSave(URL, newFilter) {
 }
 
 //Para buscar por listado
-function listFilter(column, selectId){
+function listFilter(column, selectId){   
+    
     var operator = column.parent('div').next();
     var value = operator.next();
 

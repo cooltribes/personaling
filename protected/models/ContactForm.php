@@ -42,7 +42,7 @@ class ContactForm extends CFormModel
 		return array(
 			'verifyCode'=>'Código de verificación ',
 			'name' => 'Nombre',
-			'email' => 'Email',
+			'email' => 'Correo electrónico',
 			'subject' => 'Asunto',
 			'body' => 'Mensaje',			
 		);

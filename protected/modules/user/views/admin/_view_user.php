@@ -65,7 +65,7 @@
       <li><a title="Cambiar contraseña" href="#" onclick='modal( <?php echo $data->id; ?>)'>  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
       <?php if($data->status == 0){ ?>
       <li>
-        <?php echo CHtml::link('<i class="icon-refresh">  </i>   Enviar Email de Verificación ',array("admin/resendvalidationemail","id"=>$data->id)); ?>
+        <?php echo CHtml::link('<i class="icon-refresh">  </i>   Enviar Correo electrónico de Verificación ',array("admin/resendvalidationemail","id"=>$data->id)); ?>
       </li>
       <?php } ?>
       <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>

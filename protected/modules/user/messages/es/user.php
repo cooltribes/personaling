@@ -13,7 +13,7 @@ return array(
     'old password' => 'Contraseña vieja',
     'Remember me next time' => 'Recordarme más tarde',
     'Username is incorrect.' => "El nombre de usuario es incorrecto.",
-    'Email is incorrect.' => 'El E-mail es incorrecto.',
+    'Email is incorrect.' => 'El correo electrónico es incorrecto.',
     'This user\'s name already exists.' => 'Este nombre de usuario ya existe.',
     'This user\'s email address already exists.' => '¡Upss! Este correo ya está registrado.',
     'Incorrect First Name (length between 3 and 50 characters).' => '¿Cómo te llamas?',

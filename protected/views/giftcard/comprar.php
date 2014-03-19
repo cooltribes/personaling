@@ -153,7 +153,7 @@ $this->breadcrumbs = array(
                                 <div class="accordion-inner">
 <?php
 echo $form->textFieldRow($envio, 'email', array(
-    'placeholder' => 'Email del destinatario'
+    'placeholder' => 'Correo electrónico del destinatario'
 ));
 ?>  
                                 </div>

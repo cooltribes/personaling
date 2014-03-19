@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar','cargarCiudades','addDireccion'),
+				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,6 +63,19 @@ class DireccionController extends Controller
 				$return = '';
 				foreach ($ciudades as $ciudad) {
 					$return .= '<option value="'.$ciudad->id.'">'.$ciudad->nombre.'</option>';
+				}
+				echo $return;
+			}
+		}
+	}
+	
+	public function actionCargarProvincias(){
+		if(isset($_POST['pais_id'])){
+			$provincias = Ciudad::model()->findAllBySql("SELECT * FROM tbl_provincia WHERE pais_id =".$_POST['pais_id']." order by nombre ASC");
+			if(sizeof($provincias) > 0){
+				$return = '';
+				foreach ($provincias as $provincia) {
+					$return .= '<option value="'.$provincia->id.'">'.$provincia->nombre.'</option>';
 				}
 				echo $return;
 			}

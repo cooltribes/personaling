@@ -176,8 +176,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="control-group"> 
               
               <div class="controls">
-              	<?php echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => Yii::t('contentForm','Select a province')));?>
-                
+              	<?php 
+              	if($pais->grupo==0)
+              		echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAllByAttributes(array('pais_id'=>$pais->id),array('order' => 'nombre')),'id','nombre'), array('empty' => Yii::t('contentForm','Select a province')));
+                else
+                	echo $form->dropDownListRow($dir,'provincia_id', array(), array('empty' => Yii::t('contentForm','Select a province') ));?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
@@ -261,7 +264,7 @@ else
 ?>
 
 <script>
-	
+
 	
 	$('#direccion_nueva').submit(function(e) {
     		e.preventDefault();
@@ -395,6 +398,19 @@ else
 		}
 	});
 	
+	$('#Direccion_pais').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarProvincias'); ?>",
+			      type: "post",
+			      data: { pais_id : $(this).val() },
+			      success: function(data){
+			           $('#Direccion_provincia_id').html(data);
+			      },
+			});
+		}
+	});
 	
 	
 	

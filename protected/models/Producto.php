@@ -949,6 +949,10 @@ public function multipleColor2($idColor, $idact)
              
 		
 	 }
+	 public function getPrecioVenta(){
+	 	$sql="select precioVenta from tbl_precio where tbl_producto_id =".$this->id." order by id desc limit 1";
+		return Yii::app()->db->createCommand($sql)->queryScalar();
+	 }
          
          /**
          * Buscar por todos los filtros dados en el array $filters

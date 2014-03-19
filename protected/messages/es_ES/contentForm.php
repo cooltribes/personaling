@@ -4,7 +4,8 @@ return array (
 
 	'PRONUNCIACION' => 'Española',
 	'currSym'=>'€',
-
+	'IVA' => '0.12',
+    'IVAtext' => '12%',
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',

@@ -349,6 +349,17 @@ class User extends CActiveRecord {
             $value = $filters['vals'][$i];
             $comparator = $filters['ops'][$i];
 
+            $paraPS = false;
+            /*Ver si es un filtro para PS*/
+            foreach ($filters['fields'] as $campo) {
+                if(strpos($campo, "+2")){
+                    $paraPS = true;                    
+                    strtr($campo, "+2", "");                    
+                }
+            }
+            
+            if($paraPS) $criteria->compare("personal_shopper", 1);
+            
             if ($i == 0) 
             {
                 $logicOp = 'AND';
@@ -359,8 +370,8 @@ class User extends CActiveRecord {
             }
 
             /* Usuarios */
-            if ($column == 'first_name' || $column == 'last_name'
-                    || $column == 'email' || $column == 'ciudad')
+            if (strpos($column, 'first_name')==0 || strpos($column, 'last_name')==0
+               || strpos($column, 'email')==0 || $column == 'ciudad')
             {
                 
                 $value = ($comparator == '=') ? "=" . $value . "" : $value;
@@ -413,8 +424,7 @@ class User extends CActiveRecord {
             }
             
             if($column === 'fuenteR')
-            {                                
-                
+            {   
                 if($value === 'face')
                 {
                    $comparator = $comparator === '=' ? 'NOT ' : '';                   
@@ -422,7 +432,6 @@ class User extends CActiveRecord {
                 }else if($value === 'user')
                 {
                     $comparator = $comparator === '=' ? '' : 'NOT ';
-
                 }
                 
                 $criteria->addCondition('facebook_id IS '.$comparator.'NULL', $logicOp);
@@ -433,18 +442,16 @@ class User extends CActiveRecord {
 
             if($column == 'monto')
             { 
-
                  $criteria->addCondition('(IFNULL((select SUM(orden.total) 
 		from tbl_orden orden 
 		where orden.user_id = user.id 
 			AND 
 		(orden.estado = 3 OR orden.estado = 4 OR orden.estado = 8)), 0))  '
-                                        . $comparator . ' ' . $value . '', $logicOp);
-                        
+                                        . $comparator . ' ' . $value . '', $logicOp);                        
                 continue;
             }
             /*Saldo disponible*/
-            if($column == 'balance')
+            if(strpos($column, 'balance') ===  0)
             { 
                 
                  $criteria->addCondition('(IFNULL(
@@ -577,14 +584,23 @@ class User extends CActiveRecord {
                 continue;
             }                       
 
-            if ($column == 'lastvisit_at' || $column == 'create_at') {
+            /*Looks vendidos por PS*/
+            if($column == 'looks_vendidos'){
+                
+            }
+            
+            if ($column == 'lastvisit_at' || strpos($column, 'create_at')==0) {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);
             }
             
+            
+            
+            
             $criteria->compare($column, $comparator . " " . $value, false, $logicOp);
         }
-
+        
+        
 
         //$criteria->with = array('categorias', 'preciotallacolor', 'precios');
         $criteria->together = true;
@@ -603,6 +619,8 @@ class User extends CActiveRecord {
         ));
     }
 
+   
+    
 		public function getTotalPS()
 	{
 		$sql = "select count(*) from tbl_users where personal_shopper = 1";

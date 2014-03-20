@@ -90,7 +90,7 @@
     <!--VER DETALLES-->
     <td style="text-align: center">
        <?php echo CHtml::link('<i class="icon-eye-open"></i>',
-               array("profile/perfil", "id" => $data->id)); ?>            
+               array("controlpanel/misventas", "id" => $data->id)); ?>            
     </td>
 </tr>
 <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>

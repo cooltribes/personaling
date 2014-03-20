@@ -115,7 +115,7 @@ class Filter extends CActiveRecord
     }
     
         
-    public static function guardarFiltro($tipo, &$dataProvider, &$model, $campoBuscar)
+    public static function procesarFiltros($tipo, &$dataProvider, &$model, $campoBuscar)
     {
          if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
             {

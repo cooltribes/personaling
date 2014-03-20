@@ -20,12 +20,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         )
 );
 ?> 
-
-    <style>
-        .red{
-            color: red;
-        }
-    </style>
+    
     <div class="page-header">
         <h1>Remuneración - Personal Shoppers</h1>
     </div>
@@ -42,11 +37,11 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 Total generado<br>en comsiones</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $prodsVendidosComision; ?></p>
                 Productos vendidos<br>(con comisión)</td>
-            <td><p class="T_xlarge margin_top_xsmall red"><?php echo 34; ?></p>
+            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 34; ?></p>
                 Looks vendidos<br>(con comisión)</td>
-            <td><p class="T_xlarge margin_top_xsmall red"><?php echo 22; ?></p>
+            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 22; ?></p>
                 PS con ventas</td>
-            <td><p class="T_xlarge margin_top_xsmall red"><?php echo 56; ?> </p>
+            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 56; ?> </p>
                 PS sin ventas</td>
         </tr>
     </table>

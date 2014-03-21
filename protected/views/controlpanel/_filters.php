@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -9,8 +9,6 @@
 </div>          
     
 <?php
-    echo CHtml::dropDownList('status', '', User::getStatus(), array('style' => 'display:none'));
-    
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
@@ -23,8 +21,8 @@
                                                            ),
                             array('style' => 'display:none'));    
     
-    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
-                            array('style' => 'display:none'));    
+//    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+//                            array('style' => 'display:none'));    
     
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");

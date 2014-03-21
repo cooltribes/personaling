@@ -21,7 +21,7 @@ class ControlpanelController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','delete','ventas',
                                     'pedidos','usuarios', 'looks', 'productos','ingresos',
-                                    'remuneraciones', 'personalshoppers'),
+                                    'remuneraciones', 'personalshoppers', 'misventas'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -289,54 +289,7 @@ class ControlpanelController extends Controller
         /*Ver las estadisticas generales referentes a remuneraciones*/
         public function actionRemuneraciones() {
 
-            /*Datos para las estadísticas*/
-            $totalGeneradoComisiones = Yii::app()->db->createCommand()
-                                       ->select("SUM(total)")->from("tbl_balance")
-                                       ->where("tipo = 5")->queryScalar();
             
-            $ventasGeneraronComision = Yii::app()->db->createCommand()
-                                       ->select("count(distinct(orden_id))")->from("tbl_balance")
-                                       ->where("tipo = 5")->queryScalar();
-            
-            $ventasNoGeneraronComision = Yii::app()->db->createCommand()
-                                       ->select("count(distinct(orden_id))")->from("tbl_balance")
-                                       ->where("tipo != 5")->queryScalar();
-            
-            $prodsVendidosComision = Yii::app()->db->createCommand(
-                                        "SELECT IFNULL(SUM(o.cantidad), 0)
-                                        FROM tbl_orden_has_productotallacolor o
-                                        WHERE o.look_id > 0 AND o.tbl_orden_id IN 
-                                        (SELECT DISTINCT(b.orden_id)
-                                        FROM tbl_balance b
-                                        WHERE tipo = 5)")->queryScalar();
-            
-            
-            
-            
-            
-            $model = new User('search');
-            $model->unsetAttributes();  // clear any default values
-            
-            /*Enviar a la vista el listado de todos los PS*/
-            $criteria = new CDbCriteria;
-            $criteria->compare("personal_shopper", 1);
-
-            $dataProvider = new CActiveDataProvider('User', array(
-                'criteria' => $criteria,
-                'pagination' => array(
-                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                ),
-            ));
-
-
-            $this->render('personalShoppers', array(
-                'model' => $model,                
-                'dataProvider' => $dataProvider,
-                'totalGeneradoComisiones' => $totalGeneradoComisiones,
-                'ventasGeneraronComision' => $ventasGeneraronComision,
-                'ventasNoGeneraronComision' => $ventasNoGeneraronComision,
-                'prodsVendidosComision' => $prodsVendidosComision,
-            ));
         }
         
         
@@ -380,16 +333,14 @@ class ControlpanelController extends Controller
                 ),
             ));
             
-             /*********************** Para los filtros *********************/
-            Filter::guardarFiltro(8, $dataProvider, $model, 'nombre');
+            /*********************** Para los filtros *********************/
+            Filter::procesarFiltros(8, $dataProvider, $model, 'nombre');
             
             if (isset($_GET['nombre'])) {
                 
                 unset($_SESSION["todoPost"]);
                 $criteria->alias = 'User';
-                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
-                //$criteria->compare("personal_shopper", 1); //solo con los personalShoppers
-                
+                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';                                
                 
                 $dataProvider = new CActiveDataProvider('User', array(
                     'criteria' => $criteria,
@@ -398,7 +349,6 @@ class ControlpanelController extends Controller
                     ),
                 ));
             }
-
 
             $this->render('personalShoppers', array(
                 'model' => $model,                
@@ -409,4 +359,28 @@ class ControlpanelController extends Controller
                 'prodsVendidosComision' => $prodsVendidosComision,
             ));
         }
+        
+        
+        /* Ver el listado de productos vendidos con su detalles de comision
+         * Ver algunos datos generales sobre las ventas de un PS determinado
+         */
+        public function actionMisventas($id) {
+            
+            $personalShopper = User::model()->findByPk($id);            
+            if($personalShopper===null)
+                    throw new CHttpException(404,'The requested page does not exist.');
+            
+            $producto = new Producto;
+
+            $producto->status = 1;
+
+            $dataProvider = $producto->search();
+            
+            $this->render('misVentas',array(
+                        'personalShopper' => $personalShopper,
+                        'dataProvider'=>$dataProvider,
+            ));	
+            
+        }
+        
 }

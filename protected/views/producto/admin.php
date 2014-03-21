@@ -148,7 +148,7 @@ echo $num;
                 "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
 
     </div>
-    <div class="span2"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
+    <div class="span2"><a href="#" class="btn crear-filtro">Crear nuevo búsqueda avanzada</a></div>
     <div class="span1">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'buttonType' => 'link',

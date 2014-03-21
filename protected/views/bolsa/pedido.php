@@ -42,7 +42,7 @@ $tipo_pago = $orden->getTipoPago();
             <li><strong><?php echo Yii::t('contentForm','Account Number:'); ?></strong> 0134-0277-98-2771093092</li>
             <li><strong><?php echo Yii::t('contentForm','Account holder:'); ?></strong>PERSONALING C.A.</li>
             <li><strong><?php echo Yii::t('contentForm','RIF:'); ?>:</strong> Nº J-40236088-6</li>
-            <li><strong><?php echo Yii::t('contentForm','Email:'); ?>:</strong> ventas@personaling.com</li>
+            <li><strong><?php echo Yii::t('contentForm','Email:'); ?>:</strong> operaciones@personaling.com</li>
           </ul>
         </li>
         <li class="margin_bottom_medium">

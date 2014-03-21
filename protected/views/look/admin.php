@@ -78,7 +78,7 @@
             <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 4'),
                 "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
         </div>
-        <div class="span3"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
+        <div class="span3"><a href="#" class="btn crear-filtro">Crear nueva búsqueda avanzada</a></div>
         <div class="span2">
         
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

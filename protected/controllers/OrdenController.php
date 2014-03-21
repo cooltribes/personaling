@@ -1335,7 +1335,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');                
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						Yii::app()->mail->send($message);
 						
 					/*
@@ -1354,7 +1354,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						
 						Yii::app()->mail->send($message);					
 					
@@ -1407,7 +1407,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');                
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						Yii::app()->mail->send($message);
 						
 					/*
@@ -1426,7 +1426,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						
 						Yii::app()->mail->send($message);					
 					*/

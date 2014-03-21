@@ -58,10 +58,10 @@
     <div class="span3">
         <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(
                 Filter::model()->findAll('type = 8'), "id_filter", "name"), 
-                array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters'))
+                array('empty' => '-- Búsqueda avanzada --', 'id' => 'all_filters'))
         ?>
     </div>
-    <div class="span3 "><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
+    <div class="span3 "><a href="#" class="btn  crear-filtro">Crear nueva búsqueda avanzada</a></div>
 
 </div>
 

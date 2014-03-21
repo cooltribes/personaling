@@ -56,7 +56,9 @@
         </div>
     </div>
     <div class="span3">
-        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 8'), "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters'))
+        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(
+                Filter::model()->findAll('type = 8'), "id_filter", "name"), 
+                array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters'))
         ?>
     </div>
     <div class="span3 "><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
@@ -93,20 +95,12 @@ $this->widget('zii.widgets.CListView', array(
     'dataProvider' => $dataProvider,
     'itemView' => '_viewPs',
     'template' => $template,
-    /* 	    'afterAjaxUpdate'=>" function(id, data) {
+    'afterAjaxUpdate'=>" function(id, data) {
 
-      $('#todos').click(function() {
-      inputs = $('table').find('input').filter('[type=checkbox]');
-
-      if($(this).attr('checked')){
-      inputs.attr('checked', true);
-      }else {
-      inputs.attr('checked', false);
-      }
-      });
+        actualizarNroUsuarios(id, data);
 
       } ",
-     */ 'pager' => array(
+    'pager' => array(
         'header' => '',
         'htmlOptions' => array(
             'class' => 'pagination pagination-right',
@@ -139,6 +133,7 @@ Yii::app()->clientScript->registerScript('search', "
 );
 ?> 
 
+<h3>Acciones Masivas</h3>
 <hr/>
 <div class="row">
     <div class="span3">       
@@ -215,6 +210,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
             </div>
         </div>    
         <div class="hidden" id="cambioMoneda"><?php echo Yii::t('backEnd', 'currSym'); ?></div>
+        <?php echo CHtml::hiddenField("action", 1); ?>
     </fieldset>
 
 <?php $this->endWidget(); ?>
@@ -253,7 +249,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Cambiar comisión de ventas para los Personal Shoppers</h3>
+    <h3 id="myModalLabel">Cambiar tiempo de validéz para los Personal Shoppers</h3>
 </div>
 <div class="modal-body">
     <?php
@@ -294,7 +290,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                 ?>
             </div>
         </div>    
-        
+        <?php echo CHtml::hiddenField("action", 2); ?>
     </fieldset>
 
 <?php $this->endWidget(); ?>
@@ -318,6 +314,38 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 <!-- /container -->
 <script >
+
+function accionMasiva(parametros){
+    $.ajax(
+            "<?php echo CController::createUrl(""); ?>",
+            {
+                type: 'POST',
+                dataType: 'json',
+                data: parametros,
+                beforeSend: function(){
+                    
+                },
+                success: function(data){                  
+                    
+                    $('#modalComision').modal();
+                    showAlert(data.status, data.message);                    
+                    
+                },
+                error: function( jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR);
+                }
+            }
+        );
+}
+//Numero de personal shoppers afectados con el cambio    
+function actualizarNroUsuarios(id, data){
+
+    $("strong.nroAfectados").text($("strong.nroAfectados", data).first().text());    
+    
+}
+
+
+$(document).ready(function(){
 
     /*Boton de acciones masivas, para cambiar comision y tiempo*/
     $("#btnProcesar").click(function() {
@@ -349,16 +377,16 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     /*Cambiar comisión*/
     $("#btnComision").click(function (e){
         
+        var args = $("#formCambiarComision").serialize();
+        accionMasiva(args);
+        
     });
     
-    //Cambiar símbolo
+    //Cambiar símbolo Tipo de Comision
     $("#cambiarTpComision").change(function (e){
         
         var htmlC = ($(this).val() == 1) ? "%" : $("#cambioMoneda").html();
-        
-        console.log($(this).val());
-        console.log(htmlC);
-        
+                
         $("#cambiarVlComision").next().html(htmlC);
     });
     
@@ -370,5 +398,5 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         
     });
     
-    
+});    
 </script>

@@ -667,7 +667,9 @@ public function actionReportexls(){
 
 	public function actionDetalles($id)
 	{
-		$orden = Orden::model()->findByPk($id);
+		$orden = Orden::model()->findByPk($id);  
+                
+                
 		/*$sql="select * from tbl_zoom where cod NOT IN (select cod_zoom from tbl_ciudad where cod_zoom IS NOT NULL)";
 		$zooms=Yii::app()->db->createCommand($sql)->queryAll();
 	
@@ -911,7 +913,9 @@ public function actionValidar()
 							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
 						} // si es mayor hace el balance
 						
-													
+						/*Pagar comision a las PS involucradas en la venta*/
+                                                Orden::model()->pagarComisiones($orden); 
+                                                
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					
 					}//orden save
@@ -971,6 +975,9 @@ public function actionValidar()
 								$balance->tipo=1;
 								
 								$balance->save();
+                                                                
+                                                                /*Pagar comision a las PS involucradas en la venta*/
+                                                                Orden::model()->pagarComisiones($orden); 
 									
 								
 							}

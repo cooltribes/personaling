@@ -107,7 +107,7 @@ $create_date = date('j M Y', $create_time);
                         <div class="row">
                         <div class="span5">                            
                             <div class="control-group">
-                                <label class="control-label required">Ingresa los emails de tus amig@s: </label>
+                                <label class="control-label required">Ingresa los correos electrónicos de tus amig@s: </label>
                                 <div class="controls">
                                     <?php
                                     $this->widget('application.extensions.BulkMail.BulkMail',
@@ -121,7 +121,7 @@ $create_date = date('j M Y', $create_time);
                                             )
                                     );
                                     ?>
-                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> Debes ingresar al menos una dirección email </span>
+                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> Debes ingresar al menos una dirección de correo electrónico </span>
                                 </div>
                             </div>
                             <div class="control-group">

@@ -189,7 +189,7 @@ $tracking=$orden->getTracking();
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>eMail</strong>: <?php echo $usuario->email; ?></li> 
+                <li><strong>Correo electrónico</strong>: <?php echo $usuario->email; ?></li> 
                 <li><strong>Telefono</strong>:<?php echo $usuario->profile->tlf_celular; ?> </li>
                 <li><strong>Ciudad</strong>:<?php echo $usuario->profile->ciudad; ?> </li>
               </ul>
@@ -359,7 +359,7 @@ $tracking=$orden->getTracking();
            <div class="row-fluid tel pull_left">
             <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
-            <div class="span4"><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+            <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           </div>
    <?php
@@ -379,7 +379,7 @@ $tracking=$orden->getTracking();
            <div class="row-fluid tel pull_left">
             <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
-            <div class="span4"><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+            <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           </div>
           <?php } ?>
@@ -949,7 +949,7 @@ $tracking=$orden->getTracking();
         </div>
         <div class="control-group">
           <label class="checkbox">
-          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por eMail </label>
+          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por correo electrónico </label>
           <label class="checkbox">
             <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
         </div>

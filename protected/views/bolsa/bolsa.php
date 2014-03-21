@@ -99,8 +99,8 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 						}
 					 */
 					 	array_push($cantidades,$productotallacolor->cantidad);
-					 	$pre = $producto->precio;
-						array_push($precios,$producto->getPrecio(false));	
+					 	$pre = $producto->precioVenta;
+						array_push($precios,$producto->precioVenta);	
 						array_push($descuentos,0);
                 	?>
                 <tr>
@@ -206,8 +206,8 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						array_push($precios,$precio->precioDescuento);	
 						array_push($descuentos,$precio->ahorro);		
 						}*/
-						$pre = $producto->precio;
-						array_push($precios,$producto->getPrecio(false));	
+						$pre = $producto->precioVenta;
+						array_push($precios,$producto->precioVenta);	
 						array_push($descuentos,0);
 					 	
 					 	array_push($cantidades,$productoBolsa->cantidad);

@@ -69,9 +69,9 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
     </div>
     <div class="span3">
         <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 3'),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- Búsqueda avanzada --', 'id' => 'all_filters')) ?>
     </div>
-    <div class="span3"><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
+    <div class="span3"><a href="#" class="btn crear-filtro">Crear nueva búsqueda avanzada</a></div>
     <div class="span2"><a href="#modalNuevoUsuario" class="btn btn-success" data-toggle="modal">Crear usuario</a></div>
   </div>
 

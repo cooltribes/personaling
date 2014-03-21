@@ -3,6 +3,22 @@
 	'Tienda',
 	);
 ?>
+
+<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->
+  <div id="ModalSuspencion" class="modal fade in"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-body">
+      <h3>Disculpa los inconvenientes...</h3>
+      <p>Por razones de mantenimiento,<br>
+        las compras están temporalmente suspendidas.
+      </p>
+      <p class="pull-right">¡Volveremos Pronto!</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="cerrarModalSuspencion" class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    </div>
+  </div>  
+<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
+
 <div id="banner100chic" style=" display:none; " class="margin_top ">
 	<div class="margin_bottom">
 		<img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Titina Penzini">
@@ -255,7 +271,7 @@
             	//$('#catalogo').remove(); 
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
            
             	 
               	
@@ -275,8 +291,8 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	
-            	refresh();
+            	$('#chic_hid').val('0');
+            	preRefresh();
             
 
 		});
@@ -290,7 +306,7 @@
             	$('#text_search').val('');  
 
             	$('#banner100chic').fadeIn(3000);
-            	refresh();
+            	preRefresh();
         });  
 		
 		$(".cien").click(function() { 
@@ -302,6 +318,7 @@
 		
 		$(".not_cien").click(function() { 
             	
+				
             	$('#chic_hid').val('0');
 				$('#banner100chic').fadeOut(3000);
             	
@@ -319,20 +336,20 @@
             	else
             	  $('#color_titulo').html($(this).html());
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
 
 		});  
 		
 		$("#100chic").click(function() { 
 				$('#chic_hid').val('1');
 				$('#banner100chic').fadeIn(3000);
-				refresh();
+				preRefresh();
 			});
 			
 		function unchic(){
 				$('#chic_hid').val('0');
 				$('#banner100chic').fadeOut(3000);
-				refresh();
+				preRefresh();
 		}		
 		
 		$(".hijo").click(function() { 
@@ -346,7 +363,7 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
             	
 
 		});
@@ -361,7 +378,7 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
  
 		});
 		 
@@ -375,7 +392,7 @@
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
-            	refresh();
+            	preRefresh();
 
 		});
 		
@@ -390,7 +407,7 @@
                	$('#preciohid').val('5');
                	$('#texthid').val($('#text_search').val()   );
             	$('#tienda_productos').html(''); 
-            	refresh();
+            	preRefresh();
            }
 
 		});
@@ -401,7 +418,7 @@
                	$('#catalogo').remove();
                	$('#resethid').val('1');
             	$('#tienda_productos').html(''); 
-            	refresh();
+            	preRefresh();
 
 		});
 		
@@ -417,7 +434,7 @@
 	               	$('#preciohid').val('5');
 	               	$('#texthid').val($('#text_search').val()   );
 	            	$('#tienda_productos').html(''); 
-	            	refresh();
+	            	preRefresh();
 		    		
 		    	}
 		    	
@@ -475,15 +492,27 @@ function encantar(id)
    		
    		
    	}  
-   	
+   
+function preRefresh(){
+	try{
+		 
+
+		$("#catalogo").infinitescroll("destroy");
+	
+			refresh();
+		}
+	catch(e){
+		 refresh();
+		}
+}
+   
 function refresh(reset)
 {
 
-  
-
- $("#catalogo").infinitescroll("destroy");
+	
  //$("#catalogo").infinitescroll = null;
-    	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid ,#chic_hid').serialize();
+
+	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid ,#chic_hid').serialize();
   
 
 
@@ -540,3 +569,4 @@ function refresh(reset)
 }
 </script>
  
+

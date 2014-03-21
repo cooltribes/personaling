@@ -47,9 +47,13 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
 					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
-          array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                        array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
+					)),                
+                array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
+					array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
+					array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
-                array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
 					array('label'=>'Looks', 'url'=>array('/look/admin')),
 					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
@@ -300,7 +304,7 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/sitemap" title="Site Map">Site map</a></li>          
-          <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li> -->
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
           
         </ul>
       </div>

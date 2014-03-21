@@ -4,7 +4,8 @@ return array (
 
 	'PRONUNCIACION' => 'Española',
 	'currSym'=>'€',
-
+	'IVA' => '0.12',
+    'IVAtext' => '12%',
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -103,7 +104,7 @@ return array (
 	'Edit' => 'Editar',
 	'Edit shipping address' => 'Editar dirección de envío',
 	'Effective date' => 'Fecha de vigencia',
-	'Email' => 'Email',
+	'Email' => 'Correo electrónico',
 	'Empty shopping bag' => 'Vaciar la Bolsa de Compras',
 	'Eye Color' => 'Color de Ojos',
 	'Expiration' => 'Vencimiento',
@@ -269,7 +270,7 @@ return array (
 	'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
 	'Send' => 'Enviar',
 	'Send Comment' => 'Enviar comentario',
-	'Sent by email' => 'Enviada por email',
+	'Sent by email' => 'Enviada por correo electrónico',
 	'Sent to:' => 'Enviada a:',
 	'Send back' => 'Llevar atrás',
 	'Select' => 'Seleccione',

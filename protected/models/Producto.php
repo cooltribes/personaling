@@ -1239,6 +1239,13 @@ public function multipleColor2($idColor, $idact)
             
         }
         
+        
+        public function buscarVendidos($idPersonalShopper) {
+            
+            
+            
+            
+        }
 
  
 		 

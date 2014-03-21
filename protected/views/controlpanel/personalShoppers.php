@@ -4,23 +4,22 @@
 //$this->breadcrumbs=array(
 //'Usuarios',
 //);
-
 ?>
 <div class="container margin_top">
 
-<?php
-$this->widget('bootstrap.widgets.TbAlert', array(
-    'block' => true, // display a larger alert block?
-    'fade' => true, // use transitions?
-    'closeText' => '&times;', // close link text - if set to false, no close link is displayed
-    'alerts' => array(// configurations per alert type
-        'success' => array('block' => true, 'fade' => true, 'closeText' => '&times;'), // success, info, warning, error or danger
-        'error' => array('block' => true, 'fade' => true, 'closeText' => '&times;'), // success, info, warning, error or danger
-    ),
-        )
-);
-?> 
-    
+    <?php
+    $this->widget('bootstrap.widgets.TbAlert', array(
+        'block' => true, // display a larger alert block?
+        'fade' => true, // use transitions?
+        'closeText' => '&times;', // close link text - if set to false, no close link is displayed
+        'alerts' => array(// configurations per alert type
+            'success' => array('block' => true, 'fade' => true, 'closeText' => '&times;'), // success, info, warning, error or danger
+            'error' => array('block' => true, 'fade' => true, 'closeText' => '&times;'), // success, info, warning, error or danger
+        ),
+            )
+    );
+    ?> 
+
     <div class="page-header">
         <h1>Remuneración - Personal Shoppers</h1>
     </div>
@@ -33,7 +32,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 Ventas sin comisión</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasGeneraronComision; ?></p>
                 Ventas con comisión</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $totalGeneradoComisiones." ".Yii::t('contentForm', 'currSym'); ?></p>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo $totalGeneradoComisiones . " " . Yii::t('contentForm', 'currSym'); ?></p>
                 Total generado<br>en comsiones</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $prodsVendidosComision; ?></p>
                 Productos vendidos<br>(con comisión)</td>
@@ -61,11 +60,11 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         ?>
     </div>
     <div class="span3 "><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
-    
+
 </div>
 
 <hr/>
-<?php   $this->renderPartial("_filters"); ?>
+<?php $this->renderPartial("_filters"); ?>
 <hr/>
 <?php
 $template = '{summary}
@@ -116,52 +115,36 @@ $this->widget('zii.widgets.CListView', array(
 ));
 
 
-Yii::app()->clientScript->registerScript('search', "var ajaxUpdateTimeout;
+Yii::app()->clientScript->registerScript('search', "
+            var ajaxUpdateTimeout;
 	    var ajaxRequest;
 	    $('#textbox_buscar').keyup(function(e){
-	    	
-			
-			if(e.which == 13) {
-                        
-                        $('.crear-filtro').click();
-				
-				ajaxRequest = $(this).serialize();
-	        clearTimeout(ajaxUpdateTimeout);
-	        ajaxUpdateTimeout = setTimeout(function () {
-	            $.fn.yiiListView.update(
-	// this is the id of the CListView
-	                'list-auth-items',
-	                {data: ajaxRequest}
-	            )
-	        },
-	// this is the delay
-	        300);
-		        
-		    }
-	        	/*else{
-	        		
-	        		window.location.href = document.URL;
-	        	}*/
-				
-				
-				
-	        
+                if(e.which == 13) {
+                    $('.crear-filtro').click();
+                    ajaxRequest = $(this).serialize();
+                    clearTimeout(ajaxUpdateTimeout);
+                    
+                    ajaxUpdateTimeout = setTimeout(
+                    function () {
+                        $.fn.yiiListView.update(
+                        // this is the id of the CListView
+                            'list-auth-items',
+                            {data: ajaxRequest}
+                        )
+                    },
+                    // this is the delay
+                    300);		        
+                }		        
 	    });"
 );
 ?> 
 
 <hr/>
 <div class="row">
-    <div class="span3">
-        <select class="span3 hidden">
-            <option>Seleccione una acción</option>
-            <option>Cambiar comisión</option>
-            <option>Cambiar validez de la bolsa</option>            
-        </select>
-        <?php 
+    <div class="span3">       
+        <?php
         echo CHtml::dropDownList("Filtros", "", array("1" => "Cambiar comisión",
-                                "2" => "Cambiar validez de la bolsa"),
-                array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
+            "2" => "Cambiar validez de la bolsa"), array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
         ?>
     </div>
     <div class="span1">
@@ -170,153 +153,222 @@ Yii::app()->clientScript->registerScript('search', "var ajaxUpdateTimeout;
 </div>
 </div>
 
-<?php $this->beginWidget('bootstrap.widgets.TbModal', array(
-                                'id' => 'modalComision',
-                            ),
-                            array(
-                                'class' => 'modal fade hide',
-                                'tabindex' => "-1",
-                                'role' => "dialog",
-                                'aria-labelledby' => "myModalLabel",
-                                'aria-hidden' => "true",
-                                //'style' => "display: none;",
-                            
-                            ))?>
+<!--MODAL CAMBIO COMISION ON-->
+<?php
+$this->beginWidget('bootstrap.widgets.TbModal', array(
+    'id' => 'modalComision',
+        ), array(
+    'class' => 'modal fade hide',
+    'tabindex' => "-1",
+    'role' => "dialog",
+    'aria-labelledby' => "myModalLabel",
+    'aria-hidden' => "true",
+        //'style' => "display: none;",
+))
+?>
 
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Cambiar comisión de ventas para los Personal Shoppers</h3>
-    </div>
-    <div class="modal-body">
-      
-    </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>    
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Cambiar comisión de ventas para los Personal Shoppers</h3>
+</div>
+<div class="modal-body">
     <?php
-//    $this->widget('bootstrap.widgets.TbButton', array(
-//        'buttonType' => 'button',
-//        'label' => 'Crear',
-//        'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-//        //'size' => 'large', // null, 'large', 'small' or 'mini'
-//        //'block' => 'true',
-//        'htmlOptions' => array('onclick' => 'js:$("#newUser-form").submit();')
-//    ));
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        'id' => 'formCambiarComision',
+        'htmlOptions' => array('enctype' => 'multipart/form-data'),
+        'type' => 'horizontal',
+        'enableAjaxValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+        ),
+    ));
     ?>
-  </div>                    
+    <fieldset>       
+        <div class="control-group">
+            <label class="control-label">Tipo de Comisión:</label>
+            <div class="controls">
+                <?php
+                echo TbHtml::dropDownList("cambiarTpComision", 1, array(1 => "Porcentaje (%)",
+                    2 => "Fijo (" . Yii::t('backEnd', 'currSym') . ")"), array("span" => 2));
+                ?>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Valor de la Comisión:</label>
+            <div class="controls">
+                <?php echo TbHtml::textField("cambiarVlComision", 0, array("append" => "%", "span" => "1"));
+                ?>
+            </div>
+        </div> 
+        <div class="control-group">            
+            <div class="controls">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'danger',
+                    'buttonType' => 'button',
+                    'label' => "Guardar cambios",
+                    'htmlOptions' => array(
+                        'id' => 'btnComision',
+                    )
+                ));
+                ?>
+            </div>
+        </div>    
+        <div class="hidden" id="cambioMoneda"><?php echo Yii::t('backEnd', 'currSym'); ?></div>
+    </fieldset>
 
-<?php $this->endWidget()?>
+<?php $this->endWidget(); ?>
+
+    <div class="row-fluid">
+        <div class="span12 ">
+            <strong class="nroAfectados">
+                <?php echo $dataProvider->getTotalItemCount(); ?>                
+            </strong> Personal Shoppers serán afectados <i class="icon-user"></i></div>
+    </div>
+
+</div>
+<div class="modal-footer text_align_left">
+    <h5>Descripción:</h5>
+    Cambiarás el valor de la comisión y el tipo de comisión para todos los Personal Shopper seleccionados.
+    Este nuevo valor se aplicará en las próximas ventas
+</div>                    
+
+<?php $this->endWidget() ?>
+<!--MODAL CAMBIO COMISION OFF-->
+
+
+<!--MODAL CAMBIO TIEMPO EN BOLSA ON-->
+<?php
+$this->beginWidget('bootstrap.widgets.TbModal', array(
+    'id' => 'modalTiempo',
+        ), array(
+    'class' => 'modal fade hide',
+    'tabindex' => "-1",
+    'role' => "dialog",
+    'aria-labelledby' => "myModalLabel",
+    'aria-hidden' => "true",
+        //'style' => "display: none;",
+))
+?>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Cambiar comisión de ventas para los Personal Shoppers</h3>
+</div>
+<div class="modal-body">
+    <?php
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        'id' => 'formCambiarTiempo',
+        'htmlOptions' => array('enctype' => 'multipart/form-data'),
+        'type' => 'horizontal',
+        // 'type'=>'inline',
+        //'enableClientValidation' => true,
+        'enableAjaxValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+        ),
+    ));
+    ?>
+    <fieldset>       
+        <div class="control-group">
+            <label class="control-label">Tipo de Comisión:</label>
+            <div class="controls">
+                <?php
+                echo TbHtml::dropDownList("cambiarLmTiempo", 1, array(15 => "15 Días",
+                    30 => "1 Mes", 90 => "3 Meses", 180 => "6 Meses", 360 => "1 Año"),
+                        array("span" => 2));
+                ?>
+            </div> 
+        </div>   
+        <div class="control-group">            
+            <div class="controls">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'danger',
+                    'buttonType' => 'button',
+                    'label' => "Guardar cambios",
+                    'htmlOptions' => array(
+                        'id' => 'btnTiempo',
+                    )
+                ));
+                ?>
+            </div>
+        </div>    
+        
+    </fieldset>
+
+<?php $this->endWidget(); ?>
+
+    <div class="row-fluid">
+        <div class="span12 ">
+            <strong class="nroAfectados">
+            <?php echo $dataProvider->getTotalItemCount(); ?>    
+            </strong> Personal Shoppers serán afectados <i class="icon-user"></i></div>
+    </div>
+
+</div>
+<div class="modal-footer text_align_left">
+    <h5>Descripción:</h5>
+    Cambiarás el tiempo máximo que pueden durar los productos en la bolsa para que las venta genere comisión a un Personal Shopper, afectará a todos los Personal Shopper seleccionados.
+    Este nuevo valor se aplicará en las próximas ventas.
+</div>                    
+
+<?php $this->endWidget() ?>
+<!--MODAL CAMBIO TIEMPO EN BOLSA OFF-->
+
 <!-- /container -->
 <script >
-    
+
     /*Boton de acciones masivas, para cambiar comision y tiempo*/
-    $("#btnProcesar").click(function(){
+    $("#btnProcesar").click(function() {
         var accion = $("#listaAcciones").val();
-        
-        if(accion < 1){
+
+        if (accion < 1) {
             bootbox.alert("Debes seleccionar una acción para aplicar!");
             return;
         }
-        
+
         //Si es para cambiar comisión
-        if(accion == 1){
+        if (accion == 1) {
+
+            $('#modalComision').modal();
+            //Si es para cambiar tiempo limite     
+        } else if (accion == 2) {
             
-            $('#modalComision').modal();  
+            $('#modalTiempo').modal();            
+        }
 
-
-        //Si es para cambiar tiempo limite     
-        }else if(accion == 2){
-            bootbox.alert("nada");
-        }        
-       
     });
-    
+
     $('#search-form').attr('action', '');
     $('#search-form').submit(function() {
         return false;
     });
     
-    function modal(id) {
-
-        $.ajax({
-            type: "post",
-            'url': '<?php echo CController::createUrl('admin/contrasena'); ?>',
-            data: {'id': id},
-            'success': function(data) {
-                $('#myModal').html(data);
-                $('#myModal').modal();
-            },
-            'cache': false});
-
-    }
-    function cambio(id) {
-
-        if ($("#psw1").val() == $("#psw2").val())
-        {
-            var psw = $("#psw2").val();
-            $.ajax({
-                type: "post",
-                'url': '<?php echo CController::createUrl('admin/contrasena'); ?>',
-                data: {'psw': psw,
-                    'id': id},
-                'success': function(data) {
-
-                    window.location.reload();
-                },
-                'cache': false});
-        }
-        else {
-            alert("Ambos campos deben coincidir");
-        }
-
-    }
-    function carga(id) {
-
-        $.ajax({
-            type: "post",
-            'url': '<?php echo CController::createUrl('admin/saldo'); ?>',
-            data: {'id': id},
-            'success': function(data) {
-                $('#saldoCarga').html(data);
-                $('#saldoCarga').modal();
-            },
-            'cache': false});
-
-    }
-    function saldo(id) {
-
-        var cant = $("#cant").val();
-        var desc = 0;
-        if (cant.length > 1) {
-            if (cant.indexOf(',') == (cant.length - 2))
-                cant += '0';
-            if (cant.indexOf(',') == -1)
-                cant += ',00';
-        }
-        var pattern = /^\d+(?:\,\d{0,2})$/;
-
-        if ($('#discount').attr('checked') == 'checked')
-            desc = 1;
-
-
-        if (pattern.test(cant) || cant.length < 2) {
-            cant = cant.replace(',', '.');
-
-            $.ajax({
-                type: "post",
-                'url': '<?php echo CController::createUrl('admin/saldo'); ?>',
-                data: {'cant': cant,
-                    'id': id, 'desc': desc},
-                'success': function(data) {
-                    window.location.reload();
-                },
-                'cache': false});
-        } else {
-            alert("Formato de cantidad no válido");
-        }
-    }
-
-
-
-
-
+    /*Acciones dentro de los modals*/
+    /*Cambiar comisión*/
+    $("#btnComision").click(function (e){
+        
+    });
+    
+    //Cambiar símbolo
+    $("#cambiarTpComision").change(function (e){
+        
+        var htmlC = ($(this).val() == 1) ? "%" : $("#cambioMoneda").html();
+        
+        console.log($(this).val());
+        console.log(htmlC);
+        
+        $("#cambiarVlComision").next().html(htmlC);
+    });
+    
+    
+    
+    
+    
+    $("#btnTiempo").click(function (e){
+        
+    });
+    
+    
 </script>

@@ -32,7 +32,7 @@ $pagerParams = array(
                         " " . $personalShopper->profile->last_name;
                         ?>
                     </h2>
-                    <h4>Comisión:
+                    <h4>Comisión actual:
                         <strong>
                             <?php echo $personalShopper->getComision(); ?>                            
                         </strong>
@@ -49,54 +49,37 @@ $pagerParams = array(
                         <tr>
                             <td><p class="T_xlarge margin_top_xsmall">
                                     <?php
-                                    /*
-                                      $sql = "select count( * ) as total from tbl_producto where status=1";
-                                      $num = Yii::app()->db->createCommand($sql)->queryScalar();
-                                      // echo $num;
-                                     */
-
-                                    echo Producto::model()->countByAttributes(array('status' => 1));
+                                    echo 0;
                                     ?>
                                 </p>
-                                Totales</td>
+                                Productos vendidos
+                            </td>
                             <td><p class="T_xlarge margin_top_xsmall">
                                     <?php
-                                    /*
-                                      $sql = "select count( * ) as total from tbl_producto where estado=0 and status=1";
-                                      $num = Yii::app()->db->createCommand($sql)->queryScalar();
-                                      //echo $num;
-                                     */
-
-                                    echo Producto::model()->countByAttributes(array('estado' => 0, 'status' => 1));
+                                    echo 0;
                                     ?>
                                 </p>
-                                Activos</td>
+                                Looks vendidos
+                            </td>
                             <td><p class="T_xlarge margin_top_xsmall"> 
                                     <?php
-                                    /*
-                                      $sql = "select count( * ) as total from tbl_producto where estado=1 and status=1";
-                                      $num = Yii::app()->db->createCommand($sql)->queryScalar();
-                                      //echo $num;
-                                     */
-
-                                    echo Producto::model()->countByAttributes(array('estado' => 1, 'status' => 1));
+                                    echo 0;
                                     ?>
                                 </p>
-                                Inactivos</td>
+                                Otros
+                            </td>
                             <td><p class="T_xlarge margin_top_xsmall">
-
                                     <?php
-                                    $sql = "select count(cantidad) from tbl_orden_has_productotallacolor a, tbl_orden b where a.tbl_orden_id = b.id and b.estado = 4"; // estado 4 es enviado
-                                    $num = Yii::app()->db->createCommand($sql)->queryScalar();
-                                    echo $num;
-                                    ?>     	
-
+                                   echo 0;
+                                    ?>
                                 </p>
-                                Enviados</td>
-                        <!--       <td><p class="T_xlarge margin_top_xsmall"> 1120</p>
-                                En tránsito </td> -->
-                            <td><p class="T_xlarge margin_top_xsmall"> <?php echo Producto::model()->getDevueltos(); ?> </p>
-                                Devueltos</td>
+                                Otros más
+                            </td>                       
+                            <td><p class="T_xlarge margin_top_xsmall">
+                                    <?php echo 0; ?>
+                                </p>
+                                Ganancia más alta
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -176,15 +159,7 @@ $pagerParams = array(
         </div>
         <div class="span2"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
         <div class="span1">
-            <?php
-            $this->widget('bootstrap.widgets.TbButton', array(
-                'buttonType' => 'link',
-                'label' => 'Importar',
-                'type' => 'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                'size' => 'normal', // null, 'large', 'small' or 'mini'
-                'url' => 'importar',
-            ));
-            ?>    	
+           	
         </div>
         <div class="span2">
 
@@ -199,21 +174,20 @@ $pagerParams = array(
   <table id="table" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
       <th rowspan="2" scope="col"><input name="check" type="checkbox" id="todos"></th>
-      <th rowspan="2" scope="col">Producto</th>
-      <th rowspan="2" scope="col">Referencia</th>
-      <th rowspan="2" scope="col">Categoría</th>
-      <th rowspan="2" scope="col">Precio (Bs.)</th>
-      <th colspan="3" scope="col">Cantidad</th>
-      <th rowspan="2" scope="col">Ventas Bs.</th>
-      <th rowspan="2" scope="col">Estado</th>
-      <th rowspan="2" scope="col">Fecha de Carga</th>
-      <th rowspan="2" scope="col">Progreso de la campaña</th>
+      <th rowspan="2" scope="col" colspan="2">Producto</th>
+      <th rowspan="2" scope="col">Marca</th>      
+      <th rowspan="2" scope="col">Fecha de Venta</th>
+      <th rowspan="2" scope="col" style="text-align:center">Precio de Venta ('.Yii::t('backEnd', 'currSym').')</th>
+      <th colspan="3" scope="col" style="text-align:center">Vendido</th>
+      <th rowspan="2" scope="col">Total</th>
+      <th rowspan="2" scope="col">Comisión aplicada</th>
+      <th rowspan="2" scope="col">Comisión ganada ('.Yii::t('backEnd', 'currSym').')</th>
       <th rowspan="2" scope="col">Acción</th>
     </tr>
     <tr>
-      <th scope="col">Total</th>
-      <th scope="col">Disp.</th>
-      <th scope="col">Vendido</th>
+      <th scope="col">Talla</th>
+      <th scope="col">Color</th>
+      <th scope="col">Cantidad</th>
     </tr>
     {items}
     </table>

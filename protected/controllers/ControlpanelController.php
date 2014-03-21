@@ -318,6 +318,8 @@ class ControlpanelController extends Controller
                                         (SELECT DISTINCT(b.orden_id)
                                         FROM tbl_balance b
                                         WHERE tipo = 5)")->queryScalar();
+            /*FIN de los datos para estadisticas*/
+            
             
             $model = new User('search');
             $model->unsetAttributes();  // clear any default values

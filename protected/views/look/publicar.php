@@ -12,10 +12,11 @@ $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::
       range: true,
       min: 10, 
       max: 85,
-      <?php if(is_null($model->edadMin)){
-      		$model->edadMin=20;
-			 $model->edadMax=45;
-      }
+      <?php if(is_null($model->edadMin))
+      			$model->edadMin=20;
+			if(is_null($model->edadMax))
+			 	$model->edadMax=45;
+      
 	  
       ?>
       values: [ parseInt(<?php echo $model->edadMin ?>) , parseInt(<?php echo $model->edadMax?>) ],

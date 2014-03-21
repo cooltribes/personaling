@@ -661,6 +661,12 @@ class BolsaController extends Controller
 		{
 		
                     /*Si es compra de admin para usuario*/
+                   	if(!isset(Yii::app()->session['login'])){
+                   		unset(Yii::app()->session['login']);
+                   		$this->redirect(array('bolsa/compra'));
+						
+                   	}
+						
                     $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
 
                     /*ID del usuario propietario de la bolsa*/
@@ -778,7 +784,7 @@ class BolsaController extends Controller
 				if($model->validate()) {
 					echo 'Status: '.$user->status;
 					if($user->status == 1){
-
+						Yii::app()->session['login']=1;
 						$this->redirect(array('bolsa/direcciones'));
 					}else{
 						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 

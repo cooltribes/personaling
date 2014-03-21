@@ -612,7 +612,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <form id="formu" class="no_margin_bottom form-search">
                 <div class="span6">
                   <select id="padreId" class="span12" name="padreId">
-                    <option value="0"><?php echo Yii::t('contentForm', 'Search by categories'); ?></option>
+                    <option value="0"><?php echo Yii::t('contentForm', 'Search by Categories'); ?></option>
                     <?php 
 
 	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',),array('order'=>'nombre ASC'));

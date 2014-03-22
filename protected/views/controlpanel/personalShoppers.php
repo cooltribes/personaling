@@ -217,9 +217,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
     <div class="row-fluid">
         <div class="span12 ">
-            <strong class="nroAfectados">
-                <?php echo $dataProvider->getTotalItemCount(); ?>                
-            </strong> Personal Shoppers serán afectados <i class="icon-user"></i></div>
+            <strong class="nroAfectados"><?php echo $dataProvider->getTotalItemCount(); ?></strong>
+            Personal Shoppers serán afectados <i class="icon-user"></i></div>
     </div>
 
 </div>
@@ -249,7 +248,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Cambiar tiempo de validéz para los Personal Shoppers</h3>
+    <h3 id="myModalLabel">Cambiar tiempo de validez para los Personal Shoppers</h3>
 </div>
 <div class="modal-body">
     <?php
@@ -297,9 +296,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
     <div class="row-fluid">
         <div class="span12 ">
-            <strong class="nroAfectados">
-            <?php echo $dataProvider->getTotalItemCount(); ?>    
-            </strong> Personal Shoppers serán afectados <i class="icon-user"></i></div>
+            <strong class="nroAfectados"><?php echo $dataProvider->getTotalItemCount(); ?></strong>
+            Personal Shoppers serán afectados <i class="icon-user"></i></div>
     </div>
 
 </div>
@@ -327,8 +325,13 @@ function accionMasiva(parametros){
                 },
                 success: function(data){                  
                     
-                    $('#modalComision').modal();
-                    showAlert(data.status, data.message);                    
+                    $('#modalComision').modal("hide");
+                    $('#modalTiempo').modal("hide");
+                    showAlert(data.status, data.message);
+                    
+                    $('html,body').animate({
+                        scrollTop: $(".page-header").first().next().offset().top
+                    });
                     
                 },
                 error: function( jqXHR, textStatus, errorThrown){
@@ -377,9 +380,19 @@ $(document).ready(function(){
     /*Cambiar comisión*/
     $("#btnComision").click(function (e){
         
-        var args = $("#formCambiarComision").serialize();
-        accionMasiva(args);
+        var tipo = $("#cambiarVlComision").next().text();
         
+        var comision = $("#cambiarVlComision").val();
+        var usuarios = $("strong.nroAfectados").first().text();
+        console.log(usuarios);
+        
+        var res = confirm('¿Estás seguro de establecer "'+comision+' '+tipo+'" como comisión '+
+            'para "'+usuarios+'" Personal Shoppers?');
+        
+        if(res){
+            var args = $("#formCambiarComision").serialize();
+            accionMasiva(args);
+        }
     });
     
     //Cambiar símbolo Tipo de Comision
@@ -389,12 +402,19 @@ $(document).ready(function(){
                 
         $("#cambiarVlComision").next().html(htmlC);
     });
-    
-    
-    
-    
-    
-    $("#btnTiempo").click(function (e){
+        
+    $("#btnTiempo").click(function (e){       
+        
+        var tiempo = $("#cambiarLmTiempo option:selected").text();
+        var usuarios = $("strong.nroAfectados").first().text();
+        
+        var res = confirm('¿Estás seguro de establecer el límite de tiempo en'+
+                            '"'+tiempo+'" para "'+usuarios+'" Personal Shoppers?');
+        if(res){
+            var args = $("#formCambiarTiempo").serialize();
+            accionMasiva(args);
+        }
+        
         
     });
     

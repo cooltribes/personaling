@@ -48,7 +48,7 @@
                     <div class="controls" >
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
-                                'id' => 'ID',
+                                'id_2' => 'ID',
                                 'first_name_2' => 'Nombre',
                                 'last_name_2' => 'Apellido',
                                 'email_2' => 'Correo',

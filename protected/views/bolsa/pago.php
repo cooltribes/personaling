@@ -86,7 +86,7 @@ echo CHtml::hiddenField('user',$user);
                                             <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
                                             <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
                                             <li><strong>RIF:</strong> Nº J-40236088-6</li>
-                                            <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
+                                            <li><strong>Correo electrónico:</strong> operaciones@personaling.com</li>
                                     </ul>
                                     </div>
                             </div>

@@ -9,7 +9,7 @@
 </div>
 <div>
   <ul class="nav nav-tabs nav-stacked">
-    <li class="nav-header">Opciones de ediciónnn</li>
+    <li class="nav-header">Opciones de edición</li>
     <li class="dropdown-submenu"> <a tabindex="-1" href="#">Tu perfil</a>
       <ul class="dropdown-menu">
         <li > <?php echo CHtml::link('Datos Personales',array('profile/edit'));?> </li>

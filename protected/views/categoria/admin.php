@@ -16,7 +16,7 @@ $this->breadcrumbs=array(
    <div class="row margin_top margin_bottom ">
         <div class="span4">
             <form class="no_margin_bottom form-search">
-            <div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>
+            <div class="input-append"> <span class="add-on"><i class="icon-search"></i></span>
             		<input class="span3" id="query" name="query" type="text" placeholder="Buscar">
                 	<a href="#" class="btn" id="btn_search_event">Buscar</a>
            		</form>

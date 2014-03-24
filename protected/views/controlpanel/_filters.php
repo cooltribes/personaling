@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -9,8 +9,6 @@
 </div>          
     
 <?php
-    echo CHtml::dropDownList('status', '', User::getStatus(), array('style' => 'display:none'));
-    
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
@@ -23,8 +21,8 @@
                                                            ),
                             array('style' => 'display:none'));    
     
-    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
-                            array('style' => 'display:none'));    
+//    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+//                            array('style' => 'display:none'));    
     
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -50,7 +48,7 @@
                     <div class="controls" >
                         <div class="span3" >
                             <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
-                                'id' => 'ID',
+                                'id_2' => 'ID',
                                 'first_name_2' => 'Nombre',
                                 'last_name_2' => 'Apellido',
                                 'email_2' => 'Correo',
@@ -93,8 +91,8 @@
     <div class="span2 pull-right">
         <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
     </div>
-    <div class="span3 pull-right">
-        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Nuevo Filtro</a> 
+    <div class="span2 pull-right">
+        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar</a> 
     </div>
     <div class="span2 pull-right" style="display: none">
         <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar Filtro</a> 

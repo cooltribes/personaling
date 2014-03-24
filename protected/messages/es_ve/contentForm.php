@@ -1,3 +1,4 @@
+
 <?php
 
 return array (
@@ -7,6 +8,9 @@ return array (
      'IVA' => '0.12',
      'IVAtext' => '12%',
 
+     'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
+     <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> es el canal online de prestigiosas y conocidas marcas de moda internacional, donde no solo podrás comprar prendas y accesorios de tus tiendas favoritas, también tendrás a disposición de forma gratuita el servicio exclusivo de asesoria e inspiración de especialistas, conocedores en moda (personal shoppers) y hasta celebridades; quienes crearán atuendos adecuándolos a tu perfil, gusto, necesidades y ocasiones personales, permitiendo adquirir en un solo clic los productos y recibirlos en la comodidad de tu hogar u oficina.  </p>
+     <p> <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, tenia que nacer en Venezuela, capital mundial de la mujer. </p>',
      'Action' => 'Acción',
      'Actions' => 'Acciones',
      'Account Number:' => 'Cuenta Corriente Nº',
@@ -299,7 +303,7 @@ return array (
 
      'Tax' => 'Impuesto',
      'The bag is empty' => 'La bolsa está vacia',
-     'The order to <b><{name}</b> has successfully completed' => 'El pedido para <b><{name}</b> se ha realizado con éxito.',
+     'The order to <b>{name}</b> has successfully completed' => 'El pedido para <b>{name}</b> se ha realizado con éxito.',
      'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
      'To' => 'Hasta',
      'To1' => 'Para',

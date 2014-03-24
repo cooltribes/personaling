@@ -127,7 +127,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
                         echo "
                         <td>"
-                        .$producto->nombre."<br/>
+                        .$producto->nombre." ".$producto->id."<br/>
                         <strong>Color</strong>: ".$color->valor."<br/>
                         <strong>Talla</strong>: ".$talla->valor."</td>
                         ";	

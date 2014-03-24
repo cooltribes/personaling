@@ -4,7 +4,10 @@ return array (
 
 	'PRONUNCIACION' => 'Española',
 	'currSym'=>'€',
+	'IVA' => '0.12',
+    'IVAtext' => '12%',
 
+     'About us text' => '<p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, ¡Tu personal shopper digital! es el canal online de prestigiosas y conocidas marcas de moda internacional. (punto y a parte). A través de este canal  no solo podrás comprar las prendas y accesorios de tus diseñadores favoritos, sino que tendrás a tu disposición y, de forma gratuita, el servicio exclusivo de asesores de moda, mejor conocidos como Personal Shoopers.  Estos asesores de imagen y moda -celebridades, estilistas, bloggers y especialistas- crearán looks en torno a tu perfil, gustos, necesidades y eventos especiales, permitiéndote adquirir en un solo clic, los productos recomendados y recibirlos en la comodidad de tu hogar u oficina.</p>',    
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',

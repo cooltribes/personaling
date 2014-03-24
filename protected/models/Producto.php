@@ -694,7 +694,9 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('destacado',$this->destacado,true);
 
 		$criteria->compare('peso',$this->peso,true);
-		
+		$imgsql = "SELECT tbl_producto_id FROM tbl_imagen";
+       	$enImagen= Yii::app()->db->createCommand($imgsql)->queryColumn();
+		$criteria->addInCondition('t.id',$enImagen);
 		
 		$criteria->with = array('preciotallacolor','precios','categorias', 'mymarca','mycolor');
 		if(isset(Yii::app()->session['chic'])){
@@ -724,9 +726,8 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			$criteria->addCondition('preciotallacolor.color_id = '.Yii::app()->session['f_color']);
 		}
 	
-					
-		
-		
+			
+			
 		//Filtro por marca
 		if(isset(Yii::app()->session['f_marca'])){
 			$criteria->addCondition('t.marca_id = '.Yii::app()->session['f_marca']);
@@ -948,6 +949,10 @@ public function multipleColor2($idColor, $idact)
 		));             
              
 		
+	 }
+	 public function getPrecioVenta(){
+	 	$sql="select precioVenta from tbl_precio where tbl_producto_id =".$this->id." order by id desc limit 1";
+		return Yii::app()->db->createCommand($sql)->queryScalar();
 	 }
          
          /**
@@ -1235,6 +1240,13 @@ public function multipleColor2($idColor, $idact)
             
         }
         
+        
+        public function buscarVendidos($idPersonalShopper) {
+            
+            
+            
+            
+        }
 
  
 		 

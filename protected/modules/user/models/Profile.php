@@ -69,7 +69,7 @@ class Profile extends UActiveRecord
                                                
                                                                            else if ($field->varname=="url" || $field->varname=="bio"
                                                                                    || $field->varname=="facebook" || $field->varname=="twitter")
-                                               { array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} "));
+                                               { array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} ",'on'=>'PS'));
 											   	 
 											   }
 									   else									   

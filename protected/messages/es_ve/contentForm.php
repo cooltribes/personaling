@@ -102,7 +102,7 @@ return array (
      'Details' => 'Detalles',
      'Description' => 'Descripción',
      'Delivery' => 'Envío',
-     'Decotarions' => 'Adornos',
+     'Decorations' => 'Adornos',
      'Discount' => 'Descuento',
      'Document' => 'Documento',
      'Documents' => 'Documentos',

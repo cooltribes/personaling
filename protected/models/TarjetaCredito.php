@@ -49,19 +49,19 @@ class TarjetaCredito extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required'),
+			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required','message' => '{attribute} no puede estar en blanco.'),
 			array('user_id, ci', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>80), 
-			array('numero', 'length', 'min'=>14, 'max'=>16),
-			array('codigo', 'length', 'min'=>3, 'max'=>4),
+			array('numero', 'length', 'min'=>14, 'max'=>16,'tooShort' => '{attribute} es muy corto (minimo 14 números)','tooLong'=>'{attribute} es muy largo (máximo 16 números)'),
+			array('codigo', 'length', 'min'=>3, 'max'=>4,'tooShort' => '{attribute} es muy corto (minimo 3 números)','tooLong'=>'{attribute} es muy largo (máximo 4 números)'),
 			//array('month','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un mes.'),
 			//array('year','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un año.'),
 			//array('month','compare','compareValue'=>'Mes','operator'=>'!=','message'=>'Seleccione un mes.'),
 			//array('year','compare','compareValue'=>'Año','operator'=>'==','message'=>'Seleccione un año.'),
-			array('zip', 'length', 'max'=>5),
-			array('direccion', 'length', 'max'=>150),
-			array('ciudad', 'length', 'max'=>50),
-			array('estado', 'length', 'max'=>45),
+			array('zip', 'length', 'max'=>5,'tooLong'=>'{attribute} es muy largo (máximo 5 números)'),
+			array('direccion', 'length', 'max'=>150,'tooLong'=>'{attribute} es muy largo (máximo 150 letras)'),
+			array('ciudad', 'length', 'max'=>50,'tooLong'=>'{attribute} es muy largo (máximo 50 letras)'),
+			array('estado', 'length', 'max'=>45,'tooLong'=>'{attribute} es muy largo (máximo 45 letras)'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, numero, codigo, vencimiento, ci, direccion, ciudad, zip, estado, user_id', 'safe', 'on'=>'search'),

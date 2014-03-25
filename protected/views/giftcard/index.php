@@ -98,11 +98,11 @@ $this->breadcrumbs = array(
     <div class="span3 offset1">   
         
         <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 7'),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- Búsqueda avanzada --', 'id' => 'all_filters')) ?>
 
     </div>
-        <div class="span2"><a href="#" class="btn crear-filtro"><?php echo Yii::t('contentForm' , 'Create new filter'); ?></a></div>
-        <div class="span2 offset2">
+        <div class="span3"><a href="#" class="btn crear-filtro">Crear búsqueda avanzada</a></div>
+        <div class="span2">
             <a href="create" class="btn btn-success"><?php echo Yii::t('contentForm' , 'Create Gift Card'); ?></a>
         </div>
         <div class="span2">

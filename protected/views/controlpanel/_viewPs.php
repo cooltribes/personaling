@@ -73,12 +73,12 @@
     </td>
     
     <!--SALDO EN COMISIONES-->
-    <td><?php echo $data->getSaldoPorComisiones();echo " Bs." ?></td>
+    <td><?php echo $data->getSaldoPorComisiones();echo Yii::t('backEnd', 'currSym'); ?></td>
     
     <!--SALDO TOTAL-->
     <td>
         <?php $saldo = Profile::model()->getSaldo($data->id);
-        echo Yii::app()->numberFormatter->formatDecimal($saldo) . " Bs."; ?>
+        echo Yii::app()->numberFormatter->formatDecimal($saldo).Yii::t('backEnd', 'currSym'); ?>
     </td>
     
     <!--FECHA DE REGISTRO-->
@@ -93,8 +93,4 @@
                array("controlpanel/misventas", "id" => $data->id)); ?>            
     </td>
 </tr>
-<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
-</div>
-<div id='saldoCarga' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
-</div>
 

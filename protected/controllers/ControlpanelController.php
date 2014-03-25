@@ -297,6 +297,81 @@ class ControlpanelController extends Controller
          * relacionados a las comisiones
          */
         public function actionPersonalshoppers() {
+            
+            if(isset($_POST["action"])){                
+                
+                $response = array();
+                $resultados = Yii::app()->getSession()->get("resultado");
+                $resultados->setPagination(false);
+                $resultados = $resultados->getData();
+                $total = count($resultados);
+                $error = false;
+                if($_POST["action"] == 1){ //Cambiar comisión
+                    
+                    foreach($resultados as $usuario) {                        
+                        
+//                        $perfil = Profile::model()->findByAttributes(array("user_id"=>$usuario->id));
+                        $perfil = $usuario->profile;
+                        $perfil->profile_type = 5;
+                        $perfil->comision = $_POST["cambiarVlComision"];
+                        $perfil->tipo_comision = $_POST["cambiarTpComision"];
+                        if(!$perfil->save()){
+                            $error = true;
+                        }
+                        
+//                        $perfil = User::model()->findByPk(221);
+//                        $perfil = $perfil->profile;
+                       
+                       
+                    }
+                    
+                    if($error){
+                        
+                        $response["status"] = "error";
+                        $response["message"] = "¡Hubo un error cambiando las comisiones!";
+                    
+                        
+                    }else{
+                        
+                        $response["status"] = "success";
+                        $response["message"] = "¡Se ha actualizado la comisión de <b>$total</b>
+                                Personal Shoppers!";
+                        
+                    }
+                    
+                }else if($_POST["action"] == 2){ //cambiar tiempo de validez en bolsa
+                    
+                    foreach($resultados as $usuario) {
+                        $perfil = $usuario->profile;
+                        $perfil->profile_type = 5;
+                        
+                        $perfil->tiempo_validez = $_POST["cambiarLmTiempo"];                        
+                        if(!$perfil->save()){
+                            $error = true;
+                        }
+                    }
+                    
+                    if($error){
+                        
+                        $response["status"] = "error";
+                        $response["message"] = "¡Hubo un error cambiando el tiempo de validez
+                        en la bolsa!";
+                    
+                        
+                    }else{
+                        
+                        $response["status"] = "success";
+                        $response["message"] = "¡Se ha actualizado el tiempo de validez
+                        en la bolsa para <b>$total</b> Personal Shoppers!";
+                        
+                    }
+                    
+                }
+                
+                echo CJSON::encode($response); 
+                Yii::app()->end();
+                
+            }
 
             /*Datos para las estadísticas*/
             $totalGeneradoComisiones = Yii::app()->db->createCommand()
@@ -318,6 +393,8 @@ class ControlpanelController extends Controller
                                         (SELECT DISTINCT(b.orden_id)
                                         FROM tbl_balance b
                                         WHERE tipo = 5)")->queryScalar();
+            /*FIN de los datos para estadisticas*/
+            
             
             $model = new User('search');
             $model->unsetAttributes();  // clear any default values
@@ -350,6 +427,10 @@ class ControlpanelController extends Controller
                 ));
             }
 
+            //guardar los usuarios para las acciones masivas
+            Yii::app()->getSession()->add("resultado", $dataProvider);
+            
+            
             $this->render('personalShoppers', array(
                 'model' => $model,                
                 'dataProvider' => $dataProvider,
@@ -358,6 +439,7 @@ class ControlpanelController extends Controller
                 'ventasNoGeneraronComision' => $ventasNoGeneraronComision,
                 'prodsVendidosComision' => $prodsVendidosComision,
             ));
+            
         }
         
         

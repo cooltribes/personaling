@@ -252,6 +252,9 @@ class Profile extends UActiveRecord
 					case 4:
 						$this->_model=ProfileField::model()->forPersonalShopper()->forOwner()->findAll(); //forPersonal()->
 						break;
+					case 5:
+						$this->_model=ProfileField::model()->forPersonalShopperComi()->forOwner()->findAll(); //forPersonal()->
+						break;
 					default:
 						$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->	
 				}

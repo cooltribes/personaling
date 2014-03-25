@@ -3,7 +3,7 @@
 class AdminController extends Controller
 {
 	public $defaultAction = 'admin';
-	public $layout='//layouts/column2';
+	// public $layout='//layouts/column2';
 	
 	private $_model;
 
@@ -699,7 +699,10 @@ if(isset($_POST['Profile']))
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
-		$profile=$model->profile;
+		
+	
+			$profile=$model->profile;
+
 		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
@@ -747,7 +750,7 @@ if(isset($_POST['Profile']))
 			$message->addTo($model->email);
 			$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 			Yii::app()->mail->send($message);
-			Yii::app()->user->setFlash('success',"El email de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
+			Yii::app()->user->setFlash('success',"El correo electrónico de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
 			$this->redirect(array('/user/admin'));
 		
 	}
@@ -998,7 +1001,6 @@ if(isset($_POST['Profile']))
 				
 				
 				 
-				
 				
 	            $this->render('compra', array(   'dataProvider'=>$dataProvider,
 	            ));	
@@ -1663,8 +1665,8 @@ if(isset($_POST['Profile']))
 	        $message->subject    = $subject;
 	        $message->setBody($params, 'text/html');
 	        $message->addTo($user->email);
-			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+			$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+	        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 	        Yii::app()->mail->send($message);			
 		}
 		

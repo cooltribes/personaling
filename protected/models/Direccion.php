@@ -53,7 +53,7 @@ class Direccion extends CActiveRecord
 			array('dirUno, dirDos', 'length', 'max'=>120),
 			array('telefono', 'length', 'max'=>45),
 			array('pais', 'length', 'max'=>80),
-			array('nombre, apellido, cedula, dirUno, ciudad_id, provincia_id, pais, telefono', 'required'),
+			array('nombre, apellido, cedula, dirUno, ciudad_id, provincia_id, pais, telefono', 'required', 'message' => '{attribute} no puede estar vacío'),
 			array('pais','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Escoja un país.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -70,6 +70,7 @@ class Direccion extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'ciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id')
 		);
 	}
 

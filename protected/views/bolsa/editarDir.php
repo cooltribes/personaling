@@ -20,15 +20,15 @@
     <div class="span8 offset2"> 
     </br>
     
-      <h1>Editar dirección de envío</h1>
+      <h1><?php echo Yii::t('contentForm','Edit shipping address'); ?></h1>
       
       <section class="bg_color3 margin_top margin_bottom_small padding_small box_1">
           <fieldset>          
-            <legend >Incluir una nueva dirección de envío: </legend>
+            <legend ><?php echo Yii::t('contentForm','Include a new shipping address'); ?>: </legend>
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Nombre de la persona a la que envias')); 
+              	<?php echo $form->textFieldRow($dir,'nombre',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the person to whom you send'))); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -37,7 +37,7 @@
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'apellido',array('class'=>'span4','maxlength'=>70,'placeholder'=>'Apellido de la persona a la que envias tu compra')); 
+              	<?php echo $form->textFieldRow($dir,'apellido',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Last name of the person to whom you send'))); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Apellido de la persona a la que envias tu compra" name="RegistrationForm[email]" class="span4">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -46,7 +46,7 @@
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'cedula',array('class'=>'span4','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona a la que envias')); 
+              	<?php echo $form->textFieldRow($dir,'cedula',array('class'=>'span4','maxlength'=>20,'placeholder'=>Yii::t('contentForm','ID of the person to whom you send'))); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                
@@ -56,7 +56,7 @@
             <div class="control-group"> 
            
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'dirUno',array('class'=>'span4','maxlength'=>120,'placeholder'=>'Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)'));
+              	<?php echo $form->textFieldRow($dir,'dirUno',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 1: (Avenue, Street, complex, Residential, etc.).')));
 				//<input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" name="RegistrationForm[email]" class="span4">
 				 ?>
                 
@@ -66,7 +66,7 @@
             <div class="control-group"> 
             
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'dirDos',array('class'=>'span4','maxlength'=>120,'placeholder'=>'Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)'));
+              	<?php echo $form->textFieldRow($dir,'dirDos',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 2: (Building, Floor, Number, apartment, etc.)')));
 				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" name="RegistrationForm[email]" class="span4">
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -75,7 +75,7 @@
             <div class="control-group"> 
             
               <div class="controls">
-              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>'Numero de Telefono'));
+              	<?php echo $form->textFieldRow($dir,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>Yii::t('contentForm','Phone number')));
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -83,7 +83,7 @@
             <div class="control-group"> 
               
               <div class="controls">
-              	<?php echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione un estado...'));?>
+              	<?php echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => Yii::t('contentForm','Select a province')));?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -93,7 +93,7 @@
               	<?php //echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione una ciudad...'));?>
                 <?php 
               	if($dir->provincia_id == ''){ 
-              		echo $form->dropDownListRow($dir,'ciudad_id', array(), array('empty' => 'Seleccione una ciudad...'));
+              		echo $form->dropDownListRow($dir,'ciudad_id', array(), array('empty' => Yii::t('contentForm','Select a city')));
 				}else{
 					echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array('provincia_id'=>$dir->provincia_id), array('order' => 'nombre')),'id','nombre'));
 				}
@@ -135,7 +135,7 @@
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
-            'label'=>'Guardar',
+            'label'=>Yii::t('contentForm','Save'),
         )); 
 
         ?>
@@ -144,7 +144,7 @@
             'buttonType'=>'link',
             'type'=>'info',
             'size'=>'large',
-            'label'=>'Cancelar',
+            'label'=>Yii::t('contentForm','Cancel'),
             'url' => '../direcciones',
         )); 
 

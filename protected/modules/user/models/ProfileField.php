@@ -145,6 +145,10 @@ class ProfileField extends CActiveRecord
                 ' OR id in (25, 26)',
                 'order'=>'position',
             ),
+            'forPersonalShopperComi'=>array(                
+                'condition'=>'id in (28, 29, 30)',
+                'order'=>'position',
+            ),
             'forEstilo'=>array(
                 'condition'=>'required='.self::REQUIRED_YES_ESTILO,
                 'order'=>'position',

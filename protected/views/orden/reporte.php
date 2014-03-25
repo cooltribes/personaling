@@ -4,26 +4,34 @@
   </div>
 <div>            
 	<div class="row">
-	<div class="span1"><p>Filtrar:</p></div>
 <?php 
 	$list= CHtml::listData(Marca::model()->findAll(), 'id', 'nombre');
 	$list[0]="Todas";
 	
-	  echo "<div class='span2 input-prepend'>".CHtml::textField('inicio','', array(
-                            'placeholder' => 'Desde',
-                            'class' => 'span2 ui-datepicker-trigger',
-                            
-                        ))."<span class='add-on'><i class='icon-calendar'></i></span></div>"; 
-	echo "<div class='span3 input-prepend'>".CHtml::textField('fin','', array(
-                            'placeholder' => 'Hasta',
-                            'class' => 'span2 ui-datepicker-trigger',
-                            
-                        ))."<span class='add-on'><i class='icon-calendar'></i></span></div>"; 
-	echo '<div class="span2"><a class="btn margin_bottom_small btn btn-danger" id="fechas" href="#">Buscar</a></div>';
+?>
+	<div class="span10 form-horizontal">
+		<div class="control-group">
+		<span class="control-label">Filtro:</span>
+		<div class="controls">
+<?php 
+			 echo "<div class='span2 input-prepend'>".CHtml::textField('inicio','', array(
+		                            'placeholder' => 'Desde',
+		                            'class' => 'span2 ui-datepicker-trigger',
+		                            
+		                        ))."<span class='add-on'><i class='icon-calendar'></i></span></div>"; 
+			echo "<div class='span3 input-prepend'>".CHtml::textField('fin','', array(
+		                            'placeholder' => 'Hasta',
+		                            'class' => 'span2 ui-datepicker-trigger',
+		                            
+		                        ))."<span class='add-on'><i class='icon-calendar'></i></span></div>"; 
+			echo '<div class="span2"><a class="btn margin_bottom_small btn btn-danger" id="fechas" href="#">Buscar</a></div>';
+?>
+			</div>
+		</div>
+	</div>
+<?php 	
 	
-	
-	
-	echo '<div class="span2">'.CHtml::dropDownList('marcas', 'Todas', $list, array('empty' => 'Filtrar por marca', 'class'=>'')).'</div></div>';
+	echo '<div class="span2">'.CHtml::dropDownList('marcas', 'Todas', $list, array('empty' => 'Buscar por marca', 'class'=>'')).'</div></div>';
 	$template = '<br/><hr/>
 				<div>
 					<div class="row">
@@ -76,7 +84,7 @@
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_authitem',
+	    'itemView'=>'_datosProductos',
 	    'template'=>$template,
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',

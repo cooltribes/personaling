@@ -28,12 +28,12 @@ function str_lreplace($search, $replace, $subject)
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
                     <?php if($dataProvider->getTotalItemCount()){ ?>
-                    <li class="active"><a href="#tab1" data-toggle="tab">Looks más vendidos</a></li>
+                    <li class="active"><a href="#tab1" data-toggle="tab"><?php echo Yii::t('contentForm','Looks best sellers'); ?></a></li>
                     <?php } ?>
 <!--                     <li><a href="#tab2" data-toggle="tab">Próxima Campaña</a></li>
 
  -->                <li<?php echo !($dataProvider->getTotalItemCount())? " class=\"active\" ":""; ?>>
-                        <a href="#tab3" data-toggle="tab">Looks en promoción</a>
+                        <a href="#tab3" data-toggle="tab"><?php echo Yii::t('contentForm','Looks in promotion'); ?></a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -82,12 +82,12 @@ function str_lreplace($search, $replace, $subject)
 	                                    	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
 	                                    	</a>
 	                                   </div> 
-                                    <div class="span4"> <span class="muted">Look creado por: </span>
+                                    <div class="span4"> <span class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
                                         <h5>
                                         	<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
                                         </h5>
                                     </div>
-                                    <div class="span6"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                                    <div class="span6"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym').' ';?></small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -107,7 +107,7 @@ function str_lreplace($search, $replace, $subject)
                                         
                                     </div>
                                 </div>
-                                <span class="label label-important">Promoción</span> </article>
+                                <span class="label label-important"><?php echo Yii::t('contentForm','Promotion'); ?></span> </article>
                         </div>
                         <?php 
               }
@@ -154,10 +154,10 @@ function str_lreplace($search, $replace, $subject)
                                 <?php echo CHtml::link($image,$look->getUrl()); ?>
                                 <div class="hidden-phone margin_top_small vcard row-fluid">
                                     <div class="span2 avatar "> <?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
-                                    <div class="span4"> <span class="muted">Look creado por: </span>
+                                    <div class="span4"> <span class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
                                         <h5><?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?></h5>
                                     </div>
-                                    <div class="span6"><span class="precio"><small>Bs.</small> <?php echo $look->getPrecio(); ?></span></div>
+                                    <div class="span6"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym').' ';?></small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -177,7 +177,7 @@ function str_lreplace($search, $replace, $subject)
                                         
                                     </div>
                                 </div>
-                                <span class="label label-important">Promoción</span> </article>
+                                <span class="label label-important">><?php echo Yii::t('contentForm','Promotion'); ?></span> </article>
                         </div>
 <?php 
                         if ($count >= $pagination)
@@ -193,7 +193,7 @@ function str_lreplace($search, $replace, $subject)
         </div>
     </div>
     <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
-        <h2 class="margin_bottom">Personal shoppers destacados</h2>
+        <h2 class="margin_bottom"><?php echo Yii::t('contentForm','Personal Shoppers outstanding'); ?></h2>
         <ul class="thumbnails ">
             <?php if(count($psDestacados)){ ?>
                 <?php foreach($psDestacados as $ps){ ?>
@@ -236,7 +236,7 @@ function str_lreplace($search, $replace, $subject)
         <div class=" margin_bottom_large braker_horz_top_1">
             <div class="row">
                 <div class="span12">
-                    <h3 class="margin_bottom_small">Prendas más vendidas</h3>
+                    <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','Best selling items'); ?></h3>
                     <div class="thumbnails">
                             <?php
                             foreach($iterator as $record) {
@@ -267,7 +267,7 @@ function str_lreplace($search, $replace, $subject)
             <?php } ?>
     </div>
     <div class=" margin_bottom_large braker_horz_top_1 ">
-        <h3 class="margin_bottom_small">Desde Nuestra Magazine</h3>
+        <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','From Our Magazine'); ?></h3>
         <div class="row posts_list">
             <div class="span12">
                 <div class="thumbnails">
@@ -308,7 +308,7 @@ foreach($posts_parent as $posts_parent){
             <div class="span6"> <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_blanco.jpg" width="571" height="75" alt="Banner blanco" /> </div>
             <div class="span6">
                 <div  class="">
-                	 <a class="btn btn-danger btn-block btn-morado-tiffany color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" >Ver todos los looks <i class="icon-chevron-right icon-white"></i> </a>
+                	 <a class="btn btn-danger btn-block btn-morado-tiffany color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" ><?php echo Yii::t('contentForm','See all looks'); ?> <i class="icon-chevron-right icon-white"></i> </a>
                     
                 </div>
             </div>

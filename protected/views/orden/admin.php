@@ -29,9 +29,7 @@ echo $num;
       <td>
         <p class="T_xlarge margin_top_xsmall"> 
             <?php
-            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=1";
-            $num = Yii::app()->db->createCommand($sql)->queryScalar();
-            echo $num;
+                echo $orden->countxEstado(1);
             ?>    	 
         </p>
         En espera de pago
@@ -39,9 +37,7 @@ echo $num;
       <td>
         <p class="T_xlarge margin_top_xsmall"> 
             <?php
-            $sql = "SELECT count( * ) as total FROM tbl_orden where estado=5";
-            $num = Yii::app()->db->createCommand($sql)->queryScalar();
-            echo $num;
+            echo $orden->countxEstado(5);
             ?>    	 
         </p>
         Cancelados
@@ -57,26 +53,22 @@ echo $num;
         Confirmación</td>
       <td><p class="T_xlarge margin_top_xsmall">
 	<?php
-	$sql = "SELECT count( * ) as total FROM tbl_orden where estado=3";
-	$num = Yii::app()->db->createCommand($sql)->queryScalar();
-	echo $num;
+	echo $orden->countxEstado(3);
 	?>
 	</p>
         Pago Confirmado</td>
-      <?php
-        $cant = Orden::model()->countByAttributes(array('estado'=>7));
-        ?>
-      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $cant; ?> </p>
+      
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $orden->countxEstado(7);?> </p>
         Pago Insuficiente </td>
         <?php
-        $to = Orden::model()->countByAttributes(array('estado'=>4));
+        
         ?>
-      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $to; ?> </p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $orden->countxEstado(4); ?> </p>
         Enviados </td>
         <?php
-        $recibidos = Orden::model()->countByAttributes(array('estado'=>8));
+        
         ?>
-      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $recibidos; ?>  </p>
+      <td><p class="T_xlarge margin_top_xsmall"> <?php echo $orden->countxEstado(8); ?>  </p>
         Recibidos</td>
       <td><p class="T_xlarge margin_top_xsmall">  <?php echo Orden::model()->getDevueltas(); ?>  </p>
         Devuelto</td>
@@ -87,10 +79,10 @@ echo $num;
     <div class="span4">
     	
     	<form class="no_margin_bottom form-search">
-       		<div class="input-apend"> 
+       		<div class="input-append"> 
 				<input class="span3" id="query" name="query" type="text" placeholder="Buscar por palabras clave">
        			<a href="#" class="btn" id="btn_search_event">Buscar</a>
-                </div>
+            </div>
       	</form>
     
 			<?php
@@ -155,7 +147,7 @@ echo $num;
     </div>
     <div class="span3">
         <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 1'),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- Búsquedas avanzadas --', 'id' => 'all_filters')) ?>
 <!--      <select class="span3">
         <option>Filtros preestablecidos</option>
         <option>Filtro 1</option>
@@ -164,7 +156,7 @@ echo $num;
       </select>-->
     </div>
     <div class="span3">
-      <a href="#" class="btn crear-filtro" title="Crear nuevo filtro">Crear filtro</a>
+      <a href="#" class="btn crear-filtro" title="Crear nuevo filtro">Crear búsqueda avanzada</a>
     </div>
   </div>
   <hr/>

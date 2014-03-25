@@ -1,4 +1,4 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: block">
+<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -67,7 +67,7 @@
                                 'precio' => 'Precio',
                                 'prendas' => 'Cantidad de Prendas',
                                 
-                                ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
+                                ), array('empty' => '-- '.Yii::t('contentForm','Select').' --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
                         <div class="span2" >
                             <?php echo Chtml::dropDownList('dropdown_operator[]', '', array('>' => '>', '>=' => '>=',
@@ -102,16 +102,16 @@
    <?php $this->endWidget(); ?>
 
     <div class="span2 pull-right">
-        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
+        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro"><?php echo Yii::t('contentForm','Clear Filter'); ?></a>
     </div>
     <div class="span3 pull-right">
-        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Nuevo Filtro</a> 
+        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo"><?php echo Yii::t('contentForm','Search and save new filter'); ?></a> 
     </div>
     <div class="span2 pull-right" style="display: none">
-        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar Filtro</a> 
+        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual"><?php echo Yii::t('contentForm','Save Filter'); ?></a> 
     </div>
     <div class="span1 pull-right">
-        <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  
+        <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual"><?php echo Yii::t('contentForm','Search'); ?></a>  
     </div>
     
     

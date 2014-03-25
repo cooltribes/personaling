@@ -22,14 +22,16 @@ echo CHtml::hiddenField('user',$user);
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
-      <div class="first-past">Autenticación</div>
-      <div class="middle-past">Dirección<br/>
-        de envío <br/>
-        y facturación</div>
-      <div class="middle-done">Método <br/>
-        de pago</div>
-      <div class="last-not_done">Confirmar<br/>
-        compra</div>
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
+    </div>
+      <div class="middle-done">
+        <?php echo Yii::t('contentForm','Payment <br> method'); ?>
+    </div>
+      <div class="last-not_done">
+        <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
+    </div>
     </div>
   </div>
   <div class="row">
@@ -39,12 +41,12 @@ echo CHtml::hiddenField('user',$user);
       <!-- Forma de pago ON -->
 
         <div class="box_1 padding_small margin_bottom">
-                <h4 class="braker_bottom margin_bottom_medium ">Elige el método de pago
+                <h4 class="braker_bottom margin_bottom_medium "><?php echo Yii::t('contentForm','Choose the payment method'); ?>
                     <br>
                     <?php
                         $userObject = User::model()->findByPk($user);
                         $nombre = $user ? $userObject->profile->first_name." ".$userObject->profile->last_name:"";
-                        echo $admin? "(Pedido para el usuario: <strong>{$nombre}</strong>)":"";
+                        echo $admin? "(".Yii::t('contentForm','Order for the user')." <strong>{$nombre}</strong>)":"";
                     ?>
                 </h4>
        <!--
@@ -52,7 +54,7 @@ echo CHtml::hiddenField('user',$user);
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
        -->
             <div class="accordion" id="accordion2">	
-                    <div class="accordion-group">
+<!--                    <div class="accordion-group">
                             <div class="accordion-heading">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="btn_mercadopago">
                                             <label class="radio">
@@ -66,13 +68,14 @@ echo CHtml::hiddenField('user',$user);
                                     </div>
 
                             </div>
-                    </div>
+                    </div>-->
 
                     <div class="accordion-group">
                             <div class="accordion-heading">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
                                             <label class="radio">
-                                                    <input type="radio" name="optionsRadios" id="deposito" value="option1"> Depósito o Transferencia
+                                                    <input type="radio" name="optionsRadios" id="deposito" value="option1"> 
+                                                    <?php echo Yii::t('contentForm','Deposit or Transference'); ?>
                                             </label>
                                     </a>
                             </div>
@@ -83,7 +86,7 @@ echo CHtml::hiddenField('user',$user);
                                             <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
                                             <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
                                             <li><strong>RIF:</strong> Nº J-40236088-6</li>
-                                            <li><strong>Correo electrónico:</strong> ventas@personaling.com</li>
+                                            <li><strong>Correo electrónico:</strong> operaciones@personaling.com</li>
                                     </ul>
                                     </div>
                             </div>
@@ -93,21 +96,23 @@ echo CHtml::hiddenField('user',$user);
                                     <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree" id="btn_tarjeta">
                                                 <label class="radio">
-                                                    <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> Tarjeta de Crédito
+                                                    <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> 
+                                                    <?php echo Yii::t('contentForm','Credit Card'); ?>
+
                                             </label>
                                     </a>
                             </div>
                             <div class="collapse" id="collapseTree">
                                      <div class="well well-small" >
                                         <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
-                                                <h5 class="braker_bottom">Datos de tu tarjeta de crédito</h5>            
+                                                <h5 class="braker_bottom"><?php echo Yii::t('contentForm','Details of your credit card'); ?></h5>            
 
 
 
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'nombre',array('class'=>'span5','placeholder'=>'Nombre impreso en la tarjeta')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'nombre',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Name printed on the credit card'))); 
                                                                     ?>
                                                             <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                                             </div>
@@ -115,7 +120,7 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'numero',array('class'=>'span5','placeholder'=>'Número de la tarjeta')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'numero',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Card numbers'))); 
                                                                     ?>
                                                             <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                                             </div>
@@ -123,17 +128,17 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'codigo',array('class'=>'span2','placeholder'=>'Código de seguridad')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'codigo',array('class'=>'span2','placeholder'=>Yii::t('contentForm','Security Code'))); 
                                                                     ?>
                                                             <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                                             </div>
                                                     </div>
 
                                                                     <div class="control-group">
-                                                                            Vencimiento *
+                                                                            <?php echo Yii::t('contentForm','Expiration'); ?> *
                                                             <div class="controls">
-                                                    <?php echo $form->dropDownList($tarjeta,'month',array('0'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('class'=>'span1','placeholder'=>'Mes')); ?>
-                                                    <?php echo $form->dropDownList($tarjeta,'year',array('0'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('class'=>'span1','placeholder'=>'Año')); ?>
+                                                    <?php echo $form->dropDownList($tarjeta,'month',array('0'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('class'=>'span1','placeholder'=>Yii::t('contentForm','Month'))); ?>
+                                                    <?php echo $form->dropDownList($tarjeta,'year',array('0'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('class'=>'span1','placeholder'=>Yii::t('contentForm','Year'))); ?>
                                                             <?php echo $form->hiddenField($tarjeta,'vencimiento'); ?>
                                                                     <?php echo $form->error($tarjeta,'vencimiento'); ?>
 
@@ -142,7 +147,7 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>'Cédula de Identidad')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Identity card'))); 
                                                                     ?>
                                                             <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                                             </div>
@@ -150,7 +155,7 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'direccion',array('class'=>'span5','placeholder'=>'Dirección')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'direccion',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Address'))); 
                                                                     ?>
 
                                                             </div>
@@ -158,7 +163,7 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'ciudad',array('class'=>'span5','placeholder'=>'Ciudad')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'ciudad',array('class'=>'span5','placeholder'=>Yii::t('contentForm','City'))); 
                                                                     ?>
 
                                                             </div>
@@ -166,7 +171,7 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'estado',array('class'=>'span5','placeholder'=>'Estado')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'estado',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Province'))); 
                                                                     ?>
                                                             <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                                             </div>
@@ -174,7 +179,7 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <div class="control-group"> 
                                                             <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'zip',array('class'=>'span2','placeholder'=>'Código Postal')); 
+                                                                    <?php echo $form->textFieldRow($tarjeta,'zip',array('class'=>'span2','placeholder'=>Yii::t('contentForm','Zip code'))); 
                                                                     ?>
                                                             <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
                                                             </div>
@@ -182,7 +187,7 @@ echo CHtml::hiddenField('user',$user);
 
                                                                     <?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
                                             <div class="text_center_align">
-                                                    <p>Esta transacción será procesada de forma segura gracias a la plataforma de:</p>	
+                                                    <p><?php echo Yii::t('contentForm','This transaction will be processed securely through the platform:'); ?>:</p>	
                                                     <img src="<?php echo Yii::app()->baseUrl ?>/images/Instapago-logo.png" width="77">
                                                     <img src="<?php echo Yii::app()->baseUrl ?>/images/Banesco-logo.png" width="77">
                                             </div>								
@@ -191,7 +196,7 @@ echo CHtml::hiddenField('user',$user);
                                                 'buttonType'=>'submit',
                                                 'type'=>'warning',
                                                 'size'=>'large',
-                                                'label'=>'Siguiente',
+                                                'label'=>Yii::t('contentForm','Next'),
                                             )); 
                                             //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
                                             ?>
@@ -216,7 +221,7 @@ echo CHtml::hiddenField('user',$user);
     	
       <div class="margin_left">
         <div id="resumen" class="well well_personaling_big ">
-          <h4>Resumen de la compra</h4>
+          <h4><?php echo Yii::t('contentForm','Summary of the purchase'); ?></h4>
           <div class=" margin_bottom">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
               <tr id="adentro">
@@ -243,7 +248,7 @@ echo CHtml::hiddenField('user',$user);
             </table>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed " id="tabla_resumen">
               <tr>
-                <th class="text_align_left">Subtotal:</th>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal'); ?>:</th>
                 <td><?php
                           $totalPr=Yii::app()->getSession()->get('subtotal');
                           $totalDe=Yii::app()->getSession()->get('descuento');
@@ -299,8 +304,8 @@ echo CHtml::hiddenField('user',$user);
                               $totalDe = $totalDe + $y;
                           }*/
 
-                        $iva = (($totalPr - $totalDe)*0.12);
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) ;
+                        $iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA'));
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) ;
 						if($peso_total < 5){
 							
 							$direccion = Direccion::model()->findByPk($idDireccion);
@@ -330,7 +335,7 @@ echo CHtml::hiddenField('user',$user);
 							$seguro=$envio*0.13;
 						}
 
-                        $t = $t + $envio;
+                        $t = $t + $envio + $seguro;
                         
 					
 
@@ -344,27 +349,27 @@ echo CHtml::hiddenField('user',$user);
 						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
 						Yii::app()->getSession()->add('peso',$peso_total);
 						
-                        echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
+                        echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
                   </td>
               </tr>          
               <tr>
-                <th class="text_align_left">Envío:</th>
-                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
+                <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
               </tr>
               <tr>
-                <th class="text_align_left">I.V.A. (12%):</th>
-                <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+                <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
               </tr>
               <?php if($totalDe != 0){ // si no hay descuento ?> 
               <tr>
-                <th class="text_align_left">Descuento:</th>
-                <td class="text_align_right" id="descuento"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
+                <td class="text_align_right" id="descuento"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
               <?php } ?>
               <tr>
-                <th class="text_align_left"><h4>Total:</h4></th>
-                <td class="text_align_right"><h4 id="precio_total"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
+                <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total'); ?>:</h4></th>
+                <td class="text_align_right"><h4 id="precio_total"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
               </tr>
             </table>
 
@@ -381,7 +386,7 @@ echo CHtml::hiddenField('user',$user);
             <div>
                 <label class="checkbox<?php echo $class; ?>">
                 <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-                Usar Balance disponible: <strong><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                <?php echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
               </label>
             </div>
 	    
@@ -391,7 +396,7 @@ echo CHtml::hiddenField('user',$user);
             ?>
              <button type="button" class="btn btn-success margin_top_medium" 
                      data-toggle="collapse" data-target="#collapse2">
-                 <i class = "icon-gift icon-white"></i> Agregar Gift Card</button> 
+                 <i class = "icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Redeem Gift Card'); ?></button> 
             
            
             <!-- Aplicar Gifcard ON -->
@@ -426,7 +431,7 @@ echo CHtml::hiddenField('user',$user);
                 
                <input type="hidden" id="aplicarAjax" name="aplicarAjax" /> 
 <!--               <input type="submit" name="aplicarGC" class="btn btn-mini">Aplicar Gift Card</input>-->
-               <button type="button" id="aplicarGC" class="btn btn-mini btn-danger">Aplicar Gift Card</button>
+               <button type="button" id="aplicarGC" class="btn btn-mini btn-danger"><?php echo Yii::t('contentForm','Apply Gift Card'); ?></button>
                <?php // $this->endWidget(); // formulario ?>      
                </div>     
 <!--                <div class="span12">
@@ -447,7 +452,7 @@ echo CHtml::hiddenField('user',$user);
               <?php $this->widget('bootstrap.widgets.TbButton', array(
 	            'type'=>'warning',
 	            'size'=>'large',
-	            'label'=>'Siguiente',
+	            'label'=>Yii::t('contentForm','Next'),
 	            //'url'=>'confirmar', // action
 	            'icon'=>'lock white',
 	            'buttonType'=>'submit',

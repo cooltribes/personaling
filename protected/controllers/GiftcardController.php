@@ -1103,7 +1103,7 @@ class GiftcardController extends Controller
 	public function actionComprar()
 	{		
                 $model = new BolsaGC;
-                $model->monto = 4; //Default
+                $model->monto = 100; //Default
                 $model->plantilla_url = "gift_card_one"; //Default
                 $envio = new EnvioGiftcard("masivo");
                 

@@ -23,7 +23,7 @@ $this->breadcrumbs = array(
     );
     ?>	
     <!-- FLASH OFF --> 
-    <h1>Gift Card</h1>
+    <h1><?php echo Yii::t('contentForm','Gift Card'); ?></h1>
     <section class="bg_color3  span12 margin_bottom_small padding_medium box_1">
         <?php
         $form = $this->beginWidget("bootstrap.widgets.TbActiveForm", array(
@@ -36,10 +36,10 @@ $this->breadcrumbs = array(
         ?>
 
         <fieldset>
-            <legend>Comprar Gift Card</legend>
+            <legend><?php echo Yii::t('contentForm','Buy Gift Card'); ?></legend>
 
             <div>
-                <p class="lead">1. Selecciona un diseño para la Gift Card</p>
+                <p class="lead">1. <?php echo Yii::t('contentForm','Select a design for the Gift Card'); ?></p>
                 <ul class="thumbnails" id="plantillas">
                     <li class="active" id="GC-gift_card_one">
                         <a href="active">
@@ -73,42 +73,47 @@ $this->breadcrumbs = array(
                 </ul>
             </div>	
             <div>
-                <p class="lead">2. Selecciona el monto</p>
+                <p class="lead">2. <?php echo Yii::t('contentForm','Select the price'); ?></p>
                 <?php echo $form->errorSummary($model); ?>
 
-
-                <?php
-                echo $form->dropDownListRow($model, 'monto', array(
-                    100 => 100,
-                    200 => 200,
-                    300 => 300,
-                    400 => 400,
-                    500 => 500,
-                    600 => 600,
-                    700 => 700,
-                    800 => 800,
-                    900 => 900,
-                    1000 => 1000,
-                        ), array('class' => 'span2'));
-                ?>
+                <div class="control-group input-append">
+                    <label class="control-label required" for="BolsaGC_monto"><?php echo Yii::t('contentForm','Amount'); ?> <span class="required">*</span></label>
+                    <div class="controls">
+                        <?php echo CHtml::activeDropDownList($model, 'monto', array(
+                        100 => 100,
+                        200 => 200,
+                        300 => 300,
+                        400 => 400,
+                        500 => 500,
+                        600 => 600,
+                        700 => 700,
+                        800 => 800,
+                        900 => 900,
+                        1000 => 1000,
+                        ), array('class' => 'span1',)); ?>
+                        <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                    </div>
+                    
+                </div>
+               
 
             </div>	
 
 
             <div class="row margin_top">
                 <div class="span6">	
-                    <p class="lead">3. Personalízala</p>                                       
+                    <p class="lead">3. <?php echo Yii::t('contentForm','Customize it'); ?></p>                                       
 
 
                     <?php
                     echo $form->textFieldRow($envio, 'nombre', array(
-                        'placeholder' => 'A quién se la envías'
+                        'placeholder' => Yii::t('contentForm','Whom you send him')
                     ));
                     ?>                                        
 
                     <?php
                     echo $form->textAreaRow($envio, 'mensaje', array(
-                        'placeholder' => 'Escribe un mensaje', 'maxlength' => '100'));
+                        'placeholder' => Yii::t('contentForm','Write message'), 'maxlength' => '100'));
 
                     $checkI = $checkE = "";
 
@@ -121,14 +126,14 @@ $this->breadcrumbs = array(
                         $checkE = 'checked="checked"';
                     }
                     ?>
-                    <p class="lead">4. Escoge cómo quieres entregarla</p>
+                    <p class="lead">4. <?php echo Yii::t('contentForm','Choose how you want to deliver it'); ?></p>
 
                     <div class="accordion" id="accordionE">
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <label class="radio accordion-toggle margin_left_small"
                                        data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="1" <?php echo $checkI; ?>> Impresa
+                                    <input type="radio" name="entrega" value="1" <?php echo $checkI; ?>> <?php echo Yii::t('contentForm','Printed'); ?>
                                 </label>                                
                             </div>
                             <div id="collapseT" class="accordion-body collapse">
@@ -140,7 +145,7 @@ $this->breadcrumbs = array(
                             <div class="accordion-heading">
                                 <label class="radio accordion-toggle margin_left_small" 
                                        data-toggle="collapse" data-target="#collapseOne" data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="2" <?php echo $checkE; ?>> Por correo electrónico
+                                    <input type="radio" name="entrega" value="2" <?php echo $checkE; ?>> <?php echo Yii::t('contentForm','By email'); ?>
                                 </label> 
 
                             </div>
@@ -148,7 +153,7 @@ $this->breadcrumbs = array(
                                 <div class="accordion-inner">
 <?php
 echo $form->textFieldRow($envio, 'email', array(
-    'placeholder' => 'Email del destinatario'
+    'placeholder' => 'Correo electrónico del destinatario'
 ));
 ?>  
                                 </div>
@@ -181,24 +186,24 @@ $this->widget('bootstrap.widgets.TbButton', array(
                         <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.jpg" width="470">
                         <div class="row-fluid margin_top">
                             <div class="span6 braker_right">
-                                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
+                                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto." ".Yii::t('contentForm','currSym'); ?> </div>
 
-                                <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
+                                <div class="margin_top color4" id="codigo"><div class="color9"><?php echo Yii::t('contentForm','Code'); ?></div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
                             </div>
                             <div class="span6">
-                                <strong  id="forpara">Para:</strong>&nbsp;<span id="para"></span>
+                                <strong  id="forpara"><?php echo Yii::t('contentForm','To1'); ?>:</strong>&nbsp;<span id="para"></span>
                                 <div>
-                                    <strong  id="formensaje">Mensaje:</strong>&nbsp;<span class="" id="mensaje"></span>
+                                    <strong  id="formensaje"><?php echo Yii::t('contentForm','Message'); ?>:</strong>&nbsp;<span class="" id="mensaje"></span>
                                 </div>                        
 
                             </div>
                         </div>
                         <div class="text_center_align margin_bottom_minus margin_top_small">
                             <span class=" t_small" id="fecha">
-                                Válida desde <strong><?php echo date("d/m/Y"); ?> </strong> hasta el <strong><?php
+                                <?php 
                                 $now = date('Y-m-d', strtotime('now'));
-                                echo date("d/m/Y", strtotime($now . " + 1 year"));
-                                ?> </strong>
+                                echo Yii::t('contentForm','Valid from <strong>{start}</strong> until <strong>{end}</strong>',array('{start}'=>date("d/m/Y"),'{end}'=>date("d/m/Y", strtotime($now . " + 1 year")))) ?>
+                                 </strong>
                             </span>                        
                         </div>
                     </div>

@@ -11,12 +11,12 @@
       	</div>
       <hr/>
         <div >
-        <h4>Productos</h4>
+        <h4><?php echo Yii::t('contentForm', 'Products'); ?></h4>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed"> 
         	<?php foreach($model->lookhasproducto as $lookhasproducto){ ?>     
 <tr> <th scope="row"><?php echo $lookhasproducto->producto->nombre; ?></th>
- <td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> disponibles</td>
-<td>           <?php   echo $lookhasproducto->producto->getPrecio(); ?> Bs.</td>
+ <td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> <?php echo Yii::t('contentForm','availables'); ?></td>
+<td>           <?php   echo $lookhasproducto->producto->getPrecio().' '.Yii::t('contentForm', 'currSym'); ?> </td>
 
  
 </tr>

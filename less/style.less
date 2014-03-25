@@ -19,6 +19,7 @@
 @color10: #E7E3E7; /* gris lila */
 @color11: #8b5293; /* Morado chillon */
 @color12: #1abc9c; /* Verde Muteado */
+@color13: #F5f5f5;
 @naranja: #ed751c;
 @azul:       #65BCDF;
 @verde:   #18af91;
@@ -38,6 +39,7 @@
 .color10{ color:@color10;}
 .color11{ color:@color11;}
 .color12{ color:@color12;}
+.color13{ color:@color13;}
 
 .bg_color1{ background-color:@color1;}
 .bg_color2{ background-color:@color2;}
@@ -51,7 +53,7 @@
 .bg_color10{ background-color:@color10;}
 .bg_color11{ background-color:@color11;}
 .bg_color12{ background-color:@color12;}
-
+.bg_color13{ background-color:@color13;}
 
 
 .border_radius (@radius: 5px) {
@@ -123,6 +125,13 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 -moz-transition:all ease 0.5s; /* Firefox 4 */
 -webkit-transition:all ease 0.5s; /* Safari and Chrome */
 -o-transition:all ease 0.5s; /* Opera */}
+
+/* Transitions  */
+.transition_all_6s{
+      transition:all ease 6s;
+-moz-transition:all ease 6s; /* Firefox 4 */
+-webkit-transition:all ease 6s; /* Safari and Chrome */
+-o-transition:all ease 6s; /* Opera */}
 
 /* Textos */
 .text_left_align {
@@ -1317,6 +1326,16 @@ src: url('../fonts/entypo.woff'),
         -moz-box-shadow: 5px 5px 0 #ddd;
         -o-box-shadow: 5px 5px 0 #ddd;
         -webkit-box-shadow: 5px 5px 0 #ddd;
+        
+        .is_100chic{
+          background-image: url(../images/round_100_chic.png);
+          background-color: #b59ac5;
+          background-repeat: no-repeat;
+          color: #fff;  
+          text-shadow: none; 
+          padding-top: 7px;
+          padding-bottom: 7px;
+        }
 
         }
     .imagenes_secundarias{
@@ -1950,7 +1969,7 @@ src: url('../fonts/entypo.woff'),
                 opacity:0;
                 .transition_all;
                 background:#1abc9c;
-                padding:0.5em;
+                padding:0.6em;
                 border:none;
                 z-index: 999;
                 position:relative;
@@ -2063,14 +2082,16 @@ src: url('../fonts/entypo.woff'),
     }
 
     .is_100chic{
-        background-image: url(../images/100chic.png);
+        background-image: url(../images/round_100_chic.png);
+        background-color: #b59ac5;
         background-repeat: no-repeat;
-        background-position: 6px;
-        bottom: 15px;
-        height: 100%;
-        left: 236px;
-        position: absolute;
-        width: 100%;        
+        border: 0; 
+        color: #fff;
+        margin-top: -34px;  
+        opacity: 0.7767656456; 
+        padding: 0.5em;   
+        position: absolute;  
+        text-shadow: none;
     }
 }
 

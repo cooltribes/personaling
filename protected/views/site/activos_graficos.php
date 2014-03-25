@@ -64,8 +64,8 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
                      
                 </ul></div>
                 <h2>Material POP</h2>
-<ul class="thumbnails margin_top">
- <li class="span4">
+                <ul class="thumbnails margin_top">
+                    <li class="span4">
                         <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer_preview.jpg"  alt="">
                           <div class="caption">  <h3>Flyer y Sticker</h3>
                             <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/flyer/Personaling_flyer.zip" class="btn  btn-info btn-block" title="Icono en PNG">Descargar ZIP</a> </p>
@@ -80,12 +80,21 @@ $this->pageTitle=Yii::app()->name . ' - Activos Graficos';
                         </div>
                     </li>
                      <li class="span4">
-                                    <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/elementos_graficos_preview.jpg"  alt="">
-                                      <div class="caption">  <h3>Elementos gráficos</h3>
-                                        <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Elementos_graficos/Personaling_elementos_graficos.zip" class="btn  btn-info btn-block" title="Manchas y objetos">Descargar ZIP</a></p></div>
-                                    </div>
-                                </li>
-        </ul>
-
+                        <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/elementos_graficos_preview.jpg"  alt="">
+                          <div class="caption">  <h3>Elementos gráficos</h3>
+                            <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Elementos_graficos/Personaling_elementos_graficos.zip" class="btn  btn-info btn-block" title="Manchas y objetos">Descargar ZIP</a></p></div>
+                        </div>
+                    </li>
+                </ul>
+                <h2>Redes Sociales</h2>
+                <ul class="thumbnails margin_top">
+                    <li class="span4">
+                        <div class="thumbnail"> <img src="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/redes_preview.jpg"  alt="">
+                          <div class="caption">  <h3>Imágenes de Redes Sociales</h3>
+                            <p><a href="<?php echo Yii::app()->theme->baseUrl ?>/images/activos_graficos/Redes/imagenes_redes.zip" class="btn  btn-info btn-block" title="Icono en PNG">Descargar ZIP</a> </p>
+                        </div>
+                        </div>
+                    </li>
+            </ul>            
     </div>
 </div>

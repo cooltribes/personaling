@@ -54,35 +54,7 @@ $tracking=$orden->getTracking();
    	<td><p class="T_xlarge margin_top_xsmall color1">
 <?php
 //----------------------Estado
-	if($orden->estado == 1)
-		echo "En espera de pago"; 
-	
-	if($orden->estado == 2)
-		echo "Espera confirmación";
-	
-	if($orden->estado == 3)
-		echo "Pago Confirmado";
-
-	if($orden->estado == 4)
-		echo "Pedido Enviado";
-	
-	if($orden->estado == 5)
-		echo "Orden Cancelada";	
-	
-	if($orden->estado == 6)
-		echo "Pago Rechazado";
-
-	if($orden->estado == 7)
-		echo "Pago Insuficiente";
-	
-	if($orden->estado == 8)
-		echo "Orden Entregada";
-	
-	if($orden->estado == 9)
-		echo "Devuelto";
-		
-	if($orden->estado == 10)
-		echo "Devolución Parcial";
+	echo $orden->textestado;
 	
 	// agregar demas estados
 ?>
@@ -205,7 +177,7 @@ $tracking=$orden->getTracking();
   <hr/>
   <div class="row">
     <div class="span7">
-      <h3 class="braker_bottom margin_top"> Información del cliente</h3>
+      <h3 class="braker_bottom margin_top_small"> Información del cliente</h3>
       <div class="row">
         <div class="span1">
         	<?php
@@ -217,7 +189,7 @@ $tracking=$orden->getTracking();
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">
-                <li><strong>eMail</strong>: <?php echo $usuario->email; ?></li> 
+                <li><strong>Correo electrónico</strong>: <?php echo $usuario->email; ?></li> 
                 <li><strong>Telefono</strong>:<?php echo $usuario->profile->tlf_celular; ?> </li>
                 <li><strong>Ciudad</strong>:<?php echo $usuario->profile->ciudad; ?> </li>
               </ul>
@@ -305,7 +277,7 @@ $tracking=$orden->getTracking();
      	if($orden->estado==4||$orden->estado==8||$orden->estado==9||$orden->estado==10){
      ?>
      
-      <div class="well well-small margin_top well_personaling_small">
+      <div class="well well-small margin_top_small well_personaling_small">
         <h3 class="braker_bottom "> Transporte </h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>
@@ -370,7 +342,7 @@ $tracking=$orden->getTracking();
       
       <div class="row-fluid">
         <div class="span12">
-          <h3 class="braker_bottom margin_top">Dirección de envío</h3>
+          <h3 class="braker_bottom margin_top_small">Dirección de envío</h3>
           <div class="vcard">
             <div class="adr">
             	<?php
@@ -384,10 +356,33 @@ $tracking=$orden->getTracking();
               <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
-            <div><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
-            <div><strong>Email</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+           <div class="row-fluid tel pull_left">
+            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
+            <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
+          </div>
+   <?php
+            	if(isset($orden->direccionFacturacion)){
+            		
+            	?>
+           <h3 class="braker_bottom margin_top_small">Dirección de facturación</h3>
+          <div class="vcard">
+            <div class="adr">
+            	
+              <div class="street-address"><i class="icon-map-marker"></i><?php echo $orden->direccionFacturacion->nombre." ".$orden->direccionFacturacion->apellido.". ";  ?></div>
+              
+              <span class="locality"><?php echo $orden->direccionFacturacion->dirUno.", ".$orden->direccionFacturacion->dirDos; ?>.</span>
+              <span class="locality"><?php echo $orden->direccionFacturacion->ciudad->nombre ?>, <?php echo $orden->direccionFacturacion->provincia->nombre; ?>.</span>
+              <div class="country-name"><?php echo $orden->direccionFacturacion->pais; ?></div>
+            </div>
+           <div class="row-fluid tel pull_left">
+            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
+            <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
+            <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+          </div>
+          </div>
+          <?php } ?>
           <!-- <a href="#" class="btn"><i class="icon-edit"></i></a> --> </div>
           
         <!--  
@@ -498,36 +493,9 @@ $tracking=$orden->getTracking();
 		  	{
 		  		echo("<tr>");
 				
-				if($est->estado==1)
-					echo("<td>Pendiente de Pago</td>");
 				
-				if($est->estado==2)
-					echo("<td>Pendiente por confirmar</td>");
+					echo "<td>".$orden->getTextEstado($est->estado)."</td>";
 				
-				if($est->estado==3)
-					echo("<td>Pago Confirmado</td>");
-				
-				if($est->estado==4)
-					echo("<td>Pedido enviado</td>");			 
-				
-				
-				if($est->estado == 5)
-					echo "<td>Orden Cancelada</td>";	
-				
-				if($est->estado==6)
-					echo("<td>Pago Rechazado</td>");
-				
-				if($est->estado == 7)
-					echo "<td>Pago Insuficiente</td>";
-				
-				if($est->estado == 8)
-					echo "<td>Orden Entregada</td>";
-				
-				if($est->estado == 9)
-					echo "<td>Devuelto</td>";
-		
-				if($est->estado == 10)
-					echo "<td>Parcialmente Devuelto</td>";
 				
 				
 				$usu = User::model()->findByPk($est->user_id);
@@ -981,7 +949,7 @@ $tracking=$orden->getTracking();
         </div>
         <div class="control-group">
           <label class="checkbox">
-          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por eMail </label>
+          	<input type="checkbox" value="" id="notificar" > Notificar al Cliente por correo electrónico </label>
           <label class="checkbox">
             <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
         </div>

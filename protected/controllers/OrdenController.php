@@ -667,7 +667,9 @@ public function actionReportexls(){
 
 	public function actionDetalles($id)
 	{
-		$orden = Orden::model()->findByPk($id);
+		$orden = Orden::model()->findByPk($id);  
+                
+                
 		/*$sql="select * from tbl_zoom where cod NOT IN (select cod_zoom from tbl_ciudad where cod_zoom IS NOT NULL)";
 		$zooms=Yii::app()->db->createCommand($sql)->queryAll();
 	
@@ -754,9 +756,10 @@ public function actionReportexls(){
 			}
 			
 			// devolviendo el saldo
+                        //tambien agregado el envio
 			
 			$balance = new Balance;
-			$balance->total = $_POST['monto'];
+			$balance->total = $_POST['monto'] + $_POST['envio'];
 			$balance->orden_id = $_POST['orden'];
 			$balance->user_id = $orden->user_id;
 			$balance->tipo = 4;
@@ -910,7 +913,9 @@ public function actionValidar()
 							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
 						} // si es mayor hace el balance
 						
-													
+						/*Pagar comision a las PS involucradas en la venta*/
+                                                Orden::model()->pagarComisiones($orden); 
+                                                
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					
 					}//orden save
@@ -970,6 +975,9 @@ public function actionValidar()
 								$balance->tipo=1;
 								
 								$balance->save();
+                                                                
+                                                                /*Pagar comision a las PS involucradas en la venta*/
+                                                                Orden::model()->pagarComisiones($orden); 
 									
 								
 							}
@@ -1327,7 +1335,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');                
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						Yii::app()->mail->send($message);
 						
 					/*
@@ -1346,7 +1354,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						
 						Yii::app()->mail->send($message);					
 					
@@ -1399,7 +1407,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');                
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						Yii::app()->mail->send($message);
 						
 					/*
@@ -1418,7 +1426,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						
 						Yii::app()->mail->send($message);					
 					*/
@@ -1503,9 +1511,13 @@ public function actionValidar()
 		if(isset($_POST['orden']) && isset($_POST['check']))
 		{
 			$orden = Orden::model()->findByPk($_POST['orden']);
-			
+			$devolver=array();
+			$nproductos=0;
+			$peso=0;
+			$costo=0;
+			$cont=0;
 			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
-			$cont = 0; 
+			
 //			echo count($checks);
 //                        Yii::app()->end();
 			$totalenvio = 0;
@@ -1513,19 +1525,26 @@ public function actionValidar()
 //                        foreach($checks as $uno)
 //			{echo $uno."<br>";
 //                            
-//                        }
+//                       }
 //                        Yii::app()->end();
+			
+			$orden = Orden::model()->findByPk($_POST['orden']);
+			
 			foreach($checks as $uno)
 			{
-				$orden = Orden::model()->findByPk($_POST['orden']);
+				
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno)); 
 				
-                                if($ptcolor)
+				
+             if($ptcolor)
 				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" 
                                         || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
 				{
+							
+					array_push($devolver,$ptcolor->id);	
+							
 					// calculo envio
-					
+					/*
 					$producto = Producto::model()->findByPk($ptcolor->producto_id);
 					$peso_total = $producto->peso; 
 					
@@ -1553,19 +1572,62 @@ public function actionValidar()
 						}
 							
 						$tipo_guia = 2;
-					}
-					
-					$totalenvio += $envio;
+					}*/
 					
 				} // if motivos
 
+				
+				
 				$cont++;
 			} // foreach
 			
-		echo $totalenvio;						
+			
+			$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));	
+		
+			foreach($ohptcs as $ohptc){
+				
+				if(!in_array($ohptc->preciotallacolor_id,$devolver)){
+					$nproductos=$nproductos+$ohptc->cantidad;
+					$costo=$costo+$ohptc->precio;
+					$peso+=$ohptc->cantidad*$ptcolor->producto->peso;	
+				}
+				
+			}
+			
+			if($peso< 5){      
+							
+						
+						$flete=Orden::model()->calcularTarifa($orden->direccionEnvio->myciudad->cod_zoom,$nproductos,$peso,$costo);
+							
+							if(!is_null($flete)){
+								$envio=$flete->total - $orden->flete;
+					
+							}else{
+								$envio =Tarifa::model()->calcularEnvio($peso,$orden->direccionEnvio->myciudad->ruta_id);
+								$seguro=$envio*0.13;
+							}
+							
+							
+							$tipo_guia = 1;
+							
+			}else{
+							$peso_adicional = ceil($peso-5);
+							$envio = 163.52 + ($peso*$orden->direccionEnvio->myciudad->ruta->precio);
+							if($envio > 327.04){
+								$envio = 327.04;
+							}
+							$tipo_guia = 2;
+							
+			}
+			
+					
+			
+			
+									
 //		echo Yii::app()->numberFormatter->formatCurrency($totalenvio, '');
 
 		}	
+	echo ($orden->envio-$envio);
 
 	}
 

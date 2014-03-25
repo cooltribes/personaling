@@ -37,19 +37,21 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
-      <div class="first-past">Autenticación</div>
-      <div class="middle-past">Dirección<br/>
-        de envío <br/>
-        y facturación</div>
-      <div class="middle-past">Método <br/>
-        de pago</div>
-      <div class="last-done">Confirmar<br/>
-        compra</div>
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
+      </div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Payment <br> method'); ?>
+      </div>
+      <div class="last-done">
+        <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
+      </div>
     </div>
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación del Pedido
+      <h1><?php echo Yii::t('contentForm','Order confirmation'); ?>
           <br>
           <?php 
               $userObject = User::model()->findByPk($user);
@@ -81,7 +83,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   <div class="row margin_top_medium">
       <section class="span4">
       <div class="well ">
-        <h4 class="braker_bottom">Detalles del Pedido</h4>
+        <h4 class="braker_bottom"><?php echo Yii::t('contentForm','Order Details'); ?></h4>
         <form id="form_productos">          
           <!-- Look ON -->
           <!--<h3 class="braker_bottom">Productos Individuales</h3>-->
@@ -89,9 +91,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             <table class="table" width="100%" >
               <thead>
                 <tr>
-                  <th>Producto</th>
-                  <th>Precio Unitario</th>
-                  <th>Cantidad</th>
+                  <th><?php echo Yii::t('contentForm','Product'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Unit price'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Quantity'); ?></th>
                 </tr>
               </thead>
               <tbody>
@@ -125,7 +127,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
                         echo "
                         <td>"
-                        .$producto->nombre."<br/>
+                        .$producto->nombre." ".$producto->id."<br/>
                         <strong>Color</strong>: ".$color->valor."<br/>
                         <strong>Talla</strong>: ".$talla->valor."</td>
                         ";	
@@ -162,7 +164,33 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom"> Dirección de Envío</h4>
+             <h4><?php echo Yii::t('contentForm','Payment Method Selected'); ?></h4>
+        <div class=" margin_bottom"> 
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
+            <?php 
+              	if(Yii::app()->getSession()->get('tipoPago')==1)
+                {
+                    echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','Deposit or Bank Transference').".</td></tr>";
+                }else if(Yii::app()->getSession()->get('tipoPago')==4){
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i>".Yii::t('contentForm','MercadoPago').".</td></tr>";
+                }else if(Yii::app()->getSession()->get('tipoPago')==2){
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','Credit Card').".</td></tr>";
+
+                    $tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
+
+                    $rest = substr($tarjeta->numero, -4);
+
+                    echo "</br>".Yii::t('contentForm','Name').": ".$tarjeta->nombre."
+                    </br>".Yii::t('contentForm','Number').": XXXX XXXX XXXX ".$rest."
+                    </br>".Yii::t('contentForm','Expiration').": ".$tarjeta->vencimiento;
+                }
+              ?>
+          </table>
+        </div>
+      	
+      	 	   <hr>
+      	
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>
         <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
         <?php 
         // direccion de envio 
@@ -170,40 +198,31 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
         	//echo 'Tipo pago: '.$tipoPago;
 		}
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
+		$facturacion= Direccion::model()->findByPk(Yii::app()->getSession()->get('idFacturacion'));
 		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
           <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
-        <p><strong>Dirección:</strong> <br/>
+        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
-        <p> <strong>Teléfono</strong>: <?php echo($direccion->telefono); ?> <br/>
+        <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($direccion->telefono); ?> <br/>
         </p>
+         	   <hr>
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Billing address'); ?></h4>
+        <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
+        <?php 
+     
+        ?>
+        <p> <strong><?php echo($facturacion->nombre." ".$facturacion->apellido); ?></strong> <br/>
+          <span class="muted small"> C.I. <?php echo($facturacion->cedula); ?></span></p>
+        <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
+          <?php echo($facturacion->dirUno.". ".$facturacion->dirDos.", ".$facturacion->ciudad->nombre.", ".$facturacion->ciudad->provincia->nombre.". ".$facturacion->pais); ?> </p>
+        <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($facturacion->telefono); ?> <br/>
+        </p>
+        
         <!-- Direcciones OFF --> 
         
-        <hr>
-        <h4>Método de Pago Seleccionado</h4>
-        <div class=" margin_bottom">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
-            <?php 
-              	if(Yii::app()->getSession()->get('tipoPago')==1)
-                {
-                    echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
-                }else if(Yii::app()->getSession()->get('tipoPago')==4){
-                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
-                }else if(Yii::app()->getSession()->get('tipoPago')==2){
-                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td></tr>";
-
-                    $tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
-
-                    $rest = substr($tarjeta->numero, -4);
-
-                    echo "</br>Nombre: ".$tarjeta->nombre."
-                    </br>Numero: XXXX XXXX XXXX ".$rest."
-                    </br>Vencimiento: ".$tarjeta->vencimiento;
-                }
-              ?>
-          </table>
-        </div>
+     
         
       </div>
     </section>
@@ -211,13 +230,13 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
       <div class="well well_personaling_big">
-        <h5>Look seleccionado(s): <?php echo Yii::app()->getSession()->get('totalLook'); ?><br/>
+        <h5><?php echo Yii::t('contentForm','Selected looks').': '.Yii::app()->getSession()->get('totalLook'); ?><br/>
           <?php  
            	if(Yii::app()->getSession()->get('totalProductosLook') != 0){
-           		echo Yii::app()->getSession()->get('totalProductosLook')." productos que componen los Looks<br/>";
+           		echo Yii::app()->getSession()->get('totalProductosLook')." ".Yii::t('contentForm','Products that make the Looks')."<br/>";
            	}
 			
-			echo 'Productos individuales: '.Yii::app()->getSession()->get('totalIndiv');
+			echo Yii::t('contentForm','Individual products').': '.Yii::app()->getSession()->get('totalIndiv');
 			?>
         </h5>
         
@@ -229,11 +248,11 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 			?>
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
-              <th class="text_align_left">Subtotal:</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal') ?>:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>
             <tr>
-              <th class="text_align_left">Envío:</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping') ?>:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
             </tr>
             <tr>
@@ -242,12 +261,12 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             </tr>
             <?php if($descuento != 0){ // si no hay descuento ?> 
             <tr>
-              <th class="text_align_left">Descuento:</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
               <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
            	</tr>
            	<?php } ?>
             <tr>
-              <th class="text_align_left"><h4>Total:</h4></th>
+              <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total') ?>:</h4></th>
               <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
             </tr>
           </table>
@@ -278,7 +297,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 				);
 				$preferenceResult = $mp->create_preference($preference);
 				?>
-          <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
+          <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago') ?></a>
           <?php 
           } else {
           	
@@ -296,7 +315,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 //                    'buttonType'=>'submit',
                     'buttonType'=>'button',
                     'size'=>'large',
-                    'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
+                    'label'=>$tipo_pago==2?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Complete purchase'),
                     //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
                     'icon'=>'lock white',
                     'htmlOptions'=>array(
@@ -310,10 +329,10 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 		  ?>
           
         </div>
-        <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+        <p><i class="icon-calendar"></i><?php echo Yii::t('contentForm','Date estimated delivery') ?>: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
-      <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank">Ver Políticas de Envíos y Devoluciones</a></p>
-      <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
+      <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank"><?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?></a></p>
+      <p class="muted"><i class="icon-comment"></i> <?php echo Yii::t('contentForm', 'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm'); ?></p>
       
       <!-- Resumen de Productos OFF --> 
       
@@ -330,15 +349,14 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             
     <div class="box_20130928 margin_bottom_small">
             <h1>
-                <span>Tu pago esta siendo procesado</span>
+                <span><?php echo Yii::t('contentForm', 'Your payment is being processed'); ?></span>
                 <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
             </h1>
             
             <p>
-                Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
-                <b>Atrás</b> en tu navegador
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
                 <br>
-                ¡Tu compra será completada en instantes!                
+                <?php echo Yii::t('contentForm', 'Your purchase will be completed in seconds!'); ?>                
             </p>
             
     </div>

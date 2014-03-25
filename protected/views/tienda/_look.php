@@ -8,7 +8,9 @@
   <div class="row" id="looks">
   	
 	<?php foreach($looks as $look): 
-
+                if(!$look->getIsVisible()){
+                    continue;
+                }
 		?>
 		
 		<?php  //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
@@ -65,7 +67,7 @@
             	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
           	</a>
           	</div>
-          <div class="span5"> <span class="muted">Look creado por: </span>
+          <div class="span5"> <span class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
             <h5>
 			<?php 
 			
@@ -74,7 +76,7 @@
 			echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
 			</h5>
           </div>
-          <div class="span5"><span class="precio"><small>Bs.</small><?php echo $look->getPrecio(); ?></span></div>
+          <div class="span5"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym')?> </small><?php echo $look->getPrecio(); ?></span></div>
         </div>
         <div class="share_like">
          
@@ -91,7 +93,7 @@
             
           </div>
         </div>
-        <span class="label label-important">Promoción</span> 
+        <span class="label label-important"><?php echo Yii::t('contentForm','Promotion'); ?></span> 
         </article>
     </div>		
 	<?php endforeach; ?>

@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{provincia}}':
  * @property integer $id
  * @property string $nombre
+ * @property string $pais_id
  *
  * The followings are the available model relations:
  * @property Ciudad[] $ciudads
@@ -55,6 +56,7 @@ class Provincia extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'ciudads' => array(self::HAS_MANY, 'Ciudad', 'provincia_id'),
+			'ciudads' => array(self::BELONGS_TO, 'Pais', 'pais_id'),
 		);
 	}
 

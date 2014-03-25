@@ -76,7 +76,7 @@ class PrecioTallaColor extends CActiveRecord
 		// should not be searched.
  
 	$sql="select p.id,
-		p.codigo as 'Codigo',
+		p.codigo as 'Referencia',
 		m.nombre as 'Marca',
 		p.nombre as Nombre,
 		ptc.sku as 'SKU',
@@ -85,7 +85,7 @@ class PrecioTallaColor extends CActiveRecord
 		ptc.cantidad as 'Cantidad',
 		pr.costo as 'Costo',
 		pr.precioVenta as 'Precio',
-		pr.precioImpuesto as 'pIva'
+		pr.precioImpuesto as 'pIVA'
 		from tbl_precioTallaColor ptc
 	JOIN tbl_producto p ON p.id=ptc.producto_id
 	JOIN tbl_marca m ON p.marca_id = m.id
@@ -107,17 +107,16 @@ class PrecioTallaColor extends CActiveRecord
 		
 		$rawData=Yii::app()->db->createCommand($sql)->queryAll();
 		
-		/*if(!is_null($pages)){
+		if(!is_null($pages)){
 				
 			if(!$pages){
-				$sql="select count(o.preciotallacolor_id) from tbl_orden_has_productotallacolor o WHERE o.tbl_orden_id IN(select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 ) AND o.cantidad > 0";
+				$sql="select count(ptc.id) from  tbl_precioTallaColor ptc WHERE ptc.cantidad >0";
 				$pages=Yii::app()->db->createCommand($sql)->queryScalar();
 			}
 			else
 				$pages=30;
-		}*/
-		$pages=30;
-				
+		}
+
 				// or using: $rawData=User::model()->findAll(); <--this better represents your question
 	
 				return new CArrayDataProvider($rawData, array(

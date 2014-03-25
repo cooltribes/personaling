@@ -40,15 +40,18 @@
 			  <thead>
 			  <tr class="sorter"> 
 
+			       <th>SKU</th>
+			        <th>Referencia</th>
 			      <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Marca">Marca</a></th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Nombre">Nombre</a></th>
-                    <th>SKU</th>
+                   
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Color">Color</a></th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Talla">Talla</a></th>
                     <th>Cantidad</th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Costo">Costo (Bs)</a></th>
                     <th>Precio sin IVA (Bs)</th>
                     <th>Precio con IVA (Bs)</th>
+                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Orden">Orden N°</a></th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Fecha">Vendido</a></th>
                 </tr>
 			    </thead>
@@ -81,7 +84,7 @@
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
 	      'sortableAttributes'=>array(
-                'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
+                'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Orden','Fecha'
    	),
 	    
 	    

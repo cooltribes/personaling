@@ -239,8 +239,8 @@ class Orden extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
  
- 	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
-		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color, ord.fecha as Fecha
+ 	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, ord.id as Orden,
+		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color, ord.fecha as Fecha, pr.codigo as Referencia
 		from tbl_orden_has_productotallacolor o  
 		JOIN tbl_precioTallaColor p ON p.id = o.preciotallacolor_id 
 		JOIN tbl_orden ord ON ord.id = o.tbl_orden_id 
@@ -287,7 +287,7 @@ class Orden extends CActiveRecord
 					 
 				    'sort'=>array(
 				        'attributes'=>array(
-				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
+				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Orden', 'Fecha'
 				        ),
 	    ),
 				));

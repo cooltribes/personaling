@@ -131,16 +131,19 @@ public function actionReportexls(){
 
 			// creando el encabezado
 			$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Marca')
-						->setCellValue('B1', 'Nombre')
-						->setCellValue('C1', 'SKU')
-						->setCellValue('D1', 'Color')
-						->setCellValue('E1', 'Talla')
-						->setCellValue('F1', 'Cantidad')
-						->setCellValue('G1', 'Costo (Bs)')
-						->setCellValue('H1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('I1', 'Precio de Venta con IVA (Bs)')
-						->setCellValue('J1', 'Vendido en');
+						->setCellValue('A1', 'SKU')
+						->setCellValue('B1', 'Referencia')
+						->setCellValue('C1', 'Marca')
+						->setCellValue('D1', 'Nombre')
+						
+						->setCellValue('E1', 'Color')
+						->setCellValue('F1', 'Talla')
+						->setCellValue('G1', 'Cantidad')
+						->setCellValue('H1', 'Costo (Bs)')
+						->setCellValue('I1', 'Precio de Venta sin IVA (Bs)')
+						->setCellValue('J1', 'Precio de Venta con IVA (Bs)')
+						->setCellValue('K1', 'Orden N°')
+						->setCellValue('L1', 'Vendido en');
 			// encabezado end			
 		 	
 			foreach(range('A','I') as $columnID) {
@@ -159,6 +162,8 @@ public function actionReportexls(){
 			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('L1')->applyFromArray($title);
 		 	
 		 	
 		 	//Eliminar filtrado por marca antes de consultar
@@ -184,21 +189,23 @@ public function actionReportexls(){
 			{
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
              
-                    $H=number_format($data['Precio'],2,',','.'); 
-                    $I=number_format(($data['Precio']+($data['Precio']*0.12)),2,',','.');
+                    $I=number_format($data['Precio'],2,',','.'); 
+                    $J=number_format($data['pIVA'],2,',','.');
 
 
 					$objPHPExcel->setActiveSheetIndex(0)
-							->setCellValue('A'.$fila , $data['Marca']) 
-							->setCellValue('B'.$fila , $data['Nombre'])
-							->setCellValue('C'.$fila , $data['SKU']) 
-							->setCellValue('D'.$fila , $data['Color'])
-							->setCellValue('E'.$fila , $data['Talla']) 
-							->setCellValue('F'.$fila , $data['Cantidad']) 
-							->setCellValue('G'.$fila , number_format($data['Costo'],2,',','.')) 
-							->setCellValue('H'.$fila , trim($H))							
-							->setCellValue('I'.$fila , trim($I))
-							->setCellValue('J'.$fila ,date("d/m/Y",strtotime($data['Fecha'])));
+							->setCellValue('A'.$fila , $data['SKU']) 
+							->setCellValue('B'.$fila , $data['Referencia']) 
+							->setCellValue('C'.$fila , $data['Marca']) 
+							->setCellValue('D'.$fila , $data['Nombre'])
+							->setCellValue('E'.$fila , $data['Color'])
+							->setCellValue('F'.$fila , $data['Talla']) 
+							->setCellValue('G'.$fila , $data['Cantidad']) 
+							->setCellValue('H'.$fila , number_format($data['Costo'],2,',','.')) 
+							->setCellValue('I'.$fila , trim($I))							
+							->setCellValue('J'.$fila , trim($J))
+							->setCellValue('K'.$fila , $data['Orden'])
+							->setCellValue('L'.$fila ,date("d/m/Y",strtotime($data['Fecha'])));
 					$fila++;
 
 			} // foreach

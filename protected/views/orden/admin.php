@@ -79,10 +79,10 @@ echo $num;
     <div class="span4">
     	
     	<form class="no_margin_bottom form-search">
-       		<div class="input-apend"> 
+       		<div class="input-append"> 
 				<input class="span3" id="query" name="query" type="text" placeholder="Buscar por palabras clave">
        			<a href="#" class="btn" id="btn_search_event">Buscar</a>
-                </div>
+            </div>
       	</form>
     
 			<?php
@@ -147,7 +147,7 @@ echo $num;
     </div>
     <div class="span3">
         <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 1'),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- Búsquedas avanzadas --', 'id' => 'all_filters')) ?>
 <!--      <select class="span3">
         <option>Filtros preestablecidos</option>
         <option>Filtro 1</option>
@@ -156,7 +156,7 @@ echo $num;
       </select>-->
     </div>
     <div class="span3">
-      <a href="#" class="btn crear-filtro" title="Crear nuevo filtro">Crear filtro</a>
+      <a href="#" class="btn crear-filtro" title="Crear nuevo filtro">Crear búsqueda avanzada</a>
     </div>
   </div>
   <hr/>

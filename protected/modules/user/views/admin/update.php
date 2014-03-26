@@ -55,8 +55,9 @@ function getMonthsArray()
         return array(0 => 'Año:') + $years;
     }
     $val=true;
-	if($model->personal_shopper==0)
-		$val=false;
+	if($model->personal_shopper!=0)
+		$profile->setScenario('PS');
+		
 	?>
 
 <div class="container margin_top">

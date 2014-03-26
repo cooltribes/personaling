@@ -58,6 +58,7 @@ return array (
      'By email' => 'Por correo electrónico',
      'By price' => 'Por precio',
      'By brand' => 'Por marca',
+     'Billing address' => 'Dirección de facturación',
 
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
@@ -101,7 +102,7 @@ return array (
      'Details' => 'Detalles',
      'Description' => 'Descripción',
      'Delivery' => 'Envío',
-     'Decotarions' => 'Adornos',
+     'Decorations' => 'Adornos',
      'Discount' => 'Descuento',
      'Document' => 'Documento',
      'Documents' => 'Documentos',

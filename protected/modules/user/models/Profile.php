@@ -69,7 +69,7 @@ class Profile extends UActiveRecord
                                                
                                                                            else if ($field->varname=="url" || $field->varname=="bio"
                                                                                    || $field->varname=="facebook" || $field->varname=="twitter")
-                                               { array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} "));
+                                               { array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} ",'on'=>'PS'));
 											   	 
 											   }
 									   else									   
@@ -251,6 +251,9 @@ class Profile extends UActiveRecord
 						break;
 					case 4:
 						$this->_model=ProfileField::model()->forPersonalShopper()->forOwner()->findAll(); //forPersonal()->
+						break;
+					case 5:
+						$this->_model=ProfileField::model()->forPersonalShopperComi()->forOwner()->findAll(); //forPersonal()->
 						break;
 					default:
 						$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->	

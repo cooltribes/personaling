@@ -92,13 +92,13 @@
    <?php $this->endWidget(); ?>
 
     <div class="span2 pull-right">
-        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
+        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar</a>
     </div>
     <div class="span3 pull-right">
-        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Nuevo Filtro</a> 
+        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar</a> 
     </div>
     <div class="span2 pull-right" style="display: none">
-        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar Filtro</a> 
+        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar</a> 
     </div>
     <div class="span1 pull-right">
         <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  

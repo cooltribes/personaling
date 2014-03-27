@@ -89,6 +89,7 @@
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_datosProductos',
 	    'template'=>$template,
+	    
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
 	      'sortableAttributes'=>array(

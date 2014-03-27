@@ -275,7 +275,7 @@ else
     		
     		if($('#billAdd').val()=='0'){
     			e.preventDefault();
-    			alert("Debes seleccionar una dirección de Facturación");
+    			alert('Debes seleccionar una dirección de Facturación');
     		}
     		else{
     			$('#direccionUsada').submit();

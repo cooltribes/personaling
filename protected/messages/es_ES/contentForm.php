@@ -6,6 +6,13 @@ return array (
 	'currSym'=>'€',
 	'IVA' => '0.12',
     'IVAtext' => '12%',
+	'Bank information' => '<h4>Banco Sabadell</h4>
+	                       <ul>
+	                               <li><strong>Cuenta::</strong> 0081-5645-80-0001104113</li>
+	                               <li><strong>IBAN / BIC:ES95 0081 5645 8000 0110 4113 / BSAB ESBB</li>
+	                               <li><strong>CUENTA EXPANSIÓN NEGOCIOS</li>
+	                               <li><strong>Titular:</strong> PERSONALING ENTERPRISE S.L</li>
+	                       </ul>',    
 
      'About us text' => '<p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, ¡Tu personal shopper digital! es el canal online de prestigiosas y conocidas marcas de moda internacional. (punto y a parte). A través de este canal  no solo podrás comprar las prendas y accesorios de tus diseñadores favoritos, sino que tendrás a tu disposición y, de forma gratuita, el servicio exclusivo de asesores de moda, mejor conocidos como Personal Shoopers.  Estos asesores de imagen y moda -celebridades, estilistas, bloggers y especialistas- crearán looks en torno a tu perfil, gustos, necesidades y eventos especiales, permitiéndote adquirir en un solo clic, los productos recomendados y recibirlos en la comodidad de tu hogar u oficina.</p>',    
 	'Action' => 'Acción',

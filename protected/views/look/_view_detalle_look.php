@@ -39,10 +39,10 @@
 </table>
             <h4>Precios</h4>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed">
-                <tr>
+<!--                 <tr>
                     <th scope="row">Precio base</th>
                     <td> Bs. 700,00 </td>
-                </tr>
+                </tr> -->
                 <tr>
                     <th scope="row">Precio con descuento</th>
                     <td> Bs. <?php echo $model->getPrecio(); ?></td>

@@ -1,23 +1,20 @@
 
-  <?php /* @var $this Controller */ ?>
-  <?php //date_default_timezone_set('America/Los_Angeles'); ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="language" content="en" />
-<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-<?php 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="language" content="es" />
+    <meta charset="utf-8">
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <?php 
 
-Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css',null);
-// Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
-Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico',null,null);  
-Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
-?>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-
-
-
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
+    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css',null);
+    // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
+    Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico',null,null);  
+    Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
+    ?>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
+    <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">
@@ -207,7 +204,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
-                array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
+                array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 array('label'=>$avatar."<span id='userName'>{$nombre}</span>", 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,

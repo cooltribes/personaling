@@ -323,7 +323,6 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 
 body {
     font-family: 'Open Sans', sans-serif;
-    background:url(../images/bg_site_acuerela.jpg) no-repeat  right -30px;
     }
 h1,h2,h3,h4{font-weight:300}
 
@@ -627,7 +626,7 @@ src: url('../fonts/entypo.woff'),
 #myLogo a, #site-title a , .brand{
     display: block;
     height: 36px;
-    background:url(../images/logo_personaling.png) no-repeat center left;
+    background:url(../images/logo_personaling_2.png) no-repeat center left;
     text-indent: -9999px;
     width: 284px;
     z-index: 100;
@@ -638,19 +637,26 @@ src: url('../fonts/entypo.woff'),
 
 
 #navegacion_principal{
-     .nav > li > a{ padding:18px 15px;
+      .navbar > .navbar-inner > .container{
+        padding: .5em 0;
+      }
+      .nav{
+        top: 5px;
+      }
+
+     .nav > li > a{ padding:13px 15px;
+                      text-shadow: none;
+                     -moz-text-shadow: none;
+                     -webkit-text-shadow: none;
+                     -ms-text-shadow: none;
                      &:hover{
-                         background-color: @color1;
+                         background-color: @color4;
                          color:@color3;
-                          text-shadow: none;
-                         -moz-text-shadow: none;
-                         -webkit-text-shadow: none;
-                         -ms-text-shadow: none;
                      }
                  }
      .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{
-             background-color: lighten(@lila,3%);
-             color: darken(@lila,50%);
+             background-color: @color5;
+             color: @color4;
      }
      .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner{
          box-shadow: none;
@@ -695,9 +701,7 @@ src: url('../fonts/entypo.woff'),
         }
 
         .navbar-inner{
-    border-top:5px solid @color1;
-    margin-top:-2px;
-    min-height:55px;
+          min-height:55px;
         }
 
     .navbar-inverse .navbar-inner {
@@ -724,16 +728,14 @@ src: url('../fonts/entypo.woff'),
 }
 
 .navbar .nav > li > a.btn-danger{
-    .color3;
-    .text_shadow;
+    border: 1px solid @color4;
+    background-color: transparent;
+    padding: 12px 15px !important;
     box-shadow: none;
     -moz-box-shadow: none;
     -ms-box-shadow: none;
     -webkit-box-shadow: none;
     margin-top:0;
-    .transition_all
-
-
     }
 .navbar .nav > li > a.btn-danger:hover{
     .bg_color1;
@@ -1968,7 +1970,7 @@ src: url('../fonts/entypo.woff'),
             .vista_rapida{
                 opacity:0;
                 .transition_all;
-                background:#1abc9c;
+                background: rgba(0,0,0,0.72);
                 padding:0.6em;
                 border:none;
                 z-index: 999;
@@ -1993,7 +1995,7 @@ src: url('../fonts/entypo.woff'),
 
                 .vista_rapida{
                     opacity:1;
-                    &:hover{background:darken(#1abc9c, 3%);}
+                    &:hover{background:black;}
                     }
                 }
               .icon_lupa{

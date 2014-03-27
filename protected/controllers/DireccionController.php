@@ -181,7 +181,7 @@ class DireccionController extends Controller
 		$direccion->attributes=$_POST;
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
-			echo $this->renderPartial('/bolsa/_direcciones', array(
+			echo '<legend >'.Yii::t('contentForm','Addresses used above').': </legend>'.$this->renderPartial('/bolsa/_direcciones', array(
 	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ) , 
 	       		true);
 		}

@@ -297,7 +297,7 @@ echo CHtml::hiddenField('user',$user);
                           {
                               $totalDe = $totalDe + $y;
                           }*/
-
+						$seguro=0;
                         $iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA'));
 						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) ;
 						if($peso_total < 5){
@@ -308,8 +308,12 @@ echo CHtml::hiddenField('user',$user);
 							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$t);
 							
 							if(!is_null($flete)){
+								
+								
 								$envio=$flete->total-$flete->seguro;
-								$seguro=$flete->seguro;
+								$seguro=str_replace(',','.',$flete->seguro);
+
+
 							}else{
 								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
 								$seguro=$envio*0.13;

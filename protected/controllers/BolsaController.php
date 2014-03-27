@@ -600,7 +600,16 @@ class BolsaController extends Controller
 			$id = $_POST['idDir'];
 			$direccion = Direccion::model()->findByPk( $id  );
 			$user = User::model()->findByPk( Yii::app()->user->id );
-			if($user){
+			if($direccion->delete()){
+						echo "ok";
+					}else{
+						echo "wrong";
+					}
+			
+			/*
+			 * SE COMENTA LA VALIDACION PORQUE LAS DIRECCIONES GUARDADAS EN FACTURA SON LAS CLONADAS 
+			 * EN LAS TABLAS DIRECCIONENVIO Y DIFRECCIONFACTURACION RESPECTIVAMENTE
+			 * if($user){
 				$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
 				$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
 				
@@ -613,7 +622,7 @@ class BolsaController extends Controller
 				}else{
 					echo "bad";
 				}
-			}
+			}*/
 		}
 		
 			/**
@@ -1098,6 +1107,7 @@ class BolsaController extends Controller
                                         }
                                         
 					if (!($orden->save())){
+				
 						echo CJSON::encode(array(
 								'status'=> 'error',
 								'error'=> $orden->getErrors(),
@@ -1201,6 +1211,7 @@ class BolsaController extends Controller
 						$total_orden = round(Yii::app()->getSession()->get('total'), 2);
 						$orden->total = $total_orden;
 						if (!($orden->save())){
+					
 							echo CJSON::encode(array(
 									'status'=> 'error',
 									'error'=> $orden->getErrors(),
@@ -1290,8 +1301,8 @@ class BolsaController extends Controller
 				// Generar factura
 			$factura = new Factura;
 			$factura->fecha = date('Y-m-d');
-			$factura->direccion_fiscal_id = Yii::app()->getSession()->get('idFacturacion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
-			$factura->direccion_envio_id =Yii::app()->getSession()->get('idDireccion');
+			$factura->direccion_fiscal_id = $dirFacturacion->id; // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+			$factura->direccion_envio_id = $dirEnvio->id;
 			$factura->orden_id = $orden->id;
 			if (!$factura->save())
 				Yii::trace('user id:'.Yii::app()->user->id.' Factura error:'.print_r($factura->getErrors(),true), 'registro');

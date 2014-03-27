@@ -83,7 +83,7 @@ $template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped table-condensed">
     <tr>
       <th rowspan="2" scope="col"><input name="Check" type="checkbox" value="Check"></th>
-      <th colspan="3" rowspan="2" scope="col">Usuario</th>
+      <th colspan="3" rowspan="2" scope="col">Usuario/th>
       <th colspan="2" scope="col">Pedidos</th>
       <th rowspan="2" scope="col">Saldo Disponible</th>
       <th colspan="2" scope="col">Ingresos al Portal</th>
@@ -106,9 +106,10 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_user',
 	    'template'=>$template,
-/*	    'afterAjaxUpdate'=>" function(id, data) {
-						    	
-							$('#todos').click(function() { 
+	    'afterAjaxUpdate'=>" function(id, data) {
+								
+		
+							/*$('#todos').click(function() { 
 				            	inputs = $('table').find('input').filter('[type=checkbox]');
 				 
 				 				if($(this).attr('checked')){
@@ -116,10 +117,10 @@ $template = '{summary}
 				               	}else {
 				                     inputs.attr('checked', false);
 				               	} 	
-							});
+							});*/
 						   
 							} ",
-*/		'pager'=>array(
+		'pager'=>array(
 			'header'=>'',
 			'htmlOptions'=>array(
 			'class'=>'pagination pagination-right',

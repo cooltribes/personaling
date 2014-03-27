@@ -9,6 +9,7 @@
       	<?php
       	 	// <img src="images/kitten.png" width="70" height="70" alt="avatar">
       	 		echo CHtml::image($data->getAvatar(),'Avatar',array("width"=>"70", "height"=>"70"));
+				
       	 ?>
       	
       	

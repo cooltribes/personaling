@@ -38,7 +38,7 @@
 						<div  class="span3"> 
 						{summary}
 						</div>
-						<div  class="span4 offset5"> 
+						<div  class="span5 offset4"> 
 						{sorter}
 					</div>
 				</div>
@@ -72,7 +72,14 @@
 				</div>
 				';
 				
-				
+    $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));		
 		
 	Yii::app()->clientScript->registerScript('handle_ajax_function', "
 			function porMarca()
@@ -87,13 +94,15 @@
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
+	    'sorterHeader'=>'Ordenar por:',
 	    'itemView'=>'_datosProductos',
+	    'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',    
 	    'template'=>$template,
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
 	      'sortableAttributes'=>array(
-                'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Orden','Fecha'
-   	),
+                'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Orden','Fecha'),
+        'pager'=>$pagerParams,	
 	    
 	    
 	   

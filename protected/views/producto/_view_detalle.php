@@ -186,7 +186,7 @@
             echo $producto->precio; // precio con IVA
               Yii::app()->clientScript->registerMetaTag($producto->precio.' '.Yii::t('contentForm', 'currSym').' ', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
               Yii::app()->clientScript->registerMetaTag('Precio', 'twitter:label1', null, null, null); // registrar tag de precio de Twitter
-                Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.$producto->precio. ' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+                Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.$producto->precio.' '.Yii::t('contentForm', 'currSym'), null, null, array('property' => 'og:title'), null); // registro del meta para facebook
 
             
   

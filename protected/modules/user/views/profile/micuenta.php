@@ -60,13 +60,13 @@ $looks_recomendados = $look->match($model);
       
       	if($sum >= 0){
       	?>
-      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. de Balance en tu Cuenta</li>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, '').' '.Yii::t('contentForm', 'currSym'); ?>  de Balance en tu Cuenta</li>
       	<?php
       	}
       	else
       	{
       	?>
-      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. que adeudas.</li>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, '').' '.Yii::t('contentForm', 'currSym'); ?> que adeudas.</li>
       	<?php
       	}
       	?>

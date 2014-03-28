@@ -120,6 +120,14 @@ $this->breadcrumbs = array(
     </style>
     
     <?php
+    $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));    
     $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
@@ -145,6 +153,7 @@ $this->breadcrumbs = array(
         'id' => 'list-auth-items',
         'dataProvider' => $dataProvider,
         'itemView' => '_view',
+        'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
         'template' => $template,
         'afterAjaxUpdate' => " function(id, data) {						    	
                         $('#todos').click(function() { 
@@ -160,12 +169,7 @@ $this->breadcrumbs = array(
                         desactivarGC();
 
                     } ",
-        'pager' => array(
-            'header' => '',
-            'htmlOptions' => array(
-                'class' => 'pagination pagination-right',
-            )
-        ),
+        'pager'=>$pagerParams,  
     ));
     ?>
   

@@ -303,6 +303,7 @@ class AdminController extends Controller
 	 
 	public function actionReporteXLS(){
 		$criteria=Yii::app()->session['userCriteria'];
+		$criteria->select = array('t.id');
 		$dataProvider = new CActiveDataProvider('User', array(
                     'criteria' => $criteria,
                     
@@ -368,30 +369,32 @@ class AdminController extends Controller
 		
 		$fila=2;
 		foreach($dataProvider->getData() as $data){
+			$user=User::model()->findByPk($data->id);
 			$saldo=Yii::app()->numberFormatter->formatDecimal(Profile::model()->getSaldo($data->id));
-		 	if ($data->getLastvisit()) 
-		 		$lastVisit=date("d/m/Y",$data->getLastvisit()); 
+		 	if ($user->getLastvisit()) 
+		 		$lastVisit=date("d/m/Y",$user->getLastvisit()); 
 		 	else 
 		 		$lastVisit= 'N/D'; 
-    		if ($data->getCreatetime())
-    			$createdAt=date("d/m/Y",$data->getCreatetime()); 
+    		if ($user->getCreatetime())
+    			$createdAt=date("d/m/Y",$user->getCreatetime()); 
     		else 
     			$createdAt='N/D'; 
 			
 			$objPHPExcel->setActiveSheetIndex(0)
 							->setCellValue('A'.$fila , $data->id) 
-							->setCellValue('B'.$fila , $data->profile->first_name) 
-							->setCellValue('C'.$fila , $data->profile->last_name) 
-							->setCellValue('D'.$fila , $data->email)
-							->setCellValue('E'.$fila , $data->profile->ciudad)
-							->setCellValue('F'.$fila , $data->ordenCount) 
-							->setCellValue('G'.$fila , $data->direccionCount) 
+							->setCellValue('B'.$fila , $user->profile->first_name) 
+							->setCellValue('C'.$fila , $user->profile->last_name) 
+							->setCellValue('D'.$fila , $user->email)
+							->setCellValue('E'.$fila , $user->profile->ciudad)
+							->setCellValue('F'.$fila , $user->ordenCount) 
+							->setCellValue('G'.$fila , $user->direccionCount) 
 							->setCellValue('H'.$fila , $saldo) 
-							->setCellValue('I'.$fila , $data->visit)							
+							->setCellValue('I'.$fila , $user->visit)							
 							->setCellValue('J'.$fila , $lastVisit)
 							->setCellValue('K'.$fila , $createdAt)
 							;
 					$fila++;
+	
 		}
 		$objPHPExcel->setActiveSheetIndex(0);
 

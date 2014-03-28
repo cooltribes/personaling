@@ -93,7 +93,7 @@ class Look extends CActiveRecord
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id,created_on', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter,deleted', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
-			array('has_ocasiones','required','on'=>'update'),
+			array('has_ocasiones','required','on'=>'update','message'=> 'Al menos debes elegir una ocación'),
 			array('view_counter','numerical', 'integerOnly'=>true,'on'=>'increaseview'),
 			array('view_counter','required','on'=>'increaseview'),
 			array('title', 'length', 'max'=>45),

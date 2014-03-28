@@ -98,6 +98,7 @@
 	    'itemView'=>'_datosProductos',
 	    'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',    
 	    'template'=>$template,
+	    
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
 	      'sortableAttributes'=>array(

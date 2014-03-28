@@ -642,9 +642,6 @@ if(!Yii::app()->user->isGuest){
     $("#dropdownUser .ver_todos").click(function(e){
         e.preventDefault();
         
-//        $("#modalPerfilesOcultos").modal("show");
-//        
-//        return;
         //Llevar a tienda de looks
             var urlModal = "<?php echo CController::createUrl("/tienda/modalAjax"); ?>";  
             
@@ -661,7 +658,6 @@ if(!Yii::app()->user->isGuest){
                     
                 }
             });
-        
        
     });
  

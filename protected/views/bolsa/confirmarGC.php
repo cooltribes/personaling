@@ -94,9 +94,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                     $rest = substr($tarjeta->numero, -4);
                     echo "<tr class='mp'><td>";
-                        echo "<b> ".Yii::t('contentForm','Name').".:</b> ".$tarjeta->nombre."
-                        </br><b> ".Yii::t('contentForm','Number').".:</b> XXXX - XXXX - XXXX - ".$rest."                            
-                        </br><b> ".Yii::t('contentForm','Expiration').".:</b> ".$tarjeta->vencimiento;
+                        echo "<b> ".Yii::t('contentForm','Name').":</b> ".$tarjeta->nombre."
+                        </br><b> ".Yii::t('contentForm','Number').":</b> XXXX - XXXX - XXXX - ".$rest."                            
+                        </br><b> ".Yii::t('contentForm','Expiration').":</b> ".$tarjeta->vencimiento;
                     echo "</td></tr>";
                                         
                 }

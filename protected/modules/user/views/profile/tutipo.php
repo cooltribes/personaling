@@ -110,13 +110,13 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                     <caption>
                       <p class="  color6 text_align_center ">                  
                       <?php if($key == 1) 
-                          echo "Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida";
+                          echo Yii::t('contentForm', 'Your body is rectangular or square, if your shoulders and hips are almost aligned and your waist is not as defined');
                         if($key == 2) 
-                          echo "Tu cuerpo es reloj de arena porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida"; 
+                          echo  Yii::t('contentForm', 'Your body is hourglass because in addition to your shoulders and hips aligned you must have a very defined waist');
                         if($key == 4)         
-                          echo "Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas";
+                          echo Yii::t('contentForm', 'Your body is triangle if you have shoulders and tiny waist with a pronounced hips');
                         if($key == 8)         
-                          echo "Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas";                        
+                          echo Yii::t('contentForm', 'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips');                      
                         ?>
                        </p>
                     </caption>                    

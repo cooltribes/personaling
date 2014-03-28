@@ -14,7 +14,8 @@ return array (
 	                               <li><strong>Titular:</strong> PERSONALING ENTERPRISE S.L</li>
 	                       </ul>',    
 
-     'About us text' => '<p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, ¡Tu personal shopper digital! es el canal online de prestigiosas y conocidas marcas de moda internacional. (punto y a parte). A través de este canal  no solo podrás comprar las prendas y accesorios de tus diseñadores favoritos, sino que tendrás a tu disposición y, de forma gratuita, el servicio exclusivo de asesores de moda, mejor conocidos como Personal Shoopers.  Estos asesores de imagen y moda -celebridades, estilistas, bloggers y especialistas- crearán looks en torno a tu perfil, gustos, necesidades y eventos especiales, permitiéndote adquirir en un solo clic, los productos recomendados y recibirlos en la comodidad de tu hogar u oficina.</p>',    
+     'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
+     <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.</p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -35,7 +36,7 @@ return array (
 	'All your profiles' => 'Todos tus perfiles',
 	'Amount' => 'Monto',
 	'Amount in' => 'Monto en',
-	'Amount Gift Card' => 'Monto de l GiftCard',
+	'Amount Gift Card' => 'Monto de la GiftCard',
 	'Amount returned' => 'Monto devuelto',
 	'Authentication' => 'Autenticación',
 	'Awaiting confimation' => 'Espera confirmación',
@@ -349,6 +350,10 @@ return array (
 	'Your order has been successfully received.' => 'Tu Pedido ha sido recibido con éxito.',
 	'Your payment is being processed'=> 'Tu pago esta siendo procesado',
 	'Your purchase will be completed in seconds!' => '¡Tu compra será completada en instantes!',
+     'Your body is rectangular or square, if your shoulders and hips are almost aligned and your waist is not as defined' => 'Tu tipo de cuerpo es rectangular o cuadrado si tus hombros y caderas están alineados y, tu cintura, no está definida',
+     'Your body is hourglass because in addition to your shoulders and hips aligned you must have a very defined waist' => 'Tu cuerpo es reloj de arena si tus hombros y caderas están alineados, y tienes una cintura muy definida',
+     'Your body is triangle if you have shoulders and tiny waist with a pronounced hips' => 'Tu cuerpo es triangular si tus caderas son pronunciadas y, tus hombros y cintura, están alineados',
+     'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo tiene forma triangular invertida si tus hombros son anchos y tienes una cintura muy estrecha',	
 
 	'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
 	'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',

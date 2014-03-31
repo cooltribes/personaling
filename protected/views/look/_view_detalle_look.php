@@ -83,17 +83,8 @@
     	<a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> 
     <?php 
 
-        if($model->status == 1 || $model->status == 2){
+        if($model->status == 0 || UserModule::isAdmin() ){
 
-            $this->widget('bootstrap.widgets.TbButton', array(
-    			'label'=>'Consultar',
-    			'icon'=>'info-sign',
-    			'url' => CController::createUrl('look/edit',array('id'=>$model->id)),
-    			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-    			//'size'=>'large', // null, 'large', 'small' or 'mini'
-    		)); 
-        }
-        else{
             $this->widget('bootstrap.widgets.TbButton', array(
                 'label'=>'Editar',
                 'icon'=>'edit',

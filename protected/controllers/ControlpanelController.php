@@ -298,6 +298,8 @@ class ControlpanelController extends Controller
          */
         public function actionPersonalshoppers() {
             
+            
+            //PAra hacer cambios masivas
             if(isset($_POST["action"])){                
                 
                 $response = array();

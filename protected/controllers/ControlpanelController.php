@@ -299,7 +299,7 @@ class ControlpanelController extends Controller
         public function actionPersonalshoppers() {
             
             
-            //PAra hacer cambios masivas
+            //Para hacer cambios masivas
             if(isset($_POST["action"])){                
                 
                 $response = array();
@@ -391,8 +391,9 @@ class ControlpanelController extends Controller
             /*FIN de los datos para estadisticas*/
             
             
+            //P
             $model = new User('search');
-            $model->unsetAttributes();  // clear any default values
+            $model->unsetAttributes();  
             
             /*Enviar a la vista el listado de todos los PS*/
             $criteria = new CDbCriteria;
@@ -409,7 +410,7 @@ class ControlpanelController extends Controller
             Filter::procesarFiltros(8, $dataProvider, $model, 'nombre');
             
             if (isset($_GET['nombre'])) {
-                
+
                 unset($_SESSION["todoPost"]);
                 $criteria->alias = 'User';
                 $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';                                
@@ -420,6 +421,8 @@ class ControlpanelController extends Controller
                         'pageSize' => Yii::app()->getModule('user')->user_page_size,
                     ),
                 ));
+                
+            
             }
 
             //guardar los usuarios para las acciones masivas

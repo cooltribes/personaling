@@ -24,13 +24,15 @@
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
 		            echo CHtml::hiddenField('tipo','direccionVieja');
-					if(isset(Yii::app()->getSession()->add('idFacturacion')))
-						echo CHtml::hiddenField('billAdd',Yii::app()->getSession()->add('idFacturacion'),array('class'=>'hidBill'));
+					if(isset($_SESSION['idFacturacion']))
+						{	echo CHtml::hiddenField('billAdd',Yii::app()->getSession()->get('idFacturacion'),array('class'=>'hidBill'));
+							unset($_SESSION['idFacturacion']);
+						}
 					else
 						echo CHtml::hiddenField('billAdd','0',array('class'=>'hidBill'));
 		            echo CHtml::hiddenField('admin',$admin);
     				echo CHtml::hiddenField('user',$user);
-					
+					 
 		            echo "
 		            <div class='row'>		            
 		              <div class='span2'>

@@ -12,6 +12,7 @@
 						echo '<div class="padding_top_xsmall padding_right_xsmall padding_left_xsmall ">';					
 			       $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 						'id'=>'direccionUsada',
+						'action'=>'direcciones',
 						'enableAjaxValidation'=>false,
 						'enableClientValidation'=>true,
 						'clientOptions'=>array(
@@ -23,7 +24,10 @@
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
 		            echo CHtml::hiddenField('tipo','direccionVieja');
-					echo CHtml::hiddenField('billAdd','0',array('class'=>'hidBill'));
+					if(isset(Yii::app()->getSession()->add('idFacturacion')))
+						echo CHtml::hiddenField('billAdd',Yii::app()->getSession()->add('idFacturacion'),array('class'=>'hidBill'));
+					else
+						echo CHtml::hiddenField('billAdd','0',array('class'=>'hidBill'));
 		            echo CHtml::hiddenField('admin',$admin);
     				echo CHtml::hiddenField('user',$user);
 					

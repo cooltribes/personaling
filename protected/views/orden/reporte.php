@@ -38,7 +38,7 @@
 						<div  class="span3"> 
 						{summary}
 						</div>
-						<div  class="span4 offset5"> 
+						<div  class="span5 offset4"> 
 						{sorter}
 					</div>
 				</div>
@@ -48,15 +48,18 @@
 			  <thead>
 			  <tr class="sorter"> 
 
+			       <th>SKU</th>
+			        <th>Referencia</th>
 			      <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Marca">Marca</a></th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Nombre">Nombre</a></th>
-                    <th>SKU</th>
+                   
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Color">Color</a></th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Talla">Talla</a></th>
                     <th>Cantidad</th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Costo">Costo (Bs)</a></th>
                     <th>Precio sin IVA (Bs)</th>
                     <th>Precio con IVA (Bs)</th>
+                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Orden">Orden N°</a></th>
                     <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Fecha">Vendido</a></th>
                 </tr>
 			    </thead>
@@ -69,7 +72,14 @@
 				</div>
 				';
 				
-				
+    $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));		
 		
 	Yii::app()->clientScript->registerScript('handle_ajax_function', "
 			function porMarca()
@@ -84,13 +94,16 @@
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
+	    'sorterHeader'=>'Ordenar por:',
 	    'itemView'=>'_datosProductos',
+	    'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',    
 	    'template'=>$template,
+	    
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
 	      'sortableAttributes'=>array(
-                'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
-   	),
+                'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Orden','Fecha'),
+        'pager'=>$pagerParams,	
 	    
 	    
 	   

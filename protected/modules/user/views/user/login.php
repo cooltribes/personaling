@@ -29,6 +29,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
   <div class="row">
     <div class="span6 offset3">
       <h1 class="text_align_center"><?php echo UserModule::t('Login'); ?></h1>
+      <h4 class="text_align_center"><?php echo UserModule::t('To log on Personaling you can:'); ?></h4>
       <div  class="row-fluid  margin_top">
               <div id="boton_facebook" class="span6  text_align_center offset3 margin_bottom "><a title="Inicia sesión con Facebook" class="transition_all" onclick="check_fb()" href="#"><?php echo UserModule::t('Login with Facebook'); ?></a></div>
 
@@ -48,7 +49,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 			),
 		)); ?>
           <fieldset>
-            <legend  class="text_align_center"><?php echo UserModule::t('Or use your credentials personaling'); ?>: </legend>
+            <legend  class="text_align_center"><?php echo UserModule::t('Or use your credentials personaling'); ?> </legend>
             
             <div class="control-group row-fluid">
             	 <div class="controls"> 

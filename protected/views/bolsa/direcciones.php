@@ -44,14 +44,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
      	echo CHtml::hiddenField('admin',$admin);
 		echo CHtml::hiddenField('user',$user);
       ?>
-	  <?php if( count( $direcciones ) > 0 ){ ?>
+
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
           <fieldset id="anteriores">
-            <legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
-            <?php
-            }
-            if(isset($direcciones)){
-	       		$this->renderPartial('_direcciones', array(
+            
+           <?php
+            if(count( $direcciones ) > 0 ){?>
+            	<legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
+	       	<?php	$this->renderPartial('_direcciones', array(
 	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin,'nueva'=>true) , 
 	       		false);
 	  		}
@@ -60,11 +60,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			}
  	
       ?>
- 	<?php if( count( $direcciones ) > 0 ){ ?>	      
+      
        </fieldset>
       </form>
     </section>
-    <?php } ?>
+
 
       
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
@@ -275,7 +275,7 @@ else
     		
     		if($('#billAdd').val()=='0'){
     			e.preventDefault();
-    			alert("Debes seleccionar una dirección de Facturación");
+    			alert('Debes seleccionar una dirección de Facturación');
     		}
     		else{
     			$('#direccionUsada').submit();

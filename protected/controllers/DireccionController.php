@@ -181,9 +181,21 @@ class DireccionController extends Controller
 		$direccion->attributes=$_POST;
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
-			echo $this->renderPartial('/bolsa/_direcciones', array(
-	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ) , 
-	       		true);
+			echo '<legend >'
+				.Yii::t('contentForm','Addresses used above').': </legend>'
+				.$this->renderPartial('/bolsa/_direcciones', array(
+	       			'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ),true)
+	       		."<script> $('#direccionUsada').submit(function(e) {
+	       			if($('#billAdd').val()=='0'){
+    			e.preventDefault();
+    			alert('Debes seleccionar una dirección de Facturación');
+	    		}
+	    		else{ $('#direccionUsada').submit();}});
+	 			$('.billingAddress').change(function(){
+	 				$('.hidBill').val($(this).val());
+	 				$('.billingAddress').attr('checked', false);
+	 				$(this).attr('checked','checked');});
+				 </script>";
 		}
 		
 	}

@@ -9,6 +9,7 @@
       	<?php
       	 	// <img src="images/kitten.png" width="70" height="70" alt="avatar">
       	 		echo CHtml::image($data->getAvatar(),'Avatar',array("width"=>"70", "height"=>"70"));
+				
       	 ?>
       	
       	
@@ -68,7 +69,7 @@
         <?php echo CHtml::link('<i class="icon-refresh">  </i>   Enviar Correo electrónico de Verificación ',array("admin/resendvalidationemail","id"=>$data->id)); ?>
       </li>
       <?php } ?>
-      <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>
+      <!-- <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li> -->
       <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
        <li> <?php echo CHtml::link('<i class="icon-shopping-cart">  </i>  Registrar Orden',array("admin/compra","id"=>$data->id)); ?>
       

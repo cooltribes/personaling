@@ -5,7 +5,7 @@
 ?>
 
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->
-  <div id="ModalSuspencion" class="modal fade in"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--   <div id="ModalSuspencion" class="modal fade in"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-body">
       <h3>Disculpa los inconvenientes...</h3>
       <p>Por razones de mantenimiento,<br>
@@ -16,7 +16,7 @@
     <div class="modal-footer">
       <button type="button" id="cerrarModalSuspencion" class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
-  </div>  
+  </div>   -->
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
 
 <div id="banner100chic" style=" display:none; " class="margin_top ">

@@ -31,9 +31,11 @@ class Controller extends CController
 	    // STANDARD TAGS
 	    // -------------------------
 	    // Title/Desc
-	    echo "\t".''.PHP_EOL;
-	    echo "\t".'<meta name="description" content="',CHtml::encode($this->pageDesc),'">'.PHP_EOL;
-		echo "\t".'<meta name="keywords" content="',CHtml::encode($this->keywords),'">'.PHP_EOL;
+	    // echo "\t".''.PHP_EOL;
+ 		Yii::app()->clientScript->registerMetaTag(CHtml::encode($this->pageDesc), 'description',null, null, null);
+ 		Yii::app()->clientScript->registerMetaTag(CHtml::encode($this->keywords), 'keywords', null, null, null);
+	    // echo "\t".'<meta name="description" content="',CHtml::encode($this->pageDesc),'">'.PHP_EOL;
+		// echo "\t".'<meta name="keywords" content="',CHtml::encode($this->keywords),'">'.PHP_EOL;
 	
 	    // Option for NoIndex
 	    if ( $this->pageRobotsIndex == false ) {

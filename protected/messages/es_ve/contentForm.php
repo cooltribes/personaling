@@ -7,6 +7,13 @@ return array (
      'currSym'=>'Bs',
      'IVA' => '0.12',
      'IVAtext' => '12%',
+     'Bank information' => '<h4>Banco Banesco</h4>
+                               <ul>
+                                       <li><strong>Cuenta Corriente Nº:</strong> 0134-0277-98-2771093092</li>
+                                       <li><strong>Titular de la cuenta: </strong>PERSONALING C.A.</li>
+                                       <li><strong>RIF:</strong> Nº J-40236088-6</li>
+                                       <li><strong>Correo electrónico:</strong> operaciones@personaling.com</li>
+                               </ul>',
 
      'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
      <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> es el canal online de prestigiosas y conocidas marcas de moda internacional, donde no solo podrás comprar prendas y accesorios de tus tiendas favoritas, también tendrás a disposición de forma gratuita el servicio exclusivo de asesoria e inspiración de especialistas, conocedores en moda (personal shoppers) y hasta celebridades; quienes crearán atuendos adecuándolos a tu perfil, gusto, necesidades y ocasiones personales, permitiendo adquirir en un solo clic los productos y recibirlos en la comodidad de tu hogar u oficina.  </p>
@@ -31,7 +38,7 @@ return array (
      'All your profiles' => 'Todos tus perfiles',
      'Amount' => 'Monto',
      'Amount in' => 'Monto en',
-     'Amount Gift Card' => 'Monto de l GiftCard',
+     'Amount Gift Card' => 'Monto de la GiftCard',
      'Amount returned' => 'Monto devuelto',
      'Authentication' => 'Autenticación',
      'Awaiting confimation' => 'Espera confirmación',
@@ -68,6 +75,7 @@ return array (
      'Choose a shipping address and billing of your purchase from your address book or enter a new one in the bottom section' =>'Elige una dirección de envío y facturación de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
      'Choose how you want to deliver it' => 'Escoge cómo quieres entregarla',
+     'City' => 'Ciudad',
      'click here' => 'haz click aquí',
      'Clear Filter' => 'Borrar Filtro',
      'Clean Filters' => 'Limpiar Filtros',
@@ -102,7 +110,7 @@ return array (
      'Details' => 'Detalles',
      'Description' => 'Descripción',
      'Delivery' => 'Envío',
-     'Decotarions' => 'Adornos',
+     'Decorations' => 'Adornos',
      'Discount' => 'Descuento',
      'Document' => 'Documento',
      'Documents' => 'Documentos',
@@ -233,6 +241,7 @@ return array (
      'Price' => 'Precio',
      'Price in' => 'Precio en',
      'Product' => 'Producto',
+     'Province' => 'Estado',
      'Products' => 'Productos',
      'Products that make the Looks' => 'Productos que componen los Looks',
      'Progress order' => 'Progreso del pedido',
@@ -349,6 +358,10 @@ return array (
      'Your order has been successfully received.' => 'Tu Pedido ha sido recibido con éxito.',
      'Your payment is being processed'=> 'Tu pago esta siendo procesado',
      'Your purchase will be completed in seconds!' => '¡Tu compra será completada en instantes!',
+     'Your body is rectangular or square, if your shoulders and hips are almost aligned and your waist is not as defined' => 'Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida',
+     'Your body is hourglass because in addition to your shoulders and hips aligned you must have a very defined waist' => 'Tu cuerpo es reloj de arena porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida',
+     'Your body is triangle if you have shoulders and tiny waist with a pronounced hips' => 'Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas',
+     'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas',
 
      'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
      'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',

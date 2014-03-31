@@ -1,6 +1,6 @@
 <div class="row margin_top">
   <div class="page-header">
-    <h1>Reporte de Productos Vendidos</small></h1>
+    <h1>Reporte de Productos en Existencia</small></h1>
   </div>
 <div>            
 	<div class="row">
@@ -27,13 +27,15 @@
 			  <thead>
 			  <tr class="sorter"> 
 
-			      <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Marca">Marca</a></th>
-                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Nombre">Nombre</a></th>
-                    <th>SKU</th>
-                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Color">Color</a></th>
-                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Talla">Talla</a></th>
+			         <th>SKU</th>
+			           <th>Referencia</th>
+				  <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Marca">Marca</a></th>
+                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Nombre">Nombre</a></th>
+                
+                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Color">Color</a></th>
+                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Talla">Talla</a></th>
                     <th>Cantidad</th>
-                    <th><a href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Costo">Costo (Bs)</a></th>
+                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Costo">Costo (Bs)</a></th>
                     <th>Precio sin IVA (Bs)</th>
                     <th>Precio con IVA (Bs)</th>
                

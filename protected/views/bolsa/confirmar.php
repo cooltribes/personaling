@@ -141,7 +141,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
 
 
-                        echo "<td style='width:26%'>Bs. ".$pre."</td>";
+                        echo "<td style='width:26%'>".Yii::t('contentForm','currSym')." ".$pre."</td>";
                     ?>
 
               <td width='8%' style="text-align: center">
@@ -249,25 +249,25 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal') ?>:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping') ?>:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
             </tr>
             <?php if($descuento != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
            	</tr>
            	<?php } ?>
             <tr>
               <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total') ?>:</h4></th>
-              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
+              <td><h4><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
             </tr>
           </table>
           <?php

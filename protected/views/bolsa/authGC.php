@@ -27,7 +27,7 @@
       <div class="clearfix margin_bottom">
          <div class="first-done"><?php echo Yii::t('contentForm','Authentication'); ?></div>        
          <div class="middle-not_done"><?php echo Yii::t('contentForm','Payment <br> method'); ?></div>
-         <div class="last-not_done"><?php echo Yii::t('contentForm','Confirm <br> purchase'); ?></div>
+         <div class="last-not_done"><?php echo Yii::t('contentForm','Confirm <br>purchase'); ?></div>
       </div>
   </div>
 

@@ -301,42 +301,41 @@ class ControlpanelController extends Controller
             if(isset($_POST["action"])){                
                 
                 $response = array();
+                //Obtener el criteria guardado de la ultima busqueda
                 $resultados = Yii::app()->getSession()->get("resultado");
-                $resultados->setPagination(false);
-                $resultados = $resultados->getData();
+                
+                $resultados->select = "t.*";
+                
+                $resultados = new CActiveDataProvider('User', array(
+                    'criteria' => $resultados,
+                ));
+                
+		$resultados->setPagination(false);
+                
+                //$resultados->getData();
+                $resultados = $resultados->getData();                
                 $total = count($resultados);
                 $error = false;
                 if($_POST["action"] == 1){ //Cambiar comisión
                     
                     foreach($resultados as $usuario) {                        
                         
-//                        $perfil = Profile::model()->findByAttributes(array("user_id"=>$usuario->id));
                         $perfil = $usuario->profile;
                         $perfil->profile_type = 5;
                         $perfil->comision = $_POST["cambiarVlComision"];
                         $perfil->tipo_comision = $_POST["cambiarTpComision"];
                         if(!$perfil->save()){
                             $error = true;
-                        }
-                        
-//                        $perfil = User::model()->findByPk(221);
-//                        $perfil = $perfil->profile;
-                       
-                       
+                        }  
                     }
                     
-                    if($error){
-                        
+                    if($error){                        
                         $response["status"] = "error";
                         $response["message"] = "¡Hubo un error cambiando las comisiones!";
-                    
-                        
-                    }else{
-                        
+                    }else{                        
                         $response["status"] = "success";
                         $response["message"] = "¡Se ha actualizado la comisión de <b>$total</b>
-                                Personal Shoppers!";
-                        
+                                Personal Shoppers!";                        
                     }
                     
                 }else if($_POST["action"] == 2){ //cambiar tiempo de validez en bolsa
@@ -351,21 +350,15 @@ class ControlpanelController extends Controller
                         }
                     }
                     
-                    if($error){
-                        
+                    if($error){                        
                         $response["status"] = "error";
                         $response["message"] = "¡Hubo un error cambiando el tiempo de validez
                         en la bolsa!";
-                    
-                        
-                    }else{
-                        
+                    }else{                        
                         $response["status"] = "success";
                         $response["message"] = "¡Se ha actualizado el tiempo de validez
-                        en la bolsa para <b>$total</b> Personal Shoppers!";
-                        
-                    }
-                    
+                        en la bolsa para <b>$total</b> Personal Shoppers!";                        
+                    }                    
                 }
                 
                 echo CJSON::encode($response); 
@@ -428,8 +421,7 @@ class ControlpanelController extends Controller
             }
 
             //guardar los usuarios para las acciones masivas
-            Yii::app()->getSession()->add("resultado", $dataProvider);
-            
+            Yii::app()->getSession()->add("resultado", $dataProvider->getCriteria());
             
             $this->render('personalShoppers', array(
                 'model' => $model,                

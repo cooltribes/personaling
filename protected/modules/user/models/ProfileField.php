@@ -15,6 +15,8 @@ class ProfileField extends CActiveRecord
 	const REQUIRED_YES_TIPO = 5;
 	const REQUIRED_YES_PERSONAL = 6;
         const REQUIRED_YES_PERSONAL_REG = 7;
+        const REQUIRED_YES_PERSONAL_COM = 8;
+        const REQUIRED_YES_PERSONAL_TMP = 9;
 	
 	
 	/**
@@ -146,7 +148,7 @@ class ProfileField extends CActiveRecord
                 'order'=>'position',
             ),
             'forPersonalShopperComi'=>array(                
-                'condition'=>'id in (28, 29, 30)',
+                'condition'=>'required='.self::REQUIRED_YES_PERSONAL_TMP .' OR required = '.self::REQUIRED_YES_PERSONAL_COM,
                 'order'=>'position',
             ),
             'forEstilo'=>array(

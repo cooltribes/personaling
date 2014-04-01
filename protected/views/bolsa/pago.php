@@ -723,17 +723,17 @@ $('#TarjetaCredito_year').change(function(){
 				$('#usar_balance_hidden').val('1');
 				//console.log('checked');
 				if(balance >= total){
-					$('#descuento').html('Bs. '+total);
-					$('#precio_total').html('Bs. 0');
+					$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total);
+					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> 0');
 				}else{
-					$('#descuento').html('Bs. '+balance.toFixed(2));
-					$('#precio_total').html('Bs. '+(total-balance).toFixed(2));
+					$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> '+balance.toFixed(2));
+					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+(total-balance).toFixed(2));
 				}
 			}else{
 				$('#usar_balance_hidden').val('0');
 				//console.log('not checked');
-				$('#descuento').html('Bs. 0');
-				$('#precio_total').html('Bs. '+total.toFixed(2));
+				$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> 0');
+				$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total.toFixed(2));
 			}
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');

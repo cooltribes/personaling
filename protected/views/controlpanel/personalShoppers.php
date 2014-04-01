@@ -74,6 +74,7 @@ $template = '{summary}
       <th colspan="3" rowspan="2" scope="col">Usuario</th>
       <th colspan="2" scope="col" style="text-align: center">Ventas</th>
       <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Actual</th>
+      <th rowspan="2" scope="col" style="text-align: center">Validez<br>Bolsa</th>
       <th colspan="2" scope="col" style="text-align: center">Saldo (Bs)</th>
       <th rowspan="2" scope="col">Fecha de Registro</th>
       <th rowspan="2" scope="col">Detalle</th>
@@ -110,10 +111,10 @@ $this->widget('zii.widgets.CListView', array(
 Yii::app()->clientScript->registerScript('search', "
             var ajaxUpdateTimeout;
 	    var ajaxRequest;
-	    $('#textbox_buscar').keyup(function(e){
+	    $(document).keyup(function(e){
                 if(e.which == 13) {
                     $('.crear-filtro').click();
-                    ajaxRequest = $(this).serialize();
+                    ajaxRequest = $('#textbox_buscar').serialize();
                     clearTimeout(ajaxUpdateTimeout);
                     
                     ajaxUpdateTimeout = setTimeout(
@@ -221,7 +222,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 </div>
 <div class="modal-footer text_align_left">
-    <h5>Descripción:</h5>
+    <h5 style="margin-top: 0">Descripción:</h5>
     Cambiarás el valor de la comisión y el tipo de comisión para todos los Personal Shopper seleccionados.
     Este nuevo valor se aplicará en las próximas ventas
 </div>                    
@@ -300,7 +301,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 </div>
 <div class="modal-footer text_align_left">
-    <h5>Descripción:</h5>
+    <h5 style="margin-top: 0">Descripción:</h5>
     Cambiarás el tiempo máximo que pueden durar los productos en la bolsa para que las venta genere comisión a un Personal Shopper, afectará a todos los Personal Shopper seleccionados.
     Este nuevo valor se aplicará en las próximas ventas.
 </div>                    
@@ -325,6 +326,7 @@ function accionMasiva(parametros){
                     
                     $('#modalComision').modal("hide");
                     $('#modalTiempo').modal("hide");
+                    console.log(parametros);
                     showAlert(data.status, data.message);
                     
                     $('html,body').animate({
@@ -333,6 +335,7 @@ function accionMasiva(parametros){
                     
                 },
                 error: function( jqXHR, textStatus, errorThrown){
+                    console.log("Error ejecutando el ajax");
                     console.log(jqXHR);
                 }
             }
@@ -381,8 +384,7 @@ $(document).ready(function(){
         var tipo = $("#cambiarVlComision").next().text();
         
         var comision = $("#cambiarVlComision").val();
-        var usuarios = $("strong.nroAfectados").first().text();
-        console.log(usuarios);
+        var usuarios = $("strong.nroAfectados").first().text();        
         
         var res = confirm('¿Estás seguro de establecer "'+comision+' '+tipo+'" como comisión '+
             'para "'+usuarios+'" Personal Shoppers?');
@@ -394,14 +396,12 @@ $(document).ready(function(){
     });
     
     //Cambiar símbolo Tipo de Comision
-    $("#cambiarTpComision").change(function (e){
-        
-        var htmlC = ($(this).val() == 1) ? "%" : $("#cambioMoneda").html();
-                
+    $("#cambiarTpComision").change(function (e){        
+        var htmlC = ($(this).val() == 1) ? "%" : $("#cambioMoneda").html();                
         $("#cambiarVlComision").next().html(htmlC);
     });
         
-    $("#btnTiempo").click(function (e){       
+    $("#btnTiempo").click(function (e){      
         
         var tiempo = $("#cambiarLmTiempo option:selected").text();
         var usuarios = $("strong.nroAfectados").first().text();
@@ -412,7 +412,6 @@ $(document).ready(function(){
             var args = $("#formCambiarTiempo").serialize();
             accionMasiva(args);
         }
-        
         
     });
     

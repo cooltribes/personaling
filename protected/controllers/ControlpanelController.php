@@ -298,45 +298,46 @@ class ControlpanelController extends Controller
          */
         public function actionPersonalshoppers() {
             
+            
+            //Para hacer cambios masivas
             if(isset($_POST["action"])){                
                 
                 $response = array();
+                //Obtener el criteria guardado de la ultima busqueda
                 $resultados = Yii::app()->getSession()->get("resultado");
-                $resultados->setPagination(false);
-                $resultados = $resultados->getData();
+                
+                $resultados->select = "t.*";
+                
+                $resultados = new CActiveDataProvider('User', array(
+                    'criteria' => $resultados,
+                ));
+                
+		$resultados->setPagination(false);
+                
+                //$resultados->getData();
+                $resultados = $resultados->getData();                
                 $total = count($resultados);
                 $error = false;
                 if($_POST["action"] == 1){ //Cambiar comisión
                     
                     foreach($resultados as $usuario) {                        
                         
-//                        $perfil = Profile::model()->findByAttributes(array("user_id"=>$usuario->id));
                         $perfil = $usuario->profile;
                         $perfil->profile_type = 5;
                         $perfil->comision = $_POST["cambiarVlComision"];
                         $perfil->tipo_comision = $_POST["cambiarTpComision"];
                         if(!$perfil->save()){
                             $error = true;
-                        }
-                        
-//                        $perfil = User::model()->findByPk(221);
-//                        $perfil = $perfil->profile;
-                       
-                       
+                        }  
                     }
                     
-                    if($error){
-                        
+                    if($error){                        
                         $response["status"] = "error";
                         $response["message"] = "¡Hubo un error cambiando las comisiones!";
-                    
-                        
-                    }else{
-                        
+                    }else{                        
                         $response["status"] = "success";
                         $response["message"] = "¡Se ha actualizado la comisión de <b>$total</b>
-                                Personal Shoppers!";
-                        
+                                Personal Shoppers!";                        
                     }
                     
                 }else if($_POST["action"] == 2){ //cambiar tiempo de validez en bolsa
@@ -351,21 +352,15 @@ class ControlpanelController extends Controller
                         }
                     }
                     
-                    if($error){
-                        
+                    if($error){                        
                         $response["status"] = "error";
                         $response["message"] = "¡Hubo un error cambiando el tiempo de validez
                         en la bolsa!";
-                    
-                        
-                    }else{
-                        
+                    }else{                        
                         $response["status"] = "success";
                         $response["message"] = "¡Se ha actualizado el tiempo de validez
-                        en la bolsa para <b>$total</b> Personal Shoppers!";
-                        
-                    }
-                    
+                        en la bolsa para <b>$total</b> Personal Shoppers!";                        
+                    }                    
                 }
                 
                 echo CJSON::encode($response); 
@@ -396,8 +391,9 @@ class ControlpanelController extends Controller
             /*FIN de los datos para estadisticas*/
             
             
+            //P
             $model = new User('search');
-            $model->unsetAttributes();  // clear any default values
+            $model->unsetAttributes();  
             
             /*Enviar a la vista el listado de todos los PS*/
             $criteria = new CDbCriteria;
@@ -414,7 +410,7 @@ class ControlpanelController extends Controller
             Filter::procesarFiltros(8, $dataProvider, $model, 'nombre');
             
             if (isset($_GET['nombre'])) {
-                
+
                 unset($_SESSION["todoPost"]);
                 $criteria->alias = 'User';
                 $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';                                
@@ -425,11 +421,12 @@ class ControlpanelController extends Controller
                         'pageSize' => Yii::app()->getModule('user')->user_page_size,
                     ),
                 ));
+                
+            
             }
 
             //guardar los usuarios para las acciones masivas
-            Yii::app()->getSession()->add("resultado", $dataProvider);
-            
+            Yii::app()->getSession()->add("resultado", $dataProvider->getCriteria());
             
             $this->render('personalShoppers', array(
                 'model' => $model,                

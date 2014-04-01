@@ -81,8 +81,7 @@
 	Yii::app()->clientScript->registerScript('marca',
 		"var ajaxUpdateTimeout;
 		var ajaxRequest;
-		var inicio;
-		var fin;
+	
 		$('#marcas').change(function(){
 			ajaxRequest = $('#marcas').serialize();
 			marcaId = $('#marcas').val();
@@ -94,8 +93,8 @@
 				'list-auth-items',
 				{
 				type: 'POST',	
-				url: '" . CController::createUrl('orden/reporte') . "',
-				data: {ajaxRequest:ajaxRequest}}
+				url: '" . CController::createUrl('producto/reporte') . "',
+				data: {ajaxRequest:ajaxRequest, marcaId:marcaId}}
 				
 				)
 				},

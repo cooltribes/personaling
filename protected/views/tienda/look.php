@@ -156,11 +156,10 @@ $this->breadcrumbs = array(
                                         </span>
                                     </a></li>
 <?php } ?>
+                        <?php if(!empty($rangos)){ ?>
                             <li><a class="btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
-                            <!-- 
-                                 <li><a class="btn btn-link">Bs 1000 a Bs 1500 <span class="color12">(12)</span></a></li>
-                                 <li><a class="btn btn-link">Bs 1500  a Bs 2000  <span class="color12">(5)</span></a></li>
-                                 <li><a class="btn btn-link">Más de Bs 2000  <span class="color12">(6)</span></a></li>                -->
+                        <?php } ?>  
+                            
                         </ul> 
 
                     </li>
@@ -284,6 +283,14 @@ foreach ($personal_shopper as $shopper) {
 
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
+    <?php if(empty($looks)){ ?>
+    <p>
+       Ups! Estamos seguros que con un pequeño cambio en alguna característica
+       encontraremos un look para ti. Nuestros Personal Shoppers se mueren por
+       ayudarte, vuelve a intentarlo
+    </p>
+        
+    <?php } ?>
 <?php
 $this->renderPartial('_look', array(
     'looks' => $looks,

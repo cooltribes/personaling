@@ -72,6 +72,13 @@
         ?>
     </td>
     
+    <!--VALIDEZ EN BOLSA-->
+    <td>
+        <?php 
+            echo $data->getValidezBolsa();
+        ?>
+    </td>
+    
     <!--SALDO EN COMISIONES-->
     <td><?php echo $data->getSaldoPorComisiones();echo Yii::t('backEnd', 'currSym'); ?></td>
     

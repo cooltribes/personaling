@@ -1289,26 +1289,31 @@ public function actionCategorias2(){
 
                 /*      Rangos de precios       */
                 $allLooks = Look::model()->findAll("status = 2");
-                $count = array(0, 0, 0, 0); 
+                $count = array(0, 0, 0, 0);
+                $rangosArray = array();              
                 
-                foreach ($allLooks as $look) {
-                    $allPrices[] = $look->getPrecio(false);
-                }
+                if($allLooks){
+                    
+                    foreach ($allLooks as $look) {
+                        $allPrices[] = $look->getPrecio(false);
+                    }
 
-                $rangos = 4;
-                $mayorP = max($allPrices);
-                $menorP = min($allPrices);
-                $len = ($mayorP - $menorP) / $rangos;
+                    $rangos = 4;
+                    $mayorP = max($allPrices);
+                    $menorP = min($allPrices);
+                    $len = ($mayorP - $menorP) / $rangos;
 
-                foreach ($allPrices as $price) {
-                    for($i = 0; $i < $rangos; $i++)
-                        $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
-                }                
+                    foreach ($allPrices as $price) {
+                        for($i = 0; $i < $rangos; $i++)
+                            $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
+                    }                
+
+                    for ($i = 0; $i < $rangos; $i++) {
+                        $mayorP = $menorP + $len;
+                        $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
+                        $menorP += $len;
+                    }                                
                 
-                for ($i = 0; $i < $rangos; $i++) {
-                    $mayorP = $menorP + $len;
-                    $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
-                    $menorP += $len;
                 }                                
 //                echo "<pre>"; print_r($count);echo "</pre>";               
                         

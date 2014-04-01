@@ -817,5 +817,16 @@ class User extends CActiveRecord {
             return $comision;
         }
         
+        
+        /*Obtiene el tiempo de validez de productos en la bolsa*/
+        function getValidezBolsa() {
+           
+            $valores = array(15 => "15 Días",
+                    30 => "1 Mes", 90 => "3 Meses", 180 => "6 Meses", 360 => "1 Año");
+            
+            return $valores[$this->profile->tiempo_validez];
+            
+        }
+        
 
 }

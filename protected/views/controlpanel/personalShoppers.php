@@ -74,6 +74,7 @@ $template = '{summary}
       <th colspan="3" rowspan="2" scope="col">Usuario</th>
       <th colspan="2" scope="col" style="text-align: center">Ventas</th>
       <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Actual</th>
+      <th rowspan="2" scope="col" style="text-align: center">Validez<br>Bolsa</th>
       <th colspan="2" scope="col" style="text-align: center">Saldo (Bs)</th>
       <th rowspan="2" scope="col">Fecha de Registro</th>
       <th rowspan="2" scope="col">Detalle</th>
@@ -113,7 +114,7 @@ Yii::app()->clientScript->registerScript('search', "
 	    $(document).keyup(function(e){
                 if(e.which == 13) {
                     $('.crear-filtro').click();
-                    ajaxRequest = $(this).serialize();
+                    ajaxRequest = $('#textbox_buscar').serialize();
                     clearTimeout(ajaxUpdateTimeout);
                     
                     ajaxUpdateTimeout = setTimeout(

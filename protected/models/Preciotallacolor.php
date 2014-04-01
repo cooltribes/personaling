@@ -76,23 +76,24 @@ class PrecioTallaColor extends CActiveRecord
 		// should not be searched.
  
 	$sql="select p.id,
-		p.codigo as 'Referencia',
-		m.nombre as 'Marca',
-		p.nombre as Nombre,
-		ptc.sku as 'SKU',
-		c.valor as 'Color',
-		t.valor as 'Talla',
-		ptc.cantidad as 'Cantidad',
-		pr.costo as 'Costo',
-		pr.precioVenta as 'Precio',
-		pr.precioImpuesto as 'pIVA'
-		from tbl_precioTallaColor ptc
-	JOIN tbl_producto p ON p.id=ptc.producto_id
-	JOIN tbl_marca m ON p.marca_id = m.id
-	JOIN tbl_color c ON ptc.color_id = c.id
-	JOIN tbl_talla t ON ptc.talla_id=t.id
-	JOIN tbl_precio pr ON pr.tbl_producto_id = p.id
-	WHERE ptc.cantidad >0 AND p.`status`=1 AND p.estado=0 group by ptc.id";
+		p.codigo as 'Referencia', 
+		m.nombre as 'Marca', 
+		m.id, 
+		p.nombre as Nombre, 
+		ptc.sku as 'SKU', 
+		c.valor as 'Color', 
+		t.valor as 'Talla', 
+		ptc.cantidad as 'Cantidad', 
+		pr.costo as 'Costo', 
+		pr.precioVenta as 'Precio', 
+		pr.precioImpuesto as 'pIVA' 
+		from tbl_precioTallaColor ptc 
+	JOIN tbl_producto p ON p.id=ptc.producto_id 
+	JOIN tbl_marca m ON p.marca_id = m.id 
+	JOIN tbl_color c ON ptc.color_id = c.id 
+	JOIN tbl_talla t ON ptc.talla_id=t.id 
+	JOIN tbl_precio pr ON pr.tbl_producto_id = p.id 
+	WHERE ptc.cantidad >0 AND p.`status`=1 AND p.estado=0";
  	
  	 
 		
@@ -101,6 +102,8 @@ class PrecioTallaColor extends CActiveRecord
 				$sql=$sql." AND m.id=".Yii::app()->session['idMarca'];
 
 		}
+		
+		$sql=$sql." group by ptc.id";
 		
 	
 		

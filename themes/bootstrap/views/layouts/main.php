@@ -52,21 +52,20 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
-					array('label'=>'Looks', 'url'=>array('/look/admin')),
-					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+        					array('label'=>'Looks', 'url'=>array('/look/admin')),
+        					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+                  array('label'=>'Campañas', 'url'=>array('/campana/index')),
 					)),
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Productos', 'url'=>array('/producto/admin')),
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
-					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte')
+					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte'),
+          array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
 					)
 				),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
-                array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
-                	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-
-					         array('label'=>'Campañas', 'url'=>array('/campana/index')),
-                  array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+                array('label'=>'Gift Card', 'url'=>'#', 'items'=>array(                	
+                array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
 
 					),
 				),
@@ -190,12 +189,12 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
   
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 
-                array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Tu personal Shopper', 'url'=>array('/tienda/look'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
+                array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>!UserModule::isPersonalShopper()),
+                // array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
-                array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest),                 

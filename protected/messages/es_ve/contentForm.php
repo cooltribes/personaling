@@ -368,8 +368,7 @@ return array (
      'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',
      'We received the data of purchase as well as your credit card payment.' => 'Hemos recibido los datos de la compra así como los de tu pago con tarjeta de crédito.',
      'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos de pedido asi como de tu pago con transferencia o depósito bancario',
-     'We received the order data as well as your credit card payment. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito.<br/> Tu pedido será enviado en las próximas horas.',
-
+     'We have received the order data as well as your credit card payment or Personaling credit. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito o saldo Personaling.<br/> Tu pedido será enviado en las próximas horas.',
      'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
      'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',

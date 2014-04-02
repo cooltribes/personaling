@@ -121,7 +121,7 @@ $tipo_pago = $orden->getTipoPago();
                       <h1><?php echo Yii::t('contentForm','Your order has been successfully received.');  ?></h1>                  
                   <?php } ?>
                       
-                  <p><?php echo Yii::t('contentForm','We received the order data as well as your credit card payment. <br/> Your order will be shipped in the coming hours.');  ?></p>
+                  <p><?php echo Yii::t('contentForm','We have received the order data as well as your credit card payment or Personaling credit. <br/> Your order will be shipped in the coming hours.');  ?></p>
               </div>
 
 	  	

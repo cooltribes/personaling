@@ -50,7 +50,7 @@ class TarjetaCredito extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required','message' => '{attribute} no puede estar en blanco.'),
-			array('user_id, ci', 'numerical', 'integerOnly'=>true),
+			array('user_id, ci', 'numerical', 'integerOnly'=>true,'message' => '{attribute} debe ser numérico'),
 			array('nombre', 'length', 'max'=>80), 
 			array('numero', 'length', 'min'=>14, 'max'=>16,'tooShort' => '{attribute} es muy corto (minimo 14 números)','tooLong'=>'{attribute} es muy largo (máximo 16 números)'),
 			array('codigo', 'length', 'min'=>3, 'max'=>4,'tooShort' => '{attribute} es muy corto (minimo 3 números)','tooLong'=>'{attribute} es muy largo (máximo 4 números)'),

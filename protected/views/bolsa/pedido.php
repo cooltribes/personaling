@@ -148,12 +148,20 @@ $tipo_pago = $orden->getTipoPago();
             <?php } ?>            
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
-              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
+              <td><?php 
+              		if($orden->envio>0)
+              			echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, '');
+					else
+						echo "<b class='text-success'>GRATIS</b>";
+						
+				?></td>
             </tr>
+            <?php if($orden->iva>0){?>
             <tr>
-              <th class="text_align_left">I.V.A. (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
               <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
-            </tr>            
+            </tr>  
+            <?php }?>          
             <tr>
               <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total'); ?>:</h4></th>
               <td><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>

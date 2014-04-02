@@ -198,6 +198,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
         	//echo 'Tipo pago: '.$tipoPago;
 		}
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
+		
 		$facturacion= Direccion::model()->findByPk(Yii::app()->getSession()->get('idFacturacion'));
 		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
         ?>
@@ -253,12 +254,25 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             </tr>
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping') ?>:</th>
-              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
+              <td><?php 
+              	if(Yii::app()->getSession()->get('envio')>0)
+                	 echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); 
+                else
+                	echo "<b class='text-success'>GRATIS</b>"; ?></td>
+              
+              ?></td>
             </tr>
-            <tr>
-              <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
-            </tr>
+            
+            <?php if(!$direccion->ciudad->provincia->pais->excento)
+			{?>
+				<tr>
+	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+	              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
+	            </tr>
+			<?php }
+			?>
+            
+            
             <?php if($descuento != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>

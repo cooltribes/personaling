@@ -517,12 +517,18 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
           <td><?php echo Yii::t('contentForm','Shipping and Transport');  ?></td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; ?></td>
+          <td><?php 
+          	if($orden->envio>0)
+          		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
+        	else
+        		echo "<b class='text-success'>GRATIS</b>";  ?></td>
         </tr>
-        <tr>
+       <?php if($orden->iva>0){?>
+		<tr>
           <td><?php echo Yii::t('contentForm','Tax');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
+        <?php }?>
         <tr>
           <td><?php echo Yii::t('contentForm','Total');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " ".Yii::t('contentForm','currSym')."."; ?></td>

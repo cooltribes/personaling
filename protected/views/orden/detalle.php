@@ -780,23 +780,29 @@ $tracking=$orden->getTracking();
         </tr>
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
-          <td >Bs. <?php echo number_format($orden->subtotal, 2, ',', '.'); ?></td>
+          <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->subtotal, 2, ',', '.'); ?></td>
         </tr>  
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
-          <td >Bs. <?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?></td>
+          <td ><?php 
+          	if($orden->envio>0)
+          		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
+        	else
+        		echo "<b class='text-success'>GRATIS</b>";  ?></td>
         </tr>    
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Descuento</strong></div></td>
-          <td >Bs. <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>
+          <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>
         </tr>  
+        <?php if($orden->iva>0){?>
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>Impuesto</strong></div></td>
-          <td >Bs. <?php echo number_format($orden->iva, 2, ',', '.'); ?></td>
-        </tr>   
+          <td colspan="9" ><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Tax'); ?></strong></div></td>
+          <td ><?php echo Yii::t('contentForm','currSym'); ?> <?php echo number_format($orden->iva, 2, ',', '.'); ?></td>
+        </tr>
+        <?php }?>   
         <tr>
           <th colspan="9" ><div class="text_align_right"><strong>Total</strong></div></th>
-          <th >Bs. <?php echo number_format($orden->total, 2, ',', '.'); ?></th>
+          <th ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->total, 2, ',', '.'); ?></th>
         </tr>
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Peso total del pedido</strong></div></td>

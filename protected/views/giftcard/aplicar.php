@@ -92,7 +92,7 @@ $this->breadcrumbs=array(
                         <?php echo $form->errorSummary($model, "Corrije los siguientes errores:"); ?>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">
-				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i><?php echo Yii::t('contentForm','Apply Gift Card'); ?></button>
+				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Apply Gift Card'); ?></button>
 				</div>
 			</div>			
 		</fieldset>

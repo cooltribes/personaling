@@ -5,6 +5,7 @@ return array (
 
      'PRONUNCIACION' => 'Venezolana',
      'currSym'=>'Bs',
+     'noShipping'=> '1',
      'IVA' => '0.12',
      'IVAtext' => '12%',
      'Bank information' => '<h4>Banco Banesco</h4>

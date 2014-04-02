@@ -14,6 +14,8 @@ include("class.zoom.json.services.php");
  * 9 - Devuelto
  * 10 - Parcialmente devuelto
  * 11 - Finalizada
+ * 12 - Finalizada - Devuelta
+ * 13 - Finalizada - Parcialmente devuelta
  * 
  * -------------- 
  * Tipo de Guia
@@ -52,12 +54,26 @@ class Orden extends CActiveRecord
 	const ESTADO_ESPERA = 1;
 	const ESTADO_ESPERA_CONF = 2;
 	const ESTADO_CONFIRMADO = 3;
+        
 	const ESTADO_ENVIADO = 4;
 	const ESTADO_CANCELADO = 5;
 	const ESTADO_RECHAZADO = 6;
-	const ESTADO_INSUFICIENTE = 7;
-
 	
+        const ESTADO_INSUFICIENTE = 7;	
+	const ESTADO_ENTREGADA = 8;
+	const ESTADO_DEVUELTA = 9;
+        
+	const ESTADO_PARC_DEV = 10;        
+        const ESTADO_FINALIZADA = 11;
+	const ESTADO_FIN_DEVUELTA = 12;
+        
+	const ESTADO_FIN_PARC_DEV = 13;
+
+	public static $estados = array('1' => 'En espera de pago',
+        '2' => 'En espera de confirmación', '3' => 'Pago confirmado',
+        '4' => 'Enviado', '5' => 'Cancelada', '6' => 'Pago rechazado',
+        '7' => 'Pago insuficiente', '8' => 'Entregada', '9' => 'Devuelta', 
+        '10' => 'Parcialmente devuelta', '11' => "Finalizada");
 	 /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -619,39 +635,43 @@ class Orden extends CActiveRecord
 		return count($this->findAllByAttributes(array('estado'=>$estado)));
 	}
 	
-	public function getTextEstado($estado = null){
-		if(is_null($estado)){
-			$estado=$this->estado;
-		}
-		
-		if($estado == 1)
-        return "En espera de pago";
+	public function getTextEstado($estado = null) {
+            if (is_null($estado)) {
+                $estado = $this->estado;
+            }
 
-    	if($estado == 2)
-       	return "Espera confirmación";
+            return isset(self::$estados[$estado]) ? self::$estados[$estado] : "ERROR";
+            
+            if ($estado == 1)
+                return "En espera de pago";
 
-    	if($estado == 3)
-        return  "Pago Confirmado";
+            if ($estado == 2)
+                return "Espera confirmación";
 
-    	if($estado == 4)
-        return "Pedido Enviado";
+            if ($estado == 3)
+                return "Pago Confirmado";
 
-    	if($estado == 5)
-        return "Orden Cancelada";
+            if ($estado == 4)
+                return "Pedido Enviado";
 
-    	if($estado == 6)
-        return "Pago Rechazado";
+            if ($estado == 5)
+                return "Orden Cancelada";
 
-    	if($estado == 7)
-        return  "Pago Insuficiente";
+            if ($estado == 6)
+                return "Pago Rechazado";
 
-   		if($estado == 9)
-        return  "Devuelto";
+            if ($estado == 7)
+                return "Pago Insuficiente";
 
-    	if($estado == 10)
-        return  "Devolución Parcial";
-		
-	}
+            if ($estado == 8)
+                return "Entregada";
+
+            if ($estado == 9)
+                return "Devuelta";
+
+            if ($estado == 10)
+                return "Devolución Parcial";
+        }
         
         /**
          * Revisar la orden y los looks involucrados para asignarle a los

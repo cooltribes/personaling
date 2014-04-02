@@ -10,7 +10,7 @@
 
     Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css',null);
     // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
-    Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico',null,null);  
+    Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico?v=3',null,null);  
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
     ?>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
@@ -52,6 +52,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
+                  
         					array('label'=>'Looks', 'url'=>array('/look/admin')),
         					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
                   array('label'=>'Campañas', 'url'=>array('/campana/index')),

@@ -15,11 +15,12 @@ echo"<tr>";
    		echo "<td>".date("d-m-Y H:i:s",strtotime($data->fecha))."</td>";
 	else
 		echo "<td></td>";
-	$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
-	 $indiv=OrdenHasProductotallacolor::model()->countIndividuales($data->id);
-	 $looks=OrdenHasProductotallacolor::model()->countLooks($data->id);
+		$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
+		$indiv=OrdenHasProductotallacolor::model()->countIndividuales($data->id);
+		$looks=OrdenHasProductotallacolor::model()->countLooks($data->id);
+		$xlook=OrdenHasProductotallacolor::model()->countPrendasEnLooks($data->id);
 		
-	echo "<td><strong>Looks</strong>:     (".$looks.")<br><strong>Prendas</strong>: (".$indiv.")</td>"; // totales en look y indiv
+	echo "<td>".$looks."</td><td>".$indiv."</td><td>".($indiv+$xlook)."</td>"; // totales en look y indiv
 	
 	echo "<td>".Yii::app()->numberFormatter->format("#,##0.00",$data->total)."</td>"; // precio
 	//echo "<td>".$data->total."</td>"; // monto total

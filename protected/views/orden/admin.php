@@ -172,7 +172,9 @@ $template = '{summary}
       <th scope="col">ID del pedido</th>
       <th scope="col">Usuaria</th>
       <th scope="col">Fecha de Compra</th>
-      <th scope="col">Mercancia Comprada</th>
+      <th scope="col">Looks</th>
+      <th scope="col" title="Prendas Individuales">P. I.</th>
+      <th scope="col" title="Prendas Totales">P. T.</th>
       <th scope="col">Monto (Bs)</th>
       <th scope="col">Método de pago</th>
       <th scope="col">Estado</th>

@@ -784,7 +784,11 @@ $tracking=$orden->getTracking();
         </tr>  
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
-          <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?></td>
+          <td ><?php 
+          	if($orden->envio>0)
+          		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
+        	else
+        		echo "<b class='text-success'>GRATIS</b>";  ?></td>
         </tr>    
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Descuento</strong></div></td>

@@ -121,7 +121,7 @@ $tipo_pago = $orden->getTipoPago();
                       <h1><?php echo Yii::t('contentForm','Your order has been successfully received.');  ?></h1>                  
                   <?php } ?>
                       
-                  <p><?php echo Yii::t('contentForm','We received the order data as well as your credit card payment. <br/> Your order will be shipped in the coming hours.');  ?></p>
+                  <p><?php echo Yii::t('contentForm','We have received the order data as well as your credit card payment or Personaling credit. <br/> Your order will be shipped in the coming hours.');  ?></p>
               </div>
 
 	  	
@@ -148,7 +148,13 @@ $tipo_pago = $orden->getTipoPago();
             <?php } ?>            
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
-              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
+              <td><?php 
+              		if($orden->envio>0)
+              			echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, '');
+					else
+						echo "<b class='text-success'>GRATIS</b>";
+						
+				?></td>
             </tr>
             <?php if($orden->iva>0){?>
             <tr>

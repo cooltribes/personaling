@@ -254,7 +254,13 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             </tr>
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping') ?>:</th>
-              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); ?></td>
+              <td><?php 
+              	if(Yii::app()->getSession()->get('envio')>0)
+                	 echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); 
+                else
+                	echo "<b class='text-success'>GRATIS</b>"; ?></td>
+              
+              ?></td>
             </tr>
             
             <?php if(!$direccion->ciudad->provincia->pais->excento)

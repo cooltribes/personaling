@@ -302,6 +302,8 @@ class AdminController extends Controller
 	
 	 
 	public function actionReporteXLS(){
+		ini_set('memory_limit','200M'); 
+
 		$criteria=Yii::app()->session['userCriteria'];
 		$criteria->select = array('t.id');
 		$dataProvider = new CActiveDataProvider('User', array(
@@ -413,6 +415,7 @@ class AdminController extends Controller
 		 
 			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 			$objWriter->save('php://output');
+			ini_set('memory_limit','128M'); 
 			Yii::app()->end();
 		
 	}

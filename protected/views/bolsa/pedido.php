@@ -148,7 +148,13 @@ $tipo_pago = $orden->getTipoPago();
             <?php } ?>            
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
-              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, ''); ?></td>
+              <td><?php 
+              		if($orden->envio>0)
+              			echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio + $orden->seguro, '');
+					else
+						echo "<b class='text-success'>GRATIS</b>";
+						
+				?></td>
             </tr>
             <?php if($orden->iva>0){?>
             <tr>

@@ -115,6 +115,13 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		return $pr[0]['counter'];
 	}
 	
+	public function countPrendasEnLooks($id){
+			
+		$sql="select count(preciotallacolor_id) as counter from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id<>0";	
+		$pr=Yii::app()->db->createCommand($sql)->queryAll();
+		return $pr[0]['counter'];
+	}
+	
 	public function getByLook($id, $look){
 			
 		$sql="select * from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=".$look;	

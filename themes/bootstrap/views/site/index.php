@@ -21,21 +21,29 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
     <div id="myCarousel" class="carousel slide">
 
         <ol class="carousel-indicators">
-            <a href="#"><li data-target="#myCarousel" data-slide-to="0" class="active"></li></a>
-            <a href="#"><li data-target="#myCarousel" data-slide-to="1"></li></a>
-            <a href="#"><li data-target="#myCarousel" data-slide-to="2"></li></a>
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
         </ol>
 
         <!-- Carousel items ON -->
         <div class="carousel-inner">
-            <div class="active item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_4.jpg">
+            <div class="active item" >
+                <div class="slider-home">
+                    <div>
+                        
+                    </div>
+                </div>                
             </div>
-            <div class="item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg">
+            <div class="item" >
+                <div class="slider-home">
+                    
+                </div>                
             </div>
-            <div class="item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/slide_version_20131015_brands.jpg">
+            <div class="item" >
+                <div class="slider-home">
+                    
+                </div>                
             </div>
         </div>
         <!-- Carousel items OFF -->

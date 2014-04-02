@@ -105,40 +105,40 @@ $create_date = date('j M Y', $create_time);
                     <fieldset>
                         <legend >O invítal@s por correo electrónico: </legend>
                         <div class="row">
-                        <div class="span5">                            
-                            <div class="control-group">
-                                <label class="control-label required">Ingresa los correos electrónicos de tus amig@s: </label>
-                                <div class="controls">
-                                    <?php
-                                    $this->widget('application.extensions.BulkMail.BulkMail',
-                                            array(
-                                                'model' => $model,
-                                                'field' => 'emailList',
-                                                'form' => $form,
-                                                'cssInputNew' => ''
-                                                
+	                        <div class="offset2 span5">                            
+	                            <div class="control-group">
+	                                <label class="control-label required">Ingresa los correos electrónicos de tus amig@s: </label>
+	                                <div class="controls">
+	                                    <?php
+	                                    $this->widget('application.extensions.BulkMail.BulkMail',
+	                                            array(
+	                                                'model' => $model,
+	                                                'field' => 'emailList',
+	                                                'form' => $form,
+	                                                'cssInputNew' => ''
+	                                                
 
-                                            )
-                                    );
-                                    ?>
-                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> Debes ingresar al menos una dirección de correo electrónico </span>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label required">Escribe un mensaje personal: </label>
-                                <div class="controls">
-                                    <?php 
-                                   echo CHtml::textArea('invite-message',
-                                   'Mira looks creados por las mejores Personal Shopper de Venezuela.',
-                                   array('class' => 'span5', 'rows' => '4'));
-                                   ?>
-                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
-                                </div>    
-                            </div>                            
-                        </div>
-                        <div class="span3"><img src="<?php echo Yii::app()->baseUrl; ?>/images/img_libreta.jpg" width="240" height="240" alt="Correos"></div></div>
+	                                            )
+	                                    );
+	                                    ?>
+	                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> Debes ingresar al menos una dirección de correo electrónico </span>
+	                                </div>
+	                            </div>
+	                            <div class="control-group">
+	                                <label class="control-label required">Escribe un mensaje personal: </label>
+	                                <div class="controls">
+	                                    <?php 
+	                                   echo CHtml::textArea('invite-message',
+	                                   'Mira looks creados por las mejores Personal Shopper de Venezuela.',
+	                                   array('class' => 'span5', 'rows' => '4'));
+	                                   ?>
+	                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
+	                                </div>    
+	                            </div>                            
+	                        </div>
+                    	</div>
                         <div class="form-actions"> 
-                            <a id="enviarInvitaciones" class="btn-large btn btn-danger">Enviar invitaciones</a> 
+                            <a id="enviarInvitaciones" class="btn-large btn btn-danger offset5">Enviar invitaciones</a> 
                             <?php /*$this->widget('bootstrap.widgets.TbButton', array(
                                                 'buttonType'=>'submit',
                                                 'label'=>'Enviar invitaciones',

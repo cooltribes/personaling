@@ -179,7 +179,8 @@ echo CHtml::hiddenField('user',$user);
                                                             </div>
                                                     </div>		          					
 
-                                                                    <?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); ?>
+                                                                    <?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); 
+                                                                     $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));?>
                                             <div class="text_center_align">
                                                     <p><?php echo Yii::t('contentForm','This transaction will be processed securely through the platform:'); ?>:</p>	
                                                     <img src="<?php echo Yii::app()->baseUrl ?>/images/Instapago-logo.png" width="77">
@@ -337,15 +338,6 @@ echo CHtml::hiddenField('user',$user);
                         
 					
 
-                        // variables de sesion
-                        Yii::app()->getSession()->add('subtotal',$totalPr);
-                        Yii::app()->getSession()->add('descuento',$totalDe);
-                        Yii::app()->getSession()->add('envio',$envio);
-                        Yii::app()->getSession()->add('iva',$iva);
-                        Yii::app()->getSession()->add('total',$t);
-						Yii::app()->getSession()->add('seguro',$seguro);
-						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
-						Yii::app()->getSession()->add('peso',$peso_total);
 						
                         echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
@@ -355,10 +347,23 @@ echo CHtml::hiddenField('user',$user);
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
                 <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
               </tr>
-              <tr>
-                <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
-                <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
-              </tr>
+              
+              
+              <?php if(!$direccion->ciudad->provincia->pais->excento)
+			{?>
+				<tr>
+	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+	              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
+	            </tr>
+			<?php }
+			else{
+				$t=$t-$iva;
+				$iva=0;	
+			
+
+			}?>
+              
+              
               <?php if($totalDe != 0){ // si no hay descuento ?> 
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
@@ -373,6 +378,20 @@ echo CHtml::hiddenField('user',$user);
 
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
             <?php
+            
+				
+                        // variables de sesion
+                        Yii::app()->getSession()->add('subtotal',$totalPr);
+                        Yii::app()->getSession()->add('descuento',$totalDe);
+                        Yii::app()->getSession()->add('envio',$envio);
+                     	Yii::app()->getSession()->add('iva',$iva);
+                        Yii::app()->getSession()->add('total',$t);
+						Yii::app()->getSession()->add('seguro',$seguro);
+						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
+						Yii::app()->getSession()->add('peso',$peso_total);
+			
+			
+			
 				$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
 				$balance = floor($balance *100)/100;
                 $class = "";		
@@ -723,17 +742,17 @@ $('#TarjetaCredito_year').change(function(){
 				$('#usar_balance_hidden').val('1');
 				//console.log('checked');
 				if(balance >= total){
-					$('#descuento').html('Bs. '+total);
-					$('#precio_total').html('Bs. 0');
+					$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total);
+					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> 0');
 				}else{
-					$('#descuento').html('Bs. '+balance.toFixed(2));
-					$('#precio_total').html('Bs. '+(total-balance).toFixed(2));
+					$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> '+balance.toFixed(2));
+					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+(total-balance).toFixed(2));
 				}
 			}else{
 				$('#usar_balance_hidden').val('0');
 				//console.log('not checked');
-				$('#descuento').html('Bs. 0');
-				$('#precio_total').html('Bs. '+total.toFixed(2));
+				$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> 0');
+				$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total.toFixed(2));
 			}
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');

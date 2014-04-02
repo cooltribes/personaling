@@ -10,7 +10,7 @@
 @color1: #6d2d56; /* Morado Berenjena */
 @color2: #3c4141; /* Gris raton */
 @color3: #fff;
-@color4: #000; /* Negro */
+@color4: #231f20; /* Negro */
 @color5: #ddd; /* Gris */
 @color6: #AD3682; /* Morado claro */
 @color7: #22F28A; /* Verde chillon */
@@ -85,7 +85,7 @@
 table .no_border_left{border-left:none}
 table .no_border_center{border-center:none}
 table .no_border_right{border-right:none}
-a{color:@color1; .transition_all}
+a{color:@color4; .transition_all}
 a:hover{color:#333}
 .table_border_left{border-left:1px solid #DDD}
 .text_left_align,.table_survey label{text-align:left}
@@ -368,7 +368,9 @@ strong, th{ color:#555;}
 border: 0;
 }
 
-.btn-warning:hover,
+.btn-warning:hover{
+  background: @color4;
+}
 .btn-warning:active,
 .btn-warning.active,
 .btn-warning.disabled,
@@ -378,8 +380,7 @@ border: 0;
 
 .btn-danger {
   color: #ffffff;
-  background:#6c1b4f;
-
+  background: @color9;
   border: 0;
 }
 
@@ -625,8 +626,8 @@ src: url('../fonts/entypo.woff'),
 
 #myLogo a, #site-title a , .brand{
     display: block;
-    height: 36px;
-    background:url(../images/logo_personaling_2.png) no-repeat center left;
+    height: 37px;
+    background:url(../images/logo_personaling.png) no-repeat center left;
     text-indent: -9999px;
     width: 284px;
     z-index: 100;
@@ -878,7 +879,7 @@ src: url('../fonts/entypo.woff'),
         border-color:#ddd -moz-use-text-color #FFFFFF
         }
     h3{
-        color: lighten(@color1,10%);}
+        color: lighten(@color4,10%);}
     li{
         line-height:2em;
         color:#d3cece;
@@ -1610,12 +1611,11 @@ src: url('../fonts/entypo.woff'),
         }         
         .addthis{
           margin-top: -10px;
-          margin-bottom: 0;
+          margin-bottom: 2em;
         }         
         .call2action{
             margin-bottom:1em;
             padding-bottom:1em;
-            border-bottom:1px solid #ddd;
             .btn-danger:before, .btn-warning:before{
                 content:'\E73D';
                 font-size:2em;
@@ -1968,7 +1968,7 @@ src: url('../fonts/entypo.woff'),
             .vista_rapida{
                 opacity:0;
                 .transition_all;
-                background: rgba(0,0,0,0.72);
+                background: rgba(35,31,32,0.72);
                 padding:0.6em;
                 border:none;
                 z-index: 999;
@@ -1993,7 +1993,7 @@ src: url('../fonts/entypo.woff'),
 
                 .vista_rapida{
                     opacity:1;
-                    &:hover{background:black;}
+                    &:hover{background:@color4;}
                     }
                 }
               .icon_lupa{
@@ -2066,7 +2066,7 @@ src: url('../fonts/entypo.woff'),
             right: 0;
             top: 0;
             &:hover{
-                .color6;
+                .color4;
                 opacity:1;
                 }
 

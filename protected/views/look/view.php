@@ -309,7 +309,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           </div>
           <?php $this->endWidget(); ?>
           <!-- Productos del look OFF -->
-<hr/>
           <div class="row call2action">
                 <?php
 
@@ -446,7 +445,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>           
           </div>
-          <hr/>
           <div>
             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
           </div>

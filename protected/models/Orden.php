@@ -13,6 +13,7 @@ include("class.zoom.json.services.php");
  * 8 - Recibido
  * 9 - Devuelto
  * 10 - Parcialmente devuelto
+ * 11 - Finalizada
  * 
  * -------------- 
  * Tipo de Guia

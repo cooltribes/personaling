@@ -1,6 +1,14 @@
 <?php
 
 /**
+ *  status_comision puede ser:
+ * - 0 No se paga comision
+ * - 1 Pendiente de pago
+ * - 2 Pagada
+ * 
+ */
+
+/**
  * This is the model class for table "{{orden_has_productotallacolor}}".
  *
  * The followings are the available columns in table '{{orden_has_productotallacolor}}':
@@ -10,6 +18,9 @@
  * @property integer $look_id
  * @property double $precio
  * @property int $devolucion_id
+ * @property double $comision
+ * @property int $tipo_comision
+ * @property int $status_comision 
  * 
  * The followings are the available model relations:
  * @property PrecioTallaColor $preciotallacolor

@@ -18,6 +18,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 
 
 <div class="wrapper_home">
+
     <div id="myCarousel" class="carousel slide">
 
         <ol class="carousel-indicators">

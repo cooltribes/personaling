@@ -4,8 +4,7 @@
  *  status_comision puede ser:
  * - 0 No se paga comision
  * - 1 Pendiente de pago
- * - 2 Pagada
- * 
+ * - 2 Pagada  
  */
 
 /**
@@ -27,6 +26,11 @@
  */
 class OrdenHasProductotallacolor extends CActiveRecord
 {
+    
+    const STATUS_NULO = 0;
+    const STATUS_PENDIENTE = 1;
+    const STATUS_PAGADA = 1;
+    
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.

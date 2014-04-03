@@ -116,7 +116,45 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					?>
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
-                    <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?> </td>
+                    <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?> 
+                    <?php                      
+//                        $hoy = new DateTime();
+//                        $agregado = new DateTime($productotallacolor->added_on);
+//                        $diferencia = $hoy->diff($agregado)
+//                                          ->days; //Dias desde que se agrego
+//                        
+//                        $lookActual = Look::model()->findByPk($productotallacolor->look_id);
+//                        $personalShopper = $lookActual->user->profile;
+//                        
+//                        $prorden = new OrdenHasProductotallacolor;
+//                        
+//
+//                        echo "Agregado<pre>";
+//                        print_r($hoy->format("Y-m-d"));
+//                        echo "</pre>";
+//                        echo "Agregado<pre>";
+//                        print_r($agregado->format("Y-m-d"));
+//                        echo "</pre>";
+//                        echo "Agregado<pre>";
+//                        print_r($diferencia);
+//                        echo "</pre>";
+//                        
+//                        //si lleva mas tiempo del permitido, no agregar a la orden
+//                        if($diferencia <= $personalShopper->tiempo_validez){
+//                            $prorden->comision = $personalShopper->comision;
+//                            $prorden->tipo_comision = $personalShopper->tipo_comision;
+//                            $prorden->status_comision = OrdenHasProductotallacolor::STATUS_PENDIENTE;
+//                            echo "<br>SI";
+//                        }else{
+//                            echo "<br>NO";
+//                        }
+//                        
+//                        echo "<br>$personalShopper->first_name<br>ORden<pre>";
+//                        print_r($prorden->attributes);
+//                        echo "</pre>";
+                    ?>
+                  
+                  </td>
                     
                   
                   <td> <?php echo Yii::t('contentForm', 'currSym').' '.$pre; ?></td>
@@ -191,41 +229,37 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 							}
 						}
 					}else
-						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
-							
-						echo "
-						<td>
-						<strong>".$producto->nombre."</strong> <br/>
-						<strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>";
-                                                $hoy = date("Y-m-d H:m:s");
-                                                echo "
-						<strong>".Yii::t('contentForm','Agregarlo?').
-                                                        "</strong>: ".$hoy." - ".$productoBolsa->added_on."<br/>";
-                                                        
-                                                echo "
-						<strong>".Yii::t('contentForm','Size')."</strong>: ".$talla->valor."</td>
-						";	
-				 	
-					 	$pre="";
-					 	/*foreach ($producto->precios as $precio) {
-				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
-						
-						array_push($precios,$precio->precioDescuento);	
-						array_push($descuentos,$precio->ahorro);		
-						}*/
-						$pre = $producto->precioVenta;
-						array_push($precios,$producto->precioVenta);	
-						array_push($descuentos,0);
-					 	
-					 	array_push($cantidades,$productoBolsa->cantidad);
-						
-					 	echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
-						?>
-						
-					 	<td width='8%'>
-					 		<input type="hidden" value="<?php echo $productoBolsa->cantidad; ?>" />
-							<input type='text' name="cant[<?php echo $productoBolsa->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $productoBolsa->cantidad; ?>' class='span1 cantidades'/>
-                                                <a id="<?php echo $productoBolsa->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+                                echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+
+                                echo "
+                                <td>
+                                <strong>".$producto->nombre."</strong> <br/>
+                                <strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>";
+                                echo "<strong>".Yii::t('contentForm','Size')."</strong>: ".$talla->valor;	
+                                
+                                echo "</td>";
+                                        
+
+                                $pre="";
+                                /*foreach ($producto->precios as $precio) {
+                                $pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+
+                                array_push($precios,$precio->precioDescuento);	
+                                array_push($descuentos,$precio->ahorro);		
+                                }*/
+                                $pre = $producto->precioVenta;
+                                array_push($precios,$producto->precioVenta);	
+                                array_push($descuentos,0);
+
+                                array_push($cantidades,$productoBolsa->cantidad);
+
+                                echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
+                                ?>
+
+                                <td width='8%'>
+                                        <input type="hidden" value="<?php echo $productoBolsa->cantidad; ?>" />
+                                        <input type='text' name="cant[<?php echo $productoBolsa->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $productoBolsa->cantidad; ?>' class='span1 cantidades'/>
+                                <a id="<?php echo $productoBolsa->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	                    	
 	                    </td>
 	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $productoBolsa->preciotallacolor_id; ?>)' id='elim<?php echo $productoBolsa->preciotallacolor_id; ?>'>&times;</td>

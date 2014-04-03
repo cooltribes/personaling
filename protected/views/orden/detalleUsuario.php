@@ -302,7 +302,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
           ?>
           <tr>
-            <td><?php echo Yii::t('contentForm','New Order');  ?></td>
+            <td><?php echo Yii::t('contentForm','New order');  ?></td>
             <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
             <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
           </tr>

@@ -98,10 +98,6 @@ public function actionReporte()
 	}
 
 
-
-
-
-
 public function actionReportexls(){
 	
 	$title = array(
@@ -416,17 +412,16 @@ public function actionReportexls(){
             
             //Ordenar por fecha descendiente
             $criteria = $dataProvider->getCriteria();
-             
             $criteria->order = 'fecha DESC';
-            $dataProvider->setCriteria($criteria); 
-		  
-			Yii::app()->session['ordenCriteria']=$dataProvider->getCriteria();
-		    $this->render('admin', array('orden' => $orden,
+            $dataProvider->setCriteria($criteria);       
+
+            $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,
             ));
 
 	}
-	public function actionAdminXLS()
+	
+     public function actionAdminXLS()
 	{  
 		ini_set('memory_limit','256M'); 
 
@@ -536,7 +531,7 @@ public function actionReportexls(){
 			Yii::app()->end();
 		
 	}
-        
+	   
         /**          
          * Obtiene el filtro con id $id          
          */
@@ -1036,7 +1031,7 @@ public function actionValidar()
 						} // si es mayor hace el balance
 						
 						/*Pagar comision a las PS involucradas en la venta*/
-                                                Orden::model()->pagarComisiones($orden); 
+                                                //Orden::model()->pagarComisiones($orden); 
                                                 
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					
@@ -1099,7 +1094,7 @@ public function actionValidar()
 								$balance->save();
                                                                 
                                                                 /*Pagar comision a las PS involucradas en la venta*/
-                                                                Orden::model()->pagarComisiones($orden); 
+                                                                //Orden::model()->pagarComisiones($orden); 
 									
 								
 							}

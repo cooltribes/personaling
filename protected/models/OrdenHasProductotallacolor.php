@@ -4,8 +4,7 @@
  *  status_comision puede ser:
  * - 0 No se paga comision
  * - 1 Pendiente de pago
- * - 2 Pagada
- * 
+ * - 2 Pagada  
  */
 
 /**
@@ -27,6 +26,11 @@
  */
 class OrdenHasProductotallacolor extends CActiveRecord
 {
+    
+    const STATUS_NULO = 0;
+    const STATUS_PENDIENTE = 1;
+    const STATUS_PAGADA = 1;
+    
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -71,6 +75,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		return array(
 			'preciotallacolor' => array(self::BELONGS_TO, 'Preciotallacolor', 'preciotallacolor_id'),
 			'myorden' => array(self::BELONGS_TO, 'Orden', 'tbl_orden_id'),
+			'look' => array(self::BELONGS_TO, 'Look', 'look_id'),
 		);
 	}
 
@@ -99,6 +104,30 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
+
+		$criteria->compare('tbl_orden_id',$this->tbl_orden_id);
+		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
+		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('look_id',$this->look_id);
+		$criteria->compare('precio',$this->precio);
+		$criteria->compare('devolucion_id',$this->devolucion_id);
+				
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	public function vendidosComision($id)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+                $criteria->with['look.user'] = array(
+                    'select' => false,
+                    'joinType' => 'INNER JOIN',
+                    'condition' => 'look.user.id = :id',
+                    'params' => array(":id" => $id),                  
+                ); 
 
 		$criteria->compare('tbl_orden_id',$this->tbl_orden_id);
 		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
@@ -146,7 +175,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		return $looks;
 	}
 	
-		public function precioLook($id, $look){
+        public function precioLook($id, $look){
 			
 		$sql="select sum(precio) from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=".$look;	
 		return  Yii::app()->db->createCommand($sql)->queryScalar();

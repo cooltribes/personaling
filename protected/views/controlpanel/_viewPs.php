@@ -51,7 +51,7 @@
     </td>
     
     <!--LOOKS COMPLETOS-->
-    <td>
+    <td class="error">
         <?php
             echo $data->getLooksVendidos();
         ?>
@@ -80,12 +80,12 @@
     </td>
     
     <!--SALDO EN COMISIONES-->
-    <td><?php echo $data->getSaldoPorComisiones();echo Yii::t('backEnd', 'currSym'); ?></td>
+    <td><?php echo $data->getSaldoPorComisiones();echo " ".Yii::t('backEnd', 'currSym'); ?></td>
     
     <!--SALDO TOTAL-->
     <td>
         <?php $saldo = Profile::model()->getSaldo($data->id);
-        echo Yii::app()->numberFormatter->formatDecimal($saldo).Yii::t('backEnd', 'currSym'); ?>
+        echo Yii::app()->numberFormatter->formatDecimal($saldo)." ".Yii::t('backEnd', 'currSym'); ?>
     </td>
     
     <!--FECHA DE REGISTRO-->

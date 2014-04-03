@@ -781,9 +781,11 @@ class User extends CActiveRecord {
             //buscar ventas de esos looks.
             $total = Yii::app()->db->createCommand()->select("IFNULL(SUM(o.cantidad), 0)")
                     ->from("tbl_orden_has_productotallacolor as o")
-                    ->where(array("in", "o.look_id", $looksIds))
-                    ->andWhere('tbl_orden_id IN (select orden.id from tbl_orden orden
-                    where fecha >= "2014-03-19")')
+                    ->where("status_comision <> :status", 
+                            array(":status" => OrdenHasProductotallacolor::STATUS_NULO))
+                    ->andWhere(array("in", "o.look_id", $looksIds))
+//                    ->andWhere('tbl_orden_id IN (select orden.id from tbl_orden orden
+//                    where fecha >= "2014-03-19")')
                     ->queryScalar();
             
             

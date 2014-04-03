@@ -136,7 +136,8 @@ class Orden extends CActiveRecord
         	'nproductos' => array(self::STAT, 'OrdenHasProductotallacolor', 'tbl_orden_id',
             		'select' => 'COUNT(preciotallacolor_id)',
             		'condition' => 'cantidad > 0'
-        		), 
+        		),
+        	'user'=>array(self::BELONGS_TO, 'User', 'user_id'),
      
 		);
 	}
@@ -742,6 +743,37 @@ class Orden extends CActiveRecord
             
             
         }
+ 
+	public function getTiposPago($continuo = null){
+		$text="";
+		$i=0;
+		if(count($this->detalles)){
+            foreach ($this->detalles as $detallePago){
+            	if($i>0){
+            		if(is_null($continuo))
+	            		$text.="<br/>";
+					else 
+	            		$text.=" / ";
+            	}
+            
+	            if($detallePago->tipo_pago==1)
+				 	$text.= "Dep. o Transfer"; // metodo de pago
+	            else if($detallePago->tipo_pago==2)
+	                    $text.="Tarjeta de Crédito";  
+	            else if($detallePago->tipo_pago==3)
+	                    $text.="Uso de Balance"; 
+	            else if($detallePago->tipo_pago==4)
+	                    $text.="MercadoPago"; 
+	            else
+	                    $text.="ERROR EN EL PAGO";
+				$i++;
+            
+        }
+        }else{
+            $text.="Dep. o Transfer"; 
+        }
+		return $text;
+	}
 	
 	
 	

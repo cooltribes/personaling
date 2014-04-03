@@ -83,7 +83,7 @@ $template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped table-condensed">
     <tr>
       <th rowspan="2" scope="col"><input name="Check" type="checkbox" value="Check"></th>
-      <th colspan="3" rowspan="2" scope="col">Usuario/th>
+      <th colspan="3" rowspan="2" scope="col">Usuario</th>
       <th colspan="2" scope="col">Pedidos</th>
       <th rowspan="2" scope="col">Saldo Disponible</th>
       <th colspan="2" scope="col">Ingresos al Portal</th>
@@ -169,14 +169,14 @@ $template = '{summary}
   <hr/>
    <div class="row">
    	<div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/user/admin/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
-   <div class="span3"><select class="span3">
+  <!--<div class="span3"><select class="span3">
         <option>Seleccionar usuarios</option>
         <option>Lorem</option>
         <option>Ipsum 2</option>
         <option>Lorem</option>
       </select></div>
-      <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
-      </div>
+      <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>-->
+   </div>
 </div>
 <!-- /container -->
 

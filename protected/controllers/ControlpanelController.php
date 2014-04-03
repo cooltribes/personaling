@@ -449,11 +449,9 @@ class ControlpanelController extends Controller
             if($personalShopper===null)
                     throw new CHttpException(404,'The requested page does not exist.');
             
-            $producto = new Producto;
+            $producto = new OrdenHasProductotallacolor;
 
-            $producto->status = 1;
-
-            $dataProvider = $producto->search();
+            $dataProvider = $producto->vendidosComision($id);
             
             $this->render('misVentas',array(
                         'personalShopper' => $personalShopper,

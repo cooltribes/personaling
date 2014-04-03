@@ -326,7 +326,10 @@ function accionMasiva(parametros){
                     
                     $('#modalComision').modal("hide");
                     $('#modalTiempo').modal("hide");
-                    console.log(parametros);
+                    
+                    if(!$('#filters-view').is(":visible")){
+                        $('#filters-view').show();
+                    }
                     showAlert(data.status, data.message);
                     
                     $('html,body').animate({

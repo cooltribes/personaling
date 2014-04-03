@@ -1276,7 +1276,7 @@ class BolsaController extends Controller
 						}// estado                                                                                                
                                                 
                                                 /*Pagar comision a las PS involucradas en la venta*/
-                                                Orden::model()->pagarComisiones($orden);  
+                                                //Orden::model()->pagarComisiones($orden);  
                                                 
                                                 
 						// cuando finalice entonces envia id de la orden para redireccionar

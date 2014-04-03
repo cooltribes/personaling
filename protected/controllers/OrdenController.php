@@ -921,7 +921,7 @@ public function actionValidar()
 						} // si es mayor hace el balance
 						
 						/*Pagar comision a las PS involucradas en la venta*/
-                                                Orden::model()->pagarComisiones($orden); 
+                                                //Orden::model()->pagarComisiones($orden); 
                                                 
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					
@@ -984,7 +984,7 @@ public function actionValidar()
 								$balance->save();
                                                                 
                                                                 /*Pagar comision a las PS involucradas en la venta*/
-                                                                Orden::model()->pagarComisiones($orden); 
+                                                                //Orden::model()->pagarComisiones($orden); 
 									
 								
 							}

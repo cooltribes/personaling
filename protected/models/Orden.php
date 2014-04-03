@@ -73,7 +73,9 @@ class Orden extends CActiveRecord
         '2' => 'En espera de confirmación', '3' => 'Pago confirmado',
         '4' => 'Enviado', '5' => 'Cancelada', '6' => 'Pago rechazado',
         '7' => 'Pago insuficiente', '8' => 'Entregada', '9' => 'Devuelta', 
-        '10' => 'Parcialmente devuelta', '11' => "Finalizada");
+        '10' => 'Parcialmente devuelta', '11' => "Finalizada",
+        '12' => 'Devuelta<br>Finalizada', '13' => "Parcialmente devuelta<br>Finalizada",
+         );
 	 /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.

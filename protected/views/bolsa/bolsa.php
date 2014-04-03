@@ -116,7 +116,8 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					?>
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
-                    <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?></td>
+                    <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?> </td>
+                    
                   
                   <td> <?php echo Yii::t('contentForm', 'currSym').' '.$pre; ?></td>
                   
@@ -195,7 +196,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						echo "
 						<td>
 						<strong>".$producto->nombre."</strong> <br/>
-						<strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>
+						<strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>";
+                                                $hoy = date("Y-m-d H:m:s");
+                                                echo "
+						<strong>".Yii::t('contentForm','Agregarlo?').
+                                                        "</strong>: ".$hoy." - ".$productoBolsa->added_on."<br/>";
+                                                        
+                                                echo "
 						<strong>".Yii::t('contentForm','Size')."</strong>: ".$talla->valor."</td>
 						";	
 				 	

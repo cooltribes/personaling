@@ -414,7 +414,7 @@ public function actionReportexls(){
             $criteria = $dataProvider->getCriteria();
             $criteria->order = 'fecha DESC';
             $dataProvider->setCriteria($criteria);       
-
+			Yii::app()->session['ordenCriteria']=$dataProvider->getCriteria();
             $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,
             ));

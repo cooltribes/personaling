@@ -179,7 +179,7 @@ return array (
 	'Name of items' => 'Nombre de productos',
 	'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
 	'Name printed on the credit card' => 'Nombre impreso en la tarjeta',
-	'New order' => 'Nuevo Pedido',
+	'New order' => 'Nuevo pedido',
 	'Next' => 'Siguiente',
 	'Next step' => 'Siguiente paso',
 	'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',

@@ -949,7 +949,8 @@ src: url('../fonts/entypo.woff'),
 /*------------- Home ON -------------*/
 
 .wrapper_home{
-        margin-bottom: -30px;
+      margin-bottom: -30px;
+      margin-top: 12px;
     .carousel .item img{
       margin: 0 auto;
     }
@@ -1085,6 +1086,9 @@ src: url('../fonts/entypo.woff'),
       }
 
 }
+.carousel{
+  height: 610px;
+}
   .carousel-indicators {
   position: absolute;
   bottom: 15px;
@@ -1118,10 +1122,72 @@ src: url('../fonts/entypo.woff'),
     top:5em;
     left:0;}
 .slider-home{
-  background: lightcoral;
   height: 550px;
   margin: 0 auto;
-  width: 1520px;
+  max-width: 1520px;
+
+}
+.slide-1{
+  border: 11px solid #ffd660;
+  background: #ffd660;
+  .slide-content{
+    background: url(../images/rosav-slide1.png) no-repeat 250px 66px;
+    border: 2px solid white;
+    height: 546px;
+    .copy-left{
+      .border-bottom{
+        border-bottom: 2px solid white;
+      }
+      float: right;
+      padding: 7em 7em 0 0;
+      h2{
+        font-size: 46px;
+        line-height: 55px;
+        strong{
+          color: @color4;
+          font-weight: normal;
+        }
+      }
+      a.btn-call2action{
+        border: 2px solid @color4;
+        display: block;
+        font-size: 26px;
+        margin: 57px auto 57px auto;
+        padding: .5em;
+        text-align: center;
+        width: 137px;
+        &:hover{
+          background-color: @color4;
+          color: @color3;
+          .transition_all;
+        }
+      }
+      .logo-personaling{
+        width: 210px;
+        margin: 1em auto;
+      }
+      .personaling-slogan{
+        font-weight: 100;
+        font-size: 20px;
+      }
+    }
+  }
+}
+.slide-2{
+  border: 11px solid #99e6f9;
+  background: #99e6f9;
+  .slide-content{
+    height: 546px;
+    border: 2px solid white;
+  }
+}
+.slide-3{
+  border: 11px solid #f2efe8;
+  background: #f2efe8;
+  .slide-content{
+    height: 546px;
+    border: 2px solid white;
+  }
 }
 /*------------- Home OFF -------------*/
 

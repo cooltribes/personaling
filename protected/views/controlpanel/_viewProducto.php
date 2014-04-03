@@ -1,5 +1,12 @@
+<?php  
+/**
+ * @var OrdenHasProductotallcolor $data
+ */
+
+?>
+
 <tr>
-    <td><input name='check' type='checkbox' id='<?php echo $data->id; ?>' /></td>
+    <td><input name='check' type='checkbox' id='<?php //echo $data->id; ?>' /></td>
 
     <!--DATOS-->
     <td>
@@ -16,25 +23,29 @@
     <td>Marca</td>
     
     <!--FECHA DE LA VENTA-->
-    <td>21-03-2014</td>
+    <td><?php echo date("d-m-Y", strtotime($data->myorden->fecha)); ?></td>
     
     <!--PRECIO--> 
-    <td>340,00</td>
+    <td><?php echo Yii::app()->numberFormatter->formatDecimal($data->precio); ?></td>
     
-    <!--TALLA-->
-    <td>U</td>
+    <!--TALLA-->    
+    <td><?php echo $data->preciotallacolor->mytalla->valor; ?></td>
     
     <!--COLOR-->
-    <td>Azul</td>
+    <td><?php echo $data->preciotallacolor->mycolor->valor; ?></td>
     
     <!--CANTIDAD-->
-    <td>1</td>
+    <td><?php echo $data->cantidad; ?></td>
     
     <!--TOTAL-->
     <td>340,00</td>
     
     <!--COMISION APLICADA-->
-    <td>5 %</td>
+    <td><?php
+    
+        echo $data->getComision();
+        
+    ?></td>
     
     <!--COMISION GANADA-->
     <td>34,89</td>

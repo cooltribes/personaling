@@ -180,14 +180,14 @@ $pagerParams = array(
       <th rowspan="2" scope="col" style="text-align:center">Precio de Venta ('.Yii::t('backEnd', 'currSym').')</th>
       <th colspan="3" scope="col" style="text-align:center">Vendido</th>
       <th rowspan="2" scope="col">Total</th>
-      <th rowspan="2" scope="col">Comisión aplicada</th>
-      <th rowspan="2" scope="col">Comisión ganada ('.Yii::t('backEnd', 'currSym').')</th>
+      <th rowspan="2" scope="col">Comisión<br>aplicada</th>
+      <th rowspan="2" scope="col">Monto<br>Ganado ('.Yii::t('backEnd', 'currSym').')</th>
       <th rowspan="2" scope="col">Acción</th>
     </tr>
     <tr>
       <th scope="col">Talla</th>
       <th scope="col">Color</th>
-      <th scope="col">Cantidad</th>
+      <th scope="col">Cant.</th>
     </tr>
     {items}
     </table>

@@ -118,23 +118,29 @@ class OrdenHasProductotallacolor extends CActiveRecord
 	}
 	public function vendidosComision($id)
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
 
 		$criteria=new CDbCriteria;
+                
+                //Las ventas con comision
+		$criteria->compare('status_comision',"<>0");
+                
                 $criteria->with['look.user'] = array(
-                    'select' => false,
+                   // 'select' => false,
                     'joinType' => 'INNER JOIN',
-                    'condition' => 'look.user.id = :id',
+                    'condition' => 'user.id = :id',
                     'params' => array(":id" => $id),                  
-                ); 
+                );
+                
+                $criteria->together = true;
+                
+                //Agregar el filtro por devolucion = 0
 
-		$criteria->compare('tbl_orden_id',$this->tbl_orden_id);
-		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
-		$criteria->compare('cantidad',$this->cantidad);
-		$criteria->compare('look_id',$this->look_id);
-		$criteria->compare('precio',$this->precio);
-		$criteria->compare('devolucion_id',$this->devolucion_id);
+//		$criteria->compare('tbl_orden_id',$this->tbl_orden_id);
+//		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
+//		$criteria->compare('cantidad',$this->cantidad);
+//		$criteria->compare('look_id',$this->look_id);
+//		$criteria->compare('precio',$this->precio);
+//		$criteria->compare('devolucion_id',$this->devolucion_id);
 				
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -195,5 +201,23 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		$pr=Yii::app()->db->createCommand($sql)->queryAll();
 		return $pr[0]['counter'];
 	}
+        
+        function getComision() {
+           
+            $comision = $this->comision . " ";
+            
+            //Porcentaje
+            if($this->tipo_comision == 1){
+                
+                $comision .= "%";
+                
+            }else if($this->tipo_comision == 2){
+                
+                $comision .= Yii::t('contentForm', 'currSym');
+                
+            }
+            
+            return $comision;
+        }
 
 }

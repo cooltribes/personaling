@@ -2,6 +2,7 @@
 	
 	$looks=0;
 	$indiv=0;
+	$xlook=0;
 	
 echo"<tr>";
 	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
@@ -27,25 +28,10 @@ echo"<tr>";
 	//--------------------
 	echo "<td>";
         
-        if(count($data->detalles)){
-            foreach ($data->detalles as $detallePago){
-            
-            if($detallePago->tipo_pago==1)
-		echo "Dep. o Transfer"; // metodo de pago
-            else if($detallePago->tipo_pago==2)
-                    echo "Tarjeta de Crédito"; 
-            else if($detallePago->tipo_pago==3)
-                    echo "Uso de Balance"; 
-            else if($detallePago->tipo_pago==4)
-                    echo "MercadoPago"; 
-            else
-                    echo "-ERROR EN EL PAGO-";
-            echo "</br>";
-            
-        }
-        }else{
-            echo "Dep. o Transfer"; 
-        }
+      echo $data->getTiposPago();  
+        
+        
+       
 	echo "</td>";
 	
 	//----------------------Estado

@@ -174,15 +174,15 @@ $pagerParams = array(
   <table id="table" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
       <th rowspan="2" scope="col"><input name="check" type="checkbox" id="todos"></th>
-      <th rowspan="2" scope="col" colspan="2">Producto</th>
-      <th rowspan="2" scope="col">Marca</th>      
+      <th rowspan="2" scope="col" colspan="2" style="width:32%;">Producto</th>
+      <th rowspan="2" scope="col">Look</th>      
       <th rowspan="2" scope="col">Fecha de Venta</th>
       <th rowspan="2" scope="col" style="text-align:center">Precio de Venta ('.Yii::t('backEnd', 'currSym').')</th>
       <th colspan="3" scope="col" style="text-align:center">Vendido</th>
-      <th rowspan="2" scope="col">Total</th>
+      <th rowspan="2" scope="col">Total ('.Yii::t('backEnd', 'currSym').')</th>
       <th rowspan="2" scope="col">Comisión<br>aplicada</th>
       <th rowspan="2" scope="col">Monto<br>Ganado ('.Yii::t('backEnd', 'currSym').')</th>
-      <th rowspan="2" scope="col">Acción</th>
+      
     </tr>
     <tr>
       <th scope="col">Talla</th>
@@ -219,7 +219,7 @@ $pagerParams = array(
     ?>
 
     <hr/>
-    <div class="row">
+<!--    <div class="row">
         <div class="span3">
             <select class="span3" id="accion">
                 <option id="accion">Acciones</option>
@@ -293,7 +293,7 @@ $pagerParams = array(
         ?>
 
         <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
-    </div>	  
+    </div>	  -->
 
 </div>
 <?php

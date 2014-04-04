@@ -59,9 +59,9 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
-			'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
-            'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
+                    'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
+                    'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
+                    'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
 		);
 	}
  

@@ -12,7 +12,7 @@ class OrdenController extends Controller
 		);
 	}
 	 
-		/**
+        /**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter. 
 	 * @return array access control rules 
@@ -431,11 +431,11 @@ public function actionReportexls(){
                     'criteria' => $criteria,
                     
         ));
-	
-		
 		$pages=new CPagination($dataProvider->totalItemCount);
 		$pages->pageSize=$dataProvider->totalItemCount;
 		$dataProvider->setPagination($pages);
+	
+		
 		
 		//print_r($pages);
 		
@@ -469,6 +469,7 @@ public function actionReportexls(){
 						->setCellValue('G1', 'Monto (Bs)')
 						->setCellValue('H1', 'Método de Pago')
 						->setCellValue('I1', 'Estado');
+						
 		foreach(range('A','I') as $columnID) {
     		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
         	->setAutoSize(true);
@@ -484,8 +485,6 @@ public function actionReportexls(){
 			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
 
 		
-		
-			
 		
 		$fila=2;
 		foreach($dataProvider->getData() as $data){

@@ -800,7 +800,7 @@ class User extends CActiveRecord {
             return $total;
         }
         
-        /*Obtiene la comision del PS formateada de acuerdo al tipo*/
+        /*Obtiene la comision del PS formateada de acuerdo al tipo (% o fijo)*/
         function getComision() {
            
             $comision = $this->profile->comision . " ";

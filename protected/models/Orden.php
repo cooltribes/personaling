@@ -74,7 +74,7 @@ class Orden extends CActiveRecord
         '4' => 'Enviado', '5' => 'Cancelada', '6' => 'Pago rechazado',
         '7' => 'Pago insuficiente', '8' => 'Entregada', '9' => 'Devuelta', 
         '10' => 'Parcialmente devuelta', '11' => "Finalizada",
-        '12' => 'Devuelta<br>Finalizada', '13' => "Parcialmente devuelta<br>Finalizada",
+        
          );
 	 /**
 	 * Returns the static model of the specified AR class.
@@ -643,37 +643,18 @@ class Orden extends CActiveRecord
                 $estado = $this->estado;
             }
 
+            if($estado == 12 || $estado == 13){
+            
+                $otrosEstados = array('12' => 'Devuelta<br>Finalizada',
+                    '13' => "Parcialmente devuelta<br>Finalizada",);
+                
+                return isset(self::$estados[$otrosEstados]) ? self::$estados[$otrosEstados] : "ERROR";
+                
+            }
+            
             return isset(self::$estados[$estado]) ? self::$estados[$estado] : "ERROR";
             
-            if ($estado == 1)
-                return "En espera de pago";
-
-            if ($estado == 2)
-                return "Espera confirmación";
-
-            if ($estado == 3)
-                return "Pago Confirmado";
-
-            if ($estado == 4)
-                return "Pedido Enviado";
-
-            if ($estado == 5)
-                return "Orden Cancelada";
-
-            if ($estado == 6)
-                return "Pago Rechazado";
-
-            if ($estado == 7)
-                return "Pago Insuficiente";
-
-            if ($estado == 8)
-                return "Entregada";
-
-            if ($estado == 9)
-                return "Devuelta";
-
-            if ($estado == 10)
-                return "Devolución Parcial";
+            
         }
         
         /**
@@ -742,7 +723,7 @@ class Orden extends CActiveRecord
             
             
             
-        }
+        } 
  
 	public function getTiposPago($continuo = null){
 		$text="";

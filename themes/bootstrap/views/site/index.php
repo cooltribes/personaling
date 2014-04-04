@@ -25,21 +25,21 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
             <li data-target="#sliderHome" data-slide-to="2" ></li>
         </ol>
         <!-- Carousel items ON -->
-        <div class="carousel-inner">
-            <div class="active item" >
+        <div class="carousel-inner text_align_center">
+            <div class="item " >
                 <div class="slider-home slide-1">
                     <div class="slide-content">
-                        <div class="copy-left">
+                        <div class="copy-right">
                             <div class="border-bottom">
-                                <h2>&nbsp &nbsp  &nbsp &nbsp &nbsp ¿Estás buscando <br/> <strong>looks personalizados</strong> para ti?</h2>
-                                <a href="#" class="btn-call2action">¡Regístrate!</a>
+                                <h2>¿Estás buscando <br/> <strong>looks personalizados</strong> para ti?</h2>
+                                <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn-call2action">¡Regístrate!</a>
                             </div>
                             <div>
-                                <figure class="logo-personaling">
+                                <figure class="logo-personaling ">
                                     <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling.png' ?>" alt="Personaling">
                                 </figure>
 
-                                <p class="personaling-slogan text_align_center">Somos tu Personal Shopper Online</p>
+                                <p class="personaling-slogan ">Somos tu Personal Shopper Online</p>
                             </div>
                         </div>
                     </div>
@@ -48,13 +48,36 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
             <div class="item" >
                 <div class="slider-home slide-2">
                     <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <h2 class="">Todas buscamos el <br/> <strong>look perfecto.</strong><br/>Consíguelo <strong><a href="#" class='color3'>aquí</a></strong></h2>
+
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling.png' ?>" alt="Personaling">                                    
+                                </figure>
+                            </div>
+                            <div>
+                                <p class="personaling-slogan  margin_top_medium">Cientos de looks basados en tu características físicas y estilo.</p>
+                            </div>
+                        </div>
                         
                     </div>                   
                 </div>                
             </div>
-            <div class="item" >
+            <div class="item active" >
                 <div class="slider-home slide-3">
                     <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <h2>¡Vive este <strong>verano</strong> al máximo! <br> Consigue tu <a href="#" class="btn-call2action"> bañador o bikini</a></h2>
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling">                                                                    
+                                </figure>
+                            </div>
+                            <div>
+                                <p class="personaling-slogan ">¡Ama tu cuerpo!</p>
+                            </div>
+                        </div>                            
                         
                     </div>                    
                 </div>                
@@ -66,6 +89,6 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 
 <script type="text/javascript">
 $('#sliderHome').carousel({
-  interval: 20000
+  interval: 6000
 });
 </script>

@@ -1,4 +1,7 @@
 <?php
+
+$this->pageTitle=Yii::app()->name . ' - Productos Vendidos';
+
 //$this->breadcrumbs=array(
 //	'Productos',
 //);
@@ -44,41 +47,36 @@ $pagerParams = array(
                     </h4>
                 </div>
                 <!--Totales-->
-                <div class="span7 padding_top_medium">                    
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="text-error">                        
+                <div class="span7 padding_top_medium margin_top_medium text_align_center">                    
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">                        
                         <tr>
-                            <td><p class="T_xlarge margin_top_xsmall">
+                            <td class="td-relative"><p class="T_xlarge margin_top_xsmall">
                                     <?php
-                                    echo 0;
+                                    echo $personalShopper->getProductosVendidos();
                                     ?>
                                 </p>
                                 Productos vendidos
                             </td>
-                            <td><p class="T_xlarge margin_top_xsmall">
+                            <td class="td-relative"><p class="T_xlarge margin_top_xsmall text-error">
                                     <?php
                                     echo 0;
                                     ?>
                                 </p>
                                 Looks vendidos
                             </td>
-                            <td><p class="T_xlarge margin_top_xsmall"> 
+                            <td class="td-relative"><p class="T_xlarge margin_top_xsmall text-error"> 
                                     <?php
                                     echo 0;
                                     ?>
                                 </p>
                                 Otros
                             </td>
-                            <td><p class="T_xlarge margin_top_xsmall">
+                            <td class="td-relative"><p class="T_xlarge margin_top_xsmall text-error">
                                     <?php
                                    echo 0;
                                     ?>
                                 </p>
                                 Otros más
-                            </td>                       
-                            <td><p class="T_xlarge margin_top_xsmall">
-                                    <?php echo 0; ?>
-                                </p>
-                                Ganancia más alta
                             </td>
                         </tr>
                     </table>

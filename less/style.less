@@ -166,7 +166,9 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .braker_top{ border-top:1px solid #ddd;}
 .braker_bottom{ border-bottom:1px solid #ddd;}
 
-
+.td-relative{
+  width: 25%;
+}
 /*------------------------------------ Miscelaneos ------------------------------------*/
 
 /* Margins */
@@ -1087,11 +1089,11 @@ src: url('../fonts/entypo.woff'),
 
 }
 .carousel{
-  height: 610px;
+  height: 575px;
 }
   .carousel-indicators {
   position: absolute;
-  bottom: 15px;
+  bottom: 11px;
   left: 50%;
   z-index: 5;
   margin: 0;
@@ -1121,33 +1123,44 @@ src: url('../fonts/entypo.woff'),
     position: absolute;
     top:5em;
     left:0;}
+
 .slider-home{
-  height: 550px;
+  height: 520px;
   margin: 0 auto;
   max-width: 1520px;
 
 }
-.slide-1{
-  border: 11px solid #ffd660;
-  background: #ffd660;
+.slide-1,.slide-2,.slide-3{
   .slide-content{
-    background: url(../images/rosav-slide1.png) no-repeat 250px 66px;
     border: 2px solid white;
-    height: 546px;
-    .copy-left{
+    height: 516px;
+    .copy-right{
       .border-bottom{
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid @color3;
+        margin-bottom: 1em;
       }
       float: right;
-      padding: 7em 7em 0 0;
+      padding: 5em 7em 0 0;
       h2{
         font-size: 46px;
-        line-height: 55px;
         strong{
           color: @color4;
-          font-weight: normal;
+          font-weight: 600;
         }
       }
+
+      .personaling-slogan{
+        font-weight: 100;
+        font-size: 20px;
+      }
+    }
+  }
+}
+.slide-1{
+  background: #ffd660;
+  border: 11px solid #ffd660;
+  .slide-content{
+    background: url(../images/model-slide1.jpg) no-repeat 250px 66px;
       a.btn-call2action{
         border: 2px solid @color4;
         display: block;
@@ -1161,33 +1174,53 @@ src: url('../fonts/entypo.woff'),
           color: @color3;
           .transition_all;
         }
-      }
-      .logo-personaling{
-        width: 210px;
-        margin: 1em auto;
-      }
-      .personaling-slogan{
-        font-weight: 100;
-        font-size: 20px;
-      }
     }
+    h2{
+      line-height: 55px;
+    }  
+    .logo-personaling{
+      width: 210px;
+      margin: 1em  auto;
+    }        
   }
 }
 .slide-2{
-  border: 11px solid #99e6f9;
   background: #99e6f9;
+  border: 11px solid #99e6f9;
   .slide-content{
-    height: 546px;
-    border: 2px solid white;
-  }
+    background: url(../images/model-slide2.jpg) no-repeat 250px 50px;  
+    h2{
+      line-height: 55px;
+    }
+    .logo-personaling{
+      width: 210px;
+      margin: 1em  auto;
+    }  
+  }    
 }
+
 .slide-3{
-  border: 11px solid #f2efe8;
   background: #f2efe8;
+  border: 11px solid #f2efe8;
   .slide-content{
-    height: 546px;
-    border: 2px solid white;
-  }
+    background: url(../images/model-slide3.jpg) no-repeat 170px 50px;    
+    a.btn-call2action{
+      border: 2px solid @color4;
+      padding: 0 .2em;
+      &:hover{
+        background-color: @color4;
+        color: @color3;
+        .transition_all;
+      }
+    }
+    h2{
+      line-height: 70px;
+    }
+    .logo-personaling{
+      width: 210px;
+      margin: 2em  auto;
+    }    
+  } 
 }
 /*------------- Home OFF -------------*/
 

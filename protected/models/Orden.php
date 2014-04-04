@@ -723,7 +723,7 @@ class Orden extends CActiveRecord
             
             
             
-        }
+        } 
  
 	public function getTiposPago($continuo = null){
 		$text="";

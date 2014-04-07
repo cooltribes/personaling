@@ -30,17 +30,17 @@
         <tr>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasGeneraronComision; ?></p>
                 Ventas con comisión</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasNoGeneraronComision; ?></p>
+            <td class="text-error"><p class="T_xlarge margin_top_xsmall"><?php echo $ventasNoGeneraronComision; ?></p>
                 Ventas sin comisión</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $totalGeneradoComisiones . " " . Yii::t('contentForm', 'currSym'); ?></p>
                 Total generado<br>en comsiones</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $prodsVendidosComision; ?></p>
                 Productos vendidos<br>(con comisión)</td>
-            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 34; ?></p>
+            <td class="text-error"><p class="T_xlarge margin_top_xsmall"><?php echo 34; ?></p>
                 Looks vendidos<br>(con comisión)</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $psConVentas; ?></p>
                 PS con ventas</td>
-            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 56; ?> </p>
+            <td class="text-error"><p class="T_xlarge margin_top_xsmall"><?php echo 56; ?> </p>
                 PS sin ventas</td>
         </tr>
     </table>

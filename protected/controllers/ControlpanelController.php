@@ -373,8 +373,7 @@ class ControlpanelController extends Controller
             $ventasGeneraronComision = Yii::app()->db->createCommand()
                                        ->select("COUNT(DISTINCT(tbl_orden_id))")
                                        ->from("tbl_orden_has_productotallacolor")
-                                       ->where("status_comision <> 0")
-                                       ->andWhere("devolucion_id = 0")
+                                       ->where("status_comision = 2")                                       
                                        ->queryScalar();
             
             $ventasNoGeneraronComision = Yii::app()->db->createCommand()
@@ -382,6 +381,7 @@ class ControlpanelController extends Controller
                                        ->from("tbl_orden_has_productotallacolor")
                                        ->where("status_comision = 0")
                                        ->andWhere("devolucion_id = 0")
+                                       ->andWhere("look_id > 0")
                                        ->queryScalar();
             
              $totalGeneradoComisiones = Yii::app()->db->createCommand()
@@ -391,16 +391,15 @@ class ControlpanelController extends Controller
              $prodsVendidosComision = Yii::app()->db->createCommand(
                                         "SELECT IFNULL(SUM(o.cantidad), 0)
                                         FROM tbl_orden_has_productotallacolor o
-                                        WHERE o.status_comision <> 0")
+                                        WHERE o.status_comision = 2")
                                         ->queryScalar();
-             
-             $psConVentas = Yii::app()->db->createCommand(
-                                        "SELECT COUNT(DISTINCT(l.user_id))
-                                        FROM tbl_orden_has_productotallacolor o, tbl_look l
-                                        WHERE o.look_id = l.id
-                                        AND o.devolucion_id = 0
-                                        AND o.status_comision <> 0")
-                                        ->queryScalar();
+                          
+             $psConVentas = Yii::app()->db->createCommand()
+                           ->select("COUNT(DISTINCT(l.user_id))")
+                           ->from(array("tbl_orden_has_productotallacolor o", "tbl_look l"))
+                           ->where("o.look_id = l.id")                                       
+                           ->andWhere("status_comision = 2")                                       
+                           ->queryScalar();
             /*FIN de los datos para estadisticas*/           
             
             

@@ -25,7 +25,7 @@
     </div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
         <tr>
-            <th scope="col" colspan="6"> Totales </th>
+            <th scope="col" colspan="7"> Totales </th>
         </tr>
         <tr>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasGeneraronComision; ?></p>
@@ -63,7 +63,6 @@
     
 </div>
 
-<hr/>
 <?php $this->renderPartial("_filters"); ?>
 <hr/>
 <?php

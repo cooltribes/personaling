@@ -648,7 +648,7 @@ class Orden extends CActiveRecord
                 $otrosEstados = array('12' => 'Devuelta<br>Finalizada',
                     '13' => "Parcialmente devuelta<br>Finalizada",);
                 
-                return isset(self::$estados[$otrosEstados]) ? self::$estados[$otrosEstados] : "ERROR";
+                return isset($otrosEstados[$estado]) ? $otrosEstados[$estado] : "ERROR";
                 
             }
             

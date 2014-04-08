@@ -16,6 +16,9 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 </div>
 <!-- /Hack para el layout del home  -->
 
+<div class="no-backgrounds">
+    
+</div>
 
 <section class="wrapper_home">
     <div id="sliderHome" class="carousel slide">
@@ -26,7 +29,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
         </ol>
         <!-- Carousel items ON -->
         <div class="carousel-inner text_align_center">
-            <div class="item " >
+            <div class="item active" >
                 <div class="slider-home slide-1">
                     <div class="slide-content">
                         <div class="copy-right">
@@ -64,7 +67,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                     </div>                   
                 </div>                
             </div>
-            <div class="item active" >
+            <div class="item" >
                 <div class="slider-home slide-3">
                     <div class="slide-content">
                         <div class="copy-right">
@@ -86,6 +89,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
         <!-- Carousel items OFF -->
     </div>
 </section>
+
 
 <script type="text/javascript">
 $('#sliderHome').carousel({

@@ -105,7 +105,8 @@ class BolsaController extends Controller
 	{
 		
 		$usuario = Yii::app()->user->id;
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+		$bolsa = Bolsa::model()->findByAttributes(array(
+                    'user_id'=>$usuario, 'admin' => 0));
 		
 		if(!isset($bolsa)) // si no tiene aun un carrito asociado se crea y se añade el producto
 		{

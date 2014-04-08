@@ -254,7 +254,11 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
-		
+                'metodosPago'=> array(
+                    'aztive' => false,
+                    'depositoTransferencia' => false,
+                    'instapago' => false,
+                    ),
 		
 	),
 );

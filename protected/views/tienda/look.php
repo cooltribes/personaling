@@ -142,12 +142,12 @@ $this->breadcrumbs = array(
                                 <li><a class="btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
                                         <?php
                                         if (!$key) {
-                                            echo "Hasta Bs. {$rango['end']} ";
+                                            echo "Hasta {$rango['end']} ".Yii::t('contentForm', 'currSym');
                                         } else {
                                             if ($key < 3) {
-                                                echo "De Bs. {$rango['start']} a Bs. {$rango['end']} ";
+                                                echo "De {$rango['start']} a {$rango['end']} ".Yii::t('contentForm', 'currSym');
                                             } else {
-                                                echo "Más de Bs. {$rango['start']} ";
+                                                echo "Más de {$rango['start']} ".Yii::t('contentForm', 'currSym');
                                             }
                                         }
                                         ?>

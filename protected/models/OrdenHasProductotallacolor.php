@@ -29,7 +29,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
     
     const STATUS_NULO = 0;
     const STATUS_PENDIENTE = 1;
-    const STATUS_PAGADA = 1;
+    const STATUS_PAGADA = 2;
     
 	/**
 	 * Returns the static model of the specified AR class.
@@ -122,7 +122,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
             $criteria=new CDbCriteria;
 
             //Las ventas con comision
-            $criteria->compare('status_comision',"<>0");
+            $criteria->compare('status_comision', OrdenHasProductotallacolor::STATUS_PAGADA);
 
             $criteria->with['look.user'] = array(
                // 'select' => false,

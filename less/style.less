@@ -166,7 +166,9 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .braker_top{ border-top:1px solid #ddd;}
 .braker_bottom{ border-bottom:1px solid #ddd;}
 
-
+.td-relative{
+  width: 25%;
+}
 /*------------------------------------ Miscelaneos ------------------------------------*/
 
 /* Margins */
@@ -389,7 +391,7 @@ border: 0;
 .btn-danger.active,
 .btn-danger.disabled,
 .btn-danger[disabled] {
-  background-color: #7d275e;
+  background-color: @color4;
   color:#fff;}
 
 .btn-success {
@@ -1087,28 +1089,34 @@ src: url('../fonts/entypo.woff'),
 
 }
 .carousel{
-  height: 610px;
+  height: 575px;
 }
   .carousel-indicators {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  z-index: 5;
-  margin: 0;
+  bottom: 11px;
+  cursor: pointer;
+  left: 0;
+  right: 0;
   list-style: none;
+  margin: 0 auto;
+  position: absolute;
+  width: 64px;
+  z-index: 5;
 
 }
 
 .carousel-indicators li {
   display: block;
   float: left;
-  width: 10px;
-  height: 10px;
-  margin-left: 5px;
+  width: 8px;
+  height: 8px;
+  margin-left: 16px;
   text-indent: -999px;
-  background-color: #ccc;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: white;
   border-radius: 5px;
+  border: 1px solid @color4;
+  &:first-child{
+    margin-left: 0;
+  }
 }
 
 .carousel-indicators .active {
@@ -1121,33 +1129,55 @@ src: url('../fonts/entypo.woff'),
     position: absolute;
     top:5em;
     left:0;}
+
+// Hack para cargar imagenes del slider antes que todos pasen ONNNNNNNN
+.no-backgrounds{
+  background: url(../images/model-slide1.jpg) no-repeat 250px 66px,
+              url(../images/model-slide2.jpg) no-repeat 250px 50px,  
+              url(../images/model-slide3.jpg) no-repeat 170px 50px; 
+  margin: -1000px;
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+}
+// hack para cargar imagenes del slider antes que todos pasen OFFFFFFFF
 .slider-home{
-  height: 550px;
+  height: 520px;
   margin: 0 auto;
   max-width: 1520px;
 
 }
-.slide-1{
-  border: 11px solid #ffd660;
-  background: #ffd660;
+.slide-1,.slide-2,.slide-3{
   .slide-content{
-    background: url(../images/rosav-slide1.png) no-repeat 250px 66px;
     border: 2px solid white;
-    height: 546px;
-    .copy-left{
+    height: 516px;
+    .copy-right{
       .border-bottom{
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid @color3;
+        margin-bottom: 1em;
       }
       float: right;
-      padding: 7em 7em 0 0;
+      padding: 5em 7em 0 0;
       h2{
         font-size: 46px;
-        line-height: 55px;
         strong{
           color: @color4;
-          font-weight: normal;
+          font-weight: 600;
         }
       }
+
+      .personaling-slogan{
+        font-weight: 100;
+        font-size: 20px;
+      }
+    }
+  }
+}
+.slide-1{
+  background: #ffd660;
+  border: 11px solid #ffd660;
+  .slide-content{
+    background: url(../images/model-slide1.jpg) no-repeat 250px 66px;
       a.btn-call2action{
         border: 2px solid @color4;
         display: block;
@@ -1161,33 +1191,53 @@ src: url('../fonts/entypo.woff'),
           color: @color3;
           .transition_all;
         }
-      }
-      .logo-personaling{
-        width: 210px;
-        margin: 1em auto;
-      }
-      .personaling-slogan{
-        font-weight: 100;
-        font-size: 20px;
-      }
     }
+    h2{
+      line-height: 55px;
+    }  
+    .logo-personaling{
+      width: 210px;
+      margin: 1em  auto;
+    }        
   }
 }
 .slide-2{
-  border: 11px solid #99e6f9;
   background: #99e6f9;
+  border: 11px solid #99e6f9;
   .slide-content{
-    height: 546px;
-    border: 2px solid white;
-  }
+    background: url(../images/model-slide2.jpg) no-repeat 250px 50px;  
+    h2{
+      line-height: 55px;
+    }
+    .logo-personaling{
+      width: 210px;
+      margin: 1em  auto;
+    }  
+  }    
 }
+
 .slide-3{
-  border: 11px solid #f2efe8;
   background: #f2efe8;
+  border: 11px solid #f2efe8;
   .slide-content{
-    height: 546px;
-    border: 2px solid white;
-  }
+    background: url(../images/model-slide3.jpg) no-repeat 170px 50px;    
+    a.btn-call2action{
+      border: 2px solid @color4;
+      padding: 0 .2em;
+      &:hover{
+        background-color: @color4;
+        color: @color3;
+        .transition_all;
+      }
+    }
+    h2{
+      line-height: 70px;
+    }
+    .logo-personaling{
+      width: 210px;
+      margin: 2em  auto;
+    }    
+  } 
 }
 /*------------- Home OFF -------------*/
 
@@ -3370,6 +3420,78 @@ img[alt="Loading"]{
 
 
 /*----------------  GiftCard OFF ---------------- */
+
+
+/*----------------  Landingpage ON ---------------- */
+.wrapper-landingpage{
+  bottom: 0;
+  border: 2vh solid white;
+  height: 96vh;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  .wrapper-inside-landingpage{
+    border: 1px solid @color4;
+    height: 96vh;
+    figure{
+      margin: 0;
+    }
+    .content-landingpage{
+      width: 320px;
+      margin: 14em auto 0 auto;
+      .slongan{
+        font-size: 24.5px;
+      }
+      // Hack para no mostrar estilo nativo de <select>
+      .box-select{
+        position: relative;
+        padding: 0;
+        border: 1px solid @color4;
+        width: 320px;
+        overflow: hidden;
+        .select-pais{
+          -moz-appearance: none;
+          -ms-appearance: none;       
+          -webkit-appearance: none;
+          appearance: none;
+          background-color: transparent;
+          background-image: none;
+          border: none;
+          box-shadow: none;
+          color: @color4;
+          cursor: pointer;
+          font-size: 1.2em;
+          font-weight: 200;          
+          margin: 0;
+          padding: 0px 0 0px 180px;
+          text-align: right;
+          text-indent: 0.01px;
+          text-overflow: '';
+          width: 100%;
+          &:focus{
+            outline: none;
+          }
+        }
+        .arrow{
+          color: @color4;
+          position: absolute;
+          top: 20px;
+          right: 10px;          
+          &:after{
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 9px solid @color4;
+            content: "";
+
+          }
+        }
+      }
+    }
+  }
+}
+/*----------------  Landingpage ON ---------------- */
+
 
 /*----------------  Loading bar ON ---------------- */
 .aplicacion-cargando .barra-carga

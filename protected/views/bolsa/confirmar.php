@@ -238,15 +238,12 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
            	}
 			
 			echo Yii::t('contentForm','Individual products').': '.Yii::app()->getSession()->get('totalIndiv');
-			?>
+            ?>
         </h5>
         
         <div class="margin_bottom">
-          <?php  
-          // 	if(Yii::app()->getSession()->get('totalLook') != 0){
-			//	echo "Con la compra del Look completo Ahorras 184 Bs."; 
-			//}
-			?>
+            
+         
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal') ?>:</th>
@@ -258,9 +255,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
               	if(Yii::app()->getSession()->get('envio')>0)
                 	 echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio')+Yii::app()->getSession()->get('seguro'), ''); 
                 else
-                	echo "<b class='text-success'>GRATIS</b>"; ?></td>
-              
-              ?></td>
+                	echo "<b class='text-success'>GRATIS</b>"; ?></td>              
             </tr>
             
             <?php if(!$direccion->ciudad->provincia->pais->excento)

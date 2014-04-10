@@ -29,7 +29,7 @@ return array(
                 'application.extensions.validators.age.*',
                 'ext.yii-mail.YiiMailMessage',
                 'ext.fancybox',
-                'ext.AzPayClass',
+                'ext.AzPay',
 	),
 
 	'modules'=>array(
@@ -261,6 +261,7 @@ return array(
                     'paypal' => true,
                     'depositoTransferencia' => false,
                     'instapago' => false,
+                    'mercadopago' => false,
                     ),
 		
 	),

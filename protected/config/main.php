@@ -23,11 +23,13 @@ return array(
 		'application.widgets.ctree.*',
 		'application.components.*',
 		'application.modules.user.*',
-        'application.modules.user.models.*',
-        'application.modules.user.components.*',
-        'application.helpers.*',
-        'application.extensions.validators.age.*',
-        'ext.yii-mail.YiiMailMessage',
+                'application.modules.user.models.*',
+                'application.modules.user.components.*',
+                'application.helpers.*',
+                'application.extensions.validators.age.*',
+                'ext.yii-mail.YiiMailMessage',
+                'ext.fancybox',
+                'ext.AzPayClass',
 	),
 
 	'modules'=>array(
@@ -256,6 +258,7 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
                 'metodosPago'=> array(
                     'aztive' => false,
+                    'paypal' => false,
                     'depositoTransferencia' => false,
                     'instapago' => false,
                     ),

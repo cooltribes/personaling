@@ -161,7 +161,7 @@ class Marca extends CActiveRecord
 	public function getIs_100chic($id = null){
 		if(is_null($id)){
 			$marca=$this;
-		}
+		} 
 		else{
 			$marca=$this->findByPk($id);
 		}

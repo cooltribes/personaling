@@ -2337,8 +2337,8 @@ class BolsaController extends Controller
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
                     $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-                            <br>
-                            Comienza a disfrutarla entrando en Personaling.com. Y ¡Siéntete estupenda! #mipersonaling<br/>
+    	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.')."
+    	                    <br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
                             
                     

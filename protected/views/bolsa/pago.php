@@ -301,7 +301,7 @@ echo CHtml::hiddenField('user',$user);
                               $totalDe = $totalDe + $y;
                           }*/
 						$seguro=0;
-						if($direccion->ciudad->provincia->pais->excento)
+						if($direccion->ciudad->provincia->pais->exento)
 						{
 							$iva = 0;
 							
@@ -377,9 +377,9 @@ echo CHtml::hiddenField('user',$user);
                 else
                 	echo "<b class='text-success'>GRATIS</b>"; ?></td>
               </tr>
+               
               
-              
-              <?php if(!$direccion->ciudad->provincia->pais->excento)
+              <?php if(!$direccion->ciudad->provincia->pais->exento)
 			{?>
 				<tr>
 	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>

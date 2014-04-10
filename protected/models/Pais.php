@@ -9,6 +9,7 @@
  * @property string $dominio
  * @property string $idioma
  * @property integer $grupo
+ * @property integer $exento
  */
 class Pais extends CActiveRecord
 {

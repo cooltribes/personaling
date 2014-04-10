@@ -263,7 +263,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
               ?></td>
             </tr>
             
-            <?php if(!$direccion->ciudad->provincia->pais->excento)
+            <?php if(!$direccion->ciudad->provincia->pais->exento)
 			{?>
 				<tr>
 	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>

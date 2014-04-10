@@ -216,16 +216,17 @@ echo CHtml::hiddenField('user',$user);
 
                 <?php 
                 //Banking Card Aztive
-                if(Yii::app()->params['metodosPago']['aztive']){ 
-                $this->widget('EFancyBox', array(
+                if(Yii::app()->params['metodosPago']['bkCard']){ 
+                $this->widget('fancybox.EFancyBox', array(
                     'target'=>'a[rel=gallery]',
                     'config'=>array(),
                     )
                 );
+                
                     
                     ?>                
                                   
-                        
+                    <a class="fancybox fancybox.iframe btn btn-warning btn-large" href="http://onepay.aztive.com/payments.php?orderid=2108888591&amp;amount=2499&amp;customerid=369856039&amp;terminal=002&amp;signature=0DB1259896A2EC61466FF988F4E3DEBD64523070"><i class="icon-shopping-cart icon-white"></i> Comprar</a>    
                     
 
                 <?php 

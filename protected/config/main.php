@@ -257,8 +257,8 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
                 'metodosPago'=> array(
-                    'aztive' => false,
-                    'paypal' => false,
+                    'bkCard' => true,
+                    'paypal' => true,
                     'depositoTransferencia' => false,
                     'instapago' => false,
                     ),

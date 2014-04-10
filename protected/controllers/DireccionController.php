@@ -60,7 +60,7 @@ class DireccionController extends Controller
 		if(isset($_POST['provincia_id'])){
 			$ciudades = Ciudad::model()->findAllBySql("SELECT * FROM tbl_ciudad WHERE provincia_id =".$_POST['provincia_id']." AND cod_zoom IS NOT NULL order by nombre ASC");
 			if(sizeof($ciudades) > 0){
-				$return = '';
+				$return = '<option>'.Yii::t('contentForm','Select a city').'</option>';
 				foreach ($ciudades as $ciudad) {
 					$return .= '<option value="'.$ciudad->id.'">'.$ciudad->nombre.'</option>';
 				}
@@ -73,7 +73,7 @@ class DireccionController extends Controller
 		if(isset($_POST['pais_id'])){
 			$provincias = Ciudad::model()->findAllBySql("SELECT * FROM tbl_provincia WHERE pais_id =".$_POST['pais_id']." order by nombre ASC");
 			if(sizeof($provincias) > 0){
-				$return = '';
+				$return = '<option value>'.Yii::t('contentForm','Select a province').'</option>';
 				foreach ($provincias as $provincia) {
 					$return .= '<option value="'.$provincia->id.'">'.$provincia->nombre.'</option>';
 				}

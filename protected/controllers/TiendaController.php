@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','upa'),
+                                    'getFilter','xmltest'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1810,12 +1810,7 @@ public function actionCategorias2(){
        }
 
 
-	 public function actionUpa()
-    {
-        echo "I'M HERE!";
-        break;
-    }
-
+	
     //Funcion que se llama cuando se intenta comprar para alguien mas desde afuera de la tienda
     public function actionRedirect() {
         
@@ -1874,6 +1869,10 @@ public function actionCategorias2(){
         echo CJSON::encode($response);
         
     }
+
+	public function actionXmltest(){
+		$this->renderPartial('xmltest');
+	}
        
         
 }

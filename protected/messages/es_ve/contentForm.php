@@ -84,7 +84,7 @@ return array (
      'Create new filter' => 'Crear nuevo filtro',
      'Create Gift Card' => 'Crear GiftCard',
      'Created for' => 'Creado por',
-     'Credit Card' => 'Tarjeta de Credito',
+     'Credit Card' => 'Tarjeta de Crédito',
      'Create your Look here' => 'Crea tus Looks aquí',
      'Color' => 'Color',
      'Courier delivery' => 'Transportista',
@@ -134,6 +134,7 @@ return array (
 
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
+     '<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>' =>  '<h2>¡Genial! Tu pago ha sido aceptado.</h2>Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra.<br/><br/>',
 
      'Hair Color' => 'Color de Cabello',
      'Height' => 'Altura',
@@ -217,6 +218,7 @@ return array (
      'Paid' => 'Ya pagados',
      'Parcial Returned' => 'Devolución Parcial',
      'Pay MercadoPago' => 'Pagar con MercadoPago',
+     'Paypal' => 'Paypal',
      'Pay with credit card' => 'Pagar con tarjeta de crédito',
      'Payment confirmet' => 'Pago confirmado',
      'Payment declined' => 'Pago Rechazado',
@@ -230,6 +232,7 @@ return array (
                 <b>Atrás</b> en tu navegador',
      'Personal Shoppers outstanding' => 'Personal shoppers destacados',
      'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.',
+     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card como obsequio para tí.',
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
      'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O LLama al  (212) 7202089. <strong>¡Gracias!</strong>',
@@ -265,6 +268,7 @@ return array (
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
      'Recommended Looks with this product' => 'Looks recomendados con este producto',
+     'Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.' => '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan {amout} {currSym} para pagar toda la orden.<br/><br/>',
 
 
      'Save' => 'Guardar',
@@ -295,6 +299,8 @@ return array (
      'Select' => 'Seleccione',
      'Select a design for the Gift Card' => 'Selecciona un diseño para la Gift Card',
      'Select a province' => 'Selecciona un estado',
+     'Select a city' => 'Selecciona una cuidad',
+     'Select a country' => 'Selecciona un país',
      'Select color and size' => 'Selecciona Color y talla',
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
@@ -311,6 +317,7 @@ return array (
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
+     'Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com" title="Personaling">Personaling.com</a>',
 
 
      'Tax' => 'Impuesto',
@@ -351,6 +358,7 @@ return array (
      'Value for returned shipping' => 'Monto por envío devuelto',
 
      'Year' => 'Año',
+     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/>',
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
@@ -374,6 +382,7 @@ return array (
      'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
      'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',
+     '<h2>Welcome to Personaling</h2>Receiving this email because you registered your address Personaling. Please validate your account by clicking on the link below:<br/><br/><a href="{url}">Click here</a>' => '<h2>Te damos la bienvenida a Personaling.</h2>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/><a href="{url}">Haz click aquí</a>',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
      'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
      'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',

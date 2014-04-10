@@ -179,7 +179,7 @@ return array (
 	'Name of items' => 'Nombre de productos',
 	'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
 	'Name printed on the credit card' => 'Nombre impreso en la tarjeta',
-	'New order' => 'Nuevo pedido',
+	'New order' => 'Nuevo Pedido',
 	'Next' => 'Siguiente',
 	'Next step' => 'Siguiente paso',
 	'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
@@ -226,8 +226,6 @@ return array (
 	'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
 	    <b>Atrás</b> en tu navegador',
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
-    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas para ti, a partir de tus gustos, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.',	
-    'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Posiblemente lo que quieres preguntar está en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no lo encuentras allí, llena el formulario a continuación y te contáctaremos lo más pronto posible. <strong>¡Gracias!</strong>',	
 	'Phone' => 'Teléfono',
 	'Phone number' => 'Número de teléfono',
 	'Purchasing Information' => 'Datos de la compra',

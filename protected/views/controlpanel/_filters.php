@@ -1,14 +1,17 @@
 <div class="row margin_top margin_bottom" id="filters-view" style="display: none">
+    <div class="span12">
+        <hr/>        
+    </div>
 
-<div class="span12">
-  <div class="alert in" id="alert-msg" style="display: none">
-    <button type="button" class="close" >&times;</button> 
-    <!--data-dismiss="alert"-->
-    <div class="msg"></div>
-  </div>
-</div>          
+    <div class="span12">
+      <div class="alert in" id="alert-msg" style="display: none">
+        <button type="button" class="close" >&times;</button> 
+        <!--data-dismiss="alert"-->
+        <div class="msg"></div>
+      </div>
+    </div>          
     
-<?php
+    <?php
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',

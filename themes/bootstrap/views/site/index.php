@@ -16,36 +16,83 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 </div>
 <!-- /Hack para el layout del home  -->
 
+<div class="no-backgrounds">
+    
+</div>
 
-<div class="wrapper_home">
-
-    <div id="myCarousel" class="carousel slide">
-
+<section class="wrapper_home">
+    <div id="sliderHome" class="carousel slide">
         <ol class="carousel-indicators">
-            <a href="#"><li data-target="#myCarousel" data-slide-to="0" class="active"></li></a>
-            <a href="#"><li data-target="#myCarousel" data-slide-to="1"></li></a>
-            <a href="#"><li data-target="#myCarousel" data-slide-to="2"></li></a>
+            <li data-target="#sliderHome" data-slide-to="0" class="active"></li>
+            <li data-target="#sliderHome" data-slide-to="1" ></li>
+            <li data-target="#sliderHome" data-slide-to="2" ></li>
         </ol>
-
         <!-- Carousel items ON -->
-        <div class="carousel-inner">
-            <div class="active item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_4.jpg">
+        <div class="carousel-inner text_align_center">
+            <div class="item active" >
+                <div class="slider-home slide-1">
+                    <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <h2>¿Estás buscando <br/> <strong>looks personalizados</strong> para ti?</h2>
+                                <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn-call2action">¡Regístrate!</a>
+                            </div>
+                            <div>
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling.png' ?>" alt="Personaling">
+                                </figure>
+
+                                <p class="personaling-slogan ">Somos tu Personal Shopper Online</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
             </div>
-            <div class="item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg">
+            <div class="item" >
+                <div class="slider-home slide-2">
+                    <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <h2 class="">Todas buscamos el <br/> <strong>look perfecto.</strong><br/>Consíguelo <strong><a href="#" class='color3'>aquí</a></strong></h2>
+
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling.png' ?>" alt="Personaling">                                    
+                                </figure>
+                            </div>
+                            <div>
+                                <p class="personaling-slogan  margin_top_medium">Cientos de looks basados en tu características físicas y estilo.</p>
+                            </div>
+                        </div>
+                        
+                    </div>                   
+                </div>                
             </div>
-            <div class="item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/slide_version_20131015_brands.jpg">
+            <div class="item" >
+                <div class="slider-home slide-3">
+                    <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <h2>¡Vive este <strong>verano</strong> al máximo! <br> Consigue tu <a href="#" class="btn-call2action"> bañador o bikini</a></h2>
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling">                                                                    
+                                </figure>
+                            </div>
+                            <div>
+                                <p class="personaling-slogan ">¡Ama tu cuerpo!</p>
+                            </div>
+                        </div>                            
+                        
+                    </div>                    
+                </div>                
             </div>
         </div>
         <!-- Carousel items OFF -->
-
     </div>
-</div>
+</section>
+
 
 <script type="text/javascript">
-$('#myCarousel').carousel({
+$('#sliderHome').carousel({
   interval: 6000
-})
+});
 </script>

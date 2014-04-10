@@ -17,13 +17,18 @@ RewriteCond %{REMOTE_ADDR} !186\.93\.252\.120
 RewriteCond %{REMOTE_ADDR} !190\.206\.151\.177
 RewriteCond %{REMOTE_ADDR} !174\.23\.154\.49
 RewriteCond %{REMOTE_ADDR} !205\.124\.145\.253
+
 #Nelson ON
-RewriteCond %{REMOTE_ADDR} !190\.79\.155\.36
-RewriteCond %{REMOTE_ADDR} !190\.201\.209\.230
+RewriteCond %{REMOTE_ADDR} !186\.93\.205\.190
 #Nelson OFF
+
 #Carlos ON
 RewriteCond %{REMOTE_ADDR} !186\.93\.231\.140
 #Carlos OFF
+
+#Johann ON
+RewriteCond %{REMOTE_ADDR} !190\.206\.26\.207
+#Johann OFF
 
 
 RewriteRule (.*) http://www.personaling.com/$1 [R=301,L]

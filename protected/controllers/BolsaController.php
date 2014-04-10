@@ -105,7 +105,8 @@ class BolsaController extends Controller
 	{
 		
 		$usuario = Yii::app()->user->id;
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+		$bolsa = Bolsa::model()->findByAttributes(array(
+                    'user_id'=>$usuario, 'admin' => 0));
 		
 		if(!isset($bolsa)) // si no tiene aun un carrito asociado se crea y se añade el producto
 		{
@@ -1276,7 +1277,7 @@ class BolsaController extends Controller
 						}// estado                                                                                                
                                                 
                                                 /*Pagar comision a las PS involucradas en la venta*/
-                                                Orden::model()->pagarComisiones($orden);  
+                                                //Orden::model()->pagarComisiones($orden);  
                                                 
                                                 
 						// cuando finalice entonces envia id de la orden para redireccionar
@@ -1348,42 +1349,65 @@ class BolsaController extends Controller
 		return $dirEnvio;
 	}
 	public function hacerCompra($bolsa_id,$usuario,$order_id){
-		$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa_id));	
-								
-		// añadiendo a orden producto
-		foreach($productosBolsa as $prod){
-			$prorden = new OrdenHasProductotallacolor;
-			$prorden->tbl_orden_id = $order_id;
-			$prorden->preciotallacolor_id = $prod->preciotallacolor_id;
-			$prorden->cantidad = $prod->cantidad;
-			$prorden->look_id = $prod->look_id;
-			$prtc = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
-			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
-			$prorden->precio = $precio->precioDescuento;
-			/*
-			if($prod->look_id == 0){ // no es look
-				$prorden->precio = $precio->precioDescuento;
-			} else {
-				$look = Look::model()->findByPk($prod->look_id);
-				if(isset($look)) $prorden->precio = $look->getPrecio(false);										
-			}*/
-			$prorden->save();
-				//listo y que repita el proceso
-		}
-		//descontando del inventario
-		foreach($productosBolsa as $prod){
-			$uno = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id);
-			$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
-			Preciotallacolor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
-			// descuenta y se repite									
-		}
-		// para borrar los productos de la bolsa								
-		foreach($productosBolsa as $prod){
-			$prod->delete();															
-		}
+            $productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa_id));	
+            $hoy = new DateTime();
+            
+            // añadiendo a orden producto
+            foreach($productosBolsa as $producto){
+                $prorden = new OrdenHasProductotallacolor;
+                $prorden->tbl_orden_id = $order_id;
+                $prorden->preciotallacolor_id = $producto->preciotallacolor_id;
+                $prorden->cantidad = $producto->cantidad;
+                $prorden->look_id = $producto->look_id;
+                $prtc = Preciotallacolor::model()->findByPk($producto->preciotallacolor_id); // tengo preciotallacolor
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
+                $prorden->precio = $precio->precioDescuento;
+
+                /* Revisar si cumple con el tiempo de validez del PS y
+                 *  agregar los datos referentes a la comision en la orden
+                 */
+
+                //Solo los productos que esten en un look
+                
+                if($producto->look_id > 0){ 
+                    
+                    $agregado = new DateTime($producto->added_on);
+                    $diferencia = $hoy->diff($agregado)
+                                      ->days; //Dias desde que se agrego
+
+                    $lookActual = Look::model()->findByPk($producto->look_id);
+                    $personalShopper = $lookActual->user->profile;
+                    if($diferencia <= $personalShopper->tiempo_validez){
+                            
+                            $prorden->comision = $personalShopper->comision;
+                            $prorden->tipo_comision = $personalShopper->tipo_comision;
+                            $prorden->status_comision = OrdenHasProductotallacolor::STATUS_PENDIENTE;
+                            
+                        }
+                }
 
 
-		
+                /*
+                if($prod->look_id == 0){ // no es look
+                        $prorden->precio = $precio->precioDescuento;
+                } else {
+                        $look = Look::model()->findByPk($prod->look_id);
+                        if(isset($look)) $prorden->precio = $look->getPrecio(false);										
+                }*/
+                $prorden->save();
+                            //listo y que repita el proceso
+            }
+            //descontando del inventario
+            foreach($productosBolsa as $producto){
+                    $uno = Preciotallacolor::model()->findByPk($producto->preciotallacolor_id);
+                    $cantidadNueva = $uno->cantidad - $producto->cantidad; // lo que hay menos lo que se compró
+                    Preciotallacolor::model()->updateByPk($producto->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+                    // descuenta y se repite									
+            }
+            // para borrar los productos de la bolsa								
+            foreach($productosBolsa as $producto){
+                    $producto->delete();															
+            }
 
 	}
 	/*
@@ -2313,8 +2337,8 @@ class BolsaController extends Controller
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
                     $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-                            <br>
-                            Comienza a disfrutarla entrando en Personaling.com. Y ¡Siéntete estupenda! #mipersonaling<br/>
+    	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.')."
+    	                    <br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
                             
                     

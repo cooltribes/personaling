@@ -76,6 +76,7 @@ class Precio extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
+			'anteriores' => array(self::HAS_MANY, 'HistoricoPrecio', 'precio_id'),
 		);
 	}
 
@@ -210,6 +211,20 @@ class Precio extends CActiveRecord
 				return parent::beforeSave();			
 		}
 
+	}
+	public function afterSave()
+	{
+		$historico=new HistoricoPrecio;
+		$historico->costo =$this->costo;
+		$historico->precioVenta =$this->precioVenta;
+		$historico->precioDescuento =$this->precioDescuento ;
+		$historico->precio_id =$this->id ;
+		$historico->precioImpuesto =$this->precioImpuesto;
+		$historico->fecha=date("Y-m-d h:i:s");
+		$historico->user_id=Yii::app()->user->id;
+		$historico->save();
+		return parent::afterSave();			
+	
 	}
 	
 	public function getPrecioDescuento($producto)

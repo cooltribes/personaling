@@ -781,9 +781,11 @@ class User extends CActiveRecord {
             //buscar ventas de esos looks.
             $total = Yii::app()->db->createCommand()->select("IFNULL(SUM(o.cantidad), 0)")
                     ->from("tbl_orden_has_productotallacolor as o")
-                    ->where(array("in", "o.look_id", $looksIds))
-                    ->andWhere('tbl_orden_id IN (select orden.id from tbl_orden orden
-                    where fecha >= "2014-03-19")')
+                    //Incluir solamente los que han sido pagados                    
+                    ->where("status_comision = :status", 
+                            array(":status" => OrdenHasProductotallacolor::STATUS_PAGADA))
+                    //incluir los pertenecientes al usuario
+                    ->andWhere(array("in", "o.look_id", $looksIds))
                     ->queryScalar();
             
             
@@ -798,7 +800,7 @@ class User extends CActiveRecord {
             return $total;
         }
         
-        /*Obtiene la comision del PS formateada de acuerdo al tipo*/
+        /*Obtiene la comision del PS formateada de acuerdo al tipo (% o fijo)*/
         function getComision() {
            
             $comision = $this->profile->comision . " ";

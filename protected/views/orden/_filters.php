@@ -18,10 +18,7 @@
                                 array('empty' => 'Operador',
                                     'style' => 'display:none'));
     
-    echo CHtml::dropDownList('estadosOrden', '', array('1' => 'En espera de pago',
-    '2' => 'En espera de confirmación', '3' => 'Pago confirmado', '4' => 'Enviado',
-        '5' => 'Cancelado', '6' => 'Pago rechazado', '7' => 'Pago insuficiente',
-        '8' => 'Entregado', '9' => 'Devuelto'), array('style' => 'display:none'));
+    echo CHtml::dropDownList('estadosOrden', '', Orden::$estados, array('style' => 'display:none'));
     
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");

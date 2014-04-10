@@ -7,14 +7,15 @@
     <meta charset="utf-8">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php 
-
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css',null);
+    
+    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=1',null);
     // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
     Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico?v=3',null,null);  
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
     ?>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
+    
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">
@@ -307,7 +308,7 @@ if(!Yii::app()->user->isGuest){
       </div>
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
-        <p class="lead">Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.</p>
+        <p class="lead"><?php echo Yii::t('contentForm','Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.') ?></p>
         <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
                         </div><div class="span4"><script type="text/JavaScript">
                                 //<![CDATA[

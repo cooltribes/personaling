@@ -302,7 +302,7 @@ class AdminController extends Controller
 	
 	 
 	public function actionReporteXLS(){
-		ini_set('memory_limit','200M'); 
+		ini_set('memory_limit','256M'); 
 
 		$criteria=Yii::app()->session['userCriteria'];
 		$criteria->select = array('t.id');
@@ -350,7 +350,7 @@ class AdminController extends Controller
 						->setCellValue('I1', 'Ingresos al portal')
 						->setCellValue('J1', 'Ultimo Ingreso')
 						->setCellValue('K1', 'Fecha de Registro');
-		foreach(range('A','I') as $columnID) {
+		foreach(range('A','K') as $columnID) {
     		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
         	->setAutoSize(true);
 		}  

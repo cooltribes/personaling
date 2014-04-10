@@ -499,10 +499,12 @@ $tracking=$orden->getTracking();
 				
 				
 				$usu = User::model()->findByPk($est->user_id);
-				if (isset($usu))
+				if (isset($usu))                                    
 					echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
-				else 
-						echo ("<td>Admin</td>");
+				else if($est->user_id == 0) //si fue el sistema
+                                        echo ("<td>Sistema</td>");
+                                else 
+                                        echo ("<td>Admin</td>");
 				
 				
 				$fecha = date("d/m/Y",strtotime($est->fecha));

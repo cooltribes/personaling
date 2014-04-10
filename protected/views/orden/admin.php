@@ -225,7 +225,7 @@ $template = '{summary}
       </select> 
     </div> 
     <div class="span1"><a href="#" title="Procesar" class="btn btn-danger">Procesar</a></div>
-    <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-block btn-info">Exportar a excel</a></div>
+    <div class="span2"><a href="<?php echo Yii::app()->baseUrl."/orden/adminxls"?>" title="Exportar a excel" class="btn btn-block btn-info">Exportar a excel</a></div>
     
     <div class="span2"> 
 	<?php $this->widget('bootstrap.widgets.TbButton', array( 

@@ -14,6 +14,8 @@ include("class.zoom.json.services.php");
  * 9 - Devuelto
  * 10 - Parcialmente devuelto
  * 11 - Finalizada
+ * 12 - Finalizada - Devuelta
+ * 13 - Finalizada - Parcialmente devuelta
  * 
  * -------------- 
  * Tipo de Guia
@@ -52,12 +54,28 @@ class Orden extends CActiveRecord
 	const ESTADO_ESPERA = 1;
 	const ESTADO_ESPERA_CONF = 2;
 	const ESTADO_CONFIRMADO = 3;
+        
 	const ESTADO_ENVIADO = 4;
 	const ESTADO_CANCELADO = 5;
 	const ESTADO_RECHAZADO = 6;
-	const ESTADO_INSUFICIENTE = 7;
-
 	
+        const ESTADO_INSUFICIENTE = 7;	
+	const ESTADO_ENTREGADA = 8;
+	const ESTADO_DEVUELTA = 9;
+        
+	const ESTADO_PARC_DEV = 10;        
+        const ESTADO_FINALIZADA = 11;
+	const ESTADO_FIN_DEVUELTA = 12;
+        
+	const ESTADO_FIN_PARC_DEV = 13;
+
+	public static $estados = array('1' => 'En espera de pago',
+        '2' => 'En espera de confirmación', '3' => 'Pago confirmado',
+        '4' => 'Enviado', '5' => 'Cancelada', '6' => 'Pago rechazado',
+        '7' => 'Pago insuficiente', '8' => 'Entregada', '9' => 'Devuelta', 
+        '10' => 'Parcialmente devuelta', '11' => "Finalizada",
+        
+         );
 	 /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -118,7 +136,8 @@ class Orden extends CActiveRecord
         	'nproductos' => array(self::STAT, 'OrdenHasProductotallacolor', 'tbl_orden_id',
             		'select' => 'COUNT(preciotallacolor_id)',
             		'condition' => 'cantidad > 0'
-        		), 
+        		),
+        	'user'=>array(self::BELONGS_TO, 'User', 'user_id'),
      
 		);
 	}
@@ -619,39 +638,24 @@ class Orden extends CActiveRecord
 		return count($this->findAllByAttributes(array('estado'=>$estado)));
 	}
 	
-	public function getTextEstado($estado = null){
-		if(is_null($estado)){
-			$estado=$this->estado;
-		}
-		
-		if($estado == 1)
-        return "En espera de pago";
+	public function getTextEstado($estado = null) {
+            if (is_null($estado)) {
+                $estado = $this->estado;
+            }
 
-    	if($estado == 2)
-       	return "Espera confirmación";
-
-    	if($estado == 3)
-        return  "Pago Confirmado";
-
-    	if($estado == 4)
-        return "Pedido Enviado";
-
-    	if($estado == 5)
-        return "Orden Cancelada";
-
-    	if($estado == 6)
-        return "Pago Rechazado";
-
-    	if($estado == 7)
-        return  "Pago Insuficiente";
-
-   		if($estado == 9)
-        return  "Devuelto";
-
-    	if($estado == 10)
-        return  "Devolución Parcial";
-		
-	}
+            if($estado == 12 || $estado == 13){
+            
+                $otrosEstados = array('12' => 'Devuelta<br>Finalizada',
+                    '13' => "Parcialmente devuelta<br>Finalizada",);
+                
+                return isset($otrosEstados[$estado]) ? $otrosEstados[$estado] : "ERROR";
+                
+            }
+            
+            return isset(self::$estados[$estado]) ? self::$estados[$estado] : "ERROR";
+            
+            
+        }
         
         /**
          * Revisar la orden y los looks involucrados para asignarle a los
@@ -719,7 +723,38 @@ class Orden extends CActiveRecord
             
             
             
+        } 
+ 
+	public function getTiposPago($continuo = null){
+		$text="";
+		$i=0;
+		if(count($this->detalles)){
+            foreach ($this->detalles as $detallePago){
+            	if($i>0){
+            		if(is_null($continuo))
+	            		$text.="<br/>";
+					else 
+	            		$text.=" / ";
+            	}
+            
+	            if($detallePago->tipo_pago==1)
+				 	$text.= "Dep. o Transfer"; // metodo de pago
+	            else if($detallePago->tipo_pago==2)
+	                    $text.="Tarjeta de Crédito";  
+	            else if($detallePago->tipo_pago==3)
+	                    $text.="Uso de Balance"; 
+	            else if($detallePago->tipo_pago==4)
+	                    $text.="MercadoPago"; 
+	            else
+	                    $text.="ERROR EN EL PAGO";
+				$i++;
+            
         }
+        }else{
+            $text.="Dep. o Transfer"; 
+        }
+		return $text;
+	}
 	
 	
 	

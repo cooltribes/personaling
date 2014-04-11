@@ -11,7 +11,7 @@ $this->breadcrumbs = array(
             <div class="span6 text_align_right">
                 <?php
                 $this->widget('bootstrap.widgets.TbButton', array(
-                    'label' => 'Looks para mí',
+                    'label' => 'Looks para ti',
                     'buttonType' => 'button',
                     'type' => 'danger',
                     'size' => 'large',
@@ -34,13 +34,17 @@ $this->breadcrumbs = array(
                     'htmlOptions' => array(
                         'id' => 'btnTodos',
                         'onclick' => 'js:clickTodos()',
+                        'role' => 'button',
+                        'class' => 'btn',
+                        'data-toggle' => 'modal',
                     ),
                 ));
                 ?>
 
             </div>
         </div>
-
+        
+        <a href="#ModalRegistro" role="button" class="btn" data-toggle="modal">Launch modal registro</a>
 
 
     </div>
@@ -489,8 +493,112 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     
 </div>  
-
 <?php $this->endWidget() ?>
+
+<!-- Modal Registro ON -->
+<div id="ModalRegistro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Regístrate</h3>
+    </div>
+    <div class="modal-body">
+            <p class="lead text_align_center">Queremos ofrecerte toda la experiencia Personaling y necesitamos tus datos:</p>
+            <div class="row" id="boton_facebook">
+                <a title="Registrate con facebook" class="transition_all span3 offset1" href="#">Regístrate con Facebook</a>
+            </div>
+            <section class="bg_color3 margin_top  padding_small_top padding_small_right padding_small_left">
+                <form class="personaling_form form-inline" id="registration-form">
+                    <fieldset>
+                        <legend class="text_align_center">O llena los campos a continuación: </legend>  
+                        <div class="control-group row-fluid">
+                            <div class="controls">
+                                <!--[if IE 9]> 
+                                <label>Correo:</label>
+                                <![endif]--> 
+                                <input class="span12" placeholder="Correo electrónico" type="text" value="">
+                                <span class="help-block error"  style="display: none"></span>
+                            </div>
+                        </div>
+                        <div class="control-group row-fluid">
+                            <div class="controls">  
+                                <!--[if IE 9]> 
+                                <label>Contraseña:</label>
+                                <![endif]--> 
+                                <input class="span12" placeholder="Contraseña" type="password" maxlength="128" value="">
+                                <span class="help-block error" style="display: none"></span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls row-fluid">
+                                <!--[if IE 9]> 
+                                <label>Nombre:</label>
+                                <![endif]--> 
+                                <input class="span12" maxlength="35" placeholder="Nombres" type="text">
+                                <span class="help-block error" style="display: none"></span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls row-fluid">
+                                <!--[if IE 9]> 
+                                <label>Apellido:</label>
+                                <![endif]--> 
+                                <input class="span12 " maxlength="35" placeholder="Apellidos" type="text">
+                                <span class="help-block error"  style="display: none"></span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls row-fluid">
+                                <label class="span3 required" for="Profile_birthday">¿Qué día naciste? <span class="required">*</span></label>
+                                <select class="span3">
+                                    <option value="0">Dia:</option>
+                                    <option value="01">01</option>
+                                </select>
+                                <select class="span3">
+                                    <option value="0">Mes:</option>
+                                    <option value="01">Enero</option>
+                                </select>
+                                <select class="span3">
+                                    <option value="0">Año:</option>
+                                    <option value="2014">2014</option>
+                                </select>
+                                <span class="help-block error"  style="display: none"></span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls row-fluid">
+                                <label for="Profile_sex" class="required">¿Eres? <span class="required">*</span></label>
+                                <label class="radio inline"><input value="1" type="radio">
+                                    <label for="Profile_sex_0">Mujer</label>
+                                </label>
+                                <label class="radio inline">
+                                    <input value="2" type="radio">
+                                    <label for="Profile_sex_1">Hombre</label>
+                                </label>
+                                <span class="help-block error" style="display: none"></span>    
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="checkbox">
+                                <input type="checkbox" value="suscribir" checked="">
+                                Suscribirme a la lista de correo de Personaling
+                            </label>
+                        </div>
+                        <hr>
+                        Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="#" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="#" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
+                    </fieldset>
+                </form>      
+            </section>
+    </div>    
+    <div class="modal-footer">
+        <button class="btn btn-large" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+        <button class="btn btn-danger btn-large" type="submit">Siguiente</button>
+    </div>
+</div>
+<!-- Modal Registro OFF -->
+
+ 
+
+
 
 <script type="text/javascript">
 

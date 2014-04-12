@@ -190,21 +190,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                     </br>".Yii::t('contentForm','Expiration').": ".$tarjeta->vencimiento;
                     
                     
-                }else if(Yii::app()->getSession()->get('tipoPago') == 5){
+                }else if(Yii::app()->getSession()->get('tipoPago') == 5){                    
                     
-                    $this->widget('ext.fancybox.EFancyBox', array(
-                        'target'=>'#btn-ComprarEsp',
-                        'config'=>array(
-                            "type" => "iframe",                        
-                            "height" => "75%",                        
-                            "width" => "75%",                        
-                            "autoScale" => false,                        
-                            "transitionIn" => "none",                        
-                            "transitionOut" => "none",                
-
-                            ),
-                        )
-                    );
                     
                     echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
                             Yii::t('contentForm','Credit Card').".</td></tr>";
@@ -338,9 +325,10 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 				?>
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago') ?></a>
           <?php 
-          } else if($tipo_pago == 1  || $tipo_pago == 2){
+          } else if($tipo_pago == 1  || $tipo_pago == 2){             
+                  
           	
-                  $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                         'id' => 'verticalForm',
                         'action' => Yii::app()->createUrl('bolsa/comprar'),
                         'htmlOptions' => array('class' => 'well text_align_center'),
@@ -365,10 +353,32 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
                     $this->endWidget();
                     
-                  /*Si es en españa bankCard o Paypal*/  
+                  /*
+                   * 
+                   * PARA PAGAR EN ESPAÑA
+                   * BAKING CARD (8) 
+                   * PAYPAL (999)
+                   * 
+                   * LOS TIPOS DE PAGO SELECCIONADOS EN PERSONALING
+                   * VALEN 5 y 6
+                   * 
+                   */  
 		  }else if($tipo_pago == 5  || $tipo_pago == 6){ 
-          	
-			$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                      
+                      $this->widget('ext.fancybox.EFancyBox', array(
+                                'target' => '#btn-ComprarEsp',
+                                'config' => array(
+                                    "type" => "iframe",
+                                    "height" => "75%",
+                                    "width" => "75%",
+                                    "autoScale" => false,
+                                    "transitionIn" => "none",
+                                    "transitionOut" => "none",
+                                ),
+                                )
+                        );
+                      
+                      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			    'id'=>'verticalForm',
 			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
 			    'htmlOptions'=>array('class'=>'well text_align_center'),
@@ -381,7 +391,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                         define('customerid', '396349057');
                         define('terminal',   '999');
                         define('secret',     'qwerty1234567890uiop');
-                        $idPagoAztive = $tipo_pago == 5? 1:5;
+                        $idPagoAztive = $tipo_pago == 5? 8:999;
                         $monto = Yii::app()->getSession()->get('total');
                         $optional = array(                        
                             'name'          => 'Personaling ' . customerid,

@@ -14,6 +14,7 @@
 class AzPay {
 
     private static $onepay = 'https://azpay.aztive.com';
+    
     private static $urlD = '/Direct/pay.php';
     private static $urlM = '/Method/pay.php';
     private static $push = '/pushSMS/push.php';

@@ -190,8 +190,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                     </br>".Yii::t('contentForm','Expiration').": ".$tarjeta->vencimiento;
                     
                     
-                }else if(Yii::app()->getSession()->get('tipoPago') == 5){                    
-                    
+                }else if(Yii::app()->getSession()->get('tipoPago') == 5){
                     
                     echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
                             Yii::t('contentForm','Credit Card').".</td></tr>";
@@ -325,10 +324,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 				?>
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago') ?></a>
           <?php 
-          } else if($tipo_pago == 1  || $tipo_pago == 2){             
-                  
+          } else if($tipo_pago == 1  || $tipo_pago == 2){
           	
-                    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                  $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                         'id' => 'verticalForm',
                         'action' => Yii::app()->createUrl('bolsa/comprar'),
                         'htmlOptions' => array('class' => 'well text_align_center'),
@@ -353,32 +351,50 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 
                     $this->endWidget();
                     
-                  /*
-                   * 
-                   * PARA PAGAR EN ESPAÑA
-                   * BAKING CARD (8) 
-                   * PAYPAL (999)
-                   * 
-                   * LOS TIPOS DE PAGO SELECCIONADOS EN PERSONALING
-                   * VALEN 5 y 6
-                   * 
-                   */  
+                  /*Si es en españa bankCard o Paypal*/  
 		  }else if($tipo_pago == 5  || $tipo_pago == 6){ 
-                      
-                      $this->widget('ext.fancybox.EFancyBox', array(
-                                'target' => '#btn-ComprarEsp',
-                                'config' => array(
-                                    "type" => "iframe",
-                                    "height" => "75%",
-                                    "width" => "75%",
-                                    "autoScale" => false,
-                                    "transitionIn" => "none",
-                                    "transitionOut" => "none",
+          	
+			$this->widget('ext.fancybox.EFancyBox', array(
+                            'target'=>'#btn-ComprarEsp',
+                            'config'=>array(
+                                "type" => "iframe",                        
+                                "height" => "75%",                        
+                                "width" => "75%",                        
+                                "autoScale" => false,                        
+                                "transitionIn" => "none",                        
+                                "transitionOut" => "none",                
+
                                 ),
-                                )
+                            )
                         );
                       
-                      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                     
+                            $this->beginWidget('bootstrap.widgets.TbModal', array(
+                                'id' => 'modalPrueba',
+                                    ), array(
+                                'class' => 'modal fade hide',
+                                'tabindex' => "-1",
+                                'role' => "dialog",
+                                'aria-labelledby' => "myModalLabel",
+                                'aria-hidden' => "true",
+                                    //'style' => "display: none;",
+                            ))
+                            ?>
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="myModalLabel">Prueba</h3>
+                            </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer text_align_left">
+
+                        </div>                    
+
+                        <?php 
+                        $this->endWidget() ;
+                                
+                       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			    'id'=>'verticalForm',
 			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
 			    'htmlOptions'=>array('class'=>'well text_align_center'),
@@ -402,6 +418,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                         
                         $url = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);
                         
+//                        $url = "http://www.personaling.com";
                         
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'type'=>'warning',        
@@ -413,6 +430,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                             'htmlOptions'=>array(
         //                        'onclick'=>'js:enviar_pago();'
                                 'id' => 'btn-ComprarEsp',
+//                                'data-toggle' => "modal",
+//                                'data-target' => "#modalPrueba",
                                 )
                         )); 
 		
@@ -421,6 +440,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 		  ?>
           
         </div>
+          <script></script>
         <p><i class="icon-calendar"></i><?php echo Yii::t('contentForm','Date estimated delivery') ?>: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
       <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank"><?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?></a></p>
@@ -467,6 +487,7 @@ else
 
 ?>
 
+
 <script>
     
 $(document).ready(function(){
@@ -485,6 +506,11 @@ $(document).ready(function(){
 //        $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
 //        
 //    });
+
+
+//    $('#modalPrueba').modal({
+//      remote: "<?php echo $url; ?>"
+//    })
     
 });
     

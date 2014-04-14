@@ -1012,7 +1012,7 @@ public function actionValidar()
 						}
 						// Subject y body para el correo
 						$subject = 'Pago aceptado';
-						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+						$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
 						
 						$usuario = Yii::app()->user->id;
 						//$excede = ($detalle->monto-$porpagar);	
@@ -1076,7 +1076,7 @@ public function actionValidar()
 							if($orden->save()){
 								
 								$subject = 'Pago aceptado';
-								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+								$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
 								
 								$usuario = Yii::app()->user->id;
 								
@@ -1110,7 +1110,7 @@ public function actionValidar()
 								$balance->tipo=1;								
 								if($balance->save()){
 									$subject = 'Pago insuficiente';
-									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), '').' Bs para pagar toda la orden.<br/><br/> ';
+									$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));
 									$estado = new Estado;
 																
 									
@@ -1142,7 +1142,7 @@ public function actionValidar()
 					else{
 						
 							$subject = 'Pago insuficiente';
-							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->monto.' Bs para pagar toda la orden.<br/><br/> ';
+							$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));							
 							$estado = new Estado;
 																	
 							$estado->estado = 7; // pago insuficiente

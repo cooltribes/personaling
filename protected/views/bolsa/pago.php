@@ -1,6 +1,10 @@
 <!-- tipopago 1: transferencia
      tipopago 2: Tarjeta credito
-     tipopago 3: puntos o tarjeta de regalo -->
+     tipopago 3: puntos o tarjeta de regalo 
+     tipopago 4: MercadoPago
+     tipopago 5: Tarjeta Aztive
+     tipopago 6: PayPal
+-->
 <?php
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 if (!Yii::app()->user->isGuest) { // que este logueado
@@ -53,8 +57,11 @@ echo CHtml::hiddenField('user',$user);
        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
        -->
-            <div class="accordion" id="accordion2">	
-<!--                    <div class="accordion-group">
+            <div class="accordion" id="accordion2">
+                <?php 
+                if(Yii::app()->params['metodosPago']['mercadopago']){                
+                ?>
+                    <div class="accordion-group">
                             <div class="accordion-heading">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="btn_mercadopago">
                                             <label class="radio">
@@ -68,10 +75,12 @@ echo CHtml::hiddenField('user',$user);
                                     </div>
 
                             </div>
-                    </div>-->
+                    </div>
+                <?php                 
+                } ?>
 
                 <?php 
-                //DEPOSITO O TRANSFERENCIA ON                    
+                //DEPOSITO O TRANSFERENCIA
                 if(Yii::app()->params['metodosPago']['depositoTransferencia']){                
                 ?>
                 <div class="accordion-group">
@@ -89,12 +98,10 @@ echo CHtml::hiddenField('user',$user);
                             </div>
                         </div>
                     </div>
-                <?php 
-                //DEPOSITO O TRANSFERENCIA OFF
-                } ?>
+                <?php } ?>
                  
                 <?php 
-                //INSTAPAGO ON
+                //INSTAPAGO
                 if(Yii::app()->params['metodosPago']['instapago']){                
                 ?>
                     <div class="accordion-group">
@@ -210,30 +217,64 @@ echo CHtml::hiddenField('user',$user);
                             </div>	
                         </div>
                     </div>
-                <?php 
-                //INSTAPAGO OFF
-                } ?>
+                <?php } ?>
 
                 <?php 
                 //Banking Card Aztive
-                if(Yii::app()->params['metodosPago']['aztive']){ 
-                $this->widget('EFancyBox', array(
-                    'target'=>'a[rel=gallery]',
-                    'config'=>array(),
-                    )
-                );
+                if(Yii::app()->params['metodosPago']['bkCard']){ 
+                ?>                
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <label class="radio accordion-toggle margin_left_small" data-parent="#accordion2">
+                            <input type="radio" name="optionsRadios" id="bankCard" value="5"> 
+                            <?php echo Yii::t('contentForm', 'Credit Card'); ?>
+                        </label>                       
+                       
+                    </div>
+<!--                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse"
+                           data-parent="#accordion2" href="#collapseFour" id="btn_bankCard">
+                            <label class="radio accordion-toggle">
+                                <input type="radio" name="optionsRadios" id="bankCard" value="option5"> 
+                                <?php echo Yii::t('contentForm', 'Credit Card'); ?>
+                            </label>
+                        </a>
+                    </div>-->
                     
-                    ?>                
-                                  
-                        
-                    
-
+                </div>
+                <?php } ?>
                 <?php 
-                //Banking Card Aztive OFF
-                } ?>
+                //Paypal Aztive
+                if(Yii::app()->params['metodosPago']['paypal']){ 
+                ?>                
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <label class="radio accordion-toggle margin_left_small"
+                           data-parent="#accordion2">
+                            <input type="radio" name="optionsRadios" id="payPal" value="6"> 
+                            <?php echo Yii::t('contentForm', 'PayPal'); ?>
+                        </label>                        
+                    </div>
+                    <div id="collapseT" class="accordion-body collapse">
+                    </div>
+                    
+                </div>
+<!--                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse"
+                           data-parent="#accordion2" href="#collapseFive" id="btn_payPal">
+                            <label class="radio">
+                                <input type="radio" name="optionsRadios" id="payPal" value="option6"> 
+                                <?php echo Yii::t('contentForm', 'PayPal'); ?>
+                            </label>
+                        </a>
+                    </div>
+                    
+                </div>-->
+                <?php } ?>
                 
 
-                    </div>
+            </div>
             </div>
  
     </section>
@@ -333,7 +374,7 @@ echo CHtml::hiddenField('user',$user);
                               $totalDe = $totalDe + $y;
                           }*/
 						$seguro=0;
-						if($direccion->ciudad->provincia->pais->excento)
+						if($direccion->ciudad->provincia->pais->exento)
 						{
 							$iva = 0;
 							
@@ -411,7 +452,7 @@ echo CHtml::hiddenField('user',$user);
               </tr>
               
               
-              <?php if(!$direccion->ciudad->provincia->pais->excento)
+              <?php if(!$direccion->ciudad->provincia->pais->exento)
 			{?>
 				<tr>
 	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
@@ -574,8 +615,7 @@ else
                 url: '<?php echo CController::createUrl("/giftcard/aplicar"); ?>',
                 dataType: 'JSON',
                 data: datos,
-                success: function(data){
-                    
+                success: function(data){                    
                     //si son dos errores agregar ul
                     if(data.length > 1){
                         
@@ -595,7 +635,6 @@ else
                             
                             var check = $("#usar_balance");
                             
-                         
                                 var element = $("#usar_balance").next();
                                 
                                 element.parent().removeClass("hidden");
@@ -607,8 +646,7 @@ else
                                       element.text("Bs. " + data[0].amount);
                                       showAlert(data[0].type, data[0].message);
                                     }
-                                } );
-                                
+                                } );                                
                                 
                                 element.animate({                                  
                                   opacity: 1,
@@ -628,22 +666,22 @@ else
             
         });
 
-        //Mostrar alert
-        function showAlert(type, message){
-           $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
-           $('#alert-msg').addClass("alert-"+type);
-           $('#alert-msg').children(".msg").html(message);
-           $('#alert-msg').show();
-           
-           $("#camposGC").removeClass('success error warning');
-           $('#camposGC').addClass(type);
-           
-        }
+    //Mostrar alert
+    function showAlert(type, message){
+       $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
+       $('#alert-msg').addClass("alert-"+type);
+       $('#alert-msg').children(".msg").html(message);
+       $('#alert-msg').show();
 
-        $(".alert").alert();
-        $(".alert .close").click(function(){
-            $(".alert").fadeOut('slow');
-        });
+       $("#camposGC").removeClass('success error warning');
+       $('#camposGC').addClass(type);
+
+    }
+
+    $(".alert").alert();
+    $(".alert .close").click(function(){
+        $(".alert").fadeOut('slow');
+    });
         
         
     $(document).ready(function() {
@@ -731,6 +769,7 @@ $('#TarjetaCredito_year').change(function(){
             $("#tipo_pago").val('4');
             $("#mercadopago").prop("checked", true);
         });
+        
         $("#btn_deposito").click(function() {
         	var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
@@ -771,29 +810,30 @@ $('#TarjetaCredito_year').change(function(){
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
         	
         });
-
-    $("#completar-compra").click(function(ev){
-           ev.preventDefault();
-           alert("pasar al sig");
-
-           var idDir = $("#id-direccion").attr("value");
-         var tipoPago = 1; // en este caso siempre es transferencia pero hay que pensarlo para los distintos tipos
-
-         $.ajax({
-            type: "post",
-            url: "pagos", // action pagos
-            data: { 'idDir':idDir, 'tipoPago':tipoPago},
-           // success: function (data) {
-             //   if(data == 'ok')
-               // {
-                //    alert("entró");
-                //    window.location="../confirmar";
-                //}
-           //    }//success
-           })
-
-       }); // tallas
-
+        
+        $("input[name='optionsRadios']").change(function(e){
+            
+            if($(this).is(":checked"))
+            {
+                var tipoPago = "<td valign='top'><i class='icon-exclamation-sign'></i> ";
+                //si es bankCard
+                if($(this).val() == 5){
+                    
+                    tipoPago += "<?php echo 
+                    Yii::t('contentForm', 'Credit Card'); ?> </td>";
+                    
+                }else if($(this).val() == 6){ //si es paypal
+                    
+                    tipoPago += "<?php echo 
+                    Yii::t('contentForm', 'PayPal'); ?> </td>";
+                }
+                
+                $("#adentro").html(tipoPago);        	
+                $("#tipo_pago").val($(this).val());            
+            
+            }
+         
+        });
 
     });
 

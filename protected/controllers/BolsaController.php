@@ -803,7 +803,7 @@ class BolsaController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Activa tu cuenta en Personaling';
-						$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+						$body = ii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
@@ -2033,7 +2033,7 @@ class BolsaController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Activa tu cuenta en Personaling';
-						$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+						$body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');

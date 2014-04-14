@@ -99,7 +99,8 @@ class AzPay {
         $params = array('orderid' => $orderid,
             'amount' => $amount,
             'customerid' => $this->customerid,
-            'terminal' => $this->terminal);
+            'terminal' => $this->terminal,            
+            );
 
         // add id
         if ($id != '')

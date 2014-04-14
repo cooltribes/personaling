@@ -258,8 +258,8 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
                 'metodosPago'=> array(
                     'bkCard' => true,
-                    'paypal' => true,
-                    'depositoTransferencia' => false,
+                    'paypal' => false,
+                    'depositoTransferencia' => true,
                     'instapago' => false,
                     'mercadopago' => false,
                     ),

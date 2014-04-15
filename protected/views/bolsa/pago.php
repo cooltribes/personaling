@@ -218,6 +218,7 @@ echo CHtml::hiddenField('user',$user);
                         </div>
                     </div>
                 <?php } ?>
+                
 
                 <?php 
                 //Banking Card Aztive

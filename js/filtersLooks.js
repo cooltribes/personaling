@@ -439,8 +439,11 @@ function clickPerfil(idPerfil){
 }
 
 //Al hacer click en el boton Looks para *
-function clickPersonal(){    
+function clickPersonal(status_register){    
     
+    if (status_register == -1){
+    	$('#ModalRegistro').modal();
+    } else {
     $("#btnMatch").addClass("btn-danger");
     $("#btnTodos").removeClass("btn-danger");
     
@@ -460,6 +463,7 @@ function clickPersonal(){
     $("#rango_actual").val("");
         
     refresh(true);
+    }
     
 }
 

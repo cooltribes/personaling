@@ -262,7 +262,14 @@ return array(
                     'depositoTransferencia' => true,
                     'instapago' => false,
                     'mercadopago' => false,
+				                        
                     ),
+                  'PRONUNCIACION' => 'Venezolana', 
+				    'currSym'=>'Bs',
+				    'noShipping'=> '1',
+				    'IVA' => '0.12',
+				    'IVAtext' => '12%',	
+				    'registro' => true,	  
 		
 	),
 );

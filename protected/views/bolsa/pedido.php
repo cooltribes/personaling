@@ -158,7 +158,7 @@ $tipo_pago = $orden->getTipoPago();
             </tr>
             <?php if($orden->iva>0){?>
             <tr>
-              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
               <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
             </tr>  
             <?php }?>          

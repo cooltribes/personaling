@@ -216,6 +216,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'large', // null, 'large', 'small' or 'mini'
 		)); ?>
+
 	</div>
 
 </fieldset>

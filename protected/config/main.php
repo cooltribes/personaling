@@ -258,11 +258,18 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
                 'metodosPago'=> array(
                     'bkCard' => true,
-                    'paypal' => false,
+                    'paypal' => true,
                     'depositoTransferencia' => true,
                     'instapago' => false,
                     'mercadopago' => false,
+				                        
                     ),
+                  'PRONUNCIACION' => 'Venezolana', 
+				    'currSym'=>'Bs',
+				    'noShipping'=> '1',
+				    'IVA' => '0.12',
+				    'IVAtext' => '12%',	
+				    'registro' => true,	  
 		
 	),
 );

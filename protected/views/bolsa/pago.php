@@ -218,6 +218,7 @@ echo CHtml::hiddenField('user',$user);
                         </div>
                     </div>
                 <?php } ?>
+                
 
                 <?php 
                 //Banking Card Aztive
@@ -380,7 +381,7 @@ echo CHtml::hiddenField('user',$user);
 							
 						}
 						else{
-							$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA'));
+							$iva = (($totalPr - $totalDe)*Yii::app()->params['IVA']);
 						}
                         
                         $t = $totalPr - $totalDe + $iva ;
@@ -455,7 +456,7 @@ echo CHtml::hiddenField('user',$user);
               <?php if(!$direccion->ciudad->provincia->pais->exento)
 			{?>
 				<tr>
-	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
 	              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
 	            </tr>
 			<?php }

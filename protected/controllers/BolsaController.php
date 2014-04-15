@@ -580,11 +580,31 @@ class BolsaController extends Controller
                             'admin' => $admin, 
                             ));
                     
+                    /*
+                     * Para pago con tarjeta y paypal
+                     */
+                    
+                    $tipo_pago = Yii::app()->getSession()->get('tipoPago');
+                    define('customerid', '396349057');
+                    define('terminal',   '999');
+                    define('secret',     'qwerty1234567890uiop');
+                    $idPagoAztive = $tipo_pago == 5? 8:5;
+                    $monto = Yii::app()->getSession()->get('total');
+                    $optional = array(                        
+                        'name'          => 'Personaling Enterprise S.L.',
+                        'product_name'  => 'Pedido',                             
+                    );                                                    
+
+                    $pago = new AzPay(customerid, terminal, secret);
+
+                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);                    
+                    
                     $this->render('confirmar',array(
                         'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
                         'bolsa' =>  $bolsa,
                         'admin'=> $admin,
                         'user'=> $usuario,
+                        'urlAztive'=> $urlAztive,
                             ));
                     
 		}

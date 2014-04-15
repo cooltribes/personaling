@@ -2,7 +2,13 @@
 $this->breadcrumbs = array(
     'Tu Personal Shopper',
 );
+$user = User::model()->findByPk(Yii::app()->user->id);
+$status_register = -1;
+if (isset($userTmp)){
+	$status_register = 	$userTmp->status_register;
+}	
 ?>
+
 <div class="container">
     <div class="span12">
         <!--    <h1>Todos los looks</h1>-->
@@ -13,11 +19,12 @@ $this->breadcrumbs = array(
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Looks para ti',
                     'buttonType' => 'button',
-                    'type' => 'danger',
+                    
+                    'type' => $todosLosLooks?'':'danger',
                     'size' => 'large',
                     'htmlOptions' => array(
                         'id' => 'btnMatch',
-                        'onclick' => 'js:clickPersonal()',
+                        'onclick' => 'js:clickPersonal('.$status_register.')',
                     ),
                 ));
                 ?>
@@ -28,7 +35,7 @@ $this->breadcrumbs = array(
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Todos los looks',
                     'buttonType' => 'button',
-                    //'type' => 'danger',
+                    'type' => $todosLosLooks?'danger':'',
                     'size' => 'large',
                     //'disabled' => true,
                     'htmlOptions' => array(
@@ -43,9 +50,9 @@ $this->breadcrumbs = array(
 
             </div>
         </div>
-        
+        <!--
         <a href="#ModalRegistro" role="button" class="btn" data-toggle="modal">Launch modal registro</a>
-
+-->
 
     </div>
     <div class="alert in" id="alert-msg" style="display: none">

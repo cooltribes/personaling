@@ -1896,7 +1896,7 @@ public function actionReportexls(){
 							$precio->precioVenta = $row['G'];
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = (double) $row['G'] * (Yii::t('contentForm', 'IVA')+1);
+							$precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA']+1);
 						}
 						else {
 							$precio = new Precio;
@@ -1905,7 +1905,7 @@ public function actionReportexls(){
 							$precio->tbl_producto_id = $producto->id;
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = (double) $row['G'] * (Yii::t('contentForm', 'IVA')+1);
+							$precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA']+1);
 						}
 						
 						if($precio->save())
@@ -2039,7 +2039,7 @@ public function actionReportexls(){
 							$precio->tbl_producto_id = $prod->id;
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = (double) $row['G'] * (Yii::t('contentForm', 'IVA')+1);
+							$precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA']+1);
 							
 							if($precio->save())
 							{

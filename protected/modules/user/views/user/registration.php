@@ -217,6 +217,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		    'size'=>'large', // null, 'large', 'small' or 'mini'
 		    'htmlOptions'=>array('class'=>'btn-block'),
 		)); ?>
+
 	</div>
 
 </fieldset>

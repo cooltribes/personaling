@@ -146,6 +146,7 @@ class User extends CActiveRecord {
             'lastvisit_at' => UserModule::t("Last visit"),
             'superuser' => UserModule::t("Administrador"),
             'status' => UserModule::t("Status"),
+            'status_register' => UserModule::t("Status Register"),
             'twitter_id' => UserModule::t("Twitter ID"),
             'facebook_id' => UserModule::t("Facebook ID"),
             'avatar_url' => UserModule::t("Avatar"),
@@ -178,7 +179,7 @@ class User extends CActiveRecord {
     public function defaultScope() {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
                     'alias' => 'user',
-                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado',
+                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status,user.status_register, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado',
         ));
     }
 

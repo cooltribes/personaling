@@ -441,7 +441,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       </tr>
                       <?php } ?>
                       <tr>
-                        <th class="text_align_left">I.V.A. (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+                        <th class="text_align_left">I.V.A. (<?php echo Yii::app()->params['IVAtext'];?>):</th>
                         <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
                       </tr>
                       <tr>

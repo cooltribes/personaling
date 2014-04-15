@@ -29,7 +29,7 @@ return array(
                 'application.extensions.validators.age.*',
                 'ext.yii-mail.YiiMailMessage',
                 'ext.fancybox',
-                'ext.AzPayClass',
+                'ext.AzPay',
 	),
 
 	'modules'=>array(
@@ -257,10 +257,11 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
                 'metodosPago'=> array(
-                    'aztive' => false,
+                    'bkCard' => true,
                     'paypal' => false,
-                    'depositoTransferencia' => false,
+                    'depositoTransferencia' => true,
                     'instapago' => false,
+                    'mercadopago' => false,
                     ),
 		
 	),

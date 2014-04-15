@@ -84,7 +84,7 @@ return array (
      'Create new filter' => 'Crear nuevo filtro',
      'Create Gift Card' => 'Crear GiftCard',
      'Created for' => 'Creado por',
-     'Credit Card' => 'Tarjeta de Credito',
+     'Credit Card' => 'Tarjeta de Crédito',
      'Create your Look here' => 'Crea tus Looks aquí',
      'Color' => 'Color',
      'Courier delivery' => 'Transportista',
@@ -218,6 +218,7 @@ return array (
      'Paid' => 'Ya pagados',
      'Parcial Returned' => 'Devolución Parcial',
      'Pay MercadoPago' => 'Pagar con MercadoPago',
+     'Paypal' => 'Paypal',
      'Pay with credit card' => 'Pagar con tarjeta de crédito',
      'Payment confirmet' => 'Pago confirmado',
      'Payment declined' => 'Pago Rechazado',
@@ -267,6 +268,7 @@ return array (
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
      'Recommended Looks with this product' => 'Looks recomendados con este producto',
+     'Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.' => '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan {amout} {currSym} para pagar toda la orden.<br/><br/>',
 
 
      'Save' => 'Guardar',
@@ -297,6 +299,8 @@ return array (
      'Select' => 'Seleccione',
      'Select a design for the Gift Card' => 'Selecciona un diseño para la Gift Card',
      'Select a province' => 'Selecciona un estado',
+     'Select a city' => 'Selecciona una cuidad',
+     'Select a country' => 'Selecciona un país',
      'Select color and size' => 'Selecciona Color y talla',
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
@@ -354,6 +358,7 @@ return array (
      'Value for returned shipping' => 'Monto por envío devuelto',
 
      'Year' => 'Año',
+     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/>',
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',

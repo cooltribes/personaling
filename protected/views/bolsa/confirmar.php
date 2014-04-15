@@ -2,6 +2,11 @@
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 Yii::import('application.components.*');
 require_once "mercadopago-sdk/lib/mercadopago.php";
+
+/*Aztive Pay Class*/
+//Yii::import('application.ext.AzPayClass.php');
+
+
 $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
 //$accessToken = $mp->get_access_token();
@@ -18,7 +23,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	$total = Yii::app()->getSession()->get('total');
 	if(Yii::app()->getSession()->get('usarBalance') == '1'){
 		$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
-		$balance = floor($balance *100)/100;
+		$balance = floor($balance *100)/100; 
 		if($balance > 0){
 			if($balance >= $total){
 				$descuento = $total;
@@ -172,7 +177,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                 {
                     echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','Deposit or Bank Transference').".</td></tr>";
                 }else if(Yii::app()->getSession()->get('tipoPago')==4){
-                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i>".Yii::t('contentForm','MercadoPago').".</td></tr>";
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','MercadoPago').".</td></tr>";
                 }else if(Yii::app()->getSession()->get('tipoPago')==2){
                     echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','Credit Card').".</td></tr>";
 
@@ -183,20 +188,30 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                     echo "</br>".Yii::t('contentForm','Name').": ".$tarjeta->nombre."
                     </br>".Yii::t('contentForm','Number').": XXXX XXXX XXXX ".$rest."
                     </br>".Yii::t('contentForm','Expiration').": ".$tarjeta->vencimiento;
+                    
+                    
+                }else if(Yii::app()->getSession()->get('tipoPago') == 5){
+                    
+                    echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
+                            Yii::t('contentForm','Credit Card').".</td></tr>";
+                
+                    
+                }else if(Yii::app()->getSession()->get('tipoPago') == 6){
+                    
+                    echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
+                            Yii::t('contentForm','PayPal').".</td></tr>";
+                    
                 }
+                
               ?>
           </table>
         </div>
       	
       	 	   <hr>
       	
-        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>
-        <?php //echo('tipo guia: '.Yii::app()->getSession()->get('tipo_guia')); ?>
+        <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>        
         <?php 
-        // direccion de envio 
-        if(isset($tipoPago)){
-        	//echo 'Tipo pago: '.$tipoPago;
-		}
+        
         $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
 		
 		$facturacion= Direccion::model()->findByPk(Yii::app()->getSession()->get('idFacturacion'));
@@ -280,7 +295,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             </tr>
           </table>
           <?php
-              if(Yii::app()->getSession()->get('tipoPago') == 4){
+          $tipo_pago = Yii::app()->getSession()->get('tipoPago');
+              if($tipo_pago == 4){
               	$user = User::model()->findByPk(Yii::app()->user->id);
 				$profile = Profile::model()->findByPk(Yii::app()->user->id);
               	$preference = array (
@@ -308,36 +324,129 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 				?>
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago') ?></a>
           <?php 
-          } else {
+          } else if($tipo_pago == 1  || $tipo_pago == 2){
           	
-			$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                  $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                        'id' => 'verticalForm',
+                        'action' => Yii::app()->createUrl('bolsa/comprar'),
+                        'htmlOptions' => array('class' => 'well text_align_center'),
+                    ));
+
+                    echo CHtml::hiddenField('codigo_randon', rand());
+                    echo CHtml::hiddenField('admin', $admin);
+                    echo CHtml::hiddenField('user', $user);
+                    $this->widget('bootstrap.widgets.TbButton', array(
+                        'type' => 'warning',
+            //                    'buttonType'=>'submit',
+                        'buttonType' => 'button',
+                        'size' => 'large',
+                        'label' => $tipo_pago == 2 ? Yii::t('contentForm', 'Pay with credit card') : Yii::t('contentForm', 'Complete purchase'),
+                        //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+                        'icon' => 'lock white',
+                        'htmlOptions' => array(
+            //                        'onclick'=>'js:enviar_pago();'
+                            'id' => 'btn-Comprar',
+                        )
+                    ));
+
+                    $this->endWidget();
+                    
+                  /*Si es en españa bankCard o Paypal*/  
+		  }else if($tipo_pago == 5  || $tipo_pago == 6){ 
+          	
+			$this->widget('ext.fancybox.EFancyBox', array(
+                            'target'=>'#btn-ComprarEsp',
+                            'config'=>array(
+                                "type" => "iframe",                        
+                                "height" => "90%",                        
+                                "width" => "65%",                        
+                                "autoScale" => false,                        
+                                "transitionIn" => "none",                        
+                                "transitionOut" => "none",                
+
+                                ),
+                            )
+                        );
+                      
+                     
+                            $this->beginWidget('bootstrap.widgets.TbModal', array(
+                                'id' => 'modalPrueba',
+                                    ), array(
+                                'class' => 'modal fade hide',
+                                'tabindex' => "-1",
+                                'role' => "dialog",
+                                'aria-labelledby' => "myModalLabel",
+                                'aria-hidden' => "true",
+                                    //'style' => "display: none;",
+                            ))
+                            ?>
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="myModalLabel">Prueba</h3>
+                            </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer text_align_left">
+
+                        </div>                    
+
+                        <?php 
+                        $this->endWidget() ;
+                                
+                       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			    'id'=>'verticalForm',
 			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
 			    'htmlOptions'=>array('class'=>'well text_align_center'),
 			)); 
-          	$tipo_pago = Yii::app()->getSession()->get('tipoPago');
+          	
 			echo CHtml::hiddenField('codigo_randon',rand());
                         echo CHtml::hiddenField('admin',$admin);
-		            echo CHtml::hiddenField('user',$user);
-          	$this->widget('bootstrap.widgets.TbButton', array(
-                    'type'=>'warning',
-//                    'buttonType'=>'submit',
-                    'buttonType'=>'button',
-                    'size'=>'large',
-                    'label'=>$tipo_pago==2?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Complete purchase'),
-                    //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
-                    'icon'=>'lock white',
-                    'htmlOptions'=>array(
-//                        'onclick'=>'js:enviar_pago();'
-                        'id' => 'btn-Comprar',
-                        )
-                )); 
+                        echo CHtml::hiddenField('user',$user);
+                        
+                        define('customerid', '396349057');
+                        define('terminal',   '999');
+                        define('secret',     'qwerty1234567890uiop');
+                        $idPagoAztive = $tipo_pago == 5? 8:5;
+                        $monto = Yii::app()->getSession()->get('total');
+                        $optional = array(                        
+                            'name'          => 'Personaling Enterprise S.L.',
+                            'product_name'  => 'Pedido', 
+                            'url_notification'  => CController::createUrl("confirmar"), 
+                            'url_ok'  => CController::createUrl("confirmar"), 
+                            'url_ko'  => CController::createUrl("confirmar"), 
+                            'url'  => CController::createUrl("confirmar"), 
+                            'urlOk'  => CController::createUrl("confirmar"), 
+                        );                                                    
+                        
+//                        $cData = array("url_notification" => "confirmarNelson");
+                        
+                        $pago = new AzPay(customerid, terminal, secret);
+                        
+                        $url = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);
+                        
+                        
+                        $this->widget('bootstrap.widgets.TbButton', array(
+                            'type'=>'warning',        
+                            //'buttonType'=>'button',
+                            'size'=>'large',
+                            'label'=>$tipo_pago==5?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Pay with PayPal'),
+                            'url'=> $url, // action
+                            'icon'=>'lock white',
+                            'htmlOptions'=>array(
+        //                        'onclick'=>'js:enviar_pago();'
+                                'id' => 'btn-ComprarEsp',
+//                                'data-toggle' => "modal",
+//                                'data-target' => "#modalPrueba",
+                                )
+                        )); 
 		
-		 $this->endWidget(); 
+                         $this->endWidget(); 
 		  }
 		  ?>
           
         </div>
+          <script></script>
         <p><i class="icon-calendar"></i><?php echo Yii::t('contentForm','Date estimated delivery') ?>: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
       <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank"><?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?></a></p>
@@ -384,6 +493,7 @@ else
 
 ?>
 
+
 <script>
     
 $(document).ready(function(){
@@ -393,10 +503,21 @@ $(document).ready(function(){
         $("body").addClass("aplicacion-cargando");
         $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
         $("#verticalForm").submit();
-        //e.preventDefault();
-        
-        
     });
+    
+//    $("#btn-ComprarEsp").click(function(e){
+//	$(this).attr("disabled", true);
+//        $(this).html('<i class="icon-lock icon-white"></i> Procesando pago...');
+//        $("body").addClass("aplicacion-cargando");
+//        $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
+//        
+//    });
+
+
+//    $('#modalPrueba').modal({
+//      remote: "<?php echo $url; ?>"
+//    })
+    
 });
     
     

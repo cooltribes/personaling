@@ -4,7 +4,7 @@ $this->breadcrumbs=array(
   'Look'
 );
 $this->pageTitle=Yii::app()->name . " - " . $model->title;;
-  Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title.' - '.$model->getPrecio().' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+  Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title.' - '.$model->getPrecio().' '.Yii::t('contentForm', 'currSym'), null, null, array('property' => 'og:title'), null); // registro del meta para facebook
   Yii::app()->clientScript->registerMetaTag($model->description.' Creado por: '.$model->user->profile->first_name.' '.$model->user->profile->last_name, null, null, array('property' => 'og:description'), null);
   Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
   Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
@@ -15,7 +15,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->title, 'twitter:title', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->description, 'twitter:description', null, null, null);
-  Yii::app()->clientScript->registerMetaTag($model->getPrecio().' Bs.', 'twitter:data1', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->getPrecio().' '.Yii::t('contentForm', 'currSym'), 'twitter:data1', null, null, null);
   Yii::app()->clientScript->registerMetaTag('Subtotal', 'twitter:label1', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->user->profile->first_name.' '.$model->user->profile->last_name, 'twitter:data2', null, null, null);  
   Yii::app()->clientScript->registerMetaTag('Creado por', 'twitter:label2', null, null, null);
@@ -623,7 +623,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             {
                 if (data.status == 'success')
                 {
-                      //$('#price').html('Bs.'+data.div);
+                      //$('#price').html('".Yii::t('contentForm', 'currSym')." '+data.div);
                       $('#'+data.id).fadeOut(400,function() { $(this).html(data.div+ ' unds.').fadeIn(400); });
                   //alert(data.div);
 
@@ -656,8 +656,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             {
                 if (data.status == 'success')
                 {
-                      //$('#price').html('Bs.'+data.div);
-                      $('#price').fadeOut(400,function() { $(this).html('Bs.'+data.div).fadeIn(400); });
+                      //$('#price').html('".Yii::t('contentForm', 'currSym')." '+data.div);
+                      $('#price').fadeOut(400,function() { $(this).html('".Yii::t('contentForm', 'currSym')." '+data.div).fadeIn(400); });
                   //alert(data.div);
 
                 }

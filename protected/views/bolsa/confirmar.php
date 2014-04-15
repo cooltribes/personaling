@@ -358,8 +358,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                             'target'=>'#btn-ComprarEsp',
                             'config'=>array(
                                 "type" => "iframe",                        
-                                "height" => "75%",                        
-                                "width" => "75%",                        
+                                "height" => "90%",                        
+                                "width" => "65%",                        
                                 "autoScale" => false,                        
                                 "transitionIn" => "none",                        
                                 "transitionOut" => "none",                
@@ -407,18 +407,24 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                         define('customerid', '396349057');
                         define('terminal',   '999');
                         define('secret',     'qwerty1234567890uiop');
-                        $idPagoAztive = $tipo_pago == 5? 8:999;
+                        $idPagoAztive = $tipo_pago == 5? 8:5;
                         $monto = Yii::app()->getSession()->get('total');
                         $optional = array(                        
-                            'name'          => 'Personaling ' . customerid,
-                            'product_name'  => 'Producto de Prueba' . customerid 
-                        );                        
+                            'name'          => 'Personaling Enterprise S.L.',
+                            'product_name'  => 'Pedido', 
+                            'url_notification'  => CController::createUrl("confirmar"), 
+                            'url_ok'  => CController::createUrl("confirmar"), 
+                            'url_ko'  => CController::createUrl("confirmar"), 
+                            'url'  => CController::createUrl("confirmar"), 
+                            'urlOk'  => CController::createUrl("confirmar"), 
+                        );                                                    
+                        
+//                        $cData = array("url_notification" => "confirmarNelson");
                         
                         $pago = new AzPay(customerid, terminal, secret);
                         
                         $url = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);
                         
-//                        $url = "http://www.personaling.com";
                         
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'type'=>'warning',        

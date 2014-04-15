@@ -71,15 +71,16 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
             <?php echo $form->checkBoxRow($model,'rememberMe'); ?>
             
             
-            	<div class="form-actions">
+            	<div class="padding_top_medium padding_bottom_medium">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
             'label'=>UserModule::t('Enter'),
+            'htmlOptions'=>array('class'=>'btn-block'),
         )); ?>
-         <span class="margin_left_small"> <?php echo UserModule::t('If you don\'t have an account'); ?>, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate"><?php echo UserModule::t('Sign up here'); ?></a></span>
-	</div>
+        </div>
+         <span class=""> <?php echo UserModule::t('If you don\'t have an account'); ?>, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate"><?php echo UserModule::t('Sign up here'); ?></a></span>
           </fieldset>
         <?php $this->endWidget(); ?>
       </section>

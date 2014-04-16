@@ -25,7 +25,7 @@ if (isset($user)){
                     'size' => 'large',
                     'htmlOptions' => array(
                         'id' => 'btnMatch', 
-                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
                     ),
                 ));
                 ?>

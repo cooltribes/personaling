@@ -439,11 +439,13 @@ function clickPerfil(idPerfil){
 }
 
 //Al hacer click en el boton Looks para *
-function clickPersonal(status_register,urltuestilo){    
+function clickPersonal(status_register,urltuestilo,urltutipo){    
     
     if (status_register == -1){
     	$('#ModalRegistro').modal();
     } else if (status_register == 0){
+    	window.location.replace(urltutipo);
+    } else if (status_register == 1){
     	window.location.replace(urltuestilo);
     } else {
     $("#btnMatch").addClass("btn-danger");

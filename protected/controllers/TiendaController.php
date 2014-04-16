@@ -1068,12 +1068,12 @@ public function actionCategorias2(){
 		if (isset($userTmp)){	
 			
 			
-			echo "user".$userTmp->status_register;
-			echo "status".$userTmp->status;
-			echo "destacado".$userTmp->ps_destacado;
-			echo "email".$userTmp->email;
+			//echo "user".$userTmp->status_register;
+			//echo "status".$userTmp->status;
+			//echo "destacado".$userTmp->ps_destacado;
+			//echo "email".$userTmp->email;
 		     if ($userTmp->status_register !=User::STATUS_REGISTER_ESTILO){
-		     	echo "entro"; 
+		     	//echo "entro"; 
 		     	$_POST['perfil_propio'] = 0;
 				 $_POST['reset'] = true;
 				 $todosLosLooks = true;  

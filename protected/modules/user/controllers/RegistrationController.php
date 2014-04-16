@@ -181,10 +181,10 @@ class RegistrationController extends Controller
                                 //$this->redirect(Yii::app()->controller->module->returnUrl);
  								if (Yii::app()->params['registro']){
 	                                if ($profile->sex == 1) // mujer
-	                                    $this->redirect(array('/user/profile/tutipo'));
-	                                else if ($profile->sex == 2) // hombre
-	                                    $this->redirect(array('/tienda/look'));
-								} else {
+	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                    else if ($profile->sex == 2) // hombre
+	                                        $this->redirect(array('/tienda/look'));
+									} else {
 										 $this->redirect(array('/tienda/look'));
 									}
                             } else {
@@ -204,7 +204,7 @@ class RegistrationController extends Controller
 	                                    else if ($profile->sex == 2) // hombre
 	                                        $this->redirect(array('/tienda/look'));
 									} else {
-										 $this->redirect(array('/tienda/look'));
+										$this->redirect(array('/tienda/look'));
 									}
 
                                     // $this->redirect(array('/user/profile/tutipo'));									

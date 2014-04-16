@@ -174,7 +174,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
 
                 <hr/>
                 Al hacer clic en "Enviar Solicitud" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
-                <div class="form-actions"> 
+                <div class="padding_top_medium"> 
                         
 
                 <?php
@@ -183,6 +183,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                     'label' => 'Enviar Solicitud',
                     'type' => 'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size' => 'large', // null, 'large', 'small' or 'mini'
+                    'htmlOptions' => array('class'=>'btn-block'),
                 ));
                 ?>
                 </div>

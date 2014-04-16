@@ -329,7 +329,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                   $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                         'id' => 'verticalForm',
                         'action' => Yii::app()->createUrl('bolsa/comprar'),
-                        'htmlOptions' => array('class' => 'well text_align_center'),
+                        'htmlOptions' => array('class' => 'text_align_center'),
                     ));
 
                     echo CHtml::hiddenField('codigo_randon', rand());

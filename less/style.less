@@ -760,15 +760,17 @@ src: url('../fonts/entypo.woff'),
     top:80px;
     z-index:1029;
     #scroller{ z-index:1029;}
-    .input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle {
-                .border_radius(@radius:0);
-        }
+    .input-append .add-on:last-child,
+    .input-append .btn:last-child,
+    .input-append .btn-group:last-child > .dropdown-toggle {
+      .border_radius(@radius:0);
+    }
     .label-warning{ background:@color6}
     .navbar-inner{
         position:relative;
-        background:lighten(@lila,20%);
-        border-color: #FFFFFF #DDDDDD rgba(240, 233, 241, 0.8);
-        border-top: 1px solid #FFFFFF;
+        background: @color4;
+        // border-color: #FFFFFF #DDDDDD rgba(240, 233, 241, 0.8);
+        // border-top: 1px solid #FFFFFF;
         box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
         -ms-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
         -moz-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
@@ -776,20 +778,26 @@ src: url('../fonts/entypo.woff'),
         top: 0;
         .border_radius(@radius:0px);
         .filtros-header{
-             color: #999999;
+            color: @color3;
             display: block;
             font-size: 11px;
             font-weight: bold;
             line-height: 20px;
             margin-top: 6px;
             padding: 5px 10px 5px 0;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
 
             }
          .btn-group{
             margin-top:0}
-        }
+    }
+    .navbar .nav > li > a {
+      color: @color3;
+      text-shadow: none;
+    }          
+    dropdown.open.active > .dropdown-toggle{
+      background: @color9;
+    }
     .sub_menu{
         background:rgba(35, 31, 32, 0.1);
         border:1px solid darken(@color10,5%);
@@ -850,7 +858,7 @@ src: url('../fonts/entypo.woff'),
 }
 
 #notificacion_validar{
-  background-color: @color1;
+  background-color: @color4;
   color: white;
   margin-top: 4em;
   position: fixed;
@@ -2083,7 +2091,7 @@ src: url('../fonts/entypo.woff'),
         margin-bottom:50px;
         text-align:center;
         // background:url(../images/shdow_productos_tienda.png) no-repeat center bottom ;
-        padding-bottom:10px;
+        height: 352px;
         position:relative;
 
         .producto{
@@ -2463,8 +2471,11 @@ ul.yiiPager .last
                 .border_radius(@radius:0);
                 left:0;}
             .vcard {
-                background: none repeat scroll 0 0 #EEEEEE;
+                background: none repeat scroll 0 0 @color4;
                 border-top: 1px solid #DDDDDD;
+                a{
+                  color: @color3;
+                }
                 .muted{ margin-top:.8em;}
                 .muted, h5{
                         font-size:.8em;
@@ -2484,7 +2495,7 @@ ul.yiiPager .last
                     display: block;
                     margin-right:.5em;
                     margin-top: .6em;
-                    color: #555;
+                    color: @color3;
                     small{ font-size:.6em;}
                      }
             }

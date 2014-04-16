@@ -4,9 +4,10 @@ $this->breadcrumbs = array(
 );
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;
-if (isset($userTmp)){
-	$status_register = 	$userTmp->status_register;
+if (isset($user)){
+	$status_register = 	$user->status_register;
 }	
+
 ?>
 
 <div class="container">
@@ -23,8 +24,8 @@ if (isset($userTmp)){
                     'type' => $todosLosLooks?'':'danger',
                     'size' => 'large',
                     'htmlOptions' => array(
-                        'id' => 'btnMatch',
-                        'onclick' => 'js:clickPersonal('.$status_register.')',
+                        'id' => 'btnMatch', 
+                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
                     ),
                 ));
                 ?>
@@ -117,6 +118,7 @@ if (isset($userTmp)){
                                 $('#div_ocasiones').html(data.div);
                                 $('#div_ocasiones').show();
                                 $('#div_shopper').hide();
+                                $('.sub_menu').removeClass('hide');
                               }",
                                                 'data' => array('padreId' => $categoria->id)
                                                     ), array(//htmlOptions
@@ -263,7 +265,7 @@ if (isset($userTmp)){
         <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
 
 
-        <div class="navbar-inner sub_menu">
+        <div class="navbar-inner sub_menu hide">
             <div id="div_ocasiones"></div>
             <div id="div_shopper" style="display: none">
                 <form id="form_shopper">
@@ -770,8 +772,8 @@ if (isset(Yii::app()->session["modalOn"])) {
 
         $("#btnShoppers").click(function(e) {
             e.preventDefault();
+            $('.sub_menu').removeClass('hide');
         });
-
 
 
     });

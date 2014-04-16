@@ -4,9 +4,10 @@ $this->breadcrumbs = array(
 );
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;
-if (isset($userTmp)){
-	$status_register = 	$userTmp->status_register;
+if (isset($user)){
+	$status_register = 	$user->status_register;
 }	
+
 ?>
 
 <div class="container">
@@ -23,8 +24,8 @@ if (isset($userTmp)){
                     'type' => $todosLosLooks?'':'danger',
                     'size' => 'large',
                     'htmlOptions' => array(
-                        'id' => 'btnMatch',
-                        'onclick' => 'js:clickPersonal('.$status_register.')',
+                        'id' => 'btnMatch', 
+                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tutipo").'")',
                     ),
                 ));
                 ?>

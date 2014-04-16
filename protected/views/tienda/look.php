@@ -118,6 +118,7 @@ if (isset($user)){
                                 $('#div_ocasiones').html(data.div);
                                 $('#div_ocasiones').show();
                                 $('#div_shopper').hide();
+                                $('.sub_menu').removeClass('hide');
                               }",
                                                 'data' => array('padreId' => $categoria->id)
                                                     ), array(//htmlOptions
@@ -264,7 +265,7 @@ if (isset($user)){
         <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
 
 
-        <div class="navbar-inner sub_menu">
+        <div class="navbar-inner sub_menu hide">
             <div id="div_ocasiones"></div>
             <div id="div_shopper" style="display: none">
                 <form id="form_shopper">
@@ -771,8 +772,8 @@ if (isset(Yii::app()->session["modalOn"])) {
 
         $("#btnShoppers").click(function(e) {
             e.preventDefault();
+            $('.sub_menu').removeClass('hide');
         });
-
 
 
     });

@@ -583,19 +583,18 @@ class BolsaController extends Controller
                     /*
                      * Para pago con tarjeta y paypal
                      */
+                    $nombreProducto = "Looks: ".  $bolsa->getLooks().
+                            " - Productos: ".$bolsa->getProductos();
                     
                     $tipo_pago = Yii::app()->getSession()->get('tipoPago');
-                    define('customerid', '396349057');
-                    define('terminal',   '999');
-                    define('secret',     'qwerty1234567890uiop');
                     $idPagoAztive = $tipo_pago == 5? 8:5;
                     $monto = Yii::app()->getSession()->get('total');
                     $optional = array(                        
                         'name'          => 'Personaling Enterprise S.L.',
-                        'product_name'  => 'Pedido',                             
+                        'product_name'  => $nombreProducto,                             
                     );                                                    
 
-                    $pago = new AzPay(customerid, terminal, secret);
+                    $pago = new AzPay();
 
                     $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);                    
                     
@@ -2416,6 +2415,67 @@ class BolsaController extends Controller
             
             
             $this->render('errorGC',array('mensaje'=>$mensaje));
+	}
+        
+        /**
+         * Urls para recibir las notificaciones del proceso de compra
+         * con la API de Aztive
+         */
+        public function actionNotificacionAzt(){
+            
+            $sCustomerID      = isset($_GET['onepay_customer_code']) ? $_GET['onepay_customer_code'] : "-1";
+            $sCustomerTerminal = isset($_GET['onepay_customer_terminal']) ? $_GET['onepay_customer_terminal'] : '';
+            $sOrderID           = isset($_GET['onepay_customer_order'])? $_GET['onepay_customer_order']    : '';
+            $sSignature         = isset($_GET['onepay_signature'])? $_GET['onepay_signature']         : '';
+            $lang               = isset($_GET['lang'])? $_GET['lang'] : 'es';
+            // datos de Transaccion
+            $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';
+            $opAuthCode = isset($_GET['onepay_authorization_code']) ? $_GET['onepay_authorization_code']: '';
+            $opOrder    = isset($_GET['onepay_customer_order'])? $_GET['onepay_customer_order']    : '';
+            
+            
+            $op = new AzPay ();
+            
+            if (isset($_GET['action']) && $_GET['action'] == "async") {
+
+                if ($op->validateResponseData ($_GET)) {
+                    echo "ACK=true";
+                    //realizar todas las tareas de prestación de servicio que no sean mostrar por pantalla. P.e.: BBDD, vaciar carrito, etc
+                    if ( $opResponse != "0000" ) {
+                        // ini compra Ko //
+                        
+                        // end compra Ko //
+                    } else if ($opResponse == "0000") {
+                        // ini compra OK //
+
+                        // end compra OK //
+                    }
+                } else {
+                    echo "ACK=false";
+                }
+                error_log("[Notification test]" . print_r($_GET, true));
+                exit;
+            }
+            
+	}
+        /**
+         * Urls para recibir las notificaciones del proceso de compra
+         * con la API de Aztive
+         */
+        public function actionOkAzt(){
+		
+            
+	}
+        /**
+         * Urls para recibir las notificaciones del proceso de compra
+         * con la API de Aztive
+         */
+        public function actionKoAzt(){
+	
+            echo "NO SIRVE<br>";
+            
+            error_log("[Notification test]" . print_r($_GET, true));
+            
 	}
         
         

@@ -225,7 +225,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 		            'type'=>'danger',
 		            'size'=>'large',
 		            'label'=>'Guardar en mis direcciones',
-		            'id'=>'agregar'
+		            'id'=>'agregar',
+		            'htmlOptions' => array('class'=> 'span4 no_margin_left'),
 			        )); 				
 			        ?>
                </div>

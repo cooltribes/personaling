@@ -179,11 +179,14 @@ class RegistrationController extends Controller
                                 $identity->authenticate();
                                 Yii::app()->user->login($identity, 0);
                                 //$this->redirect(Yii::app()->controller->module->returnUrl);
-
-                                if ($profile->sex == 1) // mujer
-                                    $this->redirect(array('/user/profile/tutipo'));
-                                else if ($profile->sex == 2) // hombre
-                                    $this->redirect(array('/tienda/look'));
+ 								if (Yii::app()->params['registro']){
+	                                if ($profile->sex == 1) // mujer
+	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                    else if ($profile->sex == 2) // hombre
+	                                        $this->redirect(array('/tienda/look'));
+									} else {
+										 $this->redirect(array('/tienda/look'));
+									}
                             } else {
                                 if (!Yii::app()->controller->module->activeAfterRegister && !Yii::app()->controller->module->sendActivationMail) {
                                     Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
@@ -195,10 +198,14 @@ class RegistrationController extends Controller
                                     $identity->authenticate();
                                     Yii::app()->user->login($identity, 0);
 
-                                    if ($profile->sex == 1) // mujer
-                                        $this->redirect(array('/user/profile/tutipo'));
-                                    else if ($profile->sex == 2) // hombre
-                                        $this->redirect(array('/tienda/look'));
+                                    if (Yii::app()->params['registro']){
+	                                    if ($profile->sex == 1) // mujer
+	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                    else if ($profile->sex == 2) // hombre
+	                                        $this->redirect(array('/tienda/look'));
+									} else {
+										$this->redirect(array('/tienda/look'));
+									}
 
                                     // $this->redirect(array('/user/profile/tutipo'));									
                                 } else {

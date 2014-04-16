@@ -381,9 +381,10 @@ border: 0;
 }
 
 .btn-danger {
-  color: #ffffff;
-  background: @color9;
+  background: @color4;
   border: 0;
+  color: #ffffff;
+  .transition_all;
 }
 
 .btn-danger:hover,
@@ -392,7 +393,8 @@ border: 0;
 .btn-danger.disabled,
 .btn-danger[disabled] {
   background-color: @color4;
-  color:#fff;}
+  color: @color9;
+}
 
 .btn-success {
   color: #ffffff;
@@ -758,15 +760,17 @@ src: url('../fonts/entypo.woff'),
     top:80px;
     z-index:1029;
     #scroller{ z-index:1029;}
-    .input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle {
-                .border_radius(@radius:0);
-        }
+    .input-append .add-on:last-child,
+    .input-append .btn:last-child,
+    .input-append .btn-group:last-child > .dropdown-toggle {
+      .border_radius(@radius:0);
+    }
     .label-warning{ background:@color6}
     .navbar-inner{
         position:relative;
-        background:lighten(@lila,20%);
-        border-color: #FFFFFF #DDDDDD rgba(240, 233, 241, 0.8);
-        border-top: 1px solid #FFFFFF;
+        background: @color4;
+        // border-color: #FFFFFF #DDDDDD rgba(240, 233, 241, 0.8);
+        // border-top: 1px solid #FFFFFF;
         box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
         -ms-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
         -moz-box-shadow: 0 -1px rgba(0, 0, 0, 0.1);
@@ -774,20 +778,26 @@ src: url('../fonts/entypo.woff'),
         top: 0;
         .border_radius(@radius:0px);
         .filtros-header{
-             color: #999999;
+            color: @color3;
             display: block;
             font-size: 11px;
             font-weight: bold;
             line-height: 20px;
             margin-top: 6px;
             padding: 5px 10px 5px 0;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
 
             }
          .btn-group{
             margin-top:0}
-        }
+    }
+    .navbar .nav > li > a {
+      color: @color3;
+      text-shadow: none;
+    }          
+    dropdown.open.active > .dropdown-toggle{
+      background: @color9;
+    }
     .sub_menu{
         background:rgba(35, 31, 32, 0.1);
         border:1px solid darken(@color10,5%);
@@ -1178,7 +1188,7 @@ src: url('../fonts/entypo.woff'),
   background: #ffd660;
   border: 11px solid #ffd660;
   .slide-content{
-    background: url(../images/model-slide1.jpg) no-repeat 250px 66px;
+    background: url(../images/model-slide1.jpg) no-repeat 20% 66px;
       a.btn-call2action{
         border: 2px solid @color4;
         display: block;
@@ -1206,7 +1216,7 @@ src: url('../fonts/entypo.woff'),
   background: #99e6f9;
   border: 11px solid #99e6f9;
   .slide-content{
-    background: url(../images/model-slide2.jpg) no-repeat 250px 50px;  
+    background: url(../images/model-slide2.jpg) no-repeat 20% 50px;  
     h2{
       line-height: 55px;
     }
@@ -1221,7 +1231,10 @@ src: url('../fonts/entypo.woff'),
   background: #f2efe8;
   border: 11px solid #f2efe8;
   .slide-content{
-    background: url(../images/model-slide3.jpg) no-repeat 170px 50px;    
+    background: url(../images/model-slide3.jpg) no-repeat 8% 50px;    
+    .copy-right{
+      padding-right: 2em; 
+    }
     a.btn-call2action{
       border: 2px solid @color4;
       padding: 0 .2em;
@@ -2458,8 +2471,11 @@ ul.yiiPager .last
                 .border_radius(@radius:0);
                 left:0;}
             .vcard {
-                background: none repeat scroll 0 0 #EEEEEE;
+                background: none repeat scroll 0 0 @color4;
                 border-top: 1px solid #DDDDDD;
+                a{
+                  color: @color3;
+                }
                 .muted{ margin-top:.8em;}
                 .muted, h5{
                         font-size:.8em;
@@ -2479,7 +2495,7 @@ ul.yiiPager .last
                     display: block;
                     margin-right:.5em;
                     margin-top: .6em;
-                    color: #555;
+                    color: @color3;
                     small{ font-size:.6em;}
                      }
             }
@@ -2796,11 +2812,14 @@ img[alt="Loading"]{
                     color:#666;
                     line-height: 35px;
                     margin-top: -7px;}
-                .btn-link-active .entypo{color:@color1 !important;}
+                .btn-link-active .entypo{color:@color4 !important;}
                 }
             .share_like:hover{
                 opacity:1;
-                .btn-link{ .color1}
+                .btn-link{ 
+                  .color4;
+                  text-decoration: none;
+                }
             }
             .label{
                 display:none; /* Estilo provisional hasta que se activen las promociones */
@@ -3740,7 +3759,7 @@ img[alt="Loading"]{
       #scroller-anchor #scroller{
          width:1170px;
      }
-
+  
 
  }
 
@@ -3756,6 +3775,19 @@ img[alt="Loading"]{
         font-size: 11px;
         line-height: 14px;
     }
+    // Reponsive Slider home ON
+
+    .slide-1,.slide-2,.slide-3{
+      .slide-content{
+        .copy-right{
+          padding: 4em 2em 0 0;
+        }
+      }
+    }
+    .slide-3 .slide-content{
+      background-position: -235px 50px;
+    }
+    // Reponsive Slider home OFF
 
 }
 
@@ -3771,7 +3803,45 @@ img[alt="Loading"]{
         font-size: 12px;
         line-height: 14px;
     }
-
+  
+    // Responsive del slider home ON
+    .slide-1 .slide-content{
+      background-size: 170px auto;
+      background-position: 21% 120px;
+    }
+    .carousel .item img{
+      width: 180px;
+    }
+    .slide-1,.slide-2,.slide-3{
+      .slide-content .copy-right{
+          padding: 2em 2em 0 0;
+          h2{
+            font-size: 32px;
+            margin: 30px auto;
+          }
+        } 
+    } 
+    .slide-3{
+      .slide-content{
+        background-position-x: -234px;      
+      }
+    }
+    .slide-2{
+      .slide-content{
+        background-position: 6% 50px;
+      }
+    }    
+    .slide-1 a.btn-call2action{
+      font-size: 22px !important;
+      margin: 40px auto !important;
+    }
+    // Responsive del slider home OFF
+    .wrapper_home,#page{
+      margin-top: 0;
+    }    
+    .navbar-fixed-top{
+      margin-bottom: 0;
+    }
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
@@ -3779,7 +3849,7 @@ img[alt="Loading"]{
     }
     #myLogo a, #site-title a , .brand{
         position: relative;
-      width: 37px;
+      width: 210px;
 
      }
           .navbar .brand{ padding:8px 0 12px}
@@ -3797,13 +3867,67 @@ img[alt="Loading"]{
     body{ background: none;}
      .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}
      .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
-
+    .slide-1,.slide-2,.slide-3{
+      .slide-content {
+        background-image: none;
+        .copy-right{
+          padding: 0;
+          float: none;
+          .border-bottom{
+            width: 90%;
+            margin: 0 auto;
+            h2{
+              font-size: 30px;
+            }
+          }
+        }
+      } 
+    }
+    // Reponsive Slider home OFF
+    .slide-1,.slider-2 {
+      .slide-content {
+        h2{
+          line-height: 40px;
+        }
+      }
+    }
+    .slide-3 {
+      .slide-content {
+        a.btn-call2action{
+        display: inline-block;
+        } 
+        h2{
+          line-height: 47px;
+        }
+      }
+    }
+    .slide-1 .slide-content a.btn-call2action{
+      margin: 35px auto;
+    }
+    .slide-1,.slide-2,.slide-3 {
+      .slide-content {
+        .copy-right{
+          margin-top: 40px;
+        }
+      }
+    }    
+    .carousel{
+      // left: 0;
+      // position: absolute;
+      // right: 0;
+    }    
+    // Reponsive Slider home ON
+    .wrapper_home,#page{
+      margin-top: 0;
+    }    
+    .navbar-fixed-top{
+      margin-bottom: 0;
+    }
 }
 /* Landscape phones and down */
 @media (max-width: 480px) {
     #myLogo a, #site-title a , .brand{
-        position: relative;
-      width: 37px;
+      position: relative;
   }
   #wrapper_footer{
     .padding_left;

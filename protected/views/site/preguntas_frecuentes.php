@@ -19,7 +19,7 @@ $this->breadcrumbs=array(
 
 <div class="row">
   <div class="span8">
-    <div class="box_1 bg_mancha_1 ">
+    <div class="box_1">
       <div class="page-header">
         <h1>Preguntas Frecuentes</h1>
       </div>

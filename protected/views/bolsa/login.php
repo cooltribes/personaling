@@ -43,7 +43,7 @@
   <div class="row">
     <div class="span6 offset3">
 
-      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+      <article class="bg_color3 margin_top text_align_center margin_bottom_small padding_small box_1">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			'id'=>'login-form',
 			'htmlOptions'=>array('class'=>'personaling_form'),
@@ -76,12 +76,13 @@
             <?php //echo $form->checkBoxRow($model,'rememberMe'); ?>
             
             
-        <div class="form-actions">
+        <div class="">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
             'label'=>Yii::t('contentForm','Next'),
+            'htmlOptions'=>array('class'=>'span5'),
         )); ?>
 	</div>
           </fieldset>

@@ -2,7 +2,14 @@
 $this->breadcrumbs = array(
     'Tu Personal Shopper',
 );
+$user = User::model()->findByPk(Yii::app()->user->id);
+$status_register = -1;
+if (isset($user)){
+	$status_register = 	$user->status_register;
+}	
+
 ?>
+
 <div class="container">
     <div class="span12">
         <!--    <h1>Todos los looks</h1>-->
@@ -13,11 +20,12 @@ $this->breadcrumbs = array(
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Looks para ti',
                     'buttonType' => 'button',
-                    'type' => 'danger',
+                    
+                    'type' => $todosLosLooks?'':'danger',
                     'size' => 'large',
                     'htmlOptions' => array(
-                        'id' => 'btnMatch',
-                        'onclick' => 'js:clickPersonal()',
+                        'id' => 'btnMatch', 
+                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tutipo").'")',
                     ),
                 ));
                 ?>
@@ -28,7 +36,7 @@ $this->breadcrumbs = array(
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Todos los looks',
                     'buttonType' => 'button',
-                    //'type' => 'danger',
+                    'type' => $todosLosLooks?'danger':'',
                     'size' => 'large',
                     //'disabled' => true,
                     'htmlOptions' => array(
@@ -43,9 +51,9 @@ $this->breadcrumbs = array(
 
             </div>
         </div>
-        
+        <!--
         <a href="#ModalRegistro" role="button" class="btn" data-toggle="modal">Launch modal registro</a>
-
+-->
 
     </div>
     <div class="alert in" id="alert-msg" style="display: none">
@@ -110,6 +118,7 @@ $this->breadcrumbs = array(
                                 $('#div_ocasiones').html(data.div);
                                 $('#div_ocasiones').show();
                                 $('#div_shopper').hide();
+                                $('.sub_menu').removeClass('hide');
                               }",
                                                 'data' => array('padreId' => $categoria->id)
                                                     ), array(//htmlOptions
@@ -256,7 +265,7 @@ $this->breadcrumbs = array(
         <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
 
 
-        <div class="navbar-inner sub_menu">
+        <div class="navbar-inner sub_menu hide">
             <div id="div_ocasiones"></div>
             <div id="div_shopper" style="display: none">
                 <form id="form_shopper">
@@ -763,8 +772,8 @@ if (isset(Yii::app()->session["modalOn"])) {
 
         $("#btnShoppers").click(function(e) {
             e.preventDefault();
+            $('.sub_menu').removeClass('hide');
         });
-
 
 
     });

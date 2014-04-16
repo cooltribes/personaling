@@ -367,71 +367,14 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                                 ),
                             )
                         );
-                      
-                     
-                            $this->beginWidget('bootstrap.widgets.TbModal', array(
-                                'id' => 'modalPrueba',
-                                    ), array(
-                                'class' => 'modal fade hide',
-                                'tabindex' => "-1",
-                                'role' => "dialog",
-                                'aria-labelledby' => "myModalLabel",
-                                'aria-hidden' => "true",
-                                    //'style' => "display: none;",
-                            ))
-                            ?>
-
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h3 id="myModalLabel">Prueba</h3>
-                            </div>
-                        <div class="modal-body">
-                        </div>
-                        <div class="modal-footer text_align_left">
-
-                        </div>                    
-
-                        <?php 
-                        $this->endWidget() ;
-                                
-                       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-			    'id'=>'verticalForm',
-			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
-			    'htmlOptions'=>array('class'=>'well text_align_center'),
-			)); 
-          	
-			echo CHtml::hiddenField('codigo_randon',rand());
-                        echo CHtml::hiddenField('admin',$admin);
-                        echo CHtml::hiddenField('user',$user);
                         
-                        define('customerid', '396349057');
-                        define('terminal',   '999');
-                        define('secret',     'qwerty1234567890uiop');
-                        $idPagoAztive = $tipo_pago == 5? 8:5;
-                        $monto = Yii::app()->getSession()->get('total');
-                        $optional = array(                        
-                            'name'          => 'Personaling Enterprise S.L.',
-                            'product_name'  => 'Pedido', 
-                            'url_notification'  => CController::createUrl("confirmar"), 
-                            'url_ok'  => CController::createUrl("confirmar"), 
-                            'url_ko'  => CController::createUrl("confirmar"), 
-                            'url'  => CController::createUrl("confirmar"), 
-                            'urlOk'  => CController::createUrl("confirmar"), 
-                        );                                                    
-                        
-//                        $cData = array("url_notification" => "confirmarNelson");
-                        
-                        $pago = new AzPay(customerid, terminal, secret);
-                        
-                        $url = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);
-                        
-                        
+                        echo "<div class='well text_align_center'>";
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'type'=>'warning',        
                             //'buttonType'=>'button',
                             'size'=>'large',
                             'label'=>$tipo_pago==5?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Pay with PayPal'),
-                            'url'=> $url, // action
+                            'url'=> $urlAztive, // action
                             'icon'=>'lock white',
                             'htmlOptions'=>array(
         //                        'onclick'=>'js:enviar_pago();'
@@ -440,8 +383,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 //                                'data-target' => "#modalPrueba",
                                 )
                         )); 
-		
-                         $this->endWidget(); 
+                        
+                        echo "</div>";
+                        
 		  }
 		  ?>
           
@@ -513,10 +457,6 @@ $(document).ready(function(){
 //        
 //    });
 
-
-//    $('#modalPrueba').modal({
-//      remote: "<?php echo $url; ?>"
-//    })
     
 });
     

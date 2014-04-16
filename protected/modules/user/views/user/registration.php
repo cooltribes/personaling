@@ -207,7 +207,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 	</div>
             <hr/>
              Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
-	<div class="form-actions"> 
+	<div class="padding_top_medium "> 
 		
 			
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -215,7 +215,9 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		    'label'=>'Siguiente',
 		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'large', // null, 'large', 'small' or 'mini'
+		    'htmlOptions'=>array('class'=>'btn-block'),
 		)); ?>
+
 	</div>
 
 </fieldset>

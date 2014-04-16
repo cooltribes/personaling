@@ -42,7 +42,7 @@
 	
   <div class="row">
     <div class="span6 offset3">
-
+      <h1><?php echo Yii::t('contentForm','Confirm your credentials'); ?></h1>
       <article class="bg_color3 margin_top text_align_center margin_bottom_small padding_small box_1">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			'id'=>'login-form',
@@ -55,7 +55,7 @@
 			),
 		)); ?>
           <fieldset>
-            <legend > <?php echo Yii::t('contentForm','Confirm your credentials'); ?>: </legend>
+            <!-- <legend >  </legend> -->
             
             <div class="control-group">
             	 <div class="controls"> 

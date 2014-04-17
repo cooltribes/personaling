@@ -329,7 +329,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                   $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                         'id' => 'verticalForm',
                         'action' => Yii::app()->createUrl('bolsa/comprar'),
-                        'htmlOptions' => array('class' => 'well text_align_center'),
+                        'htmlOptions' => array('class' => 'text_align_center'),
                     ));
 
                     echo CHtml::hiddenField('codigo_randon', rand());
@@ -354,7 +354,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                   /*Si es en españa bankCard o Paypal*/  
 		  }else if($tipo_pago == 5  || $tipo_pago == 6){ 
           	
-			$this->widget('ext.fancybox.EFancyBox', array(
+                      if($tipo_pago == 5){
+                          
+                        $this->widget('ext.fancybox.EFancyBox', array(
                             'target'=>'#btn-ComprarEsp',
                             'config'=>array(
                                 "type" => "iframe",                        
@@ -367,6 +369,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                                 ),
                             )
                         );
+                      }
                         
                         echo "<div class='well text_align_center'>";
                         $this->widget('bootstrap.widgets.TbButton', array(

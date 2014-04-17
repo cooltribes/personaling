@@ -107,14 +107,15 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		echo CHtml::hiddenField('facebook_request',$requests[0]);
 	}
 	?>
-	
+	<?php echo $referencia; ?>
 <div class="control-group row-fluid">
 	<div class="controls">
 	<!--[if IE 9]> 
 		<label>Correo:</label>
 	<![endif]--> 
-	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
+	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12",'readonly'=>$referencia=='look'?true:false)); 
 	echo $form->error($model,'email');
+	echo CHtml::hiddenField('referencia', $referencia, array('id'=>'referencia', 'name'=>'referencia'));
 	?>
 	</div>
 </div>

@@ -27,10 +27,10 @@ echo CHtml::hiddenField('user',$user);
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
-      <div class="middle-past">
+      <div class="middle-past dos">
         <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
     </div>
-      <div class="middle-done">
+      <div class="middle-done tres">
         <?php echo Yii::t('contentForm','Payment <br> method'); ?>
     </div>
       <div class="last-not_done">

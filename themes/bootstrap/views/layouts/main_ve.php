@@ -372,7 +372,7 @@ if(!Yii::app()->user->isGuest){
   function HandlerReady () {
     // //Boton Notificaciones
 
-    contenidoMensajes = contenidoMensajes + '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-warning">Ver notificaciones</a></div>';
+    contenidoMensajes = contenidoMensajes + '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-danger">Ver notificaciones</a></div>';
 
     $('#btn-notifications').popover(
     {
@@ -508,7 +508,7 @@ if(!Yii::app()->user->isGuest){
 
     //------------Generar html para poner en Popover OFF---------------//
 
-    textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-warning">Ver carrito</a></div>';
+    textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger">Ver carrito</a></div>';
 
     if( listaCarrito != "" ){
         textShoppingCart = listaCarrito + textShoppingCart;

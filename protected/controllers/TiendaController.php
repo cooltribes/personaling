@@ -1075,7 +1075,7 @@ public function actionCategorias2(){
 		     if ($userTmp->status_register !=User::STATUS_REGISTER_ESTILO){
 		     	//echo "entro"; 
 		     	$_POST['perfil_propio'] = 0;
-				 $_POST['reset'] = true;
+				// $_POST['reset'] = true;
 				 $todosLosLooks = true;  
 			 }  
 		} else {
@@ -1238,7 +1238,8 @@ public function actionCategorias2(){
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
-                if ($userTmp->status_register !=User::STATUS_REGISTER_ESTILO){
+				$status_register_tmp = isset($userTmp->status_register)?$userTmp->status_register:-1;
+                if ($status_register_tmp !=User::STATUS_REGISTER_ESTILO){
                   	$rangosArray = Look::model()->getRangosPrecios();
 					  $profile = new Profile;
                   	$this->render('look', array(

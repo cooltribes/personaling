@@ -6,27 +6,45 @@ $this->breadcrumbs=array(
 );
 ?>
 	
-	
-	<hr/>
-	
-	<div class='alert alert-error margin_top_medium margin_bottom'>
-		<h1><?php echo Yii::t('contentForm','It was not possible to continue with the order.'); ?></h1>
-	   	<br/>
-	   	<p><?php echo Yii::t('contentForm','Reason').': '.$mensaje; ?></p>
-	</div>
-	
-	<p> <?php echo Yii::t('contentForm','In 10 seconds this page will be redirected to the Shopping Bag.'); ?>/p>
-	<hr/>
-		<a href="<?php echo Yii::app()->createUrl('tienda/index'); ?>" class="btn btn-danger" title="seguir comprando">
-			<?php echo Yii::t('contentForm','Keep buying'); ?></a>
-		 </div>
-<script>
+    <hr/>
 
-	$(document).ready(function() {
-		setTimeout(function(){
-			window.location = "<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
-		}, 10000); /* 5 seconds */
-	});
+    <div class='alert alert-error margin_top_medium margin_bottom'>
+            <h1><?php echo Yii::t('contentForm','It was not possible to continue with the order.'); ?></h1>
+            <br/>
+            <p><?php echo '<b>'.Yii::t('contentForm','Reason').':</b> '.$mensaje; ?></p>
+    </div>
+
+    <p> <?php echo Yii::t('contentForm','In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag'); ?></p>
+    
+    <hr/>
+    
+    <a href="<?php echo Yii::app()->createUrl('bolsa/pagos'); ?>" class="btn btn-danger" title="Intentar nuevamente"><?php echo Yii::t('contentForm','Intentar nuevamente'); ?></a> </div>
 	
+
+<script type="text/javascript">
+    
+var secs = 10;
+
+function timer()
+{        
+    setTimeout(function(){            
+
+        secs--;            
+        $("#segundos").text(secs);
+        if(secs == 1){
+            window.location = "<?php echo Yii::app()->createUrl('bolsa/pagos'); ?>";
+        }else{
+            timer();
+        }    
+
+    }, 1000); 
+}
+
+
+$(document).ready(function() {
+
+    timer();
+
+});
 	
 </script>

@@ -1,5 +1,14 @@
 <?php
 // Estado: 0 -> default, 1 -> Aprobado, 2 -> rechazado
+
+/*
+ * TIPO DE PAGO: 
+ * 1 - Deposito / Transf
+ * 2 - TDC
+ * 3 - Balance
+ * 4 - Banking Card (Aztive)
+ * 5 - PayPal (Aztive)
+ */
 /**
  * This is the model class for table "{{detalle}}".
  *

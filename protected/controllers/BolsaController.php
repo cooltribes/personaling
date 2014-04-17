@@ -587,7 +587,7 @@ class BolsaController extends Controller
                             " - Productos: ".$bolsa->getProductos();
                     
                     $tipo_pago = Yii::app()->getSession()->get('tipoPago');
-                    $idPagoAztive = $tipo_pago == 5? 8:5;
+                    $idPagoAztive = $tipo_pago == 5? 8:999;
                     $monto = Yii::app()->getSession()->get('total');
                     $optional = array(                        
                         'name'          => 'Personaling Enterprise S.L.',
@@ -1084,8 +1084,6 @@ class BolsaController extends Controller
 
                         /*ID del usuario propietario de la bolsa*/
                         $usuario = $admin ? $_POST["user"] : Yii::app()->user->id;
-		 	
-                        
                         
 			$user = User::model()->findByPk($usuario);
 			$bolsa = Bolsa::model()->findByAttributes(array(
@@ -1293,29 +1291,48 @@ class BolsaController extends Controller
 							}
 								
 							
-						}// estado                                                                                                
+						}// estado                                                                                                                                                
                                                 
-                                                /*Pagar comision a las PS involucradas en la venta*/
-                                                //Orden::model()->pagarComisiones($orden);  
-                                                
-                                                
-						// cuando finalice entonces envia id de la orden para redireccionar
-						/*
-						echo CJSON::encode(array(
-							'status'=> 'ok',
-							'orden'=> $orden->id,
-							'total'=> $orden->total,
-							'respCard' => $respCard,
-							'descuento'=>$orden->descuento,
-							'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
-						));*/
-						//$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));
 					} else { 
 						$this->redirect($this->createAbsoluteUrl('bolsa/error',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
 					}			
 			        break;
-			    case 3:
-			        echo "i equals 2";
+                            case 5: //Aztive Banking Card
+			        echo "NELSON";
+                                $detalle = new Detalle;                                
+                                $detalle->nTransferencia = $resultado["idOutput"];
+                                $detalle->nombre = $tarjeta->nombre;
+                                $detalle->cedula = $tarjeta->ci;
+                                $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+                                $detalle->fecha = date("Y-m-d H:i:s");
+                                $detalle->banco = 'TDC';
+                                $detalle->estado = 1; // aceptado
+                                if(!$detalle->save()){
+                                        Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
+                                }
+                                $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+                                $dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
+                                $orden = new Orden;
+                                $orden->subtotal = Yii::app()->getSession()->get('subtotal');
+                                $orden->descuento = 0;
+                                $orden->envio = Yii::app()->getSession()->get('envio');
+                                $orden->iva = Yii::app()->getSession()->get('iva');
+                                $orden->descuentoRegalo = 0;
+                                $orden->total = Yii::app()->getSession()->get('total');
+                                $orden->seguro = Yii::app()->getSession()->get('seguro');
+                                $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+                                $orden->estado = Orden::ESTADO_CONFIRMADO; // en espera de pago
+                                $orden->bolsa_id = $bolsa->id; 
+                                $orden->user_id = $usuario;
+                                $orden->direccionEnvio_id = $dirEnvio->id;
+                                $orden->direccionFacturacion_id = $dirFacturacion->id;
+                                $orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
+                                $orden->peso = Yii::app()->getSession()->get('peso');
+                                $total_orden = round(Yii::app()->getSession()->get('total'), 2);
+                                $orden->total = $total_orden;
+                                Yii::app()->end();
+                                
+                                
 			        break;
 			}
 				// Generar factura
@@ -1780,11 +1797,30 @@ class BolsaController extends Controller
 		//$this->render('pedido',array('orden'=>$orden));
 	}
 */
+        
+        /*
+         * CODIGOS DE ERROR:
+         * 001 - Error con datos errados enviados desde Aztive
+         * otros - Error pagando con Banking Card o Paypal de Aztive
+         */
 	public function actionError(){
-		$mensaje = 	$_GET['mensaje'];
-		if ($mensaje=="The CardNumber field is not a valid credit card number.")
-			$mensaje = "El número de tarjeta que introdujó no es un número válido.";
-		$this->render('error',array('mensaje'=>$mensaje));
+		
+            $codigo = 	isset($_GET['codigo']) ? $_GET['codigo'] : "000";
+            $mensaje = 	$_GET['mensaje'];
+            
+            if($codigo != "000"){                
+                
+                
+            }else{
+                
+                if ($mensaje=="The CardNumber field is not a valid credit card number.")
+                    $mensaje = "El número de tarjeta que introdujó no es un número válido.";
+            }                
+                
+            $this->render('error',array(
+                'mensaje'=>$mensaje,
+                'codigo'=>$codigo,
+                    ));
 	}
 	/*
 	 * 
@@ -2439,21 +2475,10 @@ class BolsaController extends Controller
             if (isset($_GET['action']) && $_GET['action'] == "async") {
 
                 if ($op->validateResponseData ($_GET)) {
-                    echo "ACK=true";
-                    //realizar todas las tareas de prestación de servicio que no sean mostrar por pantalla. P.e.: BBDD, vaciar carrito, etc
-                    if ( $opResponse != "0000" ) {
-                        // ini compra Ko //
-                        
-                        // end compra Ko //
-                    } else if ($opResponse == "0000") {
-                        // ini compra OK //
-
-                        // end compra OK //
-                    }
+                    echo "ACK=true";                   
                 } else {
                     echo "ACK=false";
-                }
-                error_log("[Notification test]" . print_r($_GET, true));
+                }                
                 exit;
             }
             
@@ -2463,7 +2488,34 @@ class BolsaController extends Controller
          * con la API de Aztive
          */
         public function actionOkAzt(){
-		
+            
+            $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
+            $op = new AzPay();
+            
+            if ($op->validateResponseData($_GET)) {
+                
+                echo "<pre>";
+                print_r($_GET);
+                echo "</pre>";
+
+            } else {
+                
+                $opResponse = "001";               
+                $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";                
+                $this->redirect($this->createAbsoluteUrl('bolsa/error',
+                        array(
+                            'codigo'=>$opResponse,
+                            'mensaje'=>$mensaje,
+                        ),
+                        'http'));
+            }  
+            
+//            $this->redirect($this->createAbsoluteUrl('bolsa/error',
+//                        array(
+//                            'codigo'=>$opResponse,
+//                            'mensaje'=>$mensaje,
+//                        ),
+//                        'http'));  
             
 	}
         /**
@@ -2471,11 +2523,28 @@ class BolsaController extends Controller
          * con la API de Aztive
          */
         public function actionKoAzt(){
-	
-            echo "NO SIRVE<br>";
+           
+            $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             
-            error_log("[Notification test]" . print_r($_GET, true));
+            $op = new AzPay();
+
+            if ($op->validateResponseData($_GET)) {
+                
+                $mensaje = "Hubo un error realizando el pago, intenta de nuevo.";                
+
+            } else {
+                
+                $opResponse = "001";               
+                $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";                
+                
+            }  
             
+            $this->redirect($this->createAbsoluteUrl('bolsa/error',
+                        array(
+                            'codigo'=>$opResponse,
+                            'mensaje'=>$mensaje,
+                        ),
+                        'http'));            
 	}
         
         

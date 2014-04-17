@@ -19,7 +19,7 @@ return CMap::mergeArray(
 			'adminEmail'=>'rpalma@upsidecorp.ch',
 		    'PRONUNCIACION' => 'Española',
 		    'currSym'=>'E',
-		    'noShipping'=> '1',
+		    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
 		    'IVA' => '0.21',
 		    'IVAtext' => '21%',	
 		    'registro' => false,	

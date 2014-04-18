@@ -6,7 +6,7 @@ class DireccionController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias'),
+				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias','poblacionesseur'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -199,7 +199,69 @@ class DireccionController extends Controller
 		}
 		
 	}
-
+	
+	public function actionProvinciasSeur(){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		$params2 = array(
+			'in0'=>'',
+			'in1'=>'',
+			'in2'=>'',
+			'in3'=>'WSPERSONALING',
+			'in4'=>'ORACLE',
+			
+			);
+		$response = $soapclient->infoProvinciasStr($params2);
+		$xml = simplexml_load_string($response->out);
+		foreach ($xml as $reg){
+			$provincia= new Provincia;
+			$provincia->nombre=$reg->NOM_PROVINCIA;
+			$provincia->pais_id;
+			/*
+			if($provincia->save())
+				echo "OK <br/>";
+			else
+				echo "BAD <br/>";*/
+		}
+		
+	}
+	
+	public function actionPoblacionesSeur(){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		$params4 = array(
+			'in0'=>'',
+			'in1'=>'%%',
+			'in2'=>'',
+			'in3'=>'',
+			'in4'=>'',
+			'in5'=>'WSPERSONALING',
+			'in6'=>'ORACLE',
+			
+			);
+		$response = $soapclient->infoPoblacionesCortoStr($params4);
+		$xml = simplexml_load_string($response->out);
+		foreach ($xml as $reg){
+			
+			$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_encode($reg->NOM_PROVINCIA)));
+			if(!is_null($provincia)){
+				$ciudad= new Ciudad;
+				$ciudad->nombre=$reg->NOM_POBLACION;
+				$ciudad->provincia_id=$provincia->id;
+				$ciudad->ruta_id=$provincia->pais_id;
+				$ciudad->cod_zoom=0;
+				/*	
+				if($ciudad->save())
+					echo "OK <br/>";
+				else
+					echo "BAD <br/>";*/
+			}
+			else
+					echo "WORSE <br/>";
+			
+			
+		}
+		
+	}
+	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

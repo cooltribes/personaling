@@ -259,10 +259,17 @@ return array(
                 'metodosPago'=> array(
                     'bkCard' => true,
                     'paypal' => true,
-                    'depositoTransferencia' => false,
+                    'depositoTransferencia' => true,
                     'instapago' => false,
                     'mercadopago' => false,
+				                        
                     ),
+                  'PRONUNCIACION' => 'Venezolana', 
+				    'currSym'=>'Bs',
+				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
+				    'IVA' => '0.12',
+				    'IVAtext' => '12%',	
+				    'registro' => true,	  
 		
 	),
 );

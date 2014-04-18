@@ -26,7 +26,12 @@ class RegistrationController extends Controller
             $model = new RegistrationForm;
             $profile = new Profile;
             $profile->regMode = true;
-
+			$referencia = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+			if (strpos($referencia, 'tienda/look') === false)
+				$referencia='';
+			else 
+				$referencia='look';
+			$referencia_tmp = isset($_POST['referencia'])?$_POST['referencia']:'';
             // ajax validator
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'registration-form') {
                 //echo "rafa";	
@@ -179,11 +184,14 @@ class RegistrationController extends Controller
                                 $identity->authenticate();
                                 Yii::app()->user->login($identity, 0);
                                 //$this->redirect(Yii::app()->controller->module->returnUrl);
-
-                                if ($profile->sex == 1) // mujer
-                                    $this->redirect(array('/user/profile/tutipo'));
-                                else if ($profile->sex == 2) // hombre
-                                    $this->redirect(array('/tienda/look'));
+ 								if (Yii::app()->params['registro'] || $referencia_tmp =='look'){
+	                                if ($profile->sex == 1) // mujer
+	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                    else if ($profile->sex == 2) // hombre
+	                                        $this->redirect(array('/tienda/look'));
+									} else {
+										 $this->redirect(array('/tienda/look'));
+									}
                             } else {
                                 if (!Yii::app()->controller->module->activeAfterRegister && !Yii::app()->controller->module->sendActivationMail) {
                                     Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
@@ -194,11 +202,15 @@ class RegistrationController extends Controller
                                     $identity = new UserIdentity($model->email, $soucePassword);
                                     $identity->authenticate();
                                     Yii::app()->user->login($identity, 0);
-
-                                    if ($profile->sex == 1) // mujer
-                                        $this->redirect(array('/user/profile/tutipo'));
-                                    else if ($profile->sex == 2) // hombre
-                                        $this->redirect(array('/tienda/look'));
+									
+                                    if (Yii::app()->params['registro'] || $referencia_tmp =='look'){
+	                                    if ($profile->sex == 1) // mujer
+	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                    else if ($profile->sex == 2) // hombre
+	                                        $this->redirect(array('/tienda/look'));
+									} else {
+										$this->redirect(array('/tienda/look'));
+									}
 
                                     // $this->redirect(array('/user/profile/tutipo'));									
                                 } else {
@@ -212,7 +224,7 @@ class RegistrationController extends Controller
                         $profile->validate();
                 }
 
-                $this->render('/user/registration', array('model' => $model, 'profile' => $profile));
+                $this->render('/user/registration', array('model' => $model, 'profile' => $profile,'referencia'=>$referencia));
             }//else
     }
 

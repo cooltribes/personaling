@@ -218,6 +218,7 @@ echo CHtml::hiddenField('user',$user);
                         </div>
                     </div>
                 <?php } ?>
+                
 
                 <?php 
                 //Banking Card Aztive
@@ -380,59 +381,69 @@ echo CHtml::hiddenField('user',$user);
 							
 						}
 						else{
-							$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA'));
+							$iva = (($totalPr - $totalDe)*Yii::app()->params['IVA']);
 						}
                         
                         $t = $totalPr - $totalDe + $iva ;
 						
 						$shipping=true;
-						if(Yii::t('contentForm', 'noShipping')==0)
+						if(Yii::app()->params['noShipping']==0)
 						{
 							$shipping=true;
 						}
 						else {
-							if($t>Yii::t('contentForm', 'noShipping')){
+							if($t>Yii::app()->params['noShipping']){
 								$shipping=false;
 							}
 						}
 						if($shipping){
-							if($peso_total < 5){
-								
-								
-								//$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-								$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$t);
-								
-								if(!is_null($flete)){
+							if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
+							{	
+								if($peso_total < 5){
 									
 									
-									$envio=$flete->total-$flete->seguro;
-									$seguro=str_replace(',','.',$flete->seguro);
-	
-	
+									//$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+									
+									$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$t);
+									
+									if(!is_null($flete)){
+										
+										
+										$envio=$flete->total-$flete->seguro;
+										$seguro=str_replace(',','.',$flete->seguro);
+		
+		
+									}else{
+										$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+										$seguro=$envio*0.13;
+									}
+									
+									
+									$tipo_guia = 1;
 								}else{
-									$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+									$peso_adicional = ceil($peso_total-5);
+									$direccion = Direccion::model()->findByPk($idDireccion);
+									$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+									$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
+									if($envio > 327.04){
+										$envio = 327.04;
+									}
+									$tipo_guia = 2;
 									$seguro=$envio*0.13;
 								}
 								
-								
-								$tipo_guia = 1;
-							}else{
-								$peso_adicional = ceil($peso_total-5);
-								$direccion = Direccion::model()->findByPk($idDireccion);
-								$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-								$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
-								if($envio > 327.04){
-									$envio = 327.04;
-								}
-								$tipo_guia = 2;
+							}
+							else{
+								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
 								$seguro=$envio*0.13;
+								echo $peso_total." ".$ciudad_destino->ruta_id;
 							}
 						}
 						else{
 							$envio=0;
 							$seguro=0;
 						}
-
+						 
                         $t = $t + $envio + $seguro;
                         
 					
@@ -455,7 +466,7 @@ echo CHtml::hiddenField('user',$user);
               <?php if(!$direccion->ciudad->provincia->pais->exento)
 			{?>
 				<tr>
-	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
 	              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
 	            </tr>
 			<?php }

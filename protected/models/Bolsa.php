@@ -138,6 +138,25 @@ class Bolsa extends CActiveRecord
 		return Yii::app()->db->createCommand($sql)->queryColumn();
 		
 	}
+	public function getLooks()
+	{
+		
+		$sql = "
+                select count(distinct(look_id)) from tbl_bolsa_has_productotallacolor 
+                where look_id != 0 and bolsa_id = ".$this->id;
+                
+		return Yii::app()->db->createCommand($sql)->queryScalar();
+		
+	}
+	public function getProductos()
+	{
+		
+		$sql = "
+                select count(look_id) from tbl_bolsa_has_productotallacolor 
+                where look_id = 0 and bolsa_id = ".$this->id;
+		return Yii::app()->db->createCommand($sql)->queryScalar();
+		
+	}
 	
 	public function deleteInactivos(){
 		$return=false;

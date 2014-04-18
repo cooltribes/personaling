@@ -13,8 +13,7 @@
  */
 class AzPay {
 
-    private static $onepay = 'https://azpay.aztive.com';
-    
+    private static $onepay = 'https://azpay.aztive.com';    
     private static $urlD = '/Direct/pay.php';
     private static $urlM = '/Method/pay.php';
     private static $push = '/pushSMS/push.php';
@@ -30,6 +29,16 @@ class AzPay {
     private $lastOrderId = NULL;
     private $httpAuthUser = NULL;
     private $httpAuthPwd = NULL;
+    
+    const CUSTOMERID = '396349057';
+    
+    /*PARA PRUEBAS*/
+    const TERMINAL = '999';    
+    const SECRET = 'qwerty1234567890uiop';
+    
+    /*PARA PRODUCCION*/
+//    const TERMINAL = '001';    
+//    const SECRET = 'CA4AE93932ADF12EF0D2';
 
     /**
      * OnePay class constructor. Creates an object with
@@ -41,10 +50,10 @@ class AzPay {
      *
      * @param $secret string The secret code asigned by Aztive to sign the transactions
      */
-    public function __construct($customer, $terminal, $secret) {
-        $this->customerid = $customer;
-        $this->terminal = $terminal;
-        $this->secret = $secret;
+    public function __construct() {
+        $this->customerid = self::CUSTOMERID;
+        $this->terminal = self::TERMINAL;
+        $this->secret = self::SECRET;
     }
 
     /**
@@ -99,7 +108,8 @@ class AzPay {
         $params = array('orderid' => $orderid,
             'amount' => $amount,
             'customerid' => $this->customerid,
-            'terminal' => $this->terminal);
+            'terminal' => $this->terminal,            
+            );
 
         // add id
         if ($id != '')

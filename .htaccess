@@ -27,8 +27,12 @@ RewriteCond %{REMOTE_ADDR} !186\.93\.231\.140
 #Carlos OFF
 
 #Johann ON
-RewriteCond %{REMOTE_ADDR} !190\.206\.26\.207
+RewriteCond %{REMOTE_ADDR} !200\.8\.204\.245
 #Johann OFF
+
+#Cristal ON
+RewriteCond %{REMOTE_ADDR} !174\.23\.184\.18
+#Cristal OFF
 
 
 RewriteRule (.*) http://www.personaling.com/$1 [R=301,L]

@@ -276,7 +276,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             <?php if(!$direccion->ciudad->provincia->pais->exento)
 			{?>
 				<tr>
-	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
 	              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
 	            </tr>
 			<?php }
@@ -329,7 +329,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                   $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                         'id' => 'verticalForm',
                         'action' => Yii::app()->createUrl('bolsa/comprar'),
-                        'htmlOptions' => array('class' => 'well text_align_center'),
+                        'htmlOptions' => array('class' => 'text_align_center'),
                     ));
 
                     echo CHtml::hiddenField('codigo_randon', rand());
@@ -354,12 +354,14 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                   /*Si es en españa bankCard o Paypal*/  
 		  }else if($tipo_pago == 5  || $tipo_pago == 6){ 
           	
-			$this->widget('ext.fancybox.EFancyBox', array(
+                      if($tipo_pago == 5){
+                          
+                        $this->widget('ext.fancybox.EFancyBox', array(
                             'target'=>'#btn-ComprarEsp',
                             'config'=>array(
                                 "type" => "iframe",                        
-                                "height" => "75%",                        
-                                "width" => "75%",                        
+                                "height" => "90%",                        
+                                "width" => "65%",                        
                                 "autoScale" => false,                        
                                 "transitionIn" => "none",                        
                                 "transitionOut" => "none",                
@@ -367,65 +369,15 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                                 ),
                             )
                         );
-                      
-                     
-                            $this->beginWidget('bootstrap.widgets.TbModal', array(
-                                'id' => 'modalPrueba',
-                                    ), array(
-                                'class' => 'modal fade hide',
-                                'tabindex' => "-1",
-                                'role' => "dialog",
-                                'aria-labelledby' => "myModalLabel",
-                                'aria-hidden' => "true",
-                                    //'style' => "display: none;",
-                            ))
-                            ?>
-
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h3 id="myModalLabel">Prueba</h3>
-                            </div>
-                        <div class="modal-body">
-                        </div>
-                        <div class="modal-footer text_align_left">
-
-                        </div>                    
-
-                        <?php 
-                        $this->endWidget() ;
-                                
-                       $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-			    'id'=>'verticalForm',
-			    'action'=>Yii::app()->createUrl('bolsa/comprar'),
-			    'htmlOptions'=>array('class'=>'well text_align_center'),
-			)); 
-          	
-			echo CHtml::hiddenField('codigo_randon',rand());
-                        echo CHtml::hiddenField('admin',$admin);
-                        echo CHtml::hiddenField('user',$user);
+                      }
                         
-                        define('customerid', '396349057');
-                        define('terminal',   '999');
-                        define('secret',     'qwerty1234567890uiop');
-                        $idPagoAztive = $tipo_pago == 5? 8:999;
-                        $monto = Yii::app()->getSession()->get('total');
-                        $optional = array(                        
-                            'name'          => 'Personaling ' . customerid,
-                            'product_name'  => 'Producto de Prueba' . customerid 
-                        );                        
-                        
-                        $pago = new AzPay(customerid, terminal, secret);
-                        
-                        $url = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);
-                        
-//                        $url = "http://www.personaling.com";
-                        
+                        echo "<div class='well text_align_center'>";
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'type'=>'warning',        
                             //'buttonType'=>'button',
                             'size'=>'large',
                             'label'=>$tipo_pago==5?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Pay with PayPal'),
-                            'url'=> $url, // action
+                            'url'=> $urlAztive, // action
                             'icon'=>'lock white',
                             'htmlOptions'=>array(
         //                        'onclick'=>'js:enviar_pago();'
@@ -434,8 +386,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 //                                'data-target' => "#modalPrueba",
                                 )
                         )); 
-		
-                         $this->endWidget(); 
+                        
+                        echo "</div>";
+                        
 		  }
 		  ?>
           
@@ -507,10 +460,6 @@ $(document).ready(function(){
 //        
 //    });
 
-
-//    $('#modalPrueba').modal({
-//      remote: "<?php echo $url; ?>"
-//    })
     
 });
     

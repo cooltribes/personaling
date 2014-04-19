@@ -587,8 +587,10 @@ class BolsaController extends Controller
                             " - Productos: ".$bolsa->getProductos();
                     
                     $tipo_pago = Yii::app()->getSession()->get('tipoPago');
-                    $idPagoAztive = $tipo_pago == 5? 8:999;
+                    //Tipos de pago aceptados por Aztive
+                    $idPagoAztive = $tipo_pago == 5? 8:5;                    
                     $monto = Yii::app()->getSession()->get('total');
+                    
                     $optional = array(                        
                         'name'          => 'Personaling Enterprise S.L.',
                         'product_name'  => $nombreProducto,                             
@@ -2486,82 +2488,25 @@ class BolsaController extends Controller
                             'user_id' => $userId,
                             'admin' => 0, //Revisar para compras desde admin
                             ));
-            //5 BkCard - 6 Paypal
-            $metodoPago = Yii::app()->getSession()->get('tipoPago');
-            $metodoPago--; //llevarlo a los metodos de pago usados para las órdenes
+            
             
             if (!$bolsa->checkInventario())
                     $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-            
-            
             
             /*Crear la orden*/
             $orden = $this->crearOrden($bolsa, $userId);
             
             /*Crear el detalle de pago*/
-            $detalle = new Detalle;            
-            $detalle->nTransferencia = $datosCompra['onepay_authorization_code'];
-            $detalle->nombre = $usuario->profile->first_name." ".$usuario->profile->last_name;            
-            $detalle->monto = Yii::app()->getSession()->get('totalPagar');
-            $detalle->fecha = date("Y-m-d H:i:s");
-            $detalle->banco = $metodoPago == Detalle::TDC_AZTIVE ? 'Sabadell' : 'PayPal'; //TDC o PayPal
-            $detalle->estado = 1; // aceptado
-            $detalle->orden_id = $orden->id;
-            $detalle->tipo_pago = $metodoPago;
-            $detalle->save();
+            $this->crearDetallePago($orden, $usuario, $datosCompra['onepay_authorization_code']);
             
             /*Revisar si uso balance en la compra*/
-            $usarBalance = Yii::app()->getSession()->get('usarBalance');
-            $totalOrden = $orden->total;
-            if ($usarBalance == '1') {                                
-                $balanceUsuario = floor($usuario->saldo * 100) / 100;
-                if ($balanceUsuario > 0) {
-                    $balance = new Balance;
-                    $detalleBalance = new Detalle;
-                    if ($balanceUsuario >= $totalOrden) {
-                        //Descontar del saldo el monto total de la orden
-                        $balance->total = $totalOrden * (-1);
-                        $detalleBalance->monto = $totalOrden;
-                        
-                    } else {
-                        //Descontar todo el saldo del usuario
-                        $balance->total = $balanceUsuario * (-1);
-                        $detalleBalance->monto = $balanceUsuario;
-                    }
-
-                    $detalleBalance->comentario = "Uso de Saldo";
-                    $detalleBalance->estado = 1;//Aprobado
-                    $detalleBalance->orden_id = $orden->id;
-                    $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
-                    
-                    if ($detalleBalance->save()) {
-                        $balance->orden_id = $orden->id;
-                        $balance->user_id = $userId;
-                        $balance->tipo = 1;                        
-                        $balance->save();
-                    }
-                }
-            }
+            $this->usarBalance($orden, $usuario);
                    
             /*Vaciar bolsa, enviar a la orden*/
             $this->hacerCompra($bolsa->id, $orden->id);
             
             /*Registrar estados de la orden*/
-            $estado = new Estado;
-            $estado->estado = Orden::ESTADO_ESPERA;
-            $estado->user_id = $userId;
-            $estado->fecha = date("Y-m-d");
-            $estado->orden_id = $orden->id;            
-            if ($estado->save()) {
-                
-                // pasar a estado confirmado de una vez por que ya se pagó el dinero 
-                $estado = new Estado;
-                $estado->estado = Orden::ESTADO_CONFIRMADO;
-                $estado->user_id = $userId;
-                $estado->fecha = date("Y-m-d");
-                $estado->orden_id = $orden->id;
-                $estado->save();
-            }   
+            $this->cambiarEstadoOrden($orden, $userId);
             
             
             $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(
@@ -2597,7 +2542,10 @@ class BolsaController extends Controller
             
         }
         
-        /*Crear la orden nueva*/
+        /**
+         * Crear la orden nueva
+         * @return Orden
+         */
         function crearOrden($bolsa, $userId) {
             
             $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(
@@ -2638,6 +2586,85 @@ class BolsaController extends Controller
             return $orden;
         }
         
+        /* Crear detalle de pago según el método seleccionado
+         * El tipo de pago está en sesión
+         */
+        function crearDetallePago($orden, $usuario, $codigoTransaccion) {
+            
+            //5 BkCard - 6 Paypal
+            $metodoPago = Yii::app()->getSession()->get('tipoPago');
+            $metodoPago--; //llevarlo a los metodos de pago usados para las órdenes
+            
+            $detalle = new Detalle;            
+            $detalle->nTransferencia = $codigoTransaccion;
+            $detalle->nombre = $usuario->profile->first_name." ".$usuario->profile->last_name;            
+            //lo que queda por pagar despues de usar el saldo
+            $detalle->monto = Yii::app()->getSession()->get('totalPagar');
+            $detalle->fecha = date("Y-m-d H:i:s");
+            $detalle->banco = $metodoPago == Detalle::TDC_AZTIVE ? 'Sabadell' : 'PayPal'; //TDC o PayPal
+            $detalle->estado = 1; // aceptado
+            $detalle->orden_id = $orden->id;
+            $detalle->tipo_pago = $metodoPago;
+            $detalle->save();
+        }
+        
+        /*Determinar si se uso el balance, registrar pago respectivo*/
+        function usarBalance($orden, $usuario) {
+            
+            $usarBalance = Yii::app()->getSession()->get('usarBalance');
+            $totalOrden = $orden->total;
+            if ($usarBalance == '1') {                                
+                $balanceUsuario = floor($usuario->saldo * 100) / 100;
+                if ($balanceUsuario > 0) {
+                    $balance = new Balance;
+                    $detalleBalance = new Detalle;
+                    if ($balanceUsuario >= $totalOrden) {
+                        //Descontar del saldo el monto total de la orden
+                        $balance->total = $totalOrden * (-1);
+                        $detalleBalance->monto = $totalOrden;
+                        
+                    } else {
+                        //Descontar todo el saldo del usuario
+                        $balance->total = $balanceUsuario * (-1);
+                        $detalleBalance->monto = $balanceUsuario;
+                    }
+
+                    $detalleBalance->comentario = "Uso de Saldo";
+                    $detalleBalance->estado = 1;//Aprobado
+                    $detalleBalance->orden_id = $orden->id;
+                    $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
+                    
+                    if ($detalleBalance->save()) {
+                        $balance->orden_id = $orden->id;
+                        $balance->user_id = $usuario->id;
+                        $balance->tipo = 1;                        
+                        $balance->save();
+                    }
+                }
+            }
+
+        }
+        
+        /*Cambiar estado de la orden a Pago Confirmado*/
+        function cambiarEstadoOrden($orden, $userId) {
+            
+            $estado = new Estado;
+            $estado->estado = Orden::ESTADO_ESPERA;
+            $estado->user_id = $userId;
+            $estado->fecha = date("Y-m-d");
+            $estado->orden_id = $orden->id;            
+            if ($estado->save()) {
+                
+                // pasar a estado confirmado de una vez por que ya se pagó el dinero 
+                $estado = new Estado;
+                $estado->estado = Orden::ESTADO_CONFIRMADO;
+                $estado->user_id = $userId;
+                $estado->fecha = date("Y-m-d");
+                $estado->orden_id = $orden->id;
+                $estado->save();
+            }
+        }
+        
         /*Enviar el correo con el resumen de la orden al usuario*/
         function enviarEmail($orden, $usuario) {
             
@@ -2652,6 +2679,9 @@ class BolsaController extends Controller
             $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
+
+        
+        
         
         
         

@@ -60,7 +60,7 @@
                         <?php //echo $look->title; ?>
                         <?php echo $look->user->profile->first_name; ?> </span></a></h5>
                     </div>
-                    <div class="span6"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+                    <div class="span6"><span class="precio"><?php echo Yii::t('contentForm', 'currSym')." ".$look->getPrecio(); ?></span></div>
                   </div>
                   <div class="share_like">
                    
@@ -180,7 +180,7 @@
 		                        	<?php //echo $look->title; ?>
 		                        	<?php echo $look->user->profile->first_name; ?> </span></a></h5>
 		                    </div>
-		                    <div class="span6"><span class="precio">Bs. <?php echo $look->getPrecio(); ?></span></div>
+		                    <div class="span6"><span class="precio"><?php echo Yii::t('contentForm', 'currSym')." ".$look->getPrecio(); ?></span></div>
 		                </div>
 		                  
 		       		<div class="share_like">

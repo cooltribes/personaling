@@ -59,15 +59,88 @@ class PrecioTallaColor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
-			'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
-            'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
+                    'mycolor' => array(self::BELONGS_TO,'Color','color_id'),
+                    'mytalla' => array(self::BELONGS_TO,'Talla','talla_id'), 
+                    'producto' => array(self::BELONGS_TO,'Producto','producto_id'),
 		);
 	}
  
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
+	 
+	 
+		public function existencia($pages = NULL)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+ 
+	$sql="select p.id,
+		p.codigo as 'Referencia', 
+		m.nombre as 'Marca', 
+		m.id, 
+		p.nombre as Nombre, 
+		ptc.sku as 'SKU', 
+		c.valor as 'Color', 
+		t.valor as 'Talla', 
+		ptc.cantidad as 'Cantidad', 
+		pr.costo as 'Costo', 
+		pr.precioVenta as 'Precio', 
+		pr.precioImpuesto as 'pIVA' 
+		from tbl_precioTallaColor ptc 
+	JOIN tbl_producto p ON p.id=ptc.producto_id 
+	JOIN tbl_marca m ON p.marca_id = m.id 
+	JOIN tbl_color c ON ptc.color_id = c.id 
+	JOIN tbl_talla t ON ptc.talla_id=t.id 
+	JOIN tbl_precio pr ON pr.tbl_producto_id = p.id 
+	WHERE ptc.cantidad >0 AND p.`status`=1 AND p.estado=0";
+ 	
+ 	 
+		
+		if(isset(Yii::app()->session['idMarca'])){
+			if(Yii::app()->session['idMarca']!=0)
+				$sql=$sql." AND m.id=".Yii::app()->session['idMarca'];
+
+		}
+		
+		$sql=$sql." group by ptc.id";
+		
+	
+		
+		
+		$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+		
+		if(!is_null($pages)){
+				
+			if(!$pages){
+				$sql="select count(ptc.id) from  tbl_precioTallaColor ptc WHERE ptc.cantidad >0";
+				$pages=Yii::app()->db->createCommand($sql)->queryScalar();
+			}
+			else
+				$pages=30;
+		}
+
+				// or using: $rawData=User::model()->findAll(); <--this better represents your question
+	
+				return new CArrayDataProvider($rawData, array(
+				    'id'=>'data',
+				    'pagination'=>array(
+				        'pageSize'=>$pages,
+				    ),
+					 
+				    'sort'=>array(
+				        'attributes'=>array(
+				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
+				        ),
+	    ),
+				));
+		
+		
+
+	}
+	 
+	 
+	 
 	public function attributeLabels()
 	{
 		return array(

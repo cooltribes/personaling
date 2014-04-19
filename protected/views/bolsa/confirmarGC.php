@@ -24,16 +24,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 <div class="container margin_top">
   <div class="progreso_compra progreso_compra_giftcard">
     <div class="clearfix margin_bottom">
-      <div class="first-past">Autenticación</div>
-      <div class="middle-past">Método <br/>
-        de pago</div>
-      <div class="last-done">Confirmar<br/>
-        compra</div>
+      <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
+      <div class="middle-past">
+        <?php echo Yii::t('contentForm','Payment <br> method'); ?>
+    </div>
+      <div class="last-done">
+        <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
+    </div>
     </div>
   </div>
   <div class="row">
     <div class="span12">
-      <h1>Confirmación de la Compra</h1>
+      <h1><?php echo Yii::t('contentForm','Confirmation of Purchase'); ?></h1>
     </div>
   </div>
   <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
@@ -43,20 +45,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span4"> 
       <!-- Direcciones ON -->
       <div class="well">
-        <h4 class="braker_bottom">Datos de la compra</h4>
+        <h4 class="braker_bottom"><?php echo Yii::t('contentForm','Purchasing Information'); ?></h4>
         <?php 
         //datos de todas las giftcards de la bolsa
         //Temporalmente solo una
         //
         
         ?>
-        <p> <strong>Monto de la GiftCard</strong> <br/>
-          <span class="muted small"><?php echo $giftcard->monto; ?> Bs.</span>
+        <p> <strong><?php echo Yii::t('contentForm','Amount Gift Card'); ?></strong> <br/>
+          <span class="muted small"><?php echo $giftcard->monto.' '.Yii::t('contentForm','currSym'); ?></span>
         </p>
         <p>
-            <strong>Fecha de vigencia</strong> <br/>
-            Desde <?php echo  date("d/m/Y"); ?> <br/>
-            Hasta 
+            <strong><?php echo Yii::t('contentForm','Effective date'); ?></strong> <br/>
+            <?php echo  Yii::t('contentForm','From1').' '.date("d/m/Y"); ?> <br/>
+            <?php echo Yii::t('contentForm','Until'); ?> 
             <?php $now = date('Y-m-d', strtotime('now'));
                   echo date("d/m/Y", strtotime($now." + 1 year")); ?>
         </p>
@@ -69,32 +71,32 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     </section>
     <section class="span4">
       <div class="well ">
-        <h4>Método de Pago Seleccionado</h4>
+        <h4> <?php echo Yii::t('contentForm','Payment Method Selected'); ?> </h4>
         <div class=" margin_bottom">
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
             <?php 
               	if(Yii::app()->getSession()->get('tipoPago')==1){
                     
-                    echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td></tr>";
+                    echo "<tr class='deptran'><td valign='top'><i class='icon-exclamation-sign'></i> ".Yii::t('contentForm','Deposit or Bank Transference').".</td></tr>";
                 
                     
                 }else if(Yii::app()->getSession()->get('tipoPago')==4){
                     
-                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i> Mercadopago.</td></tr>";
+                    echo "<tr class='mp'><td valign='top'><i class='icon-exclamation-sign'></i>".Yii::t('contentForm','MercadoPago').".</td></tr>";
                     
                 }else if(Yii::app()->getSession()->get('tipoPago')==2){
                     
                     echo "<tr class='mp'>
-                            <td valign='top'><i class='icon-exclamation-sign'></i> Tarjeta de Crédito.</td>
+                            <td valign='top'><i class='icon-exclamation-sign'></i>  ".Yii::t('contentForm','Credit Card').".</td>
                           </tr>";
 
                     $tarjeta = TarjetaCredito::model()->findByPk($idTarjeta);
 
                     $rest = substr($tarjeta->numero, -4);
                     echo "<tr class='mp'><td>";
-                        echo "<b>Nombre:</b> ".$tarjeta->nombre."
-                        </br><b>Número:</b> XXXX - XXXX - XXXX - ".$rest."                            
-                        </br><b>Vencimiento:</b> ".$tarjeta->vencimiento;
+                        echo "<b> ".Yii::t('contentForm','Name').":</b> ".$tarjeta->nombre."
+                        </br><b> ".Yii::t('contentForm','Number').":</b> XXXX - XXXX - XXXX - ".$rest."                            
+                        </br><b> ".Yii::t('contentForm','Expiration').":</b> ".$tarjeta->vencimiento;
                     echo "</td></tr>";
                                         
                 }
@@ -106,18 +108,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <section class="span4"> 
       <!-- Resumen de Productos ON -->
       <div class="well well_personaling_big">
-        <h5>Total de Giftcards: <?php echo 1;?>
+        <h5><?php echo Yii::t('contentForm','Total Gift Cards'); ?>: <?php echo 1;?>
         </h5>
         <hr/>
         <div class="margin_bottom">
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
-              <th class="text_align_left">Subtotal:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($monto, ''); ?></td>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal'); ?> :</th>
+              <td><?php echo Yii::t('contentForm','currSym').'. '.Yii::app()->numberFormatter->formatCurrency($monto, ''); ?></td>
             </tr>
             <tr>
-              <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($monto, ''); ?></h4></td>
+              <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total'); ?> :</h4></th>
+              <td><h4><?php echo Yii::t('contentForm','currSym').'. '.Yii::app()->numberFormatter->formatCurrency($monto, ''); ?></h4></td>
             </tr>
           </table>
           <?php
@@ -148,7 +150,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 );
                 $preferenceResult = $mp->create_preference($preference);
                 ?>
-              <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal">Pagar con MercadoPago</a>
+              <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago'); ?></a>
           <?php
             /*PARA TARJETA DE CREDITO*/
               }
@@ -168,7 +170,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     'buttonType'=>'submit',
                     //'buttonType'=>'button',
                     'size'=>'large',
-                    'label'=>$tipo_pago==2?'Pagar con tarjeta de crédito':'Completar compra',
+                    'label'=>$tipo_pago==2?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Complete purchase'),
                     //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
                     'icon'=>'lock white',
                     'loadingText'=>'Cargando',
@@ -183,10 +185,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               }
            ?>
         </div>
-        <p><i class="icon-calendar"></i> Fecha estimada de entrega: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+        <p><i class="icon-calendar"></i><?php echo Yii::t('contentForm','Date estimated delivery') ?>: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
-      <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank">Ver Políticas de Envíos y Devoluciones</a></p>
-      <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
+      <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank"> <?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?> </a></p>
+      <p class="muted"><i class="icon-comment"></i> <?php echo Yii::t('contentForm', 'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm'); ?></p>
       
       <!-- Resumen de Productos OFF --> 
       

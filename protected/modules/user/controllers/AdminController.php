@@ -3,7 +3,7 @@
 class AdminController extends Controller
 {
 	public $defaultAction = 'admin';
-	public $layout='//layouts/column2';
+	// public $layout='//layouts/column2';
 	
 	private $_model;
 
@@ -32,7 +32,7 @@ class AdminController extends Controller
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
 
-                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento'),
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance','reporteXLS'),
 
 
 								//'users'=>array('admin'),
@@ -48,7 +48,9 @@ class AdminController extends Controller
 	 */
 	public function actionAdmin()
 	{
-            $model = new User('search');
+          
+		  	
+		    $model = new User('search');
             $model->unsetAttributes();  // clear any default values
             if (isset($_GET['User']))
                 $model->attributes = $_GET['User'];
@@ -159,6 +161,7 @@ class AdminController extends Controller
             if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
                && !isset($_POST['nombre'])){
               $_POST = $_SESSION['todoPost'];
+              
             }            
             
             if(isset($_POST['dropdown_filter'])){  
@@ -284,7 +287,7 @@ class AdminController extends Controller
                 ));
             }
 
-            
+            	Yii::app()->session['userCriteria']=$dataProvider->criteria;
             
             
             $this->render('index', array(
@@ -292,10 +295,132 @@ class AdminController extends Controller
                 'modelUser' => $modelUser,
                 'profile' => $profile,
                 'dataProvider' => $dataProvider,
+       
             ));
         
 	}
+	
+	 
+	public function actionReporteXLS(){
+		ini_set('memory_limit','256M'); 
 
+		$criteria=Yii::app()->session['userCriteria'];
+		$criteria->select = array('t.id');
+		$dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    
+        ));
+	
+		
+		$pages=new CPagination($dataProvider->totalItemCount);
+		$pages->pageSize=$dataProvider->totalItemCount;
+		$dataProvider->setPagination($pages);
+		
+		//print_r($pages);
+		
+		$title = array(
+		    'font' => array(
+		     
+		        'size' => 14,
+		        'bold' => true,
+		        'color' => array(
+		            'rgb' => '000000'
+		        ),
+	    ));
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("Reporte-Usuarios")
+		                         ->setSubject("Reporte de Usuarios")
+		                         ->setDescription("Reporte de Usuarios")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+		$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'ID')
+						->setCellValue('B1', 'Nombre')
+						->setCellValue('C1', 'Apellido')
+						->setCellValue('D1', 'Email')
+						->setCellValue('E1', 'Ciudad')
+						->setCellValue('F1', 'Ordenes Registradas')
+						->setCellValue('G1', 'Direcciones Registradas')
+						->setCellValue('H1', 'Saldo Disponible')
+						->setCellValue('I1', 'Ingresos al portal')
+						->setCellValue('J1', 'Ultimo Ingreso')
+						->setCellValue('K1', 'Fecha de Registro');
+		foreach(range('A','K') as $columnID) {
+    		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        	->setAutoSize(true);
+		}  
+			$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($title);
+		
+		
+			
+		
+		$fila=2;
+		foreach($dataProvider->getData() as $data){
+			$user=User::model()->findByPk($data->id);
+			$saldo=Yii::app()->numberFormatter->formatDecimal(Profile::model()->getSaldo($data->id));
+		 	if ($user->getLastvisit()) 
+		 		$lastVisit=date("d/m/Y",$user->getLastvisit()); 
+		 	else 
+		 		$lastVisit= 'N/D'; 
+    		if ($user->getCreatetime())
+    			$createdAt=date("d/m/Y",$user->getCreatetime()); 
+    		else 
+    			$createdAt='N/D'; 
+			
+			$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , $data->id) 
+							->setCellValue('B'.$fila , $user->profile->first_name) 
+							->setCellValue('C'.$fila , $user->profile->last_name) 
+							->setCellValue('D'.$fila , $user->email)
+							->setCellValue('E'.$fila , $user->profile->ciudad)
+							->setCellValue('F'.$fila , $user->ordenCount) 
+							->setCellValue('G'.$fila , $user->direccionCount) 
+							->setCellValue('H'.$fila , $saldo) 
+							->setCellValue('I'.$fila , $user->visit)							
+							->setCellValue('J'.$fila , $lastVisit)
+							->setCellValue('K'.$fila , $createdAt)
+							;
+					$fila++;
+	
+		}
+		$objPHPExcel->setActiveSheetIndex(0);
+
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="ReporteUsuarios.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			ini_set('memory_limit','128M'); 
+			Yii::app()->end();
+		
+	}
+	
+	
 
 	/**
 	 * Displays a particular model.
@@ -699,7 +824,10 @@ if(isset($_POST['Profile']))
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
-		$profile=$model->profile;
+		
+	
+			$profile=$model->profile;
+
 		$profile->profile_type = 1;
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
@@ -747,7 +875,7 @@ if(isset($_POST['Profile']))
 			$message->addTo($model->email);
 			$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 			Yii::app()->mail->send($message);
-			Yii::app()->user->setFlash('success',"El email de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
+			Yii::app()->user->setFlash('success',"El correo electrónico de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
 			$this->redirect(array('/user/admin'));
 		
 	}
@@ -881,7 +1009,6 @@ if(isset($_POST['Profile']))
 		}
 	}
 	
-	
 	public function actionCompra($id)
 	{
             if(isset($_POST['ptcs']))
@@ -998,7 +1125,6 @@ if(isset($_POST['Profile']))
 				
 				
 				 
-				
 				
 	            $this->render('compra', array(   'dataProvider'=>$dataProvider,
 	            ));	
@@ -1675,6 +1801,22 @@ if(isset($_POST['Profile']))
     public function actionMensajes(){
         
 		$this->render('mensajes');
+		
+		
+    }
+	 public function actionBalance($id){
+			
+        
+		$model=$this->loadModel();
+		$balances=Balance::model()->findAllByAttributes(array('user_id'=>$id));
+		
+       
+		
+		$this->render('balance',array(
+			'model'=>$model,
+			'balances'=>$balances
+			
+		));
 		
 		
     }

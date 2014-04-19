@@ -43,7 +43,7 @@ $this->breadcrumbs=array(
 			),
 		)); ?>  
     <fieldset>
-                  <h1>Tu Avatar</h1>
+                  <h1>Tu Foto</h1>
 <p>Puedes editar o cambiar tu avatar usando las opciones a continuación:</p>
     	<div id="container" class="text_align_center margin_bottom margin_top" >
     		

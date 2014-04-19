@@ -1,7 +1,7 @@
 <?php
 /* @var $this BolsaController */
 $this->breadcrumbs=array(
-	'Bolsa',
+	Yii::t('contentForm','Bag'),
 );
 if (!Yii::app()->user->isGuest) { // que este logueado
 
@@ -32,7 +32,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
           <h1>
           <?php echo $bolsa->admin ? "Bolsa de <strong>{$bolsa->user->profile->first_name}
                         {$bolsa->user->profile->last_name}</strong>"
-                      : "Tu Bolsa";  ?>
+                      : Yii::t('contentForm','Your bag');  ?>
           </h1>
           
           
@@ -68,9 +68,9 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
             <table class="table" width="100%" >
               <thead>
                 <tr>
-                  <th colspan="2">Producto</th>
-                  <th>Precio Unt.</th>
-                  <th colspan="2">Cantidad</th>
+                  <th colspan="2"><?php echo  Yii::t('contentForm', 'Product');  ?></th>
+                  <th><?php echo  Yii::t('contentForm', 'Unit price');  ?></th>
+                  <th colspan="2"><?php echo  Yii::t('contentForm', 'Quantity');  ?></th>
                 </tr>
               </thead>
               <tbody>
@@ -91,14 +91,17 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					//	echo Color::model()->findByPk($test->color_id)->valor;
 					//}
 					$pre="";
-					 	foreach ($producto->precios as $precio) {
+					/* 	foreach ($producto->precios as $precio) {
 				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 						
 						array_push($precios,$precio->precioDescuento);	
 						array_push($descuentos,$precio->ahorro);		
 						}
-					 
+					 */
 					 	array_push($cantidades,$productotallacolor->cantidad);
+					 	$pre = $producto->precioVenta;
+						array_push($precios,$producto->precioVenta);	
+						array_push($descuentos,0);
                 	?>
                 <tr>
                   <?php
@@ -113,9 +116,48 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					?>
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
-                    <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?></td>
+                    <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?> 
+                    <?php                      
+//                        $hoy = new DateTime();
+//                        $agregado = new DateTime($productotallacolor->added_on);
+//                        $diferencia = $hoy->diff($agregado)
+//                                          ->days; //Dias desde que se agrego
+//                        
+//                        $lookActual = Look::model()->findByPk($productotallacolor->look_id);
+//                        $personalShopper = $lookActual->user->profile;
+//                        
+//                        $prorden = new OrdenHasProductotallacolor;
+//                        
+//
+//                        echo "Agregado<pre>";
+//                        print_r($hoy->format("Y-m-d"));
+//                        echo "</pre>";
+//                        echo "Agregado<pre>";
+//                        print_r($agregado->format("Y-m-d"));
+//                        echo "</pre>";
+//                        echo "Agregado<pre>";
+//                        print_r($diferencia);
+//                        echo "</pre>";
+//                        
+//                        //si lleva mas tiempo del permitido, no agregar a la orden
+//                        if($diferencia <= $personalShopper->tiempo_validez){
+//                            $prorden->comision = $personalShopper->comision;
+//                            $prorden->tipo_comision = $personalShopper->tipo_comision;
+//                            $prorden->status_comision = OrdenHasProductotallacolor::STATUS_PENDIENTE;
+//                            echo "<br>SI";
+//                        }else{
+//                            echo "<br>NO";
+//                        }
+//                        
+//                        echo "<br>$personalShopper->first_name<br>ORden<pre>";
+//                        print_r($prorden->attributes);
+//                        echo "</pre>";
+                    ?>
                   
-                  <td>Bs. <?php echo $pre; ?></td>
+                  </td>
+                    
+                  
+                  <td> <?php echo Yii::t('contentForm', 'currSym').' '.$pre; ?></td>
                   
 				<td width='8%'>
 					<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
@@ -130,7 +172,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
               </tbody>
             </table>
             <hr/>
-            <p class="muted"><i class="icon-user"></i> Creado por: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
+            <p class="muted"><i class="icon-user"></i> <?php echo Yii::t('contentForm','Created for') ?>: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
           </div>
           <!-- Look OFF -->
           <?php
@@ -144,16 +186,14 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 		if($pr!=0) // si hay productos individuales
 		{
 		?>
-          <!-- Look ON -->
-          <h3 class="braker_bottom margin_top">Productos Individuales</h3>
+          <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Individual products'); ?></h3>
           <div class="padding_left">
             <table class="table" width="100%" >
               <thead>
                 <tr>
-                  <th colspan="2">Producto</th>
-                  <th>Precio por 
-                    unidad </th>
-                  <th colspan="2">Cantidad</th>
+                  <th colspan="2"><?php echo Yii::t('contentForm','Product'); ?></th>
+                  <th><?php echo Yii::t('contentForm','Unit price'); ?> </th>
+                  <th colspan="2"><?php echo Yii::t('contentForm','Quantity'); ?></th>
                 </tr>
               </thead>
               <tbody>
@@ -189,32 +229,37 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 							}
 						}
 					}else
-						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
-							
-						echo "
-						<td>
-						<strong>".$producto->nombre."</strong> <br/>
-						<strong>Color</strong>: ".$color->valor."<br/>
-						<strong>Talla</strong>: ".$talla->valor."</td>
-						";	
-				 	
-					 	$pre="";
-					 	foreach ($producto->precios as $precio) {
-				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
-						
-						array_push($precios,$precio->precioDescuento);	
-						array_push($descuentos,$precio->ahorro);		
-						}
-					 
-					 	array_push($cantidades,$productoBolsa->cantidad);
-						
-					 	echo "<td>Bs. ".$pre."</td>";
-						?>
-						
-					 	<td width='8%'>
-					 		<input type="hidden" value="<?php echo $productoBolsa->cantidad; ?>" />
-							<input type='text' name="cant[<?php echo $productoBolsa->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $productoBolsa->cantidad; ?>' class='span1 cantidades'/>
-                                                <a id="<?php echo $productoBolsa->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+                                echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+
+                                echo "
+                                <td>
+                                <strong>".$producto->nombre."</strong> <br/>
+                                <strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>";
+                                echo "<strong>".Yii::t('contentForm','Size')."</strong>: ".$talla->valor;	
+                                
+                                echo "</td>";
+                                        
+
+                                $pre="";
+                                /*foreach ($producto->precios as $precio) {
+                                $pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+
+                                array_push($precios,$precio->precioDescuento);	
+                                array_push($descuentos,$precio->ahorro);		
+                                }*/
+                                $pre = $producto->precioVenta;
+                                array_push($precios,$producto->precioVenta);	
+                                array_push($descuentos,0);
+
+                                array_push($cantidades,$productoBolsa->cantidad);
+
+                                echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
+                                ?>
+
+                                <td width='8%'>
+                                        <input type="hidden" value="<?php echo $productoBolsa->cantidad; ?>" />
+                                        <input type='text' name="cant[<?php echo $productoBolsa->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $productoBolsa->cantidad; ?>' class='span1 cantidades'/>
+                                <a id="<?php echo $productoBolsa->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	                    	
 	                    </td>
 	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $productoBolsa->preciotallacolor_id; ?>)' id='elim<?php echo $productoBolsa->preciotallacolor_id; ?>'>&times;</td>
@@ -237,8 +282,8 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 			}// if de productos individuales
 			else
 			{ 
-                             $mensaje = $bolsa->admin ? "La bolsa está vacía."
-                              : "¿Qué esperas? Looks y prendas increíbles esperan por ti.";   
+                             $mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty')
+                              :  Yii::t('contentForm', 'What are you waiting for? Looks amazing clothes and waiting for you');   
 			 
                          echo "<h4 class='braker_bottom margin_top'>{$mensaje}</h4>";
                          
@@ -317,13 +362,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				$indiv = Yii::app()->db->createCommand($sql)->queryScalar();
 				
             	?>
-                <h5>Looks seleccionados: <?php echo $total_look; ?><br/>
+                <h5><?php echo Yii::t('contentForm', 'Selected looks').': '.  $total_look; ?><br/>
                   <?php 
               	
               	if($total_look!=0)
 
 				{ 
-					echo "Productos que componen los Looks: ". $total_productos_look ."<br/>";
+					echo Yii::t('contentForm', 'Products that make the Looks').": ". $total_productos_look ."<br/>";
 				}				
               	?>
                   <?php 
@@ -333,7 +378,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>
-                  Productos individuales: <?php echo $indiv; ?></h5>
+                 <?php echo Yii::t('contentForm', 'Individual products').': '.$indiv; ?></h5>
                 <hr/>
 <!--                 <label class="checkbox">
                   <input type="checkbox">
@@ -362,9 +407,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       		$totalDe = $totalDe + $y;
                       	}*/
 						
-						$iva = (($totalPr - $totalDe)*0.12); 
+						$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')); 
 						
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*0.12) + $envio; 
+						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) + $envio; 
 						
 						$seguro = $t*0.013;
 						
@@ -373,30 +418,35 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						// variables de sesion
 						Yii::app()->getSession()->add('subtotal',$totalPr);
 						Yii::app()->getSession()->add('descuento',$totalDe);
-						Yii::app()->getSession()->add('envio',$envio);
+					
 						Yii::app()->getSession()->add('iva',$iva);
 						Yii::app()->getSession()->add('total',$t);
+						/*
+						Yii::app()->getSession()->add('envio',$envio);
 						Yii::app()->getSession()->add('seguro',$seguro);  
+						
+						*/
 						
 						//echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                       	?>
                       <tr>
-                        <th class="text_align_left">Productos:</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
+
+                        <th class="text_align_left"><?php echo Yii::t('contentForm', 'Products'); ?>:</th>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
                       </tr>
                       <?php if($totalDe != 0){ // si no hay descuento ?> 
                       <tr>
-                        <th class="text_align_left">Descuento:</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+                        <th class="text_align_left"><?php echo Yii::t('contentForm', 'Discount'); ?>:</th>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
                       </tr>
                       <?php } ?>
                       <tr>
-                        <th class="text_align_left">I.V.A. (12%):</th>
-                        <td class="text_align_right"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
+                        <th class="text_align_left">I.V.A. (<?php echo Yii::app()->params['IVAtext'];?>):</th>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
                       </tr>
                       <tr>
-                        <th class="text_align_left"><h4>Subtotal:</h4></th>
-                        <td class="text_align_right"><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
+                        <th class="text_align_left"><h4><?php echo Yii::t('contentForm', 'Subtotal'); ?>:</h4></th>
+                        <td class="text_align_right"><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
                       </tr>
                     </table>
                     
@@ -404,7 +454,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                        /*Si es una compra del admin para el usuario*/
                        $params = $bolsa->admin ? array("admin" => 1, "user" => $bolsa->user->id) : array();                    
                        $this->widget('bootstrap.widgets.TbButton', array(
-				    'label'=>'Completar compra',
+				    'label'=>Yii::t('contentForm', 'Complete purchase'),
 				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				    'size'=>'normal', // null, 'large', 'small' or 'mini'
 				    'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
@@ -424,10 +474,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					// }
                 	
                 	?>
-                	<a  onclick='actualizartodos()' class='btn btn-mini'>Actualizar todos</a>
+                	<a  onclick='actualizartodos()' class='btn btn-mini'><?php echo Yii::t('contentForm', 'Update all'); ?></a>
                   </div>
                 </div>
-                <p><i class="icon-calendar"></i> Fecha estimada de entrega: <?php echo date('d/m/Y', strtotime('+1 day'));?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
+                <p><i class="icon-calendar"></i> <?php echo Yii::t('contentForm', 'Date estimated delivery'); ?>: <?php echo date('d/m/Y', strtotime('+1 day'));?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
               </div>  
           
           
@@ -444,10 +494,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
           <!-- SIDEBAR OFF --> 
           
           
-              <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" target="_blank">Ver Politicas de Envios y Devoluciones</a></p>
-              <p class="muted"><i class="icon-comment"></i> Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm</p>
+              <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" target="_blank"><?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?></a></p>
+              <p class="muted"><i class="icon-comment"></i> <?php echo Yii::t('contentForm', 'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm'); ?></p>
               <hr/>
-              <p class="muted"><a style="cursor: pointer" onclick="limpiar(<?php echo($bolsa->id); ?>)" title="vaciar la bolsa de compras">Vaciar la Bolsa de Compras</a> | <a href="../tienda/index" title="seguir comprando">Seguir comprando</a></p>
+              <p class="muted"><a style="cursor: pointer" onclick="limpiar(<?php echo($bolsa->id); ?>)" title="vaciar la bolsa de compras"><?php echo  Yii::t('contentForm', 'Empty shopping bag');  ?></a> | <a href="../tienda/index" title="seguir comprando"><?php echo  Yii::t('contentForm', 'Keep buying');  ?></a></p>
             </div>
             
           

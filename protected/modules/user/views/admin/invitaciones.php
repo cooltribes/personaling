@@ -15,7 +15,7 @@
       <div class="bg_color3   margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
-            <legend>Invitaciones a Amigos<?php echo count($xEmail)." - ".count($xFB); ?></legend>
+            <legend>Invitaciones a Amigos <?php echo count($xEmail)." - ".count($xFB); ?></legend>
             
             
                   <div class=" margin_top">

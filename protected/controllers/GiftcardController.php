@@ -6,7 +6,7 @@ class GiftcardController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
         
         
 	/**
@@ -311,7 +311,7 @@ class GiftcardController extends Controller
                     }
                     //De donde proviene la GC
                     if($model->comesFromAdmin()){
-                        $saludo = "Personaling tiene una Gift Card como obsequio para tí.";
+                        $saludo = Yii::t('contentForm','Personaling has a Gift Card as a gift for you.');
                     }else{                        
                         $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";
                     }
@@ -326,8 +326,8 @@ class GiftcardController extends Controller
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
                     $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-                            <br>
-                            Comienza a disfrutarla entrando en Personaling.com. Y ¡Sientete estupenda! #mipersonaling<br/>
+                            <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.')."
+                            <br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
                             
                     
@@ -849,7 +849,7 @@ class GiftcardController extends Controller
 //            echo "</pre>";
 //            Yii::app()->end();
             //Saludo del correo
-            $saludo = "Personaling tiene una Gift Card como obsequio para tí.";
+            $saludo = Yii::t('contentForm','Personaling has a Gift Card as a gift for you.');
             //Mensaje que va en la tarjeta
             $personalMes = "";                  
             if($envio->mensaje != ""){
@@ -880,7 +880,8 @@ class GiftcardController extends Controller
                 $message->view = "mail_giftcard";
                 $subject = 'Gift Card de Personaling';
                 $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-                        <br>Comienza a disfrutar de tu Gift Card usándola en Personaling.com<br/
+                        <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.')."
+                        <br/>
                         Para ver la Gift Card permite mostrar las imagenes de este correo <br/><br/>";
 
 
@@ -1103,7 +1104,7 @@ class GiftcardController extends Controller
 	public function actionComprar()
 	{		
                 $model = new BolsaGC;
-                $model->monto = 4; //Default
+                $model->monto = 100; //Default
                 $model->plantilla_url = "gift_card_one"; //Default
                 $envio = new EnvioGiftcard("masivo");
                 

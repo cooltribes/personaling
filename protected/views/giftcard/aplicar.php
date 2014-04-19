@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 
 ?>
 <div class="container">
-	<h1>Gift Card</h1>
+	<h1><?php echo Yii::t('contentForm','Gift Card'); ?></h1>
 	<section class="bg_color3  margin_bottom_small padding_medium box_1">
             <?php $form = $this->beginWidget("bootstrap.widgets.TbActiveForm", array(
                     'id' => 'form-enviarGift',
@@ -24,8 +24,8 @@ $this->breadcrumbs=array(
                 )); ?>
 		
 		<fieldset>
-			<legend>Aplicar Gift Card</legend>
-            <p class="lead">Busca el código en tu Gift Card</p>
+			<legend><?php echo Yii::t('contentForm','Apply Gift Card'); ?></legend>
+            <p class="lead"><?php echo Yii::t('contentForm','Search the code of your Gift Card'); ?></p>
                         <!-- FLASH ON --> 
                         <?php $this->widget('bootstrap.widgets.TbAlert', array(
                                 'block'=>true, // display a larger alert block?
@@ -92,7 +92,7 @@ $this->breadcrumbs=array(
                         <?php echo $form->errorSummary($model, "Corrije los siguientes errores:"); ?>
 			<div class="control-group row margin_top">
 				<div class="controls pull-right">
-				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i> Aplicar Gift Card</button>
+				  <button type="submit" class="btn btn-large btn-warning"><i class=" icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Apply Gift Card'); ?></button>
 				</div>
 			</div>			
 		</fieldset>

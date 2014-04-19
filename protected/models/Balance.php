@@ -21,7 +21,8 @@
   * 1: Balance Negativo
   * 2: Tarjeta de Regalo
   * 3: Carga desde Admin
-  * 4: Saldo por devolución
+  * 4: Saldo por devolución // DEVALUACION?
+  * 5: Saldo por comision de ventas (Personal Shoppers)
   * 
   */
  
@@ -108,5 +109,27 @@ class Balance extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function getOrigen($id = null){
+		if(!is_null($id))
+			$balance=$this->findByPk($id);
+		else
+			$balance=$this;
+		if($balance->tipo==0)
+			return "Excedente de pago";
+		if($balance->tipo==1)
+			return "Descuento de Saldo";
+		if($balance->tipo==2)
+			return "Carga por Tarjeta de Regalo";
+		if($balance->tipo==3)
+			return "Carga desde Administrador";
+		if($balance->tipo==4)
+			return "Saldo por devolución";
+		
+		return "Desconocido";
+
+  
+		
 	}
 }

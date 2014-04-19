@@ -1,23 +1,21 @@
 
-  <?php /* @var $this Controller */ ?>
-  <?php //date_default_timezone_set('America/Los_Angeles'); ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="language" content="en" />
-<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-<?php 
-
-Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css',null);
-// Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
-Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico',null,null);  
-Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
-?>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-
-
-
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="language" content="es" />
+    <meta charset="utf-8">
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <?php 
+    
+    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=1',null);
+    // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
+    Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico?v=3',null,null);  
+    Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
+    ?>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
+    <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
+    
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">
@@ -47,24 +45,29 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
 					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
-          array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                        array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
+					)),                
+                array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
+					array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
+					array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
-                array('label'=>'Usuarios', 'url'=>array('/user/admin')),
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
-					array('label'=>'Looks', 'url'=>array('/look/admin')),
-					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+                  
+        					array('label'=>'Looks', 'url'=>array('/look/admin')),
+        					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+                  array('label'=>'Campañas', 'url'=>array('/campana/index')),
 					)),
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
                 	array('label'=>'Productos', 'url'=>array('/producto/admin')),
 					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte'),
+          array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
 					)
 				),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
-                array('label'=>'Sistema', 'url'=>'#', 'items'=>array(
-                	array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-
-					         array('label'=>'Campañas', 'url'=>array('/campana/index')),
-                  array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+                array('label'=>'Gift Card', 'url'=>'#', 'items'=>array(                	
+                array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
 
 					),
 				),
@@ -188,12 +191,12 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
   
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 
-                array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Tu personal Shopper', 'url'=>array('/tienda/look'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
+                array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
+                array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>!UserModule::isPersonalShopper()),
+                // array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
-                array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest),                 
@@ -202,7 +205,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
-                array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'type'=>'danger', 'htmlOptions'=>array('class'=>'btn btn-danger'),'visible'=>Yii::app()->user->isGuest),
+                array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 array('label'=>$avatar."<span id='userName'>{$nombre}</span>", 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
@@ -299,13 +302,13 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/sitemap" title="Site Map">Site map</a></li>          
-          <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li> -->
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
           
         </ul>
       </div>
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
-        <p class="lead">Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.</p>
+        <p class="lead"><?php echo Yii::t('contentForm','Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.') ?></p>
         <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/logos_seguridad.png" alt="Logos de Seguridad">
                         </div><div class="span4"><script type="text/JavaScript">
                                 //<![CDATA[
@@ -640,9 +643,6 @@ if(!Yii::app()->user->isGuest){
     $("#dropdownUser .ver_todos").click(function(e){
         e.preventDefault();
         
-//        $("#modalPerfilesOcultos").modal("show");
-//        
-//        return;
         //Llevar a tienda de looks
             var urlModal = "<?php echo CController::createUrl("/tienda/modalAjax"); ?>";  
             
@@ -659,7 +659,6 @@ if(!Yii::app()->user->isGuest){
                     
                 }
             });
-        
        
     });
  

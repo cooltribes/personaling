@@ -11,7 +11,7 @@ class UserChangePassword extends CFormModel {
 	
 	public function rules() {
 		return Yii::app()->controller->id == 'recovery' ? array(
-			array('password, verifyPassword', 'required'),
+			array('password, verifyPassword', 'required','message'=> '{attribute} no puede estar en blanco'),
 			array('password, verifyPassword', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
 			array('verifyPassword', 'compare', 'compareAttribute'=>'password', 'message' => UserModule::t("Retype Password is incorrect.")),
 		) : array(

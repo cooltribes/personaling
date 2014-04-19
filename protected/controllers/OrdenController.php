@@ -12,7 +12,7 @@ class OrdenController extends Controller
 		);
 	}
 	 
-		/**
+        /**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter. 
 	 * @return array access control rules 
@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte','reportexls'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte','reportexls','adminxls'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -131,15 +131,19 @@ public function actionReportexls(){
 
 			// creando el encabezado
 			$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Marca')
-						->setCellValue('B1', 'Nombre')
-						->setCellValue('C1', 'SKU')
-						->setCellValue('D1', 'Color')
-						->setCellValue('E1', 'Talla')
-						->setCellValue('F1', 'Cantidad')
-						->setCellValue('G1', 'Costo (Bs)')
-						->setCellValue('H1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('I1', 'Precio de Venta con IVA (Bs)');
+						->setCellValue('A1', 'SKU')
+						->setCellValue('B1', 'Referencia')
+						->setCellValue('C1', 'Marca')
+						->setCellValue('D1', 'Nombre')
+						
+						->setCellValue('E1', 'Color')
+						->setCellValue('F1', 'Talla')
+						->setCellValue('G1', 'Cantidad')
+						->setCellValue('H1', 'Costo (Bs)')
+						->setCellValue('I1', 'Precio de Venta sin IVA (Bs)')
+						->setCellValue('J1', 'Precio de Venta con IVA (Bs)')
+						->setCellValue('K1', 'Orden N°')
+						->setCellValue('L1', 'Vendido en');
 			// encabezado end			
 		 	
 			foreach(range('A','I') as $columnID) {
@@ -157,15 +161,18 @@ public function actionReportexls(){
 			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('L1')->applyFromArray($title);
 		 	
 		 	
 		 	//Eliminar filtrado por marca antes de consultar
-		 	$fake=false;
+		 	/*$fake=false;
 		 	if(isset(Yii::app()->session['idMarca'])){
 		 		$marca=Yii::app()->session['idMarca'];
 		 		$fake=true;
 		 		unset(Yii::app()->session['idMarca']);
-		 	}
+		 	}*/
 			//fin			
 		 	
 		 	$orden=new Orden;
@@ -174,31 +181,31 @@ public function actionReportexls(){
 		
 			
 			//Reestablecer filtrado por marca si existia
-			if($fake)
-				Yii::app()->session['idMarca']=$marca;
+			/*if($fake)
+				Yii::app()->session['idMarca']=$marca;*/
 		 	//fin	 
 		 
 		 	foreach($ordenes->getData() as $data)
 			{
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
-                   if($data['look'] == 0)
-                    	{$H=Yii::app()->numberFormatter->formatCurrency(($data['Precio']/1.12), ''); 
-                    	$I=Yii::app()->numberFormatter->formatCurrency($data['Precio'], '');}
-				   else
-               			{$H=Yii::app()->numberFormatter->formatCurrency($data['pVenta'], ''); 
-               			$I=Yii::app()->numberFormatter->formatCurrency($data['pIVA'], '');}
+             
+                    $I=number_format($data['Precio'],2,',','.'); 
+                    $J=number_format($data['pIVA'],2,',','.');
 
-			
+
 					$objPHPExcel->setActiveSheetIndex(0)
-							->setCellValue('A'.$fila , $data['Marca']) 
-							->setCellValue('B'.$fila , $data['Nombre'])
-							->setCellValue('C'.$fila , $data['SKU']) 
-							->setCellValue('D'.$fila , $data['Color'])
-							->setCellValue('E'.$fila , $data['Talla']) 
-							->setCellValue('F'.$fila , $data['Cantidad']) 
-							->setCellValue('G'.$fila , Yii::app()->numberFormatter->formatCurrency($data['Costo'], '')) 
-							->setCellValue('H'.$fila , $H)							
-							->setCellValue('I'.$fila , $I);
+							->setCellValue('A'.$fila , $data['SKU']) 
+							->setCellValue('B'.$fila , $data['Referencia']) 
+							->setCellValue('C'.$fila , $data['Marca']) 
+							->setCellValue('D'.$fila , $data['Nombre'])
+							->setCellValue('E'.$fila , $data['Color'])
+							->setCellValue('F'.$fila , $data['Talla']) 
+							->setCellValue('G'.$fila , $data['Cantidad']) 
+							->setCellValue('H'.$fila , number_format($data['Costo'],2,',','.')) 
+							->setCellValue('I'.$fila , trim($I))							
+							->setCellValue('J'.$fila , trim($J))
+							->setCellValue('K'.$fila , $data['Orden'])
+							->setCellValue('L'.$fila ,date("d/m/Y",strtotime($data['Fecha'])));
 					$fila++;
 
 			} // foreach
@@ -407,14 +414,123 @@ public function actionReportexls(){
             $criteria = $dataProvider->getCriteria();
             $criteria->order = 'fecha DESC';
             $dataProvider->setCriteria($criteria);       
-
+			Yii::app()->session['ordenCriteria']=$dataProvider->getCriteria();
             $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,
             ));
 
 	}
 	
-        
+     public function actionAdminXLS()
+	{  
+		ini_set('memory_limit','256M'); 
+
+		$criteria=Yii::app()->session['ordenCriteria'];
+		$criteria->select = array('t.id');
+		$dataProvider = new CActiveDataProvider('Orden', array(
+                    'criteria' => $criteria,
+                    
+        ));
+		$pages=new CPagination($dataProvider->totalItemCount);
+		$pages->pageSize=$dataProvider->totalItemCount;
+		$dataProvider->setPagination($pages);
+	
+		
+		
+		//print_r($pages);
+		
+		$title = array(
+		    'font' => array(
+		     
+		        'size' => 14,
+		        'bold' => true,
+		        'color' => array(
+		            'rgb' => '000000'
+		        ),
+	    ));
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("Reporte-Ordenes")
+		                         ->setSubject("Reporte de Ordenes")
+		                         ->setDescription("Reporte de Ordenes")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+		$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'ID')
+						->setCellValue('B1', 'Usuaria')
+						->setCellValue('C1', 'Fecha')
+						->setCellValue('D1', 'Looks')
+						->setCellValue('E1', 'Prendas Individuales')
+						->setCellValue('F1', 'Total Prendas')
+						->setCellValue('G1', 'Monto (Bs)')
+						->setCellValue('H1', 'Método de Pago')
+						->setCellValue('I1', 'Estado');
+						
+		foreach(range('A','I') as $columnID) {
+    		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        	->setAutoSize(true);
+		}  
+			$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+
+		
+		
+		$fila=2;
+		foreach($dataProvider->getData() as $data){
+				
+			$orden=Orden::model()->findByPk($data->id);
+			$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
+			$ohptc= new OrdenHasProductotallacolor;
+			
+		 
+			
+			$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , $data->id) 
+							->setCellValue('B'.$fila , $orden->user->username) 
+							->setCellValue('C'.$fila , date("d-m-Y H:i:s",strtotime($orden->fecha)))
+							->setCellValue('D'.$fila , $ohptc->countLooks($data->id))
+							->setCellValue('E'.$fila , $ohptc->countIndividuales($data->id))
+							->setCellValue('F'.$fila , $ohptc->countPrendasEnLooks($data->id)) 
+							->setCellValue('G'.$fila , number_format($orden->total,2,',','.')) 
+							->setCellValue('H'.$fila , $orden->getTiposPago('reporte')) 
+							->setCellValue('I'.$fila , $orden->textestado);  
+					$fila++;
+	
+		}
+		$objPHPExcel->setActiveSheetIndex(0);
+ 
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="ReporteOrdenes.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			ini_set('memory_limit','128M'); 
+		
+			Yii::app()->end();
+		
+	}
+	   
         /**          
          * Obtiene el filtro con id $id          
          */
@@ -667,7 +783,9 @@ public function actionReportexls(){
 
 	public function actionDetalles($id)
 	{
-		$orden = Orden::model()->findByPk($id);
+		$orden = Orden::model()->findByPk($id);  
+                
+                
 		/*$sql="select * from tbl_zoom where cod NOT IN (select cod_zoom from tbl_ciudad where cod_zoom IS NOT NULL)";
 		$zooms=Yii::app()->db->createCommand($sql)->queryAll();
 	
@@ -754,9 +872,10 @@ public function actionReportexls(){
 			}
 			
 			// devolviendo el saldo
+                        //tambien agregado el envio
 			
 			$balance = new Balance;
-			$balance->total = $_POST['monto'];
+			$balance->total = $_POST['monto'] + $_POST['envio'];
 			$balance->orden_id = $_POST['orden'];
 			$balance->user_id = $orden->user_id;
 			$balance->tipo = 4;
@@ -893,7 +1012,7 @@ public function actionValidar()
 						}
 						// Subject y body para el correo
 						$subject = 'Pago aceptado';
-						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+						$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
 						
 						$usuario = Yii::app()->user->id;
 						//$excede = ($detalle->monto-$porpagar);	
@@ -910,7 +1029,9 @@ public function actionValidar()
 							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
 						} // si es mayor hace el balance
 						
-													
+						/*Pagar comision a las PS involucradas en la venta*/
+                                                //Orden::model()->pagarComisiones($orden); 
+                                                
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					
 					}//orden save
@@ -955,7 +1076,7 @@ public function actionValidar()
 							if($orden->save()){
 								
 								$subject = 'Pago aceptado';
-								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+								$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
 								
 								$usuario = Yii::app()->user->id;
 								
@@ -970,6 +1091,9 @@ public function actionValidar()
 								$balance->tipo=1;
 								
 								$balance->save();
+                                                                
+                                                                /*Pagar comision a las PS involucradas en la venta*/
+                                                                //Orden::model()->pagarComisiones($orden); 
 									
 								
 							}
@@ -986,7 +1110,7 @@ public function actionValidar()
 								$balance->tipo=1;								
 								if($balance->save()){
 									$subject = 'Pago insuficiente';
-									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), '').' Bs para pagar toda la orden.<br/><br/> ';
+									$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));
 									$estado = new Estado;
 																
 									
@@ -1018,7 +1142,7 @@ public function actionValidar()
 					else{
 						
 							$subject = 'Pago insuficiente';
-							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->monto.' Bs para pagar toda la orden.<br/><br/> ';
+							$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));							
 							$estado = new Estado;
 																	
 							$estado->estado = 7; // pago insuficiente
@@ -1327,7 +1451,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');                
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						Yii::app()->mail->send($message);
 						
 					/*
@@ -1346,7 +1470,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						
 						Yii::app()->mail->send($message);					
 					
@@ -1399,7 +1523,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');                
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						Yii::app()->mail->send($message);
 						
 					/*
@@ -1418,7 +1542,7 @@ public function actionValidar()
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						
 						Yii::app()->mail->send($message);					
 					*/
@@ -1503,9 +1627,13 @@ public function actionValidar()
 		if(isset($_POST['orden']) && isset($_POST['check']))
 		{
 			$orden = Orden::model()->findByPk($_POST['orden']);
-			
+			$devolver=array();
+			$nproductos=0;
+			$peso=0;
+			$costo=0;
+			$cont=0;
 			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
-			$cont = 0; 
+			
 //			echo count($checks);
 //                        Yii::app()->end();
 			$totalenvio = 0;
@@ -1513,19 +1641,26 @@ public function actionValidar()
 //                        foreach($checks as $uno)
 //			{echo $uno."<br>";
 //                            
-//                        }
+//                       }
 //                        Yii::app()->end();
+			
+			$orden = Orden::model()->findByPk($_POST['orden']);
+			
 			foreach($checks as $uno)
 			{
-				$orden = Orden::model()->findByPk($_POST['orden']);
+				
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno)); 
 				
-                                if($ptcolor)
+				
+             if($ptcolor)
 				if($_POST['motivos'][$cont] == "Devolución por prenda dañada" 
                                         || $_POST['motivos'][$cont] == "Devolución por pedido equivocado")
 				{
+							
+					array_push($devolver,$ptcolor->id);	
+							
 					// calculo envio
-					
+					/*
 					$producto = Producto::model()->findByPk($ptcolor->producto_id);
 					$peso_total = $producto->peso; 
 					
@@ -1553,19 +1688,62 @@ public function actionValidar()
 						}
 							
 						$tipo_guia = 2;
-					}
-					
-					$totalenvio += $envio;
+					}*/
 					
 				} // if motivos
 
+				
+				
 				$cont++;
 			} // foreach
 			
-		echo $totalenvio;						
+			
+			$ohptcs=OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));	
+		
+			foreach($ohptcs as $ohptc){
+				
+				if(!in_array($ohptc->preciotallacolor_id,$devolver)){
+					$nproductos=$nproductos+$ohptc->cantidad;
+					$costo=$costo+$ohptc->precio;
+					$peso+=$ohptc->cantidad*$ptcolor->producto->peso;	
+				}
+				
+			}
+			
+			if($peso< 5){      
+							
+						
+						$flete=Orden::model()->calcularTarifa($orden->direccionEnvio->myciudad->cod_zoom,$nproductos,$peso,$costo);
+							
+							if(!is_null($flete)){
+								$envio=$flete->total - $orden->flete;
+					
+							}else{
+								$envio =Tarifa::model()->calcularEnvio($peso,$orden->direccionEnvio->myciudad->ruta_id);
+								$seguro=$envio*0.13;
+							}
+							
+							
+							$tipo_guia = 1;
+							
+			}else{
+							$peso_adicional = ceil($peso-5);
+							$envio = 163.52 + ($peso*$orden->direccionEnvio->myciudad->ruta->precio);
+							if($envio > 327.04){
+								$envio = 327.04;
+							}
+							$tipo_guia = 2;
+							
+			}
+			
+					
+			
+			
+									
 //		echo Yii::app()->numberFormatter->formatCurrency($totalenvio, '');
 
 		}	
+	echo ($orden->envio-$envio);
 
 	}
 

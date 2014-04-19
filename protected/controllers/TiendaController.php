@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','upa'),
+                                    'getFilter','xmltest'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -336,7 +336,11 @@ class TiendaController extends Controller
 			}
 			
 			$criteria = $producto->nueva2($a);
-			if (isset($_GET['page'])&&!isset(Yii::app()->session['f_text'])&&!isset(Yii::app()->session['f_color'])||isset($_GET['page'])&&!isset(Yii::app()->session['f_text'])&&!isset(Yii::app()->session['chic']))
+			if (isset($_GET['page'])&&
+			(!isset(Yii::app()->session['f_cat'])&&
+			!isset(Yii::app()->session['f_text'])&&
+			!isset(Yii::app()->session['f_color'])&&
+			!isset(Yii::app()->session['chic'])))
 				$criteria->order=$orden[Yii::app()->session['order']];
 			$total=Producto::model()->count($criteria);
 			if($total>0){
@@ -1057,15 +1061,38 @@ public function actionCategorias2(){
 	}
 
 	public function actionLook(){
+           	
 		
-            /* 
+           $userTmp = User::model()->findByPk(Yii::app()->user->id);
+		   $todosLosLooks = false;
+		if (isset($userTmp)){	
+			
+			
+			//echo "user".$userTmp->status_register;
+			//echo "status".$userTmp->status;
+			//echo "destacado".$userTmp->ps_destacado;
+			//echo "email".$userTmp->email;
+		     if ($userTmp->status_register !=User::STATUS_REGISTER_ESTILO){
+		     	//echo "entro"; 
+		     	$_POST['perfil_propio'] = 0;
+				// $_POST['reset'] = true;
+				 $todosLosLooks = true;  
+			 }  
+		} else {
+		   //  	$_POST['perfil_propio'] = 0;
+			//	 $_POST['reset'] = true;			
+			$todosLosLooks = true;
+		}
+				 
+		     	
+		    /* 
              * Si se utilizan filtros y estaba seteada la variable de sesion
              * Borrarla porque se va a realizar una nueva busqueda por filtros
              */
             if((isset(Yii::app()->session['todoPost']) && !isset($_GET['page'])))
             {
                 unset(Yii::app()->session['todoPost']);
-            }
+            } 
             
             
             //Comparar si vienen todos los campos de perfil
@@ -1107,12 +1134,12 @@ public function actionCategorias2(){
                 }        
             }
             
-            if (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
+            if ( (isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) 
                     || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios'])
-                || isset($_POST['perfil_propio'])) 
+                || isset($_POST['perfil_propio'])) ) 
             {
 
-                
+               
                Yii::app()->session['todoPost'] = $_POST;
                
                 $criteria = new CDbCriteria;                
@@ -1158,12 +1185,12 @@ public function actionCategorias2(){
                         $criteria->addInCondition('t.id', $inValues);
                    }  
                 }
-                
+               
                 //Looks recomendados para el usuario
                 if($_POST['perfil_propio'] == 1){
                     
-                    $userTmp = User::model()->findByPk(Yii::app()->user->id);
-                    
+                    //$userTmp = User::model()->findByPk(Yii::app()->user->id);
+                   
                     $looks = new Look();
                     $ids = $looks->match($userTmp);
                     $ids = $ids->getData();
@@ -1184,7 +1211,7 @@ public function actionCategorias2(){
                  //Looks recomendados para un perfil   
                 }else if ($filtroPerfil) {
                     
-                    $userTmp = User::model()->findByPk(Yii::app()->user->id);
+                    
                     
                     $userTmp->profile->attributes = $_POST['Profile']; //cambiar perfil temporalmente solo para buscar
                     $looks = new Look();
@@ -1201,7 +1228,7 @@ public function actionCategorias2(){
                 }
                
                 $sort = new CSort("Look");
-                Yii::app()->end();
+                //Yii::app()->end();   // NELSON QUE HICISTE NELSON
                         
                 $sort->applyOrder($criteria);
                 
@@ -1211,36 +1238,49 @@ public function actionCategorias2(){
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
-                
-                Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-                Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-                Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
-                Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-                Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-                Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
-                                      
-                if(!isset($_GET["page"])){
-                    
-                    echo CJSON::encode(array(
-                        'status' => 'success',
-                        'condicion' => $total,                        
-                        'div' => $this->renderPartial('_look', array('looks' => $looks,
-                            'pages' => $pages,), true, true)));
-                    
-                }else{
-                    
-                    echo $this->renderPartial('_look', array('looks' => $looks,
-                        'pages' => $pages,), true, true);              
-                  
+				$status_register_tmp = isset($userTmp->status_register)?$userTmp->status_register:-1;
+                if ($status_register_tmp !=User::STATUS_REGISTER_ESTILO){
+                  	$rangosArray = Look::model()->getRangosPrecios();
+					  $profile = new Profile;
+                  	$this->render('look', array(
+                    'looks' => $looks,
+                    'pages' => $pages,
+                    'profile' => $profile,
+                    'editar' => true,
+                    'rangos' => $rangosArray,
+                    'todosLosLooks' => $todosLosLooks,
+                ));
+				  } else { 
+		                Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		                Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+		                Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+		                Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+		                Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+		                Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+		                Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+		                Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+		                Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+		                Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+		                                      
+		                if(!isset($_GET["page"])){
+		                   	  
+		                    echo CJSON::encode(array(
+		                        'status' => 'success',
+		                        'condicion' => $total,                        
+		                        'div' => $this->renderPartial('_look', array('looks' => $looks,
+		                            'pages' => $pages,), true, true)));
+						 
+		                    
+		                }else{
+		                    
+		                    echo $this->renderPartial('_look', array('looks' => $looks,
+		                        'pages' => $pages,), true, true);              
+		                  
+		                }
                 }
                                 
-           } 
-           else
-           {
+           }else{
+           		
                 $search = "";
                 if (isset($_GET['search']))
                     $search = $_GET['search'];
@@ -1249,7 +1289,7 @@ public function actionCategorias2(){
                 
                 //Para mostrar por defecto los looks recomendados para el usuario
                 //siempre la primera vez que se cargue la página
-                $userTmp = User::model()->findByPk(Yii::app()->user->id);
+               // $userTmp = User::model()->findByPk(Yii::app()->user->id);
                     
                 $looks = new Look();
                 $ids = $looks->match($userTmp);
@@ -1282,38 +1322,19 @@ public function actionCategorias2(){
                 /**    Filtros por Perfil **/
 
                 $profile = new Profile;
-
-                /*      Rangos de precios       */
-                $allLooks = Look::model()->findAll("status = 2");
-                $count = array(0, 0, 0, 0); 
-                
-                foreach ($allLooks as $look) {
-                    $allPrices[] = $look->getPrecio(false);
-                }
-
-                $rangos = 4;
-                $mayorP = max($allPrices);
-                $menorP = min($allPrices);
-                $len = ($mayorP - $menorP) / $rangos;
-
-                foreach ($allPrices as $price) {
-                    for($i = 0; $i < $rangos; $i++)
-                        $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
-                }                
-                
-                for ($i = 0; $i < $rangos; $i++) {
-                    $mayorP = $menorP + $len;
-                    $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
-                    $menorP += $len;
-                }                                
+				$rangosArray = Look::model()->getRangosPrecios();
+                                                
 //                echo "<pre>"; print_r($count);echo "</pre>";               
                         
+                
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,
                     'profile' => $profile,
                     'editar' => true,
-                    'rangos' => $rangosArray
+                    'rangos' => $rangosArray,
+                    'todosLosLooks' => $todosLosLooks,
+                    
                 ));
         }	
 			
@@ -1377,7 +1398,7 @@ public function actionCategorias2(){
        	$datos=$datos.'<div class="span7">';
 		
 		foreach ($producto->precios as $precio) {
-   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span> Bs. '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
+   			$datos=$datos.'<h4 class="precio"><span>Subtotal</span>'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
    		}
 
         $datos=$datos.'</div>';
@@ -1801,12 +1822,7 @@ public function actionCategorias2(){
        }
 
 
-	 public function actionUpa()
-    {
-        echo "I'M HERE!";
-        break;
-    }
-
+	
     //Funcion que se llama cuando se intenta comprar para alguien mas desde afuera de la tienda
     public function actionRedirect() {
         
@@ -1865,6 +1881,10 @@ public function actionCategorias2(){
         echo CJSON::encode($response);
         
     }
+
+	public function actionXmltest(){
+		$this->renderPartial('xmltest');
+	}
        
         
 }

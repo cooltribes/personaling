@@ -107,14 +107,15 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		echo CHtml::hiddenField('facebook_request',$requests[0]);
 	}
 	?>
-	
+	<?php echo $referencia; ?>
 <div class="control-group row-fluid">
 	<div class="controls">
 	<!--[if IE 9]> 
 		<label>Correo:</label>
 	<![endif]--> 
-	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
+	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12",'readonly'=>$referencia=='look'?true:false)); 
 	echo $form->error($model,'email');
+	echo CHtml::hiddenField('referencia', $referencia, array('id'=>'referencia', 'name'=>'referencia'));
 	?>
 	</div>
 </div>
@@ -207,7 +208,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 	</div>
             <hr/>
              Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
-	<div class="form-actions"> 
+	<div class="padding_top_medium "> 
 		
 			
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -215,7 +216,9 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		    'label'=>'Siguiente',
 		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'large', // null, 'large', 'small' or 'mini'
+		    'htmlOptions'=>array('class'=>'btn-block'),
 		)); ?>
+
 	</div>
 
 </fieldset>
@@ -377,5 +380,56 @@ function check_fb(){
 	
 function check_twitter(){
 	console.log("Twitter");
+}
+
+$('#Profile_day').on('change', validarFecha);
+$('#Profile_month').on('change', validarFecha);
+$('#Profile_year').on('change', validarFecha);
+
+function validarFecha(){
+        var day = $('#Profile_day').val();
+        var month = $('#Profile_month').val();
+        var year = $('#Profile_anio').val();
+        
+        if(day != '-1' && month != '-1' && year != '-1'){
+                if(validarAnio(day, month, year)){
+                        $('#Campana_ventas_fin').val(year+'-'+month+'-'+day+' 23:59:59');
+                }else{
+                        $('#Profile_day').val('-1'); 
+                        $('#Profile_month').val('-1');
+                        $('#Profile_year').val('-1');
+                }
+        }
+}
+
+function validarAnio(dia, mes, anio){
+    var numDias = 31;
+    //console.log('Dia: '+dia+' - Mes: '+mes+' - Año: '+anio);
+
+    if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
+        numDias = 30;
+    }
+
+    if(mes == 2){
+        if(comprobarSiBisisesto(anio)){
+            numDias = 29;
+        }else{
+            numDias = 28;
+        }
+    }
+
+    if(dia > numDias){
+        return false;
+    }
+    return true;
+}
+
+function comprobarSiBisisesto(anio){
+    if ( ( anio % 100 != 0) && ((anio % 4 == 0) || (anio % 400 == 0))) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 </script>

@@ -32,8 +32,8 @@
                 Por Aprobar</td>
             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getPorEnviar(); ?></p>
                 Por Enviar</td>
-            <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
-                Cancelados </td>
+<!--             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(4); ?></p>
+                Cancelados </td> -->
 <!--             <td><p class="T_xlarge margin_top_xsmall"> <?php echo $look->getTotalxStatus(5); ?> </p>
                 Devueltos</td> -->
         </tr>
@@ -76,9 +76,9 @@
 ?>        
         <div class="span3">
             <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 4'),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- Búsquedas avanzadas --', 'id' => 'all_filters')) ?>
         </div>
-        <div class="span3"><a href="#" class="btn crear-filtro">Crear nuevo filtro</a></div>
+        <div class="span3"><a href="#" class="btn crear-filtro">Crear búsqueda avanzada</a></div>
         <div class="span2">
         
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -111,12 +111,21 @@ $template = '{summary}
     </table>
     {pager}
 	';
+        $pagerParams=array(
+            'header'=>'',
+            'prevPageLabel' => Yii::t('contentForm','Previous'),
+            'nextPageLabel' => Yii::t('contentForm','Next'),
+            'firstPageLabel'=> Yii::t('contentForm','First'),
+            'lastPageLabel'=> Yii::t('contentForm','Last'),
+            'htmlOptions'=>array(
+                'class'=>'pagination pagination-right'));
 
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_look',
 	    'template'=>$template,
+        'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',        
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	
 							$('#todos').click(function() { 
@@ -130,12 +139,7 @@ $template = '{summary}
 							});
 						   
 							} ",
-		'pager'=>array(
-			'header'=>'',
-			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
-		)
-		),					
+		'pager'=>$pagerParams,					
 	));    
 	?>
     <hr/>

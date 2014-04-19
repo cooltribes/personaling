@@ -4,7 +4,7 @@ $this->breadcrumbs=array(
   'Look'
 );
 $this->pageTitle=Yii::app()->name . " - " . $model->title;;
-  Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title.' - '.$model->getPrecio().' Bs.', null, null, array('property' => 'og:title'), null); // registro del meta para facebook
+  Yii::app()->clientScript->registerMetaTag('Personaling - '.$model->title.' - '.$model->getPrecio().' '.Yii::t('contentForm', 'currSym'), null, null, array('property' => 'og:title'), null); // registro del meta para facebook
   Yii::app()->clientScript->registerMetaTag($model->description.' Creado por: '.$model->user->profile->first_name.' '.$model->user->profile->last_name, null, null, array('property' => 'og:description'), null);
   Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
   Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
@@ -15,7 +15,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->title, 'twitter:title', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->description, 'twitter:description', null, null, null);
-  Yii::app()->clientScript->registerMetaTag($model->getPrecio().' Bs.', 'twitter:data1', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($model->getPrecio().' '.Yii::t('contentForm', 'currSym'), 'twitter:data1', null, null, null);
   Yii::app()->clientScript->registerMetaTag('Subtotal', 'twitter:label1', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->user->profile->first_name.' '.$model->user->profile->last_name, 'twitter:data2', null, null, null);  
   Yii::app()->clientScript->registerMetaTag('Creado por', 'twitter:label2', null, null, null);
@@ -38,7 +38,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             <div class="span6">
                 <input id="idLook" type="hidden" value="<?php echo $model->id ?>" />
               <h1><?php echo $model->title; ?></h1>
-              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   -->Estilo <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> <!-- | 100% Disponible --></small></p>
+              <p class="margin_top_small_minus"> <!-- <small>Look <a href="#" title="playero">Playero</a>,   --> <?php echo Yii::t('contentForm','Style'); ?> <a href="#" title="casual"><?php echo $model->getTipo(); ?></a> <!-- | 100% Disponible --></small></p>
             </div>
             <div class="span2 share_like">
               <div class="pull-right">
@@ -79,7 +79,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                   //Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), 'twitter:image:src', null, null, null); //Registro de meta para Card de Twitter
 
             ?>
-            <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium">Promoción</span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
+            <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium"><?php echo Yii::t('contentForm','Promotion'); ?></span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
 
           </div>
           <div class="hidden-phone row-fluid vcard">
@@ -90,12 +90,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
             <div class="span5 braker_right row-fluid">
             <div class="span9">
-            <span class="muted">Look creado por: </span>
+            <span class="muted"><?php echo Yii::t('contentForm' , 'Look created by'); ?>: </span>
               <h5><a href="<?php echo $perfil->getUrl(); ?>" title="perfil" class="url"><span class="fn"> <?php echo $model->user->profile->first_name.' '.$model->user->profile->last_name; ?></span> <i class="icon-chevron-right"></i></a></h5>
-              <p  class="note"><strong>Bio</strong>: <?php echo $model->user->profile->bio; ?> </p>
+              <p  class="note"><strong><?php echo Yii::t('contentForm','Biography'); ?></strong>: <?php echo $model->user->profile->bio; ?> </p>
             </div>
             <div class="span3">
-              <span class="muted" >En este Look</span>
+              <span class="muted" ><?php echo Yii::t('contentForm' , 'On this look'); ?></span>
             </div>
             </div>
             <!-- Marcas en el look ON -->
@@ -117,7 +117,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             <!-- Marcas en el look OFF -->            
           </div>
           <hr/>
-          <h3>Descripción del look</h3>
+          <h3><?php echo Yii::t('contentForm' , 'Look description'); ?></h3>
           <p><?php echo $model->description; ?> </p>
         </article>
         <!-- Columna Principal OFF -->
@@ -127,7 +127,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           <!-- Boton de comprar  -->
           <div class="row-fluid call2action">
             <div class="span6">
-              <h4 class="precio" ><div id="price"><span>Subtotal</span> Bs. <?php echo $model->getPrecio(); ?></div></h4>
+              <h4 class="precio" ><div id="price"><span><?php echo Yii::t('contentForm' , 'Subtotal'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></div></h4>
             </div>
             <div class="span6">
               <div class="">
@@ -138,7 +138,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                     'buttonType'=>'ajaxButton',
                     'id'=>'btn-compra', 
                     'type'=>'warning',
-                    'label'=>'Comprar',
+                    'label'=>Yii::t('contentForm' , 'Buy'),
                     'block'=>'true',
                        'size'=> 'large',
                    // 'url'=>array('producto/tallacolor'),
@@ -155,7 +155,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                                                                       var entro = true;	
                                    if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
                                    		entro = false;
-                                        alert('debe seleccionar por lo menos una prenda');
+                                        alert('".Yii::t('contentForm' , 'Must select at least one item')."');
                                         return false;
                                    }
 
@@ -164,7 +164,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                                                if ($(this).parent().prev('input').prop('checked')){
                                                		entro = false;
-                                                   bootbox.alert('debe seleccionar todas las tallas');
+                                                   bootbox.alert('".Yii::t('contentForm' , 'You must select all sizes')."');
                                                    return false;
                                                }
                                            }
@@ -225,8 +225,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
               </div>
             </div>
           </div>
-          <p class="muted t_small CAPS braker_bottom">Selecciona las tallas </p> 
-          <p class="muted t_small ">Puedes comprar por separado las prendas que te gustan</p>
+          <p class="muted t_small CAPS braker_bottom"><?php echo Yii::t('contentForm' , 'Select the size'); ?> </p> 
+          <p class="muted t_small "><?php echo Yii::t('contentForm' , 'You can buy separate clothes that you like'); ?></p>
 
           <!-- Productos del look ON -->
           <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
@@ -268,10 +268,10 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                   <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
                   <?php 
                     if($lookhasproducto->producto->estado == 0){
-                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); 
+                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
                     }else{
                         
-                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>'Talla','class'=>'span5 tallas')); 
+                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
                         
                     }
                   
@@ -280,7 +280,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                 <div class="metadata_bottom">
                   <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                   <div class="row-fluid">
-                    <div class="span7"><span>Bs.
+                    <div class="span7"><span> <?php echo Yii::t('contentForm', 'currSym'); ?>
                         <?php foreach ($lookhasproducto->producto->precios as $precio) {
                        echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
                        }
@@ -309,7 +309,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           </div>
           <?php $this->endWidget(); ?>
           <!-- Productos del look OFF -->
-<hr/>
           <div class="row call2action">
                 <?php
 
@@ -317,7 +316,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                     'buttonType'=>'ajaxButton',
                     'id'=>'btn-compra', 
                     'type'=>'warning',
-                    'label'=>'Comprar',
+                    'label'=>Yii::t('contentForm' , 'Buy'),
                     'block'=>'true',
                        'size'=> 'large',
                    // 'url'=>array('producto/tallacolor'),
@@ -334,7 +333,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                                                                       var entro = true; 
                                    if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
                                       entro = false;
-                                        alert('debe seleccionar por lo menos una prenda');
+                                        alert('".Yii::t('contentForm' , 'Must select at least one item')."');
                                         return false;
                                    }
 
@@ -343,7 +342,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                                                if ($(this).parent().prev('input').prop('checked')){
                                                   entro = false;
-                                                   bootbox.alert('debe seleccionar todas las tallas');
+                                                   bootbox.alert('".Yii::t('contentForm' , 'You must select all sizes')."');
                                                    return false;
                                                }
                                            }
@@ -404,7 +403,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           </div>
           <div class="braker_horz_top_1">            
            
-            <span class="entypo icon_personaling_medium">&#128197;</span> Fecha estimada de entrega: <?php echo date("d/m/Y", strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
+            <span class="entypo icon_personaling_medium">&#128197;</span> <?php echo Yii::t('contentForm' , 'Date estimated delivery'); ?>: <?php echo date("d/m/Y", strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>                  
           </div>
           <div class="braker_horz_top_1 addthis clearfix row-fluid">  
           <?php
@@ -414,12 +413,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             if(isset($like)) // le ha dado like 
 				    { ?>
           
-          		<div class="span6"><a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a>
+          		<div class="span6"><a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> <?php echo Yii::t('contentForm' , 'Like'); ?> </a>
             <?php
 				    }
 			      else {?>
 			       
-			       <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> Me encanta </a> 
+			       <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span><?php echo Yii::t('contentForm' , 'Like'); ?> </a> 
       			<?php
       				}
       			?>	
@@ -446,7 +445,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>           
           </div>
-          <hr/>
           <div>
             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
           </div>
@@ -501,12 +499,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                           <?php echo CHtml::image($lookre->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
                       </div>
-                      <div class="span4"> <span class="muted">Look creado por: </span>
+                      <div class="span4"> <span class="muted"><?php echo Yii::t('contentForm' , 'Look created by'); ?>:  </span>
                         <h5><a class="url" title="profile" href="#"><span class="fn">
                           <?php //echo $look->title; ?>
                           <?php echo $lookre->user->profile->first_name; ?> </span></a></h5>
                       </div>
-                      <div class="span6"><span class="precio"> <small>Bs.</small> <?php echo $lookre->getPrecio(); ?></span></div>
+                      <div class="span6"><span class="precio"> <small><?php echo Yii::t('contentForm' , 'currSym'); ?></small> <?php echo $lookre->getPrecio(); ?></span></div>
                     </div>
                     <div class="share_like">
                       <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
@@ -525,7 +523,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                       </div>
                     </div>
-                    <span class="label label-important">Promoción</span> </article>
+                    <span class="label label-important"><?php echo Yii::t('contentForm' , 'Promotion'); ?></span> </article>
                 </div>
       <?php
                   } // like
@@ -548,7 +546,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
           </div> -->
           <div class="span11">
-            <h3>Vistos recientemente</h3>
+            <h3><?php echo Yii::t('contentForm' , 'Recently viewed'); ?></h3>
             <div class="row">
                         <?php
                              //$iterator = new CDataProviderIterator($ultimos_vistos);
@@ -586,7 +584,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 <div class="modal hide fade" id="myModal">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4>Detalles</h4>
+    <h4><?php echo Yii::t('contentForm' , 'Details'); ?></h4>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -625,7 +623,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             {
                 if (data.status == 'success')
                 {
-                      //$('#price').html('Bs.'+data.div);
+                      //$('#price').html('".Yii::t('contentForm', 'currSym')." '+data.div);
                       $('#'+data.id).fadeOut(400,function() { $(this).html(data.div+ ' unds.').fadeIn(400); });
                   //alert(data.div);
 
@@ -658,8 +656,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             {
                 if (data.status == 'success')
                 {
-                      //$('#price').html('Bs.'+data.div);
-                      $('#price').fadeOut(400,function() { $(this).html('Bs.'+data.div).fadeIn(400); });
+                      //$('#price').html('".Yii::t('contentForm', 'currSym')." '+data.div);
+                      $('#price').fadeOut(400,function() { $(this).html('".Yii::t('contentForm', 'currSym')." '+data.div).fadeIn(400); });
                   //alert(data.div);
 
                 }

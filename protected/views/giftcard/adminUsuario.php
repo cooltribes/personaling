@@ -26,14 +26,14 @@ $this->pageTitle = Yii::app()->name . ' - Mis GiftCards';
         )
     ); ?>	
     <!-- FLASH OFF --> 
-        <h1>Mis Gift Cards</h1>
+        <h1><?php echo Yii::t('contentForm','My Gift Cards'); ?></h1>
     </div>
     <div class="row">
         <div class="span2 offset7">
-            <a href="comprar" class="btn btn-warning"><i class="icon-shopping-cart icon-white"></i> Comprar Gift Card</a>
+            <a href="comprar" class="btn btn-warning"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy Gift Card'); ?></a>
         </div>
         <div class="span3">
-            <a href="aplicar" class="btn btn-danger"><i class="icon-gift icon-white"></i> Aplicar una Gift Card</a>
+            <a href="aplicar" class="btn btn-danger"><i class="icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Apply Gift Card'); ?></a>
         </div>        
     </div>
     <hr/>
@@ -52,16 +52,16 @@ $this->pageTitle = Yii::app()->name . ' - Mis GiftCards';
             <th rowspan="2" scope="col"></th>
             <th rowspan="2" scope="col">Comprador</th>
             -->
-            <th rowspan="2" scope="col">Id</th>
-            <th rowspan="2" scope="col">Estado</th>
-            <th rowspan="2" scope="col">Monto Bs.</th>
-            <th colspan="2" scope="col">Vigencia</th>
-            <th rowspan="2" scope="col">Fecha de Aplicación<br>Usuario que la aplicó</th>
-            <th rowspan="2" scope="col">Acciones</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm','ID').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm','State').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm','Amount in').' '.Yii::t('contentForm', 'currSym').'</th>
+            <th colspan="2" scope="col">'.Yii::t('contentForm','Validity').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm','Date of Application <br> User who applied it').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm','Actions').'</th>
         </tr>
         <tr>
-            <th scope="col">Desde</th>
-            <th scope="col">Hasta</th>
+            <th scope="col">'.Yii::t('contentForm','From1').'</th>
+            <th scope="col">'.Yii::t('contentForm','Until').'</th>
         </tr>
     {items}
     </table>
@@ -137,7 +137,7 @@ $this->pageTitle = Yii::app()->name . ' - Mis GiftCards';
            'buttonType' => "link" ,
            'type' => "info" ,
            'icon' => "print white" ,
-           'label' => "Imprimir" ,
+           'label' => Yii::t('contentForm','Print') ,
            'url' => "javascript:printElem('#divImprimir')" ,
         ));
 

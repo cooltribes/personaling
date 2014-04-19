@@ -6,7 +6,7 @@ class ProductoController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
 
 	/**
 	 */
@@ -34,7 +34,8 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','suprimir','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'),
+				'actions'=>array('create','update','suprimir','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'
+				,'reporte','reportexls'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -48,6 +49,176 @@ class ProductoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	
+	public function actionReporte()
+	{ 
+   
+		
+		if(!isset($_GET['data_page'])){
+			
+			if(isset(Yii::app()->session['idMarca']))
+				unset(Yii::app()->session['idMarca']);
+		}
+		
+		if(isset($_POST['marcaId'])){
+			Yii::app()->session['idMarca']=$_POST['marcaId'];
+
+		}
+	
+	
+			
+
+	
+			
+			$dataProvider = Preciotallacolor::model()->existencia();
+		
+		
+		//$orden->user_id = Yii::app()->user->id;
+		
+		$marcas=Marca::model()->getAll();
+		$this->render('reporte',
+		array(
+		'dataProvider'=>$dataProvider,'marcas'=>$marcas
+		));
+
+
+	}
+
+
+public function actionReportexls(){
+	
+	$title = array(
+    'font' => array(
+     
+        'size' => 14,
+        'bold' => true,
+        'color' => array(
+            'rgb' => '000000'
+        ),
+    ),
+   /*'fill' => array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'startcolor' => array(
+            'rgb' => '6D2D56',
+        ),
+    ),*/
+);
+
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("Reporte-productos-vendidos")
+		                         ->setSubject("Reporte de Producto Vendidos")
+		                         ->setDescription("Reporte de Productos Vendidos con sus especificaciones individuales")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+
+			// creando el encabezado
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'SKU')
+						->setCellValue('B1', 'Referencia')
+						->setCellValue('C1', 'Marca')
+						->setCellValue('D1', 'Nombre')
+						
+						->setCellValue('E1', 'Color')
+						->setCellValue('F1', 'Talla')
+						->setCellValue('G1', 'Cantidad')
+						->setCellValue('H1', 'Costo (Bs)')
+						->setCellValue('I1', 'Precio de Venta sin IVA (Bs)')
+						->setCellValue('J1', 'Precio de Venta con IVA (Bs)');
+			// encabezado end			
+		 	
+			foreach(range('A','I') as $columnID) {
+    $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        ->setAutoSize(true);
+}  
+			 
+			
+		 	$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
+
+		 	
+		 	
+		 	//Eliminar filtrado por marca antes de consultar
+		 	/*$fake=false;
+		 	if(isset(Yii::app()->session['idMarca'])){
+		 		$marca=Yii::app()->session['idMarca'];
+		 		$fake=true;
+		 		unset(Yii::app()->session['idMarca']);
+		 	}*/
+			//fin			
+		 	
+		 	
+		 	$ptc = Preciotallacolor::model()->existencia(false); 
+		 	$fila = 2;
+		
+			
+			//Reestablecer filtrado por marca si existia
+			/*if($fake)
+				Yii::app()->session['idMarca']=$marca;*/
+		 	//fin	 
+		 
+		 	foreach($ptc->getData() as $data)
+			{
+					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
+             
+                    $I=number_format($data['Precio'],2,',','.'); 
+                    $J=number_format($data['pIVA'],2,',','.');
+
+
+					$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , $data['SKU']) 
+							->setCellValue('B'.$fila , $data['Referencia']) 							
+							->setCellValue('C'.$fila , $data['Marca']) 
+							->setCellValue('D'.$fila , $data['Nombre'])
+							
+							->setCellValue('E'.$fila , $data['Color'])
+							->setCellValue('F'.$fila , $data['Talla']) 
+							->setCellValue('G'.$fila , $data['Cantidad']) 
+							->setCellValue('H'.$fila , number_format($data['Costo'],2,',','.')) 
+							->setCellValue('I'.$fila , trim($I))							
+							->setCellValue('J'.$fila , trim($J));
+					$fila++;
+
+			} // foreach
+		 
+			// Rename worksheet
+	
+			$objPHPExcel->setActiveSheetIndex(0);
+
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="ReporteVentas.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			Yii::app()->end();
+				  
+	}
+	
+	
+	
+	
 	public function actionView($id)
 	{
 		$model = $this->loadModel($id);
@@ -78,11 +249,11 @@ class ProductoController extends Controller
 	public function actionGetImage($id)
 	{
 		$model = $this->loadModel($id);
-		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> false ));
+		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> true ));
 		/*echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
 		echo("<br>".Yii::app()->basePath);*/
 		
-		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').$image_url);		
+		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').$model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> false )));	
 		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
 		echo '<img '.$attr.' src="'.$image_url.'" alt>';
 		echo '<input type="hidden" name="producto_id" value="'.$id.'">';
@@ -760,30 +931,7 @@ class ProductoController extends Controller
 
 	public function actionAdmin()
 	{
-            /* if(isset($_GET['caso'])){
-                    $caso = $_GET['caso'];
-
-                    if($caso==1)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error',UserModule::t("Seleccione al menos un producto."));
-                    }
-
-                    if($caso==2)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error',UserModule::t("Seleccione una acción"));
-                    }
-
-                    if($caso==3)
-                    {
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('success',UserModule::t("Los productos han sido activados."));
-                    }
-            }// isset */
-
-            
-            
+                      
             $producto = new Producto;
 
             $producto->status = 1;
@@ -795,6 +943,12 @@ class ProductoController extends Controller
             {
                 unset($_SESSION['todoPost']);
             }
+            
+            if((isset($_SESSION['searchBox']) && !isset($_POST['query']) && !isset($_GET['ajax'])))
+            {
+                unset($_SESSION['searchBox']);
+            }
+            
              //Filtros personalizados
             $filters = array();
             
@@ -809,7 +963,7 @@ class ProductoController extends Controller
             
             if(isset($_POST['dropdown_filter'])){   
                 
-                
+                unset($_SESSION['searchBox']);
                 $_SESSION['todoPost'] = $_POST;
                 //Validar y tomar sólo los filtros válidos
                 for($i=0; $i < count($_POST['dropdown_filter']); $i++){
@@ -916,10 +1070,25 @@ class ProductoController extends Controller
                 }
             }
 
+//            if(isset($_SESSION['searchBox'])){
+//                
+//            echo "<pre>";
+//            print_r($_SESSION['searchBox']);
+//            echo "</pre>";
+//            Yii::app()->end();
+//            }
 
+            if(isset($_GET['ajax']) && isset($_SESSION['searchBox'])
+               && !isset($_POST['query'])){
+//                echo "dd";
+//                Yii::app()->end();
+              $_POST['query'] = $_SESSION['searchBox'];
+            }
+            
             if (isset($_POST['query']))
             {
                     //echo($_POST['query']);	
+                    $_SESSION['searchBox'] = $_POST['query'];
                     unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
                     $dataProvider = $producto->search();
@@ -1727,7 +1896,7 @@ class ProductoController extends Controller
 							$precio->precioVenta = $row['G'];
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = (double) $row['G'] * 1.12;
+							$precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA']+1);
 						}
 						else {
 							$precio = new Precio;
@@ -1736,7 +1905,7 @@ class ProductoController extends Controller
 							$precio->tbl_producto_id = $producto->id;
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = (double) $row['G'] * 1.12;
+							$precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA']+1);
 						}
 						
 						if($precio->save())
@@ -1870,7 +2039,7 @@ class ProductoController extends Controller
 							$precio->tbl_producto_id = $prod->id;
 							$precio->precioDescuento = $row['G'];
 							$precio->impuesto = 1;
-							$precio->precioImpuesto = (double) $row['G'] * 1.12;
+							$precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA']+1);
 							
 							if($precio->save())
 							{

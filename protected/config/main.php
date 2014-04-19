@@ -12,7 +12,8 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Personaling',
 	'timeZone' => 'America/Caracas', 
-	'language' => 'es',
+	'language' => 'es_ve',
+	'sourceLanguage'=>'es_VE',
 	// preloading 'log' component
 	'preload'=>array('log','bootstrap'),
 	'theme'=>'bootstrap',
@@ -22,11 +23,13 @@ return array(
 		'application.widgets.ctree.*',
 		'application.components.*',
 		'application.modules.user.*',
-        'application.modules.user.models.*',
-        'application.modules.user.components.*',
-        'application.helpers.*',
-        'application.extensions.validators.age.*',
-        'ext.yii-mail.YiiMailMessage',
+                'application.modules.user.models.*',
+                'application.modules.user.components.*',
+                'application.helpers.*',
+                'application.extensions.validators.age.*',
+                'ext.yii-mail.YiiMailMessage',
+                'ext.fancybox',
+                'ext.AzPay',
 	),
 
 	'modules'=>array(
@@ -150,7 +153,7 @@ return array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
      			//'caseSensitive'=>false, 
-     			'baseUrl'=>'/site',  
+     			'baseUrl'=>'/develop',  
 			'rules'=>array(
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
@@ -254,5 +257,20 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+                'metodosPago'=> array(
+                    'bkCard' => true,
+                    'paypal' => true,
+                    'depositoTransferencia' => true,
+                    'instapago' => false,
+                    'mercadopago' => false,
+				                        
+                    ),
+                  'PRONUNCIACION' => 'Venezolana', 
+				    'currSym'=>'Bs',
+				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
+				    'IVA' => '0.12',
+				    'IVAtext' => '12%',	
+				    'registro' => true,	  
+		
 	),
 );

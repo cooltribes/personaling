@@ -4,7 +4,7 @@
   <div class="alert in" id="alert-msg" style="display: none">
     <button type="button" class="close" >&times;</button> 
     <!--data-dismiss="alert"-->
-    <div class="msg">loren ipsum</div>
+    <div class="msg"></div>
   </div>
 </div>          
     
@@ -18,10 +18,7 @@
                                 array('empty' => 'Operador',
                                     'style' => 'display:none'));
     
-    echo CHtml::dropDownList('estadosOrden', '', array('1' => 'En espera de pago',
-    '2' => 'En espera de confirmación', '3' => 'Pago confirmado', '4' => 'Enviado',
-        '5' => 'Cancelado', '6' => 'Pago rechazado', '7' => 'Pago insuficiente',
-        '8' => 'Entregado', '9' => 'Devuelto'), array('style' => 'display:none'));
+    echo CHtml::dropDownList('estadosOrden', '', Orden::$estados, array('style' => 'display:none'));
     
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -72,12 +69,6 @@
                         
                             <a href="#" class="btn span_add" style="float: right" title="Agregar nuevo campo"> + </a>
                             <a href="#" class="btn btn-danger span_delete" style="display:none; float: right" title="Eliminar campo"> - </a> 
-                        
-                        
-                        
-                       
-                        
-                        
 
                     </div>
                 </div>    
@@ -88,20 +79,17 @@
    <?php $this->endWidget(); ?>
 
     <div class="span2 pull-right">
-        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar Filtro</a>
+        <a href="#" id="filter-remove" class="btn" title="Borrar Filtro">Borrar</a>
     </div>
-    <div class="span3 pull-right">
-        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar Nuevo Filtro</a> 
+    <div class="span2 pull-right">
+        <a href="#" id="filter-save" class="btn" title="Buscar con el filtro actual y guardarlo">Buscar y Guardar</a> 
     </div>
     <div class="span2 pull-right" style="display: none">
-        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar Filtro</a> 
+        <a href="#" id="filter-save2" class="btn" title="Guardar filtro actual">Guardar</a> 
     </div>
     <div class="span1 pull-right">
         <a href="#" id="filter-search" class="btn btn-danger" title="Buscar con el filtro actual">Buscar</a>  
     </div>
-    
-    
-    
     
 </div>
 <script type="text/javascript">

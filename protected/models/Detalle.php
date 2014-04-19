@@ -1,5 +1,14 @@
 <?php
 // Estado: 0 -> default, 1 -> Aprobado, 2 -> rechazado
+
+/*
+ * TIPO DE PAGO: 
+ * 1 - Deposito / Transf
+ * 2 - TDC
+ * 3 - Balance
+ * 4 - Banking Card (Aztive)
+ * 5 - PayPal (Aztive)
+ */
 /**
  * This is the model class for table "{{detalle}}".
  *
@@ -128,6 +137,16 @@ class Detalle extends CActiveRecord
 			$total=0;
 		return $total;
 		
+	}
+	
+	public function getSumxDeposito(){
+		return Yii::app()->db->createCommand("select sum(monto) from tbl_detalle where estado=1 AND tipo_pago=1")->queryScalar();
+	}
+	public function getSumxTDC(){
+		return Yii::app()->db->createCommand("select sum(monto) from tbl_detalle where estado=1 AND tipo_pago=2")->queryScalar();
+	}
+	public function getSumxSaldo(){
+		return Yii::app()->db->createCommand("select sum(monto) from tbl_detalle where estado=1 AND tipo_pago=3")->queryScalar();
 	}
 	
 }

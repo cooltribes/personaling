@@ -69,9 +69,9 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
     </div>
     <div class="span3">
         <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 3'),
-                "id_filter", "name"), array('empty' => '-- Filtros Preestablecidos --', 'id' => 'all_filters')) ?>
+                "id_filter", "name"), array('empty' => '-- Búsquedas avanzadas --', 'id' => 'all_filters')) ?>
     </div>
-    <div class="span3"><a href="#" class="btn  crear-filtro">Crear nuevo filtro</a></div>
+    <div class="span3"><a href="#" class="btn crear-filtro">Crear búsqueda avanzada</a></div>
     <div class="span2"><a href="#modalNuevoUsuario" class="btn btn-success" data-toggle="modal">Crear usuario</a></div>
   </div>
 
@@ -106,9 +106,10 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_user',
 	    'template'=>$template,
-/*	    'afterAjaxUpdate'=>" function(id, data) {
-						    	
-							$('#todos').click(function() { 
+	    'afterAjaxUpdate'=>" function(id, data) {
+								
+		
+							/*$('#todos').click(function() { 
 				            	inputs = $('table').find('input').filter('[type=checkbox]');
 				 
 				 				if($(this).attr('checked')){
@@ -116,10 +117,10 @@ $template = '{summary}
 				               	}else {
 				                     inputs.attr('checked', false);
 				               	} 	
-							});
+							});*/
 						   
 							} ",
-*/		'pager'=>array(
+		'pager'=>array(
 			'header'=>'',
 			'htmlOptions'=>array(
 			'class'=>'pagination pagination-right',
@@ -167,14 +168,15 @@ $template = '{summary}
 	
   <hr/>
    <div class="row">
-   <div class="span3"><select class="span3">
+   	<div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/user/admin/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
+  <!--<div class="span3"><select class="span3">
         <option>Seleccionar usuarios</option>
         <option>Lorem</option>
         <option>Ipsum 2</option>
         <option>Lorem</option>
       </select></div>
-      <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
-      </div>
+      <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>-->
+   </div>
 </div>
 <!-- /container -->
 

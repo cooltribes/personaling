@@ -125,7 +125,7 @@
                                                                                           <tbody>
                                                                                               <tr>
                                                                                                   <td class="mcnTextContent" valign="top" style="padding-top:9px; padding-right:9px; padding-bottom:9px; padding-left:24px; border-right: 1px solid #ddd;" width="213">
-                                                                                                      <span style="font-size:42px; color:#6d2d56;"><?php echo $model->monto ?> Bs.</span><br>
+                                                                                                      <span style="font-size:42px; color:#6d2d56;"><?php echo $model->monto.' '.Yii::t('contentForm', 'currSym'); ?> </span><br>
                                                                                                       <br>
                                                                                                       <span style="color:#9b9894;">Código:  </span><br>
                                                                                                       <span style="font-size: 14px; color: #000;"><?php echo $model->getCodigo() ?></span>

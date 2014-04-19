@@ -120,7 +120,7 @@
                                                                                     <strong>Cuenta Corriente Nº</strong> 0134 0277 98 2771093092<br/>
                                                                                     <strong>A nombre de</strong>: PERSONALING C.A<br/>
                                                                                     <strong>RIF</strong>: J-40236088-6<br/>
-                                                                                    <strong>Correo electrónico:</strong> ventas@personaling.com<br/>
+                                                                                    <strong>Correo electrónico:</strong> operaciones@personaling.com<br/>
                                                                                     <br>
                                                                                 </li>
                                                                             </ul>

@@ -6,7 +6,7 @@ class DireccionController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar','cargarCiudades'),
+				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias','poblacionesseur'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,9 +60,22 @@ class DireccionController extends Controller
 		if(isset($_POST['provincia_id'])){
 			$ciudades = Ciudad::model()->findAllBySql("SELECT * FROM tbl_ciudad WHERE provincia_id =".$_POST['provincia_id']." AND cod_zoom IS NOT NULL order by nombre ASC");
 			if(sizeof($ciudades) > 0){
-				$return = '';
+				$return = '<option>'.Yii::t('contentForm','Select a city').'</option>';
 				foreach ($ciudades as $ciudad) {
 					$return .= '<option value="'.$ciudad->id.'">'.$ciudad->nombre.'</option>';
+				}
+				echo $return;
+			}
+		}
+	}
+	
+	public function actionCargarProvincias(){
+		if(isset($_POST['pais_id'])){
+			$provincias = Ciudad::model()->findAllBySql("SELECT * FROM tbl_provincia WHERE pais_id =".$_POST['pais_id']." order by nombre ASC");
+			if(sizeof($provincias) > 0){
+				$return = '<option value>'.Yii::t('contentForm','Select a province').'</option>';
+				foreach ($provincias as $provincia) {
+					$return .= '<option value="'.$provincia->id.'">'.$provincia->nombre.'</option>';
 				}
 				echo $return;
 			}
@@ -162,7 +175,93 @@ class DireccionController extends Controller
 			'model'=>$model,
 		));
 	}
-
+	
+	public function actionAddDireccion($user,$admin){
+		$direccion=new Direccion;
+		$direccion->attributes=$_POST;
+		if($direccion->save()){
+			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
+			echo '<legend >'
+				.Yii::t('contentForm','Addresses used above').': </legend>'
+				.$this->renderPartial('/bolsa/_direcciones', array(
+	       			'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ),true)
+	       		."<script> $('#direccionUsada').submit(function(e) {
+	       			if($('#billAdd').val()=='0'){
+    			e.preventDefault();
+    			alert('Debes seleccionar una dirección de Facturación');
+	    		}
+	    		else{ $('#direccionUsada').submit();}});
+	 			$('.billingAddress').change(function(){
+	 				$('.hidBill').val($(this).val());
+	 				$('.billingAddress').attr('checked', false);
+	 				$(this).attr('checked','checked');});
+				 </script>";
+		}
+		
+	}
+	
+	public function actionProvinciasSeur(){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		$params2 = array(
+			'in0'=>'',
+			'in1'=>'',
+			'in2'=>'',
+			'in3'=>'WSPERSONALING',
+			'in4'=>'ORACLE',
+			
+			);
+		$response = $soapclient->infoProvinciasStr($params2);
+		$xml = simplexml_load_string($response->out);
+		foreach ($xml as $reg){
+			$provincia= new Provincia;
+			$provincia->nombre=$reg->NOM_PROVINCIA;
+			$provincia->pais_id;
+			/*
+			if($provincia->save())
+				echo "OK <br/>";
+			else
+				echo "BAD <br/>";*/
+		}
+		
+	}
+	
+	public function actionPoblacionesSeur(){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		$params4 = array(
+			'in0'=>'',
+			'in1'=>'%%',
+			'in2'=>'',
+			'in3'=>'',
+			'in4'=>'',
+			'in5'=>'WSPERSONALING',
+			'in6'=>'ORACLE',
+			
+			);
+		$response = $soapclient->infoPoblacionesCortoStr($params4);
+		$xml = simplexml_load_string($response->out);
+		foreach ($xml as $reg){
+			
+			$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_encode($reg->NOM_PROVINCIA)));
+			if(!is_null($provincia)){
+				$ciudad= new Ciudad;
+				$ciudad->nombre=$reg->NOM_POBLACION;
+				$ciudad->provincia_id=$provincia->id;
+				$ciudad->ruta_id=$provincia->pais_id;
+				$ciudad->cod_zoom=0;
+				/*	
+				if($ciudad->save())
+					echo "OK <br/>";
+				else
+					echo "BAD <br/>";*/
+			}
+			else
+					echo "WORSE <br/>";
+			
+			
+		}
+		
+	}
+	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

@@ -93,7 +93,7 @@ class Look extends CActiveRecord
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id,created_on', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter,deleted', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
-			array('has_ocasiones','required','on'=>'update'),
+			array('has_ocasiones','required','on'=>'update','message'=> 'Al menos debes elegir una ocación'),
 			array('view_counter','numerical', 'integerOnly'=>true,'on'=>'increaseview'),
 			array('view_counter','required','on'=>'increaseview'),
 			array('title', 'length', 'max'=>45),
@@ -208,7 +208,8 @@ class Look extends CActiveRecord
 			'criteria'=>$criteria,
 		));*/
 		
-		if ($user!==null){
+		if ($user!==null){                      
+                    
 		$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look WHERE deleted=0 and (if('.$user->profile->pelo.' & pelo !=0,1,0)+if('.$user->profile->altura.' & altura !=0,1,0))>=2')->queryScalar();
 		
 		$sql='SELECT id FROM tbl_look WHERE deleted = 0 AND  (
@@ -219,6 +220,8 @@ class Look extends CActiveRecord
 			if('.$user->profile->piel.' & piel !=0,1,0)+
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 6 
+                AND ('.$user->getEdad().' BETWEEN edadMin AND edadMax)
+                    
 		UNION ALL '.
 		'SELECT id FROM tbl_look WHERE deleted = 0 AND (
 			if('.$user->profile->altura.' & altura !=0,1,0)+
@@ -228,7 +231,9 @@ class Look extends CActiveRecord
 			if('.$user->profile->piel.' & piel !=0,1,0)+
 			if('.$user->profile->tipo_cuerpo.' & tipo_cuerpo !=0,1,0)
 		) = 5 
+                AND ('.$user->getEdad().' BETWEEN edadMin AND edadMax)
 		';
+                
 		} else {
 			$count=Yii::app()->db->createCommand('SELECT COUNT(*) FROM tbl_look where deleted=0')->queryScalar();
 			$sql = 'SELECT id FROM tbl_look WHERE deleted=0';
@@ -936,6 +941,53 @@ class Look extends CActiveRecord
 			}
 		}
 		return false;
+	}
+        
+        /**
+         * Se revisa si el look tiene al menos una prenda en existencia,
+         * disponible y activa.
+         */
+	public function getIsVisible(){
+		if(is_array($this->productos))
+		{		
+			foreach($this->lookhasproducto as $lookhasproducto){
+				if($lookhasproducto->producto->getCantidad(null, $lookhasproducto->color_id) > 0 && 
+                                    $lookhasproducto->producto->estado == 0)
+					return true;
+			}
+		}
+		return false;
+	}
+	public function getRangosPrecios(){
+		/*      Rangos de precios       */
+        $allLooks = Look::model()->findAll("status = 2");
+        $count = array(0, 0, 0, 0);
+        $rangosArray = array();              
+        
+        if($allLooks){
+            
+            foreach ($allLooks as $look) {
+                $allPrices[] = $look->getPrecio(false);
+            }
+
+            $rangos = 4;
+            $mayorP = max($allPrices);
+            $menorP = min($allPrices);
+            $len = ($mayorP - $menorP) / $rangos;
+
+            foreach ($allPrices as $price) {
+                for($i = 0; $i < $rangos; $i++)
+                    $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
+            }                
+
+            for ($i = 0; $i < $rangos; $i++) {
+                $mayorP = $menorP + $len;
+                $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
+                $menorP += $len;
+            }                                
+        
+        }
+		return $rangosArray;
 	}
 	
 }

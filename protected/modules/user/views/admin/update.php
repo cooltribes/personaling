@@ -54,7 +54,10 @@ function getMonthsArray()
 
         return array(0 => 'Año:') + $years;
     }
-    
+    $val=true;
+	if($model->personal_shopper!=0)
+		$profile->setScenario('PS');
+		
 	?>
 
 <div class="container margin_top">
@@ -72,22 +75,23 @@ function getMonthsArray()
 	'htmlOptions'=>array('class'=>'form-horizontal','enctype'=>'multipart/form-data'),
     'type'=>'horizontal',
    // 'type'=>'inline',
-	'enableClientValidation'=>true,
+	'enableClientValidation'=>$val,
+	
 	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
+		'validateOnSubmit'=>$val,
 	),
 	
 )); ?>
         <fieldset>
           <legend >Datos de Usuario: </legend>
           <?php echo $form->textFieldRow($model,'email',array('class'=>'span5',)); ?>
-          <div class="control-group">
+<!--           <div class="control-group">
             <label for="" class="control-label ">Contraseña </label>
             <div class="controls">
               <input type="password" placeholder="Contraseña"  class="span5">
               <div style="display:none" class="help-inline">Ingrese una contraseña</div>
             </div>
-          </div>
+          </div> -->
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
           <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No', 1=>'Si', 2 => "Aplicante"),array('class'=>'span2')); ?> 
               <?php if($model->personal_shopper == 1){ ?>

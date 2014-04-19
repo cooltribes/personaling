@@ -1,10 +1,10 @@
         <tr>
             <td><input name="check" type="checkbox" value=""></td>
             <td width="20%"><strong> <span class="CAPS"><?php echo $data->title; ?></span></strong><br/>
-                <strong>ID</strong>: <?php echo $data->id; ?><br/>
-                <strong>Nro. Items</strong>: <?php echo $data->countItems(); ?></td>
-            <td><strong>P.S.</strong>: <?php echo $data->user->profile->first_name; ?><br/>
-                <strong>Marcas</strong>: <?php
+                <strong><?php echo Yii::t('contentForm', 'ID'); ?></strong>: <?php echo $data->id; ?><br/>
+                <strong><?php echo Yii::t('contentForm', 'Nro. Items'); ?></strong>: <?php echo $data->countItems(); ?></td>
+            <td><strong><?php echo Yii::t('contentForm', 'P.S'); ?></strong>: <?php echo $data->user->profile->first_name; ?><br/>
+                <strong><?php echo Yii::t('contentForm', 'Brands'); ?></strong>: <?php
           			$ids=$data->getMarcas();
 					$c=0;
 					foreach($ids as $id){

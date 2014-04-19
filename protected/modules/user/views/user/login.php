@@ -28,9 +28,10 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1 class="text_align_center">Inicia sesión</h1>
+      <h1 class="text_align_center"><?php echo UserModule::t('Login'); ?></h1>
+      <h4 class="text_align_center"><?php echo UserModule::t('To log on Personaling you can:'); ?></h4>
       <div  class="row-fluid  margin_top">
-              <div id="boton_facebook" class="span6  text_align_center offset3 margin_bottom "><a title="Inicia sesión con Facebook" class="transition_all" onclick="check_fb()" href="#">Inicia sesión con Facebook</a></div>
+              <div id="boton_facebook" class="span6  text_align_center offset3 margin_bottom "><a title="Inicia sesión con Facebook" class="transition_all" onclick="check_fb()" href="#"><?php echo UserModule::t('Login with Facebook'); ?></a></div>
 
               <!-- <div id="boton_twitter" class="span5 offset2 margin_bottom "><a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Inicia sesión con Twitter</a>  -->
               <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
@@ -48,7 +49,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 			),
 		)); ?>
           <fieldset>
-            <legend  class="text_align_center">O usa tus credenciales de personaling: </legend>
+            <legend  class="text_align_center"><?php echo UserModule::t('Or use your credentials personaling'); ?> </legend>
             
             <div class="control-group row-fluid">
             	 <div class="controls"> 
@@ -62,7 +63,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
             			'class'=>'span12',
         				'hint'=>'Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>',
     				)); ?>
-                     <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar contraseña">Olvidaste tu contraseña?</a></span>
+                     <span class="help-block muted text_align_right padding_right"><a href="<?php echo Yii::app()->request->baseUrl; ?>/user/recovery" class="muted" title="Recuperar contraseña"><?php echo UserModule::t('Lost Password?'); ?></a></span>
     				<?php echo $form->error($model,'password'); ?>
                                 <?php echo $form->error($model,'status'); ?>
                 </div>
@@ -70,15 +71,16 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
             <?php echo $form->checkBoxRow($model,'rememberMe'); ?>
             
             
-            	<div class="form-actions">
+            	<div class="padding_top_medium padding_bottom_medium">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
-            'label'=>'Entrar',
+            'label'=>UserModule::t('Enter'),
+            'htmlOptions'=>array('class'=>'btn-block'),
         )); ?>
-         <span class="margin_left_small"> Si no tienes cuenta, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate">Regístrate aqui</a></span>
-	</div>
+        </div>
+         <span class=""> <?php echo UserModule::t('If you don\'t have an account'); ?>, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate"><?php echo UserModule::t('Sign up here'); ?></a></span>
           </fieldset>
         <?php $this->endWidget(); ?>
       </section>

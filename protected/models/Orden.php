@@ -13,6 +13,9 @@ include("class.zoom.json.services.php");
  * 8 - Recibido
  * 9 - Devuelto
  * 10 - Parcialmente devuelto
+ * 11 - Finalizada
+ * 12 - Finalizada - Devuelta
+ * 13 - Finalizada - Parcialmente devuelta
  * 
  * -------------- 
  * Tipo de Guia
@@ -51,12 +54,28 @@ class Orden extends CActiveRecord
 	const ESTADO_ESPERA = 1;
 	const ESTADO_ESPERA_CONF = 2;
 	const ESTADO_CONFIRMADO = 3;
+        
 	const ESTADO_ENVIADO = 4;
 	const ESTADO_CANCELADO = 5;
 	const ESTADO_RECHAZADO = 6;
-	const ESTADO_INSUFICIENTE = 7;
-
 	
+        const ESTADO_INSUFICIENTE = 7;	
+	const ESTADO_ENTREGADA = 8;
+	const ESTADO_DEVUELTA = 9;
+        
+	const ESTADO_PARC_DEV = 10;        
+        const ESTADO_FINALIZADA = 11;
+	const ESTADO_FIN_DEVUELTA = 12;
+        
+	const ESTADO_FIN_PARC_DEV = 13;
+
+	public static $estados = array('1' => 'En espera de pago',
+        '2' => 'En espera de confirmación', '3' => 'Pago confirmado',
+        '4' => 'Enviado', '5' => 'Cancelada', '6' => 'Pago rechazado',
+        '7' => 'Pago insuficiente', '8' => 'Entregada', '9' => 'Devuelta', 
+        '10' => 'Parcialmente devuelta', '11' => "Finalizada",
+        
+         );
 	 /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -101,6 +120,7 @@ class Orden extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'direccionEnvio' => array(self::BELONGS_TO, 'DireccionEnvio', 'direccionEnvio_id'),
+			'direccionFacturacion' => array(self::BELONGS_TO, 'DireccionFacturacion', 'direccionFacturacion_id'),
 			//'pago' => array(self::BELONGS_TO, 'Pago', 'pago_id'),
 			'detalle' => array(self::BELONGS_TO, 'Pago', 'detalle_id'),
 			'productos' => array(self::MANY_MANY, 'Preciotallacolor', 'tbl_orden_has_productotallacolor(tbl_orden_id, preciotallacolor_id)'),
@@ -116,7 +136,8 @@ class Orden extends CActiveRecord
         	'nproductos' => array(self::STAT, 'OrdenHasProductotallacolor', 'tbl_orden_id',
             		'select' => 'COUNT(preciotallacolor_id)',
             		'condition' => 'cantidad > 0'
-        		), 
+        		),
+        	'user'=>array(self::BELONGS_TO, 'User', 'user_id'),
      
 		);
 	}
@@ -238,8 +259,8 @@ class Orden extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
  
- 	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, 
-		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color, ord.fecha as Fecha
+ 	$sql="select p.id, o.cantidad as Cantidad, pr.nombre as Nombre, p.sku as SKU,  o.look_id as look, o.precio as Precio, pre.precioVenta as pVenta, ord.id as Orden,
+		pre.precioImpuesto as pIVA, pre.costo as Costo, m.id, m.nombre as Marca,  t.valor as Talla, c.valor as Color, ord.fecha as Fecha, pr.codigo as Referencia
 		from tbl_orden_has_productotallacolor o  
 		JOIN tbl_precioTallaColor p ON p.id = o.preciotallacolor_id 
 		JOIN tbl_orden ord ON ord.id = o.tbl_orden_id 
@@ -286,7 +307,7 @@ class Orden extends CActiveRecord
 					 
 				    'sort'=>array(
 				        'attributes'=>array(
-				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Fecha'
+				             'Nombre', 'Marca', 'Talla', 'Color', 'Costo', 'Orden', 'Fecha'
 				        ),
 	    ),
 				));
@@ -612,6 +633,128 @@ class Orden extends CActiveRecord
 	 
 		//Devuelve array de tracking si lo consigue o null si no
 	} 
+	
+	public function countxEstado($estado){
+		return count($this->findAllByAttributes(array('estado'=>$estado)));
+	}
+	
+	public function getTextEstado($estado = null) {
+            if (is_null($estado)) {
+                $estado = $this->estado;
+            }
+
+            if($estado == 12 || $estado == 13){
+            
+                $otrosEstados = array('12' => 'Devuelta<br>Finalizada',
+                    '13' => "Parcialmente devuelta<br>Finalizada",);
+                
+                return isset($otrosEstados[$estado]) ? $otrosEstados[$estado] : "ERROR";
+                
+            }
+            
+            return isset(self::$estados[$estado]) ? self::$estados[$estado] : "ERROR";
+            
+            
+        }
+        
+        /**
+         * Revisar la orden y los looks involucrados para asignarle a los
+         * respectivos PS su comisión ganada.
+         */
+        public function pagarComisiones($orden){            
+           
+            $sumaComisiones = array();
+            foreach($orden->ohptc as $productoEnOrden)
+            {                                                    
+                //Incluir en la comision solo los productos que estan en un look
+                if($productoEnOrden->look_id > 0){
+
+                    $lookActual = Look::model()->findByPk($productoEnOrden->look_id);
+
+                    //Comisión de la PS dueña del look
+                    $comision = $lookActual->user->profile->comision;
+                    $tipoComision = $lookActual->user->profile->tipo_comision;
+//                    $comision = 7;
+//                    $tipoComision = 1; //1=%, 2=fijo                       
+
+                    //Si la comisión es por Porcentaje
+                    if($tipoComision == 1){
+
+                        $comision /= 100;
+                        $montoVenta = $productoEnOrden->precio * $productoEnOrden->cantidad;
+                        $comisionAgregada = $montoVenta * $comision;                                                         
+
+                        //Si la comisión es un monto fijo
+                    }else if($tipoComision == 2){
+
+                        $comisionAgregada = $comision;
+
+                    } 
+                    $idUsuario = $lookActual->user->id;
+                    //si ya hay comisiones por el look/usuario actual, sumar
+                    if(key_exists($idUsuario, $sumaComisiones)){
+
+                        $sumaComisiones[$idUsuario] += $comisionAgregada;
+
+                    //si no hay, agregarlo al array    
+                    }else{
+
+                        $sumaComisiones[$idUsuario] = $comisionAgregada;                                
+
+                    }
+
+                }
+
+            } //fin foreach para cada producto de la orden
+
+            //Agregar la suma total de comisiones por usuario a su
+            //respectivo balance
+            foreach($sumaComisiones as $idUsuario => $comisionPs){                    
+
+                $balance = new Balance();
+                $balance->total = $comisionPs;
+                $balance->orden_id = $orden->id;
+                $balance->user_id = $idUsuario;
+                $balance->tipo = 5; //balance para comisiones
+                //$balance->save();
+
+            } 
+
+            
+            
+            
+        } 
+ 
+	public function getTiposPago($continuo = null){
+		$text="";
+		$i=0;
+		if(count($this->detalles)){
+            foreach ($this->detalles as $detallePago){
+            	if($i>0){
+            		if(is_null($continuo))
+	            		$text.="<br/>";
+					else 
+	            		$text.=" / ";
+            	}
+            
+	            if($detallePago->tipo_pago==1)
+				 	$text.= "Dep. o Transfer"; // metodo de pago
+	            else if($detallePago->tipo_pago==2)
+	                    $text.="Tarjeta de Crédito";  
+	            else if($detallePago->tipo_pago==3)
+	                    $text.="Uso de Balance"; 
+	            else if($detallePago->tipo_pago==4)
+	                    $text.="MercadoPago"; 
+	            else
+	                    $text.="ERROR EN EL PAGO";
+				$i++;
+            
+        }
+        }else{
+            $text.="Dep. o Transfer"; 
+        }
+		return $text;
+	}
 	
 	
 	

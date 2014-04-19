@@ -25,9 +25,9 @@
     </style>
 <div class="progreso_compra progreso_compra_giftcard">
       <div class="clearfix margin_bottom">
-         <div class="first-done">Autenticación</div>        
-         <div class="middle-not_done">Método <br/>de pago</div>
-         <div class="last-not_done">Confirmar<br/>compra</div>
+         <div class="first-done"><?php echo Yii::t('contentForm','Authentication'); ?></div>        
+         <div class="middle-not_done"><?php echo Yii::t('contentForm','Payment <br> method'); ?></div>
+         <div class="last-not_done"><?php echo Yii::t('contentForm','Confirm <br>purchase'); ?></div>
       </div>
   </div>
 
@@ -61,7 +61,7 @@
 			),
 		)); ?>
           <fieldset>
-            <legend >Confirma tus datos: </legend>
+            <legend > <?php  echo Yii::t('contentForm','Confirm your credentials'); ?>: </legend>
             
             <div class="control-group">
             	 <div class="controls"> 
@@ -87,7 +87,7 @@
             'buttonType'=>'submit',
             'type'=>'warning',
             'size'=>'large',
-            'label'=>'Siguiente',
+            'label'=>Yii::t('contentForm','Next'),
         )); ?>
 	</div>
           </fieldset>

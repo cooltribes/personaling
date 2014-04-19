@@ -105,7 +105,8 @@ class BolsaController extends Controller
 	{
 		
 		$usuario = Yii::app()->user->id;
-		$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$usuario));
+		$bolsa = Bolsa::model()->findByAttributes(array(
+                    'user_id'=>$usuario, 'admin' => 0));
 		
 		if(!isset($bolsa)) // si no tiene aun un carrito asociado se crea y se añade el producto
 		{
@@ -520,8 +521,8 @@ class BolsaController extends Controller
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
 						        $message->addTo($user->email);
-								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
@@ -562,7 +563,7 @@ class BolsaController extends Controller
                     /*ID del usuario propietario de la bolsa*/
                     $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
 			
-                    
+                    /*Si es compra normal del usuario*/
                     if(!$admin){
                         
                         $metric = new ShoppingMetric();
@@ -579,11 +580,30 @@ class BolsaController extends Controller
                             'admin' => $admin, 
                             ));
                     
+                    /*
+                     * Para pago con tarjeta y paypal
+                     */
+                    $nombreProducto = "Looks: ".  $bolsa->getLooks().
+                            " - Productos: ".$bolsa->getProductos();
+                    
+                    $tipo_pago = Yii::app()->getSession()->get('tipoPago');
+                    $idPagoAztive = $tipo_pago == 5? 8:999;
+                    $monto = Yii::app()->getSession()->get('total');
+                    $optional = array(                        
+                        'name'          => 'Personaling Enterprise S.L.',
+                        'product_name'  => $nombreProducto,                             
+                    );                                                    
+
+                    $pago = new AzPay();
+
+                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);                    
+                    
                     $this->render('confirmar',array(
                         'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
                         'bolsa' =>  $bolsa,
                         'admin'=> $admin,
                         'user'=> $usuario,
+                        'urlAztive'=> $urlAztive,
                             ));
                     
 		}
@@ -600,7 +620,16 @@ class BolsaController extends Controller
 			$id = $_POST['idDir'];
 			$direccion = Direccion::model()->findByPk( $id  );
 			$user = User::model()->findByPk( Yii::app()->user->id );
-			if($user){
+			if($direccion->delete()){
+						echo "ok";
+					}else{
+						echo "wrong";
+					}
+			
+			/*
+			 * SE COMENTA LA VALIDACION PORQUE LAS DIRECCIONES GUARDADAS EN FACTURA SON LAS CLONADAS 
+			 * EN LAS TABLAS DIRECCIONENVIO Y DIFRECCIONFACTURACION RESPECTIVAMENTE
+			 * if($user){
 				$facturas1 = Factura::model()->countByAttributes(array('direccion_fiscal_id'=>$id));
 				$facturas2 = Factura::model()->countByAttributes(array('direccion_envio_id'=>$id));
 				
@@ -613,7 +642,7 @@ class BolsaController extends Controller
 				}else{
 					echo "bad";
 				}
-			}
+			}*/
 		}
 		
 			/**
@@ -661,6 +690,12 @@ class BolsaController extends Controller
 		{
 		
                     /*Si es compra de admin para usuario*/
+                   	if(!isset(Yii::app()->session['login'])){
+                   		unset(Yii::app()->session['login']);
+                   		$this->redirect(array('bolsa/compra'));
+						
+                   	}
+						
                     $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
 
                     /*ID del usuario propietario de la bolsa*/
@@ -676,6 +711,8 @@ class BolsaController extends Controller
 
 
                             Yii::app()->getSession()->add('idDireccion',$dirEnvio);
+							Yii::app()->getSession()->add('idFacturacion',$_POST['billAdd']);
+							
 
 //				$this->redirect(array('bolsa/pagos'));
                             $this->redirect($this->createUrl('bolsa/pagos', array(
@@ -734,7 +771,8 @@ class BolsaController extends Controller
     //				$metric->user_id = Yii::app()->user->id;
                                 $metric->user_id = $usuario;
                                 $metric->step = ShoppingMetric::STEP_DIRECCIONES;
-                                $metric->save();	
+                                $metric->save();
+                              
                             }
                             
                             $this->render('direcciones',array(
@@ -775,7 +813,7 @@ class BolsaController extends Controller
 				if($model->validate()) {
 					echo 'Status: '.$user->status;
 					if($user->status == 1){
-
+						Yii::app()->session['login']=1;
 						$this->redirect(array('bolsa/direcciones'));
 					}else{
 						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 
@@ -784,7 +822,7 @@ class BolsaController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Activa tu cuenta en Personaling';
-						$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+						$body = ii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
@@ -1046,8 +1084,6 @@ class BolsaController extends Controller
 
                         /*ID del usuario propietario de la bolsa*/
                         $usuario = $admin ? $_POST["user"] : Yii::app()->user->id;
-		 	
-                        
                         
 			$user = User::model()->findByPk($usuario);
 			$bolsa = Bolsa::model()->findByAttributes(array(
@@ -1063,6 +1099,7 @@ class BolsaController extends Controller
 			switch ($tipoPago) {
 			    case 1: // TRANSFERENCIA
 			       	$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+					$dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
 					$orden = new Orden;
 					$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 					$orden->descuento = 0;
@@ -1076,6 +1113,7 @@ class BolsaController extends Controller
 					$orden->bolsa_id = $bolsa->id; 
 					$orden->user_id = $usuario;
 					$orden->direccionEnvio_id = $dirEnvio->id;
+					$orden->direccionFacturacion_id = $dirFacturacion->id;
 					$orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
 					$orden->peso = Yii::app()->getSession()->get('peso');
 					$total_orden = round(Yii::app()->getSession()->get('total'), 2);
@@ -1087,6 +1125,7 @@ class BolsaController extends Controller
                                         }
                                         
 					if (!($orden->save())){
+				
 						echo CJSON::encode(array(
 								'status'=> 'error',
 								'error'=> $orden->getErrors(),
@@ -1170,6 +1209,7 @@ class BolsaController extends Controller
 							Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
 						}
 						$dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+						$dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
 						$orden = new Orden;
 						$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 						$orden->descuento = 0;
@@ -1183,11 +1223,13 @@ class BolsaController extends Controller
 						$orden->bolsa_id = $bolsa->id; 
 						$orden->user_id = $usuario;
 						$orden->direccionEnvio_id = $dirEnvio->id;
+						$orden->direccionFacturacion_id = $dirFacturacion->id;
 						$orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
 						$orden->peso = Yii::app()->getSession()->get('peso');
 						$total_orden = round(Yii::app()->getSession()->get('total'), 2);
 						$orden->total = $total_orden;
 						if (!($orden->save())){
+					
 							echo CJSON::encode(array(
 									'status'=> 'error',
 									'error'=> $orden->getErrors(),
@@ -1249,31 +1291,55 @@ class BolsaController extends Controller
 							}
 								
 							
-						}// estado		
-						// cuando finalice entonces envia id de la orden para redireccionar
-						/*
-						echo CJSON::encode(array(
-							'status'=> 'ok',
-							'orden'=> $orden->id,
-							'total'=> $orden->total,
-							'respCard' => $respCard,
-							'descuento'=>$orden->descuento,
-							'url'=> $this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'),
-						));*/
-						//$this->redirect($this->createAbsoluteUrl('bolsa/pedido',array('id'=>$orden->id),'http'));
+						}// estado                                                                                                                                                
+                                                
 					} else { 
 						$this->redirect($this->createAbsoluteUrl('bolsa/error',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
 					}			
 			        break;
-			    case 3:
-			        echo "i equals 2";
+                            case 5: //Aztive Banking Card
+			        echo "NELSON";
+                                $detalle = new Detalle;                                
+                                $detalle->nTransferencia = $resultado["idOutput"];
+                                $detalle->nombre = $tarjeta->nombre;
+                                $detalle->cedula = $tarjeta->ci;
+                                $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+                                $detalle->fecha = date("Y-m-d H:i:s");
+                                $detalle->banco = 'TDC';
+                                $detalle->estado = 1; // aceptado
+                                if(!$detalle->save()){
+                                        Yii::trace('UserID:'.$usuario.' Error al guardar detalle:'.print_r($detalle->getErrors(),true), 'registro');
+                                }
+                                $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+                                $dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
+                                $orden = new Orden;
+                                $orden->subtotal = Yii::app()->getSession()->get('subtotal');
+                                $orden->descuento = 0;
+                                $orden->envio = Yii::app()->getSession()->get('envio');
+                                $orden->iva = Yii::app()->getSession()->get('iva');
+                                $orden->descuentoRegalo = 0;
+                                $orden->total = Yii::app()->getSession()->get('total');
+                                $orden->seguro = Yii::app()->getSession()->get('seguro');
+                                $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+                                $orden->estado = Orden::ESTADO_CONFIRMADO; // en espera de pago
+                                $orden->bolsa_id = $bolsa->id; 
+                                $orden->user_id = $usuario;
+                                $orden->direccionEnvio_id = $dirEnvio->id;
+                                $orden->direccionFacturacion_id = $dirFacturacion->id;
+                                $orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
+                                $orden->peso = Yii::app()->getSession()->get('peso');
+                                $total_orden = round(Yii::app()->getSession()->get('total'), 2);
+                                $orden->total = $total_orden;
+                                Yii::app()->end();
+                                
+                                
 			        break;
 			}
 				// Generar factura
 			$factura = new Factura;
 			$factura->fecha = date('Y-m-d');
-			$factura->direccion_fiscal_id = Yii::app()->getSession()->get('idDireccion');  // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
-			$factura->direccion_envio_id =Yii::app()->getSession()->get('idDireccion');
+			$factura->direccion_fiscal_id = $dirFacturacion->id; // esta direccion hay que cambiarla después, el usuario debe seleccionar esta dirección durante el proceso de compra
+			$factura->direccion_envio_id = $dirEnvio->id;
 			$factura->orden_id = $orden->id;
 			if (!$factura->save())
 				Yii::trace('user id:'.Yii::app()->user->id.' Factura error:'.print_r($factura->getErrors(),true), 'registro');
@@ -1287,8 +1353,8 @@ class BolsaController extends Controller
                         $message->subject    = $subject;
                         $message->setBody($params, 'text/html');
                         $message->addTo($user->email);
-                                $message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-                        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+                                $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+                        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
                         Yii::app()->mail->send($message);	
                         
                         $this->redirect($this->createAbsoluteUrl('bolsa/pedido',array(
@@ -1300,8 +1366,11 @@ class BolsaController extends Controller
 		 
 	}
         
-	public function clonarDireccion($direccion){
-		$dirEnvio = new DireccionEnvio;
+	public function clonarDireccion($direccion, $facturacion = false){
+		if($facturacion)
+			$dirEnvio=new DireccionFacturacion;	
+		else
+			$dirEnvio = new DireccionEnvio;
 					
 		$dirEnvio->nombre = $direccion->nombre;
 		$dirEnvio->apellido = $direccion->apellido;
@@ -1316,42 +1385,65 @@ class BolsaController extends Controller
 		return $dirEnvio;
 	}
 	public function hacerCompra($bolsa_id,$usuario,$order_id){
-		$productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa_id));	
-								
-		// añadiendo a orden producto
-		foreach($productosBolsa as $prod){
-			$prorden = new OrdenHasProductotallacolor;
-			$prorden->tbl_orden_id = $order_id;
-			$prorden->preciotallacolor_id = $prod->preciotallacolor_id;
-			$prorden->cantidad = $prod->cantidad;
-			$prorden->look_id = $prod->look_id;
-			$prtc = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id); // tengo preciotallacolor
-			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
-			$prorden->precio = $precio->precioDescuento;
-			/*
-			if($prod->look_id == 0){ // no es look
-				$prorden->precio = $precio->precioDescuento;
-			} else {
-				$look = Look::model()->findByPk($prod->look_id);
-				if(isset($look)) $prorden->precio = $look->getPrecio(false);										
-			}*/
-			$prorden->save();
-				//listo y que repita el proceso
-		}
-		//descontando del inventario
-		foreach($productosBolsa as $prod){
-			$uno = Preciotallacolor::model()->findByPk($prod->preciotallacolor_id);
-			$cantidadNueva = $uno->cantidad - $prod->cantidad; // lo que hay menos lo que se compró
-			Preciotallacolor::model()->updateByPk($prod->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
-			// descuenta y se repite									
-		}
-		// para borrar los productos de la bolsa								
-		foreach($productosBolsa as $prod){
-			$prod->delete();															
-		}
+            $productosBolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa_id));	
+            $hoy = new DateTime();
+            
+            // añadiendo a orden producto
+            foreach($productosBolsa as $producto){
+                $prorden = new OrdenHasProductotallacolor;
+                $prorden->tbl_orden_id = $order_id;
+                $prorden->preciotallacolor_id = $producto->preciotallacolor_id;
+                $prorden->cantidad = $producto->cantidad;
+                $prorden->look_id = $producto->look_id;
+                $prtc = Preciotallacolor::model()->findByPk($producto->preciotallacolor_id); // tengo preciotallacolor
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$prtc->producto_id));
+                $prorden->precio = $precio->precioDescuento;
+
+                /* Revisar si cumple con el tiempo de validez del PS y
+                 *  agregar los datos referentes a la comision en la orden
+                 */
+
+                //Solo los productos que esten en un look
+                
+                if($producto->look_id > 0){ 
+                    
+                    $agregado = new DateTime($producto->added_on);
+                    $diferencia = $hoy->diff($agregado)
+                                      ->days; //Dias desde que se agrego
+
+                    $lookActual = Look::model()->findByPk($producto->look_id);
+                    $personalShopper = $lookActual->user->profile;
+                    if($diferencia <= $personalShopper->tiempo_validez){
+                            
+                            $prorden->comision = $personalShopper->comision;
+                            $prorden->tipo_comision = $personalShopper->tipo_comision;
+                            $prorden->status_comision = OrdenHasProductotallacolor::STATUS_PENDIENTE;
+                            
+                        }
+                }
 
 
-		
+                /*
+                if($prod->look_id == 0){ // no es look
+                        $prorden->precio = $precio->precioDescuento;
+                } else {
+                        $look = Look::model()->findByPk($prod->look_id);
+                        if(isset($look)) $prorden->precio = $look->getPrecio(false);										
+                }*/
+                $prorden->save();
+                            //listo y que repita el proceso
+            }
+            //descontando del inventario
+            foreach($productosBolsa as $producto){
+                    $uno = Preciotallacolor::model()->findByPk($producto->preciotallacolor_id);
+                    $cantidadNueva = $uno->cantidad - $producto->cantidad; // lo que hay menos lo que se compró
+                    Preciotallacolor::model()->updateByPk($producto->preciotallacolor_id, array('cantidad'=>$cantidadNueva));
+                    // descuenta y se repite									
+            }
+            // para borrar los productos de la bolsa								
+            foreach($productosBolsa as $producto){
+                    $producto->delete();															
+            }
 
 	}
 	/*
@@ -1606,8 +1698,8 @@ class BolsaController extends Controller
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
 						        $message->addTo($user->email);
-								$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
@@ -1705,11 +1797,30 @@ class BolsaController extends Controller
 		//$this->render('pedido',array('orden'=>$orden));
 	}
 */
+        
+        /*
+         * CODIGOS DE ERROR:
+         * 001 - Error con datos errados enviados desde Aztive
+         * otros - Error pagando con Banking Card o Paypal de Aztive
+         */
 	public function actionError(){
-		$mensaje = 	$_GET['mensaje'];
-		if ($mensaje=="The CardNumber field is not a valid credit card number.")
-			$mensaje = "El número de tarjeta que introdujó no es un número válido.";
-		$this->render('error',array('mensaje'=>$mensaje));
+		
+            $codigo = 	isset($_GET['codigo']) ? $_GET['codigo'] : "000";
+            $mensaje = 	$_GET['mensaje'];
+            
+            if($codigo != "000"){                
+                
+                
+            }else{
+                
+                if ($mensaje=="The CardNumber field is not a valid credit card number.")
+                    $mensaje = "El número de tarjeta que introdujó no es un número válido.";
+            }                
+                
+            $this->render('error',array(
+                'mensaje'=>$mensaje,
+                'codigo'=>$codigo,
+                    ));
 	}
 	/*
 	 * 
@@ -1977,7 +2088,7 @@ class BolsaController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Activa tu cuenta en Personaling';
-						$body = 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/> '.$activation_url;
+						$body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
@@ -2222,8 +2333,8 @@ class BolsaController extends Controller
 //	        $message->subject    = $subject;
 //	        $message->setBody($params, 'text/html');
 //	        $message->addTo($user->email);
-//			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-//	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+//			$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//	        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 //	        Yii::app()->mail->send($message);		
                 
                 //Ver resumen del pedido
@@ -2281,8 +2392,8 @@ class BolsaController extends Controller
                     $message->view = "mail_giftcard";
                     $subject = 'Gift Card de Personaling';
                     $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-                            <br>
-                            Comienza a disfrutarla entrando en Personaling.com. Y ¡Siéntete estupenda! #mipersonaling<br/>
+    	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.')."
+    	                    <br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
                             
                     
@@ -2340,6 +2451,100 @@ class BolsaController extends Controller
             
             
             $this->render('errorGC',array('mensaje'=>$mensaje));
+	}
+        
+        /**
+         * Urls para recibir las notificaciones del proceso de compra
+         * con la API de Aztive
+         */
+        public function actionNotificacionAzt(){
+            
+            $sCustomerID      = isset($_GET['onepay_customer_code']) ? $_GET['onepay_customer_code'] : "-1";
+            $sCustomerTerminal = isset($_GET['onepay_customer_terminal']) ? $_GET['onepay_customer_terminal'] : '';
+            $sOrderID           = isset($_GET['onepay_customer_order'])? $_GET['onepay_customer_order']    : '';
+            $sSignature         = isset($_GET['onepay_signature'])? $_GET['onepay_signature']         : '';
+            $lang               = isset($_GET['lang'])? $_GET['lang'] : 'es';
+            // datos de Transaccion
+            $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';
+            $opAuthCode = isset($_GET['onepay_authorization_code']) ? $_GET['onepay_authorization_code']: '';
+            $opOrder    = isset($_GET['onepay_customer_order'])? $_GET['onepay_customer_order']    : '';
+            
+            
+            $op = new AzPay ();
+            
+            if (isset($_GET['action']) && $_GET['action'] == "async") {
+
+                if ($op->validateResponseData ($_GET)) {
+                    echo "ACK=true";                   
+                } else {
+                    echo "ACK=false";
+                }                
+                exit;
+            }
+            
+	}
+        /**
+         * Urls para recibir las notificaciones del proceso de compra
+         * con la API de Aztive
+         */
+        public function actionOkAzt(){
+            
+            $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
+            $op = new AzPay();
+            
+            if ($op->validateResponseData($_GET)) {
+                
+                echo "<pre>";
+                print_r($_GET);
+                echo "</pre>";
+
+            } else {
+                
+                $opResponse = "001";               
+                $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";                
+                $this->redirect($this->createAbsoluteUrl('bolsa/error',
+                        array(
+                            'codigo'=>$opResponse,
+                            'mensaje'=>$mensaje,
+                        ),
+                        'http'));
+            }  
+            
+//            $this->redirect($this->createAbsoluteUrl('bolsa/error',
+//                        array(
+//                            'codigo'=>$opResponse,
+//                            'mensaje'=>$mensaje,
+//                        ),
+//                        'http'));  
+            
+	}
+        /**
+         * Urls para recibir las notificaciones del proceso de compra
+         * con la API de Aztive
+         */
+        public function actionKoAzt(){
+           
+            $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
+            
+            $op = new AzPay();
+
+            if ($op->validateResponseData($_GET)) {
+                
+                $mensaje = "Hubo un error realizando el pago, intenta de nuevo.";                
+
+            } else {
+                
+                $opResponse = "001";               
+                $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";                
+                
+            }  
+            
+            $this->redirect($this->createAbsoluteUrl('bolsa/error',
+                        array(
+                            'codigo'=>$opResponse,
+                            'mensaje'=>$mensaje,
+                        ),
+                        'http'));            
 	}
         
         

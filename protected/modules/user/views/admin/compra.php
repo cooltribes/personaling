@@ -13,203 +13,201 @@
 </script>
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Generar Orden de Compra</small></h1>
+    <h1>Generar Orden de Compra</h1>
   </div>
 
   
     <div class="row margin_top margin_bottom ">
-    <div class="span12">
-   
-    <form class="no_margin_bottom form-search">
-    <div class="span4">
-    	<input type="text" name="query" id="query" class="span3" placeholder="SKU, nombre, marca o referencia">
-   		<a class="btn" id="btn_search_event">Buscar</a>
-   	</div>
-	</form>
-	<div class="span4">
-    	<a class="btn span2" id="ver_orden">Ver Orden</a>
-	</div>
-	<div class="span2">
-	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-						'id'=>'productos'
-						
-					));
-						
-		            echo CHtml::hiddenField('ptcs','nothing');	    
-		            echo CHtml::hiddenField('vals','nothing');
-	
-	$this->widget('bootstrap.widgets.TbButton', array(
-            'buttonType'=>'submit',
-            'type'=>'info',
-            'label'=>'Continuar',
-        )); 
-	
-	$this->endWidget();
-	
-	
-	
-	?>
-	  	
-	</div>
-	
-	
+	    <div class="span12">
+	   
+		    <form class="no_margin_bottom form-search">
+			    <div class="span4">
+			    	<input type="text" name="query" id="query" class="span3" placeholder="SKU, nombre, marca o referencia">
+			   		<a class="btn" id="btn_search_event">Buscar</a>
+			   	</div>
+			</form>
+			<div class="span4">
+		    	<a class="btn span2" id="ver_orden">Ver Orden</a>
+			</div>
+			<div class="span2">
+				<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+									'id'=>'productos'
+									
+								));
+									
+					            echo CHtml::hiddenField('ptcs','nothing');	    
+					            echo CHtml::hiddenField('vals','nothing');
+				
+				$this->widget('bootstrap.widgets.TbButton', array(
+			            'buttonType'=>'submit',
+			            'type'=>'info',
+			            'label'=>'Continuar',
+			        )); 
+				
+				$this->endWidget();	
+				?>
+			</div>
 		
-	<?php
-	
-	$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-						'id'=>'productos',
-						'enableAjaxValidation'=>false,
-						'enableClientValidation'=>true,
-						'clientOptions'=>array(
-							'validateOnSubmit'=>true, 
-						),
-						
-					));
-						
-		            echo CHtml::hiddenField('ptcs','direccionVieja');	    
-		            echo CHtml::hiddenField('vals','direccionVieja');
-	
-	$this->endWidget();
-	
-	
-	Yii::app()->clientScript->registerScript('query1',
-		"var ajaxUpdateTimeout;
-		var ajaxRequest;
-		$('#btn_search_event').click(function(){
+		
+			
+			<?php
+			
+			$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+								'id'=>'productos',
+								'enableAjaxValidation'=>false,
+								'enableClientValidation'=>true,
+								'clientOptions'=>array(
+									'validateOnSubmit'=>true, 
+								),
+								
+							));
+								
+				            echo CHtml::hiddenField('ptcs','direccionVieja');	    
+				            echo CHtml::hiddenField('vals','direccionVieja');
+			
+			$this->endWidget();
 			
 			
-			ajaxRequest = $('#query').serialize();
-			clearTimeout(ajaxUpdateTimeout);
-			
-			ajaxUpdateTimeout = setTimeout(function () {
-				$.fn.yiiListView.update(
-				'list-auth-items',
-				{
-				type: 'POST',	
-				url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
-				data: ajaxRequest,
-				}
-				
-				)
-				},
-		
-		300);
-		return false;
-		});",CClientScript::POS_READY
-	);
-	 
-	
-	$template = '<br/><br/>
-				<div style="width:100%">
-					<div  style="width:auto; float:left;"> 
-					{summary}
-					</div>
-					<div  style="width:50%; float:right"> 
-					{sorter}
-					</div>
-			 	 
-			 	
-			  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ta table-hover table-striped">
-			  <thead>
-			  <tr>
-			      
-			      <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Color</th>
-                    <th>Talla</th>
-                    <th>Precio</th>
-                    <th>Disponibles</th>
-                    <th>CANTIDAD A AGREGAR</th>
-                </tr>
-			    </thead>
-			    <tbody>
-			    {items}
-				</tbody>
-			    </table>
-			   
-			    {pager}
-				';
-				
-				
-		
-	Yii::app()->clientScript->registerScript('handle_ajax_function', "
-			function setValues()
-			{
-				
-				for(var i=0; i<arr.length;i++){
-					$('#'+arr[i]).val(arr2[i]);
-				}
-			}
-			");
-
-
-
-		$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_item',
-	    'template'=>$template,
-	    'enableSorting'=>true,
-	    'afterAjaxUpdate'=>'setValues',
-	    
-	    
-	    'sortableAttributes'=>array(
-                'Nombre', 'Marca', 'Talla', 'Color' 
-   	),
-	 					
-	));
-
-
-
-
-	
-	// Codigo para actualizar el list view cuando presionen ENTER
-	
-	Yii::app()->clientScript->registerScript('query',
-		"var ajaxUpdateTimeout;
-		var ajaxRequest; 
-		
-		$(document).keypress(function(e) {
-		    if(e.which == 13) {
-		        ajaxRequest = $('#query').serialize();
-				clearTimeout(ajaxUpdateTimeout);
-				
-				ajaxUpdateTimeout = setTimeout(function () {
-					$.fn.yiiListView.update(
-					'list-auth-items',
-					{
-					type: 'POST',	
-					url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
-					data: ajaxRequest}
+			Yii::app()->clientScript->registerScript('query1',
+				"var ajaxUpdateTimeout;
+				var ajaxRequest;
+				$('#btn_search_event').click(function(){
 					
-					)
-					},
+					
+					ajaxRequest = $('#query').serialize();
+					clearTimeout(ajaxUpdateTimeout);
+					
+					ajaxUpdateTimeout = setTimeout(function () {
+						$.fn.yiiListView.update(
+						'list-auth-items',
+						{
+						type: 'POST',	
+						url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
+						data: ajaxRequest,
+						}
+						
+						)
+						},
+				
+				300);
+				return false;
+				});",CClientScript::POS_READY
+			);
+			 
 			
-			300);
-			return false;
-		    }
-		});",CClientScript::POS_READY
-	);	
-	
-	
-	?>	
-	
-		  
-  </div>
+			$template = '<br/><br/>
+						<div style="width:100%">
+							<div  style="width:auto; float:left;"> 
+							{summary}
+							</div>
+							<div  stylexf="width:50%; float:right"> 
+							{sorter}
+							</div>
+						</div>
+					 	 
+					 	
+					  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ta table-hover table-striped">
+					  	<thead>
+					  	<tr>
+					      
+					      	<th>Imagen</th>
+		                    <th>Nombre</th>
+		                    <th>Marca</th>
+		                    <th>Color</th>
+		                    <th>Talla</th>
+		                    <th>Precio</th>
+		                    <th>Disponibles</th>
+		                    <th>CANTIDAD A AGREGAR</th>
+		                </tr>
+					    </thead>
+					    <tbody>
+					    {items}
+						</tbody>
+					    </table>
+					   
+					    {pager}
+						';
+						
+						
+				
+			Yii::app()->clientScript->registerScript('handle_ajax_function', "
+					function setValues()
+					{
+						
+						for(var i=0; i<arr.length;i++){
+							$('#'+arr[i]).val(arr2[i]);
+						}
+					}
+					");
+
+
+
+				$this->widget('zii.widgets.CListView', array(
+			    'id'=>'list-auth-items',
+			    'dataProvider'=>$dataProvider,
+			    'itemView'=>'_item',
+			    'template'=>$template,
+			    'enableSorting'=>true,
+			    'afterAjaxUpdate'=>'setValues',
+			    
+			    
+			    'sortableAttributes'=>array(
+		                'Nombre', 'Marca', 'Talla', 'Color' 
+		   	),
+			 					
+			));
+
+
+
+
+			
+			// Codigo para actualizar el list view cuando presionen ENTER
+			
+			Yii::app()->clientScript->registerScript('query',
+				"var ajaxUpdateTimeout;
+				var ajaxRequest; 
+				
+				$(document).keypress(function(e) {
+				    if(e.which == 13) {
+				        ajaxRequest = $('#query').serialize();
+						clearTimeout(ajaxUpdateTimeout);
+						
+						ajaxUpdateTimeout = setTimeout(function () {
+							$.fn.yiiListView.update(
+							'list-auth-items',
+							{
+							type: 'POST',	
+							url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
+							data: ajaxRequest}
+							
+							)
+							},
+					
+					300);
+					return false;
+				    }
+				});",CClientScript::POS_READY
+			);	
+			
+			
+			?>	
+		
+			  
+	  	</div>
+</div>
+</div>
 
         
         <!-- Modal -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-<h3 id="myModalLabel">Resumen de Compra</h3>
-</div>
-<div class="modal-body" id="modal-body">
-
-</div>
-<div class="modal-footer">
-</div>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Resumen de Compra</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+	</div>
+	<div class="modal-footer">
+	</div>
 </div>
         
         

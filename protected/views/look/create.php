@@ -316,10 +316,10 @@ $('#btn_atras').click(function(){
 <div class="container margin_top" id="crear_look">
   <div class="row">
     <div class="span4">
-      <h1>Crear look</h1>
+      <h1><?php echo Yii::t('contentForm', 'Create Look'); ?></h1>
     </div>
     <div class="span8 margin_top_small"><?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'label'=>'Siguiente',
+	    'label'=>Yii::t('contentForm', 'Next'),
 	    'type'=>'danger',
 		'buttonType' => 'ajaxSubmit',
 	    'htmlOptions'=> array(
@@ -332,7 +332,7 @@ $('#btn_atras').click(function(){
 		       ),	    
 	)); ?>
     <?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'label'=>'Guardar borrador',
+	    'label'=>Yii::t('contentForm', 'Save draft'),
 	   // 'type'=>'danger',
 
 	    'htmlOptions'=> array(
@@ -377,7 +377,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		?>
           <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
         </h4>
-        <a  title="Traer al frente" class="btn" id="btn_frente"> Traer al frente</a> <a  title="Llevar atrás" class="btn" id="btn_atras"> Llevar atrás</a>
+        <a  title="Traer al frente" class="btn" id="btn_frente"><?php echo Yii::t('contentForm', 'Bring front'); ?></a> <a  title="Llevar atrás" class="btn" id="btn_atras"> <?php echo Yii::t('contentForm', 'Send back') ?></a>
         <!--
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         
@@ -565,8 +565,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         	
         } else {
         	?>
-          <h1>Crea tus Looks aqui</h1>
-          <p>Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro</p>
+          <h1><?php echo Yii::t('contentForm', 'Create your Look here'); ?></h1>
+          <p><?php echo Yii::t('contentForm', 'Start by dragging the panel items right up here. Just click on them and move them to this box.'); ?></p>
           <?php        	
         }
 		?>
@@ -603,8 +603,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <section class="span4">
       <div class="">
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#tab1" data-toggle="tab" title="Todos los productos">Productos</a></li>
-          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks">Adornos</a></li>
+          <li class="active"><a href="#tab1" data-toggle="tab" title="Todos los productos"><?php echo Yii::t('contentForm', 'Products'); ?></a></li>
+          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks"><?php echo Yii::t('contentForm', 'Decorations'); ?></a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="tab1">
@@ -612,7 +612,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <form id="formu" class="no_margin_bottom form-search">
                 <div class="span6">
                   <select id="padreId" class="span12" name="padreId">
-                    <option value="0">Buscar por Categoria</option>
+                    <option value="0"><?php echo Yii::t('contentForm', 'Search by Categories'); ?></option>
                     <?php 
 
 	$cat = Categoria::model()->findAllByAttributes(array('padreId'=>'1',),array('order'=>'nombre ASC'));
@@ -650,7 +650,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   <!-- marcas -->
                   <div class="margin_top_small margin_bottom_small">
                     <select id="marcas" class="span12" name="marcas">
-                      <option selected>Todas las Marca</option>
+                      <option selected><?php echo Yii::t('contentForm', 'All Brands'); ?></option>
                       <?php
         			foreach($marcas as $uno){
         				echo "<option value='".$uno->id."'> ".$uno->nombre." </option>";
@@ -731,16 +731,63 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	?>
                 <div class="span6">
 				<!-- Opciones 100% chic ON -->
+				
+				 <?php $marcas = Marca::model()->findAll(array('order'=>'nombre'));  ?>
                   <div class="margin_bottom_small ">
-                  	<select name="100chic" id="" class="span12">
-                  		<option value="100% chic">100% chic</option>
+                  	<select id="marcachic" name="100chic" id="" class="span12">
+                  		<option value="100% chic">Marcas 100% Chic</option>
+                  		<?php
+        					foreach($marcas as $marca){
+        						if ($marca->is_100chic)	
+        							echo "<option value='".$marca->id."'> ".$marca->nombre." </option>";
+        					}
+        				?>
                   	</select>
 
                   </div>
+<?php
+	Yii::app()->clientScript->registerScript('marcachic',
+		"
+		$('#marcachic').change(function(){
+				$('#marcas').val($('#marcachic').val());
+				
+			". CHtml::ajax(
+						 
+			array( // ajaxOptions
+				'url'=>Yii::app()->createUrl( 'look/categorias'),
+				'type' => 'POST',
+				'beforeSend' => "function( request )
+				{
+					// Set up any pre-sending stuff like initializing progress indicators
+					$('body').addClass('aplicacion-cargando');
+					
+				}",
+				'success' => "function( data )
+				{
+				// handle return data
+				//alert( data );
+					$('#div_categorias').html(data);
+					$('body').removeClass('aplicacion-cargando');
+				}",
+					'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
+				),
+				array( //htmlOptions
+					'href' => Yii::app()->createUrl( 'look/categorias' ),
+					'class' => 'thumbnail',
+					
+					'draggable'=>"false",
+				)
+			).
+			
+		"return false;
+		});",CClientScript::POS_READY
+	);
+	
+?>                  
 				<!-- Opciones 100% chic OFF -->
 
 
-                  <div class="dropdown" > <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> Filtrar por Colores <span class="caret"></span></a> 
+                  <div class="dropdown" > <a class="btn dropdown-toggle" id="a_colores" data-toggle="dropdown" href="#"> <?php echo Yii::t('contentForm', 'Filter by Colors'); ?> <span class="caret"></span></a> 
                     <!-- Link or button to toggle dropdown -->
                     
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="crear_look_colores">

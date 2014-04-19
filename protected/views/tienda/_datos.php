@@ -48,34 +48,45 @@ $b='';
 
 	
 
-	   	if($data->precios){
+	   	/*if($data->precios){
 	   	foreach ($data->precios as $precio) {
 	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
 	   		//$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 			}
-		}
-		
+		}*/ 
+		$prePub=$data->precio;
 		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
 		if(isset($ima)){
 			
-			if($prePub!="")
-			{
+			//if($prePub!=""){
+			
 				//echo"<tr>";
 				$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$data->id));
             	
             	if(isset($like)) // le ha dado like
 				{
-					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
+					$encabezado="<td><article class='span3'><div class='articulo producto'> ";
+					$gusta="<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>";
+				}
+				else{
+					$encabezado="<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'>";
+					$gusta="<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>";
+				}
+				
+					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover bg_color3","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
 					$b = '';
+					$style='';
+					if($data->mymarca->is_100chic){
+						$style="<span class=' btn btn-block is_100chic'> <span>100% Chic</span> </span> ";
+					}
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
-						//$b = CHtml::image($segunda->getUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
-						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-						echo("<td><article class='span3'><div class='articulo producto'> 
+						//$b = CHtml::image($segunda->ge     tUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
+						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
+						echo($encabezado."
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
-						".$a.$b." 
-						 
-						".CHtml::link("Vista Rápida",
+						".$a.$b.
+						CHtml::link("Vista Rápida",
 						    $this->createUrl('modal',array('id'=>$data->id)),
 						    array(// for htmlOptions
 						      'onclick'=>' {'.CHtml::ajax( array(
@@ -85,20 +96,18 @@ $b='';
 						         'return false;}',
 						    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
 						    'id'=>'prodencanta')
-						)."		
+						).$style."		 
 												
 						</a>
 						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
-						<span class='precio'>Bs. ".$prePub."</span>
-						<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>");
+						<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</span>".$gusta);
+						
 						
 						$con=$id;
-						$entro=1;
-				}
-				else
-				{
-					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover","width" => "270", "height" => "270",'id'=>'img-'.$data->id));	
+					
+				
+				/*	$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover","width" => "270", "height" => "270",'id'=>'img-'.$data->id));	
 					$b = '';
 					$style='';
 					if($data->mymarca->is_100chic){
@@ -129,12 +138,12 @@ $b='';
 					<span class='precio'>Bs. ".$prePub."</span>
 					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
 					
-					$con=$id;
+					$con=$id;*/
 						
-				}  
+				  
 				
 				//echo("</tr>");
-			}
+			//}
 		
 		}
 

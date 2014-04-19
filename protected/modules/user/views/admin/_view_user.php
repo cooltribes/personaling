@@ -9,6 +9,7 @@
       	<?php
       	 	// <img src="images/kitten.png" width="70" height="70" alt="avatar">
       	 		echo CHtml::image($data->getAvatar(),'Avatar',array("width"=>"70", "height"=>"70"));
+				
       	 ?>
       	
       	
@@ -58,18 +59,18 @@
             <li>
         <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver',array("profile/perfil","id"=>$data->id)); ?>            
             </li>
-      <li>
-        
-       <?php echo CHtml::link('<i class="icon-edit">  </i>  Editar',array("admin/update","id"=>$data->id)); ?>
-      </li>
-      <li><a title="Cambiar contraseña" href="#" onclick='modal( <?php echo $data->id; ?>)'>  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
-      <?php if($data->status == 0){ ?>
-      <li>
-        <?php echo CHtml::link('<i class="icon-refresh">  </i>  Reenviar Email de Verificación',array("admin/resendvalidationemail","id"=>$data->id)); ?>
-      </li>
-      <?php } ?>
-      <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li>
-      <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
+            <li>
+              
+             <?php echo CHtml::link('<i class="icon-edit">  </i>  Editar',array("admin/update","id"=>$data->id)); ?>
+            </li>
+            <li><a title="Cambiar contraseña" href="#" onclick='modal( <?php echo $data->id; ?>)'>  <i class="icon-lock">  </i>  Cambiar contraseña</a></li>
+            <?php if($data->status == 0){ ?>
+            <li>
+              <?php echo CHtml::link('<i class="icon-refresh">  </i>   Enviar Correo electrónico de Verificación ',array("admin/resendvalidationemail","id"=>$data->id)); ?>
+            </li>
+            <?php } ?>
+      <!-- <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li> -->
+            <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
        <li> <?php echo CHtml::link('<i class="icon-shopping-cart">  </i>  Registrar Orden',array("admin/compra","id"=>$data->id)); ?>
       
             <li class="divider"></li>

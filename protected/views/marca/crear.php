@@ -33,14 +33,7 @@ $this->breadcrumbs=array(
             <div class="bg_color3 margin_bottom_small padding_small box_1">
                 <form class="form-stacked personaling_form padding_top_small" >
                     <fieldset>
-                    	<div class="control-group">
-				              <div class="controls">
-				                <select name="" id="" class="margin_top">
-				                  <option value="">Generales</option>
-				                  <option value="">100% Chic</option>
-				                </select>  
-				              </div>
-                        </div>		                                  	
+                    		                                  	
                     	<div class="control-group">
                               <?php echo $form->labelEx($marca,'nombre', array('class' => 'control-label required')); ?>
 				              <div class="controls">

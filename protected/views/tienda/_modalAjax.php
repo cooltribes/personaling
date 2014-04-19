@@ -8,39 +8,33 @@
     
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Todos tus perfiles</h3>
+        <h3><?php echo Yii::t('contentForm','All your profiles'); ?></h3>
     </div>    
       
     <div class="modal-body ">
 <!--        <p class="lead">Selecciona un perfil para alguien más</p> 
         <hr>-->
-        <h4>Selecciona un perfil para alguien más:</h4>
+        <h4><?php echo Yii::t('contentForm','Select a profile for someone else'); ?>:</h4>
         <div class="row-fluid margin_bottom_medium margin_top_medium">
             <div class="span6 offset3">                                     
                         
-                       <ul class="nav nav-tabs nav-stacked">
-                        
-                        <?php
-                        
-                            $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));
-                            
-                            $elementos = array();
-                            
-                            foreach($otrosPerfiles as $perfil){
-                                
-                                echo '<li class="divider-vertical">
-                                    <a data-dismiss="modal" aria-hidden="true" id="'.$perfil->id_filter.
-                                        '" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg"> '.
-                                        $perfil->name.'</a></li>';                                    
-                                       
-                            }
-                            ?>
-                           </ul>
+               <ul class="nav nav-tabs nav-stacked">
+                <?php
+                $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));                            
+
+                foreach($otrosPerfiles as $perfil){
+
+                    echo '<li class="divider-vertical">
+                        <a data-dismiss="modal" aria-hidden="true" id="'.$perfil->id_filter.
+                            '" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg"> '.
+                            $perfil->name.'</a></li>';                                    
+
+                }
+                ?>
+               </ul>
             
             </div>
         </div>
-        
-            
         
     </div>
     
@@ -49,7 +43,7 @@
             <?php
             $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType' => 'link',
-                'label' => 'Administrar Perfiles',
+                'label' => Yii::t('contentForm','Admin Profiles'),
                 'type' => 'danger',
                 'url' => CController::createUrl('/user/profile/tusPerfiles'),
                 //'size' => 'large', // null, 'large', 'small' or 'mini'
@@ -64,7 +58,7 @@
 </div>
 <script type="text/javascript">
 
- //Click para seleccionar un peril de la lista que esta en el dropdown User
+ //Click para seleccionar un perfil de la lista que esta en el dropdown User
     $("#modalPerfilesOcultos li a").click(function(e){
         e.preventDefault();
         var urlActual = "<?php echo CController::createUrl(""); ?>";

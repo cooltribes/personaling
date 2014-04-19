@@ -115,7 +115,7 @@ $looks_recomendados = $look->match($model);
             <h2 class="braker_bottom">  Tu Perfil </h2>
            <ul class="nav nav-stacked nav-tabs">
               <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
-              <li> <?php echo CHtml::link('Tu avatar',array('profile/avatar'),array("title"=>"Edita tu avatar")); ?></li>
+              <li> <?php echo CHtml::link('Tu foto',array('profile/avatar'),array("title"=>"Edita tu foto")); ?></li>
               <li> <?php echo CHtml::link('Tu Banner',array('profile/banner'),array("title"=>"Edita tu Banner"));?> </li>                         
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
               <li> <a href="#" title="Tu perfil publico">Tu perfil publico</a></li>
@@ -150,7 +150,7 @@ $looks_recomendados = $look->match($model);
         
         </div>
         <div class="span4">
-        	<h2 class="braker_bottom">Tus Encantos/Favoritos </h2>
+        	<h2 class="braker_bottom">Mis Favoritos</h2>
            <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Looks',array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
               <li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>

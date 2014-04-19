@@ -110,6 +110,7 @@ return array(
 		        ),	
 		'user'=>array(
 			// enable cookie-based authentication
+			'class' => 'WebUser',
 			'allowAutoLogin'=>true,
 			'loginUrl'=>array('/user/login'),
 		),

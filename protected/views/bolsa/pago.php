@@ -1,4 +1,5 @@
-<!-- tipopago 1: transferencia
+<!-- 
+     tipopago 1: transferencia
      tipopago 2: Tarjeta credito
      tipopago 3: puntos o tarjeta de regalo 
      tipopago 4: MercadoPago

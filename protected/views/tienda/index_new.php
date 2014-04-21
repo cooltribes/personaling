@@ -356,9 +356,9 @@
             	
 
             	$(".hijo").css('outline','none');
-            	$(this).css('outline','solid 2px #6c1b4f');            	
+            	$(this).css('outline','solid 2px #ffd660');            	
             	$('.padre').css('outline','none');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px #6c1b4f');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
             	$('#cathid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
@@ -372,7 +372,7 @@
             	
 				$(".hijo").css('outline','none');
             	$(".padre").css('outline','none');
-            	$(this).css('outline','solid 2px #6c1b4f');
+            	$(this).css('outline','solid 2px #ffd660');
             	$('#padrehid').val($(this).attr('value'));
             	$('#cathid').val('0');
             	//$('#catalogo').remove();
@@ -388,7 +388,7 @@
             	$(".padre").css('outline','none');
             	$('#padrehid').val($(this).attr('value'));
             	$('#cathid').val('0');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px #6c1b4f');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 

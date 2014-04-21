@@ -19,8 +19,8 @@
 <div class="progreso_compra">
       <div class="clearfix margin_bottom">
         <div class="first-done"><?php echo Yii::t('contentForm','Authentication'); ?></div>
-        <div class="middle-not_done"><?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?></div>
-        <div class="middle-not_done"><?php echo Yii::t('contentForm','Payment <br> method'); ?></div>
+        <div class="middle-not_done dos"><?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?></div>
+        <div class="middle-not_done tres"><?php echo Yii::t('contentForm','Payment <br> method'); ?></div>
         <div class="last-not_done"><?php echo Yii::t('contentForm','Confirm <br>purchase'); ?></div>
       </div>
   </div>

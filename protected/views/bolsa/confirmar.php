@@ -6,7 +6,7 @@ require_once "mercadopago-sdk/lib/mercadopago.php";
 /*Aztive Pay Class*/
 //Yii::import('application.ext.AzPayClass.php');
 
-
+ 
 $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
 //$accessToken = $mp->get_access_token();
@@ -36,7 +36,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	}
 //Yii::app()->getSession()->add('descuento',$descuento);
 Yii::app()->getSession()->add('total_tarjeta',$total);	
-Yii::app()->getSession()->add('totalPagar',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 
@@ -103,7 +102,8 @@ Yii::app()->getSession()->add('totalPagar',$total);
                 </tr>
               </thead>
               <tbody>
-                <?php                  
+                <?php      
+                            
 		$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));		  
 	          foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
                     {
@@ -361,7 +361,7 @@ Yii::app()->getSession()->add('totalPagar',$total);
                             'target'=>'#btn-ComprarEsp',
                             'config'=>array(
                                 "type" => "iframe",                        
-                                "height" => "100%",                        
+                                "height" => "90%",                        
                                 "width" => "65%",                        
                                 "autoScale" => false,                        
                                 "transitionIn" => "none",                        

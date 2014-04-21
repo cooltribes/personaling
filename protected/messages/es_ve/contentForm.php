@@ -220,6 +220,7 @@ return array (
      'Pay MercadoPago' => 'Pagar con MercadoPago',
      'Paypal' => 'Paypal',
      'Pay with credit card' => 'Pagar con tarjeta de crédito',
+     'Pay with PayPal' => 'Pagar con Paypal',     
      'Payment confirmet' => 'Pago confirmado',
      'Payment declined' => 'Pago Rechazado',
      'Payment report' => 'Reportar Pago',

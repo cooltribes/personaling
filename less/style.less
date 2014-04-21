@@ -663,8 +663,8 @@ src: url('../fonts/entypo.woff'),
         .box_shadow_no;
       }
      .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{
-             background-color: @color5;
-             color: @color4;
+             background-color: @color4;
+             color: @color3;
      }
      .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner{
          box-shadow: none;
@@ -1505,64 +1505,71 @@ src: url('../fonts/entypo.woff'),
 
 }
 .first-not_done {
-  background-image: url(../images/i1small.png);
+  background-image: url(../images/step.png);
   background-repeat: no-repeat;
   margin-right: -20px;
   height: 35px;
 }
 .middle-not_done {
-  background-image: url(../images/i2small.png);
+  background-image: url(../images/step.png);
   background-repeat: no-repeat;
   margin-right: -20px;
   height: 35px;
 
 }
 .last-not_done {
-  background-image: url(../images/i3small.png);
+  background-image: url(../images/step.png);
   background-repeat: no-repeat;
+  background-position-x: -307px;  
   height: 35px;
   width:70px;
 
 }
 .first-done {
-  background-image: url(../images/j1small.png);
+  background-image: url(../images/step.png);
   background-repeat: no-repeat;
   margin-right: -20px;
 
   height: 35px;
 }
 .middle-done {
-  background-image: url(../images/j2small.png);
+  background-image: url(../images/step_black.png);
   background-repeat: no-repeat;
   margin-right: -20px;
   height: 35px;
 }
 .last-done {
-  background-image: url(../images/j3small.png);
+  background-image: url(../images/step_black.png);
   background-repeat: no-repeat;
+  background-position-x: -307px;
   height: 35px;
   width:70px;
 }
 
 .first-past {
-  background-image: url(../images/p1small.png);
+  background-image: url(../images/step_grey.png);
   background-repeat: no-repeat;
   margin-right: -20px;
   height: 35px;
 }
 .middle-past {
-  background-image: url(../images/p2small.png);
+  background-image: url(../images/step_grey.png);
   background-repeat: no-repeat;
   margin-right: -20px;
   height: 35px;
 
 }
 .last-past {
-  background-image: url(../images/p3small.png);
-  background-repeat: no-repeat;
+  background-image: url(../images/step_grey.png);
+  background-repeat: no-repeat;  
   height: 35px;
   width:70px;
-
+}
+.middle-not_done.dos,.middle-past.dos,.middle-done.dos{
+  background-position-x: -107px;  
+}
+.middle-not_done.tres,.middle-past.tres,.middle-done.tres{
+  background-position-x: -207px;  
 }
 .progreso_compra{
     width:400px;
@@ -1887,12 +1894,12 @@ src: url('../fonts/entypo.woff'),
 /*----------- Tienda ON -------------*/
 
 .bard_tienda{
-  background: #f7f7f7;
+  background: @color4;
   font-weight: 200;
   .item {
     display: inline-block;
+    color: white; 
     padding: 11px 1em 8px;
-    border-right: 1px solid #eee;
     li{
       border-bottom: 1px solid @color5;
       padding: 0.5em;
@@ -1906,6 +1913,12 @@ src: url('../fonts/entypo.woff'),
       .dropdown-menu{
         width: 400;
       }
+      .dropdown-toggle:hover{
+          .caret{
+            border-top-color: @color4;
+            border-bottom-color: @color4;            
+          }
+      }
     }
   }
   .caretthumbs{
@@ -1915,22 +1928,24 @@ src: url('../fonts/entypo.woff'),
   }
   .itemThumbnails{
     display: inline-block;
-    border-right: 1px solid #eee;   
+    position: relative;
+    top: -2px;
     .dropdown{
       display: inline-block;
       vertical-align: top;
-
+      margin-left: -4px;
+      margin-right: 4px;      
     }
     .dropdown-toggle{
       padding: 1px 7px 33px;
       b.caret{
-        border-top-color: black;
-        border-bottom-color: black;
+        border-top-color: white;
+        border-bottom-color: white;
       }      
     }
     .dropdown-menu{
-      border: 10px solid #E7E3E7;
       border-bottom: 0;
+      border: 10px solid #e7e3e7;
       margin-top: 31px;
       width: 260px;
       padding-bottom: 0px;
@@ -1964,6 +1979,7 @@ src: url('../fonts/entypo.woff'),
     .open{
       background: @color10;
       .dropdown-toggle{
+        color: @color4;
         background: @color10;
       }
     }
@@ -1985,9 +2001,11 @@ src: url('../fonts/entypo.woff'),
   .itemcolor{
     padding-top: 5px;
     vertical-align: top;
+    a{color: white;}
   }
   .img-categoria{
-    width: 50px;
+    width: 41px;
+    height: 40px;
   }
   .dropinput{
     padding: 5px 5px 5px 10px;
@@ -2005,8 +2023,8 @@ src: url('../fonts/entypo.woff'),
       margin-top: 8px;
       margin-left: 0px;
       margin-right: 6px;
-      border-top-color: black;
-      border-bottom-color: black;
+      border-top-color: white;
+      border-bottom-color: white;
     }
     small{
       background: rgb(223, 223, 223);

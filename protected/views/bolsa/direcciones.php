@@ -11,10 +11,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
-      <div class="middle-done">
+      <div class="middle-done dos">
         <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
       </div>
-      <div class="middle-not_done">
+      <div class="middle-not_done tres">
         <?php echo Yii::t('contentForm','Payment <br> method'); ?>
       </div>
       <div class="last-not_done">

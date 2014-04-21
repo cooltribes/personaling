@@ -1,7 +1,7 @@
 /* Author: Cooltribes - Juan Pernia (@juanrules)  */
 /* Project name: Personaling  al 30/07/2013 */
 
-/*==============================================================
+/*================================================a==============
 ----------------  FRAMEWORK - JUAN (Con ajustes de Calosth) -------------------------------
 ==============================================================*/
 
@@ -86,7 +86,7 @@ table .no_border_left{border-left:none}
 table .no_border_center{border-center:none}
 table .no_border_right{border-right:none}
 a{color:@color4; .transition_all}
-a:hover{color:#333}
+a:hover{color:#999}
 .table_border_left{border-left:1px solid #DDD}
 .text_left_align,.table_survey label{text-align:left}
 .no_bullets{ list-style:none;}
@@ -543,7 +543,7 @@ border:0;
 .table-striped tbody tr.info:nth-child(2n+1) td{
     background-color: #DFF0D8;
 }
-.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{ background:@color1}
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{ background:@color4}
 
 .table-striped  th{
     font-size: 12px;
@@ -1519,7 +1519,7 @@ src: url('../fonts/entypo.woff'),
 
 }
 .first-not_done {
-  background-image: url(../images/step.png);
+  background-image: url(../images/step.png),url(../images/step_black.png),url(../images/step_grey.png);
   background-repeat: no-repeat;
   margin-right: -20px;
   height: 35px;
@@ -1555,6 +1555,7 @@ src: url('../fonts/entypo.woff'),
 .last-done {
   background-image: url(../images/step_black.png);
   background-repeat: no-repeat;
+  background-position-x: -307px;
   height: 35px;
   width:70px;
 }
@@ -1607,6 +1608,26 @@ src: url('../fonts/entypo.woff'),
 
 /*------------- Proceso de Compra OFF -------------*/
 
+/*------------- Proceso de Compra Giftcard ON -------------*/
+
+.progreso_compra_giftcard {
+    width: 268px;
+    .margin_top;
+    .middle-not_done{
+      background-position-x: -105px;
+    }
+    .last-not_done{
+      background-position-x: -207px;
+      width: 45px;
+    }
+    .middle-done{
+      background-position-x: -105px;
+    }
+}
+.progreso_compra_giftcard .last-not_done {
+    text-align: center;
+}
+/*------------- Proceso de Compra Giftcard OFF -------------*/
 
 
 /*------------ Mensajes/Notificaciones ON --------------*/
@@ -2603,7 +2624,7 @@ ul.yiiPager .last
     .nav-stacked li{ background-color:@color3;}
     .dropdown-menu{ min-height:inherit;}
     .dropdown-submenu > a:after{ margin-right:0}
-    .nav > li > a:hover{ background:@color1; color:@color3;}
+    .nav > li > a:hover{ background:@color4; color:@color3;}
     ul{
         min-height:100px;
         margin-bottom:20px;

@@ -99,6 +99,17 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         </br><b> ".Yii::t('contentForm','Expiration').":</b> ".$tarjeta->vencimiento;
                     echo "</td></tr>";
                                         
+                }else if(Yii::app()->getSession()->get('tipoPago') == 5){
+                    
+                    echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
+                            Yii::t('contentForm','Credit Card').".</td></tr>";
+                
+                    
+                }else if(Yii::app()->getSession()->get('tipoPago') == 6){
+                    
+                    echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
+                            Yii::t('contentForm','PayPal').".</td></tr>";
+                    
                 }
               ?>
           </table>
@@ -123,8 +134,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </tr>
           </table>
           <?php
+          $tipo_pago = Yii::app()->getSession()->get('tipoPago');
           /*Para mercadopago*/
-              if(Yii::app()->getSession()->get('tipoPago') == 4){
+              if($tipo_pago == 4){
               	$user = User::model()->findByPk(Yii::app()->user->id);
 				$profile = Profile::model()->findByPk(Yii::app()->user->id);
               	$preference = array (
@@ -152,9 +164,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 ?>
               <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago'); ?></a>
           <?php
-            /*PARA TARJETA DE CREDITO*/
+            
               }
-              else{ /*DEPOSITO O TRANSFERENCIA*/ 
+              /*DEPOSITO O TRANSFERENCIA*/ 
+              else if($tipo_pago == 1  || $tipo_pago == 2){ 
                   
               	$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			    'id'=>'form-Comprar',
@@ -181,8 +194,45 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 )); 
 		
                 $this->endWidget(); 
-                  
-              }
+                
+                /*Si es en españa bankCard o Paypal*/    
+              }else if($tipo_pago == 5  || $tipo_pago == 6){ 
+          	
+                      if($tipo_pago == 5){                          
+                        $this->widget('ext.fancybox.EFancyBox', array(
+                            'target'=>'#btn-ComprarEsp',
+                            'config'=>array(
+                                "type" => "iframe",                        
+                                "height" => "90%",                        
+                                "width" => "65%",                        
+                                "autoScale" => false,                        
+                                "transitionIn" => "none",                        
+                                "transitionOut" => "none",                
+
+                                ),
+                            )
+                        );
+                      }
+                        
+                        echo "<div class='well text_align_center'>";
+                        $this->widget('bootstrap.widgets.TbButton', array(
+                            'type'=>'warning',        
+                            //'buttonType'=>'button',
+                            'size'=>'large',
+                            'label'=>$tipo_pago==5?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Pay with PayPal'),
+                            'url'=> $urlAztive, // action
+                            'icon'=>'lock white',
+                            'htmlOptions'=>array(
+        //                        'onclick'=>'js:enviar_pago();'
+                                'id' => 'btn-ComprarEsp',
+//                                'data-toggle' => "modal",
+//                                'data-target' => "#modalPrueba",
+                                )
+                        )); 
+                        
+                        echo "</div>";
+                        
+		  }
            ?>
         </div>
         <p><i class="icon-calendar"></i><?php echo Yii::t('contentForm','Date estimated delivery') ?>: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>

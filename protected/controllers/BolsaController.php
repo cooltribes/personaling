@@ -589,16 +589,22 @@ class BolsaController extends Controller
                     $tipo_pago = Yii::app()->getSession()->get('tipoPago');
                     //Tipos de pago aceptados por Aztive
                     $idPagoAztive = $tipo_pago == 5? 8:5;                    
-                    $monto = Yii::app()->getSession()->get('total');
+                    $monto = Yii::app()->getSession()->get('total_tarjeta');
                     
                     $optional = array(                        
                         'name'          => 'Personaling Enterprise S.L.',
                         'product_name'  => $nombreProducto,                             
-                    );                                                    
+                    );               
+                    
+                    $cData = array(
+                        "src" => 1, //origen de la compra, 1-Normal, 2-GC
+                    );
 
+                    $cData = CJSON::encode($cData);
                     $pago = new AzPay();
 
-                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '', null, $optional);                    
+                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+                            $idPagoAztive==8?"I":null, $optional, $cData);                    
                     
                     $this->render('confirmar',array(
                         'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
@@ -2182,10 +2188,37 @@ class BolsaController extends Controller
                 
                 $monto = Yii::app()->getSession()->get('total');
                 
+                 /*
+                 * Para pago con tarjeta y paypal
+                 */
+                $nombreProducto = "GiftCard Personaling";
+
+                $tipo_pago = Yii::app()->getSession()->get('tipoPago');
+                //Tipos de pago aceptados por Aztive
+                $idPagoAztive = $tipo_pago == 5? 8:5; 
+
+                $optional = array(                        
+                    'name'          => 'Personaling Enterprise S.L.',
+                    'product_name'  => $nombreProducto,                             
+                );                                    
+                $cData = array(
+                    "src" => 2, //origen de la compra, 1-Normal, 2-GC
+                );
+
+                $cData = CJSON::encode($cData);
+                $pago = new AzPay();
+
+                $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+                        $idPagoAztive==8?"I":null, $optional, $cData);   
+
+                   
+                
                 $this->render('confirmarGC',array(
                     'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
                     'monto'=> $monto,
-                    'giftcard' => $giftcard));
+                    'giftcard' => $giftcard,
+                    'urlAztive' => $urlAztive,
+                    ));
         }
         
         /**
@@ -2280,7 +2313,7 @@ class BolsaController extends Controller
 	}
         
         /*Pasar de la bolsa a generar las giftcards*/
-        public function crearGC($userId, $ordeId){
+        public function crearGC($userId, $ordenId){
             
             $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => $userId));		
             
@@ -2303,7 +2336,7 @@ class BolsaController extends Controller
 
                 }while($existe);
                 
-                $model->orden_id = $ordeId;
+                $model->orden_id = $ordenId;
                 
                 $model->save();
                 $gift->delete();
@@ -2366,9 +2399,9 @@ class BolsaController extends Controller
          */
         public function actionErrorGC(){
 		
-            $codigo = $_GET['codigo'];
+            $codigo = 	isset($_GET['codigo']) ? $_GET['codigo'] : "000";
+            $mensaje = 	$_GET['mensaje'];
             
-            $mensaje = $_GET['mensaje'];
             if ($mensaje=="The CardNumber field is not a valid credit card number."){
                 
                 $mensaje = "El número de tarjeta que introdujo no es un número válido.";
@@ -2430,7 +2463,19 @@ class BolsaController extends Controller
             
             if ($op->validateResponseData($_GET)) {                
                         
-                $this->compraAztive($_GET);                
+                $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
+                
+                $cData = CJSON::decode($cData);
+                
+                /*Ver de cual compra viene*/
+                if($cData["src"] == 2) //si es de compra de GC
+                {
+                    $this->comprarGC($_GET['onepay_authorization_code']);
+                    
+                }else if($cData["src"] == 1) //si es de compra normal
+                {
+                    $this->compraAztive($_GET);                
+                }
                   
 
             } else {
@@ -2452,14 +2497,40 @@ class BolsaController extends Controller
          * con la API de Aztive
          */
         public function actionKoAzt(){
-           
+                       
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             
             $op = new AzPay();
 
             if ($op->validateResponseData($_GET)) {
                 
-                $mensaje = "Hubo un error realizando el pago, intenta de nuevo.";                
+                $mensaje = "Hubo un error realizando el pago, intenta de nuevo.";  
+                
+                $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
+                
+                $cData = CJSON::decode($cData);
+                
+                /*Ver de cual compra viene*/
+                if($cData["src"] == 2) //si es de compra de GC
+                {
+                    $this->redirect($this->createAbsoluteUrl('bolsa/errorGC',
+                        array(
+                            'codigo'=>$opResponse,
+                            'mensaje'=>$mensaje,
+                        ),
+                        'http')); 
+                    
+                }else if($cData["src"] == 1) //si es de compra normal
+                {
+                    $this->redirect($this->createAbsoluteUrl('bolsa/error',
+                        array(
+                            'codigo'=>$opResponse,
+                            'mensaje'=>$mensaje,
+                        ),
+                        'http')); 
+                }
+                
+                              
 
             } else {
                 
@@ -2468,12 +2539,7 @@ class BolsaController extends Controller
                 
             }  
             
-            $this->redirect($this->createAbsoluteUrl('bolsa/error',
-                        array(
-                            'codigo'=>$opResponse,
-                            'mensaje'=>$mensaje,
-                        ),
-                        'http'));            
+                       
 	}
         
         
@@ -2681,7 +2747,50 @@ class BolsaController extends Controller
             Yii::app()->mail->send($message);
         }
 
-        
+        /*Para realizar la compra de una giftcard*/
+        function comprarGC($codigoTransaccion){
+            
+            $userId = Yii::app()->user->id;    
+            $usuario = User::model()->findByPk($userId);
+            
+            //5 BkCard - 6 Paypal
+            $metodoPago = Yii::app()->getSession()->get('tipoPago');
+            $metodoPago--; //llevarlo a los metodos de pago usados para las órdenes	
+            
+            $total = Yii::app()->getSession()->get('total');
+            
+            $orden = new OrdenGC;                            
+            $orden->estado = Orden::ESTADO_CONFIRMADO;
+            $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+            $orden->total = $total;
+            $orden->user_id = $userId;
+
+            if (!($orden->save())){
+                    echo CJSON::encode(array(
+                                    'status'=> 'error',
+                                    'error'=> $orden->getErrors(),
+                            ));
+                    Yii::trace('UserID: '.$userId.' Error al guardar la orden:'.print_r($orden->getErrors(),true), 'registro');	
+                    Yii::app()->end();
+
+            }	
+            //Pasar de la bolsa a las giftcards
+            $this->crearGC($userId, $orden->id);
+            
+            $detalle = new DetallePago();            
+            $detalle->nTransferencia = $codigoTransaccion;
+            $detalle->nombre = $usuario->profile->first_name." ".$usuario->profile->last_name;            
+            $detalle->monto = $total;
+            $detalle->fecha = date("Y-m-d H:i:s");
+            $detalle->banco = $metodoPago == Detalle::TDC_AZTIVE ? 'Sabadell' : 'PayPal'; //TDC o PayPal
+            $detalle->estado = 1; // aceptado
+            $detalle->orden_id = $orden->id;
+            $detalle->tipo_pago = $metodoPago;
+            $detalle->save();
+            
+            $this->redirect($this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http'));	
+            
+        }
         
         
         

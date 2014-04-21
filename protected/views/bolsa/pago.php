@@ -228,7 +228,7 @@ echo CHtml::hiddenField('user',$user);
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <label class="radio accordion-toggle margin_left_small" data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="bankCard" value="5"> 
+                            <input type="radio" name="optionsRadios" id="bankCard" checked="true" value="5"> 
                             <?php echo Yii::t('contentForm', 'Credit Card'); ?>
                         </label>                       
                        
@@ -578,7 +578,7 @@ echo CHtml::hiddenField('user',$user);
             </div>
             <!-- Aplicar Gifcard OFF -->
             <?php } ?>
-            <input type="hidden" id="tipo_pago" name="tipo_pago" value="1" />
+            <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
             <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
             <div class="form-actions">
               <?php $this->widget('bootstrap.widgets.TbButton', array(

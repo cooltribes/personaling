@@ -436,7 +436,7 @@ echo CHtml::hiddenField('user',$user);
 							else{
 								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
 								$seguro=$envio*0.13;
-								echo $peso_total." ".$ciudad_destino->ruta_id;
+								
 							}
 						}
 						else{

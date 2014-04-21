@@ -102,7 +102,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                 </tr>
               </thead>
               <tbody>
-                <?php                  
+                <?php      
+                            
 		$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));		  
 	          foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
                     {

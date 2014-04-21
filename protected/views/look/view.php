@@ -321,7 +321,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                        'size'=> 'large',
                    // 'url'=>array('producto/tallacolor'),
                    'url'=> CController::createUrl('bolsa/agregar') ,
-                    'htmlOptions'=>array('id'=>'buttonGuardar','class'=>'span2'),
+                    'htmlOptions'=>array('id'=>'buttonGuardar','class'=>'span4'),
                     'ajaxOptions'=>array(
                             'type' => 'POST',
                             'data'=> "js:$('#producto-form').serialize()",
@@ -445,9 +445,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>           
           </div>
-          <div>
-            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Accesorize" />             <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_mango.jpg" width="180" height="150" alt="Banner Aldo" />
-          </div>
         </div>
         <!-- Columna secundaria OFF -->
       </div>
@@ -569,10 +566,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
             </div>
           </div>
         </div>
-      </div>
-      <div class="text_align_center">
-        <hr/>
-            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_aldo.jpg" width="970" height="90" alt="Banner blanco" />
       </div>
     </div>
 

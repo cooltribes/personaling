@@ -129,7 +129,7 @@ $this->breadcrumbs = array(
                     <p class="lead">4. <?php echo Yii::t('contentForm','Choose how you want to deliver it'); ?></p>
 
                     <div class="accordion" id="accordionE">
-                        <div class="accordion-group">
+<!--                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <label class="radio accordion-toggle margin_left_small"
                                        data-parent="#accordionE">
@@ -139,7 +139,7 @@ $this->breadcrumbs = array(
                             <div id="collapseT" class="accordion-body collapse">
                             </div>
 
-                        </div>
+                        </div> -->
                         <div class="accordion-group">
 
                             <div class="accordion-heading">
@@ -245,7 +245,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
     /*Para actualizar el monto al cambiar el dropdown*/
     $('#<?php echo CHtml::activeId($model, "monto") ?>').change(function() {
-        $('#monto').text($('#<?php echo CHtml::activeId($model, "monto") ?>').val() + " Bs.");
+        $('#monto').text($('#<?php echo CHtml::activeId($model, "monto") ?>').val() + " <?php echo Yii::t('contentForm', 'currSym'); ?>");
     });
 
     $('#plantillas li').click(function(e) {

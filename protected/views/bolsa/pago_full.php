@@ -12,10 +12,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past">Autenticación</div>
-      <div class="middle-past">Dirección<br/>
+      <div class="middle-past dos">Dirección<br/>
         de envío <br/>
         y facturación</div>
-      <div class="middle-done">Método <br/>
+      <div class="middle-done tres">Método <br/>
         de pago</div>
       <div class="last-not_done">Confirmar<br/>
         compra</div>

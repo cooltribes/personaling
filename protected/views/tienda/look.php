@@ -18,22 +18,6 @@ if (isset($user)){
             <div class="span6 text_align_right">
                 <?php
                 $this->widget('bootstrap.widgets.TbButton', array(
-                    'label' => 'Looks para ti',
-                    'buttonType' => 'button',
-                    
-                    'type' => $todosLosLooks?'':'danger',
-                    'size' => 'large',
-                    'htmlOptions' => array(
-                        'id' => 'btnMatch', 
-                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
-                    ),
-                ));
-                ?>
-
-            </div>
-            <div class="span6">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Todos los looks',
                     'buttonType' => 'button',
                     'type' => $todosLosLooks?'danger':'',
@@ -48,7 +32,22 @@ if (isset($user)){
                     ),
                 ));
                 ?>
-
+            </div>
+            <div class="span6">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'label' => 'Looks para ti',
+                    'buttonType' => 'button',
+                    
+                    'type' => $todosLosLooks?'':'danger',
+                    'size' => 'large',
+                    'htmlOptions' => array(
+                        'id' => 'btnMatch', 
+                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                        'class' => 'btn-rectangle', 
+                    ),
+                ));
+                ?>
             </div>
         </div>
         <!--

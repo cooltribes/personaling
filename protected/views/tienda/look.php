@@ -10,7 +10,7 @@ if (isset($user)){
 	 if ($user->status_register !=User::STATUS_REGISTER_ESTILO)
 	 	$perfil_propio = 0;
 } else {
-	$perfil_propio = 0;
+	$perfil_propio = 0; 
 }	
  $model = new RegistrationForm;
 ?>

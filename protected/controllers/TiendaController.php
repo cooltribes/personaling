@@ -1060,7 +1060,7 @@ public function actionCategorias2(){
 	
 	}
 
-	public function actionLook(){
+	public function actionLook(){ 
            	
 		
            $userTmp = User::model()->findByPk(Yii::app()->user->id);

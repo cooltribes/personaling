@@ -110,6 +110,7 @@ return array(
 		        ),	
 		'user'=>array(
 			// enable cookie-based authentication
+			'class' => 'WebUser',
 			'allowAutoLogin'=>true,
 			'loginUrl'=>array('/user/login'),
 		),
@@ -266,7 +267,7 @@ return array(
                     ),
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',
-				    'noShipping'=> '1',
+				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
 				    'IVA' => '0.12',
 				    'IVAtext' => '12%',	
 				    'registro' => true,	  

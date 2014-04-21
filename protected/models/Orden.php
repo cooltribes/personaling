@@ -579,7 +579,7 @@ class Orden extends CActiveRecord
 	}	
 	}
 	public function getxPagar($id=null){
-			
+		                
 		if(is_null($id))
 				$porpagar=$this->total-$this->totalpagado;
 		else
@@ -590,7 +590,7 @@ class Orden extends CActiveRecord
 		if($porpagar<0)
 			$porpagar=0;
 		
-		
+				
 		return $porpagar;
 		
 	} 
@@ -742,9 +742,11 @@ class Orden extends CActiveRecord
 	            else if($detallePago->tipo_pago==2)
 	                    $text.="Tarjeta de Crédito";  
 	            else if($detallePago->tipo_pago==3)
-	                    $text.="Uso de Balance"; 
+	                    $text.="Uso de Balance"; 	            
 	            else if($detallePago->tipo_pago==4)
-	                    $text.="MercadoPago"; 
+	                    $text.="TPV Banco Sabadell"; 
+	            else if($detallePago->tipo_pago==5)
+	                    $text.="PayPal"; 
 	            else
 	                    $text.="ERROR EN EL PAGO";
 				$i++;

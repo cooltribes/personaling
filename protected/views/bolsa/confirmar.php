@@ -6,7 +6,7 @@ require_once "mercadopago-sdk/lib/mercadopago.php";
 /*Aztive Pay Class*/
 //Yii::import('application.ext.AzPayClass.php');
 
-
+ 
 $mp = new MP ("8356724201817235", "vPwuyn89caZ5MAUy4s5vCVT78HYluaDk");
 $mp->sandbox_mode(TRUE);
 //$accessToken = $mp->get_access_token();

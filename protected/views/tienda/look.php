@@ -4,8 +4,13 @@ $this->breadcrumbs = array(
 );
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;
+$perfil_propio = 1;
 if (isset($user)){
 	$status_register = 	$user->status_register;
+	 if ($user->status_register !=User::STATUS_REGISTER_ESTILO)
+	 	$perfil_propio = 0;
+} else {
+	$perfil_propio = 0; 
 }	
  $model = new RegistrationForm;
 ?>
@@ -16,22 +21,6 @@ if (isset($user)){
 
         <div class="row-fluid margin_bottom_medium">
             <div class="span6 text_align_right">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'label' => 'Looks para ti',
-                    'buttonType' => 'button',
-                    
-                    'type' => $todosLosLooks?'':'danger',
-                    'size' => 'large',
-                    'htmlOptions' => array(
-                        'id' => 'btnMatch', 
-                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
-                    ),
-                ));
-                ?>
-
-            </div>
-            <div class="span6">
                 <?php
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Todos los looks',
@@ -48,7 +37,22 @@ if (isset($user)){
                     ),
                 ));
                 ?>
-
+            </div>
+            <div class="span6">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'label' => 'Looks para ti',
+                    'buttonType' => 'button',
+                    
+                    'type' => $todosLosLooks?'':'danger',
+                    'size' => 'large',
+                    'htmlOptions' => array(
+                        'id' => 'btnMatch', 
+                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                        'class' => 'btn-rectangle', 
+                    ),
+                ));
+                ?>
             </div>
         </div>
         <!--
@@ -262,7 +266,7 @@ if (isset($user)){
         <input type="hidden" value="" id="ocasion_actual" />
 
         <input type="hidden" id="rango_actual" name="precios" value="" />     
-        <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
+        <input type="hidden" id="perfil_propio" name="perfil_propio" value="<?php echo $perfil_propio; ?>" />     
 
 
         <div class="navbar-inner sub_menu hide">

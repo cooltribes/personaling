@@ -1,20 +1,5 @@
 <?php Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
  ?>
-<?php /* if(Yii::app()->user->hasFlash('loginMessage')): ?>
-
-<div class="success">
-	<?php echo Yii::app()->user->getFlash('loginMessage'); ?>
-</div>
-
-<?php endif; ?>
-<div class="container margin_top">
-	<?php if(Yii::app()->user->hasFlash('error')): ?>
-
-<div class="alert alert-error text_align_center">
-	<?php echo Yii::app()->user->getFlash('error'); ?>
-</div>
-
-<?php endif; */ ?>
     <style>
         .progreso_compra_giftcard {
             width: 268px;
@@ -23,7 +8,7 @@
             text-align: center;
         }
     </style>
-<div class="progreso_compra progreso_compra_giftcard">
+<div class="progreso_compra progreso_compra_giftcard margin_top">
       <div class="clearfix margin_bottom">
          <div class="first-done"><?php echo Yii::t('contentForm','Authentication'); ?></div>        
          <div class="middle-not_done"><?php echo Yii::t('contentForm','Payment <br> method'); ?></div>
@@ -49,19 +34,19 @@
   <div class="row">
     <div class="span6 offset3">
 
-      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+      <h1 > <?php  echo Yii::t('contentForm','Confirm your credentials'); ?>: </h1>
+      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1 text_align_center">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-			'id'=>'login-form',
-			'htmlOptions'=>array('class'=>'personaling_form'),
-		    //'type'=>'stacked',
-		    'type'=>'inline',
-			'enableClientValidation'=>true,
-			'clientOptions'=>array(
-				'validateOnSubmit'=>true, 
-			),
-		)); ?>
+      'id'=>'login-form',
+      'htmlOptions'=>array('class'=>'personaling_form'),
+        //'type'=>'stacked',
+        'type'=>'inline',
+      'enableClientValidation'=>true,
+      'clientOptions'=>array(
+        'validateOnSubmit'=>true, 
+      ),
+    )); ?>
           <fieldset>
-            <legend > <?php  echo Yii::t('contentForm','Confirm your credentials'); ?>: </legend>
             
             <div class="control-group">
             	 <div class="controls"> 
@@ -82,12 +67,13 @@
             <?php //echo $form->checkBoxRow($model,'rememberMe'); ?>
             
             
-        <div class="form-actions">
+        <div class="">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
-            'type'=>'warning',
+            'type'=>'danger',
             'size'=>'large',
             'label'=>Yii::t('contentForm','Next'),
+            'htmlOptions'=>array('class'=>'span5'),
         )); ?>
 	</div>
           </fieldset>

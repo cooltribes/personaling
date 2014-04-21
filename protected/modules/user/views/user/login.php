@@ -80,7 +80,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
             'htmlOptions'=>array('class'=>'btn-block'),
         )); ?>
         </div>
-         <span class=""> <?php echo UserModule::t('If you don\'t have an account'); ?>, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate"><?php echo UserModule::t('Sign up here'); ?></a></span>
+         <span class="color8"> <?php echo UserModule::t('If you don\'t have an account'); ?>, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate"><?php echo UserModule::t('Sign up here'); ?></a></span>
           </fieldset>
         <?php $this->endWidget(); ?>
       </section>

@@ -2497,6 +2497,8 @@ class BolsaController extends Controller
                 echo "<pre>";
                 print_r($_GET);
                 echo "</pre>";
+                
+                //Ir al action Comprar por POST
 
             } else {
                 

@@ -1079,7 +1079,7 @@ public function actionCategorias2(){
 				 $todosLosLooks = true;  
 			 }  
 		} else {
-		   //  	$_POST['perfil_propio'] = 0;
+		    // 	$_POST['perfil_propio'] = 0;
 			//	 $_POST['reset'] = true;			
 			$todosLosLooks = true;
 		}
@@ -1239,6 +1239,7 @@ public function actionCategorias2(){
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
 				$status_register_tmp = isset($userTmp->status_register)?$userTmp->status_register:User::STATUS_REGISTER_ESTILO;
+               
                 if ($status_register_tmp !=User::STATUS_REGISTER_ESTILO){
                   	$rangosArray = Look::model()->getRangosPrecios();
 					  $profile = new Profile;

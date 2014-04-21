@@ -4,8 +4,13 @@ $this->breadcrumbs = array(
 );
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;
+$perfil_propio = 1;
 if (isset($user)){
 	$status_register = 	$user->status_register;
+	 if ($user->status_register !=User::STATUS_REGISTER_ESTILO)
+	 	$perfil_propio = 0;
+} else {
+	$perfil_propio = 0;
 }	
  $model = new RegistrationForm;
 ?>
@@ -262,7 +267,7 @@ if (isset($user)){
         <input type="hidden" value="" id="ocasion_actual" />
 
         <input type="hidden" id="rango_actual" name="precios" value="" />     
-        <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
+        <input type="hidden" id="perfil_propio" name="perfil_propio" value="<?php echo $perfil_propio; ?>" />     
 
 
         <div class="navbar-inner sub_menu hide">

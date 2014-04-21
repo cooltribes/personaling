@@ -111,4 +111,5 @@ class Tarifa extends CActiveRecord
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}
+
 }

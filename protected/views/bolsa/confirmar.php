@@ -36,6 +36,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	}
 //Yii::app()->getSession()->add('descuento',$descuento);
 Yii::app()->getSession()->add('total_tarjeta',$total);	
+Yii::app()->getSession()->add('totalPagar',$total);	
 	//echo 'Total: '.$total.' - Descuento: '.$descuento;
 ?>
 

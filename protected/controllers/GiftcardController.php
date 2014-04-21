@@ -406,11 +406,11 @@ class GiftcardController extends Controller
                                     $balance->orden_id = 0;
                                     $balance->tipo = 2; //tipo GiftCard
                                     $balance->save();
-
+                                    $currSym = Yii::t('contentForm','currSym');
 
                                     Yii::app()->user->updateSession();
                                     Yii::app()->user->setFlash('success',
-                                            UserModule::t("¡Se ha aplicado tu Gift Card de <b>Bs. {$giftcard->monto}</b>, ahora puedes usar tu saldo para comprar en Personaling!"));                              
+                                            UserModule::t("¡Se ha aplicado tu Gift Card de <b> {$currSym} {$giftcard->monto}</b>, ahora puedes usar tu saldo para comprar en Personaling!"));                              
                                     
                                     if(!$ajax){
                                         $this->redirect(array('user/profile/micuenta'));                                        

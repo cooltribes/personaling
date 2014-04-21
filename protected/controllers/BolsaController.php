@@ -2424,7 +2424,7 @@ class BolsaController extends Controller
          * con la API de Aztive
          */
         public function actionOkAzt(){
-            
+                       
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             $op = new AzPay();
             
@@ -2481,7 +2481,7 @@ class BolsaController extends Controller
          * cuando fuè hecho con algún método de Aztive
          */
         public function compraAztive($datosCompra){            
-            
+           
             $userId = Yii::app()->user->id;
             $usuario = User::model()->findByPk($userId);
             $bolsa = Bolsa::model()->findByAttributes(array(
@@ -2556,6 +2556,7 @@ class BolsaController extends Controller
                     array('id' => Yii::app()->getSession()->get('idFacturacion'),
                         'user_id' => $userId)), true);
             
+
             $orden = new Orden;
             $orden->subtotal = Yii::app()->getSession()->get('subtotal');
             $orden->descuento = 0;

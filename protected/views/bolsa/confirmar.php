@@ -44,10 +44,10 @@ Yii::app()->getSession()->add('totalPagar',$total);
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
-      <div class="middle-past">
+      <div class="middle-past dos">
         <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
       </div>
-      <div class="middle-past">
+      <div class="middle-past tres">
         <?php echo Yii::t('contentForm','Payment <br> method'); ?>
       </div>
       <div class="last-done">
@@ -361,7 +361,7 @@ Yii::app()->getSession()->add('totalPagar',$total);
                             'target'=>'#btn-ComprarEsp',
                             'config'=>array(
                                 "type" => "iframe",                        
-                                "height" => "90%",                        
+                                "height" => "100%",                        
                                 "width" => "65%",                        
                                 "autoScale" => false,                        
                                 "transitionIn" => "none",                        

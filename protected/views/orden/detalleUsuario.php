@@ -194,7 +194,13 @@ $usuario = User::model()->findByPk($orden->user_id);
           <tr>
             <td>21/12/2012 - 12:21 PM</td>
             <td>Delivery</td>
-            <td>Zoom</td>
+            <td><?php
+
+            
+            echo $orden->shipCarrier;
+            }?>
+            
+            </td>
             <td>0,00 Kg.</td>
 
             <td><?php echo $orden->envio+$orden->seguro.' '.Yii::t('contentForm', 'currSym'); ?></td>

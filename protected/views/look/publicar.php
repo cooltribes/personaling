@@ -129,6 +129,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'enableClientValidation'=>true,
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
+		'afterValidate'=>"js:function(form, data, hasError) {
+				
+			
+				
+				
+				
+				}"
 	),
 )); ?>      	
         <legend class="lead"><?php echo Yii::t('contentForm','Last step'); ?></legend>
@@ -277,6 +284,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   			        1=>'Atrevida',
   			        2=>'Conservador',
   			    ),array('disabled'=>$disabled)); ?> 
+  			    <div style="display:none" id="radioError" class="help-block error">Debes elegir un estilo para este look</div>
             </div>
           </div>
           <hr/>
@@ -491,4 +499,23 @@ $script = "
 ";
 ?>
 <?php Yii::app()->clientScript->registerScript('botones',$script); ?>
-
+<script>
+	$('#PublicarForm').submit(function(e) {
+    		
+    	
+    		
+    	if(!$('#Look_tipo_0').is(':checked')&&!$('#Look_tipo_1').is(':checked')){
+	 			e.preventDefault();
+	 			$('#radioError').show();	 			
+	 	}
+	 	if($('#Look_tipo_0').is(':checked')||$('#Look_tipo_1').is(':checked')){
+	 		$('#PublicarForm').submit();
+	 	}
+    		
+	 });
+	 
+	 
+	
+	 
+	 
+</script>

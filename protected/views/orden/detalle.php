@@ -297,19 +297,7 @@ $tracking=$orden->getTracking();
             <td> 
             <?php
             
-            switch ($orden->tipo_guia) {
-                case 0:
-                    echo 'Zoom';
-                    break;
-                case 1:
-                    echo 'Zoom';
-                    break;
-				case 2:
-                    echo 'DHL';
-                    break;
-                default:
-                    break;
-            }
+           echo $orden->shipCarrier;
             ?></td>
             <td><?php echo $orden->peso ?> Kg.</td>
             <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
@@ -448,8 +436,8 @@ $tracking=$orden->getTracking();
             <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
             Tipo de guía: 
             <?php
-            
-            switch ($orden->tipo_guia) {
+            echo $orden->shipCarrier;
+            /*switch ($orden->tipo_guia) {
                 case 0:
                     echo 'Zoom hasta 0,5 Kg.';
                     break;
@@ -461,7 +449,7 @@ $tracking=$orden->getTracking();
                     break;
                 default:
                     break;
-            }
+            }*/
             ?>
         </div>
         <?php

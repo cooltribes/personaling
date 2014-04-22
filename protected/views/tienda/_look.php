@@ -8,6 +8,7 @@
   <div class="row" id="looks">
   	
 	<?php foreach($looks as $look): 
+			
                 if(!$look->getIsVisible()){
                     continue;
                 }

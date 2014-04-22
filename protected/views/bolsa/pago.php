@@ -5,6 +5,7 @@
      tipopago 4: MercadoPago
      tipopago 5: Tarjeta Aztive
      tipopago 6: PayPal
+     tipopago 7: Saldo
 -->
 <?php
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
@@ -21,8 +22,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                         ),
                                         'htmlOptions'=>array('class'=>''),
                                 )); 
-echo CHtml::hiddenField('admin',$admin);
-echo CHtml::hiddenField('user',$user);
                                 ?>
 <div class="container margin_top">
   <div class="progreso_compra">
@@ -507,7 +506,7 @@ echo CHtml::hiddenField('user',$user);
 			
 			
 			
-				$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
+				$balance = User::model()->findByPK($user)->saldo;
 				$balance = floor($balance *100)/100;
                 $class = "";		
 
@@ -518,7 +517,17 @@ echo CHtml::hiddenField('user',$user);
             <div>
                 <label class="checkbox<?php echo $class; ?>">
                 <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-                <?php echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                <?php
+                if($admin){
+                    echo Yii::t('contentForm', 'Use Balance.'); ?><br>
+                    <?php echo Yii::t ('contentForm', 'Avaliable for {user}:', 
+                            array("{user}"=>$nombre)) ?>
+                    <strong> <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                <?php                 
+                }else{
+                    echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>                    
+                <?php } ?>
+                
               </label>
             </div>
 	    

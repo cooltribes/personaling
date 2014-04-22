@@ -1058,7 +1058,6 @@ if(isset($_POST['Profile']))
 //                $this->redirect(array('admin/compradir'));
 //                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'https'));
                 $this->redirect($this->createAbsoluteUrl('/bolsa/index',array(
-                    "admin" => 1,
                     "user" => $id,
                     )));
 

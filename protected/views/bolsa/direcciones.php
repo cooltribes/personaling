@@ -30,7 +30,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <h1><?php echo  Yii::t('contentForm','Shipping and billing address'); ?>
           <br>
           <?php
-          if($admin){
+          if(Yii::app()->getSession()->contains("bolsaUser")){
               echo "(Usuario: <b>{$nombre}</b>)"; 
           }
           ?>
@@ -41,8 +41,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //     	$usuario = Yii::app()->user->id; 
      	$usuario = $user; 
         $direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
-     	echo CHtml::hiddenField('admin',$admin);
-		echo CHtml::hiddenField('user',$user);
+     	
       ?>
 
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
@@ -52,7 +51,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             if(count( $direcciones ) > 0 ){?>
             	<legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
 	       	<?php	$this->renderPartial('_direcciones', array(
-	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin,'nueva'=>true) , 
+	       		'direcciones'=>$direcciones,'nueva'=>true) , 
 	       		false);
 	  		}
 			else {
@@ -299,7 +298,7 @@ else
 				
 			
 	    		$.ajax({
-				      url: "<?php echo Yii::app()->createUrl('direccion/addDireccion',array('user'=>$user,'admin'=>$admin)); ?>",
+				      url: "<?php echo Yii::app()->createUrl('direccion/addDireccion',array('user'=>$user)); ?>",
 				      type: "post",
 				      data: {
 				      	nombre:nom,

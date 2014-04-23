@@ -5,6 +5,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     
     $nombre = $userObject ? $userObject->profile->first_name." ".$userObject->profile->last_name:
                 "";
+    
 ?>
 <script> var error=0;</script>
 <div class="container margin_top">
@@ -30,7 +31,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       <h1><?php echo  Yii::t('contentForm','Shipping and billing address'); ?>
           <br>
           <?php
-          if($admin){
+          if(Yii::app()->getSession()->contains("bolsaUser")){
               echo "(Usuario: <b>{$nombre}</b>)"; 
           }
           ?>
@@ -41,8 +42,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //     	$usuario = Yii::app()->user->id; 
      	$usuario = $user; 
         $direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$usuario));
-     	echo CHtml::hiddenField('admin',$admin);
-		echo CHtml::hiddenField('user',$user);
+     	
       ?>
 
 	  <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
@@ -52,7 +52,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             if(count( $direcciones ) > 0 ){?>
             	<legend ><?php echo Yii::t('contentForm','Addresses used above'); ?>: </legend>
 	       	<?php	$this->renderPartial('_direcciones', array(
-	       		'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin,'nueva'=>true) , 
+	       		'direcciones'=>$direcciones,'nueva'=>true) , 
 	       		false);
 	  		}
 			else {
@@ -207,6 +207,30 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+              
+            <div class="control-group"> 
+              <div class="controls"> 
+              	<?php 
+              	if($dir->ciudad_id == ''){ 
+              		echo $form->dropDownListRow($dir,'codigo_postal_id', array(), array('empty' => 'Seleccione una ciudad...'));
+				}else{
+						/*$criteria=new CDbCriteria;
+						$criteria->addCondition('cod_zoom IS NULL'); 
+						$criteria->addCondition('provincia_id ='.$dir->provincia_id); 
+						*/
+						//$criteria->order('nombre'); 
+					//echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array(),"cod_zoom IS NOT NULL AND provincia_id =".$dir->provincia_id, array('order' => 'nombre')),'id','nombre'));
+					echo $form->dropDownListRow($dir,'codigo_postal_id', CHtml::listData(CodigoPostal::model()->findAllBySql("SELECT * FROM tbl_codigo_postal WHERE ciudad_id =".$dir->provincia_id." order by codigo ASC"),'id','codigo'));
+					//echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAll($criteria),'id','nombre'));
+				}
+              	?>
+                
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            
+            
+            
             <div class="control-group"> 
             
               <div class="controls">
@@ -299,7 +323,7 @@ else
 				
 			
 	    		$.ajax({
-				      url: "<?php echo Yii::app()->createUrl('direccion/addDireccion',array('user'=>$user,'admin'=>$admin)); ?>",
+				      url: "<?php echo Yii::app()->createUrl('direccion/addDireccion',array('user'=>$user)); ?>",
 				      type: "post",
 				      data: {
 				      	nombre:nom,
@@ -392,6 +416,20 @@ else
 			      data: { provincia_id : $(this).val() },
 			      success: function(data){
 			           $('#Direccion_ciudad_id').html(data);
+			      },
+			});
+		}
+	});
+	
+	$('#Direccion_ciudad_id').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarCodigos'); ?>",
+			      type: "post",
+			      data: { ciudad_id : $(this).val() },
+			      success: function(data){
+			           $('#Direccion_codigo_postal_id').html(data);
 			      },
 			});
 		}

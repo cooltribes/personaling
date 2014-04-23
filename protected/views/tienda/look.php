@@ -50,9 +50,7 @@ if (isset($user)){
                 ?>
             </div>
         </div>
-        <!--
-        <a href="#ModalRegistro" role="button" class="btn" data-toggle="modal">Launch modal registro</a>
--->
+
 
     </div>
     <div class="alert in" id="alert-msg" style="display: none">
@@ -504,7 +502,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 <?php $this->endWidget() ?>
 
 <!-- Modal Registro ON -->
-<div id="ModalRegistro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="ModalRegistro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'action'=>Yii::app()->createUrl("/user/registration"),
 	'id'=>'registration-form',
@@ -529,29 +527,29 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         
                     <fieldset>
                         <legend class="text_align_center">O llena los campos a continuación: </legend>  
-<div class="control-group row-fluid">
-	<div class="controls">
-	<!--[if IE 9]> 
-		<label>Correo:</label>
-	<![endif]--> 
-	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
-	echo $form->error($model,'email');
-	?>
-	</div>
-</div>
+                        <div class="control-group row-fluid">
+                        	<div class="controls">
+                        	<!--[if IE 9]> 
+                        		<label>Correo:</label>
+                        	<![endif]--> 
+                        	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
+                        	echo $form->error($model,'email');
+                        	?>
+                        	</div>
+                        </div>
 
-<div class="control-group row-fluid">
-	<div class="controls">	
-	<!--[if IE 9]> 
-		<label>Contraseña:</label>
-	<![endif]--> 
-	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span12')); 
-	echo $form->error($model,'password');
-	?>
-	</div>
-</div>
-   <hr>
-    Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="#" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="#" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
+                        <div class="control-group row-fluid">
+                        	<div class="controls">	
+                        	<!--[if IE 9]> 
+                        		<label>Contraseña:</label>
+                        	<![endif]--> 
+                        	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span12')); 
+                        	echo $form->error($model,'password');
+                        	?>
+                        	</div>
+                        </div>
+                           <hr>
+                            Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="#" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="#" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
                     </fieldset>
   
             </section>

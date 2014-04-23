@@ -35,7 +35,7 @@ class AzPay {
     /*PARA PRUEBAS*/
     const TERMINAL = '999';    
     const SECRET = 'qwerty1234567890uiop';
-    
+//    
     /*PARA PRODUCCION*/
 //    const TERMINAL = '001';    
 //    const SECRET = 'CA4AE93932ADF12EF0D2';

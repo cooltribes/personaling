@@ -229,6 +229,7 @@ var cols = document.querySelectorAll('.column');
 }
 $(window).load(function(){
 	$('#btn_siguiente').removeAttr('disabled');
+	$('#div_invisible').show();
 });
 $(document).ready(function() {
 
@@ -880,8 +881,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <?php echo CHtml::hiddenField('colores'); ?>
             </div>
             <hr/>
-            <div id="div_categorias">
+           
+            <div id="div_categorias" >
+            	<div id="div_invisible" style="display: none">
               <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>0)) ?>
+              </div>
             </div>
           </div>
           <div class="tab-pane" id="tab2">

@@ -189,7 +189,7 @@ class DireccionController extends Controller
 		));
 	}
 	
-	public function actionAddDireccion($user,$admin){
+	public function actionAddDireccion($user){
 		$direccion=new Direccion;
 		$direccion->attributes=$_POST;
 		if($direccion->save()){
@@ -197,7 +197,7 @@ class DireccionController extends Controller
 			echo '<legend >'
 				.Yii::t('contentForm','Addresses used above').': </legend>'
 				.$this->renderPartial('/bolsa/_direcciones', array(
-	       			'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ),true)
+	       			'direcciones'=>$direcciones,'user'=>$user, 'iddireccionNueva' =>$direccion->id ),true)
 	       		."<script> $('#direccionUsada').submit(function(e) {
 	       			if($('#billAdd').val()=='0'){
     			e.preventDefault();

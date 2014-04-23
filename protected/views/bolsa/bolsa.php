@@ -452,7 +452,8 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                     
                     <?php
                        /*Si es una compra del admin para el usuario*/
-                       $params = $bolsa->admin ? array("admin" => 1, "user" => $bolsa->user->id) : array();                    
+//                       $params = $bolsa->admin ? array("admin" => 1, "user" => $bolsa->user->id) : array();                    
+                       $params = array();                    
                        $this->widget('bootstrap.widgets.TbButton', array(
 				    'label'=>Yii::t('contentForm', 'Complete purchase'),
 				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'

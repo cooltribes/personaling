@@ -51,10 +51,19 @@ class BolsaController extends Controller
             if(!Yii::app()->user->isGuest){
 
                 /*Si es compra de admin para usuario*/
-                $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
+                if(isset($_GET["user"]) && UserModule::isAdmin()){
+                    Yii::app()->getSession()->add("bolsaUser", $_GET["user"]);
+                }else{
+                                        
+                    Yii::app()->getSession()->remove("bolsaUser");                    
+                    
+                }
 
+                $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                
                 /*ID del usuario propietario de la bolsa*/
-                $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
+                $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+                                    : Yii::app()->user->id;
 
                 $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $usuario,
@@ -294,11 +303,12 @@ class BolsaController extends Controller
 	
 		public function actionPagos()
 		{   
-                    /*Si es compra de admin para usuario*/
-                    $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
-
+                    
+                    $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                
                     /*ID del usuario propietario de la bolsa*/
-                    $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
+                    $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+                                        : Yii::app()->user->id;
                     
                     $tarjeta = new TarjetaCredito;                        
 
@@ -349,23 +359,14 @@ class BolsaController extends Controller
                                             Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
                                             //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
 //                                            $this->redirect(array('bolsa/confirmar'));
-                                            $this->redirect($this->createUrl('bolsa/confirmar', array(
-                                                "admin" => $_POST["admin"],
-                                                "user" => $_POST["user"],
-                                                )));
+                                            $this->redirect($this->createUrl('bolsa/confirmar'));
                                     }
                                     else
-                                            //var_dump($tarjeta->getErrors());
                                     echo CActiveForm::validate($tarjeta);
 
                             }
                             else {
-                                    //$this->render('confirmar');
-//                                    $this->redirect(array('bolsa/confirmar'));
-                                     $this->redirect($this->createUrl('bolsa/confirmar', array(
-                                                "admin" => $_POST["admin"],
-                                                "user" => $_POST["user"],
-                                                )));
+                                $this->redirect($this->createUrl('bolsa/confirmar'));
                             }
 
                     }
@@ -557,11 +558,11 @@ class BolsaController extends Controller
 		
 		public function actionConfirmar()
 		{
-                    /*Si es compra de admin para usuario*/
-                    $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
-
+                     $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                
                     /*ID del usuario propietario de la bolsa*/
-                    $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
+                    $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+                                        : Yii::app()->user->id;
 			
                     /*Si es compra normal del usuario*/
                     if(!$admin){
@@ -580,6 +581,27 @@ class BolsaController extends Controller
                             'admin' => $admin, 
                             ));
                     
+                    $descuento = Yii::app()->getSession()->get('descuento');
+                    $total = Yii::app()->getSession()->get('total');
+                    if(Yii::app()->getSession()->get('usarBalance') == '1'){
+                            $balance = User::model()->findByPK($user)->saldo;
+                            $balance = floor($balance *100)/100; 
+                            if($balance > 0){
+                                    if($balance >= $total){
+                                            $descuento = $total;
+                                            $total = 0;
+                                    }else{
+                                            $descuento = $balance;
+                                            $total = $total - $balance;
+                                    }
+                            }
+                    }
+
+                    if($total == 0){
+                        Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
+                    }
+                    Yii::app()->getSession()->add('total_tarjeta',$total);
+
                     /*
                      * Para pago con tarjeta y paypal
                      */
@@ -697,17 +719,11 @@ class BolsaController extends Controller
 		public function actionDirecciones()
 		{
 		
-                    /*Si es compra de admin para usuario*/
-                   	if(!isset(Yii::app()->session['login'])){
-                   		unset(Yii::app()->session['login']);
-                   		$this->redirect(array('bolsa/compra'));
-						
-                   	}
-						
-                    $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
-
+                    $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                
                     /*ID del usuario propietario de la bolsa*/
-                    $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
+                    $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+                                        : Yii::app()->user->id;
                     
                     
                     $dir = new Direccion;
@@ -719,14 +735,11 @@ class BolsaController extends Controller
 
 
                             Yii::app()->getSession()->add('idDireccion',$dirEnvio);
-							Yii::app()->getSession()->add('idFacturacion',$_POST['billAdd']);
+                            Yii::app()->getSession()->add('idFacturacion',$_POST['billAdd']);
 							
 
 //				$this->redirect(array('bolsa/pagos'));
-                            $this->redirect($this->createUrl('bolsa/pagos', array(
-                                "admin" => $_POST["admin"],
-                                "user" => $_POST["user"],
-                                )));
+                            $this->redirect($this->createUrl('bolsa/pagos'));
 			}
 			else
 			if(isset($_POST['Direccion'])) // nuevo registro
@@ -756,10 +769,7 @@ class BolsaController extends Controller
 
                                 Yii::app()->getSession()->add('idDireccion',$dir->id);
 //						$this->redirect(array('bolsa/pagos'));		
-                                $this->redirect($this->createUrl('bolsa/pagos', array(
-                                    "admin" => $_POST["admin"],
-                                    "user" => $_POST["user"],
-                                    )));
+                                $this->redirect($this->createUrl('bolsa/pagos'));
                                 //$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
 
                                 //$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
@@ -785,7 +795,6 @@ class BolsaController extends Controller
                             
                             $this->render('direcciones',array(
                                 'dir'=>$dir,
-                                'admin'=> $admin,
                                 'user'=> $usuario,
                                     ));
                             
@@ -802,12 +811,10 @@ class BolsaController extends Controller
 		if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
 			
                     /*Si es compra de admin para usuario*/
-                    $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
+                    $admin = Yii::app()->getSession()->contains("bolsaUser");                                    
+                    
                     if($admin){
-                        $this->redirect($this->createUrl('bolsa/direcciones',array(
-                                        "admin" => 1,
-                                        "user" => $_GET["user"],
-                                        )));
+                        $this->redirect($this->createUrl('bolsa/direcciones'));
                     }
                     
 			$model=new UserLogin;
@@ -1087,11 +1094,11 @@ class BolsaController extends Controller
 				Yii::app()->end();
 			Yii::app()->getSession()->add('codigo_randon',$codigo_randon);	
                         
-                         /*Si es compra de admin para usuario*/
-                        $admin = isset($_POST["admin"]) && $_POST["admin"] == 1;
-
+                         $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                
                         /*ID del usuario propietario de la bolsa*/
-                        $usuario = $admin ? $_POST["user"] : Yii::app()->user->id;
+                        $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+                                            : Yii::app()->user->id;
                         
 			$user = User::model()->findByPk($usuario);
 			$bolsa = Bolsa::model()->findByAttributes(array(
@@ -1294,7 +1301,98 @@ class BolsaController extends Controller
                                 else {
                                     $this->redirect($this->createAbsoluteUrl('bolsa/error', array('codigo' => $resultado['codigo'], 'mensaje' => $resultado['mensaje']), 'http'));
                                 }			
-			        break;                            
+			        break; 
+                            case 7:
+                                
+                                $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
+                                $dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
+                                
+                                $orden = new Orden;
+                                $orden->subtotal = Yii::app()->getSession()->get('subtotal');
+                                $orden->descuento = 0;
+                                $orden->envio = Yii::app()->getSession()->get('envio');
+                                $orden->iva = Yii::app()->getSession()->get('iva');
+                                $orden->descuentoRegalo = 0;
+                                $orden->total = Yii::app()->getSession()->get('total');
+                                $orden->seguro = Yii::app()->getSession()->get('seguro');
+                                $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
+                                $orden->estado = Orden::ESTADO_ESPERA; // en espera de pago
+                                $orden->bolsa_id = $bolsa->id; 
+                                $orden->user_id = $usuario;
+                                $orden->direccionEnvio_id = $dirEnvio->id;
+                                $orden->direccionFacturacion_id = $dirFacturacion->id;
+                                $orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
+                                $orden->peso = Yii::app()->getSession()->get('peso');
+                                $total_orden = round(Yii::app()->getSession()->get('total'), 2);
+                                $orden->total = $total_orden;
+
+                                /*Si es compra del admin para el usuario*/
+                                if($admin){
+                                    $orden->admin_id = Yii::app()->user->id;
+                                }
+
+                                if (!($orden->save())){
+
+                                    echo CJSON::encode(array(
+                                        'status' => 'error',
+                                        'error' => $orden->getErrors(),
+                                    ));
+                                    Yii::trace('UserID:' . $usuario . ' Error al guardar la orden:' . print_r($orden->getErrors(), true), 'registro');
+                                    Yii::app()->end();
+
+                                }	
+                                
+                                //Poner inicialmente la orden en espera de pago
+                                $estado = new Estado;
+                                $estado->estado = Orden::ESTADO_ESPERA;
+                                $estado->user_id = $usuario;
+                                $estado->fecha = date("Y-m-d");
+                                $estado->orden_id = $orden->id;
+                                $estado->save();
+                                
+                                $userBalance = 	Yii::app()->getSession()->get('usarBalance');			
+                                if($userBalance == '1'){                                    
+                                    $balance_usuario = $user->saldo;
+                                    $balance_usuario = floor($balance_usuario * 100) / 100;
+                                    if ($balance_usuario > 0) {
+                                        $balance = new Balance;
+                                        $detalle_balance = new Detalle;
+                                        if ($balance_usuario >= $total_orden) {
+                                            $orden->cambiarEstado(Orden::ESTADO_CONFIRMADO);
+                                            $balance->total = $total_orden * (-1);
+                                            $detalle_balance->monto = $total_orden;
+                                            
+                                        } else {
+                                            $orden->cambiarEstado(Orden::ESTADO_INSUFICIENTE);
+                                            $balance->total = $balance_usuario * (-1);
+                                            $detalle_balance->monto = $balance_usuario;
+                                        }
+
+                                        $detalle_balance->comentario = "Uso de Saldo";
+                                        $detalle_balance->estado = 1;
+                                        $detalle_balance->orden_id = $orden->id;
+                                        $detalle_balance->tipo_pago = Detalle::USO_BALANCE;
+                                        if ($detalle_balance->save()) {
+                                            
+                                            $estado = new Estado;
+                                            $estado->estado = $orden->estado;
+                                            $estado->user_id = $usuario;
+                                            $estado->fecha = date("Y-m-d");
+                                            $estado->orden_id = $orden->id;
+                                            $estado->save();                                            
+                                            
+                                            $balance->orden_id = $orden->id;
+                                            $balance->user_id = $usuario;
+                                            $balance->tipo = 1;
+                                            //$balance->total=round($balance->total,2);
+                                            $balance->save();
+                                        }
+                                    }
+                                }
+
+                                $this->hacerCompra($bolsa->id,$orden->id);
+                                
+                                break;
 			} //FIN SWITCH
 				// Generar factura
 			$factura = new Factura;
@@ -2548,6 +2646,12 @@ class BolsaController extends Controller
          */
         public function compraAztive($datosCompra){            
            
+             $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                
+            /*ID del usuario propietario de la bolsa*/
+            $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+                                : Yii::app()->user->id;
+            
             $userId = Yii::app()->user->id;
             $usuario = User::model()->findByPk($userId);
             $bolsa = Bolsa::model()->findByAttributes(array(

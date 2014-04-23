@@ -39,6 +39,17 @@ if (!Yii::app()->user->isGuest) { // que este logueado
        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
        -->
+       <?php 
+                 $this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+                                        'id'=>'pagos-form',
+                                        'enableAjaxValidation'=>false,
+                                        'enableClientValidation'=>true,
+                                        'clientOptions'=>array(
+                                                'validateOnSubmit'=>true, 
+                                     ),
+                                        'htmlOptions'=>array('class'=>''),
+                                )); 
+                ?>
        <div class="accordion" id="accordion2">	
              <?php 
             //Banking Card Aztive
@@ -47,7 +58,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <label class="radio accordion-toggle margin_left_small" data-parent="#accordion2">
-                        <input type="radio" name="optionsRadios" id="bankCard" value="5"> 
+                        <input type="radio" name="optionsRadios" id="bankCard" checked="true" value="5"> 
                         <?php echo Yii::t('contentForm', 'Credit Card'); ?>
                     </label>                       
 
@@ -55,7 +66,30 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
             </div>
             <?php } ?>
-           </div>
+           
+           <?php 
+                //Paypal Aztive
+                if(Yii::app()->params['metodosPago']['paypal']){ 
+                ?>                
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <label class="radio accordion-toggle margin_left_small"
+                           data-parent="#accordion2">
+                            <input type="radio" name="optionsRadios" id="payPal" value="6"> 
+                            <?php echo Yii::t('contentForm', 'PayPal'); ?>
+                        </label>                        
+                    </div>
+                    <div id="collapseT" class="accordion-body collapse">
+                    </div>
+                    
+                </div>
+                <?php } ?>
+           </div> 
+           <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
+            <?php 
+             $this->endWidget();
+
+            ?>
         </div>
  
     </section>
@@ -118,7 +152,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 </td>
               </tr>
             </table>            
-            
+                
             <div class="form-actions">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
 	            'type'=>'warning',
@@ -130,9 +164,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            'htmlOptions'=>array('id'=>'btn-siguiente',),
 	        ));
         
-        ?>
+                ?>
             </div>
-
           </div>
         </div>
       </div>
@@ -177,6 +210,36 @@ $(".alert .close").click(function(){
         
         
 $(document).ready(function() {
+
+$("input[name='optionsRadios']").change(function(e){
+            
+    if($(this).is(":checked"))
+    {
+        var tipoPago = "<td valign='top'><i class='icon-exclamation-sign'></i> ";
+        //si es bankCard
+        if($(this).val() == 5){
+
+            tipoPago += "<?php echo 
+            Yii::t('contentForm', 'Credit Card'); ?> </td>";
+
+        }else if($(this).val() == 6){ //si es paypal
+
+            tipoPago += "<?php echo 
+            Yii::t('contentForm', 'PayPal'); ?> </td>";
+        }
+
+        $("#adentro").html(tipoPago);        	
+        $("#tipo_pago").val($(this).val());            
+
+    }
+
+});
+
+//Boton siguiente - General para todos los metodos de pago        
+$("#btn-siguiente").click(function(e){
+    
+    $("#pagos-form").submit();
+});
 
 ////***** RAFA ******///////
 $('#TarjetaCredito_month').change(function(){
@@ -299,10 +362,7 @@ $('#TarjetaCredito_year').change(function(){
 
     });
 	
-    //Boton siguiente - General para todos los metodos de pago        
-    $("#btn-siguiente").click(function(e){
-        $("#tarjeta-form").submit();
-    });
+    
     
     function tarjetas()
     {

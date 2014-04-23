@@ -5,6 +5,7 @@
      tipopago 4: MercadoPago
      tipopago 5: Tarjeta Aztive
      tipopago 6: PayPal
+     tipopago 7: Saldo
 -->
 <?php
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
@@ -21,8 +22,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                         ),
                                         'htmlOptions'=>array('class'=>''),
                                 )); 
-echo CHtml::hiddenField('admin',$admin);
-echo CHtml::hiddenField('user',$user);
                                 ?>
 <div class="container margin_top">
   <div class="progreso_compra">
@@ -228,7 +227,7 @@ echo CHtml::hiddenField('user',$user);
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <label class="radio accordion-toggle margin_left_small" data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="bankCard" value="5"> 
+                            <input type="radio" name="optionsRadios" id="bankCard" checked="true" value="5"> 
                             <?php echo Yii::t('contentForm', 'Credit Card'); ?>
                         </label>                       
                        
@@ -507,7 +506,7 @@ echo CHtml::hiddenField('user',$user);
 			
 			
 			
-				$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
+				$balance = User::model()->findByPK($user)->saldo;
 				$balance = floor($balance *100)/100;
                 $class = "";		
 
@@ -518,7 +517,17 @@ echo CHtml::hiddenField('user',$user);
             <div>
                 <label class="checkbox<?php echo $class; ?>">
                 <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-                <?php echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                <?php
+                if($admin){
+                    echo Yii::t('contentForm', 'Use Balance.'); ?><br>
+                    <?php echo Yii::t ('contentForm', 'Avaliable for {user}:', 
+                            array("{user}"=>$nombre)) ?>
+                    <strong> <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                <?php                 
+                }else{
+                    echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>                    
+                <?php } ?>
+                
               </label>
             </div>
 	    
@@ -578,7 +587,7 @@ echo CHtml::hiddenField('user',$user);
             </div>
             <!-- Aplicar Gifcard OFF -->
             <?php } ?>
-            <input type="hidden" id="tipo_pago" name="tipo_pago" value="1" />
+            <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
             <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
             <div class="form-actions">
               <?php $this->widget('bootstrap.widgets.TbButton', array(

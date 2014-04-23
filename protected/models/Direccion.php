@@ -15,6 +15,7 @@
  * @property string $pais
  * @property string $telefono
  * @property integer $user_id
+ * @property integer $codigo_postal_id
  *
  * The followings are the available model relations:
  * @property Users $user

@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias','poblacionesseur'),
+				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias','codigospostalesseur','cargarCodigos'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,6 +63,19 @@ class DireccionController extends Controller
 				$return = '<option>'.Yii::t('contentForm','Select a city').'</option>';
 				foreach ($ciudades as $ciudad) {
 					$return .= '<option value="'.$ciudad->id.'">'.$ciudad->nombre.'</option>';
+				}
+				echo $return;
+			}
+		}
+	}
+	 
+	public function actionCargarCodigos(){
+		if(isset($_POST['ciudad_id'])){
+			$codigos= CodigoPostal::model()->findAllBySql("SELECT * FROM tbl_codigo_postal WHERE ciudad_id =".$_POST['ciudad_id']);
+			if(sizeof($codigos) > 0){
+				$return = '<option>'.Yii::t('contentForm','Select a zip code').'</option>';
+				foreach ($codigos as $codigo) {
+					$return .= '<option value="'.$codigo->id.'">'.$codigo->codigo.'</option>';
 				}
 				echo $return;
 			}
@@ -176,15 +189,16 @@ class DireccionController extends Controller
 		));
 	}
 	
-	public function actionAddDireccion($user,$admin){
+	public function actionAddDireccion($user){
 		$direccion=new Direccion;
 		$direccion->attributes=$_POST;
+		$direccion->codigo_postal_id=$_POST['codigo_postal_id'];
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
 			echo '<legend >'
 				.Yii::t('contentForm','Addresses used above').': </legend>'
 				.$this->renderPartial('/bolsa/_direcciones', array(
-	       			'direcciones'=>$direcciones,'user'=>$user,'admin'=>$admin, 'iddireccionNueva' =>$direccion->id ),true)
+	       			'direcciones'=>$direcciones,'user'=>$user, 'iddireccionNueva' =>$direccion->id ),true)
 	       		."<script> $('#direccionUsada').submit(function(e) {
 	       			if($('#billAdd').val()=='0'){
     			e.preventDefault();
@@ -213,9 +227,12 @@ class DireccionController extends Controller
 		$response = $soapclient->infoProvinciasStr($params2);
 		$xml = simplexml_load_string($response->out);
 		foreach ($xml as $reg){
+			/*
 			$provincia= new Provincia;
 			$provincia->nombre=$reg->NOM_PROVINCIA;
-			$provincia->pais_id;
+			$provincia->pais_id;*/
+			print_r($reg);
+			echo"<br/><br/>";
 			/*
 			if($provincia->save())
 				echo "OK <br/>";
@@ -261,6 +278,49 @@ class DireccionController extends Controller
 		}
 		
 	}
+	
+	public function actionCodigosPostalesSeur(){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		$all=Ciudad::model()->findAll(array(
+		    'condition'=>'ruta_id > 4 AND id NOT IN (select distinct(ciudad_id) from tbl_codigo_postal )'
+		    ));
+			
+		foreach($all as $city){
+			print_r('<b>'.$city->nombre.'</b><br/>');
+			$params4 = array(
+			'in0'=>'',
+			'in1'=>$city->nombre, 
+			'in2'=>'',
+			'in3'=>'',
+			'in4'=>'',
+			'in5'=>'WSPERSONALING',
+			'in6'=>'ORACLE',
+			
+			);
+			$response = $soapclient->infoPoblacionesCortoStr($params4);
+			$xml = simplexml_load_string($response->out);
+			foreach ($xml as $reg){
+				$codigo=new CodigoPostal;
+				$codigo->codigo=$reg->CODIGO_POSTAL;
+				$codigo->ciudad_id=$city->id;
+				if($codigo->save())
+					echo "OK<br/>";
+				else	
+					echo "BAD<br/>";
+			}
+			echo "<br/><br/>";
+			
+			
+		}
+		
+		
+		
+	
+		
+		
+	}
+	
+	
 	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

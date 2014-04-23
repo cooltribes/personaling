@@ -54,7 +54,7 @@ class RegistrationController extends Controller
                     $model->email = $_GET['email'];
                 }
 
-
+				
                 if (isset($_POST['RegistrationForm'])) {
                     //$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
                     //echo 'rafa'.$_POST['Profile']['birthday'];	
@@ -67,8 +67,9 @@ class RegistrationController extends Controller
                     //$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
                     //echo 'lore'.$profile->birthday;
 
-
+					
                     if ($model->validate() && $profile->validate()) {
+                    	
                         $soucePassword = $model->password;
                         $model->activkey = UserModule::encrypting(microtime() . $model->password);
                         $model->password = UserModule::encrypting($model->password);
@@ -220,10 +221,22 @@ class RegistrationController extends Controller
                             }
                         }
                     }
-                    else
+                    else {
                         $profile->validate();
-                }
-
+						if ($model->validate()) {
+                			$registro = new Registro;
+							$registro->email = $model->email;
+							$registro->source = 0;
+					
+							if (!$registro->save())
+        		        		Yii::trace('Guardando correo en registro:'.print_r($registro->getErrors(),true), 'registro');
+						}
+            
+						
+					}
+                }  
+                	
+             
                 $this->render('/user/registration', array('model' => $model, 'profile' => $profile,'referencia'=>$referencia));
             }//else
     }

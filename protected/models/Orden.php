@@ -758,6 +758,22 @@ class Orden extends CActiveRecord
 		return $text;
 	}
 	
+	public function shipCarrier($id=null){
+		if(is_null($id))
+			$orden=$this;
+		else {
+			$orden=Orden::model()->findByPk($id);
+		}
+		if(Yii::app()->language=="es_es")
+			return "SEUR";
+		if(Yii::app()->language=="es_ve"){
+			if($orden->peso>5)
+				return "DHL";
+			else {
+				return "ZOOM";
+			}
+		}
+	}
 	
 	
 }

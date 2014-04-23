@@ -111,5 +111,34 @@ class Tarifa extends CActiveRecord
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}
+	
+	public function envioSeur(){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');	
+		$xml = new SimpleXMLElement('<REG/>');
+		//$xml->addChild("REG");
+		$xml->USUARIO = "WSPERSONALING";
+		$xml->PASSWORD = "ORACLE";
+		$xml->NOM_POBLA_DEST = "BARCELONA"; 
+		$xml->CODIGO_POSTAL_DEST = "08001";
+		$xml->Bultos = "1";
+		$xml->Peso = "1";
+		$xml->CodContableRemitente = "32532-54";
+		$xml->PesoVolumen = "1";
+		$xml->CodServ = "1";
+		$xml->CodProd = "2";
+		$xml->FechaVigenciaTasacion = "20110918";
+		$xml->SERVICIOS_COMPLEMENTARIOS = "";
+		$xml->COD_IDIOMA = "ES";
+		
+		/*$in = array(
+			'in0'=>$xml->asXML(),
+		);*/
+		$in = new stdClass();
+		$in->in0 = $xml->asXML();
+		
+		return $soapclient->tarificacionPrivadaStr($in);
+	}
+	
+	
 
 }

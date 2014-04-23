@@ -442,7 +442,7 @@ $sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,produ
 		));  	
 		
 		$totalp = 0;
-		
+		 
 		foreach($data->getData() as $cadauno)
 		{
 			$precio = $cadauno['precioDescuento'];

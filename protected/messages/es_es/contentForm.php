@@ -13,10 +13,10 @@ return array (
 	                               <li><strong>IBAN / BIC:ES95 0081 5645 8000 0110 4113 / BSAB ESBB</li>
 	                               <li><strong>CUENTA EXPANSIÓN NEGOCIOS</li>
 	                               <li><strong>Titular:</strong> PERSONALING ENTERPRISE S.L</li>
-	                       </ul>',    
+	                       </ul>',
 
      'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
-     <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.</p>',   
+     <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> ¡Tu personal shopper digital! es el canal online de prestigiosas y conocidas marcas de moda internacional. (punto y a parte). A través de este canal no solo podrás comprar las prendas y accesorios de tus diseñadores favoritos, sino que tendrás a tu disposición y, de forma gratuita, el servicio exclusivo de asesores de moda, mejor conocidos como Personal Shoopers. Estos asesores de imagen y moda -celebridades, estilistas, bloggers y especialistas- crearán looks en torno a tu perfil, gustos, necesidades y eventos especiales, permitiéndote adquirir en un solo clic, los productos recomendados y recibirlos en la comodidad de tu hogar u oficina.</p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -47,7 +47,8 @@ return array (
 	'Approve' => 'Aprobar',
 	'Approved' => 'Aprobados',
 	'availables' => 'disponibles',
-
+    'Avaliable for {user}:' => 'Disponible para {user}:',
+    
 
 	'Balance' => 'Saldo',
 	'Bag' => 'Bolsa',
@@ -64,6 +65,7 @@ return array (
 	'By email' => 'Por correo electrónico',
 	'By price' => 'Por precio',
 	'By brand' => 'Por marca',
+    'Billing address' => 'Dirección de facturación',
 
 	'Card numbers' => 'Número de la tarjeta',
 	'Cancel' => 'Cancelar',
@@ -108,7 +110,7 @@ return array (
 	'Details' => 'Detalles',
 	'Description' => 'Descripción',
 	'Delivery' => 'Envío',
-	'Decotarions' => 'Adornos',
+	'Decorations' => 'Adornos',
 	'Discount' => 'Descuento',
 	'Document' => 'Documento',
 	'Documents' => 'Documentos',
@@ -128,6 +130,7 @@ return array (
 	'Filter' => 'Filtrar',
 	'Filter by Colors' => 'Filtrar por Colores',
 	'First'=>'Primera',
+
 
 	'Gift Card' => 'Gift Card',
 	'Go to Store' => 'Ir a la tienda',
@@ -231,6 +234,7 @@ return array (
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
     'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas para ti, a partir de tus gustos, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.',	
     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card para ti.',    
+	'Personaling C.A RIF: J-40236088-6' => 'Personaling Enterprise S.L.',
     'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Posiblemente lo que quieres preguntar está en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no lo encuentras allí, llena el formulario a continuación y te contáctaremos lo más pronto posible. <strong>¡Gracias!</strong>',	
 	'Phone' => 'Teléfono',
 	'Phone number' => 'Número de teléfono',
@@ -354,6 +358,7 @@ return array (
 	'Value for returned shipping' => 'Monto por envío devuelto',
 
 	'Year' => 'Año',
+    'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo clic en el enlace que aparece a continuación:<br/>',	
 	'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
 	'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
 	'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',

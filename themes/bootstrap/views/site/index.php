@@ -53,7 +53,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                     <div class="slide-content">
                         <div class="copy-right">
                             <div class="border-bottom">
-                                <h2 class="">Todas buscamos el <br/> <strong>look perfecto.</strong><br/>Consíguelo <strong><a href="#" class='color3'>aquí</a></strong></h2>
+                                <h2 class="">Solamente tú, <br/> eres <strong>irrepetible.</strong></h2>
 
                                 <figure class="logo-personaling ">
                                     <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling.png' ?>" alt="Personaling">                                    

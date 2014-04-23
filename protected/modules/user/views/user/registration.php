@@ -98,7 +98,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
           <fieldset>
             <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login">Si ya estas registrado haz click aquí</a></p>
             <legend class="text_align_center" >O llena los campos a continuación: </legend>
-	<?php echo $form->errorSummary(array($model,$profile)); ?>
+	<?php echo $form->errorSummary(array($model,$profile),"Corrije los siguientes errores:"); ?>
 	<?php
 	if(isset($_GET['request_ids'])){
 		//echo $_GET['request_ids'];

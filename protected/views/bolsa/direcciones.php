@@ -24,7 +24,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     </div>
       
   </div>
-
+ 
   <div class="row">
     <div class="span8 offset2"> 
      
@@ -319,6 +319,7 @@ else
 				var prov=$('#Direccion_provincia_id').val();
 				var ciu=$('#Direccion_ciudad_id').val();
 				var pa=$('#Direccion_pais').val();
+				var codigopostal=$('#Direccion_codigo_postal_id').val();
 				var us=<?php echo $usuario; ?>
 				
 			
@@ -335,7 +336,8 @@ else
 				      	provincia_id:prov,
 				      	ciudad_id:ciu,
 				      	pais:pa,
-				      	user_id:us
+				      	user_id:us,
+				      	codigo_postal_id:codigopostal
 				      	
 				      	 },
 				      success: function(data){

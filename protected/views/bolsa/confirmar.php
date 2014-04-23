@@ -368,7 +368,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                             'target'=>'#btn-ComprarEsp',
                             'config'=>array(
                                 "type" => "iframe",                        
-                                "height" => "90%",                        
+                                "height" => "100%",                        
                                 "width" => "65%",                        
                                 "autoScale" => false,                        
                                 "transitionIn" => "none",                        
@@ -377,8 +377,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                                 ),
                             )
                         );
-                      }
-                        
+                      }                        
                         echo "<div class='well text_align_center'>";
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'type'=>'warning',        

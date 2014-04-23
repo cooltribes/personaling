@@ -581,6 +581,27 @@ class BolsaController extends Controller
                             'admin' => $admin, 
                             ));
                     
+                    $descuento = Yii::app()->getSession()->get('descuento');
+                    $total = Yii::app()->getSession()->get('total');
+                    if(Yii::app()->getSession()->get('usarBalance') == '1'){
+                            $balance = User::model()->findByPK($user)->saldo;
+                            $balance = floor($balance *100)/100; 
+                            if($balance > 0){
+                                    if($balance >= $total){
+                                            $descuento = $total;
+                                            $total = 0;
+                                    }else{
+                                            $descuento = $balance;
+                                            $total = $total - $balance;
+                                    }
+                            }
+                    }
+
+                    if($total == 0){
+                        Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
+                    }
+                    Yii::app()->getSession()->add('total_tarjeta',$total);
+
                     /*
                      * Para pago con tarjeta y paypal
                      */

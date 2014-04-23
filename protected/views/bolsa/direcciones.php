@@ -5,6 +5,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     
     $nombre = $userObject ? $userObject->profile->first_name." ".$userObject->profile->last_name:
                 "";
+    
 ?>
 <script> var error=0;</script>
 <div class="container margin_top">

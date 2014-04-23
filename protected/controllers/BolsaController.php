@@ -610,7 +610,7 @@ class BolsaController extends Controller
                     
                     $tipo_pago = Yii::app()->getSession()->get('tipoPago');
                     //Tipos de pago aceptados por Aztive
-                    $idPagoAztive = $tipo_pago == 5? 8:5;                    
+                    $idPagoAztive = $tipo_pago == 5? 8:999;                    
                     $monto = Yii::app()->getSession()->get('total_tarjeta');
                     
                     $optional = array(                        
@@ -1122,7 +1122,10 @@ class BolsaController extends Controller
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal');
                                 $orden->descuento = 0;
-                                $orden->envio = Yii::app()->getSession()->get('envio');
+								if(Yii::app()->getSession()->get('envio')>0)
+                                	$orden->envio = Yii::app()->getSession()->get('envio');
+								else
+                                	$orden->envio = 0;
                                 $orden->iva = Yii::app()->getSession()->get('iva');
                                 $orden->descuentoRegalo = 0;
                                 $orden->total = Yii::app()->getSession()->get('total');
@@ -1429,6 +1432,7 @@ class BolsaController extends Controller
 		$dirEnvio->telefono = $direccion->telefono;
 		$dirEnvio->ciudad_id = $direccion->ciudad_id;
 		$dirEnvio->provincia_id = $direccion->provincia_id;
+		$dirEnvio->codigo_postal_id = $direccion->codigo_postal_id;
 		$dirEnvio->pais = $direccion->pais;	
 		$dirEnvio->save();
 		return $dirEnvio;

@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias','codigospostalesseur'),
+				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias','codigospostalesseur','cargarCodigos'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -74,7 +74,7 @@ class DireccionController extends Controller
 			$codigos= CodigoPostal::model()->findAllBySql("SELECT * FROM tbl_codigo_postal WHERE ciudad_id =".$_POST['ciudad_id']);
 			if(sizeof($codigos) > 0){
 				$return = '<option>'.Yii::t('contentForm','Select a zip code').'</option>';
-				foreach ($ciudades as $ciudad) {
+				foreach ($codigos as $codigo) {
 					$return .= '<option value="'.$codigo->id.'">'.$codigo->codigo.'</option>';
 				}
 				echo $return;
@@ -192,6 +192,7 @@ class DireccionController extends Controller
 	public function actionAddDireccion($user){
 		$direccion=new Direccion;
 		$direccion->attributes=$_POST;
+		$direccion->codigo_postal_id=$_POST['codigo_postal_id'];
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
 			echo '<legend >'

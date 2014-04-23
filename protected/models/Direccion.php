@@ -71,11 +71,12 @@ class Direccion extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
-			'ciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id')
+			'ciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id'),
+			'codigopostal' => array(self::BELONGS_TO, 'CodigoPostal', 'codigo_postal_id')
 			
 		);
 	}
-
+ 
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

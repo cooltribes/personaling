@@ -199,10 +199,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
-                array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest),                 
-				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
+                array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest),                 
+				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
+                	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone to-white-icon') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Ingresa', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
@@ -325,7 +325,7 @@ if(!Yii::app()->user->isGuest){
         <p>Nos Avalan</p>
         <a href="http://ve.wayra.org/es/startup/personaling" target="_blank" ><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Personaling en Wayra" width="74"></a>
         <a href="http://www.startupchile.org/congrats-welcome-to-start-up-chiles-9th-gen/" target="_blank" ><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_startupchile.png" alt="Start-Up Chile"  title="Personaling en Start-Up Chile"></a>
-        <a href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013" target="_blank" ><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title=="Personaling en Ideas" width="83"></a>
+        <a href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013" target="_blank" ><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title="Personaling en Ideas" width="83"></a>
         <p class="margin_top_small">Afiliados a</p>
         <img class="margin_top_small_minus" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners">
       </div>

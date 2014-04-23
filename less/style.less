@@ -86,7 +86,10 @@ table .no_border_left{border-left:none}
 table .no_border_center{border-center:none}
 table .no_border_right{border-right:none}
 a{color:@color4; .transition_all}
-a:hover{color:#999}
+a:hover{
+  color:#999;
+  text-decoration: underline;
+}
 .table_border_left{border-left:1px solid #DDD}
 .text_left_align,.table_survey label{text-align:left}
 .no_bullets{ list-style:none;}
@@ -621,8 +624,8 @@ src: url('../fonts/entypo.woff'),
         a{
             color: lighten(@color2,20%);
             }
-        }
         a:hover{text-decoration:none;
+        }
     }
 
 /*------------ FUENTES OFF --------------*/
@@ -919,6 +922,16 @@ src: url('../fonts/entypo.woff'),
         font-size:1.1em;
         line-height:1.6em
         }
+    .social-icons a{
+      height: 40px;
+      overflow: hidden;
+      display: inline-block;
+      &:hover{
+        img{
+          margin-top: -40px
+        }
+      }
+    }
     }
 
 /*------------ Footer OFF --------------*/
@@ -978,8 +991,11 @@ src: url('../fonts/entypo.woff'),
 .wrapper_home{
       margin-bottom: -30px;
       margin-top: 12px;
-    .carousel .item img{
-      margin: 0 auto;
+    .carousel {
+      height: 575px;
+      .item img{
+        margin: 0 auto;
+      }
     }
     .box_20130928{
       width: 48%;
@@ -1113,9 +1129,7 @@ src: url('../fonts/entypo.woff'),
       }
 
 }
-.carousel{
-  height: 575px;
-}
+
   .carousel-indicators {
   bottom: 11px;
   cursor: pointer;
@@ -1439,7 +1453,7 @@ src: url('../fonts/entypo.woff'),
                 border:0;
                 .color3;
                 .entypo{ font-size:2em;.color3;}
-                &:hover{ text-decoration:underline; }
+                &:hover{ text-decoration:none; }
                 }
             .precio{
                     font-size: 1.7em;

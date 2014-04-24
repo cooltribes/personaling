@@ -150,6 +150,7 @@
 					</ul>  
 				</div>	
 			</li>
+			<?php if (Yii::app()->params['mostrarMarcas']): ?>
 			<li class="item">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -183,6 +184,7 @@
 					</ul>  	
 				</div>	
 			</li>
+			<?php endif; ?>
 			<li class="item" id="li_chic">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >

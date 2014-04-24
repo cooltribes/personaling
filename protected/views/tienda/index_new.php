@@ -150,7 +150,7 @@
 					</ul>  
 				</div>	
 			</li>
-			<li class="item">
+<!-- 			<li class="item">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
@@ -182,8 +182,8 @@
 						<li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
 					</ul>  	
 				</div>	
-			</li>
-			<li class="item" id="li_chic">
+			</li> -->
+<!-- 			<li class="item" id="li_chic">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropdown100Chic" >
@@ -215,7 +215,7 @@
 						?>
 					</ul>  
 				</div>			
-			</li>
+			</li> -->
 			<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search"> 

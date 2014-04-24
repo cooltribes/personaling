@@ -31,7 +31,7 @@ class DireccionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','cargarProvincias','codigospostalesseur','cargarCodigos'),
+				'actions'=>array('create','update','editar','cargarCiudades','addDireccion','decode','cargarProvincias','cargarCodigos'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -229,7 +229,7 @@ class DireccionController extends Controller
 		foreach ($xml as $reg){
 			/*
 			$provincia= new Provincia;
-			$provincia->nombre=$reg->NOM_PROVINCIA;
+			$provincia->nombre=utf8_decode($reg->NOM_PROVINCIA);
 			$provincia->pais_id;*/
 			print_r($reg);
 			echo"<br/><br/>";
@@ -261,7 +261,7 @@ class DireccionController extends Controller
 			$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_encode($reg->NOM_PROVINCIA)));
 			if(!is_null($provincia)){
 				$ciudad= new Ciudad;
-				$ciudad->nombre=$reg->NOM_POBLACION;
+				$ciudad->nombre=utf8_decode($reg->NOM_POBLACION);
 				$ciudad->provincia_id=$provincia->id;
 				$ciudad->ruta_id=$provincia->pais_id;
 				$ciudad->cod_zoom=0;
@@ -278,7 +278,37 @@ class DireccionController extends Controller
 		}
 		
 	}
-	
+	public function actionDecode(){
+	$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		$all=Ciudad::model()->findAll(array(
+		    'condition'=>" ruta_id>4 AND id NOT IN (select distinct(ciudad_id) from tbl_codigo_postal )"
+		    ));
+			$i=1;
+		foreach($all as $city){
+
+			$params4 = array(
+			'in0'=>'',
+			'in1'=>'%%' , 
+			'in2'=>'',
+			'in3'=>'',
+			'in4'=>'',
+			'in5'=>'WSPERSONALING',
+			'in6'=>'ORACLE',
+			
+			);
+			$response = $soapclient->infoPoblacionesCortoStr($params4);
+			$xml = simplexml_load_string($response->out);
+			foreach ($xml as $reg){
+				echo $i.' <b>'.$city->nombre."</b> ----> ".utf8_decode($reg->NOM_POBLACION)."<br/>";
+			
+			}
+			
+			
+			
+		}
+		
+			
+	}
 	public function actionCodigosPostalesSeur(){
 		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
 		$all=Ciudad::model()->findAll(array(
@@ -303,10 +333,10 @@ class DireccionController extends Controller
 				$codigo=new CodigoPostal;
 				$codigo->codigo=$reg->CODIGO_POSTAL;
 				$codigo->ciudad_id=$city->id;
-				if($codigo->save())
+				/*if($codigo->save())
 					echo "OK<br/>";
 				else	
-					echo "BAD<br/>";
+					echo "BAD<br/>";*/
 			}
 			echo "<br/><br/>";
 			

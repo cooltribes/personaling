@@ -758,7 +758,7 @@ class Orden extends CActiveRecord
 		return $text;
 	}
 	
-	public function shipCarrier($id=null){
+	public function getShipCarrier($id=null){
 		if(is_null($id))
 			$orden=$this;
 		else {

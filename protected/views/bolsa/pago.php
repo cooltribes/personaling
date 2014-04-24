@@ -392,10 +392,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							$shipping=true;
 						}
 						else {
-							if($t>Yii::app()->params['noShipping']){
-								$shipping=false;
-							}
+							
+								if($t>Yii::app()->params['noShipping']){
+									$shipping=false;
+								}
+							
 						}
+						if($ciudad_destino->ruta_id==9)
+							$shipping=true;
 						if($shipping){
 							if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
 							{	
@@ -434,9 +438,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 								
 							}
 							else{
-								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-								$seguro=$envio*0.13;
-								echo $peso_total." ".$ciudad_destino->ruta_id;
+								$seur=Tarifa::model()->envioSeur($ciudad_destino->nombre, $direccion->codigopostal->codigo, $peso_total);
+								if(!is_null($seur)){
+									
+									$envio =floatval($seur['porte'])+floatval($seur['iva'])+floatval($seur['combustible']);
+									
+									$seguro=0;
+								}
+								else {
+									$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+									$seguro=0;
+								} 
+									
+								
+								
 							}
 						}
 						else{
@@ -454,7 +469,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   </td>
               </tr>          
               <tr>
-                <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
+				
+				?>:</th>
                 <td class="text_align_right"><?php 
                 if($shipping)
                 	echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); 

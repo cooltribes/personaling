@@ -56,7 +56,9 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
 					<p class="lead">2. Selecciona un monto y un período de vigencia</p>                                       
                                         
                                         <?php echo $form->dropDownListRow($giftcard,'monto',
-                                        array(100 => 100, 200 => 200, 300 => 300, 400 => 400, 500 => 500),
+                                        array(
+                                            5 => 5, 10 => 10, 15 => 15,
+                                            20 => 20, 50 => 50, 100 => 100),
                                         array('class' => 'span2')); ?>
 
 
@@ -77,7 +79,7 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
 				</div>	
 				<div class="span5 bg_color5 box_shadow_personaling padding_medium">
                                     <div class="contenedorPreviewGift" >
-                                        <span class=" T_xlarge" id="monto"><?php echo $giftcard->monto?$giftcard->monto:100 ?> Bs. </span>
+                                        <span class=" T_xlarge" id="monto"><?php echo $giftcard->monto?$giftcard->monto:5 ?> <?php echo Yii::t('contentForm', 'currSym'); ?> </span>
                                         <span  id="forpara">Para:</span><p id="para">
                                            
                                         </p>                        

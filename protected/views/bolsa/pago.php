@@ -392,10 +392,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							$shipping=true;
 						}
 						else {
-							if($t>Yii::app()->params['noShipping']){
-								$shipping=false;
-							}
+							
+								if($t>Yii::app()->params['noShipping']){
+									$shipping=false;
+								}
+							
 						}
+						if($ciudad_destino->ruta_id==9)
+							$shipping=true;
 						if($shipping){
 							if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
 							{	

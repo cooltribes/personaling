@@ -34,7 +34,8 @@ class Giftcard extends CActiveRecord
         /*CAMBIAR ESTA CONSTANTE CUANDO SE REQUIERA CAMBIAR LA LONGITUD DEL CODIGO DE UNA TARJETA*/
         const DIGITOS_CODIGO = 16;
         
-        const MAX_MONTO = 1000;
+        const MAX_MONTO_VE = 1000; //Para venezuela
+        const MAX_MONTO_ES = 100; //Para españa
     
 	/**
 	 * Returns the static model of the specified AR class.
@@ -73,7 +74,7 @@ class Giftcard extends CActiveRecord
                     
                         array('codigo', 'unique', 'message'=>'Código de gift card ya registrado.'),
 			array('estado, comprador, beneficiario', 'numerical', 'integerOnly'=>true),
-			array('monto', 'numerical', 'max' => self::MAX_MONTO),
+			array('monto', 'numerical', 'max' => self::MAX_MONTO_ES),
 			array('codigo', 'length', 'max'=>25),
 			array('fecha_uso', 'safe'),
 			// The following rule is used by search().

@@ -434,8 +434,19 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 								
 							}
 							else{
-								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-								$seguro=$envio*0.13;
+								$seur=Tarifa::model()->envioSeur($ciudad_destino->nombre, $direccion->codigopostal->codigo, $peso_total);
+								if(!is_null($seur)){
+									
+									$envio =floatval($seur['porte'])+floatval($seur['iva'])+floatval($seur['combustible']);
+									
+									$seguro=0;
+								}
+								else {
+									$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+									$seguro=0;
+								} 
+									
+								
 								
 							}
 						}
@@ -455,13 +466,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </tr>          
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
-				/* 
-				$a=Tarifa::model()->envioSeur($ciudad_destino->nombre, $direccion->codigopostal, $peso_total);
-				if(!is_null($a))
-				print_r($a);
-				else {
-					echo $ciudad_destino->nombre.$ciudad_destino->id." / ".$direccion->codigopostal->codigo." / ".$peso_total;
-				} */?>:</th>
+				
+				?>:</th>
                 <td class="text_align_right"><?php 
                 if($shipping)
                 	echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); 

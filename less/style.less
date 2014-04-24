@@ -1212,8 +1212,12 @@ src: url('../fonts/entypo.woff'),
       }
 
       .personaling-slogan{
+        margin-top: 1em;
         font-weight: 100;
         font-size: 20px;
+        strong{
+          color: black;
+        }
       }
     }
   }
@@ -1241,7 +1245,7 @@ src: url('../fonts/entypo.woff'),
       line-height: 55px;
     }  
     .logo-personaling{
-      width: 210px;
+      width: 260px;
       margin: 1em  auto;
     }        
   }
@@ -1250,13 +1254,17 @@ src: url('../fonts/entypo.woff'),
   background: #99e6f9;
   border: 11px solid #99e6f9;
   .slide-content{
-    background: url(../images/model-slide2.jpg) no-repeat 20% 50px;  
+    background: url(../images/model-slide2.jpg) no-repeat 20% 36px;  
+    .copy-right{
+      width: 530px;
+    }
     h2{
       line-height: 55px;
     }
     .logo-personaling{
       width: 210px;
-      margin: 1em  auto;
+      margin: 1.6em  auto 3em;
+
     }  
   }    
 }
@@ -1267,7 +1275,8 @@ src: url('../fonts/entypo.woff'),
   .slide-content{
     background: url(../images/model-slide3.jpg) no-repeat 8% 50px;    
     .copy-right{
-      padding-right: 2em; 
+      padding-right: 6em; 
+      padding-top: 3.3em;
     }
     a.btn-call2action{
       border: 2px solid @color4;
@@ -1279,7 +1288,7 @@ src: url('../fonts/entypo.woff'),
       }
     }
     h2{
-      line-height: 70px;
+      line-height: 55px;
     }
     .logo-personaling{
       width: 210px;
@@ -1301,7 +1310,10 @@ src: url('../fonts/entypo.woff'),
     color: #fff;
     display: block;
     padding: 0.7em 0.7em 0.7em 40px;
-    &:hover{ background-color:@color4;}
+    &:hover{ 
+      background-color:@color4; 
+      text-decoration: none;
+    }
 }
 
 
@@ -1348,11 +1360,11 @@ src: url('../fonts/entypo.woff'),
 
 .thumbnails > li .thumbnail{.transition_all    }
  .thumbnails > li .thumbnail:hover {
-    border-color:lighten(@color6,30%);
+    border-color:lighten(@color4,30%);
 
     }
 .thumbnails > li.active .thumbnail{
-    border-color:lighten(@color1,10%);
+    border-color:lighten(@color4,10%);
     border-width:2px;
 }
 .tab_falta{
@@ -1950,6 +1962,7 @@ src: url('../fonts/entypo.woff'),
 .bard_tienda{
   background: @color3;
   font-weight: 200;
+  a{text-decoration: none}
   .nav{
     border: 1px solid #ddd;
   }
@@ -2681,7 +2694,7 @@ ul.yiiPager .last
         h2{
             font-size:1.5em;
             margin-bottom:1em;
-            .color1;
+            .color4;
         }
         aside{
             h5{
@@ -3537,16 +3550,16 @@ img[alt="Loading"]{
 
 /*----------------  Landingpage ON ---------------- */
 .wrapper-landingpage{
-  bottom: 0;
-  border: 2vh solid white;
-  height: 96vh;
+  border: 15px solid white;
+  display: table;
+  height: 100%;
   left: 0;
   position: absolute;
-  right: 0;
   top: 0;
+  width: 98.4%;
   .wrapper-inside-landingpage{
-    border: 1px solid @color4;
-    height: 96vh;
+    border: 1px solid #333;
+    height: 100%;
     figure{
       margin: 0;
     }

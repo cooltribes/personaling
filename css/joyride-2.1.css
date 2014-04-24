@@ -23,7 +23,7 @@ body {
   top: 0; /* keeps the page from scrolling when calculating position */
   left: 0;
   height: 250px;
-  border: 5px #6D2D56 solid;
+  border: 5px #231f20 solid;
   font-family: inherit;
   font-weight: normal;
      -moz-border-radius: 135px;
@@ -71,7 +71,7 @@ body {
   border-bottom-color so here we set the border-color
   and override the top,left,right colors below.
   */
-  border-color: #6D2D56;
+  border-color: #231f20;
   border-top-color: transparent !important;
   border-left-color: transparent !important;
   border-right-color: transparent !important;
@@ -87,7 +87,7 @@ body {
   border-top-color so here we set the border-color
   and override the bottom,left,right colors below.
   */
-  border-color: #6D2D56;  
+  border-color: #231f20;  
   border-bottom-color: transparent !important;
   border-left-color: transparent !important;
   border-right-color: transparent !important;
@@ -96,7 +96,7 @@ body {
 }
 
 .joyride-tip-guide span.joyride-nub.right {
-  border-color: #6D2D56; 
+  border-color: #231f20; 
   border-top-color: transparent !important;
   border-right-color: transparent !important;
   border-bottom-color: transparent !important;
@@ -107,7 +107,7 @@ body {
 }
 
 .joyride-tip-guide span.joyride-nub.left {
-  border-color: #6D2D56;
+  border-color: #231f20;
   border-top-color: transparent !important;
   border-left-color: transparent !important;
   border-bottom-color: transparent !important;
@@ -118,7 +118,7 @@ body {
 }
 
 .joyride-tip-guide span.joyride-nub.top-right {
-  border-color: #6D2D56;
+  border-color: #231f20;
   border-color: rgba(0,0,0,0.8);
   border-top-color: transparent !important;
   border-left-color: transparent !important;
@@ -164,7 +164,7 @@ body {
   font-size: 13px;
   text-decoration: none;
   color: rgb(255,255,255);
-  background: #6D2D56;
+  background: #231f20;
 }
 
 .joyride-next-tip:hover {

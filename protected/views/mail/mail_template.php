@@ -24,7 +24,7 @@
               <td class="w640" width="640" height="20"></td>
             </tr>
             <tr>
-              <td class="w640" width="640"><table id="top-bar" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#a25f7f">
+              <td class="w640" width="640"><table id="top-bar" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#231f20">
                   <tbody>
                     <tr>
                       <td class="w15" width="15"></td>
@@ -77,7 +77,7 @@
                 </table></td>
             </tr>
             <tr>
-              <td id="header" class="w640" width="640" align="center" bgcolor="#FFFFFF"><div align="center" style="text-align: center"> <a href="http://personaling.com/"> <img id="customHeaderImage" label="Header Image" editable="true" width="600" src="http://personaling.com/contenido_estatico/header_personaling_email.png" class="w640" border="0" align="top" style="display: inline"> </a> </div></td>
+              <td id="header" class="w640" width="640" align="center" bgcolor="#FFFFFF"><div align="center" style="text-align: center"> <a href="http://personaling.com/"> <img id="customHeaderImage" label="Header Image" editable="true" width="600" src="http://personaling.com/contenido_estatico/header_personaling_email_v2.png" class="w640" border="0" align="top" style="display: inline"> </a> </div></td>
             </tr>
             <tr>
               <td class="w640" width="640" height="30" bgcolor="#ffffff"></td>
@@ -118,7 +118,7 @@
               <td class="w640" width="640" height="15" bgcolor="#ffffff"></td>
             </tr>
             <tr>
-              <td class="w640" width="640"><table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#6E1346">
+              <td class="w640" width="640"><table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#231f20">
                   <tbody>
                     <tr>
                       <td class="w30" width="30"></td>

@@ -238,7 +238,7 @@ class Precio extends CActiveRecord
 	}
 	 
 	public function getLimites(){
-		$sql="SELECT MAX(p.precioVenta) as maximo, MIN(p.precioVenta) as minimo from tbl_precio p JOIN tbl_producto pr ON pr.id=p.tbl_producto_id  where pr.estado=0 AND pr.`status`=1";
+		$sql="SELECT MAX(p.precioVenta) as maximo, MIN(p.precioVenta) as minimo from tbl_precio p WHERE p.tbl_producto_id IN( select id from tbl_producto where estado=0 and status=1)";
 		return Yii::app()->db->createCommand($sql)->queryRow();
 	}
 	

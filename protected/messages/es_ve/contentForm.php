@@ -18,7 +18,7 @@ return array (
 
      'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
      <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> es el canal online de prestigiosas y conocidas marcas de moda internacional, donde no solo podrás comprar prendas y accesorios de tus tiendas favoritas, también tendrás a disposición de forma gratuita el servicio exclusivo de asesoria e inspiración de especialistas, conocedores en moda (personal shoppers) y hasta celebridades; quienes crearán atuendos adecuándolos a tu perfil, gusto, necesidades y ocasiones personales, permitiendo adquirir en un solo clic los productos y recibirlos en la comodidad de tu hogar u oficina.  </p>
-     <p> <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, tenia que nacer en Venezuela, capital mundial de la mujer. </p>',
+     <p> <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, tenía que nacer en Venezuela, capital mundial de la mujer. </p>',
      'Action' => 'Acción',
      'Actions' => 'Acciones',
      'Account Number:' => 'Cuenta Corriente Nº',
@@ -49,6 +49,7 @@ return array (
      'Approve' => 'Aprobar',
      'Approved' => 'Aprobados',
      'availables' => 'disponibles',
+     'Avaliable for {user}:' => 'Disponible para {user}:',
 
 
      'Balance' => 'Saldo',
@@ -234,6 +235,7 @@ return array (
      'Personal Shoppers outstanding' => 'Personal shoppers destacados',
      'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.',
      'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card como obsequio para tí.',
+     'Personaling C.A RIF: J-40236088-6' => 'Personaling C.A RIF: J-40236088-6',
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
      'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O LLama al  (212) 7202089. <strong>¡Gracias!</strong>',

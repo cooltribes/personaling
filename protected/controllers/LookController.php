@@ -635,7 +635,7 @@ public function actionCategorias(){
 				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
 			
 	  	if(isset($_POST['marcas'])){
-		  	if ($_POST['marcas']!='Todas las Marca')	
+		  	if ($_POST['marcas']!='Todas las Marcas')	
 		  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
 			else	
 		  		$productos = Producto::model()->with($with)->findAll();

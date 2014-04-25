@@ -180,6 +180,7 @@ $script = "
 <?php Yii::app()->clientScript->registerScript('botones',$script); ?>
 
 <!-- contenido -->
+<div id="div_aviso" style="display: none">
 <ol id="joyRideTipContent" data-joyride>
   <li data-id="numero1" data-button="Siguiente" data-options="tipAnimation:fade" >
   <p class="lead"><strong>Escoge las características de tu cuerpo</strong></p>
@@ -195,10 +196,13 @@ $script = "
     <p class="muted">Haz click en siguiente y elige entre las imágenes tu estilo </p>
   </li>
 </ol>
+</div>
+<?php if ($errorValidando): ?>
 <?php Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,null); ?>
 <!--<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>-->
     <script>
       $(window).load(function() {
+      	$('#div_aviso').show();
         $('#joyRideTipContent').joyride({      
           autoStart : <?php echo !((isset($editar) && $editar)) ? 'true' : 'false' ?>,
           modal: true,
@@ -220,4 +224,6 @@ $script = "
       });
   });
 </script>
+
+<?php endif; ?>
 

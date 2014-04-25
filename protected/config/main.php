@@ -260,7 +260,7 @@ return array(
                 'metodosPago'=> array(
                     'bkCard' => true,
                     'paypal' => true,
-                    'depositoTransferencia' => true,
+                    'depositoTransferencia' => false,
                     'instapago' => false,
                     'mercadopago' => false,
 				                        

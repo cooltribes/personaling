@@ -93,43 +93,21 @@ $this->breadcrumbs = array(
                         $checkE = 'checked="checked"';
                     }
                     ?>
-                    <p class="lead">4. <?php echo Yii::t('contentForm','Choose how you want to deliver it'); ?></p>
-
-                    <div class="accordion" id="accordionE">
-<!--                         <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <label class="radio accordion-toggle margin_left_small"
-                                       data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="1" <?php echo $checkI; ?>> <?php echo Yii::t('contentForm','Printed'); ?>
-                                </label>                                
-                            </div>
-                            <div id="collapseT" class="accordion-body collapse">
-                            </div>
-
-                        </div> -->
-                        <div class="accordion-group">
-
-                            <div class="accordion-heading">
-                                <label class="radio accordion-toggle margin_left_small" 
-                                       data-toggle="collapse" data-target="#collapseOne" data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="2" <?php echo $checkE; ?>> <?php echo Yii::t('contentForm','By email'); ?>
-                                </label> 
-
-                            </div>
-                            <div id="collapseOne" class="accordion-body collapse<?php echo $checkE ? " in" : ""; ?>">
-                                <div class="accordion-inner">
-<?php
-echo $form->textFieldRow($envio, 'email', array(
-    'placeholder' => 'Correo electrónico del destinatario'
-));
-?>  
-                                </div>
-                            </div>
-                        </div>
+                    <p class="lead">4. <?php echo Yii::t('contentForm','¿A quién la envías?'); ?></p>
 
 
 
-                    </div>
+                         <input type="hidden" name="entrega" value="2" >
+
+                        <?php
+                        echo $form->textFieldRow($envio, 'email', array(
+                            'placeholder' => 'Correo electrónico del destinatario'
+                        ));
+                        ?>  
+
+
+
+
 
                     <div class="control-group margin_top_large text_align_center">
 <?php
@@ -153,7 +131,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
                         <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.jpg" width="470">
                         <div class="row-fluid margin_top">
                             <div class="span6 braker_right">
-                                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto." ".Yii::t('contentForm','currSym'); ?> </div>
+                                <div class=" T_xlarge color4" id="monto"><?php echo $model->monto." ".Yii::t('contentForm','currSym'); ?> </div>
 
                                 <div class="margin_top color4" id="codigo"><div class="color9"><?php echo Yii::t('contentForm','Code'); ?></div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
                             </div>

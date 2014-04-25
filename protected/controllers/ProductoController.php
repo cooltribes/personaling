@@ -2024,7 +2024,10 @@ public function actionReportexls(){
 						$prod->status = 1; // no está eliminado
 						
 						$marca = Marca::model()->findByAttributes(array('nombre'=>$row['D']));
-						$prod->marca_id = $marca->id;
+						if (isset($marca))
+							$prod->marca_id = $marca->id;
+						else
+							Yii::trace('Importacion Marca:'.$row['D'], 'registro');
 						
 						if($prod->save())
 						{

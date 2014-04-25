@@ -150,7 +150,10 @@
 					</ul>  
 				</div>	
 			</li>
+D
+			<?php if (Yii::app()->params['mostrarMarcas']): ?>
 			<li class="item">
+
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
@@ -182,8 +185,13 @@
 						<li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
 					</ul>  	
 				</div>	
+
 			</li>
+			<?php endif; ?>
 			<li class="item" id="li_chic">
+
+<!-- 			<li class="item" id="li_chic">
+>>>>>>> 6b3c77a4efba5677a5d32cc4c06a0cfd1ce8987a
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropdown100Chic" >
@@ -215,7 +223,7 @@
 						?>
 					</ul>  
 				</div>			
-			</li>
+			</li> -->
 			<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search"> 

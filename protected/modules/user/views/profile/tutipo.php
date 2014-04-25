@@ -1,5 +1,5 @@
 <?php
-Yii::app()->clientScript->registerCssFile('/css/joyride-2.1.css',null);
+Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 if((isset($editar) && $editar)){
   $this->breadcrumbs=array(
@@ -35,7 +35,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     <?php if ( !(isset($editar) && $editar) ){ ?>
           
           <h2 class=""> Debes completar tu test de estilos para poder continuar </h2>
-          <p class="color11">Utilizamos tus características y medidas para que nuestros Personal Shoppers puedan dar en el clavo con los looks que te recomienden. <strong class="color11">¡No te preocupes!</strong> Esta información es confidencial y solo podremos saberla nosotros.</p>
+          <p class="">Utilizamos tus características y medidas para que nuestros Personal Shoppers puedan dar en el clavo con los looks que te recomienden. <strong>¡No te preocupes!</strong> Esta información es confidencial y solo podremos saberla nosotros.</p>
 
     <?php } ?>      
 
@@ -108,7 +108,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                       <p ><?php echo $tipo; ?></p>
                     </div>
                     <caption>
-                      <p class="  color6 text_align_center ">                  
+                      <p class=" text_align_center ">                  
                       <?php if($key == 1) 
                           echo Yii::t('contentForm', 'Your body is rectangular or square, if your shoulders and hips are almost aligned and your waist is not as defined');
                         if($key == 2) 

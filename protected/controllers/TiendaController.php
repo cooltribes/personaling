@@ -173,15 +173,22 @@ class TiendaController extends Controller
 		
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
-		$rangos[0]['max']=round($rangos[0]['max']/100, 0)*100;
+		
 		$rangos[1]['min']=$rangos[0]['max']+0.01;
 		$rangos[1]['max']=($dif*.50)+$lims['minimo'];
-		$rangos[1]['max']=round($rangos[1]['max']/100, 0)*100;
+		
 		$rangos[2]['min']=$rangos[1]['max']+0.01;
 		$rangos[2]['max']=($dif*.75)+$lims['minimo'];
-		$rangos[2]['max']=round($rangos[2]['max']/100, 0)*100;
+		
 		$rangos[3]['min']=$rangos[2]['max']+0.01;
 		$rangos[3]['max']=$lims['maximo']+0.01;
+		
+		if($rangos[0]['max']>100){
+			$rangos[0]['max']=round($rangos[0]['max']/100, 0)*100;
+			$rangos[1]['max']=round($rangos[1]['max']/100, 0)*100;
+			$rangos[2]['max']=round($rangos[2]['max']/100, 0)*100;
+		}
+		
 		
 		for($i=0;$i<4;$i++){
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);

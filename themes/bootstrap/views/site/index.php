@@ -33,16 +33,12 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                 <div class="slider-home slide-1">
                     <div class="slide-content">
                         <div class="copy-right">
-                            <div class="border-bottom">
-                                <h2>¿Estás buscando <br/> <strong>looks personalizados</strong> para ti?</h2>
-                                <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn-call2action">¡Regístrate!</a>
-                            </div>
-                            <div>
+                            <div class="">
                                 <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling.png' ?>" alt="Personaling">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="95"  heigth="95"> 
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="260"> 
                                 </figure>
-
-                                <p class="personaling-slogan ">Somos tu Personal Shopper Online</p>
+                                <h2>La primera <br><strong>shopping experience</strong><br>única y…repetible.</h2>
                             </div>
                         </div>
                     </div>
@@ -56,11 +52,11 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                                 <h2 class="">Solamente tú, <br/> eres <strong>irrepetible.</strong></h2>
 
                                 <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling.png' ?>" alt="Personaling">                                    
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="135"  heigth="135">                                    
                                 </figure>
                             </div>
                             <div>
-                                <p class="personaling-slogan  margin_top_medium">Cientos de looks basados en tu características físicas y estilo.</p>
+                                <p class="personaling-slogan  margin_top_medium">La primera <strong>shopping experience</strong> única y…repetible</p>
                             </div>
                         </div>
                         
@@ -72,13 +68,13 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                     <div class="slide-content">
                         <div class="copy-right">
                             <div class="border-bottom">
-                                <h2>¡Vive este <strong>verano</strong> al máximo! <br> Consigue tu <a href="#" class="btn-call2action"> bañador o bikini</a></h2>
+                                <h2>Si algo puede mejorar el <br> carácter de <strong>la moda</strong>,<br>sin duda, es <strong>tu personalidad.</strong></h2>
                                 <figure class="logo-personaling ">
                                     <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling">                                                                    
                                 </figure>
                             </div>
                             <div>
-                                <p class="personaling-slogan ">¡Ama tu cuerpo!</p>
+                                <p class="personaling-slogan ">La primera <strong>shopping experience</strong> única y…repetible</p>
                             </div>
                         </div>                            
                         
@@ -93,6 +89,6 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 
 <script type="text/javascript">
 $('#sliderHome').carousel({
-  interval: 6000
+  interval: 60000
 });
 </script>

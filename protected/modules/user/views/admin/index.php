@@ -28,7 +28,15 @@ $usuarios_twitter = User::model()->count('twitter_id IS NOT NULL');
         ),
     )
 ); ?> 
-
+    
+    <style>
+        div#modalNuevoUsuario.modal.fade.in {
+            top: 50%;
+        }
+        div#modalNuevoUsuario.modal.fade {
+            top: -35%;
+        }
+    </style> 
   <div class="page-header">
     <h1>Administrar usuarios</h1>
   </div>

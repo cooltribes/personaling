@@ -23,13 +23,13 @@
 
             	//echo Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
             	//if (file_exists(Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg'))
-					$nombre_image = Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
+                    $nombre_image = Yii::app()->baseUrl . '/images/'.Yii::app()->language.'/estilos/'.$nombre_tmp.'_'.$key.'.jpg';
 				//else 
 				//	$nombre_image = "http://placehold.it/270x400";
             $return .=  '<li class="span4 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elige este estilo">
-                <div class="thumbnail">'.
-                CHtml::image($nombre_image, "Imagen ".$value, array("width" => "370", "height" => "370"))
-                .'<div class="caption text_align_center CAPS">
+                <div class="thumbnail">
+                <img width="370" height="370" src="'.$nombre_image.'" alt="Imagen "'.$value.'">
+                <div class="caption text_align_center CAPS">
                     
                   </div>
                 </div>

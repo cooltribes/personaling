@@ -127,11 +127,12 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               </ul>
             </div>
           </div>
+<?php if ($errorValidando): ?>          
           <div class="text_align_center">
             <p class="lead"> Debes completar tu test de estilos para poder continuar </p>
             <p class="">Utilizamos tus características y medidas para que nuestros Personal Shoppers puedan dar en el clavo con los looks que te recomienden. <strong>¡No te preocupes!</strong> Esta información es confidencial y solo podremos saberla nosotros.</p>
           </div>
-
+<?php endif; ?>
           <div  class="margin_top_medium row" >
             <div id="numero3" class="span4 offset4 ">
               <?php $this->widget('bootstrap.widgets.TbButton', array(

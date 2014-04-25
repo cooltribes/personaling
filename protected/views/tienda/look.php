@@ -32,7 +32,7 @@ if (isset($user)){
                         'id' => 'btnTodos',
                         'onclick' => 'js:clickTodos()',
                         'role' => 'button',
-                        'class' => 'btn',
+                        'class' => $todosLosLooks?'':'btn-rectangle',
                         'data-toggle' => 'modal',
                     ),
                 ));
@@ -49,7 +49,7 @@ if (isset($user)){
                     'htmlOptions' => array(
                         'id' => 'btnMatch', 
                         'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
-                        'class' => 'btn-rectangle', 
+                        'class' => $todosLosLooks?'btn-rectangle':'',
                     ),
                 ));
                 ?>

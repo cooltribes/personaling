@@ -450,7 +450,8 @@ function clickPersonal(status_register,urltuestilo,urltutipo){
     } else {
     $("#btnMatch").addClass("btn-danger");
     $("#btnTodos").removeClass("btn-danger");
-    
+    $("#btnMatch").removeClass("btn-rectangle");
+    $("#btnTodos").addClass("btn-rectangle");
     if(!perfilActivo){
         $("#perfil_propio").val("1");
     }
@@ -478,6 +479,8 @@ function clickTodos(){
     console.log("Todos");
     $("#btnTodos").addClass("btn-danger");
     $("#btnMatch").removeClass("btn-danger");
+    $("#btnTodos").removeClass("btn-rectangle");
+    $("#btnMatch").addClass("btn-rectangle");   
     $("#perfil_propio").val("0");
     
      //desmarcar los filtros de ocasiones y shopper, ocultar divs., desmarcar precios.

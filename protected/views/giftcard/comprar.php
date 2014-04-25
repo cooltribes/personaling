@@ -48,27 +48,6 @@ $this->breadcrumbs = array(
                             </div>
                         </a>
                     </li>		
-                    <li id="GC-gift_card_two">
-                        <a href="">
-                            <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_two_x200.jpg">
-                            </div>
-                        </a>
-                    </li>	
-                    <li id="GC-gift_card_three">
-                        <a href="">
-                            <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_three_x200.jpg">
-                            </div>
-                        </a>
-                    </li>	
-                    <li id="GC-gift_card_four">
-                        <a href="">
-                            <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_four_x200.jpg">
-                            </div>
-                        </a>
-                    </li>	
                     <?php echo $form->hiddenField($model, 'plantilla_url'); ?>
                 </ul>
             </div>	

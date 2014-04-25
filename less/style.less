@@ -604,6 +604,11 @@ border:0;
 
 .error{color: #B94A48}
 
+.modal{
+  border-radius: 0;
+  outline: 0;
+}
+
 /*------------ RESETS PARA BOOTSTRAP OFF --------------*/
 
 
@@ -895,6 +900,9 @@ src: url('../fonts/entypo.woff'),
   a:hover > i{
     background-image: url("../images/glyphicons-halflings-white.png");
   }
+  .active > i{
+    background-image: url("../images/glyphicons-halflings-white.png");
+  }  
 }
 /*------------ HEADER OFF --------------*/
 
@@ -2313,6 +2321,7 @@ src: url('../fonts/entypo.woff'),
             }
         .like-active{
             .color4;
+            text-decoration: none;
                 }
         }
     .item_producto{
@@ -2614,7 +2623,34 @@ ul.yiiPager .last
             }
         }
 
+}
+#ModalRegistro{
     // Cambios del modal para hacerlo mas ancho
+    .legend{
+      border-bottom: none;
+      margin-bottom: 0;
+      line-height: 28px;
+    }
+    .modal-footer{
+      background-color: white;
+      border-top: 0;
+    }
+    button.close{
+      font-size: 31px;
+      &:hover{
+        color: @color4;  
+      }
+    }
+    .modal-header{
+      border-bottom: 0;
+    }
+    .modal-body{
+      #boton_facebook{
+        a{
+          text-align: center;
+        }
+      }
+    }
 }
 #modalFiltroPerfil{
     width: 880px;

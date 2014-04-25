@@ -32,7 +32,7 @@ if (isset($user)){
                         'id' => 'btnTodos',
                         'onclick' => 'js:clickTodos()',
                         'role' => 'button',
-                        'class' => 'btn',
+                        'class' => $todosLosLooks?'':'btn-rectangle',
                         'data-toggle' => 'modal',
                     ),
                 ));
@@ -49,7 +49,7 @@ if (isset($user)){
                     'htmlOptions' => array(
                         'id' => 'btnMatch', 
                         'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
-                        'class' => 'btn-rectangle', 
+                        'class' => $todosLosLooks?'btn-rectangle':'',
                     ),
                 ));
                 ?>
@@ -524,14 +524,13 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         <h3 id="myModalLabel">Regístrate</h3>
     </div>
     <div class="modal-body">
-            <p class="lead text_align_center">Queremos ofrecerte toda la experiencia Personaling y necesitamos tus datos:</p>
             <div class="row" id="boton_facebook">
                 <a title="Registrate con facebook" class="transition_all span3 offset1" href="#">Regístrate con Facebook</a>
             </div>
             <section class="bg_color3 margin_top_xsmall  padding_small_top padding_small_right padding_small_left">
         
                     <fieldset>
-                        <legend class="text_align_center">O llena los campos a continuación: </legend>  
+                        <legend class="text_align_center no_margin_bottom">O <br> llena los campos a continuación: </legend>  
                         <div class="control-group row-fluid">
                         	<div class="controls">
                         	<!--[if IE 9]> 
@@ -559,15 +558,13 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
   
             </section>
     </div>    
-    <div class="modal-footer">
-        <button class="btn btn-large" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-        
+    <div class="modal-footer">        
         		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 		    'label'=>'Siguiente',
 		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'large', // null, 'large', 'small' or 'mini'
-		  //  'htmlOptions'=>array('class'=>'btn-block'),
+		   'htmlOptions'=>array('class'=>'span5'),
 		)); ?>
     </div>
     <?php $this->endWidget(); ?>  

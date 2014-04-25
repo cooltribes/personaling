@@ -606,6 +606,7 @@ class ProfileController extends Controller
 		$model = $this->loadUser();
 		$profile=$model->profile;
 		$profile->profile_type = 3;
+		$errorValidando = false;
 		//$profile=new Profile;
 		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
 		{
@@ -655,11 +656,14 @@ class ProfileController extends Controller
 				} else {
 					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
 				}
+			} else {
+				$errorValidando = true;
 			}
 		}	
 	    $this->render('tutipo',array(
 	    	'model'=>$model,
-			'profile'=>$model->profile,
+			'profile'=>$model->profile, 
+			'errorValidando'=>$errorValidando,
 	    ));
 	}
 /**
@@ -670,6 +674,7 @@ class ProfileController extends Controller
 		$model = $this->loadUser();
 		$profile=$model->profile;
 		$profile->profile_type = 3;
+		$errorValidando = false;
 		//$profile=new Profile;
 		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
 		{
@@ -737,6 +742,7 @@ class ProfileController extends Controller
 				}
 			} else {
 				Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
+				$errorValidando = true;
 				//Yii::trace('username:'.$model->username.' Error:'.$profile->getErrors(), 'registro');
 			}
 		}	
@@ -744,6 +750,7 @@ class ProfileController extends Controller
 	    	'model'=>$model,
 			'profile'=>$model->profile,
 			'editar'=>true,
+			'errorValidando'=>$errorValidando,
 	    ));
 		
 	}		

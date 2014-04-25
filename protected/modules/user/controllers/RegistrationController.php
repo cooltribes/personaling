@@ -227,7 +227,8 @@ class RegistrationController extends Controller
                 			$registro = new Registro;
 							$registro->email = $model->email;
 							$registro->source = 0;
-					
+							$profile = new Profile;
+							$profile->regMode = true;
 							if (!$registro->save())
         		        		Yii::trace('Guardando correo en registro:'.print_r($registro->getErrors(),true), 'registro');
 						}

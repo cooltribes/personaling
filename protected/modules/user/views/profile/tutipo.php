@@ -34,8 +34,6 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 ?>
     <?php if ( !(isset($editar) && $editar) ){ ?>
           
-          <h2 class=""> Debes completar tu test de estilos para poder continuar </h2>
-          <p class="">Utilizamos tus características y medidas para que nuestros Personal Shoppers puedan dar en el clavo con los looks que te recomienden. <strong>¡No te preocupes!</strong> Esta información es confidencial y solo podremos saberla nosotros.</p>
 
     <?php } ?>      
 
@@ -54,7 +52,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         <fieldset>
           <div id="numero1">
 
-            <div class="control-group" >
+            <div class="control-group offset2 margin_top_small" >
               <div class="controls row-fluid" id="caracteristicas">
                 <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
                 <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
@@ -129,16 +127,19 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               </ul>
             </div>
           </div>
+          <div class="text_align_center">
+            <p class="lead"> Debes completar tu test de estilos para poder continuar </p>
+            <p class="">Utilizamos tus características y medidas para que nuestros Personal Shoppers puedan dar en el clavo con los looks que te recomienden. <strong>¡No te preocupes!</strong> Esta información es confidencial y solo podremos saberla nosotros.</p>
+          </div>
 
-
-          <div  class="form-actions row" >
-            <div id="numero3" class="span3 offset9 ">
+          <div  class="margin_top_medium row" >
+            <div id="numero3" class="span4 offset4 ">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
               				'buttonType' => 'submit',
   						    'label'=>isset($editar)?'Guardar':'Siguiente',
   						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
   						    'size'=>'large', // null, 'large', 'small' or 'mini'
-  							'htmlOptions' => array('class'=>'margin_left_large'), 
+  							'htmlOptions' => array('class'=>'btn-block'), 
   							
   						)); ?>
             </div>

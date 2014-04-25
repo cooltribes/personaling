@@ -7,7 +7,7 @@ return array(
 	'Register' => 'Registrar',
     'Login' => 'Inicia sesión',
     'To log on Personaling you can:' => 'Para iniciar sesión en Personaling puedes:',
-    'Login with Facebook' => 'Inicia sesión con Facebook',
+    'Login with Facebook' => 'Iniciar sesión con Facebook',
     'Or use your credentials personaling' => 'O introducir tus datos de usuario:',
     'Enter' => 'Entrar',
     'Sign up here' => 'Regístrate aquí',

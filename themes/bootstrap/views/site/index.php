@@ -33,13 +33,14 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                 <div class="slider-home slide-1">
                     <div class="slide-content">
                         <div class="copy-right">
-                            <div class="">
+                            <div class="border-bottom">
                                 <figure class="logo-personaling ">
                                     <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="95"  heigth="95"> 
                                     <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="260"> 
                                 </figure>
                                 <h2>La primera <br><strong>shopping experience</strong><br>única y…repetible.</h2>
                             </div>
+                            <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn-call2action">¡Regístrate!</a>
                         </div>
                     </div>
                 </div>                

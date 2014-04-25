@@ -608,6 +608,11 @@ border:0;
   border-radius: 0;
   outline: 0;
 }
+.dropdown-menu .active > a, .dropdown-menu .active > a:hover{
+  background-color: @color4;
+  background-image: none;
+  color: white;
+}
 
 /*------------ RESETS PARA BOOTSTRAP OFF --------------*/
 
@@ -1235,16 +1240,20 @@ src: url('../fonts/entypo.woff'),
   border: 11px solid #ffd660;
   .slide-content{
     background: url(../images/model-slide1.jpg) no-repeat 20% 66px;
+      .copy-right{
+        padding-top: 2em;
+      }
       a.btn-call2action{
         border: 2px solid @color4;
         display: block;
         font-size: 26px;
-        margin: 57px auto 57px auto;
+        margin: 25px auto 20px auto;
         padding: .5em;
         text-align: center;
         width: 137px;
         &:hover{
           background-color: @color4;
+          text-decoration: none;
           color: @color3;
           .transition_all;
         }
@@ -1254,7 +1263,7 @@ src: url('../fonts/entypo.woff'),
     }  
     .logo-personaling{
       width: 260px;
-      margin: 1em  auto;
+      margin: 0  auto;
     }        
   }
 }

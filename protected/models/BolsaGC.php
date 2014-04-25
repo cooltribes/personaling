@@ -43,7 +43,7 @@ class BolsaGC extends CActiveRecord
 			array('user_id, monto', 'required'),
 			array('user_id, monto', 'numerical', 'integerOnly'=>true),
 			array('plantilla_url', 'length', 'max'=>255),
-                        array('monto', 'numerical', 'max' => Giftcard::MAX_MONTO),
+                        array('monto', 'numerical', 'max' => Giftcard::getMontoMaximo()),
                     
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

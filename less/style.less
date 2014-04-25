@@ -779,7 +779,7 @@ src: url('../fonts/entypo.woff'),
     }
 .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{.color4}
 .navbar-inverse .nav > .active > a, .navbar-inverse .nav > .active > a:hover, .navbar-inverse .nav > .active > a:focus{.color3}
-.nav-pills > .active > a, .nav-pills > .active > a:hover{ background-color:@color1;}
+.nav-pills > .active > a, .nav-pills > .active > a:hover{ background-color:@color4;}
 .nav-pills > li > a{ .border_radius(@radius:0)}
 
 #menu_estatico, #scroller-anchor{
@@ -905,7 +905,7 @@ src: url('../fonts/entypo.woff'),
   a:hover > i{
     background-image: url("../images/glyphicons-halflings-white.png");
   }
-  .active > i{
+  &.active > a > i{
     background-image: url("../images/glyphicons-halflings-white.png");
   }  
 }
@@ -1387,7 +1387,7 @@ src: url('../fonts/entypo.woff'),
 .tab_falta{
     a{
         background: #f0e9f1;
-        color: rgba(167, 95, 141, 0.64);
+        color: rgba(35, 31, 32, 0.64);
         border: 1px dashed #c69db7;
         padding-bottom:7px !important;
         padding-top:7px !important;

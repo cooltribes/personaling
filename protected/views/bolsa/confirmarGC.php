@@ -203,7 +203,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             'target'=>'#btn-ComprarEsp',
                             'config'=>array(
                                 "type" => "iframe",                        
-                                "height" => "90%",                        
+                                "height" => "100%",                        
                                 "width" => "65%",                        
                                 "autoScale" => false,                        
                                 "transitionIn" => "none",                        

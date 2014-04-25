@@ -90,6 +90,6 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 
 <script type="text/javascript">
 $('#sliderHome').carousel({
-  interval: 60000
+  interval: 6000
 });
 </script>

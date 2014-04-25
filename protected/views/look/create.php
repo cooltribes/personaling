@@ -131,7 +131,7 @@ function handleDrop(e) {
 			
 	$('<img/>').attr('src', ident).load(function() {
 		    
-		    if (contenedor.innerHTML.indexOf("Crea tus Looks aqui") >=0)
+		    if (contenedor.innerHTML.indexOf("<h1>") >=0)
 				$(contenedor).html(	nuevo_objeto );
 		    else
 		    	$(contenedor).append(nuevo_objeto);
@@ -229,9 +229,10 @@ var cols = document.querySelectorAll('.column');
 }
 $(window).load(function(){
 	$('#btn_siguiente').removeAttr('disabled');
-	$('#div_invisible').show();
+	
 });
 $(document).ready(function() {
+	$('#div_invisible').show();
 
 
 /*

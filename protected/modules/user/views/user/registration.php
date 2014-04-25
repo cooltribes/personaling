@@ -107,7 +107,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		echo CHtml::hiddenField('facebook_request',$requests[0]);
 	}
 	?>
-	<?php echo $referencia; ?>
+
 <div class="control-group row-fluid">
 	<div class="controls">
 	<!--[if IE 9]> 

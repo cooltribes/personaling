@@ -55,22 +55,11 @@ $this->breadcrumbs = array(
                 <p class="lead">2. <?php echo Yii::t('contentForm','Select the price'); ?></p>
                 <?php echo $form->errorSummary($model); ?>
 
-                <div class="control-group input-append">
+                <div class="control-group input-prepend">
                     <label class="control-label required" for="BolsaGC_monto"><?php echo Yii::t('contentForm','Amount'); ?> <span class="required">*</span></label>
                     <div class="controls">
-                        <?php echo CHtml::activeDropDownList($model, 'monto', array(
-                        100 => 100,
-                        200 => 200,
-                        300 => 300,
-                        400 => 400,
-                        500 => 500,
-                        600 => 600,
-                        700 => 700,
-                        800 => 800,
-                        900 => 900,
-                        1000 => 1000,
-                        ), array('class' => 'span1',)); ?>
                         <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                        <?php echo CHtml::activeDropDownList($model, 'monto', Giftcard::getMontos(), array('class' => 'span1',)); ?>
                     </div>
                     
                 </div>
@@ -82,7 +71,6 @@ $this->breadcrumbs = array(
             <div class="row margin_top">
                 <div class="span6">	
                     <p class="lead">3. <?php echo Yii::t('contentForm','Customize it'); ?></p>                                       
-
 
                     <?php
                     echo $form->textFieldRow($envio, 'nombre', array(

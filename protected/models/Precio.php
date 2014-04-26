@@ -76,6 +76,7 @@ class Precio extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'tblProducto' => array(self::BELONGS_TO, 'Producto', 'tbl_producto_id'),
+			'anteriores' => array(self::HAS_MANY, 'HistoricoPrecio', 'precio_id'),
 		);
 	}
 
@@ -211,6 +212,20 @@ class Precio extends CActiveRecord
 		}
 
 	}
+	public function afterSave()
+	{
+		$historico=new HistoricoPrecio;
+		$historico->costo =$this->costo;
+		$historico->precioVenta =$this->precioVenta;
+		$historico->precioDescuento =$this->precioDescuento ;
+		$historico->precio_id =$this->id ;
+		$historico->precioImpuesto =$this->precioImpuesto;
+		$historico->fecha=date("Y-m-d h:i:s");
+		$historico->user_id=Yii::app()->user->id;
+		$historico->save();
+		return parent::afterSave();			
+	
+	}
 	
 	public function getPrecioDescuento($producto)
 	 {
@@ -223,7 +238,7 @@ class Precio extends CActiveRecord
 	}
 	 
 	public function getLimites(){
-		$sql="SELECT MAX(p.precioVenta) as maximo, MIN(p.precioVenta) as minimo from tbl_precio p JOIN tbl_producto pr ON pr.id=p.tbl_producto_id  where pr.estado=0 AND pr.`status`=1";
+		$sql="SELECT MAX(p.precioVenta) as maximo, MIN(p.precioVenta) as minimo from tbl_precio p WHERE p.tbl_producto_id IN( select id from tbl_producto where estado=0 and status=1)";
 		return Yii::app()->db->createCommand($sql)->queryRow();
 	}
 	

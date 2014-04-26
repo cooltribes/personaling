@@ -26,7 +26,12 @@ class RegistrationController extends Controller
             $model = new RegistrationForm;
             $profile = new Profile;
             $profile->regMode = true;
-
+			$referencia = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+			if (strpos($referencia, 'tienda/look') === false)
+				$referencia='';
+			else 
+				$referencia='look';
+			$referencia_tmp = isset($_POST['referencia'])?$_POST['referencia']:'';
             // ajax validator
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'registration-form') {
                 //echo "rafa";	
@@ -49,7 +54,7 @@ class RegistrationController extends Controller
                     $model->email = $_GET['email'];
                 }
 
-
+				
                 if (isset($_POST['RegistrationForm'])) {
                     //$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
                     //echo 'rafa'.$_POST['Profile']['birthday'];	
@@ -62,8 +67,9 @@ class RegistrationController extends Controller
                     //$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
                     //echo 'lore'.$profile->birthday;
 
-
+					
                     if ($model->validate() && $profile->validate()) {
+                    	
                         $soucePassword = $model->password;
                         $model->activkey = UserModule::encrypting(microtime() . $model->password);
                         $model->password = UserModule::encrypting($model->password);
@@ -122,8 +128,7 @@ class RegistrationController extends Controller
                                 $message = new YiiMailMessage;
                                 $message->view = "mail_template";
                                 $subject = 'Registro Personaling';
-                                $body = '<h2>¡Bienvenido a Personaling.com!</h2><br/>Tu dirección se ha registrado en Personaling.com, solo estas a un paso de comenzar a disfrutar de nuestra plataforma, valida tu cuenta haciendo click en este enlace. <br/><br/>
-                                			<a href="' . $activation_url.'">Click aquí</a>';
+                                $body = Yii::t('contentForm','<h2>Welcome to Personaling</h2>Receiving this email because you registered your address Personaling. Please validate your account by clicking on the link below:<br/><br/><a href="{url}">Click here</a>',array('{url}'=>$activation_url));
                                 $params = array('subject' => $subject, 'body' => $body);
                                 $message->subject = $subject;
                                 $message->setBody($params, 'text/html');
@@ -180,11 +185,14 @@ class RegistrationController extends Controller
                                 $identity->authenticate();
                                 Yii::app()->user->login($identity, 0);
                                 //$this->redirect(Yii::app()->controller->module->returnUrl);
-
-                                if ($profile->sex == 1) // mujer
-                                    $this->redirect(array('/user/profile/tutipo'));
-                                else if ($profile->sex == 2) // hombre
-                                    $this->redirect(array('/tienda/look'));
+ 								if (Yii::app()->params['registro'] || $referencia_tmp =='look'){
+	                                if ($profile->sex == 1) // mujer
+	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                    else if ($profile->sex == 2) // hombre
+	                                        $this->redirect(array('/tienda/look'));
+									} else {
+										 $this->redirect(array('/tienda/look'));
+									}
                             } else {
                                 if (!Yii::app()->controller->module->activeAfterRegister && !Yii::app()->controller->module->sendActivationMail) {
                                     Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
@@ -195,11 +203,15 @@ class RegistrationController extends Controller
                                     $identity = new UserIdentity($model->email, $soucePassword);
                                     $identity->authenticate();
                                     Yii::app()->user->login($identity, 0);
-
-                                    if ($profile->sex == 1) // mujer
-                                        $this->redirect(array('/user/profile/tutipo'));
-                                    else if ($profile->sex == 2) // hombre
-                                        $this->redirect(array('/tienda/look'));
+									
+                                    if (Yii::app()->params['registro'] || $referencia_tmp =='look'){
+	                                    if ($profile->sex == 1) // mujer
+	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                    else if ($profile->sex == 2) // hombre
+	                                        $this->redirect(array('/tienda/look'));
+									} else {
+										$this->redirect(array('/tienda/look'));
+									}
 
                                     // $this->redirect(array('/user/profile/tutipo'));									
                                 } else {
@@ -209,11 +221,24 @@ class RegistrationController extends Controller
                             }
                         }
                     }
-                    else
+                    else {
                         $profile->validate();
-                }
-
-                $this->render('/user/registration', array('model' => $model, 'profile' => $profile));
+						if ($model->validate()) {
+                			$registro = new Registro;
+							$registro->email = $model->email;
+							$registro->source = 0;
+							$profile = new Profile;
+							$profile->regMode = true;
+							if (!$registro->save())
+        		        		Yii::trace('Guardando correo en registro:'.print_r($registro->getErrors(),true), 'registro');
+						}
+            
+						
+					}
+                }  
+                	
+             
+                $this->render('/user/registration', array('model' => $model, 'profile' => $profile,'referencia'=>$referencia));
             }//else
     }
 

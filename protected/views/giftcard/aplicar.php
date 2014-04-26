@@ -41,7 +41,7 @@ $this->breadcrumbs=array(
                         <!-- FLASH OFF --> 
 			<div class="margin_bottom text_align_center">
                 <div class="contenedorgiftcard bg_color5 padding_small box_shadow">
-				    <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470_desf.jpg" width="470">
+				    <img src="<?php echo Yii::app()->baseUrl.'/images/'.Yii::app()->language."/giftcard/gift_card_one_x470_desf.jpg"?>" width="470">
                 </div>
 			</div>				
 			<div class="row margin_top text_align_center">

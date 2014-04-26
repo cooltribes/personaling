@@ -146,6 +146,7 @@ class User extends CActiveRecord {
             'lastvisit_at' => UserModule::t("Last visit"),
             'superuser' => UserModule::t("Administrador"),
             'status' => UserModule::t("Status"),
+            'status_register' => UserModule::t("Status Register"),
             'twitter_id' => UserModule::t("Twitter ID"),
             'facebook_id' => UserModule::t("Facebook ID"),
             'avatar_url' => UserModule::t("Avatar"),
@@ -178,7 +179,7 @@ class User extends CActiveRecord {
     public function defaultScope() {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
                     'alias' => 'user',
-                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado',
+                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status,user.status_register, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado',
         ));
     }
 
@@ -781,9 +782,11 @@ class User extends CActiveRecord {
             //buscar ventas de esos looks.
             $total = Yii::app()->db->createCommand()->select("IFNULL(SUM(o.cantidad), 0)")
                     ->from("tbl_orden_has_productotallacolor as o")
-                    ->where(array("in", "o.look_id", $looksIds))
-                    ->andWhere('tbl_orden_id IN (select orden.id from tbl_orden orden
-                    where fecha >= "2014-03-19")')
+                    //Incluir solamente los que han sido pagados                    
+                    ->where("status_comision = :status", 
+                            array(":status" => OrdenHasProductotallacolor::STATUS_PAGADA))
+                    //incluir los pertenecientes al usuario
+                    ->andWhere(array("in", "o.look_id", $looksIds))
                     ->queryScalar();
             
             
@@ -798,7 +801,7 @@ class User extends CActiveRecord {
             return $total;
         }
         
-        /*Obtiene la comision del PS formateada de acuerdo al tipo*/
+        /*Obtiene la comision del PS formateada de acuerdo al tipo (% o fijo)*/
         function getComision() {
            
             $comision = $this->profile->comision . " ";

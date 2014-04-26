@@ -297,19 +297,7 @@ $tracking=$orden->getTracking();
             <td> 
             <?php
             
-            switch ($orden->tipo_guia) {
-                case 0:
-                    echo 'Zoom';
-                    break;
-                case 1:
-                    echo 'Zoom';
-                    break;
-				case 2:
-                    echo 'DHL';
-                    break;
-                default:
-                    break;
-            }
+           echo $orden->shipCarrier;
             ?></td>
             <td><?php echo $orden->peso ?> Kg.</td>
             <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
@@ -448,8 +436,8 @@ $tracking=$orden->getTracking();
             <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
             Tipo de guía: 
             <?php
-            
-            switch ($orden->tipo_guia) {
+            echo $orden->shipCarrier;
+            /*switch ($orden->tipo_guia) {
                 case 0:
                     echo 'Zoom hasta 0,5 Kg.';
                     break;
@@ -461,7 +449,7 @@ $tracking=$orden->getTracking();
                     break;
                 default:
                     break;
-            }
+            }*/
             ?>
         </div>
         <?php
@@ -499,10 +487,12 @@ $tracking=$orden->getTracking();
 				
 				
 				$usu = User::model()->findByPk($est->user_id);
-				if (isset($usu))
+				if (isset($usu))                                    
 					echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
-				else 
-						echo ("<td>Admin</td>");
+				else if($est->user_id == 0) //si fue el sistema
+                                        echo ("<td>Sistema</td>");
+                                else 
+                                        echo ("<td>Admin</td>");
 				
 				
 				$fecha = date("d/m/Y",strtotime($est->fecha));
@@ -784,7 +774,11 @@ $tracking=$orden->getTracking();
         </tr>  
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
-          <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?></td>
+          <td ><?php 
+          	if($orden->envio>0)
+          		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
+        	else
+        		echo "<b class='text-success'>GRATIS</b>";  ?></td>
         </tr>    
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong>Descuento</strong></div></td>

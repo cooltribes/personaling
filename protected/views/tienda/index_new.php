@@ -150,7 +150,10 @@
 					</ul>  
 				</div>	
 			</li>
+D
+			<?php if (Yii::app()->params['mostrarMarcas']): ?>
 			<li class="item">
+
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
@@ -182,8 +185,13 @@
 						<li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
 					</ul>  	
 				</div>	
+
 			</li>
+			<?php endif; ?>
 			<li class="item" id="li_chic">
+
+<!-- 			<li class="item" id="li_chic">
+>>>>>>> 6b3c77a4efba5677a5d32cc4c06a0cfd1ce8987a
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
 						<div class="dropdown100Chic" >
@@ -215,7 +223,7 @@
 						?>
 					</ul>  
 				</div>			
-			</li>
+			</li> -->
 			<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search"> 
@@ -356,9 +364,9 @@
             	
 
             	$(".hijo").css('outline','none');
-            	$(this).css('outline','solid 2px #6c1b4f');            	
+            	$(this).css('outline','solid 2px #ffd660');            	
             	$('.padre').css('outline','none');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px #6c1b4f');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
             	$('#cathid').val($(this).attr('value'));
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
@@ -372,7 +380,7 @@
             	
 				$(".hijo").css('outline','none');
             	$(".padre").css('outline','none');
-            	$(this).css('outline','solid 2px #6c1b4f');
+            	$(this).css('outline','solid 2px #ffd660');
             	$('#padrehid').val($(this).attr('value'));
             	$('#cathid').val('0');
             	//$('#catalogo').remove();
@@ -388,7 +396,7 @@
             	$(".padre").css('outline','none');
             	$('#padrehid').val($(this).attr('value'));
             	$('#cathid').val('0');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px #6c1b4f');
+            	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 

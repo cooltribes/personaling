@@ -2,7 +2,19 @@
 $this->breadcrumbs = array(
     'Tu Personal Shopper',
 );
+$user = User::model()->findByPk(Yii::app()->user->id);
+$status_register = -1;
+$perfil_propio = 1;
+if (isset($user)){
+	$status_register = 	$user->status_register;
+	 if ($user->status_register !=User::STATUS_REGISTER_ESTILO)
+	 	$perfil_propio = 0;
+} else {
+	$perfil_propio = 0; 
+}	
+ $model = new RegistrationForm;
 ?>
+
 <div class="container">
     <div class="span12">
         <!--    <h1>Todos los looks</h1>-->
@@ -11,36 +23,38 @@ $this->breadcrumbs = array(
             <div class="span6 text_align_right">
                 <?php
                 $this->widget('bootstrap.widgets.TbButton', array(
-                    'label' => 'Looks para mí',
-                    'buttonType' => 'button',
-                    'type' => 'danger',
-                    'size' => 'large',
-                    'htmlOptions' => array(
-                        'id' => 'btnMatch',
-                        'onclick' => 'js:clickPersonal()',
-                    ),
-                ));
-                ?>
-
-            </div>
-            <div class="span6">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Todos los looks',
                     'buttonType' => 'button',
-                    //'type' => 'danger',
+                    'type' => $todosLosLooks?'danger':'',
                     'size' => 'large',
                     //'disabled' => true,
                     'htmlOptions' => array(
                         'id' => 'btnTodos',
                         'onclick' => 'js:clickTodos()',
+                        'role' => 'button',
+                        'class' => $todosLosLooks?'':'btn-rectangle',
+                        'data-toggle' => 'modal',
                     ),
                 ));
                 ?>
-
+            </div>
+            <div class="span6">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'label' => 'Looks para ti',
+                    'buttonType' => 'button',
+                    
+                    'type' => $todosLosLooks?'':'danger',
+                    'size' => 'large',
+                    'htmlOptions' => array(
+                        'id' => 'btnMatch', 
+                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                        'class' => $todosLosLooks?'btn-rectangle':'',
+                    ),
+                ));
+                ?>
             </div>
         </div>
-
 
 
     </div>
@@ -106,6 +120,7 @@ $this->breadcrumbs = array(
                                 $('#div_ocasiones').html(data.div);
                                 $('#div_ocasiones').show();
                                 $('#div_shopper').hide();
+                                $('.sub_menu').removeClass('hide');
                               }",
                                                 'data' => array('padreId' => $categoria->id)
                                                     ), array(//htmlOptions
@@ -142,12 +157,12 @@ $this->breadcrumbs = array(
                                 <li><a class="btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
                                         <?php
                                         if (!$key) {
-                                            echo "Hasta Bs. {$rango['end']} ";
+                                            echo "Hasta {$rango['end']} ".Yii::t('contentForm', 'currSym');
                                         } else {
                                             if ($key < 3) {
-                                                echo "De Bs. {$rango['start']} a Bs. {$rango['end']} ";
+                                                echo "De {$rango['start']} a {$rango['end']} ".Yii::t('contentForm', 'currSym');
                                             } else {
-                                                echo "Más de Bs. {$rango['start']} ";
+                                                echo "Más de {$rango['start']} ".Yii::t('contentForm', 'currSym');
                                             }
                                         }
                                         ?>
@@ -249,10 +264,10 @@ $this->breadcrumbs = array(
         <input type="hidden" value="" id="ocasion_actual" />
 
         <input type="hidden" id="rango_actual" name="precios" value="" />     
-        <input type="hidden" id="perfil_propio" name="perfil_propio" value="1" />     
+        <input type="hidden" id="perfil_propio" name="perfil_propio" value="<?php echo $perfil_propio; ?>" />     
 
 
-        <div class="navbar-inner sub_menu">
+        <div class="navbar-inner sub_menu hide">
             <div id="div_ocasiones"></div>
             <div id="div_shopper" style="display: none">
                 <form id="form_shopper">
@@ -489,8 +504,76 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     
 </div>  
-
 <?php $this->endWidget() ?>
+
+<!-- Modal Registro ON -->
+<div id="ModalRegistro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+	'action'=>Yii::app()->createUrl("/user/registration"),
+	'id'=>'registration-form',
+	'htmlOptions'=>array('class'=>'personaling_form'),
+    //'type'=>'stacked',
+    'type'=>'inline',
+	'enableAjaxValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+)); ?>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Regístrate</h3>
+    </div>
+    <div class="modal-body">
+            <div class="row" id="boton_facebook">
+                <a title="Registrate con facebook" class="transition_all span3 offset1" href="#">Regístrate con Facebook</a>
+            </div>
+            <section class="bg_color3 margin_top_xsmall  padding_small_top padding_small_right padding_small_left">
+        
+                    <fieldset>
+                        <legend class="text_align_center no_margin_bottom">O <br> llena los campos a continuación: </legend>  
+                        <div class="control-group row-fluid">
+                        	<div class="controls">
+                        	<!--[if IE 9]> 
+                        		<label>Correo:</label>
+                        	<![endif]--> 
+                        	<?php echo $form->textFieldRow($model,'email',array("class"=>"span12")); 
+                        	echo $form->error($model,'email');
+                        	?>
+                        	</div>
+                        </div>
+
+                        <div class="control-group row-fluid">
+                        	<div class="controls">	
+                        	<!--[if IE 9]> 
+                        		<label>Contraseña:</label>
+                        	<![endif]--> 
+                        	<?php echo $form->passwordFieldRow($model, 'password', array('class'=>'span12')); 
+                        	echo $form->error($model,'password');
+                        	?>
+                        	</div>
+                        </div>
+                           <hr>
+                            Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="#" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="#" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
+                    </fieldset>
+  
+            </section>
+    </div>    
+    <div class="modal-footer">        
+        		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+		    'label'=>'Siguiente',
+		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+		    'size'=>'large', // null, 'large', 'small' or 'mini'
+		   'htmlOptions'=>array('class'=>'span5'),
+		)); ?>
+    </div>
+    <?php $this->endWidget(); ?>  
+</div>
+<!-- Modal Registro OFF -->
+
+ 
+
+
 
 <script type="text/javascript">
 
@@ -655,8 +738,8 @@ if (isset(Yii::app()->session["modalOn"])) {
 
         $("#btnShoppers").click(function(e) {
             e.preventDefault();
+            $('.sub_menu').removeClass('hide');
         });
-
 
 
     });

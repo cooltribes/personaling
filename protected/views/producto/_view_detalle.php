@@ -406,7 +406,7 @@
                 <div class="span3"><p class="padding_top_small"><?php echo Yii::t('contentForm','Our deliveries through'); ?>:</p></div>
               </div>
               <div class="row">
-                <div class="span3"><img height="60px"  src="<?php echo Yii::app()->baseUrl; ?>/images/logos_carriers.png"/></div>
+                <div class="span3"><img height="60px"  src="<?php echo Yii::app()->baseUrl.'//images/'.Yii::app()->language.'/logos_carriers.png'; ?>"/></div>
               </div>
             </div>
             </div>
@@ -499,18 +499,8 @@ $cont=0;
       }// foreach
       
     } // count
-else if($count == 0){
   ?>
-  <div class="braker_horz_top_1 hidden-phone">
-    <h3><?php echo Yii::t('contentForm','Recommended Looks with this product'); ?></h3>
-    
-    <?php
-  echo CHtml::image(Yii::app()->request->baseUrl.'/images/Ups_Personaling.jpg',"Imagen ", array("width" => "370", "height" => "370",'class'=>'img_1'));
-  
-}   
-    
-      ?>  
-                     </div>
+
       </div>
 
   </div>

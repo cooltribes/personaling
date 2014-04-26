@@ -194,7 +194,13 @@ $usuario = User::model()->findByPk($orden->user_id);
           <tr>
             <td>21/12/2012 - 12:21 PM</td>
             <td>Delivery</td>
-            <td>Zoom</td>
+            <td><?php
+
+            
+            echo $orden->shipCarrier;
+            }?>
+            
+            </td>
             <td>0,00 Kg.</td>
 
             <td><?php echo $orden->envio+$orden->seguro.' '.Yii::t('contentForm', 'currSym'); ?></td>
@@ -302,7 +308,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
           ?>
           <tr>
-            <td><?php echo Yii::t('contentForm','New Order');  ?></td>
+            <td><?php echo Yii::t('contentForm','New order');  ?></td>
             <td><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?></td>
             <td><?php echo date("d/m/Y",strtotime($orden->fecha)); ?></td>
           </tr>
@@ -517,7 +523,11 @@ $usuario = User::model()->findByPk($orden->user_id);
         </tr>
         <tr>
           <td><?php echo Yii::t('contentForm','Shipping and Transport');  ?></td>
-          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; ?></td>
+          <td><?php 
+          	if($orden->envio>0)
+          		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
+        	else
+        		echo "<b class='text-success'>GRATIS</b>";  ?></td>
         </tr>
        <?php if($orden->iva>0){?>
 		<tr>

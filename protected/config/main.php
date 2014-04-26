@@ -23,11 +23,13 @@ return array(
 		'application.widgets.ctree.*',
 		'application.components.*',
 		'application.modules.user.*',
-        'application.modules.user.models.*',
-        'application.modules.user.components.*',
-        'application.helpers.*',
-        'application.extensions.validators.age.*',
-        'ext.yii-mail.YiiMailMessage',
+                'application.modules.user.models.*',
+                'application.modules.user.components.*',
+                'application.helpers.*',
+                'application.extensions.validators.age.*',
+                'ext.yii-mail.YiiMailMessage',
+                'ext.fancybox',
+                'ext.AzPay',
 	),
 
 	'modules'=>array(
@@ -108,6 +110,7 @@ return array(
 		        ),	
 		'user'=>array(
 			// enable cookie-based authentication
+			'class' => 'WebUser',
 			'allowAutoLogin'=>true,
 			'loginUrl'=>array('/user/login'),
 		),
@@ -254,7 +257,20 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
-		
+                'metodosPago'=> array(
+                    'bkCard' => true,
+                    'paypal' => true,
+                    'depositoTransferencia' => false,
+                    'instapago' => false,
+                    'mercadopago' => false,
+				                        
+                    ),
+                  'PRONUNCIACION' => 'Venezolana', 
+				    'currSym'=>'Bs',
+				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
+				    'IVA' => '0.12',
+				    'IVAtext' => '12%',	
+				    'registro' => true,	  
 		
 	),
 );

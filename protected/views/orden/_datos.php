@@ -2,6 +2,7 @@
 	
 	$looks=0;
 	$indiv=0;
+	$xlook=0;
 	
 echo"<tr>";
 	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
@@ -15,36 +16,22 @@ echo"<tr>";
    		echo "<td>".date("d-m-Y H:i:s",strtotime($data->fecha))."</td>";
 	else
 		echo "<td></td>";
-	$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
-	 $indiv=OrdenHasProductotallacolor::model()->countIndividuales($data->id);
-	 $looks=OrdenHasProductotallacolor::model()->countLooks($data->id);
+		$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
+		$indiv=OrdenHasProductotallacolor::model()->countIndividuales($data->id);
+		$looks=OrdenHasProductotallacolor::model()->countLooks($data->id);
+		$xlook=OrdenHasProductotallacolor::model()->countPrendasEnLooks($data->id);
 		
-	echo "<td><strong>Looks</strong>:     (".$looks.")<br><strong>Prendas</strong>: (".$indiv.")</td>"; // totales en look y indiv
+	echo "<td>".$looks."</td><td>".$indiv."</td><td>".($indiv+$xlook)."</td>"; // totales en look y indiv
 	
 	echo "<td>".Yii::app()->numberFormatter->format("#,##0.00",$data->total)."</td>"; // precio
 	//echo "<td>".$data->total."</td>"; // monto total
 	//--------------------
 	echo "<td>";
         
-        if(count($data->detalles)){
-            foreach ($data->detalles as $detallePago){
-            
-            if($detallePago->tipo_pago==1)
-		echo "Dep. o Transfer"; // metodo de pago
-            else if($detallePago->tipo_pago==2)
-                    echo "Tarjeta de Crédito"; 
-            else if($detallePago->tipo_pago==3)
-                    echo "Uso de Balance"; 
-            else if($detallePago->tipo_pago==4)
-                    echo "MercadoPago"; 
-            else
-                    echo "-ERROR EN EL PAGO-";
-            echo "</br>";
-            
-        }
-        }else{
-            echo "Dep. o Transfer"; 
-        }
+      echo $data->getTiposPago();  
+        
+        
+       
 	echo "</td>";
 	
 	//----------------------Estado

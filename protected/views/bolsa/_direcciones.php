@@ -30,8 +30,7 @@
 						}
 					else
 						echo CHtml::hiddenField('billAdd','0',array('class'=>'hidBill'));
-		            echo CHtml::hiddenField('admin',$admin);
-    				echo CHtml::hiddenField('user',$user);
+		           
 					 
 		            echo "
 		            <div class='row'>		            

@@ -17,7 +17,7 @@ $this->breadcrumbs=array(
 
 <div class="row">
   <div class="span12">
-    <div class="box_1 bg_mancha_1 ">
+    <div class="box_1">
       <div class="padding_medium">
         <div class="page-header">
           <h1>Acerca Personaling</h1>

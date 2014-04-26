@@ -302,6 +302,8 @@ class AdminController extends Controller
 	
 	 
 	public function actionReporteXLS(){
+		ini_set('memory_limit','256M'); 
+
 		$criteria=Yii::app()->session['userCriteria'];
 		$criteria->select = array('t.id');
 		$dataProvider = new CActiveDataProvider('User', array(
@@ -348,7 +350,7 @@ class AdminController extends Controller
 						->setCellValue('I1', 'Ingresos al portal')
 						->setCellValue('J1', 'Ultimo Ingreso')
 						->setCellValue('K1', 'Fecha de Registro');
-		foreach(range('A','I') as $columnID) {
+		foreach(range('A','K') as $columnID) {
     		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
         	->setAutoSize(true);
 		}  
@@ -413,6 +415,7 @@ class AdminController extends Controller
 		 
 			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 			$objWriter->save('php://output');
+			ini_set('memory_limit','128M'); 
 			Yii::app()->end();
 		
 	}
@@ -1055,7 +1058,6 @@ if(isset($_POST['Profile']))
 //                $this->redirect(array('admin/compradir'));
 //                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'https'));
                 $this->redirect($this->createAbsoluteUrl('/bolsa/index',array(
-                    "admin" => 1,
                     "user" => $id,
                     )));
 

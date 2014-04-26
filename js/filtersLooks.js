@@ -439,11 +439,19 @@ function clickPerfil(idPerfil){
 }
 
 //Al hacer click en el boton Looks para *
-function clickPersonal(){    
+function clickPersonal(status_register,urltuestilo,urltutipo){    
     
+    if (status_register == -1){
+    	$('#ModalRegistro').modal();
+    } else if (status_register == 0){
+    	window.location.replace(urltutipo);
+    } else if (status_register == 1){
+    	window.location.replace(urltuestilo);
+    } else {
     $("#btnMatch").addClass("btn-danger");
     $("#btnTodos").removeClass("btn-danger");
-    
+    $("#btnMatch").removeClass("btn-rectangle");
+    $("#btnTodos").addClass("btn-rectangle");
     if(!perfilActivo){
         $("#perfil_propio").val("1");
     }
@@ -460,6 +468,7 @@ function clickPersonal(){
     $("#rango_actual").val("");
         
     refresh(true);
+    }
     
 }
 
@@ -470,6 +479,8 @@ function clickTodos(){
     console.log("Todos");
     $("#btnTodos").addClass("btn-danger");
     $("#btnMatch").removeClass("btn-danger");
+    $("#btnTodos").removeClass("btn-rectangle");
+    $("#btnMatch").addClass("btn-rectangle");   
     $("#perfil_propio").val("0");
     
      //desmarcar los filtros de ocasiones y shopper, ocultar divs., desmarcar precios.

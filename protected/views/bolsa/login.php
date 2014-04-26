@@ -19,8 +19,8 @@
 <div class="progreso_compra">
       <div class="clearfix margin_bottom">
         <div class="first-done"><?php echo Yii::t('contentForm','Authentication'); ?></div>
-        <div class="middle-not_done"><?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?></div>
-        <div class="middle-not_done"><?php echo Yii::t('contentForm','Payment <br> method'); ?></div>
+        <div class="middle-not_done dos"><?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?></div>
+        <div class="middle-not_done tres"><?php echo Yii::t('contentForm','Payment <br> method'); ?></div>
         <div class="last-not_done"><?php echo Yii::t('contentForm','Confirm <br>purchase'); ?></div>
       </div>
   </div>
@@ -42,8 +42,8 @@
 	
   <div class="row">
     <div class="span6 offset3">
-
-      <article class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
+      <h1><?php echo Yii::t('contentForm','Confirm your credentials'); ?></h1>
+      <article class="bg_color3 margin_top text_align_center margin_bottom_small padding_small box_1">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			'id'=>'login-form',
 			'htmlOptions'=>array('class'=>'personaling_form'),
@@ -55,7 +55,7 @@
 			),
 		)); ?>
           <fieldset>
-            <legend > <?php echo Yii::t('contentForm','Confirm your credentials'); ?>: </legend>
+            <!-- <legend >  </legend> -->
             
             <div class="control-group">
             	 <div class="controls"> 
@@ -76,12 +76,13 @@
             <?php //echo $form->checkBoxRow($model,'rememberMe'); ?>
             
             
-        <div class="form-actions">
+        <div class="">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
             'label'=>Yii::t('contentForm','Next'),
+            'htmlOptions'=>array('class'=>'span5'),
         )); ?>
 	</div>
           </fieldset>

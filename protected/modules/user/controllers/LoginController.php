@@ -56,7 +56,7 @@ class LoginController extends Controller
 						if($user->profile->sex == 2) 
 							$this->redirect(array('/tienda/look'));
 						else{
-							if ($user->status_register == User::STATUS_REGISTER_ESTILO){
+							if ($user->status_register == User::STATUS_REGISTER_ESTILO || !Yii::app()->params['registro']){
 								//Yii::trace('username:'.$model->username.' Error ESTILO: '.$user->status_register, 'registro');
 							if (Yii::app()->user->returnUrl=='/index.php')
 								$this->redirect(Yii::app()->controller->module->returnUrl);

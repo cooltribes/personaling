@@ -1,6 +1,13 @@
 <?php
 
 /**
+ *  status_comision puede ser:
+ * - 0 No se paga comision
+ * - 1 Pendiente de pago
+ * - 2 Pagada  
+ */
+
+/**
  * This is the model class for table "{{orden_has_productotallacolor}}".
  *
  * The followings are the available columns in table '{{orden_has_productotallacolor}}':
@@ -10,12 +17,20 @@
  * @property integer $look_id
  * @property double $precio
  * @property int $devolucion_id
+ * @property double $comision
+ * @property int $tipo_comision
+ * @property int $status_comision 
  * 
  * The followings are the available model relations:
  * @property PrecioTallaColor $preciotallacolor
  */
 class OrdenHasProductotallacolor extends CActiveRecord
 {
+    
+    const STATUS_NULO = 0;
+    const STATUS_PENDIENTE = 1;
+    const STATUS_PAGADA = 2;
+    
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -60,6 +75,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		return array(
 			'preciotallacolor' => array(self::BELONGS_TO, 'Preciotallacolor', 'preciotallacolor_id'),
 			'myorden' => array(self::BELONGS_TO, 'Orden', 'tbl_orden_id'),
+			'look' => array(self::BELONGS_TO, 'Look', 'look_id'),
 		);
 	}
 
@@ -100,6 +116,37 @@ class OrdenHasProductotallacolor extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	public function vendidosComision($id)
+	{
+
+            $criteria=new CDbCriteria;
+
+            //Las ventas con comision
+            $criteria->compare('status_comision', OrdenHasProductotallacolor::STATUS_PAGADA);
+
+            $criteria->with['look.user'] = array(
+               // 'select' => false,
+                'joinType' => 'INNER JOIN',
+                'condition' => 'user.id = :id',
+                'params' => array(":id" => $id),                  
+            );
+
+            $criteria->together = true;
+
+            //Agregar el filtro por devolucion = 0
+
+
+//		$criteria->compare('tbl_orden_id',$this->tbl_orden_id);
+//		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
+//		$criteria->compare('cantidad',$this->cantidad);
+//		$criteria->compare('look_id',$this->look_id);
+//		$criteria->compare('precio',$this->precio);
+//		$criteria->compare('devolucion_id',$this->devolucion_id);
+
+            return new CActiveDataProvider($this, array(
+                    'criteria'=>$criteria,
+            ));
+	}
 	
 	public function countLooks($id){
 			
@@ -135,7 +182,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		return $looks;
 	}
 	
-		public function precioLook($id, $look){
+        public function precioLook($id, $look){
 			
 		$sql="select sum(precio) from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id=".$look;	
 		return  Yii::app()->db->createCommand($sql)->queryScalar();
@@ -148,4 +195,59 @@ class OrdenHasProductotallacolor extends CActiveRecord
 		$result=Yii::app()->db->createCommand($sql)->queryAll();
 		return $result;
 	}
+        
+        public function countPrendasEnLooks($id){
+			
+		$sql="select count(preciotallacolor_id) as counter from tbl_orden_has_productotallacolor where tbl_orden_id=".$id." and look_id<>0";	
+		$pr=Yii::app()->db->createCommand($sql)->queryAll();
+		return $pr[0]['counter'];
+	}
+        
+        /*Obtiene la comision aplicada formateada de acuerdo al tipo (% o fijo)*/
+        function getComision() {
+           
+            $comision = $this->comision . " ";
+            
+            //Porcentaje
+            if($this->tipo_comision == 1){
+                
+                $comision .= "%";
+                
+            }else if($this->tipo_comision == 2){
+                
+                $comision .= Yii::t('contentForm', 'currSym');
+                
+            }
+            
+            return $comision;
+        }
+        
+        function getMontoTotal() {
+            return $this->precio * $this->cantidad;
+        }
+        
+        /*Obtiene la ganancia */
+        function getGanancia() {
+           
+            $comision = $this->comision;
+            $tipoComision = $this->tipo_comision;                     
+            
+            //Si la comisión es por Porcentaje
+            if($tipoComision == 1){
+
+                $comision /= 100;
+                
+                return Yii::app()->numberFormatter->formatDecimal($this->getMontoTotal() * $comision);                                                         
+
+                //Si la comisión es un monto fijo
+            }else if($tipoComision == 2){
+
+                return Yii::app()->numberFormatter->formatDecimal($comision * $this->cantidad);
+
+            } 
+            
+        }
+        
+        
+
 }

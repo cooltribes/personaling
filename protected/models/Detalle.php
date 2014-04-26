@@ -1,5 +1,14 @@
 <?php
 // Estado: 0 -> default, 1 -> Aprobado, 2 -> rechazado
+
+/*
+ * TIPO DE PAGO: 
+ * 1 - Deposito / Transf
+ * 2 - TDC
+ * 3 - Balance
+ * 4 - Banking Card (Aztive)
+ * 5 - PayPal (Aztive)
+ */
 /**
  * This is the model class for table "{{detalle}}".
  *
@@ -20,7 +29,15 @@
  */
 class Detalle extends CActiveRecord
 {
-	/**
+
+    const DEP_TRANSF = 1;
+    const TDC_INSTAPAGO = 2;
+    const USO_BALANCE = 3;
+    const TDC_AZTIVE = 4;
+    const PAYPAL_AZTIVE = 5;
+    
+    
+        /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Detalle the static model class

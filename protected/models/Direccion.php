@@ -15,6 +15,7 @@
  * @property string $pais
  * @property string $telefono
  * @property integer $user_id
+ * @property integer $codigo_postal_id
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -70,11 +71,12 @@ class Direccion extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
-			'ciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id')
+			'ciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id'),
+			'codigopostal' => array(self::BELONGS_TO, 'CodigoPostal', 'codigo_postal_id')
 			
 		);
 	}
-
+ 
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -94,7 +96,7 @@ class Direccion extends CActiveRecord
 			'user_id' => 'User',
 		);
 	}
-
+	
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.

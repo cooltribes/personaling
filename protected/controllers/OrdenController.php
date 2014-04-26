@@ -12,7 +12,7 @@ class OrdenController extends Controller
 		);
 	}
 	 
-		/**
+        /**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter. 
 	 * @return array access control rules 
@@ -26,7 +26,7 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte','reportexls'),
+				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte','reportexls','adminxls'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -414,14 +414,123 @@ public function actionReportexls(){
             $criteria = $dataProvider->getCriteria();
             $criteria->order = 'fecha DESC';
             $dataProvider->setCriteria($criteria);       
-
+			Yii::app()->session['ordenCriteria']=$dataProvider->getCriteria();
             $this->render('admin', array('orden' => $orden,
                 'dataProvider' => $dataProvider,
             ));
 
 	}
 	
-        
+     public function actionAdminXLS()
+	{  
+		ini_set('memory_limit','256M'); 
+
+		$criteria=Yii::app()->session['ordenCriteria'];
+		$criteria->select = array('t.id');
+		$dataProvider = new CActiveDataProvider('Orden', array(
+                    'criteria' => $criteria,
+                    
+        ));
+		$pages=new CPagination($dataProvider->totalItemCount);
+		$pages->pageSize=$dataProvider->totalItemCount;
+		$dataProvider->setPagination($pages);
+	
+		
+		
+		//print_r($pages);
+		
+		$title = array(
+		    'font' => array(
+		     
+		        'size' => 14,
+		        'bold' => true,
+		        'color' => array(
+		            'rgb' => '000000'
+		        ),
+	    ));
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("Reporte-Ordenes")
+		                         ->setSubject("Reporte de Ordenes")
+		                         ->setDescription("Reporte de Ordenes")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+		$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'ID')
+						->setCellValue('B1', 'Usuaria')
+						->setCellValue('C1', 'Fecha')
+						->setCellValue('D1', 'Looks')
+						->setCellValue('E1', 'Prendas Individuales')
+						->setCellValue('F1', 'Total Prendas')
+						->setCellValue('G1', 'Monto (Bs)')
+						->setCellValue('H1', 'Método de Pago')
+						->setCellValue('I1', 'Estado');
+						
+		foreach(range('A','I') as $columnID) {
+    		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        	->setAutoSize(true);
+		}  
+			$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+
+		
+		
+		$fila=2;
+		foreach($dataProvider->getData() as $data){
+				
+			$orden=Orden::model()->findByPk($data->id);
+			$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
+			$ohptc= new OrdenHasProductotallacolor;
+			
+		 
+			
+			$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , $data->id) 
+							->setCellValue('B'.$fila , $orden->user->username) 
+							->setCellValue('C'.$fila , date("d-m-Y H:i:s",strtotime($orden->fecha)))
+							->setCellValue('D'.$fila , $ohptc->countLooks($data->id))
+							->setCellValue('E'.$fila , $ohptc->countIndividuales($data->id))
+							->setCellValue('F'.$fila , $ohptc->countPrendasEnLooks($data->id)) 
+							->setCellValue('G'.$fila , number_format($orden->total,2,',','.')) 
+							->setCellValue('H'.$fila , $orden->getTiposPago('reporte')) 
+							->setCellValue('I'.$fila , $orden->textestado);  
+					$fila++;
+	
+		}
+		$objPHPExcel->setActiveSheetIndex(0);
+ 
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="ReporteOrdenes.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			ini_set('memory_limit','128M'); 
+		
+			Yii::app()->end();
+		
+	}
+	   
         /**          
          * Obtiene el filtro con id $id          
          */
@@ -903,7 +1012,7 @@ public function actionValidar()
 						}
 						// Subject y body para el correo
 						$subject = 'Pago aceptado';
-						$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+						$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
 						
 						$usuario = Yii::app()->user->id;
 						//$excede = ($detalle->monto-$porpagar);	
@@ -921,7 +1030,7 @@ public function actionValidar()
 						} // si es mayor hace el balance
 						
 						/*Pagar comision a las PS involucradas en la venta*/
-                                                Orden::model()->pagarComisiones($orden); 
+                                                //Orden::model()->pagarComisiones($orden); 
                                                 
 							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
 					
@@ -967,7 +1076,7 @@ public function actionValidar()
 							if($orden->save()){
 								
 								$subject = 'Pago aceptado';
-								$body = '<h2> ¡Genial! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra. <br/><br/> ';
+								$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
 								
 								$usuario = Yii::app()->user->id;
 								
@@ -984,7 +1093,7 @@ public function actionValidar()
 								$balance->save();
                                                                 
                                                                 /*Pagar comision a las PS involucradas en la venta*/
-                                                                Orden::model()->pagarComisiones($orden); 
+                                                                //Orden::model()->pagarComisiones($orden); 
 									
 								
 							}
@@ -1001,7 +1110,7 @@ public function actionValidar()
 								$balance->tipo=1;								
 								if($balance->save()){
 									$subject = 'Pago insuficiente';
-									$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), '').' Bs para pagar toda la orden.<br/><br/> ';
+									$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));
 									$estado = new Estado;
 																
 									
@@ -1033,7 +1142,7 @@ public function actionValidar()
 					else{
 						
 							$subject = 'Pago insuficiente';
-							$body = '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan '.$orden->total-$detalle->monto.' Bs para pagar toda la orden.<br/><br/> ';
+							$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));							
 							$estado = new Estado;
 																	
 							$estado->estado = 7; // pago insuficiente

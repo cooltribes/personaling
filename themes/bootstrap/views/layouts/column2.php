@@ -1,8 +1,15 @@
 <?php /* @var $this Controller */ ?>
-<?php $this->beginContent('//layouts/main'); ?>
+<?php 
+if (Yii::app()->language == "es_ve")
+	$this->beginContent('//layouts/main_ve');
+if (Yii::app()->language == "es_es") 
+	$this->beginContent('//layouts/main_es');
+ 
+?>
 <div class="row">
     <div class="span12">
         <div id="content">
+        	
             <?php echo $content; ?>
         </div><!-- content -->
     </div>

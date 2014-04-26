@@ -1,6 +1,12 @@
-<!-- tipopago 1: transferencia
+<!-- 
+     tipopago 1: transferencia
      tipopago 2: Tarjeta credito
-     tipopago 3: puntos o tarjeta de regalo -->
+     tipopago 3: puntos o tarjeta de regalo 
+     tipopago 4: MercadoPago
+     tipopago 5: Tarjeta Aztive
+     tipopago 6: PayPal
+     tipopago 7: Saldo
+-->
 <?php
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 if (!Yii::app()->user->isGuest) { // que este logueado
@@ -16,17 +22,15 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                         ),
                                         'htmlOptions'=>array('class'=>''),
                                 )); 
-echo CHtml::hiddenField('admin',$admin);
-echo CHtml::hiddenField('user',$user);
                                 ?>
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
-      <div class="middle-past">
+      <div class="middle-past dos">
         <?php echo Yii::t('contentForm','Shipping <br/>and billing<br/> address'); ?>
     </div>
-      <div class="middle-done">
+      <div class="middle-done tres">
         <?php echo Yii::t('contentForm','Payment <br> method'); ?>
     </div>
       <div class="last-not_done">
@@ -53,8 +57,11 @@ echo CHtml::hiddenField('user',$user);
        <input type="radio" name="optionsRadios" id="mercadopago" value="option4" data-toggle="collapse" data-target="#mercadoPago">
         <button type="button" id="btn_mercadopago" class="btn btn-link" data-toggle="collapse" data-target="#mercadoPagoCol"> MercadoPago </button>
        -->
-            <div class="accordion" id="accordion2">	
-<!--                    <div class="accordion-group">
+            <div class="accordion" id="accordion2">
+                <?php 
+                if(Yii::app()->params['metodosPago']['mercadopago']){                
+                ?>
+                    <div class="accordion-group">
                             <div class="accordion-heading">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="btn_mercadopago">
                                             <label class="radio">
@@ -68,146 +75,213 @@ echo CHtml::hiddenField('user',$user);
                                     </div>
 
                             </div>
-                    </div>-->
-
-                    <div class="accordion-group">
-                            <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
-                                            <label class="radio">
-                                                    <input type="radio" name="optionsRadios" id="deposito" value="option1"> 
-                                                    <?php echo Yii::t('contentForm','Deposit or Transference'); ?>
-                                            </label>
-                                    </a>
-                            </div>
-                            <div class="padding_left margin_bottom_medium collapse" id="collapseTwo">
-                                    <div class="well well-small" >
-                                    <?php echo Yii::t('contentForm','Bank information'); ?>
-                                    </div>
-                            </div>
-                            </div>
-
-                            <div class="accordion-group">
-                                    <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree" id="btn_tarjeta">
-                                                <label class="radio">
-                                                    <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> 
-                                                    <?php echo Yii::t('contentForm','Credit Card'); ?>
-
-                                            </label>
-                                    </a>
-                            </div>
-                            <div class="collapse" id="collapseTree">
-                                     <div class="well well-small" >
-                                        <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago'); ?> -->
-                                                <h5 class="braker_bottom"><?php echo Yii::t('contentForm','Details of your credit card'); ?></h5>            
-
-
-
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'nombre',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Name printed on the credit card'))); 
-                                                                    ?>
-                                                            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                                                            </div>
-                                                    </div>
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'numero',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Card numbers'))); 
-                                                                    ?>
-                                                            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                                                            </div>
-                                                    </div>
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'codigo',array('class'=>'span2','placeholder'=>Yii::t('contentForm','Security Code'))); 
-                                                                    ?>
-                                                            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                                                            </div>
-                                                    </div>
-
-                                                                    <div class="control-group">
-                                                                            <?php echo Yii::t('contentForm','Expiration'); ?> *
-                                                            <div class="controls">
-                                                    <?php echo $form->dropDownList($tarjeta,'month',array('0'=>'Mes','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12'),array('class'=>'span1','placeholder'=>Yii::t('contentForm','Month'))); ?>
-                                                    <?php echo $form->dropDownList($tarjeta,'year',array('0'=>'Año','2013'=>'2013','2014'=>'2014','2015'=>'2015','2016'=>'2016','2017'=>'2017','2018'=>'2018','2019'=>'2019','2020'=>'2020'),array('class'=>'span1','placeholder'=>Yii::t('contentForm','Year'))); ?>
-                                                            <?php echo $form->hiddenField($tarjeta,'vencimiento'); ?>
-                                                                    <?php echo $form->error($tarjeta,'vencimiento'); ?>
-
-                                                            </div>
-                                                    </div>
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'ci',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Identity card'))); 
-                                                                    ?>
-                                                            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                                                            </div>
-                                                    </div>
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'direccion',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Address'))); 
-                                                                    ?>
-
-                                                            </div>
-                                                    </div>            	
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'ciudad',array('class'=>'span5','placeholder'=>Yii::t('contentForm','City'))); 
-                                                                    ?>
-
-                                                            </div>
-                                                    </div>			
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'estado',array('class'=>'span5','placeholder'=>Yii::t('contentForm','Province'))); 
-                                                                    ?>
-                                                            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                                                            </div>
-                                                    </div>	
-
-                                                                    <div class="control-group"> 
-                                                            <div class="controls">
-                                                                    <?php echo $form->textFieldRow($tarjeta,'zip',array('class'=>'span2','placeholder'=>Yii::t('contentForm','Zip code'))); 
-                                                                    ?>
-                                                            <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-                                                            </div>
-                                                    </div>		          					
-
-                                                                    <?php echo CHtml::hiddenField('idDireccion',Yii::app()->getSession()->get('idDireccion') ); 
-                                                                     $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));?>
-                                            <div class="text_center_align">
-                                                    <p><?php echo Yii::t('contentForm','This transaction will be processed securely through the platform:'); ?>:</p>	
-                                                    <img src="<?php echo Yii::app()->baseUrl ?>/images/Instapago-logo.png" width="77">
-                                                    <img src="<?php echo Yii::app()->baseUrl ?>/images/Banesco-logo.png" width="77">
-                                            </div>								
-                                                    <div class="form-actions">
-                                                <?php $this->widget('bootstrap.widgets.TbButton', array(
-                                                'buttonType'=>'submit',
-                                                'type'=>'warning',
-                                                'size'=>'large',
-                                                'label'=>Yii::t('contentForm','Next'),
-                                            )); 
-                                            //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
-                                            ?>
-                                            </div>
-
-
-                                            </div>	
-                                    </div>
-                            </div>
                     </div>
+                <?php                 
+                } ?>
+
+                <?php 
+                //DEPOSITO O TRANSFERENCIA
+                if(Yii::app()->params['metodosPago']['depositoTransferencia']){                
+                ?>
+                <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
+                                <label class="radio">
+                                    <input type="radio" name="optionsRadios" id="deposito" value="option1"> 
+                                    <?php echo Yii::t('contentForm', 'Deposit or Transference'); ?>
+                                </label>
+                            </a>
+                        </div>
+                        <div class="padding_left margin_bottom_medium collapse" id="collapseTwo">
+                            <div class="well well-small" >
+                                <?php echo Yii::t('contentForm', 'Bank information'); ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                 
+                <?php 
+                //INSTAPAGO
+                if(Yii::app()->params['metodosPago']['instapago']){                
+                ?>
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree" id="btn_tarjeta">
+                                <label class="radio">
+                                    <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> 
+                                    <?php echo Yii::t('contentForm', 'Credit Card'); ?>
+
+                                </label>
+                            </a>
+                        </div>
+                        <div class="collapse" id="collapseTree">
+                            <div class="well well-small" >
+                                <!-- Haz click en "Completar compra" para continuar. <?php //echo 'Pago: '.Yii::app()->getSession()->get('tipoPago');  ?> -->
+                                <h5 class="braker_bottom"><?php echo Yii::t('contentForm', 'Details of your credit card'); ?></h5>            
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'nombre', array('class' => 'span5', 'placeholder' => Yii::t('contentForm', 'Name printed on the credit card')));
+                                        ?>
+                                        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'numero', array('class' => 'span5', 'placeholder' => Yii::t('contentForm', 'Card numbers')));
+                                        ?>
+                                        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'codigo', array('class' => 'span2', 'placeholder' => Yii::t('contentForm', 'Security Code')));
+                                        ?>
+                                        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <?php echo Yii::t('contentForm', 'Expiration'); ?> *
+                                    <div class="controls">
+                                        <?php echo $form->dropDownList($tarjeta, 'month', array('0' => 'Mes', '01' => '01', '02' => '02', '03' => '03', '04' => '04', '05' => '05', '06' => '06', '07' => '07', '08' => '08', '09' => '09', '10' => '10', '11' => '11', '12' => '12'), array('class' => 'span1', 'placeholder' => Yii::t('contentForm', 'Month'))); ?>
+                                        <?php echo $form->dropDownList($tarjeta, 'year', array('0' => 'Año', '2013' => '2013', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017', '2018' => '2018', '2019' => '2019', '2020' => '2020'), array('class' => 'span1', 'placeholder' => Yii::t('contentForm', 'Year'))); ?>
+                                        <?php echo $form->hiddenField($tarjeta, 'vencimiento'); ?>
+                                        <?php echo $form->error($tarjeta, 'vencimiento'); ?>
+
+                                    </div>
+                                </div>
+
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'ci', array('class' => 'span5', 'placeholder' => Yii::t('contentForm', 'Identity card')));
+                                        ?>
+                                        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'direccion', array('class' => 'span5', 'placeholder' => Yii::t('contentForm', 'Address')));
+                                        ?>
+
+                                    </div>
+                                </div>            	
+
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'ciudad', array('class' => 'span5', 'placeholder' => Yii::t('contentForm', 'City')));
+                                        ?>
+
+                                    </div>
+                                </div>			
+
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'estado', array('class' => 'span5', 'placeholder' => Yii::t('contentForm', 'Province')));
+                                        ?>
+                                        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                                    </div>
+                                </div>	
+
+                                <div class="control-group"> 
+                                    <div class="controls">
+                                        <?php echo $form->textFieldRow($tarjeta, 'zip', array('class' => 'span2', 'placeholder' => Yii::t('contentForm', 'Zip code')));
+                                        ?>
+                                        <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                                    </div>
+                                </div>		          					
+
+                                <?php echo CHtml::hiddenField('idDireccion', Yii::app()->getSession()->get('idDireccion'));
+                                $direccion = Direccion::model()->findByPk(Yii::app()->getSession()->get('idDireccion'));
+                                ?>
+                                <div class="text_center_align">
+                                    <p><?php echo Yii::t('contentForm', 'This transaction will be processed securely through the platform:'); ?>:</p>	
+                                    <img src="<?php echo Yii::app()->baseUrl ?>/images/Instapago-logo.png" width="77">
+                                    <img src="<?php echo Yii::app()->baseUrl ?>/images/Banesco-logo.png" width="77">
+                                </div>								
+                                <div class="form-actions">
+                                    <?php
+                                    $this->widget('bootstrap.widgets.TbButton', array(
+                                        'buttonType' => 'submit',
+                                        'type' => 'warning',
+                                        'size' => 'large',
+                                        'label' => Yii::t('contentForm', 'Next'),
+                                    ));
+                                    //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
+                                    ?>
+                                </div>
+
+
+                            </div>	
+                        </div>
+                    </div>
+                <?php } ?>
+                
+
+                <?php 
+                //Banking Card Aztive
+                if(Yii::app()->params['metodosPago']['bkCard']){ 
+                ?>                
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <label class="radio accordion-toggle margin_left_small" data-parent="#accordion2">
+                            <input type="radio" name="optionsRadios" id="bankCard" checked="true" value="5"> 
+                            <?php echo Yii::t('contentForm', 'Credit Card'); ?>
+                        </label>                       
+                       
+                    </div>
+<!--                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse"
+                           data-parent="#accordion2" href="#collapseFour" id="btn_bankCard">
+                            <label class="radio accordion-toggle">
+                                <input type="radio" name="optionsRadios" id="bankCard" value="option5"> 
+                                <?php echo Yii::t('contentForm', 'Credit Card'); ?>
+                            </label>
+                        </a>
+                    </div>-->
+                    
+                </div>
+                <?php } ?>
+                <?php 
+                //Paypal Aztive
+                if(Yii::app()->params['metodosPago']['paypal']){ 
+                ?>                
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <label class="radio accordion-toggle margin_left_small"
+                           data-parent="#accordion2">
+                            <input type="radio" name="optionsRadios" id="payPal" value="6"> 
+                            <?php echo Yii::t('contentForm', 'PayPal'); ?>
+                        </label>                        
+                    </div>
+                    <div id="collapseT" class="accordion-body collapse">
+                    </div>
+                    
+                </div>
+<!--                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse"
+                           data-parent="#accordion2" href="#collapseFive" id="btn_payPal">
+                            <label class="radio">
+                                <input type="radio" name="optionsRadios" id="payPal" value="option6"> 
+                                <?php echo Yii::t('contentForm', 'PayPal'); ?>
+                            </label>
+                        </a>
+                    </div>
+                    
+                </div>-->
+                <?php } ?>
+                
+
+            </div>
             </div>
  
     </section>
     <?php
 
-//     echo CHtml::hiddenField('idDireccion',$idDireccion);
+// echo CHtml::hiddenField('idDireccion',$idDireccion);
 // echo CHtml::hiddenField('tipoPago','1');
 ?>
     <?php // Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
@@ -276,7 +350,9 @@ echo CHtml::hiddenField('user',$user);
 							}
 						  }
 						
-						 
+						$direccion = Direccion::model()->findByPk($idDireccion);
+						$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id); 
+						
 						  
                         $i=0;
 
@@ -299,41 +375,92 @@ echo CHtml::hiddenField('user',$user);
                               $totalDe = $totalDe + $y;
                           }*/
 						$seguro=0;
-                        $iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA'));
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) ;
-						if($peso_total < 5){
+						if($direccion->ciudad->provincia->pais->exento)
+						{
+							$iva = 0;
 							
-							$direccion = Direccion::model()->findByPk($idDireccion);
-							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-							//$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-							$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$t);
-							
-							if(!is_null($flete)){
-								
-								
-								$envio=$flete->total-$flete->seguro;
-								$seguro=str_replace(',','.',$flete->seguro);
-
-
-							}else{
-								$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-								$seguro=$envio*0.13;
-							}
-							
-							
-							$tipo_guia = 1;
-						}else{
-							$peso_adicional = ceil($peso_total-5);
-							$direccion = Direccion::model()->findByPk($idDireccion);
-							$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-							$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
-							if($envio > 327.04){
-								$envio = 327.04;
-							}
-							$tipo_guia = 2;
-							$seguro=$envio*0.13;
 						}
-
+						else{
+							$iva = (($totalPr - $totalDe)*Yii::app()->params['IVA']);
+						}
+                        
+                        $t = $totalPr - $totalDe + $iva ;
+						
+						$shipping=true;
+						if(Yii::app()->params['noShipping']==0)
+						{
+							$shipping=true;
+						}
+						else {
+							
+								if($t>Yii::app()->params['noShipping']){
+									$shipping=false;
+								}
+							
+						}
+						
+						if($ciudad_destino->ruta_id==9)
+							$shipping=true;
+						
+						if($shipping){
+							if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
+							{	
+								if($peso_total < 5){
+									
+									
+									//$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+									
+									$flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$t);
+									
+									if(!is_null($flete)){
+										
+										
+										$envio=$flete->total-$flete->seguro;
+										$seguro=str_replace(',','.',$flete->seguro);
+		
+		
+									}else{
+										$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+										$seguro=$envio*0.13;
+									}
+									
+									
+									$tipo_guia = 1;
+								}else{
+									$peso_adicional = ceil($peso_total-5);
+									$direccion = Direccion::model()->findByPk($idDireccion);
+									$ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+									$envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
+									if($envio > 327.04){
+										$envio = 327.04;
+									}
+									$tipo_guia = 2;
+									$seguro=$envio*0.13;
+								}
+								
+							}
+							else{
+								$seur=Tarifa::model()->envioSeur($ciudad_destino->nombre, $direccion->codigopostal->codigo, $peso_total);
+								if(!is_null($seur)){
+									
+									$envio =floatval($seur['porte'])+floatval($seur['iva'])+floatval($seur['combustible']);
+									
+									$seguro=0;
+								}
+								else {
+									$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+									$seguro=0;
+								} 
+									
+								
+								
+							}
+						}
+						else{
+							$envio=0;
+							$seguro=0;
+						}
+						 
                         $t = $t + $envio + $seguro;
                         
 					
@@ -344,15 +471,21 @@ echo CHtml::hiddenField('user',$user);
                   </td>
               </tr>          
               <tr>
-                <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
-                <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); ?></td>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
+				
+				?>:</th>
+                <td class="text_align_right"><?php 
+                if($shipping)
+                	echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); 
+                else
+                	echo "<b class='text-success'>GRATIS</b>"; ?></td>
               </tr>
               
               
-              <?php if(!$direccion->ciudad->provincia->pais->excento)
+              <?php if(!$direccion->ciudad->provincia->pais->exento)
 			{?>
 				<tr>
-	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::t('contentForm', 'IVAtext');?>):</th>
+	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
 	              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
 	            </tr>
 			<?php }
@@ -392,7 +525,7 @@ echo CHtml::hiddenField('user',$user);
 			
 			
 			
-				$balance = User::model()->findByPK(Yii::app()->user->id)->saldo;
+				$balance = User::model()->findByPK($user)->saldo;
 				$balance = floor($balance *100)/100;
                 $class = "";		
 
@@ -403,7 +536,17 @@ echo CHtml::hiddenField('user',$user);
             <div>
                 <label class="checkbox<?php echo $class; ?>">
                 <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
-                <?php echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                <?php
+                if($admin){
+                    echo Yii::t('contentForm', 'Use Balance.'); ?><br>
+                    <?php echo Yii::t ('contentForm', 'Avaliable for {user}:', 
+                            array("{user}"=>$nombre)) ?>
+                    <strong> <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                <?php                 
+                }else{
+                    echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>                    
+                <?php } ?>
+                
               </label>
             </div>
 	    
@@ -463,7 +606,7 @@ echo CHtml::hiddenField('user',$user);
             </div>
             <!-- Aplicar Gifcard OFF -->
             <?php } ?>
-            <input type="hidden" id="tipo_pago" name="tipo_pago" value="1" />
+            <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
             <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
             <div class="form-actions">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -512,8 +655,7 @@ else
                 url: '<?php echo CController::createUrl("/giftcard/aplicar"); ?>',
                 dataType: 'JSON',
                 data: datos,
-                success: function(data){
-                    
+                success: function(data){                    
                     //si son dos errores agregar ul
                     if(data.length > 1){
                         
@@ -533,7 +675,6 @@ else
                             
                             var check = $("#usar_balance");
                             
-                         
                                 var element = $("#usar_balance").next();
                                 
                                 element.parent().removeClass("hidden");
@@ -545,8 +686,7 @@ else
                                       element.text("Bs. " + data[0].amount);
                                       showAlert(data[0].type, data[0].message);
                                     }
-                                } );
-                                
+                                } );                                
                                 
                                 element.animate({                                  
                                   opacity: 1,
@@ -566,22 +706,22 @@ else
             
         });
 
-        //Mostrar alert
-        function showAlert(type, message){
-           $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
-           $('#alert-msg').addClass("alert-"+type);
-           $('#alert-msg').children(".msg").html(message);
-           $('#alert-msg').show();
-           
-           $("#camposGC").removeClass('success error warning');
-           $('#camposGC').addClass(type);
-           
-        }
+    //Mostrar alert
+    function showAlert(type, message){
+       $('#alert-msg').removeClass('alert-success alert-error alert-warning') ;
+       $('#alert-msg').addClass("alert-"+type);
+       $('#alert-msg').children(".msg").html(message);
+       $('#alert-msg').show();
 
-        $(".alert").alert();
-        $(".alert .close").click(function(){
-            $(".alert").fadeOut('slow');
-        });
+       $("#camposGC").removeClass('success error warning');
+       $('#camposGC').addClass(type);
+
+    }
+
+    $(".alert").alert();
+    $(".alert .close").click(function(){
+        $(".alert").fadeOut('slow');
+    });
         
         
     $(document).ready(function() {
@@ -669,6 +809,7 @@ $('#TarjetaCredito_year').change(function(){
             $("#tipo_pago").val('4');
             $("#mercadopago").prop("checked", true);
         });
+        
         $("#btn_deposito").click(function() {
         	var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> Depósito o Transferencia Bancaria.</td>";
             $("#adentro").html(añadir);
@@ -709,29 +850,30 @@ $('#TarjetaCredito_year').change(function(){
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
         	
         });
-
-    $("#completar-compra").click(function(ev){
-           ev.preventDefault();
-           alert("pasar al sig");
-
-           var idDir = $("#id-direccion").attr("value");
-         var tipoPago = 1; // en este caso siempre es transferencia pero hay que pensarlo para los distintos tipos
-
-         $.ajax({
-            type: "post",
-            url: "pagos", // action pagos
-            data: { 'idDir':idDir, 'tipoPago':tipoPago},
-           // success: function (data) {
-             //   if(data == 'ok')
-               // {
-                //    alert("entró");
-                //    window.location="../confirmar";
-                //}
-           //    }//success
-           })
-
-       }); // tallas
-
+        
+        $("input[name='optionsRadios']").change(function(e){
+            
+            if($(this).is(":checked"))
+            {
+                var tipoPago = "<td valign='top'><i class='icon-exclamation-sign'></i> ";
+                //si es bankCard
+                if($(this).val() == 5){
+                    
+                    tipoPago += "<?php echo 
+                    Yii::t('contentForm', 'Credit Card'); ?> </td>";
+                    
+                }else if($(this).val() == 6){ //si es paypal
+                    
+                    tipoPago += "<?php echo 
+                    Yii::t('contentForm', 'PayPal'); ?> </td>";
+                }
+                
+                $("#adentro").html(tipoPago);        	
+                $("#tipo_pago").val($(this).val());            
+            
+            }
+         
+        });
 
     });
 
@@ -862,3 +1004,4 @@ $('#TarjetaCredito_year').change(function(){
 	}
 	
 </script>
+

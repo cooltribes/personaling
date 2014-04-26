@@ -34,8 +34,27 @@ class Giftcard extends CActiveRecord
         /*CAMBIAR ESTA CONSTANTE CUANDO SE REQUIERA CAMBIAR LA LONGITUD DEL CODIGO DE UNA TARJETA*/
         const DIGITOS_CODIGO = 16;
         
-        const MAX_MONTO = 1000;
+        const MAX_MONTO_VE = 1000; //Para venezuela
+        const MAX_MONTO_ES = 100; //Para españa
     
+        //Montos para españa
+        public static $montosES = array(1=>1, 5 => 5, 10 => 10, 15 => 15,
+                                        20 => 20, 50 => 50, 100 => 100);
+        //Montos para españa
+        public static $montosVE = array(
+                        100 => 100,
+                        200 => 200,
+                        300 => 300,
+                        400 => 400,
+                        500 => 500,
+                        600 => 600,
+                        700 => 700,
+                        800 => 800,
+                        900 => 900,
+                        1000 => 1000,
+                        );
+        
+        
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -73,7 +92,7 @@ class Giftcard extends CActiveRecord
                     
                         array('codigo', 'unique', 'message'=>'Código de gift card ya registrado.'),
 			array('estado, comprador, beneficiario', 'numerical', 'integerOnly'=>true),
-			array('monto', 'numerical', 'max' => self::MAX_MONTO),
+			array('monto', 'numerical', 'max' => self::getMontoMaximo()),
 			array('codigo', 'length', 'max'=>25),
 			array('fecha_uso', 'safe'),
 			// The following rule is used by search().
@@ -339,5 +358,46 @@ class Giftcard extends CActiveRecord
                 'criteria' => $criteria,
             ));
        }
+       
+       public static function getMontos() {
+            
+            //si es españa
+            if (Yii::app()->language == "es_es") {
+                return self::$montosES;            
+            //si es venezuela
+            }else if (Yii::app()->language == "es_ve") {
+                return self::$montosVE;                        
+            }
+
+            return array();
+        }
+        
+       public static function getMontoPredeterminado() {
+           
+           $montoES = 5;
+           $montoVE = 100;           
+           //si es españa
+           if (Yii::app()->language == "es_es") {
+               return $montoES;            
+           //si es venezuela
+           }else if (Yii::app()->language == "es_ve") {
+               return $montoVE;                        
+           }
+
+           return array();
+        }
+        
+       public static function getMontoMaximo() {
+                   
+           //si es españa
+           if (Yii::app()->language == "es_es") {
+               return self::MAX_MONTO_ES;            
+           //si es venezuela
+           }else if (Yii::app()->language == "es_ve") {
+               return self::MAX_MONTO_VE;            
+           }
+
+           return 0;
+        }
 
 }

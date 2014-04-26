@@ -19,7 +19,7 @@ $this->breadcrumbs=array(
 <div class="row">
 <!-- PAGINA DE CONTACTO ON -->
 <div class="span8 ">
-    <div class="box_1 bg_mancha_1 " >
+    <div class="box_1" >
         <h1>Ponte en contacto</h1>
 
     	<?php if(Yii::app()->user->hasFlash('contact')){?>
@@ -28,7 +28,7 @@ $this->breadcrumbs=array(
 		    </div>
 		<?php } ?>
  
-        <p class="margin_top_medium">Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O LLama al  (212) 7202089. <strong>¡Gracias!</strong></p>
+        <p class="margin_top_medium"><?php echo Yii::t('contentForm','Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>'); ?></p>
         <div class="form">
            
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(

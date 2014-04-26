@@ -48,27 +48,6 @@ $this->breadcrumbs = array(
                             </div>
                         </a>
                     </li>		
-                    <li id="GC-gift_card_two">
-                        <a href="">
-                            <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_two_x200.jpg">
-                            </div>
-                        </a>
-                    </li>	
-                    <li id="GC-gift_card_three">
-                        <a href="">
-                            <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_three_x200.jpg">
-                            </div>
-                        </a>
-                    </li>	
-                    <li id="GC-gift_card_four">
-                        <a href="">
-                            <div class="thumbnail">
-                                <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_four_x200.jpg">
-                            </div>
-                        </a>
-                    </li>	
                     <?php echo $form->hiddenField($model, 'plantilla_url'); ?>
                 </ul>
             </div>	
@@ -76,22 +55,11 @@ $this->breadcrumbs = array(
                 <p class="lead">2. <?php echo Yii::t('contentForm','Select the price'); ?></p>
                 <?php echo $form->errorSummary($model); ?>
 
-                <div class="control-group input-append">
+                <div class="control-group input-prepend">
                     <label class="control-label required" for="BolsaGC_monto"><?php echo Yii::t('contentForm','Amount'); ?> <span class="required">*</span></label>
                     <div class="controls">
-                        <?php echo CHtml::activeDropDownList($model, 'monto', array(
-                        100 => 100,
-                        200 => 200,
-                        300 => 300,
-                        400 => 400,
-                        500 => 500,
-                        600 => 600,
-                        700 => 700,
-                        800 => 800,
-                        900 => 900,
-                        1000 => 1000,
-                        ), array('class' => 'span1',)); ?>
                         <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                        <?php echo CHtml::activeDropDownList($model, 'monto', Giftcard::getMontos(), array('class' => 'span1',)); ?>
                     </div>
                     
                 </div>
@@ -103,7 +71,6 @@ $this->breadcrumbs = array(
             <div class="row margin_top">
                 <div class="span6">	
                     <p class="lead">3. <?php echo Yii::t('contentForm','Customize it'); ?></p>                                       
-
 
                     <?php
                     echo $form->textFieldRow($envio, 'nombre', array(
@@ -126,43 +93,21 @@ $this->breadcrumbs = array(
                         $checkE = 'checked="checked"';
                     }
                     ?>
-                    <p class="lead">4. <?php echo Yii::t('contentForm','Choose how you want to deliver it'); ?></p>
-
-                    <div class="accordion" id="accordionE">
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <label class="radio accordion-toggle margin_left_small"
-                                       data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="1" <?php echo $checkI; ?>> <?php echo Yii::t('contentForm','Printed'); ?>
-                                </label>                                
-                            </div>
-                            <div id="collapseT" class="accordion-body collapse">
-                            </div>
-
-                        </div>
-                        <div class="accordion-group">
-
-                            <div class="accordion-heading">
-                                <label class="radio accordion-toggle margin_left_small" 
-                                       data-toggle="collapse" data-target="#collapseOne" data-parent="#accordionE">
-                                    <input type="radio" name="entrega" value="2" <?php echo $checkE; ?>> <?php echo Yii::t('contentForm','By email'); ?>
-                                </label> 
-
-                            </div>
-                            <div id="collapseOne" class="accordion-body collapse<?php echo $checkE ? " in" : ""; ?>">
-                                <div class="accordion-inner">
-<?php
-echo $form->textFieldRow($envio, 'email', array(
-    'placeholder' => 'Correo electrónico del destinatario'
-));
-?>  
-                                </div>
-                            </div>
-                        </div>
+                    <p class="lead">4. <?php echo Yii::t('contentForm','¿A quién la envías?'); ?></p>
 
 
 
-                    </div>
+                         <input type="hidden" name="entrega" value="2" >
+
+                        <?php
+                        echo $form->textFieldRow($envio, 'email', array(
+                            'placeholder' => 'Correo electrónico del destinatario'
+                        ));
+                        ?>  
+
+
+
+
 
                     <div class="control-group margin_top_large text_align_center">
 <?php
@@ -186,7 +131,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
                         <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.jpg" width="470">
                         <div class="row-fluid margin_top">
                             <div class="span6 braker_right">
-                                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto." ".Yii::t('contentForm','currSym'); ?> </div>
+                                <div class=" T_xlarge color4" id="monto"><?php echo $model->monto." ".Yii::t('contentForm','currSym'); ?> </div>
 
                                 <div class="margin_top color4" id="codigo"><div class="color9"><?php echo Yii::t('contentForm','Code'); ?></div> <?php echo "XXXX-XXXX-XXXX-XXXX"; ?> </div>
                             </div>
@@ -245,7 +190,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
     /*Para actualizar el monto al cambiar el dropdown*/
     $('#<?php echo CHtml::activeId($model, "monto") ?>').change(function() {
-        $('#monto').text($('#<?php echo CHtml::activeId($model, "monto") ?>').val() + " Bs.");
+        $('#monto').text($('#<?php echo CHtml::activeId($model, "monto") ?>').val() + " <?php echo Yii::t('contentForm', 'currSym'); ?>");
     });
 
     $('#plantillas li').click(function(e) {

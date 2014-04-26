@@ -45,7 +45,7 @@
                 </tr> -->
                 <tr>
                     <th scope="row">Precio con descuento</th>
-                    <td> Bs. <?php echo $model->getPrecio(); ?></td>
+                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
                 </tr>
                 <tr>
                     <th scope="row">Descuento %</th>
@@ -53,7 +53,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Descuento Bs.</th>
-                    <td>Bs. 50,00</td>
+                    <td><?php echo Yii::t('contentForm', 'currSym');?> 50,00</td>
                 </tr>
             </table>
             <hr/>

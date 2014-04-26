@@ -9,7 +9,11 @@
  * @property string $dominio
  * @property string $idioma
  * @property integer $grupo
+ * @property integer $exento
  */
+ // GRUPO: '0'=>No pertenece a ningun grupo, '1,2,3...∞' => Agrupamientos segun se necesite
+ 
+ 
 class Pais extends CActiveRecord
 {
 	/**

@@ -45,13 +45,10 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
 			</div>	
 			<div>
 				<p class="lead">2. Selecciona un monto y un período de vigencia</p>
-				
-                                    
-                        
 
-                                <?php echo $form->dropDownListRow($giftcard,'monto',
-                                        array(100 => 100, 200 => 200, 300 => 300),
-                                        array('class' => 'span2')); ?>
+                                <?php echo TbHtml::activeDropDownList($giftcard,'monto',
+                                         Giftcard::getMontos(),
+                                        array('class' => 'span1', "prepend"=>  Yii::t('backEnd', 'currSym'))); ?>
 
 
                                 <?php echo $form->textFieldRow($giftcard,'inicio_vigencia', array(

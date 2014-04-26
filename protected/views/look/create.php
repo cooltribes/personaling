@@ -131,7 +131,7 @@ function handleDrop(e) {
 			
 	$('<img/>').attr('src', ident).load(function() {
 		    
-		    if (contenedor.innerHTML.indexOf("Crea tus Looks aqui") >=0)
+		    if (contenedor.innerHTML.indexOf("<h1>") >=0)
 				$(contenedor).html(	nuevo_objeto );
 		    else
 		    	$(contenedor).append(nuevo_objeto);
@@ -229,8 +229,10 @@ var cols = document.querySelectorAll('.column');
 }
 $(window).load(function(){
 	$('#btn_siguiente').removeAttr('disabled');
+	
 });
 $(document).ready(function() {
+	$('#div_invisible').show();
 
 
 /*
@@ -731,12 +733,59 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	?>
                 <div class="span6">
 				<!-- Opciones 100% chic ON -->
+				
+				 <?php $marcas = Marca::model()->findAll(array('order'=>'nombre'));  ?>
                   <div class="margin_bottom_small ">
-                  	<select name="100chic" id="" class="span12">
-                  		<option value="100% chic">100% chic</option>
+                  	<select id="marcachic" name="100chic" id="" class="span12">
+                  		<option value="100% chic">Marcas 100% Chic</option>
+                  		<?php
+        					foreach($marcas as $marca){
+        						if ($marca->is_100chic)	
+        							echo "<option value='".$marca->id."'> ".$marca->nombre." </option>";
+        					}
+        				?>
                   	</select>
 
                   </div>
+<?php
+	Yii::app()->clientScript->registerScript('marcachic',
+		"
+		$('#marcachic').change(function(){
+				$('#marcas').val($('#marcachic').val());
+				
+			". CHtml::ajax(
+						 
+			array( // ajaxOptions
+				'url'=>Yii::app()->createUrl( 'look/categorias'),
+				'type' => 'POST',
+				'beforeSend' => "function( request )
+				{
+					// Set up any pre-sending stuff like initializing progress indicators
+					$('body').addClass('aplicacion-cargando');
+					
+				}",
+				'success' => "function( data )
+				{
+				// handle return data
+				//alert( data );
+					$('#div_categorias').html(data);
+					$('body').removeClass('aplicacion-cargando');
+				}",
+					'data' => "js:$('#formu').serialize()+'&colores='+$('#colores').val()",
+				),
+				array( //htmlOptions
+					'href' => Yii::app()->createUrl( 'look/categorias' ),
+					'class' => 'thumbnail',
+					
+					'draggable'=>"false",
+				)
+			).
+			
+		"return false;
+		});",CClientScript::POS_READY
+	);
+	
+?>                  
 				<!-- Opciones 100% chic OFF -->
 
 
@@ -833,8 +882,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <?php echo CHtml::hiddenField('colores'); ?>
             </div>
             <hr/>
-            <div id="div_categorias">
+           
+            <div id="div_categorias" >
+            	<div id="div_invisible" style="display: none">
               <?php $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>0)) ?>
+              </div>
             </div>
           </div>
           <div class="tab-pane" id="tab2">

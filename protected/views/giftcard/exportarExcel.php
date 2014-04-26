@@ -55,10 +55,16 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
 				<div class="span6">	
 					<p class="lead">2. Selecciona un monto y un período de vigencia</p>                                       
                                         
-                                        <?php echo $form->dropDownListRow($giftcard,'monto',
-                                        array(100 => 100, 200 => 200, 300 => 300, 400 => 400, 500 => 500),
-                                        array('class' => 'span2')); ?>
-
+                                        <div class="control-group input-prepend">
+                                            <label class="control-label required" for="Giftcard_monto">
+                                                <?php echo Yii::t('contentForm','Amount'); ?> <span class="required">*</span>
+                                            </label>
+                                            <div class="controls">
+                                                <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                                                <?php echo CHtml::activeDropDownList($giftcard, 'monto', 
+                                                        Giftcard::getMontos(), array('class' => 'span1')); ?>
+                                            </div>
+                                        </div>
 
                                 <?php echo $form->textFieldRow($giftcard,'inicio_vigencia', array(
                                     'append' => '<i class="icon-calendar"></i>',
@@ -75,23 +81,10 @@ $this->pageTitle=Yii::app()->name . ' - Enviar Gift Cards Masivo';
                                 )); ?>
 					   
 				</div>	
-				<div class="span5 bg_color5 box_shadow_personaling padding_medium">
-                                    <div class="contenedorPreviewGift" >
-                                        <span class=" T_xlarge" id="monto"><?php echo $giftcard->monto?$giftcard->monto:100 ?> Bs. </span>
-                                        <span  id="forpara">Para:</span><p id="para">
-                                           
-                                        </p>                        
-                                        <span  id="formensaje">Mensaje:</span><p class="" id="mensaje"></p>
-                                        <span class=" T_large color4" id="codigo"> <?php echo "XXXX-XXXX-XXXX-XXXX";//$model->getMascaraCodigo(); ?> </span>
-                                        <span class=" t_small" id="fecha">Válida desde <?php echo "fecha";//echo date("d/m/Y", $model->getInicioVigencia()); ?> hasta el 
-                                            <?php //echo date("d/m/Y", $model->getFinVigencia()); ?> </span>
-                                        <img src="<?php echo Yii::app()->baseUrl; ?>/images/giftcards/gift_card_one_x470.png" width="470">
-
-                                    </div>
-				</div>
+				
 			</div>
 			<div class="control-group row margin_top">
-				<div class="controls pull-right">                                   
+				<div class="controls">                                   
                                     <button type="button" id="btnExportar"  class="btn btn-danger"><i class="icon-download icon-white"></i> Exportar</button>                                  
                                     <input type="hidden" name="Exportar" >
 				</div>

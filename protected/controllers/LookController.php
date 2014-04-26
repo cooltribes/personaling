@@ -457,7 +457,7 @@ header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GM
 		 
 		 $imagenes[$i] = new stdClass();
 				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
-					$imagenes[$i]->top = 0;
+					$imagenes[$i]->top = 5;
 					$imagenes[$i]->left = 5;
 					$imagenes[$i]->width = 70;
 					$imagenes[$i]->height = 70;
@@ -635,7 +635,7 @@ public function actionCategorias(){
 				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
 			
 	  	if(isset($_POST['marcas'])){
-		  	if ($_POST['marcas']!='Todas las Marca')	
+		  	if ($_POST['marcas']!='Todas las Marcas')	
 		  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
 			else	
 		  		$productos = Producto::model()->with($with)->findAll();

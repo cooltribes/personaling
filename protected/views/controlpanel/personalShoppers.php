@@ -1,6 +1,6 @@
 <?php
 /* @var $form TbActiveForm */
-
+ $this->pageTitle = Yii::app()->name . ' - Personal Shoppers';
 //$this->breadcrumbs=array(
 //'Usuarios',
 //);
@@ -25,22 +25,22 @@
     </div>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
         <tr>
-            <th scope="col" colspan="6"> Totales </th>
+            <th scope="col" colspan="7"> Totales </th>
         </tr>
         <tr>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasNoGeneraronComision; ?></p>
-                Ventas sin comisión</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $ventasGeneraronComision; ?></p>
                 Ventas con comisión</td>
+            <td class="text-error"><p class="T_xlarge margin_top_xsmall"><?php echo $ventasNoGeneraronComision; ?></p>
+                Ventas sin comisión</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $totalGeneradoComisiones . " " . Yii::t('contentForm', 'currSym'); ?></p>
                 Total generado<br>en comsiones</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $prodsVendidosComision; ?></p>
                 Productos vendidos<br>(con comisión)</td>
-            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 34; ?></p>
+            <td class="text-error"><p class="T_xlarge margin_top_xsmall"><?php echo 34; ?></p>
                 Looks vendidos<br>(con comisión)</td>
-            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 22; ?></p>
+            <td><p class="T_xlarge margin_top_xsmall"><?php echo $psConVentas; ?></p>
                 PS con ventas</td>
-            <td><p class="T_xlarge margin_top_xsmall text-error"><?php echo 56; ?> </p>
+            <td class="text-error"><p class="T_xlarge margin_top_xsmall"><?php echo 56; ?> </p>
                 PS sin ventas</td>
         </tr>
     </table>
@@ -63,7 +63,6 @@
     
 </div>
 
-<hr/>
 <?php $this->renderPartial("_filters"); ?>
 <hr/>
 <?php
@@ -326,7 +325,10 @@ function accionMasiva(parametros){
                     
                     $('#modalComision').modal("hide");
                     $('#modalTiempo').modal("hide");
-                    console.log(parametros);
+                    
+                    if(!$('#filters-view').is(":visible")){
+                        $('#filters-view').show();
+                    }
                     showAlert(data.status, data.message);
                     
                     $('html,body').animate({

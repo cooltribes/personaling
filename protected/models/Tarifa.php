@@ -111,4 +111,46 @@ class Tarifa extends CActiveRecord
 		$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		return $num;
 	}
+	
+	public function envioSeur($ciudad,$postal,$peso){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');	
+		$xml = new SimpleXMLElement('<REG/>');
+		//$xml->addChild("REG");
+		$xml->USUARIO = "WSPERSONALING";
+		$xml->PASSWORD = "ORACLE";
+		$xml->NOM_POBLA_DEST = utf8_encode($ciudad); 
+		$xml->CODIGO_POSTAL_DEST = $postal;
+		$xml->Bultos = "1";
+		$xml->Peso = $peso;
+		$xml->CodContableRemitente = "32532-54";
+		$xml->PesoVolumen = "1";
+		$xml->CodServ = "1";
+		$xml->CodProd = "2";
+		$xml->FechaVigenciaTasacion = "20110918";
+		$xml->SERVICIOS_COMPLEMENTARIOS = "";
+		$xml->COD_IDIOMA = "ES";
+		
+		/*$in = array(
+			'in0'=>$xml->asXML(),
+		);*/
+		$in = new stdClass();
+		$in->in0 = $xml->asXML();
+		$response=$soapclient->tarificacionPrivadaStr($in);
+		$xmlresponse = simplexml_load_string($response->out);
+		if(isset($xmlresponse->REG[2]))
+		{			
+			$return['porte']=$xmlresponse->REG[0]->VALOR[0];
+			$return['iva']=$xmlresponse->REG[1]->VALOR[0];
+			$return['combustible']=$xmlresponse->REG[2]->VALOR[0];
+			return $return;
+		}
+		else 
+			return;
+		
+
+		
+	}
+	
+	
+
 }

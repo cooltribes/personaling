@@ -16,35 +16,80 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 </div>
 <!-- /Hack para el layout del home  -->
 
+<div class="no-backgrounds">
+    
+</div>
 
-<div class="wrapper_home">
-    <div id="myCarousel" class="carousel slide">
-
+<section class="wrapper_home">
+    <div id="sliderHome" class="carousel slide">
         <ol class="carousel-indicators">
-            <a href="#"><li data-target="#myCarousel" data-slide-to="0" class="active"></li></a>
-            <a href="#"><li data-target="#myCarousel" data-slide-to="1"></li></a>
-            <a href="#"><li data-target="#myCarousel" data-slide-to="2"></li></a>
+            <li data-target="#sliderHome" data-slide-to="0" class="active"></li>
+            <li data-target="#sliderHome" data-slide-to="1" ></li>
+            <li data-target="#sliderHome" data-slide-to="2" ></li>
         </ol>
-
         <!-- Carousel items ON -->
-        <div class="carousel-inner">
-            <div class="active item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home_4.jpg">
+        <div class="carousel-inner text_align_center">
+            <div class="item active" >
+                <div class="slider-home slide-1">
+                    <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="95"  heigth="95"> 
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="260"> 
+                                </figure>
+                                <h2>La primera <br><strong>shopping experience</strong><br>única y…repetible.</h2>
+                            </div>
+                            <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn-call2action">¡Regístrate!</a>
+                        </div>
+                    </div>
+                </div>                
             </div>
-            <div class="item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/bg_personal_shoppers_home.jpg">
+            <div class="item" >
+                <div class="slider-home slide-2">
+                    <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <h2 class="">Solamente tú, <br/> eres <strong>irrepetible.</strong></h2>
+
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="135"  heigth="135">                                    
+                                </figure>
+                            </div>
+                            <div>
+                                <p class="personaling-slogan  margin_top_medium">La primera <strong>shopping experience</strong> única y…repetible</p>
+                            </div>
+                        </div>
+                        
+                    </div>                   
+                </div>                
             </div>
-            <div class="item">
-                <img src="http://personaling.com<?php echo Yii::app()->theme->baseUrl; ?>/images/slide_version_20131015_brands.jpg">
+            <div class="item" >
+                <div class="slider-home slide-3">
+                    <div class="slide-content">
+                        <div class="copy-right">
+                            <div class="border-bottom">
+                                <h2>Si algo puede mejorar el <br> carácter de <strong>la moda</strong>,<br>sin duda, es <strong>tu personalidad.</strong></h2>
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling">                                                                    
+                                </figure>
+                            </div>
+                            <div>
+                                <p class="personaling-slogan ">La primera <strong>shopping experience</strong> única y…repetible</p>
+                            </div>
+                        </div>                            
+                        
+                    </div>                    
+                </div>                
             </div>
         </div>
         <!-- Carousel items OFF -->
-
     </div>
-</div>
+</section>
+
 
 <script type="text/javascript">
-$('#myCarousel').carousel({
+$('#sliderHome').carousel({
   interval: 6000
-})
+});
 </script>

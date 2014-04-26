@@ -1,4 +1,9 @@
 <?php
+/**
+ * Cuando $user_id sea 0, indica que fue cambiada la orden automaticamente por
+ * el script a estado 11 (Finalizada) al pasar los 3 dias de haber sido Entregada (8).
+ * Nelson...
+ */
 
 /**
  * This is the model class for table "{{estado}}".

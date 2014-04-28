@@ -1176,7 +1176,7 @@ public function multipleColor2($idColor, $idact)
 	    
 	    $order="id ASC";
 	
-	    $records = Producto::model()->findAll(
+	    $records = Producto::model()->findAllByAttributes(array('status'=>1),
 	    	array('select'=>'id', 'order'=>$order)
 	    );
 	

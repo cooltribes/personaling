@@ -356,8 +356,7 @@ class GiftcardController extends Controller
                     
                 }
                 
-            }
-            
+            }            
             
             $this->render('enviargiftcard', array('model' => $model, 'envio' => $envio));
                 
@@ -366,12 +365,8 @@ class GiftcardController extends Controller
         
         public function actionAplicar(){                           
            
-            $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;           
-
-           
-            $response = array();
-
-            
+            $ajax = isset($_POST["aplicarAjax"]) && $_POST["aplicarAjax"] == 1;                      
+            $response = array();            
             $aplicar = new AplicarGC;
             
             if(isset($_POST["AplicarGC"])){
@@ -443,16 +438,16 @@ class GiftcardController extends Controller
                    
                }else{ //Invalido
 
-                    
-                    $cReq = 0;
-                    $cLen = 0;
+                   
+                    $cRequerido = 0;
+                    $cLength = 0;
                     foreach($aplicar->errors as $att => $error){
-                        $cReq += in_array("req", $error) ? 1:0;
-                        $cLen += in_array("len", $error) ? 1:0;
+                        $cRequerido += in_array("req", $error) ? 1:0;
+                        $cLength += in_array("len", $error) ? 1:0;
                     }
                     $aplicar->clearErrors();
 
-                    if($cReq){
+                    if($cRequerido){
                        $aplicar->addError("campo1", "Debes escribir el código de tu Gift Card completo."); 
                     }
                     if($cLen){
@@ -462,8 +457,7 @@ class GiftcardController extends Controller
                     if($ajax){
                         foreach($aplicar->getErrors("campo1") as $mensajeError){
                             $response[] = array("type" => "error", "message" => $mensajeError);
-                        }
-                        
+                        }                        
                     }
                }               
             }
@@ -482,11 +476,8 @@ class GiftcardController extends Controller
 
                         $balance = Yii::app()->numberFormatter->formatCurrency($balance, "");                                               
                         $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]], "amount" => $balance);
-
-                       
                         
-                    }else{
-                        
+                    }else{                        
                         $response[] = array("type" => $keys[0], "message" => $flashes[$keys[0]]);                        
                     }
 
@@ -673,12 +664,12 @@ class GiftcardController extends Controller
 
             if (isset($_POST['query']))
             {
+                /*Para buscar escribiendo en el input*/
 //                    //echo($_POST['query']);	
 //                    unset($_SESSION["todoPost"]);
 //                    $giftcard->nombre = $_POST['query'];
 //                    $dataProvider = $giftcard->search();
-            }    
-            
+            }   
             
                 
             $this->render('index',array(
@@ -707,7 +698,6 @@ class GiftcardController extends Controller
 	public function actionAdminUser()
 	{
 		$model=new Giftcard('search');		
-
 		$this->render('adminUsuario',array(
 			'model'=>$model,
 		));
@@ -816,9 +806,6 @@ class GiftcardController extends Controller
                     $this->redirect(array("index"));
                     
                     
-                }else{
-                    
-
                 }
                 
             }
@@ -842,12 +829,8 @@ class GiftcardController extends Controller
         private function generarMasivo($modelo, $envio, $cant = 1){
             
             $errores = 0;
-            $usuarios = User::model()->findAllByAttributes(array("id" => Yii::app()->session["users"]));
-            
-//            echo "<pre>";
-//            echo count($usuarios);//print_r($usuarios);
-//            echo "</pre>";
-//            Yii::app()->end();
+            $usuarios = User::model()->findAllByAttributes(array("id" => Yii::app()->session["users"]));            
+
             //Saludo del correo
             $saludo = Yii::t('contentForm','Personaling has a Gift Card as a gift for you.');
             //Mensaje que va en la tarjeta
@@ -869,9 +852,6 @@ class GiftcardController extends Controller
 
                 //Enviarla
                 $model->estado = 2;
-                //Direccion y nombre
-                //Yii::app()->session["users"];
-                //usuario $i
                 $envio->nombre = $usuarios[$i]->profile->first_name;
                 $envio->email = $usuarios[$i]->username;
                                       
@@ -1104,20 +1084,19 @@ class GiftcardController extends Controller
 	public function actionComprar()
 	{		
                 $model = new BolsaGC;
-                $model->monto = 100; //Default
+                $model->monto = Giftcard::getMontoPredeterminado(); //Default
                 $model->plantilla_url = "gift_card_one"; //Default
                 $envio = new EnvioGiftcard("masivo");
                 
                 if(isset($_POST['BolsaGC']))
-		{                                        
-  
-                    
+		{    
+                                        
                     $model->attributes = $_POST['BolsaGC'];
                     
                     $model->user_id = Yii::app()->user->id;
-                    
 
-                    if($model->validate()){
+
+                    if($model->validate()){                    
                         
                         $envio->attributes = $_POST['EnvioGiftcard'];
                         

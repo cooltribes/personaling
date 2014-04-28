@@ -837,7 +837,7 @@ class BolsaController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Activa tu cuenta en Personaling';
-						$body = ii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
+						$body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
@@ -2563,8 +2563,13 @@ class BolsaController extends Controller
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             $op = new AzPay();
             
-            if ($op->validateResponseData($_GET)) {                
-                        
+            if ($op->validateResponseData($_GET)) {                                       
+                
+//                echo "<pre>";
+//                print_r(Yii::app()->getSession());
+//                echo "</pre><br>";
+//                Yii::app()->end();
+
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
                 
                 $cData = CJSON::decode($cData);
@@ -2583,13 +2588,25 @@ class BolsaController extends Controller
             } else {
                 
                 $opResponse = "001";               
-                $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";                
-                $this->redirect($this->createAbsoluteUrl('bolsa/error',
+                $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";      
+                
+                $url = $this->createAbsoluteUrl('bolsa/error',
                         array(
                             'codigo'=>$opResponse,
                             'mensaje'=>$mensaje,
                         ),
-                        'http'));
+                        'http');
+                echo "<script>
+                    window.top.location.href = '".$url."';
+                    </script>
+                    ";
+                
+//                $this->redirect($this->createAbsoluteUrl('bolsa/error',
+//                        array(
+//                            'codigo'=>$opResponse,
+//                            'mensaje'=>$mensaje,
+//                        ),
+//                        'http'));
             }  
             
 	}
@@ -2615,21 +2632,33 @@ class BolsaController extends Controller
                 /*Ver de cual compra viene*/
                 if($cData["src"] == 2) //si es de compra de GC
                 {
-                    $this->redirect($this->createAbsoluteUrl('bolsa/errorGC',
+                    
+                    $url = $this->createAbsoluteUrl('bolsa/errorGC',
                         array(
                             'codigo'=>$opResponse,
                             'mensaje'=>$mensaje,
                         ),
-                        'http')); 
+                        'http');
+                    echo "<script>
+                        window.top.location.href = '".$url."';
+                        </script>
+                        ";
+                    
+            
                     
                 }else if($cData["src"] == 1) //si es de compra normal
                 {
-                    $this->redirect($this->createAbsoluteUrl('bolsa/error',
+                    
+                    $url = $this->createAbsoluteUrl('bolsa/error',
                         array(
                             'codigo'=>$opResponse,
                             'mensaje'=>$mensaje,
                         ),
-                        'http')); 
+                        'http');
+                    echo "<script>
+                        window.top.location.href = '".$url."';
+                        </script>
+                        ";
                 }
                 
                               
@@ -2646,7 +2675,7 @@ class BolsaController extends Controller
         
         
         /* Crear la orden, los pagos y registrar el pedido
-         * cuando fuè hecho con algún método de Aztive
+         * cuando fue hecho con algún método de Aztive
          */
         public function compraAztive($datosCompra){            
            
@@ -2702,17 +2731,22 @@ class BolsaController extends Controller
             if (!$factura->save())
                 Yii::trace('user id:'.Yii::app()->user->id.' Factura error:'.print_r($factura->getErrors(),true), 'registro');
             
-           
-            
             /*Enviar correo con el resumen de la compra*/
-            $this->enviarEmail($orden, $usuario);          
+            $this->enviarEmail($orden, $usuario);  
             
+            /*Generar el Outbound para Logishfashion*/
+            $this->generarOutbound($orden);
             
-            $this->redirect($this->createAbsoluteUrl('bolsa/pedido',array(
+            $url = $this->createAbsoluteUrl('bolsa/pedido',array(
                         'id'=>$orden->id,
                         'admin' => '',
                         'user' => $userId,
-                            ),'http'));
+                            ),'http');
+            
+                echo "<script>
+                    window.top.location.href = '".$url."';
+                    </script>
+                    ";
             
         }
         
@@ -2872,7 +2906,7 @@ class BolsaController extends Controller
             $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
             $orden->total = $total;
             $orden->user_id = $userId;
-
+            
             if (!($orden->save())){
                     echo CJSON::encode(array(
                                     'status'=> 'error',
@@ -2896,7 +2930,55 @@ class BolsaController extends Controller
             $detalle->tipo_pago = $metodoPago;
             $detalle->save();
             
-            $this->redirect($this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http'));	
+            $url = $this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http');
+            echo "<script>
+                window.top.location.href = '".$url."';
+                </script>
+                ";
+            //$this->redirect($this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http'));	
+            
+        }
+        
+        /**
+         * Para generar el archivo XML correspondiente a un outbound
+         * LogisFashion
+         * @param Orden $orden La orden de donde se extrae la informacion para el Outbound
+         */
+        function generarOutbound($orden){
+            
+            $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
+            $outbound = $xml->addChild('Outbound');
+            
+            //Codigo de Albaran
+            $codigo = $orden->id;
+            $outbound->addChild('Albaran', $codigo);
+            
+            //Fecha de Albaran
+            $fecha = date("Y-m-d", strtotime($orden->fecha));
+            $outbound->addChild("FechaAlbaran", "{$fecha}");
+            
+            //Cliente - Usuario
+            $usuario = $orden->user;
+            $cliente = $outbound->addChild("Cliente");
+            $cliente->addChild("Codigo", "{$usuario->id}");
+            $cliente->addChild("Nombre", "{$usuario->profile->getNombre()}");
+            $cliente->addChild("Email", "{$usuario->email}");
+
+            //Listado de items vendidos   
+            $productos = $orden->ohptc;
+            foreach ($productos as $producto) {
+                
+                $item = $outbound->addChild("Item");                
+                //Agregar el SKU
+                $item->addChild("EAN", "{$producto->preciotallacolor->sku}");
+                //Agregar la cantidad vendida.                
+                $item->addChild("Cantidad", "{$producto->cantidad}");                
+                
+            }
+
+            Header('Content-type: text/xml');
+            print($xml->asXML());
+            
             
         }
         

@@ -447,6 +447,9 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           </div>
         </div>
         <!-- Columna secundaria OFF -->
+         <div>
+            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner-night_non_stop.jpg" width="180" height="150" alt="Banner Accesorize" /> 
+          </div>        
       </div>
 
       <?php if($dataProvider->getItemCount() > 0){ //si hay looks que te puedan gustar para mostrar  ?>
@@ -567,6 +570,9 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           </div>
         </div>
       </div>
+     <div class="text_align_center">
+           <a href="http://personaling.com/magazine"><img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner-grande.gif" width="970" height="90" alt="Banner blanco" /></a> 
+      </div>      
     </div>
 
     <!-- /container -->

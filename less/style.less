@@ -604,6 +604,16 @@ border:0;
 
 .error{color: #B94A48}
 
+.modal{
+  border-radius: 0;
+  outline: 0;
+}
+.dropdown-menu .active > a, .dropdown-menu .active > a:hover{
+  background-color: @color4;
+  background-image: none;
+  color: white;
+}
+
 /*------------ RESETS PARA BOOTSTRAP OFF --------------*/
 
 
@@ -769,7 +779,7 @@ src: url('../fonts/entypo.woff'),
     }
 .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{.color4}
 .navbar-inverse .nav > .active > a, .navbar-inverse .nav > .active > a:hover, .navbar-inverse .nav > .active > a:focus{.color3}
-.nav-pills > .active > a, .nav-pills > .active > a:hover{ background-color:@color1;}
+.nav-pills > .active > a, .nav-pills > .active > a:hover{ background-color:@color4;}
 .nav-pills > li > a{ .border_radius(@radius:0)}
 
 #menu_estatico, #scroller-anchor{
@@ -895,6 +905,9 @@ src: url('../fonts/entypo.woff'),
   a:hover > i{
     background-image: url("../images/glyphicons-halflings-white.png");
   }
+  &.active > a > i{
+    background-image: url("../images/glyphicons-halflings-white.png");
+  }  
 }
 /*------------ HEADER OFF --------------*/
 
@@ -1227,16 +1240,20 @@ src: url('../fonts/entypo.woff'),
   border: 11px solid #ffd660;
   .slide-content{
     background: url(../images/model-slide1.jpg) no-repeat 20% 66px;
+      .copy-right{
+        padding-top: 2em;
+      }
       a.btn-call2action{
         border: 2px solid @color4;
         display: block;
         font-size: 26px;
-        margin: 57px auto 57px auto;
+        margin: 25px auto 20px auto;
         padding: .5em;
         text-align: center;
         width: 137px;
         &:hover{
           background-color: @color4;
+          text-decoration: none;
           color: @color3;
           .transition_all;
         }
@@ -1246,7 +1263,7 @@ src: url('../fonts/entypo.woff'),
     }  
     .logo-personaling{
       width: 260px;
-      margin: 1em  auto;
+      margin: 0  auto;
     }        
   }
 }
@@ -1370,7 +1387,7 @@ src: url('../fonts/entypo.woff'),
 .tab_falta{
     a{
         background: #f0e9f1;
-        color: rgba(167, 95, 141, 0.64);
+        color: rgba(35, 31, 32, 0.64);
         border: 1px dashed #c69db7;
         padding-bottom:7px !important;
         padding-top:7px !important;
@@ -2313,6 +2330,7 @@ src: url('../fonts/entypo.woff'),
             }
         .like-active{
             .color4;
+            text-decoration: none;
                 }
         }
     .item_producto{
@@ -2614,7 +2632,34 @@ ul.yiiPager .last
             }
         }
 
+}
+#ModalRegistro{
     // Cambios del modal para hacerlo mas ancho
+    .legend{
+      border-bottom: none;
+      margin-bottom: 0;
+      line-height: 28px;
+    }
+    .modal-footer{
+      background-color: white;
+      border-top: 0;
+    }
+    button.close{
+      font-size: 31px;
+      &:hover{
+        color: @color4;  
+      }
+    }
+    .modal-header{
+      border-bottom: 0;
+    }
+    .modal-body{
+      #boton_facebook{
+        a{
+          text-align: center;
+        }
+      }
+    }
 }
 #modalFiltroPerfil{
     width: 880px;

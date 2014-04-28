@@ -1513,11 +1513,12 @@ public function actionValidar()
 						$user = User::model()->findByPk($orden->user_id);		
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
+						Yii::t('contentForm','',array('{number}'=>$orden->tracking));
 						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
 						$body = "Nos complace informarte que tu pedido #".$orden->id." esta en camino y pronto podrás disfrutar de tu compra
 								<br/>
 								<br/>
-								Puedes hacer seguimiento a tu pedido a través de la página de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: ".$orden->tracking." <br/> 
+								".Yii::t('contentForm','You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}',array('{number}'=>$orden->tracking))." <br/> 
 								";
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;

@@ -15,8 +15,4 @@ svn-commit*.tmp
 sftp-config.json
 /nbproject/private/
 nbproject
-/magazine/*
-/test48/*
-backup1.1.tar.gz
-backup2.1.tar.gz
-backup2.2.tar.gz
+

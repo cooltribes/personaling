@@ -32,21 +32,16 @@ $this->breadcrumbs=array(
                         
                          <?php echo $form->errorSummary($model); ?>
                         
-			
-                         <?php echo $form->dropDownListRow($model,'monto',
-                                    array(100 => 100,
-                                        200 => 200,
-                                        300 => 300,
-                                        400 => 400,
-                                        500 => 500,
-                                        600 => 600,
-                                        700 => 700,
-                                        800 => 800,
-                                        900 => 900,
-                                        1000 => 1000,
-                                        ),
-                                    array('class' => 'span2')); ?>
-                        
+			<div class="control-group input-prepend">
+                            <label class="control-label required" for="Giftcard_monto">
+                                <?php echo Yii::t('contentForm','Amount'); ?> <span class="required">*</span>
+                            </label>
+                            <div class="controls">
+                                <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                                <?php echo CHtml::activeDropDownList($model, 'monto', 
+                                        Giftcard::getMontos(), array('class' => 'span1')); ?>
+                            </div>
+                        </div>
                         
                         
                         <?php echo $form->textFieldRow($model,'inicio_vigencia', array(

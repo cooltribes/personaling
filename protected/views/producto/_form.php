@@ -128,9 +128,12 @@
 				 	echo $form->timepickerRow($model, 'horaFin', array('append'=>'<i class="icon-time" style="cursor:pointer"></i>'));	
 				}
 
-            ?>
+            ?> 
                     </div>
 				</div>
+				<div class="control-group"> <?php echo $form->labelEx($model,'temporada', array('class' => 'control-label')); ?>
+                        <div class="controls"> <?php echo $form->textField($model,'temporada',array('class'=>'span5','maxlength'=>25, 'placeholder'=>'Temporada')); ?> <?php echo $form->error($model,'temporada'); ?> </div>
+                   </div>
                 </fieldset>
             </form>
         </div>

@@ -636,11 +636,11 @@ public function actionCategorias(){
 			
 	  	if(isset($_POST['marcas'])){
 		  	if ($_POST['marcas']!='Todas las Marcas')	
-		  		$productos = Producto::model()->with($with)->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
+		  		$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
 			else	
-		  		$productos = Producto::model()->with($with)->findAll();
+		  		$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
 		} else {
-			$productos = Producto::model()->with($with)->findAll();
+			$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
 		}
 	  	if (isset($categoria_padre))
 	  		echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);

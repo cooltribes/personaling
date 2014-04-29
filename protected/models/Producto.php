@@ -52,7 +52,7 @@ class Producto extends CActiveRecord
                 'condition'=>'status=1',
             ),
             'activos'=>array(
-                'condition'=>'estado=0',
+                'condition'=>'t.estado=0',
             ),
         );
     }

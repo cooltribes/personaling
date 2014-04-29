@@ -74,6 +74,15 @@ class MarcaController extends Controller
 		if(isset($_POST['Marca'])){
 			
 			$marca->attributes = $_POST['Marca'];
+			$marca->contacto= $_POST['Marca']['contacto'];
+	
+				$marca->cif= $_POST['Marca']['cif'];
+				$marca->dirUno = $_POST['Marca']['dirUno'];
+				$marca->dirDos = $_POST['Marca']['dirDos'];
+				$marca->telefono = $_POST['Marca']['telefono'];
+				$marca->ciudad_id = $_POST['Marca']['ciudad_id'];
+				$marca->provincia_id = $_POST['Marca']['provincia_id'];
+				$marca->pais = $_POST['Marca']['pais'];
 			//$marca->urlImagen = $_POST['Marca']['Urlimagen'];
 		
 			echo($_POST['url']);
@@ -156,6 +165,9 @@ class MarcaController extends Controller
 		        }
 			}// isset
 			
+		                
+		                
+		                
 		                $this->redirect(array('admin'));
 			}
 		

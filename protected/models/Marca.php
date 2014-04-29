@@ -8,6 +8,18 @@
  * @property string $nombre
  * @property string $descripcion
  * @property string $urlImagen
+ * @property string $contacto
+ *  @property string $cif
+ *  @property string $dirUno
+ *  @property string $dirDos
+ *  @property string $telefono
+ *  @property string $pais
+ *  @property integer $provincia_id
+ *  @property integer $provincia_id
+ *  @property integer $ciudad_id
+ * @property integer $codigo_postal_id
+ *  @property integer $pais
+
  */
 class Marca extends CActiveRecord
 {

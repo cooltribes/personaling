@@ -48,7 +48,7 @@ class Direccion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, ciudad_id, provincia_id', 'numerical', 'integerOnly'=>true),
+			array('user_id, ciudad_id, provincia_id', 'numerical', 'integerOnly'=>true,'message' => 'Debes seleccionar una {attribute}'),
 			array('nombre, apellido', 'length', 'max'=>70),
 			array('cedula', 'length', 'max'=>20),
 			array('dirUno, dirDos', 'length', 'max'=>120),
@@ -90,7 +90,7 @@ class Direccion extends CActiveRecord
 			'dirUno' => 'Dirección Línea 1',
 			'dirDos' => 'Dirección Línea 2',
 			'telefono' => 'Teléfono',
-			'ciudad_id' => 'Ciudad',
+			'ciudad_id' => Yii::t('contentForm','City'),
 			'provincia_id' => 'Estado',
 			'pais' => 'País',
 			'user_id' => 'User',

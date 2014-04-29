@@ -178,7 +178,7 @@ var pre;
 			$("#Precio_precioImpuesto").val(this.value - (this.value * (dos/100)));		
 		else{
 			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()););			
+			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
 			$("#Precio_precioImpuesto").val(tres);
 		}// else
 	}
@@ -191,7 +191,7 @@ var pre;
 			$("#Precio_precioImpuesto").val(this.value - dos);	
 		else{
 			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()););			
+			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
 			$("#Precio_precioImpuesto").val(tres);
 		}	
 	}
@@ -220,7 +220,7 @@ var valor;
 			$("#Precio_precioImpuesto").val(dos - (dos * (this.value/100)));	
 		else{
 			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()););			
+			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
 			$("#Precio_precioImpuesto").val(tres);
 		}
 	}
@@ -233,7 +233,7 @@ var valor;
 			$("#Precio_precioImpuesto").val(dos - this.value);	
 		else{
 			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()););			
+			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
 			$("#Precio_precioImpuesto").val(tres);
 		}				
 	}
@@ -255,7 +255,7 @@ dos= document.getElementById("Precio_precioDescuento").value;
 		$("#Precio_precioImpuesto").val(dos);
 	
 	if(uno==1 || uno==2){
-		tres = parseFloat(dos) * parseFloat($("#iva").val());;
+		tres = parseFloat(dos) * parseFloat($("#iva").val());
 		
 		dos = parseFloat(dos)+parseFloat(tres);
 		
@@ -306,7 +306,7 @@ cinco = $("#Precio_tipoDescuento").val();
 			$("#Precio_precioImpuesto").val(uno - dos);	
 		else{
 			pre = $("#Precio_precioDescuento").val();
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()););			
+			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
 			$("#Precio_precioImpuesto").val(tres);
 		}
 		

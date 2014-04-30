@@ -293,7 +293,8 @@ public function actionReportexls(){
 					'fFin'=>$_POST['Producto']['fFin'],
 					'destacado' => $_POST['Producto']['destacado'],
 					'peso' => $_POST['Producto']['peso'],
-					'almacen' => $_POST['Producto']['almacen']
+					'almacen' => $_POST['Producto']['almacen'],
+					'temporada' => $_POST['Producto']['temporada']
 					));
 					
 					Yii::app()->user->updateSession();
@@ -320,6 +321,7 @@ public function actionReportexls(){
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
 				$model->almacen = $_POST['Producto']['almacen'];
+				$model->temporada = $_POST['Producto']['temporada'];
 				if($model->save())
 				{
 					Yii::app()->user->updateSession();

@@ -15,4 +15,6 @@ svn-commit*.tmp
 sftp-config.json
 /nbproject/private/
 nbproject
+/magazine/
+/test48/
 

@@ -62,7 +62,7 @@
 						 	Yii::app()->clientScript->registerScript('img_ps_script'.$look->id,$script);			 
   					?>
         <div class="hidden-phone margin_top_small vcard row-fluid">
-          <div class="span2">
+          <div class="span2 hidden-tablet">
             <div class="avatar">
             <a href="<?php echo $look->user->profile->getUrl(); ?>">
             	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>

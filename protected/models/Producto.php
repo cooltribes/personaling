@@ -22,6 +22,8 @@
  * @property integer $marca_id
  * @property integer $view_counter 
  * @property string $almacen
+ * @property string $temporada
+ *
  */
 class Producto extends CActiveRecord
 {
@@ -52,7 +54,7 @@ class Producto extends CActiveRecord
                 'condition'=>'status=1',
             ),
             'activos'=>array(
-                'condition'=>'estado=0',
+                'condition'=>'t.estado=0',
             ),
         );
     }
@@ -147,6 +149,7 @@ class Producto extends CActiveRecord
 			'view_counter' => 'Contador',
 			'peso' => 'Peso',
 			'almacen' => 'Almacen',
+			'temporada' => 'Temporada',
 		);
 	}
 
@@ -1176,7 +1179,7 @@ public function multipleColor2($idColor, $idact)
 	    
 	    $order="id ASC";
 	
-	    $records = Producto::model()->findAll(
+	    $records = Producto::model()->findAllByAttributes(array('status'=>1),
 	    	array('select'=>'id', 'order'=>$order)
 	    );
 	

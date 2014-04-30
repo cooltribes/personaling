@@ -150,8 +150,8 @@
 					</ul>  
 				</div>	
 			</li>
-D
-			<?php if (Yii::app()->params['mostrarMarcas']): ?>
+
+			<?php if (Yii::app()->params['mostrarMarcas']){ ?>
 			<li class="item">
 
 				<div class="dropdown">
@@ -187,7 +187,14 @@ D
 				</div>	
 
 			</li>
-			<?php endif; ?>
+			<?php }else{
+				if(isset(Yii::app()->session['f_marca']))
+								echo CHtml::hiddenField('marcahid',Yii::app()->session['f_marca']); 
+							else {
+								echo CHtml::hiddenField('marcahid',0);
+							}
+				echo CHtml::hiddenField('texthid','');
+			} ?>
 			<li class="item" id="li_chic">
 
 <!-- 			<li class="item" id="li_chic">

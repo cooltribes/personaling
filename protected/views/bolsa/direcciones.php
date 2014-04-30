@@ -205,7 +205,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				}
 
               	?>
-                
+                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>

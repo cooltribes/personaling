@@ -474,7 +474,7 @@ $cont=0;
 
 <?php if($count > 0){  ?>
 
-<div class="braker_horz_top_1 hidden-phone">
+<div class="braker_horz_top_1 hidden-phone" id="tienda_looks">
     <h3><?php echo Yii::t('contentForm','Recommended Looks with this product'); ?></h3>
     <div id="myCarousel" class="carousel slide"> 
       <!-- Carousel items -->
@@ -488,10 +488,27 @@ $cont=0;
           $lk = Look::model()->aprobados()->findByPk($cadauno->look_id);
           
             if(isset($lk)){
-              echo('<div class="span4">'); 
+              echo('<div class="span4 look"><article class="">');
               echo("<a href='".$lk->getUrl()."' title='".$lk->title."'>");
-              echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>'img_1'));
-              echo("</a></div>");
+              echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>''));
+              echo("</a>");
+              ?>
+              <div class="hidden-phone margin_top_small vcard row-fluid">
+                <div class="span2 avatar ">
+
+                    <?php echo CHtml::image($lk->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
+                </div>
+                <div class="span4"> <span class="muted"><?php echo Yii::t('contentForm' , 'Look created by'); ?>:  </span>
+                  <h5><a class="url" title="profile" href="#"><span class="fn">
+                    <?php //echo $look->title; ?>
+                    <?php echo $lk->user->profile->first_name; ?> </span></a></h5>
+                </div>
+                <div class="span6"><span class="precio"> <small><?php echo Yii::t('contentForm' , 'currSym'); ?></small> <?php echo $lk->getPrecio(); ?></span></div>
+              </div>
+              </article>
+            </div>
+              <?php
+  
               $cont++; // solo 3 veces
             }
           }

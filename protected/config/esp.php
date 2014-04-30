@@ -23,7 +23,8 @@ return CMap::mergeArray(
 		    'IVA' => '0.21',
 		    'IVAtext' => '21%',	
 		    'registro' => false,	
-		    'mostarMarcas'=>false,
+		    'mostrarMarcas'=>false,
+		    'mostrarChic'=>false,
 			'pais'=>'espana',
                         'metodosPago'=> array(
                                 'bkCard' => true,

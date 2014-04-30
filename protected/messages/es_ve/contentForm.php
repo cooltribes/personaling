@@ -143,6 +143,9 @@ return array (
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
      'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
      'Help' => 'Ayuda',
+     'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
+     <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas. <br/> Puedes registrarte haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Click aquí</a>',
+
 
      'ID' => 'ID',
      'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
@@ -243,6 +246,7 @@ return array (
      'Purchasing Information' => 'Datos de la compra',
      'Publish Look' => 'Publicar Look',
      'Preset filters' => 'Filtros Preestablecidos',
+     'Personaling.com' => 'Personaling.com',
      'Previous'=>'Anterior',
      'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
@@ -272,7 +276,7 @@ return array (
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
      'Recommended Looks with this product' => 'Looks recomendados con este producto',
-     'Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.' => '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan {amout} {currSym} para pagar toda la orden.<br/><br/>',
+     'Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.' => '¡Upsss! El pago que realizaste no cubre el monto de tu pedido, faltan {amout} {currSym} para pagar toda la orden y comenzar el procesar el envío de tu compra.<br/><br/>',
 
 
      'Save' => 'Guardar',
@@ -390,6 +394,7 @@ return array (
      'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',
      '<h2>Welcome to Personaling</h2>Receiving this email because you registered your address Personaling. Please validate your account by clicking on the link below:<br/><br/><a href="{url}">Click here</a>' => '<h2>Te damos la bienvenida a Personaling.</h2>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/><a href="{url}">Haz click aquí</a>',
+     '<h2>Welcome to Personaling.es!</h2>  We want to welcome you to live your first Shopping Experience unique and… repeatable.<br/>Your registration has been successfully validated.<br/>Your temporary password is: <strong>{code}</strong><br/>This password can change it by logging into your account and clicking on "Change Password". The next step you must take is to validate your account by clicking this link:<br/> <a href="{activation_url}">Click here</a>' =>     '<h2>¡Bienvenido a Personaling.com!</h2>Tu registro se ha validado con éxito.<br/><br/> Tu contraseña provisional es: <strong>{code}</strong><br/><br/> Esta contraseña puedes cambiarla accediendo a tu cuenta y haciendo click en “cambiar contraseña”. El siguiente paso que debes hacer es validar tu cuenta haciendo click en este enlace: <br/><br/> <a href="{activation_url}">Click aquí</a>',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
      'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
      'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',

@@ -117,6 +117,9 @@ class AdminController extends Controller
                                 'Tu registro se ha validado con éxito. <br/><br/>'.
                                 'Tu contraseña provisional es: <strong>'.$originalPass.'</strong><br/><br/>' .
                                 'Esta contraseña puedes cambiarla accediendo a tu cuenta y haciendo click en “cambiar contraseña”. El siguiente paso que debes hacer es validar tu cuenta haciendo click en este enlace: <br/> <br/>  <a href="'.$activation_url.'">Click aquí</a>';
+                        $body = Yii::t('contentForm','<h2>Welcome to Personaling.es!</h2>  We want to welcome you to live your first Shopping Experience unique and… repeatable.<br/>Your registration has been successfully validated.<br/>Your temporary password is: <strong>{code}</strong><br/>This password can change it by logging into your account and clicking on "Change Password". The next step you must take is to validate your account by clicking this link:<br/> <a href="{activation_url}">Click here</a>',array(
+                            '{code}'=>$originalPass,
+                            '{activation_url}'=>$activation_url));
                         $params = array('subject' => $subject, 'body' => $body);
                         $message->subject = $subject;
                         $message->setBody($params, 'text/html');

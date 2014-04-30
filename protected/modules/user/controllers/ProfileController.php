@@ -83,10 +83,14 @@ class ProfileController extends Controller
                     $message = new YiiMailMessage;
                     $message->view = "mail_invite";
                     $subject = 'Invitación a Personaling';
-                    $body = '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>' . $model->profile->first_name . '</strong>.' .
-                            '<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
-                            'Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas.<br/><br/>' .
-                            'Puedes registrarte haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $registration_url.'">Click aquí</a>';
+                    // $body = '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>' . $model->profile->first_name . '</strong>.' .
+                    //         '<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
+                    //         'Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas.<br/><br/>' .
+                    //         'Puedes registrarte haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $registration_url.'">Click aquí</a>';
+					$body = Yii::t('contentForm','Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>', array(
+						'{name}'=>$model->profile->first_name,
+						'{message}'=>$textoMensaje,
+						'{registration_url}'=>$registration_url));                        
                     $params = array('subject' => $subject, 'body' => $body);
                     $message->subject = $subject;
                     $message->setBody($params, 'text/html');

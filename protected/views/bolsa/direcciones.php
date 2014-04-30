@@ -192,7 +192,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               	<?php 
 
               	if($dir->provincia_id == ''){ 
-              		echo $form->dropDownListRow($dir,'ciudad_id', array(), array('empty' => 'Seleccione una ciudad'));
+              		echo $form->dropDownListRow($dir,'ciudad_id', array(), array('empty' => Yii::t('contentForm','Select a city')));
 				}else{
 						/*$criteria=new CDbCriteria;
 						$criteria->addCondition('cod_zoom IS NULL'); 
@@ -200,7 +200,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 						*/
 						//$criteria->order('nombre'); 
 					//echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array(),"cod_zoom IS NOT NULL AND provincia_id =".$dir->provincia_id, array('order' => 'nombre')),'id','nombre'));
-					echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAllBySql("SELECT * FROM tbl_ciudad WHERE provincia_id =".$dir->provincia_id." AND cod_zoom IS NOT NULL order by nombre ASC"),'id','nombre'),array('empty' => 'Seleccione una ciudad'));
+					echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAllBySql("SELECT * FROM tbl_ciudad WHERE provincia_id =".$dir->provincia_id." AND cod_zoom IS NOT NULL order by nombre ASC"),'id','nombre'),array('empty' => Yii::t('contentForm','Select a city')));
 					//echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAll($criteria),'id','nombre'));
 				}
 
@@ -214,7 +214,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <div class="controls"> 
               	<?php 
               	if($dir->ciudad_id == ''){ 
-              		echo $form->dropDownListRow($dir,'codigo_postal_id', array(), array('empty' => 'Seleccione una ciudad...'));
+              		echo $form->dropDownListRow($dir,'codigo_postal_id', array(), array('empty' => Yii::t('contentForm','Select a zip code')));
 				}else{
 						/*$criteria=new CDbCriteria;
 						$criteria->addCondition('cod_zoom IS NULL'); 

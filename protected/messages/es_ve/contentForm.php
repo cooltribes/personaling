@@ -305,6 +305,7 @@ return array (
      'Select a province' => 'Selecciona un estado',
      'Select a city' => 'Selecciona una cuidad',
      'Select a country' => 'Selecciona un país',
+     'Select a zip code' => 'Selecciona un código postal',
      'Select color and size' => 'Selecciona Color y talla',
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',

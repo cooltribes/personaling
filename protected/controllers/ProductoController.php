@@ -110,9 +110,9 @@ public function actionReportexls(){
 	
 		$objPHPExcel->getProperties()->setCreator("Personaling.com")
 		                         ->setLastModifiedBy("Personaling.com")
-		                         ->setTitle("Reporte-productos-vendidos")
-		                         ->setSubject("Reporte de Producto Vendidos")
-		                         ->setDescription("Reporte de Productos Vendidos con sus especificaciones individuales")
+		                         ->setTitle("Reporte-inventario")
+		                         ->setSubject("Reporte de Inventario")
+		                         ->setDescription("Reporte de Productos en existencia")
 		                         ->setKeywords("personaling")
 		                         ->setCategory("personaling");
 
@@ -199,7 +199,7 @@ public function actionReportexls(){
 
 			// Redirect output to a clientâ€™s web browser (Excel5)
 			header('Content-Type: application/vnd.ms-excel');
-			header('Content-Disposition: attachment;filename="ReporteVentas.xls"');
+			header('Content-Disposition: attachment;filename="ReporteInventario.xls"');
 			header('Cache-Control: max-age=0');
 			// If you're serving to IE 9, then the following may be needed
 			header('Cache-Control: max-age=1');

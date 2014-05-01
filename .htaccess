@@ -27,6 +27,7 @@ RewriteCond %{REMOTE_ADDR} !190\.207\.165\.206
 
 #Carlos ON
 RewriteCond %{REMOTE_ADDR} !186\.93\.231\.140
+RewriteCond %{REMOTE_ADDR} !190\.38\.5\.237
 #Carlos OFF
 
 #Johann ON

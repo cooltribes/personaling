@@ -15,7 +15,6 @@
  *  @property string $telefono
  *  @property string $pais
  *  @property integer $provincia_id
- *  @property integer $provincia_id
  *  @property integer $ciudad_id
  * @property integer $codigo_postal_id
  *  @property integer $pais
@@ -84,6 +83,16 @@ class Marca extends CActiveRecord
 			'nombre' => 'Nombre',
 			'descripcion' => 'Descripción',
 			'urlImagen' => 'Url Imagen',
+			'contacto'=>'Persona de Contacto',
+			'cif'=>'Identificación Fiscal',
+			'dirUno'=>'Dirección',
+			'$dirDos'=>'Información Adicional (Dirección)',
+			'telefono'=>'Teléfono',
+			'pais'=>'País',
+			'provincia_id'=>'Provincia',
+			'ciudad_id'=>'Población',
+			'codigo_postal_id'=>'Postal'
+
 		);
 	}
 
@@ -97,7 +106,6 @@ class Marca extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nombre',$this->nombre,true);
 		$criteria->compare('descripcion',$this->descripcion,true);

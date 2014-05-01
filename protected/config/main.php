@@ -271,6 +271,8 @@ return array(
 				    'IVA' => '0.12',
 				    'IVAtext' => '12%',	
 				    'registro' => true,	  
+				    'mostrarMarcas'=>true,
+				    'mostrarChic'=>true,
 		
 	),
 );

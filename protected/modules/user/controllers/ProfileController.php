@@ -371,6 +371,7 @@ class ProfileController extends Controller
 		if(isset($_POST['Direccion']))
 		{
 			$model->attributes = $_POST['Direccion'];
+			$model->codigo_postal_id = $_POST['Direccion']['codigo_postal_id'];
 			$model->user_id = $usuario->id;
 			
 			if($model->save())

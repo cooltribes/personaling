@@ -65,7 +65,7 @@ $b='';
             	
             	if(isset($like)) // le ha dado like
 				{
-					$encabezado="<td><article class='span3'><div class='articulo producto'> ";
+					$encabezado="<td><article class='span3'><div onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'> ";
 					$gusta="<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>";
 				}
 				else{

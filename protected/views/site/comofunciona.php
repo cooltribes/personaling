@@ -13,6 +13,20 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 ?>
 </div>
 </div>
+<?php
+$pais=Pais::model()->findByAttributes(array('idioma'=>Yii::app()->getLanguage()));
+ if($pais->idioma=='es_es')         { ?>
+	<section class="container margin_top_large margin_bottom_xlarge padding_top_large padding_bottom_large" >
+		<article class="row">
+			<div class="offset1 span10">
+				<p class="lead"><b>Personaling</b> es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlos en la comodidad de tu casa u oficina.
+				<br><br>¿Quieres vivir la primera shopping experience única y repetible?
+				<br><br> <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" >¡Regístrate ya!</a>   ...y comienza a disfrutar de <b>Personaling.</b></p>
+			</div>
+		</article>
+	</section>
+<?php } elseif($pais->idioma=='es_ve') { ?>
+
 <article class="como_funciona"> 
 	<div class="seccion1">
 		<div class="container"><div class="row-fluid">
@@ -123,3 +137,4 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 	}
 </script>
 
+<?php }?>				

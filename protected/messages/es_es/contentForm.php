@@ -16,7 +16,7 @@ return array (
 	                       </ul>',
 
      'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
-     <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> ¡Tu personal shopper digital! es el canal online de prestigiosas y conocidas marcas de moda internacional. (punto y a parte). A través de este canal no solo podrás comprar las prendas y accesorios de tus diseñadores favoritos, sino que tendrás a tu disposición y, de forma gratuita, el servicio exclusivo de asesores de moda, mejor conocidos como Personal Shoopers. Estos asesores de imagen y moda -celebridades, estilistas, bloggers y especialistas- crearán looks en torno a tu perfil, gustos, necesidades y eventos especiales, permitiéndote adquirir en un solo clic, los productos recomendados y recibirlos en la comodidad de tu hogar u oficina.</p>',   
+     <p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" > Regístrate ya! </a>  ...y comienza a disfrutar de Personaling. </p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -398,8 +398,47 @@ return array (
 	'Write message' => 'Escribe un mensaje',
 
 	'Zip code' => 'Código postal',
-	
 
+	// Copys de paginas estaticas
+	'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?</h3>
+      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>
+      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <hr/>
+      <h3>¿Debo pagar por mi envío?</h3>
+      <p>Sí, si tu compra es menor a 30 euros. De igual forma las tarifas cambiarán dependiendo del destino final del envío y de la urgencia con que desees la entrega. </p>
+      <h3>Quiero devolver mi compra ¿Debo hacerlo a través del mismo operador?</h3>
+      <p>Para asegurar un mejor servicio es necesario hacer la devolución a través del mismo operador que lo recibio. Personaling hace todos sus envíos a través de SEUR.  </p>
+      <hr/>
+      <h3>¿Debo pagar la devolución?</h3>
+      <p>Sí, debes pagar por la devolución de tu compra a menos que sea Personaling.es el responsable del deterioro de una de tus prendas o de un mal embalaje que dañara tu compra. </p>
+      <hr/>
+      <h3>¿Tiene Personaling.es tienda física?</h3>
+      <p>Por el momento no, y ¿Por qué? Nada más fácil que comprar tus marcas favoritas desde la comodidad de tu casa. </p>
+      <hr/>
+      <h3>¿Puedo elaborar looks? </h3>
+      <p>En Personaling.es estamos abiertos a cualquier opción y creemos que todos podemos agudizar nuestro buen gusto, así que si eres muy activo en nuestras redes sociales podemos considerarte un personal shopper honorario. </p>
+      <hr/>
+      <h3>¿Si quiero cambiar algo puedo acercarme a la tienda de las marca directamente?</h3>
+      <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí. </p>
+      <hr/>
+      <h3>¿Si tengo una queja o sugerencia, a cuál correo electrónico puedo escribir? </h3>
+      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de <a href="mailto:info@personaling.com">info@personaling.com</a></p>',
+
+    'Copy Politicas de Privacidad' => '
+	  <div class="page-header">
+	    <h1>Políticas de privacidad</h1>
+	  </div>    
+    <p>Según lo establecido en la Ley Orgánica 15/1999 de Protección de Datos de Carácter Personal, los datos personales que se faciliten a través del sitio web www.personaling.es o mediante la remisión de un correo electrónico a cualquiera de las cuentas de e-mail de Personaling, implica la aceptación de esta política de privacidad, así como la autorización a Personaling para que gestione los datos personales que nos facilite, ejecutar los contratos que por medio del sitio web se realicen, enviar los cuestionarios de encuesta, estudiar los servicios por parte de los socios, el envío de actualizaciones de los servicios, así como para enviarle información publicitaria y/o promocional de los productos y servicios de Personaling. Por la mera visita al sitio web, los usuarios no facilitan información personal alguna ni queda obligado a facilitarla.</p>
+    <p>Durante el proceso de registro, Personaling comunica al usuario el carácter no obligatorio de la recogida de tales datos, salvo en los campos que se indique lo contrario. No obstante la no cumplimentación de dicha información podrá impedir a la empresa prestar todos aquellos servicios vinculados a tales datos, liberándole de toda responsabilidad por la no prestación o prestación incompleta de algunos servicios. Personaling se compromete a guardar la máxima reserva y confidencialidad sobre la información que le sea facilitada y a utilizarla únicamente para los fines indicados. </p>
+    <p>La persona registrada en la página web podrá ejercitar sus derechos de acceso, rectificación, y oposición por medio del envío de un comunicado a la dirección <a href="mailto:info@personaling.com">info@personaling.com</a>. El usuario también podrá realizar cualquier gestión de sus datos personales en el apartado “Tu cuenta”. El usuario deberá responder, en todo caso, de la veracidad de los datos facilitados, reservándose Personaling el derecho de excluir de los servicios registrados a todo cliente que haya facilitado datos falsos, sin perjuicio de las demás acciones que procedan en Derecho. Conforme a la legislación vigente en materia de protección de datos, Personaling ha adoptado los niveles de seguridad adecuados a los datos facilitados por los usuarios y ha instalado todos los medios y medidas a su alcance para evitar la pérdida, mal uso, alteración, acceso no autorizado y extracción de los mismos. </p>
+    <p>Si haces conexión con alguna red social, es posible que tengamos acceso a información como: fotografías, fecha de nacimiento, teléfono, etc. De igual forma, esta información será tratada con  los mismos niveles de privacidad y protección.</p>
+    Por lo general, el tratamiento de datos se hace necesario para poder prestar los siguientes servicios disponibles a través de nuestra página web: <br/>
+	Registro de datos para poder disfrutar de los servicios ofrecidos a través de la página. <br/>
+	Suscripción de otros servicios específicos, tales como la “Newsletter” y otros servicios de información análogos sobre nuestra actividad comercial.<br/>
+	Gestión y/o tramitación de pedidos y actividades conexas. <br/>
+	Gestión de consultas, dudas o problemas de carácter técnico, comercial, sobre el estado de los pedidos realizados y otras solicitudes.
+	<br/><br/><p>Utilización de cookies<br/>
+	Durante la navegación por el sitio Web se utilizan “cookies”, un dispositivo que se transmite al disco duro del Usuario. No contiene informaciones comprensibles y nos permite obtener información sobre la identidad del usuario y asociarla con sus datos personales, que este deja en la página web. La información obtenida es totalmente anónima, en ningún caso puede ser asociada a un Usuario concreto e identificado. Solo Personaling procesa y gestiona esta información para adaptar y mejorar sus servicios a los intereses del Usuario. Son necesarios, para navegar por la página web, acceder a sus servicios y realizar una compra; la aceptación y la conformidad con los procedimientos automáticos de recogida de datos y el uso de las cookies. Los servicios de “Tu Cuenta” están adaptados con respecto a las cookies y el navegador de Internet permite eliminarlas al finalizar cada sesión. El usuario tiene la opción de impedir la generación de datos por medio de las cookies. En tal caso Personaling no garantiza al usuario la visualización completa de algunas páginas, ni el correcto funcionamiento de algunos servicios.</p>',
 	
 	
 );

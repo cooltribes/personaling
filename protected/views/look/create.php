@@ -732,6 +732,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	?>
                 <div class="span6">
+			    <?php if (Yii::app()->params['mostrarChic']): ?>
 				<!-- Opciones 100% chic ON -->
 				
 				 <?php $marcas = Marca::model()->findAll(array('order'=>'nombre'));  ?>
@@ -747,6 +748,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   	</select>
 
                   </div>
+                  <?php endif; ?>
+                  
 <?php
 	Yii::app()->clientScript->registerScript('marcachic',
 		"

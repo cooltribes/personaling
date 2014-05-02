@@ -110,9 +110,9 @@ public function actionReportexls(){
 	
 		$objPHPExcel->getProperties()->setCreator("Personaling.com")
 		                         ->setLastModifiedBy("Personaling.com")
-		                         ->setTitle("Reporte-productos-vendidos")
-		                         ->setSubject("Reporte de Producto Vendidos")
-		                         ->setDescription("Reporte de Productos Vendidos con sus especificaciones individuales")
+		                         ->setTitle("Reporte-inventario")
+		                         ->setSubject("Reporte de Inventario")
+		                         ->setDescription("Reporte de Productos en existencia")
 		                         ->setKeywords("personaling")
 		                         ->setCategory("personaling");
 
@@ -199,7 +199,7 @@ public function actionReportexls(){
 
 			// Redirect output to a clientâ€™s web browser (Excel5)
 			header('Content-Type: application/vnd.ms-excel');
-			header('Content-Disposition: attachment;filename="ReporteVentas.xls"');
+			header('Content-Disposition: attachment;filename="ReporteInventario.xls"');
 			header('Cache-Control: max-age=0');
 			// If you're serving to IE 9, then the following may be needed
 			header('Cache-Control: max-age=1');
@@ -293,7 +293,8 @@ public function actionReportexls(){
 					'fFin'=>$_POST['Producto']['fFin'],
 					'destacado' => $_POST['Producto']['destacado'],
 					'peso' => $_POST['Producto']['peso'],
-					'almacen' => $_POST['Producto']['almacen']
+					'almacen' => $_POST['Producto']['almacen'],
+					'temporada' => $_POST['Producto']['temporada']
 					));
 					
 					Yii::app()->user->updateSession();
@@ -320,6 +321,7 @@ public function actionReportexls(){
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
 				$model->almacen = $_POST['Producto']['almacen'];
+				$model->temporada = $_POST['Producto']['temporada'];
 				if($model->save())
 				{
 					Yii::app()->user->updateSession();

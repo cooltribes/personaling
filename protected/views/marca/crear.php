@@ -88,9 +88,157 @@ $this->breadcrumbs=array(
                         
                       <br>
                     </fieldset>
-                </form>
+                
+          <fieldset>
+            <legend> <?php echo Yii::t('contentForm','Datos Adicionales'); ?>: </legend>
+            <div class="control-group"> 
+             
+              <div class="controls">
+              	<?php 
+              	
+              	
+              	echo $form->textFieldRow($marca,'contacto',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the person to whom you send'))); 
+              	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
+              	?>
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            
+            <div class="control-group"> 
+             
+              <div class="controls">
+              	<?php echo $form->textFieldRow($marca,'cif',array('class'=>'span4','maxlength'=>20,'placeholder'=>Yii::t('contentForm','ID of the person to whom you send'))); 
+              	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span4">
+              	?>
+               
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            <div class="control-group"> 
+           
+              <div class="controls">
+              	<?php echo $form->textFieldRow($marca,'dirUno',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 1: (Avenue, Street, complex, Residential, etc.).')));
+				//<input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" name="RegistrationForm[email]" class="span4">
+				 ?>
+                
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            <div class="control-group"> 
+            
+              <div class="controls">
+              	<?php echo $form->textFieldRow($marca,'dirDos',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 2: (Building, Floor, Number, apartment, etc.)')));
+				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" name="RegistrationForm[email]" class="span4">
+				 ?>
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            <div class="control-group"> 
+            	
+              <div class="controls">
+              	<?php echo $form->textFieldRow($marca,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>Yii::t('contentForm','Phone number')));
+				 ?>
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            
+            <div class="control-group"> 
+              
+              <div class="controls">
+              	<?php // echo $form->dropDownListRow($marca, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+       
+              		
+						 echo $form->dropDownListRow(
+						 	$marca,'pais', CHtml::listData(
+						 		Pais::model()->findAll(),'id','nombre'
+							), array(
+								'empty' => Yii::t(
+									'contentForm','Select a country')
+								)
+							);
+					
+              		
+ 	 			 ?>
+              </div>
+            </div>
+            
+            <div class="control-group"> 
+              
+              <div class="controls">
+              	<?php 
+              	
+                	echo $form->dropDownListRow($marca,'provincia_id', array(), array('empty' => Yii::t('contentForm','Select a province') ));?>
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            
+            
+            
+            <div class="control-group"> 
+              <div class="controls">
+              	<?php 
+              	if($marca->provincia_id == ''){ 
+              		echo $form->dropDownListRow($marca,'ciudad_id', array(), array('empty' => 'Seleccione una ciudad...'));
+				}else{
+						/*$criteria=new CDbCriteria;
+						$criteria->addCondition('cod_zoom IS NULL'); 
+						$criteria->addCondition('provincia_id ='.$marca->provincia_id); 
+						*/
+						//$criteria->order('nombre'); 
+					//echo $form->dropDownListRow($marca,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array(),"cod_zoom IS NOT NULL AND provincia_id =".$marca->provincia_id, array('order' => 'nombre')),'id','nombre'));
+					echo $form->dropDownListRow($marca,'ciudad_id', CHtml::listData(Ciudad::model()->findAllBySql("SELECT * FROM tbl_ciudad WHERE provincia_id =".$marca->provincia_id." AND cod_zoom IS NOT NULL order by nombre ASC"),'id','nombre'));
+					//echo $form->dropDownListRow($marca,'ciudad_id', CHtml::listData(Ciudad::model()->findAll($criteria),'id','nombre'));
+				}
+              	?>
+                
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+        
+            <div class="control-group"> 
+              <div class="controls"> 
+              	<?php 
+              	if($marca->ciudad_id == ''){ 
+              		echo $form->dropDownListRow($marca,'codigo_postal_id', array(), array('empty' => 'Seleccione una ciudad...'));
+				}else{
+						/*$criteria=new CDbCriteria;
+						$criteria->addCondition('cod_zoom IS NULL'); 
+						$criteria->addCondition('provincia_id ='.$marca->provincia_id); 
+						*/
+						//$criteria->order('nombre'); 
+					//echo $form->dropDownListRow($marca,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array(),"cod_zoom IS NOT NULL AND provincia_id =".$marca->provincia_id, array('order' => 'nombre')),'id','nombre'));
+					echo $form->dropDownListRow($marca,'codigo_postal_id', CHtml::listData(CodigoPostal::model()->findAllBySql("SELECT * FROM tbl_codigo_postal WHERE ciudad_id =".$marca->provincia_id." order by codigo ASC"),'id','codigo'));
+					//echo $form->dropDownListRow($marca,'ciudad_id', CHtml::listData(Ciudad::model()->findAll($criteria),'id','nombre'));
+				}
+              	?>
+                
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+            
+            
+            
+            <div class="control-group"> 
+            
+              <div class="controls">
+              	
+              	 
+ 	 			 
+ 	 			
+ 	 		
+                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+              </div>
+            </div>
+
+        
+
+           
+          </fieldset>
+      </form>
             </div>
         </div>
+        
+        
         <div class="span3">
             <div class="padding_left"> 
             	
@@ -129,4 +277,47 @@ $this->breadcrumbs=array(
 			});
         
   	});	
+  	
+  	$('#Marca_provincia_id').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarCiudades'); ?>",
+			      type: "post",
+			      data: { provincia_id : $(this).val() },
+			      success: function(data){
+			           $('#Marca_ciudad_id').html(data);
+			      },
+			});
+		}
+	});
+	
+	$('#Marca_ciudad_id').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarCodigos'); ?>",
+			      type: "post",
+			      data: { ciudad_id : $(this).val() },
+			      success: function(data){
+			           $('#Marca_codigo_postal_id').html(data);
+			      },
+			});
+		}
+	});
+	
+	$('#Marca_pais').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarProvincias'); ?>",
+			      type: "post",
+			      data: { pais_id : $(this).val() },
+			      success: function(data){
+			           $('#Marca_provincia_id').html(data);
+			      },
+			});
+		}
+	});
+  	
 </script>

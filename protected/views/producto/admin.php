@@ -300,6 +300,7 @@ $template = '{summary}
 			)); ?>
 
     <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
+    
   </div>	  
 		  
   </div>

@@ -91,7 +91,7 @@ class Direccion extends CActiveRecord
 			'dirDos' => 'Dirección Línea 2',
 			'telefono' => 'Teléfono',
 			'ciudad_id' => Yii::t('contentForm','City'),
-			'provincia_id' => 'Estado',
+			'provincia_id' => Yii::t('contentForm','Province'),
 			'pais' => 'País',
 			'user_id' => 'User',
 		);

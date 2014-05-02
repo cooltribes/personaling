@@ -16,7 +16,7 @@ return array (
 	                       </ul>',
 
      'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
-     <p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" > Regístrate ya! </a>  ...y comienza a disfrutar de Personaling. </p>',   
+     <p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',

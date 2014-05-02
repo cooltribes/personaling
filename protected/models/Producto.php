@@ -22,6 +22,8 @@
  * @property integer $marca_id
  * @property integer $view_counter 
  * @property string $almacen
+ * @property string $temporada
+ *
  */
 class Producto extends CActiveRecord
 {
@@ -147,6 +149,7 @@ class Producto extends CActiveRecord
 			'view_counter' => 'Contador',
 			'peso' => 'Peso',
 			'almacen' => 'Almacen',
+			'temporada' => 'Temporada',
 		);
 	}
 

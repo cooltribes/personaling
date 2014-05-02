@@ -132,7 +132,7 @@
                       <td class="w580" width="360" valign="top">
                        <span class="hide">
                                                 <p id="permission-reminder" align="left" class="footer-content-left" style="color:#FFFFFF">
-                                                    <span>Recibes este correo porque tienes una invitación para unirte a <a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a> </span>
+                                                    <span>Recibes este correo porque tienes una invitación para unirte a <a href="http://<?php echo Yii::t('contentForm','Personaling.com') ?>" title="personaling" style="color:#FFFFFF"><?php echo Yii::t('contentForm','Personaling.com') ?></a> </span>
                                                 </p>
                                                 </span>
                        </td>

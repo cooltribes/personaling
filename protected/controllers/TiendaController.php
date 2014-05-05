@@ -1289,21 +1289,26 @@ public function actionCategorias2(){
                 //siempre la primera vez que se cargue la página
                 // $userTmp = User::model()->findByPk(Yii::app()->user->id);
 
-                $looks = new Look();
-                $ids = $looks->match($userTmp);
-                $ids = $ids->getData();
+                //Si esta logueado un usuario
+                if(!$todosLosLooks){
+                    
+                    $looks = new Look();
+                    $ids = $looks->match($userTmp);
+                    $ids = $ids->getData();
 
-                $inValues = array();
+                    $inValues = array();
 
-                foreach ($ids as $row) {
+                    foreach ($ids as $row) {
 
-                    $look = Look::model()->findByPk($row['id']);
-                    if ($look->matchOcaciones($userTmp)) {
-                        $inValues[] = $row["id"];
+                        $look = Look::model()->findByPk($row['id']);
+                        if ($look->matchOcaciones($userTmp)) {
+                            $inValues[] = $row["id"];
+                        }
                     }
-                }
 
-                $criteria->addInCondition('t.id', $inValues);
+                    $criteria->addInCondition('t.id', $inValues);
+                
+                }
 
                 $criteria->compare('title', $search, true, 'OR');
                 $criteria->compare('description', $search, true, 'OR');

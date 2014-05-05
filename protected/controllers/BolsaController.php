@@ -304,6 +304,11 @@ class BolsaController extends Controller
 		public function actionPagos()
 		{   
                     
+                    if (Yii::app()->user->isGuest){
+                        //Redirigir a login si no esta logueado
+                        $this->redirect(array('/user/login'));                        
+                    }
+                    
                     $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
                     /*ID del usuario propietario de la bolsa*/
@@ -558,7 +563,13 @@ class BolsaController extends Controller
 		
 		public function actionConfirmar()
 		{
-                     $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                    
+                    if (Yii::app()->user->isGuest){
+                        //Redirigir a login
+                        $this->redirect(array('/user/login'));                        
+                    }
+                    
+                    $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
                     /*ID del usuario propietario de la bolsa*/
                     $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
@@ -584,7 +595,7 @@ class BolsaController extends Controller
                     $descuento = Yii::app()->getSession()->get('descuento');
                     $total = Yii::app()->getSession()->get('total');
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
-                            $balance = User::model()->findByPK($user)->saldo;
+                            $balance = User::model()->findByPK($usuario)->saldo;
                             $balance = floor($balance *100)/100; 
                             if($balance > 0){
                                     if($balance >= $total){
@@ -719,6 +730,12 @@ class BolsaController extends Controller
 		public function actionDirecciones()
 		{
 		
+                    if (Yii::app()->user->isGuest){
+                        //Redirigir a login
+                        $this->redirect(array('/user/login'));                        
+                    }
+                    
+                    
                     $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
                     /*ID del usuario propietario de la bolsa*/
@@ -808,69 +825,70 @@ class BolsaController extends Controller
 	 */
 	public function actionCompra()
 	{
-		if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
-			
-                    /*Si es compra de admin para usuario*/
-                    $admin = Yii::app()->getSession()->contains("bolsaUser");                                    
-                    
-                    if($admin){
-                        $this->redirect($this->createUrl('bolsa/direcciones'));
+            if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
+
+                /* Si es compra de admin para usuario */
+                $admin = Yii::app()->getSession()->contains("bolsaUser");
+
+                if ($admin) {
+                    $this->redirect($this->createUrl('bolsa/direcciones'));
+                }
+
+                $model = new UserLogin;
+                $user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
+
+                if (isset($_POST['UserLogin'])) {
+                    $model->attributes = $_POST['UserLogin'];
+                    // validate user input and redirect to previous page if valid
+
+                    if ($model->validate()) {
+                        echo 'Status: ' . $user->status;
+                        if ($user->status == 1) {
+                            Yii::app()->session['login'] = 1;
+                            $this->redirect(array('bolsa/direcciones'));
+                        } else {
+                            Yii::app()->user->setFlash('error', "Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>" . $user->email . "</strong>");
+                            $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $user->activkey, "email" => $user->email));
+
+                            $message = new YiiMailMessage;
+                            $message->view = "mail_template";
+                            $subject = 'Activa tu cuenta en Personaling';
+                            $body = Yii::t('contentForm', 'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>') . $activation_url;
+                            $params = array('subject' => $subject, 'body' => $body);
+                            $message->subject = $subject;
+                            $message->setBody($params, 'text/html');
+                            $message->addTo($user->email);
+                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                            Yii::app()->mail->send($message);
+                            $this->refresh();
+                        }
+                    } else {
+                        $this->render('login', array('model' => $model));
+                        Yii::app()->user->setFlash('error', UserModule::t("La contraseña es incorrecta."));
                     }
-                    
-			$model=new UserLogin;
-			$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
-			
-			if(isset($_POST['UserLogin']))
-			{
-				$model->attributes=$_POST['UserLogin'];
-				// validate user input and redirect to previous page if valid
-				
-				if($model->validate()) {
-					echo 'Status: '.$user->status;
-					if($user->status == 1){
-						Yii::app()->session['login']=1;
-						$this->redirect(array('bolsa/direcciones'));
-					}else{
-						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 
-						$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $user->activkey, "email" => $user->email));
-		
-						$message            = new YiiMailMessage;
-						$message->view = "mail_template";
-						$subject = 'Activa tu cuenta en Personaling';
-						$body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
-						$params              = array('subject'=>$subject, 'body'=>$body);
-						$message->subject    = $subject;
-						$message->setBody($params, 'text/html');
-						$message->addTo($user->email);
-						$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-						Yii::app()->mail->send($message);
-						$this->refresh();
-					}
-				}else{
-					$this->render('login',array('model'=>$model));
-					Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta.")); 
-				}	
-			}else{
-				$bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$user->id));
-				if($bolsa->deleteInactivos()){
-						Yii::app()->session['inactivos']=1;
-						$this->redirect(array('bolsa/index'));
-				}
-				else{
-					$metric = new ShoppingMetric();
-					$metric->user_id = Yii::app()->user->id;
-					$metric->step = ShoppingMetric::STEP_LOGIN;
-					$metric->save();
-					
-					// si no viene del formulario. O bien viene de la pagina anterior
-					$this->render('login',array('model'=>$model));	
-				}	
-				
-				
-			}
-		} else{
-			// no va a llegar nadie que no esté logueado
-		}
+                } else {
+                    $bolsa = Bolsa::model()->findByAttributes(array('user_id' => $user->id));
+                    if ($bolsa->deleteInactivos()) {
+                        Yii::app()->session['inactivos'] = 1;
+                        $this->redirect(array('bolsa/index'));
+                    } else {
+                        $metric = new ShoppingMetric();
+                        $metric->user_id = Yii::app()->user->id;
+                        $metric->step = ShoppingMetric::STEP_LOGIN;
+                        $metric->save();
+
+                        // si no viene del formulario. O bien viene de la pagina anterior
+                        $this->render('login', array('model' => $model));
+                    }
+                }
+            } else {
+                // no va a llegar nadie que no esté logueado 
+                // (CLARO QUE SI, SI ESCRIBEN LA URL O SI SE MUERE 
+                // LA SESION EN EL PROCESO DE COMPRA)
+                
+                //Redirigir a login
+                $this->redirect(array('/user/login'));
+            }
 	}//fin
 	/*
 	 * Realizar cobro a la tarjeta
@@ -2156,6 +2174,10 @@ class BolsaController extends Controller
 			}
 		} else{
 			// no va a llegar nadie que no esté logueado
+                    
+                        //Redirigir a login
+                        $this->redirect(array('/user/login'));                        
+                    
 		}
 	}//fin
         
@@ -2168,6 +2190,11 @@ class BolsaController extends Controller
         public function actionPagoGC()
         {
 
+            if (Yii::app()->user->isGuest){
+                //Redirigir a login
+                $this->redirect(array('/user/login'));                        
+            }
+            
             $tarjeta = new TarjetaCredito; 
 
             if(isset($_POST['tipo_pago'])){
@@ -2272,55 +2299,58 @@ class BolsaController extends Controller
 	 */
         public function actionConfirmarGC()
         {                
-                $metric = new ShoppingMetric();
-                $metric->user_id = Yii::app()->user->id;
-                $metric->step = ShoppingMetric::STEP_CONFIRMAR;
-                $metric->tipo_compra = ShoppingMetric::TIPO_GIFTCARD;
-                $metric->save();
-//                echo Yii::app()->getSession()->get('tipoPago');
-//                Yii::app()->end();
+            
+            if (Yii::app()->user->isGuest){
+                //Redirigir a login
+                $this->redirect(array('/user/login'));                        
+            }
+            
+            $metric = new ShoppingMetric();
+            $metric->user_id = Yii::app()->user->id;
+            $metric->step = ShoppingMetric::STEP_CONFIRMAR;
+            $metric->tipo_compra = ShoppingMetric::TIPO_GIFTCARD;
+            $metric->save();
                 
-                
-                //por los momentos solo la primera giftcard que encuentre
-                $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
-                
-                if(!$giftcard){
-                    $this->redirect(array("giftcard/comprar"));
-                }
-                
-                $monto = Yii::app()->getSession()->get('total');
-                
-                 /*
-                 * Para pago con tarjeta y paypal
-                 */
-                $nombreProducto = "GiftCard Personaling";
+            //por los momentos solo la primera giftcard que encuentre
+            $giftcard = BolsaGC::model()->findByAttributes(array("user_id" => Yii::app()->user->id));
 
-                $tipo_pago = Yii::app()->getSession()->get('tipoPago');
-                //Tipos de pago aceptados por Aztive
-                $idPagoAztive = $tipo_pago == 5? 8:5; 
+            if(!$giftcard){
+                $this->redirect(array("giftcard/comprar"));
+            }
 
-                $optional = array(                        
-                    'name'          => 'Personaling Enterprise S.L.',
-                    'product_name'  => $nombreProducto,                             
-                );                                    
-                $cData = array(
-                    "src" => 2, //origen de la compra, 1-Normal, 2-GC
-                );
+            $monto = Yii::app()->getSession()->get('total');
 
-                $cData = CJSON::encode($cData);
-                $pago = new AzPay();
+             /*
+             * Para pago con tarjeta y paypal
+             */
+            $nombreProducto = "GiftCard Personaling";
 
-                $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
-                        $idPagoAztive==8?"I":null, $optional, $cData);   
+            $tipo_pago = Yii::app()->getSession()->get('tipoPago');
+            //Tipos de pago aceptados por Aztive
+            $idPagoAztive = $tipo_pago == 5? 8:5; 
 
-                   
-                
-                $this->render('confirmarGC',array(
-                    'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
-                    'monto'=> $monto,
-                    'giftcard' => $giftcard,
-                    'urlAztive' => $urlAztive,
-                    ));
+            $optional = array(                        
+                'name'          => 'Personaling Enterprise S.L.',
+                'product_name'  => $nombreProducto,                             
+            );                                    
+            $cData = array(
+                "src" => 2, //origen de la compra, 1-Normal, 2-GC
+            );
+
+            $cData = CJSON::encode($cData);
+            $pago = new AzPay();
+
+            $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+                    $idPagoAztive==8?"I":null, $optional, $cData);   
+
+
+
+            $this->render('confirmarGC',array(
+                'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
+                'monto'=> $monto,
+                'giftcard' => $giftcard,
+                'urlAztive' => $urlAztive,
+                ));
         }
         
         /**

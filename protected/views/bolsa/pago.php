@@ -445,11 +445,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 									
 									$envio =floatval($seur['porte'])+floatval($seur['iva'])+floatval($seur['combustible']);
 									
-									$seguro=0;
+									$seguro=1;
 								}
 								else {
 									$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-									$seguro=0;
+									$seguro=1;
 								} 
 									
 								
@@ -461,14 +461,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							$seguro=0;
 						}
 						 
-                        $t = $t + $envio + $seguro;
+                        $t = $t + $envio;
                         
 					
 
 						
                         echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                           ?>
-                  </td>
+               </td>  
               </tr>          
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
@@ -476,10 +476,17 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				?>:</th>
                 <td class="text_align_right"><?php 
                 if($shipping)
-                	echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio+$seguro, ''); 
+                	echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio, ''); 
                 else
                 	echo "<b class='text-success'>GRATIS</b>"; ?></td>
               </tr>
+              
+             <!-- <tr >
+                <td class="text_align_left" colspan="2"><?php echo  CHtml::CheckBox('asegurado','', array ( 'checked'=>'checked', 'value'=>$seguro, )).' '.Yii::t('contentForm','Deseo asegurar mi pedido por').' '.$seguro.' '.Yii::t('contentForm','currSym');
+				 
+				?></td>
+                
+              </tr>-->
               
               
               <?php if(!$direccion->ciudad->provincia->pais->exento)
@@ -608,6 +615,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <?php } ?>
             <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
             <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
+            <input type="hidden" id="conSeguro" name="conSeguro" value="0" />
             <div class="form-actions">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
 	            'type'=>'warning',
@@ -644,7 +652,9 @@ else
 ?>
 
 <script>
-
+	
+	
+	
     $("#aplicarGC").click(function(e){
             $("#aplicarAjax").val("1");
                         
@@ -877,7 +887,22 @@ $('#TarjetaCredito_year').change(function(){
 
     });
 
+	$("#asegurado").change(function(e){
+		
+		calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)
+		
+	});
+	
+	
+
 	function calcular_total(total, balance){
+		 
+		if($("#asegurado").is(':checked')){
+			total=total+parseFloat($("#asegurado").val());
+			$("#conSeguro").val('1')
+		}else{
+			$("#conSeguro").val('0');
+		}
 		if(balance > 0){
 			//console.log('Total: '+total+' - Balance: '+balance);
 			if($('#usar_balance').is(':checked')){

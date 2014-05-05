@@ -323,7 +323,13 @@ class BolsaController extends Controller
                     }
 
                     if(isset($_POST['tipo_pago'])){
-                       
+                            	
+                       		if($_POST['conSeguro']==0){
+								Yii::app()->session['seguro']=0;
+							}else{
+								Yii::app()->session['total']=Yii::app()->session['total']+Yii::app()->session['seguro'];
+							}
+								
                             Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
 
                             if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
@@ -1248,7 +1254,7 @@ class BolsaController extends Controller
                                         Yii::app()->end();
                                     }
                                     $userBalance = Yii::app()->getSession()->get('usarBalance');
-
+ 
                                     if ($userBalance == '1') {
                                         //$balance_usuario=$balance_usuario=str_replace(',','.',Profile::model()->getSaldo(Yii::app()->user->id));	
                                         $balance_usuario = $user->saldo;

@@ -15,6 +15,8 @@
  * @property integer $impuesto
  * @property double $precioImpuesto
  * @property integer $tbl_producto_id
+ * @property double $ganancia
+ * @property integer $gananciaImpuesto
  *
  * The followings are the available model relations:
  * @property Producto $tblProducto

@@ -29,21 +29,31 @@ $b='';
 	
 	$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id),array('order'=>'orden asc'));
 
-	/*if(isset(Yii::app()->session['f_color'])){
-					
-		if(Yii::app()->session['f_color']!=0){
-			
-			$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id,'color_id'=>$Yii::app()->session['f_color']),array('order'=>'orden asc'));
-						
-		}
-						
-	}*/
+	
 	
 	$ima=$ims[0];
 	if(isset($ims[1]))
 		$segunda=$ims[1];
 	else
 		$segunda=$ims[0];
+	
+	
+	
+	if(isset(Yii::app()->session['f_color'])){
+					
+		if(Yii::app()->session['f_color']!=0){
+			
+			$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id,'color_id'=>Yii::app()->session['f_color']),array('order'=>'orden asc'));
+						
+			if(count($ims)>0){
+				$ima=$ims[0];
+			}
+			if(count($ims)>1){
+				$segunda=$ims[1];
+			}
+		}
+						
+	}
 
 
 	

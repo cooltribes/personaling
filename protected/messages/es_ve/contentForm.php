@@ -445,6 +445,80 @@ return array (
         <li>Tus compras serán cuantificadas para uso interno de elaboración de apartados como “Más vendidos” o “Más buscados” y serán utilizadas dentro de grandes muestras para nuestra promoción, sin publicar tu identidad a no ser que así lo autorices.  </li>
         <li><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
       </ol>',
+
+      'Copy Envios y Encomiendas' => '
+          <div class="page-header">
+          <h1>Condiciones de Envíos y Encomiendas</h1>
+        </div>
+        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
+        <ol>
+          <li>Los envíos de Personaling.com se harán solamente dentro del  territorio venezolano, con excepción del Estado Nueva Esparta,  y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
+          <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>
+          <li> El costo del envio corre por cuenta del comprador, y el mismo depende del destino y del contenido o volumen del envío mismo. En todo caso, el monto del costo del envío se calculará automáticamente en el sistema, previo al pago, en el momento de realizar el pedido. De esta manera podrás conocerlo  antes de tomar la decisión final de compra o cierre de la transacción. </li>
+          <li> El envió se llevará a cabo a través de un operador que gestionará su entrega por medio de Personaling.com </li>
+          <li>Puedes elegir entre dos tipo de entregas:
+            <ol class="margin_left_medium" style="list-style-type: none">
+              <li >5.1 &nbsp;  Puerta: Cuando tu dirección es de fácil acceso, podremos llevar tu pedido hasta la puerta de tu domicilio u oficina.  </li>
+              <li >5.2 &nbsp;  Local: Si por el contrario, es una dirección de difícil acceso podrás elegir la opción recogida en la oficina del operador más cercana, donde deberás buscar tu pedido cuando te notifiquemos que ha llegado. </li>
+            </ol>
+          </li>
+          <li>Para recibir tu pedido en cualquiera de las modalidades debes presentar tu cédula de identidad y firmar el acuse de recibo.  </li>
+          <li>Personaling.com se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
+        </ol>
+        <p>&nbsp;</p>',
+
+        'Copy Politicas de Devoluciones' => '     
+          <div class="page-header">
+             <h1>Políticas de devoluciones</h1>
+           </div>
+           <p class="lead">A continuación te detallamos las políticas de  devoluciones de <a href="http://www.personaling.com">www.personaling.com</a> la cual rige a partir de tu registro o cuando compras en nuestra  plataforma, por lo que es muy importante que te asegures de leerlas y entenderlas con antelación. Cualquier cambio en su contenido o alcance, sea por requerimientos legislativos o corporativos, serán notificados a nuestros usuarios  mediante sus correos electrónicos. </p>
+           <ol>
+             <li> Solo  se aceptarán devoluciones bajo los siguientes términos. 
+               <ol type="a">
+                 <br/><li >El plazo de devolución del artículo es de tres (3) días contados a partir de la recepción del envío del mismo. </li><br/>
+                 <li>Previo a la devolución, deberás enviar un correo  a <a href="mailto:devoluciones@personaling.com"><em>devoluciones@personaling.com</em></a> indicando la razón por la cual devuelves tu pedido y el número de seguimiento del mismo para el control de la empresa. Si el motivo de la devolución fuese daño a la prenda deberás anexar una foto explícita de la prenda dañada.  </li><br/>
+                 <li>El producto devuelto deberá estar en perfectas condiciones de venta con sus etiquetas y en su caja  sin haber sido usado, a menos que sea el caso del apartado “b”.  </li><br/>
+                 <li>El costo de re-envío corre por cuenta del cliente. Salvo que la devolución se deba a responsabilidad de <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, en cuyo caso la empresa correrá con dichos gastos y repondrá el artículo u ofrecerá un vale por el monto de la compra más el monto del envio, que podrás aplicar en posteriores compras. </li><br/>
+                 <li>El envío únicamente corre por cuenta de la compañía cuando se ha cometido un error en cuanto a la talla o si te enviamos el pedido equivocado.</li><br/>
+                 <li>Al momento de devolver el pedido debes cuidar enviarlo  en las mismas condiciones de empaque y embalaje en que fue recibido a fin de que esté protegido de daño.  </li>
+               </ol>
+             </li> <br/>
+             <li>Personaling.com no realizará devoluciones de dinero bajo ningún concepto. A beneficio de nuestros clientes entregaremos un vale de consumo por el monto del pedido devuelto que tiene validez por un año a partir de la fecha de expedición.  </li><br/>
+             <li>Personaling.com se compromete a la revisión detallada de cada uno de sus pedidos antes de la salida de su almacén; esforzándonos por un servicio certero y de calidad.</li><br/>
+             <li>Otras condiciones aplican.</li>
+           </ol>',
+     'Copy Formas de Pago' => '        
+        <div class="page-header">
+          <h1>Formas de Pago: Personaling</h1>
+        </div>
+        <p>Para facilitar tu compra ponemos a disposición tres (3) formas de pago: tarjeta de crédito, transferencia bancaria y depósito bancario. A continuación te indicamos cómo proceder según el medio que utilices. </p>
+        <ol style="list-style:lower-latin"><br />
+          <li><strong>Pagos con Tarjeta de Crédito: </strong><br />
+            <p>Aceptamos VISA Y MASTERCARD de cualquier Banco. El sistema te solicitará  la información que es indispensable para efectos de una transacción regular y efectiva por Internet, y cualquier información adicional será solicitada bajo tu estricta autorización. Una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p>
+            <p>Es importante que tengas presente que <a href="http://www.personaling.com" >Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red donde los datos introducidos están debidamente protegidos. Tu compra con este medio de pago no implica cargo adicional.</p>
+            
+          </li><br />
+          <li><strong>Pagos con Transferencia Bancaria:</strong><br />
+            <p>Si eliges como método de pago &ldquo;transferencia bancaria&ldquo;, es importante que tengas presente que debes efectuarla dentro de las veinticuatro (24) horas siguientes de haber hecho tu pedido. De lo contrario no podremos garantizarte que la mercancía estará aún disponible. La transferencia debes realizarla desde la plataforma online de tu banco, a una de nuestras cuentas habilitadas, utilizando los datos siguientes:</p> <br />
+            PERSONALING C.A  <br />
+            RIF: J-40236088-6<br />
+            BANESCO: <br />
+            Número Cta corriente: 0134-0277-98-2771093092 <br /><br />
+            <p>Deposita en cualquiera de nuestras cuentas habilitadas, utilizando los datos siguientes: Anota el  número de referencia una vez realizada la transacción;  ya que este número es el que deberás introducir en la casilla correspondiente al control de pago en tu compra. Una vez recibido y confirmado procesaremos tu pedido. Tu compra con este medio de pago no implica cargo adicional, excepto aquellas que te aplique tu entidad bancaria.  </p>
+          </li><br />
+          <li><strong>Pagos con depósito Bancario.</strong><br />
+            <p>Hecha la selección de artículos a comprar, en la sección de pagar, elegirás como método de pago &ldquo;depósito bancario&ldquo;. En este caso haz el depósito por el monto total de tu compra, y conserva tu comprobante, ya que el número de depósito es el que deberás introducir en la casilla correspondiente al control del pago de tu compra.  A partir de completar este paso comenzaremos a procesar tu  pedido. 
+            Tu compra por este medio de pago no implica cargo adicional, excepto aquellas que aplique tu entidad bancaria.</p>    
+            Las cuentas a las cuales puedes depositar son: <br />
+            
+            <br/>
+            PERSONALING C.A  <br/>
+            RIF: J-40236088-6 <br/>
+            BANESCO: <br/>
+            Número Cta corriente: 0134-0277-98-2771093092 <br/> <br/>           
+
+        </ol>
+        <p>Te mantendremos al tanto del status de tu compra a través de tu dirección de correo electrónico o través de tu perfil en <a href="http://www.personaling.com" >Personaling.com</a>.</p>'
 );
 
 ?>

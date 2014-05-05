@@ -1015,6 +1015,10 @@ src: url('../fonts/entypo.woff'),
       .item img{
         margin: 0 auto;
       }
+      .carousel-inner{
+        width: 94%;
+        margin: 0 auto;
+      }
     }
     .box_20130928{
       width: 48%;
@@ -1200,34 +1204,34 @@ src: url('../fonts/entypo.woff'),
 }
 // hack para cargar imagenes del slider antes que todos pasen OFFFFFFFF
 .slider-home{
-  height: 520px;
+  height: 518px;
   margin: 0 auto;
-  max-width: 1520px;
+  max-width: 1203px;
 
 }
 .slide-1,.slide-2,.slide-3{
   .slide-content{
     border: 2px solid white;
-    height: 516px;
+    height: 513px;
     .copy-right{
       .border-bottom{
-        border-bottom: 2px solid @color3;
+        border-bottom: 1px solid @color3;
         margin-bottom: 1em;
       }
       float: right;
       padding: 5em 7em 0 0;
       h2{
-        font-size: 46px;
+        font-size: 37px;
         strong{
           color: @color4;
-          font-weight: 600;
+          font-weight: 700;
         }
       }
 
       .personaling-slogan{
         margin-top: 1em;
         font-weight: 100;
-        font-size: 20px;
+        font-size: 17px;
         strong{
           color: black;
         }
@@ -1236,21 +1240,24 @@ src: url('../fonts/entypo.woff'),
   }
 }
 .slide-1{
-  background: #ffd660;
-  border: 11px solid #ffd660;
+
+  background: #ffd571;
+  border: 11px solid #ffd571;
   .slide-content{
-    background: url(../images/model-slide1.jpg) no-repeat 20% 66px;
+    background: url(../images/model-slide1.jpg) no-repeat 256px 21px;
       .copy-right{
-        padding-top: 2em;
+        padding-top: 7.8em;
+        width: 475px;
+        padding: 4.7em 5.7em 0 0;
       }
       a.btn-call2action{
         border: 2px solid @color4;
         display: block;
-        font-size: 26px;
+        font-size: 23px;
         margin: 25px auto 20px auto;
         padding: .5em;
         text-align: center;
-        width: 137px;
+        width: 122px;
         &:hover{
           background-color: @color4;
           text-decoration: none;
@@ -1259,7 +1266,9 @@ src: url('../fonts/entypo.woff'),
         }
     }
     h2{
-      line-height: 55px;
+      line-height: 46px;
+      margin-top: 0;
+      margin-bottom: 18px;
     }  
     .logo-personaling{
       width: 260px;
@@ -1268,15 +1277,16 @@ src: url('../fonts/entypo.woff'),
   }
 }
 .slide-2{
-  background: #99e6f9;
-  border: 11px solid #99e6f9;
+  background: #86e9f8;
+  border: 11px solid #86e9f8;
   .slide-content{
-    background: url(../images/model-slide2.jpg) no-repeat 20% 36px;  
+    background: url(../images/model-slide2.jpg) no-repeat 263px 20px;  
     .copy-right{
       width: 530px;
+      padding: 7em 7em 0 0;
     }
     h2{
-      line-height: 55px;
+      line-height: 46px;
     }
     .logo-personaling{
       width: 210px;
@@ -1287,13 +1297,13 @@ src: url('../fonts/entypo.woff'),
 }
 
 .slide-3{
-  background: #f2efe8;
-  border: 11px solid #f2efe8;
+  background: #f3efe8;
+  border: 11px solid #f3efe8;
   .slide-content{
-    background: url(../images/model-slide3.jpg) no-repeat 8% 50px;    
+    background: url(../images/model-slide3.jpg) no-repeat 68px 38px;    
     .copy-right{
       padding-right: 6em; 
-      padding-top: 3.3em;
+      padding-top: 6.8em;
     }
     a.btn-call2action{
       border: 2px solid @color4;
@@ -1305,11 +1315,12 @@ src: url('../fonts/entypo.woff'),
       }
     }
     h2{
-      line-height: 55px;
+      line-height: 46px;
+      font-size: 33px !important;
     }
     .logo-personaling{
       width: 210px;
-      margin: 2em  auto;
+      margin: 1.5em  auto;
     }    
   } 
 }
@@ -4097,11 +4108,14 @@ img[alt="Loading"]{
     background: #fff;
     border-top: 0;
   }
-  .navbar .brand{ padding:8px 0 12px}
+  .navbar .brand{ padding:10px 0 12px}
    #scroller-anchor #scroller{
      width:auto;
   }
 
+  .slide-1 .logo-personaling{
+      width: 210px;
+  }
   .wrapper_home{
     .box_20130928{
       h1{

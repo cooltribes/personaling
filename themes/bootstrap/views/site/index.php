@@ -35,8 +35,8 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                         <div class="copy-right">
                             <div class="border-bottom">
                                 <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="95"  heigth="95"> 
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="260"> 
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="73"  heigth="73"> 
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="215"> 
                                 </figure>
                                 <h2>La primera <br><strong>shopping experience</strong><br>única y…repetible.</h2>
                             </div>
@@ -53,7 +53,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                                 <h2 class="">Solamente tú, <br/> eres <strong>irrepetible.</strong></h2>
 
                                 <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="135"  heigth="135">                                    
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="102"  heigth="102">                                    
                                 </figure>
                             </div>
                             <div>
@@ -71,7 +71,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
                             <div class="border-bottom">
                                 <h2>Si algo puede mejorar el <br> carácter de <strong>la moda</strong>,<br>sin duda, es <strong>tu personalidad.</strong></h2>
                                 <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling">                                                                    
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="110"  heigth="110">                                                                    
                                 </figure>
                             </div>
                             <div>
@@ -90,6 +90,6 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 
 <script type="text/javascript">
 $('#sliderHome').carousel({
-  interval: 6000
+  interval: 60000
 });
 </script>

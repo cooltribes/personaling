@@ -15,8 +15,7 @@ return array (
 	                               <li><strong>Titular:</strong> PERSONALING ENTERPRISE S.L</li>
 	                       </ul>',
 
-     'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
-     <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> ¡Tu personal shopper digital! es el canal online de prestigiosas y conocidas marcas de moda internacional. (punto y a parte). A través de este canal no solo podrás comprar las prendas y accesorios de tus diseñadores favoritos, sino que tendrás a tu disposición y, de forma gratuita, el servicio exclusivo de asesores de moda, mejor conocidos como Personal Shoopers. Estos asesores de imagen y moda -celebridades, estilistas, bloggers y especialistas- crearán looks en torno a tu perfil, gustos, necesidades y eventos especiales, permitiéndote adquirir en un solo clic, los productos recomendados y recibirlos en la comodidad de tu hogar u oficina.</p>',   
+     'About us text' => '<p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -232,7 +231,7 @@ return array (
 	'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
 	    <b>Atrás</b> en tu navegador',
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
-    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas para ti, a partir de tus gustos, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.',	
+    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina. <br/>¿Quieres vivir la primera shopping experience única y repetible? <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card para ti.',    
 	'Personaling C.A RIF: J-40236088-6' => 'Personaling Enterprise S.L.',
     'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Posiblemente lo que quieres preguntar está en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no lo encuentras allí, llena el formulario a continuación y te contáctaremos lo más pronto posible. <strong>¡Gracias!</strong>',	
@@ -398,9 +397,135 @@ return array (
 	'Write message' => 'Escribe un mensaje',
 
 	'Zip code' => 'Código postal',
-	
 
-	
+	// Copys de paginas estaticas
+	'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?</h3>
+      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>
+      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <hr/>
+      <h3>¿Debo pagar por mi envío?</h3>
+      <p>Sí, si tu compra es menor a 30 euros. De igual forma las tarifas cambiarán dependiendo del destino final del envío y de la urgencia con que desees la entrega. </p>
+      <h3>Quiero devolver mi compra ¿Debo hacerlo a través del mismo operador?</h3>
+      <p>Para asegurar un mejor servicio es necesario hacer la devolución a través del mismo operador que lo recibio. Personaling hace todos sus envíos a través de SEUR.  </p>
+      <hr/>
+      <h3>¿Debo pagar la devolución?</h3>
+      <p>Sí, debes pagar por la devolución de tu compra a menos que sea Personaling.es el responsable del deterioro de una de tus prendas o de un mal embalaje que dañara tu compra. </p>
+      <hr/>
+      <h3>¿Tiene Personaling.es tienda física?</h3>
+      <p>Por el momento no, y ¿Por qué? Nada más fácil que comprar tus marcas favoritas desde la comodidad de tu casa. </p>
+      <hr/>
+      <h3>¿Puedo elaborar looks? </h3>
+      <p>En Personaling.es estamos abiertos a cualquier opción y creemos que todos podemos agudizar nuestro buen gusto, así que si eres muy activo en nuestras redes sociales podemos considerarte un personal shopper honorario. </p>
+      <hr/>
+      <h3>¿Si quiero cambiar algo puedo acercarme a la tienda de las marca directamente?</h3>
+      <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí. </p>
+      <hr/>
+      <h3>¿Si tengo una queja o sugerencia, a cuál correo electrónico puedo escribir? </h3>
+      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de <a href="mailto:info@personaling.com">info@personaling.com</a></p>',
+
+    'Copy Politicas de Privacidad' => '
+	  <div class="page-header">
+	    <h1>Políticas de privacidad</h1>
+	  </div>    
+    <p>Según lo establecido en la Ley Orgánica 15/1999 de Protección de Datos de Carácter Personal, los datos personales que se faciliten a través del sitio web www.personaling.es o mediante la remisión de un correo electrónico a cualquiera de las cuentas de e-mail de Personaling, implica la aceptación de esta política de privacidad, así como la autorización a Personaling para que gestione los datos personales que nos facilite, ejecutar los contratos que por medio del sitio web se realicen, enviar los cuestionarios de encuesta, estudiar los servicios por parte de los socios, el envío de actualizaciones de los servicios, así como para enviarle información publicitaria y/o promocional de los productos y servicios de Personaling. Por la mera visita al sitio web, los usuarios no facilitan información personal alguna ni queda obligado a facilitarla.</p>
+    <p>Durante el proceso de registro, Personaling comunica al usuario el carácter no obligatorio de la recogida de tales datos, salvo en los campos que se indique lo contrario. No obstante la no cumplimentación de dicha información podrá impedir a la empresa prestar todos aquellos servicios vinculados a tales datos, liberándole de toda responsabilidad por la no prestación o prestación incompleta de algunos servicios. Personaling se compromete a guardar la máxima reserva y confidencialidad sobre la información que le sea facilitada y a utilizarla únicamente para los fines indicados. </p>
+    <p>La persona registrada en la página web podrá ejercitar sus derechos de acceso, rectificación, y oposición por medio del envío de un comunicado a la dirección <a href="mailto:info@personaling.com">info@personaling.com</a>. El usuario también podrá realizar cualquier gestión de sus datos personales en el apartado “Tu cuenta”. El usuario deberá responder, en todo caso, de la veracidad de los datos facilitados, reservándose Personaling el derecho de excluir de los servicios registrados a todo cliente que haya facilitado datos falsos, sin perjuicio de las demás acciones que procedan en Derecho. Conforme a la legislación vigente en materia de protección de datos, Personaling ha adoptado los niveles de seguridad adecuados a los datos facilitados por los usuarios y ha instalado todos los medios y medidas a su alcance para evitar la pérdida, mal uso, alteración, acceso no autorizado y extracción de los mismos. </p>
+    <p>Si haces conexión con alguna red social, es posible que tengamos acceso a información como: fotografías, fecha de nacimiento, teléfono, etc. De igual forma, esta información será tratada con  los mismos niveles de privacidad y protección.</p>
+    Por lo general, el tratamiento de datos se hace necesario para poder prestar los siguientes servicios disponibles a través de nuestra página web: <br/>
+	Registro de datos para poder disfrutar de los servicios ofrecidos a través de la página. <br/>
+	Suscripción de otros servicios específicos, tales como la “Newsletter” y otros servicios de información análogos sobre nuestra actividad comercial.<br/>
+	Gestión y/o tramitación de pedidos y actividades conexas. <br/>
+	Gestión de consultas, dudas o problemas de carácter técnico, comercial, sobre el estado de los pedidos realizados y otras solicitudes.
+	<br/><br/><p>Utilización de cookies<br/>
+	Durante la navegación por el sitio Web se utilizan “cookies”, un dispositivo que se transmite al disco duro del Usuario. No contiene informaciones comprensibles y nos permite obtener información sobre la identidad del usuario y asociarla con sus datos personales, que este deja en la página web. La información obtenida es totalmente anónima, en ningún caso puede ser asociada a un Usuario concreto e identificado. Solo Personaling procesa y gestiona esta información para adaptar y mejorar sus servicios a los intereses del Usuario. Son necesarios, para navegar por la página web, acceder a sus servicios y realizar una compra; la aceptación y la conformidad con los procedimientos automáticos de recogida de datos y el uso de las cookies. Los servicios de “Tu Cuenta” están adaptados con respecto a las cookies y el navegador de Internet permite eliminarlas al finalizar cada sesión. El usuario tiene la opción de impedir la generación de datos por medio de las cookies. En tal caso Personaling no garantiza al usuario la visualización completa de algunas páginas, ni el correcto funcionamiento de algunos servicios.</p>',
+
+	'Copy Envios y Encomiendas' => '        
+		<div class="page-header">
+          <h1>Condiciones de Envíos y Encomiendas</h1>
+        </div>
+        <p>Al registrarte o realizar una compra en nuestra tienda <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">www.personaling.es</a>, aceptas automáticamente cada uno de los términos y condiciones que rigen nuestros envíos. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación. A continuación te los detallamos: </p>
+        <ol>
+          <li>Los envíos de Personaling.es se harán solamente dentro del territorio español y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
+          <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>
+          <li>El costo del envío corre por cuenta del comprador si: 
+            <ol class="margin_left_medium" style="list-style-type: none">
+              <li >3.1 &nbsp;  La compra es inferior a los 30 euros.  </li>
+              <li >3.2 &nbsp;  Se realiza a Canarias, Ceuta, Melilla o Baleares. </li>
+              <li >3.3 &nbsp;  Es más pesado de 5 Kg. el envío  </li>
+              <li >3.4 &nbsp;  Se desea entregar en una franja horaria específica. </li>
+            </ol>
+            En todo caso, el monto del costo del envío se calculará automáticamente en el sistema, previo al pago, en el momento de realizar el pedido. De esta manera podrás conocerlo antes de tomar la decisión final de compra o cierre de la transacción.
+          </li>
+          <li>El envió se llevará a cabo a través de SEUR que gestionará su entrega por medio de <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">Personaling.es</a> 
+            <br/> Puedes elegir entre dos tipo de entregas: </li>
+            <ol class="margin_left_medium" style="list-style-type: none">
+              <li >4.1 &nbsp;  Puerta: Cuando tu dirección es de fácil acceso, podremos llevar tu pedido hasta la puerta de tu domicilio u oficina.  </li>
+              <li >4.2 &nbsp; Local: Si por el contrario, es una dirección de difícil acceso podrás elegir la opción recogida en la oficina de SEUR más cercana, donde deberás buscar tu pedido cuando te notifiquemos que ha llegado. </li>
+            </ol>            
+          <li>Para recibir tu pedido en cualquiera de las modalidades debes presentar tu DNI y firmar el acuse de recibo. </li>
+          <li> <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">Personaling.es</a> se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
+        </ol>
+        <p>&nbsp;</p>',
+
+    'Copy Politicas de Devoluciones' => '      
+    <div class="page-header">
+        <h1>Políticas de devoluciones</h1>
+      </div>
+      <p class="lead">¿No te quedó una prenda y deseas devolverla? ¿Te diste cuenta que no eres la talla que dices ser? Tu nuevo look te queda grande o pequeño, no hay problema, en el caso que al recibir tu pedido cambies de opinión, dispones de un plazo de 14 días laborales, a contar desde el día siguiente a la compra del pedido, para cambiarlo por otra talla o color, o devolverlo. Por el momento no podemos procesar cambios de un producto por otro. Solo se pueden por otra talla o color. En caso de no tener stock de la misma talla o color, te daremos un vale para que puedas usarlo en cualquier otra prenda. </p>
+      <p>En periodos especiales los plazos de devolución pueden variar, estas variaciones serán debidamente informadas en tiempo y forma en nuestra página web. Ninguna de las devoluciones corre por cuenta de Personaling.es</p>
+      <p>Para pedidos a Canarias, Ceuta, Melilla y Baleares sólo son posibles devoluciones, en ningún caso cambios. Ten en cuenta que salvo en caso de un defecto imputable a Personaling, no se admitirán cambios o devoluciones de ropa interior, lencería, baño, medias/calcetines, bisutería, gafas de sol, cosméticos o accesorios para el pelo. Del mismo modo, no se aceptaran devoluciones parciales de artículos que formen parte de un lote.</p>
+      <p>En el caso de las devoluciones: <br/>
+      Para importes superiores a 20 euros: Personaling abonará el importe mediante transferencia bancaria en el número de cuenta facilitado (Se solicitará telefónicamente), en un plazo aproximado de 10 días desde la recepción del producto devuelto. <br/>
+      Para importes de 20 euros o inferiores: la devolución se realizará mediante cupón de compra de Personaling.</p>
+      <p>Para hacer tu cambio o devolución sólo tienes que seguir estos pasos:</p>
+      <p>Entra en la web en el apartado “Tu Cuenta” y dentro del pedido solicita el cambio o devolución de los artículos que desees. Si tienes cualquier duda, envíanos un email a info@personaling.com y nuestro servicio de Atención al Cliente contactará contigo en horario comercial. Si vas a contactar por correo electrónico no olvides enviarnos el número de tu pedido.
+      Los productos deben estar en perfecto estado, en su embalaje original y en la caja o sobre en la que te llegó el pedido. Si el producto no está en perfecto estado, nos reservamos el derecho de facturarte el producto, así como cualquier gasto asociado.  
+      <ul class="margin_left_medium" >
+        <li >  Anota en un lugar visible fuera del paquete el número de pedido original. </li>
+        <li >  Incluye el albarán de entrega, indicando código, cantidad y el motivo del cambio o devolución. </li>
+        <li >  Es más pesado de 5 Kg. el envío  </li>
+        <li>La empresa transportista recogerá tú pedido en el lugar que nos indiques en 2-3 días hábiles (Península). Para otros destinos escríbenos a <a href="mailto:info@personaling.com">info@personaling.com</a>.</li>
+        <li>En caso de cambio se generará automáticamente un nuevo número de pedido</li>
+      </ul>
+      Los artículos comprados serán responsabilidad del cliente hasta la llegada de los mismos al almacén. Cuando nos llegue físicamente, revisaremos su estado y te reembolsaremos el importe de los artículos adquiridos al precio que se pagaron, normalmente en un plazo no superior a 7 días hábiles.
+    </p>
+    <p>En Personaling nos preocupamos por nuestros clientes. Por ello, en el caso de que quieras devolver parte o todo tu pedido, iremos a recogerlo a la dirección que nos indiques, sin necesidad de que tengas que desplazarte a ninguna oficina postal. </p>
+    <p>Si una devolución modifica las condiciones de venta de una promoción (cheques, descuentos, cupones, etc.), se deducirá la parte proporcional de la promoción en función de los artículos devueltos en cada caso.</p>
+    <p>Si tienes cualquier duda, puedes ponerte en contacto con nosotros vía mail en <a href="mailto:info@personaling.com">info@personaling.com</p>',
+
+        'Copy Politicas de Devoluciones' => '     
+          <div class="page-header">
+             <h1>Políticas de devoluciones</h1>
+           </div>
+           <p class="lead">A continuación te detallamos las políticas de  devoluciones de <a href="http://www.personaling.com">www.personaling.com</a> la cual rige a partir de tu registro o cuando compras en nuestra  plataforma, por lo que es muy importante que te asegures de leerlas y entenderlas con antelación. Cualquier cambio en su contenido o alcance, sea por requerimientos legislativos o corporativos, serán notificados a nuestros usuarios  mediante sus correos electrónicos. </p>
+           <ol>
+             <li> Solo  se aceptarán devoluciones bajo los siguientes términos. 
+               <ol type="a">
+                 <br/><li >El plazo de devolución del artículo es de tres (3) días contados a partir de la recepción del envío del mismo. </li><br/>
+                 <li>Previo a la devolución, deberás enviar un correo  a <a href="mailto:devoluciones@personaling.com"><em>devoluciones@personaling.com</em></a> indicando la razón por la cual devuelves tu pedido y el número de seguimiento del mismo para el control de la empresa. Si el motivo de la devolución fuese daño a la prenda deberás anexar una foto explícita de la prenda dañada.  </li><br/>
+                 <li>El producto devuelto deberá estar en perfectas condiciones de venta con sus etiquetas y en su caja  sin haber sido usado, a menos que sea el caso del apartado “b”.  </li><br/>
+                 <li>El costo de re-envío corre por cuenta del cliente. Salvo que la devolución se deba a responsabilidad de <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, en cuyo caso la empresa correrá con dichos gastos y repondrá el artículo u ofrecerá un vale por el monto de la compra más el monto del envio, que podrás aplicar en posteriores compras. </li><br/>
+                 <li>El envío únicamente corre por cuenta de la compañía cuando se ha cometido un error en cuanto a la talla o si te enviamos el pedido equivocado.</li><br/>
+                 <li>Al momento de devolver el pedido debes cuidar enviarlo  en las mismas condiciones de empaque y embalaje en que fue recibido a fin de que esté protegido de daño.  </li>
+               </ol>
+             </li> <br/>
+             <li>Personaling.com no realizará devoluciones de dinero bajo ningún concepto. A beneficio de nuestros clientes entregaremos un vale de consumo por el monto del pedido devuelto que tiene validez por un año a partir de la fecha de expedición.  </li><br/>
+             <li>Personaling.com se compromete a la revisión detallada de cada uno de sus pedidos antes de la salida de su almacén; esforzándonos por un servicio certero y de calidad.</li><br/>
+             <li>Otras condiciones aplican.</li>
+           </ol>',
+     'Copy Formas de Pago' => '        
+        <div class="page-header">
+          <h1>Formas de Pago: Personaling</h1>
+        </div>
+        <p>Para facilitar tu compra ponemos a disposición tres (3) formas de pago: tarjeta de débito, crédito o Paypal. A continuación te indicamos qué debes hacer según la forma que utilices. </p>
+        <ol style="list-style:lower-latin"><br />
+          <li><strong>Pagos con Tarjeta de Crédito o Débito:  </strong><br />
+            <p>Aceptamos Visa, Visa Electron, Visa Debit, Maestro, Mastercard de cualquier banco. El sistema te solicitará información indispensable para realizar una transacción regular y efectiva por Internet. Cualquier información adicional será solicitada bajo tu estricta autorización. Una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p>
+          </li><br />
+          <li><strong>Pagos con Paypal:</strong><br />
+            <p>Aceptamos pagar con Paypal, el sistema de pago más seguro. Solo necesitas estar registrado en Paypal y conectar tu tarjeta de crédito o cuenta bancaria. A partir de allí el sistema solicitará la información necesaria para realizar una transacción regular. Al igual que con los demás sistemas de pago regulares, una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p> <br />
+        </ol>
+        <p>Es importante que tengas presente que <a href="http://www.personaling.es" >Personaling.es</a> cuenta con un sistema de protección de datos y seguridad en red donde los datos introducidos están debidamente protegidos. Tu compra con esta forma de pago no implica cargo adicional.</p> ',
 	
 );
 

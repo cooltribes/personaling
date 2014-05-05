@@ -24,7 +24,7 @@ class LoginController extends Controller
 				Yii::app()->user->setState('id', $this->_model->id);
 				$identity = new UserIdentity($this->_model->username, '');
 		
-				Yii::app()->user->login($identity, 3600);
+				Yii::app()->user->login($identity, 36);
 		
 				
 			}else{

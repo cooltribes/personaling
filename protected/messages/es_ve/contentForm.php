@@ -143,6 +143,9 @@ return array (
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
      'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
      'Help' => 'Ayuda',
+     'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
+     <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas. <br/> Puedes registrarte haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Click aquí</a>',
+
 
      'ID' => 'ID',
      'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
@@ -243,6 +246,7 @@ return array (
      'Purchasing Information' => 'Datos de la compra',
      'Publish Look' => 'Publicar Look',
      'Preset filters' => 'Filtros Preestablecidos',
+     'Personaling.com' => 'Personaling.com',
      'Previous'=>'Anterior',
      'Print' => 'Imprimir',
      'Print order' => 'Imprimir Pedido',
@@ -272,7 +276,7 @@ return array (
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
      'Recommended Looks with this product' => 'Looks recomendados con este producto',
-     'Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.' => '¡Upsss! El pago que realizaste no cubre el monto del pedido, faltan {amout} {currSym} para pagar toda la orden.<br/><br/>',
+     'Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.' => '¡Upsss! El pago que realizaste no cubre el monto de tu pedido, faltan {amout} {currSym} para pagar toda la orden y comenzar el procesar el envío de tu compra.<br/><br/>',
 
 
      'Save' => 'Guardar',
@@ -305,6 +309,7 @@ return array (
      'Select a province' => 'Selecciona un estado',
      'Select a city' => 'Selecciona una cuidad',
      'Select a country' => 'Selecciona un país',
+     'Select a zip code' => 'Selecciona un código postal',
      'Select color and size' => 'Selecciona Color y talla',
      'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
      'Select the size' => 'Selecciona la talla',
@@ -389,6 +394,7 @@ return array (
      'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',
      '<h2>Welcome to Personaling</h2>Receiving this email because you registered your address Personaling. Please validate your account by clicking on the link below:<br/><br/><a href="{url}">Click here</a>' => '<h2>Te damos la bienvenida a Personaling.</h2>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/><a href="{url}">Haz click aquí</a>',
+     '<h2>Welcome to Personaling.es!</h2>  We want to welcome you to live your first Shopping Experience unique and… repeatable.<br/>Your registration has been successfully validated.<br/>Your temporary password is: <strong>{code}</strong><br/>This password can change it by logging into your account and clicking on "Change Password". The next step you must take is to validate your account by clicking this link:<br/> <a href="{activation_url}">Click here</a>' =>     '<h2>¡Bienvenido a Personaling.com!</h2>Tu registro se ha validado con éxito.<br/><br/> Tu contraseña provisional es: <strong>{code}</strong><br/><br/> Esta contraseña puedes cambiarla accediendo a tu cuenta y haciendo click en “cambiar contraseña”. El siguiente paso que debes hacer es validar tu cuenta haciendo click en este enlace: <br/><br/> <a href="{activation_url}">Click aquí</a>',
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
      'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
      'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',
@@ -403,6 +409,116 @@ return array (
 
      'Zip code' => 'Código postal',
 
+     // Copys de paginas estaticas
+     'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?  </h3>
+      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación.  </p>
+      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <hr/>
+      <h3>¿Debo pagar por mi envío?</h3>
+      <p>Si, Personaling.com hace sus envíos a través de operadores de envios  y cada envío la cancela el cliente al momento de la cancelación de su compra. Las tarifas cambiarán dependiendo del destino final del envío.  </p>
+      <p>Quiero devolver mi compra ¿Debo hacerlo a través del mismo operador?    </p>
+      <p>Para asegurar un mejor servicio es necesario  hacer la devolución a través del mismo operador que lo recibió.  </p>
+      <hr/>
+      <h3>¿Debo pagar la devolución?</h3>
+      <p>Si, debes pagar por la devolución de tu compra a menos que sea Personaling.com el responsable del deterioro de una de tus prendas o de un mal embalaje que dañara tu compra.  </p>
+      <hr/>
+      <h3>¿Tiene Personaling.com tienda física?</h3>
+      <p>Por el momento no, y ¿Por qué? Nada más fácil que comprar tus marcas favoritas desde la comodidad de tu casa. </p>
+      <hr/>
+      <h3>¿Puedo elaborar looks?  </h3>
+      <p>En Personaling.com estamos abiertos a cualquier opción y creemos que todos podemos agudizar nuestro buen gusto, así que si eres muy activo en nuestras redes sociales podemos considerarte un personal shopper honorario.  </p>
+      <hr/>
+      <h3>¿Si quiero cambiar algo puedo acercarme a la tienda de las marca directamente?  </h3>
+      <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí.    </p>
+      <hr/>
+      <h3>¿Si tengo una queja o sugerencia, a cuál correo electrónico puedo escribir?  </h3>
+      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de  <a href="mailto:servicioalcliente@personaling.com">servicioalcliente@personaling.com</a></p>',
+
+      'Copy Politicas de Privacidad' => '
+      <div class="page-header">
+        <h1>Política de privacidad o privacidad de datos</h1>
+      </div>
+      <p class="lead">A continuación te indicamos los terminos y politicas de privacidad de   <a href="http://www.personaling.com">www.personaling.com</a>  las cuales rigen y son aceptadas automáticamente por nuestros usuarios, a partir de su registro y compra en nuestro portal, razón por la cual es sumamente importante te asegures de leerlas y entenderlas con antelación. En caso de algún cambio en las mismas, sea por razones legales o corporativas, cada uno de nuestros usuarios serán notificados vía correo electrónico.  </p>
+      <ol>
+        <li>La información que facilites a la hora del registro será debidamente guardada en un fichero de datos destinado solamente al uso de nuestra plataforma y no será facilitada a terceros sin tu previa autorización. </li>
+        <li> Si haces conexión con alguna red social, es posible que tengamos acceso a alguna información como fotografías, fecha de nacimiento, teléfono, etc. Será tratada esta información de la misma manera que en el punto uno (1), es decir, para el uso exclusivo de nuestra página web y en caso de ser compartida será sólo bajo tu previa autorización.</li>
+        <li>Tus compras serán cuantificadas para uso interno de elaboración de apartados como “Más vendidos” o “Más buscados” y serán utilizadas dentro de grandes muestras para nuestra promoción, sin publicar tu identidad a no ser que así lo autorices.  </li>
+        <li><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
+      </ol>',
+
+      'Copy Envios y Encomiendas' => '
+          <div class="page-header">
+          <h1>Condiciones de Envíos y Encomiendas</h1>
+        </div>
+        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
+        <ol>
+          <li>Los envíos de Personaling.com se harán solamente dentro del  territorio venezolano, con excepción del Estado Nueva Esparta,  y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
+          <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>
+          <li> El costo del envio corre por cuenta del comprador, y el mismo depende del destino y del contenido o volumen del envío mismo. En todo caso, el monto del costo del envío se calculará automáticamente en el sistema, previo al pago, en el momento de realizar el pedido. De esta manera podrás conocerlo  antes de tomar la decisión final de compra o cierre de la transacción. </li>
+          <li> El envió se llevará a cabo a través de un operador que gestionará su entrega por medio de Personaling.com </li>
+          <li>Puedes elegir entre dos tipo de entregas:
+            <ol class="margin_left_medium" style="list-style-type: none">
+              <li >5.1 &nbsp;  Puerta: Cuando tu dirección es de fácil acceso, podremos llevar tu pedido hasta la puerta de tu domicilio u oficina.  </li>
+              <li >5.2 &nbsp;  Local: Si por el contrario, es una dirección de difícil acceso podrás elegir la opción recogida en la oficina del operador más cercana, donde deberás buscar tu pedido cuando te notifiquemos que ha llegado. </li>
+            </ol>
+          </li>
+          <li>Para recibir tu pedido en cualquiera de las modalidades debes presentar tu cédula de identidad y firmar el acuse de recibo.  </li>
+          <li>Personaling.com se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
+        </ol>
+        <p>&nbsp;</p>',
+
+        'Copy Politicas de Devoluciones' => '     
+          <div class="page-header">
+             <h1>Políticas de devoluciones</h1>
+           </div>
+           <p class="lead">A continuación te detallamos las políticas de  devoluciones de <a href="http://www.personaling.com">www.personaling.com</a> la cual rige a partir de tu registro o cuando compras en nuestra  plataforma, por lo que es muy importante que te asegures de leerlas y entenderlas con antelación. Cualquier cambio en su contenido o alcance, sea por requerimientos legislativos o corporativos, serán notificados a nuestros usuarios  mediante sus correos electrónicos. </p>
+           <ol>
+             <li> Solo  se aceptarán devoluciones bajo los siguientes términos. 
+               <ol type="a">
+                 <br/><li >El plazo de devolución del artículo es de tres (3) días contados a partir de la recepción del envío del mismo. </li><br/>
+                 <li>Previo a la devolución, deberás enviar un correo  a <a href="mailto:devoluciones@personaling.com"><em>devoluciones@personaling.com</em></a> indicando la razón por la cual devuelves tu pedido y el número de seguimiento del mismo para el control de la empresa. Si el motivo de la devolución fuese daño a la prenda deberás anexar una foto explícita de la prenda dañada.  </li><br/>
+                 <li>El producto devuelto deberá estar en perfectas condiciones de venta con sus etiquetas y en su caja  sin haber sido usado, a menos que sea el caso del apartado “b”.  </li><br/>
+                 <li>El costo de re-envío corre por cuenta del cliente. Salvo que la devolución se deba a responsabilidad de <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, en cuyo caso la empresa correrá con dichos gastos y repondrá el artículo u ofrecerá un vale por el monto de la compra más el monto del envio, que podrás aplicar en posteriores compras. </li><br/>
+                 <li>El envío únicamente corre por cuenta de la compañía cuando se ha cometido un error en cuanto a la talla o si te enviamos el pedido equivocado.</li><br/>
+                 <li>Al momento de devolver el pedido debes cuidar enviarlo  en las mismas condiciones de empaque y embalaje en que fue recibido a fin de que esté protegido de daño.  </li>
+               </ol>
+             </li> <br/>
+             <li>Personaling.com no realizará devoluciones de dinero bajo ningún concepto. A beneficio de nuestros clientes entregaremos un vale de consumo por el monto del pedido devuelto que tiene validez por un año a partir de la fecha de expedición.  </li><br/>
+             <li>Personaling.com se compromete a la revisión detallada de cada uno de sus pedidos antes de la salida de su almacén; esforzándonos por un servicio certero y de calidad.</li><br/>
+             <li>Otras condiciones aplican.</li>
+           </ol>',
+     'Copy Formas de Pago' => '        
+        <div class="page-header">
+          <h1>Formas de Pago: Personaling</h1>
+        </div>
+        <p>Para facilitar tu compra ponemos a disposición tres (3) formas de pago: tarjeta de crédito, transferencia bancaria y depósito bancario. A continuación te indicamos cómo proceder según el medio que utilices. </p>
+        <ol style="list-style:lower-latin"><br />
+          <li><strong>Pagos con Tarjeta de Crédito: </strong><br />
+            <p>Aceptamos VISA Y MASTERCARD de cualquier Banco. El sistema te solicitará  la información que es indispensable para efectos de una transacción regular y efectiva por Internet, y cualquier información adicional será solicitada bajo tu estricta autorización. Una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p>
+            <p>Es importante que tengas presente que <a href="http://www.personaling.com" >Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red donde los datos introducidos están debidamente protegidos. Tu compra con este medio de pago no implica cargo adicional.</p>
+            
+          </li><br />
+          <li><strong>Pagos con Transferencia Bancaria:</strong><br />
+            <p>Si eliges como método de pago &ldquo;transferencia bancaria&ldquo;, es importante que tengas presente que debes efectuarla dentro de las veinticuatro (24) horas siguientes de haber hecho tu pedido. De lo contrario no podremos garantizarte que la mercancía estará aún disponible. La transferencia debes realizarla desde la plataforma online de tu banco, a una de nuestras cuentas habilitadas, utilizando los datos siguientes:</p> <br />
+            PERSONALING C.A  <br />
+            RIF: J-40236088-6<br />
+            BANESCO: <br />
+            Número Cta corriente: 0134-0277-98-2771093092 <br /><br />
+            <p>Deposita en cualquiera de nuestras cuentas habilitadas, utilizando los datos siguientes: Anota el  número de referencia una vez realizada la transacción;  ya que este número es el que deberás introducir en la casilla correspondiente al control de pago en tu compra. Una vez recibido y confirmado procesaremos tu pedido. Tu compra con este medio de pago no implica cargo adicional, excepto aquellas que te aplique tu entidad bancaria.  </p>
+          </li><br />
+          <li><strong>Pagos con depósito Bancario.</strong><br />
+            <p>Hecha la selección de artículos a comprar, en la sección de pagar, elegirás como método de pago &ldquo;depósito bancario&ldquo;. En este caso haz el depósito por el monto total de tu compra, y conserva tu comprobante, ya que el número de depósito es el que deberás introducir en la casilla correspondiente al control del pago de tu compra.  A partir de completar este paso comenzaremos a procesar tu  pedido. 
+            Tu compra por este medio de pago no implica cargo adicional, excepto aquellas que aplique tu entidad bancaria.</p>    
+            Las cuentas a las cuales puedes depositar son: <br />
+            
+            <br/>
+            PERSONALING C.A  <br/>
+            RIF: J-40236088-6 <br/>
+            BANESCO: <br/>
+            Número Cta corriente: 0134-0277-98-2771093092 <br/> <br/>           
+
+        </ol>
+        <p>Te mantendremos al tanto del status de tu compra a través de tu dirección de correo electrónico o través de tu perfil en <a href="http://www.personaling.com" >Personaling.com</a>.</p>'
 );
 
 ?>

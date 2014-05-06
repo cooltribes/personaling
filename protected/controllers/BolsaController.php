@@ -2790,8 +2790,12 @@ class BolsaController extends Controller
             /*Enviar correo con el resumen de la compra*/
             $this->enviarEmail($orden, $usuario);  
             
+            
+            /*Enviar correo OPERACIONES (operaciones@personaling.com*/
+            $this->enviarEmailOperaciones($orden, $usuario);  
+            
             /*Generar el Outbound para Logishfashion*/
-            $this->generarOutbound($orden);
+            //$this->generarOutbound($orden);
             
             $url = $this->createAbsoluteUrl('bolsa/pedido',array(
                         'id'=>$orden->id,
@@ -2944,6 +2948,45 @@ class BolsaController extends Controller
             $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
+        
+        
+        
+        /*Enviar el correo para notificar a Operaciones*/
+        function enviarEmailOperaciones($orden) {
+            
+            $message = new YiiMailMessage;
+            //this points to the file test.php inside the view path
+            $message->view = "mail_template";
+            
+            $subject = 'Compra en Personaling';
+            $body = $body = Yii::t('contentForm',
+                    'Alguien ha comprado en personaling, debes generar el archivo Excel
+                     correspondiente al Outbound para enviar a LogisFashion
+                     <br>
+                     <br>
+                     <br>
+                     <a title="Ver órdenes" 
+                     href="http://www.personaling.es'.Yii::app()->baseUrl.
+                    '/orden/admin" 
+                        style="text-align:center;text-decoration:none;color:#ffffff;
+                        word-wrap:break-word;background: #231f20; padding: 12px;" 
+                        target="_blank">Ver órdenes</a><br><br/><br/><br/><br/>'
+                     ."Los datos de la orden generada son:<br/>
+                     Codigo: {$orden->id}<br/>
+                     Fecha: {$orden->fecha}<br/>
+                     <br/>
+                         
+                     <br/>");
+            
+            
+            $params = array('subject'=>$subject, 'body'=>$body);
+            $message->subject = $subject;
+            $message->setBody($params, 'text/html');
+            $message->addTo("nramirez@upsidecorp.ch");
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            Yii::app()->mail->send($message);
+        }
+        
 
         /*Para realizar la compra de una giftcard*/
         function comprarGC($codigoTransaccion){

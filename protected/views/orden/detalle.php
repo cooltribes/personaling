@@ -683,7 +683,7 @@ $tracking=$orden->getTracking();
 				$talla=Talla::model()->findByPk($ptc->talla_id);
 				$color=Color::model()->findByPk($ptc->color_id);
 				
-                                $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id));
+                                $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id),array('order'=>'orden'));
                                 $contador=0;
                                 $foto = "";
                                 $label = $color->valor;
@@ -693,7 +693,7 @@ $tracking=$orden->getTracking();
 						if($contador==0){		 
 							$foto = CHtml::image(Yii::app()->baseUrl . 
                                                                 str_replace(".","_thumb.",$img->url), "Imagen ", 
-                                                                array("width" => "70", "height" => "70"));							
+                                                                array("width" => "70", "height" => "70","class"=>"bg_color3"));							
 							$contador++;
 						}
 					}					  	

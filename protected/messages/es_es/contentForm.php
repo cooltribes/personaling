@@ -5,8 +5,8 @@ return array (
 	'PRONUNCIACION' => 'Española',
 	'currSym'=>'€',
 	'noShipping'=>'30',
-	'IVA' => '0.12',
-    'IVAtext' => '12%',
+	'IVA' => '0.21',
+    'IVAtext' => '21%',
 	'Bank information' => '<h4>Banco Sabadell</h4>
 	                       <ul>
 	                               <li><strong>Cuenta::</strong> 0081-5645-80-0001104113</li>
@@ -48,6 +48,7 @@ return array (
 	'Approved' => 'Aprobados',
 	'availables' => 'disponibles',
     'Avaliable for {user}:' => 'Disponible para {user}:',
+    'Active Orders' => 'Compras Activas',
     
 
 	'Balance' => 'Saldo',
@@ -366,6 +367,7 @@ return array (
 	'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
 	'You must select all sizes' => 'Debes seleccionar todas las tallas',
 	'Your bag' =>'Tu bolsa',
+    'Your Purchases' => 'Tus Compras',	
 	'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
 	'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',
 	'Your order has been successfully received.' => 'Tu Pedido ha sido recibido con éxito.',

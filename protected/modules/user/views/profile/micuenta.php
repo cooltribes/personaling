@@ -109,9 +109,9 @@ $looks_recomendados = $look->match($model);
             </ul>
           </div>
           <div class="span4">
-            <h2 class="braker_bottom"> Tus Pedidos </h2>
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm','Your Purchases'); ?> </h2>
             <ul class="nav nav-stacked nav-tabs">
-            	<li> <?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
+            	<li> <?php echo CHtml::link(Yii::t('contentForm','Active Orders'),array('/orden/listado'),array("title"=>Yii::t('contentForm','Active Orders'))); ?></li>
             	<li> <?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
             </ul>
             <h2 class="braker_bottom"> Gift Cards </h2>    
@@ -133,7 +133,7 @@ $looks_recomendados = $look->match($model);
             </ul>
           </div>
           <div class="span4">
-            <h2 class="braker_bottom"> Mis Favoritos </h2>
+            <h2 class="braker_bottom"> Tus Favoritos </h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Looks',array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
               <li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>

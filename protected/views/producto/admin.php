@@ -183,9 +183,9 @@ $template = '{summary}
       <th rowspan="2" scope="col">Producto</th>
       <th rowspan="2" scope="col">Referencia</th>
       <th rowspan="2" scope="col">Categoría</th>
-      <th rowspan="2" scope="col">Precio (Bs.)</th>
+      <th rowspan="2" scope="col">Precio ('.Yii::t('contentForm','currSym').')</th>
       <th colspan="3" scope="col">Cantidad</th>
-      <th rowspan="2" scope="col">Ventas Bs.</th>
+      <th rowspan="2" scope="col">Ventas '.Yii::t('contentForm','currSym').'</th>
       <th rowspan="2" scope="col">Estado</th>
       <th rowspan="2" scope="col">Fecha de Carga</th>
       <th rowspan="2" scope="col">Progreso de la campaña</th>

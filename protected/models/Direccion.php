@@ -86,7 +86,7 @@ class Direccion extends CActiveRecord
 			'id' => 'ID',
 			'nombre' => 'Nombre',
 			'apellido' => 'Apellido',
-			'cedula' => 'Cedula de Identidad',
+			'cedula' => Yii::t('contentForm','Identity card'),
 			'dirUno' => 'Dirección Línea 1',
 			'dirDos' => 'Dirección Línea 2',
 			'telefono' => 'Teléfono',

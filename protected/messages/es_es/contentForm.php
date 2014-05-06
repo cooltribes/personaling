@@ -14,6 +14,7 @@ return array (
 	                               <li><strong>CUENTA EXPANSIÓN NEGOCIOS</li>
 	                               <li><strong>Titular:</strong> PERSONALING ENTERPRISE S.L</li>
 	                       </ul>',
+	'List ID Mailchimp' => '43ddd18a56',
 
      'About us text' => '<p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
 	'Action' => 'Acción',
@@ -86,6 +87,7 @@ return array (
 	'Credit Card' => 'Tarjeta de Credito',
 	'Create your Look here' => 'Crea tus Looks aquí',
 	'Color' => 'Color',
+	'Colors' => 'Colores',
 	'Courier delivery' => 'Transportista',
 	'Confirm <br>purchase' => 'Confirmar <br/>Compra',
 	'Current state' => 'Estado Actual',
@@ -95,7 +97,7 @@ return array (
 	'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
 	'Complete purchase' => 'Completar compra',
 	'Complete the following fields:' => 'Completa los siguientes campos:',
-	'C.I' => 'C.I',
+	'C.I' => 'DNI/NIE',
 	'Customize it' => 'Personalízala',
 
 
@@ -142,9 +144,9 @@ return array (
 	'Help' => 'Ayuda',
 
 	'ID' => 'ID',
-	'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
+	'ID of the person to whom you send' => 'DNI/NIE de la persona a la que envias',
 	'ID Transaction' => 'ID de Transaccion',
-	'Identity card' => 'Documento de Identidad',
+	'Identity card' => 'DNI/NIE',
 	'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
 	'Inactive' => 'Inactivo',
 	'Include a new shipping address' => 'Incluir una nueva dirección de envío',

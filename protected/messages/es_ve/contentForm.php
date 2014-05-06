@@ -15,6 +15,7 @@ return array (
                                        <li><strong>RIF:</strong> Nº J-40236088-6</li>
                                        <li><strong>Correo electrónico:</strong> operaciones@personaling.com</li>
                                </ul>',
+     'List ID Mailchimp' => '2bcdb716e8',                               
 
      'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
      <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> es el canal online de prestigiosas y conocidas marcas de moda internacional, donde no solo podrás comprar prendas y accesorios de tus tiendas favoritas, también tendrás a disposición de forma gratuita el servicio exclusivo de asesoria e inspiración de especialistas, conocedores en moda (personal shoppers) y hasta celebridades; quienes crearán atuendos adecuándolos a tu perfil, gusto, necesidades y ocasiones personales, permitiendo adquirir en un solo clic los productos y recibirlos en la comodidad de tu hogar u oficina.  </p>
@@ -148,7 +149,7 @@ return array (
 
 
      'ID' => 'ID',
-     'ID of the person to whom you send' => 'Cedula de Identidad de la persona a la que envias',
+     'ID of the person to whom you send' => 'Cédula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
      'Identity card' => 'Cédula de Identidad',
      'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',

@@ -37,6 +37,11 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
               <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
         <!-- </div> -->
       </div>
+      <?php if(Yii::app()->user->hasFlash('error')){?>
+        <div class="alert in alert-block fade alert-error text_align_center">
+            <?php echo Yii::app()->user->getFlash('error'); ?>
+        </div>
+    <?php } ?>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			'id'=>'login-form',

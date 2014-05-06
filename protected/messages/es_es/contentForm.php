@@ -5,8 +5,8 @@ return array (
 	'PRONUNCIACION' => 'Española',
 	'currSym'=>'€',
 	'noShipping'=>'30',
-	'IVA' => '0.12',
-    'IVAtext' => '12%',
+	'IVA' => '0.21',
+    'IVAtext' => '21%',
 	'Bank information' => '<h4>Banco Sabadell</h4>
 	                       <ul>
 	                               <li><strong>Cuenta::</strong> 0081-5645-80-0001104113</li>

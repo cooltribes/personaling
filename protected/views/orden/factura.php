@@ -1,10 +1,10 @@
 <?php
 $profile = Profile::model()->findByAttributes(array('user_id' => $factura->orden->user_id));
-$direccion_fiscal = Direccion::model()->findByPk($factura->direccion_fiscal_id);
+$direccion_fiscal = DireccionFacturacion::model()->findByPk($factura->direccion_fiscal_id);
 $ciudad_fiscal = Ciudad::model()->findByPk($direccion_fiscal->ciudad_id);
 $provincia_fiscal = Provincia::model()->findByPk($direccion_fiscal->provincia_id);
 
-$direccion_envio = Direccion::model()->findByPk($factura->direccion_envio_id);
+$direccion_envio = DireccionEnvio::model()->findByPk($factura->direccion_envio_id);
 $ciudad_envio = Ciudad::model()->findByPk($direccion_envio->ciudad_id);
 $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
 ?>
@@ -68,38 +68,38 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                         <td><?php echo $ordenhasproducto->preciotallacolor->sku; ?></td>
                                         <td><?php echo $ordenhasproducto->preciotallacolor->producto->nombre; ?></td>
                                         <td><?php echo $ordenhasproducto->cantidad; ?></td>
-                                        <td>Bs. <?php echo number_format($ordenhasproducto->precio, 2, ',', '.'); ?></td>
-                                        <td>Bs. <?php echo number_format($ordenhasproducto->cantidad * $ordenhasproducto->precio, 2, ',', '.'); ?></td>
+                                        <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($ordenhasproducto->precio, 2, ',', '.'); ?></td>
+                                        <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($ordenhasproducto->cantidad * $ordenhasproducto->precio, 2, ',', '.'); ?></td>
                                     </tr>       
                                     <?php
                                 }
                                 ?>
                                 <tr>
                                     <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Subtotal'); ?></strong>:</div></td>
-                                    <td>Bs. <?php echo number_format($factura->orden->subtotal, 2, ',', '.'); ?></td>
+                                    <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->subtotal, 2, ',', '.'); ?></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Shipping'); ?></strong>:</div></td>
-                                    <td>Bs. <?php echo number_format($factura->orden->envio + $factura->orden->seguro, 2, ',', '.'); ?></td>
+                                    <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->envio + $factura->orden->seguro, 2, ',', '.'); ?></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Discount'); ?></strong>:</div></td>
-                                    <td>Bs. <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>
+                                    <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'VAT on taxable'); ?></strong></div></td>
-                                    <td>Bs. <?php echo number_format($factura->orden->iva, 2, ',', '.'); ?></td>
+                                    <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->iva, 2, ',', '.'); ?></td>
                                 </tr>
 
                                 <tr>
                                     <th colspan="4"><div class="text_align_right"><?php echo Yii::t('backEnd', 'Total'); ?></div></th>
-                                <th>Bs. <?php echo number_format($factura->orden->total, 2, ',', '.'); ?></th>
+                                <th><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->total, 2, ',', '.'); ?></th>
                     </tr>
                 </table></td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td colspan="2"><span style="color:#F00;border-top: none;"><?php echo Yii::t('backEnd', 'No right to tax credit'); ?></span></td>
-                </tr>
+                </tr>-->
                 </table>
                 <hr/>
             </section>

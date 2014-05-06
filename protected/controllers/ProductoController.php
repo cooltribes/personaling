@@ -422,6 +422,8 @@ public function actionReportexls(){
 		if(isset($_POST['Precio']))
 		{
 			$precio->attributes=$_POST['Precio'];
+			$precio->ganancia=$_POST['Precio']['ganancia'];
+			$precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
 			
 			if($id==""){
 				Yii::app()->user->updateSession();

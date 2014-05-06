@@ -157,7 +157,7 @@
                                                                 <table width="100%" border="0" cellspacing="3" style="margin-bottom:10px;" cellpadding="5">
     <tr>
         <td style=" background-color:#dff0d8; padding:6px;  color:#468847; margin-bottom:5px"><p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p></td>
-        <td style=" background-color:#dff0d8; color:#468847;"><p> <strong>Fecha estimada de entrega</strong>: 01/01/2013</p></td>
+        <td style=" background-color:#dff0d8; color:#468847;"><p> <strong>Fecha estimada de entrega</strong>: <?php echo  date('d/m/Y', strtotime($orden->fecha.'+1 week')); ?></p></td>
     </tr>
 </table>
                                                                                                                       <table width="100%" border="0" cellspacing="0" cellpadding="0">

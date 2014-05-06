@@ -198,7 +198,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
             
             echo $orden->shipCarrier;
-            }?>
+            ?>
             
             </td>
             <td>0,00 Kg.</td>

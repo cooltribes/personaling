@@ -129,7 +129,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
         $itemsUser = array(
                     array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                    array('label'=>'Tus Pedidos', 'url'=>array('/orden/listado')),
+                    array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),

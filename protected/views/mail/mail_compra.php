@@ -163,26 +163,26 @@
                                                                                                                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
                                                                         <td  style="text-align:left"><b>Subtotal:</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
+                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
                                                                     </tr>
                                                                     <?php if($orden->descuento != 0){ // si no hay descuento ?> 
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Descuento:</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
+                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
                                                                     </tr>
                                                                     <?php } ?>
                                                                     <tr>
                                                                         <td style="text-align:left"><b>Envío:</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->envio+$orden->seguro, ''); ?></td>
+                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio+$orden->seguro, ''); ?></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td style="text-align:left"><b>I.V.A. (12%):</b></th>
-                                                                        <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
+                                                                        <td style="text-align:left"><b>I.V.A. (<?php echo Yii::t('contentForm','IVAtext'); ?>):</b></th>
+                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
                                                                     </tr>
 
                                                                     <tr>
                                                                         <td style="text-align:left"><h4 class="color1">TOTAL:</h4></th>
-                                                                        <td><h4 class="color1"><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
+                                                                        <td><h4 class="color1"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
                                                                     </tr>
                                                                 </table>
                                                                 <hr/>
@@ -268,7 +268,7 @@
 		                  		<strong>Color</strong>: '.$color->valor.'<br/>
 		                  		<strong>Talla</strong>: '.$talla->valor.'<br/>
 		                  		</td>
-		                <td style="border-bottom:1px solid #dddddd;">Bs. '.$pre.'</td>
+		                <td style="border-bottom:1px solid #dddddd;">'.Yii::t('contentForm','currSym').' '.$pre.'</td>
 		                <td style="border-bottom:1px solid #dddddd;">'.$cadauno->cantidad.'</td>
 		              </tr>');		
 						}
@@ -318,7 +318,7 @@
 				$talla = Talla::model()->findByPk($todo->talla_id);
 				$color = Color::model()->findByPk($todo->color_id);
 							
-				$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+				$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden'));
 								
 				echo "<tr>";		
 							
@@ -344,7 +344,7 @@
 					$pre = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
 				}
 						
-				echo "<td style='border-bottom:1px solid #dddddd;'>Bs. ".$pre."</td>";
+				echo "<td style='border-bottom:1px solid #dddddd;'>".Yii::t('contentForm','currSym')." ".$pre."</td>";
 				echo "<td style='border-bottom:1px solid #dddddd;'>".$individual->cantidad."</td>";
 				echo "</tr>";
 

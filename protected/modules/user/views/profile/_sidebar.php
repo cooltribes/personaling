@@ -19,9 +19,9 @@
         <?php if($model->personal_shopper==1) { ?><li> <?php echo CHtml::link('Tu Banner',array('profile/banner'));?> </li><?php }?>
       </ul>
     </li>
-    <li class="dropdown-submenu"> <a tabindex="-1" href="#">Tus Pedidos </a>
+    <li class="dropdown-submenu"> <a tabindex="-1" href="#"><?php echo Yii::t('contentForm','Your Purchases'); ?></a>
       <ul class="dropdown-menu">
-        <li> <?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
+        <li> <?php echo CHtml::link(Yii::t('contentForm','Active Orders'),array('/orden/listado'),array("title"=>Yii::t('contentForm','Active Orders'))); ?></li>
         <li> <?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
         <li> <?php echo CHtml::link('Aplicar Gift Card',array('/giftcard/aplicar'),array("title"=>"Aplica una Gift Card")); ?></li>
       </ul>
@@ -35,7 +35,7 @@
         <li><?php echo CHtml::link('Oficina',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Oficina")); ?></li>
       </ul>
     </li>
-    <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Tus Encantos/Favoritos </a>
+    <li class="dropdown-submenu"> <a tabindex="-1" href="#"> Tus Favoritos </a>
       <ul class="dropdown-menu">
         <li><?php echo CHtml::link('Looks',array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
         <li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>

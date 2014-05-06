@@ -694,7 +694,7 @@ public function actionReportexls(){
 			if($precio->tipoDescuento==0)
 	        	$datos=$datos."<td>".Yii::app()->numberFormatter->formatDecimal($precio->valorTipo)."%";
 			else
-				$datos=$datos."<td> En Bs.";
+				$datos=$datos."<td> En ".Yii::t('contentForm','currSym');
 		else
         	$datos=$datos."<td>"; 
 
@@ -705,7 +705,7 @@ public function actionReportexls(){
 		
 		if($precio)
 			if($precio)
-				$datos=$datos."<td> Bs.".Yii::app()->numberFormatter->formatDecimal($precio->ahorro); 
+				$datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->ahorro); 
 			else
         		$datos=$datos."<td>"; 
 

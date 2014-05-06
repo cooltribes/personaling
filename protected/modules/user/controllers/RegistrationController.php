@@ -156,7 +156,7 @@ class RegistrationController extends Controller
                             //API key para lista de Personaling en Mailchimp
                             $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
                             $result = $MailChimp->call('lists/subscribe', array(
-                                'id' => '2bcdb716e8',
+                                'id' => Yii::t('contentForm','List ID Mailchimp'),
                                 'email' => array('email' => $_POST['RegistrationForm']['email']),
                                 'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name'], 'GROUPINGS' => $group),
                                 'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],

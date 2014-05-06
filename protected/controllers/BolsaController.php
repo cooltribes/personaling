@@ -2612,7 +2612,8 @@ class BolsaController extends Controller
                        
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             $op = new AzPay();
-            
+//            echo "NELSON";
+//            Yii::app()->end();
             if ($op->validateResponseData($_GET)) {                                       
                 
 //                echo "<pre>";
@@ -2729,17 +2730,22 @@ class BolsaController extends Controller
          */
         public function compraAztive($datosCompra){            
            
-             $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+            $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
+             
             /*ID del usuario propietario de la bolsa*/
             $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                 : Yii::app()->user->id;
-            
-            $userId = Yii::app()->user->id;
+//             echo "user".Yii::app()->user->id;
+//             echo "<pre>";
+//             print_r(Yii::app()->getSession());
+//             echo "</pre><br>";
+
+            $userId = $usuario;
             $usuario = User::model()->findByPk($userId);
             $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $userId,
-                            'admin' => 0, //Revisar para compras desde admin
+                            'admin' => $admin, //Revisar para compras desde admin
                             ));
             
             

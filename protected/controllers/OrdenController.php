@@ -1030,7 +1030,8 @@ public function actionValidar()
 							$balance->total = $diferencia_pago;
 							
 							$balance->save();
-							$body .= 'Tenemos una buena noticia, tienes disponible un saldo a favor de '.Yii::app()->numberFormatter->formatCurrency($excede, '').' Bs.';
+							$body .=  Yii::t('contentForm','We have good news, you have a balance available for {balance}',array('{balance}' => Yii::app()->numberFormatter->formatCurrency($excede, '')))." ".Yii::t('contentForm','currSym');
+
 						} // si es mayor hace el balance
 						
 						/*Pagar comision a las PS involucradas en la venta*/

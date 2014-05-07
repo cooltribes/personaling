@@ -361,7 +361,7 @@ return array (
 	'Value for returned shipping' => 'Monto por envío devuelto',
 
 	'Year' => 'Año',
-    'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo clic en el enlace que aparece a continuación:<br/>',	
+    'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => '¡Hola! Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.es<br/> Valida tu cuenta clicando en el enlace que aparece a continuación:',	
 	'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
 	'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
     'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Seur: https://www.seur.com/seguimiento-online.do?accion=nuevaBusqueda con el siguiente número de seguimiento: {number}',

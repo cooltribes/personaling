@@ -154,6 +154,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               		if($pais->grupo==0)
               			echo ' <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="'.$pais->nombre.'" />';
 					else{
+						echo '<p>España Exenta de IVA: Ceuta, Melilla, Canarias y Andorra</p>';
 						 echo $form->dropDownListRow(
 						 	$dir,'pais', CHtml::listData(
 						 		Pais::model()->findAllByAttributes(

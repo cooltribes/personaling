@@ -83,7 +83,7 @@ echo"<tr>";
         
 	echo "
 	<td>
-	<div class='dropdown'>
+	<div class='dropdown pull-right'>
 	<a class='dropdown-toggle btn' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='admin_pedidos_detalles.php'>
 	<i class='icon-cog'></i> <b class='caret'></b>
 	</a> 
@@ -96,6 +96,11 @@ echo"<tr>";
                     
             
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>
+            <li class='divider'></li>
+            
+            <li><a tabindex='-1' href='".$this->createUrl('orden/generarExcelOut',array('id'=>$data->id)).
+                "'><i class='icon-file'></i> Generar Excel para Outbound</a></li>            
+                    
             <li class='divider'></li>
             <li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
           </ul>

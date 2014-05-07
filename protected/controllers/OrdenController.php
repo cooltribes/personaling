@@ -26,7 +26,11 @@ class OrdenController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
 
-				'actions'=>array('index','cancel','admin','modalventas','detalles','devoluciones','validar','enviar','factura','entregar','calcularenvio','createexcel','importarmasivo','reporte','reportexls','adminxls'),
+				'actions'=>array('index','cancel','admin','modalventas',
+                                    'detalles','devoluciones','validar','enviar',
+                                    'factura','entregar','calcularenvio','createexcel',
+                                    'importarmasivo','reporte','reportexls','adminxls',
+                                    'generarExcelOut'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -2004,4 +2008,84 @@ public function actionValidar()
 		);
 	}
 	*/
+        
+    public function actionGenerarExcelOut($id) {
+
+        
+        $orden = Orden::model()->findByPk($id);
+        $productos = $orden->ohptc;       
+                
+        $encabezado = array(
+            "Albaran",
+            "FechaAlbaran",
+            "CodigoProveedor",
+            "NombreProveedor",
+            "DireccionProveedor",
+            "CP",
+            "Poblacion",
+            "Pais",
+            "EAN",
+            "Cantidad",
+        );
+        
+        header("Content-Disposition: attachment; filename=\"Outbound.xls\"");
+        header("Content-Type: application/vnd.ms-excel;");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        $out = fopen("php://output", 'w');
+        
+        //Crear la primera fila con encabezado.
+        fputcsv($out, $encabezado, "\t");
+        
+        foreach ($productos as $producto) {
+            $row = array();
+            
+            //albaran y fecha
+            $fecha = date("Y-m-d", strtotime($orden->fecha));
+            $row[] = $orden->id;
+            $row[] = $fecha;
+
+            //codigo y nombre de usuario        
+            $usuario = $orden->user;
+            $row[] = $usuario->id;
+            $row[] = $usuario->profile->getNombre();
+
+            //Direccion
+            $direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+            $ciudadEnvio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+            $provinciaEnvio = Provincia::model()->findByPk($direccionEnvio->provincia_id);
+            $codigoPostal = CodigoPostal::model()->findByPk($direccionEnvio->codigo_postal_id);
+            
+            $row[] = $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;
+
+            //ZIP
+            if($codigoPostal){
+                $row[] = $codigoPostal->codigo;                
+            }else{
+                $row[] = "No existe";                
+            }
+
+            //Poblacion, pais
+            $row[] = $ciudadEnvio->nombre;
+            $row[] = $direccionEnvio->pais;
+
+            //sku y cantidad
+            $row[] = $producto->preciotallacolor->sku;
+            $row[] = $producto->cantidad;
+            
+            //sustituir codificacion
+            $row[3] = mb_convert_encoding($row[3], 'UTF-16LE', 'UTF-8');
+            $row[4] = mb_convert_encoding($row[4], 'UTF-16LE', 'UTF-8');
+            $row[6] = mb_convert_encoding($row[6], 'UTF-16LE', 'UTF-8');
+            $row[7] = mb_convert_encoding($row[7], 'UTF-16LE', 'UTF-8');            
+            
+            //Escribir en el excel
+            fputcsv($out, $row,"\t");
+            
+        }
+        
+        
+        fclose($out);
+    }
+        
 }

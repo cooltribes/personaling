@@ -525,9 +525,12 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 )); ?>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Regístrate</h3>
     </div>
     <div class="modal-body">
+            <h4 class="text_align_center">
+                ¿No tienes todavía cuenta? ¿Qué estás esperando?<br><br>
+                Registrate aquí 
+            </h4>
             <div class="row" id="boton_facebook">
                 <a title="Registrate con facebook" class="transition_all span3 offset1" href="#">Regístrate con Facebook</a>
             </div>
@@ -557,7 +560,6 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                         	</div>
                         </div>
                            <hr>
-                            Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="#" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="#" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
                     </fieldset>
   
             </section>
@@ -571,6 +573,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 		   'htmlOptions'=>array('class'=>'span5'),
 		)); ?>
     </div>
+    <p class="text_align_center">Si ya tienes cuenta accede <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/login/">de manera habitual.</a></p>
     <?php $this->endWidget(); ?>  
 </div>
 <!-- Modal Registro OFF -->

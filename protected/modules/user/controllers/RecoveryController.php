@@ -47,8 +47,7 @@ class RecoveryController extends Controller
 							$message            = new YiiMailMessage;
 						    $message->view = "mail_template";
 							$subject = 'Recupera tu contraseña de Personaling';
-							$body = '<h2>Has solicitado cambiar tu contraseña</h2> Para recibir una nueva contraseña haz clic en el siguiente link:<br/><br/> <a href="' . $activation_url.'">Click aquí</a>
-							<br/><br/> Si no has sido tu quien ha pedido el cambio, comunícate con nosotros a través de  soporte@personaling.com';
+							$body = Yii::t('contentForm','<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com',array('{url}'=>$activation_url));		
 						    $params              = array('subject'=>$subject, 'body'=>$body);
 						    $message->subject    = $subject;
 						    $message->setBody($params, 'text/html');                

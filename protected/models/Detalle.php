@@ -156,5 +156,24 @@ class Detalle extends CActiveRecord
 	public function getSumxSaldo(){
 		return Yii::app()->db->createCommand("select sum(monto) from tbl_detalle where estado=1 AND tipo_pago=3")->queryScalar();
 	}
+        
+        public function getTipoPago() {
+
+            $text = "";
+            if ($this->tipo_pago == self::DEP_TRANSF)
+                $text.= "Dep. o Transfer"; // metodo de pago
+            else if ($this->tipo_pago == self::TDC_INSTAPAGO)
+                $text.="Tarjeta de Crédito";
+            else if ($this->tipo_pago == self::USO_BALANCE)
+                $text.="Uso de Balance";
+            else if ($this->tipo_pago == self::TDC_AZTIVE)
+                $text.="TPV Banco Sabadell";
+            else if ($this->tipo_pago == self::PAYPAL_AZTIVE)
+                $text.="PayPal";
+            else
+                $text.="ERROR EN EL PAGO";
+
+            return $text;
+        }
 	
 }

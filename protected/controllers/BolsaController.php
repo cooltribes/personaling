@@ -2869,7 +2869,7 @@ class BolsaController extends Controller
             $detalle->nTransferencia = $codigoTransaccion;
             $detalle->nombre = $usuario->profile->first_name." ".$usuario->profile->last_name;            
             //lo que queda por pagar despues de usar el saldo
-            $detalle->monto = Yii::app()->getSession()->get('totalPagar');
+            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
             $detalle->fecha = date("Y-m-d H:i:s");
             $detalle->banco = $metodoPago == Detalle::TDC_AZTIVE ? 'Sabadell' : 'PayPal'; //TDC o PayPal
             $detalle->estado = 1; // aceptado

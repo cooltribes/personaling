@@ -708,14 +708,7 @@ class BolsaController extends Controller
 				$dirEdit->ciudad_id = $_POST['Direccion']['ciudad_id'];
 				$dirEdit->provincia_id = $_POST['Direccion']['provincia_id'];
 				
-				if($_POST['Direccion']['pais']==1)
-					$dirEdit->pais = "Venezuela";
-				
-				if($_POST['Direccion']['pais']==2)
-					$dirEdit->pais = "Colombia";
-				
-				if($_POST['Direccion']['pais']==3)
-					$dirEdit->pais = "Estados Unidos";
+				$dirEdit->pais=Pais::model()->getOficial($_POST['Direccion']['pais']);
 				
 				if($dirEdit->save()){
 					$dir = new Direccion;
@@ -774,15 +767,16 @@ class BolsaController extends Controller
                             // guardar en el modelo direccion
                             $dir->attributes=$_POST['Direccion'];
 
-                            if($dir->pais=="1")
+                          /*  if($dir->pais=="1")
                                     $dir->pais = "Venezuela";
 
                             if($dir->pais=="2")
                                     $dir->pais = "Colombia";
 
                             if($dir->pais=="3")
-                                    $dir->pais = "Estados Unidos"; 
-
+                                    $dir->pais = "Estados Unidos"; */
+                            $dir->pais=Pais::model()->getOficial($dir->pais);
+							
 //				$dir->user_id = Yii::app()->user->id;
                             $dir->user_id = $_POST["user"];
 
@@ -2868,7 +2862,7 @@ class BolsaController extends Controller
             $detalle->nTransferencia = $codigoTransaccion;
             $detalle->nombre = $usuario->profile->first_name." ".$usuario->profile->last_name;            
             //lo que queda por pagar despues de usar el saldo
-            $detalle->monto = Yii::app()->getSession()->get('totalPagar');
+            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
             $detalle->fecha = date("Y-m-d H:i:s");
             $detalle->banco = $metodoPago == Detalle::TDC_AZTIVE ? 'Sabadell' : 'PayPal'; //TDC o PayPal
             $detalle->estado = 1; // aceptado

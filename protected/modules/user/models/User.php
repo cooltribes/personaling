@@ -830,6 +830,11 @@ class User extends CActiveRecord {
             return $valores[$this->profile->tiempo_validez];
             
         }
+		
+		function is_personalshopper($id){
+			$user=User::model()->findByPk($id);
+			return $user->personal_shopper;
+		}
         
 
 }

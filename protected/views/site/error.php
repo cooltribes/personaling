@@ -9,8 +9,8 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="row">
-  <div class="span3 offset2"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/404_torre_eiffel.jpg" width="216" height="386" alt="Torre Eiffel tipo personaling" /></div>
-  <div class="span6">
+  <!--<div class="span3 offset2"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/404_torre_eiffel.jpg" width="216" height="386" alt="Torre Eiffel tipo personaling" /></div>-->
+  <div class="span6 offset3">
     <h1 class="T_superlarge"><?php echo $code; ?></h1>
          <div class="error"> <strong>Detalles</strong>: <?php echo CHtml::encode($message); ?> </div>
 

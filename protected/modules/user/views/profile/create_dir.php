@@ -277,6 +277,7 @@ $looks_recomendados = $look->match($usuario);
 			      data: { provincia_id : $(this).val() },
 			      success: function(data){
 			           $('#Direccion_ciudad_id').html(data);
+			           $("#Direccion_codigo_postal_id").html('');
 			      },
 			});
 		}
@@ -305,6 +306,8 @@ $looks_recomendados = $look->match($usuario);
 			      data: { pais_id : $(this).val() },
 			      success: function(data){
 			           $('#Direccion_provincia_id').html(data);
+			           $("#Direccion_ciudad_id").html('');
+			           $("#Direccion_codigo_postal_id").html('');
 			      },
 			});
 		}

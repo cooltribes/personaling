@@ -80,14 +80,55 @@
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+            
+            
+            
+            
             <div class="control-group"> 
               
               <div class="controls">
-              	<?php echo $form->dropDownListRow($dir,'provincia_id', CHtml::listData(Provincia::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => Yii::t('contentForm','Select a province')));?>
+              	<?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
+              		$pais=Pais::model()->findByPk($dir->ciudad->provincia->pais_id);
+              		if($pais->grupo==0)
+              			echo ' <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="'.$pais->nombre.'" />';
+					else{
+						echo '<p>España Exenta de IVA: Ceuta, Melilla, Canarias y Andorra</p>';
+						 echo $form->dropDownListRow(
+						 	$dir,'pais', CHtml::listData(
+						 		Pais::model()->findAllByAttributes(
+						 			array(
+						 				'grupo'=>$pais->grupo),
+						 			array(
+						 				'order' => 'nombre')
+								),'id','nombre'
+							), array(
+								'selected' => $pais->id
+								)
+							);
+					}
+              		
+ 	 			 ?>
+              </div>
+            </div>
+            
+            
+            
+            <div class="control-group"> 
+              
+              <div class="controls">
+              	<?php echo $form->dropDownListRow($dir,'provincia_id', 
+              				CHtml::listData(Provincia::model()->findAllByAttributes(array('pais_id'=>$pais->id),array('order' => 'nombre')),'id','nombre')
+              				, array('empty' => Yii::t('contentForm','Select a province')));?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+            
+            
+            
+            
+            
+            
             <div class="control-group"> 
               <div class="controls">
               	<?php //echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAll(array('order' => 'nombre')),'id','nombre'), array('empty' => 'Seleccione una ciudad...'));?>
@@ -101,35 +142,25 @@
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+             <?php if($pais->idioma=='es_es')         {?>
             <div class="control-group"> 
+              <div class="controls"> 
+              	<?php 
+              	if($dir->ciudad_id == ''){ 
+              		echo $form->dropDownListRow($dir,'codigo_postal_id', array(), array('empty' => Yii::t('contentForm','Select a zip code')));
+				}else{
+						/*$criteria=new CDbCriteria;
+						$criteria->addCondition('cod_zoom IS NULL'); 
+						$criteria->addCondition('provincia_id ='.$dir->provincia_id); 
+						*/
+						//$criteria->order('nombre'); 
+					//echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAllByAttributes(array(),"cod_zoom IS NOT NULL AND provincia_id =".$dir->provincia_id, array('order' => 'nombre')),'id','nombre'));
+					echo $form->dropDownListRow($dir,'codigo_postal_id', CHtml::listData(CodigoPostal::model()->findAllBySql("SELECT * FROM tbl_codigo_postal WHERE ciudad_id =".$dir->ciudad_id." order by codigo ASC"),'id','codigo'));
+					//echo $form->dropDownListRow($dir,'ciudad_id', CHtml::listData(Ciudad::model()->findAll($criteria),'id','nombre'));
+				}}
+              	?>
             
-              <div class="controls">
-              	
-              	 <?php 
-              	 /*
-              	 if($dir->pais=="Venezuela"){
-              	 	echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
-              	 		array('options' => array(1 => array('selected'=>true))));
-              	 }
-				 
-				 if($dir->pais=="Colombia"){
-              	 	echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
-              	 		array('options' => array(2 => array('selected'=>true))));
-              	 }
-              	 
-              	 if($dir->pais=="Estados Unidos"){
-              	 	echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País','Venezuela','Colombia','Estados Unidos'),
-              	 		array('options' => array(3 => array('selected'=>true))));
-              	 }
-	 	
-              	 */
-              	 ?>
-              	 
-              	  <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="Venezuela" />
-              	 
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
+      
             <div class="form-actions">
             <?php $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType'=>'submit',
@@ -169,6 +200,24 @@ else
 $this->endWidget(); ?>
 
 <script>
+
+	$('#Direccion_pais').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarProvincias'); ?>",
+			      type: "post",
+			      data: { pais_id : $(this).val() },
+			      success: function(data){
+			           $('#Direccion_provincia_id').html(data);
+			           $("#Direccion_ciudad_id").html('');
+			           $("#Direccion_codigo_postal_id").html('');
+			           
+			      },
+			});
+		}
+	});
+	
 	$('#Direccion_provincia_id').change(function(){
 		if($(this).val() != ''){
 			var path = location.pathname.split('/');
@@ -178,8 +227,28 @@ $this->endWidget(); ?>
 			      data: { provincia_id : $(this).val() },
 			      success: function(data){
 			           $('#Direccion_ciudad_id').html(data);
+			          $("#Direccion_codigo_postal_id").html('');
 			      },
 			});
 		}
 	});
+	
+	$('#Direccion_ciudad_id').change(function(){
+		if($(this).val() != ''){
+			var path = location.pathname.split('/');
+			$.ajax({
+			      url: "<?php echo Yii::app()->createUrl('direccion/cargarCodigos'); ?>",
+			      type: "post",
+			      data: { ciudad_id : $(this).val() },
+			      success: function(data){
+			           $('#Direccion_codigo_postal_id').html(data);
+			      },
+			});
+		}
+	});
+	
+
+	
+	
+	
 </script>

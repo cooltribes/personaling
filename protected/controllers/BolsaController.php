@@ -708,14 +708,7 @@ class BolsaController extends Controller
 				$dirEdit->ciudad_id = $_POST['Direccion']['ciudad_id'];
 				$dirEdit->provincia_id = $_POST['Direccion']['provincia_id'];
 				
-				if($_POST['Direccion']['pais']==1)
-					$dirEdit->pais = "Venezuela";
-				
-				if($_POST['Direccion']['pais']==2)
-					$dirEdit->pais = "Colombia";
-				
-				if($_POST['Direccion']['pais']==3)
-					$dirEdit->pais = "Estados Unidos";
+				$dirEdit->pais=Pais::model()->getOficial($_POST['Direccion']['pais']);
 				
 				if($dirEdit->save()){
 					$dir = new Direccion;

@@ -25,6 +25,7 @@ return CMap::mergeArray(
 		    'registro' => false,	
 		    'mostrarMarcas'=>false,
 		    'mostrarChic'=>false,
+		    'country'=>'España',
 			'pais'=>'espana',
                         'metodosPago'=> array(
                                 'bkCard' => true,

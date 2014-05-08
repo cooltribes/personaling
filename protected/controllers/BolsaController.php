@@ -774,15 +774,16 @@ class BolsaController extends Controller
                             // guardar en el modelo direccion
                             $dir->attributes=$_POST['Direccion'];
 
-                            if($dir->pais=="1")
+                          /*  if($dir->pais=="1")
                                     $dir->pais = "Venezuela";
 
                             if($dir->pais=="2")
                                     $dir->pais = "Colombia";
 
                             if($dir->pais=="3")
-                                    $dir->pais = "Estados Unidos"; 
-
+                                    $dir->pais = "Estados Unidos"; */
+                            $dir->pais=Pais::model()->getOficial($dir->pais);
+							
 //				$dir->user_id = Yii::app()->user->id;
                             $dir->user_id = $_POST["user"];
 

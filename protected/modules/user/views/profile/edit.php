@@ -104,8 +104,23 @@ function getMonthsArray()
 		} elseif ($field->range) {
 			if ($field->varname == 'sex')
 				echo $form->radioButtonListInlineRow($profile,$field->varname,Profile::range($field->range));
-			else
-				echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+			else{
+				if($field->varname=='tipo_comision')
+				{
+					if(UserModule::isAdmin()){
+						echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+					}else{
+						if(User::model()->is_personalshopper(Yii::app()->user->id)){
+							echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range),array('disabled'=>'disabled'));
+						}
+						
+					}
+				}
+				else
+					echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+			}
+			
+				
 						
 			//echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
 			//echo $form->radioButtonListRow($profile,$field->varname,Profile::range($field->range));
@@ -127,8 +142,21 @@ function getMonthsArray()
 				 
 				
 		} else {
-			echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+			if($field->varname=='comision'||$field->varname=='tiempo_validez'){
+				if(UserModule::isAdmin()){
+					echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+				}else{
+					if(User::model()->is_personalshopper(Yii::app()->user->id)){
+						echo $form->textFieldRow($profile,$field->varname,array('disabled'=>'disabled','class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+					}
+					
+				}
+			}
+			else{
+				echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
+			}
 		}
+			
 		 ?>
 		 <?php echo $form->error($profile,$field->varname); ?>
 	</div>

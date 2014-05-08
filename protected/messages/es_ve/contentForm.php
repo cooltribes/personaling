@@ -369,7 +369,7 @@ return array (
      'Value for returned shipping' => 'Monto por envío devuelto',
 
      'Year' => 'Año',
-     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Recibes este correo porque has solicitado un nuevo enlace para la validación de tu cuenta. Puedes continuar haciendo click en el enlace que aparece a continuación:<br/>',
+     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación:',   
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: {number}',
@@ -386,6 +386,7 @@ return array (
      'Your body is hourglass because in addition to your shoulders and hips aligned you must have a very defined waist' => 'Tu cuerpo es reloj de arena porque además de tener tus hombros y caderas alineados debes tener una cintura muy definida',
      'Your body is triangle if you have shoulders and tiny waist with a pronounced hips' => 'Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas',
      'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas',
+    '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña </h2> Para recibir una nueva contraseña haz clic en el siguiente link: <br/><br/> <a href="{url}">Click aquí</a><br/><br/> Si no has sido tu quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 
      'Weight' => 'Peso',
      'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',

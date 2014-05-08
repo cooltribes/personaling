@@ -24,7 +24,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         <div class="page-header">
             <h1>Importar Productos</h1>
         </div>
-        <div class="bg_color3   margin_bottom_small padding_small box_1">
+        <div class="bg_color3 margin_bottom_small padding_small box_1">
             <?php
             $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                     'action' => CController::createUrl('importar'),

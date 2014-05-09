@@ -445,7 +445,7 @@ class RegistrationController extends Controller
             $message            = new YiiMailMessage;
             $message->view = "mail_template";
             $subject = 'Activa tu cuenta en Personaling';
-            $body = 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com <br/><br/>Valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>  <a href="'.$activation_url.'">Click aquí</a>';
+            $body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
             $params              = array('subject'=>$subject, 'body'=>$body);
             $message->subject    = $subject;
             $message->setBody($params, 'text/html');                

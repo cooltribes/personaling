@@ -151,4 +151,5 @@ if ($total > 0 || $actualizar > 0) {
     echo "<h3> Se actualizaron " . $actualizar . " productos. </h3>";
     echo "</br></br>" . $tabla;
 }
+
 ?>

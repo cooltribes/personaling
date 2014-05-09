@@ -26,7 +26,7 @@ function str_lreplace($search, $replace, $subject)
         <div class="span12" >
 
 <h2><?php echo Yii::t('contentForm','Looks in promotion'); ?></h2>
-                     <div class="" id="tab3">
+                     <div class="margin_top" >
                         <div class="items row " id="perfil_looks">
 <?php
 	//foreach($dataProvider_destacados->getData() as $record) {

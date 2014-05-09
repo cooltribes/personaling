@@ -1684,10 +1684,33 @@ public function actionReportexls(){
             $tabla = "";
 
             if (isset($_POST['valido'])) { // enviaron un archivo
-              
-                
-                //Primer paso - Validar el archivo
+
+                /*Primer paso - Validar el archivo*/
                 if(isset($_POST["validar"])){
+                
+                    $archivo = CUploadedFile::getInstancesByName('validar');
+                    
+                    if (isset($archivo) && count($archivo) > 0) {
+                        foreach ($archivo as $arc => $xls) {
+
+                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsValidar/' . "Nelson";//date('d-m-Y-H:i:s', strtotime('now'));
+                            $extension = '.' . $xls->extensionName;
+                            //	$model->banner_url = '/images/banner/'. $id .'/'. $image .$extension;
+                            //	 if (!$model->save())	
+                            //			Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
+
+                            if ($xls->saveAs($nombre . $extension)) {
+//                                Yii::app()->user->updateSession();
+//                                Yii::app()->user->setFlash('success', UserModule::t("El archivo ha sido cargado exitosamente."));
+                            } else {
+//                                Yii::app()->user->updateSession();
+//                                Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                            }
+                        }
+                    }
+                    
+                    /**/
+                    
                     
 
                 //Segundo paso - Subir el Archivo

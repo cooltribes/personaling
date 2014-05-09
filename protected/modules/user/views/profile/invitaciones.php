@@ -75,7 +75,7 @@ $create_date = date('j M Y', $create_time);
             </div>
         </aside>
         <div class="span9 ">
-            <div class="bg_mancha_1  box_1">
+            <div class=" box_1">
                 <div class="page-header">
                     <h1>Invita tus amig@s a Personaling</h1>
                 </div>

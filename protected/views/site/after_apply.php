@@ -1,4 +1,4 @@
-<div class="wrapper_home">
+<div class="padding_top_large padding_bottom_large margin_bottom_large">
   <div class="container">
     <div class="row">
       <div class="span7 offset2 text_align_center margin_top">

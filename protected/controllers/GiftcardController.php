@@ -405,7 +405,7 @@ class GiftcardController extends Controller
 
                                     Yii::app()->user->updateSession();
                                     Yii::app()->user->setFlash('success',
-                                            Yii::t("¡Se ha aplicado tu Gift Card de <b> {$currSym} {$giftcard->monto}</b>, ahora puedes usar tu saldo para comprar en Personaling!"));                              
+                                            Yii::t('contentForm',"¡Se ha aplicado tu Gift Card de <b> {$currSym} {$giftcard->monto}</b>, ahora puedes usar tu saldo para comprar en Personaling!"));                              
                                     
                                     if(!$ajax){
                                         $this->redirect(array('user/profile/micuenta'));                                        
@@ -413,27 +413,27 @@ class GiftcardController extends Controller
 
                                 }else{ //Vencida
                                    Yii::app()->user->updateSession();
-                                   Yii::app()->user->setFlash('error',Yii::t("¡Esta Gift Card ha expirado, ya no está disponible!"));                              
+                                   Yii::app()->user->setFlash('error',Yii::t('contentForm',"¡Esta Gift Card ha expirado, ya no está disponible!"));                              
                                 }                               
                                
                            }else{ //no ha entrado en vigencia
                               Yii::app()->user->updateSession();
-                              Yii::app()->user->setFlash('warning', Yii::t("¡No puedes usar esta Gift Card porque aún no está disponible!"));    
+                              Yii::app()->user->setFlash('warning', Yii::t('contentForm',"¡No puedes usar esta Gift Card porque aún no está disponible!"));    
                            }
                                    
                        }else if($giftcard->estado == 1){ //Invalida
                            Yii::app()->user->updateSession();
-                           Yii::app()->user->setFlash('error',Yii::t("¡Gift Card inválida!"));
+                           Yii::app()->user->setFlash('error',Yii::t('contentForm',"¡Gift Card inválida!"));
                        
                        }else if($giftcard->estado == 3){ //Aplicada
                            Yii::app()->user->updateSession();
-                           Yii::app()->user->setFlash('error',Yii::t("¡Esta Gift Card ya ha sido usada!"));
+                           Yii::app()->user->setFlash('error',Yii::t('contentForm',"¡Esta Gift Card ya ha sido usada!"));
                        }
                    
                        
                    }else{ // Si no existe
                        Yii::app()->user->updateSession();
-                       Yii::app()->user->setFlash('error',Yii::t("¡Gift Card inválida!"));
+                       Yii::app()->user->setFlash('error',Yii::t('contentForm',"¡Gift Card inválida!"));
                    }
                    
                }else{ //Invalido

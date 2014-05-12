@@ -28,12 +28,12 @@ if($ventas != 0)
 	$promedio = $sumatoria / $ventas;
 else
 	$promedio = 0;
-?>
-
+?> 
+       
 <div class="container margin_top">
   <div class="page-header">
     <h1>Panel de Control</h1>
-  </div>
+  </div> 
   
   	<?php
   	/*

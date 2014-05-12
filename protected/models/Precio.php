@@ -50,7 +50,8 @@ class Precio extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('tbl_producto_id', 'required'),
-			array('combinacion, tipoDescuento, impuesto, tbl_producto_id', 'numerical', 'integerOnly'=>true),
+			array('combinacion, tipoDescuento, impuesto, tbl_producto_id, ganancia', 'numerical', 'integerOnly'=>true),
+			
 			array('ahorro, precioDescuento, precioImpuesto', 'numerical'),
 			array('costo, precioVenta','numerical',
 				    'integerOnly'=>false,
@@ -99,6 +100,8 @@ class Precio extends CActiveRecord
 			'impuesto' => 'Regla de Impuestos',
 			'precioImpuesto' => 'Precio con impuesto para el usuario (Bs.)',
 			'tbl_producto_id' => 'Tbl Producto',
+			'ganancia'=>'Margen de Ganancia (%)',
+			'gananciaImpuesto'=>'La ganancia es sobre el precio con impuesto',
 		);
 	}
 

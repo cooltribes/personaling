@@ -3,7 +3,11 @@ $this->breadcrumbs=array(
 	'Productos'=>array('admin'),
 	'Precios',
 );
-
+ if($precio->gananciaImpuesto)
+ 	$checked=" checked='checked' ";
+ else {
+     $checked="";
+ }
 ?>
 
 <div class="container margin_top">
@@ -59,6 +63,9 @@ $this->breadcrumbs=array(
             </div>
             <div class="control-group"> <?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA '.Yii::app()->params['IVAtext'].' (Tierra Firme)',2 => 'Ambos')); ?> <?php echo $form->error($precio,'impuesto'); ?> </div>
             <div class="control-group"> <?php echo $form->textFieldRow($precio, 'precioImpuesto', array('class'=>'span5')); ?> </div>
+             <div class="control-group"> <?php echo $form->textFieldRow($precio, 'ganancia', array('class'=>'span5')); ?> 
+              <?php echo "<div class='span5'><input type='checkbox' id='ganImp' name='ganImp' ".$checked.">".$precio->getAttributeLabel('gananciaImpuesto')."</div>";
+              echo CHtml::activeHiddenField($precio, 'gananciaImpuesto', array('value'=>'0')) ?></div>
           </fieldset>
         </form>
         <?php if(count($precio->anteriores)){ ?>
@@ -265,6 +272,8 @@ dos= document.getElementById("Precio_precioDescuento").value;
 	
 });
 
+
+
 $("#Precio_tipoDescuento").click(function(){
 
 var uno;
@@ -292,7 +301,7 @@ cinco = $("#Precio_tipoDescuento").val();
 			$("#Precio_precioImpuesto").val(uno - (uno * (dos/100)));	
 		else{
 			pre = $("#Precio_precioDescuento").val();
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()););			
+			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
 			$("#Precio_precioImpuesto").val(tres);
 		}
 		
@@ -367,5 +376,13 @@ cinco = $("#Precio_tipoDescuento").val();
 		}
 	);
 	
+	$("#ganImp").click(function(){
+	if($("#ganImp").is(':checked')) {
+		$('#Precio_gananciaImpuesto').val('1');
+		}
+	else
+		{$('#Precio_gananciaImpuesto').val('0');
+	}
+});
 	
 </script>

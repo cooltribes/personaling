@@ -24,7 +24,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         <div class="page-header">
             <h1>Importar Productos</h1>
         </div>
-        <div class="bg_color3   margin_bottom_small padding_small box_1">
+        <div class="bg_color3 margin_bottom_small padding_small box_1">
             <?php
             $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                     'action' => CController::createUrl('importar'),
@@ -151,4 +151,5 @@ if ($total > 0 || $actualizar > 0) {
     echo "<h3> Se actualizaron " . $actualizar . " productos. </h3>";
     echo "</br></br>" . $tabla;
 }
+
 ?>

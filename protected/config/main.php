@@ -273,6 +273,7 @@ return array(
 				    'registro' => true,	  
 				    'mostrarMarcas'=>true,
 				    'mostrarChic'=>true,
+				    'country'=>'Venezuela',
 		
 	),
 );

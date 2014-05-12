@@ -100,4 +100,13 @@ class Pais extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function getOficial($id = null){
+		if(is_null($id)){
+			$pais=$this;
+		}else{
+			$pais=Pais::findByPk($id);
+		}
+		return $pais->nombreOficial;
+	}
 }

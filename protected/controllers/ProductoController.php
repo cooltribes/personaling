@@ -422,6 +422,8 @@ public function actionReportexls(){
 		if(isset($_POST['Precio']))
 		{
 			$precio->attributes=$_POST['Precio'];
+			$precio->ganancia=$_POST['Precio']['ganancia'];
+			$precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
 			
 			if($id==""){
 				Yii::app()->user->updateSession();
@@ -1678,15 +1680,43 @@ public function actionReportexls(){
 	public function actionImportar()
 	{
             $total_prod = 0;
+            $total = 0;
             $actualizar = 0;
             $tabla = "";
 
             if (isset($_POST['valido'])) { // enviaron un archivo
-              
-                
-                //Primer paso - Validar el archivo
+
+                /*Primer paso - Validar el archivo*/
                 if(isset($_POST["validar"])){
                     
+                    $archivo = CUploadedFile::getInstancesByName('validar');
+                    
+                    //Guardarlo en el servidor para luego abrirlo y revisar
+                    
+                    if (isset($archivo) && count($archivo) > 0) {
+                        foreach ($archivo as $arc => $xls) {
+                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsValidar/' . "Temporal";//date('d-m-Y-H:i:s', strtotime('now'));
+                            $extension = '.' . $xls->extensionName;                     
+
+                            if ($xls->saveAs($nombre . $extension)) {
+
+                            } else {
+                                Yii::app()->user->updateSession();
+                                Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                            }
+                        }
+                    }                    
+                    
+                    //Si no hubo errores
+                    if($this->validarArchivoV2($nombre . $extension)){
+                        
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
+                                                    Puede continuar con el siguiente paso.");                    
+                    }                    
+                    
+                    $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
+                    Yii::app()->end();
 
                 //Segundo paso - Subir el Archivo
                 }else if(isset($_POST["cargar"])){
@@ -1715,189 +1745,82 @@ public function actionReportexls(){
 
                     // ==============================================================================
 
-                    $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
-
-                    $tabla = $tabla . "<div class='well well-small margin_top well_personaling_small'>";
-                    $tabla = $tabla . "<table class='table table-bordered table-hover table-striped'>";
-
-                    foreach ($sheet_array as $row) {
-                        $tabla = $tabla . "<tr>";
-
-                        foreach ($row as $column)
-                            $tabla = $tabla . "<td>$column</td>";
-
-                        $tabla = $tabla . "</tr>";
+                    //Validar
+                    if( !$this->validarArchivoV2($nombre . $extension) ){
+                        
+                        $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
+                        Yii::app()->end();
                     }
-
-                    $tabla = $tabla . "</table>";
-                    $tabla = $tabla . "</div>";
-                    $tabla = $tabla . "<br/>";
+                    
+                    $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 
                     $anterior;
                     $pr_id;
-
-                    $contador = 1;
-                    $falla = "";
-
-                    $linea = 0;
-
-                    foreach ($sheet_array as $row) {
-
-                        $linea++; // saber cual numero de linea es
-
-                        if ($row['A'] != "") {
-
-                            if ($contador == 1) { // revisar las columnas
-                                if ($row['A'] != "Nombre")
-                                    $falla = "Nombre";
-                                else if ($row['B'] != "Descripción")
-                                    $falla = "Descripción";
-                                else if ($row['C'] != "Referencia")
-                                    $falla = "Referencia";
-                                else if ($row['D'] != "Marca")
-                                    $falla = "Marca";
-                                else if ($row['E'] != "Peso")
-                                    $falla = "Peso";
-                                else if ($row['F'] != "Costo")
-                                    $falla = "Costo";
-                                else if ($row['G'] != "Precio Venta")
-                                    $falla = "Precio Venta";
-                                else if ($row['H'] != "Categorías")
-                                    $falla = "Categorías";
-                                else if ($row['I'] != "Categorías")
-                                    $falla = "Categorías";
-                                else if ($row['J'] != "Categorías")
-                                    $falla = "Categorías";
-                                else if ($row['K'] != "Talla")
-                                    $falla = "Talla";
-                                else if ($row['L'] != "Color")
-                                    $falla = "Color";
-                                else if ($row['M'] != "Cantidad")
-                                    $falla = "Cantidad";
-                                else if ($row['N'] != "SKU")
-                                    $falla = "SKU";
-                                else if ($row['O'] != "MetaDescripción")
-                                    $falla = "MetaDescripción";
-                                else if ($row['P'] != "Meta tags")
-                                    $falla = "Meta tags";
-                                else if ($row['Q'] != "Almacén")
-                                    $falla = "Almacén";
-
-
-                                if ($falla != "") { // algo falló
-                                    Yii::app()->user->updateSession();
-                                    Yii::app()->user->setFlash('error', UserModule::t("La columna " . $falla . " no se encuentra en la columna que debe ir o está mal escrita"));
-
-                                    $total = 0;
-                                    $actualizar = 0;
-
-                                    $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
-                                    Yii::app()->end();
-                                }
-
-                                $contador++;
-                            }
-
-                            //si pasa las columnas entonces que revise las tallas y coloes
-                            //tallas
-                            if (isset($row['K']) && $linea > 1) {
-                                $talla = Talla::model()->findByAttributes(array('valor' => $row['K']));
-
-                                if (!isset($talla)) {
-                                    Yii::app()->user->updateSession();
-                                    Yii::app()->user->setFlash('error', UserModule::t("La Talla " . $row['K'] . " no existe en la aplicación. Error en linea: " . $linea));
-
-                                    $total = 0;
-                                    $actualizar = 0;
-
-                                    $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
-                                    Yii::app()->end();
-                                }
-                            }
-
-                            //colores
-                            if (isset($row['L']) && $linea > 1) {
-                                $color = Color::model()->findByAttributes(array('valor' => $row['L']));
-
-                                if (!isset($color)) {
-                                    Yii::app()->user->updateSession();
-                                    Yii::app()->user->setFlash('error', UserModule::t("El Color " . $row['L'] . " no existe en la aplicación. Error en linea: " . $linea));
-
-                                    $total = 0;
-                                    $actualizar = 0;
-
-                                    $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
-                                    Yii::app()->end();
-                                }
-
-
-                                // 	
-                            }
-                        }
-                    } // cierra primer foreach para comprobar
+                   
+                    //para el MasterData en XML
+                    $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
+                    $masterData = $xml->addChild('MasterData');
+                    
                     // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
 
                         $tabla = $tabla . '<br/><br/>';
 
-                        if ($row['A'] != "" && $row['A'] != "Nombre") { // para que no tome la primera ni vacios
-                            /*
-                              $tabla = $tabla.'Nombre: '.$row['A'].
-                              ' Descripcion: '.$row['B'].
-                              ' Referencia: '.$row['C'].
-                              ' Marca: '.$row['D'].
-                              ' Peso: '.$row['E'].
-                              ' Costo: '.$row['F'].
-                              ' Precio: '.$row['G'].
-                              ' Categorias: '.$row['H'].
-                              ' Categorias: '.$row['I'].
-                              ' Categorias: '.$row['J'].
-                              ' Talla: '.$row['K'].
-                              ' Color: '.$row['L'].
-                              ' Cantidad: '.$row['M'].
-                              ' Sku: '.$row['N'].
-                              ' M Desc: '.$row['O'].
-                              ' M Tag: '.$row['P'].
-                              ' Almacen: '.$row['Q'],
-                              '<br/>';
-                             */
+                        if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
+                            
+                            $rSku = $row['A'];
+                            $rRef = $row['B'];
+                            $rMarca = $row['C'];
+                            $rNombre = $row['D'];
+                            $rDescrip = $row['E'];
+                            $rCatego1 = $row['F'];
+                            $rCatego2 = $row['G'];
+                            $rCatego3 = $row['H'];
+                            $rTalla = $row['I'];
+                            $rColor = $row['J'];
+                            $rPeso = $row['K'];
+                            $rCosto = $row['L'];
+                            $rPrecio = $row['M'];
+                            $rmDesc = $row['N'];
+                            $rmTags = $row['O'];
+                            $rAlmacen = $row['P'];
+                            
                             $anterior = $row;
 
-
-                            $producto = Producto::model()->findByAttributes(array('codigo' => $row['C']));
+                            $producto = Producto::model()->findByAttributes(array('codigo' => $rRef));
 
                             if (isset($producto)) { // la referencia existe, hay que actualizar los campos
                                 $actualizar++; // suma un producto actualizado
-                                $pr_id = $producto->id;
-
-                                $marca = Marca::model()->findByAttributes(array('nombre' => $row['D']));
-
+                                
+                                $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));
+                                
+                                // actualiza el producto
                                 Producto::model()->updateByPk($producto->id, array(
-                                    'nombre' => $row['A'],
+                                    'nombre' => $rNombre,
                                     'marca_id' => $marca->id,
-                                    'descripcion' => $row['B'],
-                                    'peso' => $row['E'],
-                                    'almacen' => $row['Q'],
+                                    'descripcion' => $rDescrip,
+                                    'peso' => $rPeso,
+                                    'almacen' => $rAlmacen,
                                     'status' => 1
                                 ));
 
-                                // ahora los precios
+                                // actualiza los precios
                                 $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
 
                                 if (isset($precio)) {
-                                    $precio->costo = $row['F'];
-                                    $precio->precioVenta = $row['G'];
-                                    $precio->precioDescuento = $row['G'];
+                                    $precio->costo = $rCosto;
+                                    $precio->precioVenta = $rPrecio;
+                                    $precio->precioDescuento = $rPrecio;
                                     $precio->impuesto = 1;
-                                    $precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA'] + 1);
+                                    $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
                                 } else {
                                     $precio = new Precio;
-                                    $precio->costo = $row['F'];
-                                    $precio->precioVenta = $row['G'];
+                                    $precio->costo = $rCosto;
+                                    $precio->precioVenta = $rPrecio;
                                     $precio->tbl_producto_id = $producto->id;
-                                    $precio->precioDescuento = $row['G'];
+                                    $precio->precioDescuento = $rPrecio;
                                     $precio->impuesto = 1;
-                                    $precio->precioImpuesto = (double) $row['G'] * (Yii::app()->params['IVA'] + 1);
+                                    $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
                                 }
 
                                 if ($precio->save()) {
@@ -1993,7 +1916,7 @@ public function actionReportexls(){
                                     $tabla = $tabla . ', actualizadas categorias y cantidad. Seo_id: ' . $seo->id . '<br/>';
                                 }
                             } else { // no existe la referencia, es producto nuevo
-                                $total_prod++; // un producto nuevo
+                                $total++; // un producto nuevo
 
                                 $prod = new Producto;
 
@@ -2166,7 +2089,7 @@ public function actionReportexls(){
 
             $this->render('importar_productos', array(
                 'tabla' => $tabla,
-                'total' => $total_prod,
+                'total' => $total,
                 'actualizar' => $actualizar,
             ));
 
@@ -2198,4 +2121,236 @@ public function actionReportexls(){
 			Yii::app()->end();
 		}
 	}
+        
+        
+        protected function validarArchivo($archivo){
+            
+            $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
+
+            $falla = "";
+            $erroresTallas = "";
+            $erroresColores = "";
+
+            $linea = 1;                    
+            foreach ($sheet_array as $row) {
+
+                if ($row['A'] != "") {
+
+                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                        if ($row['A'] != "Nombre")
+                            $falla = "Nombre";
+                        else if ($row['B'] != "Descripción")
+                            $falla = "Descripción";
+                        else if ($row['C'] != "Referencia")
+                            $falla = "Referencia";
+                        else if ($row['D'] != "Marca")
+                            $falla = "Marca";
+                        else if ($row['E'] != "Peso")
+                            $falla = "Peso";
+                        else if ($row['F'] != "Costo")
+                            $falla = "Costo";
+                        else if ($row['G'] != "Precio Venta")
+                            $falla = "Precio Venta";
+                        else if ($row['H'] != "Categorías")
+                            $falla = "Categorías";
+                        else if ($row['I'] != "Categorías")
+                            $falla = "Categorías";
+                        else if ($row['J'] != "Categorías")
+                            $falla = "Categorías";
+                        else if ($row['K'] != "Talla")
+                            $falla = "Talla";
+                        else if ($row['L'] != "Color")
+                            $falla = "Color";
+                        else if ($row['M'] != "Cantidad")
+                            $falla = "Cantidad";
+                        else if ($row['N'] != "SKU")
+                            $falla = "SKU";
+                        else if ($row['O'] != "MetaDescripción")
+                            $falla = "MetaDescripción";
+                        else if ($row['P'] != "Meta tags")
+                            $falla = "Meta tags";
+                        else if ($row['Q'] != "Almacén")
+                            $falla = "Almacén";
+
+                        if ($falla != "") { // algo falló
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                            $falla . "</b> no se encuentra en la columna que debe ir o está mal escrita"));                                   
+
+                            $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
+                            Yii::app()->end();
+                        }
+
+
+                    }
+
+                    //si pasa las columnas entonces que revise las tallas y coloes
+                    //tallas
+                    if (isset($row['K']) && $linea > 1) {
+                        $talla = Talla::model()->findByAttributes(array('valor' => $row['K']));
+
+                        if (!isset($talla)) {
+
+                            $erroresTallas .= "<li> <b>" . $row['K'] . "</b>, en la línea <b>" . $linea."</b></li>";
+
+                        }
+                    }
+
+                    //colores
+                    if (isset($row['L']) && $linea > 1) {
+                        $color = Color::model()->findByAttributes(array('valor' => $row['L']));
+
+                        if (!isset($color)) {
+                            $erroresColores .= "<li> <b>" . $row['L'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
+                        // 	
+                    }
+                }
+
+                $linea++; // saber cual numero de linea es
+            } // cierra primer foreach para comprobar
+
+            //Eliminar el archivo
+//                    unlink ( $nombre . $extension );
+
+            //Si hubo errores en las tallas o en los Colores
+            if($erroresTallas != ""){
+                $erroresTallas = "Las siguientes tallas no existen en la plataforma:<br><ul>
+                                 {$erroresTallas}
+                                 </ul><br>";
+            }
+            if($erroresColores != ""){
+                $erroresColores = "Los siguientes colores no existen en la plataforma:<br><ul>
+                                 {$erroresColores}
+                                 </ul>";
+            }
+
+            if($erroresTallas != "" || $erroresColores != ""){
+
+                $erroresTallas .= $erroresColores;
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('error', $erroresTallas);
+
+                return false;
+                
+            } 
+            
+            return true;
+            
+        }
+        
+        
+        protected function validarArchivoV2($archivo){
+            
+            $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
+
+            $falla = "";
+            $erroresTallas = "";
+            $erroresColores = "";
+
+            $linea = 1;                    
+            foreach ($sheet_array as $row) {
+
+                if ($row['A'] != "") {
+
+                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                        if ($row['A'] != "SKU")
+                            $falla = "SKU";
+                        else if ($row['B'] != "Referencia")
+                            $falla = "Referencia";
+                        else if ($row['C'] != "Marca")
+                            $falla = "Marca";
+                        if ($row['D'] != "Nombre")
+                            $falla = "Nombre";
+                        else if ($row['E'] != "Descripción")
+                            $falla = "Descripción";
+                        else if ($row['F'] != "Categorías")
+                            $falla = "Categorías";
+                        else if ($row['G'] != "Categorías")
+                            $falla = "Categorías";
+                        else if ($row['H'] != "Categorías")
+                            $falla = "Categorías";
+                        else if ($row['I'] != "Talla")
+                            $falla = "Talla";
+                        else if ($row['J'] != "Color")
+                            $falla = "Color";
+                        else if ($row['K'] != "Peso")
+                            $falla = "Peso";                                                
+                        else if ($row['L'] != "Costo sin iva")
+                            $falla = "Costo";
+                        else if ($row['M'] != "Precio Venta sin iva")
+                            $falla = "Precio Venta";
+                        else if ($row['N'] != "MetaDescripción")
+                            $falla = "MetaDescripción";
+                        else if ($row['O'] != "Meta tags")
+                            $falla = "Meta tags";
+                        else if ($row['P'] != "Almacén")
+                            $falla = "Almacén";
+
+                        if ($falla != "") { // algo falló
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                            $falla . "</b> no se encuentra en la columna que debe ir o está mal escrita"));                                   
+
+                            return false;
+                        }
+
+
+                    }
+
+                    //si pasa las columnas entonces que revise las tallas y coloes
+                    //tallas
+                    if (isset($row['I']) && $linea > 1) {
+                        $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
+
+                        if (!isset($talla)) {
+
+                            $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+
+                        }
+                    }
+
+                    //colores
+                    if (isset($row['J']) && $linea > 1) {
+                        $color = Color::model()->findByAttributes(array('valor' => $row['J']));
+
+                        if (!isset($color)) {
+                            $erroresColores .= "<li> <b>" . $row['J'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
+                        // 	
+                    }
+                }
+
+                $linea++; // saber cual numero de linea es
+            } // cierra primer foreach para comprobar
+
+            //Eliminar el archivo
+//                    unlink ( $nombre . $extension );
+
+            //Si hubo errores en las tallas o en los Colores
+            if($erroresTallas != ""){
+                $erroresTallas = "Las siguientes tallas no existen en la plataforma:<br><ul>
+                                 {$erroresTallas}
+                                 </ul><br>";
+            }
+            if($erroresColores != ""){
+                $erroresColores = "Los siguientes colores no existen en la plataforma:<br><ul>
+                                 {$erroresColores}
+                                 </ul>";
+            }
+
+            if($erroresTallas != "" || $erroresColores != ""){
+
+                $erroresTallas .= $erroresColores;
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('error', $erroresTallas);
+
+                return false;
+                
+            } 
+            
+            return true;
+            
+        }
+        
 }

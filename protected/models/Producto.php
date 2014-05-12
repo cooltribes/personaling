@@ -1240,8 +1240,15 @@ public function multipleColor2($idColor, $idact)
 		else
 			return $this->_totalVentas;
             
-            
+             
         }
+        
+        public function getTallasDisponibles($id = null){
+        	if(is_null($id))
+				$id=$this->id;
+        	$sql ="select * from tbl_talla where id in (select distinct t.talla_id from tbl_precioTallaColor t where t.producto_id = ".$id." and cantidad >0) order by orden asc";
+        	return Yii::app()->db->createCommand($sql)->queryAll();
+		}
         
          
 		 

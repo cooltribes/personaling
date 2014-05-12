@@ -708,14 +708,7 @@ class BolsaController extends Controller
 				$dirEdit->ciudad_id = $_POST['Direccion']['ciudad_id'];
 				$dirEdit->provincia_id = $_POST['Direccion']['provincia_id'];
 				
-				if($_POST['Direccion']['pais']==1)
-					$dirEdit->pais = "Venezuela";
-				
-				if($_POST['Direccion']['pais']==2)
-					$dirEdit->pais = "Colombia";
-				
-				if($_POST['Direccion']['pais']==3)
-					$dirEdit->pais = "Estados Unidos";
+				$dirEdit->pais=Pais::model()->getOficial($_POST['Direccion']['pais']);
 				
 				if($dirEdit->save()){
 					$dir = new Direccion;
@@ -774,15 +767,16 @@ class BolsaController extends Controller
                             // guardar en el modelo direccion
                             $dir->attributes=$_POST['Direccion'];
 
-                            if($dir->pais=="1")
+                          /*  if($dir->pais=="1")
                                     $dir->pais = "Venezuela";
 
                             if($dir->pais=="2")
                                     $dir->pais = "Colombia";
 
                             if($dir->pais=="3")
-                                    $dir->pais = "Estados Unidos"; 
-
+                                    $dir->pais = "Estados Unidos"; */
+                            $dir->pais=Pais::model()->getOficial($dir->pais);
+							
 //				$dir->user_id = Yii::app()->user->id;
                             $dir->user_id = $_POST["user"];
 
@@ -2792,7 +2786,13 @@ class BolsaController extends Controller
             
             
             /*Enviar correo OPERACIONES (operaciones@personaling.com*/
-            $this->enviarEmailOperaciones($orden, $usuario);  
+            /*Solo enviar correos cuando este en producccion, not develop, not test*/
+            if(strpos(Yii::app()->baseUrl, "develop") == false 
+                && strpos(Yii::app()->baseUrl, "test") == false){
+                
+                $this->enviarEmailOperaciones($orden, $usuario);  
+
+            }
             
             /*Generar el Outbound para Logishfashion*/
             //$this->generarOutbound($orden);
@@ -2868,7 +2868,7 @@ class BolsaController extends Controller
             $detalle->nTransferencia = $codigoTransaccion;
             $detalle->nombre = $usuario->profile->first_name." ".$usuario->profile->last_name;            
             //lo que queda por pagar despues de usar el saldo
-            $detalle->monto = Yii::app()->getSession()->get('totalPagar');
+            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
             $detalle->fecha = date("Y-m-d H:i:s");
             $detalle->banco = $metodoPago == Detalle::TDC_AZTIVE ? 'Sabadell' : 'PayPal'; //TDC o PayPal
             $detalle->estado = 1; // aceptado
@@ -2978,11 +2978,10 @@ class BolsaController extends Controller
                          
                      <br/>");
             
-            
             $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
-            $message->addTo("nramirez@upsidecorp.ch");
+            $message->addTo("operaciones@upsidecorp.ch");
             $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
@@ -3079,8 +3078,8 @@ class BolsaController extends Controller
             //print($xml->asXML());
             
             $archivo = tmpfile();
-            fwrite($archivo, "nelson");
-//            fwrite($archivo, $xml->asXML());
+//            fwrite($archivo, "nelson");
+            fwrite($archivo, $xml->asXML());
             fseek($archivo, 0);
             //echo fread($archivo, 10242424);
 //            echo "<pre>";
@@ -3096,7 +3095,7 @@ class BolsaController extends Controller
         }
         
         function subirArchivoFtp($archivo){
-            $ftpServer = "personaling.com";
+
             $ftpServer = "localhost";
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";
@@ -3119,6 +3118,7 @@ class BolsaController extends Controller
             ftp_pasv($conexion, true);
             
             echo "Conexión a $ftpServer realizada con éxito, por el usuario $userName";
+            
             //ubicarse en el directorio a donde se subira el archivo
             ftp_chdir($conexion, $directorio);      
             
@@ -3129,7 +3129,7 @@ class BolsaController extends Controller
             if (!$upload) {  
                 echo "¡La subida FTP ha fallado!";
             } else {
-                echo "Subida de $nombreArchivo a $ftpServer con éxito";
+                echo "<br>Subida de $nombreArchivo a $ftpServer con éxito";
             }
             
             echo "<br>Directorio: ".ftp_pwd($conexion);

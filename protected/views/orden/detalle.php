@@ -204,74 +204,65 @@ $tracking=$orden->getTracking();
           </div>
         </div>
       </div>      
-        
-          	<?php
+      <div id='pago' class='well well-small margin_top well_personaling_small'>
+        <h3 class='braker_bottom '> Método de Pago</h3>
+            <table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
+            <tr>
+            <th scope='col'>Fecha</th>
+            <th scope='col'>Método de pago</th>
+            <th scope='col'>ID de Transaccion</th>
+            <th scope='col'>Monto</th>
+            <th scope='col'></th>
+            </tr> 
+            
+            <?php
           	
-          	$productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-          //	$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
-						
-			if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron
-			
-			echo("
-	          	<div id='pago' class='well well-small margin_top well_personaling_small'>
-	          	<h3 class='braker_bottom '> Método de Pago</h3>
-	        		<table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
-	          		<tr>
-	            		<th scope='col'>Fecha</th>
-	            		<th scope='col'>Método de pago</th>
-	            		<th scope='col'>ID de Transaccion</th>
-	            		<th scope='col'>Monto</th>
-	            		<th scope='col'></th>
-	          		</tr>
-	          	");
-			
-				foreach($productoBolsa as $detalle){
-				
-				echo("<tr>");
-				
-					if($detalle->estado == 1) // si fue aceptado
-					{
+          	$detalleDePago = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+          
+                if($orden->estado!=5 && $orden->estado!=1){ // no ha pagado o no la cancelaron						
 
-						echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
-						
-						if($detalle->tipo_pago == 1)
-							echo("<td>Deposito o Transferencia</td>");
-						if($detalle->tipo_pago == 2)
-							echo("<td>Tarjeta de credito</td>");
-						if($detalle->tipo_pago == 3)
-							echo("<td>Saldo</td>");						
-						if($detalle->tipo_pago == 4)
-							echo("<td>Mercado Pago</td>");	
-														//hacer los demas tipos
-								
-						echo("<td>".$detalle->nTransferencia."</td>");	
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
-						echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
-	
-						
-					}
-					else
-					if($detalle->estado == 2) // rechazado
-						{
-		          	
-		          		echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
-						
-						if($detalle->tipo_pago == 1)
-							echo("<td>Deposito o Transferencia</td>");
-							//hacer los demas tipos
-								
-						echo("<td> PAGO RECHAZADO </td>");	
-						echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
-						echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
-							
-						}
-					
-					echo("</tr>");
-					}//foreach
-				
-				echo("</table></div>");
-				}
-		  	?>    
+                    foreach($detalleDePago as $detalle){
+                        echo("<tr>");
+
+                                if($detalle->estado == 1) // si fue aceptado
+                                {
+
+                                        echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
+                                        echo("<td>".$detalle->getTipoPago()."</td>");
+
+                                        echo("<td>".$detalle->nTransferencia."</td>");	
+                                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
+                                        echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
+
+
+                                }
+                                else
+                                if($detalle->estado == 2) // rechazado
+                                        {
+
+                                echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
+
+                                        if($detalle->tipo_pago == 1)
+                                                echo("<td>Deposito o Transferencia</td>");
+                                                //hacer los demas tipos
+
+                                        echo("<td> PAGO RECHAZADO </td>");	
+                                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+                                        echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
+
+                                        }
+
+                                echo("</tr>");
+                                }//foreach
+
+                        echo("");
+                        }
+            ?>  
+            
+            
+       </table>
+      </div>
+          	  
      
      <?php
      	if($orden->estado==4||$orden->estado==8||$orden->estado==9||$orden->estado==10){

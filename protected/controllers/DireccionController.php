@@ -110,6 +110,7 @@ class DireccionController extends Controller
 		if(isset($_POST['Direccion']))
 		{
 			$model->attributes=$_POST['Direccion'];
+			$model->pais=Pais::model()->getOficial($model->pais);
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -193,6 +194,7 @@ class DireccionController extends Controller
 		$direccion=new Direccion;
 		$direccion->attributes=$_POST;
 		$direccion->codigo_postal_id=$_POST['codigo_postal_id'];
+		$direccion->pais=Pais::model()->getOficial($direccion->pais);
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
 			echo '<legend >'

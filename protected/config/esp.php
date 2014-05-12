@@ -3,6 +3,7 @@ return CMap::mergeArray(
     require(dirname(__FILE__).'/main.php'), 
     array(
    	 'language' => 'es_es',
+   	 'timeZone' => 'Europe/Madrid', 
 	// 'sourceLanguage'=>'es_ES',
         'components'=>array(
 			'db'=>array(

@@ -39,13 +39,13 @@
     <fieldset>
                   <h1>Tu Banner</h1>
 <?php echo "<p>Puedes editar o cambiar tu banner usando las opciones a continuación";
- if(is_null($user->banner_url)||$user->banner_url=="/images/banner/default.jpg")
+ if(is_null($user->banner_url)||$user->banner_url=="/images/banner/default.gif")
 		echo  ", con las siguientes dimensiones:</p>".CHtml::image('http://placehold.it/870x90','Avatar',array("width"=>"870", "height"=>"90", "id"=>"example")); //imagen 
 		else
 			 echo":</p>";?>
     	<div id="container" class="text_align_center margin_bottom margin_top" >
     		<?php if( $user->banner_url != null ){ ?>
-        <img src="<?php echo Yii::app()->baseUrl.$user->banner_url; ?>">
+        <img src="<?php echo $user->getBanner(); ?>">
         <?php } ?>
         </div> <div class="text_align_center">
     		<div id="boton_original" class="btn">original</div> 

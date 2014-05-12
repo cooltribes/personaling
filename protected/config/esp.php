@@ -4,6 +4,7 @@ return CMap::mergeArray(
     array(
     //'timeZone' => 'CEST',
    	 'language' => 'es_es',
+   	 'timeZone' => 'Europe/Madrid', 
 	// 'sourceLanguage'=>'es_ES',
         'components'=>array(
 			'db'=>array(

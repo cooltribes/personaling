@@ -21,106 +21,13 @@ function str_lreplace($search, $replace, $subject)
   //$cs->registerScriptFile($baseUrl.'/js/slider.js');
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
 ?>
-
 <div class="container margin_top">
     <div class="row margin_bottom_large">
-        <div class="span12" id="lo_mas_top">
-            <div class="tabbable"> <!-- Only required for left/right tabs -->
-                <ul class="nav nav-tabs">
-                    <?php if($dataProvider->getTotalItemCount()){ ?>
-                    <li class="active"><a href="#tab1" data-toggle="tab"><?php echo Yii::t('contentForm','Looks best sellers'); ?></a></li>
-                    <?php } ?>
-<!--                     <li><a href="#tab2" data-toggle="tab">Próxima Campaña</a></li>
+        <div class="span12" >
 
- -->                <li<?php echo !($dataProvider->getTotalItemCount())? " class=\"active\" ":""; ?>>
-                        <a href="#tab3" data-toggle="tab"><?php echo Yii::t('contentForm','Looks in promotion'); ?></a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <?php if($dataProvider->getTotalItemCount()){ ?>
-                    <div class="tab-pane active" id="tab1" >
-                        <div class="items row ">
-                    <?php
-                     foreach($dataProvider->getData() as $record) {
-                            $look = Look::model()->findByPk($record['look_id']);
-                            if (isset($look)){
-                     ?>
-                        <div class="span4">
-                            <article class="item span4" >
-                            	<?php if($look->has_100chic){ ?>
-									<!-- <div class="has_100chic"></div> -->
-						      	<?php }?>
-                            	<?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$look->id)); ?>
-                            	
-                                <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id)), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "370", "height" => "400", 'class'=>'')); ?>
-                                <?php
-                                //"style"=>"display: none",              	
-                                    /*
-                                    $script = "$('#"."imglook".$look->id."').load(function(){
-  												//alert('cargo');
-  												$('#imgloading".$look->id."').hide();
-  												$(this).show();
-  												//$('#loader_img').hide();
-									});";
-									 * 
-									 */
-									 $script = "
-										var load_handler = function() {
-										    $('#imgloading".$look->id."').hide();
-										    $(this).show();
-										}
-										$('#"."imglook".$look->id."').filter(function() {
-										    return this.complete;
-										}).each(load_handler).end().load(load_handler);						 
-									 ";									 
-              						Yii::app()->clientScript->registerScript('img_script'.$look->id,$script);
-              					?>   
-                                <?php echo CHtml::link($image,$look->getUrl()); ?>
-                                <div class="hidden-phone margin_top_small vcard row-fluid">
-                                    <div class="span2 avatar ">
-	                                    	<a href="<?php echo $look->user->profile->getUrl(); ?>">
-	                                    	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?>
-	                                    	</a>
-	                                   </div> 
-                                    <div class="span4"> <span class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
-                                        <h5>
-                                        	<?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
-                                        </h5>
-                                    </div>
-                                    <div class="span6"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym').' ';?></small> <?php echo $look->getPrecio(); ?></span></div>
-                                </div>
-                                <div class="share_like">
-                                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                                    
-                                    <div class="btn-group">
-                                        <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                                        <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                                            <!-- AddThis Button BEGIN 
-                                            
-                                            <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                                            <li><a class="addthis_button_tweet"></a></li>
-                                            <li><a class="addthis_button_pinterest_pinit"></a></li>
-                                        </ul>
-                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                                             AddThis Button END --> 
-                                        
-                                    </div>
-                                </div>
-                                <span class="label label-important"><?php echo Yii::t('contentForm','Promotion'); ?></span> </article>
-                        </div>
-                        <?php 
-              }
-} 
-?>
-                    </div>
-                    </div>
-                    <?php } ?>
-<!--                     <div class="tab-pane" id="tab2">
-                        <p>Howdy, I'm in Section 2.</p>
-                    </div> -->
-                     <div class="tab-pane <?php echo !($dataProvider->getTotalItemCount())? "active":""; ?>" id="tab3">
-                        <div class="items row ">
+<h2><?php echo Yii::t('contentForm','Looks in promotion'); ?></h2>
+                     <div class="margin_top" >
+                        <div class="items row " id="perfil_looks">
 <?php
 	//foreach($dataProvider_destacados->getData() as $record) {
 	//$look = Look::model()->findByPk($record['look_id']);
@@ -162,30 +69,15 @@ function str_lreplace($search, $replace, $subject)
                                 <div class="share_like">
                                     <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
                                     
-                                    <div class="btn-group">
-                                        <button class="dropdown-toggle btn-link" data-toggle="dropdown"><span class="entypo icon_personaling_big">&#59157;</span></button>
-                                        <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                                            <!-- AddThis Button BEGIN 
-                                            
-                                            <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                                            <li><a class="addthis_button_tweet"></a></li>
-                                            <li><a class="addthis_button_pinterest_pinit"></a></li>
-                                        </ul>
-                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                                             AddThis Button END --> 
-                                        
-                                    </div>
+
                                 </div>
                                 <span class="label label-important">><?php echo Yii::t('contentForm','Promotion'); ?></span> </article>
                         </div>
 <?php 
-                        if ($count >= $pagination)
+                        if ($count >= 6 )
                              break;
 	}
 } ?>
-                    </div>
-                    </div>
                 </div>
             </div>
             
@@ -305,10 +197,9 @@ foreach($posts_parent as $posts_parent){
     </div>
     <div class="braker_horz_top_1">
         <div class="row">
-            <div class="span6"> <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner_blanco.jpg" width="571" height="75" alt="Banner blanco" /> </div>
-            <div class="span6">
+            <div class="offset3 span6">
                 <div  class="">
-                	 <a class="btn btn-danger btn-block btn-morado-tiffany color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" ><?php echo Yii::t('contentForm','See all looks'); ?> <i class="icon-chevron-right icon-white"></i> </a>
+                	 <a class="btn btn-danger btn-block  color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" ><?php echo Yii::t('contentForm','See all looks'); ?> </a>
                     
                 </div>
             </div>

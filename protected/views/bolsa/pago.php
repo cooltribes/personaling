@@ -445,11 +445,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 									
 									$envio =floatval($seur['porte'])+floatval($seur['iva'])+floatval($seur['combustible']);
 									
-									$seguro=1;
+									$seguro=0;
 								}
 								else {
 									$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-									$seguro=1;
+									$seguro=0;
 								} 
 									
 								

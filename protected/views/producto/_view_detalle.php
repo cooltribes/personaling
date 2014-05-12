@@ -317,29 +317,19 @@
               <h5><?php echo Yii::t('contentForm','Sizes'); ?></h5>
               <div id="vTa" class="clearfix tallas">
                 <?php
-                
-        if( $cont2 == 1) // Si solo hay una talla seleccionela
-        {
-          $talla = Talla::model()->findByPk($canttallas[0]);
-          echo "<div value='solo' id=".$talla->id." style='cursor: pointer' class='tallass active' title='talla'>".$talla->valor."</div>"; 
-        }
-        else{             
-          foreach ($producto->preciotallacolor as $talCol) { 
-                    
-            if($talCol->cantidad > 0) // que haya disp
-            {
-              $talla = Talla::model()->findByPk($talCol->talla_id);
               
-              if(in_array($talla->id, $valores2)){  // no hace nada para que no se repita el valor      
-              }
-              else{
-                echo "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
-                array_push($valores2, $talla->id);
-              }
-            }
+        
+        	            
+          foreach ($producto->tallasDisponibles as $talla) { 
+                    
+             
+                echo "<div id=".$talla['id']." style='cursor: pointer' class='tallass' title='talla'>".$talla['valor']."</div>"; 
+                array_push($valores2, $talla['id']);
+             
+            
             }
           
-          }// else
+          // else
                 ?>                
               </div>
 <!--               <div class="braker_top margin_top_small">

@@ -1,4 +1,20 @@
 <?php
+if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
+    Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
+    var fb_param = {};
+    fb_param.pixel_id = '6016397659254';
+    fb_param.value = '0.01';
+    fb_param.currency = 'EUR';
+    (function(){
+    var fpw = document.createElement('script');
+    fpw.async = true;
+    fpw.src = '//connect.facebook.net/en_US/fp.js';
+    var ref = document.getElementsByTagName('script')[0];
+    ref.parentNode.insertBefore(fpw, ref);
+    })();
+    ", CClientScript::POS_HEAD, 1);
+}
+
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 if((isset($editar) && $editar)){

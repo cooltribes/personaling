@@ -15,7 +15,7 @@
     ?>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
-    
+    <noscript><img height='1' width='1' alt='' style='display:none' src='https://www.facebook.com/offsite_event.php?id=6016397659254&amp;value=0.01&amp;currency=EUR' /></noscript>
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">

@@ -1,4 +1,20 @@
 <?php
+if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
+    Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
+    var fb_param = {};
+    fb_param.pixel_id = '6016397659254';
+    fb_param.value = '0.01';
+    fb_param.currency = 'EUR';
+    (function(){
+    var fpw = document.createElement('script');
+    fpw.async = true;
+    fpw.src = '//connect.facebook.net/en_US/fp.js';
+    var ref = document.getElementsByTagName('script')[0];
+    ref.parentNode.insertBefore(fpw, ref);
+    })();
+    ", CClientScript::POS_HEAD, 1);
+}
+
 $this->breadcrumbs = array(
     'Tu Personal Shopper',
 );
@@ -22,6 +38,7 @@ if (isset($user)){
         <div class="row-fluid margin_bottom_medium">
             <div class="span6 text_align_right">
                 <?php
+                //var_dump(Yii::app()->getRequest()->getUrlReferrer());
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Todos los looks',
                     'buttonType' => 'button',

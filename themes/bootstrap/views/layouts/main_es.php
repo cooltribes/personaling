@@ -1,4 +1,4 @@
-
+  
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 <head>
@@ -286,6 +286,11 @@ if(!Yii::app()->user->isGuest){
   <?php echo $content; ?> </div>
 <!-- page -->
 <div id="modalAjax"></div>
+<!-- <div class="messageCookies">
+  Este sitio web hace uso de cookies para mejorar la experiencia al usuario. Estamos configurados para permitir todas las versiones de cookies. 
+Para más información sobre las cookies en nuestra web consulta nuestra
+políticas de cookies
+</div> -->
 <div id="wrapper_footer">
   <footer class="container">
     <div class="row hidden-phone">
@@ -296,6 +301,7 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/condiciones_de_envios_y_encomiendas" title="Envíos y Encomiendas">Envíos y Encomiendas</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>

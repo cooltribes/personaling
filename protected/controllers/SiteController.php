@@ -26,7 +26,7 @@ class SiteController extends Controller
 				'actions'=>array('index','top','error','contacto','login','logout',
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
-                                    'terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes',
+                                    'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies','preguntas_frecuentes',
                                     'equipo_personaling','captcha','comofunciona', 'afterApply','sitemap','landingpage'), 
 				'users'=>array('*'),
 			),
@@ -82,6 +82,11 @@ class SiteController extends Controller
 	public function actionPoliticas_de_devoluciones()
 	{
 		$this->render('politicas_de_devoluciones');
+	}
+
+	public function actionPoliticas_de_cookies()
+	{
+		$this->render('politicas_de_cookies');
 	}
 
 	public function actionPreguntas_frecuentes()

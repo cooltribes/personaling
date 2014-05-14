@@ -143,6 +143,8 @@ return array (
 	'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
 	'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
 	'Help' => 'Ayuda',
+    'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡¡Hola! Alguien ha pensado que Personaling.es es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
+     <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de tu primera Shopping Experience única y… repetible. <br/> Puedes registrarte clicando en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Clica aquí</a>',
 
 	'ID' => 'ID',
 	'ID of the person to whom you send' => 'DNI/NIE de la persona a la que envias',
@@ -444,8 +446,7 @@ return array (
 	Suscripción de otros servicios específicos, tales como la “Newsletter” y otros servicios de información análogos sobre nuestra actividad comercial.<br/>
 	Gestión y/o tramitación de pedidos y actividades conexas. <br/>
 	Gestión de consultas, dudas o problemas de carácter técnico, comercial, sobre el estado de los pedidos realizados y otras solicitudes.
-	<br/><br/><p>Utilización de cookies<br/>
-	Durante la navegación por el sitio Web se utilizan “cookies”, un dispositivo que se transmite al disco duro del Usuario. No contiene informaciones comprensibles y nos permite obtener información sobre la identidad del usuario y asociarla con sus datos personales, que este deja en la página web. La información obtenida es totalmente anónima, en ningún caso puede ser asociada a un Usuario concreto e identificado. Solo Personaling procesa y gestiona esta información para adaptar y mejorar sus servicios a los intereses del Usuario. Son necesarios, para navegar por la página web, acceder a sus servicios y realizar una compra; la aceptación y la conformidad con los procedimientos automáticos de recogida de datos y el uso de las cookies. Los servicios de “Tu Cuenta” están adaptados con respecto a las cookies y el navegador de Internet permite eliminarlas al finalizar cada sesión. El usuario tiene la opción de impedir la generación de datos por medio de las cookies. En tal caso Personaling no garantiza al usuario la visualización completa de algunas páginas, ni el correcto funcionamiento de algunos servicios.</p>',
+	</p>',
 
 	'Copy Envios y Encomiendas' => '        
 		<div class="page-header">
@@ -515,7 +516,9 @@ return array (
             <p>Aceptamos pagar con Paypal, el sistema de pago más seguro. Solo necesitas estar registrado en Paypal y conectar tu tarjeta de crédito o cuenta bancaria. A partir de allí el sistema solicitará la información necesaria para realizar una transacción regular. Al igual que con los demás sistemas de pago regulares, una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p> <br />
         </ol>
         <p>Es importante que tengas presente que <a href="http://www.personaling.es" >Personaling.es</a> cuenta con un sistema de protección de datos y seguridad en red donde los datos introducidos están debidamente protegidos. Tu compra con esta forma de pago no implica cargo adicional.</p> ',
-	
+	'Copy de Cookies' => '<div class="page-header">
+          <h1>Políticas de Cookies</h1>
+        </div><p> En Personaling utilizamos cookies para facilitar el uso de nuestra página web. Las cookies son pequeños ficheros de texto que su navegador almacena en el disco duro de su ordenador y que son necesarias para utilizar nuestra página web. Las utilizamos para entender mejor la manera en la que se usa nuestra página web y de esta manera poder mejorar consecuentemente el proceso de navegación. Las cookies son el referente que nos indica, por ejemplo, si una página de nuestra web ha sido vista con anterioridad, o si su visita es nueva o recurrente. Las cookies que utilizamos no almacenan datos personal alguno, ni ningún tipo de información que pueda identificarle. En caso de no querer recibir cookies, por favor configure su navegador de Internet para que las borre del disco duro de su ordenador, las bloquee o le avise en caso de instalación de las mismas.  </p>'
 );
 
 ?>

@@ -1727,12 +1727,9 @@ public function actionReportexls(){
                         
                         foreach ($archivo as $arc => $xls) {
 
-                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsImported/' . date('d-m-Y-H:i:s', strtotime('now'));
+                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsImported/' . date('d-m-Y-H:i:s');
                             $extension = '.' . $xls->extensionName;
-                            //	$model->banner_url = '/images/banner/'. $id .'/'. $image .$extension;
-                            //	 if (!$model->save())	
-                            //			Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
-
+                            
                             if ($xls->saveAs($nombre . $extension)) {
                                 
                             } else {
@@ -1747,7 +1744,7 @@ public function actionReportexls(){
 
                     // ==============================================================================
 
-                    // Validar
+                    // Validar (de nuevo)
                     if( !$this->validarArchivoV2($nombre . $extension) ){
                         
                         // Archivo con errores, eliminar del servidor
@@ -1763,15 +1760,22 @@ public function actionReportexls(){
                     $anterior;
                     $pr_id;
                    
-                    //para el MasterData en XML
-//                    $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
-//                    $masterData = $xml->addChild('MasterData');
+                    /*
+                        Para el MasterData en XML
+                     */
+                    $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
+                    $masterData = $xml->addChild('MasterData');
+                    //Agregar la fecha de creacion
+                    $masterData->addChild("FechaCreacion", date("Y-m-d"));                                        
                     
-                    // segundo foreach, si llega aqui es para insertar y todo es valido
+//                    Header('Content-type: text/xml');
+//                    print($xml->asXML());
+//                    Yii::app()->end();
+//                    MasterData::subirArchivoFtp($archivo);
+
+                // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
-
-                        $tabla = $tabla . '<br/><br/>';
-
+                        
                         if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
                             
                             $rSku = $row['A'];
@@ -1795,11 +1799,14 @@ public function actionReportexls(){
 
                             $producto = Producto::model()->findByAttributes(array('codigo' => $rRef));
 
-                            if (isset($producto)) { // la referencia existe, hay que actualizar los campos
-                                $actualizar++; // suma un producto actualizado
-                                
-                                $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                            
-                                
+                            // la referencia existe, hay que actualizar los campos
+                            $prodExiste = isset($producto);
+
+                            // Marca para actualizar
+                            $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
+                            
+                            if($prodExiste){
+                                $actualizar++; // suma un producto actualizado                                
                                 // actualiza el producto
                                 Producto::model()->updateByPk($producto->id, array(
                                     'nombre' => $rNombre,
@@ -1808,127 +1815,10 @@ public function actionReportexls(){
                                     'peso' => $rPeso,
                                     'almacen' => $rAlmacen,
                                     'status' => 1
-                                ));
-
-                                // actualiza los precios
-                                $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
-
-                                if (isset($precio)) {
-                                    $precio->costo = $rCosto;
-                                    $precio->precioVenta = $rPrecio;
-                                    $precio->precioDescuento = $rPrecio;
-                                    $precio->impuesto = 1;
-                                    $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
-                                } else {
-                                    $precio = new Precio;
-                                    $precio->costo = $rCosto;
-                                    $precio->precioVenta = $rPrecio;
-                                    $precio->tbl_producto_id = $producto->id;
-                                    $precio->precioDescuento = $rPrecio;
-                                    $precio->impuesto = 1;
-                                    $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
-                                }
-
-                                if ($precio->save()) {
-
-                                    $categorias = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id' => $producto->id));
-                                    // borrar todas las categorias
-                                    if (isset($categorias)) {
-                                        foreach ($categorias as $categoria) {
-                                            $categoria->delete();
-                                        }
-                                    }
-
-                                    $cat = new CategoriaHasProducto;
-                                    $cat2 = new CategoriaHasProducto;
-                                    $cat3 = new CategoriaHasProducto;
-
-                                    //Agregar 3 categorias al producto
-                                    if ($rCatego1 != "") {
-                                        $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego1));
-                                        $cat->tbl_producto_id = $producto->id;
-                                        $cat->tbl_categoria_id = $x->id;
-
-                                        $cat->save();
-                                    }
-
-                                    if ($rCatego2 != "") {
-                                        $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
-                                        $cat2->tbl_producto_id = $producto->id;
-                                        $cat2->tbl_categoria_id = $x->id;
-
-                                        $cat2->save();
-                                    }
-
-                                    if ($rCatego3 != "") {
-                                        $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
-                                        $cat3->tbl_producto_id = $producto->id;
-                                        $cat3->tbl_categoria_id = $x->id;
-
-                                        $cat3->save();
-                                    }
-
-                                    // Insertar el precio-talla-color
-                                    $ptc = Preciotallacolor::model()->findByAttributes(array(
-                                            'producto_id' => $producto->id,
-                                            'sku' => $rSku,
-                                            'talla_id' => $rTalla,
-                                            'color_id' => $rColor,
-                                        ));
-
-                                    // Ya no se actualizaran las cantidades
-                                    /*if (isset($ptc)) { // existe el sku, hay que actualizar
-                                        $a = $ptc->cantidad;
-
-                                        $ptc->cantidad = $a + $row['M'];
-                                        $ptc->save();
-                                    } */
-                                    
-                                    // si ya existe no hacer nada, si no, Crear uno nuevo
-                                    if (!isset($ptc)) { 
-                                        
-                                        $ptc = new Preciotallacolor;                                        
-                                        $ptc->cantidad = 0; //Creando un producto nuevo, sin existencia
-                                        $ptc->sku = $rSku;
-                                        $ptc->producto_id = $producto->id;
-
-                                        $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
-                                        $color = Color::model()->findByAttributes(array('valor' => $rColor));
-
-                                        $ptc->talla_id = $talla->id;
-                                        $ptc->color_id = $color->id;
-                                        $ptc->save();
-                                    }
-
-                                    // seo
-                                    $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
-
-                                    if (isset($seo)) {
-                                        
-                                        $seo->mTitulo = $producto->nombre;
-                                        $seo->mDescripcion = $rmDesc;
-                                        $seo->pClave = $rmTags;
-                                        $seo->save();
-                                        
-                                    } else {
-                                        
-                                        $seo = new Seo;
-                                        $seo->mTitulo = $producto->nombre;
-                                        $seo->mDescripcion = $rmDesc;
-                                        $seo->pClave = $rmTags;
-                                        $seo->tbl_producto_id = $producto->id;
-                                        $seo->save();
-                                    }
-
-                                    $tabla = $tabla . 'Se agregó el producto con id ' . $producto->id;
-                                    $tabla = $tabla . ', de nombre: ' . $producto->nombre;
-                                    $tabla = $tabla . ', precio_id: ' . $precio->id;
-                                    $tabla = $tabla . ', actualizadas categorias. Seo_id: ' . $seo->id . '<br/>';
-                                }
-                            } 
-                            else { // no existe la referencia, es producto nuevo
-
-                                $total++; // un producto nuevo
+                                ));                                
+                            } else
+                            { // no existe la referencia, es producto nuevo                           
+                                $total++; // suma un producto nuevo
                                 
                                 $producto = new Producto;
                                 $producto->nombre = $rNombre;
@@ -1940,107 +1830,130 @@ public function actionReportexls(){
                                 $producto->almacen = $rAlmacen;
                                 $producto->status = 1; // no está eliminado
                                 
-//                                echo "<pre>";
-//                            print_r($producto->attributes);
-//                            echo "</pre><br>";
-//                            Yii::app()->end();
-                                
-                                $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));
-                                if (isset($marca))
-                                    $producto->marca_id = $marca->id;
-                                else
-                                    Yii::trace('Importacion Marca:' . $rMarca, 'registro');
+                                $producto->save();                                
+                            }
+                            
+                            // Si existe o no el producto, actualizar o insertar precio nuevo
+                            $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
+                            
+                            if (isset($precio)) {
+                                $precio->costo = $rCosto;
+                                $precio->precioVenta = $rPrecio;
+                                $precio->precioDescuento = $rPrecio;
+                                $precio->impuesto = 1;
+                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
+                            } 
+                            else
+                            {
+                                $precio = new Precio;
+                                $precio->costo = $rCosto;
+                                $precio->precioVenta = $rPrecio;
+                                $precio->tbl_producto_id = $producto->id;
+                                $precio->precioDescuento = $rPrecio;
+                                $precio->impuesto = 1;
+                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
+                            }
+                            
+                            $precio->save();
+                            
+                            //Consultar las categorias
+                            $categorias = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id' => $producto->id));
+                            // borrar todas las categorias
+                            if (isset($categorias)) {
+                                foreach ($categorias as $categoria) {
+                                    $categoria->delete();
+                                }
+                            }
 
-                                if ($producto->save()) {
-                                    
-                                    // apartir de aqui tengo el id del producto
-                                    $precio = new Precio;
-                                    $precio->costo = $rCosto;
-                                    $precio->precioVenta = $rPrecio;
-                                    $precio->tbl_producto_id = $producto->id;
-                                    $precio->precioDescuento = $rPrecio;
-                                    $precio->impuesto = 1;
-                                    $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                                    
-                                    
-                                    if ($precio->save()) {
-                                        $cat = new CategoriaHasProducto;
-                                        $cat2 = new CategoriaHasProducto;
-                                        $cat3 = new CategoriaHasProducto;
+                            $cat = new CategoriaHasProducto;
+                            $cat2 = new CategoriaHasProducto;
+                            $cat3 = new CategoriaHasProducto;
 
-                                        //Agregar 3 categorias al producto
-                                        if ($rCatego1 != "") {
-                                            $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego1));
-                                            $cat->tbl_producto_id = $producto->id;
-                                            $cat->tbl_categoria_id = $x->id;
+                            //Agregar 3 categorias al producto
+                            if ($rCatego1 != "") {
+                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego1));
+                                $cat->tbl_producto_id = $producto->id;
+                                $cat->tbl_categoria_id = $x->id;
 
-                                            $cat->save();
-                                        }
+                                $cat->save();
+                            }
+                            
+                            if ($rCatego2 != "") {
+                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
+                                $cat2->tbl_producto_id = $producto->id;
+                                $cat2->tbl_categoria_id = $x->id;
 
-                                        if ($rCatego2 != "") {
-                                            $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
-                                            $cat2->tbl_producto_id = $producto->id;
-                                            $cat2->tbl_categoria_id = $x->id;
+                                $cat2->save();
+                            }
 
-                                            $cat2->save();
-                                        }
+                            if ($rCatego3 != "") {
+                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
+                                $cat3->tbl_producto_id = $producto->id;
+                                $cat3->tbl_categoria_id = $x->id;
 
-                                        if ($rCatego3 != "") {
-                                            $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
-                                            $cat3->tbl_producto_id = $producto->id;
-                                            $cat3->tbl_categoria_id = $x->id;
-
-                                            $cat3->save();
-                                        }
-
-                                        // ahora precio talla color
-                                        $ptc = Preciotallacolor::model()->findByAttributes(array(
+                                $cat3->save();
+                            }
+                            
+                            $ptc = Preciotallacolor::model()->findByAttributes(array(
+                                            'producto_id' => $producto->id,
                                             'sku' => $rSku,
                                             'talla_id' => $rTalla,
                                             'color_id' => $rColor,
-                                        ));
-                                        
-                                        // si ya existe no hacer nada, si no, Crear uno nuevo
-                                        if (!isset($ptc)) { 
+                                        ));                                   
+                                    
+                            // si ya existe no hacer nada, si no, Crear uno nuevo
+                            if (!isset($ptc)) { 
 
-                                            $ptc = new Preciotallacolor;                                        
-                                            $ptc->cantidad = 0; //Creando un producto nuevo, sin existencia
-                                            $ptc->sku = $rSku;
-                                            $ptc->producto_id = $producto->id;
+                                $ptc = new Preciotallacolor;                                        
+                                $ptc->cantidad = 0; //Creando un producto nuevo, sin existencia
+                                $ptc->sku = $rSku;
+                                $ptc->producto_id = $producto->id;
 
-                                            $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
-                                            $color = Color::model()->findByAttributes(array('valor' => $rColor));
+                                $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
+                                $color = Color::model()->findByAttributes(array('valor' => $rColor));
 
-                                            $ptc->talla_id = $talla->id;
-                                            $ptc->color_id = $color->id;
-                                            $ptc->save();
-                                        }
-                                        
-                                        // seo
-                                        $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
-
-                                        if (isset($seo)) {
-
-                                            $seo->mTitulo = $producto->nombre;
-                                            $seo->mDescripcion = $rmDesc;
-                                            $seo->pClave = $rmTags;
-                                            $seo->save();
-
-                                        } else {
-
-                                            $seo = new Seo;
-                                            $seo->mTitulo = $producto->nombre;
-                                            $seo->mDescripcion = $rmDesc;
-                                            $seo->pClave = $rmTags;
-                                            $seo->tbl_producto_id = $producto->id;
-                                            $seo->save();
-                                        }
-                                        $tabla = $tabla . 'Se agregó el producto con id ' . $producto->id;
-                                        $tabla = $tabla . ', de nombre: ' . $producto->nombre;
-                                        $tabla = $tabla . ', precio_id: ' . $precio->id;
-                                        $tabla = $tabla . ', actualizadas categorias y cantidad. Seo_id: ' . $seo->id . '<br/>';
-                                    }
-                                }
+                                $ptc->talla_id = $talla->id;
+                                $ptc->color_id = $color->id;
+                                $ptc->save();
                             }
+                            
+                            // seo
+                            $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
+
+                            if (isset($seo)) {
+
+                                $seo->mTitulo = $producto->nombre;
+                                $seo->mDescripcion = $rmDesc;
+                                $seo->pClave = $rmTags;
+                                $seo->save();
+
+                            } else {
+
+                                $seo = new Seo;
+                                $seo->mTitulo = $producto->nombre;
+                                $seo->mDescripcion = $rmDesc;
+                                $seo->pClave = $rmTags;
+                                $seo->tbl_producto_id = $producto->id;
+                                $seo->save();
+                            }
+                            
+                            //Agregar el item al XML
+                            $item = $masterData->addChild('Item');
+                            
+                            
+                            
+                            MasterData::subirArchivoFtp($xml, "MasterData.xml");
+
+                            
+                            $tabla .= 'Se agregó el producto con ID: ' . $producto->id
+                                    .', Nombre: ' . $producto->nombre
+                                    . ', Precio_id: ' . $precio->id
+                                    . ', actualizadas categorias, Seo_id: ' . $seo->id . '<br/>';
+                                    
+                            
+                            //===============================================
+                            
+                            
                         } else if ($row['A'] == "") { // si está vacia la primera
                             
                             if ($row['K'] != "" && $row['L'] != "" && $row['M'] != "" && $row['N'] != "") {
@@ -2137,124 +2050,6 @@ public function actionReportexls(){
 		}
 	}
         
-        
-        protected function validarArchivo($archivo){
-            
-            $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
-
-            $falla = "";
-            $erroresTallas = "";
-            $erroresColores = "";
-
-            $linea = 1;                    
-            foreach ($sheet_array as $row) {
-
-                if ($row['A'] != "") {
-
-                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
-                        if ($row['A'] != "Nombre")
-                            $falla = "Nombre";
-                        else if ($row['B'] != "Descripción")
-                            $falla = "Descripción";
-                        else if ($row['C'] != "Referencia")
-                            $falla = "Referencia";
-                        else if ($row['D'] != "Marca")
-                            $falla = "Marca";
-                        else if ($row['E'] != "Peso")
-                            $falla = "Peso";
-                        else if ($row['F'] != "Costo")
-                            $falla = "Costo";
-                        else if ($row['G'] != "Precio Venta")
-                            $falla = "Precio Venta";
-                        else if ($row['H'] != "Categorías")
-                            $falla = "Categorías";
-                        else if ($row['I'] != "Categorías")
-                            $falla = "Categorías";
-                        else if ($row['J'] != "Categorías")
-                            $falla = "Categorías";
-                        else if ($row['K'] != "Talla")
-                            $falla = "Talla";
-                        else if ($row['L'] != "Color")
-                            $falla = "Color";
-                        else if ($row['M'] != "Cantidad")
-                            $falla = "Cantidad";
-                        else if ($row['N'] != "SKU")
-                            $falla = "SKU";
-                        else if ($row['O'] != "MetaDescripción")
-                            $falla = "MetaDescripción";
-                        else if ($row['P'] != "Meta tags")
-                            $falla = "Meta tags";
-                        else if ($row['Q'] != "Almacén")
-                            $falla = "Almacén";
-
-                        if ($falla != "") { // algo falló
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
-                                            $falla . "</b> no se encuentra en la columna que debe ir o está mal escrita"));                                   
-
-                            $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
-                            Yii::app()->end();
-                        }
-
-
-                    }
-
-                    //si pasa las columnas entonces que revise las tallas y coloes
-                    //tallas
-                    if (isset($row['K']) && $linea > 1) {
-                        $talla = Talla::model()->findByAttributes(array('valor' => $row['K']));
-
-                        if (!isset($talla)) {
-
-                            $erroresTallas .= "<li> <b>" . $row['K'] . "</b>, en la línea <b>" . $linea."</b></li>";
-
-                        }
-                    }
-
-                    //colores
-                    if (isset($row['L']) && $linea > 1) {
-                        $color = Color::model()->findByAttributes(array('valor' => $row['L']));
-
-                        if (!isset($color)) {
-                            $erroresColores .= "<li> <b>" . $row['L'] . "</b>, en la línea <b>" . $linea."</b></li>";
-                        }
-                        // 	
-                    }
-                }
-
-                $linea++; // saber cual numero de linea es
-            } // cierra primer foreach para comprobar
-
-            //Eliminar el archivo
-//                    unlink ( $nombre . $extension );
-
-            //Si hubo errores en las tallas o en los Colores
-            if($erroresTallas != ""){
-                $erroresTallas = "Las siguientes tallas no existen en la plataforma:<br><ul>
-                                 {$erroresTallas}
-                                 </ul><br>";
-            }
-            if($erroresColores != ""){
-                $erroresColores = "Los siguientes colores no existen en la plataforma:<br><ul>
-                                 {$erroresColores}
-                                 </ul>";
-            }
-
-            if($erroresTallas != "" || $erroresColores != ""){
-
-                $erroresTallas .= $erroresColores;
-                Yii::app()->user->updateSession();
-                Yii::app()->user->setFlash('error', $erroresTallas);
-
-                return false;
-                
-            } 
-            
-            return true;
-            
-        }
-        
-        
         protected function validarArchivoV2($archivo){
             
             $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
@@ -2309,11 +2104,16 @@ public function actionReportexls(){
 
                             return false;
                         }
-
-
                     }
 
-                    //si pasa las columnas entonces que revise las tallas y coloes
+                    //si pasa las columnas entonces que revise
+                    //Marcas, categorias, tallas y colores.
+
+                    
+                    //Marcas
+                    
+                    //Categorias
+                    
                     //tallas
                     if (isset($row['I']) && $linea > 1) {
                         $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));

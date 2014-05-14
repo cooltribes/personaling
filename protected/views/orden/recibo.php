@@ -20,7 +20,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
               Barcelona 08007<br/>
               España <br/>
               </td>
-            <td width="50%"><div class="text_align_right"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/logo_personaling.png" width="284" height="36" alt="Personaling"><br/><strong> Número de recibo: <span style="color:#F00"><?php echo str_pad($factura->id, 4, '0', STR_PAD_LEFT); ?></span> </strong> <br/>
+            <td width="50%"><div class="text_align_right"> <img src="<?php echo Yii::app()->baseUrl; ?>/themes/bootstrap/images/logo_personaling.png" width="284" height="36" alt="Personaling"><br/><strong> Número de recibo: <span style="color:#F00"><?php echo str_pad($factura->id, 4, '0', STR_PAD_LEFT); ?></span> </strong> <br/>
                 <strong> Fecha de emisión:</strong> <?php echo date('d/m/Y', strtotime($factura->fecha)); ?> </div></td>
           </tr>
           <tr>

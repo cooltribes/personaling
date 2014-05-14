@@ -24,8 +24,8 @@ $create_date = date('j M Y', $create_time);
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tu perfil</a>
                         <ul class="dropdown-menu">
                             <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edit">Datos Personales</a> </li>
-                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/avatar">Avatar</a> </li>
-                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittutipo">Tu Tipo</a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/avatar">Tu Foto</a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittutipo">Tu Perfil Corporal</a> </li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tus Pedidos </a>
@@ -43,7 +43,7 @@ $create_date = date('j M Y', $create_time);
                             <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/trabajo" title="Edita tu estilo Trabajo">Trabajo</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Tus Encantos/Favoritos </a>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Tus Favoritos </a>
                         <ul class="dropdown-menu">
                             <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/looksencantan" title="Looks que te encantan">Looks</a></li>
                             <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/encantan" title="Productos que te encantan">Productos</a></li>
@@ -55,10 +55,10 @@ $create_date = date('j M Y', $create_time);
                             <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/changepassword" title="Cambia tu contraseña">Cambiar Contraseña</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Notificaciones </a>
-                        <ul class="dropdown-menu">
+                    <li class="dropdown-submenu"> <a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones" tabindex="-1"> Notificaciones </a>
+                       <!-- <ul class="dropdown-menu">
                             <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/direcciones" title="Gestiona tus direcciones">Gestionar direcciones de Envíos y Pagos.</a></li>
-                        </ul>
+                       </ul> -->
                     </li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Libreta de Direcciones </a>
                         <ul class="dropdown-menu">
@@ -129,7 +129,7 @@ $create_date = date('j M Y', $create_time);
 	                                <div class="controls">
 	                                    <?php 
 	                                   echo CHtml::textArea('invite-message',
-	                                   'Mira looks creados por las mejores Personal Shopper de Venezuela.',
+	                                   Yii::t('contentForm','Watch all the looks created by the best Personal Shoppers from *country*'),
 	                                   array('class' => 'span5', 'rows' => '4'));
 	                                   ?>
 	                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>

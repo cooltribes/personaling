@@ -147,7 +147,7 @@ return array (
      'Help' => 'Ayuda',
      'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
      <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas. <br/> Puedes registrarte haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Click aquí</a>',
-
+	'How does Personaling.com works?'=>'¿Cómo funciona Personaling.es?',
 
      'ID' => 'ID',
      'ID of the person to whom you send' => 'Cédula de Identidad de la persona a la que envias',
@@ -197,8 +197,9 @@ return array (
      'No messages have been posted' => 'No se han enviado mensajes',
      'Nro. looks' => 'No. de looks',
      'Nro. items' => 'No. de Prendas',
+     'No elements to show'=>'No existen elementos para mostrar',
      'Number' => 'Número',
-
+ 
      'Last step' => 'Último paso',
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
      'Look created by' => 'Look creado por',
@@ -388,6 +389,8 @@ return array (
      'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas',
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña </h2> Para recibir una nueva contraseña haz clic en el siguiente link: <br/><br/> <a href="{url}">Click aquí</a><br/><br/> Si no has sido tu quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 
+     'Watch all the looks created by the best Personal Shoppers from *country*'=>
+		'Mira todos los looks creados por las mejores Personal Shoppers de Venezuela',
      'Weight' => 'Peso',
      'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
      'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',

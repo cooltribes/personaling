@@ -16,7 +16,7 @@ return array (
 	                       </ul>',
 	'List ID Mailchimp' => '43ddd18a56',
 
-     'About us text' => '<p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
+     'About us text' => '<p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlos en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -191,6 +191,7 @@ return array (
 	'Next step' => 'Siguiente paso',
 	'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
 	'No messages have been posted' => 'No se han enviado mensajes',
+	'No elements to show'=>'No existen elementos para mostrar',
 	'Nro. looks' => 'No. de looks',
 	'Nro. items' => 'No. de Prendas',
 	'Number' => 'Número',
@@ -234,7 +235,7 @@ return array (
 	'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
 	    <b>Atrás</b> en tu navegador',
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
-    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina. <br/>¿Quieres vivir la primera shopping experience única y repetible? <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
+    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlos en la comodidad de tu casa u oficina. <br/>¿Quieres vivir la primera shopping experience única y repetible? <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card para ti.',    
 	'Personaling C.A RIF: J-40236088-6' => 'Personaling Enterprise S.L.',
     'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Posiblemente lo que quieres preguntar está en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no lo encuentras allí, llena el formulario a continuación y te contáctaremos lo más pronto posible. <strong>¡Gracias!</strong>',	
@@ -380,6 +381,8 @@ return array (
     'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo tiene forma triangular invertida si tus hombros son anchos y tienes una cintura muy estrecha',	
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña.</h2> Para recibir una nueva contraseña clica en el siguiente link: <br/><br/> <a href="{url}">Clica aquí</a><br/><br/> Si no has sido tú quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 
+	'Watch all the looks created by the best Personal Shoppers from *country*'=>
+		'Mira todos los looks creados por las mejores Personal Shoppers de España',
 	'Weight' => 'Peso',
 	'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
 	'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',
@@ -406,7 +409,7 @@ return array (
 	'Zip code' => 'Código postal',
 
 	// Copys de paginas estaticas
-	'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?</h3>
+	'copy FAQ' => '<h3>¿Cómo funciona Personaling.es?</h3>
       <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>
       <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
       <hr/>

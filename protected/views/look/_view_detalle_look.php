@@ -47,14 +47,14 @@
                     <th scope="row">Precio con descuento</th>
                     <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
                 </tr>
-                <tr>
+               <!-- <tr>
                     <th scope="row">Descuento %</th>
                     <td>7.15%</td>
                 </tr>
                 <tr>
-                    <th scope="row">Descuento Bs.</th>
+                    <th scope="row">Descuento <?php echo Yii::t('contentForm', 'currSym'); ?></th>
                     <td><?php echo Yii::t('contentForm', 'currSym');?> 50,00</td>
-                </tr>
+                </tr>-->
             </table>
             <hr/>
             <h4>Estadísticas</h4>
@@ -80,7 +80,7 @@
 			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
 		)); ?>    	
-    	<a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> 
+    	<!-- <a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> -->
     <?php 
 
         if($model->status == 0 || UserModule::isAdmin() ){

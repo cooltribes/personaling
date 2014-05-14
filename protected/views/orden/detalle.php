@@ -34,7 +34,7 @@ $tracking=$orden->getTracking();
 	    </div>
 	<?php } ?>
   <div class="page-header">
-    <h1>PEDIDO #<?php echo $orden->id; 
+    <h1>PEDIDOO #<?php echo $orden->id; 
      ?></h1> <input type="hidden" value="<?php echo $orden->id; ?>" id="orden_id" />
   </div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
@@ -120,22 +120,22 @@ $tracking=$orden->getTracking();
         <?php
 //----------------------Estado
 	if($orden->estado == 1)
-		echo "Bs. Pendientes por pagar"; 
+		echo Yii::t('backEnd', 'currSym')." Pendientes por pagar"; 
 	
 	if($orden->estado == 2)
-		echo "Bs. Pendientes por confirmar";
+		echo Yii::t('backEnd', 'currSym')." Pendientes por confirmar";
 	
 	if($orden->estado == 3 || $orden->estado == 8)
-		echo "Bs. ya pagados";
+		echo Yii::t('backEnd', 'currSym')." ya pagados";
 
 	if($orden->estado == 4)
-		echo "Bs. ya pagados";
+		echo Yii::t('backEnd', 'currSym')." ya pagados";
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";	
 	
 	if($orden->estado == 7)
-		echo "Bs. que faltan.";
+		echo Yii::t('backEnd', 'currSym')." que faltan.";
 	
 		
 	// agregar demas estados
@@ -198,7 +198,7 @@ $tracking=$orden->getTracking();
               <ul class="no_bullets no_margin_left">
                 <li><strong>Cuenta registrada</strong>:<?php echo date('d/m/Y h:i A', strtotime($usuario->create_at)); ?></li>
                 <li><strong>Pedidos validos realizados</strong>: <?php echo Orden::model()->countByAttributes(array('user_id'=>$orden->user_id,'estado'=>8)); ?></li>
-                <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." Bs."; ?> </li>
+                <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." ". Yii::t('backEnd', 'currSym'); ?> </li>
               </ul>
             </div>
           </div>
@@ -291,7 +291,7 @@ $tracking=$orden->getTracking();
            echo $orden->shipCarrier;
             ?></td>
             <td><?php echo $orden->peso ?> Kg.</td>
-            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
+            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.').' '.Yii::t('backEnd', 'currSym'); ?> </td>
             <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
@@ -895,15 +895,15 @@ $tracking=$orden->getTracking();
         </tr>        
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo $totaldevuelto; ?> <?php echo Yii::t('backEnd', 'currSym'); ?></td>
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo $totalenvio; ?> <?php echo Yii::t('backEnd', 'currSym'); ?></td>
         </tr>
         <tr>
         	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
+        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> <?php echo Yii::t('backEnd', 'currSym'); ?></th>
         </tr>        
     	</table>
 	</div>

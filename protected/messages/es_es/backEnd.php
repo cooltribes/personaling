@@ -3,7 +3,7 @@
 return array(
     
     'PRONUNCIACION' => 'Venezolana',
-    'currSym' => 'Bs',
+    'currSym' => '€',
     'IVA' => '0.12',
     'IVAtext' => '12%',
     

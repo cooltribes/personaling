@@ -303,6 +303,7 @@ return array (
     'Select a country' => 'Selecciona un país',	
 	'Select a design for the Gift Card' => 'Selecciona un diseño para la Gift Card',
 	'Select a province' => 'Selecciona una provincia',
+    'Select a city' => 'Selecciona una población',	
 	'Select color and size' => 'Selecciona Color y talla',
 	'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
 	'Select the size' => 'Selecciona la talla',

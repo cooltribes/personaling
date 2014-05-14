@@ -6,7 +6,7 @@
            			<!-- <img width="370" height="400" alt="Look" src="http://www.personaling.com/site/look/getImage/3" class="" id="imglook3" style=""> -->
            		</a>
               
-              <div class="hidden-phone margin_top_small vcard row-fluid">
+              <div class="hidden-phone vcard row-fluid">
                 <div class="span2 avatar ">
                 	<?php echo CHtml::image($data->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); ?>
                 	<!-- <img width="40" alt="Avatar" src="http://www.personaling.com/site/images/avatar_provisional_2.jpg" class="photo img-circle"> -->
@@ -21,7 +21,7 @@
                   		</a>
                   	</h5>
                 </div>
-                <div class="span5"><span class="precio"><small>Bs.</small> <?php echo $data->getPrecio(); ?></span></div>
+                <div class="span5"><span class="precio"><small><?php echo Yii::t('contentForm','currSym'); ?></small> <?php echo $data->getPrecio(); ?></span></div>
               </div>
               <div class="share_like">
                 <button class="btn-link" title="Me encanta" href="#"><span class="entypo icon_personaling_big">&hearts;</span></button>

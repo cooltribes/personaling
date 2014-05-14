@@ -396,7 +396,7 @@
                 <div class="span3"><p class="padding_top_small"><?php echo Yii::t('contentForm','Our deliveries through'); ?>:</p></div>
               </div>
               <div class="row">
-                <div class="span3"><img height="60px"  src="<?php echo Yii::app()->baseUrl.'//images/'.Yii::app()->language.'/logos_carriers.png'; ?>"/></div>
+                <div class="span3"><img height="60px"  src="<?php echo Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/logos_carriers.png'; ?>"/></div>
               </div>
             </div>
             </div>

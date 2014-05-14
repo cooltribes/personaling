@@ -37,7 +37,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             
             ?>
             <fieldset>
-                <legend>1.- Subir archivo para revisión previa:</legend>
+                <legend>1.- Realizar la validación previa del archivo:</legend>
                 
                 <div class="well span5">
                     
@@ -55,7 +55,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'buttonType' => 'submit',
                             'type' => 'danger',
-                            'label' => 'Cargar Archivo',
+                            'label' => 'Validar',
+                            'icon' => 'ok white',
                             'htmlOptions' => array(
                                 'name' => 'validar'
                             ),
@@ -81,8 +82,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                         <?php
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'buttonType' => 'submit',
-                            'type' => 'danger',
-                            'label' => 'Cargar Archivo',
+                            'type' => 'warning',
+                            'icon' => 'upload white',
+                            'label' => 'Cargar MasterData',
                             'htmlOptions' => array(
                                 'name' => 'cargar'
                             ),
@@ -98,6 +100,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                             $this->widget('bootstrap.widgets.TbButton', array(
                                 'buttonType' => 'submit',
                                 'type' => 'info',
+                                'icon' => 'download-alt white',
                                 'label' => 'Descargar Archivo',
                                 'htmlOptions' => array(
                                     'name' => 'generar'
@@ -122,8 +125,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                         <?php
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'buttonType' => 'submit',
-                            'type' => 'danger',
-                            'label' => 'Cargar Archivo',
+                            'type' => 'warning',
+                            'icon' => 'upload white',
+                            'label' => 'Cargar Inbound',
                             'htmlOptions' => array(
                                 'name' => 'cargarIn'
                             ),

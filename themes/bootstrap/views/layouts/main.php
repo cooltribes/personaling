@@ -46,7 +46,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
                                         array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
-                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
+//                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
 					)),                
                 array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
 					array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),

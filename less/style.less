@@ -3623,22 +3623,20 @@ img[alt="Loading"]{
 
 /*----------------  Landingpage ON ---------------- */
 .wrapper-landingpage{
-  border: 15px solid white;
-  display: table;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 98.4%;
   .wrapper-inside-landingpage{
     border: 1px solid #333;
-    height: 100%;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    right: 15px;
+    bottom: 15px;  
+    min-height: 600px;  
     figure{
       margin: 0;
     }
     .content-landingpage{
       width: 320px;
-      margin: 14em auto 0 auto;
+      margin: 10em auto 0 auto;
       .slongan{
         font-size: 24.5px;
       }
@@ -4168,5 +4166,28 @@ img[alt="Loading"]{
   .tienda_productos .span3 .producto, .tienda_productos .item_tienda .producto, .tienda_productos .item_producto .producto{ background: @color3}
   .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
   .slide-3 .slide-content .copy-right .border-bottom h2{font-size: 27px;}
+
+  // Landing Page ON
+  .wrapper-landingpage .wrapper-inside-landingpage{
+    .logo-personaling {
+      img{
+        width: 70%;
+        margin: 0 auto;
+        display: inherit;
+      }
+      .slongan{
+        font-size: 18.5px
+      }
+      .box-select{
+        margin: 0 auto;
+        width: 240px;
+        .select-pais{
+          padding: 5px 0px;
+        }
+      }
+    }
+
+  }
+  // Landing Page OFF
 
  }

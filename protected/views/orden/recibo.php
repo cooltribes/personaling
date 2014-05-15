@@ -1,4 +1,10 @@
 <?php
+/*if(!Yii::app()->user->isAdmin()){
+	if($factura->orden->user_id!=Yii::app()->user->id||!isset($factura)){
+		header("HTTP/1.0 403 Forbidden");
+	}
+}
+*/
 $profile = Profile::model()->findByAttributes(array('user_id'=>$factura->orden->user_id));
 $direccion_fiscal = DireccionFacturacion::model()->findByPk($factura->direccion_fiscal_id);
 $ciudad_fiscal = Ciudad::model()->findByPk($direccion_fiscal->ciudad_id);

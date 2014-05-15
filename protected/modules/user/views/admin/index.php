@@ -100,6 +100,15 @@ $template = '{summary}
     </table>
     {pager}
 	';
+	$pagerParams=array(
+            'header'=>'',
+            'prevPageLabel' => Yii::t('contentForm','Previous'),
+            'nextPageLabel' => Yii::t('contentForm','Next'),
+            'firstPageLabel'=> Yii::t('contentForm','First'),
+            'lastPageLabel'=> Yii::t('contentForm','Last'),
+            'htmlOptions'=>array(
+                'class'=>'pagination pagination-right'));
+	
 
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
@@ -120,12 +129,7 @@ $template = '{summary}
 							});*/
 						   
 							} ",
-		'pager'=>array(
-			'header'=>'',
-			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
-		)
-		),					
+		'pager'=>$pagerParams,					
 	));    
 	
 	

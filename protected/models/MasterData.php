@@ -99,6 +99,12 @@ class MasterData extends CActiveRecord
         
         public static function subirArchivoFtp($xml, $nombre){
 
+            /*
+            URL: ftp.logisfahion.com
+            usuario: personaling@ftp.logisfashion.com
+            PAS: Personaling789
+             */
+            
             $ftpServer = "localhost";
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";

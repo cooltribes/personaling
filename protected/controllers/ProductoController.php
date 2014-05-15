@@ -1724,10 +1724,11 @@ public function actionReportexls(){
                     $archivo = CUploadedFile::getInstancesByName('url');
                              
                     if (isset($archivo) && count($archivo) > 0) {
-                        
+                        $nombreTemporal = "Archivo";
+                        $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';
                         foreach ($archivo as $arc => $xls) {
 
-                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsImported/' . date('d-m-Y-H:i:s');
+                            $nombre = $rutaArchivo.$nombreTemporal;
                             $extension = '.' . $xls->extensionName;
                             
                             if ($xls->saveAs($nombre . $extension)) {
@@ -1758,20 +1759,36 @@ public function actionReportexls(){
                     $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 
                     $anterior;
-                    $pr_id;
-                   
+                    $pr_id;                   
                     /*
-                        Para el MasterData en XML
+                    Para el MasterData en XML
                      */
                     $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
                     $masterData = $xml->addChild('MasterData');
                     //Agregar la fecha de creacion
-                    $masterData->addChild("FechaCreacion", date("Y-m-d"));                                        
+                    $masterData->addChild("FechaCreacion", date("Y-m-d")); 
                     
-//                    Header('Content-type: text/xml');
-//                    print($xml->asXML());
-//                    Yii::app()->end();
-//                    MasterData::subirArchivoFtp($archivo);
+                    
+                    /*Para el Excel*/
+//                    Yii::import('ext.phpexcel.XPHPExcel');
+//                    $objPHPExcel = XPHPExcel::createPHPExcel();
+//	
+//                    $objPHPExcel->getProperties()->setCreator("Personaling.com")
+//		                         ->setLastModifiedBy("Personaling.com")
+//		                         ->setTitle("Inbound")
+//		                         ->setSubject("Inbound")
+//		                         ->setDescription("Inbound");
+//
+//			// creando el encabezado
+//			$objPHPExcel->setActiveSheetIndex(0)
+//                                    ->setCellValue('A1', 'REMITENTE')
+//                                    ->setCellValue('A2', 'Persona Contacto')
+//                                    ->setCellValue('B2', 'Teléfono');
+//                              
+//                        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+//			$objWriter->save($rutaArchivo."prueba.xls");
+//                        Yii::app()->end();
+                    
 
                 // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
@@ -1940,10 +1957,67 @@ public function actionReportexls(){
                             //Agregar el item al XML
                             $item = $masterData->addChild('Item');
                             
+                            //Primera Categoria que haya                            
+                            $categorias = CategoriaHasProducto::model()->findAllByAttributes(
+                                    array('tbl_producto_id' => $producto->id));     
+                            
+                            if (isset($categorias)) {
+                                foreach ($categorias as $categoria) {
+                                    $cat = Categoria::model()->findByAttributes(
+                                            array('id' => $categoria->tbl_categoria_id));
+                                    $item->addChild('CodigoFamilia', $cat->id);
+                                    $item->addChild('DescripcionFamilia', $cat->nombre);
+                                    break;
+                                }
+                            }
+                            
+                            //Agregar el modelo
+                            $item->addChild('CodigoModelo', $producto->codigo);
+                            $item->addChild('DescripcionModelo', $producto->nombre);
+                            
+                            //Agregar el color
+                            $item->addChild('CodigoColor', $color->id);
+                            $item->addChild('DescripcionColor', $color->valor);
+                            
+                            //Agregar la talla
+                            $item->addChild('CodigoTalla', $talla->id);
+                            $item->addChild('DescripcionTalla', $talla->valor);
+                            
+                            //Agregar la clave auxiliar 1 - ID
+                            $item->addChild('CodigoClaveAuxiliar1', $producto->id);
+                            $item->addChild('DescripcionClaveAuxiliar1', "ID del Producto");
+                            
+                            //Agregar el SKU
+                            $item->addChild('EAN1', $rSku);
                             
                             
-                            MasterData::subirArchivoFtp($xml, "MasterData.xml");
-
+                            /*Enviar MasterData a logisFashion y mostrar notificacion*/
+                            $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml");
+                            $mensajeLF = "El archivo MasterData.xml se ha enviado
+                                satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
+                            $flash = "success";
+                            
+                            Yii::app()->user->updateSession();
+                            //Si hubo error conectandose al ftp logisfashion
+                            if(!$subido){
+                                $flash = "error";
+                                $mensajeLF = "Ha ocurrido un error enviando el
+                                    archivo MasterData.xml a LogisFashion. <i class='icon icon-thumbs-down'></i>";
+                            }
+                            Yii::app()->user->setFlash($flash, $mensajeLF);                                   
+                            
+                            
+                            //Insertar nuevo MasterData
+                            $masterDataBD = new MasterData();
+                            $masterDataBD->fecha_carga = date("Y-m-d H:i:s");
+                            //el admin que esta cargando
+                            $masterDataBD->user_id = Yii::app()->user->id;
+                            $masterDataBD->prod_actualizados = $actualizar;
+                            $masterDataBD->prod_nuevos = $total;
+                            $masterDataBD->save();
+                            
+                            // Cambiar nombre al archivo xls                            
+                            rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
                             
                             $tabla .= 'Se agregó el producto con ID: ' . $producto->id
                                     .', Nombre: ' . $producto->nombre
@@ -2006,8 +2080,39 @@ public function actionReportexls(){
                     
                     
                 //Cuarto paso - Subir Inbound
-                }else if(isset($_POST["validar"])){
+                }else if(isset($_POST["cargarIn"])){
                     
+                    $archivo = CUploadedFile::getInstancesByName('inbound');
+                             
+                    if (isset($archivo) && count($archivo) > 0) {
+                        $nombreTemporal = "Archivo";
+                        $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsInbound/';
+                        foreach ($archivo as $arc => $xls) {
+
+                            $nombre = $rutaArchivo.$nombreTemporal;
+                            $extension = '.' . $xls->extensionName;
+                            
+                            if ($xls->saveAs($nombre . $extension)) {
+                                
+                            } else {
+                                Yii::app()->user->updateSession();
+                                Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                                $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
+                                Yii::app()->end();
+                                
+                            }
+                        }
+                    }
+                    
+                    /*Validar el inbound*/
+                    if( !$this->validarArchivoInbound($nombre . $extension) ){
+                        
+                        // Archivo con errores, eliminar del servidor
+                        unlink($nombre . $extension);
+                        
+                        $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
+                        Yii::app()->end();
+                    }
                     
                     
                 }
@@ -2055,6 +2160,8 @@ public function actionReportexls(){
             $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
 
             $falla = "";
+            $erroresMarcas = "";
+            $erroresCategorias = "";
             $erroresTallas = "";
             $erroresColores = "";
 
@@ -2100,72 +2207,293 @@ public function actionReportexls(){
                         if ($falla != "") { // algo falló
                             Yii::app()->user->updateSession();
                             Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
-                                            $falla . "</b> no se encuentra en la columna que debe ir o está mal escrita"));                                   
+                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita"));                                   
 
                             return false;
                         }
                     }
 
-                    //si pasa las columnas entonces que revise
-                    //Marcas, categorias, tallas y colores.
+                    /*si pasa las columnas entonces que revise
+                    Marcas, categorias, tallas y colores.*/
+                          
+                    if($linea > 1){
+                        
+                        //Marcas
+                        if (isset($row['C']) && $row['C'] != "") {                        
+                            $marca = Marca::model()->findByAttributes(array("nombre" => $row["C"]));
 
-                    
-                    //Marcas
-                    
-                    //Categorias
-                    
-                    //tallas
-                    if (isset($row['I']) && $linea > 1) {
-                        $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
+                            if (!isset($marca)) {
+                                $erroresMarcas .= "<li> <b>" . $row['C'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }                    
+                        //Categorias
+                        if (isset($row['F']) && $row['F'] != "") {                        
+                            $categoria = Categoria::model()->findByAttributes(array("nombre" => $row["F"]));
 
-                        if (!isset($talla)) {
+                            if (!isset($categoria)) {
+                                $erroresCategorias .= "<li> <b>" . $row['F'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }                    
+                        if (isset($row['G']) && $row['G'] != "") {                        
+                            $categoria = Categoria::model()->findByAttributes(array("nombre" => $row["G"]));
 
-                            $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            if (!isset($categoria)) {
+                                $erroresCategorias .= "<li> <b>" . $row['G'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }                    
+                        if (isset($row['H']) && $row['H'] != "") {                        
+                            $categoria = Categoria::model()->findByAttributes(array("nombre" => $row["H"]));
 
+                            if (!isset($categoria)) {
+                                $erroresCategorias .= "<li> <b>" . $row['H'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }   
+                        
+                        //tallas
+                        if (isset($row['I']) && $row['I'] != "" ) {
+                            $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
+
+                            if (!isset($talla)) {
+                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
                         }
-                    }
+                        //colores
+                        if (isset($row['J']) && $row['J'] != "") {
+                            $color = Color::model()->findByAttributes(array('valor' => $row['J']));
 
-                    //colores
-                    if (isset($row['J']) && $linea > 1) {
-                        $color = Color::model()->findByAttributes(array('valor' => $row['J']));
-
-                        if (!isset($color)) {
-                            $erroresColores .= "<li> <b>" . $row['J'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            if (!isset($color)) {
+                                $erroresColores .= "<li> <b>" . $row['J'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }	
                         }
-                        // 	
+                    
                     }
                 }
 
-                $linea++; // saber cual numero de linea es
-            } // cierra primer foreach para comprobar
+                $linea++;
+            } 
 
-            //Eliminar el archivo
-//                    unlink ( $nombre . $extension );
-
-            //Si hubo errores en las tallas o en los Colores
+            //Si hubo errores en marcas, cat, tallas, colores
+            if($erroresCategorias!= ""){
+                $erroresCategorias = "Las siguientes Categorías no existen en la plataforma:<br><ul>
+                                 {$erroresCategorias}
+                                 </ul>";
+            }
+            if($erroresMarcas!= ""){
+                $erroresMarcas = "Las siguientes Marcas no existen en la plataforma:<br><ul>
+                                 {$erroresMarcas}
+                                 </ul><br>";
+            }
             if($erroresTallas != ""){
-                $erroresTallas = "Las siguientes tallas no existen en la plataforma:<br><ul>
+                $erroresTallas = "Las siguientes Tallas no existen en la plataforma:<br><ul>
                                  {$erroresTallas}
                                  </ul><br>";
             }
             if($erroresColores != ""){
-                $erroresColores = "Los siguientes colores no existen en la plataforma:<br><ul>
+                $erroresColores = "Los siguientes Colores no existen en la plataforma:<br><ul>
                                  {$erroresColores}
-                                 </ul>";
+                                 </ul><br>";
             }
 
-            if($erroresTallas != "" || $erroresColores != ""){
+            if($erroresTallas != "" || $erroresColores != "" || $erroresMarcas != ""
+                     || $erroresCategorias != ""){
 
-                $erroresTallas .= $erroresColores;
+                $erroresTallas .= $erroresColores . $erroresMarcas . $erroresCategorias;
                 Yii::app()->user->updateSession();
                 Yii::app()->user->setFlash('error', $erroresTallas);
 
-                return false;
-                
+                return false;                
             } 
             
-            return true;
-            
+            return true;            
         }
+        
+        protected function validarArchivoInbound($archivo){
+            
+            $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
+
+            $falla = "";
+            $erroresSKU = "";
+            $erroresCantidad = "";
+
+            $linea = 1;                    
+            foreach ($sheet_array as $row) {
+
+                if ($row['A'] != "") {
+
+                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                        
+                        if ($row['A'] != "SKU")
+                            $falla = "SKU";
+                        else if ($row['B'] != "Cantidad")
+                            $falla = "Referencia";                        
+
+                        if ($falla != "") { // algo falló
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                            $falla . "</b> no se encuentra el lugar correspondiente que debe ir o está mal escrita"));                                   
+
+                            return false;
+                        }
+                    }
+
+                    /*si pasa las columnas entonces que revise
+                    SKU y Cantidad */
+                          
+                    if($linea > 1){
+                        
+                        //Marcas
+                        if (isset($row['A']) && $row['A'] != "") {                        
+                            $producto = PrecioTallaColor::model()->findByAttributes(
+                                    array("sku" => $row["A"]));
+
+                            if (!isset($producto)) {
+                                $erroresSKU .= "<li><b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }                    
+                        //Cantidades
+                        if (isset($row['B']) && $row['B'] != "") {                        
+                            
+                            if (!is_numeric($row['B']) || $row['B'] <= 0){
+                                $erroresCantidad .= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        } 
+                    
+                    }
+                }
+
+                $linea++;
+            } 
+
+            //Si hubo errores en marcas, cat, tallas, colores
+            if($erroresCategorias!= ""){
+                $erroresCategorias = "Las siguientes Categorías no existen en la plataforma:<br><ul>
+                                 {$erroresCategorias}
+                                 </ul>";
+            }
+            if($erroresMarcas!= ""){
+                $erroresMarcas = "Las siguientes Marcas no existen en la plataforma:<br><ul>
+                                 {$erroresMarcas}
+                                 </ul><br>";
+            }
+            if($erroresTallas != ""){
+                $erroresTallas = "Las siguientes Tallas no existen en la plataforma:<br><ul>
+                                 {$erroresTallas}
+                                 </ul><br>";
+            }
+            if($erroresColores != ""){
+                $erroresColores = "Los siguientes Colores no existen en la plataforma:<br><ul>
+                                 {$erroresColores}
+                                 </ul><br>";
+            }
+
+            if($erroresTallas != "" || $erroresColores != "" || $erroresMarcas != ""
+                     || $erroresCategorias != ""){
+
+                $erroresTallas .= $erroresColores . $erroresMarcas . $erroresCategorias;
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('error', $erroresTallas);
+
+                return false;                
+            } 
+            
+            return true;            
+        }
+        
+        public function actionCreateExcel(){
+		
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("plantilla-masiva-prepagada")
+		                         ->setSubject("Plantilla masiva prepagada")
+		                         ->setDescription("Plantilla masiva prepagada creada a través de la aplicación.")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+
+			// creando el encabezado
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'REMITENTE')
+						->setCellValue('A2', 'Persona Contacto')
+						->setCellValue('B2', 'Teléfono')
+						->setCellValue('C2', 'Dirección')
+						->setCellValue('D1', 'DESTINATARIO')
+						->setCellValue('D2', 'Ciudad Destino')
+						->setCellValue('E2', 'Destinatarios')
+						->setCellValue('F2', 'Persona Contacto')
+						->setCellValue('G2', 'R.I.F/C.I')
+						->setCellValue('H2', 'Teléfono')
+						->setCellValue('I2', 'Dirección')
+						->setCellValue('J1', 'DATOS DEL ENVIO')
+						->setCellValue('J2', 'Referencia')
+						->setCellValue('K2', 'Pzas')
+						->setCellValue('L2', 'Peso Ref (Kg) ')
+						->setCellValue('M2', 'Tipo de Envio')
+						->setCellValue('N2', 'Descripción de Contenido')
+						->setCellValue('O2', 'Valor Declarado (Bs)')
+						->setCellValue('Q1', 'Nota:')
+						->setCellValue('Q2', 'En Tipo de Envio solo debe escribir D ó M')
+						->setCellValue('S1', 'D = Documento')
+						->setCellValue('S2', 'M = Mercancia');	
+			// encabezado end			
+		 
+		 	$ordenes = Orden::model()->findAllByAttributes(array('estado'=>3)); // pago confirmado
+		 	$fila = 3;
+			
+		 	// el remitente siempre será el mismo por tanto		 	
+		 	foreach($ordenes as $orden)
+			{
+				if($orden->peso < 5){
+					$dir = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+					$prov = Provincia::model()->findByPk($dir->provincia_id);
+					$usuario = User::model()->findByPk($orden->user_id);
+					
+				
+					$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , 'PERSONALING, C.A.') // Persona Contacto
+							->setCellValue('B'.$fila , '04144239902') // Teléfono
+							->setCellValue('C'.$fila , 'AV BOLIVAR C.C. CM, PISO 2 OFICINA 210. MUNICIPIO MARIÑO, PORLAMAR, NUEVA ESPARTA. 6301') // Direccion
+							->setCellValue('D'.$fila , $prov->nombre) // ciudad destino
+							->setCellValue('E'.$fila , $usuario->profile->first_name." ".$usuario->profile->first_name) // destinatario
+							->setCellValue('F'.$fila , $usuario->profile->first_name." ".$usuario->profile->first_name) // persona contacto
+							->setCellValue('G'.$fila , $usuario->profile->cedula) // cedula
+							->setCellValue('H'.$fila , $usuario->profile->tlf_celular) // telefono
+							->setCellValue('I'.$fila , $dir->dirUno.", ".$dir->dirDos) // Direccion
+							->setCellValue('J'.$fila , $orden->id) // referencia
+							->setCellValue('K'.$fila , '1') // Piezas
+							->setCellValue('L'.$fila , $orden->peso) // Peso ref
+							->setCellValue('M'.$fila , 'M') // tipo de envio
+							->setCellValue('N'.$fila , 'Ropa') // Descripcion
+							->setCellValue('O'.$fila , ($orden->total - $orden->envio)); // valor declarado
+					$fila++;
+						
+				}// orden
+			} // foreach	 
+					 
+			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+			$objPHPExcel->setActiveSheetIndex(0);
+
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="plantillamasivaprepagada.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			      Yii::app()->end();
+				  
+	}
+        
+        
         
 }

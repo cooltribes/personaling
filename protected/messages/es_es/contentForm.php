@@ -337,6 +337,7 @@ return array (
 	'To complete your purchase you must:' => 'Para completar tu comprar debes:',
 	'To approve' => 'Por aprobar',
 	'To send' => 'Por enviar',
+	'To all of us has broken a heel ever, refreshes the screen tu try more later.' => 'A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
 	'Total' => 'Total',
 	'Totals' => 'Totales',
 	'Total Gift Cards' => 'Total de Gift Cards',
@@ -356,7 +357,7 @@ return array (
     'Use this as billing address' => 'Utilizar esta como dirección de facturación',	
 	'Update all' => 'Actualizar todo',
 	'Update date' => 'Fecha de carga',
-	'¡Upss! To all of us has broken a heel ever, refreshes the screen tu try more later.' => '¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
+	'Upss!'=>'¡Upss!',	
 	'Use Balance available:' => 'Usar balance disponible',
 
 

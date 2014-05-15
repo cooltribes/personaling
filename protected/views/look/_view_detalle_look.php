@@ -44,7 +44,7 @@
                     <td> Bs. 700,00 </td>
                 </tr> -->
                 <tr>
-                    <th scope="row">Precio con descuento</th>
+                    <th scope="row">Precio</th>
                     <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
                 </tr>
                <!-- <tr>

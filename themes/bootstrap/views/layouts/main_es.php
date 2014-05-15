@@ -286,11 +286,6 @@ if(!Yii::app()->user->isGuest){
   <?php echo $content; ?> </div>
 <!-- page -->
 <div id="modalAjax"></div>
-<!-- <div class="messageCookies">
-  Este sitio web hace uso de cookies para mejorar la experiencia al usuario. Estamos configurados para permitir todas las versiones de cookies. 
-Para más información sobre las cookies en nuestra web consulta nuestra
-políticas de cookies
-</div> -->
 <div id="wrapper_footer">
   <footer class="container">
     <div class="row hidden-phone">

@@ -3073,72 +3073,16 @@ class BolsaController extends Controller
                 $item->addChild("Cantidad", "{$producto->cantidad}");                
                 
             }
-
             //Header('Content-type: text/xml');
             //print($xml->asXML());
-            
-            $archivo = tmpfile();
-//            fwrite($archivo, "nelson");
-            fwrite($archivo, $xml->asXML());
-            fseek($archivo, 0);
-            //echo fread($archivo, 10242424);
-//            echo "<pre>";
-//            print_r(fstat($archivo));
-//            echo "</pre><br>";
 
-            $this->subirArchivoFtp($archivo);
-            
-            fclose($archivo); 
+            $subido = MasterData::subirArchivoFtp($xml, "Outbound.xml");
             
             
             
         }
         
-        function subirArchivoFtp($archivo){
-
-            $ftpServer = "localhost";
-            $userName = "personaling";
-            $userPwd = "P3rs0n4l1ng";
-            
-            $nombreArchivo = "Outbound.xml";
-            
-            $directorio = "html/develop/develop/protected/data";
-            
-            //realizar la conexion ftp
-            $conexion = ftp_connect($ftpServer); 
-            //loguearse
-            $loginResult = ftp_login($conexion, $userName, $userPwd); 
-            
-            if ((!$conexion) || (!$loginResult)) {  
-                echo "¡La conexión FTP ha fallado!";
-                echo "Se intentó conectar al $ftpServer por el usuario $userName"; 
-                exit; 
-            }
-            //activar modo pasivo
-            ftp_pasv($conexion, true);
-            
-            echo "Conexión a $ftpServer realizada con éxito, por el usuario $userName";
-            
-            //ubicarse en el directorio a donde se subira el archivo
-            ftp_chdir($conexion, $directorio);      
-            
-            //subir el archivo
-            $upload = ftp_fput($conexion, $nombreArchivo, $archivo, FTP_BINARY);  
-
-            // comprobar el estado de la subida
-            if (!$upload) {  
-                echo "¡La subida FTP ha fallado!";
-            } else {
-                echo "<br>Subida de $nombreArchivo a $ftpServer con éxito";
-            }
-            
-            echo "<br>Directorio: ".ftp_pwd($conexion);
-
-            
-
-            // cerrar la conexión ftp 
-            ftp_close($conexion);
-        }
+        
         
         
         

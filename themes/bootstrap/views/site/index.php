@@ -20,6 +20,13 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
     
 </div>
 
+<!-- Mensaje Cookies ON -->
+<div class="message-cookies">
+        Este sitio web hace uso de <strong>cookies</strong> para mejorar la experiencia al usuario. Estamos configurados para permitir todas las versiones de <strong>cookies</strong>. 
+    Para más información sobre las cookies en nuestra web consulta nuestra <a href="<?php echo Yii::app()->baseUrl; ?>/site/politicas_de_cookies">políticas de cookies</a>
+    <button id="buttomCookies" type="button" class="close" aria-hidden="true">&times;</button>
+</div>
+<!-- Mensaje Cookies OFF -->
 <section class="wrapper_home">
     <div id="sliderHome" class="carousel slide">
         <ol class="carousel-indicators">
@@ -90,6 +97,9 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 
 <script type="text/javascript">
 $('#sliderHome').carousel({
-  interval: 6000
+  interval: 6000,
+});
+$('#buttomCookies').on('click',function(){
+    $('.message-cookies').css({display:'none',});
 });
 </script>

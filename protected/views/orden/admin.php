@@ -202,7 +202,7 @@ $template = '{summary}
 	    'template'=>$template,
 	    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {
-						    	
+						    	 
 							$('#todos').click(function() { 
 				            	inputs = $('table').find('input').filter('[type=checkbox]');
 				 

@@ -939,6 +939,14 @@ public function actionReportexls(){
 	{
 		$factura = Factura::model()->findByPk($id);
 		
+		if(!UserModule::isAdmin()){
+			
+			if($factura->orden->user_id!=Yii::app()->user->id||!isset($factura)){
+				
+				$this->redirect(Yii::app()->request->baseUrl.'/orden/listado');
+			}
+		}
+		
 		$this->render('recibo', array('factura'=>$factura));
 	}
 	

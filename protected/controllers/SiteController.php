@@ -149,10 +149,10 @@ class SiteController extends Controller
 			$this->redirect(array('look/create'));//$this->render('personal_shopper');
 		elseif (Yii::app()->user->isGuest) 
 			$this->render('index');
-		else
+		else 
 			//$this->redirect(array('site/personal'));//$this->render('personal_shopper');
                     /*Unificacion de la tienda de looks con tu personal shopper*/
-			$this->redirect(array('tienda/look'));//$this->render('personal_shopper');
+			$this->redirect(array('site/top'));//$this->render('personal_shopper');
 			
 		
 		
@@ -210,14 +210,18 @@ class SiteController extends Controller
 	 */
 	public function actionError()
 	{
+		
+		
 		if($error=Yii::app()->errorHandler->error)
-		{
+		{	
 			if(Yii::app()->request->isAjaxRequest)
 				echo $error['message'];
 			else
 				$this->render('error', $error);
 		}
 	}
+	
+	
 
 	/**
 	 * Displays the contact page

@@ -2114,6 +2114,49 @@ public function actionReportexls(){
                         Yii::app()->end();
                     }
                     
+                     /*
+                    Para el Inbound en XML
+                     */
+                    $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
+                    $inbound = $xml->addChild('Inbound');
+                    $inbound->addChild('Albaran');
+                    $inbound->addChild('FechaAlbaran', date("Y-m-d"));                    
+//                    $cliente = $inbound->addChild('Cliente', date("Y-m-d")); 
+                    
+                    /*Leer el XLS*/
+                    $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
+                    $fila = 1;
+                    foreach ($sheetArray as $row){
+                        
+                        $rSku = $row['A'];
+                        $rCant = $row['B'];
+                        
+                        if($fila > 1){
+                            /*Agregar el Item*/
+                            $item = $inbound->addChild('Item');
+                            $item->addChild("EAN", $rSku);
+                            $item->addChild("Cantidad", $rCant);
+                            
+                            /*Agregar la cantidad a la BD*/
+//                            Preciotallacolor::model()->findByAttributes(array(
+//                                    ""
+//                                ));
+                            
+                        }
+                        $fila++;
+                        
+                    }
+                    
+                    
+                    Header('Content-type: text/xml');
+                    print($xml->asXML());
+                    Yii::app()->end();
+                    //Agregar el codigo y la fecha de creacion
+//                    $inbound->addChild("Albaran", date("Y-m-d")); 
+//                    $inbound->addChild("FechaCreacion", date("Y-m-d")); 
+                    
+                    MasterData::subirArchivoFtp($xml, "Inbound.xml");
+                    
                     
                 }
                 
@@ -2337,13 +2380,12 @@ public function actionReportexls(){
                     }
 
                     /*si pasa las columnas entonces que revise
-                    SKU y Cantidad */
-                          
+                    SKU y Cantidad */                          
                     if($linea > 1){
                         
-                        //Marcas
+                        //SKU
                         if (isset($row['A']) && $row['A'] != "") {                        
-                            $producto = PrecioTallaColor::model()->findByAttributes(
+                            $producto = Preciotallacolor::model()->findByAttributes(
                                     array("sku" => $row["A"]));
 
                             if (!isset($producto)) {
@@ -2365,33 +2407,22 @@ public function actionReportexls(){
             } 
 
             //Si hubo errores en marcas, cat, tallas, colores
-            if($erroresCategorias!= ""){
-                $erroresCategorias = "Las siguientes Categorías no existen en la plataforma:<br><ul>
-                                 {$erroresCategorias}
-                                 </ul>";
-            }
-            if($erroresMarcas!= ""){
-                $erroresMarcas = "Las siguientes Marcas no existen en la plataforma:<br><ul>
-                                 {$erroresMarcas}
+            if($erroresSKU!= ""){
+                $erroresSKU = "Los siguientes SKU no existen en la plataforma:<br><ul>
+                                 {$erroresSKU}
                                  </ul><br>";
             }
-            if($erroresTallas != ""){
-                $erroresTallas = "Las siguientes Tallas no existen en la plataforma:<br><ul>
-                                 {$erroresTallas}
-                                 </ul><br>";
-            }
-            if($erroresColores != ""){
-                $erroresColores = "Los siguientes Colores no existen en la plataforma:<br><ul>
-                                 {$erroresColores}
+            if($erroresCantidad!= ""){
+                $erroresCantidad = "Las siguientes cantidades están mal escritas:<br><ul>
+                                 {$erroresCantidad}
                                  </ul><br>";
             }
 
-            if($erroresTallas != "" || $erroresColores != "" || $erroresMarcas != ""
-                     || $erroresCategorias != ""){
+            if($erroresSKU != "" || $erroresCantidad != ""){
 
-                $erroresTallas .= $erroresColores . $erroresMarcas . $erroresCategorias;
+                $erroresSKU .= $erroresCantidad."No se ha cargado el archivo Inbound debido a que presenta errores.";
                 Yii::app()->user->updateSession();
-                Yii::app()->user->setFlash('error', $erroresTallas);
+                Yii::app()->user->setFlash('error', $erroresSKU);
 
                 return false;                
             } 

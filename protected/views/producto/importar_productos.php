@@ -99,8 +99,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                         ?>
                     </div>
                 </div>
-                <legend>3.- Descargar archivo Excel para generar el Inbound: </legend>
-                <div class="well span5">
+                <!--<legend>3.- Descargar archivo Excel para generar el Inbound: </legend>-->
+<!--                <div class="well span5">
                     <div class="">
                         <?php
                             
@@ -116,8 +116,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                             ?>
                         
                     </div>                    
-                </div>
-                <legend>4.- Subir Excel para Inbound: </legend>
+                </div>-->
+                <legend>3.- Subir Excel para Inbound: </legend>
                 <div class="well span5">
                     <?php
                     $this->widget('CMultiFileUpload', array(

@@ -97,7 +97,8 @@ function handleDrop(e) {
   // Don't do anything if dropping the same column we're dragging.
  
   if (dragSrcEl != this) {
-  	console.log('handleDrop='+dragSrcEl);
+  	//console.log('handleDrop='+dragSrcEl);
+  	var p_id = e.dataTransfer.getData('producto_id');
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML; 
     var contenedor = this;
@@ -996,6 +997,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 function addPublicar(tipo)
 {
 	var productos_id = '';
+	var products_array;
 	var color_id = '';
 	var left = '';
 	var top = '';
@@ -1016,7 +1018,9 @@ function addPublicar(tipo)
 	
 	if($('#Look_campana_id').val() != ''){
 		$('#campana_id_error').hide('slow');
+		$("#productos_id").val('');
 		$('.canvas input[name="producto_id"]').each(function(item){
+			console.log($(this).val());
 			productos_id += $(this).val()+',';
 			color_id += $(this).next().val()+',';
 			position = $(this).parent().position();
@@ -1088,6 +1092,24 @@ function addPublicar(tipo)
 		productos_id = productos_id.substring(0, productos_id.length-1);
 		adornos_id = adornos_id.substring(0, adornos_id.length-1);
 		//alert(productos_id);
+
+		// check forr repeated products
+		products_array = productos_id.split(',');
+		products_array.sort();
+		var last = products_array[0];
+		var repeated = false;
+		for (var i=1; i<products_array.length; i++) {
+			if (products_array[i] == last){
+				repeated = true;
+			}
+			last = products_array[i];
+		}
+
+		if(repeated){
+			bootbox.alert("No puedes incluir prendas repetidas");
+			return false;
+		}
+
 		//alert(left);
 		//productos_id = "1,2,3,4";
 		
@@ -1113,6 +1135,7 @@ function addPublicar(tipo)
 		//count = 6;
 		//alert(productos_id);
 		//count = count + count_a;
+
 		if (count >= 6){
 			$("#form_productos").submit();
 		} else {

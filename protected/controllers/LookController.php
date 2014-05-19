@@ -943,6 +943,39 @@ public function actionCategorias(){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
+			/*$products_count = array_count_values(explode(',',$_POST['productos_id']));
+			$repeated = false;
+			foreach ($products_count as $key => $value) {
+				if($value > 1){
+					$repeated = true;
+				}
+			}
+
+			if($repeated){
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("No puedes incluir prendas repetidas"));	
+				
+				$user = User::model()->findByPk(Yii::app()->user->id);
+				$criteria=new CDbCriteria;
+				$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" >= recepcion_inicio AND "'.date('Y-m-d H:i:s').'" <= recepcion_fin';
+				if($user->superuser != '1'){
+					$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+				}
+				
+				$models = Campana::model()->findAll($criteria);
+				
+				if(sizeof($models) > 0){
+			        $this->render('create',array(
+							'model'=>$model,
+							'categorias'=>$categorias,
+							'models'=>$models,
+						)
+					);
+				}else{
+					$this->render('no_campanas');
+				}
+			}*/
+
 			$model->title = "Look Nuevo";
 			$model->altura = 0;
 			$model->contextura = 0;

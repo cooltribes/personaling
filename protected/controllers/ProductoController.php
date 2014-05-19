@@ -1708,18 +1708,22 @@ public function actionReportexls(){
                     }                    
                     
                     //Si no hubo errores
-                    if($this->validarArchivoV2($nombre . $extension)){
+                    if(is_array($resValidacion = $this->validarArchivoV2($nombre . $extension))){
                         
                         Yii::app()->user->updateSession();
                         Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
-                                                    Puede continuar con el siguiente paso.");                    
+                                                    Puede continuar con el siguiente paso.<br><br>
+                                                    Este archivo contiene <b>{$resValidacion['nProds']}
+                                                    </b> productos, recuerde no dejar líneas vacías.
+                                                    ");                    
                     }                    
                     
                     $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
                     Yii::app()->end();
 
                 //Segundo paso - Subir el Archivo
-                }else if(isset($_POST["cargar"])){
+                }
+                else if(isset($_POST["cargar"])){
                     
                     $archivo = CUploadedFile::getInstancesByName('url');
                              
@@ -1742,11 +1746,10 @@ public function actionReportexls(){
                             }
                         }
                     }
-
                     // ==============================================================================
 
                     // Validar (de nuevo)
-                    if( !$this->validarArchivoV2($nombre . $extension) ){
+                    if( !is_array($resValidacion = $this->validarArchivoV2($nombre . $extension)) ){
                         
                         // Archivo con errores, eliminar del servidor
                         unlink($nombre . $extension);
@@ -1819,11 +1822,15 @@ public function actionReportexls(){
                             // la referencia existe, hay que actualizar los campos
                             $prodExiste = isset($producto);
 
+                            
+                            
                             // Marca para actualizar
                             $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
                             
+                            
+                            
                             if($prodExiste){
-                                $actualizar++; // suma un producto actualizado                                
+                                $actualizar++; //suma un producto actualizado                                
                                 // actualiza el producto
                                 Producto::model()->updateByPk($producto->id, array(
                                     'nombre' => $rNombre,
@@ -1832,7 +1839,9 @@ public function actionReportexls(){
                                     'peso' => $rPeso,
                                     'almacen' => $rAlmacen,
                                     'status' => 1
-                                ));                                
+                                )); 
+                                
+                                
                             } else
                             { // no existe la referencia, es producto nuevo                           
                                 $total++; // suma un producto nuevo
@@ -1846,8 +1855,9 @@ public function actionReportexls(){
                                 $producto->peso = $rPeso;
                                 $producto->almacen = $rAlmacen;
                                 $producto->status = 1; // no está eliminado
-                                
-                                $producto->save();                                
+                                $producto->marca_id = $marca->id;
+                                $producto->save();  
+                                                                
                             }
                             
                             // Si existe o no el producto, actualizar o insertar precio nuevo
@@ -1990,92 +2000,100 @@ public function actionReportexls(){
                             //Agregar el SKU
                             $item->addChild('EAN1', $rSku);
                             
-                            
-                            /*Enviar MasterData a logisFashion y mostrar notificacion*/
-                            $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml");
-                            $mensajeLF = "El archivo MasterData.xml se ha enviado
-                                satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
-                            $flash = "success";
-                            
-                            Yii::app()->user->updateSession();
-                            //Si hubo error conectandose al ftp logisfashion
-                            if(!$subido){
-                                $flash = "error";
-                                $mensajeLF = "Ha ocurrido un error enviando el
-                                    archivo MasterData.xml a LogisFashion. <i class='icon icon-thumbs-down'></i>";
-                            }
-                            Yii::app()->user->setFlash($flash, $mensajeLF);                                   
-                            
-                            
-                            //Insertar nuevo MasterData
-                            $masterDataBD = new MasterData();
-                            $masterDataBD->fecha_carga = date("Y-m-d H:i:s");
-                            //el admin que esta cargando
-                            $masterDataBD->user_id = Yii::app()->user->id;
-                            $masterDataBD->prod_actualizados = $actualizar;
-                            $masterDataBD->prod_nuevos = $total;
-                            $masterDataBD->save();
-                            
-                            // Cambiar nombre al archivo xls                            
-                            rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
-                            
-                            $tabla .= 'Se agregó el producto con ID: ' . $producto->id
-                                    .', Nombre: ' . $producto->nombre
-                                    . ', Precio_id: ' . $precio->id
-                                    . ', actualizadas categorias, Seo_id: ' . $seo->id . '<br/>';
+//                            $tabla .= 'Se agregó el producto con ID: ' . $producto->id
+//                                    .', Nombre: ' . $producto->nombre
+//                                    . ', Precio_id: ' . $precio->id
+//                                    . ', actualizadas categorias, Seo_id: ' . $seo->id . '<br/>';
                                     
                             
                             //===============================================
                             
                             
-                        } else if ($row['A'] == "") { // si está vacia la primera
+                        } 
+                        else if ($row['A'] == "") 
+                        { // si está vacia la primera
                             
-                            if ($row['K'] != "" && $row['L'] != "" && $row['M'] != "" && $row['N'] != "") {
-
-                                $tabla = $tabla . 'esta combinacion pertenece al producto: ' . $anterior['A'] . ' <br/>';
-                                $tabla = $tabla . 'Talla: ' . $row['K'] .
-                                        ' Color: ' . $row['L'] .
-                                        ' Cantidad: ' . $row['M'] .
-                                        ' Sku: ' . $row['N'] .
-                                        '<br/>';
-
-                                // ahora precio talla color
-
-                                $ptc = Preciotallacolor::model()->findByAttributes(array(
-                                    'sku' => $row['N'],
-                                    'producto_id' => $pr_id,
-                                    'talla_id' => $row['K'], 
-                                    'color_id' => $row['L']));
-
-                                if (isset($ptc)) { // existe el sku, hay que actualizar
-                                    $a = $ptc->cantidad;
-
-                                    $ptc->cantidad = $a + $row['M'];
-                                    $ptc->save();
-
-                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $ptc->id . '<br/>';
-                                } else { // nueva combinacion
-                                    $pre = new Preciotallacolor;
-                                    $pre->cantidad = $row['M'];
-                                    $pre->sku = $row['N'];
-                                    $pre->producto_id = $pr_id;
-
-                                    $talla = Talla::model()->findByAttributes(array('valor' => $row['K']));
-                                    $color = Color::model()->findByAttributes(array('valor' => $row['L']));
-
-                                    $pre->talla_id = $talla->id;
-                                    $pre->color_id = $color->id;
-
-                                    $pre->save();
-
-                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $pre->id . '<br/>';
-                                }
-                            }
+//                            if ($row['K'] != "" && $row['L'] != "" && $row['M'] != "" && $row['N'] != "") {
+//
+//                                $tabla = $tabla . 'esta combinacion pertenece al producto: ' . $anterior['A'] . ' <br/>';
+//                                $tabla = $tabla . 'Talla: ' . $row['K'] .
+//                                        ' Color: ' . $row['L'] .
+//                                        ' Cantidad: ' . $row['M'] .
+//                                        ' Sku: ' . $row['N'] .
+//                                        '<br/>';
+//
+//                                // ahora precio talla color
+//
+//                                $ptc = Preciotallacolor::model()->findByAttributes(array(
+//                                    'sku' => $row['N'],
+//                                    'producto_id' => $pr_id,
+//                                    'talla_id' => $row['K'], 
+//                                    'color_id' => $row['L']));
+//
+//                                if (isset($ptc)) { // existe el sku, hay que actualizar
+//                                    $a = $ptc->cantidad;
+//
+//                                    $ptc->cantidad = $a + $row['M'];
+//                                    $ptc->save();
+//
+//                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $ptc->id . '<br/>';
+//                                } else { // nueva combinacion
+//                                    $pre = new Preciotallacolor;
+//                                    $pre->cantidad = $row['M'];
+//                                    $pre->sku = $row['N'];
+//                                    $pre->producto_id = $pr_id;
+//
+//                                    $talla = Talla::model()->findByAttributes(array('valor' => $row['K']));
+//                                    $color = Color::model()->findByAttributes(array('valor' => $row['L']));
+//
+//                                    $pre->talla_id = $talla->id;
+//                                    $pre->color_id = $color->id;
+//
+//                                    $pre->save();
+//
+//                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $pre->id . '<br/>';
+//                                }
+//                            }
                         }
                     }// foreach
+                    
+                    //Insertar nuevo MasterData
+                    $masterDataBD = new MasterData();
+                    $masterDataBD->fecha_carga = date("Y-m-d H:i:s");
+                    //el admin que esta cargando
+                    $masterDataBD->user_id = Yii::app()->user->id;
+                    $masterDataBD->prod_actualizados = $actualizar;
+                    $masterDataBD->prod_nuevos = $total;
+                    $masterDataBD->save();
+
+                    // Cambiar nombre al archivo xls                            
+                    rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
+                    
+                    $mensajeSuccess = "Se ha cargado con éxito el archivo.
+                                Puede ver los detalles de la carga a continuación<br>";
+                            
+                    /*Enviar MasterData a logisFashion y mostrar notificacion*/
+                    $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml");
+                    $mensajeLF = "El archivo MasterData.xml se ha enviado
+                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
+                    $flash = "success";
+
+                    Yii::app()->user->updateSession();
+                    //Si hubo error conectandose al ftp logisfashion
+                    if(!$subido){
+                        $flash = "error";
+                        $mensajeLF = "Ha ocurrido un error enviando el
+                            archivo MasterData.xml a LogisFashion. <i class='icon icon-thumbs-down'></i>";
+                        Yii::app()->user->setFlash($flash, $mensajeLF);                                   
+                        $mensajeLF = "";
+
+                    }
+                    Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF);                                   
+
 
                 //Tercer paso - Descargar archivo para Inbound
-                }else if(isset($_POST["generar"])){
+                }
+                else if(isset($_POST["generar"])){
                     
                     
                     
@@ -2098,8 +2116,7 @@ public function actionReportexls(){
                                 Yii::app()->user->updateSession();
                                 Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
                                 $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
-                                Yii::app()->end();
-                                
+                                Yii::app()->end();                                
                             }
                         }
                     }
@@ -2117,47 +2134,59 @@ public function actionReportexls(){
                      /*
                     Para el Inbound en XML
                      */
+                    $fecha = time();
                     $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
                     $inbound = $xml->addChild('Inbound');
                     $inbound->addChild('Albaran');
-                    $inbound->addChild('FechaAlbaran', date("Y-m-d"));                    
+                    $inbound->addChild('FechaAlbaran', date("Y-m-d", $fecha));                    
 //                    $cliente = $inbound->addChild('Cliente', date("Y-m-d")); 
                     
                     /*Leer el XLS*/
                     $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
                     $fila = 1;
+                    $totalCantidades = 0;
                     foreach ($sheetArray as $row){
                         
                         $rSku = $row['A'];
                         $rCant = $row['B'];
                         
                         if($fila > 1){
-                            /*Agregar el Item*/
+                            /*Agregar el Item al inbound*/
                             $item = $inbound->addChild('Item');
                             $item->addChild("EAN", $rSku);
                             $item->addChild("Cantidad", $rCant);
                             
-                            /*Agregar la cantidad a la BD*/
-//                            Preciotallacolor::model()->findByAttributes(array(
-//                                    ""
+                            $totalCantidades += $rCant;
+                            
+                            /*Incrementar cantidad en la BD*/
+//                           $producto = Preciotallacolor::model()->findByAttributes(array(
+//                                    "sku" => $rSku,
 //                                ));
+//                                                      
+//                           $producto->cantidad += $rCant;
                             
                         }
-                        $fila++;
-                        
+                        $fila++;                        
                     }
                     
+                    //Insertar nuevo Inbound
+                    $inboundRow = new Inbound();
+                    $inboundRow->fecha_carga = date("Y-m-d H:i:s", $fecha);
+                    $inboundRow->user_id = Yii::app()->user->id;
+                    $inboundRow->total_productos = $fila-2;
+                    $inboundRow->total_cantidad = $totalCantidades;
+//                    $inboundRow->save();
+                    
+                    //Agregar el codigo
+                    $inbound->Albaran = 3;//$inboundRow->id;
+                // Cambiar nombre al archivo xls                            
+//                    rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
                     
                     Header('Content-type: text/xml');
                     print($xml->asXML());
                     Yii::app()->end();
-                    //Agregar el codigo y la fecha de creacion
-//                    $inbound->addChild("Albaran", date("Y-m-d")); 
-//                    $inbound->addChild("FechaCreacion", date("Y-m-d")); 
                     
                     MasterData::subirArchivoFtp($xml, "Inbound.xml");
-                    
-                    
                 }
                 
                 
@@ -2347,7 +2376,10 @@ public function actionReportexls(){
                 return false;                
             } 
             
-            return true;            
+            return array(
+                "valid"=>true,
+                "nProds"=>$linea-2,
+                );            
         }
         
         protected function validarArchivoInbound($archivo){

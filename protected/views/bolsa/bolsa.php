@@ -369,7 +369,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 
 				{ 
 					echo Yii::t('contentForm', 'Products that make the Looks').": ". $total_productos_look ."<br/>";
-				}				
+				}
+				$balance=Profile::getSaldo(Yii::app()->user->id);
+								
               	?>
                   <?php 
               	//variables de sesion
@@ -378,7 +380,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>
-                 <?php echo Yii::t('contentForm', 'Individual products').': '.$indiv; ?></h5>
+                 <?php echo Yii::t('contentForm', 'Individual products').': '.$indiv; 
+                 if($balance>0)
+
+				{ 
+					echo "<br/><br/>".Yii::t('contentForm', 'Available Balance:').' <strong>'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, '').'</strong> '; 
+				}?>
+                 </h5>
                 <hr/>
 <!--                 <label class="checkbox">
                   <input type="checkbox">

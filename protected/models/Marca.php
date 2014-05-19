@@ -52,6 +52,7 @@ class Marca extends CActiveRecord
 			array('descripcion', 'length', 'max'=>250),
 			array('urlImagen', 'length', 'max'=>150),
 			array('urlImagen', 'required'),
+			array('nombre, descripcion, urlImagen, contacto, cif, dirUno, telefono, ciudad_id, provincia_id, pais ', 'required', 'on'=>'adicional'),
 			array('descripcion', 'required', 'message'=>'No puede registrar una marca sin descripción.'),
 			array('nombre', 'required', 'message'=>'No puede registrar una marca sin nombre.'),			
 			// The following rule is used by search().

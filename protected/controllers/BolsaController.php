@@ -734,7 +734,10 @@ class BolsaController extends Controller
                         Yii::app()->user->setFlash('error',Yii::t("contentForm", "¡La sesión ha expirado, intenta tu compra nuevamente!"));                              
                         $this->redirect(array('/user/login'));                        
                     }
-                    
+                    if(!isset(Yii::app()->session['login']))
+						 $this->redirect(array('/bolsa/compra'));
+					
+					
                     
                     $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
@@ -756,6 +759,8 @@ class BolsaController extends Controller
 							
 
 //				$this->redirect(array('bolsa/pagos'));
+							if(isset(Yii::app()->session['login']))
+								unset(Yii::app()->session['login']);
                             $this->redirect($this->createUrl('bolsa/pagos'));
 			}
 			else
@@ -787,12 +792,14 @@ class BolsaController extends Controller
 
                                 Yii::app()->getSession()->add('idDireccion',$dir->id);
 //						$this->redirect(array('bolsa/pagos'));		
+								if(isset(Yii::app()->session['login']))
+									unset(Yii::app()->session['login']);
                                 $this->redirect($this->createUrl('bolsa/pagos'));
                                 //$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
 
                                 //$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
                             }
-
+ 
                             //} // nombre
                     //	else {
                                     //$this->render('direcciones',array('dir'=>$dir)); // regresa

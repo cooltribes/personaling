@@ -14,7 +14,7 @@
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
     ?>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-    <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
+    <?php  Yii::app()->clientScript->registerCoreScript( Yii::app()->theme->baseUrl."/js/jquery.hoverIntent.minified.js" ); ?>
     
 </head>
 

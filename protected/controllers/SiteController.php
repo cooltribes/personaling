@@ -27,7 +27,7 @@ class SiteController extends Controller
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies','preguntas_frecuentes',
-                                    'equipo_personaling','captcha','comofunciona', 'afterApply','sitemap','landingpage'), 
+                                    'equipo_personaling','captcha','comofunciona', 'afterApply','sitemap','landingpage','ve'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -126,6 +126,10 @@ class SiteController extends Controller
 	public function actionLandingpage()
 	{
 		$this->render('landingpage');
+	}
+	public function actionVe()
+	{
+		$this->render('landingpage_ve');
 	}        
     public function actionAfterApply()
 	{

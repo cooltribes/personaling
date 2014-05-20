@@ -42,7 +42,7 @@ $this->breadcrumbs=array(
 			<legend>Enviar Gift Card</legend>
 			<aside class="muted padding_small">
                             <span class="margin_right_medium ">
-                                Monto: <strong><?php echo $model->monto . " Bs."; ?></strong>
+                                Monto: <strong><?php echo $model->monto ." ". Yii::t('contentForm','currSym'); ?></strong>
                             </span>
                             <span class="margin_right_medium ">
                                 Válida Desde: <strong><?php echo date("d/m/Y", $model->getInicioVigencia()); ?></strong>
@@ -75,7 +75,7 @@ $this->breadcrumbs=array(
                                     <img src="<?php echo Yii::app()->baseUrl."/images/giftcards/{$model->plantilla_url}_x470.jpg"; ?>" width="470">
                                     <div class="row-fluid margin_top">
                                         <div class="span6 braker_right">
-                                            <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
+                                            <div class=" T_xlarge color1" id="monto"><?php echo $model->monto." ".Yii::t('contentForm','currSym'); ?> </div>
 
                                             <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo $model->getMascaraCodigo(); ?> </div>
                                         </div>

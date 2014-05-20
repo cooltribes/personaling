@@ -607,47 +607,45 @@ public function actionColores(){
 	
 }
 public function actionCategorias(){
-	  	$categorias = false;
-		$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
-	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+	$categorias = false;
+	$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
+	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+	Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+	Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	if ($_POST['padreId']!=0){ 
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
-	  
-
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
 	}
-	  if ($categorias){
-	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
-	  }else {
-	  	$with = array();
-	  	if(isset($_POST['padreId']))
-		  	if ($_POST['padreId']!=0)
+	if ($categorias){
+		echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
+	}else{
+		$with = array();
+		if(isset($_POST['padreId']))
+			if ($_POST['padreId']!=0)
 				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
 		if(isset($_POST['colores']))
 			if ($_POST['colores']!='')
 				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
-			
-	  	if(isset($_POST['marcas'])){
-		  	if ($_POST['marcas']!='Todas las Marcas')	
-		  		$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
+
+		if(isset($_POST['marcas'])){
+			if ($_POST['marcas']!='Todas las Marcas')	
+				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
 			else	
-		  		$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
+				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
 		} else {
 			$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
 		}
-	  	if (isset($categoria_padre))
-	  		echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
+		
+		if (isset($categoria_padre))
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId, 'color'=>$_POST['colores']),true,true);
 		else
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null),true,true);
-	  	// echo 'rafa';
-	  }
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null, 'color'=>$_POST['colores']),true,true);
+	}
 }
 
 

@@ -16,8 +16,8 @@ $envio = new EnvioGiftcard();
         </div>
         <div class=" margin_top ">
             <div class=" margin_left">
-                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto; ?> Bs.</div>
-
+                <div class=" T_xlarge color1" id="monto"><?php echo $model->monto." ".Yii::t('contentForm','currSym'); ?></div>
+   
                 <div class="margin_top color4" id="codigo"><div class="color9">Código</div> <?php echo $model->getCodigo(); ?> </div>
             </div>
             </div>

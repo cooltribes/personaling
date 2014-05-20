@@ -10,7 +10,7 @@
 			    		<option value="http://www.personaling.es">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspEspaña</option>
 			    		<option value="http://www.personaling.com.ve">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspVenezuela</option>
 			    	</select>  
-			    	<span class="arrow"></span>                                                  
+			    	<span class="arrow" style="cursor:pointer;"></span>
 		    	</div>      
 			</figure>
 		</section>
@@ -34,6 +34,11 @@
 		createCookie('country_value', this.options[this.selectedIndex].value, 7);
 		window.location.replace(this.options[this.selectedIndex].value);
 	});
+
+	/*$('.arrow').on('change', function(e){
+		createCookie('country_value', this.options[this.selectedIndex].value, 7);
+		window.location.replace(this.options[this.selectedIndex].value);
+	});*/
 
 	function createCookie(name,value,days) {
 		if (days) {

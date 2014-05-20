@@ -175,7 +175,7 @@ $template = '{summary}
       <th scope="col">Looks</th>
       <th scope="col" title="Prendas Individuales">P. I.</th>
       <th scope="col" title="Prendas Totales">P. T.</th>
-      <th scope="col">Monto (Bs)</th>
+      <th scope="col">Monto ('.Yii::t('contentForm','currSym').')</th>
       <th scope="col">Método de pago</th>
       <th scope="col">Estado</th>
       <th scope="col">Acciones</th>

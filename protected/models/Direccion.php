@@ -94,6 +94,7 @@ class Direccion extends CActiveRecord
 			'provincia_id' => Yii::t('contentForm','Province'),
 			'pais' => 'País',
 			'user_id' => 'User',
+			'codigo_postal_id'=>Yii::t('contentForm','Zip code')
 		);
 	}
 	

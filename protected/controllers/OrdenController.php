@@ -143,9 +143,9 @@ public function actionReportexls(){
 						->setCellValue('E1', 'Color')
 						->setCellValue('F1', 'Talla')
 						->setCellValue('G1', 'Cantidad')
-						->setCellValue('H1', 'Costo (Bs)')
-						->setCellValue('I1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('J1', 'Precio de Venta con IVA (Bs)')
+						->setCellValue('H1', 'Costo ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('I1', 'Precio de Venta sin IVA ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('J1', 'Precio de Venta con IVA ('.Yii::t('contentForm','currSym').')')
 						->setCellValue('K1', 'Orden N°')
 						->setCellValue('L1', 'Vendido en');
 			// encabezado end			

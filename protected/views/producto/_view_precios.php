@@ -51,7 +51,7 @@ $this->breadcrumbs=array(
                 <div class=" muted">Precio sin Iva de venta de este producto</div>
               </div>
             </div>
-            <div class="control-group"> <?php echo $form->dropDownListRow($precio, 'tipoDescuento', array(0 => 'Porcentaje %', 1 => 'Monto en Bs.',)); ?> <?php echo $form->error($precio,'tipoDescuento'); ?> </div>
+            <div class="control-group"> <?php echo $form->dropDownListRow($precio, 'tipoDescuento', array(0 => 'Porcentaje %', 1 => 'Monto en '.Yii::t('contentForm','currSym'),)); ?> <?php echo $form->error($precio,'tipoDescuento'); ?> </div>
             <div class="control-group"> <?php echo $form->textFieldRow($precio, 'valorTipo', array('class'=>'span5','id'=>'valordescuento')); ?>
               <div class="controls">
                 <div class=" muted">Si el producto no tendrá descuento ingrese 0</div>

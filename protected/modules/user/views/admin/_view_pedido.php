@@ -6,7 +6,7 @@
 	</td>
 	<td>
 		<?php
-		echo Yii::app()->numberFormatter->formatDecimal($data->total).' Bs.'; 
+		echo Yii::app()->numberFormatter->formatDecimal($data->total).' '.Yii::t('contentForm','currSym'); 
 		?>
 	</td>
 	<td>
@@ -35,17 +35,8 @@
 		if(count($data->detalles)){
                     foreach ($data->detalles as $detallePago){
 
-                    if($detallePago->tipo_pago==1)
-                        echo "Dep. o Transfer"; // metodo de pago
-                    else if($detallePago->tipo_pago==2)
-                            echo "Tarjeta de Crédito"; 
-                    else if($detallePago->tipo_pago==3)
-                            echo "Uso de Balance"; 
-                    else if($detallePago->tipo_pago==4)
-                            echo "MercadoPago"; 
-                    else
-                            echo "-ERROR EN EL PAGO-";
-                    echo "</br>";
+                   
+                    echo $detallePago->tipoPago."</br>";
 
                 }
                 }else{

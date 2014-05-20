@@ -689,7 +689,7 @@ class User extends CActiveRecord {
 	{
 	   	
 	   if($this->personal_shopper>0)
-	   		$this->banner_url='/images/banner/default.jpg';
+	   		$this->banner_url='/images/banner/default.gif';
 	   //echo $this->birthday;
 	   return parent::beforeSave();
 	}

@@ -316,6 +316,7 @@ return array (
 	'Select the size' => 'Selecciona la talla',
 	'Select the price' => 'Selecciona el monto',
 	'Select a profile for someone else' => 'Selecciona un perfil para alguien más',
+	'Select a zip code'=>'Selecciona un código postal',
 	'Selected looks' => 'Looks seleccionados',
 	'Search' => 'Buscar',
 	'Search by Categories' => 'Buscar por Categorias',

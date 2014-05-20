@@ -229,55 +229,76 @@ class DireccionController extends Controller
 		$response = $soapclient->infoProvinciasStr($params2);
 		$xml = simplexml_load_string($response->out);
 		foreach ($xml as $reg){
-			/*
-			$provincia= new Provincia;
-			$provincia->nombre=utf8_decode($reg->NOM_PROVINCIA);
-			$provincia->pais_id;*/
-			print_r($reg);
-			echo"<br/><br/>";
-			/*
-			if($provincia->save())
-				echo "OK <br/>";
-			else
-				echo "BAD <br/>";*/
+				
+				
+			$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_PROVINCIA)));
+			if(is_null($provincia)){
+				$provincia= new Provincia;
+				$provincia->nombre=utf8_decode($reg->NOM_PROVINCIA);
+				$provincia->pais_id;
+				if($provincia->save())
+					echo "OK <br/>";
+				else
+					echo "BAD <br/>";
+			}
+				else
+					echo "PROVINCIA EXISTENTE  <br/>";
 		}
 		
 	}
 	
 	public function actionPoblacionesSeur(){
 		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
-		$params4 = array(
-			'in0'=>'',
-			'in1'=>'%%',
-			'in2'=>'',
-			'in3'=>'',
-			'in4'=>'',
-			'in5'=>'WSPERSONALING',
-			'in6'=>'ORACLE',
-			
-			);
-		$response = $soapclient->infoPoblacionesCortoStr($params4);
-		$xml = simplexml_load_string($response->out);
-		foreach ($xml as $reg){
-			
-			$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_encode($reg->NOM_PROVINCIA)));
-			if(!is_null($provincia)){
-				$ciudad= new Ciudad;
-				$ciudad->nombre=utf8_decode($reg->NOM_POBLACION);
-				$ciudad->provincia_id=$provincia->id;
-				$ciudad->ruta_id=$provincia->pais_id;
-				$ciudad->cod_zoom=0;
-				/*	
-				if($ciudad->save())
-					echo "OK <br/>";
-				else
-					echo "BAD <br/>";*/
+		
+		/*
+		$cont=0;
+		for($i='a'; $i<='z'; $i++)
+		{	 */
+		  
+		
+		 	
+			$params4 = array(
+				'in0'=>'',
+				'in1'=>'S'.'%',
+				'in2'=>'',
+				'in3'=>'',
+				'in4'=>'',
+				'in5'=>'WSPERSONALING',
+				'in6'=>'ORACLE',
+				
+				);
+			$response = $soapclient->infoPoblacionesCortoStr($params4);
+			$xml = simplexml_load_string($response->out);
+			foreach ($xml as $reg){
+				$test=Ciudad::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_POBLACION)));
+				if(is_null($test))
+				{
+					
+					$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_PROVINCIA)));
+					if(!is_null($provincia)){
+						$ciudad= new Ciudad;
+						$ciudad->nombre=utf8_decode($reg->NOM_POBLACION);
+						$ciudad->provincia_id=$provincia->id;
+						$ciudad->ruta_id=$provincia->pais_id;
+						$ciudad->cod_zoom=0;
+							  
+						if($ciudad->save())
+							echo "OK <br/>";
+						else
+							print_r ($ciudad->getErrors()); echo $reg->NOM_PROVINCIA."--".$reg->NOM_POBLACION." BAD <br/>";
+					}
+					else{
+						echo "WORSE PROVINCIA ".$reg->NOM_PROVINCIA."--".$reg->NOM_POBLACION."<br/>";
+					   
+					}
+				}else
+					echo "YA ESTABA CIUDAD ".$reg->NOM_POBLACION."--".$reg->NOM_PROVINCIA."<br/>";	
+				
 			}
-			else
-					echo "WORSE <br/>";
-			
-			
-		}
+			/*$cont++;
+			if($cont==26)
+				break;
+		}*/
 		
 	}
 	public function actionDecode(){
@@ -312,10 +333,9 @@ class DireccionController extends Controller
 			
 	}
 	public function actionCodigosPostalesSeur(){
+		
 		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
-		$all=Ciudad::model()->findAll(array(
-		    'condition'=>'ruta_id > 4 AND id NOT IN (select distinct(ciudad_id) from tbl_codigo_postal )'
-		    ));
+		$all=Ciudad::model()->findAll(array('condition'=>'provincia_id > 25 AND ruta_id=2 and id NOT IN (select distinct(ciudad_id) from tbl_codigo_postal)' ));
 			
 		foreach($all as $city){
 			print_r('<b>'.$city->nombre.'</b><br/>');
@@ -332,13 +352,15 @@ class DireccionController extends Controller
 			$response = $soapclient->infoPoblacionesCortoStr($params4);
 			$xml = simplexml_load_string($response->out);
 			foreach ($xml as $reg){
-				$codigo=new CodigoPostal;
-				$codigo->codigo=$reg->CODIGO_POSTAL;
-				$codigo->ciudad_id=$city->id;
-				/*if($codigo->save())
-					echo "OK<br/>";
-				else	
-					echo "BAD<br/>";*/
+				
+					$codigo=new CodigoPostal;
+					$codigo->codigo=$reg->CODIGO_POSTAL;
+					$codigo->ciudad_id=$city->id;
+					if($codigo->save())
+						echo "OK<br/>";
+					else	
+						echo "BAD<br/>";
+				
 			}
 			echo "<br/><br/>";
 			

@@ -29,6 +29,12 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             //echo $tabla. "<br/><br/>";
         }
         ?>
+        <?php
+        if ($totalInbound > 0) {
+            echo "<h3>Total de productos en el archivo: <b>" . $totalInbound. "</b></h3>";            
+            echo "<h4>Productos actualizados: <b>" . $actualizadosInbound . "</b></h4><br><hr><br>";            
+        }
+        ?>
         <div class="page-header">
             <h1>Importar Productos</h1>
         </div>        

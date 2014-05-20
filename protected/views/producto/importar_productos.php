@@ -21,16 +21,23 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
 <div class="row margin_top">
     <div class="span12">
-        <div class="page-header">
-            <h1>Importar Productos</h1>
-        </div>
         <?php
         if ($total > 0 || $actualizar > 0) {
-            echo "<h3> Se importaron <b>" . $total . "</b> productos. </h3>";            
-            echo "<h3> Se actualizaron <b>" . $actualizar . "</b> productos. </h3>";
+            echo "<h3>Total de productos en el archivo: <b>" . ($total + $actualizar). "</b></h3>";            
+            echo "<h4>Productos nuevos: <b>" . $total . "</b></h4>";
+            echo "<h4>Productos actualizados: <b>" . $actualizar . "</b></h4><br><hr><br>";
             //echo $tabla. "<br/><br/>";
         }
         ?>
+        <?php
+        if ($totalInbound > 0) {
+            echo "<h3>Total de productos en el archivo: <b>" . $totalInbound. "</b></h3>";            
+            echo "<h4>Productos actualizados: <b>" . $actualizadosInbound . "</b></h4><br><hr><br>";            
+        }
+        ?>
+        <div class="page-header">
+            <h1>Importar Productos</h1>
+        </div>        
         <div class="bg_color3 margin_bottom_small padding_small box_1">
             <?php
             $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(

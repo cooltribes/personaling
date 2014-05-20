@@ -1732,7 +1732,7 @@ public function actionReportexls(){
                 else if(isset($_POST["cargar"])){
                     
                     $archivo = CUploadedFile::getInstancesByName('url');
-                             
+                           
                     if (isset($archivo) && count($archivo) > 0) {
                         $nombreTemporal = "Archivo";
                         $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';
@@ -1752,6 +1752,7 @@ public function actionReportexls(){
                             }
                         }
                     }
+                    
                     // ==============================================================================
 
                     // Validar (de nuevo)
@@ -1776,29 +1777,7 @@ public function actionReportexls(){
                     $masterData = $xml->addChild('MasterData');
                     //Agregar la fecha de creacion
                     $masterData->addChild("FechaCreacion", date("Y-m-d")); 
-                    
-                    
-                    /*Para el Excel*/
-//                    Yii::import('ext.phpexcel.XPHPExcel');
-//                    $objPHPExcel = XPHPExcel::createPHPExcel();
-//	
-//                    $objPHPExcel->getProperties()->setCreator("Personaling.com")
-//		                         ->setLastModifiedBy("Personaling.com")
-//		                         ->setTitle("Inbound")
-//		                         ->setSubject("Inbound")
-//		                         ->setDescription("Inbound");
-//
-//                    // creando el encabezado
-//                    $objPHPExcel->setActiveSheetIndex(0)
-//                                ->setCellValue('A1', 'REMITENTE')
-//                                ->setCellValue('A2', 'Persona Contacto')
-//                                ->setCellValue('B2', 'Teléfono');
-//
-//                    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-//                    $objWriter->save($rutaArchivo."prueba.xls");
-//                        Yii::app()->end();
-                    
-
+                   
                 // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
                         
@@ -2101,10 +2080,20 @@ public function actionReportexls(){
                 }
                 else if(isset($_POST["generar"])){
                     
-                    
-                    
-                //Cuarto paso - Subir Inbound
-                }else if(isset($_POST["cargarIn"])){
+                    if(!isset($_POST["Marca"]) || $_POST["Marca"] == ""){
+                     
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash("error", "Debe seleccionar una marca para
+                            poder exportar el archivo de Excel."); 
+                        
+                    }else{
+                        
+                        $this->exportarExcelInbound($_POST["Marca"]);
+                        
+                    }
+                    //Cuarto paso - Subir Inbound
+                }
+                else if(isset($_POST["cargarIn"])){
                     
                     $archivo = CUploadedFile::getInstancesByName('inbound');
                              
@@ -2498,46 +2487,87 @@ public function actionReportexls(){
             return true;            
         }
         
-        public function actionCreateExcel(){
+        public function exportarExcelInbound($idMarca){
 		
-		Yii::import('ext.phpexcel.XPHPExcel');    
-	
-		$objPHPExcel = XPHPExcel::createPHPExcel();
-	
-		$objPHPExcel->getProperties()->setCreator("Personaling.com")
-		                         ->setLastModifiedBy("Personaling.com")
-		                         ->setTitle("plantilla-masiva-prepagada")
-		                         ->setSubject("Plantilla masiva prepagada")
-		                         ->setDescription("Plantilla masiva prepagada creada a través de la aplicación.")
-		                         ->setKeywords("personaling")
-		                         ->setCategory("personaling");
+            Yii::import('ext.phpexcel.XPHPExcel');
+            $objPHPExcel = XPHPExcel::createPHPExcel();
 
-			// creando el encabezado
-			$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Remitente')
-						->setCellValue('A2', 'Persona Contacto');
-						
-			 
-					 
-			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-			$objPHPExcel->setActiveSheetIndex(0);
+            $marca = Marca::model()->findByPk($idMarca);
 
-			// Redirect output to a clientâ€™s web browser (Excel5)
-			header('Content-Type: application/vnd.ms-excel');
-			header('Content-Disposition: attachment;filename="plantillamasivaprepagada.xls"');
-			header('Cache-Control: max-age=0');
-			// If you're serving to IE 9, then the following may be needed
-			header('Cache-Control: max-age=1');
-		 
-			// If you're serving to IE over SSL, then the following may be needed
-			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-			header ('Pragma: public'); // HTTP/1.0
-		 
-			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-			$objWriter->save('php://output');
-			      Yii::app()->end();
+            $objPHPExcel->getProperties()->setCreator("Personaling.com")
+                                     ->setLastModifiedBy("Personaling.com")
+                                     ->setTitle("Inbound $marca->nombre");
+
+            // creando el encabezado
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'Sku')
+                ->setCellValue('B1', 'Cantidad');
+
+            //Poner autosize todas las columnas
+            foreach(range('A','B') as $columnID) {
+                $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+            }           
+            
+            //Formato del encabezado
+            $title = array(
+                'font' => array(
+                    'size' => 14,
+                    'bold' => true,
+                    'color' => array(
+                                'rgb' => '000000'
+                            ),
+                    ),
+                'text-align' => array(
+                    'horizontal' => 'center',
+                ),
+            );
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+
+            $objPHPExcel->getDefaultStyle()
+                        ->getNumberFormat()
+                        ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            
+            //Consulta los sku de esta marca
+            //Y los agrega al excel
+            
+            $prodsMarca = $marca->productos;
+//            preciotallacolor
+            $i = 0;
+            foreach ($prodsMarca as $producto){
+                
+                $precioTallaColores = $producto->preciotallacolor;
+                
+                foreach ($precioTallaColores as $precTColor){                    
+                    
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A'.($i + 2) ,$precTColor->sku) 
+                        ->setCellValue('B'.($i + 2), 0);
+                    //AGregar la fila al documento xls
+                    $i++;
+                }   
+            }
+            
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+
+            // Redirect output to a clientâ€™s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="Inbound '.$marca->nombre.'.xls"');
+            header('Cache-Control: max-age=0');
+            // If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+            // If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0                        
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            Yii::app()->end();
 				  
 	}
         

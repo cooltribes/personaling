@@ -632,7 +632,6 @@ public function actionCategorias(){
 			if ($_POST['colores']!='')
 				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
 
-		//print_r($with);
 		if(isset($_POST['marcas'])){
 			if ($_POST['marcas']!='Todas las Marcas')	
 				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
@@ -641,11 +640,11 @@ public function actionCategorias(){
 		} else {
 			$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
 		}
+		
 		if (isset($categoria_padre))
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId, 'color'=>$_POST['colores']),true,true);
 		else
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null),true,true);
-		// echo 'rafa';
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null, 'color'=>$_POST['colores']),true,true);
 	}
 }
 

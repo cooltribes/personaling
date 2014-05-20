@@ -34,8 +34,12 @@ class ProductoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','suprimir','admin','delete','precios','producto','imagenes','multi','orden','eliminar','inventario','detalles','tallacolor','addtallacolor','varias','categorias','recatprod','seo','importar'
-				,'reporte','reportexls'),
+				'actions'=>array('create','update','suprimir','admin',
+                                    'delete','precios','producto','imagenes','multi',
+                                    'orden','eliminar','inventario','detalles',
+                                    'tallacolor','addtallacolor','varias','categorias',
+                                    'recatprod','seo','importar'
+				,'reporte','reportexls', "createExcel"),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -1683,6 +1687,8 @@ public function actionReportexls(){
             $total = 0;
             $actualizar = 0;
             $tabla = "";
+            $totalInbound = 0;
+            $actualizadosInbound = 0;
 
             if (isset($_POST['valido'])) { // enviaron un archivo
 
@@ -1708,18 +1714,22 @@ public function actionReportexls(){
                     }                    
                     
                     //Si no hubo errores
-                    if($this->validarArchivoV2($nombre . $extension)){
+                    if(is_array($resValidacion = $this->validarArchivoV2($nombre . $extension))){
                         
                         Yii::app()->user->updateSession();
                         Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
-                                                    Puede continuar con el siguiente paso.");                    
+                                                    Puede continuar con el siguiente paso.<br><br>
+                                                    Este archivo contiene <b>{$resValidacion['nProds']}
+                                                    </b> productos, recuerde no dejar líneas vacías.
+                                                    ");                    
                     }                    
                     
                     $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
                     Yii::app()->end();
 
                 //Segundo paso - Subir el Archivo
-                }else if(isset($_POST["cargar"])){
+                }
+                else if(isset($_POST["cargar"])){
                     
                     $archivo = CUploadedFile::getInstancesByName('url');
                              
@@ -1742,11 +1752,10 @@ public function actionReportexls(){
                             }
                         }
                     }
-
                     // ==============================================================================
 
                     // Validar (de nuevo)
-                    if( !$this->validarArchivoV2($nombre . $extension) ){
+                    if( !is_array($resValidacion = $this->validarArchivoV2($nombre . $extension)) ){
                         
                         // Archivo con errores, eliminar del servidor
                         unlink($nombre . $extension);
@@ -1763,7 +1772,7 @@ public function actionReportexls(){
                     /*
                     Para el MasterData en XML
                      */
-                    $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
+                    $xml = new SimpleXMLElement('<xml version="1.0"/>');
                     $masterData = $xml->addChild('MasterData');
                     //Agregar la fecha de creacion
                     $masterData->addChild("FechaCreacion", date("Y-m-d")); 
@@ -1779,14 +1788,14 @@ public function actionReportexls(){
 //		                         ->setSubject("Inbound")
 //		                         ->setDescription("Inbound");
 //
-//			// creando el encabezado
-//			$objPHPExcel->setActiveSheetIndex(0)
-//                                    ->setCellValue('A1', 'REMITENTE')
-//                                    ->setCellValue('A2', 'Persona Contacto')
-//                                    ->setCellValue('B2', 'Teléfono');
-//                              
-//                        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-//			$objWriter->save($rutaArchivo."prueba.xls");
+//                    // creando el encabezado
+//                    $objPHPExcel->setActiveSheetIndex(0)
+//                                ->setCellValue('A1', 'REMITENTE')
+//                                ->setCellValue('A2', 'Persona Contacto')
+//                                ->setCellValue('B2', 'Teléfono');
+//
+//                    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+//                    $objWriter->save($rutaArchivo."prueba.xls");
 //                        Yii::app()->end();
                     
 
@@ -1819,11 +1828,15 @@ public function actionReportexls(){
                             // la referencia existe, hay que actualizar los campos
                             $prodExiste = isset($producto);
 
+                            
+                            
                             // Marca para actualizar
                             $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
                             
+                            
+                            
                             if($prodExiste){
-                                $actualizar++; // suma un producto actualizado                                
+                                $actualizar++; //suma un producto actualizado                                
                                 // actualiza el producto
                                 Producto::model()->updateByPk($producto->id, array(
                                     'nombre' => $rNombre,
@@ -1832,7 +1845,9 @@ public function actionReportexls(){
                                     'peso' => $rPeso,
                                     'almacen' => $rAlmacen,
                                     'status' => 1
-                                ));                                
+                                )); 
+                                
+                                
                             } else
                             { // no existe la referencia, es producto nuevo                           
                                 $total++; // suma un producto nuevo
@@ -1846,8 +1861,9 @@ public function actionReportexls(){
                                 $producto->peso = $rPeso;
                                 $producto->almacen = $rAlmacen;
                                 $producto->status = 1; // no está eliminado
-                                
-                                $producto->save();                                
+                                $producto->marca_id = $marca->id;
+                                $producto->save();  
+                                                                
                             }
                             
                             // Si existe o no el producto, actualizar o insertar precio nuevo
@@ -1990,92 +2006,100 @@ public function actionReportexls(){
                             //Agregar el SKU
                             $item->addChild('EAN1', $rSku);
                             
-                            
-                            /*Enviar MasterData a logisFashion y mostrar notificacion*/
-                            $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml");
-                            $mensajeLF = "El archivo MasterData.xml se ha enviado
-                                satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
-                            $flash = "success";
-                            
-                            Yii::app()->user->updateSession();
-                            //Si hubo error conectandose al ftp logisfashion
-                            if(!$subido){
-                                $flash = "error";
-                                $mensajeLF = "Ha ocurrido un error enviando el
-                                    archivo MasterData.xml a LogisFashion. <i class='icon icon-thumbs-down'></i>";
-                            }
-                            Yii::app()->user->setFlash($flash, $mensajeLF);                                   
-                            
-                            
-                            //Insertar nuevo MasterData
-                            $masterDataBD = new MasterData();
-                            $masterDataBD->fecha_carga = date("Y-m-d H:i:s");
-                            //el admin que esta cargando
-                            $masterDataBD->user_id = Yii::app()->user->id;
-                            $masterDataBD->prod_actualizados = $actualizar;
-                            $masterDataBD->prod_nuevos = $total;
-                            $masterDataBD->save();
-                            
-                            // Cambiar nombre al archivo xls                            
-                            rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
-                            
-                            $tabla .= 'Se agregó el producto con ID: ' . $producto->id
-                                    .', Nombre: ' . $producto->nombre
-                                    . ', Precio_id: ' . $precio->id
-                                    . ', actualizadas categorias, Seo_id: ' . $seo->id . '<br/>';
+//                            $tabla .= 'Se agregó el producto con ID: ' . $producto->id
+//                                    .', Nombre: ' . $producto->nombre
+//                                    . ', Precio_id: ' . $precio->id
+//                                    . ', actualizadas categorias, Seo_id: ' . $seo->id . '<br/>';
                                     
                             
                             //===============================================
                             
                             
-                        } else if ($row['A'] == "") { // si está vacia la primera
+                        } 
+                        else if ($row['A'] == "") 
+                        { // si está vacia la primera
                             
-                            if ($row['K'] != "" && $row['L'] != "" && $row['M'] != "" && $row['N'] != "") {
-
-                                $tabla = $tabla . 'esta combinacion pertenece al producto: ' . $anterior['A'] . ' <br/>';
-                                $tabla = $tabla . 'Talla: ' . $row['K'] .
-                                        ' Color: ' . $row['L'] .
-                                        ' Cantidad: ' . $row['M'] .
-                                        ' Sku: ' . $row['N'] .
-                                        '<br/>';
-
-                                // ahora precio talla color
-
-                                $ptc = Preciotallacolor::model()->findByAttributes(array(
-                                    'sku' => $row['N'],
-                                    'producto_id' => $pr_id,
-                                    'talla_id' => $row['K'], 
-                                    'color_id' => $row['L']));
-
-                                if (isset($ptc)) { // existe el sku, hay que actualizar
-                                    $a = $ptc->cantidad;
-
-                                    $ptc->cantidad = $a + $row['M'];
-                                    $ptc->save();
-
-                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $ptc->id . '<br/>';
-                                } else { // nueva combinacion
-                                    $pre = new Preciotallacolor;
-                                    $pre->cantidad = $row['M'];
-                                    $pre->sku = $row['N'];
-                                    $pre->producto_id = $pr_id;
-
-                                    $talla = Talla::model()->findByAttributes(array('valor' => $row['K']));
-                                    $color = Color::model()->findByAttributes(array('valor' => $row['L']));
-
-                                    $pre->talla_id = $talla->id;
-                                    $pre->color_id = $color->id;
-
-                                    $pre->save();
-
-                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $pre->id . '<br/>';
-                                }
-                            }
+//                            if ($row['K'] != "" && $row['L'] != "" && $row['M'] != "" && $row['N'] != "") {
+//
+//                                $tabla = $tabla . 'esta combinacion pertenece al producto: ' . $anterior['A'] . ' <br/>';
+//                                $tabla = $tabla . 'Talla: ' . $row['K'] .
+//                                        ' Color: ' . $row['L'] .
+//                                        ' Cantidad: ' . $row['M'] .
+//                                        ' Sku: ' . $row['N'] .
+//                                        '<br/>';
+//
+//                                // ahora precio talla color
+//
+//                                $ptc = Preciotallacolor::model()->findByAttributes(array(
+//                                    'sku' => $row['N'],
+//                                    'producto_id' => $pr_id,
+//                                    'talla_id' => $row['K'], 
+//                                    'color_id' => $row['L']));
+//
+//                                if (isset($ptc)) { // existe el sku, hay que actualizar
+//                                    $a = $ptc->cantidad;
+//
+//                                    $ptc->cantidad = $a + $row['M'];
+//                                    $ptc->save();
+//
+//                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $ptc->id . '<br/>';
+//                                } else { // nueva combinacion
+//                                    $pre = new Preciotallacolor;
+//                                    $pre->cantidad = $row['M'];
+//                                    $pre->sku = $row['N'];
+//                                    $pre->producto_id = $pr_id;
+//
+//                                    $talla = Talla::model()->findByAttributes(array('valor' => $row['K']));
+//                                    $color = Color::model()->findByAttributes(array('valor' => $row['L']));
+//
+//                                    $pre->talla_id = $talla->id;
+//                                    $pre->color_id = $color->id;
+//
+//                                    $pre->save();
+//
+//                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $pre->id . '<br/>';
+//                                }
+//                            }
                         }
                     }// foreach
+                    
+                    //Insertar nuevo MasterData
+                    $masterDataBD = new MasterData();
+                    $masterDataBD->fecha_carga = date("Y-m-d H:i:s");
+                    //el admin que esta cargando
+                    $masterDataBD->user_id = Yii::app()->user->id;
+                    $masterDataBD->prod_actualizados = $actualizar;
+                    $masterDataBD->prod_nuevos = $total;
+                    $masterDataBD->save();
+
+                    // Cambiar nombre al archivo xls                            
+                    rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
+                    
+                    $mensajeSuccess = "Se ha cargado con éxito el archivo.
+                                Puede ver los detalles de la carga a continuación<br>";
+                            
+                    /*Enviar MasterData a logisFashion y mostrar notificacion*/
+                    $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml", $masterDataBD->id);
+                    $mensajeLF = "El archivo <b>MasterData.xml</b> se ha enviado
+                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
+                    $flash = "success";
+
+                    Yii::app()->user->updateSession();
+                    //Si hubo error conectandose al ftp logisfashion
+                    if(!$subido){
+                        $flash = "error";
+                        $mensajeLF = "Ha ocurrido un error enviando el
+                            archivo <b>MasterData.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
+                        Yii::app()->user->setFlash($flash, $mensajeLF);                                   
+                        $mensajeLF = "";
+
+                    }
+                    Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF);                                   
+
 
                 //Tercer paso - Descargar archivo para Inbound
-                }else if(isset($_POST["generar"])){
+                }
+                else if(isset($_POST["generar"])){
                     
                     
                     
@@ -2098,8 +2122,7 @@ public function actionReportexls(){
                                 Yii::app()->user->updateSession();
                                 Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
                                 $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
-                                Yii::app()->end();
-                                
+                                Yii::app()->end();                                
                             }
                         }
                     }
@@ -2117,46 +2140,86 @@ public function actionReportexls(){
                      /*
                     Para el Inbound en XML
                      */
+                    $fecha = time();
                     $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
                     $inbound = $xml->addChild('Inbound');
                     $inbound->addChild('Albaran');
-                    $inbound->addChild('FechaAlbaran', date("Y-m-d"));                    
+                    $inbound->addChild('FechaAlbaran', date("Y-m-d", $fecha));                    
 //                    $cliente = $inbound->addChild('Cliente', date("Y-m-d")); 
                     
                     /*Leer el XLS*/
                     $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
                     $fila = 1;
+                    $totalCantidades = 0;
                     foreach ($sheetArray as $row){
                         
                         $rSku = $row['A'];
                         $rCant = $row['B'];
                         
                         if($fila > 1){
-                            /*Agregar el Item*/
-                            $item = $inbound->addChild('Item');
-                            $item->addChild("EAN", $rSku);
-                            $item->addChild("Cantidad", $rCant);
                             
-                            /*Agregar la cantidad a la BD*/
-//                            Preciotallacolor::model()->findByAttributes(array(
-//                                    ""
-//                                ));
+                            /*Solo si la cantidad es mayor a 0
+                             * Agregar el Item al inbound*/
                             
+                            if($rCant > 0){
+                                
+                                $item = $inbound->addChild('Item');
+                                $item->addChild("EAN", $rSku);
+                                $item->addChild("Cantidad", $rCant);
+
+                                $totalCantidades += $rCant;
+
+                                /*Incrementar cantidad en la BD*/
+                                $producto = Preciotallacolor::model()->findByAttributes(array(
+                                         "sku" => $rSku,
+                                     ));
+
+                                $producto->cantidad += $rCant;
+                                $producto->save();
+                                
+                                $actualizadosInbound++;
+                                
+                            }
                         }
-                        $fila++;
-                        
+                        $fila++;                        
                     }
                     
+                    //Insertar nuevo Inbound
+                    $inboundRow = new Inbound();
+                    $inboundRow->fecha_carga = date("Y-m-d H:i:s", $fecha);
+                    $inboundRow->user_id = Yii::app()->user->id;
+                    $inboundRow->total_productos = $fila-2;
+                    $inboundRow->total_cantidad = $totalCantidades;
+                    $inboundRow->save();
                     
-                    Header('Content-type: text/xml');
-                    print($xml->asXML());
-                    Yii::app()->end();
-                    //Agregar el codigo y la fecha de creacion
-//                    $inbound->addChild("Albaran", date("Y-m-d")); 
-//                    $inbound->addChild("FechaCreacion", date("Y-m-d")); 
+                    //Totales
+                    $totalInbound = $fila - 2;
                     
-                    MasterData::subirArchivoFtp($xml, "Inbound.xml");
-                    
+                   //Agregar el codigo en el XML
+                    $inbound->Albaran = $inboundRow->id;
+                   //Cambiar nombre al archivo xls                            
+                    rename($nombre.$extension, $rutaArchivo."$inboundRow->id".$extension);
+                   
+                    $mensajeSuccess = "Se ha cargado con éxito el archivo.
+                                Puede ver los detalles de la carga a continuación<br>";
+                            
+                    /*Enviar MasterData a logisFashion y mostrar notificacion*/
+                    $subido = MasterData::subirArchivoFtp($xml, "Inbound.xml", $inboundRow->id);
+                    $mensajeLF = "El archivo <b>Inbound.xml</b> se ha enviado
+                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
+                    $flash = "success";
+
+                    Yii::app()->user->updateSession();
+                    //Si hubo error conectandose al ftp logisfashion
+                    if(!$subido){
+                        $flash = "error";
+                        $mensajeLF = "Ha ocurrido un error enviando el
+                            archivo <b>Inbound.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
+                        Yii::app()->user->setFlash($flash, $mensajeLF);                                   
+                        $mensajeLF = "";
+
+                    }
+                    Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF);
                     
                 }
                 
@@ -2167,6 +2230,8 @@ public function actionReportexls(){
                 'tabla' => $tabla,
                 'total' => $total,
                 'actualizar' => $actualizar,
+                'totalInbound' => $totalInbound,
+                'actualizadosInbound' => $actualizadosInbound,
             ));
 
 	}
@@ -2347,7 +2412,10 @@ public function actionReportexls(){
                 return false;                
             } 
             
-            return true;            
+            return array(
+                "valid"=>true,
+                "nProds"=>$linea-2,
+                );            
         }
         
         protected function validarArchivoInbound($archivo){
@@ -2395,7 +2463,7 @@ public function actionReportexls(){
                         //Cantidades
                         if (isset($row['B']) && $row['B'] != "") {                        
                             
-                            if (!is_numeric($row['B']) || $row['B'] <= 0){
+                            if (!is_numeric($row['B']) || $row['B'] < 0){
                                 $erroresCantidad .= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         } 
@@ -2446,62 +2514,10 @@ public function actionReportexls(){
 
 			// creando el encabezado
 			$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'REMITENTE')
-						->setCellValue('A2', 'Persona Contacto')
-						->setCellValue('B2', 'Teléfono')
-						->setCellValue('C2', 'Dirección')
-						->setCellValue('D1', 'DESTINATARIO')
-						->setCellValue('D2', 'Ciudad Destino')
-						->setCellValue('E2', 'Destinatarios')
-						->setCellValue('F2', 'Persona Contacto')
-						->setCellValue('G2', 'R.I.F/C.I')
-						->setCellValue('H2', 'Teléfono')
-						->setCellValue('I2', 'Dirección')
-						->setCellValue('J1', 'DATOS DEL ENVIO')
-						->setCellValue('J2', 'Referencia')
-						->setCellValue('K2', 'Pzas')
-						->setCellValue('L2', 'Peso Ref (Kg) ')
-						->setCellValue('M2', 'Tipo de Envio')
-						->setCellValue('N2', 'Descripción de Contenido')
-						->setCellValue('O2', 'Valor Declarado (Bs)')
-						->setCellValue('Q1', 'Nota:')
-						->setCellValue('Q2', 'En Tipo de Envio solo debe escribir D ó M')
-						->setCellValue('S1', 'D = Documento')
-						->setCellValue('S2', 'M = Mercancia');	
-			// encabezado end			
-		 
-		 	$ordenes = Orden::model()->findAllByAttributes(array('estado'=>3)); // pago confirmado
-		 	$fila = 3;
-			
-		 	// el remitente siempre será el mismo por tanto		 	
-		 	foreach($ordenes as $orden)
-			{
-				if($orden->peso < 5){
-					$dir = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
-					$prov = Provincia::model()->findByPk($dir->provincia_id);
-					$usuario = User::model()->findByPk($orden->user_id);
-					
-				
-					$objPHPExcel->setActiveSheetIndex(0)
-							->setCellValue('A'.$fila , 'PERSONALING, C.A.') // Persona Contacto
-							->setCellValue('B'.$fila , '04144239902') // Teléfono
-							->setCellValue('C'.$fila , 'AV BOLIVAR C.C. CM, PISO 2 OFICINA 210. MUNICIPIO MARIÑO, PORLAMAR, NUEVA ESPARTA. 6301') // Direccion
-							->setCellValue('D'.$fila , $prov->nombre) // ciudad destino
-							->setCellValue('E'.$fila , $usuario->profile->first_name." ".$usuario->profile->first_name) // destinatario
-							->setCellValue('F'.$fila , $usuario->profile->first_name." ".$usuario->profile->first_name) // persona contacto
-							->setCellValue('G'.$fila , $usuario->profile->cedula) // cedula
-							->setCellValue('H'.$fila , $usuario->profile->tlf_celular) // telefono
-							->setCellValue('I'.$fila , $dir->dirUno.", ".$dir->dirDos) // Direccion
-							->setCellValue('J'.$fila , $orden->id) // referencia
-							->setCellValue('K'.$fila , '1') // Piezas
-							->setCellValue('L'.$fila , $orden->peso) // Peso ref
-							->setCellValue('M'.$fila , 'M') // tipo de envio
-							->setCellValue('N'.$fila , 'Ropa') // Descripcion
-							->setCellValue('O'.$fila , ($orden->total - $orden->envio)); // valor declarado
-					$fila++;
+						->setCellValue('A1', 'Remitente')
+						->setCellValue('A2', 'Persona Contacto');
 						
-				}// orden
-			} // foreach	 
+			 
 					 
 			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 			$objPHPExcel->setActiveSheetIndex(0);

@@ -97,7 +97,7 @@ class MasterData extends CActiveRecord
 		));
 	}
         
-        public static function subirArchivoFtp($xml, $nombre){
+        public static function subirArchivoFtp($xml, $nombre, $idSaved = null){
 
             /*
             URL: ftp.logisfahion.com
@@ -108,6 +108,20 @@ class MasterData extends CActiveRecord
             $ftpServer = "localhost";
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";
+            
+            // si hay que guardar el xml enviado
+            if($idSaved){                
+                if($nombre == "MasterData.xml"){
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';
+                    $xml->asXML($rutaArchivo.$idSaved.".xml");                    
+                }
+                if($nombre == "Inbound.xml"){
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsInbound/';
+                    $xml->asXML($rutaArchivo.$idSaved.".xml");                    
+                }
+            }
+            
+            
             
             $nombreArchivo = $nombre;//"Outbound.xml";
             $archivo = tmpfile();

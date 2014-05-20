@@ -47,6 +47,7 @@ return array (
 	'Approve' => 'Aprobar',
 	'Approved' => 'Aprobados',
 	'availables' => 'disponibles',
+	'Available Balance:'=>'Balance Disponible:',
     'Avaliable for {user}:' => 'Disponible para {user}:',
     'Active Orders' => 'Compras Activas',
     
@@ -99,6 +100,9 @@ return array (
 	'Complete purchase' => 'Completar compra',
 	'Complete the following fields:' => 'Completa los siguientes campos:',
 	'C.I' => 'DNI/NIE',
+	'Contact information succesfully saved'=>'Información adicional guardada.',
+	'Contact information could not been saved'=>'Información adicional no guardada.',
+	
 	'Customize it' => 'Personalízala',
 
 
@@ -328,11 +332,13 @@ return array (
 
 
 	'Tax' => 'Impuesto',
+	'Tax information code'=>'Codigo de Información Fiscal',
 	'The bag is empty' => 'La bolsa está vacia',
 	'The order to <b><{name}</b> has successfully completed' => 'El pedido para <b><{name}</b> se ha realizado con éxito.',
 	'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
 	'To' => 'Hasta',
 	'To1' => 'Para',
+	'To save this information you should fill every field.'=>'Para guardar esta información debes completar todos los campos.',
 	'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
 	'To complete your purchase you must:' => 'Para completar tu comprar debes:',
 	'To approve' => 'Por aprobar',

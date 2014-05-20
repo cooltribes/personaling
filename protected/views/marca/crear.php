@@ -91,13 +91,13 @@ $this->breadcrumbs=array(
                 
           <fieldset>
             <legend> <?php echo Yii::t('contentForm','Datos Adicionales'); ?>: </legend>
+            <p class="muted Italic"><?php echo Yii::t('contentForm','To save this information you should fill every field.') ?></p>
             <div class="control-group"> 
-             
-              <div class="controls">
+             <div class="controls">
               	<?php 
               	
               	
-              	echo $form->textFieldRow($marca,'contacto',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the person to whom you send'))); 
+              	echo $form->textFieldRow($marca,'contacto',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the contact person'))); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -107,7 +107,7 @@ $this->breadcrumbs=array(
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($marca,'cif',array('class'=>'span4','maxlength'=>20,'placeholder'=>Yii::t('contentForm','ID of the person to whom you send'))); 
+              	<?php echo $form->textFieldRow($marca,'cif',array('class'=>'span4','maxlength'=>20,'placeholder'=>Yii::t('contentForm','Tax information code'))); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                

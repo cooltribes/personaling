@@ -332,9 +332,9 @@
           // else
                 ?>                
               </div>
-<!--               <div class="braker_top margin_top_small">
+               <div class="braker_top margin_top_small">
                 <a href="#myModal" role="button" class="btn btn-mini btn-link color9" data-toggle="modal">Ver guia de tallas</a>
-              </div>
+              </div><!--
  -->            </div>
            </div>
              
@@ -537,8 +537,9 @@ $cont=0;
       </ul>
       <p><em>Ahora, debes tomarte las medidas de la siguiente forma: </em></p>
         <div class="row-fluid margin_top_medium margin_bottom_medium">
-          <div class="span4 offset1">
-            <img src="<?php echo  $baseUrl ?>/images/model_guiadetallas.jpg"  alt="Modelo de Guia de Tallas" />      
+          <div class="span4 offset1 modelo">
+            <!--<img src="<?php echo  $baseUrl ?>/images/model_guiadetallas.jpg"  alt="Modelo de Guia de Tallas" />-->      
+            <img src="<?php echo  $baseUrl ?>/images/cuerpo_2.jpg"  alt="Modelo de Guia de Tallas" />      
           </div>
             
         <div class="span7">
@@ -628,7 +629,7 @@ $cont=0;
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <tbody>
               <tr>
-                <th><strong>Europa</strong></th>
+                <th>Europa</th>
                 <td>PT</td>
                 <td>XS</td>
                 <td>S</td>
@@ -638,7 +639,7 @@ $cont=0;
                 <td>XXL</td>
               </tr>
               <tr>
-                <th><strong>Alemania</strong></th>
+                <th>Alemania</th>
                 <td>PT</td>
                 <td>XS</td>
                 <td>S</td>
@@ -648,7 +649,7 @@ $cont=0;
                 <td>XXL</td>
               </tr>
               <tr>
-                <th><strong>Canada</strong></th>
+                <th>Canada</th>
                 <td>PT</td>
                 <td>SS/2</td>
                 <td>XS/4</td>
@@ -658,7 +659,7 @@ $cont=0;
                 <td>XL/12</td>
               </tr>
               <tr>
-                <th><strong>México</strong></th>
+                <th>México</th>
                 <td>PT</td>
                 <td>ECH</td>
                 <td>CH</td>
@@ -668,7 +669,7 @@ $cont=0;
                 <td>EEG</td>
               </tr>
               <tr>
-                <th><strong>Reino Unido</strong></th>
+                <th>Reino Unido</th>
                 <td>PT</td>
                 <td>XS/6</td>
                 <td>S/8</td>
@@ -678,7 +679,7 @@ $cont=0;
                 <td>XXL/16</td>
               </tr>    
               <tr>
-                <th><strong>U.S.A</strong></th>
+                <th>U.S.A.</th>
                 <td>PT</td>
                 <td>XXS/2</td>
                 <td>XS/4</td>
@@ -695,7 +696,7 @@ $cont=0;
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <tbody>
               <tr>
-                <th><strong>Europa</strong></th>
+                <th>Europa</th>
                 <td>32</td>
                 <td>34</td>
                 <td>36</td>
@@ -708,7 +709,7 @@ $cont=0;
                 <td>46</td>
               </tr>
               <tr>
-                <th><strong>Alemania</strong></th>
+                <th>Alemania</th>
                 <td>32</td>
                 <td>34</td>
                 <td>36</td>
@@ -721,7 +722,7 @@ $cont=0;
                 <td>46</td>
               </tr>
               <tr>
-                <th><strong>México</strong></th>
+                <th>México</th>
                 <td>0</td>
                 <td>1</td>
                 <td>3</td>
@@ -734,7 +735,7 @@ $cont=0;
                 <td>13</td>
               </tr>
               <tr>
-                <th><strong>Reino Unido</strong></th>
+                <th>Reino Unido</th>
                 <td>4</td>
                 <td>6</td>
                 <td>8</td>
@@ -747,7 +748,7 @@ $cont=0;
                 <td>18</td>
               </tr>  
               <tr>
-                <th><strong>U.S.A</strong></th>
+                <th>U.S.A.</th>
                 <td>1</td>
                 <td>2</td>
                 <td>4</td>
@@ -767,7 +768,7 @@ $cont=0;
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <tbody>
               <tr>
-                <th><strong>Europa</strong></th>
+                <th>Europa</th>
                 <td>35</td>
                 <td>36</td>
                 <td>37</td>
@@ -780,7 +781,7 @@ $cont=0;
                 <td>44</td>
               </tr>
               <tr>
-                <th><strong>México</strong></th>
+                <th>México</th>
                 <td>2</td>
                 <td>3/</td>
                 <td>4</td>
@@ -793,7 +794,7 @@ $cont=0;
                 <td></td>
               </tr>
               <tr>
-                <th><strong>Reino Unido</strong></th>
+                <th>Reino Unido</th>
                 <td>2</td>
                 <td>3</td>
                 <td>4</td>
@@ -806,7 +807,7 @@ $cont=0;
                 <td></td>
               </tr>  
               <tr>
-                <th><strong>U.S.A</strong></th>
+                <th>U.S.A.</th>
                 <td>5</td>
                 <td>6</td>
                 <td>6/</td>

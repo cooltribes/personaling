@@ -686,6 +686,5 @@ if(!Yii::app()->user->isGuest){
 
 </script>
 
-
 </body>
 </html>

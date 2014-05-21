@@ -1994,6 +1994,7 @@ public function actionReportexls(){
                             //===============================================
                             
                             
+                            
                         } 
                         else if ($row['A'] == "") 
                         { // si está vacia la primera
@@ -2055,7 +2056,7 @@ public function actionReportexls(){
                     rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
                     
                     $mensajeSuccess = "Se ha cargado con éxito el archivo.
-                                Puede ver los detalles de la carga a continuación<br>";
+                                Puede ver los detalles de la carga a continuación.<br>";
                             
                     /*Enviar MasterData a logisFashion y mostrar notificacion*/
                     $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml", $masterDataBD->id);
@@ -2262,7 +2263,8 @@ public function actionReportexls(){
             $erroresTallas = "";
             $erroresColores = "";
 
-            $linea = 1;                    
+            $linea = 1;  
+            //Revisar cada fila de la hoja de excel.
             foreach ($sheet_array as $row) {
 
                 if ($row['A'] != "") {
@@ -2570,7 +2572,5 @@ public function actionReportexls(){
             Yii::app()->end();
 				  
 	}
-        
-        
         
 }

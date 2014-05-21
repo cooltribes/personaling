@@ -1079,7 +1079,10 @@ public function actionCategorias2(){
                 //echo "status".$userTmp->status;
                 //echo "destacado".$userTmp->ps_destacado;
                 //echo "email".$userTmp->email;
-                if ($userTmp->status_register != User::STATUS_REGISTER_ESTILO) {
+                
+               // $perfil_propio = null;
+				//if (isset($_POST['perfil_propio']))
+                if (($userTmp->status_register != User::STATUS_REGISTER_ESTILO) && !isset($_POST['perfil_propio'])) {
                     //echo "entro"; 
                     $_POST['perfil_propio'] = 0;
                     $_POST['reset'] = true;
@@ -1164,8 +1167,8 @@ public function actionCategorias2(){
                     }
 
                     if (isset($_POST['precios']) && $_POST['precios'] != "") {
-                        echo "NELSON";
-                                                Yii::app()->end();
+                       // echo "NELSON";
+                       //                         Yii::app()->end();
                         $limits = explode("-", $_POST['precios']);
 
                         $looks = Look::model()->findAll("status = 2");
@@ -1238,7 +1241,7 @@ public function actionCategorias2(){
                 $looks = Look::model()->findAll($criteria);
                 $status_register_tmp = isset($userTmp->status_register) ? $userTmp->status_register : User::STATUS_REGISTER_ESTILO;
 
-                if ($status_register_tmp != User::STATUS_REGISTER_ESTILO) {
+                if (($status_register_tmp != User::STATUS_REGISTER_ESTILO) && $todosLosLooks) {
                     $rangosArray = Look::model()->getRangosPrecios();
                     $profile = new Profile;
                     $this->render('look', array(

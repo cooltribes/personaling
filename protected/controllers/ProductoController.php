@@ -1099,7 +1099,7 @@ public function actionReportexls(){
                     $_SESSION['searchBox'] = $_POST['query'];
                     unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
-                    $dataProvider = $producto->search();
+                    $dataProvider = $producto->busquedaNombreReferencia($_POST['query']);
             }	
 
             $this->render('admin',

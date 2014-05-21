@@ -99,17 +99,32 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                             'type' => 'warning',
                             'icon' => 'upload white',
                             'label' => 'Cargar MasterData',
+                            'loadingText'=>'Cargando ...',
                             'htmlOptions' => array(
-                                'name' => 'cargar'
+                                'name' => 'cargar',
+                                'id'=>'buttonCargaMD',
                             ),
                         ));
                         ?>
                     </div>
                 </div>
-                <!--<legend>3.- Descargar archivo Excel para generar el Inbound: </legend>-->
-<!--                <div class="well span5">
-                    <div class="">
-                        <?php
+                <legend>3.- Descargar archivo Excel para generar el Inbound: </legend>
+                <div class="well span5">
+                    <div class="row-fluid">
+                        <div class="span7">
+                            <?php 
+                            echo TbHtml::dropDownList("Marca", "",
+                            TbHtml::listData(Marca::model()->findAll(array(
+                                "order" => "nombre",
+                            )), "id", "nombre"),
+                                    array(
+                                        'empty' => "-Seleccione-"
+                                    )
+                                    );
+                            ?>
+                        </div>
+                        <div class="span5">
+                            <?php
                             
                             $this->widget('bootstrap.widgets.TbButton', array(
                                 'buttonType' => 'submit',
@@ -121,10 +136,11 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                                 ),
                             ));
                             ?>
-                        
+                        </div>
                     </div>                    
-                </div>-->
-                <legend>3.- Subir Excel para Inbound: </legend>
+                        
+                </div>
+                <legend>4.- Subir Excel para Inbound: </legend>
                 <div class="well span5">
                     <?php
                     $this->widget('CMultiFileUpload', array(
@@ -142,8 +158,10 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                             'type' => 'warning',
                             'icon' => 'upload white',
                             'label' => 'Cargar Inbound',
+                            'loadingText'=>'Cargando ...',
                             'htmlOptions' => array(
-                                'name' => 'cargarIn'
+                                'name' => 'cargarIn',
+                                'id' => 'buttonCargaIB',
                             ),
                         ));
                         ?>
@@ -158,6 +176,21 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         </div>	
     </div>
 </div>
+<script type="text/javascript">
 
+$('#buttonCargaMD, #buttonCargaIB').click(function(e) {
+    var btn = $(this);
+    var res = confirm("El archivo será cargado.\n¿Está seguro de que ha sido validado ya?");
+    if (res == true) {
+        btn.button('loading'); // call the loading function
+        $("body").addClass("aplicacion-cargando");
+       
+    } else {
+       e.preventDefault();
+    }
+    
+});
+
+</script>
 
 

@@ -21,7 +21,7 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
 </div>
 
 <!-- Mensaje Cookies ON -->
-<div style="margin-top: 12px; padding: .8em; text-align: center; background: #D6D6D6; display: none;" id="cookies_notification">
+<div class="header_notification" id="cookies_notification">
     Esta web utiliza <strong>cookies</strong> para mejorar tu experiencia de usuario y para recopilar información estadística sobre tu navegación. Si continúas navegando, consideramos que aceptas su uso. <a href="<?php echo Yii::app()->baseUrl; ?>/site/politicas_de_cookies" style="color: #0000FF">Más información</a> | <a id="accept_cookies" href="#" style="color: #0000FF">No mostrar de nuevo</a>
     <button id="buttomCookies" type="button" class="close" aria-hidden="true">&times;</button>
 </div>

@@ -386,8 +386,10 @@ public function actionReportexls(){
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
-					if($_POST['accion'] == "normal") // si es el boton principal
-						$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
+					if($_POST['accion'] == "normal"){ // si es el boton principal
+						//$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
+						$this->redirect(array('seo', 'id'=>$id));
+					}
 					
 					if($_POST['accion'] == "nuevo") // guardar y nuevo
 						$this->redirect(array('create'));

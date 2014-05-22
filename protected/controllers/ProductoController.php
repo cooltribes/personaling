@@ -386,14 +386,14 @@ public function actionReportexls(){
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
-					if($_POST['accion'] == "normal") // si es el boton principal
-						$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
-					
-					if($_POST['accion'] == "nuevo") // guardar y nuevo
+					if($_POST['accion'] == "normal"){ // si es el boton principal
+						//$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
+						$this->redirect(array('seo', 'id'=>$id));
+					}else if($_POST['accion'] == "nuevo"){ // guardar y nuevo
 						$this->redirect(array('create'));
-					
-					if($_POST['accion'] == "siguiente") // guardar y siguiente
+					}else if($_POST['accion'] == "siguiente"){ // guardar y siguiente
 						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					}
 					
 				}
 				//	$this->redirect(array('view','id'=>$model->id));
@@ -1099,7 +1099,7 @@ public function actionReportexls(){
                     $_SESSION['searchBox'] = $_POST['query'];
                     unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
-                    $dataProvider = $producto->search();
+                    $dataProvider = $producto->busquedaNombreReferencia($_POST['query']);
             }	
 
             $this->render('admin',

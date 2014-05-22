@@ -711,26 +711,16 @@ $(document).ready(function(){
     $('#buttomCookies').on('click', function(e){
         createCookie('accept_cookies', 'true', 365);
         $('#cookies_notification').hide();
-        //window.location.replace(this.options[this.selectedIndex].value);
     });
 
     $('#accept_cookies').on('click', function(e){
         createCookie('accept_cookies', 'true', 365);
         $('#cookies_notification').hide();
-        //window.location.replace(this.options[this.selectedIndex].value);
     });
 
     $('body').on('click', function(e){
         createCookie('accept_cookies', 'true', 365);
-        console.log('body');
-        //$('#cookies_notification').hide();
-        //window.location.replace(this.options[this.selectedIndex].value);
     });
-
-    /*$('.arrow').on('change', function(e){
-        createCookie('country_value', this.options[this.selectedIndex].value, 7);
-        window.location.replace(this.options[this.selectedIndex].value);
-    });*/
 
     function createCookie(name,value,days) {
         if (days) {

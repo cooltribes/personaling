@@ -182,6 +182,23 @@ class Producto extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	} 
+
+	public function busquedaNombreReferencia($keyword)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('codigo',$keyword,true,'OR');
+		$criteria->compare('nombre',$keyword,true,'OR');
+		//$criteria->addSearchCondition('codigo', $query);
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	} 
+
 	public function busqueda($todos)
 	{
 

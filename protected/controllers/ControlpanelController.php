@@ -74,7 +74,11 @@ class ControlpanelController extends Controller
             $total += $looks[]["total"] = Look::model()->countByAttributes(array("status" => Look::STATUS_APROBADO));
 
             for ($i=0; $i<3;$i++) {
-                $looks[$i]["porcentaje"] = ($looks[$i]["total"] / $total) * 100;
+                if($total > 0){
+                    $looks[$i]["porcentaje"] = ($looks[$i]["total"] / $total) * 100;
+                }else{
+                    $looks[$i]["porcentaje"] = 0;
+                }
             }
             $looks[0]["nombre"] = "Borrador";
             $looks[1]["nombre"] = "Enviados";

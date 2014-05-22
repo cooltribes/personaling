@@ -100,7 +100,7 @@ class MasterData extends CActiveRecord
         public static function subirArchivoFtp($xml, $nombre, $idSaved = null){
 
             /*
-            URL: ftp.logisfahion.com
+            URL: ftp.logisfashion.com
             usuario: personaling@ftp.logisfashion.com
             PAS: Personaling789
              */
@@ -120,8 +120,6 @@ class MasterData extends CActiveRecord
                     $xml->asXML($rutaArchivo.$idSaved.".xml");                    
                 }
             }
-            
-            
             
             $nombreArchivo = $nombre;//"Outbound.xml";
             $archivo = tmpfile();

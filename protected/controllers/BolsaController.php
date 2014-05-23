@@ -2988,7 +2988,7 @@ class BolsaController extends Controller
             $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
-            $message->addTo("operaciones@upsidecorp.ch");
+            $message->addTo("operaciones@personaling.com");
             $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }

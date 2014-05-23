@@ -386,14 +386,14 @@ public function actionReportexls(){
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
-					if($_POST['accion'] == "normal") // si es el boton principal
-						$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
-					
-					if($_POST['accion'] == "nuevo") // guardar y nuevo
+					if($_POST['accion'] == "normal"){ // si es el boton principal
+						//$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
+						$this->redirect(array('seo', 'id'=>$id));
+					}else if($_POST['accion'] == "nuevo"){ // guardar y nuevo
 						$this->redirect(array('create'));
-					
-					if($_POST['accion'] == "siguiente") // guardar y siguiente
+					}else if($_POST['accion'] == "siguiente"){ // guardar y siguiente
 						$this->redirect(array('create','id'=>$_POST['id_sig']));
+					}
 					
 				}
 				//	$this->redirect(array('view','id'=>$model->id));
@@ -1099,7 +1099,7 @@ public function actionReportexls(){
                     $_SESSION['searchBox'] = $_POST['query'];
                     unset($_SESSION["todoPost"]);
                     $producto->nombre = $_POST['query'];
-                    $dataProvider = $producto->search();
+                    $dataProvider = $producto->busquedaNombreReferencia($_POST['query']);
             }	
 
             $this->render('admin',
@@ -1720,11 +1720,16 @@ public function actionReportexls(){
                         Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
                                                     Puede continuar con el siguiente paso.<br><br>
                                                     Este archivo contiene <b>{$resValidacion['nProds']}
-                                                    </b> productos, recuerde no dejar líneas vacías.
-                                                    ");                    
+                                                    </b> productos.");                    
                     }                    
                     
-                    $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar));
+                    $this->render('importar_productos', array(
+                        'tabla' => $tabla,
+                        'total' => $total,
+                        'actualizar' => $actualizar,
+                        'totalInbound' => $totalInbound,
+                        'actualizadosInbound' => $actualizadosInbound,
+                    ));
                     Yii::app()->end();
 
                 //Segundo paso - Subir el Archivo
@@ -1746,7 +1751,13 @@ public function actionReportexls(){
                             } else {
                                 Yii::app()->user->updateSession();
                                 Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
-                                $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
+                                $this->render('importar_productos', array(
+                                    'tabla' => $tabla,
+                                    'total' => $total,
+                                    'actualizar' => $actualizar,
+                                    'totalInbound' => $totalInbound,
+                                    'actualizadosInbound' => $actualizadosInbound,
+                                ));
                                 Yii::app()->end();
                                 
                             }
@@ -1761,7 +1772,13 @@ public function actionReportexls(){
                         // Archivo con errores, eliminar del servidor
                         unlink($nombre . $extension);
                         
-                        $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
+                        $this->render('importar_productos', array(
+                            'tabla' => $tabla,
+                            'total' => $total,
+                            'actualizar' => $actualizar,
+                            'totalInbound' => $totalInbound,
+                            'actualizadosInbound' => $actualizadosInbound,
+                        ));
                         Yii::app()->end();
                     }
                     
@@ -1806,13 +1823,9 @@ public function actionReportexls(){
 
                             // la referencia existe, hay que actualizar los campos
                             $prodExiste = isset($producto);
-
-                            
                             
                             // Marca para actualizar
                             $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
-                            
-                            
                             
                             if($prodExiste){
                                 $actualizar++; //suma un producto actualizado                                
@@ -1994,6 +2007,7 @@ public function actionReportexls(){
                             //===============================================
                             
                             
+                            
                         } 
                         else if ($row['A'] == "") 
                         { // si está vacia la primera
@@ -2055,7 +2069,7 @@ public function actionReportexls(){
                     rename($nombre.$extension, $rutaArchivo."$masterDataBD->id".$extension);
                     
                     $mensajeSuccess = "Se ha cargado con éxito el archivo.
-                                Puede ver los detalles de la carga a continuación<br>";
+                                Puede ver los detalles de la carga a continuación.<br>";
                             
                     /*Enviar MasterData a logisFashion y mostrar notificacion*/
                     $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml", $masterDataBD->id);
@@ -2110,7 +2124,13 @@ public function actionReportexls(){
                             } else {
                                 Yii::app()->user->updateSession();
                                 Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
-                                $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
+                                $this->render('importar_productos', array(
+                                    'tabla' => $tabla,
+                                    'total' => $total,
+                                    'actualizar' => $actualizar,
+                                    'totalInbound' => $totalInbound,
+                                    'actualizadosInbound' => $actualizadosInbound,
+                                ));
                                 Yii::app()->end();                                
                             }
                         }
@@ -2122,7 +2142,13 @@ public function actionReportexls(){
                         // Archivo con errores, eliminar del servidor
                         unlink($nombre . $extension);
                         
-                        $this->render('importar_productos', array('total' => $total, 'actualizar' => $actualizar)); 
+                        $this->render('importar_productos', array(
+                            'tabla' => $tabla,
+                            'total' => $total,
+                            'actualizar' => $actualizar,
+                            'totalInbound' => $totalInbound,
+                            'actualizadosInbound' => $actualizadosInbound,
+                        ));
                         Yii::app()->end();
                     }
                     
@@ -2259,10 +2285,15 @@ public function actionReportexls(){
             $falla = "";
             $erroresMarcas = "";
             $erroresCategorias = "";
+            $erroresCatRepetidas = "";
+            $erroresCatVacias = "";
             $erroresTallas = "";
             $erroresColores = "";
 
-            $linea = 1;                    
+            $linea = 1;
+            $lineaProducto = 0;
+
+            //Revisar cada fila de la hoja de excel.
             foreach ($sheet_array as $row) {
 
                 if ($row['A'] != "") {
@@ -2311,9 +2342,11 @@ public function actionReportexls(){
                     }
 
                     /*si pasa las columnas entonces que revise
-                    Marcas, categorias, tallas y colores.*/
-                          
+                    Marcas, categorias, tallas y colores.*/                          
                     if($linea > 1){
+                        
+                        $categoriasRepetidas = array();
+                        $cantCategorias = 0;
                         
                         //Marcas
                         if (isset($row['C']) && $row['C'] != "") {                        
@@ -2329,23 +2362,40 @@ public function actionReportexls(){
 
                             if (!isset($categoria)) {
                                 $erroresCategorias .= "<li> <b>" . $row['F'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }else{
+                                //si esta repetida
+                                $categoriasRepetidas[] = $categoria->id;
                             }
+                            $cantCategorias++;                        
                         }                    
                         if (isset($row['G']) && $row['G'] != "") {                        
                             $categoria = Categoria::model()->findByAttributes(array("nombre" => $row["G"]));
 
                             if (!isset($categoria)) {
                                 $erroresCategorias .= "<li> <b>" . $row['G'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }else{
+                                //si existe y esta repetida
+                                if (in_array($categoria->id, $categoriasRepetidas)) {
+                                    $erroresCatRepetidas .= "<li> <b>" . $row['G'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                                }
+                                $categoriasRepetidas[] = $categoria->id;
                             }
+                            $cantCategorias++;
                         }                    
                         if (isset($row['H']) && $row['H'] != "") {                        
                             $categoria = Categoria::model()->findByAttributes(array("nombre" => $row["H"]));
 
                             if (!isset($categoria)) {
                                 $erroresCategorias .= "<li> <b>" . $row['H'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }else{
+                               if (in_array($categoria->id, $categoriasRepetidas)) {
+                                    $erroresCatRepetidas .= "<li> <b>" . $row['H'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                                }                                
+                                $categoriasRepetidas[] = $categoria->id;
                             }
+                            $cantCategorias++;
                         }   
-                        
+                                                
                         //tallas
                         if (isset($row['I']) && $row['I'] != "" ) {
                             $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
@@ -2362,48 +2412,70 @@ public function actionReportexls(){
                                 $erroresColores .= "<li> <b>" . $row['J'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }	
                         }
+                        
+                        //la cantidad de categorias
+                        if ($cantCategorias == 0){
+                            $erroresCatVacias .= "<li> Línea <b>" . $linea."</b></li>";
+                        }
                     
+                        //sumar solo si la linea tiene algo
+                        //y si esta por encima de la fila 1 (header)
+                        $lineaProducto++;
                     }
+                    
                 }
 
                 $linea++;
             } 
 
             //Si hubo errores en marcas, cat, tallas, colores
-            if($erroresCategorias!= ""){
-                $erroresCategorias = "Las siguientes Categorías no existen en la plataforma:<br><ul>
+            if($erroresCategorias != ""){
+                $erroresCategorias = "Las siguientes Categorías no existen en la plataforma o están mal escritas:<br><ul>
                                  {$erroresCategorias}
-                                 </ul>";
+                                 </ul><br>";
             }
-            if($erroresMarcas!= ""){
-                $erroresMarcas = "Las siguientes Marcas no existen en la plataforma:<br><ul>
+            if($erroresCatRepetidas != ""){
+                $erroresCatRepetidas = "Las siguientes Categorías están repetidas para el mismo producto:<br><ul>
+                                 {$erroresCatRepetidas}
+                                 </ul><br>";
+            }
+            if($erroresCatVacias != ""){
+                $erroresCatVacias = "Los siguientes productos deben tener al menos una (1) categoría asociada:<br><ul>
+                                 {$erroresCatVacias}
+                                 </ul><br>";
+            }
+            if($erroresMarcas != ""){
+                $erroresMarcas = "Las siguientes Marcas no existen en la plataforma o están mal escritas:<br><ul>
                                  {$erroresMarcas}
                                  </ul><br>";
             }
             if($erroresTallas != ""){
-                $erroresTallas = "Las siguientes Tallas no existen en la plataforma:<br><ul>
+                $erroresTallas = "Las siguientes Tallas no existen en la plataforma o están mal escritas:<br><ul>
                                  {$erroresTallas}
                                  </ul><br>";
             }
             if($erroresColores != ""){
-                $erroresColores = "Los siguientes Colores no existen en la plataforma:<br><ul>
+                $erroresColores = "Los siguientes Colores no existen en la plataforma o están mal escritos:<br><ul>
                                  {$erroresColores}
                                  </ul><br>";
             }
 
-            if($erroresTallas != "" || $erroresColores != "" || $erroresMarcas != ""
-                     || $erroresCategorias != ""){
-
-                $erroresTallas .= $erroresColores . $erroresMarcas . $erroresCategorias;
+                
+            $errores = $erroresTallas .$erroresColores . $erroresMarcas .
+                    $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias;
+            
+            if($errores != ""){
+                
                 Yii::app()->user->updateSession();
-                Yii::app()->user->setFlash('error', $erroresTallas);
+                Yii::app()->user->setFlash('error', $errores);
 
                 return false;                
             } 
             
             return array(
                 "valid"=>true,
-                "nProds"=>$linea-2,
+                "nProds"=>$lineaProducto,
+                "nLineas"=>$linea-2,
                 );            
         }
         
@@ -2425,7 +2497,7 @@ public function actionReportexls(){
                         if ($row['A'] != "SKU")
                             $falla = "SKU";
                         else if ($row['B'] != "Cantidad")
-                            $falla = "Referencia";                        
+                            $falla = "Cantidad";                        
 
                         if ($falla != "") { // algo falló
                             Yii::app()->user->updateSession();
@@ -2452,7 +2524,7 @@ public function actionReportexls(){
                         //Cantidades
                         if (isset($row['B']) && $row['B'] != "") {                        
                             
-                            if (!is_numeric($row['B']) || $row['B'] < 0){
+                            if (!ctype_digit($row['B']) || $row['B'] < 0){
                                 $erroresCantidad .= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         } 
@@ -2500,7 +2572,7 @@ public function actionReportexls(){
 
             // creando el encabezado
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'Sku')
+                ->setCellValue('A1', 'SKU')
                 ->setCellValue('B1', 'Cantidad');
 
             //Poner autosize todas las columnas
@@ -2570,7 +2642,5 @@ public function actionReportexls(){
             Yii::app()->end();
 				  
 	}
-        
-        
         
 }

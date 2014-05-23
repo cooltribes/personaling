@@ -165,6 +165,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 
 			echo $form->hiddenField($profile,$field->varname);
 			echo CHtml::hiddenField('facebook_id', '', array('id'=>'facebook_id', 'name'=>'facebook_id'));
+			echo CHtml::hiddenField('facebook_picture', '', array('id'=>'facebook_picture', 'name'=>'facebook_picture'));
 			//echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 			echo $form->error($profile,$field->varname);
 				 
@@ -260,63 +261,59 @@ function check_fb(){
         if (response.status === 'connected') {
         	// está conectado a facebook y además ya tiene permiso de usar la aplicacion personaling
 				
-			console.log('Welcome!  Fetching your information.... ');
+			//console.log('Welcome!  Fetching your information.... ');
+
+			FB.api('/me/picture?type=large', function(response) {
+                //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+                console.log(response);
+                if(response.data.is_silhouette != 'false'){
+                	$('#facebook_picture').val(response.data.url);
+                }
+            });
                     
-                    FB.api('/me', function(response) {
-                        console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
-                        console.log(response.birthday);
-                        
-                        
-                  	//	$("#registration-form").fadeOut(100,function(){
-	     					
-	     					$('#facebook_id').val(response.id);
-	     					$('#RegistrationForm_password').val('1234');
-	     					$('#RegistrationForm_email').val(response.email); 
-	                        $('#Profile_first_name').val(response.first_name);
-	                        $('#Profile_last_name').val(response.last_name);
-	                        
-	                        var fecha = response.birthday;
-	                        var n = fecha.split("/"); // 0 mes, 1 dia, 2 año
-	                        
-	                        $('#Profile_day').val(n[1]);
-	                        $('#Profile_month').val(n[0]);
-	                        $('#Profile_year').val(n[2]);
-	                        
-	                        if(response.gender == 'male')
-	                        {
-	                        	$('#Profile_sex_1').attr('checked',true);
-	                        }
-	                        
-	                        if(response.gender == 'female')
-	                        {
-	                        	$('#Profile_sex_0').attr('checked',true);
-	                        }
-	     	
-	     				$('#registration-form').submit(); 
-	     	
-	     			//	});
-	
-	    			//	$("#registration-form").fadeIn(100,function(){});         
-                       
-					/*
-                        $.ajax({
-                          url: 'registration', // accion
-                          data: {'facebook_id': response.id, 'email' : response.email, 'birthday': response.birthday, 'gender' : response.gender, 'first': response.first_name, 'last': response.last_name},
-                          type: 'POST',
-                          dataType: 'html',
-                          success: function(data) {
-                              console.log(data);
-                              alert("registró");
-                              //window.location = "http://careerdays.ch/aiesec/user/profile/create";
-                          }
-                        });*/
-                        
-                    }, {scope: 'email,user_birthday'});
+            FB.api('/me', function(response) {
+                //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+                //console.log(response);
+                
+                
+          	//	$("#registration-form").fadeOut(100,function(){
+ 					
+ 					$('#facebook_id').val(response.id);
+ 					$('#RegistrationForm_password').val('1234');
+ 					$('#RegistrationForm_email').val(response.email); 
+                    $('#Profile_first_name').val(response.first_name);
+                    $('#Profile_last_name').val(response.last_name);
+                    
+                    var fecha = response.birthday;
+                    var n = fecha.split("/"); // 0 mes, 1 dia, 2 año
+                    
+                    $('#Profile_day').val(n[1]);
+                    $('#Profile_month').val(n[0]);
+                    $('#Profile_year').val(n[2]);
+                    
+                    if(response.gender == 'male')
+                    {
+                    	$('#Profile_sex_1').attr('checked',true);
+                    }
+                    
+                    if(response.gender == 'female')
+                    {
+                    	$('#Profile_sex_0').attr('checked',true);
+                    }
+
+                    $('#registration-form').submit();
+            }, {scope: 'email,user_birthday'});
         } else {
             FB.login(function(response) {
                 if (response.authResponse) {
                 	//user is already logged in and connected (using information)
                     console.log('Welcome!  Fetching your information.... ');
+
+                    FB.api('/me/picture?type=large', function(response) {
+		                if(response.data.is_silhouette != 'false'){
+		                	$('#facebook_picture').val(response.data.url);
+		                }
+		            });
                     
                     FB.api('/me', function(response) {
                         console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
@@ -347,7 +344,7 @@ function check_fb(){
 	                        	$('#Profile_sex_0').attr('checked',true);
 	                        }
 	     	
-	     				$('#registration-form').submit(); 	
+	     				$('#registration-form').submit();
 	     					
 	     			//	});
 	

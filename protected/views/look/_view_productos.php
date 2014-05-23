@@ -37,10 +37,17 @@ if (isset($categoria_padre) ){
 		* 
 		*/
 		if ($producto->getPrecio(false)!=0){
-			$tallacolores=Preciotallacolor::model()->findAllBySql(
-				'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad AND color_id=:color_id GROUP BY color_id',
-				array(':cantidad'=>1, ':producto_id'=>$producto->id, ':color_id'=>$color)
-			);
+			if($color != ''){
+				$tallacolores=Preciotallacolor::model()->findAllBySql(
+					'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad AND color_id=:color_id GROUP BY color_id',
+					array(':cantidad'=>1, ':producto_id'=>$producto->id, ':color_id'=>$color)
+				);
+			}else{
+				$tallacolores=Preciotallacolor::model()->findAllBySql(
+					'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad GROUP BY color_id',
+					array(':cantidad'=>1, ':producto_id'=>$producto->id)
+				);
+			}
 			foreach($tallacolores as $tallacolor){
 				if ( $producto->getImageUrl($tallacolor->color_id)!="http://placehold.it/180"){
 					?>
@@ -67,6 +74,7 @@ if (isset($categoria_padre) ){
 								//echo $image;
 								echo CHtml::image($producto->getImageUrl($tallacolor->color_id), "Imagen", array("width" => "180", "height" => "180"));
 								//echo $tallacolor->color_id;
+								//echo $producto->id;
 								//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));
 								/*
 								echo CHtml::ajaxLink(

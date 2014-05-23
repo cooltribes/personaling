@@ -149,6 +149,15 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 		
     ';
 	
+	$pagerParams=array(
+            'header'=>'',
+            'prevPageLabel' => Yii::t('contentForm','Previous'),
+            'nextPageLabel' => Yii::t('contentForm','Next'),
+            'firstPageLabel'=> Yii::t('contentForm','First'),
+            'lastPageLabel'=> Yii::t('contentForm','Last'),
+            'htmlOptions'=>array(
+                'class'=>'pagination pagination-right'));
+	
 	$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-looks',
 	    'dataProvider'=>$datalooks,
@@ -156,12 +165,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 	    'afterAjaxUpdate'=>" function(id, data) {
 						} ",
 	    'template'=>$template,
-	    'pager'=>array(
-			'header'=>'Ir a la página: ',
-			'htmlOptions'=>array(
-			'class'=>'yiiPager ',
-			)
-		),
+	    'pager'=>$pagerParams,
 	));   
 	?>
 	
@@ -255,12 +259,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 				
 							} ",
 		    'template'=>$template2,
-		    'pager'=>array(
-				'header'=>'Ir a la página:',
-				'htmlOptions'=>array(
-				'class'=>'yiiPager ',
-				)
-			),
+		    'pager'=>$pagerParams,
 		));   
 	?>
 

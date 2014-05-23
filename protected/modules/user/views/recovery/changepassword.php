@@ -19,8 +19,8 @@ $this->breadcrumbs=array(
       </div>
       <div class="control-group"> <?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
         <div class="controls"> <?php echo CHtml::activePasswordField($form,'verifyPassword', array('class'=>'span5')); ?> </div>
-      </div>
-      <div class="form-actions"> <?php echo CHtml::submitButton(UserModule::t("Save"), array('class'=>'btn btn-danger btn-large')); ?> </div>
+      </div> 
+      <div> <?php echo CHtml::submitButton(UserModule::t("Save"), array('class'=>'btn btn-danger btn-large')); ?> </div>
       <?php echo CHtml::endForm(); ?> </div>
   </div>
   <!-- form --> 

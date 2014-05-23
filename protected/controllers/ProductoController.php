@@ -2497,7 +2497,7 @@ public function actionReportexls(){
                         if ($row['A'] != "SKU")
                             $falla = "SKU";
                         else if ($row['B'] != "Cantidad")
-                            $falla = "Referencia";                        
+                            $falla = "Cantidad";                        
 
                         if ($falla != "") { // algo falló
                             Yii::app()->user->updateSession();
@@ -2524,7 +2524,7 @@ public function actionReportexls(){
                         //Cantidades
                         if (isset($row['B']) && $row['B'] != "") {                        
                             
-                            if (!is_numeric($row['B']) || $row['B'] < 0){
+                            if (!ctype_digit($row['B']) || $row['B'] < 0){
                                 $erroresCantidad .= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         } 

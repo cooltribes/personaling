@@ -7,7 +7,7 @@
 	
      <h2 class="color14 httpError-title">
     	<p><?php echo Yii::t('contentForm','Upss!'); ?></p></h2>
-    	<h3 class="color14 httpError-text"> <?php echo Yii::t('contentForm','Se nos rompió un tacón y no hemos llegado a tiempo a Personaling.com.ve <br/>Discúlpanos pero estaremos temporalmente fuera de servicio. <br/>¡Al volver lo avisaremos en nuestras redes sociales!'); ?>  </h3>
+    	<h3 class="color14 httpError-text" style="width:auto"> <?php echo Yii::t('contentForm','Se nos rompió un tacón y no hemos llegado a tiempo a Personaling.com.ve <br/>Discúlpanos pero estaremos temporalmente fuera de servicio. <br/>¡Al volver lo avisaremos en nuestras redes sociales!'); ?>  </h3>
     	<div class="offset1 margin_bottom_large"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/tacon300x48.png" height="48" alt="Tacon Roto"/>
   	</div>
      <?php /*?><p class="lead">

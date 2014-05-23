@@ -2035,21 +2035,22 @@ public function actionValidar()
             "EAN",
             "Cantidad",
         );
+        $fecha = date("Y-m-d", strtotime($orden->fecha));
+        $fechaNombre = date("YmdHi");
         
-        header("Content-Disposition: attachment; filename=\"Outbound.xls\"");
+        header("Content-Disposition: attachment; filename=\"Outbound$fechaNombre.csv\"");
         header("Content-Type: application/vnd.ms-excel;");
         header("Pragma: no-cache");
         header("Expires: 0");
         $out = fopen("php://output", 'w');
         
         //Crear la primera fila con encabezado.
-        fputcsv($out, $encabezado, "\t");
+        fputcsv($out, $encabezado);
         
         foreach ($productos as $producto) {
             $row = array();
             
-            //albaran y fecha
-            $fecha = date("Y-m-d", strtotime($orden->fecha));
+            //albaran y fecha            
             $row[] = $orden->id;
             $row[] = $fecha;
 
@@ -2088,7 +2089,7 @@ public function actionValidar()
             $row[7] = mb_convert_encoding($row[7], 'UTF-16LE', 'UTF-8');            
             
             //Escribir en el excel
-            fputcsv($out, $row,"\t");
+            fputcsv($out, $row);
             
         }
         

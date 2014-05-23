@@ -159,11 +159,14 @@ function str_lreplace($search, $replace, $subject)
             <?php } ?>
     </div>
     <div class=" margin_bottom_large braker_horz_top_1 ">
-        <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','From Our Magazine'); ?></h3>
+       <!-- <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','From Our Magazine'); ?></h3>-->
         <div class="row posts_list">
             <div class="span12">
-                <div class="thumbnails">
-                    <?php
+                <div class="thumbnails" align="center">
+                	<a href="http://www.personaling.com/magazine"><?php  echo CHtml::image(Yii::app()->getBaseUrl()."/images/magazine_banner.gif", "Imagen", array()); ?></a>
+               <!-- 	
+                	
+                  <?php
 
 $posts_parent = WpPosts::model()->findAllByAttributes(array('post_type'=>'post','post_status'=>'publish'),array('order'=>'post_date DESC'));
 $count = 0;
@@ -182,7 +185,7 @@ foreach($posts_parent as $posts_parent){
 				echo CHtml::link($imghtml, $posts_parent->guid);
               	?>
                             <h3 > <?php echo CHtml::link($posts_parent->post_title, $posts_parent->guid,array('class'=>"show_modal_post" )); ?> </h3>
-                            <!-- /.row --> 
+                          
                         </div>
                     </li>
                     <?php 
@@ -190,7 +193,7 @@ foreach($posts_parent as $posts_parent){
 		if ($count >= 4) 
 			break;
 	}
-?>
+?> -->
                 </div>
             </div>
         </div>

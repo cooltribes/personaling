@@ -20,12 +20,6 @@ Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, perso
     
 </div>
 
-<!-- Mensaje Cookies ON -->
-<div class="header_notification" id="cookies_notification">
-    Esta web utiliza <strong>cookies</strong> para mejorar tu experiencia de usuario y para recopilar información estadística sobre tu navegación. Si continúas navegando, consideramos que aceptas su uso. <a href="<?php echo Yii::app()->baseUrl; ?>/site/politicas_de_cookies" style="color: #0000FF">Más información</a> | <a id="accept_cookies" href="#" style="color: #0000FF">No mostrar de nuevo</a>
-    <button id="buttomCookies" type="button" class="close" aria-hidden="true">&times;</button>
-</div>
-<!-- Mensaje Cookies OFF -->
 <section class="wrapper_home">
     <div id="sliderHome" class="carousel slide">
         <ol class="carousel-indicators">
@@ -101,55 +95,4 @@ $('#sliderHome').carousel({
 $('#buttomCookies').on('click',function(){
     $('.message-cookies').css({display:'none',});
 });
-</script>
-
-<script>
-$(document).ready(function(){
-        var accepted = readCookie('accept_cookies');
-        if(!accepted){
-            $('#cookies_notification').show();
-        }
-    });
-
-    $('#buttomCookies').on('click', function(e){
-        createCookie('accept_cookies', 'true', 365);
-        $('#cookies_notification').hide();
-        //window.location.replace(this.options[this.selectedIndex].value);
-    });
-
-    $('#accept_cookies').on('click', function(e){
-        createCookie('accept_cookies', 'true', 365);
-        $('#cookies_notification').hide();
-        //window.location.replace(this.options[this.selectedIndex].value);
-    });
-
-    /*$('.arrow').on('change', function(e){
-        createCookie('country_value', this.options[this.selectedIndex].value, 7);
-        window.location.replace(this.options[this.selectedIndex].value);
-    });*/
-
-    function createCookie(name,value,days) {
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime()+(days*24*60*60*1000));
-            var expires = "; expires="+date.toGMTString();
-        }
-        else var expires = "";
-        document.cookie = name+"="+value+expires+"; path=/";
-    }
-
-    function readCookie(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for(var i=0;i < ca.length;i++) {
-            var c = ca[i];
-            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-        }
-        return null;
-    }
-
-    function eraseCookie(name) {
-        createCookie(name,"",-1);
-    }
 </script>

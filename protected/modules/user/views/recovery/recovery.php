@@ -20,7 +20,7 @@ $this->breadcrumbs=array(
             <p class="hint"><?php echo UserModule::t("Please enter your login or email addres."); ?></p>
           </div>
         </div>
-        <div class="form-actions"> <?php echo CHtml::submitButton(UserModule::t("Restore"), array('class'=>'btn btn-danger btn-large')); ?> </div>
+        <div> <?php echo CHtml::submitButton(UserModule::t("Restore"), array('class'=>'btn btn-danger btn-large')); ?> </div>
         <?php echo CHtml::endForm(); ?> </div>
       <!-- form --> 
     </section>

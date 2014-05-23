@@ -265,6 +265,15 @@ return array(
                     'mercadopago' => false,
 				                        
                     ),
+                    'clientName'=>'Personaling Enterprise S.L ',
+			'clientIdentification'=>'B66202383',
+			'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
+			'clientCity'=>'Barcelona',
+			'clientZIP'=>'08003',
+			'clientPhone'=>'934 344 634',
+			'clientEmail'=>'info@personaling.com',
+					
+					
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',
 				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado

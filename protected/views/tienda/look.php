@@ -593,6 +593,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <p class="text_align_center">Si ya tienes cuenta accede <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/login/">de manera habitual.</a></p>
     <?php $this->endWidget(); ?>  
 </div>
+<a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
+
 <!-- Modal Registro OFF -->
 
  
@@ -764,6 +766,28 @@ if (isset(Yii::app()->session["modalOn"])) {
             e.preventDefault();
             $('.sub_menu').removeClass('hide');
         });
+        
+        
+        $(window).scroll(function() {
+				if ($(this).scrollTop() > 200&&$(this).scrollTop()+200<$('#wrapper_footer').offset().top) {
+					
+					$('.go-top').fadeIn(600);
+				} else if ($(this).scrollTop() > 200) 
+					
+					$('.go-top').fadeIn(600);
+				
+				 else {
+					$('.go-top').fadeOut(600);
+				}
+
+			});
+			
+			// Animate the scroll to top
+			$('.go-top').click(function(event) {
+				event.preventDefault();
+				
+				$('html, body').animate({scrollTop: 0}, 300);
+			});
 
 
     });
@@ -776,3 +800,8 @@ if (isset(Yii::app()->session["modalOn"])) {
         moveScroller();
     });
 </script>
+
+
+
+
+

@@ -55,6 +55,7 @@ return array (
 	'Balance' => 'Saldo',
 	'Bag' => 'Bolsa',
 	'Back to shop' => 'Regresar a la tienda',
+	'Back to top' => 'Ir arriba',
 	'Best selling items' => 'Prendas más vendidas',
 	'Biography' => 'Bio',
 	'Body shape' => 'Forma de Cuerpo',
@@ -99,7 +100,7 @@ return array (
 	'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
 	'Complete purchase' => 'Completar compra',
 	'Complete the following fields:' => 'Completa los siguientes campos:',
-	'C.I' => 'DNI/NIE',
+	'C.I' => 'DNI/NIF',
 	'Contact information succesfully saved'=>'Información adicional guardada.',
 	'Contact information could not been saved'=>'Información adicional no guardada.',
 	

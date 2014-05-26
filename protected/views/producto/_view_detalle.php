@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
  <?php
   /* @var $this TiendaController */
   $this->breadcrumbs=array(
@@ -866,8 +867,9 @@ $('.imagen_principal').zoom({url: imgZ});
       // primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
       var source = cambio;
     var imgZ = source.replace(".","_orig.");
-    
+      imgZ = imgZ.replace("png", "jpg");
       $('.imagen_principal').zoom({url: imgZ});
+      
           
         // cambio de la principal   
       $("#principal").fadeOut("slow",function(){
@@ -963,7 +965,8 @@ $('.imagen_principal').zoom({url: imgZ});
                 objImage = new Image();
                 var source = ''+base +valor[0];
                 var imgZ = source.replace(".","_orig.");
-              //  alert(imgZ);      
+              //  alert(imgZ);    
+                imgZ = imgZ.replace("png", "jpg");  
               objImage.src = imgZ;
               
                         
@@ -981,6 +984,8 @@ $('.imagen_principal').zoom({url: imgZ});
               
                 var source = $('#principal').attr("src");
                 var imgZ = source.replace(".","_orig.");
+                  imgZ = imgZ.replace("png", "jpg");
+                    imgZ = imgZ.replace("png", "jpg");
                 $('.imagen_principal').zoom();
               
             });
@@ -1070,6 +1075,7 @@ $('.imagen_principal').zoom({url: imgZ});
   $(".imagen_principal").hover(function(){
     var source = $('#principal').attr("src");
     var imgZ = source.replace(".","_orig.");
+      imgZ = imgZ.replace("png", "jpg");
     $('.imagen_principal').zoom({url: imgZ});     
   });
   

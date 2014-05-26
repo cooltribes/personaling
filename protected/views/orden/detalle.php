@@ -12,7 +12,8 @@ if($orden->getFlete())
 //echo $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total."<br/>"."17 - 1 - 0.4 - 3290";
 $usuario = User::model()->findByPk($orden->user_id); 
 
-$tracking=$orden->getTracking();
+$tracking=$orden->getTrackingInfo();
+
 
 
 
@@ -620,13 +621,11 @@ $tracking=$orden->getTracking();
                                         $foto = "";
                                         $label = $color->valor;
                                         //$label = "No hay foto</br>para el color</br> ".$color->valor;
-                                        if(count($imagen)>0){
+                                        /*if(count($imagen)>0){
                                                 echo count($imagen);	
                                                 foreach($imagen as $img) {
                                                         if($contador==0){		 
-                                                                $foto = CHtml::image(Yii::app()->baseUrl . 
-                                                                        str_replace(".","_thumb.",$img->url), "Imagen ", 
-                                                                        array("width" => "70", "height" => "70"));							
+                                                              							
                                                                 $contador++;
                                                         }
                                                 }					   	
@@ -635,8 +634,15 @@ $tracking=$orden->getTracking();
                                         }else{
                                             $foto = "";//"<img src='http://placehold.it/70x70' >";
                                             $label = "No hay foto</br>para el color</br> ".$color->valor;
-                                        }
-
+                                        }*/
+                                        if(!is_null($ptclk->imagen))
+											  $foto = CHtml::image(Yii::app()->baseUrl . 
+                                                                        str_replace(".","_thumb.",$ptclk->imagen['url']), "Imagen ", 
+                                                                        array("width" => "70", "height" => "70"));
+										else {
+											$foto="No hay foto</br>para el color";
+										}
+										
 
                                         echo("<tr>");
                                         //echo("<td>".$prdlk->codigo."</td>"); // nombre
@@ -680,29 +686,20 @@ $tracking=$orden->getTracking();
                                 $foto = "";
                                 $label = $color->valor;
                                 //$label = "No hay foto</br>para el color</br> ".$color->valor;
-                                if(count($imagen)>0){
-					foreach($imagen as $img) {
-						if($contador==0){		 
-							$foto = CHtml::image(Yii::app()->baseUrl . 
-                                                                str_replace(".","_thumb.",$img->url), "Imagen ", 
-                                                                array("width" => "70", "height" => "70","class"=>"bg_color3"));							
-							$contador++;
-						}
-					}					  	
-					
-				
-				}else{
-                                    $foto = "<img src='http://placehold.it/70x70' >";
-                                    $label = "No hay foto</br>para el color</br> ".$color->valor;
-                                    
-                                    
-                                }
+                                 if(!is_null($ptc->imagen))
+											  {$foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
+												 
+											  }
+								else {
+											$foto="No hay foto</br>para el color";
+								} 
+                            
                                 
 				echo("<tr>");
 //				echo("<td>".$indiv->codigo."</td>");// Referencia
 //				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
 				/*Datos resumidos + foto*/
-				echo("<td style='text-align:center'><div>".$label."</div></td>");
+				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
                                 echo('<td style="vertical-align: middle">
                                         <b>Referencia:</b> '.$indiv->codigo.
                                         "</pre><br><b>Nombre de la Prenda:</b> ".

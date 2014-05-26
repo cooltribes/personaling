@@ -302,16 +302,16 @@ else
          <table width="100%" border="0" class="table table-bordered table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Ventas Totales</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($sumatoria); ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($sumatoria)." ".Yii::t('contentForm','currSym'); ?> </td>
             </tr>
             
             <tr>
               <td><strong> Promedio de Ventas</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($promedio); ?> Bs / Venta.</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($promedio)." ".Yii::t('contentForm','currSym'); ?> / Venta.</td>
             </tr>
             <tr>
               <td><strong>Ordenes por enviar, enviadas y recibidas</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($ordenesValidas); ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($ordenesValidas)." ".Yii::t('contentForm','currSym'); ?></td>
             </tr>
             <tr>
               <td><strong>Numero de Usuarios registrados</strong>:</td>

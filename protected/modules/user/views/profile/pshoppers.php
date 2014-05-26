@@ -1,9 +1,3 @@
-<?php
-$this->pageTitle = 'Looks';
-Yii::app()->clientScript->registerMetaTag('Personaling | Tu primera shopping experience única y...repetible', 'title', null, null, null);
-Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion', 'description', null, null, null);
-Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, looks, asesoría ropa personalizada, moda, fashion bloggers, personal shopper gratis', 'keywords', null, null, null);
-?>
 <div class="container">
   <div class="page-header">
     <h1>Nuestros Personal Shoppers</h1>  

@@ -1,4 +1,6 @@
 <?php
+// Lib para conectar con el API de MailChimp
+include("MailChimp.php");
 
 class ProfileController extends Controller
 {
@@ -792,16 +794,10 @@ class ProfileController extends Controller
 				/*if(isset($_POST['Profile']['ciudad'])){
 					//API key para lista de Personaling en Mailchimp
                     $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
-                    $result = $MailChimp->call('lists/subscribe', array(
+                    $result = $MailChimp->call('lists/update-member', array(
                         'id' => 'e5d30a0894',
-                        'email' => array('email' => $_POST['RegistrationForm']['email']),
-                        'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name'], 'GROUPINGS' => $group),
-                        'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],
-                        'mc_language' => 'es',
-                        'update_existing' => true,
-                        'replace_interests' => false,
-                        'double_optin' => false,
-                        'send_welcome' => false,
+                        'email' => array('email' => $model->email),
+                        'merge_vars' => array('CITY' => $_POST['Profile']['ciudad']),
                     ));
 				}*/
 				//$this->redirect(array('/user/profile'));

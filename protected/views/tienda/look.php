@@ -1,4 +1,10 @@
 <?php
+$this->pageTitle = 'Looks';
+Yii::app()->clientScript->registerMetaTag('Looks', 'title', null, null, null);
+Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion bloggers y personal shoppers', 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, looks, asesoría ropa personalizada, moda, fashion bloggers, personal shopper gratis', 'keywords', null, null, null);
+?>
+<?php
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
     var fb_param = {};

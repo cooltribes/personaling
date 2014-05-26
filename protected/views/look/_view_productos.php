@@ -37,7 +37,7 @@ if (isset($categoria_padre) ){
 		* 
 		*/
 		if ($producto->getPrecio(false)!=0){
-			if($color != ''){
+			if(isset($color) && $color != ''){
 				$tallacolores=Preciotallacolor::model()->findAllBySql(
 					'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad AND color_id=:color_id GROUP BY color_id',
 					array(':cantidad'=>1, ':producto_id'=>$producto->id, ':color_id'=>$color)

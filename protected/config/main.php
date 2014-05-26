@@ -157,6 +157,8 @@ return array(
 			'rules'=>array(
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
+				'looks-personalizados'=>'tienda/look',
+				'tienda-ropa-personalizada'=>'tienda/index',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

@@ -3,11 +3,26 @@
 
 /*
  * TIPO DE PAGO: 
+ * -(En el modelo Detalle)-
  * 1 - Deposito / Transf
  * 2 - TDC
  * 3 - Balance
  * 4 - Banking Card (Aztive)
  * 5 - PayPal (Aztive)
+ * 
+ * -(En la pagina de selección de pago)-
+     tipopago 1: transferencia
+     tipopago 2: Tarjeta credito
+     tipopago 3: puntos o tarjeta de regalo 
+     tipopago 4: MercadoPago
+     tipopago 5: Tarjeta Aztive
+     tipopago 6: PayPal
+     tipopago 7: Saldo
+ * 
+ * -(En la API de Aztive)
+ * 8 - Banking Card
+ * 5 - PayPal.
+ * 
  */
 /**
  * This is the model class for table "{{detalle}}".

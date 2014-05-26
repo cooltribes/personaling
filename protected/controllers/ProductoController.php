@@ -1324,44 +1324,41 @@ public function actionReportexls(){
  */
 	public function actionDetalle()
 	{
-		if(isset($_GET['alias']))
-		{
-			$seo = Seo::model()->findByAttributes(array('urlAmigable'=>$_GET['alias']));
-//			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
-			$producto = Producto::model()->noeliminados()->findByPk($seo->tbl_producto_id);
-		}
-		else
-		{
-//			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
-			$producto = Producto::model()->noeliminados()->findByPk($_GET['id']);
-			$seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
-		}				
-			
-		$contador = $producto->view_counter + 1;
+            if (isset($_GET['alias'])) {
+                $seo = Seo::model()->findByAttributes(array('urlAmigable' => $_GET['alias']));
+    //			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
+                $producto = Producto::model()->noeliminados()->findByPk($seo->tbl_producto_id);
+            } else {
+    //			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
+                $producto = Producto::model()->noeliminados()->findByPk($_GET['id']);
+                $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
+            }
 
-		Producto::model()->updateByPk($producto->id, array(
-					'view_counter' => $contador
-					));
+            $contador = $producto->view_counter + 1;
 
-		if($seo){
-			$this->pageDesc = $seo->mDescripcion;
-			$this->pageTitle = 'Personaling - '.$seo->mTitulo;
-			$this->keywords = $seo->pClave;
-		}else{
-    		$this->pageDesc = $producto->descripcion;
-			$this->pageTitle = 'Personaling - '.$producto->nombre;
-    	}
-		
-		$this->display_seo();
-		$view = new ProductoView;
-		$view->producto_id = $producto->id;
-		$view->user_id = Yii::app()->user->id;
-		
-		if (!$view->save())
-			Yii::trace('ProductoController.php:946, Error:'.print_r($view->getErrors(), true), 'registro');
-		
-		$this->render('_view_detalle',array('producto'=>$producto));
-	}
+            Producto::model()->updateByPk($producto->id, array(
+                'view_counter' => $contador
+            ));
+
+            if ($seo) {
+                $this->pageDesc = $seo->mDescripcion;
+                $this->pageTitle = 'Personaling - ' . $seo->mTitulo;
+                $this->keywords = $seo->pClave;
+            } else {
+                $this->pageDesc = $producto->descripcion;
+                $this->pageTitle = 'Personaling - ' . $producto->nombre;
+            }
+
+            $this->display_seo();
+            $view = new ProductoView;
+            $view->producto_id = $producto->id;
+            $view->user_id = Yii::app()->user->id;
+
+            if (!$view->save())
+                Yii::trace('ProductoController.php:946, Error:' . print_r($view->getErrors(), true), 'registro');
+
+            $this->render('_view_detalle', array('producto' => $producto));
+        }
 	
 	/**
  * Consigue las tallas al presionar un color
@@ -1793,6 +1790,7 @@ public function actionReportexls(){
                     // Si pasa la validacion
                     $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 
+                    //Esto no se pa que es
                     $anterior;
                     $pr_id;                   
                     /*
@@ -1808,6 +1806,8 @@ public function actionReportexls(){
                         
                         if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
                             
+                            //Modificaciones a las columnas
+                            //antes de procesarlas                            
                             //Transformar los datos numericos: Peso, costo y Precio
                             $row['K'] = str_replace(",", ".", $row['K']);
                             $row['L'] = str_replace(",", ".", $row['L']);
@@ -2179,6 +2179,10 @@ public function actionReportexls(){
                     $fila = 1;
                     $totalCantidades = 0;
                     foreach ($sheetArray as $row){
+                        
+                        //Modificaciones a las columnas
+                        //antes de procesarlas
+                        $row['B'] = strval($row['B']);
                         
                         $rSku = $row['A'];
                         $rCant = $row['B'];
@@ -2576,21 +2580,11 @@ public function actionReportexls(){
                         }                    
                         //Cantidades
                         if (isset($row['B']) && $row['B'] != "") {                        
-                            
+                            $row['B'] = strval($row['B']);
                             if (!ctype_digit($row['B']) || $row['B'] < 0){
                                 $erroresCantidad .= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         } 
-//                        echo "<pre>";
-//                        print_r($row);
-//                        echo "</pre><br>";
-//                        
-//                        if(ctype_digit($row['B'])){
-//                            echo "Numero";
-//                        }else{
-//                            echo "noNumero";
-//                            
-//                        }
 
                     }
                 }
@@ -2598,7 +2592,6 @@ public function actionReportexls(){
                 $linea++;
             } 
 
-//            Yii::app()->end();
             //Si hubo errores en marcas, cat, tallas, colores
             if($erroresSKU!= ""){
                 $erroresSKU = "Los siguientes SKU no existen en la plataforma:<br><ul>

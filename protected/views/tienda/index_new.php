@@ -1,3 +1,9 @@
+<?php
+$this->pageTitle = 'Tienda';
+Yii::app()->clientScript->registerMetaTag('Tienda', 'title', null, null, null);
+Yii::app()->clientScript->registerMetaTag('La primera shopping experience con las mejores marcas de ropa y complementos.', 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, moda, tienda de ropa online, marcas de ropa, ropa de mujer, venta de ropa online', 'keywords', null, null, null);
+?>
 <?php 
 	$this->breadcrumbs=array(
 	'Tienda',

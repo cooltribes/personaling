@@ -1068,8 +1068,6 @@ public function actionCategorias2(){
 	}
 
 	public function actionLook(){ 
-           	
-            
 		
             $userTmp = User::model()->findByPk(Yii::app()->user->id);
             $todosLosLooks = false;

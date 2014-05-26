@@ -178,7 +178,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 </div>
 <script type="text/javascript">
 
-$('#buttonCargaMD, #buttonCargaIB').click(function(e) {
+$('#buttonCargaMD').click(function(e) {
     var btn = $(this);
     var res = confirm("El archivo será cargado.\n¿Está seguro de que ha sido validado ya?");
     if (res == true) {
@@ -190,6 +190,21 @@ $('#buttonCargaMD, #buttonCargaIB').click(function(e) {
     }
     
 });
+
+$('#buttonCargaIB').click(function(e) {
+    var btn = $(this);
+    var res = confirm("El archivo será cargado.\n¿Está seguro de que no contiene errores?");
+    if (res == true) {
+        btn.button('loading'); // call the loading function
+        $("body").addClass("aplicacion-cargando");
+       
+    } else {
+       e.preventDefault();
+    }
+    
+});
+
+
 
 </script>
 

@@ -1701,7 +1701,7 @@ public function actionReportexls(){
                     
                     if (isset($archivo) && count($archivo) > 0) {
                         foreach ($archivo as $arc => $xls) {
-                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsValidar/' . "Temporal";//date('d-m-Y-H:i:s', strtotime('now'));
+                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsMasterData/' . "Temporal";//date('d-m-Y-H:i:s', strtotime('now'));
                             $extension = '.' . $xls->extensionName;                     
 
                             if ($xls->saveAs($nombre . $extension)) {
@@ -1709,6 +1709,14 @@ public function actionReportexls(){
                             } else {
                                 Yii::app()->user->updateSession();
                                 Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                                $this->render('importar_productos', array(
+                                    'tabla' => $tabla,
+                                    'total' => $total,
+                                    'actualizar' => $actualizar,
+                                    'totalInbound' => $totalInbound,
+                                    'actualizadosInbound' => $actualizadosInbound,
+                                ));
+                                Yii::app()->end();
                             }
                         }
                     }                    
@@ -1799,6 +1807,11 @@ public function actionReportexls(){
                     foreach ($sheet_array as $row) {
                         
                         if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
+                            
+                            //Transformar los datos numericos: Peso, costo y Precio
+                            $row['K'] = str_replace(",", ".", $row['K']);
+                            $row['L'] = str_replace(",", ".", $row['L']);
+                            $row['M'] = str_replace(",", ".", $row['M']); 
                             
                             $rSku = $row['A'];
                             $rRef = $row['B'];
@@ -2071,19 +2084,18 @@ public function actionReportexls(){
                     $mensajeSuccess = "Se ha cargado con éxito el archivo.
                                 Puede ver los detalles de la carga a continuación.<br>";
                             
-                    /*Enviar MasterData a logisFashion y mostrar notificacion*/
-                    $subido = MasterData::subirArchivoFtp($xml, "MasterData.xml", $masterDataBD->id);
+                    /*Enviar MasterData a logisFashion guardar respaldo del xml
+                     *  y mostrar notificacion*/
+                    $subido = MasterData::subirArchivoFtp($xml, 1, $masterDataBD->id);
                     $mensajeLF = "El archivo <b>MasterData.xml</b> se ha enviado
                         satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
-                    $flash = "success";
 
                     Yii::app()->user->updateSession();
                     //Si hubo error conectandose al ftp logisfashion
                     if(!$subido){
-                        $flash = "error";
                         $mensajeLF = "Ha ocurrido un error enviando el
                             archivo <b>MasterData.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
-                        Yii::app()->user->setFlash($flash, $mensajeLF);                                   
+                        Yii::app()->user->setFlash("error", $mensajeLF);                                   
                         $mensajeLF = "";
 
                     }
@@ -2212,25 +2224,24 @@ public function actionReportexls(){
                     
                    //Agregar el codigo en el XML
                     $inbound->Albaran = $inboundRow->id;
-                   //Cambiar nombre al archivo xls                            
+                   //Cambiar nombre al archivo Excel                           
                     rename($nombre.$extension, $rutaArchivo."$inboundRow->id".$extension);
                    
                     $mensajeSuccess = "Se ha cargado con éxito el archivo.
                                 Puede ver los detalles de la carga a continuación<br>";
                             
-                    /*Enviar MasterData a logisFashion y mostrar notificacion*/
-                    $subido = MasterData::subirArchivoFtp($xml, "Inbound.xml", $inboundRow->id);
+                    /*Enviar Inbound a logisFashion, guardar respaldo del xml
+                     *  y mostrar notificacion*/
+                    $subido = MasterData::subirArchivoFtp($xml, 2, $inboundRow->id);
                     $mensajeLF = "El archivo <b>Inbound.xml</b> se ha enviado
-                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
-                    $flash = "success";
+                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";                    
 
                     Yii::app()->user->updateSession();
                     //Si hubo error conectandose al ftp logisfashion
                     if(!$subido){
-                        $flash = "error";
                         $mensajeLF = "Ha ocurrido un error enviando el
                             archivo <b>Inbound.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
-                        Yii::app()->user->setFlash($flash, $mensajeLF);                                   
+                        Yii::app()->user->setFlash("error", $mensajeLF);                                   
                         $mensajeLF = "";
 
                     }
@@ -2289,6 +2300,10 @@ public function actionReportexls(){
             $erroresCatVacias = "";
             $erroresTallas = "";
             $erroresColores = "";
+            $erroresPeso = "";
+            $erroresCosto = "";
+            $erroresPrecio = "";
+            
 
             $linea = 1;
             $lineaProducto = 0;
@@ -2348,6 +2363,23 @@ public function actionReportexls(){
                         $categoriasRepetidas = array();
                         $cantCategorias = 0;
                         
+                        $row['K'] = str_replace(",", ".", $row['K']);
+                        $row['L'] = str_replace(",", ".", $row['L']);
+                        $row['M'] = str_replace(",", ".", $row['M']);                        
+                        
+                        //Peso
+                        if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
+                            $erroresPeso = "<li> <b>" . $row['K'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                        }
+                        //Costo
+                        if(isset($row['L']) && $row['L'] != "" && !is_numeric($row['L'])){
+                            $erroresCosto = "<li> <b>" . $row['L'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                        }
+                        //Precio
+                        if(isset($row['M']) && $row['M'] != "" && !is_numeric($row['M'])){
+                            $erroresPrecio = "<li> <b>" . $row['M'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                        }
+
                         //Marcas
                         if (isset($row['C']) && $row['C'] != "") {                        
                             $marca = Marca::model()->findByAttributes(array("nombre" => $row["C"]));
@@ -2356,6 +2388,7 @@ public function actionReportexls(){
                                 $erroresMarcas .= "<li> <b>" . $row['C'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         }                    
+                        
                         //Categorias
                         if (isset($row['F']) && $row['F'] != "") {                        
                             $categoria = Categoria::model()->findByAttributes(array("nombre" => $row["F"]));
@@ -2404,6 +2437,7 @@ public function actionReportexls(){
                                 $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         }
+                        
                         //colores
                         if (isset($row['J']) && $row['J'] != "") {
                             $color = Color::model()->findByAttributes(array('valor' => $row['J']));
@@ -2426,7 +2460,8 @@ public function actionReportexls(){
                 }
 
                 $linea++;
-            } 
+            }
+            
 
             //Si hubo errores en marcas, cat, tallas, colores
             if($erroresCategorias != ""){
@@ -2459,10 +2494,28 @@ public function actionReportexls(){
                                  {$erroresColores}
                                  </ul><br>";
             }
+            
+            //Errores numericos
+            if($erroresPeso != ""){
+                $erroresPeso = "Los siguientes Pesos están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+                                 {$erroresPeso}
+                                 </ul><br>";
+            }
+            if($erroresCosto != ""){
+                $erroresCosto = "Los siguientes Costos están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+                                 {$erroresCosto}
+                                 </ul><br>";
+            }
+            if($erroresPrecio != ""){
+                $erroresPrecio = "Los siguientes Precios están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+                                 {$erroresPrecio}
+                                 </ul><br>";
+            }
 
                 
             $errores = $erroresTallas .$erroresColores . $erroresMarcas .
-                    $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias;
+                    $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias.
+                    $erroresPrecio . $erroresCosto . $erroresPeso;
             
             if($errores != ""){
                 
@@ -2528,13 +2581,24 @@ public function actionReportexls(){
                                 $erroresCantidad .= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         } 
-                    
+//                        echo "<pre>";
+//                        print_r($row);
+//                        echo "</pre><br>";
+//                        
+//                        if(ctype_digit($row['B'])){
+//                            echo "Numero";
+//                        }else{
+//                            echo "noNumero";
+//                            
+//                        }
+
                     }
                 }
 
                 $linea++;
             } 
 
+//            Yii::app()->end();
             //Si hubo errores en marcas, cat, tallas, colores
             if($erroresSKU!= ""){
                 $erroresSKU = "Los siguientes SKU no existen en la plataforma:<br><ul>

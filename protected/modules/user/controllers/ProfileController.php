@@ -788,6 +788,22 @@ class ProfileController extends Controller
 				if ($profile->save()){
                 Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+
+				/*if(isset($_POST['Profile']['ciudad'])){
+					//API key para lista de Personaling en Mailchimp
+                    $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
+                    $result = $MailChimp->call('lists/subscribe', array(
+                        'id' => 'e5d30a0894',
+                        'email' => array('email' => $_POST['RegistrationForm']['email']),
+                        'merge_vars' => array('FNAME' => $_POST['Profile']['first_name'], 'LNAME' => $_POST['Profile']['last_name'], 'GROUPINGS' => $group),
+                        'birthday' => $_POST['Profile']['month'] . '/' . $_POST['Profile']['year'],
+                        'mc_language' => 'es',
+                        'update_existing' => true,
+                        'replace_interests' => false,
+                        'double_optin' => false,
+                        'send_welcome' => false,
+                    ));
+				}*/
 				//$this->redirect(array('/user/profile'));
 				} else {
 					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
@@ -802,7 +818,7 @@ class ProfileController extends Controller
 		));
 	}
 
-	/**
+	/*
 	Edita los campos del personal Shopper
 	 */
 	public function actionEditShopper()

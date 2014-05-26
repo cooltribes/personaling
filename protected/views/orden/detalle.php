@@ -14,13 +14,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
 $tracking=$orden->getTracking();
 
-
-
 ?>
-
-
-
-
 
 <div class="container margin_top">
 			<?php if(Yii::app()->user->hasFlash('success')){?>

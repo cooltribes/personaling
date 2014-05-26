@@ -55,6 +55,7 @@ return array (
 	'Balance' => 'Saldo',
 	'Bag' => 'Bolsa',
 	'Back to shop' => 'Regresar a la tienda',
+	'Back to top' => 'Ir arriba',
 	'Best selling items' => 'Prendas más vendidas',
 	'Biography' => 'Bio',
 	'Body shape' => 'Forma de Cuerpo',

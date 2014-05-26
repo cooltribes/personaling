@@ -734,7 +734,7 @@ class BolsaController extends Controller
                         Yii::app()->user->setFlash('error',Yii::t("contentForm", "¡La sesión ha expirado, intenta tu compra nuevamente!"));                              
                         $this->redirect(array('/user/login'));                        
                     }
-                    if(!isset(Yii::app()->session['login']))
+                    if(!isset(Yii::app()->session['login'])&&!UserModule::isAdmin())
 						 $this->redirect(array('/bolsa/compra'));
 					
 					
@@ -2613,14 +2613,8 @@ class BolsaController extends Controller
                        
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             $op = new AzPay();
-//            echo "NELSON";
-//            Yii::app()->end();
-            if ($op->validateResponseData($_GET)) {                                       
-                
-//                echo "<pre>";
-//                print_r(Yii::app()->getSession());
-//                echo "</pre><br>";
-//                Yii::app()->end();
+            
+            if ($op->validateResponseData($_GET)) {                                                       
 
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
                 
@@ -2633,7 +2627,7 @@ class BolsaController extends Controller
                     
                 }else if($cData["src"] == 1) //si es de compra normal
                 {
-                    $this->compraAztive($_GET);                
+                    $this->compraAztive($_GET['onepay_authorization_code']);                
                 }
                   
 
@@ -2729,7 +2723,7 @@ class BolsaController extends Controller
         /* Crear la orden, los pagos y registrar el pedido
          * cuando fue hecho con algún método de Aztive
          */
-        public function compraAztive($datosCompra){            
+        public function compraAztive($codigoTransaccion){            
            
             $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
@@ -2757,7 +2751,7 @@ class BolsaController extends Controller
             $orden = $this->crearOrden($bolsa, $userId);
             
             /*Crear el detalle de pago*/
-            $this->crearDetallePago($orden, $usuario, $datosCompra['onepay_authorization_code']);
+            $this->crearDetallePago($orden, $usuario, $codigoTransaccion);
             
             /*Revisar si uso balance en la compra*/
             $this->usarBalance($orden, $usuario);
@@ -3079,13 +3073,21 @@ class BolsaController extends Controller
                 //Agregar la cantidad vendida.                
                 $item->addChild("Cantidad", "{$producto->cantidad}");                
                 
-            }
-            //Header('Content-type: text/xml');
-            //print($xml->asXML());
+            }            
 
-            $subido = MasterData::subirArchivoFtp($xml, "Outbound.xml");
-            
-            
+            //Enviar Outbound a LF y guardarlo en local para respaldo
+            $subido = MasterData::subirArchivoFtp($xml, 3, $orden->id);
+
+            Yii::app()->user->updateSession();
+            //Si hubo error conectandose al ftp logisfashion
+            if(!$subido){
+                $mensajeLF = "Ha ocurrido un error enviando el
+                    archivo <b>MasterData.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
+                Yii::app()->user->setFlash("error", $mensajeLF);                                   
+                $mensajeLF = "";
+
+            }
+            Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF); 
             
         }
         

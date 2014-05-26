@@ -102,8 +102,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
           <?php
 
-            $productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-            // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+            $detalleDePago = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 
             if($orden->estado != 1 && $orden->estado != 5){
 
@@ -119,7 +118,7 @@ $usuario = User::model()->findByPk($orden->user_id);
                       </tr>
                   ");
 
-            foreach($productoBolsa as $detalle){
+            foreach($detalleDePago as $detalle){
 
                 echo("<tr>");
 
@@ -139,19 +138,26 @@ $usuario = User::model()->findByPk($orden->user_id);
                         if($detalle->estado == 1) // si fue aceptado
                         {
 
-                            echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+//                            echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+//
+//                            if($detalle->tipo_pago == 1)
+//                                echo("<td>".Yii::t('contentForm','Deposit or Transference')."</td>");
+//                            if($detalle->tipo_pago == 2)
+//                                echo("<td>".Yii::t('contentForm','Credit Card')."</td>");
+// 						if($detalle->tipo_pago == 3)
+//							echo("<td>".Yii::t('contentForm','Balance')."</td>");						
+//						if($detalle->tipo_pago == 4)
+//							echo("<td>".Yii::t('contentForm','MercadoPago')."</td>");	                               //hacer los demas tipos
+//
+//                            echo("<td>".$detalle->nTransferencia."</td>");
+//                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</td>");
+                            
+                             echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
+                            echo("<td>".$detalle->getTipoPago()."</td>");
 
-                            if($detalle->tipo_pago == 1)
-                                echo("<td>".Yii::t('contentForm','Deposit or Transference')."</td>");
-                            if($detalle->tipo_pago == 2)
-                                echo("<td>".Yii::t('contentForm','Credit Card')."</td>");
- 						if($detalle->tipo_pago == 3)
-							echo("<td>".Yii::t('contentForm','Balance')."</td>");						
-						if($detalle->tipo_pago == 4)
-							echo("<td>".Yii::t('contentForm','MercadoPago')."</td>");	                               //hacer los demas tipos
-
-                            echo("<td>".$detalle->nTransferencia."</td>");
-                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</td>");
+                            echo("<td>".$detalle->nTransferencia."</td>");	
+                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
+                            
 
                         }
                     else if($detalle->estado == 2) // rechazado

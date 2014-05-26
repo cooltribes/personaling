@@ -97,7 +97,7 @@ class MasterData extends CActiveRecord
 		));
 	}
         
-        public static function subirArchivoFtp($xml, $nombre, $idSaved = null){
+        public static function subirArchivoFtp($docXml, $tipoArchivo, $idSaved){
 
             /*
             URL: ftp.logisfashion.com
@@ -109,23 +109,48 @@ class MasterData extends CActiveRecord
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";
             
-            // si hay que guardar el xml enviado
-            if($idSaved){                
-                if($nombre == "MasterData.xml"){
-                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';
-                    $xml->asXML($rutaArchivo.$idSaved.".xml");                    
-                }
-                if($nombre == "Inbound.xml"){
-                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsInbound/';
-                    $xml->asXML($rutaArchivo.$idSaved.".xml");                    
-                }
+            /*Tipos de archivo
+             * 1: MasterData
+             * 2: Inbound
+             * 3: Outbound
+             */
+            
+            $nombre = "";
+            $rutaArchivo = "";
+            $fechaNombre = date("_Ymd_His");
+            
+            switch ($tipoArchivo){
+                case 1:
+                    $nombre = "MasterData";
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';                    
+                break;
+                
+                case 2:
+                    $nombre = "Inbound_".$idSaved;
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsInbound/';                    
+                break;
+            
+                case 3:
+                    $nombre = "Outbound_".$idSaved;
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsOutbound/';                    
+                break;
+            
+                default:
+                    return false;            
             }
+            
+            // Armar el nombre del archivo con la fecha
+            $nombre .= $fechaNombre."-001.xml";
+            
+            //Guardar en local
+            $docXml->asXML($rutaArchivo.$idSaved.".xml");                                
             
             $nombreArchivo = $nombre;//"Outbound.xml";
             $archivo = tmpfile();
-            fwrite($archivo, $xml->asXML());
+            fwrite($archivo, $docXml->asXML());
             fseek($archivo, 0);
             
+//            $directorio = "IN/"; // En LogisFashion
             $directorio = "html/develop/develop/protected/data";
             
             //realizar la conexion ftp
@@ -140,8 +165,7 @@ class MasterData extends CActiveRecord
                 return false; 
             }
             //activar modo pasivo FTP
-            ftp_pasv($conexion, true);
-            
+            ftp_pasv($conexion, true);            
 //            echo "Conexión a $ftpServer realizada con éxito, por el usuario $userName";
             
             //ubicarse en el directorio a donde se subira el archivo
@@ -153,11 +177,11 @@ class MasterData extends CActiveRecord
             // comprobar el estado de la subida
             if (!$upload) {  
 //                echo "¡La subida FTP ha fallado!";
+                fclose($archivo); 
+                return false;               
             } else {
 //                echo "<br>Subida de $nombreArchivo a $ftpServer con éxito";
             }
-            
-//            echo "<br>Directorio: ".ftp_pwd($conexion);
 
             // Cerrar/Borrar archivo
             fclose($archivo); 

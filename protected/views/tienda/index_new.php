@@ -268,7 +268,7 @@
  <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
 
 	<?php $this->endWidget(); ?>
-
+<a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 
 
 <!-- PRODUCTOS OFF -->
@@ -584,4 +584,29 @@ function refresh(reset)
 }
 </script>
  
+<script>
+		$(document).ready(function() {
 
+			// Show or hide the sticky footer button
+			$(window).scroll(function() {
+				if ($(this).scrollTop() > 200&&$(this).scrollTop()+200<$('#wrapper_footer').offset().top) {
+					
+					$('.go-top').fadeIn(600);
+				} else if ($(this).scrollTop() > 200) 
+					
+					$('.go-top').fadeIn(600);
+				
+				 else {
+					$('.go-top').fadeOut(600);
+				}
+
+			});
+			
+			// Animate the scroll to top
+			$('.go-top').click(function(event) {
+				event.preventDefault();
+				
+				$('html, body').animate({scrollTop: 0}, 300);
+			})
+		});
+	</script>

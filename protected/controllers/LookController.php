@@ -395,12 +395,15 @@ class LookController extends Controller
 			//header('Cache-Control: max-age=86400');
 			//header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
 			//header('Content-Type: image/jpeg'); 
-header("Content-type: image/jpeg");
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT');
-			imagejpeg($image_p, null, 100);
+		//imagefilter($image_p, IMG_FILTER_MEAN_REMOVAL);
+		imageinterlace($image_p, 1);
+		header("Content-type: image/jpeg");
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT');
+		imagejpeg($image_p, null, 100);
 			//readfile($filename);
 			//imagepng($src,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
-			imagedestroy($src);			
+		imagedestroy($src);
+		imagedestroy($image_p);			
 		} else {
 		 $look = Look::model()->findByPk($id);
 		 
@@ -502,7 +505,9 @@ header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GM
 				$img = imagerotate($img,$image->angle*(-1),$pngTransparency);
 			}
 			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
-		}
+		} 
+		imagefilter($canvas, IMG_FILTER_MEAN_REMOVAL);
+		imageinterlace($canvas, 1);
 		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
 		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9);
@@ -777,6 +782,11 @@ public function actionCategorias(){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
+			$model->modified_on = date('Y-m-d H:i:s', time());
+			$model->scenario = 'draft';
+			if(!$model->save()){
+				print_r($model->getErrors());
+			}
 			if (isset($_POST['Look']['campana_id'])){
 				$model->campana_id =$_POST['Look']['campana_id'];
 				$model->save();
@@ -860,6 +870,8 @@ public function actionCategorias(){
 					 
 				}
 				$model->createImage();
+				/*$model->modified_on = date('Y-m-d H:i:s');
+				$model->save();*/
 				if ($_POST['tipo']==1){ 
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();

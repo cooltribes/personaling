@@ -777,6 +777,11 @@ public function actionCategorias(){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
+			$model->modified_on = date('Y-m-d H:i:s', time());
+			$model->scenario = 'draft';
+			if(!$model->save()){
+				print_r($model->getErrors());
+			}
 			if (isset($_POST['Look']['campana_id'])){
 				$model->campana_id =$_POST['Look']['campana_id'];
 				$model->save();
@@ -860,6 +865,8 @@ public function actionCategorias(){
 					 
 				}
 				$model->createImage();
+				/*$model->modified_on = date('Y-m-d H:i:s');
+				$model->save();*/
 				if ($_POST['tipo']==1){ 
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();

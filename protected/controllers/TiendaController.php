@@ -1232,6 +1232,8 @@ public function actionCategorias2(){
                 $sort->applyOrder($criteria);
 
                 $criteria->compare('status', 2);
+                $criteria->order = "orden DESC";
+                
                 $total = Look::model()->count($criteria);
                 $pages = new CPagination($total);
                 $pages->pageSize = 9;
@@ -1314,6 +1316,8 @@ public function actionCategorias2(){
                 $criteria->compare('title', $search, true, 'OR');
                 $criteria->compare('description', $search, true, 'OR');
                 $criteria->compare('status', 2);
+                $criteria->order = "orden DESC";
+                
                 $total = Look::model()->count($criteria);
 
                 $pages = new CPagination($total);

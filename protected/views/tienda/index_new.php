@@ -1,3 +1,9 @@
+<?php
+$this->pageTitle = 'Tienda';
+Yii::app()->clientScript->registerMetaTag('Tienda', 'title', null, null, null);
+Yii::app()->clientScript->registerMetaTag('La primera shopping experience con las mejores marcas de ropa y complementos.', 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, moda, tienda de ropa online, marcas de ropa, ropa de mujer, venta de ropa online', 'keywords', null, null, null);
+?>
 <?php 
 	$this->breadcrumbs=array(
 	'Tienda',
@@ -266,7 +272,7 @@
 
 
  <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
-
+ 
 	<?php $this->endWidget(); ?>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 

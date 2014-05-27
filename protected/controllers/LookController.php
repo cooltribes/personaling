@@ -614,6 +614,7 @@ public function actionColores(){
 public function actionCategorias(){
 	$categorias = false;
 	$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
+	$color = null;
 	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 	Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 	Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
@@ -634,8 +635,10 @@ public function actionCategorias(){
 			if ($_POST['padreId']!=0)
 				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
 		if(isset($_POST['colores']))
-			if ($_POST['colores']!='')
+			if ($_POST['colores']!=''){
 				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
+				$color = $_POST['colores'];
+			}
 
 		if(isset($_POST['marcas'])){
 			if ($_POST['marcas']!='Todas las Marcas')	
@@ -647,9 +650,9 @@ public function actionCategorias(){
 		}
 		
 		if (isset($categoria_padre))
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId, 'color'=>$_POST['colores']),true,true);
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId, 'color'=>$color),true,true);
 		else
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null, 'color'=>$_POST['colores']),true,true);
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null, 'color'=>$color),true,true);
 	}
 }
 

@@ -100,7 +100,7 @@ return array (
 	'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
 	'Complete purchase' => 'Completar compra',
 	'Complete the following fields:' => 'Completa los siguientes campos:',
-	'C.I' => 'DNI/NIF',
+	'C.I.' => 'DNI/NIF',
 	'Contact information succesfully saved'=>'Información adicional guardada.',
 	'Contact information could not been saved'=>'Información adicional no guardada.',
 	
@@ -175,6 +175,7 @@ return array (
 	'Last'=>'Última',
 	
 	'<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
+	'Manage' => 'Administrar',
 	'Manage my Looks' => 'Administrar mis Looks',
 	'Manage Gift Card' => 'Administrar Gift Cards',
 	'Massive Export' => 'Exportación Masiva',
@@ -194,6 +195,7 @@ return array (
 	'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
 	'Name printed on the credit card' => 'Nombre impreso en la tarjeta',
 	'New order' => 'Nuevo pedido',
+	'New products' => 'Productos Nuevos',
 	'Next' => 'Siguiente',
 	'Next step' => 'Siguiente paso',
 	'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
@@ -365,6 +367,8 @@ return array (
     'Use this as billing address' => 'Utilizar esta como dirección de facturación',	
 	'Update all' => 'Actualizar todo',
 	'Update date' => 'Fecha de carga',
+	'Upload date' => 'Fecha de carga',
+	'Updated products' => 'Productos actualizados',
 	'Upss!'=>'¡Upss!',	
 	'Use Balance available:' => 'Usar balance disponible',
 

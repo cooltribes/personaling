@@ -175,6 +175,7 @@ return array (
 	'Last'=>'Última',
 	
 	'<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
+	'Manage' => 'Administrar',
 	'Manage my Looks' => 'Administrar mis Looks',
 	'Manage Gift Card' => 'Administrar Gift Cards',
 	'Massive Export' => 'Exportación Masiva',
@@ -194,6 +195,7 @@ return array (
 	'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
 	'Name printed on the credit card' => 'Nombre impreso en la tarjeta',
 	'New order' => 'Nuevo pedido',
+	'New products' => 'Productos Nuevos',
 	'Next' => 'Siguiente',
 	'Next step' => 'Siguiente paso',
 	'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
@@ -365,6 +367,8 @@ return array (
     'Use this as billing address' => 'Utilizar esta como dirección de facturación',	
 	'Update all' => 'Actualizar todo',
 	'Update date' => 'Fecha de carga',
+	'Upload date' => 'Fecha de carga',
+	'Updated products' => 'Productos actualizados',
 	'Upss!'=>'¡Upss!',	
 	'Use Balance available:' => 'Usar balance disponible',
 

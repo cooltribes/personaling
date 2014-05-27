@@ -1,5 +1,12 @@
 <?php
-
+/* ESTADOS
+ * 0. No enviado
+ * 1. Enviado
+ * 2. Confirmado
+ * 3. Con discrepancias
+ * 4. Corregido
+ * 
+ */
 /**
  * This is the model class for table "{{inbound}}".
  *
@@ -9,12 +16,16 @@
  * @property string $fecha_carga
  * @property integer $total_productos
  * @property integer $total_cantidad
+ * @property integer $estado
  *
  * The followings are the available model relations:
  * @property Users $user
  */
 class Inbound extends CActiveRecord
 {
+    
+    const RUTA_ARCHIVOS = '/docs/xlsInbound/';
+    
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -42,10 +53,10 @@ class Inbound extends CActiveRecord
         // will receive user inputs.
         return array(
             array('user_id, fecha_carga, total_productos, total_cantidad', 'required'),
-            array('user_id, total_productos, total_cantidad', 'numerical', 'integerOnly'=>true),
+            array('user_id, total_productos, total_cantidad, estado', 'numerical', 'integerOnly'=>true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, user_id, fecha_carga, total_productos, total_cantidad', 'safe', 'on'=>'search'),
+            array('id, user_id, fecha_carga, total_productos, total_cantidad, estado', 'safe', 'on'=>'search'),
         );
     }
 
@@ -72,6 +83,7 @@ class Inbound extends CActiveRecord
             'fecha_carga' => 'Fecha Carga',
             'total_productos' => 'Total Productos',
             'total_cantidad' => 'Total Cantidad',
+            'estado' => 'Estado',
         );
     }
 
@@ -91,6 +103,7 @@ class Inbound extends CActiveRecord
         $criteria->compare('fecha_carga',$this->fecha_carga,true);
         $criteria->compare('total_productos',$this->total_productos);
         $criteria->compare('total_cantidad',$this->total_cantidad);
+        $criteria->compare('estado',$this->estado);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

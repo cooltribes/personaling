@@ -68,7 +68,7 @@ class Inbound extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
         );
     }
 
@@ -109,4 +109,20 @@ class Inbound extends CActiveRecord
             'criteria'=>$criteria,
         ));
     }
+    
+    /*Retorna la fecha de carga como timestamp*/
+        public function getEstado() {
+            $status = "No Enviado";
+            switch ($this->estado){
+                case 1: $status = "Enviado"; break;
+                case 2: $status = "Confirmado"; break;
+                case 3: $status = "Con Discrepancias"; break;
+                case 4: $status = "Corregido"; break;
+            }
+            return $status;
+        }
+    /*Retorna la fecha de carga como timestamp*/
+        public function getFecha() {
+            return strtotime($this->fecha_carga);
+        }
 }

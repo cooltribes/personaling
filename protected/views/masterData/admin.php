@@ -21,8 +21,8 @@ $this->breadcrumbs = array(
                 ),
             )
         ); ?>	
-    <!-- FLASH OFF --> 
-        <h1><?php echo Yii::t('contentForm' , 'Manage') . " Archivos MasterData"; ?></h1>
+        <!-- FLASH OFF --> 
+        <h1><?php echo Yii::t('contentForm' , 'Manage') . " Archivos <strong>MasterData</strong>"; ?></h1>
     </div>
     <style>
         th.productos{

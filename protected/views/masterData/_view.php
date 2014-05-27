@@ -15,7 +15,7 @@
     
     <!--Fecha de carga-->   
     <td>
-        <?php echo date("d/m/Y h:m:i a", $data->getFecha()); ?>
+        <?php echo date("d/m/Y - h:m:i a", $data->getFecha()); ?>
     </td>      
     
     <td>
@@ -32,19 +32,13 @@
             </a> 
             <!-- Link or button to toggle dropdown -->
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-                <li>
+                <li>          
                     <?php echo CHtml::link('<i class="icon-list-alt"></i>  Descargar Excel',
-                            array("/masterData/descargarExcel"), array(
-                        
-                    )); ?>            
-                    <?php echo CHtml::link('<i class="icon-list-alt"></i>  Descargar Excel',
-                            $this->createUrl("/masterData/descargarExcel", array("id"=>$data->id)), array(
-                        
-                    )); ?>            
+                                $this->createUrl("/masterData/descargarExcel", array("id"=>$data->id))
+                            ); ?>            
                     <?php echo CHtml::link('<i class="icon-align-center"></i>  Descargar XML',
-                            array("/masterData/descargarXml"), array(
-                        
-                    )); ?>            
+                                $this->createUrl("/masterData/descargarXml", array("id"=>$data->id))
+                            ); ?>            
                 </li>                    
             </ul>
         </div>

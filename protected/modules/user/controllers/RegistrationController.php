@@ -222,6 +222,7 @@ class RegistrationController extends Controller
                                 //$this->redirect(Yii::app()->controller->module->returnUrl);
  								if (Yii::app()->params['registro'] || $referencia_tmp =='look'){
 	                                if ($profile->sex == 1){ // mujer
+	                                	Yii::app()->session['registerStep']=1;
                                         if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
                                             $this->redirect(array('/user/profile/tutipo', 'fb'=>'true'));
                                         }else{
@@ -235,11 +236,22 @@ class RegistrationController extends Controller
                                         }
                                     }
 								} else {
-									if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
-                                        $this->redirect(array('/tienda/look', 'fb'=>'true'));
-                                    }else{
-                                        $this->redirect(array('/tienda/look'));
+									if ($profile->sex == 1){ // mujer
+                                        if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
+                                            $this->redirect(array('/user/profile/tutipo', 'fb'=>'true'));
+                                        }else{
+                                        		Yii::app()->session['registerStep']=1;
+                                            	$this->redirect(array('/user/profile/tutipo'));
+                                        }
                                     }
+										
+									else{
+										if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
+	                                        $this->redirect(array('/tienda/look', 'fb'=>'true'));
+	                                    }else{
+	                                        $this->redirect(array('/tienda/look'));
+	                                    }
+									}
 								}
                             } else {
                                 if (!Yii::app()->controller->module->activeAfterRegister && !Yii::app()->controller->module->sendActivationMail) {

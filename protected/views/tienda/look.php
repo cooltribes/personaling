@@ -95,7 +95,7 @@ if (isset($user)){
         <div class="navbar-inner"  >
             <nav class="  ">
                 <ul class="nav">
-                    <li class="filtros-header">Filtrar por:</li>
+                    <li class="filtros-header">Filtrar por: <?php echo Yii::app()->session['registerStep']; ?></li>
                     <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ocasiones <b class="caret"></b></a>
                         <ul class="dropdown-menu ">
                             <?php $categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2')); ?>
@@ -601,6 +601,20 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 </div>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 
+<?php if(isset(Yii::app()->session['registerStep'])){if(Yii::app()->session['registerStep']==3){?>
+<div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">¡Enhorabuena!</h3>
+   
+  </div>
+  <div class="modal-body">
+ 		 <h4>Has sumado 5 euros a tu saldo por completar tu registro.</h4>
+  </div>
+  <div class="modal-footer">  <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+  </div>
+</div><?php }}?>
+
 <!-- Modal Registro OFF -->
 
  
@@ -793,6 +807,10 @@ if (isset(Yii::app()->session["modalOn"])) {
 				event.preventDefault();
 				
 				$('html, body').animate({scrollTop: 0}, 300);
+			});
+			
+			$('.closeModal').click(function(event) {
+				$('#myModalRegalo').remove();
 			});
 
 

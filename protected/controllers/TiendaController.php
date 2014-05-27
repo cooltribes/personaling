@@ -1327,7 +1327,20 @@ public function actionCategorias2(){
 
     //                echo "<pre>"; print_r($count);echo "</pre>";               
 
-
+				if(isset(Yii::app()->session['registerStep'])){
+					if(Yii::app()->session['registerStep']==3&&Yii::app()->params['registerGift']>0){
+						$balance=new Balance;
+						$balance->user_id=Yii::app()->user->id;
+						$balance->tipo=6;
+						$balance->orden_id=0;
+						$balance->total=Yii::app()->params['registerGift'];
+						if($balance->save())
+							unset(Yii::app()->session['registerStep']);
+						
+						
+					}else
+						unset(Yii::app()->session['registerStep']);
+				}
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,

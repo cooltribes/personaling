@@ -76,7 +76,8 @@ return array(
 
             # page after logout
             'returnLogoutUrl' => array('/user/login'),
-        ),		
+        ),	
+        'reportico'=>array(),	
 		
 	),
 
@@ -158,6 +159,7 @@ return array(
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
 				'looks-personalizados'=>'tienda/look',
+				'reportico'=>'reportico',
 				'tienda-ropa-personalizada'=>'tienda/index',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
@@ -278,6 +280,7 @@ return array(
 					
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',
+				     'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
 				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
 				    'IVA' => '0.12',
 				    'IVAtext' => '12%',	

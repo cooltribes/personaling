@@ -227,7 +227,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
-          <span class="muted small"> C.I. <?php echo($direccion->cedula); ?></span></p>
+          <span class="muted small"> <?php echo Yii::t('contentForm','C.I.'); ?> <?php echo($direccion->cedula); ?></span></p>
         <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
         <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($direccion->telefono); ?> <br/>

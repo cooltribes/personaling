@@ -6,8 +6,13 @@
     </div>
     <div class="modal-body">
       <div class="text_align_center">
-      	
-      	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "300", "height" => "300", 'class'=>'img-polaroid')); ?>
+      	<?php
+        $mod_time = '';
+        if($model->modified_on){
+            $mod_time = '?lastmod='.strtotime($model->modified_on);
+        }
+        ?>
+      	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)).$mod_time, "Look", array("width" => "300", "height" => "300", 'class'=>'img-polaroid')); ?>
       	</div>
       <hr/>
         <div >

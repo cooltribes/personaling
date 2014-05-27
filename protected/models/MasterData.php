@@ -15,6 +15,9 @@
  */
 class MasterData extends CActiveRecord
 {
+    
+    const RUTA_ARCHIVOS = '/docs/xlsMasterData/';
+    
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -57,7 +60,7 @@ class MasterData extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 		);
 	}
 
@@ -96,6 +99,10 @@ class MasterData extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        /*Retorna la fecha de carga como timestamp*/
+        public function getFecha() {
+            return strtotime($this->fecha_carga);
+        }       
         
         public static function subirArchivoFtp($docXml, $tipoArchivo, $idSaved){
 
@@ -122,12 +129,12 @@ class MasterData extends CActiveRecord
             switch ($tipoArchivo){
                 case 1:
                     $nombre = "MasterData";
-                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';                    
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').self::RUTA_ARCHIVOS;                    
                 break;
                 
                 case 2:
                     $nombre = "Inbound_".$idSaved;
-                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsInbound/';                    
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
                 break;
             
                 case 3:
@@ -188,6 +195,14 @@ class MasterData extends CActiveRecord
 
             // cerrar la conexión ftp 
             ftp_close($conexion);
+            
+            //Marcar archivos como enviados
+            if($tipoArchivo == 2) //Si es inbound
+            {
+                Inbound::model()->updateByPk($idSaved, array(
+                   "estado" => 1, //Marcarlo como enviado 
+                ));
+            }    
             
             return true;
         }

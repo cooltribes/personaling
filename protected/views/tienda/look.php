@@ -810,10 +810,10 @@ if (isset(Yii::app()->session["modalOn"])) {
 			});
 			
 			$('.closeModal').click(function(event) {
-				$('#myModalRegalo').remove();
+				$('#0myModalRegalo').remove();
 			});
 
-
+ 
     });
 
 

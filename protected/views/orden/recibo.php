@@ -39,7 +39,8 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                 <strong>Dirección de envio: </strong><?php echo $direccion_envio->dirUno.' '.$direccion_envio->dirDos.'. '.$ciudad_envio->nombre.' - '.$provincia_envio->nombre.'. '.$direccion_envio->pais; ?></p></td>
           </tr>
           <tr>
-            <td colspan="2"><strong>Estado</strong>: 
+            <td colspan="2">
+            	<!--<strong>Estado</strong>: 
             	<?php
             	switch ($factura->estado) {
 					case '1':
@@ -52,7 +53,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
 						echo 'Desconocido';
 						break;
 				}
-            	?>
+            	?>-->
             </td>
           </tr>
           <tr>

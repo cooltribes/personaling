@@ -19,7 +19,7 @@ if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     ref.parentNode.insertBefore(fpw, ref);
     })();
     ", CClientScript::POS_HEAD, 1);
-}
+} 
 
 $this->breadcrumbs = array(
     'Tu Personal Shopper',

@@ -595,7 +595,7 @@ class Orden extends CActiveRecord
 		
 	} 
 	
-	public function getTracking($id=null){
+	public function getTrackingInfo($id=null){
 			
 		if(is_null($id))
 				$orden=$this;
@@ -604,9 +604,13 @@ class Orden extends CActiveRecord
 				$orden=$this->findByPk($id);
 		}
 		$guia=$orden->tracking;
-		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
-	 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>"400933"));
+		if($orden->shipCarrier=='ZOOM'){
+			$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+		 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>"400933"));
 		//Devuelve array de tracking si lo consigue o null si no
+		}
+		else
+			return;
 	}
 	
 	public function getFlete($id=null){

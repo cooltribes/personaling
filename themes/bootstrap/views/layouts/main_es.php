@@ -40,29 +40,42 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
  
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
-					array('label'=>'General', 'url'=>array('/controlpanel/index')),
-					array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
-					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
-					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
-					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
-                                        array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                            array('label'=>'General', 'url'=>array('/controlpanel/index')),
+                                            array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
+                                            array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
+                                            array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
+                                            array('label'=>'Acciones', 'url'=>array('/adorno/index')),
+                                            array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
 //                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
-					)),                
+					)),  
+                
                 array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
-					array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
-					array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
+                                            array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
+                                            array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
-                array('label'=>'Looks', 'url'=>'#', 'items'=>array(
-                  
-        					array('label'=>'Looks', 'url'=>array('/look/admin')),
-        					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
-                  array('label'=>'Campañas', 'url'=>array('/campana/index')),
-					)),
+                
+                array('label'=>'Looks', 'url'=>'#', 'items'=>array(                  
+                                            array('label'=>'Looks', 'url'=>array('/look/admin')),
+                                            array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+                                            array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                                        )),
+                
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
-                	array('label'=>'Productos', 'url'=>array('/producto/admin')),
-					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
-					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte'),
-          array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+                                            array('label'=>'Productos', 'url'=>array('/producto/admin')),
+                                            array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+                                            array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+                                            '---',
+                                            array('label'=>'Inventario','url'=>'#',                                                
+                                                'items' => array(
+                                                    array('label' => 'Reporte de Inventario',
+                                                        'url'=>array('/producto/reporte'),),
+                                                    array('label' => 'Importación',
+                                                        'url'=>array('/producto/importar'),),
+                                                    array('label' => 'MasterData',
+                                                        'url'=>array('/masterData/admin'),),
+                                                    array('label' => 'Inbound',
+                                                        'url'=>array('/inbound/admin'),),
+                                                )),
 					)
 				),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),

@@ -252,18 +252,58 @@ public function actionReportexls(){
 	}
 	public function actionGetImage($id)
 	{
+		//$start = microtime(true);	
+			
+		//echo $inicio = $time = microtime();
+		//echo "0"."<br>";	
+		
+		
+		
 		$model = $this->loadModel($id);
+		
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."<br>";
+		
 		$image_url = $model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> true ));
-		/*echo(Yii::getPathOfAlias('webroot').'/../'.$image_url);
-		echo("<br>".Yii::app()->basePath);*/
+		
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."<br>";
 		
 		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').$model->getImageUrl($_GET['color_id'],array('type'=>'thumb','ext'=>'png','baseUrl'=> false )));	
-		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
-		echo '<img '.$attr.' src="'.$image_url.'" alt>';
-		echo '<input type="hidden" name="producto_id" value="'.$id.'">';
-		echo '<input type="hidden" name="color_id" value="'.$_GET['color_id'].'">';
-		echo '</div>';
+		
+		
 		 
+		/*
+		$SQL="Select * from tbl_imagen where tbl_producto_id = '$id' and color_id= '".$_GET['color_id']."' and orden=1";
+		
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."<br>";
+		
+		$list= Yii::app()->db->createCommand('select url from tbl_imagen where tbl_producto_id=:tbl_producto_id and color_id=:color_id')->bindValue('tbl_producto_id',$id)->bindValue('color_id',$_GET['color_id'])->queryAll();
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."<br>";
+		$image_url = Yii::app()->baseUrl.str_replace(".","_thumb.",$list[0]["url"]);
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."<br>";
+		list($width, $height, $type, $attr) = getimagesize(Yii::getPathOfAlias('webroot').str_replace(".","_thumb.",$list[0]["url"]));	
+		
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."<br>";
+		*/ 		
+		//echo $time = microtime()-$time."<br>";
+		echo '<div class="new" id="div'.$id.'_'.$_GET['color_id'].'">';
+		//echo $time = microtime()-$time."<br>";
+		echo '<img '.$attr.' src="'.$image_url.'" alt>';
+		//echo $time = microtime()-$time."<br>";
+		echo '<input type="hidden" name="producto_id" value="'.$id.'">';
+		//echo $time = microtime()-$time."<br>";
+		echo '<input type="hidden" name="color_id" value="'.$_GET['color_id'].'">';
+		//echo $time = microtime()-$time."<br>";
+		echo '</div>';
+		//echo $time = microtime()-$time."<br>";
+		//echo microtime()-$inicio;
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."<br>";
 	}
 	/**
 	 * Creates a new model.

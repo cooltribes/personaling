@@ -66,7 +66,7 @@ class ItemInbound extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'inbound' => array(self::BELONGS_TO, 'Inbound', 'inbound_id'),
-			'producto' => array(self::BELONGS_TO, 'PrecioTallaColor', 'producto_id'),
+			'producto' => array(self::BELONGS_TO, 'Preciotallacolor', 'producto_id'),
 		);
 	}
 

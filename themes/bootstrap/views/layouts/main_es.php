@@ -75,7 +75,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                     array('label' => 'MasterData',
                                                         'url'=>array('/masterData/admin'),),
                                                     array('label' => 'Inbound',
-                                                        'url'=>array('/inbound/admin'),),
+                                                        'url'=>array('/inbound/admin'),),                                                    
                                                 )),
 					)
 				),

@@ -23,7 +23,7 @@ $this->breadcrumbs = array(
             )
         ); ?>	
     <!-- FLASH OFF --> 
-        <h1><?php echo Yii::t('contentForm' , 'Inbound details') . ": <strong>Albaran - {$id}</strong>"; ?></h1>
+        <h1><?php echo Yii::t('contentForm' , 'Inbound details') . " - <strong>Albaran: {$id}</strong>"; ?></h1>
     </div>
     <style>
         th.productos{

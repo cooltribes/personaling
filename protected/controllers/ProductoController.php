@@ -2212,7 +2212,15 @@ public function actionReportexls(){
                     $inbound = $xml->addChild('Inbound');
                     $inbound->addChild('Albaran');
                     $inbound->addChild('FechaAlbaran', date("Y-m-d", $fecha));                    
-//                    $cliente = $inbound->addChild('Cliente', date("Y-m-d")); 
+
+                    //Insertar el nuevo Inbound en la BD                    
+                    $inboundRow = new Inbound();
+                    $inboundRow->fecha_carga = date("Y-m-d H:i:s", $fecha);
+                    $inboundRow->user_id = Yii::app()->user->id;
+                    $inboundRow->total_productos = 0;
+                    $inboundRow->total_cantidad = 0;
+                    $inboundRow->save();
+                    
                     
                     /*Leer el XLS*/
                     $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
@@ -2248,6 +2256,13 @@ public function actionReportexls(){
                                 $producto->cantidad += $rCant;
                                 $producto->save();
                                 
+                                /*Crear detalle del inbound*/
+                                $itemInboundRow = new ItemInbound();
+                                $itemInboundRow->producto_id = $producto->id;
+                                $itemInboundRow->inbound_id = $inboundRow->id;
+                                $itemInboundRow->cant_enviada = $rCant;
+                                $itemInboundRow->save();
+                                
                                 $actualizadosInbound++;
                                 
                             }
@@ -2255,20 +2270,18 @@ public function actionReportexls(){
                         $fila++;                        
                     }
                     
-                    //Insertar nuevo Inbound
-                    $inboundRow = new Inbound();
-                    $inboundRow->fecha_carga = date("Y-m-d H:i:s", $fecha);
-                    $inboundRow->user_id = Yii::app()->user->id;
-                    $inboundRow->total_productos = $fila-2;
-                    $inboundRow->total_cantidad = $totalCantidades;
-                    $inboundRow->save();
-                    
                     //Totales
                     $totalInbound = $fila - 2;
                     
-                   //Agregar el codigo en el XML
+                    //Insertar nuevo Inbound
+                    $inboundRow->total_productos = $totalInbound;
+                    $inboundRow->total_cantidad = $totalCantidades;
+                    $inboundRow->save();
+                    
+                   //Agregar el ID del inbound como codigo de albaran en el XML
                     $inbound->Albaran = $inboundRow->id;
-                   //Cambiar nombre al archivo Excel                           
+                    
+                   //Cambiar nombre al archivo Excel para almacenarlo                          
                     rename($nombre.$extension, $rutaArchivo."$inboundRow->id".$extension);
                    
                     $mensajeSuccess = "Se ha cargado con éxito el archivo.

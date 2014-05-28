@@ -131,7 +131,7 @@ class Inbound extends CActiveRecord
     {
         $criteria=new CDbCriteria;
 
-        $criteria->compare('producto_id',$this->id);        
+        $criteria->compare('inbound_id',$this->id);        
 
         return new CActiveDataProvider("ItemInbound", array(
             'criteria'=>$criteria,

@@ -18,10 +18,16 @@
     
     <!--Cantidad Recibida-->
     <td>
-        <?php echo $data->cant_recibida; ?>
+        <?php
+        if($data->cant_recibida){
+            echo $data->cant_recibida;             
+        }else{
+            echo "---";
+        }
+        ?>
     </td>      
     <td>
-        <?php echo $this->widget("bootstrap.widgets.TbButton", array(
+        <?php $this->widget("bootstrap.widgets.TbButton", array(
             "icon" => "ban-circle",
             "disabled" => true,
         )); ?>

@@ -21,7 +21,7 @@ class ControlpanelController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','delete','ventas',
                                     'pedidos','usuarios', 'looks', 'productos','ingresos',
-                                    'remuneraciones', 'personalshoppers', 'misventas'),
+                                    'remuneraciones', 'personalshoppers', 'misventas','seo','createSeo','deleteSeo'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -290,130 +290,146 @@ class ControlpanelController extends Controller
 	}
 	*/
         
-        /*Ver las estadisticas generales referentes a remuneraciones*/
-        public function actionRemuneraciones() {
+    /*Ver las estadisticas generales referentes a remuneraciones*/
+    public function actionRemuneraciones() {
 
-            
-        }
+        
+    }
+    
+    
+    /* Ver el listado de personalshoppers con sus respectivos datos
+     * relacionados a las comisiones
+     */
+    public function actionPersonalshoppers() {
         
         
-        /* Ver el listado de personalshoppers con sus respectivos datos
-         * relacionados a las comisiones
-         */
-        public function actionPersonalshoppers() {
+        //Para hacer cambios masivas
+        if(isset($_POST["action"])){                
             
+            $response = array();
+            //Obtener el criteria guardado de la ultima busqueda
+            $resultados = Yii::app()->getSession()->get("resultado");
             
-            //Para hacer cambios masivas
-            if(isset($_POST["action"])){                
+            $resultados->select = "t.*";
+            
+            $resultados = new CActiveDataProvider('User', array(
+                'criteria' => $resultados,
+            ));
+            
+	$resultados->setPagination(false);
+            
+            //$resultados->getData();
+            $resultados = $resultados->getData();                
+            $total = count($resultados);
+            $error = false;
+            if($_POST["action"] == 1){ //Cambiar comisión
                 
-                $response = array();
-                //Obtener el criteria guardado de la ultima busqueda
-                $resultados = Yii::app()->getSession()->get("resultado");
-                
-                $resultados->select = "t.*";
-                
-                $resultados = new CActiveDataProvider('User', array(
-                    'criteria' => $resultados,
-                ));
-                
-		$resultados->setPagination(false);
-                
-                //$resultados->getData();
-                $resultados = $resultados->getData();                
-                $total = count($resultados);
-                $error = false;
-                if($_POST["action"] == 1){ //Cambiar comisión
+                foreach($resultados as $usuario) {                        
                     
-                    foreach($resultados as $usuario) {                        
-                        
-                        $perfil = $usuario->profile;
-                        $perfil->profile_type = 5;
-                        $perfil->comision = $_POST["cambiarVlComision"];
-                        $perfil->tipo_comision = $_POST["cambiarTpComision"];
-                        if(!$perfil->save()){
-                            $error = true;
-                        }  
-                    }
-                    
-                    if($error){                        
-                        $response["status"] = "error";
-                        $response["message"] = "¡Hubo un error cambiando las comisiones!";
-                    }else{                        
-                        $response["status"] = "success";
-                        $response["message"] = "¡Se ha actualizado la comisión de <b>$total</b>
-                                Personal Shoppers!";                        
-                    }
-                    
-                }else if($_POST["action"] == 2){ //cambiar tiempo de validez en bolsa
-                    
-                    foreach($resultados as $usuario) {
-                        $perfil = $usuario->profile;
-                        $perfil->profile_type = 5;
-                        
-                        $perfil->tiempo_validez = $_POST["cambiarLmTiempo"];                        
-                        if(!$perfil->save()){
-                            $error = true;
-                        }
-                    }
-                    
-                    if($error){                        
-                        $response["status"] = "error";
-                        $response["message"] = "¡Hubo un error cambiando el tiempo de validez
-                        en la bolsa!";
-                    }else{                        
-                        $response["status"] = "success";
-                        $response["message"] = "¡Se ha actualizado el tiempo de validez
-                        en la bolsa para <b>$total</b> Personal Shoppers!";                        
-                    }                    
+                    $perfil = $usuario->profile;
+                    $perfil->profile_type = 5;
+                    $perfil->comision = $_POST["cambiarVlComision"];
+                    $perfil->tipo_comision = $_POST["cambiarTpComision"];
+                    if(!$perfil->save()){
+                        $error = true;
+                    }  
                 }
                 
-                echo CJSON::encode($response); 
-                Yii::app()->end();
+                if($error){                        
+                    $response["status"] = "error";
+                    $response["message"] = "¡Hubo un error cambiando las comisiones!";
+                }else{                        
+                    $response["status"] = "success";
+                    $response["message"] = "¡Se ha actualizado la comisión de <b>$total</b>
+                            Personal Shoppers!";                        
+                }
                 
+            }else if($_POST["action"] == 2){ //cambiar tiempo de validez en bolsa
+                
+                foreach($resultados as $usuario) {
+                    $perfil = $usuario->profile;
+                    $perfil->profile_type = 5;
+                    
+                    $perfil->tiempo_validez = $_POST["cambiarLmTiempo"];                        
+                    if(!$perfil->save()){
+                        $error = true;
+                    }
+                }
+                
+                if($error){                        
+                    $response["status"] = "error";
+                    $response["message"] = "¡Hubo un error cambiando el tiempo de validez
+                    en la bolsa!";
+                }else{                        
+                    $response["status"] = "success";
+                    $response["message"] = "¡Se ha actualizado el tiempo de validez
+                    en la bolsa para <b>$total</b> Personal Shoppers!";                        
+                }                    
             }
+            
+            echo CJSON::encode($response); 
+            Yii::app()->end();
+            
+        }
 
-            /*Datos para las estadísticas*/ 
-            
-            $ventasGeneraronComision = Yii::app()->db->createCommand()
-                                       ->select("COUNT(DISTINCT(tbl_orden_id))")
-                                       ->from("tbl_orden_has_productotallacolor")
-                                       ->where("status_comision = 2")                                       
-                                       ->queryScalar();
-            
-            $ventasNoGeneraronComision = Yii::app()->db->createCommand()
-                                       ->select("COUNT(DISTINCT(tbl_orden_id))")
-                                       ->from("tbl_orden_has_productotallacolor")
-                                       ->where("status_comision = 0")
-                                       ->andWhere("devolucion_id = 0")
-                                       ->andWhere("look_id > 0")
-                                       ->queryScalar();
-            
-             $totalGeneradoComisiones = Yii::app()->db->createCommand()
-                                       ->select("count(distinct(orden_id))")->from("tbl_balance")
-                                       ->where("tipo = 5")->queryScalar();
-            
-             $prodsVendidosComision = Yii::app()->db->createCommand(
-                                        "SELECT IFNULL(SUM(o.cantidad), 0)
-                                        FROM tbl_orden_has_productotallacolor o
-                                        WHERE o.status_comision = 2")
-                                        ->queryScalar();
-                          
-             $psConVentas = Yii::app()->db->createCommand()
-                           ->select("COUNT(DISTINCT(l.user_id))")
-                           ->from(array("tbl_orden_has_productotallacolor o", "tbl_look l"))
-                           ->where("o.look_id = l.id")                                       
-                           ->andWhere("status_comision = 2")                                       
-                           ->queryScalar();
-            /*FIN de los datos para estadisticas*/           
-            
-            
-            $model = new User('search');
-            $model->unsetAttributes();  
-            
-            /*Enviar a la vista el listado de todos los PS*/
-            $criteria = new CDbCriteria;
-            $criteria->compare("personal_shopper", 1);
+        /*Datos para las estadísticas*/ 
+        
+        $ventasGeneraronComision = Yii::app()->db->createCommand()
+                                   ->select("COUNT(DISTINCT(tbl_orden_id))")
+                                   ->from("tbl_orden_has_productotallacolor")
+                                   ->where("status_comision = 2")                                       
+                                   ->queryScalar();
+        
+        $ventasNoGeneraronComision = Yii::app()->db->createCommand()
+                                   ->select("COUNT(DISTINCT(tbl_orden_id))")
+                                   ->from("tbl_orden_has_productotallacolor")
+                                   ->where("status_comision = 0")
+                                   ->andWhere("devolucion_id = 0")
+                                   ->andWhere("look_id > 0")
+                                   ->queryScalar();
+        
+         $totalGeneradoComisiones = Yii::app()->db->createCommand()
+                                   ->select("count(distinct(orden_id))")->from("tbl_balance")
+                                   ->where("tipo = 5")->queryScalar();
+        
+         $prodsVendidosComision = Yii::app()->db->createCommand(
+                                    "SELECT IFNULL(SUM(o.cantidad), 0)
+                                    FROM tbl_orden_has_productotallacolor o
+                                    WHERE o.status_comision = 2")
+                                    ->queryScalar();
+                      
+         $psConVentas = Yii::app()->db->createCommand()
+                       ->select("COUNT(DISTINCT(l.user_id))")
+                       ->from(array("tbl_orden_has_productotallacolor o", "tbl_look l"))
+                       ->where("o.look_id = l.id")                                       
+                       ->andWhere("status_comision = 2")                                       
+                       ->queryScalar();
+        /*FIN de los datos para estadisticas*/           
+        
+        
+        $model = new User('search');
+        $model->unsetAttributes();  
+        
+        /*Enviar a la vista el listado de todos los PS*/
+        $criteria = new CDbCriteria;
+        $criteria->compare("personal_shopper", 1);
 
+        $dataProvider = new CActiveDataProvider('User', array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => Yii::app()->getModule('user')->user_page_size,
+            ),
+        ));
+        
+        /*********************** Para los filtros *********************/
+        Filter::procesarFiltros(8, $dataProvider, $model, 'nombre');
+        
+        if (isset($_GET['nombre'])) {
+
+            unset($_SESSION["todoPost"]);
+            $criteria->alias = 'User';
+            $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';                                
+            
             $dataProvider = new CActiveDataProvider('User', array(
                 'criteria' => $criteria,
                 'pagination' => array(
@@ -421,59 +437,101 @@ class ControlpanelController extends Controller
                 ),
             ));
             
-            /*********************** Para los filtros *********************/
-            Filter::procesarFiltros(8, $dataProvider, $model, 'nombre');
-            
-            if (isset($_GET['nombre'])) {
+        
+        }
 
-                unset($_SESSION["todoPost"]);
-                $criteria->alias = 'User';
-                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';                                
-                
-                $dataProvider = new CActiveDataProvider('User', array(
-                    'criteria' => $criteria,
-                    'pagination' => array(
-                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                    ),
-                ));
-                
+        //guardar los usuarios para las acciones masivas
+        Yii::app()->getSession()->add("resultado", $dataProvider->getCriteria());
+        
+        $this->render('personalShoppers', array(
+            'model' => $model,                
+            'dataProvider' => $dataProvider,
+            'totalGeneradoComisiones' => $totalGeneradoComisiones,
+            'ventasGeneraronComision' => $ventasGeneraronComision,
+            'ventasNoGeneraronComision' => $ventasNoGeneraronComision,
+            'prodsVendidosComision' => $prodsVendidosComision,
+            'psConVentas' => $psConVentas,
+        ));
+        
+    }
+    
+    
+    /* Ver el listado de productos vendidos con su detalles de comision
+     * Ver algunos datos generales sobre las ventas de un PS determinado
+     */
+    public function actionMisventas($id) {
+        
+        $personalShopper = User::model()->findByPk($id);            
+        if($personalShopper===null)
+                throw new CHttpException(404,'The requested page does not exist.');
+        
+        $producto = new OrdenHasProductotallacolor;
+
+        $dataProvider = $producto->vendidosComision($id);
+        
+        $this->render('misVentas',array(
+                    'personalShopper' => $personalShopper,
+                    'dataProvider'=>$dataProvider,
+        ));	
+        
+    }
+
+    public function actionSeo(){
+        $model = new SeoStatic;
+        $dataProvider = $model->search();
+        
+        if (isset($_POST['query'])){
+                $model->nombre = $_POST['query'];
+                $dataProvider = $model->busquedaNombreReferencia($_POST['query']);
+        }   
+
+        $this->render('seo', array(
+            'model'=>$model,
+            'dataProvider'=>$dataProvider,
+        )); 
+    }
+
+    public function actionCreateSeo(){
+        if(isset($_GET['id'])){
+            $model = SeoStatic::model()->findByPk($_GET['id']);
+        }else{
+            $model = new SeoStatic;
+        }
+        
+        
+        if(isset($_POST['SeoStatic'])){
+            $model->attributes = $_POST['SeoStatic'];
             
+            
+            if($model->save()){
+                Yii::app()->user->setFlash('success','Elemento guardado con éxito');
+                $this->redirect(array('seo'));
+            }else{
+                Yii::app()->user->setFlash('error','No se pudo guardar el elemento');
             }
-
-            //guardar los usuarios para las acciones masivas
-            Yii::app()->getSession()->add("resultado", $dataProvider->getCriteria());
-            
-            $this->render('personalShoppers', array(
-                'model' => $model,                
-                'dataProvider' => $dataProvider,
-                'totalGeneradoComisiones' => $totalGeneradoComisiones,
-                'ventasGeneraronComision' => $ventasGeneraronComision,
-                'ventasNoGeneraronComision' => $ventasNoGeneraronComision,
-                'prodsVendidosComision' => $prodsVendidosComision,
-                'psConVentas' => $psConVentas,
-            ));
-            
         }
-        
-        
-        /* Ver el listado de productos vendidos con su detalles de comision
-         * Ver algunos datos generales sobre las ventas de un PS determinado
-         */
-        public function actionMisventas($id) {
-            
-            $personalShopper = User::model()->findByPk($id);            
-            if($personalShopper===null)
-                    throw new CHttpException(404,'The requested page does not exist.');
-            
-            $producto = new OrdenHasProductotallacolor;
 
-            $dataProvider = $producto->vendidosComision($id);
-            
-            $this->render('misVentas',array(
-                        'personalShopper' => $personalShopper,
-                        'dataProvider'=>$dataProvider,
-            ));	
-            
+        $this->render('createSeo', array(
+            'model'=>$model
+        ));
+    }
+
+    public function actionDeleteSeo(){
+        if(isset($_GET['id'])){
+            $model = SeoStatic::model()->findByPk($_GET['id']);
+            if($model){
+                if($model->delete()){
+                    Yii::app()->user->setFlash('success','Elemento eliminado con éxito');
+                }else{
+                    Yii::app()->user->setFlash('error','No se pudo eliminar el elemento');
+                }
+            }else{
+                Yii::app()->user->setFlash('error','Petición no válida');
+            }
+        }else{
+            Yii::app()->user->setFlash('error','Petición no válida');
         }
+        $this->redirect(array('seo'));
+    }
         
 }

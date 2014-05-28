@@ -237,10 +237,10 @@ class RegistrationController extends Controller
                                     }
 								} else {
 									if ($profile->sex == 1){ // mujer
+                                        Yii::app()->session['registerStep']=1;
                                         if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
                                             $this->redirect(array('/user/profile/tutipo', 'fb'=>'true'));
-                                        }else{
-                                        		Yii::app()->session['registerStep']=1;
+                                        }else{                                        		
                                             	$this->redirect(array('/user/profile/tutipo'));
                                         }
                                     }

@@ -157,6 +157,7 @@ return array (
 	'Identity card' => 'DNI/NIE',
 	'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
 	'Inactive' => 'Inactivo',
+	'Inbound details' => 'Detalles del Inbound',
 	'Include a new shipping address' => 'Incluir una nueva dirección de envío',
 	'Individual items' => 'Prendas individuales',
 	'Individual products' => 'Productos Individuales',

@@ -36,13 +36,20 @@
             </a> 
             <!-- Link or button to toggle dropdown -->
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-                <li>          
+                <li>
+                    <?php echo CHtml::link('<i class="icon-eye-open"></i>  Ver Detalle',
+                            $this->createUrl("/inbound/detalle", array("id"=>$data->id))
+                    ); ?>                                
+                </li>
+                <li>
                     <?php echo CHtml::link('<i class="icon-list-alt"></i>  Descargar Excel',
-                                $this->createUrl("/inbound/descargarExcel", array("id"=>$data->id))
-                            ); ?>            
+                            $this->createUrl("/inbound/descargarExcel", array("id"=>$data->id))
+                    ); ?>                                
+                </li>
+                <li>          
                     <?php echo CHtml::link('<i class="icon-align-center"></i>  Descargar XML',
-                                $this->createUrl("/inbound/descargarXml", array("id"=>$data->id))
-                            ); ?>            
+                            $this->createUrl("/inbound/descargarXml", array("id"=>$data->id))
+                    ); ?>            
                 </li>                    
             </ul>
         </div>

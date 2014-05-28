@@ -6,7 +6,7 @@ class ProfileController extends Controller
 {
 	public $defaultAction = 'profile';
 	//public $layout='//layouts/column2';
-
+ 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
@@ -666,7 +666,7 @@ class ProfileController extends Controller
                                                 $filterProfile->save();                                                                  
                                             }
                                         }
-                                        
+                                         
                                         
 					if ($model->save())	{
 						if(isset(Yii::app()->session['registerStep'])){

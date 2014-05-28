@@ -65,7 +65,7 @@ class MarcaController extends Controller
 
 	public function actionCrear($id = null)
 	{
-		if(!$id){
+		if(is_null($id)){
 			$marca = new Marca;
 		}else{
 			$marca = Marca::model()->findByPk($id);
@@ -92,12 +92,12 @@ class MarcaController extends Controller
 				}else{
 					unset($marca);
 					$adicional="<br/>".Yii::t('contentForm','Contact information could not been saved');	
-					if(!$id){
+					if(is_null($id)){
 						$marca = new Marca;
 					}else{
 						$marca = Marca::model()->findByPk($id);
 					}
-					
+					$marca->attributes = $_POST['Marca'];
 				}
 				
 			}

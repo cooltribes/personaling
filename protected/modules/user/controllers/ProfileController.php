@@ -6,7 +6,7 @@ class ProfileController extends Controller
 {
 	public $defaultAction = 'profile';
 	//public $layout='//layouts/column2';
-
+ 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
@@ -591,8 +591,17 @@ class ProfileController extends Controller
 				if ($profile->save())
 				{
 					$model->status_register = User::STATUS_REGISTER_ESTILO;
-					if ($model->save())	
-						$this->redirect(array('/site/index'));
+					if ($model->save())	{
+						if(isset(Yii::app()->session['registerStep'])){
+                                    	if(Yii::app()->session['registerStep']==2)
+											Yii::app()->session['registerStep']=3;
+										else
+											unset(Yii::app()->session['registerStep']);
+                                    		
+                                    }
+						$this->redirect(array('/tienda/look'));
+					}
+						
 					else 
 						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
 					
@@ -625,6 +634,9 @@ class ProfileController extends Controller
 			$profile->attributes=$_POST['Profile'];
 			if($profile->validate())
 			{
+					
+					
+					
 				if ($profile->save())
 				{
 					$model->status_register = User::STATUS_REGISTER_TIPO;
@@ -654,10 +666,20 @@ class ProfileController extends Controller
                                                 $filterProfile->save();                                                                  
                                             }
                                         }
+                                         
                                         
-                                        
-					if ($model->save())	
+					if ($model->save())	{
+						if(isset(Yii::app()->session['registerStep'])){
+                                    	if(Yii::app()->session['registerStep']==1)
+											Yii::app()->session['registerStep']=2;
+										else
+											unset(Yii::app()->session['registerStep']);
+                                    		
+                        }
 						$this->redirect(array('/user/profile/tuestilo'));
+					}
+					
+						
 					else 
 						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
 					

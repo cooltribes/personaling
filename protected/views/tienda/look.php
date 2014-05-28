@@ -4,7 +4,7 @@ Yii::app()->clientScript->registerMetaTag('Looks', 'title', null, null, null);
 Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion bloggers y personal shoppers', 'description', null, null, null);
 Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, looks, asesoría ropa personalizada, moda, fashion bloggers, personal shopper gratis', 'keywords', null, null, null);
 ?>
-<?php
+<?php 
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
     var fb_param = {};
@@ -95,7 +95,7 @@ if (isset($user)){
         <div class="navbar-inner"  >
             <nav class="  ">
                 <ul class="nav">
-                    <li class="filtros-header">Filtrar por:</li>
+                    <li class="filtros-header">Filtrar por: <?php echo Yii::app()->session['registerStep']; ?></li>
                     <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ocasiones <b class="caret"></b></a>
                         <ul class="dropdown-menu ">
                             <?php $categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2')); ?>
@@ -601,6 +601,20 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 </div>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 
+<?php if($gift){?>
+<div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">¡Enhorabuena!</h3>
+   
+  </div>
+  <div class="modal-body">
+ 		 <h4>Has sumado 5 euros a tu saldo por completar tu registro.</h4>
+  </div>
+  <div class="modal-footer">  <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+  </div>
+</div><?php }?>
+
 <!-- Modal Registro OFF -->
 
  
@@ -794,14 +808,19 @@ if (isset(Yii::app()->session["modalOn"])) {
 				
 				$('html, body').animate({scrollTop: 0}, 300);
 			});
+			
+			$('.closeModal').click(function(event) {
+				$('#myModalRegalo').remove();
+			});
 
-
+ 
     });
 
 
 </script>
 
 <script type="text/javascript">
+
     $(function() {
         moveScroller();
     });

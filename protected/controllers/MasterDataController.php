@@ -53,8 +53,55 @@ class MasterDataController extends Controller
 	 */
 	public function actionDescargarExcel()
 	{
-            $this->redirect(Yii::getPathOfAlias("webroot").MasterData::RUTA_ARCHIVOS.
-            Yii::app()->request->get($id)."xlsx");
+            //Revisar la extension
+            $archivo = Yii::getPathOfAlias("webroot").MasterData::RUTA_ARCHIVOS.
+                    $_GET["id"].".xlsx";
+            $existe = file_exists($archivo);
+            
+            //si no existe con extension xlsx, poner xls
+            if(!$existe){
+                $archivo = substr($archivo, 0, -1);
+            }
+            
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=MasterData-'.basename($archivo));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($archivo));
+            ob_clean();
+            flush();
+            readfile($archivo);
+            
+	}
+        
+	/**
+	 * Descargar el archivo XML correspondiente al MasterData cargado
+	 */
+	public function actionDescargarXml()
+	{
+            //Revisar la extension
+            $archivo = Yii::getPathOfAlias("webroot").MasterData::RUTA_ARCHIVOS.
+                    $_GET["id"].".xml";
+            $existe = file_exists($archivo);
+            
+            //si no existe con extension xlsx, poner xls
+            if(!$existe){
+                throw new CHttpException(404,'The requested page does not exist.');
+            }
+            
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=MasterData-'.basename($archivo));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($archivo));
+            ob_clean();
+            flush();
+            readfile($archivo);
+            
 	}
 
 	/**

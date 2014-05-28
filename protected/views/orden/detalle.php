@@ -180,7 +180,7 @@ $tracking=$orden->getTrackingInfo();
         	?>
         </div>
         <div class="span6">
-          <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> C.I. <?php echo $usuario->profile->cedula; ?></small></h2>
+          <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> <?php echo Yii::t('contentForm','C.I.')." ".$usuario->profile->cedula; ?></small></h2>
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">

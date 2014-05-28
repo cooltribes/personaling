@@ -7,7 +7,7 @@ class TiendaController extends Controller
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
-	 */
+	 */ 
 	public function accessRules()
 	{
 		return array(
@@ -1330,8 +1330,22 @@ public function actionCategorias2(){
                 $rangosArray = Look::model()->getRangosPrecios();
 
     //                echo "<pre>"; print_r($count);echo "</pre>";               
-
-
+				$gift=false;
+				if(isset(Yii::app()->session['registerStep'])){
+					if(Yii::app()->session['registerStep']==3&&Yii::app()->params['registerGift']>0){
+						$balance=new Balance;
+						$balance->user_id=Yii::app()->user->id;
+						$balance->tipo=6;
+						$balance->orden_id=0;
+						$balance->total=Yii::app()->params['registerGift'];
+						if($balance->save()){
+							unset(Yii::app()->session['registerStep']);
+							$gift=true;
+						}
+						
+					}else
+						unset(Yii::app()->session['registerStep']);
+				}
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,
@@ -1339,6 +1353,7 @@ public function actionCategorias2(){
                     'editar' => true,
                     'rangos' => $rangosArray,
                     'todosLosLooks' => $todosLosLooks,
+                    'gift'=>$gift,
                 ));
             }	
 			

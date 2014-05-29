@@ -47,6 +47,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
                                             array('label'=>'Acciones', 'url'=>array('/adorno/index')),
                                             array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                            array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
 //                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
 					)),  
                 
@@ -72,10 +73,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                         'url'=>array('/producto/reporte'),),
                                                     array('label' => 'Importación',
                                                         'url'=>array('/producto/importar'),),
-                                                    array('label' => 'MasterData',
+                                                    array('label' => 'Ver MasterDatas',
                                                         'url'=>array('/masterData/admin'),),
-                                                    array('label' => 'Inbound',
-                                                        'url'=>array('/inbound/admin'),),
+                                                    array('label' => 'Ver Inbounds',
+                                                        'url'=>array('/inbound/admin'),),                                                    
                                                 )),
 					)
 				),

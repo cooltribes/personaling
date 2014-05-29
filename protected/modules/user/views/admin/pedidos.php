@@ -34,20 +34,26 @@
 			    {pager}
 				';
 			
+			$pagerParams=array(
+            'header'=>'',
+            'prevPageLabel' => Yii::t('contentForm','Previous'),
+            'nextPageLabel' => Yii::t('contentForm','Next'),
+            'firstPageLabel'=> Yii::t('contentForm','First'),
+            'lastPageLabel'=> Yii::t('contentForm','Last'),
+            
+            'htmlOptions'=>array(
+                'class'=>'pagination pagination-right'));
+					
 					$this->widget('zii.widgets.CListView', array(
 				    'id'=>'list-pedidos',
 				    'dataProvider'=>$dataProvider,
 				    'itemView'=>'_view_pedido',
+				      'summaryText' => 'Mostrando {start} - {end} de {count} Resultados', 
 				    'template'=>$template,
 				    'enableSorting'=>'true',
 				    'afterAjaxUpdate'=>" function(id, data) {
 										} ",
-					'pager'=>array(
-						'header'=>'',
-						'htmlOptions'=>array(
-						'class'=>'pagination pagination-right',
-					)
-					),					
+					'pager'=>$pagerParams,					
 				));    
 				?>
           </fieldset>

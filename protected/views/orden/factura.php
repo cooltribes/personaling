@@ -17,12 +17,12 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                     <tr>
              
                         <td width="50%"> 
-                        	<b>Nombre de Empresa:<b/> <?php echo Yii::app()->params['clientName'];?><br/>
-							<b>NIF:<b/> <?php echo Yii::app()->params['clientIdentification'];?> <br/>
-							<b>Dirección Fiscal:<b/> <?php echo Yii::app()->params['clientAddress'];?> <br/>
-								<?php echo Yii::app()->params['clientCity']." - ".Yii::app()->params['clientZIP']; ?>
-							<b>Teléfono:<b/> <?php echo Yii::app()->params['clientPhone'];?><br/>
-							<b>Email:<b/> <?php echo Yii::app()->params['clientEmail'];?>
+                        			<strong>Nombre de Empresa:</strong> <?php echo Yii::app()->params['clientName'];?><br/>
+							<strong>NIF:</strong> <?php echo Yii::app()->params['clientIdentification'];?> <br/>
+							<strong>Dirección Fiscal:</strong> <?php echo Yii::app()->params['clientAddress'];?> <br/>
+								<?php echo Yii::app()->params['clientCity']." - ".Yii::app()->params['clientZIP']; ?><br/>
+							<strong>Teléfono:</strong> <?php echo Yii::app()->params['clientPhone'];?><br/>
+							<strong>Email:</strong> <?php echo Yii::app()->params['clientEmail'];?>
                         </td>
                         <td width="50%">
                             <div class="text_align_right">
@@ -46,7 +46,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                 <strong><?php echo Yii::t('backEnd', 'Shipping Address:'); ?></strong> <?php echo $direccion_envio->dirUno . ' ' . $direccion_envio->dirDos . '. ' . $ciudad_envio->nombre . ' - ' . $provincia_envio->nombre . '. ' . $direccion_envio->pais; ?></p></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><strong><?php echo Yii::t('backEnd', 'State'); ?>:</strong> 
+                        <td colspan="2"><!--<strong><?php echo Yii::t('backEnd', 'State'); ?>:</strong> 
                             <?php
                             switch ($factura->estado) {
                                 case '1':
@@ -59,7 +59,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                     echo Yii::t('backEnd', 'Unknown');
                                     break;
                             }
-                            ?>
+                            ?>-->
                         </td>
                     </tr>
                     <tr>

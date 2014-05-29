@@ -19,7 +19,7 @@
 $ventas = Orden::model()->count();
 $enviados = Orden::model()->countByAttributes(array('estado'=>4)); // enviados
 
-$sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado = 4 and a.id = b.tbl_orden_id ";
+$sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado in (4,8,11) and a.id = b.tbl_orden_id ";
 $productos_enviados = Yii::app()->db->createCommand($sql)->queryScalar();
 
 	// el total de ordenes pagas o enviadas
@@ -70,7 +70,7 @@ else
 $f = substr($e,0,-1);
 $g = substr($envios,0,-1);
 
-$sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado = 1 and a.id = b.tbl_orden_id";
+$sql = "select sum(cantidad) from tbl_orden a, tbl_orden_has_productotallacolor b where a.estado in (1,2,6,7) and a.id = b.tbl_orden_id";
 $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 
 ?>  
@@ -125,7 +125,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 							         'categories' => array($uno, $dos)
 							      ),
 							      'yAxis' => array(
-							         'title' => array('text' => 'Bs.')
+							         'title' => array('text' => Yii::t('contentForm','currSym'))
 							      ),
 							      'series' => array(
 							        // array('name' => 'Jane', 'data' => array(1, 0, 4)),
@@ -189,7 +189,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 									'categories' => array($uno, $tres, $cuatro, $cinco, $dos)
 									),
 								'yAxis' => array(
-										'title' => array('text' => 'Bs.')
+										'title' => array('text' => Yii::t('contentForm','currSym'))
 									),
 								'series' => array(
 										array('name' => 'Total', 'data' => array($cuatrosem, $tressem, $dossem, $unosem, $ahora))
@@ -248,7 +248,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 															$fecha[21],$fecha[22],$fecha[23],$fecha[24],$fecha[25],$fecha[26],$fecha[27],$fecha[28],$fecha[29])
 									),
 								'yAxis' => array(
-										'title' => array('text' => 'Bs.')
+										'title' => array('text' => Yii::t('contentForm','currSym'))
 									),
 								'series' => array(
 									array('name' => 'Total', 'data' => array($treintaun, $treinta,$todos[0],$todos[1],$todos[2],$todos[3],$todos[4],$todos[5],$todos[6],$todos[7],$todos[8],$todos[9],$todos[10]
@@ -273,19 +273,30 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
           <table width="100%" border="0" class="table table-bordered  table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Ventas Totales</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$a); ?> Bs.</td>
+              <td><?php 
+              			echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","completas","subtotal"))." ".Yii::t('contentForm','currSym');
+              	?> 
+              	
+              </td>
             </tr>
             <tr>
               <td><strong>Promedio de Ventas</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$c); ?> Bs.</td>
+              <td><?php if(Orden::model()->getStats("count","completas","id")>0)
+              			echo Yii::app()->numberFormatter->format("#,##0.00",(Orden::model()->getStats("sum","completas","subtotal")/Orden::model()->getStats("count","completas","id")))." ".Yii::t('contentForm','currSym');
+              		else
+						echo "0"." ".Yii::t('contentForm','currSym');
+					
+              	?> 
+              	
+              </td>
             </tr>
             <tr>
               <td><strong>Impuestos</strong>:</td>
-              <td><?php echo $b; ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","completas","iva"))." ".Yii::t('contentForm','currSym'); ?></td>
             </tr>
             <tr>
               <td><strong>Envíos</strong>:</td>
-              <td><?php echo $enviados; ?></td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","completas","envio"))." ".Yii::t('contentForm','currSym'); ?></td>
             </tr>
             <tr>
               <td><strong>Numero de Productos envíos</strong>:</td>
@@ -298,19 +309,26 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <td><strong>Total Pagos Pendientes:</strong></td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$d); ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","pendientes","subtotal"))." ".Yii::t('contentForm','currSym');
+              	 ?></td>
             </tr>
             <tr>
               <td><strong>Promedio en Pagos Pendientes:</strong></td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($f); ?> Bs.</td>
+              <td><?php if(Orden::model()->getStats("count","pendientes","id")>0)
+              			echo Yii::app()->numberFormatter->format("#,##0.00",(Orden::model()->getStats("sum","pendientes","subtotal")/Orden::model()->getStats("count","pendientes","id")))." ".Yii::t('contentForm','currSym');
+              		else
+						echo "0"." ".Yii::t('contentForm','currSym');
+					 ?></td>
             </tr>
             <tr>
               <td><strong>Impuestos:</strong></td>
-              <td>870 Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","pendientes","iva"))." ".Yii::t('contentForm','currSym');
+              	 ?></td>
             </tr>
             <tr>
               <td><strong>Envios:</strong></td>
-              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$g); ?> Bs.</td>
+              <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","pendientes","envio"))." ".Yii::t('contentForm','currSym');
+              	 ?></td>
             </tr>
             <tr>
               <td><strong>Numero de Productos Pendientes:</strong></td>
@@ -335,9 +353,9 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
           <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Nombre del Look</th>
-              <th scope="col">Precio (Bs.)</th>
+              <th scope="col">Precio (<?php echo Yii::t('contentForm','currSym');?>)</th>
               <th scope="col">Cantidad</th>
-              <th scope="col">Total Vendidos (Bs.)</th>
+              <th scope="col">Total Vendidos (<?php echo Yii::t('contentForm','currSym');?>)</th>
             </tr>
             		
       	<?php
@@ -359,9 +377,9 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
       	?>
         	<tr>
               <td><a href="<?php echo $lk->getUrl(); ?>" title="Ver Look"><?php echo $lk->title; ?></a></td>
-              <td>Bs. <?php echo $lk->getPrecio(); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym');?> <?php echo $lk->getPrecio(); ?></td>
               <td><?php echo $record['looks']; ?></td>
-              <td>Bs. <?php echo $ppp; ?></td>
+              <td><?php echo Yii::t('contentForm','currSym');?> <?php echo $ppp; ?></td>
           	</tr>
 	<?php
 		}
@@ -375,9 +393,9 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
         <table width="100%" border="0" class="table table-bordered table-striped table-condensed"  cellspacing="0" cellpadding="0">
             <tr>
               <th scope="col">Nombre del Producto</th>
-              <th scope="col">Precio (Bs.)</th>
+              <th scope="col">Precio (<?php echo Yii::t('contentForm','currSym');?>)</th>
               <th scope="col">Cantidad</th>
-              <th scope="col">Total Vendidos (Bs.)</th>
+              <th scope="col">Total Vendidos (<?php echo Yii::t('contentForm','currSym');?>)</th>
             </tr>	
       	<?php
       		$x = new Producto;
@@ -398,9 +416,9 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
             
             <tr>
               <td><a href="<?php echo $pro->getUrl(); ?>" title="Ver producto"><?php echo $pro->nombre; ?></a></td>
-              <td>Bs. <?php echo $pre->precioDescuento; ?></td>
+              <td><?php echo Yii::t('contentForm','currSym');?> <?php echo $pre->precioDescuento; ?></td>
               <td><?php echo $record['productos']; ?></td>
-              <td>Bs. <?php echo $ppp; ?></td>
+              <td><?php echo Yii::t('contentForm','currSym');?> <?php echo $ppp; ?></td>
             </tr>
        <?php      
 			}
@@ -414,7 +432,7 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
             <tr>
               <th scope="col">Nombre de la marca</th>
               <th scope="col">Items vendidos</th>
-              <th scope="col">Total Vendidos (Bs.)</th>
+              <th scope="col">Total Vendidos (<?php echo Yii::t('contentForm','currSym');?>)</th>
             </tr>
       <?php
       		$x = new Marca;
@@ -456,7 +474,7 @@ $sql = "SELECT SUM(tbl_orden_has_productotallacolor.cantidad) as productos,produ
             <tr>
               <td><?php echo $indiv->nombre; ?></td>
               <td><?php echo $record['uno']; ?></td>
-              <td>Bs. <?php echo Yii::app()->numberFormatter->format("#,##0.00",$totalp); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym');?> <?php echo Yii::app()->numberFormatter->format("#,##0.00",$totalp); ?></td>
             </tr>
        
        <?php

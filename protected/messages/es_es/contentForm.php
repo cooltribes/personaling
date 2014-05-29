@@ -72,6 +72,7 @@ return array (
 
 	'Card numbers' => 'Número de la tarjeta',
 	'Cancel' => 'Cancelar',
+	'cannot be blank'=>'No puede quedar vacío.',
 	'Campaign progress' => 'Progreso de la campaña',
 	'Campaigns don\'t have available at this time' => 'No tenemos campañas disponibles en este momento',
 	'Code' => 'Código',
@@ -421,6 +422,7 @@ return array (
 	'Whom you send him' => 'A quién se la envías',
 	'Write a friendly URL to this look.' => 'Escribe una url amigable para este look.',
 	'Write message' => 'Escribe un mensaje',
+	'Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?'=>'¿Quién dijo qué '.Yii::app()->params['registerGift'].'€ es poco ?',
 
 	'Zip code' => 'Código postal',
 

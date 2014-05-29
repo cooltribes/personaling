@@ -22,19 +22,17 @@ $this->breadcrumbs = array(
                 ),
             )
         ); ?>	
-    <!-- FLASH OFF --> 
+        <!-- FLASH OFF --> 
         <h1><?php echo Yii::t('contentForm' , 'Inbound details') . " - <strong>Albaran: {$id}</strong>"; ?></h1>
     </div>
     <style>
-        th.productos{
+        th.totales{
             width: 14%;
         }
         th.acciones{
             width: 8%;
         }
     </style>
-   
-    
         <?php 
 //        $this->renderPartial('_filters'); 
         ?>
@@ -62,9 +60,9 @@ $this->breadcrumbs = array(
         <tr>            
             <th classrowspan="2" scope="col">'.Yii::t('contentForm' , 'SKU').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Status').'</th>
-            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Sent amount').'</th>
-            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Received amount').'</th>            
-            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>            
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Sent amount').'</th>
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Received amount').'</th>            
+            <th class="acciones" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>            
         </tr>
         <tr>
             
@@ -113,4 +111,43 @@ $this->breadcrumbs = array(
       <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
     </div>-->
 
+<script type="text/javascript">
+
+function marcarCorregida(idItem){
+
+    $.ajax({
+        type: 'GET',
+        url: '<?php echo CController::createUrl('inbound/corregirItem')?>',
+        dataType: 'JSON',
+        data: {id: idItem},
+        success: function(data){
+//            console.log(data);
+            bootbox.alert(data.status);
+            if(data.status === 'success'){
+               ajaxUpdateTimeout = setTimeout(function () {
+               $.fn.yiiListView.update(
+                    'list-auth-items',
+                    {
+                        type: 'POST',	
+                        url: '<?php echo CController::createUrl('inbound/detalle')?>',
+                        data: ajaxRequest
+                    }
+
+               )
+               },
+               300);
+
+            }else if(data.status === 'error'){
+
+            }
+
+        }
+    });
+
+}
+
+    
+
+</script>
 </div>
+    

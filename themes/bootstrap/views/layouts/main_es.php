@@ -73,9 +73,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                         'url'=>array('/producto/reporte'),),
                                                     array('label' => 'Importación',
                                                         'url'=>array('/producto/importar'),),
-                                                    array('label' => 'MasterData',
+                                                    array('label' => 'Ver MasterDatas',
                                                         'url'=>array('/masterData/admin'),),
-                                                    array('label' => 'Inbound',
+                                                    array('label' => 'Ver Inbounds',
                                                         'url'=>array('/inbound/admin'),),                                                    
                                                 )),
 					)

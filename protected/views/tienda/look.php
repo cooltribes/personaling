@@ -4,7 +4,7 @@ Yii::app()->clientScript->registerMetaTag('Looks', 'title', null, null, null);
 Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion bloggers y personal shoppers', 'description', null, null, null);
 Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, looks, asesoría ropa personalizada, moda, fashion bloggers, personal shopper gratis', 'keywords', null, null, null);
 ?>
-<?php
+<?php 
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
     var fb_param = {};
@@ -601,7 +601,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 </div>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 
-<?php if(isset(Yii::app()->session['registerStep'])){if(Yii::app()->session['registerStep']==3){?>
+<?php if($gift){?>
 <div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
   <div class="modal-header">
     <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
@@ -613,7 +613,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
   </div>
   <div class="modal-footer">  <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
   </div>
-</div><?php }}?>
+</div><?php }?>
 
 <!-- Modal Registro OFF -->
 
@@ -810,7 +810,7 @@ if (isset(Yii::app()->session["modalOn"])) {
 			});
 			
 			$('.closeModal').click(function(event) {
-				$('#0myModalRegalo').remove();
+				$('#myModalRegalo').remove();
 			});
 
  
@@ -820,6 +820,7 @@ if (isset(Yii::app()->session["modalOn"])) {
 </script>
 
 <script type="text/javascript">
+
     $(function() {
         moveScroller();
     });

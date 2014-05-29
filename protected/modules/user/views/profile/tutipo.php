@@ -53,7 +53,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
     <?php } ?>      
 
-      <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
+      <h1>Tu tipo<small> - Escoge las opciones que más se parezcan a ti:</small></h1>
       <article class="margin_top  margin_bottom_small ">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',
@@ -210,7 +210,7 @@ $script = "
   </li>
   
   <li id="numero3" data-id="yw1" data-button="Terminar" data-options="tipLocation:top;tipAnimation:fade">
-    <p class="lead"><strong>Escoge tu estilo</strong></p>
+    <p class="lead"><strong>Escoge tu estilo </strong></p>
     <p class="muted">Haz click en siguiente y elige entre las imágenes tu estilo </p>
   </li>
 </ol>

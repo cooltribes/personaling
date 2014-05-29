@@ -25,11 +25,18 @@ $this->breadcrumbs = array(
         <h1><?php echo Yii::t('contentForm' , 'Manage') . " Archivos <strong>Inbound</strong>"; ?></h1>
     </div>
     <style>
-        th.productos{
-            width: 14%;
+        th.albaran{
+            width: 6%;
+        }
+        th.totales{
+            width: 9%;
         }
         th.acciones{
             width: 8%;
+        }
+        
+        td.nombreUsuario{
+            width: 23%;
         }
     </style>
    
@@ -59,12 +66,13 @@ $this->breadcrumbs = array(
     $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>            
-            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'ID').'</th>
+            <th class="albaran" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Albaran<br>(ID)').'</th>
+            <th colspan="2" scope="col">'.Yii::t('contentForm' , 'User').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Status').'</th>
-            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'User').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Upload date').'</th>
-            <th class="productos" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Sent products').'</th>
-            <th class="productos" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Received products').'</th>
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'No. of products').'</th>
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Total sent amount').'</th>
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Total acknowledged amount').'</th>
             <th class="acciones" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>
         </tr>
         <tr>

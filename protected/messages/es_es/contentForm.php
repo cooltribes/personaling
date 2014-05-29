@@ -72,6 +72,7 @@ return array (
 
 	'Card numbers' => 'Número de la tarjeta',
 	'Cancel' => 'Cancelar',
+	'cannot be blank'=>'No puede quedar vacío.',
 	'Campaign progress' => 'Progreso de la campaña',
 	'Campaigns don\'t have available at this time' => 'No tenemos campañas disponibles en este momento',
 	'Code' => 'Código',
@@ -204,6 +205,7 @@ return array (
 	'No elements to show'=>'No existen elementos para mostrar',
 	'Nro. looks' => 'No. de looks',
 	'Nro. items' => 'No. de Prendas',
+	'No. of products' => 'Nro. de productos',
 	'Number' => 'Número',
 
 	'Last step' => 'Último paso',
@@ -295,6 +297,7 @@ return array (
 	'State' => 'Estado',
 	'Start by dragging the panel items right up here. Just click on them and move them to this box.' => 'Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro.',
 	'Start enjoying your Gift Card in Personaling.com using it.' => 'Comienza a disfrutar de tu Gift Card usándola en Personaling.com.',
+	'Status' => 'Estado',
 	'Style' => 'Estilo',
 	'Size' => 'Talla',
 	'Sizes' => 'Tallas',
@@ -353,6 +356,8 @@ return array (
 	'Totals' => 'Totales',
 	'Total Gift Cards' => 'Total de Gift Cards',
 	'Total returned' => 'Total devuelto',
+	'Total sent amount' => 'Cant. Total Enviada',
+	'Total acknowledged amount' => 'Cant. Total Confirmada',
 	'Type' => 'Tipo',
 	'Type a description for this look' => 'Escriba una descripción para este look',
 	'Tracking' => 'Número de seguimiento',
@@ -422,6 +427,7 @@ return array (
 	'Whom you send him' => 'A quién se la envías',
 	'Write a friendly URL to this look.' => 'Escribe una url amigable para este look.',
 	'Write message' => 'Escribe un mensaje',
+	'Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?'=>'¿Quién dijo qué '.Yii::app()->params['registerGift'].'€ es poco ?',
 
 	'Zip code' => 'Código postal',
 

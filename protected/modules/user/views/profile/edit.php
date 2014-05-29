@@ -116,8 +116,9 @@ function getMonthsArray()
 						
 					}
 				}
-				else
-					echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range));
+			
+				elseif($field->varname == 'pais')
+					echo $form->hiddenField($profile,$field->varname,array("value"=>"1"));
 			}
 			
 				

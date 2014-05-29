@@ -105,7 +105,11 @@ class Inbound extends CActiveRecord
         $criteria->compare('total_productos',$this->total_productos);
         $criteria->compare('total_cantidad',$this->total_cantidad);
         $criteria->compare('estado',$this->estado);
-
+        
+        //ORdenar por fecha
+        $criteria->order = "fecha_carga DESC";
+        
+        
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));

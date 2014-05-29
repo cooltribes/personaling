@@ -601,7 +601,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 </div>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 
-<?php if($gift){?>
+<?php if(true){?>
 <div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
   <div class="modal-header">
     <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
@@ -609,7 +609,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
    
   </div>
   <div class="modal-body">
- 		 <h4>Has sumado 5 euros a tu saldo por completar tu registro.</h4>
+ 		 <h4><?php echo Yii::t('contentForm','Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?');?></h4>
   </div>
   <div class="modal-footer">  <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
   </div>

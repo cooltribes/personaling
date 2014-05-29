@@ -6,7 +6,7 @@ class InboundController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+//	public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -28,7 +28,7 @@ class InboundController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','detalle','descargarExcel',
-                                    'descargarXml'),
+                                    'descargarXml', "corregirItem"),
 				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
@@ -63,6 +63,22 @@ class InboundController extends Controller
 		$this->render('admin',array(
 			'dataProvider'=>$model->search(),
 		));
+	}
+        
+	/**
+	 * Cambiar estado a "Corregido"
+	 */
+	public function actionCorregirItem()
+	{
+            if(isset($_GET['id'])){
+                $response = array();
+                
+                $response["status"] = "success";
+                echo CJSON::encode($response);
+            }            
+            
+            Yii::app()->end();
+		
 	}
 
 	/**

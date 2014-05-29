@@ -86,11 +86,11 @@
           <div class="span5"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym')?> </small><?php echo $look->getPrecio(); ?></span></div>
         </div>
         <div class="share_like">
-         
+         <?php if(!Yii::app()->user->isGuest){?>
           <button id="meEncanta<?php echo $look->id; ?>" onclick='encantar(<?php echo $look->id; ?>)' title="Me encanta" class="btn-link <?php echo $look->meEncanta()?"btn-link-active":""; ?>">
           	<span id="like<?php echo $look->id; ?>" class="entypo icon_personaling_big"><?php echo $look->meEncanta()?"♥":"♡"; ?></span>
           </button>
-          
+          <?php }?>
           <div class="btn-group">
             <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
             <ul class="dropdown-menu addthis_toolbox addthis_default_style ">

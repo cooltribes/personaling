@@ -27,9 +27,22 @@
         ?>
     </td>      
     <td>
-        <?php $this->widget("bootstrap.widgets.TbButton", array(
-            "icon" => "ban-circle",
-            "disabled" => true,
-        )); ?>
+        <div class="dropdown text_align_center"> 
+            <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="" title="acciones">
+                <i class="icon-cog"></i> <b class='caret'></b>
+            </a> 
+            <!-- Link or button to toggle dropdown -->
+            <ul class="dropdown-menu pull-right text_align_left" role="menu" aria-labelledby="dLabel">
+                <li>
+                    <?php echo CHtml::link('<i class="icon-ok"></i>  Marcar como corregido',
+                            "#",
+                            array(
+                                "onclick" => "js:marcarCorregida($data->id)"
+                            )
+//                            $this->createUrl("/inbound/corregirItem", array("id"=>$data->id))
+                    ); ?>                                
+                </li>                                 
+            </ul>
+        </div>
     </td>
 </tr>

@@ -1437,6 +1437,18 @@ class BolsaController extends Controller
                         // Enviar correo con resumen de la compra
                         $this->enviarEmail($orden, $user);
                         
+                        /*Enviar correo OPERACIONES (operaciones@personaling.com*/
+                        /*Solo enviar correos cuando este en producccion, not develop, not test*/
+                        if(strpos(Yii::app()->baseUrl, "develop") == false 
+                            && strpos(Yii::app()->baseUrl, "test") == false){
+
+                            $this->enviarEmailOperaciones($orden);  
+
+                        }
+
+                        /*Generar el Outbound para Logishfashion*/
+                        $this->generarOutbound($orden);
+                        
                         $this->redirect($this->createAbsoluteUrl('bolsa/pedido',array(
                             'id'=>$orden->id,
                             'admin' => $admin,
@@ -2599,11 +2611,6 @@ class BolsaController extends Controller
                 exit;
             }
             
-            
-            $orden = Orden::model()->findByPk(152);
-            $this->generarOutbound($orden);
-            
-            
 	}
         /**
          * Urls para recibir las notificaciones del proceso de compra
@@ -2731,10 +2738,6 @@ class BolsaController extends Controller
             /*ID del usuario propietario de la bolsa*/
             $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                 : Yii::app()->user->id;
-//             echo "user".Yii::app()->user->id;
-//             echo "<pre>";
-//             print_r(Yii::app()->getSession());
-//             echo "</pre><br>";
 
             $userId = $usuario;
             $usuario = User::model()->findByPk($userId);
@@ -2791,12 +2794,12 @@ class BolsaController extends Controller
             if(strpos(Yii::app()->baseUrl, "develop") == false 
                 && strpos(Yii::app()->baseUrl, "test") == false){
                 
-                $this->enviarEmailOperaciones($orden, $usuario);  
+                $this->enviarEmailOperaciones($orden);  
 
             }
             
             /*Generar el Outbound para Logishfashion*/
-            //$this->generarOutbound($orden);
+            $this->generarOutbound($orden);
             
             $url = $this->createAbsoluteUrl('bolsa/pedido',array(
                         'id'=>$orden->id,
@@ -3085,15 +3088,10 @@ class BolsaController extends Controller
                     archivo <b>MasterData.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
                 Yii::app()->user->setFlash("error", $mensajeLF);                                   
                 $mensajeLF = "";
-
             }
             Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF); 
             
         }
         
-        
-        
-        
-        
-        
+                
 }

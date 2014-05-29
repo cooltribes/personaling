@@ -779,5 +779,21 @@ class Orden extends CActiveRecord
 		}
 	}
 	
+	public function getStats($accion = "sum", $criterio = "total", $campo = "total" ){
+		switch ($criterio) {
+                
+                case "pendientes":
+                    $sql="select ".$accion."(".$campo.") from tbl_orden where estado IN (1,2,6,7)";
+                    break;
+				case "completas":
+                    $sql="select ".$accion."(".$campo.") from tbl_orden where estado IN (11,8,4,3)";
+                    break;
+                default:
+					$sql="select ".$accion."(".$campo.") from tbl_orden";
+                    break;
+            }
+           return Yii::app()->db->createCommand($sql)->queryScalar();
+	}
+	
 	
 }

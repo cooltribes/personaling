@@ -140,6 +140,7 @@ function handleDrop(e) {
 		var img = new Image();
 		//img.attr('id','img'+nuevo_objeto.attr('id'));
 		img.onload = function(){
+
 			//alert(this.width + 'x' + this.height);
 			$(this).attr('width',this.width);
 			$(this).attr('height',this.height);
@@ -223,8 +224,8 @@ function handleDrop(e) {
 		img.src = urlVar;
 		//
 		nuevo_objeto.append(img);
-		nuevo_objeto.append('<span class="eliminar ocultar"><i class=" icon-remove"></i></span>');
-		nuevo_objeto.append('<div class="rotar ocultar"> <i class=" icon-repeat"></i></div>');
+			nuevo_objeto.append('<span class="eliminar ocultar"><i class=" icon-remove"></i></span>');
+			nuevo_objeto.append('<div class="rotar ocultar"> <i class=" icon-repeat"></i></div>');
 		  if (contenedor.innerHTML.indexOf("<h1>") >=0)
 			$(contenedor).html(	nuevo_objeto );
 	    else

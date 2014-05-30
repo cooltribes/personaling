@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','xmltest'),
+                                    'getFilter','xmltest','rangoslook'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -111,7 +111,11 @@ class TiendaController extends Controller
 		));	
 			
 	}
-	
+	public function actionRangoslook(){
+		
+		$rangosArray = Look::model()->getRangosPrecios();
+		$this->renderPartial('_rangos',array('rangos'=>$rangosArray));
+	}
 	public function actionIndex()
 	{
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
@@ -1067,8 +1071,9 @@ public function actionCategorias2(){
 	
 	}
 
-	public function actionLook(){ 
-		
+	public function actionLook(){
+            	 
+			//$start = microtime(true);
             $userTmp = User::model()->findByPk(Yii::app()->user->id);
             $todosLosLooks = false;
             if (isset($userTmp)) {
@@ -1324,11 +1329,13 @@ public function actionCategorias2(){
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
-
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."a<br>"; 
                 /**    Filtros por Perfil * */
                 $profile = new Profile;
-                $rangosArray = Look::model()->getRangosPrecios();
-
+               // $rangosArray = Look::model()->getRangosPrecios();
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."b<br>"; 
     //                echo "<pre>"; print_r($count);echo "</pre>";               
 				$gift=false;
 				if(isset(Yii::app()->session['registerStep'])){
@@ -1346,15 +1353,19 @@ public function actionCategorias2(){
 					}else
 						unset(Yii::app()->session['registerStep']);
 				}
+				
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,
                     'profile' => $profile,
                     'editar' => true,
-                    'rangos' => $rangosArray,
+                    //'rangos' => $rangosArray,
                     'todosLosLooks' => $todosLosLooks,
                     'gift'=>$gift,
                 ));
+				
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."<br>"; 
             }	
 			
 		

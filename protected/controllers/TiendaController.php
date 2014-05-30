@@ -122,6 +122,8 @@ class TiendaController extends Controller
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
+
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 		/*
 		if(isset(Yii::app()->session['f_color'])){
 			unset(Yii::app()->session['f_color']);
@@ -377,6 +379,7 @@ class TiendaController extends Controller
 						'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
 						'pages'=>$pages,
 						'total'=>$total,
+						'seo' => $seo,
 						));	
 			} else {
 					
@@ -460,6 +463,7 @@ class TiendaController extends Controller
 		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
 		'pages'=>$pages,
 		'total'=>$total,
+		'seo' => $seo,
 		));	
 		}	
 	}
@@ -1254,6 +1258,7 @@ public function actionCategorias2(){
                         'pages' => $pages,
                         'profile' => $profile,
                         'editar' => true,
+                        'gift' => false,
                        // 'rangos' => $rangosArray,
                         'todosLosLooks' => $todosLosLooks,
                     ));
@@ -1353,7 +1358,9 @@ public function actionCategorias2(){
 					}else
 						unset(Yii::app()->session['registerStep']);
 				}
-				
+
+				$seo = SeoStatic::model()->findByAttributes(array('name'=>'Looks'));
+
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,
@@ -1362,6 +1369,7 @@ public function actionCategorias2(){
                     //'rangos' => $rangosArray,
                     'todosLosLooks' => $todosLosLooks,
                     'gift'=>$gift,
+                    'seo' => $seo,
                 ));
 				
 //$time_taken = microtime(true) - $start;

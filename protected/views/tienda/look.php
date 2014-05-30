@@ -1,8 +1,10 @@
 <?php
-$this->pageTitle = 'Looks';
-Yii::app()->clientScript->registerMetaTag('Looks', 'title', null, null, null);
-Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion bloggers y personal shoppers', 'description', null, null, null);
-Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, looks, asesoría ropa personalizada, moda, fashion bloggers, personal shopper gratis', 'keywords', null, null, null);
+if($seo){
+    $this->pageTitle = $seo->title;
+    Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+}
 ?>
 <?php 
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){

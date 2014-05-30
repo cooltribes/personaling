@@ -600,7 +600,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <?php $this->endWidget(); ?>  
 </div>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
-
+  
 <?php if($gift){?>
 <div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
  <div class="modal-header">

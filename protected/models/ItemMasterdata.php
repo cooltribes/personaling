@@ -1,33 +1,29 @@
 <?php
 /* ESTADOS
- * 0. Esperando confirmacion
- * 1. ...
- * 2. Confirmado
- * 3. Con discrepancias 
- * 4. Corregido
- * 
+ * 0. Nuevo
+ * 1. Actualizado 
  */
+
 /**
- * This is the model class for table "{{itemInbound}}".
+ * This is the model class for table "{{itemMasterdata}}".
  *
- * The followings are the available columns in table '{{itemInbound}}':
+ * The followings are the available columns in table '{{itemMasterdata}}':
  * @property integer $id
  * @property integer $producto_id
- * @property integer $inbound_id
- * @property integer $cant_enviada
- * @property integer $cant_recibida
+ * @property integer $masterdata_id
  * @property integer $estado
+ * @property integer $tipo_actualizacion
  *
  * The followings are the available model relations:
- * @property Inbound $inbound
  * @property PrecioTallaColor $producto
+ * @property MasterData $masterdata
  */
-class ItemInbound extends CActiveRecord
+class ItemMasterdata extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return ItemInbound the static model class
+	 * @return ItemMasterdata the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -39,7 +35,7 @@ class ItemInbound extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{itemInbound}}';
+		return '{{itemMasterdata}}';
 	}
 
 	/**
@@ -50,11 +46,11 @@ class ItemInbound extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('producto_id, inbound_id, cant_enviada', 'required'),
-			array('producto_id, inbound_id, cant_enviada, cant_recibida, estado', 'numerical', 'integerOnly'=>true),
+			array('producto_id, masterdata_id', 'required'),
+			array('producto_id, masterdata_id, estado, tipo_actualizacion', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, producto_id, inbound_id, cant_enviada, cant_recibida, estado', 'safe', 'on'=>'search'),
+			array('id, producto_id, masterdata_id, estado, tipo_actualizacion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,8 +62,8 @@ class ItemInbound extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'inbound' => array(self::BELONGS_TO, 'Inbound', 'inbound_id'),
 			'producto' => array(self::BELONGS_TO, 'Preciotallacolor', 'producto_id'),
+			'masterdata' => array(self::BELONGS_TO, 'MasterData', 'masterdata_id'),
 		);
 	}
 
@@ -79,10 +75,9 @@ class ItemInbound extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'producto_id' => 'Producto',
-			'inbound_id' => 'Inbound',
-			'cant_enviada' => 'Cant Enviada',
-			'cant_recibida' => 'Cant Recibida',
+			'masterdata_id' => 'Masterdata',
 			'estado' => 'Estado',
+			'tipo_actualizacion' => 'Tipo Actualizacion',
 		);
 	}
 
@@ -99,10 +94,9 @@ class ItemInbound extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('producto_id',$this->producto_id);
-		$criteria->compare('inbound_id',$this->inbound_id);
-		$criteria->compare('cant_enviada',$this->cant_enviada);
-		$criteria->compare('cant_recibida',$this->cant_recibida);
+		$criteria->compare('masterdata_id',$this->masterdata_id);
 		$criteria->compare('estado',$this->estado);
+		$criteria->compare('tipo_actualizacion',$this->tipo_actualizacion);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -111,14 +105,11 @@ class ItemInbound extends CActiveRecord
         
         /*Retorna El estado*/
         public function getEstado() {
-            $status = "No Enviado";
-            switch ($this->estado){
-                case 0: 
-                case 1: $status = "Enviado"; break;
-                case 2: $status = "Confirmado"; break;
-                case 3: $status = "Con Discrepancias"; break;
-                case 4: $status = "Corregido"; break;
+            $status = "Nuevo";
+            switch ($this->estado){                
+                case 1: $status = "Actualizado"; break;                
             }
             return $status;
         }
+        
 }

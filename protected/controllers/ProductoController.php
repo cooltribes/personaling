@@ -1833,15 +1833,25 @@ public function actionReportexls(){
                     //Esto no se pa que es
                     $anterior;
                     $pr_id;                   
+                    
+                    /*
+                    Para el MasterData en la BD
+                     */                    
+                    $masterDataBD = new MasterData();
+                    $masterDataBD->fecha_carga = date("Y-m-d H:i:s");
+                    //el admin que esta cargando
+                    $masterDataBD->user_id = Yii::app()->user->id;
+                    $masterDataBD->prod_actualizados = 0;
+                    $masterDataBD->prod_nuevos = 0;
+                    $masterDataBD->save();
                     /*
                     Para el MasterData en XML
                      */
-                    $xml = new SimpleXMLElement('<xml version="1.0"/>');
-                    $masterData = $xml->addChild('MasterData');
+                    $masterData = new SimpleXMLElement('<MasterData/>');                    
                     //Agregar la fecha de creacion
                     $masterData->addChild("FechaCreacion", date("Y-m-d")); 
                    
-                // segundo foreach, si llega aqui es para insertar y todo es valido
+                    // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
                         
                         if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
@@ -1873,7 +1883,9 @@ public function actionReportexls(){
                             $anterior = $row;
 
                             $producto = Producto::model()->findByAttributes(array('codigo' => $rRef));
-
+                            //Crear detalle en la BD
+                            $itemMasterdataRow = new ItemMasterdata();
+                            
                             // la referencia existe, hay que actualizar los campos
                             $prodExiste = isset($producto);
                             
@@ -1891,8 +1903,6 @@ public function actionReportexls(){
                                     'almacen' => $rAlmacen,
                                     'status' => 1
                                 )); 
-                                
-                                
                             } else
                             { // no existe la referencia, es producto nuevo                           
                                 $total++; // suma un producto nuevo
@@ -1910,7 +1920,6 @@ public function actionReportexls(){
                                 $producto->save();  
                                                                 
                             }
-                            
                             // Si existe o no el producto, actualizar o insertar precio nuevo
                             $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
                             
@@ -1972,14 +1981,18 @@ public function actionReportexls(){
                                 $cat3->save();
                             }
                             
+                            //buscar talla y color
+                            $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
+                            $color = Color::model()->findByAttributes(array('valor' => $rColor));
+                            
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
                                             'producto_id' => $producto->id,
                                             'sku' => $rSku,
-                                            'talla_id' => $rTalla,
-                                            'color_id' => $rColor,
+                                            'talla_id' => $talla->id,
+                                            'color_id' => $color->id,
                                         ));                                   
-                                    
-                            // si ya existe no hacer nada, si no, Crear uno nuevo
+                            
+                            // Si no existe crearlo
                             if (!isset($ptc)) { 
 
                                 $ptc = new Preciotallacolor;                                        
@@ -1987,13 +2000,19 @@ public function actionReportexls(){
                                 $ptc->sku = $rSku;
                                 $ptc->producto_id = $producto->id;
 
-                                $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
-                                $color = Color::model()->findByAttributes(array('valor' => $rColor));
-
                                 $ptc->talla_id = $talla->id;
                                 $ptc->color_id = $color->id;
                                 $ptc->save();
+                                
+                            }else{
+                                //Si ya existe
+                                //Marcar item como actualizado
+                                $itemMasterdataRow->estado = 1;
                             }
+                            
+
+                            //Agregar el preciotallacolor correspondiete
+                            $itemMasterdataRow->producto_id = $ptc->id;
                             
                             // seo
                             $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
@@ -2051,15 +2070,14 @@ public function actionReportexls(){
                             //Agregar el SKU
                             $item->addChild('EAN1', $rSku);
                             
+                            $itemMasterdataRow->masterdata_id = $masterDataBD->id;
+                            $itemMasterdataRow->save();
+
 //                            $tabla .= 'Se agregó el producto con ID: ' . $producto->id
 //                                    .', Nombre: ' . $producto->nombre
 //                                    . ', Precio_id: ' . $precio->id
 //                                    . ', actualizadas categorias, Seo_id: ' . $seo->id . '<br/>';
-                                    
-                            
                             //===============================================
-                            
-                            
                             
                         } 
                         else if ($row['A'] == "") 
@@ -2109,11 +2127,7 @@ public function actionReportexls(){
                         }
                     }// foreach
                     
-                    //Insertar nuevo MasterData
-                    $masterDataBD = new MasterData();
-                    $masterDataBD->fecha_carga = date("Y-m-d H:i:s");
-                    //el admin que esta cargando
-                    $masterDataBD->user_id = Yii::app()->user->id;
+                    //Insertar nuevo MasterData                   
                     $masterDataBD->prod_actualizados = $actualizar;
                     $masterDataBD->prod_nuevos = $total;
                     $masterDataBD->save();
@@ -2126,7 +2140,7 @@ public function actionReportexls(){
                             
                     /*Enviar MasterData a logisFashion guardar respaldo del xml
                      *  y mostrar notificacion*/
-                    $subido = MasterData::subirArchivoFtp($xml, 1, $masterDataBD->id);
+                    $subido = MasterData::subirArchivoFtp($masterData, 1, $masterDataBD->id);
                     $mensajeLF = "El archivo <b>MasterData.xml</b> se ha enviado
                         satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
 
@@ -2208,8 +2222,7 @@ public function actionReportexls(){
                     Para el Inbound en XML
                      */
                     $fecha = time();
-                    $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
-                    $inbound = $xml->addChild('Inbound');
+                    $inbound = new SimpleXMLElement('<Inbound/>');
                     $inbound->addChild('Albaran');
                     $inbound->addChild('FechaAlbaran', date("Y-m-d", $fecha));                    
 
@@ -2289,7 +2302,7 @@ public function actionReportexls(){
                             
                     /*Enviar Inbound a logisFashion, guardar respaldo del xml
                      *  y mostrar notificacion*/
-                    $subido = MasterData::subirArchivoFtp($xml, 2, $inboundRow->id);
+                    $subido = MasterData::subirArchivoFtp($inbound, 2, $inboundRow->id);
                     $mensajeLF = "El archivo <b>Inbound.xml</b> se ha enviado
                         satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";                    
 

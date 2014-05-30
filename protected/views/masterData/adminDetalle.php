@@ -4,7 +4,7 @@
 
 $this->breadcrumbs = array(
     'Inventario',
-    'Inbound - '.$id => array("inbound/admin"),
+    'MasterData - '.$id => array("masterdata/admin"),
     'Detalle',
 );
 ?>
@@ -23,7 +23,7 @@ $this->breadcrumbs = array(
             )
         ); ?>	
         <!-- FLASH OFF --> 
-        <h1><?php echo Yii::t('contentForm' , 'Inbound details') . " - <strong>Albaran: {$id}</strong>"; ?></h1>
+        <h1><?php echo Yii::t('contentForm' , 'MasterData details') . " - <strong>ID: {$id}</strong>"; ?></h1>
     </div>
     <style>
         th.totales{
@@ -60,8 +60,6 @@ $this->breadcrumbs = array(
         <tr>            
             <th classrowspan="2" scope="col">'.Yii::t('contentForm' , 'SKU').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Status').'</th>
-            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Sent amount').'</th>
-            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Acknowledged amount').'</th>            
             <th class="acciones" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>            
         </tr>
         <tr>

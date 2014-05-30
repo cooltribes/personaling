@@ -3048,8 +3048,7 @@ class BolsaController extends Controller
          */
         function generarOutbound($orden){
             
-            $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
-            $outbound = $xml->addChild('Outbound');
+            $outbound = new SimpleXMLElement('<Outbound/>');
             
             //Codigo de Albaran
             $codigo = $orden->id;
@@ -3079,7 +3078,7 @@ class BolsaController extends Controller
             }            
 
             //Enviar Outbound a LF y guardarlo en local para respaldo
-            $subido = MasterData::subirArchivoFtp($xml, 3, $orden->id);
+            $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
 
             Yii::app()->user->updateSession();
             //Si hubo error conectandose al ftp logisfashion

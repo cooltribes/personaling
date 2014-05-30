@@ -32,10 +32,17 @@
             </a> 
             <!-- Link or button to toggle dropdown -->
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-                <li>          
+                 <li>
+                    <?php echo CHtml::link('<i class="icon-eye-open"></i>  Ver Detalle',
+                            $this->createUrl("/masterData/detalle", array("id"=>$data->id))
+                    ); ?>                                
+                </li>
+                <li>
                     <?php echo CHtml::link('<i class="icon-list-alt"></i>  Descargar Excel',
                                 $this->createUrl("/masterData/descargarExcel", array("id"=>$data->id))
-                            ); ?>            
+                            ); ?>                                
+                </li>
+                <li>          
                     <?php echo CHtml::link('<i class="icon-align-center"></i>  Descargar XML',
                                 $this->createUrl("/masterData/descargarXml", array("id"=>$data->id))
                             ); ?>            

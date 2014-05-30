@@ -9,23 +9,8 @@
     <td>
         <?php echo $data->getEstado(); ?>
     </td>      
-    
-    
-    <!--Cantidad Enviada-->
-    <td>
-        <?php echo $data->cant_enviada; ?>
-    </td>      
-    
-    <!--Cantidad Recibida-->
-    <td>
-        <?php
-        if($data->cant_recibida){
-            echo $data->cant_recibida;             
-        }else{
-            echo "---";
-        }
-        ?>
-    </td>      
+     
+    <!--ACCIONES-->
     <td>
         <div class="dropdown text_align_center"> 
             <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="" title="acciones">

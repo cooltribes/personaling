@@ -27,8 +27,8 @@ class MasterDataController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update',
-                                    'index','view','descargarExcel','descargarXml'),
+				'actions'=>array('admin','detalle',
+                                    'descargarExcel','descargarXml'),
 				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
@@ -38,14 +38,16 @@ class MasterDataController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
+	 * Muestra los productos contenidos en un Inbound
 	 */
-	public function actionView($id)
+	public function actionDetalle($id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+            $dataProvider = $this->loadModel($id)->buscarProductos();
+            
+            $this->render('adminDetalle',array(
+                    'dataProvider'=>$dataProvider,
+                    'id'=>$id,
+            ));
 	}
 
 	/**
@@ -104,60 +106,6 @@ class MasterDataController extends Controller
             
 	}
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['MasterData']))
-		{
-			$model->attributes=$_POST['MasterData'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
-
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
-
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('MasterData');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
 
 	/**
 	 * Manages all models.

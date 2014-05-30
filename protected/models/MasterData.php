@@ -94,6 +94,7 @@ class MasterData extends CActiveRecord
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('prod_nuevos',$this->prod_nuevos);
 		$criteria->compare('prod_actualizados',$this->prod_actualizados);
+		$criteria->order = "fecha_carga DESC";
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -102,7 +103,18 @@ class MasterData extends CActiveRecord
         /*Retorna la fecha de carga como timestamp*/
         public function getFecha() {
             return strtotime($this->fecha_carga);
-        }       
+        }  
+        
+        public function buscarProductos()
+        {
+            $criteria=new CDbCriteria;
+
+            $criteria->compare('masterdata_id',$this->id);        
+
+            return new CActiveDataProvider("ItemMasterdata", array(
+                'criteria'=>$criteria,
+            ));
+        }
         
         /**
          * @param SimpleXMLElement $docXml el documento ya construido

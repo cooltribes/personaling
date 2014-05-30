@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Looks'=>array('admin'),
+	'Looks'=>array('mislooks'),
 	'Publicar',
 );
 $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::STATUS_APROBADO) && !Yii::app()->user->isAdmin())

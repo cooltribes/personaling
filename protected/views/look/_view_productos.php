@@ -72,7 +72,12 @@ if (isset($categoria_padre) ){
 								* */
 
 								//echo $image;
+								
+								
 								echo CHtml::image($producto->getImageUrl($tallacolor->color_id), "Imagen", array("width" => "180", "height" => "180"));
+								//echo CHtml::image(Yii::app()->createUrl('site/productoImagen',array('producto'=>$producto->id,'color'=>$tallacolor->color_id,'h'=>180,'w'=>180)), "Imagen", array("width" => "180", "height" => "180"));
+								
+								
 								//echo $tallacolor->color_id;
 								//echo $producto->id;
 								//echo CHtml::link($image, array('items/viewslug', 'slug'=>$data->slug));

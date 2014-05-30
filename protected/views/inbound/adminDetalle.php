@@ -4,7 +4,8 @@
 
 $this->breadcrumbs = array(
     'Inventario',
-    'Inbound',
+    'Inbound - '.$id => array("inbound/admin"),
+    'Detalle',
 );
 ?>
 
@@ -21,26 +22,17 @@ $this->breadcrumbs = array(
                 ),
             )
         ); ?>	
-    <!-- FLASH OFF --> 
-        <h1><?php echo Yii::t('contentForm' , 'Manage') . " Archivos <strong>Inbound</strong>"; ?></h1>
+        <!-- FLASH OFF --> 
+        <h1><?php echo Yii::t('contentForm' , 'Inbound details') . " - <strong>Albaran: {$id}</strong>"; ?></h1>
     </div>
     <style>
-        th.albaran{
-            width: 6%;
-        }
         th.totales{
-            width: 9%;
+            width: 14%;
         }
         th.acciones{
             width: 8%;
         }
-        
-        td.nombreUsuario{
-            width: 23%;
-        }
     </style>
-   
-    
         <?php 
 //        $this->renderPartial('_filters'); 
         ?>
@@ -66,14 +58,11 @@ $this->breadcrumbs = array(
     $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>            
-            <th class="albaran" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Albaran<br>(ID)').'</th>
-            <th colspan="2" scope="col">'.Yii::t('contentForm' , 'User').'</th>
+            <th classrowspan="2" scope="col">'.Yii::t('contentForm' , 'SKU').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Status').'</th>
-            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Upload date').'</th>
-            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'No. of products').'</th>
-            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Total sent amount').'</th>
-            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Total acknowledged amount').'</th>
-            <th class="acciones" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Sent amount').'</th>
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Received amount').'</th>            
+            <th class="acciones" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>            
         </tr>
         <tr>
             
@@ -86,7 +75,7 @@ $this->breadcrumbs = array(
     $this->widget('zii.widgets.CListView', array(
         'id' => 'list-auth-items',
         'dataProvider' => $dataProvider,
-        'itemView' => '_view',
+        'itemView' => '_viewDetalle',
         'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
         'template' => $template,
         'afterAjaxUpdate' => " function(id, data) {						    	
@@ -122,4 +111,43 @@ $this->breadcrumbs = array(
       <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
     </div>-->
 
+<script type="text/javascript">
+
+function marcarCorregida(idItem){
+
+    $.ajax({
+        type: 'GET',
+        url: '<?php echo CController::createUrl('inbound/corregirItem')?>',
+        dataType: 'JSON',
+        data: {id: idItem},
+        success: function(data){
+//            console.log(data);
+            bootbox.alert(data.status);
+            if(data.status === 'success'){
+               ajaxUpdateTimeout = setTimeout(function () {
+               $.fn.yiiListView.update(
+                    'list-auth-items',
+                    {
+                        type: 'POST',	
+                        url: '<?php echo CController::createUrl('inbound/detalle')?>',
+                        data: ajaxRequest
+                    }
+
+               )
+               },
+               300);
+
+            }else if(data.status === 'error'){
+
+            }
+
+        }
+    });
+
+}
+
+    
+
+</script>
 </div>
+    

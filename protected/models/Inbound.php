@@ -69,6 +69,7 @@ class Inbound extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+            'productos' => array(self::HAS_MANY, 'ItemInbound','inbound_id'),
         );
     }
 
@@ -104,25 +105,40 @@ class Inbound extends CActiveRecord
         $criteria->compare('total_productos',$this->total_productos);
         $criteria->compare('total_cantidad',$this->total_cantidad);
         $criteria->compare('estado',$this->estado);
-
+        
+        //ORdenar por fecha
+        $criteria->order = "fecha_carga DESC";
+        
+        
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
     }
     
     /*Retorna la fecha de carga como timestamp*/
-        public function getEstado() {
-            $status = "No Enviado";
-            switch ($this->estado){
-                case 1: $status = "Enviado"; break;
-                case 2: $status = "Confirmado"; break;
-                case 3: $status = "Con Discrepancias"; break;
-                case 4: $status = "Corregido"; break;
-            }
-            return $status;
+    public function getEstado() {
+        $status = "No Enviado";
+        switch ($this->estado){
+            case 1: $status = "Enviado"; break;
+            case 2: $status = "Confirmado"; break;
+            case 3: $status = "Con Discrepancias"; break;
+            case 4: $status = "Corregido"; break;
         }
+        return $status;
+    }
     /*Retorna la fecha de carga como timestamp*/
-        public function getFecha() {
-            return strtotime($this->fecha_carga);
-        }
+    public function getFecha() {
+        return strtotime($this->fecha_carga);
+    }
+    
+    public function buscarProductos()
+    {
+        $criteria=new CDbCriteria;
+
+        $criteria->compare('inbound_id',$this->id);        
+
+        return new CActiveDataProvider("ItemInbound", array(
+            'criteria'=>$criteria,
+        ));
+    }
 }

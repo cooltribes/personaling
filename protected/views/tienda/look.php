@@ -605,13 +605,13 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 <?php if($gift){?>
 <div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-  <div class="modal-header">
+ <div class="modal-header">
     <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">¡Enhorabuena!</h3>
+   <!--  <h3 id="myModalLabel">¡Enhorabuena!</h3>-->
    
   </div>
   <div class="modal-body">
- 		 <h4>Has sumado 5 euros a tu saldo por completar tu registro.</h4>
+ 		 <h4><?php echo Yii::t('contentForm','Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?');?></h4>
   </div>
   <div class="modal-footer">  <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
   </div>

@@ -23,7 +23,7 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','top','error','contacto','login','logout',
+				'actions'=>array('productoimagen','index','top','error','contacto','login','logout',
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies','preguntas_frecuentes',
@@ -227,7 +227,37 @@ class SiteController extends Controller
 		}
 	}
 	
-	
+	public function actionProductoImagen(){
+		
+		/*
+		ALTER TABLE `db_personaling`.`tbl_imagen` 
+ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
+		*/
+//at the beginning
+//$start_time = microtime(1);		
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";
+			   
+		//$list= Yii::app()->db->createCommand('select url from tbl_imagen where tbl_producto_id=:tbl_producto_id and color_id=:color_id order by orden limit 0,1')->bindValue('tbl_producto_id',$_GET['producto'])->bindValue('color_id',$_GET['color'])->queryAll();
+		$image = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$_GET['producto'],'color_id'=>$_GET['color']),array('order'=>'orden','limit'=>1,'offset'=>0));
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";
+		//$image_url = Yii::app()->baseUrl.str_replace(".","_thumb.",$list[0]["url"]);
+		
+		//$image_url = str_replace(".","_thumb.",$list[0]["url"]);
+		$image_url = str_replace(".","_thumb.",$image->url);
+		$filename = Yii::getPathOfAlias('webroot').$image_url;
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";			
+		$image = Yii::app()->image->load($filename);
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";		
+		$image->resize($_GET['h'],$_GET['w']);
+		$image->render();
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";	
+
+	}	
 
 	/**
 	 * Displays the contact page

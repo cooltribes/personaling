@@ -2,10 +2,7 @@
 /* @var $this OrdenController */
 //$this->breadcrumbs=array(
 //	'Pedidos',
-//);
-
-
-        
+//);        
 ?>
 
 <div class="container margin_top">
@@ -20,10 +17,10 @@
       <td><p class="T_xlarge margin_top_xsmall">
       	
       	<?php
-$sql = "select count( * ) as total from tbl_orden";
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
-?>
+        $sql = "select count( * ) as total from tbl_orden";
+        $num = Yii::app()->db->createCommand($sql)->queryScalar();
+        echo $num;
+        ?>
       </p>
         Totales</td>
       <td>
@@ -44,10 +41,10 @@ echo $num;
       </td>
       <td><p class="T_xlarge margin_top_xsmall">
       	      	<?php
-$sql = "SELECT count( * ) as total FROM tbl_orden where estado=2";
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
-?> 
+                $sql = "SELECT count( * ) as total FROM tbl_orden where estado=2";
+                $num = Yii::app()->db->createCommand($sql)->queryScalar();
+                echo $num;
+                ?> 
       </p>
         Esperando<br/>
         Confirmación</td>

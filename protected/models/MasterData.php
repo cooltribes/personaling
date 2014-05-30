@@ -104,6 +104,19 @@ class MasterData extends CActiveRecord
             return strtotime($this->fecha_carga);
         }       
         
+        /**
+         * @param SimpleXMLElement $docXml el documento ya construido
+         * @param int $tipoArchivo para los distintos documentos que
+         * se utilizan:
+         * 1: MasterData
+         * 2: Inbound
+         * 3: Outbound
+         * @param int $idSaved id o albaran del documento, usado para el nombre
+         * del archivo xml enviado a LF
+         * 
+         * @return boolean para indicar si se pudosubir el archivo o no.
+         * 
+         */        
         public static function subirArchivoFtp($docXml, $tipoArchivo, $idSaved){
 
             /*
@@ -114,13 +127,7 @@ class MasterData extends CActiveRecord
             
             $ftpServer = "localhost";
             $userName = "personaling";
-            $userPwd = "P3rs0n4l1ng";
-            
-            /*Tipos de archivo
-             * 1: MasterData
-             * 2: Inbound
-             * 3: Outbound
-             */
+            $userPwd = "P3rs0n4l1ng";            
             
             $nombre = "";
             $rutaArchivo = "";
@@ -158,7 +165,14 @@ class MasterData extends CActiveRecord
             fseek($archivo, 0);
             
 //            $directorio = "IN/"; // En LogisFashion
+            /* en pruebas dejarlos aparte, en produccion
+             * subirlo a una carpeta especifica de produccion*/
             $directorio = "html/develop/develop/protected/data";
+            if(strpos(Yii::app()->baseUrl, "develop") == false 
+                && strpos(Yii::app()->baseUrl, "test") == false){
+
+                $directorio = "html/develop/develop/protected/data/produccion";
+            }
             
             //realizar la conexion ftp
             $conexion = ftp_connect($ftpServer); 

@@ -88,7 +88,7 @@ class Producto extends CActiveRecord
 			array('peso', 'numerical', 'min'=>0.1, 'tooSmall'=>'El peso debe ser mayor a 0'),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
-			array('nombre, codigo, marca_id, descripcion, peso', 'required'),
+			array('nombre, codigo, marca_id, descripcion, peso', 'required','message'=>'{attribute} '.Yii::t('contentForm','cannot be blank')),
 			//array('proveedor', 'length', 'max'=>45), 
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),

@@ -1247,14 +1247,14 @@ public function actionCategorias2(){
                 $status_register_tmp = isset($userTmp->status_register) ? $userTmp->status_register : User::STATUS_REGISTER_ESTILO;
 
                 if (($status_register_tmp != User::STATUS_REGISTER_ESTILO) && $todosLosLooks) {
-                    $rangosArray = Look::model()->getRangosPrecios();
+                    //$rangosArray = Look::model()->getRangosPrecios();
                     $profile = new Profile;
                     $this->render('look', array(
                         'looks' => $looks,
                         'pages' => $pages,
                         'profile' => $profile,
                         'editar' => true,
-                        'rangos' => $rangosArray,
+                       // 'rangos' => $rangosArray,
                         'todosLosLooks' => $todosLosLooks,
                     ));
                 } 

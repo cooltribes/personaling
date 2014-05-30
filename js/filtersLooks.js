@@ -564,7 +564,7 @@ $(function() {
     
     
     //FIltrar por precios
-    
+   /* 
     $("#price-ranges a.price-filter").click(function(e){
         
         var id = $(this).attr("id");
@@ -580,7 +580,7 @@ $(function() {
         
     });
     
-    
+    */
     
     //Click Boton todos los looks
 //    $('.crear-filtro').click(function(e){

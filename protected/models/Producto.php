@@ -46,6 +46,7 @@ class Producto extends CActiveRecord
 	public $categoria_id="";
 	public $_precio = null;
     private $_totalVentas = null;
+	public $precioNf;
     
     public function scopes()
     {
@@ -343,8 +344,18 @@ class Producto extends CActiveRecord
                 }
             else
                 return 0;
-        }
-	
+    }
+	/*
+	public function getPrecioNf()
+	{
+	    $c = new CDbCriteria();
+	    $c->order = '`id` desc';
+	    $c->compare('tbl_producto_id', $this->id);
+	    $temp_precio = Precio::model()->find($c);
+        if (isset($temp_precio->precioImpuesto))
+            return $temp_precio->precioImpuesto;
+       return 0;
+    }	*/
 	public function getCantidad($talla=null,$color=null)
 	{
 	if (is_null($talla) and is_null($color))

@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','xmltest'),
+                                    'getFilter','xmltest','rangoslook'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -111,13 +111,19 @@ class TiendaController extends Controller
 		));	
 			
 	}
-	
+	public function actionRangoslook(){
+		
+		$rangosArray = Look::model()->getRangosPrecios();
+		$this->renderPartial('_rangos',array('rangos'=>$rangosArray));
+	}
 	public function actionIndex()
 	{
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
+
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 		/*
 		if(isset(Yii::app()->session['f_color'])){
 			unset(Yii::app()->session['f_color']);
@@ -373,6 +379,7 @@ class TiendaController extends Controller
 						'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
 						'pages'=>$pages,
 						'total'=>$total,
+						'seo' => $seo,
 						));	
 			} else {
 					
@@ -456,6 +463,7 @@ class TiendaController extends Controller
 		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
 		'pages'=>$pages,
 		'total'=>$total,
+		'seo' => $seo,
 		));	
 		}	
 	}
@@ -1067,8 +1075,9 @@ public function actionCategorias2(){
 	
 	}
 
-	public function actionLook(){ 
-		
+	public function actionLook(){
+            	 
+			//$start = microtime(true);
             $userTmp = User::model()->findByPk(Yii::app()->user->id);
             $todosLosLooks = false;
             if (isset($userTmp)) {
@@ -1242,14 +1251,15 @@ public function actionCategorias2(){
                 $status_register_tmp = isset($userTmp->status_register) ? $userTmp->status_register : User::STATUS_REGISTER_ESTILO;
 
                 if (($status_register_tmp != User::STATUS_REGISTER_ESTILO) && $todosLosLooks) {
-                    $rangosArray = Look::model()->getRangosPrecios();
+                    //$rangosArray = Look::model()->getRangosPrecios();
                     $profile = new Profile;
                     $this->render('look', array(
                         'looks' => $looks,
                         'pages' => $pages,
                         'profile' => $profile,
                         'editar' => true,
-                        'rangos' => $rangosArray,
+                        'gift' => false,
+                       // 'rangos' => $rangosArray,
                         'todosLosLooks' => $todosLosLooks,
                     ));
                 } 
@@ -1324,11 +1334,13 @@ public function actionCategorias2(){
                 $pages->pageSize = 9;
                 $pages->applyLimit($criteria);
                 $looks = Look::model()->findAll($criteria);
-
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."a<br>"; 
                 /**    Filtros por Perfil * */
                 $profile = new Profile;
-                $rangosArray = Look::model()->getRangosPrecios();
-
+               // $rangosArray = Look::model()->getRangosPrecios();
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."b<br>"; 
     //                echo "<pre>"; print_r($count);echo "</pre>";               
 				$gift=false;
 				if(isset(Yii::app()->session['registerStep'])){
@@ -1346,15 +1358,22 @@ public function actionCategorias2(){
 					}else
 						unset(Yii::app()->session['registerStep']);
 				}
+
+				$seo = SeoStatic::model()->findByAttributes(array('name'=>'Looks'));
+
                 $this->render('look', array(
                     'looks' => $looks,
                     'pages' => $pages,
                     'profile' => $profile,
                     'editar' => true,
-                    'rangos' => $rangosArray,
+                    //'rangos' => $rangosArray,
                     'todosLosLooks' => $todosLosLooks,
                     'gift'=>$gift,
+                    'seo' => $seo,
                 ));
+				
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."<br>"; 
             }	
 			
 		

@@ -46,6 +46,7 @@ class Producto extends CActiveRecord
 	public $categoria_id="";
 	public $_precio = null;
     private $_totalVentas = null;
+	public $precioNf;
     
     public function scopes()
     {
@@ -88,7 +89,7 @@ class Producto extends CActiveRecord
 			array('peso', 'numerical', 'min'=>0.1, 'tooSmall'=>'El peso debe ser mayor a 0'),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
-			array('nombre, codigo, marca_id, descripcion, peso', 'required'),
+			array('nombre, codigo, marca_id, descripcion, peso', 'required','message'=>'{attribute} '.Yii::t('contentForm','cannot be blank')),
 			//array('proveedor', 'length', 'max'=>45), 
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
@@ -343,8 +344,18 @@ class Producto extends CActiveRecord
                 }
             else
                 return 0;
-        }
-	
+    }
+	/*
+	public function getPrecioNf()
+	{
+	    $c = new CDbCriteria();
+	    $c->order = '`id` desc';
+	    $c->compare('tbl_producto_id', $this->id);
+	    $temp_precio = Precio::model()->find($c);
+        if (isset($temp_precio->precioImpuesto))
+            return $temp_precio->precioImpuesto;
+       return 0;
+    }	*/
 	public function getCantidad($talla=null,$color=null)
 	{
 	if (is_null($talla) and is_null($color))

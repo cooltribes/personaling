@@ -601,11 +601,11 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 </div>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 
-<?php if(true){?>
+<?php if($gift){?>
 <div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-  <div class="modal-header">
+ <div class="modal-header">
     <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">¡Enhorabuena!</h3>
+   <!--  <h3 id="myModalLabel">¡Enhorabuena!</h3>-->
    
   </div>
   <div class="modal-body">

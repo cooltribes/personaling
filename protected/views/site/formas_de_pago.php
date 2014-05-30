@@ -1,9 +1,19 @@
 <?php
+//$this->pageTitle=Yii::app()->name . ' - Página de inicio';
+if($seo){
+  $this->pageTitle = $seo->title;
+  Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+  Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+}
+?>
+<?php
 /* @var $this SiteController */
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Formas de Pago';
+
+
 $this->breadcrumbs=array(
 	'Formas de pago',
 );

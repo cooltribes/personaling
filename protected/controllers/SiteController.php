@@ -96,7 +96,8 @@ class SiteController extends Controller
 
 	public function actionFormas_de_pago()
 	{
-		$this->render('formas_de_pago');
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Formas de pago'));
+		$this->render('formas_de_pago', array('seo'=>$seo));
 	}
 
 	public function actionCondiciones_De_Envios_y_Encomiendas()
@@ -125,7 +126,8 @@ class SiteController extends Controller
 	}
 	public function actionLandingpage()
 	{
-		$this->render('landingpage');
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Landing'));
+		$this->render('landingpage', array('seo'=>$seo));
 	}
 	public function actionVe()
 	{

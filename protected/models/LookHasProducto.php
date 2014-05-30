@@ -58,6 +58,7 @@ class LookHasProducto extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'producto' => array(self::BELONGS_TO, 'Producto', 'producto_id'),
+			//'precioNf' => array(self::STAT,'Producto','prooducto_id','select'=>'SUM(precioNf)'),
 		);
 	}
 

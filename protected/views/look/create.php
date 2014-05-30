@@ -128,7 +128,7 @@ function handleDrop(e) {
 		//alert(json);
 		//html = '<div class="new" id="div142_22"><img width="270" height="270" src="/develop/images/producto/142/137_thumb.png" alt><input type="hidden" name="producto_id" value="142"><input type="hidden" name="color_id" value="22"></div>';
 		//html = '<div class="new" id="div'+json[0].tbl_producto_id+'_'+json[0].color_id+'"><img src="/develop/'+json[0].url+'" alt><input type="hidden" name="producto_id" value="'+json[0].tbl_producto_id+'"><input type="hidden" name="color_id" value="'+json[0].color_id+'"></div>';
-		html = '<div class="new" id="div'+producto_id+'_'+color_id+'"><input type="hidden" name="color_id" value="'+color_id+'"></div>';
+		html = '<div class="new" id="div'+producto_id+'_'+color_id+'"><input type="hidden" name="producto_id" value="'+producto_id+'"><input type="hidden" name="color_id" value="'+color_id+'"></div>';
 		
 		//alert(html);
 		nuevo_objeto = $(html);
@@ -140,6 +140,7 @@ function handleDrop(e) {
 		var img = new Image();
 		//img.attr('id','img'+nuevo_objeto.attr('id'));
 		img.onload = function(){
+
 			//alert(this.width + 'x' + this.height);
 			$(this).attr('width',this.width);
 			$(this).attr('height',this.height);
@@ -223,8 +224,8 @@ function handleDrop(e) {
 		img.src = urlVar;
 		//
 		nuevo_objeto.append(img);
-		nuevo_objeto.append('<span class="eliminar ocultar"><i class=" icon-remove"></i></span>');
-		nuevo_objeto.append('<div class="rotar ocultar"> <i class=" icon-repeat"></i></div>');
+			nuevo_objeto.append('<span class="eliminar ocultar"><i class=" icon-remove"></i></span>');
+			nuevo_objeto.append('<div class="rotar ocultar"> <i class=" icon-repeat"></i></div>');
 		  if (contenedor.innerHTML.indexOf("<h1>") >=0)
 			$(contenedor).html(	nuevo_objeto );
 	    else
@@ -1012,7 +1013,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 <!-- /container --> 
 
-<!------------------- MODAL WINDOW ON -----------------> 
+
 
 <!-- Modal 1 --> 
 <!--
@@ -1023,7 +1024,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <div class="divForForm"></div>
 <?php $this->endWidget(); ?>
 
-<!------------------- DETECT BROWSER -----------------> 
+
 <style>
     body .buorg{
         position: absolute;
@@ -1083,7 +1084,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     } 
     
 </script>
-<!------------------- MODAL WINDOW OFF -----------------> 
+
 <script type="text/javascript">
     
 
@@ -1123,7 +1124,7 @@ function addPublicar(tipo)
 		$('#campana_id_error').hide('slow');
 		$("#productos_id").val('');
 		$('.canvas input[name="producto_id"]').each(function(item){
-			console.log($(this).val());
+			//console.log($(this).val());
 			productos_id += $(this).val()+',';
 			color_id += $(this).next().val()+',';
 			position = $(this).parent().position();
@@ -1155,6 +1156,7 @@ function addPublicar(tipo)
 			height += image.height() + ',';
 			left += position.left + ',';
 			top += position.top + ',';
+			//console.log('count');
 			count++;
 		});
 		
@@ -1197,6 +1199,7 @@ function addPublicar(tipo)
 		//alert(productos_id);
 
 		// check forr repeated products
+		//console.log(productos_id);
 		products_array = productos_id.split(',');
 		products_array.sort();
 		var last = products_array[0];
@@ -1212,6 +1215,8 @@ function addPublicar(tipo)
 			bootbox.alert("No puedes incluir prendas repetidas");
 			return false;
 		}
+
+
 
 		//alert(left);
 		//productos_id = "1,2,3,4";
@@ -1238,7 +1243,7 @@ function addPublicar(tipo)
 		//count = 6;
 		//alert(productos_id);
 		//count = count + count_a;
-
+		console.log(count);
 		if (count >= 6){
 			$("#form_productos").submit();
 		} else {

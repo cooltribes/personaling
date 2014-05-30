@@ -1,8 +1,10 @@
 <?php
-$this->pageTitle = 'Looks';
-Yii::app()->clientScript->registerMetaTag('Looks', 'title', null, null, null);
-Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion bloggers y personal shoppers', 'description', null, null, null);
-Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, looks, asesoría ropa personalizada, moda, fashion bloggers, personal shopper gratis', 'keywords', null, null, null);
+if($seo){
+    $this->pageTitle = $seo->title;
+    Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+}
 ?>
 <?php 
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
@@ -172,37 +174,23 @@ if (isset($user)){
                             background: #6d2d56;
                         }
                     </style>
-                    <li class="dropdown">
+                    <li id="li_rangos" class="dropdown">
 
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
-                        <ul class="dropdown-menu" id="price-ranges" role="menu" aria-labelledby="dLabel">
-                                    <?php foreach ($rangos as $key => $rango) { ?>
-                                <li><a class="btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
-                                        <?php
-                                        if (!$key) {
-                                            echo "Hasta ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
-                                            .Yii::t('contentForm', 'currSym');
-                                        } else {
-                                            if ($key < 3) {
-                                                echo "De ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start'])." 
-                                                    a ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
-                                                        .Yii::t('contentForm', 'currSym');
-                                            } else {
-                                                echo "Más de ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start']).
-                                                        " ".Yii::t('contentForm', 'currSym');
-                                            }
-                                        }
-                                        ?>
-                                        <span class="color12">
-                                <?php echo "({$rango['count']})" ?>
-                                        </span>
-                                    </a></li>
-<?php } ?>
-                        <?php if(!empty($rangos)){ ?>
-                            <li><a class="btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
-                        <?php } ?>  
-                            
-                        </ul> 
+						<?php Yii::app()->clientScript->registerScript('rangoprecios', "
+						$.get('/develop/tienda/rangoslook',function(data){
+							$('#li_rangos').append(data);
+							    $('#price-ranges a.price-filter').click(function(e){
+							        var id = $(this).attr('id');
+							        if($('#rango_actual').val() !== id){
+							            $(this).parent().siblings().removeClass('active-range');
+							            $(this).parent().addClass('active-range');
+							            $('#rango_actual').val(id); 
+							            refresh();
+							        }
+							    });
+						})
+						"); ?>
 
                     </li>
                     <!-- Filtro por Precios OFF -->

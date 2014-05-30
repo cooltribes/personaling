@@ -1,9 +1,9 @@
 <?php
 //$this->pageTitle=Yii::app()->name . ' - Página de inicio';
-$this->pageTitle = 'Personaling | Tu primera shopping experience única y...repetible';
-Yii::app()->clientScript->registerMetaTag('Personaling | Tu primera shopping experience única y...repetible', 'title', null, null, null);
-Yii::app()->clientScript->registerMetaTag('Personaling.com es el primera shopping experience de moda donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por personal shoppers.', 'description', null, null, null);
-Yii::app()->clientScript->registerMetaTag('personal shopper online, ropa online, looks, moda, tienda de ropa online, marcas de ropa, ropa de mujer', 'keywords', null, null, null);
+$this->pageTitle = $seo->title;
+Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
 ?>
 <div class="wrapper-landingpage">
 	<div class="wrapper-inside-landingpage">

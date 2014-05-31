@@ -79,7 +79,7 @@ class CategoriaController extends Controller
 			$model->descripcion = $_POST['Categoria']['descripcion'];
 			
 			//echo($model->nombre);
-			
+			if($model->validate()){
 			if($model->save()){
 
 	        	$images = CUploadedFile::getInstancesByName('url');
@@ -110,8 +110,10 @@ class CategoriaController extends Controller
 				
 				$this->redirect(array('admin'));
 			}
-			//else
-				//var_dump($model->getErrors());	
+			else {
+				Yii::trace('Update Categoria, Error:'.print_r($model->getErrors(), true), 'registro');
+			}
+			}	
 		}
 
 		$this->render('create',array(
@@ -136,6 +138,9 @@ class CategoriaController extends Controller
 			$model->attributes=$_POST['Categoria'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
+			else 
+				Yii::trace('Update Categoria, Error:'.print_r($model->getErrors(), true), 'registro');
+			
 		}
 
 		$this->render('update',array(

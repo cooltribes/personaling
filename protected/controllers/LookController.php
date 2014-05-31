@@ -105,7 +105,7 @@ class LookController extends Controller
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('precios','categorias','view','colores'),
-				'users'=>array('@'),
+				'users'=>Yii::app()->params['registro']?array('@'):array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks','softdelete'),
